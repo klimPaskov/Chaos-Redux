@@ -129,3 +129,17 @@ The Knife Breaks contribution floor is dealing the central defeat or completing 
 The Empty Chair Holds forgives up to two consecutive pulses (about twenty to thirty days) without the original capital.
 Necessary Hypocrisy proves the Mechanized Assassin formation with a majority template and one fielded mechanized division; it does not measure the division's supply.
 The Last Safe Cabinet treats any Event 39 office casualty after activation as losing a protected office, and keeps the activation ruler through a character flag.
+
+## D15. Decision costs come from fourteen cost families
+
+Disposition: implemented; affordability and debit need live confirmation.
+Every action used to pay a hidden flat 20 political power, plus 5 command power for two actions, and only the two raids showed a real cost.
+Each decision and selectable mission now names one cost family when it is taken, and the family decides what the payer spends: seven government families (case authority, security detail, forensic inquiry, route watch, armed raid, capture planning, public strain) and seven movement families (Brotherhood council, cell supply, field operation, revolt preparation, local administration, terminal settlement, terminal campaign).
+Each family spends two or three resources, shows them through `custom_cost_text` with texticons, and uses one inclusive affordability trigger in both `available` and `custom_cost_trigger`.
+Political power remains only on political, legal and council actions; security work spends manpower, support equipment and command power, raids spend rifles and manpower, route work spends trucks, and movement actions spend operations kits, rifles, trucks and manpower.
+The government response profile surcharge now applies only to the political power of the case authority and public strain families, where a profile changes how much political cover an action needs.
+The debit records one receipt per resource and a rolled-back transaction refunds exactly those receipts, replacing the four fixed refund flags.
+Cell actions are paid by the central movement state while it can act, matching where `murder_mystery_decision_run_cell_support` runs the transaction; the cost tooltip says so.
+Operations kits have no vanilla texticon, so a 24x24 texticon was downscaled from the existing kit equipment icon rather than generated.
+The cost text colours every amount red when the payer cannot afford the action, the repository's established blocked-cost pattern; per-resource colouring would need a scripted localisation entry for every family and resource.
+The HOI4 MCP `probability_inspect` route returned `INTERNAL_ERROR` for a narrow `decision_ai_will_do` query on one decision, so no baseline or compare evidence exists for the changed AI blocked conditions; each changed condition only swaps the old political power gate for the family affordability trigger.

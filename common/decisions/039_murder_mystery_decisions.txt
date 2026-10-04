@@ -16,6 +16,15 @@
 # The mission divisions threshold field requires a file-local literal.
 @murder_mystery_objective_required_divisions = 2
 
+# ai_hint_pp_cost takes a literal. Each value equals the political power of the
+# matching murder_mystery_cost family in 039_murder_mystery_constants.txt.
+@murder_mystery_ai_hint_case_authority = 35
+@murder_mystery_ai_hint_forensic_inquiry = 15
+@murder_mystery_ai_hint_public_strain = 25
+@murder_mystery_ai_hint_brotherhood_council = 30
+@murder_mystery_ai_hint_local_administration = 25
+@murder_mystery_ai_hint_terminal_settlement = 60
+
 murder_mystery_investigation_category = {
 	# -----------------------------------------------------------------------
 	# Government investigation: phases one through three
@@ -38,12 +47,16 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
+		custom_cost_text = murder_mystery_cost_case_authority
+		ai_hint_pp_cost = @murder_mystery_ai_hint_case_authority
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.case_authority }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.establish_case_command }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.secure_succession }
 				murder_mystery_decision_run_investigation_action = yes
@@ -85,8 +98,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
+		custom_cost_text = murder_mystery_cost_security_detail
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -94,6 +109,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.security_detail }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.protect_succession }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.secure_succession }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.investigation_mission_days }
@@ -140,7 +156,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_security_detail = yes }
 			}
 		}
 	}
@@ -164,8 +180,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
+		custom_cost_text = murder_mystery_cost_forensic_inquiry
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -173,6 +191,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.forensic_inquiry }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.preserve_evidence }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.preserve_scene }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.investigation_mission_days }
@@ -216,7 +235,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
 			}
 		}
 	}
@@ -237,13 +256,16 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			command_power > constant:murder_mystery_action_cost.command_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
+		custom_cost_text = murder_mystery_cost_case_authority
+		ai_hint_pp_cost = @murder_mystery_ai_hint_case_authority
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.case_authority }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.commit_intelligence }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.preserve_scene }
 				murder_mystery_decision_run_investigation_action = yes
@@ -263,7 +285,7 @@ murder_mystery_investigation_category = {
 				factor = constant:murder_mystery_ai.blocked
 				OR = {
 					NOT = { murder_mystery_action_is_available = yes }
-					NOT = { command_power > constant:murder_mystery_action_cost.command_power_gate }
+					NOT = { murder_mystery_can_pay_cost_case_authority = yes }
 				}
 			}
 		}
@@ -285,13 +307,16 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			command_power > constant:murder_mystery_action_cost.command_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
+		custom_cost_text = murder_mystery_cost_forensic_inquiry
+		ai_hint_pp_cost = @murder_mystery_ai_hint_forensic_inquiry
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.forensic_inquiry }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.audit_comms }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.map_network }
 				murder_mystery_decision_run_investigation_action = yes
@@ -311,7 +336,7 @@ murder_mystery_investigation_category = {
 				factor = constant:murder_mystery_ai.blocked
 				OR = {
 					NOT = { murder_mystery_action_is_available = yes }
-					NOT = { command_power > constant:murder_mystery_action_cost.command_power_gate }
+					NOT = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
 				}
 			}
 		}
@@ -336,8 +361,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
+		custom_cost_text = murder_mystery_cost_route_watch
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -345,6 +372,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.route_watch }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.trace_logistics }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.map_network }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.investigation_mission_days }
@@ -399,7 +427,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_route_watch = yes }
 			}
 		}
 	}
@@ -427,8 +455,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
+		custom_cost_text = murder_mystery_cost_security_detail
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -436,6 +466,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.security_detail }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.protect_witnesses }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.protect_likely_targets }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.investigation_mission_days }
@@ -479,7 +510,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_security_detail = yes }
 			}
 		}
 	}
@@ -501,12 +532,17 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
+		custom_cost_text = murder_mystery_cost_security_detail
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
-			hidden_effect = { murder_mystery_decision_protect_selected_target = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.security_detail }
+				murder_mystery_decision_protect_selected_target = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.high
@@ -542,12 +578,16 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
+		custom_cost_text = murder_mystery_cost_public_strain
+		ai_hint_pp_cost = @murder_mystery_ai_hint_public_strain
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.public_strain }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.replace_office }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.protect_likely_targets }
 				murder_mystery_decision_run_investigation_action = yes
@@ -589,11 +629,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			hidden_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
+			hidden_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
 		}
-		custom_cost_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
-		custom_cost_text = murder_mystery_government_raid_cost
+		custom_cost_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
+		custom_cost_text = murder_mystery_cost_armed_raid
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -601,6 +640,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.armed_raid }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.raid_cell }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.break_cell }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.investigation_mission_days }
@@ -644,7 +684,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { murder_mystery_can_pay_government_raid_cost = yes }
+				NOT = { murder_mystery_can_pay_cost_armed_raid = yes }
 			}
 		}
 	}
@@ -669,8 +709,10 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_capture_planning = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_capture_planning = yes }
+		custom_cost_text = murder_mystery_cost_capture_planning
 		days_mission_timeout = constant:murder_mystery_action_tuning.terminal_mission_days
 		days_remove = constant:murder_mystery_action_tuning.terminal_mission_days
 		is_good = yes
@@ -678,6 +720,7 @@ murder_mystery_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.capture_planning }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.prepare_final_operation }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.terminal_mission_days }
@@ -721,7 +764,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_capture_planning = yes }
 			}
 		}
 	}
@@ -743,12 +786,15 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_can_capture = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
+		custom_cost_text = murder_mystery_cost_armed_raid
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.armed_raid }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.silent_arrest }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				murder_mystery_decision_run_investigation_action = yes
@@ -788,12 +834,15 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_can_capture = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
+		custom_cost_text = murder_mystery_cost_armed_raid
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.armed_raid }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.coordinated_raids }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				murder_mystery_decision_run_investigation_action = yes
@@ -833,12 +882,16 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_can_capture = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
+		custom_cost_text = murder_mystery_cost_public_strain
+		ai_hint_pp_cost = @murder_mystery_ai_hint_public_strain
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.public_strain }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.baited_target }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				murder_mystery_decision_run_investigation_action = yes
@@ -878,12 +931,15 @@ murder_mystery_investigation_category = {
 		}
 		available = {
 			murder_mystery_can_capture = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
+		custom_cost_text = murder_mystery_cost_route_watch
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.route_watch }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_interception }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				murder_mystery_decision_run_investigation_action = yes
@@ -1123,8 +1179,10 @@ murder_mystery_foreign_cell_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_case_authority = yes }
+		custom_cost_text = murder_mystery_cost_case_authority
 		days_mission_timeout = constant:murder_mystery_action_tuning.foreign_mission_days
 		days_remove = constant:murder_mystery_action_tuning.foreign_mission_days
 		is_good = yes
@@ -1132,6 +1190,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.case_authority }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_evidence_exchange }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.map_network }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.foreign_mission_days }
@@ -1183,7 +1242,7 @@ murder_mystery_foreign_cell_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_case_authority = yes }
 			}
 		}
 	}
@@ -1201,12 +1260,16 @@ murder_mystery_foreign_cell_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_forensic_inquiry = yes }
+		custom_cost_text = murder_mystery_cost_forensic_inquiry
+		ai_hint_pp_cost = @murder_mystery_ai_hint_forensic_inquiry
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.forensic_inquiry }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_evidence_exchange }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.map_network }
 				murder_mystery_decision_run_investigation_action = yes
@@ -1238,12 +1301,15 @@ murder_mystery_foreign_cell_investigation_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_security_detail = yes }
+		custom_cost_text = murder_mystery_cost_security_detail
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.security_detail }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_counterintelligence }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.break_cell }
 				murder_mystery_decision_run_investigation_action = yes
@@ -1282,8 +1348,10 @@ murder_mystery_foreign_cell_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
+		custom_cost_text = murder_mystery_cost_route_watch
 		days_mission_timeout = constant:murder_mystery_action_tuning.foreign_mission_days
 		days_remove = constant:murder_mystery_action_tuning.foreign_mission_days
 		is_good = yes
@@ -1291,6 +1359,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.route_watch }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_route_disruption }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.break_cell }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.foreign_mission_days }
@@ -1342,7 +1411,7 @@ murder_mystery_foreign_cell_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { has_political_power > constant:murder_mystery_action_cost.political_power_gate }
+				NOT = { murder_mystery_can_pay_cost_route_watch = yes }
 			}
 		}
 	}
@@ -1365,11 +1434,10 @@ murder_mystery_foreign_cell_investigation_category = {
 		available = {
 			murder_mystery_action_is_available = yes
 			murder_mystery_country_has_registered_cell = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			hidden_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
+			hidden_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
 		}
-		custom_cost_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
-		custom_cost_text = murder_mystery_government_raid_cost
+		custom_cost_trigger = { murder_mystery_can_pay_cost_armed_raid = yes }
+		custom_cost_text = murder_mystery_cost_armed_raid
 		days_mission_timeout = constant:murder_mystery_action_tuning.foreign_mission_days
 		days_remove = constant:murder_mystery_action_tuning.foreign_mission_days
 		is_good = yes
@@ -1377,6 +1445,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.armed_raid }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.foreign_cell_raid }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.break_cell }
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.foreign_mission_days }
@@ -1428,7 +1497,7 @@ murder_mystery_foreign_cell_investigation_category = {
 				factor = constant:murder_mystery_ai.blocked
 				OR = {
 					NOT = { murder_mystery_country_has_registered_cell = yes }
-					NOT = { murder_mystery_can_pay_government_raid_cost = yes }
+					NOT = { murder_mystery_can_pay_cost_armed_raid = yes }
 				}
 			}
 		}
@@ -1640,12 +1709,16 @@ murder_mystery_brotherhood_operations_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_brotherhood_council = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_brotherhood_council = yes }
+		custom_cost_text = murder_mystery_cost_brotherhood_council
+		ai_hint_pp_cost = @murder_mystery_ai_hint_brotherhood_council
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.brotherhood_council }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.assassin_state_preparation }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				murder_mystery_decision_run_investigation_action = yes
@@ -1692,10 +1765,12 @@ murder_mystery_brotherhood_operations_category = {
 		available = {
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
 			murder_mystery_selected_cell_is_valid = yes
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_cell_supply = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_cell_supply = yes }
+		custom_cost_text = murder_mystery_cost_cell_supply
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -1703,6 +1778,7 @@ murder_mystery_brotherhood_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.cell_supply }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_supply_selected_cell = yes
@@ -1743,7 +1819,7 @@ murder_mystery_brotherhood_operations_category = {
 				factor = constant:murder_mystery_ai.blocked
 				OR = {
 					NOT = { murder_mystery_selected_cell_is_valid = yes }
-					NOT = { event_target:murder_mystery_assassin_state = { has_political_power > constant:murder_mystery_action_cost.political_power_gate } }
+					NOT = { murder_mystery_cell_payer_can_pay_cell_supply = yes }
 				}
 			}
 		}
@@ -1769,18 +1845,21 @@ murder_mystery_brotherhood_operations_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
+		custom_cost_text = murder_mystery_cost_field_operation
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
 				event_target:murder_mystery_assassin_state = {
+					set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.field_operation }
 					murder_mystery_decision_execute_high_value_operation = yes
 				}
 			}
@@ -1826,9 +1905,11 @@ murder_mystery_brotherhood_operations_category = {
 			murder_mystery_selected_cell_is_valid = yes
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
+		custom_cost_text = murder_mystery_cost_revolt_preparation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -1836,6 +1917,7 @@ murder_mystery_brotherhood_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.revolt_preparation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_prepare_territorial_revolt = yes
@@ -1900,9 +1982,11 @@ murder_mystery_brotherhood_operations_category = {
 			murder_mystery_selected_cell_is_valid = yes
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
+		custom_cost_text = murder_mystery_cost_field_operation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -1910,6 +1994,7 @@ murder_mystery_brotherhood_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.field_operation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_dispatch_shadow_company = yes
@@ -1972,18 +2057,24 @@ murder_mystery_brotherhood_operations_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
 			murder_mystery_selected_cell_is_valid = yes
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_brotherhood_council = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_brotherhood_council = yes }
+		custom_cost_text = murder_mystery_cost_brotherhood_council
+		ai_hint_pp_cost = @murder_mystery_ai_hint_brotherhood_council
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
-			hidden_effect = { murder_mystery_decision_discipline_selected_cell = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.brotherhood_council }
+				murder_mystery_decision_discipline_selected_cell = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.high
@@ -2023,11 +2114,13 @@ murder_mystery_brotherhood_operations_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			murder_mystery_derivative_registry_has_capacity = yes
 			murder_mystery_assassin_state_has_derivative_anchor = yes
 			murder_mystery_selected_cell_is_valid = yes
+			hidden_trigger = { murder_mystery_can_pay_cost_revolt_preparation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_revolt_preparation = yes }
+		custom_cost_text = murder_mystery_cost_revolt_preparation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -2035,6 +2128,7 @@ murder_mystery_brotherhood_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.revolt_preparation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_create_derivative = yes
@@ -2101,12 +2195,18 @@ murder_mystery_brotherhood_operations_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		custom_cost_text = murder_mystery_cost_terminal_settlement
+		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_settlement_tt
-			hidden_effect = { murder_mystery_decision_complete_terminal_settlement = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
+				murder_mystery_decision_complete_terminal_settlement = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.urgent
@@ -2144,8 +2244,10 @@ murder_mystery_brotherhood_operations_category = {
 		available = {
 			murder_mystery_world_end_preparation_is_valid = yes
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
+		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_mission_timeout = constant:murder_mystery_action_tuning.terminal_mission_days
 		days_remove = constant:murder_mystery_action_tuning.terminal_mission_days
 		is_good = yes
@@ -2153,6 +2255,7 @@ murder_mystery_brotherhood_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.terminal_mission_days }
 				murder_mystery_decision_activate_world_end = yes
@@ -2237,9 +2340,11 @@ murder_mystery_cell_administration_category = {
 		available = {
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
+		custom_cost_text = murder_mystery_cost_revolt_preparation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -2247,6 +2352,7 @@ murder_mystery_cell_administration_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.revolt_preparation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_secure_revolt_capital = yes
@@ -2305,9 +2411,11 @@ murder_mystery_cell_administration_category = {
 		available = {
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_field_operation = yes }
+		custom_cost_text = murder_mystery_cost_field_operation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -2315,6 +2423,7 @@ murder_mystery_cell_administration_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.field_operation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_dispatch_shadow_company = yes
@@ -2373,9 +2482,11 @@ murder_mystery_cell_administration_category = {
 		available = {
 			event_target:murder_mystery_assassin_state = {
 				murder_mystery_action_is_available = yes
-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_revolt_preparation = yes }
+		custom_cost_text = murder_mystery_cost_revolt_preparation
 		days_mission_timeout = constant:murder_mystery_action_tuning.revolt_mission_days
 		days_remove = constant:murder_mystery_action_tuning.revolt_mission_days
 		is_good = yes
@@ -2383,6 +2494,7 @@ murder_mystery_cell_administration_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.revolt_preparation }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.revolt_mission_days }
 				murder_mystery_decision_seize_depot_rail = yes
@@ -2440,17 +2552,20 @@ murder_mystery_cell_administration_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_cell_supply = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_cell_supply = yes }
+		custom_cost_text = murder_mystery_cost_cell_supply
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.cell_supply }
 				murder_mystery_decision_request_central_support = yes
 			}
 		}
@@ -2482,17 +2597,23 @@ murder_mystery_cell_administration_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
-			hidden_effect = { murder_mystery_decision_integrate_local_cells = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.local_administration }
+				murder_mystery_decision_integrate_local_cells = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.standard
@@ -2526,17 +2647,23 @@ murder_mystery_cell_administration_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
-			hidden_effect = { murder_mystery_decision_manage_captured_officials = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.local_administration }
+				murder_mystery_decision_manage_captured_officials = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.standard
@@ -2570,17 +2697,23 @@ murder_mystery_cell_administration_category = {
 				limit = { has_event_target = murder_mystery_assassin_state }
 				event_target:murder_mystery_assassin_state = {
 					murder_mystery_action_is_available = yes
-					has_political_power > constant:murder_mystery_action_cost.political_power_gate
 				}
 				else = {
 					always = no
 				}
 			}
+			hidden_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
 		}
+		custom_cost_trigger = { murder_mystery_cell_payer_can_pay_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
 		days_re_enable = constant:murder_mystery_cooldown.action_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_action_commitment_tt
-			hidden_effect = { murder_mystery_decision_negotiate_local_settlement = yes }
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.local_administration }
+				murder_mystery_decision_negotiate_local_settlement = yes
+			}
 		}
 		ai_will_do = {
 			base = constant:murder_mystery_ai.high
@@ -2640,8 +2773,10 @@ murder_mystery_world_without_leaders_category = {
 				}
 			}
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
+		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_mission_timeout = constant:murder_mystery_action_tuning.terminal_mission_days
 		days_remove = constant:murder_mystery_action_tuning.terminal_mission_days
 		is_good = yes
@@ -2649,6 +2784,7 @@ murder_mystery_world_without_leaders_category = {
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_mission_success_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				murder_mystery_open_phase_mission = yes
 				set_variable = { murder_mystery_decision_mission_duration = constant:murder_mystery_action_tuning.terminal_mission_days }
 				if = {
@@ -2738,12 +2874,15 @@ murder_mystery_world_without_leaders_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
+		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_sector_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_two }
 				murder_mystery_decision_activate_terminal_sector = yes
 			}
@@ -2773,12 +2912,15 @@ murder_mystery_world_without_leaders_category = {
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
+		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_sector_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_three }
 				murder_mystery_decision_activate_terminal_sector = yes
 			}
@@ -2808,12 +2950,15 @@ murder_mystery_world_without_leaders_category = {
 		available = {
 			murder_mystery_action_is_available = yes
 			murder_mystery_terminal_target_is_valid = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
+		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_operation_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.silent_arrest }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_retired }
@@ -2850,12 +2995,16 @@ murder_mystery_world_without_leaders_category = {
 		available = {
 			murder_mystery_action_is_available = yes
 			murder_mystery_terminal_target_is_valid = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		custom_cost_text = murder_mystery_cost_terminal_settlement
+		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_operation_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.coordinated_raids }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_administered }
@@ -2892,12 +3041,16 @@ murder_mystery_world_without_leaders_category = {
 		available = {
 			murder_mystery_action_is_available = yes
 			murder_mystery_terminal_target_is_valid = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		custom_cost_text = murder_mystery_cost_terminal_settlement
+		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
 			custom_effect_tooltip = murder_mystery_terminal_operation_tt
 			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
 				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.baited_target }
 				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_administered }

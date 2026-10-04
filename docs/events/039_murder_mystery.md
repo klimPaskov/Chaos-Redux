@@ -151,10 +151,37 @@ The movement ends when its center (or heir) is gone, no derivative still fights 
 Ending retires the lower-stage remnant cells, applies the movement-ended Chaos reversal once, finalizes the runtime, and reports `chaosx.nr39.61` and `chaosx.nr39.62` (or `chaosx.nr39.20` when no territorial state ever existed).
 No inheritance step retires or creates a character.
 
+## Decision costs
+
+Every Event 039 decision and selectable mission names one cost family (`murder_mystery_cost_profile`) in its completion effect.
+The family decides what the payer spends; its amounts live in `murder_mystery_cost` and `murder_mystery_cost_float` and feed the cost text, the affordability check in `available` and `custom_cost_trigger`, the debit in `murder_mystery_pay_action_cost`, and the refund when the action transaction rolls back.
+Each family spends at most three resources, and every affordability check is inclusive.
+
+| Family | Spends | Decisions |
+| --- | --- | --- |
+| Case authority | political power (plus the response profile surcharge), command power | Establish the Case Command, Commit a Case Team, Join the Evidence Exchange |
+| Security detail | manpower, support equipment, command power | Secure the Government Quarter, Protect Witnesses, Choose a Protection Priority, Harden a Target Group |
+| Forensic inquiry | support equipment, political power | Preserve the First Evidence, Audit Communications, Request the Original Case File |
+| Route watch | trucks, manpower, command power | Trace Movement Logistics, Interdict a Known Route, Foreign Interception |
+| Armed raid | command power, infantry equipment, manpower | Raid an Identified Cell, Dismantle the Local Cell, Silent Arrest, Coordinated Raids |
+| Capture planning | command power, support equipment | Prepare the Final Operation |
+| Public strain | political power (plus the surcharge), stability | Replace a Compromised Office, Baited Target |
+| Brotherhood council | political power, command power | Reconcile a Command Dispute, Discipline an Unauthorized Cell |
+| Cell supply | operations kits, infantry equipment, trucks | Supply the Selected Cell, Request Central Support |
+| Field operation | operations kits, manpower, command power | Order a High-Value Operation, Dispatch a Shadow Company, Raise Local Assassin Cadres |
+| Revolt preparation | operations kits, manpower, infantry equipment | Prepare a Territorial Revolt, Create a Derivative Administration, Secure the Revolt Capital, Seize a Depot or Rail Hub |
+| Local administration | political power, manpower | Integrate Local Cells, Manage Captured Officials, Negotiate a Local Settlement |
+| Terminal settlement | political power, command power | Complete the Terminal Command Settlement, Establish a Successor Administration, Reconstitute the Campaign Council |
+| Terminal campaign | command power, operations kits, manpower | Activate World of Anarchy, Synchronize Uprisings, Select a Campaign Sector, Break the Command Spine |
+
+Cell actions run their transaction on the central movement state while it can act in its final phase, and on the acting country otherwise; the `murder_mystery_cell_payer_can_pay_*` checks read the same condition, so the shown cost always belongs to the payer.
+Operations kits are an Assassin-only cost and use the `GFX_murder_mystery_operations_kit_texticon` texticon (`gfx/texticons/039_murder_mystery/operations_kit_texticon.dds`, 24x24, downscaled from the kit equipment icon, registered in `interface/039_murder_mystery_icons.gfx`).
+Shared amounts are published as `global.murder_mystery_cost_*` display variables; the case authority and public strain political power quotes are per country because they carry the response profile surcharge.
+`ai_hint_pp_cost` uses file-scoped literals in the decisions file that mirror the political power of each family.
+
 ## Government cell raids
 
-Raid an Identified Cell (host) and Dismantle the Local Cell (foreign government) cost command power, infantry equipment and manpower from `murder_mystery_action_cost.government_raid_*`, shown as the decision cost.
-Operations kits remain an Assassin-only cost.
+Raid an Identified Cell (host) and Dismantle the Local Cell (foreign government) pay the armed raid family.
 A foreign government's case opens when a cell is registered in its country; after mapping the network it moves straight to breaking the cell.
 A successful local raid dismantles the cell (immunity, Chaos decrease for the first few cells, report `chaosx.nr39.10`); a partial raid costs the cell maturity and one stage.
 

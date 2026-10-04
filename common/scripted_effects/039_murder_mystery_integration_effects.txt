@@ -736,64 +736,265 @@ murder_mystery_set_government_response_profile = {
 		set_country_flag = murder_mystery_response_profile_locked
 		clear_variable = murder_mystery_response_profile_input
 		murder_mystery_set_action_deltas_zero = yes
+		murder_mystery_refresh_action_cost_display = yes
 	}
 }
 
+# ---------------------------------------------------------------------------
+# Decision cost families
+# ---------------------------------------------------------------------------
+# COUNTRY scope, the paying actor, inside an open action transaction.
+# Input: murder_mystery_pending_cost_profile, the family the decision named.
+# Without one, governments pay case authority and movement countries pay the
+# Brotherhood council family, matching murder_mystery_action_cost_is_available.
+# Output: one receipt variable per debited resource, refunded by
+# murder_mystery_refund_action_cost when the transaction rolls back.
 murder_mystery_pay_action_cost = {
-	set_temp_variable = { murder_mystery_action_payment = constant:murder_mystery_action_cost.political_power_spend }
+	murder_mystery_clear_action_cost_receipt = yes
 	if = {
-		limit = { has_variable = murder_mystery_response_cost_addition }
-		add_to_temp_variable = { murder_mystery_action_payment = murder_mystery_response_cost_addition }
-	}
-	set_variable = { murder_mystery_action_political_power_spent = murder_mystery_action_payment }
-	multiply_temp_variable = { murder_mystery_action_payment = -1 }
-	add_political_power = murder_mystery_action_payment
-	set_country_flag = murder_mystery_action_political_power_paid
-	if = {
-		limit = {
-			OR = {
-				check_variable = { var = murder_mystery_action_id value = constant:murder_mystery_action.audit_comms compare = equals }
-				check_variable = { var = murder_mystery_action_id value = constant:murder_mystery_action.commit_intelligence compare = equals }
-			}
-		}
-		set_temp_variable = { murder_mystery_action_payment = constant:murder_mystery_action_cost.command_power_spend }
-		multiply_temp_variable = { murder_mystery_action_payment = -1 }
-		add_command_power = murder_mystery_action_payment
-		set_country_flag = murder_mystery_action_command_power_paid
-	}
-	if = {
-		limit = {
-			OR = {
-				check_variable = { var = murder_mystery_action_id value = constant:murder_mystery_action.raid_cell compare = equals }
-				check_variable = { var = murder_mystery_action_id value = constant:murder_mystery_action.foreign_cell_raid compare = equals }
-			}
-		}
+		limit = { NOT = { has_variable = murder_mystery_pending_cost_profile } }
 		if = {
 			limit = { murder_mystery_assassin_actor = yes }
-			add_equipment_to_stockpile = {
-				type = assassin_operations_kit_1
-				amount = constant:murder_mystery_action_cost.operations_kit_spend_negative
-			}
-			set_country_flag = murder_mystery_action_operations_kit_paid
+			set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.brotherhood_council }
 		}
 		else = {
-			add_command_power = constant:murder_mystery_action_cost.government_raid_command_power_spend_negative
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = constant:murder_mystery_action_cost.government_raid_infantry_equipment_spend_negative
-			}
-			add_manpower = constant:murder_mystery_action_cost.government_raid_manpower_spend_negative
-			set_country_flag = murder_mystery_action_raid_resources_paid
+			set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.case_authority }
 		}
 	}
+	set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_infantry_equipment = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_support_equipment = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_trucks = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_operations_kits = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_due_stability = constant:murder_mystery_value.zero }
+	if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.case_authority compare = equals } }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.case_authority_political_power }
+		if = {
+			limit = { has_variable = murder_mystery_cost_case_authority_pp }
+			set_temp_variable = { murder_mystery_due_political_power = murder_mystery_cost_case_authority_pp }
+		}
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.case_authority_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.security_detail compare = equals } }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.security_detail_manpower }
+		set_temp_variable = { murder_mystery_due_support_equipment = constant:murder_mystery_cost.security_detail_support_equipment }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.security_detail_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.forensic_inquiry compare = equals } }
+		set_temp_variable = { murder_mystery_due_support_equipment = constant:murder_mystery_cost.forensic_inquiry_support_equipment }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.forensic_inquiry_political_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.route_watch compare = equals } }
+		set_temp_variable = { murder_mystery_due_trucks = constant:murder_mystery_cost.route_watch_trucks }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.route_watch_manpower }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.route_watch_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.armed_raid compare = equals } }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.armed_raid_command_power }
+		set_temp_variable = { murder_mystery_due_infantry_equipment = constant:murder_mystery_cost.armed_raid_infantry_equipment }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.armed_raid_manpower }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.capture_planning compare = equals } }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.capture_planning_command_power }
+		set_temp_variable = { murder_mystery_due_support_equipment = constant:murder_mystery_cost.capture_planning_support_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.public_strain compare = equals } }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.public_strain_political_power }
+		if = {
+			limit = { has_variable = murder_mystery_cost_public_strain_pp }
+			set_temp_variable = { murder_mystery_due_political_power = murder_mystery_cost_public_strain_pp }
+		}
+		set_temp_variable = { murder_mystery_due_stability = constant:murder_mystery_cost_float.public_strain_stability }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.brotherhood_council compare = equals } }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.brotherhood_council_political_power }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.brotherhood_council_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.cell_supply compare = equals } }
+		set_temp_variable = { murder_mystery_due_operations_kits = constant:murder_mystery_cost.cell_supply_operations_kits }
+		set_temp_variable = { murder_mystery_due_infantry_equipment = constant:murder_mystery_cost.cell_supply_infantry_equipment }
+		set_temp_variable = { murder_mystery_due_trucks = constant:murder_mystery_cost.cell_supply_trucks }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.field_operation compare = equals } }
+		set_temp_variable = { murder_mystery_due_operations_kits = constant:murder_mystery_cost.field_operation_operations_kits }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.field_operation_manpower }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.field_operation_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.revolt_preparation compare = equals } }
+		set_temp_variable = { murder_mystery_due_operations_kits = constant:murder_mystery_cost.revolt_preparation_operations_kits }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.revolt_preparation_manpower }
+		set_temp_variable = { murder_mystery_due_infantry_equipment = constant:murder_mystery_cost.revolt_preparation_infantry_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.local_administration compare = equals } }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.local_administration_political_power }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.local_administration_manpower }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.terminal_settlement compare = equals } }
+		set_temp_variable = { murder_mystery_due_political_power = constant:murder_mystery_cost.terminal_settlement_political_power }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.terminal_settlement_command_power }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.terminal_campaign compare = equals } }
+		set_temp_variable = { murder_mystery_due_command_power = constant:murder_mystery_cost.terminal_campaign_command_power }
+		set_temp_variable = { murder_mystery_due_operations_kits = constant:murder_mystery_cost.terminal_campaign_operations_kits }
+		set_temp_variable = { murder_mystery_due_manpower = constant:murder_mystery_cost.terminal_campaign_manpower }
+	}
+	clear_variable = murder_mystery_pending_cost_profile
+	murder_mystery_debit_action_cost = yes
 }
 
-# COUNTRY scope. Copies the government raid cost constants into country
-# variables read by the decision cost text.
+# COUNTRY scope. Debits the murder_mystery_due_* temp amounts set by
+# murder_mystery_pay_action_cost and records each payment for a refund.
+murder_mystery_debit_action_cost = {
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_political_power value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_political_power = murder_mystery_due_political_power }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_political_power }
+		add_political_power = murder_mystery_debit
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_command_power value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_command_power = murder_mystery_due_command_power }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_command_power }
+		add_command_power = murder_mystery_debit
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_manpower value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_manpower = murder_mystery_due_manpower }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_manpower }
+		add_manpower = murder_mystery_debit
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_infantry_equipment value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_infantry_equipment = murder_mystery_due_infantry_equipment }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_infantry_equipment }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = murder_mystery_debit }
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_support_equipment value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_support_equipment = murder_mystery_due_support_equipment }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_support_equipment }
+		add_equipment_to_stockpile = { type = support_equipment amount = murder_mystery_debit }
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_trucks value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_trucks = murder_mystery_due_trucks }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_trucks }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = murder_mystery_debit }
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_operations_kits value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_operations_kits = murder_mystery_due_operations_kits }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_operations_kits }
+		add_equipment_to_stockpile = { type = assassin_operations_kit_1 amount = murder_mystery_debit }
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_due_stability value = constant:murder_mystery_value.zero compare = greater_than } }
+		set_variable = { murder_mystery_paid_stability = murder_mystery_due_stability }
+		set_temp_variable = { murder_mystery_debit = constant:murder_mystery_value.zero }
+		subtract_from_temp_variable = { murder_mystery_debit = murder_mystery_due_stability }
+		add_stability = murder_mystery_debit
+	}
+	set_country_flag = murder_mystery_action_cost_paid
+}
+
+# COUNTRY scope. Returns every resource recorded by the last debit.
+murder_mystery_refund_action_cost = {
+	if = {
+		limit = { has_country_flag = murder_mystery_action_cost_paid }
+		if = { limit = { has_variable = murder_mystery_paid_political_power } add_political_power = murder_mystery_paid_political_power }
+		if = { limit = { has_variable = murder_mystery_paid_command_power } add_command_power = murder_mystery_paid_command_power }
+		if = { limit = { has_variable = murder_mystery_paid_manpower } add_manpower = murder_mystery_paid_manpower }
+		if = { limit = { has_variable = murder_mystery_paid_infantry_equipment } add_equipment_to_stockpile = { type = infantry_equipment amount = murder_mystery_paid_infantry_equipment } }
+		if = { limit = { has_variable = murder_mystery_paid_support_equipment } add_equipment_to_stockpile = { type = support_equipment amount = murder_mystery_paid_support_equipment } }
+		if = { limit = { has_variable = murder_mystery_paid_trucks } add_equipment_to_stockpile = { type = motorized_equipment amount = murder_mystery_paid_trucks } }
+		if = { limit = { has_variable = murder_mystery_paid_operations_kits } add_equipment_to_stockpile = { type = assassin_operations_kit_1 amount = murder_mystery_paid_operations_kits } }
+		if = { limit = { has_variable = murder_mystery_paid_stability } add_stability = murder_mystery_paid_stability }
+	}
+	murder_mystery_clear_action_cost_receipt = yes
+}
+
+# COUNTRY scope. Forgets the last debit once the transaction commits or rolls
+# back.
+murder_mystery_clear_action_cost_receipt = {
+	clr_country_flag = murder_mystery_action_cost_paid
+	clear_variable = murder_mystery_paid_political_power
+	clear_variable = murder_mystery_paid_command_power
+	clear_variable = murder_mystery_paid_manpower
+	clear_variable = murder_mystery_paid_infantry_equipment
+	clear_variable = murder_mystery_paid_support_equipment
+	clear_variable = murder_mystery_paid_trucks
+	clear_variable = murder_mystery_paid_operations_kits
+	clear_variable = murder_mystery_paid_stability
+}
+
+# COUNTRY scope. Publishes the cost family amounts read by the decision cost
+# text. Shared amounts are global; the political power of the case authority
+# and public strain families is per country because it carries the
+# government's response profile surcharge.
 murder_mystery_refresh_action_cost_display = {
-	set_variable = { murder_mystery_raid_command_power_cost = constant:murder_mystery_action_cost.government_raid_command_power_spend }
-	set_variable = { murder_mystery_raid_infantry_cost = constant:murder_mystery_action_cost.government_raid_infantry_equipment_spend }
-	set_variable = { murder_mystery_raid_manpower_cost = constant:murder_mystery_action_cost.government_raid_manpower_spend }
+	set_variable = { global.murder_mystery_cost_case_authority_command = constant:murder_mystery_cost.case_authority_command_power }
+	set_variable = { global.murder_mystery_cost_security_detail_manpower = constant:murder_mystery_cost.security_detail_manpower }
+	set_variable = { global.murder_mystery_cost_security_detail_support = constant:murder_mystery_cost.security_detail_support_equipment }
+	set_variable = { global.murder_mystery_cost_security_detail_command = constant:murder_mystery_cost.security_detail_command_power }
+	set_variable = { global.murder_mystery_cost_forensic_inquiry_support = constant:murder_mystery_cost.forensic_inquiry_support_equipment }
+	set_variable = { global.murder_mystery_cost_forensic_inquiry_political = constant:murder_mystery_cost.forensic_inquiry_political_power }
+	set_variable = { global.murder_mystery_cost_route_watch_trucks = constant:murder_mystery_cost.route_watch_trucks }
+	set_variable = { global.murder_mystery_cost_route_watch_manpower = constant:murder_mystery_cost.route_watch_manpower }
+	set_variable = { global.murder_mystery_cost_route_watch_command = constant:murder_mystery_cost.route_watch_command_power }
+	set_variable = { global.murder_mystery_cost_armed_raid_command = constant:murder_mystery_cost.armed_raid_command_power }
+	set_variable = { global.murder_mystery_cost_armed_raid_infantry = constant:murder_mystery_cost.armed_raid_infantry_equipment }
+	set_variable = { global.murder_mystery_cost_armed_raid_manpower = constant:murder_mystery_cost.armed_raid_manpower }
+	set_variable = { global.murder_mystery_cost_capture_planning_command = constant:murder_mystery_cost.capture_planning_command_power }
+	set_variable = { global.murder_mystery_cost_capture_planning_support = constant:murder_mystery_cost.capture_planning_support_equipment }
+	set_variable = { global.murder_mystery_cost_public_strain_stability = constant:murder_mystery_cost_float.public_strain_stability }
+	set_variable = { global.murder_mystery_cost_brotherhood_council_political = constant:murder_mystery_cost.brotherhood_council_political_power }
+	set_variable = { global.murder_mystery_cost_brotherhood_council_command = constant:murder_mystery_cost.brotherhood_council_command_power }
+	set_variable = { global.murder_mystery_cost_cell_supply_kits = constant:murder_mystery_cost.cell_supply_operations_kits }
+	set_variable = { global.murder_mystery_cost_cell_supply_infantry = constant:murder_mystery_cost.cell_supply_infantry_equipment }
+	set_variable = { global.murder_mystery_cost_cell_supply_trucks = constant:murder_mystery_cost.cell_supply_trucks }
+	set_variable = { global.murder_mystery_cost_field_operation_kits = constant:murder_mystery_cost.field_operation_operations_kits }
+	set_variable = { global.murder_mystery_cost_field_operation_manpower = constant:murder_mystery_cost.field_operation_manpower }
+	set_variable = { global.murder_mystery_cost_field_operation_command = constant:murder_mystery_cost.field_operation_command_power }
+	set_variable = { global.murder_mystery_cost_revolt_preparation_kits = constant:murder_mystery_cost.revolt_preparation_operations_kits }
+	set_variable = { global.murder_mystery_cost_revolt_preparation_manpower = constant:murder_mystery_cost.revolt_preparation_manpower }
+	set_variable = { global.murder_mystery_cost_revolt_preparation_infantry = constant:murder_mystery_cost.revolt_preparation_infantry_equipment }
+	set_variable = { global.murder_mystery_cost_local_administration_political = constant:murder_mystery_cost.local_administration_political_power }
+	set_variable = { global.murder_mystery_cost_local_administration_manpower = constant:murder_mystery_cost.local_administration_manpower }
+	set_variable = { global.murder_mystery_cost_terminal_settlement_political = constant:murder_mystery_cost.terminal_settlement_political_power }
+	set_variable = { global.murder_mystery_cost_terminal_settlement_command = constant:murder_mystery_cost.terminal_settlement_command_power }
+	set_variable = { global.murder_mystery_cost_terminal_campaign_command = constant:murder_mystery_cost.terminal_campaign_command_power }
+	set_variable = { global.murder_mystery_cost_terminal_campaign_kits = constant:murder_mystery_cost.terminal_campaign_operations_kits }
+	set_variable = { global.murder_mystery_cost_terminal_campaign_manpower = constant:murder_mystery_cost.terminal_campaign_manpower }
+	set_variable = { murder_mystery_cost_case_authority_pp = constant:murder_mystery_cost.case_authority_political_power }
+	set_variable = { murder_mystery_cost_public_strain_pp = constant:murder_mystery_cost.public_strain_political_power }
+	if = {
+		limit = { has_variable = murder_mystery_response_cost_addition }
+		add_to_variable = { murder_mystery_cost_case_authority_pp = murder_mystery_response_cost_addition }
+		add_to_variable = { murder_mystery_cost_public_strain_pp = murder_mystery_response_cost_addition }
+	}
 }
 
 murder_mystery_select_operation_target = {

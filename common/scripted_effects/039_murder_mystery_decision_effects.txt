@@ -47,6 +47,7 @@ murder_mystery_decision_clear_uncommitted_action = {
 		clear_variable = murder_mystery_pending_action
 		clear_variable = murder_mystery_pending_phase
 	}
+	clear_variable = murder_mystery_pending_cost_profile
 }
 
 murder_mystery_decision_advance_after_action = {
@@ -529,6 +530,10 @@ murder_mystery_decision_run_cell_support = {
 		event_target:murder_mystery_assassin_state = {
 			set_variable = { murder_mystery_pending_action = ROOT.murder_mystery_pending_action }
 			set_variable = { murder_mystery_pending_phase = ROOT.murder_mystery_pending_phase }
+			if = {
+				limit = { ROOT = { has_variable = murder_mystery_pending_cost_profile } }
+				set_variable = { murder_mystery_pending_cost_profile = ROOT.murder_mystery_pending_cost_profile }
+			}
 			murder_mystery_decision_run_investigation_action = yes
 		}
 	}

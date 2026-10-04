@@ -396,8 +396,6 @@ murder_mystery_response_profile = {
 	political_power_cost_rule_bound = 0
 	political_power_cost_integrated_security = 5
 	political_power_cost_emergency_repression = 10
-	political_power_gate_integrated_security = 25
-	political_power_gate_emergency_repression = 30
 	continuity_case_progress = 5
 	continuity_evidence = 10
 	continuity_witness_safety = 10
@@ -667,51 +665,85 @@ murder_mystery_chaos = {
 	derivative_revolt = 2
 }
 
-murder_mystery_action_cost = {
+# Decision cost families. Each decision names one family when it is taken; the
+# family decides what the acting country pays, and the same amounts feed the
+# decision cost text, the affordability check, the debit and any refund.
+murder_mystery_cost_profile = {
 	schema = {
 		any_key = yes
 		data = int
 	}
 
-	command_power_gate = 5
-	command_power_spend = 5
-	political_power_gate = 20
-	political_power_spend = 20
-	army_experience_gate = 5
-	army_experience_spend = 5
-	civilian_factory_gate = 1
-	trains_gate = 2
-	trains_spend = 1
-	trucks_gate = 50
-	trucks_spend = 25
-	convoys_gate = 10
-	convoys_spend = 5
-	operations_kit_gate = 100
-	operations_kit_spend = 50
-	operations_kit_spend_negative = -50
-	manpower_gate = 500
-	manpower_spend = 250
-	fuel_gate = 500
-	fuel_spend = 250
-	foreign_command_power_gate = 10
-	foreign_political_power_gate = 30
-	revolt_manpower_gate = 1000
-	revolt_operations_kit_gate = 150
-	terminal_command_power_gate = 20
-	terminal_operations_kit_gate = 250
-	political_power_spend_negative = -20
-	command_power_spend_negative = -5
-	# Government cell raids use ordinary security resources. Operations kits
-	# belong to Assassin actors only.
-	government_raid_command_power_gate = 15
-	government_raid_command_power_spend = 15
-	government_raid_command_power_spend_negative = -15
-	government_raid_infantry_equipment_gate = 300
-	government_raid_infantry_equipment_spend = 300
-	government_raid_infantry_equipment_spend_negative = -300
-	government_raid_manpower_gate = 2000
-	government_raid_manpower_spend = 2000
-	government_raid_manpower_spend_negative = -2000
+	none = 0
+	case_authority = 1
+	security_detail = 2
+	forensic_inquiry = 3
+	route_watch = 4
+	armed_raid = 5
+	capture_planning = 6
+	public_strain = 7
+	brotherhood_council = 8
+	cell_supply = 9
+	field_operation = 10
+	revolt_preparation = 11
+	local_administration = 12
+	terminal_settlement = 13
+	terminal_campaign = 14
+}
+
+murder_mystery_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Government families. Case authority and public strain political power
+	# also carry the response profile surcharge.
+	case_authority_political_power = 35
+	case_authority_command_power = 5
+	security_detail_manpower = 1500
+	security_detail_support_equipment = 20
+	security_detail_command_power = 10
+	forensic_inquiry_support_equipment = 40
+	forensic_inquiry_political_power = 15
+	route_watch_trucks = 20
+	route_watch_manpower = 1000
+	route_watch_command_power = 10
+	armed_raid_command_power = 15
+	armed_raid_infantry_equipment = 300
+	armed_raid_manpower = 2000
+	capture_planning_command_power = 30
+	capture_planning_support_equipment = 20
+	public_strain_political_power = 25
+
+	# Assassin families. Operations kits are the movement's own equipment.
+	brotherhood_council_political_power = 30
+	brotherhood_council_command_power = 10
+	cell_supply_operations_kits = 25
+	cell_supply_infantry_equipment = 300
+	cell_supply_trucks = 10
+	field_operation_operations_kits = 40
+	field_operation_manpower = 800
+	field_operation_command_power = 10
+	revolt_preparation_operations_kits = 60
+	revolt_preparation_manpower = 2000
+	revolt_preparation_infantry_equipment = 600
+	local_administration_political_power = 25
+	local_administration_manpower = 500
+	terminal_settlement_political_power = 60
+	terminal_settlement_command_power = 20
+	terminal_campaign_command_power = 30
+	terminal_campaign_operations_kits = 100
+	terminal_campaign_manpower = 3000
+}
+
+murder_mystery_cost_float = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	public_strain_stability = 0.03
 }
 
 murder_mystery_action_tuning = {

@@ -251,54 +251,242 @@ murder_mystery_action_can_begin = {
 	check_variable = { var = murder_mystery_pending_phase value = murder_mystery_investigation_phase compare = equals }
 }
 
+# COUNTRY scope, the paying actor. Reads the cost family the decision named in
+# murder_mystery_pending_cost_profile. Without one, governments pay the case
+# authority family and movement countries the Brotherhood council family.
 murder_mystery_action_cost_is_available = {
 	OR = {
 		AND = {
-			NOT = { has_country_flag = murder_mystery_response_integrated_security }
-			NOT = { has_country_flag = murder_mystery_response_emergency_repression }
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-		}
-		AND = {
-			has_country_flag = murder_mystery_response_integrated_security
-			has_political_power > constant:murder_mystery_response_profile.political_power_gate_integrated_security
-		}
-		AND = {
-			has_country_flag = murder_mystery_response_emergency_repression
-			has_political_power > constant:murder_mystery_response_profile.political_power_gate_emergency_repression
-		}
-	}
-	OR = {
-		NOT = {
-			OR = {
-				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.commit_intelligence compare = equals }
-				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.audit_comms compare = equals }
-			}
-		}
-		command_power > constant:murder_mystery_action_cost.command_power_gate
-	}
-	OR = {
-		NOT = {
-			OR = {
-				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.raid_cell compare = equals }
-				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_cell_raid compare = equals }
-			}
-		}
-		AND = {
+			NOT = { has_variable = murder_mystery_pending_cost_profile }
 			murder_mystery_assassin_actor = yes
-			has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+			murder_mystery_can_pay_cost_brotherhood_council = yes
 		}
 		AND = {
+			NOT = { has_variable = murder_mystery_pending_cost_profile }
 			NOT = { murder_mystery_assassin_actor = yes }
-			murder_mystery_can_pay_government_raid_cost = yes
+			murder_mystery_can_pay_cost_case_authority = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.case_authority compare = equals }
+			murder_mystery_can_pay_cost_case_authority = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.security_detail compare = equals }
+			murder_mystery_can_pay_cost_security_detail = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.forensic_inquiry compare = equals }
+			murder_mystery_can_pay_cost_forensic_inquiry = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.route_watch compare = equals }
+			murder_mystery_can_pay_cost_route_watch = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.armed_raid compare = equals }
+			murder_mystery_can_pay_cost_armed_raid = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.capture_planning compare = equals }
+			murder_mystery_can_pay_cost_capture_planning = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.public_strain compare = equals }
+			murder_mystery_can_pay_cost_public_strain = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.brotherhood_council compare = equals }
+			murder_mystery_can_pay_cost_brotherhood_council = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.cell_supply compare = equals }
+			murder_mystery_can_pay_cost_cell_supply = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.field_operation compare = equals }
+			murder_mystery_can_pay_cost_field_operation = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.revolt_preparation compare = equals }
+			murder_mystery_can_pay_cost_revolt_preparation = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.local_administration compare = equals }
+			murder_mystery_can_pay_cost_local_administration = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.terminal_settlement compare = equals }
+			murder_mystery_can_pay_cost_terminal_settlement = yes
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_cost_profile value = constant:murder_mystery_cost_profile.terminal_campaign compare = equals }
+			murder_mystery_can_pay_cost_terminal_campaign = yes
 		}
 	}
 }
 
-# COUNTRY scope. Ordinary resources for a government cell raid.
-murder_mystery_can_pay_government_raid_cost = {
-	command_power > constant:murder_mystery_action_cost.government_raid_command_power_gate
-	has_equipment = { infantry_equipment > constant:murder_mystery_action_cost.government_raid_infantry_equipment_gate }
-	has_manpower > constant:murder_mystery_action_cost.government_raid_manpower_gate
+# ---------------------------------------------------------------------------
+# Cost family affordability. Each check is inclusive, so a country holding
+# exactly the quoted amount can pay. Decisions use the same checks in
+# available and custom_cost_trigger, and murder_mystery_pay_action_cost
+# debits the same amounts.
+# ---------------------------------------------------------------------------
+
+murder_mystery_can_pay_cost_case_authority = {
+	has_variable = murder_mystery_cost_case_authority_pp
+	check_variable = { var = political_power value = murder_mystery_cost_case_authority_pp compare = greater_than_or_equals }
+	NOT = { command_power < constant:murder_mystery_cost.case_authority_command_power }
+}
+
+murder_mystery_can_pay_cost_security_detail = {
+	NOT = { has_manpower < constant:murder_mystery_cost.security_detail_manpower }
+	check_variable = { var = num_equipment@support_equipment value = constant:murder_mystery_cost.security_detail_support_equipment compare = greater_than_or_equals }
+	NOT = { command_power < constant:murder_mystery_cost.security_detail_command_power }
+}
+
+murder_mystery_can_pay_cost_forensic_inquiry = {
+	check_variable = { var = num_equipment@support_equipment value = constant:murder_mystery_cost.forensic_inquiry_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = political_power value = constant:murder_mystery_cost.forensic_inquiry_political_power compare = greater_than_or_equals }
+}
+
+murder_mystery_can_pay_cost_route_watch = {
+	check_variable = { var = num_equipment@motorized_equipment value = constant:murder_mystery_cost.route_watch_trucks compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.route_watch_manpower }
+	NOT = { command_power < constant:murder_mystery_cost.route_watch_command_power }
+}
+
+murder_mystery_can_pay_cost_armed_raid = {
+	NOT = { command_power < constant:murder_mystery_cost.armed_raid_command_power }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:murder_mystery_cost.armed_raid_infantry_equipment compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.armed_raid_manpower }
+}
+
+murder_mystery_can_pay_cost_capture_planning = {
+	NOT = { command_power < constant:murder_mystery_cost.capture_planning_command_power }
+	check_variable = { var = num_equipment@support_equipment value = constant:murder_mystery_cost.capture_planning_support_equipment compare = greater_than_or_equals }
+}
+
+murder_mystery_can_pay_cost_public_strain = {
+	has_variable = murder_mystery_cost_public_strain_pp
+	check_variable = { var = political_power value = murder_mystery_cost_public_strain_pp compare = greater_than_or_equals }
+	NOT = { has_stability < constant:murder_mystery_cost_float.public_strain_stability }
+}
+
+murder_mystery_can_pay_cost_brotherhood_council = {
+	check_variable = { var = political_power value = constant:murder_mystery_cost.brotherhood_council_political_power compare = greater_than_or_equals }
+	NOT = { command_power < constant:murder_mystery_cost.brotherhood_council_command_power }
+}
+
+murder_mystery_can_pay_cost_cell_supply = {
+	check_variable = { var = num_equipment@assassin_operations_kit_1 value = constant:murder_mystery_cost.cell_supply_operations_kits compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:murder_mystery_cost.cell_supply_infantry_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:murder_mystery_cost.cell_supply_trucks compare = greater_than_or_equals }
+}
+
+murder_mystery_can_pay_cost_field_operation = {
+	check_variable = { var = num_equipment@assassin_operations_kit_1 value = constant:murder_mystery_cost.field_operation_operations_kits compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.field_operation_manpower }
+	NOT = { command_power < constant:murder_mystery_cost.field_operation_command_power }
+}
+
+murder_mystery_can_pay_cost_revolt_preparation = {
+	check_variable = { var = num_equipment@assassin_operations_kit_1 value = constant:murder_mystery_cost.revolt_preparation_operations_kits compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.revolt_preparation_manpower }
+	check_variable = { var = num_equipment@infantry_equipment value = constant:murder_mystery_cost.revolt_preparation_infantry_equipment compare = greater_than_or_equals }
+}
+
+murder_mystery_can_pay_cost_local_administration = {
+	check_variable = { var = political_power value = constant:murder_mystery_cost.local_administration_political_power compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.local_administration_manpower }
+}
+
+murder_mystery_can_pay_cost_terminal_settlement = {
+	check_variable = { var = political_power value = constant:murder_mystery_cost.terminal_settlement_political_power compare = greater_than_or_equals }
+	NOT = { command_power < constant:murder_mystery_cost.terminal_settlement_command_power }
+}
+
+murder_mystery_can_pay_cost_terminal_campaign = {
+	NOT = { command_power < constant:murder_mystery_cost.terminal_campaign_command_power }
+	check_variable = { var = num_equipment@assassin_operations_kit_1 value = constant:murder_mystery_cost.terminal_campaign_operations_kits compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_cost.terminal_campaign_manpower }
+}
+
+# COUNTRY scope. Cell actions run their transaction on the central movement
+# state while it can act in its final phase, and on the acting country
+# otherwise (murder_mystery_decision_run_cell_support). The payer checks below
+# read the same condition, so the shown cost always belongs to the payer.
+murder_mystery_cell_action_uses_central_payer = {
+	has_event_target = murder_mystery_assassin_state
+	event_target:murder_mystery_assassin_state = {
+		exists = yes
+		murder_mystery_action_is_available = yes
+		check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.final_operation compare = equals }
+	}
+}
+
+murder_mystery_cell_payer_can_pay_brotherhood_council = {
+	OR = {
+		AND = {
+			murder_mystery_cell_action_uses_central_payer = yes
+			event_target:murder_mystery_assassin_state = { murder_mystery_can_pay_cost_brotherhood_council = yes }
+		}
+		AND = {
+			NOT = { murder_mystery_cell_action_uses_central_payer = yes }
+			murder_mystery_can_pay_cost_brotherhood_council = yes
+		}
+	}
+}
+
+murder_mystery_cell_payer_can_pay_cell_supply = {
+	OR = {
+		AND = {
+			murder_mystery_cell_action_uses_central_payer = yes
+			event_target:murder_mystery_assassin_state = { murder_mystery_can_pay_cost_cell_supply = yes }
+		}
+		AND = {
+			NOT = { murder_mystery_cell_action_uses_central_payer = yes }
+			murder_mystery_can_pay_cost_cell_supply = yes
+		}
+	}
+}
+
+murder_mystery_cell_payer_can_pay_field_operation = {
+	OR = {
+		AND = {
+			murder_mystery_cell_action_uses_central_payer = yes
+			event_target:murder_mystery_assassin_state = { murder_mystery_can_pay_cost_field_operation = yes }
+		}
+		AND = {
+			NOT = { murder_mystery_cell_action_uses_central_payer = yes }
+			murder_mystery_can_pay_cost_field_operation = yes
+		}
+	}
+}
+
+murder_mystery_cell_payer_can_pay_revolt_preparation = {
+	OR = {
+		AND = {
+			murder_mystery_cell_action_uses_central_payer = yes
+			event_target:murder_mystery_assassin_state = { murder_mystery_can_pay_cost_revolt_preparation = yes }
+		}
+		AND = {
+			NOT = { murder_mystery_cell_action_uses_central_payer = yes }
+			murder_mystery_can_pay_cost_revolt_preparation = yes
+		}
+	}
+}
+
+murder_mystery_cell_payer_can_pay_local_administration = {
+	OR = {
+		AND = {
+			murder_mystery_cell_action_uses_central_payer = yes
+			event_target:murder_mystery_assassin_state = { murder_mystery_can_pay_cost_local_administration = yes }
+		}
+		AND = {
+			NOT = { murder_mystery_cell_action_uses_central_payer = yes }
+			murder_mystery_can_pay_cost_local_administration = yes
+		}
+	}
 }
 
 murder_mystery_action_result_is_valid = {

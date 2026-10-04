@@ -825,10 +825,7 @@ murder_mystery_begin_action_transaction = {
 	clr_country_flag = murder_mystery_action_transaction_prepared
 	clr_country_flag = murder_mystery_action_transaction_rolled_back
 	clr_country_flag = murder_mystery_action_completed
-	clr_country_flag = murder_mystery_action_political_power_paid
-	clr_country_flag = murder_mystery_action_command_power_paid
-	clr_country_flag = murder_mystery_action_operations_kit_paid
-	clr_country_flag = murder_mystery_action_raid_resources_paid
+	murder_mystery_clear_action_cost_receipt = yes
 	if = {
 		limit = { murder_mystery_action_can_begin = yes }
 		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
@@ -944,11 +941,7 @@ murder_mystery_resolve_action_transaction = {
 			days = murder_mystery_action_cooldown_days
 		}
 		set_country_flag = murder_mystery_action_completed
-		clr_country_flag = murder_mystery_action_political_power_paid
-		clr_country_flag = murder_mystery_action_command_power_paid
-		clr_country_flag = murder_mystery_action_operations_kit_paid
-		clr_country_flag = murder_mystery_action_raid_resources_paid
-		clear_variable = murder_mystery_action_political_power_spent
+		murder_mystery_clear_action_cost_receipt = yes
 		clr_country_flag = murder_mystery_action_transaction_active
 		clr_country_flag = murder_mystery_action_transaction_prepared
 		clear_variable = murder_mystery_pending_action
@@ -962,36 +955,7 @@ murder_mystery_resolve_action_transaction = {
 murder_mystery_rollback_action_transaction = {
 	if = {
 		limit = { has_country_flag = murder_mystery_action_transaction_active }
-		if = {
-			limit = { has_country_flag = murder_mystery_action_political_power_paid }
-			if = {
-				limit = { has_variable = murder_mystery_action_political_power_spent }
-				add_political_power = murder_mystery_action_political_power_spent
-			}
-			else = {
-				add_political_power = constant:murder_mystery_action_cost.political_power_spend
-			}
-		}
-		if = {
-			limit = { has_country_flag = murder_mystery_action_command_power_paid }
-			add_command_power = constant:murder_mystery_action_cost.command_power_spend
-		}
-		if = {
-			limit = { has_country_flag = murder_mystery_action_operations_kit_paid }
-			add_equipment_to_stockpile = {
-				type = assassin_operations_kit_1
-				amount = constant:murder_mystery_action_cost.operations_kit_spend
-			}
-		}
-		if = {
-			limit = { has_country_flag = murder_mystery_action_raid_resources_paid }
-			add_command_power = constant:murder_mystery_action_cost.government_raid_command_power_spend
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = constant:murder_mystery_action_cost.government_raid_infantry_equipment_spend
-			}
-			add_manpower = constant:murder_mystery_action_cost.government_raid_manpower_spend
-		}
+		murder_mystery_refund_action_cost = yes
 		if = { limit = { has_variable = murder_mystery_action_case_before } set_variable = { murder_mystery_case_progress = murder_mystery_action_case_before } }
 		if = { limit = { has_variable = murder_mystery_action_reach_before } set_variable = { murder_mystery_network_reach = murder_mystery_action_reach_before } }
 		if = { limit = { has_variable = murder_mystery_action_cohesion_before } set_variable = { murder_mystery_brotherhood_cohesion = murder_mystery_action_cohesion_before } }
@@ -1009,16 +973,12 @@ murder_mystery_rollback_action_transaction = {
 		set_variable = { murder_mystery_action_result = constant:murder_mystery_action_result.invalid }
 		set_variable = { murder_mystery_action_transaction_status = constant:murder_mystery_transaction.rolled_back }
 		set_country_flag = murder_mystery_action_transaction_rolled_back
-		clr_country_flag = murder_mystery_action_political_power_paid
-		clr_country_flag = murder_mystery_action_command_power_paid
-		clr_country_flag = murder_mystery_action_operations_kit_paid
-		clr_country_flag = murder_mystery_action_raid_resources_paid
+		murder_mystery_clear_action_cost_receipt = yes
 		clr_country_flag = murder_mystery_action_transaction_active
 		clr_country_flag = murder_mystery_action_transaction_prepared
 		clr_country_flag = murder_mystery_action_completed
 		clear_variable = murder_mystery_pending_action
 		clear_variable = murder_mystery_pending_phase
-		clear_variable = murder_mystery_action_political_power_spent
 	}
 }
 
@@ -2060,7 +2020,10 @@ murder_mystery_cleanup_country_runtime = {
 	clear_variable = murder_mystery_action_phase
 	clear_variable = murder_mystery_action_result
 	clear_variable = murder_mystery_action_cooldown_days
-	clear_variable = murder_mystery_action_political_power_spent
+	murder_mystery_clear_action_cost_receipt = yes
+	clear_variable = murder_mystery_pending_cost_profile
+	clear_variable = murder_mystery_cost_case_authority_pp
+	clear_variable = murder_mystery_cost_public_strain_pp
 	clear_variable = murder_mystery_action_transaction_status
 	clear_variable = murder_mystery_action_case_before
 	clear_variable = murder_mystery_action_reach_before
