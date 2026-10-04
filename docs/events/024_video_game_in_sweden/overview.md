@@ -60,6 +60,14 @@ The four public states are Instrument at 0 to 24, Habit at 25 to 49, Doctrine at
 
 Actions change the normal variable, and a scripted localisation entry renders both the value and its current state in the category header.
 
+The header's next-review line (`GetVideoGameReassessment`) follows the phase.
+During a Trust the Model surge or its open reassessment it shows the reassessment deadline.
+A running field validation, audit, narrow reassessment, dual-track verification or restriction shows its proof days completed out of the days its report needs.
+In the baseline it shows when the trial can be concluded and when it concludes on its own, or the containment review date for a high-Reliance trial that cannot evolve.
+An idle Evolution III shows the final review date.
+Otherwise it reads "No review scheduled".
+The dates come from `video_game_in_sweden_refresh_review_dates`, which runs when the programme starts and after each maintenance check.
+
 The staged idea lifecycle has exactly one active idea at a time.
 
 | Lifecycle stage | Idea id | Meaning |

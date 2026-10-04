@@ -294,3 +294,17 @@ Decision: both texts now name the army, the supplied training region in Skane, S
 No gating changed.
 Basis: CLAUDE.md player-visible requirement rule (state the real requirement), chaos-redux-decisions-missions trigger clarity.
 Disposition: `implemented`.
+
+### R2-5. The category "Next review" line is current in every phase
+
+Finding: `GetVideoGameReassessment` showed `video_game_in_sweden_trust_model_reassessment_deadline` whenever the variable existed, so after a Trust the Model reassessment the header kept a past date (for example during the audit mission), and every other phase read "N/A" although the source tracks the baseline review and automatic conclusion, the containment review, the idle Evolution III final review and mission proof days.
+Decision: the selector shows, in order of precedence:
+- the Trust the Model deadline only while the surge is active or its reassessment is pending;
+- for a running mission, proof days completed out of the days its report needs (`video_game_in_sweden_mission_elapsed_days` against the field, full audit, narrow audit, dual-track or restriction proof constant);
+- in the baseline, when the trial can be concluded and when it concludes on its own, or the containment review date for a trial at Doctrine Reliance or above that cannot evolve;
+- in an idle Evolution III, the final review date, or "in about 150 days" before the first idle maintenance check;
+- otherwise "No review scheduled".
+The dates are display variables (`video_game_in_sweden_trial_review_date`, `video_game_in_sweden_trial_close_date`, `video_game_in_sweden_final_review_date`) set by `video_game_in_sweden_refresh_review_dates` from the day counters through `chaosx_convert_days_to_date_offset`. It runs when the programme starts and after each maintenance check, which is the only time those counters change, so the dates never go stale between checks. No gameplay logic reads them.
+The deadline variable itself is not cleared, because the reassessment logic still reads it; the flag gate in the selector is enough.
+Basis: round 2 lead decision 4, spec part 4 accessibility ("the category should show the next review or active mission clearly").
+Disposition: `implemented`; the rendered dates are needs_live_game.
