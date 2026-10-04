@@ -182,3 +182,15 @@ The accepted asteroid-incident connection from commit `49a7a68ad` was lost when 
 One line in `asteroid_incoming_add_state_receipt_to_country` (`common/scripted_effects/028_asteroid_incoming_effects.txt`) now calls the hook in the country scope of each owner or controller of a state the impact actually damaged.
 The hook acts only for the current Kruger host and is guarded by its country and character receipt flags, so it records once; no other Event 028 behaviour changes.
 The Event 028 file was clean before the edit, and the edit is the single added line, made after re-reading the current file.
+
+## D17. Exact provenance for the reused High Energy and Biological Weapons sources
+
+Decision, under the accepted 2026-10-03 native Prototype ownership amendment: High Energy and Biological Weapons now record exact source and mode in the existing provenance arrays, with no new selection controls.
+
+- High Energy keys on the completing project itself: the Event 016 mirror of `sp_nuclear_reactor` calls the literal wrapper `brilliant_scientist_mengele_native_completion_sp_nuclear_reactor` from its project output, and the completion hook no longer rescans it.
+- Biological Weapons: the six agent projects belong to other workstreams and carry no Event 016 output hook, so the completion hook observes each agent once and treats a completed-but-unobserved agent as the completing one. The first such agent settles the family; unrelated completions observe and settle nothing. This avoids editing CBRN, Event 002, and Event 020 project files.
+- A source completed after the private Theory is recorded as fresh output; a source completed earlier is adopted when the Theory settles (Biological Weapons adopts the first completed agent in fixed order). An active paid Prototype timer is never replaced.
+- The nine provider-exclusive Event 016 projects (Computation, Materials, Biomedical, Teleportation, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms, Temporal) need no selection controls: their project outputs already emit their literal family wrappers, so their source is exact by construction.
+
+Evidence: `common/script_constants/016_mengele_native_prototype_constants.txt` (source codes 5 to 11), `common/scripted_effects/016_mengele_native_prototype_effects.txt` and `.md`, `common/scripted_effects/016_mengele_project_stage_effects.txt` and `.md`, `common/special_projects/projects/nuclear_projects.txt` (one hidden wrapper call), `docs/events/016_brilliant_scientist/systems/native_prototype_ownership.md`.
+Needs live game: reactor and agent completion order against a running Mengele Theory.

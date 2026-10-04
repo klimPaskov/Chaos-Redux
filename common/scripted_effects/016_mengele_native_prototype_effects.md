@@ -299,3 +299,23 @@ The complete exact-completion section was read successfully through two bounded 
 The complete offline Decision modding timer section was read successfully at 337-356, revision 7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162.
 The parent radar source lookups at 75 and 12 lines and four-node root event lint timed out after 600 seconds; the parent two-node event retry remained pending at final worker handoff.
 Those results do not establish engine callback or cancellation behavior.
+
+## Reused-source provenance: High Energy and Biological Weapons
+
+High Energy reuses `sp_nuclear_reactor`, and Biological Weapons reuses `anthrax_bomb`, `plague_bomb`, `tularemia_bomb`, `smallpox_bomb`, `weaponize_the_zombies`, and `black_plague_weaponization_program`.
+Countries can complete these outside the provider, so neither family has selection controls; settlement records the exact source and mode in `mengele_event016_native_prototype_source_entries` and `mengele_event016_native_prototype_mode_entries` instead.
+
+| Effect | Scope and inputs | Output | Callers |
+| --- | --- | --- | --- |
+| `brilliant_scientist_mengele_settle_reused_native_prototype` | COUNTRY; temporary family (High Energy or Biological Weapons), source code, and mode | `mengele_event016_native_prototype_result`: `fresh_settled`, `adopted_settled`, or `blocked` | The three helpers below |
+| `brilliant_scientist_mengele_native_completion_sp_nuclear_reactor` | COUNTRY; none | Same result; marks the reactor observed | `sp_nuclear_reactor` project output in the Event 016 `nuclear_projects.txt` mirror |
+| `brilliant_scientist_mengele_observe_reused_biological_sources` | COUNTRY; none | Same result when a new agent settles | `brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` from `on_project_completion` |
+| `brilliant_scientist_mengele_adopt_reused_native_prototype` | COUNTRY; temporary family | Same result | `brilliant_scientist_mengele_adopt_completed_native_after_theory` |
+
+Settlement requires the strict provider, the completed private Theory, an empty paid receipt (an active paid Prototype timer is never replaced), and the mapped completed source; the shared output core applies the Prototype once.
+A source that completes after the Theory settles as `fresh_output`.
+A source completed before the Theory is adopted as `adopted_completed` when the Theory settles; Biological Weapons adopts the first completed agent in the fixed order anthrax, plague, tularemia, smallpox, weaponized zombies, black plague.
+The CBRN agent projects carry no Event 016 output hook, so the completing agent is identified as the mapped source that is completed but not yet observed; every agent is observed once through `mengele_event016_reused_source_observed_*` flags.
+Source codes 5 to 11 in `mengele_event016_native_prototype_source` name the reactor and the six agents.
+
+Limit: an agent completed while the provider was invalid and observed later after the Theory is recorded as fresh output; it is still the exact agent that completed.

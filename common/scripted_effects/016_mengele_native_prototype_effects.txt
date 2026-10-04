@@ -333,3 +333,209 @@ brilliant_scientist_mengele_native_output_electronics_radar = {
 	}
 	brilliant_scientist_mengele_clear_native_prototype_selector = yes
 }
+
+# ---------------------------------------------------------------------------
+# Reused-source Prototype provenance: High Energy and Biological Weapons
+# ---------------------------------------------------------------------------
+# These families reuse sp_nuclear_reactor and the six mapped CBRN agent
+# projects, which countries can complete outside the provider. They have no
+# selection controls. A source that completes after the private Theory settles
+# as fresh output; a source completed before the Theory is adopted when the
+# Theory settles. Both record the exact source and mode in the existing
+# provenance arrays.
+
+# COUNTRY scope. Inputs: temporary mengele_event016_project_family (High Energy
+# or Biological Weapons), mengele_event016_native_prototype_source, and
+# mengele_event016_native_prototype_mode. Output: the native request result.
+# Settles only with a completed private Theory, an empty paid receipt, and a
+# completed mapped source, so an active paid timer is never replaced.
+brilliant_scientist_mengele_settle_reused_native_prototype = {
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.blocked }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			OR = {
+				check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+				check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			}
+		}
+		brilliant_scientist_mengele_prepare_project_index = yes
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+		if = {
+			limit = {
+				brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+				brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+				brilliant_scientist_mengele_project_native_output_is_authentic = yes
+			}
+			brilliant_scientist_mengele_initialize_native_prototype_provenance = yes
+			set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.one }
+			brilliant_scientist_mengele_apply_family_stage_output = yes
+			if = {
+				limit = { check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals } }
+				set_variable = { mengele_event016_native_prototype_source_entries^mengele_event016_project_index = mengele_event016_native_prototype_source }
+				set_variable = { mengele_event016_native_prototype_mode_entries^mengele_event016_project_index = mengele_event016_native_prototype_mode }
+				if = {
+					limit = { check_variable = { var = mengele_event016_native_prototype_mode value = constant:mengele_event016_native_prototype_mode.fresh_output compare = equals } }
+					set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.fresh_settled }
+				}
+				else = {
+					set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.adopted_settled }
+				}
+			}
+		}
+	}
+	brilliant_scientist_mengele_clear_native_prototype_selector = yes
+}
+
+# COUNTRY scope. Literal High Energy wrapper called by the sp_nuclear_reactor
+# project output, so settlement keys on the completing project itself.
+brilliant_scientist_mengele_native_completion_sp_nuclear_reactor = {
+	set_country_flag = mengele_event016_reused_source_observed_nuclear_reactor
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
+	if = {
+		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
+		set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.high_energy_nuclear_reactor }
+		set_temp_variable = { mengele_event016_native_prototype_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+		brilliant_scientist_mengele_settle_reused_native_prototype = yes
+	}
+}
+
+# COUNTRY scope, called from on_project_completion for a valid provider. The
+# CBRN agent projects carry no Event 016 output hook, so the completing agent
+# is the mapped source that is completed but not yet observed. Every newly
+# completed source is observed once; the first in fixed agent order settles
+# Biological Weapons as fresh output. Unrelated completions observe nothing
+# and settle nothing.
+brilliant_scientist_mengele_observe_reused_biological_sources = {
+	set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.none }
+	if = {
+		limit = {
+			is_special_project_completed = sp:anthrax_bomb
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_anthrax }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_anthrax
+		set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_anthrax }
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:plague_bomb
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_plague }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_plague
+		if = {
+			limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = equals } }
+			set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_plague }
+		}
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:tularemia_bomb
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_tularemia }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_tularemia
+		if = {
+			limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = equals } }
+			set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_tularemia }
+		}
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:smallpox_bomb
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_smallpox }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_smallpox
+		if = {
+			limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = equals } }
+			set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_smallpox }
+		}
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:weaponize_the_zombies
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_weaponized_zombies }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_weaponized_zombies
+		if = {
+			limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = equals } }
+			set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_weaponized_zombies }
+		}
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:black_plague_weaponization_program
+			NOT = { has_country_flag = mengele_event016_reused_source_observed_black_plague }
+		}
+		set_country_flag = mengele_event016_reused_source_observed_black_plague
+		if = {
+			limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = equals } }
+			set_temp_variable = { mengele_event016_reused_biological_fresh_source = constant:mengele_event016_native_prototype_source.biological_black_plague }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_reused_biological_fresh_source value = constant:mengele_event016_native_prototype_source.none compare = not_equals } }
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.biological_weapons }
+		set_temp_variable = { mengele_event016_native_prototype_source = mengele_event016_reused_biological_fresh_source }
+		set_temp_variable = { mengele_event016_native_prototype_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+		brilliant_scientist_mengele_settle_reused_native_prototype = yes
+	}
+}
+
+# COUNTRY scope. Theory-time adoption for a reused source completed earlier.
+# Input: temporary mengele_event016_project_family. High Energy adopts the
+# completed reactor; Biological Weapons adopts the first completed mapped agent
+# in fixed order. The adopted source is also marked observed.
+brilliant_scientist_mengele_adopt_reused_native_prototype = {
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
+	set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.none }
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals } }
+		if = {
+			limit = { is_special_project_completed = sp:sp_nuclear_reactor }
+			set_country_flag = mengele_event016_reused_source_observed_nuclear_reactor
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.high_energy_nuclear_reactor }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals } }
+		if = {
+			limit = { is_special_project_completed = sp:anthrax_bomb }
+			set_country_flag = mengele_event016_reused_source_observed_anthrax
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_anthrax }
+		}
+		else_if = {
+			limit = { is_special_project_completed = sp:plague_bomb }
+			set_country_flag = mengele_event016_reused_source_observed_plague
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_plague }
+		}
+		else_if = {
+			limit = { is_special_project_completed = sp:tularemia_bomb }
+			set_country_flag = mengele_event016_reused_source_observed_tularemia
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_tularemia }
+		}
+		else_if = {
+			limit = { is_special_project_completed = sp:smallpox_bomb }
+			set_country_flag = mengele_event016_reused_source_observed_smallpox
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_smallpox }
+		}
+		else_if = {
+			limit = { is_special_project_completed = sp:weaponize_the_zombies }
+			set_country_flag = mengele_event016_reused_source_observed_weaponized_zombies
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_weaponized_zombies }
+		}
+		else_if = {
+			limit = { is_special_project_completed = sp:black_plague_weaponization_program }
+			set_country_flag = mengele_event016_reused_source_observed_black_plague
+			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.biological_black_plague }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.none compare = not_equals } }
+		set_temp_variable = { mengele_event016_native_prototype_mode = constant:mengele_event016_native_prototype_mode.adopted_completed }
+		brilliant_scientist_mengele_settle_reused_native_prototype = yes
+	}
+}

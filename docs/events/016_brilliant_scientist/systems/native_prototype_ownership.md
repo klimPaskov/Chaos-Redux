@@ -54,6 +54,14 @@ The shared native selection, fresh settlement and exact adoption cores own the f
 The Cloning project country output also initializes the result before using the literal wrapper's success to grant its existing operational package.
 This removes a dependency on helper-created temporary values surviving return, as described in the offline Data structures page's Variable types section.
 
+## Reused vanilla and CBRN sources
+
+High Energy (`sp_nuclear_reactor`) and Biological Weapons (six mapped agent projects) record exact provenance without selection controls, because those projects can be completed outside the provider.
+The reactor settles through a literal wrapper in its project output; the agents are observed once each from `on_project_completion`, and the first newly completed agent settles the family.
+A source completed after the private Theory is recorded as fresh output; a source completed earlier is adopted when the Theory settles.
+The nine provider-exclusive Event 016 projects need no selection controls because their project outputs already call their literal family wrappers.
+Contracts are in `common/scripted_effects/016_mengele_native_prototype_effects.md`.
+
 ## Implementation surfaces
 
 The new native_prototype constants, triggers, effects and matching API document define selection, exact output, adoption, release, and cleanup.
