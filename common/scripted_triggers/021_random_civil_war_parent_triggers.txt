@@ -408,6 +408,193 @@ event021_parent_preplanned_secondary_state_candidate = {
 	is_controlled_by = event_target:random_civil_war_secondary_source_country
 }
 
+# STATE scope during an Evolution I review. The state can leave the side in
+# `random_civil_war_active_review_source` only while that side owns and
+# controls it, it is populated and reachable, it is not that side's capital,
+# and no other front, reservation, transfer, or scenario hold claims it.
+event021_parent_active_source_state_candidate = {
+	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
+	infrastructure > constant:random_civil_war_value.zero
+	NOT = { is_capital = yes }
+	is_owned_by = event_target:random_civil_war_active_review_source
+	is_controlled_by = event_target:random_civil_war_active_review_source
+	NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
+	NOT = { has_state_flag = random_civil_war_opening_transfer_state }
+	NOT = { is_in_array = { array = global.random_civil_war_front_states value = THIS } }
+	NOT = { is_in_array = { array = global.random_civil_war_reserved_states value = THIS } }
+	NOT = { is_in_array = { array = global.random_civil_war_scenario_reserved_states value = THIS } }
+}
+
+# STATE scope. Pool predicate used by the shared region grower. The opening
+# keeps its original predicate; the Evolution I review uses the source-bound
+# predicate above while `event021_parent_dynamic_active_mode` is one.
+event021_parent_dynamic_region_state_candidate = {
+	OR = {
+		AND = {
+			check_variable = { var = event021_parent_dynamic_active_mode value = constant:random_civil_war_value.one compare = equals }
+			event021_parent_active_source_state_candidate = yes
+		}
+		AND = {
+			NOT = { check_variable = { var = event021_parent_dynamic_active_mode value = constant:random_civil_war_value.one compare = equals } }
+			event021_parent_secondary_state_candidate = yes
+		}
+	}
+}
+
+# COUNTRY scope on a theater member when Evolution I activates. Only the
+# canonical government of a live crisis that opened before Evolution I is
+# queued; a missing opening-stage receipt fails closed.
+event021_active_review_baseline_host = {
+	exists = yes
+	random_civil_war_is_normal_human_country = yes
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_government_side
+	has_country_flag = random_civil_war_front_registered
+	NOT = { has_country_flag = random_civil_war_cleanup_complete }
+	NOT = { has_country_flag = random_civil_war_settlement_recorded }
+	NOT = { has_country_flag = random_civil_war_reconstruction_active }
+	has_variable = random_civil_war_crisis_id
+	OR = {
+		NOT = { has_variable = random_civil_war_crisis_host_scope }
+		var:random_civil_war_crisis_host_scope = { tag = PREV }
+	}
+	has_variable = random_civil_war_opening_evolution_stage
+	check_variable = { var = random_civil_war_opening_evolution_stage value = constant:random_civil_war_event.baseline_stage compare = equals }
+}
+
+# COUNTRY scope on a queued crisis government. The review belongs to this
+# exact crisis and to its canonical host.
+event021_active_review_host_valid = {
+	exists = yes
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_government_side
+	has_country_flag = random_civil_war_front_registered
+	NOT = { has_country_flag = random_civil_war_cleanup_complete }
+	has_variable = random_civil_war_crisis_id
+	has_variable = random_civil_war_active_evolution_i_crisis_id
+	check_variable = { var = random_civil_war_crisis_id value = random_civil_war_active_evolution_i_crisis_id compare = equals }
+	OR = {
+		NOT = { has_variable = random_civil_war_crisis_host_scope }
+		var:random_civil_war_crisis_host_scope = { tag = PREV }
+	}
+}
+
+# COUNTRY scope on a queued crisis government. A war that has ended, is being
+# settled, or whose Evolution I was switched off closes its review.
+event021_active_review_host_closing = {
+	OR = {
+		NOT = { has_global_flag = random_civil_war_evolution_i_active }
+		event021_evolution_i_disabled = yes
+		has_country_flag = random_civil_war_settlement_recorded
+		has_country_flag = random_civil_war_reconstruction_active
+		has_country_flag = random_civil_war_reconstruction_phase
+		event021_parent_internal_war_ended = yes
+	}
+}
+
+# COUNTRY scope on a queued crisis government. Temporary conditions that defer
+# the whole review: no spare front, another serial transaction or scenario in
+# flight, or settlement talks that must run their course first.
+event021_active_review_globally_blocked = {
+	OR = {
+		NOT = { random_civil_war_front_capacity_available = yes }
+		has_global_flag = random_civil_war_plan_active
+		has_global_flag = random_civil_war_planning_lock
+		has_global_flag = random_civil_war_front_plan_ready
+		has_global_flag = random_civil_war_launch_in_progress
+		has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+		has_global_flag = random_civil_war_scenario_maximum_mode
+		has_global_flag = random_civil_war_scenario_bypass_active
+		has_global_flag = random_civil_war_secondary_front_pending
+		has_global_flag = random_civil_war_event6_secondary_front_pending
+		has_global_flag = random_civil_war_dynamic_front_activation_active
+		has_global_flag = random_civil_war_active_front_commit_in_progress
+		has_country_flag = random_civil_war_settlement_phase
+		has_country_flag = event021_settlement_pending
+		has_country_flag = event021_settlement_talks_open
+	}
+}
+
+# COUNTRY scope on a reviewed source side. Successor grace or a side close to
+# defeat waits for the existing lifecycle to resolve before any split.
+event021_active_review_source_deferred = {
+	OR = {
+		NOT = { random_civil_war_successor_grace_clear = yes }
+		surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+		AND = {
+			has_variable = random_civil_war_immediate_opponent_scope
+			var:random_civil_war_immediate_opponent_scope = {
+				exists = yes
+				surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+			}
+		}
+		AND = {
+			has_country_flag = random_civil_war_government_side
+			has_variable = random_civil_war_opposition_actor_scope
+			var:random_civil_war_opposition_actor_scope = {
+				exists = yes
+				surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a reviewed source side. Same-tag contests and Event 006
+# carriers keep their own identity, and a side without a held capital, a
+# remnant, or spare divisions cannot give up a region.
+event021_active_review_source_can_split = {
+	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
+	NOT = { has_country_flag = random_civil_war_event6_front_active }
+	NOT = { has_country_flag = random_civil_war_event6_origin }
+	NOT = { has_capitulated = yes }
+	capital_scope = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+	}
+	num_of_controlled_states > constant:event021_active_review.minimum_remnant_states
+	num_divisions > constant:event021_active_review.minimum_remnant_divisions
+}
+
+# COUNTRY scope on a reviewed source side. The registered row and the live
+# side must carry the same nonnegative whole generation within the crisis cap.
+# Input: `event021_active_review_row_generation`. A missing value fails closed.
+event021_active_review_source_generation_valid = {
+	has_variable = random_civil_war_generation
+	check_variable = { var = random_civil_war_generation value = constant:random_civil_war_value.zero compare = greater_than_or_equals }
+	check_variable = { var = random_civil_war_generation value = constant:random_civil_war_capacity.maximum_generation compare = less_than_or_equals }
+	check_variable = { var = random_civil_war_generation value = event021_active_review_row_generation compare = equals }
+	check_variable = { var = random_civil_war_generation value = event021_active_review_generation_rounded compare = equals }
+}
+
+# COUNTRY scope. Evolution I management access for a live war that was running
+# when the stage activated. It ends with the stage, settlement, or cleanup.
+event021_country_has_evolution_i_management = {
+	has_country_flag = random_civil_war_evolution_i_management_ready
+	has_global_flag = random_civil_war_evolution_i_active
+	NOT = { event021_evolution_i_disabled = yes }
+}
+
+# COUNTRY scope. Communications can be protected only while the capital is
+# held and keeps a supply hub.
+event021_evolution_i_communications_target_valid = {
+	capital_scope = {
+		is_controlled_by = ROOT
+		supply_node > constant:random_civil_war_value.zero
+	}
+}
+
+# COUNTRY scope. Evolution I prevention access for a live war without new
+# sides: it replaces the opening arsenal action with Protect State
+# Communications while the capital supply hub is held.
+event021_country_can_use_evolution_i_prevention = {
+	event021_country_can_manage_crisis = yes
+	event021_country_has_evolution_i_management = yes
+	NOT = { has_country_flag = random_civil_war_multifront_active }
+	NOT = { has_country_flag = random_civil_war_settlement_phase }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
+	event021_evolution_i_communications_target_valid = yes
+}
+
 event021_parent_territorial_war_ended = {
 	event021_parent_internal_war_ended = yes
 	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
@@ -984,6 +1171,7 @@ event021_secure_rail_mission_target_valid = {
 event021_country_can_manage_opening = {
 	event021_country_can_manage_crisis = yes
 	NOT = { has_country_flag = random_civil_war_multifront_active }
+	NOT = { event021_country_has_evolution_i_management = yes }
 	NOT = { has_country_flag = random_civil_war_neighbor_exposure }
 	NOT = { has_country_flag = random_civil_war_settlement_phase }
 	NOT = { has_country_flag = event021_settlement_pending }
@@ -993,7 +1181,10 @@ event021_country_can_manage_opening = {
 
 event021_country_can_manage_fronts = {
 	event021_country_can_manage_crisis = yes
-	has_country_flag = random_civil_war_multifront_active
+	OR = {
+		has_country_flag = random_civil_war_multifront_active
+		event021_country_has_evolution_i_management = yes
+	}
 	NOT = { has_country_flag = random_civil_war_settlement_phase }
 	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
 }

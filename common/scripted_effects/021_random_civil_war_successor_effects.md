@@ -5,6 +5,7 @@ This file documents the reusable effects in `021_random_civil_war_successor_effe
 ## Helper map
 
 `event021_prepare_successor_roster_adoption` runs in the promoted successor country before white peace and annexation.
+It also carries the predecessor's Evolution I management access and any queued Evolution I review, with its crisis ID, epoch, and reviewed front IDs, to the successor; the successor's own grace defers that review.
 
 `event021_adopt_successor_roster` runs in ROOT after FROM has completed `event021_handle_annexed_country`.
 

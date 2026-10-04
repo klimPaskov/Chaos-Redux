@@ -40,3 +40,16 @@ These pointer guards do not replace the separate requirement to adopt and resolv
 `event021_parent_settlement_terms_valid`, `event021_parent_negotiated_settlement`, and `event021_parent_reconstruction_complete` gate finite postwar transitions.
 
 All actual nonhuman immunity is inherited from the normal-human predicate and its `is_actual_nonhuman_country` exclusion.
+
+`event021_evolution_i_disabled`, `event021_evolution_ii_disabled`, and `event021_evolution_iii_disabled` read the shared Events Log settings flags for each Event 021 stage.
+
+`event021_parent_active_source_state_candidate` is the STATE predicate for an Evolution I review: the state must be populated, have infrastructure, not be a capital, be owned and controlled by `random_civil_war_active_review_source`, and be free of transfer markers, other fronts, reservations, and scenario holds.
+`event021_parent_dynamic_region_state_candidate` lets the shared region grower use that predicate when `event021_parent_dynamic_active_mode` is one and the opening predicate otherwise.
+
+`event021_active_review_baseline_host`, `event021_active_review_host_valid`, `event021_active_review_host_closing`, and `event021_active_review_globally_blocked` decide which crisis governments are queued at Evolution I, whether a queued review still belongs to its crisis, when it closes, and when it waits.
+`event021_active_review_source_deferred`, `event021_active_review_source_can_split`, and `event021_active_review_source_generation_valid` classify one reviewed side as waiting, unable to split, or ineligible; the generation check needs `event021_active_review_row_generation` and `event021_active_review_generation_rounded` from its caller.
+
+`event021_country_has_evolution_i_management` is true for a side holding the Evolution I management receipt while Evolution I is active and switched on.
+`event021_country_can_manage_opening` excludes that phase, and `event021_country_can_manage_fronts` admits it alongside a real multi-front war, so a war without new sides swaps its opening actions for the front-management actions.
+`event021_country_can_use_evolution_i_prevention` admits Protect State Communications for such a war while `event021_evolution_i_communications_target_valid` holds: the capital is controlled and keeps a supply node.
+

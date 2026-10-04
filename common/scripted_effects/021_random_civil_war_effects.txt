@@ -964,11 +964,13 @@ event021_unregister_front = {
 # no post-mutation map search is used to infer a missing plan row.
 event021_bind_front_plan_row = {
 	set_temp_variable = { event021_front_plan_bind_break = constant:random_civil_war_value.zero }
-	clr_country_flag = random_civil_war_front_plan_row_bound
+	# The bound receipt is replaced only by a published row; a later call with
+	# no published plan, such as a priority-front decision, keeps it intact.
 	if = {
 		limit = {
 			has_global_flag = random_civil_war_front_plan_ready
 		}
+		clr_country_flag = random_civil_war_front_plan_row_bound
 		for_each_loop = {
 			array = global.random_civil_war_planned_front_ids
 			value = event021_front_plan_bind_id
@@ -1000,6 +1002,15 @@ event021_bind_front_plan_row = {
 				set_country_flag = random_civil_war_front_plan_row_bound
 			}
 		}
+	}
+	# Sides opened by an Evolution I review bind to the reviewing government's
+	# own receipt rows.
+	else_if = {
+		limit = {
+			has_global_flag = random_civil_war_active_front_commit_in_progress
+			has_event_target = random_civil_war_active_front_commit_owner
+		}
+		event021_bind_active_front_row = yes
 	}
 }
 

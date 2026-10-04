@@ -46,6 +46,37 @@ event021_prepare_successor_roster_adoption = {
 			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_evolution_i_multifront } }
 			set_country_flag = random_civil_war_evolution_i_multifront
 		}
+		# A queued Evolution I review and its management access follow the
+		# government role. Reviewed front IDs and the retry date carry over; the
+		# successor's own grace defers the review until it has settled in.
+		if = {
+			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_evolution_i_management_ready } }
+			set_country_flag = random_civil_war_evolution_i_management_ready
+		}
+		if = {
+			limit = {
+				event_target:event021_successor_roster_adoption_predecessor = {
+					has_country_flag = random_civil_war_active_evolution_i_pending
+					has_variable = random_civil_war_active_evolution_i_crisis_id
+				}
+			}
+			set_country_flag = random_civil_war_active_evolution_i_pending
+			set_variable = { random_civil_war_active_evolution_i_crisis_id = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_active_evolution_i_crisis_id }
+			if = {
+				limit = { event_target:event021_successor_roster_adoption_predecessor = { has_variable = random_civil_war_active_evolution_i_epoch } }
+				set_variable = { random_civil_war_active_evolution_i_epoch = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_active_evolution_i_epoch }
+			}
+			clear_array = random_civil_war_active_evolution_i_reviewed_front_ids
+			event_target:event021_successor_roster_adoption_predecessor = {
+				for_each_loop = {
+					array = random_civil_war_active_evolution_i_reviewed_front_ids
+					value = event021_successor_reviewed_front_id
+					event_target:event021_successor_roster_adoption_successor = {
+						add_to_array = { array = random_civil_war_active_evolution_i_reviewed_front_ids value = event021_successor_reviewed_front_id }
+					}
+				}
+			}
+		}
 
 		# The predecessor remains the expected host until the annex callback
 		# rebinds the live front rows and the caller invokes the after-annex

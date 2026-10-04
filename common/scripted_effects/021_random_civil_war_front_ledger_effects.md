@@ -24,6 +24,7 @@ The validity scalar `event021_planned_front_plan_valid` must already have caller
 Example: call `event021_parent_validate_front_ledger_spans = yes` after alignment checks and before setting `random_civil_war_front_plan_ready`.
 
 `event021_parent_validate_secondary_transfer_receipt` runs in the exact recorded secondary source country before `start_civil_war`.
+While an Evolution I review holds `random_civil_war_active_front_commit_in_progress`, it delegates to `event021_parent_validate_active_secondary_transfer_receipt`, which applies the same exact-span, marker, remnant, and division checks to the reviewing government's own receipt row instead of the global opening template.
 Inputs are the validated plan, pending child ID, source front ID, staged markers, current state control, and live division count.
 It requires an exact marker/state count, every selected state owned and controlled by that source, a surviving controlled remnant, and a positive division request smaller than the live army.
 The marker count covers all controlled states admitted by the engine filter, not only owned states.

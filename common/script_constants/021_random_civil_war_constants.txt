@@ -717,6 +717,39 @@ event021_scheduler = {
 	maximum_critical_scan = 3
 }
 
+# Evolution I review of wars that were already running when the stage
+# activated. Budgets bound the daily host pulse; shares and minimums decide
+# whether a current side can give up a coherent region and still fight on.
+event021_active_review = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	pulse_theater_scan = 2
+	retry_days = 30
+	maximum_detach_share = 0.50
+	minimum_remnant_states = 2
+	minimum_region_states = 1
+	remnant_division_share = 0.60
+	minimum_remnant_divisions = 2
+	minimum_child_divisions = 1
+	minimum_child_stockpile_share = 0.05
+}
+
+# Per-source review results. Opened and no-side results finish that source for
+# the epoch; deferred results keep the crisis queued for a later retry.
+event021_active_review_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	none = 0
+	opened = 1
+	no_side = 2
+	deferred = 3
+	ineligible = 4
+}
+
 event021_settlement_obligation = {
 	schema = {
 		any_key = yes

@@ -170,6 +170,11 @@ Example: a failed generation-two attempt from generation one restores generation
 The sponsor helper carries recipient and front identifiers through normal country-scoped bridge variables before recording the commitment, because temporary variables cannot persist across the nested country scopes used by the neighbor pass.
 
 `event021_parent_apply_evolution_i`, `event021_parent_apply_evolution_ii`, and `event021_parent_apply_evolution_iii` are the history-writing wrappers for the three Event Log and Event Details evolution records.
+The first recorded Evolution I also calls `event021_parent_attach_active_evolution_i_reviews`, which queues one review of every war that was already running and unlocks its Evolution I management phase.
+The global scheduler pulse ends with `event021_parent_process_active_evolution_i_reviews`, which dispatches a bounded slice of those reviews through `chaosx.nr21.20`.
+The review, its candidate collector, its government-owned receipt, and its commit through the secondary adapters are documented in `021_random_civil_war_active_evolution_effects.md`.
+While that commit holds `random_civil_war_active_front_commit_in_progress`, `event021_parent_load_planned_secondary_front`, `event021_parent_copy_planned_front_state_span`, and `event021_parent_copy_opening_state_receipts` read the reviewing government's own receipt instead of the global opening template; outside that lock they are unchanged.
+`event021_parent_apply_settlement` removes Evolution I management access from every side of the crisis, and `event021_parent_cleanup_crisis` clears the review and management receipts on the country it cleans.
 
 `event021_parent_reconstruction_tick` is a finite postwar tick that records settlement obligations and calls cleanup only after reconstruction is complete.
 

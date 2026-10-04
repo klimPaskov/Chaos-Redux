@@ -557,11 +557,9 @@ event021_parent_clear_dynamic_optional_front_candidate_reservations = {
 	}
 }
 
-# COUNTRY scope on the opening host. Collects viable optional rows before the
-# core front plan is appended. Ordinary row count follows distinct viable state
-# anchors; Event 006 row count follows complete, unreserved package receipts.
-event021_parent_collect_dynamic_optional_front_candidates = {
-	save_event_target_as = random_civil_war_host_country
+# COUNTRY scope on the planning host. Clears the aligned candidate scratch
+# shared by the opening collector and the Evolution I active collector.
+event021_parent_reset_dynamic_optional_front_candidates = {
 	clear_temp_array = event021_parent_dynamic_optional_front_archetypes
 	clear_temp_array = event021_parent_dynamic_optional_front_routes
 	clear_temp_array = event021_parent_dynamic_optional_front_anchors
@@ -589,6 +587,241 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 	clear_temp_array = event021_parent_dynamic_neighbor_state_pool
 	clear_temp_array = event021_parent_dynamic_neighbor_score_pool
 	clear_temp_array = event021_parent_dynamic_neighbor_main_indexes
+}
+
+# COUNTRY scope on the planning host. Grows variable-length connected ordinary
+# regions from the scored anchor pool until the ordinary capacity, the anchor
+# pool, or the state budget runs out. Inputs are the source-state, route,
+# anchor and score scratch arrays plus the optional and ordinary capacities.
+# `event021_parent_dynamic_active_mode` selects the Evolution I branch: its
+# region size comes from `event021_parent_dynamic_region_state_budget` and its
+# rebuilt pool uses the active source predicate instead of the opening one.
+event021_parent_grow_dynamic_ordinary_front_regions = {
+	clear_temp_array = event021_parent_dynamic_region_source_states
+	clear_temp_array = event021_parent_dynamic_region_source_scores
+	set_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.zero }
+	for_each_scope_loop = {
+		array = event021_parent_dynamic_anchor_state_pool
+		add_to_temp_array = { array = event021_parent_dynamic_region_source_states value = THIS }
+		add_to_temp_array = { array = event021_parent_dynamic_region_source_scores value = event021_parent_dynamic_anchor_score_pool^event021_parent_dynamic_pool_copy_index }
+		add_to_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.one }
+	}
+	set_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_parent_dynamic_candidate_driver_break = constant:random_civil_war_value.zero }
+	for_each_loop = {
+		array = event021_parent_dynamic_optional_source_states
+		value = event021_parent_dynamic_candidate_witness
+		break = event021_parent_dynamic_candidate_driver_break
+		if = {
+			limit = {
+				check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
+				check_variable = { var = event021_parent_dynamic_ordinary_front_count value = event021_parent_dynamic_ordinary_front_capacity compare = less_than }
+				check_variable = { var = event021_parent_dynamic_anchor_state_pool^num value = constant:random_civil_war_value.zero compare = greater_than }
+			}
+			if = {
+				limit = { check_variable = { var = event021_parent_dynamic_route_index value = event021_parent_dynamic_route_types^num compare = greater_than_or_equals } }
+				set_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.zero }
+			}
+			find_highest_in_array = { array = event021_parent_dynamic_anchor_score_pool value = event021_parent_dynamic_best_anchor_score index = event021_parent_dynamic_best_anchor_index }
+			set_temp_variable = { event021_parent_dynamic_anchor_iteration = constant:random_civil_war_value.zero }
+			set_temp_variable = { event021_parent_dynamic_anchor_selected = constant:random_civil_war_value.zero }
+			for_each_scope_loop = {
+				array = event021_parent_dynamic_anchor_state_pool
+				break = event021_parent_dynamic_anchor_selected
+				if = {
+					limit = {
+						check_variable = { var = event021_parent_dynamic_anchor_selected value = constant:random_civil_war_value.zero compare = equals }
+						check_variable = { var = event021_parent_dynamic_anchor_iteration value = event021_parent_dynamic_best_anchor_index compare = equals }
+						check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
+					}
+					set_temp_variable = { event021_dynamic_candidate_archetype = event021_parent_dynamic_route_types^event021_parent_dynamic_route_index }
+					save_event_target_as = random_civil_war_dynamic_front_candidate_anchor
+					clear_temp_array = event021_parent_dynamic_candidate_region_states
+					add_to_temp_array = { array = event021_parent_dynamic_candidate_region_states value = THIS }
+					set_temp_variable = { event021_dynamic_candidate_region_weight = event021_parent_dynamic_anchor_score_pool^event021_parent_dynamic_best_anchor_index }
+					set_temp_variable = { event021_parent_dynamic_candidate_region_count = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_anchor_state_pool^num }
+					set_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_optional_front_capacity }
+					subtract_from_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_optional_front_count }
+					# An Evolution I review spends only its detachable state budget across the
+					# ordinary rows it can still afford, so the current side keeps its remnant.
+					if = {
+						limit = { check_variable = { var = event021_parent_dynamic_active_mode value = constant:random_civil_war_value.one compare = equals } }
+						set_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_region_state_budget }
+						set_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_ordinary_front_capacity }
+						subtract_from_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_ordinary_front_count }
+					}
+					divide_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_region_remaining_slots }
+					round_temp_variable = event021_parent_dynamic_region_target_count
+					if = {
+						limit = { check_variable = { var = event021_parent_dynamic_region_target_count value = constant:random_civil_war_value.one compare = less_than } }
+						set_temp_variable = { event021_parent_dynamic_region_target_count = constant:random_civil_war_value.one }
+					}
+					if = {
+						limit = { check_variable = { var = event021_parent_dynamic_region_target_count value = event021_parent_dynamic_anchor_state_pool^num compare = greater_than } }
+						set_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_anchor_state_pool^num }
+					}
+					set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.zero }
+					set_temp_variable = { event021_parent_dynamic_growth_driver_break = constant:random_civil_war_value.zero }
+					for_each_loop = {
+						array = event021_parent_dynamic_region_source_states
+						value = event021_parent_dynamic_growth_witness
+						break = event021_parent_dynamic_growth_driver_break
+						if = {
+							limit = {
+								check_variable = { var = event021_parent_dynamic_candidate_region_count value = event021_parent_dynamic_region_target_count compare = less_than }
+								check_variable = { var = event021_parent_dynamic_region_finished value = constant:random_civil_war_value.zero compare = equals }
+							}
+							clear_temp_array = event021_parent_dynamic_neighbor_state_pool
+							clear_temp_array = event021_parent_dynamic_neighbor_score_pool
+							clear_temp_array = event021_parent_dynamic_neighbor_main_indexes
+							set_temp_variable = { event021_parent_dynamic_region_scan_index = constant:random_civil_war_value.zero }
+							for_each_scope_loop = {
+								array = event021_parent_dynamic_region_source_states
+								if = {
+									limit = {
+										NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
+										NOT = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
+										any_neighbor_state = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
+									}
+									add_to_temp_array = { array = event021_parent_dynamic_neighbor_state_pool value = THIS }
+									add_to_temp_array = { array = event021_parent_dynamic_neighbor_score_pool value = event021_parent_dynamic_region_source_scores^event021_parent_dynamic_region_scan_index }
+									add_to_temp_array = { array = event021_parent_dynamic_neighbor_main_indexes value = event021_parent_dynamic_region_scan_index }
+								}
+								# The scan index stays aligned with region_source_scores, so it advances for every source state.
+								add_to_temp_variable = { event021_parent_dynamic_region_scan_index = constant:random_civil_war_value.one }
+							}
+							if = {
+								limit = { check_variable = { var = event021_parent_dynamic_neighbor_state_pool^num value = constant:random_civil_war_value.zero compare = equals } }
+								set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.one }
+							}
+							else = {
+								find_highest_in_array = { array = event021_parent_dynamic_neighbor_score_pool value = event021_parent_dynamic_neighbor_best_score index = event021_parent_dynamic_neighbor_best_index }
+								set_temp_variable = { event021_parent_dynamic_neighbor_iteration = constant:random_civil_war_value.zero }
+								set_temp_variable = { event021_parent_dynamic_neighbor_selected = constant:random_civil_war_value.zero }
+								for_each_scope_loop = {
+									array = event021_parent_dynamic_neighbor_state_pool
+									break = event021_parent_dynamic_neighbor_selected
+									if = {
+										limit = {
+											check_variable = { var = event021_parent_dynamic_neighbor_selected value = constant:random_civil_war_value.zero compare = equals }
+											check_variable = { var = event021_parent_dynamic_neighbor_iteration value = event021_parent_dynamic_neighbor_best_index compare = equals }
+										}
+										add_to_temp_array = { array = event021_parent_dynamic_candidate_region_states value = THIS }
+										add_to_temp_variable = { event021_dynamic_candidate_region_weight = event021_parent_dynamic_neighbor_score_pool^event021_parent_dynamic_neighbor_iteration }
+										add_to_temp_variable = { event021_parent_dynamic_candidate_region_count = constant:random_civil_war_value.one }
+										set_temp_variable = { event021_parent_dynamic_neighbor_selected = constant:random_civil_war_value.one }
+									}
+									add_to_temp_variable = { event021_parent_dynamic_neighbor_iteration = constant:random_civil_war_value.one }
+								}
+								if = {
+									limit = { check_variable = { var = event021_parent_dynamic_neighbor_selected value = constant:random_civil_war_value.zero compare = equals } }
+									set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.one }
+								}
+							}
+						}
+						else = { set_temp_variable = { event021_parent_dynamic_growth_driver_break = constant:random_civil_war_value.one } }
+					}
+					event021_parent_append_dynamic_ordinary_front_candidate = yes
+					add_to_temp_variable = { event021_parent_dynamic_optional_front_count = constant:random_civil_war_value.one }
+					add_to_temp_variable = { event021_parent_dynamic_ordinary_front_count = constant:random_civil_war_value.one }
+					add_to_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_parent_dynamic_anchor_selected = constant:random_civil_war_value.one }
+					if = {
+						limit = { check_variable = { var = event021_parent_dynamic_active_mode value = constant:random_civil_war_value.one compare = equals } }
+						subtract_from_temp_variable = { event021_parent_dynamic_region_state_budget = event021_dynamic_candidate_state_count }
+						if = {
+							limit = { check_variable = { var = event021_parent_dynamic_region_state_budget value = constant:event021_active_review.minimum_region_states compare = less_than } }
+							set_temp_variable = { event021_parent_dynamic_ordinary_front_capacity = event021_parent_dynamic_ordinary_front_count }
+						}
+					}
+				}
+				add_to_temp_variable = { event021_parent_dynamic_anchor_iteration = constant:random_civil_war_value.one }
+			}
+			if = {
+				limit = { check_variable = { var = event021_parent_dynamic_anchor_selected value = constant:random_civil_war_value.one compare = equals } }
+				clear_temp_array = event021_parent_dynamic_anchor_state_pool
+				clear_temp_array = event021_parent_dynamic_anchor_score_pool
+				clear_temp_array = event021_parent_dynamic_region_source_states
+				clear_temp_array = event021_parent_dynamic_region_source_scores
+				set_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.zero }
+				for_each_scope_loop = {
+					array = event021_parent_dynamic_optional_source_states
+					if = {
+						limit = {
+							event021_parent_dynamic_region_state_candidate = yes
+							NOT = { is_in_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS } }
+							OR = {
+								NOT = { has_event_target = random_civil_war_dynamic_primary_anchor }
+								NOT = { state = event_target:random_civil_war_dynamic_primary_anchor }
+							}
+						}
+						event021_parent_score_anchor_state = yes
+						add_to_temp_array = { array = event021_parent_dynamic_anchor_state_pool value = THIS }
+						add_to_temp_array = { array = event021_parent_dynamic_anchor_score_pool value = event021_anchor_state_score }
+						add_to_temp_array = { array = event021_parent_dynamic_region_source_states value = THIS }
+						add_to_temp_array = { array = event021_parent_dynamic_region_source_scores value = event021_anchor_state_score }
+						add_to_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.one }
+					}
+				}
+			}
+			else = { set_temp_variable = { event021_parent_dynamic_optional_front_capacity = event021_parent_dynamic_optional_front_count } }
+		}
+		else = { set_temp_variable = { event021_parent_dynamic_candidate_driver_break = constant:random_civil_war_value.one } }
+	}
+}
+
+# COUNTRY scope on the planning host (ROOT). Appends complete, unreserved
+# Event 006 package rows while optional capacity remains. The finder cursor,
+# capacity gate, and early finish are unchanged from the opening collector.
+event021_parent_collect_dynamic_event6_front_candidates = {
+	set_temp_variable = { event021_parent_dynamic_event6_attempts = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_parent_dynamic_event6_finished = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_parent_dynamic_package_driver_break = constant:random_civil_war_value.zero }
+	for_each_loop = {
+		array = global.independence_wave_event021_complete_package_ids
+		value = event021_parent_dynamic_package_witness
+		break = event021_parent_dynamic_package_driver_break
+		if = {
+			limit = {
+				check_variable = { var = event021_parent_dynamic_event6_attempts value = event021_parent_event6_package_count compare = less_than }
+				check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
+				check_variable = { var = event021_parent_dynamic_event6_finished value = constant:random_civil_war_value.zero compare = equals }
+			}
+			add_to_temp_variable = { event021_parent_dynamic_event6_attempts = constant:random_civil_war_value.one }
+			event021_parent_save_event6_host_identity = yes
+			set_global_flag = random_civil_war_event6_secondary_search_active
+			event021_parent_find_event6_package = yes
+			clr_global_flag = random_civil_war_event6_secondary_search_active
+			set_temp_variable = { event021_parent_dynamic_event6_candidate_found = event021_parent_event6_package_found }
+			if = {
+				limit = {
+					check_variable = { var = event021_parent_dynamic_event6_candidate_found value = constant:random_civil_war_value.one compare = equals }
+					has_variable = random_civil_war_event6_package_id
+					has_event_target = random_civil_war_event6_selected_anchor
+				}
+				event021_parent_append_dynamic_event6_front_candidate = yes
+				set_temp_variable = { event021_parent_dynamic_optional_front_count = event021_parent_dynamic_optional_front_anchors^num }
+				event021_parent_clear_event6_package_transaction = yes
+				event021_parent_restore_event6_host_identity = yes
+			}
+			else = {
+				set_temp_variable = { event021_parent_dynamic_event6_finished = constant:random_civil_war_value.one }
+				event021_parent_clear_event6_package_transaction = yes
+				event021_parent_restore_event6_host_identity = yes
+			}
+		}
+		else = { set_temp_variable = { event021_parent_dynamic_package_driver_break = constant:random_civil_war_value.one } }
+	}
+}
+
+# COUNTRY scope on the opening host. Collects viable optional rows before the
+# core front plan is appended. Ordinary row count follows distinct viable state
+# anchors; Event 006 row count follows complete, unreserved package receipts.
+event021_parent_collect_dynamic_optional_front_candidates = {
+	save_event_target_as = random_civil_war_host_country
+	event021_parent_reset_dynamic_optional_front_candidates = yes
+	set_temp_variable = { event021_parent_dynamic_active_mode = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_parent_dynamic_optional_front_valid = constant:random_civil_war_value.one }
 	set_temp_variable = { event021_parent_dynamic_optional_front_capacity = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_parent_dynamic_optional_front_count = constant:random_civil_war_value.zero }
@@ -761,162 +994,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 				check_variable = { var = event021_parent_dynamic_route_types^num value = constant:random_civil_war_value.zero compare = greater_than }
 				check_variable = { var = event021_parent_dynamic_optional_front_capacity value = constant:random_civil_war_value.zero compare = greater_than }
 			}
-			clear_temp_array = event021_parent_dynamic_region_source_states
-			clear_temp_array = event021_parent_dynamic_region_source_scores
-			set_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.zero }
-			for_each_scope_loop = {
-				array = event021_parent_dynamic_anchor_state_pool
-				add_to_temp_array = { array = event021_parent_dynamic_region_source_states value = THIS }
-				add_to_temp_array = { array = event021_parent_dynamic_region_source_scores value = event021_parent_dynamic_anchor_score_pool^event021_parent_dynamic_pool_copy_index }
-				add_to_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.one }
-			}
-			set_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.zero }
-			set_temp_variable = { event021_parent_dynamic_candidate_driver_break = constant:random_civil_war_value.zero }
-			for_each_loop = {
-				array = event021_parent_dynamic_optional_source_states
-				value = event021_parent_dynamic_candidate_witness
-				break = event021_parent_dynamic_candidate_driver_break
-				if = {
-					limit = {
-						check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
-						check_variable = { var = event021_parent_dynamic_ordinary_front_count value = event021_parent_dynamic_ordinary_front_capacity compare = less_than }
-						check_variable = { var = event021_parent_dynamic_anchor_state_pool^num value = constant:random_civil_war_value.zero compare = greater_than }
-					}
-					if = {
-						limit = { check_variable = { var = event021_parent_dynamic_route_index value = event021_parent_dynamic_route_types^num compare = greater_than_or_equals } }
-						set_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.zero }
-					}
-					find_highest_in_array = { array = event021_parent_dynamic_anchor_score_pool value = event021_parent_dynamic_best_anchor_score index = event021_parent_dynamic_best_anchor_index }
-					set_temp_variable = { event021_parent_dynamic_anchor_iteration = constant:random_civil_war_value.zero }
-					set_temp_variable = { event021_parent_dynamic_anchor_selected = constant:random_civil_war_value.zero }
-					for_each_scope_loop = {
-						array = event021_parent_dynamic_anchor_state_pool
-						break = event021_parent_dynamic_anchor_selected
-						if = {
-							limit = {
-								check_variable = { var = event021_parent_dynamic_anchor_selected value = constant:random_civil_war_value.zero compare = equals }
-								check_variable = { var = event021_parent_dynamic_anchor_iteration value = event021_parent_dynamic_best_anchor_index compare = equals }
-								check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
-							}
-							set_temp_variable = { event021_dynamic_candidate_archetype = event021_parent_dynamic_route_types^event021_parent_dynamic_route_index }
-							save_event_target_as = random_civil_war_dynamic_front_candidate_anchor
-							clear_temp_array = event021_parent_dynamic_candidate_region_states
-							add_to_temp_array = { array = event021_parent_dynamic_candidate_region_states value = THIS }
-							set_temp_variable = { event021_dynamic_candidate_region_weight = event021_parent_dynamic_anchor_score_pool^event021_parent_dynamic_best_anchor_index }
-							set_temp_variable = { event021_parent_dynamic_candidate_region_count = constant:random_civil_war_value.one }
-							set_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_anchor_state_pool^num }
-							set_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_optional_front_capacity }
-							subtract_from_temp_variable = { event021_parent_dynamic_region_remaining_slots = event021_parent_dynamic_optional_front_count }
-							divide_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_region_remaining_slots }
-							round_temp_variable = event021_parent_dynamic_region_target_count
-							if = {
-								limit = { check_variable = { var = event021_parent_dynamic_region_target_count value = constant:random_civil_war_value.one compare = less_than } }
-								set_temp_variable = { event021_parent_dynamic_region_target_count = constant:random_civil_war_value.one }
-							}
-							if = {
-								limit = { check_variable = { var = event021_parent_dynamic_region_target_count value = event021_parent_dynamic_anchor_state_pool^num compare = greater_than } }
-								set_temp_variable = { event021_parent_dynamic_region_target_count = event021_parent_dynamic_anchor_state_pool^num }
-							}
-							set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.zero }
-							set_temp_variable = { event021_parent_dynamic_growth_driver_break = constant:random_civil_war_value.zero }
-							for_each_loop = {
-								array = event021_parent_dynamic_region_source_states
-								value = event021_parent_dynamic_growth_witness
-								break = event021_parent_dynamic_growth_driver_break
-								if = {
-									limit = {
-										check_variable = { var = event021_parent_dynamic_candidate_region_count value = event021_parent_dynamic_region_target_count compare = less_than }
-										check_variable = { var = event021_parent_dynamic_region_finished value = constant:random_civil_war_value.zero compare = equals }
-									}
-									clear_temp_array = event021_parent_dynamic_neighbor_state_pool
-									clear_temp_array = event021_parent_dynamic_neighbor_score_pool
-									clear_temp_array = event021_parent_dynamic_neighbor_main_indexes
-									set_temp_variable = { event021_parent_dynamic_region_scan_index = constant:random_civil_war_value.zero }
-									for_each_scope_loop = {
-										array = event021_parent_dynamic_region_source_states
-										if = {
-											limit = {
-												NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
-												NOT = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
-												any_neighbor_state = { is_in_array = { array = event021_parent_dynamic_candidate_region_states value = THIS } }
-											}
-											add_to_temp_array = { array = event021_parent_dynamic_neighbor_state_pool value = THIS }
-											add_to_temp_array = { array = event021_parent_dynamic_neighbor_score_pool value = event021_parent_dynamic_region_source_scores^event021_parent_dynamic_region_scan_index }
-											add_to_temp_array = { array = event021_parent_dynamic_neighbor_main_indexes value = event021_parent_dynamic_region_scan_index }
-										}
-										# The scan index stays aligned with region_source_scores, so it advances for every source state.
-										add_to_temp_variable = { event021_parent_dynamic_region_scan_index = constant:random_civil_war_value.one }
-									}
-									if = {
-										limit = { check_variable = { var = event021_parent_dynamic_neighbor_state_pool^num value = constant:random_civil_war_value.zero compare = equals } }
-										set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.one }
-									}
-									else = {
-										find_highest_in_array = { array = event021_parent_dynamic_neighbor_score_pool value = event021_parent_dynamic_neighbor_best_score index = event021_parent_dynamic_neighbor_best_index }
-										set_temp_variable = { event021_parent_dynamic_neighbor_iteration = constant:random_civil_war_value.zero }
-										set_temp_variable = { event021_parent_dynamic_neighbor_selected = constant:random_civil_war_value.zero }
-										for_each_scope_loop = {
-											array = event021_parent_dynamic_neighbor_state_pool
-											break = event021_parent_dynamic_neighbor_selected
-											if = {
-												limit = {
-													check_variable = { var = event021_parent_dynamic_neighbor_selected value = constant:random_civil_war_value.zero compare = equals }
-													check_variable = { var = event021_parent_dynamic_neighbor_iteration value = event021_parent_dynamic_neighbor_best_index compare = equals }
-												}
-												add_to_temp_array = { array = event021_parent_dynamic_candidate_region_states value = THIS }
-												add_to_temp_variable = { event021_dynamic_candidate_region_weight = event021_parent_dynamic_neighbor_score_pool^event021_parent_dynamic_neighbor_iteration }
-												add_to_temp_variable = { event021_parent_dynamic_candidate_region_count = constant:random_civil_war_value.one }
-												set_temp_variable = { event021_parent_dynamic_neighbor_selected = constant:random_civil_war_value.one }
-											}
-											add_to_temp_variable = { event021_parent_dynamic_neighbor_iteration = constant:random_civil_war_value.one }
-										}
-										if = {
-											limit = { check_variable = { var = event021_parent_dynamic_neighbor_selected value = constant:random_civil_war_value.zero compare = equals } }
-											set_temp_variable = { event021_parent_dynamic_region_finished = constant:random_civil_war_value.one }
-										}
-									}
-								}
-								else = { set_temp_variable = { event021_parent_dynamic_growth_driver_break = constant:random_civil_war_value.one } }
-							}
-							event021_parent_append_dynamic_ordinary_front_candidate = yes
-							add_to_temp_variable = { event021_parent_dynamic_optional_front_count = constant:random_civil_war_value.one }
-							add_to_temp_variable = { event021_parent_dynamic_ordinary_front_count = constant:random_civil_war_value.one }
-							add_to_temp_variable = { event021_parent_dynamic_route_index = constant:random_civil_war_value.one }
-							set_temp_variable = { event021_parent_dynamic_anchor_selected = constant:random_civil_war_value.one }
-						}
-						add_to_temp_variable = { event021_parent_dynamic_anchor_iteration = constant:random_civil_war_value.one }
-					}
-					if = {
-						limit = { check_variable = { var = event021_parent_dynamic_anchor_selected value = constant:random_civil_war_value.one compare = equals } }
-						clear_temp_array = event021_parent_dynamic_anchor_state_pool
-						clear_temp_array = event021_parent_dynamic_anchor_score_pool
-						clear_temp_array = event021_parent_dynamic_region_source_states
-						clear_temp_array = event021_parent_dynamic_region_source_scores
-						set_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.zero }
-						for_each_scope_loop = {
-							array = event021_parent_dynamic_optional_source_states
-							if = {
-								limit = {
-									event021_parent_secondary_state_candidate = yes
-									NOT = { is_in_array = { array = event021_parent_dynamic_optional_front_selected_states value = THIS } }
-									OR = {
-										NOT = { has_event_target = random_civil_war_dynamic_primary_anchor }
-										NOT = { state = event_target:random_civil_war_dynamic_primary_anchor }
-									}
-								}
-								event021_parent_score_anchor_state = yes
-								add_to_temp_array = { array = event021_parent_dynamic_anchor_state_pool value = THIS }
-								add_to_temp_array = { array = event021_parent_dynamic_anchor_score_pool value = event021_anchor_state_score }
-								add_to_temp_array = { array = event021_parent_dynamic_region_source_states value = THIS }
-								add_to_temp_array = { array = event021_parent_dynamic_region_source_scores value = event021_anchor_state_score }
-								add_to_temp_variable = { event021_parent_dynamic_pool_copy_index = constant:random_civil_war_value.one }
-							}
-						}
-					}
-					else = { set_temp_variable = { event021_parent_dynamic_optional_front_capacity = event021_parent_dynamic_optional_front_count } }
-				}
-				else = { set_temp_variable = { event021_parent_dynamic_candidate_driver_break = constant:random_civil_war_value.one } }
-			}
+			event021_parent_grow_dynamic_ordinary_front_regions = yes
 		}
 		if = {
 			limit = {
@@ -930,44 +1008,7 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 					check_variable = { var = random_civil_war_scenario_type value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals }
 				}
 			}
-			set_temp_variable = { event021_parent_dynamic_event6_attempts = constant:random_civil_war_value.zero }
-			set_temp_variable = { event021_parent_dynamic_event6_finished = constant:random_civil_war_value.zero }
-			set_temp_variable = { event021_parent_dynamic_package_driver_break = constant:random_civil_war_value.zero }
-			for_each_loop = {
-				array = global.independence_wave_event021_complete_package_ids
-				value = event021_parent_dynamic_package_witness
-				break = event021_parent_dynamic_package_driver_break
-				if = {
-					limit = {
-						check_variable = { var = event021_parent_dynamic_event6_attempts value = event021_parent_event6_package_count compare = less_than }
-						check_variable = { var = event021_parent_dynamic_optional_front_count value = event021_parent_dynamic_optional_front_capacity compare = less_than }
-						check_variable = { var = event021_parent_dynamic_event6_finished value = constant:random_civil_war_value.zero compare = equals }
-					}
-					add_to_temp_variable = { event021_parent_dynamic_event6_attempts = constant:random_civil_war_value.one }
-					event021_parent_save_event6_host_identity = yes
-					set_global_flag = random_civil_war_event6_secondary_search_active
-					event021_parent_find_event6_package = yes
-					clr_global_flag = random_civil_war_event6_secondary_search_active
-					set_temp_variable = { event021_parent_dynamic_event6_candidate_found = event021_parent_event6_package_found }
-					if = {
-						limit = {
-							check_variable = { var = event021_parent_dynamic_event6_candidate_found value = constant:random_civil_war_value.one compare = equals }
-							has_variable = random_civil_war_event6_package_id
-							has_event_target = random_civil_war_event6_selected_anchor
-						}
-						event021_parent_append_dynamic_event6_front_candidate = yes
-						set_temp_variable = { event021_parent_dynamic_optional_front_count = event021_parent_dynamic_optional_front_anchors^num }
-						event021_parent_clear_event6_package_transaction = yes
-						event021_parent_restore_event6_host_identity = yes
-					}
-					else = {
-						set_temp_variable = { event021_parent_dynamic_event6_finished = constant:random_civil_war_value.one }
-						event021_parent_clear_event6_package_transaction = yes
-						event021_parent_restore_event6_host_identity = yes
-					}
-				}
-				else = { set_temp_variable = { event021_parent_dynamic_package_driver_break = constant:random_civil_war_value.one } }
-			}
+			event021_parent_collect_dynamic_event6_front_candidates = yes
 		}
 	}
 	set_temp_variable = { event021_parent_dynamic_optional_front_count = event021_parent_dynamic_optional_front_anchors^num }

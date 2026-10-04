@@ -36,6 +36,15 @@ The helper sets `event021_parent_dynamic_optional_front_valid` to one before col
 
 `event021_parent_append_dynamic_ordinary_front_candidate` and `event021_parent_append_dynamic_event6_front_candidate` append one complete aligned candidate row with its exact state receipt; activation marks only the row currently being consumed.
 
+The collector's scratch reset, region growth, and package loop are shared helpers so the Evolution I review of running wars uses the same implementation:
+
+- `event021_parent_reset_dynamic_optional_front_candidates` clears every aligned candidate scratch array.
+- `event021_parent_grow_dynamic_ordinary_front_regions` grows the connected ordinary regions from the scored anchor pool. With `event021_parent_dynamic_active_mode` at zero it behaves exactly as the inline opening loop did. With the mode at one, each region's size comes from the remaining `event021_parent_dynamic_region_state_budget` divided by the ordinary slots still open, the budget shrinks by each appended region, growth stops when the budget falls below `constant:event021_active_review.minimum_region_states`, and the rebuilt pool uses `event021_parent_active_source_state_candidate` through `event021_parent_dynamic_region_state_candidate`.
+- `event021_parent_collect_dynamic_event6_front_candidates` runs the complete-package finder loop with its cursor, capacity gate, and early finish unchanged.
+
+The opening collector sets the mode to zero before it runs, so its rows are unchanged.
+The active collector and its contract are documented in `021_random_civil_war_active_evolution_effects.md`.
+
 `event021_parent_freeze_scenario_optional_front_rows` copies the temporary ledger to aligned country-scoped arrays during `chaosx.nr21.19` and reserves each selected optional state, package, and front-capacity share before any scenario opening commits.
 
 The freezer binds the host as `random_civil_war_scenario_receipt_owner` before entering a stored state or actor scope, returns to that country for each persistent array write, and passes the selected scope as `PREV`.

@@ -91,7 +91,16 @@ event021_parent_validate_secondary_transfer_receipt = {
 	}
 	set_temp_variable = { event021_secondary_receipt_row_break = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_secondary_receipt_state_break = constant:random_civil_war_value.zero }
+	# An Evolution I review reads the reviewing government's own receipt rows.
 	if = {
+		limit = {
+			has_global_flag = random_civil_war_active_front_commit_in_progress
+			has_event_target = random_civil_war_active_front_commit_owner
+			has_variable = global.random_civil_war_pending_secondary_front_id
+		}
+		event021_parent_validate_active_secondary_transfer_receipt = yes
+	}
+	else_if = {
 		limit = { has_global_flag = random_civil_war_front_plan_ready has_variable = global.random_civil_war_pending_secondary_front_id has_variable = random_civil_war_front_id }
 		for_each_loop = {
 			array = global.random_civil_war_planned_front_ids

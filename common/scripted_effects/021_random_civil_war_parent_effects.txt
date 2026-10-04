@@ -653,6 +653,7 @@ event021_parent_global_scheduler_pulse = {
 			}
 			set_variable = { global.random_civil_war_critical_cursor = constant:event021_scheduler.first_array_index }
 		}
+		event021_parent_process_active_evolution_i_reviews = yes
 		event021_finish_global_review_batch = yes
 	}
 }
@@ -2484,6 +2485,14 @@ event021_parent_load_planned_primary_front = {
 event021_parent_load_planned_secondary_front = {
 	set_temp_variable = { event021_planned_secondary_load_break = constant:random_civil_war_value.zero }
 	if = {
+		limit = {
+			has_global_flag = random_civil_war_active_front_commit_in_progress
+			has_event_target = random_civil_war_active_front_commit_owner
+			has_variable = global.random_civil_war_pending_secondary_front_id
+		}
+		event021_parent_load_active_secondary_front = yes
+	}
+	else_if = {
 		limit = { has_global_flag = random_civil_war_front_plan_ready has_variable = global.random_civil_war_pending_secondary_front_id }
 		set_temp_variable = { event021_planned_front_load_index = constant:random_civil_war_value.zero }
 		for_each_loop = {
@@ -2528,6 +2537,14 @@ event021_parent_copy_planned_front_state_span = {
 	save_event_target_as = event021_planned_state_span_owner
 	set_temp_variable = { event021_planned_state_span_id = random_civil_war_front_id }
 	if = {
+		limit = {
+			has_global_flag = random_civil_war_active_front_commit_in_progress
+			has_event_target = random_civil_war_active_front_commit_owner
+			has_variable = random_civil_war_front_id
+		}
+		event021_parent_copy_active_front_state_span = yes
+	}
+	else_if = {
 		limit = {
 			has_global_flag = random_civil_war_front_plan_ready
 			has_variable = random_civil_war_front_id
@@ -2655,17 +2672,35 @@ event021_parent_copy_opening_state_receipts = {
 	clear_array = random_civil_war_opening_core_states
 	clear_array = random_civil_war_opening_all_core_states
 	clear_array = random_civil_war_opening_provenance_states
-	for_each_scope_loop = {
-		array = global.random_civil_war_event21_opening_states
-		event_target:random_civil_war_receipt_owner = {
-			add_to_array = { array = random_civil_war_opening_core_states value = PREV }
-			add_to_array = { array = random_civil_war_opening_provenance_states value = PREV }
+	# A side opened by an Evolution I review shares its crisis's original core
+	# states; its own region comes from its receipt row, not the last opening.
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_active_front_commit_in_progress
+			has_event_target = random_civil_war_active_front_commit_owner
+		}
+		event_target:random_civil_war_active_front_commit_owner = {
+			for_each_scope_loop = {
+				array = random_civil_war_opening_all_core_states
+				event_target:random_civil_war_receipt_owner = {
+					add_to_array = { array = random_civil_war_opening_all_core_states value = PREV }
+				}
+			}
 		}
 	}
-	for_each_scope_loop = {
-		array = global.random_civil_war_event21_original_core_states
-		event_target:random_civil_war_receipt_owner = {
-			add_to_array = { array = random_civil_war_opening_all_core_states value = PREV }
+	else = {
+		for_each_scope_loop = {
+			array = global.random_civil_war_event21_opening_states
+			event_target:random_civil_war_receipt_owner = {
+				add_to_array = { array = random_civil_war_opening_core_states value = PREV }
+				add_to_array = { array = random_civil_war_opening_provenance_states value = PREV }
+			}
+		}
+		for_each_scope_loop = {
+			array = global.random_civil_war_event21_original_core_states
+			event_target:random_civil_war_receipt_owner = {
+				add_to_array = { array = random_civil_war_opening_all_core_states value = PREV }
+			}
 		}
 	}
 }
@@ -6658,6 +6693,7 @@ event021_parent_apply_settlement = {
 		}
 		event021_parent_review_secondary_front = yes
 		event021_parent_review_event6_secondary_front = yes
+		event021_parent_clear_evolution_i_management = yes
 		event021_parent_select_settlement_terms = yes
 		event021_parent_select_settlement_obligation = yes
 		event021_treaty_prepare_signatory_obligations = yes
@@ -8283,7 +8319,9 @@ event021_parent_roll_strange_incident = {
 }
 
 # ANY scope. Evolution I activates multi-front planning and records the
-# transition in the shared Event Log and Event Details registries.
+# transition in the shared Event Log and Event Details registries. Its first
+# record also queues one review of every war that was already running and
+# unlocks that war's Evolution I management phase.
 event021_parent_apply_evolution_i = {
 	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_value.zero }
 	set_temp_variable = { events_log_evolution_type = constant:random_civil_war_value.zero }
@@ -8302,6 +8340,7 @@ event021_parent_apply_evolution_i = {
 			event021_select_verified_evolution_log_actor = yes
 			record_events_log_evolution_entry = yes
 			set_global_flag = random_civil_war_evolution_i_recorded
+			event021_parent_attach_active_evolution_i_reviews = yes
 		}
 	}
 }
@@ -8609,6 +8648,7 @@ event021_parent_cleanup_crisis = {
 		clear_variable = random_civil_war_event6_secondary_actor_scope
 		clr_country_flag = random_civil_war_secondary_front_active
 		clr_country_flag = random_civil_war_multifront_active
+		event021_parent_clear_active_evolution_i_state = yes
 		clr_country_flag = random_civil_war_ideological_route_reserved
 		clr_country_flag = random_civil_war_legal_route_reserved
 		clr_country_flag = random_civil_war_regional_route_reserved

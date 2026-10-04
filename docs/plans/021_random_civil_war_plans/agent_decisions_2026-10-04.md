@@ -50,3 +50,26 @@ Evolution II needs Evolution I recorded or switched off; Evolution III needs bot
 Re-enabling a stage returns it to normal scheduling through its own wrapper.
 Basis: the lead's round-1 assignment, the audit finding EV21-DISABLED-01 in `subagent_handoffs/event021_date_units_probability_audit_2026-10-03.md`, and `common/scripted_effects/004_random_war_effects.txt`, which checks `is_current_evolution_enabled` per stage.
 Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (scheduler section).
+
+## D5. Evolution I reviews wars that were already running
+
+Decision: take the accepted addendum's recommended options.
+The first recorded Evolution I queues one review on the canonical government of every live crisis whose recorded opening stage is baseline; a crisis without that record fails closed.
+The existing daily global-host pulse dispatches a bounded, rotating slice of the theater registry to hidden callback `chaosx.nr21.20`, so ROOT is the reviewed government.
+Each live side of the crisis is reviewed once by front ID: the government and its ordinary claimants may give up a connected region from their own held states with their own route evidence, and the government may release a complete Event 006 package from its own territory.
+The donor keeps its capital, a connected remnant at or above `minimum_remnant_states` (checked by a flood fill from the capital), and its reserved share of divisions; spare divisions are split across kept rows by region weight with whole divisions and no borrowing.
+Rows live in the government's own `random_civil_war_active_front_*` arrays with their own validator, and commit synchronously through the existing ordinary and Event 006 secondary adapters under a commit lock; the loader, receipt validator, span copy, opening-receipt copy, and row binding gained active branches, and the borrowed transaction globals are saved and restored.
+New sides inherit the crisis ID and the donor's generation, so no descendant crisis is created, and they are marked reviewed so they cannot split again in the same epoch.
+Temporary blockers (no spare front, another serial transaction or scenario, settlement talks, successor grace, a side near defeat) defer the review on `retry_days`; an idle finished opening template is offered to its owner's release check first.
+Event 006 carriers are no-side sources, because their package identity cannot be proven to survive a further split; this is a fail-closed reading of the addendum rather than a new rule.
+The region-growth and package loops were extracted from the opening collector into shared helpers; the opening path runs them with the active mode off and its rows are unchanged.
+Basis: master spec Evolution I section, `021_random_civil_war_spec_part_4_evolution_i.md` "Active-war transition", and the parent acceptance at the top of `event021_active_war_evolution_i_repair_addendum_2026-10-03.md`.
+Contract: `common/scripted_effects/021_random_civil_war_active_evolution_effects.md`; accepted behavior merged into the spec section "Accepted active-war review".
+
+## D6. Evolution I management phase for wars without a new side
+
+Decision: queueing a crisis for its Evolution I review also gives its government and every live registered side `random_civil_war_evolution_i_management_ready`, with no actor and no multi-front flag.
+While Evolution I is active and switched on, that receipt moves the side out of the opening phase into the front-management phase: Review Command Loyalty, Integrate Loyal Formations, and Set the Priority Front, plus Protect State Communications while the capital is controlled and keeps a supply node, replacing the opening arsenal, capital, and depot actions; Offer Emergency Settlement stays the government's conditional fifth action.
+Settlement removes the receipt from every side of the crisis, crisis cleanup removes it per country, and any new crisis role starts without it.
+No AI weight, cost, or mission changed; the hold-capital mission keeps its existing activation.
+Basis: the spec's no-side outcome and the addendum's management section; granting at queueing instead of after a no-side verdict keeps the phase available while a review waits on a temporary blocker.

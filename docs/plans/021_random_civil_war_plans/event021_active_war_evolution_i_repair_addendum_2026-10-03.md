@@ -1,5 +1,12 @@
 # Event 021 active-war Evolution I repair
 
+Disposition update 2026-10-04: implemented and promoted into an accepted spec.
+Implementation evidence: `common/scripted_effects/021_random_civil_war_active_evolution_effects.txt` and its contract, the shared region-growth helpers in `021_random_civil_war_dynamic_front_candidate_effects.txt`, the active branches of the secondary loader, receipt validator, span copy, opening-receipt copy, and row binding, hidden callback `chaosx.nr21.20`, and the `event021_active_review` constants.
+Destination spec: the "Accepted active-war review" section of `docs/specs/021_random_civil_war_specs/021_random_civil_war_spec_part_4_evolution_i.md`.
+Acceptance basis: the parent acceptance below and agent decisions D5 and D6 in `agent_decisions_2026-10-04.md`.
+Recorded differences from the proposal: management access is granted when the review is queued rather than after a no-side verdict, so a deferred war already has its management phase; Event 006 carriers are reviewed as no-side sources; source receipts refresh retained membership by current ownership rather than through a separate owner ledger; the commit lock is synchronous, so normal openings are not given a separate reciprocal refusal.
+Validation limits: source review and repository static checks only; native civil-war rounding, rollback resource restoration, and live campaign behavior remain needs_live_game, and the MCP and probability routes listed below remain unavailable.
+
 Disposition: accepted and queued for implementation after parent review on 2026-10-03, with source-integration and evidence limits below.
 Acceptance basis: the user's full Event 021 specification requires this existing active-war theater review, the parent reviewed the complete addendum, and the parent selected immediate source-country opening, independent country-owned receipts, separate active ownership validation, genuine no-side management, and bounded contention/capacity retries within that authorized scope.
 The accepted generation clarification distinguishes inherited same-crisis generation from a new descendant crisis, and the accepted template-release clarification preserves completed callbacks and durable copies before idle scratch is released.
