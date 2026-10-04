@@ -13,17 +13,18 @@ This abstraction records membership among civilians already present at a host, w
 | `camp_administration_civil_prepare_monthly` | Country, before foundation monthly | Once per calendar month: ends invalid authority, closes national occupation contract, releases surviving detainees through foundation reform, opens one qualifying host and admits finite cohorts only if previous monthly policy funding succeeded | `camp_admin_country_prepare_monthly` |
 | `camp_administration_civil_monthly` | Country, after foundation maintenance and economic processing | Once per calendar month: shared quote/payment for administration, review and claims; pressure and idea updates | `camp_admin_country_monthly` |
 | `camp_administration_civil_action_one` | Country, `action_one_available` | Authorizes appropriate national institution, registers bounded recurring country processing; AI selects development budget; no immediate equipment or PP debit | Parent GUI dispatcher and `camp_admin_civil_authorize_policy_ai` |
-| `camp_administration_civil_action_two` | Country, `action_two_available` | Immediate survivor release/reform or dated US property-claims work; paid institutional progress; AI selects priority budget | Parent GUI dispatcher and `camp_admin_civil_review_policy_ai` |
+| `camp_administration_civil_action_two` | Country, `action_two_available` | Immediate survivor release/reform or dated US property-claims work; superseded USA security-sunset mission is removed before review authority flags change; paid institutional progress; AI selects priority budget | Parent GUI dispatcher and `camp_admin_civil_review_policy_ai` |
 | `camp_administration_civil_open_next_host` | Authorized country, previous paid policy flag | At most one unassigned controlled/subject-controlled eligible host; uses existing registration and foundation initialization; transient `camp_admin_civil_next_host_id` is cleared | Prepare callback |
 | `camp_administration_civil_admit_host_cohort` | Eligible operational state with ROOT country | Consumes only `camp_admin_admission_accepted_k` from local remaining membership and national cumulative admission room | Prepare callback's bounded active-state loop |
 | `camp_administration_civil_classify_host` | State with ROOT country | Custody/labor role and persistent geographical responsibility labels; USA has custody role and a two-percent economic scale ceiling | Admission helper |
 | `camp_administration_civil_authorize_subject_site` | State with immutable existing responsibility | Sets `camp_admin_subject_authority` only for Belgian-administered Congo controlled by Belgian-subject COG or British-administered Raj controlled by British-subject RAJ; resolves responsibility directly without ROOT | Initializer's bounded existing registry and colonial registration before foundation initialization |
 | `camp_administration_civil_record_legacy_violence` | Operational state under valid authority | Requests a centrally tuned fraction of surviving detainees as violence; foundation produces actual receipt and all physical accounting | Existing colonial major-harm adapter |
 | `camp_administration_civil_migrate_projects` | Country | Transfers one valid pre-existing works target into the foundation economic slot and removes the legacy timer; begins with zero proved paid months | Initializer |
-| `camp_administration_civil_cancel_routine_projects` | Country | Removes seven routine timers and their target references without invoking completion outcomes | Migration, review, authority loss and cleanup |
+| `camp_administration_civil_cancel_routine_projects` | Country | Removes seven routine timers and their target references; initialized-country guards in their `cancel_effect` blocks prevent old completion outcomes if the engine invokes cancellation on removal | Migration, review, authority loss and cleanup |
 | `camp_administration_civil_cleanup` | Country at terminal lifecycle | Cancels routines and active policy/review/claims flags; clears transient progress and retains cumulative admissions and source-membership records | Parent terminal cleanup |
 | `camp_administration_civil_refresh_pressures`, `camp_administration_civil_refresh_ideas` | Country | Actual cohort burden, separate French regional burdens, Raj autonomy pressure, Congo strike penalty and British domestic ideas | Monthly callback; legacy idea refresh delegates the idea helper |
 | `camp_administration_civil_finish_review` | Country after required paid months | Terminal review flag, country-specific settlement, Raj autonomy adjustment, concession reform, court result | Monthly callback |
+| `camp_administration_civil_review_ready` | Country; supported routing, active incomplete review, no implicit defaults | Read-only current complete custody/occupation union preflight | Paid monthly review and direct final settlement |
 | `camp_administration_civil_quote_policy` | Country | Temporary `camp_admin_quote_support` and `camp_admin_quote_pp`, consumed by `camp_admin_try_pay_project` | Monthly callback |
 | `camp_administration_civil_choose_ai_budget` | Country; temporary `camp_admin_control_requested` | Requests the shared `camp_admin_set_budget` command only for unpaused AI; consumes the same quote and PP payment as GUI/decision commands and never refills a monthly allowance | One-time policy authorization/review callbacks |
 
@@ -36,6 +37,8 @@ No civil helper modifies the shared Deaths core or directly changes civilian pop
 
 `camp_administration_civil_country_supported` is the country routing trigger.
 `camp_administration_civil_action_one_visible` and `camp_administration_civil_action_two_visible` hide future dates and invalid governments.
+The USA review command requires a real authorized or admitted commitment after 1942-02-18, so an early generic camp network cannot terminate the later wartime authority.
+Both the player review command and the automatic authority-loss review remove a still-active USA security-sunset timer before ending emergency authority; its timeout cannot then apply a second closure outcome.
 Matching `_available` triggers additionally require an unoccupied institutional slot.
 Authorization is a policy choice rather than an upfront purchase; monthly work proceeds only after the shared payment accepts the quoted costs.
 Human budgets are retained; AI requests a development ceiling for administration and a priority ceiling for review through the shared paid budget command.
@@ -88,7 +91,23 @@ All civil tuning lives in `common/script_constants/camp_administration_civil_con
 Standard monthly administration costs 10 support equipment and 5 PP; review costs 15 support and 8 PP for three funded months; claims cost 10 support and 12 PP for six funded months.
 Foundation maintenance, protected reserves and remaining budget are checked before any such payment.
 An exhausted budget pauses progress without granting partial success.
+The national reform command, each paid review installment and final settlement require the complete bounded custody/occupation union to retain valid provenance.
+An uncertain occupation-only host therefore blocks charges and policy/reward progression even when it is absent from the custody site registry.
+The final helper also requires the full paid-month target and rejects premature or repeated direct calls.
+Intentional halt remains independent of survivor-release proof.
 The institution slot remains occupied during review or claims and is released on completion or terminal cancellation.
+
+```txt
+# Country scope; the monthly caller still requires an accepted shared payment.
+if = {
+	limit = { camp_administration_civil_review_ready = yes }
+	# Only after the recorded paid-month target, repeat readiness at settlement.
+	camp_administration_civil_finish_review = yes
+}
+```
+
+`camp_administration_civil_review_ready` has no side effects or cleanup and returns false for absent review authorization, unsupported authority, a completed review or unresolved custody/occupation provenance.
+`camp_administration_civil_finish_review` consumes no implicit completion input; it reads the persistent paid review progress and refuses settlement before the centrally defined target.
 
 The national admission ceilings are 27,000 British internees, 60,000 Raj detainees, 120,000 US incarcerated civilians, 30,000 French detainees, 10,000 Italian detainees and 40,000 Congo labor detainees.
 These are conservative finite gameplay cohort ceilings, not asserted national census totals, fatality totals or historical quotas.
@@ -130,6 +149,7 @@ The task's `civil_scenarios.py` evaluates actual current source for selected dat
 It is a restricted script interpreter with explicit native fixtures, not HOI4 runtime evidence.
 The initial narrow event MCP inspection timed out after 180 seconds.
 Parent-owned GUI MCP and the probability auditor's final same-scenario compare remain completion requirements.
+The 2026-10-03 joined source scenarios exercise occupation-only uncertainty, rejected stale reform clicks, halted policy independence, exact healthy release and three funded review months; their evidence and MCP gaps are recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_country_civil_integration_2026-10-03.md`.
 
 ## Assets and future work
 

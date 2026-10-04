@@ -82,17 +82,16 @@ camp_admin_country_apportion_census_ger_camps = {
 	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
 	set_variable = { camp_admin_country_ceiling_ger_camps_k = camp_admin_census_ceiling_k }
 	set_temp_variable = { camp_admin_census_host_count = 0 }
-	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
 			limit = { camp_admin_country_census_ger_camps_host = yes }
 			add_to_temp_variable = { camp_admin_census_host_count = 1 }
-			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
 		}
 	}
 	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
-	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	# A released or deceased cohort does not reopen this dated intake envelope.
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_country_cumulative_ger_camps_k }
 	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
 	if = {
 		limit = { check_variable = { camp_admin_census_host_count > 0 } }

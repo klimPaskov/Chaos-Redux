@@ -71,9 +71,7 @@ camp_repression_network_category = {
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.activation_pp
 		custom_cost_trigger = {
-			has_manpower > constant:camp_rework_cost.activation_manpower
-			command_power > constant:camp_rework_cost.activation_command
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			camp_rework_generic_activation_resources_ready = yes
 		}
 		custom_cost_text = camp_cost_activation_non_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
@@ -178,9 +176,7 @@ camp_repression_network_category = {
 				is_ai = no
 				camp_rework_country_under_ai_site_cap = yes
 			}
-			has_manpower > constant:camp_rework_cost.activation_manpower
-			command_power > constant:camp_rework_cost.activation_command
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			camp_rework_generic_activation_resources_ready = yes
 			FROM = {
 				OR = {
 					AND = {
@@ -207,7 +203,6 @@ camp_repression_network_category = {
 		}
 		ai_will_do = {
 			base = 0
-			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
 			modifier = {
 				add = constant:camp_rework_ai_weight.generic_authoritarian_activation
 				OR = {
@@ -229,6 +224,7 @@ camp_repression_network_category = {
 				factor = constant:camp_rework_ai_weight.factor_losing_war
 				surrender_progress > constant:camp_rework_threshold.retreat_surrender
 			}
+			modifier = { factor = 0 NOT = { camp_rework_country_under_ai_site_cap = yes } }
 		}
 	}
 
@@ -864,8 +860,8 @@ camp_repression_network_category = {
 		ai_hint_pp_cost = 60
 		allowed = { always = yes }
 		visible = { camp_admin_generic_reform_visible = yes }
-		available = { camp_admin_generic_reform_available = yes }
-		custom_cost_trigger = { camp_admin_generic_reform_available = yes }
+		available = { custom_trigger_tooltip = { tooltip = camp_admin_generic_reform_requirements_tt camp_admin_generic_reform_available = yes } }
+		custom_cost_trigger = { camp_admin_generic_reform_can_pay = yes }
 		custom_cost_text = camp_admin_generic_reform_cost_tt
 		complete_effect = {
 			custom_effect_tooltip = camp_admin_generic_reform_effect_tt
@@ -886,8 +882,8 @@ camp_repression_network_category = {
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.dismantle_pp
 		custom_cost_trigger = {
-			has_manpower > constant:camp_rework_cost.dismantle_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			NOT = { has_manpower < constant:camp_rework_cost.dismantle_manpower }
+			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
 		}
 		custom_cost_text = camp_cost_dismantlement_non_pp
 		days_remove = constant:camp_rework_timing.reform_days
@@ -905,8 +901,8 @@ camp_repression_network_category = {
 		}
 		target_trigger = { FROM = { is_valid_camp_dormant_reform_state = yes } }
 		available = {
-			has_manpower > constant:camp_rework_cost.dismantle_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			NOT = { has_manpower < constant:camp_rework_cost.dismantle_manpower }
+			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
 			FROM = { is_valid_camp_dormant_reform_state = yes }
 		}
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
@@ -960,7 +956,9 @@ camp_repression_network_category = {
 				NOT = { camp_rework_generic_labor_project_requirements_met = yes }
 			}
 		}
-		cancel_effect = { camp_rework_complete_generic_labor_project = yes }
+		cancel_effect = {
+			if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_generic_labor_project = yes }
+		}
 		ai_will_do = { base = 0 }
 	}
 
@@ -1044,7 +1042,9 @@ camp_repression_network_category = {
 		days_mission_timeout = constant:camp_rework_timing.reform_days
 		is_good = no
 		cancel_trigger = { check_variable = { camp_active_site_count = 0 } }
-		cancel_effect = { camp_rework_complete_generic_reform = yes }
+		cancel_effect = {
+			if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_generic_reform = yes }
+		}
 		timeout_effect = { camp_rework_complete_generic_reform = yes }
 		ai_will_do = { base = 0 }
 	}
@@ -1064,6 +1064,7 @@ camp_repression_network_category = {
 					OR = {
 						NOT = { camp_rework_state_is_actor_or_subject_controlled = yes }
 						NOT = { has_state_flag = camp_rework_site_dismantlement_in_progress }
+						NOT = { camp_rework_site_can_complete_dismantlement = yes }
 					}
 				}
 			}

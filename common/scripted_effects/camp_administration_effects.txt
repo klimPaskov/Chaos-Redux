@@ -5,6 +5,7 @@
 
 @CAMP_ADMIN_ROW_RELEASE = 2
 @CAMP_ADMIN_ROW_OUTSIDE = 3
+@CAMP_ADMIN_ROW_VOID = -1
 
 camp_admin_initialize_records = {
 	if = { limit = { NOT = { has_variable = camp_admin_total_deaths_k } } set_variable = { camp_admin_total_deaths_k = 0 } }
@@ -14,6 +15,7 @@ camp_admin_initialize_records = {
 	camp_admin_initialize_cause_records_labor = yes
 	camp_admin_initialize_cause_records_violence = yes
 	camp_admin_initialize_cause_records_institutional = yes
+	camp_admin_initialize_arrival_records = yes
 }
 camp_admin_initialize_cause_records_custody = {
 	if = { limit = { NOT = { has_variable = camp_admin_month_custody_deaths_k } } set_variable = { camp_admin_month_custody_deaths_k = 0 } }
@@ -33,6 +35,10 @@ camp_admin_initialize_cause_records_violence = {
 camp_admin_initialize_cause_records_institutional = {
 	if = { limit = { NOT = { has_variable = camp_admin_month_institutional_deaths_k } } set_variable = { camp_admin_month_institutional_deaths_k = 0 } }
 	if = { limit = { NOT = { has_variable = camp_admin_total_institutional_deaths_k } } set_variable = { camp_admin_total_institutional_deaths_k = 0 } }
+}
+camp_admin_initialize_arrival_records = {
+	if = { limit = { NOT = { has_variable = camp_admin_month_arrival_deaths_k } } set_variable = { camp_admin_month_arrival_deaths_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_total_arrival_deaths_k } } set_variable = { camp_admin_total_arrival_deaths_k = 0 } }
 }
 camp_admin_initialize_country = {
 	if = {
@@ -57,6 +63,19 @@ camp_admin_initialize_country = {
 	if = { limit = { NOT = { has_variable = camp_admin_economy_work_rate } } set_variable = { camp_admin_economy_work_rate = 0 } }
 	camp_admin_initialize_records = yes
 }
+# STATE. Archive only the already recorded immutable authority; no live-country
+# requirement, active registration, population transaction or inferred identity.
+camp_admin_register_known_site = {
+	if = {
+		limit = { has_state_flag = camp_admin_initialized has_variable = camp_admin_responsible_country }
+		var:camp_admin_responsible_country = {
+			if = {
+				limit = { NOT = { is_in_array = { array = camp_admin_known_site_states value = PREV } } }
+				add_to_array = { array = camp_admin_known_site_states value = PREV }
+			}
+		}
+	}
+}
 camp_admin_initialize_site = {
 	if = {
 		limit = { NOT = { has_state_flag = camp_admin_initialized } has_variable = genocide_responsible_country }
@@ -76,9 +95,201 @@ camp_admin_initialize_site = {
 		if = { limit = { gulag_labor_camp_network > 0 } set_variable = { camp_admin_role = constant:camp_admin_role.penal } }
 		if = { limit = { extermination_camp > 0 } set_variable = { camp_admin_role = constant:camp_admin_role.killing } }
 	}
+	camp_admin_register_known_site = yes
+	camp_admin_initialize_rows = yes
 	camp_admin_initialize_records = yes
+	camp_origin_initialize_host = yes
 	camp_admin_refresh_capacity = yes
 }
+
+# State-owned sparse custody rows. IDs stay stable; a zero-live row retains history.
+camp_admin_initialize_rows = {
+	if = {
+		limit = { NOT = { has_state_flag = camp_admin_rows_initialized } }
+		set_state_flag = camp_admin_rows_initialized
+		clear_array = camp_admin_row_ids
+		clear_array = camp_admin_row_origins
+		clear_array = camp_admin_row_authorities
+		clear_array = camp_admin_row_occupation_roots
+		clear_array = camp_admin_row_amounts_k
+		clear_array = camp_admin_row_deaths_k
+		clear_array = camp_admin_row_arrival_deaths_k
+		clear_array = camp_admin_row_released_k
+		clear_array = camp_admin_row_removed_k
+		clear_array = camp_admin_row_statuses
+		set_variable = { camp_admin_next_row_id = constant:camp_admin_value.one }
+		set_variable = { camp_admin_row_count = 0 }
+		# Adopt an existing aggregate once without enrolling any extra people.
+		if = {
+			limit = { check_variable = { camp_admin_detainees_k > 0 } }
+			set_temp_variable = { camp_admin_append_origin = THIS }
+			set_temp_variable = { camp_admin_append_authority = camp_admin_responsible_country }
+			set_temp_variable = { camp_admin_append_root_id = 0 }
+			set_temp_variable = { camp_admin_append_amount_k = camp_admin_detainees_k }
+			camp_admin_append_row = yes
+		}
+	}
+}
+camp_admin_append_row = {
+	set_temp_variable = { camp_admin_appended_row_id = camp_admin_next_row_id }
+	add_to_array = { array = camp_admin_row_ids value = camp_admin_appended_row_id }
+	add_to_array = { array = camp_admin_row_origins value = camp_admin_append_origin }
+	add_to_array = { array = camp_admin_row_authorities value = camp_admin_append_authority }
+	add_to_array = { array = camp_admin_row_occupation_roots value = camp_admin_append_root_id }
+	add_to_array = { array = camp_admin_row_amounts_k value = camp_admin_append_amount_k }
+	add_to_array = { array = camp_admin_row_deaths_k value = 0 }
+	add_to_array = { array = camp_admin_row_arrival_deaths_k value = 0 }
+	add_to_array = { array = camp_admin_row_released_k value = 0 }
+	add_to_array = { array = camp_admin_row_removed_k value = 0 }
+	add_to_array = { array = camp_admin_row_statuses value = constant:camp_admin_value.one }
+	add_to_variable = { camp_admin_next_row_id = constant:camp_admin_value.one }
+	set_variable = { camp_admin_row_count = camp_admin_row_ids^num }
+}
+camp_admin_check_rows = {
+	set_temp_variable = { camp_admin_rows_valid = 0 }
+	set_temp_variable = { camp_admin_expected_next_row_id = camp_admin_row_count }
+	add_to_temp_variable = { camp_admin_expected_next_row_id = constant:camp_admin_value.one }
+	if = {
+		limit = {
+			has_state_flag = camp_admin_rows_initialized
+			check_variable = { camp_admin_next_row_id = camp_admin_expected_next_row_id }
+			check_variable = { camp_admin_row_count = camp_admin_row_ids^num }
+			check_variable = { camp_admin_row_origins^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_authorities^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_occupation_roots^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_amounts_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_deaths_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_arrival_deaths_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_released_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_removed_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_statuses^num = camp_admin_row_count }
+		}
+		set_temp_variable = { camp_admin_rows_valid = constant:camp_admin_value.one }
+	}
+}
+camp_admin_count_live_rows = {
+	set_temp_variable = { camp_admin_rows_live_k = 0 }
+	set_temp_variable = { camp_admin_selected_row_live_k = 0 }
+	set_temp_variable = { camp_admin_row_scan_index = camp_admin_row_count }
+	while_loop_effect = {
+		limit = { check_variable = { camp_admin_row_scan_index > 0 } }
+		subtract_from_temp_variable = { camp_admin_row_scan_index = constant:camp_admin_value.one }
+		if = {
+			limit = { check_variable = { camp_admin_row_statuses^camp_admin_row_scan_index = constant:camp_admin_value.one } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { camp_admin_row_authorities^camp_admin_row_scan_index = camp_admin_responsible_country } }
+						check_variable = { camp_admin_row_amounts_k^camp_admin_row_scan_index < 0 }
+					}
+				}
+				set_temp_variable = { camp_admin_rows_valid = 0 }
+			}
+			add_to_temp_variable = { camp_admin_rows_live_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
+			if = {
+				limit = { check_variable = { camp_admin_row_ids^camp_admin_row_scan_index = camp_admin_selected_row_id } }
+				set_temp_variable = { camp_admin_selected_row_live_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
+			}
+		}
+	}
+}
+# State. A validated physical receipt or release supplies amount and kind: death=1, release=2, outside=3.
+# A positive selected ID restricts consumption to that exact origin row; zero uses newest-first allocation.
+camp_admin_consume_rows = {
+	set_temp_variable = { camp_admin_row_consumed_k = 0 }
+	set_temp_variable = { camp_admin_row_remaining_to_consume_k = camp_admin_row_consume_amount_k }
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = camp_origin_ambiguous
+				AND = {
+					has_state_flag = camp_origin_single_origin_reconciliation_pending
+					NOT = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE } }
+				}
+				AND = {
+					check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE }
+					OR = {
+						NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
+						NOT = { check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody } }
+						NOT = { check_variable = { camp_admin_selected_row_id = camp_origin_pending_single_row_id } }
+					}
+				}
+			}
+		}
+		set_temp_variable = { camp_admin_row_remaining_to_consume_k = constant:camp_admin_value.zero }
+	}
+	set_temp_variable = { camp_admin_row_scan_index = camp_admin_row_count }
+	while_loop_effect = {
+		limit = { check_variable = { camp_admin_row_scan_index > 0 } check_variable = { camp_admin_row_remaining_to_consume_k > 0 } }
+		subtract_from_temp_variable = { camp_admin_row_scan_index = constant:camp_admin_value.one }
+		if = {
+			limit = {
+				check_variable = { camp_admin_row_statuses^camp_admin_row_scan_index = constant:camp_admin_value.one }
+				OR = { check_variable = { camp_admin_selected_row_id = 0 } check_variable = { camp_admin_row_ids^camp_admin_row_scan_index = camp_admin_selected_row_id } }
+			}
+			set_temp_variable = { camp_admin_row_slice_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
+			clamp_temp_variable = { var = camp_admin_row_slice_k min = 0 max = camp_admin_row_remaining_to_consume_k }
+			set_temp_variable = { camp_admin_row_after_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
+			subtract_from_temp_variable = { camp_admin_row_after_k = camp_admin_row_slice_k }
+			set_variable = { camp_admin_row_amounts_k^camp_admin_row_scan_index = camp_admin_row_after_k }
+			if = {
+				limit = { check_variable = { camp_admin_row_consume_kind = constant:camp_admin_value.one } }
+				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_deaths_k^camp_admin_row_scan_index }
+				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
+				set_variable = { camp_admin_row_deaths_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
+				if = {
+					limit = { check_variable = { camp_admin_arrival_phase_contract = constant:camp_admin_value.one } }
+					set_temp_variable = { camp_admin_row_arrival_after_k = camp_admin_row_arrival_deaths_k^camp_admin_row_scan_index }
+					add_to_temp_variable = { camp_admin_row_arrival_after_k = camp_admin_row_slice_k }
+					set_variable = { camp_admin_row_arrival_deaths_k^camp_admin_row_scan_index = camp_admin_row_arrival_after_k }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_RELEASE } }
+				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_released_k^camp_admin_row_scan_index }
+				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
+				set_variable = { camp_admin_row_released_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
+			}
+			else_if = {
+				limit = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE } }
+				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_removed_k^camp_admin_row_scan_index }
+				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
+				set_variable = { camp_admin_row_removed_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
+			}
+			if = { limit = { check_variable = { camp_admin_row_after_k = 0 } } set_variable = { camp_admin_row_statuses^camp_admin_row_scan_index = 0 } }
+			subtract_from_temp_variable = { camp_admin_row_remaining_to_consume_k = camp_admin_row_slice_k }
+			add_to_temp_variable = { camp_admin_row_consumed_k = camp_admin_row_slice_k }
+		}
+	}
+}
+# State. Retire only the exact uniquely attributable pending custody row.
+# The common observer freezes ambiguous hosts without assigning a lost origin.
+camp_admin_consume_outside_rows = {
+	set_temp_variable = { camp_admin_outside_actual_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
+	if = {
+		limit = {
+			has_state_flag = camp_origin_single_origin_reconciliation_pending
+			NOT = { has_state_flag = camp_origin_ambiguous }
+			check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody }
+			camp_origin_host_rows_valid = yes
+		}
+		set_temp_variable = { camp_admin_selected_row_id = camp_origin_pending_single_row_id }
+		set_temp_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE }
+		set_temp_variable = { camp_admin_row_consume_amount_k = camp_origin_pending_single_removal_k }
+		camp_admin_consume_rows = yes
+		set_temp_variable = { camp_admin_outside_actual_k = camp_admin_row_consumed_k }
+		subtract_from_variable = { camp_admin_detainees_k = camp_admin_outside_actual_k }
+		add_to_variable = { camp_admin_external_attrition_k = camp_admin_outside_actual_k }
+		set_temp_variable = { camp_origin_single_reconcile_contract = constant:camp_admin_value.one }
+		set_temp_variable = { camp_origin_single_reconcile_sequence = camp_origin_observation_sequence }
+		set_temp_variable = { camp_origin_single_reconcile_amount_k = camp_admin_outside_actual_k }
+		camp_origin_acknowledge_single_origin_reconciliation = yes
+	}
+	set_temp_variable = { camp_admin_selected_row_id = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_row_consume_amount_k = constant:camp_admin_value.zero }
+}
+
 camp_admin_refresh_capacity = {
 	clamp_variable = { var = camp_admin_development_level min = 0 max = constant:camp_admin_value.max_development }
 	set_variable = { camp_admin_capacity_k = building_level@concentration_camp }
@@ -95,23 +306,26 @@ camp_admin_refresh_capacity = {
 	set_temp_variable = { camp_admin_population_headroom_k = state_population_k }
 	subtract_from_temp_variable = { camp_admin_population_headroom_k = constant:camp_admin_value.minimum_population_k }
 	clamp_temp_variable = { var = camp_admin_population_headroom_k min = 0 }
-	# External population loss cannot leave a cohort larger than its host population.
-	# This is reconciliation only: no second death debit or invented camp cause.
-	if = {
-		limit = { check_variable = { camp_admin_detainees_k > camp_admin_population_headroom_k } }
-		set_temp_variable = { camp_admin_missing_k = camp_admin_detainees_k }
-		subtract_from_temp_variable = { camp_admin_missing_k = camp_admin_population_headroom_k }
-		add_to_variable = { camp_admin_external_attrition_k = camp_admin_missing_k }
-		set_variable = { camp_admin_detainees_k = camp_admin_population_headroom_k }
-	}
+	camp_admin_initialize_rows = yes
+	camp_origin_reconcile_host_membership = yes
+	camp_admin_check_rows = yes
+	set_temp_variable = { camp_admin_selected_row_id = 0 }
+	if = { limit = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } camp_admin_count_live_rows = yes }
 	clamp_variable = { var = camp_admin_capacity_k min = 0 max = camp_admin_population_headroom_k }
 }
 camp_admin_admit_detainees = {
 	set_temp_variable = { camp_admin_admission_accepted_k = 0 }
+	camp_admin_initialize_rows = yes
 	camp_admin_refresh_capacity = yes
+	camp_admin_check_rows = yes
+	set_temp_variable = { camp_admin_selected_row_id = 0 }
+	camp_admin_count_live_rows = yes
 	if = {
 		limit = {
 			camp_admin_site_is_operational = yes
+			camp_origin_host_provenance_ready = yes
+			check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one }
+			check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k }
 			check_variable = { camp_admin_admission_proven = 1 }
 			check_variable = { camp_admin_admission_requested_k > 0 }
 			check_variable = { camp_admin_admission_source_k > 0 }
@@ -133,10 +347,170 @@ camp_admin_admit_detainees = {
 		clamp_temp_variable = { var = camp_admin_admission_accepted_k min = 0 max = camp_admin_admission_source_k }
 		add_to_variable = { camp_admin_detainees_k = camp_admin_admission_accepted_k }
 		add_to_variable = { camp_admin_total_admitted_k = camp_admin_admission_accepted_k }
+		if = {
+			limit = { check_variable = { camp_admin_admission_accepted_k > 0 } }
+			set_temp_variable = { camp_admin_append_origin = THIS }
+			set_temp_variable = { camp_admin_append_authority = camp_admin_responsible_country }
+			set_temp_variable = { camp_admin_append_root_id = 0 }
+			set_temp_variable = { camp_admin_append_amount_k = camp_admin_admission_accepted_k }
+			camp_admin_append_row = yes
+			camp_origin_observe_host = yes
+		}
 	}
 	set_temp_variable = { camp_admin_admission_requested_k = 0 }
 	set_temp_variable = { camp_admin_admission_source_k = 0 }
 	set_temp_variable = { camp_admin_admission_proven = 0 }
+}
+
+# Destination state. Read-only quotation for a living occupation-origin arrival.
+# Inputs: requested whole people, origin state, original authority, occupation root ID.
+camp_admin_preflight_import = {
+	set_temp_variable = { camp_admin_import_preflight_valid = 0 }
+	set_temp_variable = { camp_admin_import_preflight_row_id = 0 }
+	set_temp_variable = { camp_admin_import_preflight_before_people = 0 }
+	set_temp_variable = { camp_admin_import_preflight_amount_people = 0 }
+	set_temp_variable = { camp_admin_import_preflight_root_id = 0 }
+	camp_admin_check_rows = yes
+	set_temp_variable = { camp_admin_selected_row_id = 0 }
+	if = { limit = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } camp_admin_count_live_rows = yes }
+	set_temp_variable = { camp_admin_import_rounded_people = camp_admin_import_requested_people }
+	round_temp_variable = camp_admin_import_rounded_people
+	set_temp_variable = { camp_admin_import_requested_k = camp_admin_import_requested_people }
+	divide_temp_variable = { camp_admin_import_requested_k = constant:camp_admin_value.people_per_k }
+	set_temp_variable = { camp_admin_import_max_people = constant:camp_admin_value.maximum_receipt_k }
+	multiply_temp_variable = { camp_admin_import_max_people = constant:camp_admin_value.people_per_k }
+	set_temp_variable = { camp_admin_import_capacity_k = building_level@concentration_camp }
+	add_to_temp_variable = { camp_admin_import_capacity_k = building_level@gulag_labor_camp_network }
+	add_to_temp_variable = { camp_admin_import_capacity_k = building_level@extermination_camp }
+	multiply_temp_variable = { camp_admin_import_capacity_k = constant:camp_admin_value.capacity_per_building_k }
+	if = {
+		limit = { camp_admin_site_is_operational = yes check_variable = { camp_admin_import_capacity_k < constant:camp_admin_value.marker_capacity_k } }
+		set_temp_variable = { camp_admin_import_capacity_k = constant:camp_admin_value.marker_capacity_k }
+	}
+	set_temp_variable = { camp_admin_import_developed_k = camp_admin_development_level }
+	clamp_temp_variable = { var = camp_admin_import_developed_k min = 0 max = constant:camp_admin_value.max_development }
+	multiply_temp_variable = { camp_admin_import_developed_k = constant:camp_admin_value.capacity_per_building_k }
+	add_to_temp_variable = { camp_admin_import_capacity_k = camp_admin_import_developed_k }
+	subtract_from_temp_variable = { camp_admin_import_capacity_k = camp_admin_detainees_k }
+	set_temp_variable = { camp_admin_import_share_headroom_k = state_population_k }
+	add_to_temp_variable = { camp_admin_import_share_headroom_k = camp_admin_import_requested_k }
+	multiply_temp_variable = { camp_admin_import_share_headroom_k = constant:camp_admin_value.maximum_population_share }
+	subtract_from_temp_variable = { camp_admin_import_share_headroom_k = camp_admin_detainees_k }
+	set_temp_variable = { camp_admin_import_uncommitted_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_import_uncommitted_k = constant:camp_admin_value.minimum_population_k }
+	subtract_from_temp_variable = { camp_admin_import_uncommitted_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_import_uncommitted_k = camp_occ_remaining_k } }
+	if = {
+		limit = {
+			state = 88
+			camp_origin_host_provenance_ready = yes
+			extermination_camp > 0
+			camp_admin_site_is_operational = yes
+			check_variable = { camp_admin_role = constant:camp_admin_role.killing }
+			check_variable = { camp_admin_import_authority = camp_admin_responsible_country }
+			is_controlled_by = var:camp_admin_import_authority
+			var:camp_admin_import_origin = { has_state_flag = camp_occ_registered }
+			check_variable = { camp_admin_import_occupation_root_id > 0 }
+			check_variable = { camp_admin_import_requested_people > 0 }
+			check_variable = { camp_admin_import_rounded_people = camp_admin_import_requested_people }
+			check_variable = { var = camp_admin_import_requested_people value = camp_admin_import_max_people compare = less_than_or_equals }
+			check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one }
+			check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k }
+			check_variable = { var = camp_admin_import_requested_k value = camp_admin_import_capacity_k compare = less_than_or_equals }
+			check_variable = { var = camp_admin_import_requested_k value = camp_admin_import_share_headroom_k compare = less_than_or_equals }
+			NOT = { check_variable = { camp_admin_import_uncommitted_k < 0 } }
+		}
+		set_temp_variable = { camp_admin_import_preflight_valid = constant:camp_admin_value.one }
+		set_temp_variable = { camp_admin_import_preflight_row_id = camp_admin_next_row_id }
+		set_temp_variable = { camp_admin_import_preflight_amount_people = camp_admin_import_requested_people }
+		set_temp_variable = { camp_admin_import_preflight_origin = camp_admin_import_origin }
+		set_temp_variable = { camp_admin_import_preflight_authority = camp_admin_import_authority }
+		set_temp_variable = { camp_admin_import_preflight_root_id = camp_admin_import_occupation_root_id }
+		set_temp_variable = { camp_admin_import_preflight_before_people = state_population_k }
+		multiply_temp_variable = { camp_admin_import_preflight_before_people = constant:camp_admin_value.people_per_k }
+		round_temp_variable = camp_admin_import_preflight_before_people
+	}
+}
+
+# Destination state. Called only after an exact physical credit, never adds population.
+camp_admin_bind_import = {
+	if = {
+		limit = { NOT = { check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_admin_value.one } } }
+		set_temp_variable = { camp_admin_import_bind_accepted_people = 0 }
+		set_temp_variable = { camp_admin_import_bound_row_id = 0 }
+	}
+	set_temp_variable = { camp_admin_import_after_people = state_population_k }
+	multiply_temp_variable = { camp_admin_import_after_people = constant:camp_admin_value.people_per_k }
+	round_temp_variable = camp_admin_import_after_people
+	subtract_from_temp_variable = { camp_admin_import_after_people = camp_admin_import_preflight_before_people }
+	camp_admin_check_rows = yes
+	set_temp_variable = { camp_admin_selected_row_id = 0 }
+	if = { limit = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } camp_admin_count_live_rows = yes }
+	if = {
+		limit = {
+			NOT = { check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_admin_value.one } }
+			check_variable = { camp_admin_import_preflight_valid = constant:camp_admin_value.one }
+			check_variable = { camp_admin_import_preflight_amount_people = camp_admin_import_requested_people }
+			check_variable = { camp_admin_import_preflight_origin = camp_admin_import_origin }
+			check_variable = { camp_admin_import_preflight_authority = camp_admin_import_authority }
+			check_variable = { camp_admin_import_preflight_root_id = camp_admin_import_occupation_root_id }
+			check_variable = { camp_admin_import_after_people = camp_admin_import_requested_people }
+			check_variable = { camp_admin_import_preflight_row_id = camp_admin_next_row_id }
+			check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one }
+			check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k }
+			camp_admin_site_is_operational = yes
+			state = 88
+			camp_origin_host_provenance_ready = yes
+			extermination_camp > 0
+			check_variable = { camp_admin_role = constant:camp_admin_role.killing }
+			check_variable = { camp_admin_import_authority = camp_admin_responsible_country }
+		}
+		set_temp_variable = { camp_admin_append_origin = camp_admin_import_origin }
+		set_temp_variable = { camp_admin_append_authority = camp_admin_import_authority }
+		set_temp_variable = { camp_admin_append_root_id = camp_admin_import_occupation_root_id }
+		set_temp_variable = { camp_admin_append_amount_k = camp_admin_import_requested_k }
+		camp_admin_append_row = yes
+		add_to_variable = { camp_admin_detainees_k = camp_admin_append_amount_k }
+		add_to_variable = { camp_admin_total_admitted_k = camp_admin_append_amount_k }
+		set_temp_variable = { camp_admin_import_bind_accepted_people = camp_admin_import_requested_people }
+		set_temp_variable = { camp_admin_import_bound_row_id = camp_admin_appended_row_id }
+		set_temp_variable = { camp_admin_import_bind_pending_inverse = constant:camp_admin_value.one }
+	}
+	set_temp_variable = { camp_admin_import_preflight_valid = 0 }
+}
+
+# Destination state. Same-chain inverse for the one row returned by bind; repeat calls are inert.
+camp_admin_inverse_import_bind = {
+	set_temp_variable = { camp_admin_import_inverse_accepted_people = 0 }
+	if = {
+		limit = {
+			check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_admin_value.one }
+			check_variable = { camp_admin_import_bound_row_id > 0 }
+			check_variable = { camp_admin_import_bind_accepted_people = camp_admin_import_requested_people }
+		}
+		camp_admin_check_rows = yes
+		set_temp_variable = { camp_admin_import_inverse_index = camp_admin_row_count }
+		subtract_from_temp_variable = { camp_admin_import_inverse_index = constant:camp_admin_value.one }
+		if = {
+			limit = {
+				check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one }
+				check_variable = { camp_admin_row_ids^camp_admin_import_inverse_index = camp_admin_import_bound_row_id }
+				check_variable = { camp_admin_row_statuses^camp_admin_import_inverse_index = constant:camp_admin_value.one }
+				check_variable = { camp_admin_row_origins^camp_admin_import_inverse_index = camp_admin_import_origin }
+				check_variable = { camp_admin_row_authorities^camp_admin_import_inverse_index = camp_admin_import_authority }
+				check_variable = { camp_admin_row_occupation_roots^camp_admin_import_inverse_index = camp_admin_import_occupation_root_id }
+				check_variable = { camp_admin_row_amounts_k^camp_admin_import_inverse_index = camp_admin_import_requested_k }
+				check_variable = { var = camp_admin_detainees_k value = camp_admin_import_requested_k compare = greater_than_or_equals }
+				check_variable = { var = camp_admin_total_admitted_k value = camp_admin_import_requested_k compare = greater_than_or_equals }
+			}
+			set_variable = { camp_admin_row_amounts_k^camp_admin_import_inverse_index = 0 }
+			set_variable = { camp_admin_row_statuses^camp_admin_import_inverse_index = @CAMP_ADMIN_ROW_VOID }
+			subtract_from_variable = { camp_admin_detainees_k = camp_admin_import_requested_k }
+			subtract_from_variable = { camp_admin_total_admitted_k = camp_admin_import_requested_k }
+			set_temp_variable = { camp_admin_import_inverse_accepted_people = camp_admin_import_bind_accepted_people }
+			set_temp_variable = { camp_admin_import_bind_pending_inverse = 0 }
+		}
+	}
 }
 
 # Calendar guard: meta dates use current year, avoiding an approximate 30-day month.
@@ -168,6 +542,7 @@ camp_admin_reset_month_records = {
 	set_variable = { camp_admin_month_labor_deaths_k = 0 }
 	set_variable = { camp_admin_month_violence_deaths_k = 0 }
 	set_variable = { camp_admin_month_institutional_deaths_k = 0 }
+	set_variable = { camp_admin_month_arrival_deaths_k = 0 }
 	set_variable = { camp_admin_records_month = camp_admin_month_key }
 }
 camp_admin_ensure_current_records_month = {
@@ -201,9 +576,18 @@ camp_admin_record_death_projection = {
 	else_if = { limit = { check_variable = { camp_admin_death_cause = constant:camp_admin_cause.labor } } camp_admin_record_cause_labor = yes }
 	else_if = { limit = { check_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence } } camp_admin_record_cause_violence = yes }
 	else_if = { limit = { check_variable = { camp_admin_death_cause = constant:camp_admin_cause.institutional } } camp_admin_record_cause_institutional = yes }
+	if = {
+		limit = {
+			check_variable = { camp_admin_arrival_phase_contract = constant:camp_admin_value.one }
+			check_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
+		}
+		add_to_variable = { camp_admin_month_arrival_deaths_k = camp_admin_death_actual_k }
+		add_to_variable = { camp_admin_total_arrival_deaths_k = camp_admin_death_actual_k }
+	}
 }
 camp_admin_record_deaths = {
 	set_temp_variable = { camp_admin_death_actual_k = 0 }
+	camp_admin_initialize_rows = yes
 	if = {
 		limit = {
 			camp_admin_site_is_operational = yes
@@ -214,41 +598,75 @@ camp_admin_record_deaths = {
 			check_variable = { camp_admin_death_cause < 5 }
 		}
 		camp_admin_refresh_capacity = yes
+		camp_admin_check_rows = yes
+		set_temp_variable = { camp_admin_selected_row_id = camp_admin_death_row_id }
+		camp_admin_count_live_rows = yes
 		set_temp_variable = { camp_admin_death_before_k = state_population_k }
+		set_temp_variable = { camp_admin_death_open_sequence = camp_origin_observation_sequence }
+		set_temp_variable = { camp_admin_death_open_deaths_people = chaos_state_civilian_deaths_total }
 		set_temp_variable = { camp_admin_death_request_k = camp_admin_death_requested_k }
 		clamp_temp_variable = { var = camp_admin_death_request_k min = 0 max = camp_admin_detainees_k }
 		clamp_temp_variable = { var = camp_admin_death_request_k min = 0 max = constant:camp_admin_value.maximum_receipt_k }
-		set_temp_variable = { state_civilian_population_loss_requested = camp_admin_death_request_k }
-		multiply_temp_variable = { state_civilian_population_loss_requested = constant:camp_admin_value.people_per_k }
-		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_admin_value.minimum_population_k }
-		multiply_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_admin_value.people_per_k }
-		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		# Physical debit once; measure before registering its actual receipt.
-		set_temp_variable = { state_civilian_population_loss_log_deaths = 0 }
-		set_temp_variable = { state_civilian_population_loss_target_country = camp_admin_responsible_country }
-		set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
-		set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
-		apply_exact_state_civilian_population_loss = yes
-		set_temp_variable = { camp_admin_death_actual_k = camp_admin_death_before_k }
-		subtract_from_temp_variable = { camp_admin_death_actual_k = state_population_k }
-		clamp_temp_variable = { var = camp_admin_death_actual_k min = 0 max = camp_admin_detainees_k }
-		subtract_from_variable = { camp_admin_detainees_k = camp_admin_death_actual_k }
-		set_temp_variable = { chaos_deaths_change = camp_admin_death_actual_k }
-		multiply_temp_variable = { chaos_deaths_change = constant:camp_admin_value.people_per_k }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		set_temp_variable = { chaos_deaths_is_civilian = 1 }
-		set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
-		set_temp_variable = { chaos_deaths_record_state_ledger = 1 }
-		set_temp_variable = { chaos_deaths_target_country = camp_admin_responsible_country }
-		set_temp_variable = { chaos_deaths_has_target_country = 1 }
-		chaos_meter_register_deaths = yes
-		camp_rework_record_latest_state_deaths = yes
-		camp_admin_record_death_projection = yes
-		var:camp_admin_responsible_country = { camp_admin_record_death_projection = yes }
+		if = { limit = { check_variable = { camp_admin_selected_row_id > 0 } } clamp_temp_variable = { var = camp_admin_death_request_k min = 0 max = camp_admin_selected_row_live_k } }
+		if = {
+			limit = { OR = { NOT = { camp_origin_host_provenance_ready = yes } NOT = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } NOT = { check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k } } } }
+			set_temp_variable = { camp_admin_death_request_k = 0 }
+		}
+		if = {
+			limit = { check_variable = { camp_admin_death_request_k > 0 } }
+			set_temp_variable = { state_civilian_population_loss_requested = camp_admin_death_request_k }
+			multiply_temp_variable = { state_civilian_population_loss_requested = constant:camp_admin_value.people_per_k }
+			set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_admin_value.minimum_population_k }
+			multiply_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_admin_value.people_per_k }
+			set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+			# Physical debit once; measure before registering its actual receipt.
+			set_temp_variable = { state_civilian_population_loss_log_deaths = 0 }
+			set_temp_variable = { state_civilian_population_loss_target_country = camp_admin_responsible_country }
+			set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
+			set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
+			apply_exact_state_civilian_population_loss = yes
+			set_temp_variable = { camp_admin_death_actual_k = camp_admin_death_before_k }
+			subtract_from_temp_variable = { camp_admin_death_actual_k = state_population_k }
+			clamp_temp_variable = { var = camp_admin_death_actual_k min = 0 max = camp_admin_detainees_k }
+			set_temp_variable = { camp_admin_row_consume_amount_k = camp_admin_death_actual_k }
+			set_temp_variable = { camp_admin_row_consume_kind = constant:camp_admin_value.one }
+			camp_admin_consume_rows = yes
+			subtract_from_variable = { camp_admin_detainees_k = camp_admin_death_actual_k }
+			set_temp_variable = { chaos_deaths_change = camp_admin_death_actual_k }
+			multiply_temp_variable = { chaos_deaths_change = constant:camp_admin_value.people_per_k }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
+			set_temp_variable = { chaos_deaths_is_civilian = 1 }
+			set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+			set_temp_variable = { chaos_deaths_record_state_ledger = 1 }
+			set_temp_variable = { chaos_deaths_target_country = camp_admin_responsible_country }
+			set_temp_variable = { chaos_deaths_has_target_country = 1 }
+			chaos_meter_register_deaths = yes
+			camp_rework_record_latest_state_deaths = yes
+			camp_admin_record_death_projection = yes
+			var:camp_admin_responsible_country = { camp_admin_record_death_projection = yes }
+			set_temp_variable = { camp_origin_known_contract = constant:camp_admin_value.one }
+			set_temp_variable = { camp_origin_known_observation_sequence = camp_admin_death_open_sequence }
+			set_temp_variable = { camp_origin_known_before_population_k = camp_admin_death_before_k }
+			set_temp_variable = { camp_origin_known_after_population_k = camp_admin_death_before_k }
+			subtract_from_temp_variable = { camp_origin_known_after_population_k = camp_admin_death_actual_k }
+			set_temp_variable = { camp_origin_known_before_state_deaths_people = camp_admin_death_open_deaths_people }
+			set_temp_variable = { camp_origin_known_after_state_deaths_people = camp_admin_death_actual_k }
+			multiply_temp_variable = { camp_origin_known_after_state_deaths_people = constant:camp_admin_value.people_per_k }
+			add_to_temp_variable = { camp_origin_known_after_state_deaths_people = camp_admin_death_open_deaths_people }
+			set_temp_variable = { camp_origin_known_adjustment_accepted = constant:camp_admin_value.zero }
+			camp_origin_adjust_known_receipt = yes
+			if = {
+				limit = { NOT = { check_variable = { camp_origin_known_adjustment_accepted = constant:camp_admin_value.one } } }
+				set_variable = { camp_admin_unreconciled_death_receipt_k = camp_admin_death_actual_k }
+				camp_origin_quarantine_transaction = yes
+			}
+		}
 	}
 	set_temp_variable = { camp_admin_death_requested_k = 0 }
 	set_temp_variable = { camp_admin_death_contract = 0 }
 	set_temp_variable = { camp_admin_death_cause = 0 }
+	set_temp_variable = { camp_admin_death_row_id = 0 }
+	set_temp_variable = { camp_admin_arrival_phase_contract = 0 }
 }
 
 camp_admin_clear_state_output = {
@@ -475,7 +893,16 @@ camp_admin_pay_monthly_maintenance = {
 	set_temp_variable = { equipment_stockpile_removal_amount = camp_admin_maintenance_paid }
 	remove_support_equipment_from_stockpile = yes
 	subtract_from_variable = { camp_admin_budget_support_remaining = camp_admin_maintenance_paid }
-	if = { limit = { check_variable = { camp_admin_country_support_ratio < 1 } } set_country_flag = camp_admin_maintenance_shortage }
+	if = {
+		limit = { check_variable = { camp_admin_country_support_ratio < constant:camp_admin_value.one } }
+		if = {
+			limit = { NOT = { has_country_flag = camp_admin_maintenance_shortage } }
+			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.shortage }
+			set_temp_variable = { camp_admin_record_state_id = constant:camp_admin_value.zero }
+			camp_admin_record_history = yes
+		}
+		set_country_flag = camp_admin_maintenance_shortage
+	}
 	else = { clr_country_flag = camp_admin_maintenance_shortage }
 	set_temp_variable = { camp_admin_funded_ratio = camp_admin_country_support_ratio }
 	for_each_scope_loop = { array = camp_active_site_states set_variable = { camp_admin_support_ratio = camp_admin_funded_ratio } }
@@ -485,44 +912,80 @@ camp_admin_pay_monthly_maintenance = {
 camp_admin_release_survivors = {
 	set_temp_variable = { camp_admin_release_requested_k = camp_admin_detainees_k }
 	camp_admin_release_detainees = yes
+	# A full release closes this site's automatic census intake; survivors remain free.
+	if = { limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } } set_state_flag = camp_admin_census_intake_closed }
 }
 camp_admin_release_detainees = {
+	camp_admin_initialize_rows = yes
+	camp_admin_refresh_capacity = yes
+	camp_admin_check_rows = yes
+	set_temp_variable = { camp_admin_selected_row_id = 0 }
+	camp_admin_count_live_rows = yes
 	set_temp_variable = { camp_admin_release_actual_k = camp_admin_release_requested_k }
 	clamp_temp_variable = { var = camp_admin_release_actual_k min = 0 max = camp_admin_detainees_k }
+	if = {
+		limit = { OR = { NOT = { camp_origin_host_provenance_ready = yes } NOT = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } } NOT = { check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k } } } }
+		set_temp_variable = { camp_admin_release_actual_k = 0 }
+	}
+	set_temp_variable = { camp_admin_row_consume_amount_k = camp_admin_release_actual_k }
+	set_temp_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_RELEASE }
+	camp_admin_consume_rows = yes
 	add_to_variable = { camp_admin_total_released_k = camp_admin_release_actual_k }
 	if = {
 		limit = { has_variable = camp_admin_responsible_country }
 		var:camp_admin_responsible_country = { add_to_variable = { camp_admin_total_released_k = camp_admin_release_actual_k } }
 	}
 	subtract_from_variable = { camp_admin_detainees_k = camp_admin_release_actual_k }
+	if = { limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } } camp_origin_observe_host = yes }
 	camp_admin_clear_state_output = yes
 	if = { limit = { has_variable = camp_admin_responsible_country } var:camp_admin_responsible_country = { camp_admin_refresh_country_economy = yes } }
 	set_temp_variable = { camp_admin_release_requested_k = 0 }
 }
 camp_admin_close_site = {
+	camp_admin_register_known_site = yes
 	if = {
 		limit = { has_state_flag = camp_admin_initialized }
-		camp_admin_release_survivors = yes
-		set_state_flag = camp_admin_closed
-		set_variable = { camp_admin_support_ratio = 0 }
+		camp_origin_reconcile_host_membership = yes
 		if = {
-			limit = { has_variable = camp_admin_responsible_country }
-			set_temp_variable = { camp_admin_closing_state_id = THIS.id }
-			var:camp_admin_responsible_country = {
-				if = {
-					limit = { check_variable = { camp_admin_economy_state_id = camp_admin_closing_state_id } }
-					camp_admin_cancel_economy_project = yes
+			limit = { camp_admin_site_rows_reconciled = yes }
+			camp_admin_release_survivors = yes
+			set_state_flag = camp_admin_closed
+		}
+		else_if = {
+			limit = {
+				OR = { has_state_flag = camp_origin_ambiguous has_state_flag = camp_origin_single_origin_reconciliation_pending has_state_flag = camp_origin_records_unresolved }
+				OR = {
+					check_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
+					NOT = { camp_admin_site_authority_is_valid = yes }
+					var:camp_admin_responsible_country = { NOT = { exists = yes } }
 				}
-				if = {
-					limit = { check_variable = { camp_admin_institution_state_id = camp_admin_closing_state_id } }
-					clr_country_flag = camp_admin_institution_slot_active
-					set_variable = { camp_admin_institution_progress = 0 }
-					clear_variable = camp_admin_institution_state_id
+			}
+			# Terminal administration stops without fabricating survivor releases.
+			set_state_flag = camp_admin_closed
+			set_state_flag = camp_origin_ambiguity_terminal
+		}
+		if = {
+			limit = { has_state_flag = camp_admin_closed }
+			set_variable = { camp_admin_support_ratio = 0 }
+			camp_admin_clear_state_output = yes
+			if = {
+				limit = { has_variable = camp_admin_responsible_country }
+				set_temp_variable = { camp_admin_closing_state_id = THIS.id }
+				var:camp_admin_responsible_country = {
+					if = { limit = { check_variable = { camp_admin_economy_state_id = camp_admin_closing_state_id } } camp_admin_cancel_economy_project = yes }
+					if = {
+						limit = { check_variable = { camp_admin_institution_state_id = camp_admin_closing_state_id } }
+						clr_country_flag = camp_admin_institution_slot_active
+						set_variable = { camp_admin_institution_progress = 0 }
+						clear_variable = camp_admin_institution_state_id
+					}
+					camp_admin_refresh_country_economy = yes
 				}
-				camp_admin_refresh_country_economy = yes
 			}
 		}
 	}
+	# Consume explicit terminal intent before another close in this effect chain.
+	set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.zero }
 }
 camp_admin_reopen_site = {
 	if = {
@@ -533,6 +996,7 @@ camp_admin_reopen_site = {
 			has_variable = genocide_responsible_country
 			check_variable = { genocide_responsible_country = camp_admin_responsible_country }
 			camp_admin_site_authority_is_valid = yes
+			camp_origin_host_provenance_ready = yes
 			var:camp_admin_responsible_country = { NOT = { has_country_flag = camp_admin_reforming } }
 		}
 		clr_state_flag = camp_admin_closed
@@ -555,30 +1019,37 @@ camp_admin_reform_site = {
 			NOT = { has_state_flag = camp_admin_closed }
 			camp_admin_site_authority_is_valid = yes
 		}
-		set_variable = { camp_admin_civilian_target_k = camp_admin_detainees_k }
-		multiply_variable = { camp_admin_civilian_target_k = constant:camp_admin_value.workforce_share }
-		camp_admin_close_site = yes
+		camp_admin_refresh_capacity = yes
 		if = {
-			limit = { check_variable = { camp_admin_civilian_target_k > 0 } }
-			set_state_flag = camp_admin_civilian_conversion_pending
-			var:camp_admin_responsible_country = {
-				if = { limit = { NOT = { is_in_array = { array = camp_admin_civilian_states value = PREV } } } add_to_array = { array = camp_admin_civilian_states value = PREV } }
+			limit = { camp_admin_site_rows_reconciled = yes }
+			set_variable = { camp_admin_civilian_target_k = camp_admin_detainees_k }
+			multiply_variable = { camp_admin_civilian_target_k = constant:camp_admin_value.workforce_share }
+			camp_admin_close_site = yes
+			if = {
+				limit = { check_variable = { camp_admin_civilian_target_k > 0 } }
+				set_state_flag = camp_admin_civilian_conversion_pending
+				var:camp_admin_responsible_country = {
+					if = { limit = { NOT = { is_in_array = { array = camp_admin_civilian_states value = PREV } } } add_to_array = { array = camp_admin_civilian_states value = PREV } }
+				}
 			}
 		}
 	}
 }
 camp_admin_begin_reform = {
 	camp_admin_initialize_country = yes
-	save_event_target_as = camp_admin_actor
-	set_country_flag = camp_admin_reforming
-	set_country_flag = camp_rework_expansion_frozen
-	set_variable = { camp_admin_mandate = constant:camp_admin_mandate.custody }
-	camp_admin_cancel_economy_project = yes
-	clr_country_flag = camp_admin_institution_slot_active
-	set_variable = { camp_admin_institution_progress = 0 }
-	clear_variable = camp_admin_institution_state_id
-	for_each_scope_loop = { array = camp_active_site_states camp_admin_reform_site = yes }
-	camp_admin_refresh_country_economy = yes
+	if = {
+		limit = { camp_admin_country_sites_ready_for_reform = yes }
+		save_event_target_as = camp_admin_actor
+		set_country_flag = camp_admin_reforming
+		set_country_flag = camp_rework_expansion_frozen
+		set_variable = { camp_admin_mandate = constant:camp_admin_mandate.custody }
+		camp_admin_cancel_economy_project = yes
+		clr_country_flag = camp_admin_institution_slot_active
+		set_variable = { camp_admin_institution_progress = 0 }
+		clear_variable = camp_admin_institution_state_id
+		for_each_scope_loop = { array = camp_active_site_states camp_admin_reform_site = yes }
+		camp_admin_refresh_country_economy = yes
+	}
 }
 
 camp_admin_select_economy_project = {
@@ -806,6 +1277,7 @@ camp_admin_monthly_state = {
 			set_temp_variable = { camp_admin_death_contract = 1 }
 			camp_admin_record_deaths = yes
 		}
+		camp_admin_country_apply_institutional_site_mortality = yes
 		camp_admin_refresh_state_economy = yes
 	}
 }
@@ -852,100 +1324,4 @@ camp_admin_try_claim_research_award = {
 	set_temp_variable = { camp_admin_research_contract = 0 }
 	set_temp_variable = { camp_admin_research_program_valid = 0 }
 	set_temp_variable = { camp_admin_research_requested_bonus = 0 }
-}
-
-# Provenance library exact row-consumer dependency.
-camp_admin_consume_rows = {
-	set_temp_variable = { camp_admin_row_consumed_k = 0 }
-	set_temp_variable = { camp_admin_row_remaining_to_consume_k = camp_admin_row_consume_amount_k }
-	if = {
-		limit = {
-			OR = {
-				has_state_flag = camp_origin_ambiguous
-				AND = {
-					has_state_flag = camp_origin_single_origin_reconciliation_pending
-					NOT = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE } }
-				}
-				AND = {
-					check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE }
-					OR = {
-						NOT = { has_state_flag = camp_origin_single_origin_reconciliation_pending }
-						NOT = { check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody } }
-						NOT = { check_variable = { camp_admin_selected_row_id = camp_origin_pending_single_row_id } }
-					}
-				}
-			}
-		}
-		set_temp_variable = { camp_admin_row_remaining_to_consume_k = constant:camp_admin_value.zero }
-	}
-	set_temp_variable = { camp_admin_row_scan_index = camp_admin_row_count }
-	while_loop_effect = {
-		limit = { check_variable = { camp_admin_row_scan_index > 0 } check_variable = { camp_admin_row_remaining_to_consume_k > 0 } }
-		subtract_from_temp_variable = { camp_admin_row_scan_index = constant:camp_admin_value.one }
-		if = {
-			limit = {
-				check_variable = { camp_admin_row_statuses^camp_admin_row_scan_index = constant:camp_admin_value.one }
-				OR = { check_variable = { camp_admin_selected_row_id = 0 } check_variable = { camp_admin_row_ids^camp_admin_row_scan_index = camp_admin_selected_row_id } }
-			}
-			set_temp_variable = { camp_admin_row_slice_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
-			clamp_temp_variable = { var = camp_admin_row_slice_k min = 0 max = camp_admin_row_remaining_to_consume_k }
-			set_temp_variable = { camp_admin_row_after_k = camp_admin_row_amounts_k^camp_admin_row_scan_index }
-			subtract_from_temp_variable = { camp_admin_row_after_k = camp_admin_row_slice_k }
-			set_variable = { camp_admin_row_amounts_k^camp_admin_row_scan_index = camp_admin_row_after_k }
-			if = {
-				limit = { check_variable = { camp_admin_row_consume_kind = constant:camp_admin_value.one } }
-				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_deaths_k^camp_admin_row_scan_index }
-				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
-				set_variable = { camp_admin_row_deaths_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
-				if = {
-					limit = { check_variable = { camp_admin_arrival_phase_contract = constant:camp_admin_value.one } }
-					set_temp_variable = { camp_admin_row_arrival_after_k = camp_admin_row_arrival_deaths_k^camp_admin_row_scan_index }
-					add_to_temp_variable = { camp_admin_row_arrival_after_k = camp_admin_row_slice_k }
-					set_variable = { camp_admin_row_arrival_deaths_k^camp_admin_row_scan_index = camp_admin_row_arrival_after_k }
-				}
-			}
-			else_if = {
-				limit = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_RELEASE } }
-				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_released_k^camp_admin_row_scan_index }
-				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
-				set_variable = { camp_admin_row_released_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
-			}
-			else_if = {
-				limit = { check_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE } }
-				set_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_removed_k^camp_admin_row_scan_index }
-				add_to_temp_variable = { camp_admin_row_record_after_k = camp_admin_row_slice_k }
-				set_variable = { camp_admin_row_removed_k^camp_admin_row_scan_index = camp_admin_row_record_after_k }
-			}
-			if = { limit = { check_variable = { camp_admin_row_after_k = 0 } } set_variable = { camp_admin_row_statuses^camp_admin_row_scan_index = 0 } }
-			subtract_from_temp_variable = { camp_admin_row_remaining_to_consume_k = camp_admin_row_slice_k }
-			add_to_temp_variable = { camp_admin_row_consumed_k = camp_admin_row_slice_k }
-		}
-	}
-}
-
-# Provenance library exact row-consumer dependency.
-camp_admin_consume_outside_rows = {
-	set_temp_variable = { camp_admin_outside_actual_k = constant:camp_admin_value.zero }
-	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
-	if = {
-		limit = {
-			has_state_flag = camp_origin_single_origin_reconciliation_pending
-			NOT = { has_state_flag = camp_origin_ambiguous }
-			check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.custody }
-			camp_origin_host_rows_valid = yes
-		}
-		set_temp_variable = { camp_admin_selected_row_id = camp_origin_pending_single_row_id }
-		set_temp_variable = { camp_admin_row_consume_kind = @CAMP_ADMIN_ROW_OUTSIDE }
-		set_temp_variable = { camp_admin_row_consume_amount_k = camp_origin_pending_single_removal_k }
-		camp_admin_consume_rows = yes
-		set_temp_variable = { camp_admin_outside_actual_k = camp_admin_row_consumed_k }
-		subtract_from_variable = { camp_admin_detainees_k = camp_admin_outside_actual_k }
-		add_to_variable = { camp_admin_external_attrition_k = camp_admin_outside_actual_k }
-		set_temp_variable = { camp_origin_single_reconcile_contract = constant:camp_admin_value.one }
-		set_temp_variable = { camp_origin_single_reconcile_sequence = camp_origin_observation_sequence }
-		set_temp_variable = { camp_origin_single_reconcile_amount_k = camp_admin_outside_actual_k }
-		camp_origin_acknowledge_single_origin_reconciliation = yes
-	}
-	set_temp_variable = { camp_admin_selected_row_id = constant:camp_admin_value.zero }
-	set_temp_variable = { camp_admin_row_consume_amount_k = constant:camp_admin_value.zero }
 }

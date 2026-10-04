@@ -14109,6 +14109,24 @@ soviet_collapse_uwr_blacksite_category = {
 		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
 		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
 		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		available = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = uwr_dismantle_captured_blacksite_custody_req_tt
+					hidden_trigger = {
+						is_soviet_collapse_uwr_aftermath_target_state = yes
+						OR = {
+							NOT = { soviet_collapse_uwr_aftermath_requires_camp_receipt = yes }
+							NOT = { has_state_flag = camp_admin_initialized }
+							AND = {
+								camp_admin_site_rows_reconciled = yes
+								NOT = { has_state_flag = camp_admin_closed }
+							}
+						}
+					}
+				}
+			}
+		}
 		complete_effect = {
 			custom_effect_tooltip = uwr_dismantle_captured_blacksite_tt
 			hidden_effect = {
@@ -14130,6 +14148,7 @@ soviet_collapse_uwr_blacksite_category = {
 		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
 		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
 		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		available = { FROM = { custom_trigger_tooltip = { tooltip = uwr_aftermath_current_control_req_tt hidden_trigger = { is_soviet_collapse_uwr_aftermath_target_state = yes } } } }
 		complete_effect = {
 			custom_effect_tooltip = uwr_secure_captured_blacksite_tt
 			hidden_effect = {
@@ -14151,6 +14170,7 @@ soviet_collapse_uwr_blacksite_category = {
 		target_root_trigger = { has_soviet_collapse_uwr_aftermath_site = yes }
 		target_trigger = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
 		visible = { FROM = { is_soviet_collapse_uwr_aftermath_target_state = yes } }
+		available = { FROM = { custom_trigger_tooltip = { tooltip = uwr_aftermath_current_control_req_tt hidden_trigger = { is_soviet_collapse_uwr_aftermath_target_state = yes } } } }
 		complete_effect = {
 			custom_effect_tooltip = uwr_exploit_captured_blacksite_tt
 			hidden_effect = {

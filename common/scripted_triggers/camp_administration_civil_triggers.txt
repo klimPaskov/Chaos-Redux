@@ -102,7 +102,18 @@ camp_administration_civil_action_two_visible = {
 	NOT = { has_country_flag = camp_admin_civil_review_active }
 	NOT = { has_country_flag = camp_admin_civil_claims_active }
 	OR = {
-		AND = { NOT = { has_country_flag = camp_admin_civil_review_complete } OR = { has_country_flag = camp_admin_civil_policy_authorized has_active_camp_network = yes check_variable = { camp_admin_civil_admitted_k > 0 } } }
+		AND = {
+			NOT = { has_country_flag = camp_admin_civil_review_complete }
+			OR = {
+				NOT = { original_tag = USA }
+				AND = {
+					original_tag = USA
+					date > 1942.2.18
+					OR = { has_country_flag = camp_rework_usa_authority_active has_country_flag = camp_admin_civil_policy_authorized check_variable = { camp_admin_civil_admitted_k > 0 } }
+				}
+			}
+			OR = { has_country_flag = camp_admin_civil_policy_authorized has_active_camp_network = yes check_variable = { camp_admin_civil_admitted_k > 0 } }
+		}
 		AND = { original_tag = USA date > 1948.7.1 has_government = democratic has_country_flag = camp_rework_usa_authority_terminated OR = { check_variable = { camp_admin_civil_admitted_k > 0 } check_variable = { redress_pressure > 0 } } NOT = { has_country_flag = camp_admin_civil_claims_complete } }
 		AND = { original_tag = ITA date > 1935.12.31 NOT = { has_country_flag = camp_admin_civil_review_complete } }
 	}
@@ -111,9 +122,25 @@ camp_administration_civil_action_two_visible = {
 camp_administration_civil_action_one_available = {
 	camp_administration_civil_action_one_visible = yes
 	NOT = { has_country_flag = camp_admin_institution_slot_active }
+	OR = {
+		NOT = { AND = { OR = { original_tag = FRA tag = VIC } has_government = democratic NOT = { camp_administration_civil_french_refugee_authority = yes } } }
+		camp_admin_country_sites_ready_for_reform = yes
+	}
 }
 
 camp_administration_civil_action_two_available = {
 	camp_administration_civil_action_two_visible = yes
 	NOT = { has_country_flag = camp_admin_institution_slot_active }
+	OR = {
+		AND = { original_tag = USA has_country_flag = camp_rework_usa_authority_terminated date > 1948.7.1 }
+		camp_admin_country_sites_ready_for_reform = yes
+	}
+}
+# COUNTRY. Survivor-derived review work must preserve the complete union before
+# charging another installment or publishing its final policy settlement.
+camp_administration_civil_review_ready = {
+	camp_administration_civil_country_supported = yes
+	has_country_flag = camp_admin_civil_review_active
+	NOT = { has_country_flag = camp_admin_civil_review_complete }
+	camp_admin_country_sites_ready_for_reform = yes
 }

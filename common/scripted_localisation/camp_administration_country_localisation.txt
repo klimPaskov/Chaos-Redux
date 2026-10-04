@@ -1,4 +1,10 @@
-# Two context-sensitive national actions and a compact institutional status summary.
+# Country-scoped national action labels, institutional status and one-time
+# Soviet prisoner-release policy consequence text.
+defined_text = {
+	name = GetSovServiceReleaseConsequence
+	text = { trigger = { has_country_flag = camp_rework_soviet_service_release_policy_enacted } localization_key = sov_release_prisoners_repeat_consequence }
+	text = { localization_key = sov_release_prisoners_first_consequence }
+}
 defined_text = {
 	name = GetCampAdminCountryAction1Name
 	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_admin_civil_action_one_name }
@@ -22,10 +28,33 @@ defined_text = {
 	text = { localization_key = camp_admin_country_authorize_tt }
 }
 defined_text = {
+	name = GetCampAdminCountryAction1BlockedReason
+	text = { trigger = { camp_administration_civil_country_supported = yes has_country_flag = camp_admin_institution_slot_active } localization_key = camp_admin_country_action_1_blocked_slot }
+	text = { trigger = { camp_administration_civil_country_supported = yes OR = { original_tag = FRA tag = VIC } has_government = democratic NOT = { camp_administration_civil_french_refugee_authority = yes } NOT = { camp_admin_country_sites_ready_for_reform = yes } } localization_key = camp_admin_country_action_1_blocked_rows }
+	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_admin_civil_action_1_blocked_general }
+	text = { trigger = { check_variable = { camp_admin_budget < constant:camp_admin_budget.development } } localization_key = camp_admin_country_action_1_blocked_budget }
+	text = { trigger = { NOT = { check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody } } } localization_key = camp_admin_country_action_1_blocked_mandate }
+	text = { trigger = { NOT = { check_variable = { var = political_power value = constant:camp_admin_country.monthly_pp compare = greater_than_or_equals } } } localization_key = camp_admin_country_action_1_blocked_pp }
+	text = { trigger = { NOT = { check_variable = { var = num_equipment@support_equipment value = constant:camp_admin_country.monthly_support compare = greater_than_or_equals } } } localization_key = camp_admin_country_action_1_blocked_support }
+	text = { localization_key = camp_admin_country_action_1_blocked_general }
+}
+defined_text = {
 	name = GetCampAdminCountryAction2Tooltip
 	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_administration_civil_action_two_tt }
+	text = { trigger = { camp_admin_generic_reform_visible = yes } localization_key = camp_admin_generic_reform_tt }
 	text = { trigger = { OR = { has_country_flag = camp_admin_country_programs_authorized has_country_flag = camp_admin_country_oversight_active } } localization_key = camp_admin_country_halt_tt }
 	text = { localization_key = camp_admin_country_reform_tt }
+}
+defined_text = {
+	name = GetCampAdminCountryAction2BlockedReason
+	text = { trigger = { camp_administration_civil_country_supported = yes has_country_flag = camp_admin_institution_slot_active } localization_key = camp_admin_country_action_2_blocked_slot }
+	text = { trigger = { camp_administration_civil_country_supported = yes NOT = { AND = { original_tag = USA has_country_flag = camp_rework_usa_authority_terminated date > 1948.7.1 } } NOT = { camp_admin_country_sites_ready_for_reform = yes } } localization_key = camp_admin_country_action_2_blocked_rows }
+	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_admin_civil_action_2_blocked_general }
+	text = { trigger = { has_country_flag = camp_rework_site_closure_active } localization_key = camp_admin_country_action_2_blocked_closure }
+	text = { trigger = { has_country_flag = camp_rework_gui_dismantlement_active } localization_key = camp_admin_country_action_2_blocked_dismantlement }
+	text = { trigger = { NOT = { camp_admin_country_sites_ready_for_reform = yes } } localization_key = camp_admin_country_action_2_blocked_rows }
+	text = { trigger = { camp_admin_generic_reform_visible = yes has_variable = camp_admin_generic_reform_pp check_variable = { var = political_power value = camp_admin_generic_reform_pp compare = less_than } } localization_key = camp_admin_country_action_2_blocked_pp }
+	text = { localization_key = camp_admin_country_action_2_blocked_site }
 }
 defined_text = {
 	name = GetCampAdminInstitutionProgram
@@ -52,6 +81,22 @@ defined_text = {
 	text = { localization_key = camp_admin_institution_inactive }
 }
 defined_text = {
+	name = GetCampAdminInstitutionPlace
+	text = { trigger = { check_variable = { camp_admin_country_program > constant:camp_admin_value.zero } has_variable = camp_admin_institution_state_id check_variable = { camp_admin_institution_state_id > constant:camp_admin_value.zero } } localization_key = camp_admin_institution_active_place }
+	text = { localization_key = camp_admin_blank }
+}
+defined_text = {
+	name = GetCampAdminInstitutionStatus
+	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_admin_civil_institution_status }
+	text = { trigger = { has_country_flag = camp_admin_country_archive_work_active } localization_key = camp_admin_institution_archives_status }
+	text = { trigger = { has_country_flag = camp_admin_country_reformed } localization_key = camp_admin_institution_reformed_status }
+	text = { trigger = { has_country_flag = camp_admin_country_oversight_active } localization_key = camp_admin_institution_review_status }
+	text = { trigger = { check_variable = { camp_admin_country_program > 0 } has_country_flag = camp_admin_country_institution_paused } localization_key = camp_admin_institution_paused_status }
+	text = { trigger = { check_variable = { camp_admin_country_program > 0 } } localization_key = camp_admin_institution_active_status }
+	text = { trigger = { has_country_flag = camp_admin_country_programs_authorized } localization_key = camp_admin_institution_waiting_status }
+	text = { localization_key = camp_admin_institution_inactive_status }
+}
+defined_text = {
 	name = GetCampAdminCivilInstitutionSummary
 	text = { trigger = { has_country_flag = camp_admin_civil_claims_active } localization_key = camp_admin_civil_institution_claims }
 	text = { trigger = { has_country_flag = camp_admin_civil_review_active } localization_key = camp_admin_civil_institution_review }
@@ -60,4 +105,67 @@ defined_text = {
 	text = { trigger = { has_country_flag = camp_admin_civil_policy_funded } localization_key = camp_admin_civil_institution_funded }
 	text = { trigger = { has_country_flag = camp_admin_civil_policy_authorized } localization_key = camp_admin_civil_institution_authorized }
 	text = { localization_key = camp_admin_civil_institution_inactive }
+}
+
+# The native status row uses short states; broader summaries retain the full prose.
+defined_text = {
+	name = GetCampAdminCivilInstitutionStatus
+	text = { trigger = { has_country_flag = camp_admin_civil_claims_active } localization_key = camp_admin_civil_status_claims }
+	text = { trigger = { has_country_flag = camp_admin_civil_review_active } localization_key = camp_admin_civil_status_review }
+	text = { trigger = { has_country_flag = camp_admin_civil_claims_complete } localization_key = camp_admin_civil_status_claims_complete }
+	text = { trigger = { has_country_flag = camp_admin_reforming } localization_key = camp_admin_civil_status_conversion }
+	text = { trigger = { has_country_flag = camp_admin_civil_policy_funded } localization_key = camp_admin_civil_status_funded }
+	text = { trigger = { has_country_flag = camp_admin_civil_policy_authorized } localization_key = camp_admin_civil_status_authorized }
+	text = { localization_key = camp_admin_civil_status_inactive }
+}
+
+# The institution panel selects the matching paid helper before showing its quote.
+defined_text = {
+	name = GetCampAdminInstitutionTooltip
+	text = { trigger = { camp_administration_civil_country_supported = yes has_country_flag = camp_admin_civil_claims_active } localization_key = camp_admin_civil_usa_claims_text }
+	text = { trigger = { camp_administration_civil_country_supported = yes has_country_flag = camp_admin_civil_review_active } localization_key = camp_administration_civil_action_two_tt }
+	text = { trigger = { camp_administration_civil_country_supported = yes has_country_flag = camp_admin_civil_policy_authorized NOT = { has_country_flag = camp_admin_reforming } } localization_key = camp_administration_civil_action_one_tt }
+	text = { trigger = { camp_administration_civil_country_supported = yes } localization_key = camp_admin_institution_inactive_tt }
+	text = { trigger = { has_country_flag = camp_admin_country_archive_work_active } localization_key = camp_admin_archives_tt }
+	text = { trigger = { has_country_flag = camp_admin_country_oversight_active } localization_key = camp_admin_oversight_tt }
+	text = { trigger = { camp_admin_country_is_major_kit = yes camp_admin_country_program_still_valid = yes } localization_key = camp_admin_country_authorize_tt }
+	text = { localization_key = camp_admin_institution_inactive_tt }
+}
+
+# Decision custom-cost hover names the first short resource without adding another spendable type.
+defined_text = {
+	name = GetCampOccManualSourceName
+	text = {
+		trigger = {
+			set_temp_variable = { camp_occ_manual_display_source = 0 }
+			any_of_scopes = {
+				array = camp_occ_states
+				camp_occ_manual_transfer_live_source_ready = yes
+				set_temp_variable = { camp_occ_manual_display_source = THIS }
+			}
+		}
+		localization_key = "[?camp_occ_manual_display_source.GetName]"
+	}
+	text = { localization_key = camp_occ_manual_no_source }
+}
+
+defined_text = {
+	name = GetCampOccManualTransferCostStatus
+	text = {
+		trigger = { check_variable = { var = political_power value = constant:genocide_decision_cost.german_experiment_transfer compare = less_than } }
+		localization_key = camp_occ_manual_transfer_short_pp
+	}
+	text = {
+		trigger = { check_variable = { var = army_experience value = constant:genocide_decision_cost.german_experiment_transfer_army_xp compare = less_than } }
+		localization_key = camp_occ_manual_transfer_short_xp
+	}
+	text = {
+		trigger = { check_variable = { var = num_equipment@support_equipment_1 value = constant:camp_rework_equipment_cost.support_equipment compare = less_than } }
+		localization_key = camp_occ_manual_transfer_short_support
+	}
+	text = {
+		trigger = { check_variable = { var = num_equipment@train_equipment_1 value = constant:camp_rework_equipment_cost.trains compare = less_than } }
+		localization_key = camp_occ_manual_transfer_short_trains
+	}
+	text = { localization_key = camp_occ_manual_transfer_cost_ready }
 }

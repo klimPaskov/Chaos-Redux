@@ -43,13 +43,26 @@ defined_text = {
 	text = { localization_key = camp_admin_economy_waiting }
 }
 defined_text = {
+	name = GetCampAdminEconomyStatus
+	text = { trigger = { has_country_flag = camp_admin_economy_slot_active has_country_flag = camp_admin_reforming } localization_key = camp_admin_economy_replacement_status }
+	text = { trigger = { has_country_flag = camp_admin_economy_slot_active } localization_key = camp_admin_economy_running_status }
+	text = { trigger = { has_country_flag = camp_admin_development_paused } localization_key = camp_admin_economy_paused_status }
+	text = { trigger = { check_variable = { camp_admin_budget = constant:camp_admin_budget.maintenance } } localization_key = camp_admin_economy_maintenance_status }
+	text = { localization_key = camp_admin_economy_waiting_status }
+}
+defined_text = {
+	name = GetCampAdminEconomyPlace
+	text = { trigger = { has_country_flag = camp_admin_economy_slot_active has_variable = camp_admin_economy_state_id } localization_key = camp_admin_economy_active_place }
+	text = { localization_key = camp_admin_blank }
+}
+defined_text = {
 	name = GetCampAdminEconomyProgress
 	text = { trigger = { has_country_flag = camp_admin_economy_slot_active } localization_key = camp_admin_economy_progress_value }
 	text = { localization_key = camp_admin_blank }
 }
 defined_text = {
 	name = GetCampAdminInstitutionProgress
-	text = { trigger = { has_country_flag = camp_admin_institution_slot_active } localization_key = camp_admin_institution_progress_value }
+	text = { trigger = { check_variable = { camp_admin_gui_institution_target > constant:camp_admin_value.zero } } localization_key = camp_admin_institution_progress_value }
 	text = { localization_key = camp_admin_blank }
 }
 defined_text = {
@@ -76,7 +89,15 @@ defined_text = {
 	text = { localization_key = camp_admin_selected_idle }
 }
 defined_text = {
+	name = GetCampAdminSelectedContributionValue
+	text = { trigger = { check_variable = { camp_admin_gui_site_industry > 0 } } localization_key = camp_admin_selected_industry_value }
+	text = { trigger = { check_variable = { camp_admin_gui_site_construction > 0 } } localization_key = camp_admin_selected_works_value }
+	text = { trigger = { check_variable = { camp_admin_gui_site_extraction > 0 } } localization_key = camp_admin_selected_extraction_value }
+	text = { localization_key = camp_admin_selected_idle_value }
+}
+defined_text = {
 	name = GetCampAdminSelectedConditions
+	text = { trigger = { var:camp_selected_state_id = { camp_admin_gui_host_records_uncertain = yes } } localization_key = camp_admin_conditions_records }
 	text = { trigger = { var:camp_selected_state_id = { has_state_flag = camp_admin_civilian_converted } } localization_key = camp_admin_conditions_civilian }
 	text = { trigger = { var:camp_selected_state_id = { has_state_flag = camp_admin_site_suspended } } localization_key = camp_admin_conditions_suspended }
 	text = { trigger = { check_variable = { camp_admin_gui_site_support < 1 } } localization_key = camp_admin_conditions_shortage }
@@ -104,10 +125,26 @@ defined_text = {
 	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.suspended } } localization_key = camp_admin_history_suspended }
 	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.resumed } } localization_key = camp_admin_history_resumed }
 	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.role } } localization_key = camp_admin_history_role }
+	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.killing_center_transfer } } localization_key = camp_admin_history_killing_center_transfer }
+	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.site_established } } localization_key = camp_admin_history_site_established }
+	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.unrecorded_closure } } localization_key = camp_admin_history_unrecorded_closure }
+	text = { trigger = { check_variable = { camp_admin_history_kinds^camp_admin_history_index = constant:camp_admin_history_kind.unrecorded_liberation } } localization_key = camp_admin_history_unrecorded_liberation }
 	text = { localization_key = camp_admin_history_authority }
 }
 defined_text = {
 	name = GetCampAdminHistoryPlace
 	text = { trigger = { check_variable = { camp_admin_history_states^camp_admin_history_index > 0 } } localization_key = "[?camp_admin_history_states^camp_admin_history_index.GetName]" }
 	text = { localization_key = camp_admin_history_national }
+}
+
+# Country scope. Discloses unlabelled losses that could not be assigned to one place of origin.
+defined_text = {
+	name = GetCampAdminUnknownOriginNote
+	text = {
+		trigger = {
+			check_variable = { camp_admin_gui_uncertain_locations > constant:camp_admin_value.zero }
+		}
+		localization_key = camp_admin_records_unknown_origin_note
+	}
+	text = { localization_key = camp_admin_blank }
 }

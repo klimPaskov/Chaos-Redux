@@ -253,6 +253,12 @@ genocide_country_can_liberate_discovered_camp = {
 	}
 	event_target:genocide_discovered_state = {
 		is_controlled_by = ROOT
+		NOT = { has_state_flag = camp_admin_closed }
+		NOT = { has_state_flag = camp_rework_site_dismantled }
+		OR = {
+			NOT = { has_state_flag = camp_admin_initialized }
+			camp_admin_site_rows_reconciled = yes
+		}
 		OR = {
 			concentration_camp > 0
 			extermination_camp > 0

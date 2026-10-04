@@ -15,6 +15,17 @@ camp_rework_country_is_eligible = {
 	NOT = { is_special_chaos_country = yes }
 }
 
+# Shared retention gate for the global cleanup and the bounded country timer.
+camp_rework_country_has_registry_work = {
+	OR = {
+		has_active_camp_network = yes
+		has_visible_camp_reform_work = yes
+		has_country_flag = camp_repression_ledger_open
+		camp_rework_country_has_focus_hook_watch = yes
+		camp_admin_integration_has_continuing_work = yes
+	}
+}
+
 is_valid_camp_dormant_marker_state = {
 	has_state_flag = genocide_historical_quiet_camp
 	NOT = { has_state_flag = camp_rework_site_active }
@@ -123,6 +134,339 @@ is_valid_camp_dismantlement_state = {
 		is_valid_camp_active_site_state = yes
 		has_state_flag = genocide_site_discovered
 	}
+}
+
+# Legacy per-site dismantlement can continue after administration initializes.
+# Its paid start must not proceed unless the finite custody rows can be released.
+camp_rework_site_can_start_dismantlement = {
+	OR = {
+		NOT = { has_state_flag = camp_admin_initialized }
+		AND = {
+			NOT = { has_state_flag = camp_admin_closed }
+			camp_admin_site_authority_is_valid = yes
+			camp_admin_site_rows_reconciled = yes
+		}
+	}
+}
+
+# Completion may follow a pre-administration start or an enemy liberation; in
+# either case an initialized site's custody rows must remain reconciled.
+camp_rework_site_can_complete_dismantlement = {
+	OR = {
+		NOT = { has_state_flag = camp_admin_initialized }
+		AND = {
+			camp_admin_site_rows_reconciled = yes
+			OR = {
+				AND = {
+					check_variable = { camp_rework_enemy_liberation > constant:camp_admin_value.zero }
+					NOT = { has_state_flag = camp_admin_closed }
+					is_controlled_by = ROOT
+				}
+				AND = {
+					NOT = { check_variable = { camp_rework_enemy_liberation > constant:camp_admin_value.zero } }
+					has_state_flag = camp_admin_closed
+					check_variable = { camp_admin_detainees_k = constant:camp_admin_value.zero }
+				}
+				AND = {
+					NOT = { check_variable = { camp_rework_enemy_liberation > constant:camp_admin_value.zero } }
+					NOT = { has_state_flag = camp_admin_closed }
+					camp_admin_site_authority_is_valid = yes
+				}
+			}
+		}
+	}
+}
+
+# Country scope. The Locations control and its command use the same fresh
+# selected-site quote, authority and finite-row contract before payment.
+camp_rework_can_dismantle_selected_site = {
+	has_variable = camp_selected_state_id
+	camp_rework_country_can_reform = yes
+	NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+	set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+	camp_rework_can_pay_site_dismantle = yes
+	var:camp_selected_state_id = {
+		is_valid_camp_dismantlement_state = yes
+		camp_rework_legacy_closure_site_can_begin = yes
+	}
+}
+
+camp_rework_selected_dismantle_has_site = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = { is_valid_camp_dismantlement_state = yes }
+}
+camp_rework_selected_dismantle_route_ready = {
+	camp_rework_country_can_reform = yes
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+}
+camp_rework_selected_dismantle_in_progress = {
+	OR = {
+		has_country_flag = camp_rework_gui_dismantlement_active
+		var:camp_selected_state_id = { has_state_flag = camp_rework_site_reforming }
+		var:camp_selected_state_id = { has_state_flag = camp_rework_site_dismantlement_in_progress }
+	}
+}
+camp_rework_selected_dismantle_custody_ready = {
+	var:camp_selected_state_id = { camp_rework_legacy_closure_site_can_begin = yes }
+}
+camp_rework_selected_dismantle_resources_ready = {
+	set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+	camp_rework_can_pay_site_dismantle = yes
+}
+camp_rework_selected_dismantle_locked_site = {
+	NOT = { camp_rework_selected_dismantle_has_site = yes }
+}
+camp_rework_selected_dismantle_locked_route = {
+	camp_rework_selected_dismantle_has_site = yes
+	NOT = { camp_rework_selected_dismantle_route_ready = yes }
+}
+camp_rework_selected_dismantle_locked_progress = {
+	camp_rework_selected_dismantle_has_site = yes
+	camp_rework_selected_dismantle_route_ready = yes
+	camp_rework_selected_dismantle_in_progress = yes
+}
+camp_rework_selected_dismantle_locked_custody = {
+	camp_rework_selected_dismantle_has_site = yes
+	camp_rework_selected_dismantle_route_ready = yes
+	NOT = { camp_rework_selected_dismantle_in_progress = yes }
+	NOT = { camp_rework_selected_dismantle_custody_ready = yes }
+}
+camp_rework_selected_dismantle_locked_resources = {
+	camp_rework_selected_dismantle_has_site = yes
+	camp_rework_selected_dismantle_route_ready = yes
+	NOT = { camp_rework_selected_dismantle_in_progress = yes }
+	camp_rework_selected_dismantle_custody_ready = yes
+	NOT = { camp_rework_selected_dismantle_resources_ready = yes }
+}
+
+# A colonial closure pays again only to resume physical dismantlement at a
+# site whose finite custody release was accepted on the first attempt.
+camp_rework_legacy_closure_site_can_begin = {
+	camp_rework_state_is_actor_or_subject_controlled = yes
+	NOT = { has_state_flag = camp_rework_site_reforming }
+	NOT = { has_state_flag = camp_rework_site_dismantlement_in_progress }
+	OR = {
+		camp_rework_site_can_start_dismantlement = yes
+		AND = {
+			has_state_flag = camp_rework_legacy_closure_custody_accepted
+			has_state_flag = camp_admin_initialized
+			has_state_flag = camp_admin_closed
+			camp_admin_site_authority_is_valid = yes
+			camp_admin_site_rows_reconciled = yes
+			check_variable = { camp_admin_detainees_k = constant:camp_admin_value.zero }
+		}
+	}
+}
+
+# State scope. Only an operating Gulag with the Soviet actor's responsibility
+# belongs to this national survivor-release order.
+camp_rework_soviet_service_release_target = {
+	camp_admin_site_is_operational = yes
+	gulag_labor_camp_network > constant:camp_admin_value.zero
+	has_variable = camp_admin_responsible_country
+	var:camp_admin_responsible_country = { tag = ROOT }
+}
+# Country scope. Check every affected site before releasing from any of them.
+camp_rework_soviet_service_release_ready = {
+	original_tag = SOV
+	has_war = yes
+	check_variable = { forced_labor_quota > constant:camp_admin_value.zero }
+	any_of_scopes = {
+		array = camp_active_site_states
+		camp_rework_soviet_service_release_target = yes
+		camp_admin_site_rows_reconciled = yes
+		check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+	}
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_soviet_service_release_target = yes }
+			camp_admin_site_rows_reconciled = yes
+		}
+	}
+}
+
+# State scope. A USA release order may only target an initialized, operating
+# site whose current authority and living custody rows still reconcile.
+camp_rework_usa_release_site_ready = {
+	is_valid_camp_active_site_state = yes
+	camp_admin_site_is_operational = yes
+	camp_admin_site_authority_is_valid = yes
+	var:camp_admin_responsible_country = { tag = ROOT }
+	var:genocide_responsible_country = { tag = ROOT }
+	is_controlled_by = ROOT
+	camp_admin_site_rows_reconciled = yes
+	check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+}
+
+# Country scope. This legacy choice closes at the civil-administration handoff.
+camp_rework_usa_release_country_eligible = {
+	original_tag = USA
+	NOT = { has_country_flag = camp_admin_civil_initialized }
+	has_country_flag = camp_rework_usa_authority_active
+	has_active_camp_network = yes
+	OR = {
+		has_country_flag = camp_rework_inspection_active
+		has_country_flag = usa_focus_civil_liberties_restoration
+	}
+	NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
+	NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+}
+
+# Country scope. The same requirements and quote govern native and Ledger use;
+# AI proves a target in the existing active-site registry.
+camp_rework_usa_release_order_ready = {
+	camp_rework_usa_release_country_eligible = yes
+	NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
+	OR = {
+		AND = {
+			is_ai = no
+			has_variable = camp_selected_state_id
+			var:camp_selected_state_id = { camp_rework_usa_release_site_ready = yes }
+		}
+		AND = {
+			is_ai = yes
+			any_of_scopes = {
+				array = camp_active_site_states
+				camp_rework_usa_release_site_ready = yes
+			}
+		}
+	}
+}
+
+# Country scope. The execution-time recheck runs after the political payment.
+camp_rework_usa_release_selected_ready = {
+	camp_rework_usa_release_country_eligible = yes
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = { camp_rework_usa_release_site_ready = yes }
+}
+
+# SOV country scope. A funded national closure needs at least one actual target,
+# and every target must still be releasable under the current controller.
+camp_rework_soviet_dismantlement_target = {
+	camp_rework_state_can_accept_responsibility_from_root = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { tag = ROOT }
+	OR = {
+		has_state_flag = genocide_soviet_mass_repression_site
+		has_state_flag = genocide_soviet_famine_pressure_site
+		gulag_labor_camp_network > constant:camp_admin_value.zero
+	}
+}
+camp_rework_soviet_dismantlement_sites_ready = {
+	any_of_scopes = { array = camp_active_site_states camp_rework_soviet_dismantlement_target = yes }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_soviet_dismantlement_target = yes }
+			camp_rework_state_is_actor_responsible_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+
+# Japan's paid institutional shutdown uses the same finite-site boundary for
+# its start, mission outcome and completion rewards.
+camp_rework_japan_shutdown_target = {
+	camp_rework_state_can_accept_responsibility_from_root = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { tag = ROOT }
+	OR = {
+		has_state_flag = genocide_japanese_biowarfare_atrocity_site
+		has_state_flag = camp_rework_experiment_site
+	}
+}
+camp_rework_japan_dismantlement_sites_ready = {
+	any_of_scopes = { array = camp_active_site_states camp_rework_japan_shutdown_target = yes }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_japan_shutdown_target = yes }
+			camp_rework_state_is_actor_responsible_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+
+# The legacy colonial orders remain payable until the civil cutover. Bound
+# every start to its actual registered target rows before any country cost.
+camp_rework_colonial_responsible_active_site = {
+	is_valid_camp_active_site_state = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { tag = ROOT }
+}
+camp_rework_colonial_dismantlement_target = {
+	camp_rework_colonial_responsible_active_site = yes
+	camp_rework_state_is_actor_or_subject_controlled = yes
+}
+camp_rework_colonial_dismantlement_sites_ready = {
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_colonial_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_legacy_closure_site_can_begin = yes
+		}
+	}
+}
+camp_rework_colonial_dismantlement_sites_completable = {
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_colonial_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+camp_rework_french_inherited_responsible_active_site = {
+	is_valid_camp_active_site_state = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
+	OR = {
+		has_state_flag = camp_rework_france_camp_legacy
+		state = 21
+		state = 31
+		state = 32
+		is_core_of = ALG
+		is_core_of = MOR
+		is_core_of = TUN
+		AND = {
+			NOT = { is_core_of = ROOT }
+			NOT = { OR = { is_core_of = ALG is_core_of = MOR is_core_of = TUN } }
+			OR = { has_resistance = yes has_state_flag = camp_rework_france_colonial_labor_pool }
+		}
+	}
+}
+camp_rework_french_inherited_dismantlement_target = {
+	camp_rework_french_inherited_responsible_active_site = yes
+	camp_rework_state_is_actor_or_subject_controlled = yes
+}
+camp_rework_french_inherited_dismantlement_sites_ready = {
+	NOT = { has_country_flag = camp_rework_legacy_closure_active }
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_legacy_closure_site_can_begin = yes
+		}
+	}
+}
+camp_rework_french_inherited_dismantlement_sites_completable = {
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_responsible_active_site = yes }
+			camp_rework_state_is_actor_or_subject_controlled = yes
+			camp_rework_site_can_complete_dismantlement = yes
+		}
+	}
+}
+camp_rework_french_legacy_closure_ready = {
+	camp_rework_french_inherited_dismantlement_sites_ready = yes
 }
 
 is_valid_camp_enemy_proximity_state = {
@@ -369,6 +713,7 @@ camp_rework_germany_mengele_is_player_relevant = {
 has_camp_category_visible_action = {
 	camp_rework_country_is_eligible = yes
 	OR = {
+		camp_admin_integration_has_site_records = yes
 		has_country_flag = camp_admin_initialized
 		check_variable = { camp_evidence_states^num > 0 }
 		check_variable = { camp_admin_total_deaths_k > 0 }
@@ -668,6 +1013,13 @@ camp_rework_country_can_activate_generic = {
 			camp_rework_country_has_generic_activation_pool = yes
 		}
 	}
+}
+
+# Country. The direct generic order and Ledger entry accept exact quoted stock.
+camp_rework_generic_activation_resources_ready = {
+	NOT = { has_manpower < constant:camp_rework_cost.activation_manpower }
+	NOT = { command_power < constant:camp_rework_cost.activation_command }
+	NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
 }
 
 camp_rework_country_can_expand_generic_labor = {
@@ -2079,6 +2431,42 @@ camp_rework_soviet_paranoia_critical = {
 	}
 }
 
+# SOV country scope. Funded famine relief needs every quoted equipment type;
+# exactly the quoted stock is enough. Shared by the decision, dispatcher and events.
+camp_rework_soviet_relief_resources_ready = {
+	NOT = { has_equipment = { motorized_equipment_1 < constant:camp_rework_equipment_cost.motorized_equipment } }
+	NOT = { has_equipment = { train_equipment_1 < constant:camp_rework_equipment_cost.trains } }
+	NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+}
+
+# SOV country scope. Final relief-order preflight, shared by all funded callers.
+# Event choices have no additional PP charge, so political power is caller-owned.
+camp_rework_soviet_relief_mobilization_pending = {
+	original_tag = SOV
+	check_variable = { famine_pressure > 0 }
+	NOT = { has_country_flag = sov_famine_relief_active }
+	NOT = { has_active_mission = sov_emergency_famine_relief_mission }
+}
+
+camp_rework_soviet_relief_order_ready = {
+	camp_rework_soviet_relief_mobilization_pending = yes
+	camp_rework_soviet_relief_resources_ready = yes
+}
+
+camp_rework_soviet_relief_underway = {
+	original_tag = SOV
+	OR = {
+		has_country_flag = sov_famine_relief_active
+		has_active_mission = sov_emergency_famine_relief_mission
+	}
+}
+
+camp_rework_soviet_famine_eased = {
+	original_tag = SOV
+	NOT = { check_variable = { famine_pressure > 0 } }
+	NOT = { camp_rework_soviet_relief_underway = yes }
+}
+
 camp_rework_soviet_famine_crisis_active = {
 	original_tag = SOV
 	check_variable = {
@@ -2204,11 +2592,42 @@ camp_rework_italy_road_project_requirements_met = {
 	}
 }
 
+# State scope. The Italy decision, Ledger and AI selector use one registered-site rule.
+camp_rework_italy_security_battalions_site_ready = {
+	is_valid_camp_active_site_state = yes
+	is_italy_libya_repression_pool_state = yes
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { tag = ROOT }
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+}
+
+# Country scope. The paid decision and Ledger order accept stock exactly equal to the debit.
+camp_rework_italy_security_battalions_resources_ready = {
+	NOT = { has_manpower < constant:camp_rework_cost.guard_manpower }
+	NOT = { has_equipment = { infantry_equipment < constant:camp_rework_equipment_cost.infantry_equipment } }
+	NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+}
+
+# State scope. The timed local benefit never follows a captor or Italian subject.
+camp_rework_italy_security_sweep_state_active = {
+	has_state_flag = ita_security_sweep_active
+	is_core_of = LBA
+	has_variable = genocide_responsible_country
+	var:genocide_responsible_country = { exists = yes }
+	is_controlled_by = var:genocide_responsible_country
+	NOT = { is_core_of = var:genocide_responsible_country }
+}
+
 camp_rework_italy_security_sweep_requirements_met = {
 	check_variable = { camp_supply_burden < constant:camp_rework_threshold.band_high }
 	has_variable = ita_security_sweep_state_id
 	var:ita_security_sweep_state_id = {
 		camp_rework_state_is_actor_responsible_controlled = yes
+		is_controlled_by = ROOT
+		is_italy_libya_repression_pool_state = yes
+		camp_rework_italy_security_sweep_state_active = yes
+		has_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country }
 		is_valid_camp_active_site_state = yes
 		NOT = { is_core_of = ROOT }
 		camp_rework_state_has_supplied_actor_garrison = yes

@@ -179,98 +179,25 @@ germany_mengele_calculate_coup_pressure = {
 }
 
 germany_mengele_register_experiment_deaths = {
-	set_temp_variable = { mengele_experiment_deaths = constant:germany_mengele_deaths.base }
-	if = {
-		limit = { has_variable = mengele_autonomy }
-		set_temp_variable = { mengele_autonomy_death_add = mengele_autonomy }
-		multiply_temp_variable = { mengele_autonomy_death_add = mengele_autonomy }
-		multiply_temp_variable = { mengele_autonomy_death_add = constant:germany_mengele_deaths.autonomy_square_factor }
-		add_to_temp_variable = { mengele_experiment_deaths = mengele_autonomy_death_add }
-	}
-	germany_mengele_count_biowarfare_facilities = yes
-	set_temp_variable = { mengele_facility_death_add = mengele_biowarfare_facility_count }
-	multiply_temp_variable = { mengele_facility_death_add = constant:germany_mengele_deaths.facility_factor }
-	add_to_temp_variable = { mengele_experiment_deaths = mengele_facility_death_add }
-	if = {
-		limit = { has_variable = mengele_permission_level }
-		set_temp_variable = { mengele_permission_death_add = mengele_permission_level }
-		multiply_temp_variable = { mengele_permission_death_add = constant:germany_mengele_permission.experiment_death_factor }
-		add_to_temp_variable = { mengele_experiment_deaths = mengele_permission_death_add }
-		set_temp_variable = { mengele_permission_hidden_atrocity = mengele_permission_level }
-		multiply_temp_variable = { mengele_permission_hidden_atrocity = constant:germany_mengele_permission.experiment_hidden_atrocity_factor }
-		add_to_variable = { hidden_atrocity_score = mengele_permission_hidden_atrocity }
-	}
-	if = {
-		limit = { 88 = { has_state_flag = genocide_auschwitz_experiment_site } }
-		add_to_temp_variable = { mengele_experiment_deaths = constant:germany_mengele_deaths.auschwitz_site_bonus }
-	}
-	clamp_temp_variable = {
-		var = mengele_experiment_deaths
-		min = 0
-		max = constant:germany_mengele_deaths.max_report_deaths
-	}
-	round_temp_variable = mengele_experiment_deaths
-	88 = {
-		if = {
-			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
-			if = {
-				limit = { NOT = { has_variable = genocide_responsible_country } }
-				set_variable = { genocide_responsible_country = ROOT }
-			}
-			if = {
-				limit = { NOT = { has_state_flag = genocide_site_has_responsible_country } }
-				set_state_flag = genocide_site_has_responsible_country
-			}
-			set_temp_variable = { camp_exact_deaths = mengele_experiment_deaths }
-			set_temp_variable = { camp_exact_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-			camp_rework_register_exact_state_deaths = yes
-		}
-	}
+	# COUNTRY report compatibility entry point. Continuing institutional deaths
+	# belong to camp_admin_country_apply_institutional_site_mortality in the
+	# guarded monthly state pass. Report delivery never submits a second receipt.
+	set_temp_variable = { mengele_experiment_deaths = constant:camp_admin_value.zero }
+	set_temp_variable = { mengele_autonomy_death_add = constant:camp_admin_value.zero }
+	set_temp_variable = { mengele_facility_death_add = constant:camp_admin_value.zero }
+	set_temp_variable = { mengele_permission_death_add = constant:camp_admin_value.zero }
+	set_temp_variable = { mengele_permission_hidden_atrocity = constant:camp_admin_value.zero }
 }
 
 germany_mengele_import_subjects_from_from_state_accepted = {
-	genocide_initialize_country_variables = yes
-	add_to_variable = { hidden_atrocity_score = constant:germany_mengele_foreign_subjects.hidden_atrocity }
-	add_to_variable = { genocide_tribunal_severity = constant:germany_mengele_foreign_subjects.hidden_atrocity }
-	add_political_power = constant:germany_mengele_foreign_subjects.germany_political_power
-	germany_mengele_raise_permission_to_limited = yes
-	set_temp_variable = { mengele_autonomy_delta = germany_mengele_foreign_subjects_autonomy }
-	germany_mengele_add_autonomy = yes
-	set_temp_variable = { mengele_condemnation_add = constant:germany_mengele_foreign_subjects.condemnation }
-	set_temp_variable = { mengele_condemnation_source_type = constant:condemnation_source.atrocity }
-	set_temp_variable = { mengele_condemnation_severity_type = constant:condemnation_severity.mass_death }
-	set_temp_variable = { mengele_condemnation_context_type = constant:condemnation_context.experiment_site }
-	set_temp_variable = { mengele_condemnation_visibility_type = constant:condemnation_visibility.hidden }
-	germany_mengele_add_condemnation = yes
-	FROM = {
-		if = {
-			limit = { NOT = { has_variable = genocide_responsible_country } }
-			set_variable = { genocide_responsible_country = ROOT }
-		}
-		set_state_flag = genocide_site_has_responsible_country
-		set_state_flag = genocide_foreign_experimentation_source
-		set_state_flag = genocide_atrocity_site_known_to_regime
-		set_temp_variable = { chaos_state_deaths_percent = constant:genocide_death_percent.foreign_experimentation }
-		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
-		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-		set_temp_variable = { chaos_deaths_target_country = ROOT }
-		set_temp_variable = { chaos_deaths_has_target_country = 1 }
-		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
-		controller = {
-			add_political_power = constant:germany_mengele_foreign_subjects.cooperator_political_power
-			add_war_support = constant:germany_mengele_foreign_subjects.cooperator_war_support
-			army_experience = constant:germany_mengele_foreign_subjects.cooperator_army_experience
-		}
-	}
+	# Retired foreign-purchase compatibility entry point, COUNTRY scope.
+	# No finite foreign transfer is authorized by this old payload.
+	set_temp_variable = { germany_mengele_foreign_subjects_autonomy = constant:camp_admin_value.zero }
 }
 
 germany_mengele_import_subjects_from_from_state = {
-	if = {
-		limit = { FROM = { camp_rework_state_can_accept_responsibility_from_root = yes } }
-		germany_mengele_import_subjects_from_from_state_accepted = yes
-	}
+	# Direct legacy calls consume scratch input without effects or a refund.
+	set_temp_variable = { germany_mengele_foreign_subjects_autonomy = constant:camp_admin_value.zero }
 }
 
 germany_mengele_register_coup_state_deaths = {

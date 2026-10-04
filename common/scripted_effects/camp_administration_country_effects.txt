@@ -1,5 +1,65 @@
 # GER/JAP/SOV institutions: one national slot, paid monthly work, finite single-use awards.
-# Foundation owns population, payment ceilings and annual award count. No institution creates population or research slots.
+# Experiment-linked sites also request continuing measured institutional losses
+# through the foundation; no institution creates population or research slots.
+
+# A one-time German detention-site establishment in the package's KrakÃƒÂ³w-area state.
+# The later killing-role conversion retains its separate radical mandate, quote and consequences.
+camp_admin_ger_establish_krakow_site = {
+	if = {
+		limit = {
+			camp_admin_ger_krakow_setup_eligible = yes
+			check_variable = { var = political_power value = constant:genocide_decision_cost.build_concentration compare = greater_than_or_equals }
+		}
+		set_temp_variable = { camp_admin_krakow_setup_debit = constant:genocide_decision_cost.build_concentration }
+		multiply_temp_variable = { camp_admin_krakow_setup_debit = constant:camp_admin_value.negative_one }
+		add_political_power = camp_admin_krakow_setup_debit
+		88 = {
+			set_variable = { genocide_responsible_country = ROOT }
+			set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.standard }
+			genocide_ensure_concentration_camp_level = yes
+			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.detention }
+			camp_rework_register_active_site = yes
+			set_state_flag = camp_admin_ger_krakow_site_established
+		}
+		set_country_flag = camp_admin_ger_krakow_site_established
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.site_established }
+		set_temp_variable = { camp_admin_record_state_id = 88 }
+		camp_admin_record_history = yes
+		camp_admin_refresh_interface = yes
+	}
+}
+
+# AI uses the same role availability, quote, debit and conversion as the Locations command.
+camp_admin_country_ai_ger_radical_mandate = {
+	if = {
+		limit = {
+			is_ai = yes
+			original_tag = GER
+			camp_admin_country_nazi_authority = yes
+			has_war = yes
+			date > 1941.6.21
+			check_variable = { camp_admin_mandate < constant:camp_admin_mandate.radical }
+		}
+		set_temp_variable = { camp_admin_control_requested = constant:camp_admin_mandate.radical }
+		camp_admin_set_mandate = yes
+	}
+}
+
+camp_admin_country_ai_krakow_killing_role = {
+	if = {
+		limit = {
+			is_ai = yes
+			original_tag = GER
+			has_country_flag = camp_admin_ger_krakow_site_established
+			check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical }
+			88 = { is_controlled_by = PREV camp_admin_site_is_operational = yes concentration_camp > 0 }
+		}
+		set_variable = { camp_selected_state_id = 88 }
+		set_temp_variable = { camp_admin_control_requested = constant:camp_admin_role.killing }
+		camp_admin_set_selected_role = yes
+		clear_variable = camp_selected_state_id
+	}
+}
 
 camp_admin_country_initialize = {
 	if = { limit = { camp_administration_civil_country_supported = yes } camp_administration_civil_initialize = yes camp_admin_country_refresh_civil_institution_display = yes }
@@ -30,61 +90,73 @@ camp_admin_country_initialize = {
 }
 
 # Country, literal PROGRAM constant. Select first qualifying registered site; no random target weight.
+camp_admin_country_clear_engineer_pending_receipt = {
+	clr_country_flag = camp_admin_country_engineer_release_pending
+	clear_variable = camp_admin_country_engineer_receipt_k
+	clear_variable = camp_admin_country_engineer_receipt_state_id
+	clear_variable = camp_admin_country_engineer_receipt_authority
+	clear_variable = camp_admin_country_engineer_receipt_program
+	clear_variable = camp_admin_country_engineer_receipt_progress
+	clear_variable = camp_admin_country_engineer_receipt_target
+}
+
 camp_admin_country_start_program = {
-	set_variable = { camp_admin_country_program = camp_admin_start_program_input }
-	set_variable = { camp_admin_institution_progress = 0 }
-	set_variable = { camp_admin_institution_target = constant:camp_admin_country.program_months }
-	clear_variable = camp_admin_institution_state_id
-	for_each_scope_loop = {
-		array = camp_active_site_states
-		if = {
-			limit = {
-				camp_admin_site_is_operational = yes
-				check_variable = { camp_admin_detainees_k > 0 }
-				OR = { PREV = { NOT = { original_tag = SOV } } gulag_labor_camp_network > 0 }
-				PREV = { NOT = { has_variable = camp_admin_institution_state_id } }
-			}
-			PREV = { set_variable = { camp_admin_institution_state_id = PREV } }
-		}
-	}
 	if = {
-		limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_auschwitz } }
-		set_variable = { camp_admin_institution_state_id = 88 }
-	}
-	else_if = {
-		limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_pingfang } }
-		set_variable = { camp_admin_institution_state_id = 328 }
-	}
-	else_if = {
-		limit = { original_tag = JAP }
+		limit = { NOT = { has_country_flag = camp_admin_institution_slot_active } NOT = { has_country_flag = camp_admin_country_engineer_release_pending } camp_admin_country_start_input_valid = yes }
+		set_variable = { camp_admin_country_program = camp_admin_start_program_input }
+		set_variable = { camp_admin_institution_progress = 0 }
+		set_variable = { camp_admin_institution_target = constant:camp_admin_country.program_months }
 		clear_variable = camp_admin_institution_state_id
 		for_each_scope_loop = {
 			array = camp_active_site_states
 			if = {
 				limit = {
-					camp_admin_site_is_operational = yes
-					camp_admin_country_china_geography = yes
-					check_variable = { camp_admin_detainees_k > 0 }
+					camp_admin_country_program_site_ready = yes
+					OR = { PREV = { NOT = { original_tag = SOV } } gulag_labor_camp_network > 0 }
 					PREV = { NOT = { has_variable = camp_admin_institution_state_id } }
-					OR = { PREV = { NOT = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_transport } } } camp_admin_country_census_jap_industry_host = yes }
 				}
 				PREV = { set_variable = { camp_admin_institution_state_id = PREV } }
 			}
 		}
-	}
-	if = {
-		limit = { has_variable = camp_admin_institution_state_id }
-		set_country_flag = camp_admin_institution_slot_active
 		if = {
-			limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-			var:camp_admin_institution_state_id = {
-				set_temp_variable = { camp_admin_engineer_cohort_k = camp_admin_detainees_k }
-				clamp_temp_variable = { var = camp_admin_engineer_cohort_k min = 0 max = constant:camp_admin_country.engineer_cohort_k }
-			}
-			set_variable = { camp_admin_country_engineer_cohort_k = camp_admin_engineer_cohort_k }
+			limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_auschwitz } }
+			set_variable = { camp_admin_institution_state_id = 88 }
 		}
+		else_if = {
+			limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_pingfang } }
+			set_variable = { camp_admin_institution_state_id = 328 }
+		}
+		else_if = {
+			limit = { original_tag = JAP }
+			clear_variable = camp_admin_institution_state_id
+			for_each_scope_loop = {
+				array = camp_active_site_states
+				if = {
+					limit = {
+						camp_admin_country_program_site_ready = yes
+						camp_admin_country_china_geography = yes
+						PREV = { NOT = { has_variable = camp_admin_institution_state_id } }
+						OR = { PREV = { NOT = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_transport } } } camp_admin_country_census_jap_industry_host = yes }
+					}
+					PREV = { set_variable = { camp_admin_institution_state_id = PREV } }
+				}
+			}
+		}
+		if = {
+			limit = { has_variable = camp_admin_institution_state_id var:camp_admin_institution_state_id = { camp_admin_country_program_site_ready = yes } }
+			set_country_flag = camp_admin_institution_slot_active
+			if = {
+				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
+				var:camp_admin_institution_state_id = {
+					set_temp_variable = { camp_admin_engineer_cohort_k = camp_admin_detainees_k }
+					clamp_temp_variable = { var = camp_admin_engineer_cohort_k min = 0 max = constant:camp_admin_country.engineer_cohort_k }
+				}
+				set_variable = { camp_admin_country_engineer_cohort_k = camp_admin_engineer_cohort_k }
+			}
+		}
+		else = { set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none } clear_variable = camp_admin_institution_state_id }
 	}
-	else = { set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none } }
+	set_temp_variable = { camp_admin_start_program_input = constant:camp_admin_value.zero }
 }
 
 camp_admin_country_select_program = {
@@ -108,7 +180,8 @@ camp_admin_country_award_program_ger_inspectorate = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_ger_inspectorate }
 			NOT = { has_tech_bonus = { category = industry } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_inspectorate }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -121,14 +194,6 @@ camp_admin_country_award_program_ger_inspectorate = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_ger_inspectorate
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -142,7 +207,8 @@ camp_admin_country_award_program_ger_wvha = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_ger_wvha }
 			NOT = { has_tech_bonus = { category = industry } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_wvha }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_advanced }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -155,14 +221,6 @@ camp_admin_country_award_program_ger_wvha = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_ger_wvha
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -176,7 +234,8 @@ camp_admin_country_award_program_ger_auschwitz = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_ger_auschwitz }
 			NOT = { has_tech_bonus = { category = support_tech } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_auschwitz }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -189,14 +248,6 @@ camp_admin_country_award_program_ger_auschwitz = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_ger_auschwitz
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -210,7 +261,8 @@ camp_admin_country_award_program_jap_transport = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_jap_transport }
 			NOT = { has_tech_bonus = { category = industry } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_transport }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_extended }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -223,14 +275,6 @@ camp_admin_country_award_program_jap_transport = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_jap_transport
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -244,7 +288,8 @@ camp_admin_country_award_program_jap_army_review = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_jap_army_review }
 			NOT = { has_tech_bonus = { category = support_tech } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_army_review }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -257,14 +302,6 @@ camp_admin_country_award_program_jap_army_review = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_jap_army_review
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -278,7 +315,8 @@ camp_admin_country_award_program_jap_pingfang = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_jap_pingfang }
 			NOT = { has_tech_bonus = { category = support_tech } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.jap_pingfang }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -291,14 +329,6 @@ camp_admin_country_award_program_jap_pingfang = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_jap_pingfang
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -312,7 +342,8 @@ camp_admin_country_award_program_sov_design_bureaux = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_sov_design_bureaux }
 			NOT = { has_tech_bonus = { category = engineers_tech } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_design_bureaux }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_extended }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -325,14 +356,6 @@ camp_admin_country_award_program_sov_design_bureaux = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_sov_design_bureaux
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -346,7 +369,8 @@ camp_admin_country_award_program_sov_wartime_industry = {
 		limit = {
 			NOT = { has_country_flag = camp_admin_done_sov_wartime_industry }
 			NOT = { has_tech_bonus = { category = industry } }
-			camp_admin_country_program_still_valid = yes
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_wartime_industry }
+			camp_admin_country_program_completion_ready = yes
 		}
 		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_advanced }
 		set_temp_variable = { camp_admin_research_contract = 1 }
@@ -359,14 +383,6 @@ camp_admin_country_award_program_sov_wartime_industry = {
 				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
 			}
 			set_country_flag = camp_admin_done_sov_wartime_industry
-			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
-				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
-			}
 			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
 			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 			clear_variable = camp_admin_institution_state_id
@@ -378,38 +394,55 @@ camp_admin_country_award_program_sov_wartime_industry = {
 camp_admin_country_award_program_sov_engineer_release = {
 	if = {
 		limit = {
+			check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release }
 			NOT = { has_country_flag = camp_admin_done_sov_engineer_release }
-			NOT = { has_tech_bonus = { category = engineers_tech } }
-			camp_admin_country_program_still_valid = yes
+			camp_admin_country_program_completion_ready = yes
 		}
-		set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
-		set_temp_variable = { camp_admin_research_contract = 1 }
-		set_temp_variable = { camp_admin_research_program_valid = 1 }
-		camp_admin_try_claim_research_award = yes
 		if = {
-			limit = { check_variable = { camp_admin_research_award_accepted = 1 } }
-			meta_effect = {
-				text = { add_tech_bonus = { name = camp_admin_bonus_sov_engineer_release bonus = [BONUS_VALUE] uses = 1 category = engineers_tech } }
-				BONUS_VALUE = "[?camp_admin_research_award_bonus]"
-			}
-			set_country_flag = camp_admin_done_sov_engineer_release
+			limit = { NOT = { has_country_flag = camp_admin_country_engineer_release_pending } }
+			set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
+			var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
 			if = {
-				limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } }
-				set_temp_variable = { camp_admin_release_requested_k = camp_admin_country_engineer_cohort_k }
-				var:camp_admin_institution_state_id = { camp_admin_release_detainees = yes }
+				limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } }
+				set_country_flag = camp_admin_country_engineer_release_pending
+				set_variable = { camp_admin_country_engineer_receipt_k = camp_admin_release_actual_k }
+				set_variable = { camp_admin_country_engineer_receipt_state_id = camp_admin_institution_state_id }
+				set_variable = { camp_admin_country_engineer_receipt_authority = THIS }
+				set_variable = { camp_admin_country_engineer_receipt_program = camp_admin_country_program }
+				set_variable = { camp_admin_country_engineer_receipt_progress = camp_admin_institution_progress }
+				set_variable = { camp_admin_country_engineer_receipt_target = camp_admin_institution_target }
 				set_variable = { camp_admin_country_last_engineers_released_k = camp_admin_release_actual_k }
-				clear_variable = camp_admin_country_engineer_cohort_k
-				set_country_flag = camp_admin_country_engineers_released
 			}
-			set_variable = { camp_admin_country_last_program = camp_admin_country_program }
-			set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
-			clear_variable = camp_admin_institution_state_id
-			clr_country_flag = camp_admin_country_institution_paused
+		}
+		# Revalidate the same completed programme/site/authority after the measured
+		# release. A zero-held site can use only its own matching positive receipt.
+		if = {
+			limit = { camp_admin_country_engineer_receipt_identity_valid = yes camp_admin_country_program_completion_ready = yes }
+			set_temp_variable = { camp_admin_research_requested_bonus = constant:camp_admin_country.bonus_standard }
+			set_temp_variable = { camp_admin_research_contract = constant:camp_admin_value.one }
+			set_temp_variable = { camp_admin_research_program_valid = constant:camp_admin_value.one }
+			camp_admin_try_claim_research_award = yes
+			if = {
+				limit = { check_variable = { camp_admin_research_award_accepted = constant:camp_admin_value.one } }
+				meta_effect = {
+					text = { add_tech_bonus = { name = camp_admin_bonus_sov_engineer_release bonus = [BONUS_VALUE] uses = 1 category = engineers_tech } }
+					BONUS_VALUE = "[?camp_admin_research_award_bonus]"
+				}
+				set_country_flag = camp_admin_done_sov_engineer_release
+				set_country_flag = camp_admin_country_engineers_released
+				clear_variable = camp_admin_country_engineer_cohort_k
+				camp_admin_country_clear_engineer_pending_receipt = yes
+				set_variable = { camp_admin_country_last_program = camp_admin_country_program }
+				set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
+				clear_variable = camp_admin_institution_state_id
+				clr_country_flag = camp_admin_country_institution_paused
+			}
 		}
 	}
 }
 
 camp_admin_country_finish_program = {
+	if = { limit = { has_variable = camp_admin_institution_state_id } var:camp_admin_institution_state_id = { camp_admin_refresh_capacity = yes } }
 	if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_inspectorate } } camp_admin_country_award_program_ger_inspectorate = yes }
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_wvha } } camp_admin_country_award_program_ger_wvha = yes }
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.ger_auschwitz } } camp_admin_country_award_program_ger_auschwitz = yes }
@@ -421,24 +454,72 @@ camp_admin_country_finish_program = {
 	else_if = { limit = { check_variable = { camp_admin_country_program = constant:camp_admin_country_program.sov_engineer_release } } camp_admin_country_award_program_sov_engineer_release = yes }
 }
 
+# STATE scope. This continuing site consequence is separate from the finite
+# paid research slot and never changes progress or awards.
+camp_admin_country_apply_institutional_site_mortality = {
+	if = {
+		limit = { camp_admin_country_experiment_site_active = yes }
+		set_temp_variable = { camp_admin_institution_monthly_rate = constant:camp_admin_institution_mortality.ger_restricted }
+		if = {
+			limit = { state = 88 }
+			var:camp_admin_responsible_country = {
+				if = {
+					limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.full } }
+					set_temp_variable = { camp_admin_institution_monthly_rate = constant:camp_admin_institution_mortality.ger_bypass }
+				}
+				else_if = {
+					limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.limited } }
+					set_temp_variable = { camp_admin_institution_monthly_rate = constant:camp_admin_institution_mortality.ger_full }
+				}
+				else_if = {
+					limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.restricted } }
+					set_temp_variable = { camp_admin_institution_monthly_rate = constant:camp_admin_institution_mortality.ger_limited }
+				}
+			}
+		}
+		else_if = {
+			limit = { state = 328 }
+			set_temp_variable = { camp_admin_institution_monthly_rate = constant:camp_admin_institution_mortality.jap_pingfang }
+		}
+		set_temp_variable = { camp_admin_death_requested_k = camp_admin_detainees_k }
+		multiply_temp_variable = { camp_admin_death_requested_k = camp_admin_institution_monthly_rate }
+		multiply_temp_variable = { camp_admin_death_requested_k = camp_admin_support_ratio }
+		set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.institutional }
+		set_temp_variable = { camp_admin_death_contract = constant:camp_admin_value.one }
+		set_temp_variable = { camp_admin_death_row_id = constant:camp_admin_value.zero }
+		set_temp_variable = { camp_admin_arrival_phase_contract = constant:camp_admin_value.zero }
+		camp_admin_record_deaths = yes
+	}
+}
+
 camp_admin_country_tick_institution = {
+	if = { limit = { has_variable = camp_admin_institution_state_id } var:camp_admin_institution_state_id = { camp_admin_refresh_capacity = yes } }
 	set_country_flag = camp_admin_country_institution_paused
 	if = {
-		limit = { camp_admin_country_institution_supported = yes }
+		limit = { has_country_flag = camp_admin_country_engineer_release_pending }
+		if = { limit = { camp_admin_country_program_completion_ready = yes } camp_admin_country_finish_program = yes }
+	}
+	else = {
 		if = {
-			limit = { check_variable = { var = camp_admin_institution_progress value = camp_admin_institution_target compare = greater_than_or_equals } }
-			camp_admin_country_finish_program = yes
-		}
-		else = {
+			limit = {
+				camp_admin_country_institution_supported = yes
+				OR = {
+					NOT = { check_variable = { camp_admin_research_year = global.year } }
+					check_variable = { camp_admin_research_awards_this_year < constant:camp_admin_value.research_annual_cap }
+				}
+			}
 			set_temp_variable = { camp_admin_quote_support = constant:camp_admin_country.monthly_support }
 			set_temp_variable = { camp_admin_quote_pp = constant:camp_admin_country.monthly_pp }
 			camp_admin_try_pay_project = yes
 			if = {
 				limit = { check_variable = { camp_admin_payment_accepted = 1 } }
 				clr_country_flag = camp_admin_country_institution_paused
-				if = { limit = { check_variable = { var = camp_admin_country_authority_pressure value = constant:camp_admin_country.authority_contested compare = greater_than_or_equals } } add_to_variable = { camp_admin_institution_progress = constant:camp_admin_country.contested_progress } }
-				else = { add_to_variable = { camp_admin_institution_progress = constant:camp_admin_country.monthly_progress } }
-				clamp_variable = { var = camp_admin_institution_progress min = 0 max = constant:camp_admin_country.program_months }
+				if = {
+					limit = { check_variable = { camp_admin_institution_progress < camp_admin_institution_target } }
+					if = { limit = { check_variable = { var = camp_admin_country_authority_pressure value = constant:camp_admin_country.authority_contested compare = greater_than_or_equals } } add_to_variable = { camp_admin_institution_progress = constant:camp_admin_country.contested_progress } }
+					else = { add_to_variable = { camp_admin_institution_progress = constant:camp_admin_country.monthly_progress } }
+					clamp_variable = { var = camp_admin_institution_progress min = 0 max = constant:camp_admin_country.program_months }
+				}
 				if = {
 					limit = { check_variable = { var = camp_admin_institution_progress value = camp_admin_institution_target compare = greater_than_or_equals } }
 					camp_admin_country_finish_program = yes
@@ -497,20 +578,24 @@ camp_admin_country_halt = {
 }
 
 camp_admin_country_reform = {
-	camp_admin_country_halt = yes
-	set_country_flag = camp_admin_country_reformed
-	set_country_flag = camp_admin_country_legacy_active
-	set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
-	set_variable = { camp_admin_institution_progress = 0 }
-	clear_variable = camp_admin_institution_state_id
-	set_variable = { camp_admin_country_sponsor = constant:camp_admin_country.sponsor_review }
-	clear_variable = camp_admin_country_engineer_cohort_k
-	set_country_flag = camp_rework_reform_route_open
-	camp_occ_close_country = yes
-	camp_admin_begin_reform = yes
-	if = { limit = { original_tag = GER } set_country_flag = germany_mengele_program_closed }
-	else_if = { limit = { original_tag = JAP } set_country_flag = japan_prisoner_experiments_shutdown set_country_flag = japan_biowarfare_reform_route }
-	else_if = { limit = { original_tag = SOV } set_country_flag = camp_rework_reformed_legacy }
+	if = {
+		limit = { camp_admin_country_sites_ready_for_reform = yes }
+		camp_admin_country_halt = yes
+		camp_admin_country_clear_engineer_pending_receipt = yes
+		set_country_flag = camp_admin_country_reformed
+		set_country_flag = camp_admin_country_legacy_active
+		set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
+		set_variable = { camp_admin_institution_progress = 0 }
+		clear_variable = camp_admin_institution_state_id
+		set_variable = { camp_admin_country_sponsor = constant:camp_admin_country.sponsor_review }
+		clear_variable = camp_admin_country_engineer_cohort_k
+		set_country_flag = camp_rework_reform_route_open
+		camp_occ_close_country = yes
+		camp_admin_begin_reform = yes
+		if = { limit = { original_tag = GER } set_country_flag = germany_mengele_program_closed }
+		else_if = { limit = { original_tag = JAP } set_country_flag = japan_prisoner_experiments_shutdown set_country_flag = japan_biowarfare_reform_route }
+		else_if = { limit = { original_tag = SOV } set_country_flag = camp_rework_reformed_legacy }
+	}
 }
 
 # The state receipt bounds real releases. No additive army reserve or restored population.
@@ -519,8 +604,17 @@ camp_admin_country_release_registered_prisoners = {
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = { camp_admin_site_is_operational = yes gulag_labor_camp_network > 0 }
-			camp_admin_release_survivors = yes
+			limit = {
+				camp_rework_soviet_service_release_target = yes
+				camp_admin_site_rows_reconciled = yes
+				check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+			}
+			set_temp_variable = { camp_admin_release_requested_k = camp_admin_detainees_k }
+			camp_admin_release_detainees = yes
+			if = {
+				limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } }
+				set_state_flag = camp_admin_census_intake_closed
+			}
 			PREV = { add_to_variable = { camp_admin_country_last_released_k = camp_admin_release_actual_k } }
 		}
 	}
@@ -529,6 +623,7 @@ camp_admin_country_release_registered_prisoners = {
 
 camp_admin_country_start_oversight = {
 	camp_admin_country_halt = yes
+	camp_admin_country_clear_engineer_pending_receipt = yes
 	set_variable = { camp_admin_country_program = constant:camp_admin_country_program.none }
 	clear_variable = camp_admin_institution_state_id
 	set_country_flag = camp_admin_institution_slot_active
@@ -592,6 +687,9 @@ camp_admin_country_monthly = {
 		}
 		camp_admin_country_initialize = yes
 		set_variable = { camp_admin_country_last_month_key = camp_admin_month_key }
+		camp_admin_country_ai_ger_radical_mandate = yes
+		if = { limit = { is_ai = yes } camp_admin_ger_establish_krakow_site = yes }
+		camp_admin_country_ai_krakow_killing_role = yes
 		if = {
 			limit = { NOT = { camp_admin_country_regime_valid = yes } NOT = { has_country_flag = camp_admin_country_reformed } has_country_flag = camp_admin_country_legacy_active }
 			camp_admin_country_reform = yes
@@ -645,8 +743,26 @@ camp_admin_country_action_2 = {
 # Annual/monthly quota administration has moved into the paid finite-cohort pulse.
 # Crisis, review, construction and evacuation missions remain distinct choices.
 camp_admin_country_cancel_routine_missions = {
-	if = { limit = { has_active_mission = sov_gulag_quota_cycle } remove_mission = sov_gulag_quota_cycle }
-	if = { limit = { has_active_mission = sov_famine_pressure_cycle } remove_mission = sov_famine_pressure_cycle }
+	camp_admin_initialize_country = yes
+	if = {
+		limit = { OR = { has_active_mission = germany_occupied_poland_camp_expansion_mission has_active_mission = germany_eastern_fortifications_labor_mission has_active_mission = germany_ss_laboratory_annex_mission has_active_mission = japan_pingfang_research_bureau_mission has_active_mission = sov_gulag_quota_cycle has_active_mission = sov_famine_pressure_cycle } }
+		if = {
+			limit = { has_active_mission = germany_occupied_poland_camp_expansion_mission }
+			if = { limit = { has_variable = camp_rework_germany_poland_expansion_state_id } var:camp_rework_germany_poland_expansion_state_id = { clr_state_flag = camp_rework_germany_poland_expansion_project } }
+			clear_variable = camp_rework_germany_poland_expansion_state_id
+			remove_mission = germany_occupied_poland_camp_expansion_mission
+		}
+		if = {
+			limit = { has_active_mission = germany_eastern_fortifications_labor_mission }
+			for_each_scope_loop = { array = camp_evidence_states if = { limit = { has_state_flag = camp_rework_germany_eastern_fortification_project } clr_state_flag = camp_rework_germany_eastern_fortification_project } }
+			remove_mission = germany_eastern_fortifications_labor_mission
+		}
+		if = { limit = { has_active_mission = germany_ss_laboratory_annex_mission } remove_mission = germany_ss_laboratory_annex_mission }
+		if = { limit = { has_active_mission = japan_pingfang_research_bureau_mission } clr_country_flag = camp_rework_japan_pingfang_bureau_active remove_mission = japan_pingfang_research_bureau_mission }
+		if = { limit = { has_active_mission = sov_gulag_quota_cycle } remove_mission = sov_gulag_quota_cycle }
+		if = { limit = { has_active_mission = sov_famine_pressure_cycle } remove_mission = sov_famine_pressure_cycle }
+		camp_rework_recalculate_country_values = yes
+	}
 	clr_country_flag = camp_rework_soviet_gulag_quota_cycle_active
 	clr_country_flag = camp_rework_soviet_famine_pressure_cycle_active
 }
@@ -716,6 +832,7 @@ camp_admin_country_prepare_ai_budget = {
 				OR = {
 					camp_admin_country_program_available = yes
 					camp_admin_country_archives_available = yes
+					camp_admin_ger_krakow_setup_context = yes
 					any_of_scopes = { array = camp_active_site_states camp_admin_has_supported_workforce = yes check_variable = { camp_admin_development_level < constant:camp_admin_value.max_development } }
 				}
 			}

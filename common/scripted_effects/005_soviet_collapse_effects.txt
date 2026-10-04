@@ -22032,68 +22032,107 @@ soviet_collapse_mark_uwr_blacksite_state_for_aftermath = {
 }
 
 soviet_collapse_dismantle_uwr_aftermath_site = {
-	event_target:soviet_collapse_uwr_aftermath_state = {
-		if = {
-			limit = { biowarfare_facility > 0 }
-			remove_building = { type = biowarfare_facility level = constant:soviet_collapse_uwr_aftermath.remove_facility_levels }
-		}
-		if = {
-			limit = { cw_facility > 0 }
-			remove_building = { type = cw_facility level = constant:soviet_collapse_uwr_aftermath.remove_facility_levels }
-		}
-		if = {
-			limit = {
-				has_state_flag = camp_rework_experiment_site
-				OR = { concentration_camp > 0 extermination_camp > 0 }
+	set_temp_variable = { soviet_collapse_uwr_aftermath_dismantle_accepted = constant:camp_admin_value.zero }
+	if = {
+		limit = { has_event_target = soviet_collapse_uwr_aftermath_state }
+		event_target:soviet_collapse_uwr_aftermath_state = {
+			if = {
+				limit = { is_soviet_collapse_uwr_aftermath_target_state = yes }
+				if = {
+					limit = { soviet_collapse_uwr_aftermath_requires_camp_receipt = yes }
+					set_temp_variable = { camp_rework_enemy_liberation = constant:camp_admin_value.one }
+					camp_rework_complete_dismantlement = yes
+					set_temp_variable = { soviet_collapse_uwr_aftermath_dismantle_accepted = camp_rework_dismantlement_completion_accepted }
+					set_temp_variable = { camp_rework_enemy_liberation = constant:camp_admin_value.zero }
+				}
+				else = { set_temp_variable = { soviet_collapse_uwr_aftermath_dismantle_accepted = constant:camp_admin_value.one } }
+				if = {
+					limit = { check_variable = { soviet_collapse_uwr_aftermath_dismantle_accepted = constant:camp_admin_value.one } }
+					if = {
+						limit = { biowarfare_facility > 0 }
+						remove_building = { type = biowarfare_facility level = constant:soviet_collapse_uwr_aftermath.remove_facility_levels }
+					}
+					if = {
+						limit = { cw_facility > 0 }
+						remove_building = { type = cw_facility level = constant:soviet_collapse_uwr_aftermath.remove_facility_levels }
+					}
+					clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
+					clr_state_flag = soviet_collapse_uwr_contamination_aftermath
+					set_state_flag = soviet_collapse_uwr_aftermath_dismantled
+					clear_variable = soviet_collapse_uwr_blacksite_source
+					clear_variable = soviet_collapse_uwr_contamination_source
+				}
 			}
-			camp_rework_complete_dismantlement = yes
 		}
-		clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
-		clr_state_flag = soviet_collapse_uwr_contamination_aftermath
-		set_state_flag = soviet_collapse_uwr_aftermath_dismantled
-		clear_variable = soviet_collapse_uwr_blacksite_source
-		clear_variable = soviet_collapse_uwr_contamination_source
 	}
-	add_stability = constant:soviet_collapse_uwr_aftermath.dismantlement_stability
+	if = {
+		limit = { check_variable = { soviet_collapse_uwr_aftermath_dismantle_accepted = constant:camp_admin_value.one } }
+		add_stability = constant:soviet_collapse_uwr_aftermath.dismantlement_stability
+	}
+	else = { add_political_power = constant:soviet_collapse_uwr_aftermath.dismantlement_cost }
+}
+
+# Country scope. Both non-demolition outcomes must re-prove the saved state
+# after the daily target list and before granting any research or stability.
+soviet_collapse_uwr_aftermath_validate_target = {
+	set_temp_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.zero }
+	if = {
+		limit = { has_event_target = soviet_collapse_uwr_aftermath_state }
+		event_target:soviet_collapse_uwr_aftermath_state = {
+			if = { limit = { is_soviet_collapse_uwr_aftermath_target_state = yes } set_temp_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.one } }
+		}
+	}
 }
 
 soviet_collapse_secure_uwr_aftermath_site = {
-	event_target:soviet_collapse_uwr_aftermath_state = {
-		clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
-		clr_state_flag = soviet_collapse_uwr_contamination_aftermath
-		set_state_flag = soviet_collapse_uwr_aftermath_contained
-		clear_variable = soviet_collapse_uwr_blacksite_source
-		clear_variable = soviet_collapse_uwr_contamination_source
+	soviet_collapse_uwr_aftermath_validate_target = yes
+	if = {
+		limit = { check_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.one } }
+		event_target:soviet_collapse_uwr_aftermath_state = {
+			clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
+			clr_state_flag = soviet_collapse_uwr_contamination_aftermath
+			set_state_flag = soviet_collapse_uwr_aftermath_contained
+			clear_variable = soviet_collapse_uwr_blacksite_source
+			clear_variable = soviet_collapse_uwr_contamination_source
+		}
+		add_breakthrough_progress = {
+			specialization = specialization_biowarfare
+			value = constant:soviet_collapse_uwr_aftermath.containment_breakthrough_gain
+		}
+		add_breakthrough_progress = {
+			specialization = specialization_cw
+			value = constant:soviet_collapse_uwr_aftermath.containment_breakthrough_gain
+		}
+		add_stability = constant:soviet_collapse_uwr_aftermath.containment_stability
 	}
-	add_breakthrough_progress = {
-		specialization = specialization_biowarfare
-		value = constant:soviet_collapse_uwr_aftermath.containment_breakthrough_gain
-	}
-	add_breakthrough_progress = {
-		specialization = specialization_cw
-		value = constant:soviet_collapse_uwr_aftermath.containment_breakthrough_gain
-	}
-	add_stability = constant:soviet_collapse_uwr_aftermath.containment_stability
+	else = { add_political_power = constant:soviet_collapse_uwr_aftermath.containment_cost }
+	set_temp_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.zero }
 }
 
 soviet_collapse_exploit_uwr_aftermath_site = {
-	event_target:soviet_collapse_uwr_aftermath_state = {
-		clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
-		clr_state_flag = soviet_collapse_uwr_contamination_aftermath
-		set_state_flag = soviet_collapse_uwr_aftermath_exploited
-		clear_variable = soviet_collapse_uwr_blacksite_source
-		clear_variable = soviet_collapse_uwr_contamination_source
+	soviet_collapse_uwr_aftermath_validate_target = yes
+	if = {
+		limit = { check_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.one } }
+		event_target:soviet_collapse_uwr_aftermath_state = {
+			clr_state_flag = soviet_collapse_uwr_blacksite_aftermath_site
+			clr_state_flag = soviet_collapse_uwr_contamination_aftermath
+			set_state_flag = soviet_collapse_uwr_aftermath_exploited
+			clear_variable = soviet_collapse_uwr_blacksite_source
+			clear_variable = soviet_collapse_uwr_contamination_source
+		}
+		add_breakthrough_progress = {
+			specialization = specialization_biowarfare
+			value = constant:soviet_collapse_uwr_aftermath.exploitation_breakthrough_gain
+		}
+		add_breakthrough_progress = {
+			specialization = specialization_cw
+			value = constant:soviet_collapse_uwr_aftermath.exploitation_breakthrough_gain
+		}
+		army_experience = constant:soviet_collapse_uwr_aftermath.exploitation_army_experience
+		add_stability = constant:soviet_collapse_uwr_aftermath.exploitation_stability
 	}
-	add_breakthrough_progress = {
-		specialization = specialization_biowarfare
-		value = constant:soviet_collapse_uwr_aftermath.exploitation_breakthrough_gain
-	}
-	add_breakthrough_progress = {
-		specialization = specialization_cw
-		value = constant:soviet_collapse_uwr_aftermath.exploitation_breakthrough_gain
-	}
-	army_experience = constant:soviet_collapse_uwr_aftermath.exploitation_army_experience
-	add_stability = constant:soviet_collapse_uwr_aftermath.exploitation_stability
+	else = { add_political_power = constant:soviet_collapse_uwr_aftermath.exploitation_cost }
+	set_temp_variable = { soviet_collapse_uwr_aftermath_target_valid = constant:camp_admin_value.zero }
 }
 
 soviet_collapse_kmb_apply_basin_resource_surge = {

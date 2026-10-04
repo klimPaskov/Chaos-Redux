@@ -289,7 +289,7 @@ camp_rework_dispatch_generic_action_legacy = {
 			camp_rework_can_pay_site_dismantle = yes
 			camp_rework_country_can_reform = yes
 			NOT = { has_country_flag = camp_rework_site_closure_active }
-			var:camp_rework_action_state_id = { is_valid_camp_dismantlement_state = yes }
+			var:camp_rework_action_state_id = { is_valid_camp_dismantlement_state = yes camp_rework_site_can_start_dismantlement = yes }
 		}
 		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
 		camp_rework_pay_site_dismantle = yes
@@ -367,7 +367,7 @@ camp_rework_dispatch_japan_action = {
 	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.japan_submit_to_army_review } } camp_rework_japan_submit_to_army_review = yes }
 	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.japan_remove_ishii_from_program_control } } camp_rework_japan_remove_ishii_from_program_control = yes }
 	else_if = {
-		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.japan_shut_down_prisoner_experiments } }
+		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.japan_shut_down_prisoner_experiments } camp_rework_japan_dismantlement_sites_ready = yes }
 		camp_rework_consume_dismantlement_resources = yes
 		camp_rework_japan_shutdown_prisoner_experiments = yes
 	}
@@ -389,7 +389,14 @@ camp_rework_dispatch_soviet_action = {
 	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_reduce_paranoia_through_party_review } } camp_rework_soviet_start_party_review = yes }
 	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_release_prisoners_for_military_service } } camp_rework_soviet_release_prisoners_for_military_service = yes }
 	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_dismantle_overextended_gulags } } camp_rework_soviet_start_gulag_dismantlement = yes }
-	else_if = { limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_emergency_famine_relief } } camp_rework_soviet_emergency_famine_relief = yes }
+	else_if = {
+		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_emergency_famine_relief } }
+		camp_rework_soviet_emergency_famine_relief = yes
+		if = {
+			limit = { NOT = { has_country_flag = camp_rework_soviet_relief_order_accepted } }
+			add_political_power = constant:camp_rework_cost.labor_project_pp
+		}
+	}
 	else_if = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_conceal_famine_mortality }
@@ -397,6 +404,7 @@ camp_rework_dispatch_soviet_action = {
 			var:camp_rework_action_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
 			}
 		}
 		camp_rework_consume_evidence_resources = yes
@@ -409,6 +417,7 @@ camp_rework_dispatch_soviet_action = {
 			var:camp_rework_action_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
 			}
 		}
 		camp_rework_soviet_admit_administrative_collapse = yes

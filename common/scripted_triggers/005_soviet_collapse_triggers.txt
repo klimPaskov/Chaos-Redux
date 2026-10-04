@@ -8919,6 +8919,32 @@ is_soviet_collapse_uwr_aftermath_target_state = {
 	}
 }
 
+# State scope. A captured UWR facility cannot bypass a living administered camp
+# merely because that camp lacks UWR's experiment-site marker.
+soviet_collapse_uwr_aftermath_requires_camp_receipt = {
+	OR = {
+		AND = {
+			has_state_flag = camp_rework_experiment_site
+			OR = { concentration_camp > 0 extermination_camp > 0 }
+		}
+		AND = {
+			has_state_flag = camp_admin_initialized
+			OR = {
+				AND = { has_variable = camp_admin_detainees_k check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero } }
+				AND = {
+					NOT = { has_state_flag = camp_admin_closed }
+					OR = {
+						has_state_flag = camp_rework_site_active
+						concentration_camp > 0
+						extermination_camp > 0
+						gulag_labor_camp_network > 0
+					}
+				}
+			}
+		}
+	}
+}
+
 has_soviet_collapse_uwr_aftermath_site = {
 	NOT = { tag = UWR }
 	any_owned_state = {

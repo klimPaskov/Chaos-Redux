@@ -651,7 +651,7 @@ camp_rework_japan_monthly_bridge = {
 		limit = {
 			NOT = { has_country_flag = japan_pingfang_retreat_event_fired }
 			328 = {
-				is_controlled_by = ROOT
+				has_state_flag = camp_rework_pingfang_bureau_completed
 				is_valid_camp_enemy_proximity_state = yes
 			}
 		}
@@ -820,109 +820,54 @@ camp_rework_germany_register_auschwitz_layers = {
 }
 
 camp_rework_germany_apply_prisoner_transfer = {
-	camp_rework_germany_initialize_country_values = yes
+	camp_rework_germany_apply_exact_cohort_transfer = yes
+}
+
+# Country ROOT and oldest eligible registered source. The decision and its AI share this paid
+# exact-cohort action; neither movement nor a later death advances research.
+camp_rework_germany_apply_exact_cohort_transfer = {
+	# Availability scans live rows; refresh the execution pointer before the exact receipt.
+	camp_occ_refresh_manual_transfer_source = yes
+	camp_occ_try_manual_auschwitz_transfer = yes
 	if = {
 		limit = {
-			check_variable = {
-				var = mengele_permission_level
-				value = constant:germany_mengele_permission.restricted
-				compare = greater_than_or_equals
-			}
-			FROM = {
-				NOT = { state = 88 }
-				camp_rework_state_can_accept_responsibility_from_root = yes
-				OR = {
-					is_germany_occupied_poland_prisoner_source = yes
-					is_germany_other_occupied_noncore_prisoner_source = yes
-					is_germany_core_prisoner_source_fallback = yes
-				}
-			}
-			88 = {
-				is_controlled_by = ROOT
-				camp_rework_state_can_accept_responsibility_from_root = yes
-			}
+			check_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_custody_committed_people > 0 }
 		}
+		set_temp_variable = { camp_occ_manual_transfer_debit_pp = constant:genocide_decision_cost.german_experiment_transfer }
+		multiply_temp_variable = { camp_occ_manual_transfer_debit_pp = constant:camp_occ_value.negative_one }
+		add_political_power = camp_occ_manual_transfer_debit_pp
+		set_temp_variable = { camp_occ_manual_transfer_debit_xp = constant:genocide_decision_cost.german_experiment_transfer_army_xp }
+		multiply_temp_variable = { camp_occ_manual_transfer_debit_xp = constant:camp_occ_value.negative_one }
+		army_experience = camp_occ_manual_transfer_debit_xp
+		set_temp_variable = { camp_occ_manual_transfer_debit_support = constant:camp_rework_equipment_cost.support_equipment }
+		multiply_temp_variable = { camp_occ_manual_transfer_debit_support = constant:camp_occ_value.negative_one }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_occ_manual_transfer_debit_support }
+		set_temp_variable = { camp_occ_manual_transfer_debit_trains = constant:camp_rework_equipment_cost.trains }
+		multiply_temp_variable = { camp_occ_manual_transfer_debit_trains = constant:camp_occ_value.negative_one }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_occ_manual_transfer_debit_trains }
 		genocide_activate_crisis = yes
-		add_to_variable = { genocide_decisions_taken = 1 }
-		set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_restricted }
-		set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_minor }
-		if = {
-			limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.full } }
-			set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_bypass }
-			set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_major }
-		}
-		else_if = {
-			limit = { check_variable = { mengele_permission_level = constant:germany_mengele_permission.full } }
-			set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_full }
-			set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_major }
-		}
-		FROM = {
-			if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
-			set_state_flag = genocide_site_has_responsible_country
-			set_state_flag = genocide_foreign_experimentation_source
-			set_state_flag = genocide_atrocity_site_known_to_regime
-			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
-			# Finite monthly custody/occupation accounting owns physical losses.
-			camp_admin_initialize_site = yes
-			camp_rework_register_evidence_state = yes
-			set_variable = {
-				migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
-			}
-			set_variable = { migration_persecution_pending_actor = ROOT }
-			migration_persecution_record_state = yes
-		}
-		camp_rework_germany_register_auschwitz_layers = yes
-		if = { limit = { FROM = { is_germany_occupied_poland_prisoner_source = yes } } add_to_variable = { poland_transfer_pressure = constant:camp_rework_germany.poland_transfer_pressure } }
-		else = { add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_minor } }
-		if = {
-			limit = { FROM = { is_germany_core_prisoner_source_fallback = yes } }
-			add_stability = constant:camp_rework_germany.core_fallback_stability
-			add_war_support = constant:camp_rework_germany.core_fallback_war_support
-			add_to_variable = { camp_policy_legitimacy = constant:camp_rework_country_value.legitimacy_major }
-			add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
-		}
-		set_temp_variable = { mengele_autonomy_delta = camp_germany_transfer_autonomy }
-		germany_mengele_add_autonomy = yes
-		set_temp_variable = { mengele_cloning_progress_delta = camp_germany_transfer_progress }
-		germany_mengele_add_cloning_project_progress = yes
-		add_to_variable = { racial_policy_radicalization = constant:camp_rework_germany.radicalization_minor }
+		add_to_variable = { genocide_decisions_taken = constant:camp_admin_value.one }
+		add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }
+		add_to_variable = { hidden_atrocity_score = constant:genocide_crisis_value.foreign_experimentation_hidden_atrocity }
 		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+		var:camp_occ_manual_source_state_id = {
+			set_state_flag = genocide_atrocity_site_known_to_regime
+			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
+			camp_rework_register_evidence_state = yes
+			set_temp_variable = { camp_admin_record_state_id = THIS.id }
+		}
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.killing_center_transfer }
+		camp_admin_record_history = yes
+		if = {
+			limit = { var:camp_occ_manual_source_state_id = { is_germany_occupied_poland_prisoner_source = yes } }
+			add_to_variable = { poland_transfer_pressure = constant:camp_rework_germany.poland_transfer_pressure }
+		}
+		else = { add_to_variable = { occupied_deportation_pressure = constant:camp_rework_germany.deportation_pressure_minor } }
 		camp_rework_recalculate_country_values = yes
-		# State 88 is the owner-proven camp-prison reception site for this
-		# transaction. These are forced-intake proofs, not a humanitarian
-		# destination selection and not a proxy Soviet route.
-		88 = {
-			save_event_target_as = migration_forced_transfer_destination
-			set_temp_variable = { migration_forced_transfer_destination_food_safe_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_destination_reception_proven = constant:humanitarian_runtime.one }
-		}
-		set_temp_variable = { migration_forced_transfer_transaction_id = genocide_decisions_taken }
-		FROM = {
-			set_temp_variable = { migration_forced_transfer_requested_people = state_population_k }
-			multiply_temp_variable = { migration_forced_transfer_requested_people = constant:chaos_meter_deaths.people_per_k }
-			multiply_temp_variable = { migration_forced_transfer_requested_people = constant:migration_decision_threshold.transfer_share }
-			round_temp_variable = migration_forced_transfer_requested_people
-			set_temp_variable = { migration_forced_transfer_minimum_origin_remaining = state_population_k }
-			multiply_temp_variable = { migration_forced_transfer_minimum_origin_remaining = constant:chaos_meter_deaths.people_per_k }
-			multiply_temp_variable = { migration_forced_transfer_minimum_origin_remaining = constant:migration_decision_threshold.transfer_minimum_origin_share }
-			round_temp_variable = migration_forced_transfer_minimum_origin_remaining
-			set_temp_variable = { migration_forced_transfer_request_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_origin_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_destination_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_actor_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_transaction_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_cause = constant:migration_forced_movement_cause.deportation_camp_prison_transfer }
-			set_temp_variable = { migration_forced_transfer_custody_status = constant:migration_forced_movement_custody.forced }
-			set_temp_variable = { migration_forced_transfer_source_pressure_owner_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_reception_owner_proven = constant:humanitarian_runtime.one }
-			set_temp_variable = { migration_forced_transfer_route_deaths_requested = constant:humanitarian_population.zero }
-			set_temp_variable = { migration_forced_transfer_route_death_proven = constant:humanitarian_runtime.zero }
-			set_temp_variable = { migration_forced_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
-			set_temp_variable = { migration_forced_transfer_log_deaths = constant:humanitarian_runtime.zero }
-			migration_execute_forced_transfer_exact = yes
-		}
 	}
+	camp_occ_refresh_manual_transfer_source = yes
 }
 
 camp_rework_germany_assign_rail_capacity = {
@@ -1231,14 +1176,12 @@ camp_rework_germany_cancel_evidence_destruction = {
 }
 
 camp_rework_germany_start_auschwitz_dismantlement = {
-	camp_rework_consume_dismantlement_resources = yes
-	88 = {
-		if = {
-			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
-			camp_rework_start_dismantlement = yes
-		}
+	if = {
+		limit = { 88 = { is_controlled_by = ROOT is_valid_camp_dismantlement_state = yes camp_rework_state_can_accept_responsibility_from_root = yes camp_rework_site_can_start_dismantlement = yes } }
+		camp_rework_consume_dismantlement_resources = yes
+		88 = { camp_rework_start_dismantlement = yes }
+		activate_mission = germany_auschwitz_dismantlement_mission
 	}
-	activate_mission = germany_auschwitz_dismantlement_mission
 }
 
 camp_rework_germany_complete_auschwitz_dismantlement = {
@@ -1248,11 +1191,12 @@ camp_rework_germany_complete_auschwitz_dismantlement = {
 			limit = {
 				is_controlled_by = ROOT
 				is_valid_camp_dismantlement_state = yes
+				camp_rework_site_can_complete_dismantlement = yes
 				has_variable = genocide_responsible_country
 				var:genocide_responsible_country = { tag = ROOT }
 			}
 			camp_rework_complete_dismantlement = yes
-			set_temp_variable = { camp_germany_auschwitz_dismantlement_succeeded = 1 }
+			if = { limit = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } } set_temp_variable = { camp_germany_auschwitz_dismantlement_succeeded = constant:camp_admin_value.one } }
 		}
 	}
 	if = {
@@ -1849,11 +1793,14 @@ camp_rework_japan_remove_ishii_from_program_control = {
 }
 
 camp_rework_japan_shutdown_prisoner_experiments = {
-	set_country_flag = camp_rework_japan_shutdown_mission_active
-	set_country_flag = japan_biowarfare_reform_route
-	camp_rework_freeze_expansion_for_reform = yes
-	camp_rework_recalculate_country_values = yes
-	activate_mission = japan_prisoner_experiment_shutdown_mission
+	if = {
+		limit = { camp_rework_japan_dismantlement_sites_ready = yes }
+		set_country_flag = camp_rework_japan_shutdown_mission_active
+		set_country_flag = japan_biowarfare_reform_route
+		camp_rework_freeze_expansion_for_reform = yes
+		camp_rework_recalculate_country_values = yes
+		activate_mission = japan_prisoner_experiment_shutdown_mission
+	}
 }
 
 camp_rework_japan_complete_prisoner_experiment_shutdown = {
@@ -1862,17 +1809,9 @@ camp_rework_japan_complete_prisoner_experiment_shutdown = {
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = {
-				camp_rework_state_can_accept_responsibility_from_root = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
-				OR = {
-					has_state_flag = genocide_japanese_biowarfare_atrocity_site
-						has_state_flag = camp_rework_experiment_site
-				}
-			}
+			limit = { camp_rework_japan_shutdown_target = yes }
 			if = {
-				limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
+				limit = { camp_rework_state_is_actor_or_subject_controlled = yes camp_rework_site_can_complete_dismantlement = yes }
 				add_to_temp_array = { camp_japan_experiment_shutdown_states = THIS }
 			}
 			else = { set_temp_variable = { camp_japan_experiment_shutdown_blocked = 1 } }
@@ -1886,26 +1825,32 @@ camp_rework_japan_complete_prisoner_experiment_shutdown = {
 		for_each_scope_loop = {
 			array = camp_japan_experiment_shutdown_states
 			if = {
-				limit = { camp_rework_state_is_actor_responsible_controlled = yes }
+				limit = { camp_rework_state_is_actor_responsible_controlled = yes camp_rework_site_can_complete_dismantlement = yes }
 				camp_rework_complete_dismantlement = yes
+				if = { limit = { NOT = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } } } set_temp_variable = { camp_japan_experiment_shutdown_blocked = constant:camp_admin_value.one } }
 			}
+			else = { set_temp_variable = { camp_japan_experiment_shutdown_blocked = constant:camp_admin_value.one } }
 		}
-		clr_country_flag = camp_rework_japan_shutdown_mission_active
-		set_country_flag = japan_prisoner_experiments_shutdown
-		set_country_flag = japan_biowarfare_reform_route
-		clr_country_flag = japan_ishii_authority_route
-		camp_rework_freeze_expansion_for_reform = yes
-		add_to_variable = { ishii_influence = constant:camp_rework_japan.shutdown_relief }
-		add_to_variable = { occupation_test_records = constant:camp_rework_japan.shutdown_records_relief }
-		add_to_variable = { bio_project_pressure = constant:camp_rework_japan.shutdown_project_relief }
-		add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.shutdown_relief }
-		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
-		clamp_variable = { var = ishii_influence min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = occupation_test_records min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = bio_project_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = outbreak_accident_risk min = 0 max = constant:camp_rework_threshold.max_value }
-		camp_rework_japan_refresh_project_unlocks = yes
-		camp_rework_recalculate_country_values = yes
+		if = {
+			limit = { check_variable = { camp_japan_experiment_shutdown_blocked = constant:camp_admin_value.zero } }
+			clr_country_flag = camp_rework_japan_shutdown_mission_active
+			set_country_flag = japan_prisoner_experiments_shutdown
+			set_country_flag = japan_biowarfare_reform_route
+			clr_country_flag = japan_ishii_authority_route
+			camp_rework_freeze_expansion_for_reform = yes
+			add_to_variable = { ishii_influence = constant:camp_rework_japan.shutdown_relief }
+			add_to_variable = { occupation_test_records = constant:camp_rework_japan.shutdown_records_relief }
+			add_to_variable = { bio_project_pressure = constant:camp_rework_japan.shutdown_project_relief }
+			add_to_variable = { outbreak_accident_risk = constant:camp_rework_japan.shutdown_relief }
+			add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+			clamp_variable = { var = ishii_influence min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = occupation_test_records min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = bio_project_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = outbreak_accident_risk min = 0 max = constant:camp_rework_threshold.max_value }
+			camp_rework_japan_refresh_project_unlocks = yes
+			camp_rework_recalculate_country_values = yes
+		}
+		else = { camp_rework_japan_fail_prisoner_experiment_shutdown = yes }
 	}
 	else = { camp_rework_japan_fail_prisoner_experiment_shutdown = yes }
 	clear_temp_array = camp_japan_experiment_shutdown_states
@@ -2380,24 +2325,44 @@ camp_rework_soviet_cancel_party_review = {
 }
 
 camp_rework_soviet_release_prisoners_for_military_service = {
-	camp_rework_soviet_initialize_country_values = yes
-	camp_admin_country_release_registered_prisoners = yes
-	add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
-	add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
-	add_to_variable = { old_movement_grievance = constant:camp_rework_soviet.quota_relief }
-	add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
-	clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = famine_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = old_movement_grievance min = 0 max = constant:camp_rework_threshold.max_value }
-	camp_rework_soviet_refresh_famine_states = yes
-	camp_rework_recalculate_country_values = yes
+	set_variable = { camp_admin_country_last_released_k = constant:camp_admin_value.zero }
+	if = {
+		limit = { camp_rework_soviet_service_release_ready = yes }
+		camp_admin_country_release_registered_prisoners = yes
+		if = {
+			limit = { check_variable = { camp_admin_country_last_released_k > constant:camp_admin_value.zero } }
+			camp_rework_soviet_initialize_country_values = yes
+			if = {
+				limit = { NOT = { has_country_flag = camp_rework_soviet_service_release_policy_enacted } }
+				set_country_flag = camp_rework_soviet_service_release_policy_enacted
+				add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
+				add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
+				add_to_variable = { old_movement_grievance = constant:camp_rework_soviet.quota_relief }
+				add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+				clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
+				clamp_variable = { var = famine_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+				clamp_variable = { var = old_movement_grievance min = 0 max = constant:camp_rework_threshold.max_value }
+				camp_rework_soviet_refresh_famine_states = yes
+			}
+			camp_rework_recalculate_country_values = yes
+		}
+	}
+	if = {
+		limit = { NOT = { check_variable = { camp_admin_country_last_released_k > constant:camp_admin_value.zero } } }
+		# The native decision pays before this effect. A stale row preflight or a
+		# zero actual release must not buy policy relief.
+		add_political_power = constant:camp_rework_cost.review_pp
+	}
 }
 
 camp_rework_soviet_start_gulag_dismantlement = {
-	camp_rework_consume_dismantlement_resources = yes
-	set_country_flag = sov_gulag_dismantlement_active
-	camp_rework_recalculate_country_values = yes
-	activate_mission = sov_overextended_gulag_dismantlement_mission
+	if = {
+		limit = { camp_rework_soviet_dismantlement_sites_ready = yes }
+		camp_rework_consume_dismantlement_resources = yes
+		set_country_flag = sov_gulag_dismantlement_active
+		camp_rework_recalculate_country_values = yes
+		activate_mission = sov_overextended_gulag_dismantlement_mission
+	}
 }
 
 camp_rework_soviet_complete_gulag_dismantlement = {
@@ -2406,18 +2371,9 @@ camp_rework_soviet_complete_gulag_dismantlement = {
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = {
-				camp_rework_state_can_accept_responsibility_from_root = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
-				OR = {
-					has_state_flag = genocide_soviet_mass_repression_site
-					has_state_flag = genocide_soviet_famine_pressure_site
-					gulag_labor_camp_network > 0
-				}
-			}
+			limit = { camp_rework_soviet_dismantlement_target = yes }
 			if = {
-				limit = { camp_rework_state_is_actor_or_subject_controlled = yes }
+				limit = { camp_rework_state_is_actor_or_subject_controlled = yes camp_rework_site_can_complete_dismantlement = yes }
 				add_to_temp_array = { camp_soviet_dismantlement_states = THIS }
 			}
 			else = { set_temp_variable = { camp_soviet_dismantlement_blocked = 1 } }
@@ -2431,24 +2387,30 @@ camp_rework_soviet_complete_gulag_dismantlement = {
 		for_each_scope_loop = {
 			array = camp_soviet_dismantlement_states
 			if = {
-				limit = { camp_rework_state_is_actor_responsible_controlled = yes }
+				limit = { camp_rework_state_is_actor_responsible_controlled = yes camp_rework_site_can_complete_dismantlement = yes }
 				camp_rework_complete_dismantlement = yes
+				if = { limit = { NOT = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } } } set_temp_variable = { camp_soviet_dismantlement_blocked = constant:camp_admin_value.one } }
 			}
+			else = { set_temp_variable = { camp_soviet_dismantlement_blocked = constant:camp_admin_value.one } }
 		}
-		clr_country_flag = sov_gulag_dismantlement_active
-		set_country_flag = camp_rework_reform_route_open
-		set_country_flag = camp_rework_reformed_legacy
-		add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
-		add_to_variable = { grain_extraction_burden = constant:camp_rework_soviet.grain_relief }
-		add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
-		add_to_variable = { camp_administrator_corruption = constant:camp_rework_soviet.grain_relief }
-		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
-		clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = grain_extraction_burden min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = famine_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-		clamp_variable = { var = camp_administrator_corruption min = 0 max = constant:camp_rework_threshold.max_value }
-		camp_rework_soviet_refresh_famine_states = yes
-		camp_rework_recalculate_country_values = yes
+		if = {
+			limit = { check_variable = { camp_soviet_dismantlement_blocked = constant:camp_admin_value.zero } }
+			clr_country_flag = sov_gulag_dismantlement_active
+			set_country_flag = camp_rework_reform_route_open
+			set_country_flag = camp_rework_reformed_legacy
+			add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
+			add_to_variable = { grain_extraction_burden = constant:camp_rework_soviet.grain_relief }
+			add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
+			add_to_variable = { camp_administrator_corruption = constant:camp_rework_soviet.grain_relief }
+			add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+			clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = grain_extraction_burden min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = famine_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+			clamp_variable = { var = camp_administrator_corruption min = 0 max = constant:camp_rework_threshold.max_value }
+			camp_rework_soviet_refresh_famine_states = yes
+			camp_rework_recalculate_country_values = yes
+		}
+		else = { camp_rework_soviet_fail_gulag_dismantlement = yes }
 	}
 	else = { camp_rework_soviet_fail_gulag_dismantlement = yes }
 	clear_temp_array = camp_soviet_dismantlement_states
@@ -2469,18 +2431,25 @@ camp_rework_soviet_cancel_gulag_dismantlement = {
 	camp_rework_recalculate_country_values = yes
 }
 
+# Final funded-order transaction. The caller consumes and clears the success
+# receipt before recording a success cooldown or returning an upfront PP quote.
 camp_rework_soviet_emergency_famine_relief = {
-	camp_rework_soviet_initialize_country_values = yes
-	camp_rework_consume_labor_project_resources = yes
-	set_country_flag = sov_famine_relief_active
-	add_stability = constant:camp_rework_soviet.emergency_relief_stability
-	add_to_variable = { grain_extraction_burden = constant:camp_rework_soviet.grain_relief }
-	add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
-	clamp_variable = { var = grain_extraction_burden min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
-	if = { limit = { NOT = { has_active_mission = sov_emergency_famine_relief_mission } } activate_mission = sov_emergency_famine_relief_mission }
-	camp_rework_soviet_refresh_famine_states = yes
-	camp_rework_recalculate_country_values = yes
+	clr_country_flag = camp_rework_soviet_relief_order_accepted
+	if = {
+		limit = { camp_rework_soviet_relief_order_ready = yes }
+		camp_rework_soviet_initialize_country_values = yes
+		camp_rework_consume_labor_project_resources = yes
+		set_country_flag = sov_famine_relief_active
+		set_country_flag = camp_rework_soviet_relief_order_accepted
+		add_stability = constant:camp_rework_soviet.emergency_relief_stability
+		add_to_variable = { grain_extraction_burden = constant:camp_rework_soviet.grain_relief }
+		add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
+		clamp_variable = { var = grain_extraction_burden min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = forced_labor_quota min = 0 max = constant:camp_rework_threshold.max_value }
+		activate_mission = sov_emergency_famine_relief_mission
+		camp_rework_soviet_refresh_famine_states = yes
+		camp_rework_recalculate_country_values = yes
+	}
 }
 
 camp_rework_soviet_complete_famine_relief = {
@@ -2513,6 +2482,39 @@ camp_rework_soviet_fail_famine_relief = {
 	camp_rework_recalculate_country_values = yes
 }
 
+# SOV country scope. Event response when the relief columns cannot be equipped:
+# no equipment is spent, and the shortage adds famine and corruption pressure.
+camp_rework_soviet_relief_mobilization_failed = {
+	if = {
+		limit = {
+			original_tag = SOV
+			check_variable = { famine_pressure > 0 }
+			NOT = { has_country_flag = sov_famine_relief_active }
+			NOT = { has_active_mission = sov_emergency_famine_relief_mission }
+		}
+		camp_rework_soviet_initialize_country_values = yes
+		add_to_variable = { famine_pressure = constant:camp_rework_soviet.famine_pressure_minor }
+		add_to_variable = { camp_administrator_corruption = constant:camp_rework_soviet.administrator_corruption_minor }
+		clamp_variable = { var = famine_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = camp_administrator_corruption min = 0 max = constant:camp_rework_threshold.max_value }
+		camp_rework_soviet_refresh_famine_states = yes
+		camp_rework_recalculate_country_values = yes
+	}
+}
+
+# Critical no-resource response cannot cancel an independently funded mission.
+camp_rework_soviet_relief_crisis_mobilization_failed = {
+	if = {
+		limit = {
+			original_tag = SOV
+			check_variable = { famine_pressure > 0 }
+			NOT = { has_country_flag = sov_famine_relief_active }
+			NOT = { has_active_mission = sov_emergency_famine_relief_mission }
+		}
+		camp_rework_soviet_fail_famine_relief = yes
+	}
+}
+
 camp_rework_soviet_cancel_famine_relief = {
 	clr_country_flag = sov_famine_relief_active
 	add_to_variable = { famine_pressure = constant:camp_rework_soviet.famine_pressure_minor }
@@ -2525,6 +2527,7 @@ camp_rework_soviet_conceal_current_famine_state = {
 		limit = {
 			camp_rework_state_can_accept_responsibility_from_root = yes
 			has_state_flag = genocide_soviet_famine_pressure_site
+			NOT = { has_state_flag = camp_rework_soviet_records_concealed }
 		}
 		if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
 		set_state_flag = genocide_site_has_responsible_country
@@ -2544,6 +2547,7 @@ camp_rework_soviet_conceal_famine_mortality = {
 			var:camp_rework_action_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
 			}
 		}
 		var:camp_rework_action_state_id = { camp_rework_soviet_conceal_current_famine_state = yes }
@@ -2554,6 +2558,7 @@ camp_rework_soviet_conceal_famine_mortality = {
 			var:sov_famine_event_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
 			}
 		}
 		var:sov_famine_event_state_id = { camp_rework_soviet_conceal_current_famine_state = yes }
@@ -2563,6 +2568,7 @@ camp_rework_soviet_conceal_famine_mortality = {
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = camp_rework_soviet_records_concealed }
 			}
 		}
 		FROM = { camp_rework_soviet_conceal_current_famine_state = yes }
@@ -2584,6 +2590,7 @@ camp_rework_soviet_admit_current_famine_state = {
 		limit = {
 			camp_rework_state_can_accept_responsibility_from_root = yes
 			has_state_flag = genocide_soviet_famine_pressure_site
+			NOT = { has_state_flag = genocide_site_discovered }
 		}
 		if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
 		set_state_flag = genocide_site_has_responsible_country
@@ -2604,6 +2611,7 @@ camp_rework_soviet_admit_administrative_collapse = {
 			var:camp_rework_action_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
 			}
 		}
 		var:camp_rework_action_state_id = { camp_rework_soviet_admit_current_famine_state = yes }
@@ -2614,6 +2622,7 @@ camp_rework_soviet_admit_administrative_collapse = {
 			var:sov_famine_event_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
 			}
 		}
 		var:sov_famine_event_state_id = { camp_rework_soviet_admit_current_famine_state = yes }
@@ -2623,6 +2632,7 @@ camp_rework_soviet_admit_administrative_collapse = {
 			FROM = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				has_state_flag = genocide_soviet_famine_pressure_site
+				NOT = { has_state_flag = genocide_site_discovered }
 			}
 		}
 		FROM = { camp_rework_soviet_admit_current_famine_state = yes }

@@ -2,6 +2,38 @@
 # Ordinary institutional work completes through the bounded monthly pulse.
 # AI chooses these deterministic policies in the country monthly helper; no hidden weighted pool.
 genocide_crisis_category = {
+	camp_admin_ger_establish_krakow_site = {
+		icon = GFX_decision_germany_ss_camp_administration
+		allowed = { original_tag = GER }
+		visible = {
+			is_ai = no
+			original_tag = GER
+			has_country_flag = camp_admin_initialized
+			date > 1943.5.29
+			NOT = { has_country_flag = camp_admin_ger_krakow_site_established }
+			88 = {
+				is_controlled_by = ROOT
+				NOT = { has_state_flag = camp_rework_site_active }
+				NOT = { has_state_flag = camp_admin_closed }
+				NOT = { has_variable = genocide_responsible_country }
+				NOT = { concentration_camp > 0 }
+				NOT = { extermination_camp > 0 }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = camp_admin_ger_krakow_site_requirements_tt
+				camp_admin_ger_krakow_setup_eligible = yes
+			}
+		}
+		cost = 0
+		custom_cost_trigger = { check_variable = { var = political_power value = constant:genocide_decision_cost.build_concentration compare = greater_than_or_equals } }
+		custom_cost_text = camp_admin_ger_krakow_site_cost
+		complete_effect = {
+			custom_effect_tooltip = camp_admin_ger_krakow_site_effect_tt
+			camp_admin_ger_establish_krakow_site = yes
+		}
+	}
 	camp_admin_ger_economic_authority = {
 		icon = GFX_decision_germany_ss_camp_administration
 		allowed = { original_tag = GER }

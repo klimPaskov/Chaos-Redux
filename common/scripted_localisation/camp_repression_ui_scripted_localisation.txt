@@ -74,6 +74,13 @@ defined_text = {
 
 defined_text = {
 	name = GetCampUiActivationManpower
+	text = { trigger = { has_manpower < constant:camp_rework_cost.activation_manpower } localization_key = camp_ui_manpower_activation_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_manpower_activation }
+}
+
+# Evidence uses the same displayed manpower quote but keeps its own legacy gate.
+defined_text = {
+	name = GetCampUiEvidenceManpower
 	text = { trigger = { NOT = { has_manpower > constant:camp_rework_cost.activation_manpower } } localization_key = camp_ui_manpower_activation_red }
 	text = { trigger = { always = yes } localization_key = camp_ui_manpower_activation }
 }
@@ -98,7 +105,7 @@ defined_text = {
 
 defined_text = {
 	name = GetCampUiActivationCommand
-	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.activation_command } } localization_key = camp_ui_command_activation_red }
+	text = { trigger = { command_power < constant:camp_rework_cost.activation_command } localization_key = camp_ui_command_activation_red }
 	text = { trigger = { always = yes } localization_key = camp_ui_command_activation }
 }
 
@@ -123,6 +130,12 @@ defined_text = {
 defined_text = {
 	name = GetCampUiSupportCost
 	text = { trigger = { NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_ui_equipment_support_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_support }
+}
+
+defined_text = {
+	name = GetCampUiActivationSupportCost
+	text = { trigger = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } } localization_key = camp_ui_equipment_support_red }
 	text = { trigger = { always = yes } localization_key = camp_ui_equipment_support }
 }
 

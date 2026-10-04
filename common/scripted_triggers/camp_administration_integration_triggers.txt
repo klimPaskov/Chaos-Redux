@@ -14,6 +14,16 @@ camp_admin_integration_has_continuing_work = {
 	}
 }
 
+# COUNTRY. Record availability is separate from periodic work registration.
+camp_admin_integration_has_site_records = {
+	check_variable = { camp_admin_known_site_states^num > constant:camp_admin_value.zero }
+}
+camp_admin_integration_is_records_only = {
+	camp_admin_integration_has_site_records = yes
+	NOT = { check_variable = { camp_active_site_states^num > constant:camp_admin_value.zero } }
+	NOT = { camp_admin_integration_has_continuing_work = yes }
+}
+
 # Country action bus. Guard/quota/role purchases have no equivalent automatic
 # control command; reject them before any legacy equipment or PP debit.
 camp_admin_legacy_generic_action_is_retired = {
@@ -37,6 +47,10 @@ camp_admin_generic_reform_quote = {
 	multiply_temp_variable = { camp_admin_reform_quote_pp = constant:camp_admin_command.mandate_pp_multiplier }
 	always = yes
 }
+camp_admin_generic_reform_can_pay = {
+	camp_admin_generic_reform_quote = yes
+	check_variable = { var = political_power value = camp_admin_reform_quote_pp compare = greater_than_or_equals }
+}
 
 camp_admin_generic_reform_visible = {
 	has_country_flag = camp_admin_initialized
@@ -49,15 +63,18 @@ camp_admin_generic_reform_visible = {
 
 camp_admin_generic_reform_available = {
 	camp_admin_generic_reform_visible = yes
+	camp_admin_country_sites_ready_for_reform = yes
 	NOT = { has_country_flag = camp_rework_site_closure_active }
 	NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
+	# Every site must be releasable now; the effect checks rows again before payment.
 	all_of_scopes = {
 		array = camp_active_site_states
 		has_state_flag = camp_admin_initialized
 		NOT = { has_state_flag = camp_admin_closed }
+		camp_admin_site_authority_is_valid = yes
+		camp_admin_site_rows_reconciled = yes
 		is_valid_camp_dismantlement_state = yes
 		var:camp_admin_responsible_country = { tag = PREV.PREV }
 	}
-	camp_admin_generic_reform_quote = yes
-	check_variable = { var = political_power value = camp_admin_reform_quote_pp compare = greater_than_or_equals }
+	camp_admin_generic_reform_can_pay = yes
 }

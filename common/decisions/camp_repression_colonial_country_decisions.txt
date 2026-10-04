@@ -153,6 +153,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.construction_days
 		allowed = { original_tag = ENG }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -160,6 +161,7 @@ camp_repression_network_category = {
 			OR = { has_war = yes has_country_flag = uk_focus_wartime_raj_logistics }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = uk_complete_raj_military_works }
 			NOT = { has_decision = uk_postwar_raj_review }
 			NOT = { has_decision = uk_negotiate_indian_release_terms }
@@ -252,6 +254,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { original_tag = ENG }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -262,6 +265,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			has_manpower > constant:camp_rework_cost.expansion_manpower
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -332,6 +336,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { original_tag = ENG }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -339,6 +344,7 @@ camp_repression_network_category = {
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			OR = { has_country_flag = uk_focus_indian_manpower_question has_war = yes }
 			OR = {
 				AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { is_valid_uk_active_colonial_action_state = yes } }
@@ -384,11 +390,13 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { original_tag = ENG }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
 			has_manpower > constant:camp_rework_cost.guard_manpower
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
@@ -542,6 +550,7 @@ camp_repression_network_category = {
 		allowed = { original_tag = ENG }
 		visible = {
 			NOT = { has_country_flag = camp_admin_civil_initialized }
+			hidden_trigger = { NOT = { has_country_flag = camp_rework_uk_raj_review_complete } }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			OR = {
 				has_active_camp_network = yes
@@ -557,7 +566,8 @@ camp_repression_network_category = {
 			NOT = { has_decision = uk_postwar_raj_review }
 			NOT = { has_decision = uk_negotiate_indian_release_terms }
 			camp_rework_all_responsible_sites_currently_closable = yes
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			custom_trigger_tooltip = { tooltip = camp_rework_colonial_dismantlement_readiness_tt camp_rework_colonial_dismantlement_sites_ready = yes }
+			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
 		}
 		complete_effect = {
 			custom_effect_tooltip = uk_dismantle_raj_detention_network_effect_tt
@@ -589,13 +599,14 @@ camp_repression_network_category = {
 				var:uk_raj_security_line_state_id = {
 					OR = {
 						NOT = { is_valid_camp_active_site_state = yes }
+						NOT = { is_italy_libya_repression_pool_state = yes }
 						NOT = { camp_rework_state_is_actor_responsible_controlled = yes }
 						NOT = { is_uk_raj_detention_pool_state = yes }
 					}
 				}
 			}
 		}
-		cancel_effect = { camp_rework_complete_uk_security_line = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_uk_security_line = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -618,7 +629,7 @@ camp_repression_network_category = {
 			camp_rework_complete_uk_raj_military_works = yes
 		}
 		cancel_trigger = { NOT = { camp_rework_uk_military_works_requirements_met = yes } }
-		cancel_effect = { camp_rework_complete_uk_raj_military_works = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_uk_raj_military_works = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -634,7 +645,7 @@ camp_repression_network_category = {
 		is_good = yes
 		timeout_effect = {
 			if = {
-				limit = { has_war = no has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes }
+				limit = { has_war = no has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes camp_rework_colonial_dismantlement_sites_completable = yes }
 				custom_effect_tooltip = uk_postwar_raj_review_success_tt
 			}
 			else = { custom_effect_tooltip = uk_postwar_raj_review_failure_tt }
@@ -767,12 +778,14 @@ camp_repression_network_category = {
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_country_flag = camp_rework_usa_authority_active
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
 			has_manpower > constant:camp_rework_cost.expansion_manpower
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
@@ -827,6 +840,7 @@ camp_repression_network_category = {
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		allowed = { original_tag = USA }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_country_flag = camp_rework_usa_authority_active
@@ -834,6 +848,7 @@ camp_repression_network_category = {
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			OR = {
 				AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { is_valid_camp_active_site_state = yes var:genocide_responsible_country = { tag = ROOT } is_controlled_by = ROOT } }
@@ -976,7 +991,6 @@ camp_repression_network_category = {
 	usa_release_detainees_under_supervision = {
 		icon = GFX_decision_usa_court_review
 		cost = constant:camp_rework_cost.guard_pp
-		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { original_tag = USA }
 		visible = {
 			NOT = { has_country_flag = camp_admin_civil_initialized }
@@ -989,18 +1003,22 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
-			NOT = { has_country_flag = camp_gui_country_action_2_cooldown }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			OR = {
-				AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { is_valid_camp_active_site_state = yes var:genocide_responsible_country = { tag = ROOT } is_controlled_by = ROOT } }
-				AND = { is_ai = yes any_controlled_state = { is_valid_camp_active_site_state = yes var:genocide_responsible_country = { tag = ROOT } } }
+			custom_trigger_tooltip = {
+				tooltip = camp_rework_usa_release_order_requirements_tt
+				camp_rework_usa_release_order_ready = yes
 			}
 		}
 		complete_effect = {
-			custom_effect_tooltip = usa_release_detainees_under_supervision_effect_tt
+			custom_effect_tooltip = camp_rework_usa_release_order_effect_tt
+			set_temp_variable = { camp_rework_usa_release_order_accepted = 0 }
 			camp_rework_prepare_selected_action_state = yes
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.usa_release_detainees_under_supervision }
 			camp_rework_route_country_specific_action = yes
+			if = {
+				limit = { NOT = { check_variable = { camp_rework_usa_release_order_accepted = 1 } } }
+				add_political_power = constant:camp_rework_cost.guard_pp
+			}
+			set_temp_variable = { camp_rework_usa_release_order_accepted = 0 }
 		}
 		ai_will_do = { base = constant:camp_rework_ai_weight.usa_reform }
 	}
@@ -1027,6 +1045,7 @@ camp_repression_network_category = {
 			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
 			NOT = { has_country_flag = camp_rework_dismantlement_in_progress }
 			camp_rework_all_responsible_sites_currently_closable = yes
+			custom_trigger_tooltip = { tooltip = camp_rework_colonial_dismantlement_readiness_tt camp_rework_colonial_dismantlement_sites_ready = yes }
 		}
 		complete_effect = {
 			custom_effect_tooltip = usa_terminate_relocation_authority_effect_tt
@@ -1090,11 +1109,12 @@ camp_repression_network_category = {
 		activation = { always = no }
 		visible = { has_country_flag = camp_rework_usa_authority_active }
 		available = { hidden_trigger = { always = no } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = camp_rework_usa_authority_active } has_country_flag = camp_admin_civil_review_active is_special_chaos_country = yes } }
 		days_mission_timeout = constant:camp_rework_timing.usa_security_authority_sunset_days
 		is_good = yes
 		timeout_effect = {
 			if = {
-				limit = { has_country_flag = camp_rework_expansion_frozen OR = { has_war = no has_country_flag = camp_rework_usa_court_review_complete } camp_rework_all_responsible_sites_currently_closable = yes }
+				limit = { has_country_flag = camp_rework_expansion_frozen OR = { has_war = no has_country_flag = camp_rework_usa_court_review_complete } camp_rework_all_responsible_sites_currently_closable = yes camp_rework_colonial_dismantlement_sites_completable = yes }
 				custom_effect_tooltip = usa_security_authority_sunset_success_tt
 			}
 			else = { custom_effect_tooltip = usa_security_authority_sunset_failure_tt }
@@ -1184,7 +1204,8 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			custom_trigger_tooltip = { tooltip = camp_rework_france_legacy_custody_tt camp_rework_french_legacy_closure_ready = yes }
+			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
 		}
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
 		complete_effect = {
@@ -1283,6 +1304,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.construction_days
 		allowed = { OR = { original_tag = FRA tag = VIC } }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -1291,6 +1313,7 @@ camp_repression_network_category = {
 			OR = { tag = VIC has_country_flag = vichy_focus_north_africa_labor_projects has_government = fascism has_government = neutrality }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = fr_north_africa_rail_labor_project }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
@@ -1442,6 +1465,7 @@ camp_repression_network_category = {
 		}
 		available = {
 			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
+			hidden_trigger = { NOT = { has_country_flag = camp_rework_legacy_closure_active } }
 			NOT = { has_country_flag = camp_rework_france_colonial_review_open }
 			NOT = { has_decision = fr_post_liberation_reckoning }
 		}
@@ -1519,8 +1543,9 @@ camp_repression_network_category = {
 			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
 			NOT = { has_decision = fr_post_liberation_reckoning }
 			camp_rework_all_responsible_sites_currently_closable = yes
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			has_equipment = { convoy_1 > constant:camp_rework_equipment_cost.convoys }
+			custom_trigger_tooltip = { tooltip = camp_rework_colonial_dismantlement_readiness_tt camp_rework_french_inherited_dismantlement_sites_ready = yes }
+			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+			NOT = { has_equipment = { convoy_1 < constant:camp_rework_equipment_cost.convoys } }
 		}
 		complete_effect = {
 			custom_effect_tooltip = fr_dismantle_north_africa_labor_network_effect_tt
@@ -1570,7 +1595,7 @@ camp_repression_network_category = {
 			camp_rework_complete_france_north_africa_project = yes
 		}
 		cancel_trigger = { NOT = { camp_rework_france_rail_project_requirements_met = yes } }
-		cancel_effect = { camp_rework_complete_france_north_africa_project = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_france_north_africa_project = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -1623,7 +1648,7 @@ camp_repression_network_category = {
 		is_good = yes
 		timeout_effect = {
 			if = {
-				limit = { has_government = democratic has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes }
+				limit = { has_government = democratic has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes camp_rework_french_inherited_dismantlement_sites_completable = yes }
 				custom_effect_tooltip = fr_post_liberation_reckoning_success_tt
 			}
 			else = { custom_effect_tooltip = fr_post_liberation_reckoning_failure_tt }
@@ -1782,6 +1807,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.construction_days
 		allowed = { original_tag = ITA }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -1793,6 +1819,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = ita_desert_road_labor_project }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
@@ -1854,6 +1881,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { original_tag = ITA }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -1863,21 +1891,33 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_country_flag = camp_gui_country_action_4_cooldown }
 			NOT = { has_decision = ita_colonial_security_sweep }
-			has_manpower > constant:camp_rework_cost.guard_manpower
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			OR = {
-				AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { is_valid_camp_active_site_state = yes var:genocide_responsible_country = { tag = ROOT } is_controlled_by = ROOT NOT = { is_core_of = ROOT } } }
-				AND = { is_ai = yes any_controlled_state = { is_valid_camp_active_site_state = yes var:genocide_responsible_country = { tag = ROOT } NOT = { is_core_of = ROOT } } }
+			custom_trigger_tooltip = { tooltip = ita_security_battalions_resources_req_tt camp_rework_italy_security_battalions_resources_ready = yes }
+			custom_trigger_tooltip = {
+				tooltip = ita_security_battalions_site_req_tt
+				hidden_trigger = {
+					OR = {
+						AND = { is_ai = no has_variable = camp_selected_state_id var:camp_selected_state_id = { camp_rework_italy_security_battalions_site_ready = yes } }
+						AND = { is_ai = yes any_of_scopes = { array = camp_active_site_states camp_rework_italy_security_battalions_site_ready = yes } }
+					}
+				}
 			}
 		}
+		custom_cost_trigger = { camp_rework_italy_security_battalions_resources_ready = yes }
+		custom_cost_text = ita_security_battalions_cost
 		complete_effect = {
 			custom_effect_tooltip = ita_raise_colonial_security_battalions_effect_tt
 			camp_rework_prepare_selected_action_state = yes
+			set_temp_variable = { camp_rework_italy_security_pp_paid = constant:camp_rework_cost.guard_pp }
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.ita_raise_colonial_security_battalions }
 			camp_rework_route_country_specific_action = yes
+			if = {
+				limit = { check_variable = { camp_rework_italy_security_pp_paid > 0 } }
+				add_political_power = camp_rework_italy_security_pp_paid
+				set_temp_variable = { camp_rework_italy_security_pp_paid = 0 }
+			}
 		}
 		ai_will_do = { base = constant:camp_rework_ai_weight.guard_allocation }
 	}
@@ -1888,12 +1928,14 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { original_tag = ITA }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 			check_variable = { camp_overstretch > constant:camp_rework_threshold.band_medium }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_country_flag = camp_gui_country_action_3_cooldown }
 			command_power > constant:camp_rework_cost.guard_command
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
@@ -1914,6 +1956,7 @@ camp_repression_network_category = {
 		allowed = { original_tag = ITA }
 		visible = {
 			NOT = { has_country_flag = camp_admin_civil_initialized }
+			hidden_trigger = { NOT = { has_country_flag = camp_rework_italy_desert_camps_closed } }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			OR = {
 				has_active_camp_network = yes
@@ -1933,6 +1976,7 @@ camp_repression_network_category = {
 			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
 			NOT = { has_decision = ita_desert_camp_closure }
 			camp_rework_all_responsible_sites_currently_closable = yes
+			custom_trigger_tooltip = { tooltip = camp_rework_colonial_dismantlement_readiness_tt camp_rework_colonial_dismantlement_sites_ready = yes }
 		}
 		complete_effect = {
 			custom_effect_tooltip = ita_close_desert_camps_effect_tt
@@ -1941,6 +1985,16 @@ camp_repression_network_category = {
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.blocked
+			modifier = {
+				add = constant:camp_rework_ai_weight.italy_reform
+				has_government = fascism
+				NOT = { has_country_flag = camp_rework_crisis_exposed }
+				NOT = { surrender_progress > constant:camp_rework_threshold.retreat_surrender }
+				OR = {
+					has_country_flag = ita_focus_postwar_colonial_reform
+					has_country_flag = ita_focus_abandon_colonial_camps
+				}
+			}
 			modifier = {
 				add = constant:camp_rework_ai_weight.italy_exposure_reform
 				has_country_flag = camp_rework_crisis_exposed
@@ -2004,7 +2058,7 @@ camp_repression_network_category = {
 			camp_rework_complete_italy_desert_road_project = yes
 		}
 		cancel_trigger = { NOT = { camp_rework_italy_road_project_requirements_met = yes } }
-		cancel_effect = { camp_rework_complete_italy_desert_road_project = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_italy_desert_road_project = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -2031,12 +2085,14 @@ camp_repression_network_category = {
 					OR = {
 						NOT = { is_valid_camp_active_site_state = yes }
 						NOT = { camp_rework_state_is_actor_responsible_controlled = yes }
+						NOT = { is_controlled_by = ROOT }
+						NOT = { has_state_flag = ita_security_sweep_active }
 						is_core_of = ROOT
 					}
 				}
 			}
 		}
-		cancel_effect = { camp_rework_complete_italy_security_sweep = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } NOT = { has_country_flag = camp_admin_civil_initialized } } camp_rework_complete_italy_security_sweep = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -2052,7 +2108,7 @@ camp_repression_network_category = {
 		is_good = yes
 		timeout_effect = {
 			if = {
-				limit = { has_country_flag = camp_rework_expansion_frozen has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes }
+				limit = { has_country_flag = camp_rework_expansion_frozen has_country_flag = camp_rework_reform_route_open camp_rework_all_responsible_sites_currently_closable = yes camp_rework_colonial_dismantlement_sites_completable = yes }
 				custom_effect_tooltip = ita_desert_camp_closure_success_tt
 			}
 			else = { custom_effect_tooltip = ita_desert_camp_closure_failure_tt }
@@ -2092,6 +2148,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { original_tag = BEL }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
@@ -2107,6 +2164,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = bel_congo_resource_quota_cycle }
 			OR = { is_ai = no camp_rework_country_under_ai_site_cap = yes }
 			has_manpower > constant:camp_rework_cost.activation_manpower
@@ -2197,6 +2255,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { original_tag = BEL }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -2216,6 +2275,7 @@ camp_repression_network_category = {
 			}
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = bel_congo_resource_quota_cycle }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
@@ -2262,6 +2322,7 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.construction_days
 		allowed = { original_tag = BEL }
 		visible = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
@@ -2269,6 +2330,7 @@ camp_repression_network_category = {
 			OR = { any_controlled_state = { is_bel_congo_transport_project_state = yes } any_subject_country = { any_controlled_state = { is_bel_congo_transport_project_state = yes } } }
 		}
 		available = {
+			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_decision = bel_congo_transport_corridor_project }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
@@ -2419,6 +2481,7 @@ camp_repression_network_category = {
 		allowed = { original_tag = BEL }
 		visible = {
 			NOT = { has_country_flag = camp_admin_civil_initialized }
+			hidden_trigger = { NOT = { has_country_flag = camp_rework_belgium_concessions_reformed } }
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_country_flag = camp_rework_belgium_inspection_open
 			OR = { has_active_camp_network = yes check_variable = { postwar_accountability_pressure > 0 } }
@@ -2430,6 +2493,7 @@ camp_repression_network_category = {
 			NOT = { has_decision = bel_congo_resource_quota_cycle }
 			NOT = { has_decision = bel_congo_transport_corridor_project }
 			camp_rework_all_responsible_sites_currently_closable = yes
+			custom_trigger_tooltip = { tooltip = camp_rework_colonial_dismantlement_readiness_tt camp_rework_colonial_dismantlement_sites_ready = yes }
 		}
 		complete_effect = {
 			custom_effect_tooltip = bel_reform_concession_system_effect_tt
@@ -2484,7 +2548,7 @@ camp_repression_network_category = {
 			camp_rework_complete_belgium_quota_cycle = yes
 		}
 		cancel_trigger = { NOT = { camp_rework_belgium_quota_requirements_met = yes } }
-		cancel_effect = { camp_rework_complete_belgium_quota_cycle = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_quota_cycle = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -2507,7 +2571,7 @@ camp_repression_network_category = {
 			camp_rework_complete_belgium_transport_corridor = yes
 		}
 		cancel_trigger = { NOT = { camp_rework_belgium_corridor_requirements_met = yes } }
-		cancel_effect = { camp_rework_complete_belgium_transport_corridor = yes }
+		cancel_effect = { if = { limit = { NOT = { has_country_flag = camp_admin_initialized } } camp_rework_complete_belgium_transport_corridor = yes } }
 		ai_will_do = { base = constant:camp_rework_ai_weight.blocked }
 	}
 
@@ -2564,6 +2628,7 @@ camp_repression_network_category = {
 					has_country_flag = camp_rework_expansion_frozen
 					has_country_flag = camp_rework_reform_route_open
 					camp_rework_all_responsible_sites_currently_closable = yes
+					camp_rework_colonial_dismantlement_sites_completable = yes
 					OR = {
 						any_controlled_state = { is_bel_congo_concession_pool_state = yes }
 						any_subject_country = { any_controlled_state = { is_bel_congo_concession_pool_state = yes } }

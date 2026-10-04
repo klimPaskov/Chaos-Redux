@@ -2,6 +2,22 @@
 # Country defaults, institutional callbacks and civilian replacement remain owned
 # by their modules. No helper here creates population or logs a second debit.
 
+# Existing startup migration entry calls this one native metadata-only pass.
+# It does not reconstruct active membership or infer a missing original actor.
+camp_admin_integration_bootstrap_known_sites = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_admin_known_sites_bootstrapped } }
+		every_country = {
+			limit = { exists = yes }
+			every_controlled_state = {
+				limit = { has_state_flag = camp_admin_initialized has_variable = camp_admin_responsible_country }
+				camp_admin_register_known_site = yes
+			}
+		}
+		set_global_flag = camp_admin_known_sites_bootstrapped
+	}
+}
+
 camp_admin_integration_initialize_country = {
 	camp_admin_initialize_country = yes
 	camp_admin_country_initialize = yes
@@ -18,7 +34,7 @@ camp_admin_integration_monthly_country = {
 	}
 }
 
-# Only the hidden recipient event calls this runner: ROOT is the actual country,
+# Hidden country events .1 and .2 call this runner: ROOT is the actual country,
 # including for legacy registration and state-pool predicates in prepare/tail.
 camp_admin_integration_monthly_country_recipient = {
 	camp_admin_integration_initialize_country = yes
@@ -101,11 +117,17 @@ camp_admin_integration_cancel_routine_projects = {
 # Terminal country cleanup runs before legacy arrays are cleared.
 # Cohorts release in their existing state; cumulative evidence is immutable.
 camp_admin_integration_close_country = {
+	# A terminal country cannot complete an outstanding USA review or closure timer.
+	if = { limit = { has_active_mission = usa_court_review_period } remove_mission = usa_court_review_period }
+	camp_rework_usa_cancel_security_sunset = yes
+	if = { limit = { has_active_mission = usa_redress_commission_work } remove_mission = usa_redress_commission_work }
 	for_each_scope_loop = {
 		array = camp_active_site_states
+		set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
 		camp_admin_integration_close_site = yes
 	}
 	camp_admin_country_halt = yes
+	camp_admin_country_clear_engineer_pending_receipt = yes
 	camp_administration_civil_cleanup = yes
 	camp_occ_close_country = yes
 	camp_admin_integration_cancel_routine_projects = yes
@@ -123,17 +145,47 @@ camp_admin_integration_record_site_history = {
 }
 
 camp_admin_integration_close_site = {
+	camp_admin_register_known_site = yes
+	set_temp_variable = { camp_admin_terminal_history_pending = constant:camp_admin_value.zero }
 	if = {
 		limit = { has_state_flag = camp_admin_initialized NOT = { has_state_flag = camp_admin_closed } }
+		set_temp_variable = { camp_admin_terminal_history_pending = constant:camp_admin_value.one }
+	}
+	camp_admin_close_site = yes
+	if = {
+		limit = { check_variable = { camp_admin_terminal_history_pending = constant:camp_admin_value.one } has_state_flag = camp_admin_closed }
 		if = {
 			limit = {
 				NOT = { OR = { is_controlled_by = var:camp_admin_responsible_country CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country } } }
 			}
-			set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.liberation } camp_admin_integration_record_site_history = yes
+			set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.liberation }
 		}
-		else = { set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure } camp_admin_integration_record_site_history = yes }
+		else = { set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure } }
+		camp_admin_integration_record_site_history = yes
 	}
-	camp_admin_close_site = yes
+	set_temp_variable = { camp_admin_terminal_history_pending = constant:camp_admin_value.zero }
+}
+
+# State scope. A site torn down before administration kept no finite custody rows,
+# so the closure is recorded once with no survivor figure. Nothing is inferred
+# from buildings, state population, census ceilings or transport estimates.
+camp_admin_integration_record_unrecorded_closure = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_initialized }
+			NOT = { has_state_flag = camp_admin_unrecorded_closure_recorded }
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		set_state_flag = camp_admin_unrecorded_closure_recorded
+		set_temp_variable = { camp_admin_record_state_id = THIS.id }
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.unrecorded_closure }
+		if = {
+			limit = { check_variable = { camp_rework_enemy_liberation > constant:camp_admin_value.zero } }
+			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.unrecorded_liberation }
+		}
+		var:genocide_responsible_country = { camp_admin_record_history = yes }
+	}
 }
 
 camp_admin_integration_reform_site = {
@@ -141,11 +193,16 @@ camp_admin_integration_reform_site = {
 		limit = {
 			has_state_flag = camp_admin_initialized
 			NOT = { has_state_flag = camp_admin_closed }
-			OR = { is_controlled_by = var:camp_admin_responsible_country CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country } }
+			camp_admin_site_authority_is_valid = yes
 		}
-		set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure } camp_admin_integration_record_site_history = yes
+		camp_admin_refresh_capacity = yes
+		if = {
+			limit = { camp_admin_site_rows_reconciled = yes }
+			set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure }
+			camp_admin_integration_record_site_history = yes
+			camp_admin_reform_site = yes
+		}
 	}
-	camp_admin_reform_site = yes
 }
 
 camp_admin_integration_record_completed_project = {
@@ -187,8 +244,24 @@ camp_admin_generic_reform_refresh_quote = {
 }
 
 camp_admin_generic_reform = {
+	set_temp_variable = { camp_admin_generic_release_rows_ready = constant:camp_admin_value.one }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		camp_admin_check_rows = yes
+		set_temp_variable = { camp_admin_selected_row_id = constant:camp_admin_value.zero }
+		camp_admin_count_live_rows = yes
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } }
+					NOT = { check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k } }
+				}
+			}
+			set_temp_variable = { camp_admin_generic_release_rows_ready = constant:camp_admin_value.zero }
+		}
+	}
 	if = {
-		limit = { camp_admin_generic_reform_available = yes }
+		limit = { camp_admin_generic_reform_available = yes check_variable = { camp_admin_generic_release_rows_ready = constant:camp_admin_value.one } }
 		multiply_temp_variable = { camp_admin_reform_quote_pp = -1 }
 		add_political_power = camp_admin_reform_quote_pp
 		clear_array = camp_admin_generic_reform_states

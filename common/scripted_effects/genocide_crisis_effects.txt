@@ -1058,16 +1058,28 @@ genocide_publicize_discovery_report = {
 
 genocide_liberate_discovered_camp = {
 	custom_effect_tooltip = chaosx_genocide.discovery_liberate.tt
-	set_temp_variable = { camp_rework_enemy_liberation = 1 }
-	event_target:genocide_discovered_state = {
-		set_state_flag = camp_rework_prisoners_liberated
-		camp_rework_complete_dismantlement = yes
+	set_temp_variable = { camp_liberation_accepted = constant:camp_admin_value.zero }
+	if = {
+		limit = { genocide_country_can_liberate_discovered_camp = yes }
+		set_temp_variable = { camp_rework_enemy_liberation = constant:camp_admin_value.one }
+		event_target:genocide_discovered_state = {
+			camp_rework_complete_dismantlement = yes
+			if = {
+				limit = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } }
+				set_state_flag = camp_rework_prisoners_liberated
+				set_temp_variable = { camp_liberation_accepted = constant:camp_admin_value.one }
+			}
+		}
+		set_temp_variable = { camp_rework_enemy_liberation = constant:camp_admin_value.zero }
+		if = {
+			limit = { check_variable = { camp_liberation_accepted = constant:camp_admin_value.one } }
+			# Release is a finite cohort status change, never a building-count manpower grant.
+			add_stability = constant:genocide_liberation.stability
+			add_war_support = constant:genocide_liberation.war_support
+			set_country_flag = camp_rework_liberated_enemy_camp
+			genocide_publicize_discovery_report = yes
+		}
 	}
-	# Release is a finite cohort status change, never a building-count manpower grant.
-	add_stability = constant:genocide_liberation.stability
-	add_war_support = constant:genocide_liberation.war_support
-	set_country_flag = camp_rework_liberated_enemy_camp
-	genocide_publicize_discovery_report = yes
 }
 
 genocide_receive_severe_discovery_news = {
@@ -1090,15 +1102,15 @@ genocide_receive_severe_discovery_news = {
 	}
 }
 
-# State scope. The stored responsible country determines presentation only;
+# State scope. Responsibility and the actual discovered site select report art;
 # evidence and condemnation were already resolved before this dispatcher runs.
 genocide_dispatch_discoverer_report_from_state = {
 	if = {
-		limit = { event_target:genocide_responsible_country = { original_tag = GER } }
+		limit = { event_target:genocide_responsible_country = { original_tag = GER } state = 88 OR = { has_state_flag = genocide_auschwitz_experiment_site has_state_flag = genocide_ss_laboratory_site } }
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.56 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
-		limit = { event_target:genocide_responsible_country = { original_tag = JAP } }
+		limit = { event_target:genocide_responsible_country = { original_tag = JAP } state = 328 has_state_flag = genocide_japanese_biowarfare_atrocity_site }
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.57 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
@@ -1106,7 +1118,7 @@ genocide_dispatch_discoverer_report_from_state = {
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.58 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
-		limit = { event_target:genocide_responsible_country = { original_tag = ENG } }
+		limit = { event_target:genocide_responsible_country = { original_tag = ENG } OR = { is_core_of = RAJ is_core_of = PAK is_core_of = BAN } }
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.50 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
@@ -1125,11 +1137,11 @@ genocide_dispatch_discoverer_report_from_state = {
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.52 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
-		limit = { event_target:genocide_responsible_country = { original_tag = ITA } }
+		limit = { event_target:genocide_responsible_country = { original_tag = ITA } is_core_of = LBA }
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.53 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else_if = {
-		limit = { event_target:genocide_responsible_country = { original_tag = BEL } }
+		limit = { event_target:genocide_responsible_country = { original_tag = BEL } OR = { is_core_of = COG has_state_flag = camp_rework_congo_concession_pool } }
 		event_target:genocide_discovering_country = { country_event = { id = chaosx_genocide.54 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS } }
 	}
 	else = {
@@ -1172,7 +1184,7 @@ genocide_fire_country_kit_exposure_events = {
 		save_event_target_as = genocide_responsible_country
 		if = {
 			limit = { original_tag = ENG }
-			country_event = { id = chaosx_genocide.50 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
+			country_event = { id = chaosx_genocide.55 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
 		}
 		else_if = {
 			limit = { original_tag = USA }
@@ -1184,11 +1196,11 @@ genocide_fire_country_kit_exposure_events = {
 		}
 		else_if = {
 			limit = { original_tag = ITA }
-			country_event = { id = chaosx_genocide.53 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
+			country_event = { id = chaosx_genocide.55 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
 		}
 		else_if = {
 			limit = { original_tag = BEL }
-			country_event = { id = chaosx_genocide.54 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
+			country_event = { id = chaosx_genocide.55 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
 		}
 		else = {
 			country_event = { id = chaosx_genocide.55 hours = @GENOCIDE_DISCOVERY_DISCOVERER_DELAY_HOURS }
@@ -1444,6 +1456,7 @@ genocide_try_discover_state_atrocity = {
 genocide_on_state_control_changed = {
 	FROM.FROM = {
 		camp_occ_on_state_control_changed = yes
+		if = { limit = { has_state_flag = ita_security_sweep_active NOT = { camp_rework_italy_security_sweep_state_active = yes } } camp_rework_italy_end_security_sweep_state = yes }
 		save_event_target_as = genocide_discovered_state
 	}
 	save_event_target_as = genocide_discovering_country

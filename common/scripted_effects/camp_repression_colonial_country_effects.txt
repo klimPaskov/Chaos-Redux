@@ -1177,6 +1177,18 @@ camp_rework_select_usa_active_security_state = {
 	camp_rework_colonial_select_random_candidate = yes
 }
 
+camp_rework_select_usa_releasable_security_state = {
+	clear_temp_array = camp_colonial_action_states
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_usa_release_site_ready = yes }
+			add_to_temp_array = { camp_colonial_action_states = THIS }
+		}
+	}
+	camp_rework_colonial_select_random_candidate = yes
+}
+
 camp_rework_select_france_legacy_state = {
 	clear_temp_array = camp_colonial_action_states
 	every_controlled_state = {
@@ -1307,12 +1319,7 @@ camp_rework_select_italy_active_colonial_state = {
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = {
-				is_valid_camp_active_site_state = yes
-				var:genocide_responsible_country = { tag = ROOT }
-				is_controlled_by = ROOT
-				NOT = { is_core_of = ROOT }
-			}
+			limit = { camp_rework_italy_security_battalions_site_ready = yes }
 			add_to_temp_array = { camp_colonial_action_states = THIS }
 		}
 	}
@@ -1666,52 +1673,93 @@ camp_rework_apply_major_colonial_subject_concession = {
 # Shared country-kit dismantlement and one-shot discovery
 # ---------------------------------------------------------------------------
 
+# A first attempt releases finite custody through the shared site adapter.
+# After control loss, the paid retry rearms only physical dismantlement.
+camp_rework_begin_legacy_closure_site = {
+	if = {
+		limit = { camp_rework_legacy_closure_site_can_begin = yes }
+		if = {
+			limit = { has_state_flag = camp_rework_legacy_closure_custody_accepted has_state_flag = camp_admin_closed camp_admin_site_rows_reconciled = yes check_variable = { camp_admin_detainees_k = constant:camp_admin_value.zero } }
+			camp_rework_rearm_dismantlement_site = yes
+		}
+		else = { camp_rework_start_dismantlement = yes }
+		if = {
+			limit = { has_state_flag = camp_rework_site_reforming }
+			if = {
+				limit = { has_state_flag = camp_admin_initialized has_state_flag = camp_admin_closed camp_admin_site_rows_reconciled = yes check_variable = { camp_admin_detainees_k = constant:camp_admin_value.zero } }
+				set_state_flag = camp_rework_legacy_closure_custody_accepted
+			}
+			set_state_flag = camp_rework_legacy_closure_site_active
+			ROOT = {
+				if = { limit = { NOT = { is_in_array = { array = camp_rework_legacy_closure_active_states value = PREV } } } add_to_array = { array = camp_rework_legacy_closure_active_states value = PREV } }
+				set_country_flag = camp_rework_legacy_closure_active
+				set_country_flag = camp_rework_dismantlement_in_progress
+			}
+		}
+	}
+}
+
+camp_rework_clear_legacy_closure_attempt = {
+	if = {
+		limit = { has_country_flag = camp_rework_legacy_closure_active }
+		for_each_scope_loop = {
+			array = camp_rework_legacy_closure_active_states
+			if = {
+				limit = { has_state_flag = camp_rework_legacy_closure_site_active }
+				clr_state_flag = camp_rework_legacy_closure_site_active
+				clr_state_flag = camp_rework_site_reforming
+				clr_state_flag = camp_rework_site_dismantlement_in_progress
+				if = { limit = { has_state_flag = camp_rework_site_dismantled } clr_state_flag = camp_rework_legacy_closure_custody_accepted }
+				if = {
+					limit = { has_variable = genocide_responsible_country }
+					var:genocide_responsible_country = {
+						camp_rework_clear_dismantlement_progress_if_idle = yes
+					}
+				}
+			}
+		}
+		clear_array = camp_rework_legacy_closure_active_states
+		clr_country_flag = camp_rework_legacy_closure_active
+		camp_rework_clear_dismantlement_progress_if_idle = yes
+	}
+}
+
 camp_rework_start_all_colonial_site_dismantlement = {
 	clear_temp_array = camp_colonial_dismantlement_states
+	clear_array = camp_rework_legacy_closure_active_states
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = {
-				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
-				OR = {
-					is_controlled_by = ROOT
-					CONTROLLER = { is_subject_of = ROOT }
-				}
-			}
+			limit = { camp_rework_colonial_dismantlement_target = yes }
 			add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
 		}
 	}
 	for_each_scope_loop = {
 		array = camp_colonial_dismantlement_states
-		camp_rework_start_dismantlement = yes
+		camp_rework_begin_legacy_closure_site = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
 }
 
 camp_rework_complete_all_colonial_site_dismantlement = {
+	set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero }
 	clear_temp_array = camp_colonial_dismantlement_states
 	for_each_scope_loop = {
 		array = camp_active_site_states
 		if = {
-			limit = {
-				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { tag = ROOT }
-				OR = {
-					is_controlled_by = ROOT
-					CONTROLLER = { is_subject_of = ROOT }
-				}
-			}
+			limit = { camp_rework_colonial_dismantlement_target = yes }
 			add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
 		}
 	}
-	for_each_scope_loop = {
-		array = camp_colonial_dismantlement_states
-		camp_rework_apply_major_colonial_subject_concession = yes
-		camp_admin_close_site = yes
-		camp_rework_complete_dismantlement = yes
+	if = {
+		limit = { camp_rework_colonial_dismantlement_sites_completable = yes all_of_scopes = { array = camp_colonial_dismantlement_states camp_rework_site_can_complete_dismantlement = yes } }
+		set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one }
+		for_each_scope_loop = {
+			array = camp_colonial_dismantlement_states
+			camp_rework_complete_dismantlement = yes
+			if = { limit = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } } camp_rework_apply_major_colonial_subject_concession = yes }
+			else = { set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero } }
+		}
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
 	camp_rework_recalculate_country_values = yes
@@ -1720,76 +1768,40 @@ camp_rework_complete_all_colonial_site_dismantlement = {
 
 camp_rework_start_all_french_inherited_site_dismantlement = {
 	clear_temp_array = camp_colonial_dismantlement_states
-	every_controlled_state = {
-		limit = {
-			is_valid_camp_active_site_state = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
-			OR = {
-				is_france_camp_legacy_pool_state = yes
-				is_france_north_africa_labor_pool_state = yes
-				is_france_other_colonial_labor_pool_state = yes
-			}
-		}
-		add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
-	}
-	every_subject_country = {
-		limit = { exists = yes }
-		every_controlled_state = {
-			limit = {
-				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
-				OR = {
-					is_france_north_africa_labor_pool_state = yes
-					is_france_other_colonial_labor_pool_state = yes
-				}
-			}
+	clear_array = camp_rework_legacy_closure_active_states
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_dismantlement_target = yes }
 			add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
 		}
 	}
 	for_each_scope_loop = {
 		array = camp_colonial_dismantlement_states
-		camp_rework_start_dismantlement = yes
+		camp_rework_begin_legacy_closure_site = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
 }
 
 camp_rework_complete_all_french_inherited_site_dismantlement = {
+	set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero }
 	clear_temp_array = camp_colonial_dismantlement_states
-	every_controlled_state = {
-		limit = {
-			is_valid_camp_active_site_state = yes
-			has_variable = genocide_responsible_country
-			var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
-			OR = {
-				is_france_camp_legacy_pool_state = yes
-				is_france_north_africa_labor_pool_state = yes
-				is_france_other_colonial_labor_pool_state = yes
-			}
-		}
-		add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
-	}
-	every_subject_country = {
-		limit = { exists = yes }
-		every_controlled_state = {
-			limit = {
-				is_valid_camp_active_site_state = yes
-				has_variable = genocide_responsible_country
-				var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } }
-				OR = {
-					is_france_north_africa_labor_pool_state = yes
-					is_france_other_colonial_labor_pool_state = yes
-				}
-			}
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_rework_french_inherited_dismantlement_target = yes }
 			add_to_temp_array = { camp_colonial_dismantlement_states = THIS }
 		}
 	}
-	for_each_scope_loop = {
-		array = camp_colonial_dismantlement_states
-		camp_rework_apply_major_colonial_subject_concession = yes
-		camp_admin_close_site = yes
-		camp_rework_complete_dismantlement = yes
+	if = {
+		limit = { camp_rework_french_inherited_dismantlement_sites_completable = yes all_of_scopes = { array = camp_colonial_dismantlement_states camp_rework_site_can_complete_dismantlement = yes } }
+		set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one }
+		for_each_scope_loop = {
+			array = camp_colonial_dismantlement_states
+			camp_rework_complete_dismantlement = yes
+			if = { limit = { check_variable = { camp_rework_dismantlement_completion_accepted = constant:camp_admin_value.one } } camp_rework_apply_major_colonial_subject_concession = yes }
+			else = { set_temp_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.zero } }
+		}
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
 	camp_rework_recalculate_country_values = yes
@@ -2088,13 +2100,16 @@ camp_rework_uk_begin_colonial_labor_reform = {
 }
 
 camp_rework_uk_begin_raj_network_dismantlement = {
-	camp_rework_consume_colonial_support_equipment = yes
-	add_stability = constant:camp_rework_cost.stability_minor
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
-	set_country_flag = camp_rework_inspection_active
-	camp_rework_start_all_colonial_site_dismantlement = yes
-	activate_mission = uk_postwar_raj_review
+	if = {
+		limit = { camp_rework_colonial_dismantlement_sites_ready = yes }
+		camp_rework_consume_colonial_support_equipment = yes
+		add_stability = constant:camp_rework_cost.stability_minor
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		set_country_flag = camp_rework_inspection_active
+		camp_rework_start_all_colonial_site_dismantlement = yes
+		activate_mission = uk_postwar_raj_review
+	}
 }
 
 camp_rework_complete_uk_security_line = {
@@ -2145,7 +2160,7 @@ camp_rework_complete_uk_postwar_review = {
 		}
 		camp_rework_complete_all_colonial_site_dismantlement = yes
 		if = {
-			limit = { check_variable = { camp_active_site_count = 0 } }
+			limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 			set_country_flag = camp_rework_uk_raj_review_complete
 			set_country_flag = camp_rework_uk_indian_release_terms_complete
 			set_country_flag = camp_rework_reformed_legacy
@@ -2166,6 +2181,7 @@ camp_rework_complete_uk_postwar_review = {
 		camp_rework_expose_first_colonial_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }
 
 camp_rework_complete_uk_indian_release_terms = {
@@ -2295,37 +2311,57 @@ camp_rework_usa_allow_court_review = {
 }
 
 camp_rework_usa_release_detainees_under_supervision = {
-	if = { limit = { is_ai = yes } camp_rework_select_usa_active_security_state = yes }
+	set_temp_variable = { camp_rework_usa_release_order_accepted = 0 }
+	set_temp_variable = { camp_admin_release_actual_k = 0 }
+	if = { limit = { is_ai = yes } camp_rework_select_usa_releasable_security_state = yes }
 	if = {
-		limit = {
-			has_variable = camp_selected_state_id
-			var:camp_selected_state_id = {
-				is_valid_camp_active_site_state = yes
-				var:genocide_responsible_country = { tag = ROOT }
-				is_controlled_by = ROOT
-			}
+		limit = { camp_rework_usa_release_selected_ready = yes }
+		var:camp_selected_state_id = {
+			set_temp_variable = { camp_admin_release_actual_k = 0 }
+			camp_admin_release_survivors = yes
 		}
-		camp_rework_consume_colonial_support_equipment = yes
-		set_temp_variable = { camp_colonial_relief = constant:camp_rework_colonial.local_burden_minor }
-		multiply_temp_variable = { camp_colonial_relief = -1 }
-		add_to_variable = { relocation_population_disruption = camp_colonial_relief }
-		add_to_variable = { wartime_security_reach = camp_colonial_relief }
-		add_to_variable = { court_challenge_pressure = constant:camp_rework_country_value.inspection_tribunal_relief }
-		var:camp_selected_state_id = { camp_admin_release_survivors = yes set_state_flag = camp_rework_site_reforming }
+		if = {
+			limit = { check_variable = { camp_admin_release_actual_k > constant:camp_admin_value.zero } }
+			set_temp_variable = { camp_rework_usa_release_order_accepted = 1 }
+			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.release }
+			set_temp_variable = { camp_admin_record_state_id = camp_selected_state_id }
+			camp_admin_record_history = yes
+			camp_rework_consume_colonial_support_equipment = yes
+			set_temp_variable = { camp_colonial_relief = constant:camp_rework_colonial.local_burden_minor }
+			multiply_temp_variable = { camp_colonial_relief = -1 }
+			add_to_variable = { relocation_population_disruption = camp_colonial_relief }
+			add_to_variable = { wartime_security_reach = camp_colonial_relief }
+			add_to_variable = { court_challenge_pressure = constant:camp_rework_country_value.inspection_tribunal_relief }
+			var:camp_selected_state_id = { set_state_flag = camp_rework_site_reforming }
+			camp_rework_update_colonial_country_monthly_bridge = yes
+		}
 	}
-	camp_rework_update_colonial_country_monthly_bridge = yes
+}
+
+# Country. Civil reform or terminal cleanup supersedes the legacy security
+# sunset timer; removing it never runs the timeout reward or failure branch.
+camp_rework_usa_cancel_security_sunset = {
+	if = {
+		limit = { original_tag = USA }
+		if = { limit = { has_active_mission = usa_security_authority_sunset } remove_mission = usa_security_authority_sunset }
+		clr_country_flag = camp_rework_usa_authority_active
+		clr_country_flag = camp_rework_democratic_emergency_authorized
+	}
 }
 
 camp_rework_usa_begin_relocation_termination = {
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
-	set_country_flag = camp_rework_inspection_active
-	camp_rework_start_all_colonial_site_dismantlement = yes
 	if = {
-		limit = { has_decision = usa_security_authority_sunset }
-		remove_mission = usa_security_authority_sunset
+		limit = { camp_rework_colonial_dismantlement_sites_ready = yes }
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		set_country_flag = camp_rework_inspection_active
+		camp_rework_start_all_colonial_site_dismantlement = yes
+		if = {
+			limit = { has_decision = usa_security_authority_sunset }
+			remove_mission = usa_security_authority_sunset
+		}
+		activate_mission = usa_security_authority_sunset
 	}
-	activate_mission = usa_security_authority_sunset
 }
 
 camp_rework_usa_begin_redress_commission = {
@@ -2360,6 +2396,18 @@ camp_rework_complete_usa_court_review = {
 camp_rework_complete_usa_security_sunset = {
 	if = {
 		limit = {
+			has_country_flag = camp_rework_usa_authority_active
+			NOT = { has_country_flag = camp_rework_usa_authority_terminated }
+			NOT = { has_country_flag = camp_admin_civil_review_active }
+			NOT = { is_special_chaos_country = yes }
+		}
+		camp_rework_resolve_usa_security_sunset_active = yes
+	}
+}
+
+camp_rework_resolve_usa_security_sunset_active = {
+	if = {
+		limit = {
 			has_country_flag = camp_rework_expansion_frozen
 			OR = {
 				has_war = no
@@ -2369,7 +2417,7 @@ camp_rework_complete_usa_security_sunset = {
 		}
 		camp_rework_complete_all_colonial_site_dismantlement = yes
 		if = {
-			limit = { check_variable = { camp_active_site_count = 0 } }
+			limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 			clr_country_flag = camp_rework_usa_authority_active
 			clr_country_flag = camp_rework_democratic_emergency_authorized
 			set_country_flag = camp_rework_usa_authority_terminated
@@ -2391,6 +2439,7 @@ camp_rework_complete_usa_security_sunset = {
 		camp_rework_expose_first_colonial_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }
 
 camp_rework_complete_usa_redress_commission = {
@@ -2454,23 +2503,29 @@ camp_rework_france_inspect_camp_legacy = {
 }
 
 camp_rework_france_begin_legacy_closure = {
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
-	set_country_flag = camp_rework_inspection_active
-	camp_rework_consume_colonial_support_equipment = yes
-	camp_rework_start_all_french_inherited_site_dismantlement = yes
+	if = {
+		limit = { camp_rework_french_legacy_closure_ready = yes }
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		set_country_flag = camp_rework_inspection_active
+		camp_rework_consume_colonial_support_equipment = yes
+		camp_rework_start_all_french_inherited_site_dismantlement = yes
+	}
 }
 
 camp_rework_france_complete_legacy_closure = {
 	camp_rework_complete_all_french_inherited_site_dismantlement = yes
-	every_controlled_state = {
-		limit = { is_france_camp_legacy_pool_state = yes }
-		clr_state_flag = genocide_historical_quiet_camp
-		set_state_flag = camp_rework_site_dismantled
-		camp_rework_resolve_site_evidence = yes
+	if = {
+		limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } }
+		every_controlled_state = {
+			limit = { is_france_camp_legacy_pool_state = yes OR = { NOT = { has_state_flag = camp_rework_site_active } has_state_flag = camp_rework_site_dismantled } }
+			clr_state_flag = genocide_historical_quiet_camp
+			set_state_flag = camp_rework_site_dismantled
+			camp_rework_resolve_site_evidence = yes
+		}
 	}
 	if = {
-		limit = { check_variable = { camp_active_site_count = 0 } }
+		limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 		set_country_flag = camp_rework_france_legacy_closed
 		set_country_flag = camp_rework_reformed_legacy
 		set_variable = { french_camp_legacy = 0 }
@@ -2482,6 +2537,7 @@ camp_rework_france_complete_legacy_closure = {
 		camp_rework_expose_first_french_inherited_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }
 
 camp_rework_france_expand_vichy_internment = {
@@ -2644,20 +2700,23 @@ camp_rework_france_open_colonial_review = {
 }
 
 camp_rework_france_begin_north_africa_dismantlement = {
-	camp_rework_consume_colonial_support_and_convoys = yes
-	set_country_flag = camp_rework_france_colonial_review_open
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
 	if = {
-		limit = {
-			has_country_flag = camp_rework_france_refugee_response_pending
-			NOT = { has_country_flag = camp_rework_france_refugee_route_suppression }
-			NOT = { has_country_flag = camp_rework_france_refugee_route_aid }
+		limit = { camp_rework_french_inherited_dismantlement_sites_ready = yes }
+		camp_rework_consume_colonial_support_and_convoys = yes
+		set_country_flag = camp_rework_france_colonial_review_open
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		if = {
+			limit = {
+				has_country_flag = camp_rework_france_refugee_response_pending
+				NOT = { has_country_flag = camp_rework_france_refugee_route_suppression }
+				NOT = { has_country_flag = camp_rework_france_refugee_route_aid }
+			}
+			set_country_flag = camp_rework_france_refugee_route_reform
 		}
-		set_country_flag = camp_rework_france_refugee_route_reform
+		camp_rework_start_all_french_inherited_site_dismantlement = yes
+		activate_mission = fr_post_liberation_reckoning
 	}
-	camp_rework_start_all_french_inherited_site_dismantlement = yes
-	activate_mission = fr_post_liberation_reckoning
 }
 
 camp_rework_complete_france_gurs_review = {
@@ -2756,7 +2815,7 @@ camp_rework_complete_france_post_liberation_reckoning = {
 		}
 		camp_rework_complete_all_french_inherited_site_dismantlement = yes
 		if = {
-			limit = { check_variable = { camp_active_site_count = 0 } }
+			limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 			set_country_flag = camp_rework_france_post_liberation_reckoning_complete
 			set_country_flag = camp_rework_france_legacy_closed
 			set_country_flag = camp_rework_reformed_legacy
@@ -2776,6 +2835,7 @@ camp_rework_complete_france_post_liberation_reckoning = {
 		camp_rework_expose_first_french_inherited_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -2895,26 +2955,79 @@ camp_rework_italy_force_settlement = {
 	camp_rework_update_colonial_country_monthly_bridge = yes
 }
 
+# State scope. The paid sweep provides a bounded local garrison benefit only
+# while the original Italian authority directly controls its selected site.
+camp_rework_italy_begin_security_sweep_state = {
+	set_temp_variable = { camp_rework_italy_security_state_applied = 0 }
+	if = {
+		limit = { camp_rework_italy_security_battalions_site_ready = yes }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country } }
+			remove_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country }
+		}
+		set_temp_variable = { camp_rework_italy_security_duration_days = constant:camp_rework_timing.ita_colonial_security_sweep_days }
+		add_to_temp_variable = { camp_rework_italy_security_duration_days = constant:camp_rework_timing.ita_security_sweep_flag_grace_days }
+		set_state_flag = { flag = ita_security_sweep_active days = var:camp_rework_italy_security_duration_days }
+		add_dynamic_modifier = {
+			modifier = ita_colonial_security_sweep_state
+			days = camp_rework_italy_security_duration_days
+			scope = var:genocide_responsible_country
+		}
+		force_update_dynamic_modifier = yes
+		if = {
+			limit = { has_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country } }
+			set_temp_variable = { camp_rework_italy_security_state_applied = 1 }
+		}
+		else = { clr_state_flag = ita_security_sweep_active }
+	}
+}
+
+# State scope. All terminal paths may call this safely more than once.
+camp_rework_italy_end_security_sweep_state = {
+	if = {
+		limit = { has_variable = genocide_responsible_country var:genocide_responsible_country = { exists = yes } }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country } }
+			remove_dynamic_modifier = { modifier = ita_colonial_security_sweep_state scope = var:genocide_responsible_country }
+		}
+	}
+	clr_state_flag = ita_security_sweep_active
+}
+
+# Country scope. Follow the one live mission pointer before clearing it.
+camp_rework_italy_clear_security_sweep_state = {
+	if = { limit = { has_variable = ita_security_sweep_state_id } var:ita_security_sweep_state_id = { camp_rework_italy_end_security_sweep_state = yes } }
+}
+
 camp_rework_italy_raise_security_battalions = {
+	set_temp_variable = { camp_rework_italy_security_action_accepted = 0 }
 	if = { limit = { is_ai = yes } camp_rework_select_italy_active_colonial_state = yes }
 	if = {
 		limit = {
+			NOT = { has_country_flag = camp_admin_initialized }
+			NOT = { has_country_flag = camp_admin_civil_initialized }
+			NOT = { has_decision = ita_colonial_security_sweep }
+			check_variable = { camp_rework_italy_security_pp_paid = constant:camp_rework_cost.guard_pp }
+			camp_rework_italy_security_battalions_resources_ready = yes
 			has_variable = camp_selected_state_id
-			var:camp_selected_state_id = {
-				is_valid_camp_active_site_state = yes
-				var:genocide_responsible_country = { tag = ROOT }
-				is_controlled_by = ROOT
-				NOT = { is_core_of = ROOT }
-			}
+			var:camp_selected_state_id = { camp_rework_italy_security_battalions_site_ready = yes }
 		}
-		camp_rework_consume_colonial_security_battalion_resources = yes
-		set_country_flag = camp_rework_italy_security_battalions_active
-		add_to_variable = { camp_guard_burden = constant:camp_rework_country_value.overstretch_minor }
-		add_to_variable = { libyan_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
-		set_variable = { ita_security_sweep_state_id = camp_selected_state_id }
-		activate_mission = ita_colonial_security_sweep
+		var:camp_selected_state_id = { camp_rework_italy_begin_security_sweep_state = yes }
+		if = {
+			limit = { check_variable = { camp_rework_italy_security_state_applied = 1 } }
+			camp_rework_consume_colonial_security_battalion_resources = yes
+			if = { limit = { NOT = { has_country_flag = camp_rework_italy_security_battalions_active } } add_to_variable = { camp_guard_burden = constant:camp_rework_country_value.overstretch_minor } }
+			set_country_flag = camp_rework_italy_security_battalions_active
+			add_to_variable = { libyan_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
+			set_variable = { ita_security_sweep_state_id = camp_selected_state_id }
+			activate_mission = ita_colonial_security_sweep
+			set_temp_variable = { camp_rework_italy_security_action_accepted = 1 }
+			camp_rework_update_colonial_country_monthly_bridge = yes
+		}
 	}
-	camp_rework_update_colonial_country_monthly_bridge = yes
+	if = { limit = { check_variable = { camp_rework_italy_security_action_accepted = 0 } check_variable = { camp_rework_italy_security_pp_paid > 0 } } add_political_power = camp_rework_italy_security_pp_paid }
+	set_temp_variable = { camp_rework_italy_security_pp_paid = 0 }
+	set_temp_variable = { camp_rework_italy_security_state_applied = 0 }
 }
 
 camp_rework_italy_expand_transport_guard = {
@@ -2928,11 +3041,15 @@ camp_rework_italy_expand_transport_guard = {
 }
 
 camp_rework_italy_begin_desert_camp_closure = {
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
-	set_country_flag = camp_rework_inspection_active
-	camp_rework_start_all_colonial_site_dismantlement = yes
-	activate_mission = ita_desert_camp_closure
+	if = {
+		limit = { camp_rework_colonial_dismantlement_sites_ready = yes }
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		camp_rework_cancel_active_expansion_projects = yes
+		set_country_flag = camp_rework_inspection_active
+		camp_rework_start_all_colonial_site_dismantlement = yes
+		activate_mission = ita_desert_camp_closure
+	}
 }
 
 camp_rework_italy_begin_colonial_compensation = {
@@ -2979,17 +3096,23 @@ camp_rework_complete_italy_security_sweep = {
 	if = {
 		limit = { camp_rework_italy_security_sweep_requirements_met = yes }
 		add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.quota_relief }
+		add_to_variable = { libyan_resistance_pressure = constant:camp_rework_country_value.quota_relief }
 		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_minor }
 		add_to_variable = { libyan_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
+		clamp_variable = { var = camp_policy_resistance_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = libyan_resistance_pressure min = 0 max = constant:camp_rework_threshold.max_value }
 	}
 	else = {
 		add_to_variable = { libyan_resistance_pressure = constant:camp_rework_colonial.local_burden_major }
 		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 		if = {
 			limit = { has_variable = ita_security_sweep_state_id }
-			var:ita_security_sweep_state_id = { camp_rework_colonial_apply_major_harm_to_current_state = yes }
+			var:ita_security_sweep_state_id = {
+				if = { limit = { is_italy_libya_repression_pool_state = yes has_variable = genocide_responsible_country var:genocide_responsible_country = { tag = ROOT } } camp_rework_colonial_apply_major_harm_to_current_state = yes }
+			}
 		}
 	}
+	camp_rework_italy_clear_security_sweep_state = yes
 	clear_variable = ita_security_sweep_state_id
 	camp_rework_update_colonial_country_monthly_bridge = yes
 }
@@ -3003,7 +3126,7 @@ camp_rework_complete_italy_desert_camp_closure = {
 		}
 		camp_rework_complete_all_colonial_site_dismantlement = yes
 		if = {
-			limit = { check_variable = { camp_active_site_count = 0 } }
+			limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 			clr_country_flag = camp_rework_italy_desert_administration_active
 			clr_country_flag = camp_rework_italy_security_battalions_active
 			set_country_flag = camp_rework_italy_desert_camps_closed
@@ -3028,6 +3151,7 @@ camp_rework_complete_italy_desert_camp_closure = {
 		camp_rework_expose_first_colonial_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }
 
 camp_rework_complete_italy_colonial_compensation = {
@@ -3274,20 +3398,23 @@ camp_rework_belgium_open_international_inspection = {
 }
 
 camp_rework_belgium_begin_concession_reform = {
-	set_country_flag = camp_rework_belgium_inspection_open
-	set_country_flag = camp_rework_inspection_active
-	set_country_flag = camp_rework_reform_route_open
-	set_country_flag = camp_rework_expansion_frozen
 	if = {
-		limit = {
-			has_country_flag = camp_rework_belgium_strike_response_pending
-			NOT = { has_country_flag = camp_rework_belgium_strike_route_negotiation }
-			NOT = { has_country_flag = camp_rework_belgium_strike_route_suppression }
+		limit = { camp_rework_colonial_dismantlement_sites_ready = yes }
+		set_country_flag = camp_rework_belgium_inspection_open
+		set_country_flag = camp_rework_inspection_active
+		set_country_flag = camp_rework_reform_route_open
+		set_country_flag = camp_rework_expansion_frozen
+		if = {
+			limit = {
+				has_country_flag = camp_rework_belgium_strike_response_pending
+				NOT = { has_country_flag = camp_rework_belgium_strike_route_negotiation }
+				NOT = { has_country_flag = camp_rework_belgium_strike_route_suppression }
+			}
+			set_country_flag = camp_rework_belgium_strike_route_reform
 		}
-		set_country_flag = camp_rework_belgium_strike_route_reform
+		camp_rework_start_all_colonial_site_dismantlement = yes
+		activate_mission = bel_concession_reform_mandate
 	}
-	camp_rework_start_all_colonial_site_dismantlement = yes
-	activate_mission = bel_concession_reform_mandate
 }
 
 camp_rework_belgium_recognize_local_administration = {
@@ -3438,7 +3565,7 @@ camp_rework_complete_belgium_concession_reform = {
 		}
 		camp_rework_complete_all_colonial_site_dismantlement = yes
 		if = {
-			limit = { check_variable = { camp_active_site_count = 0 } }
+			limit = { check_variable = { camp_colonial_dismantlement_all_accepted = constant:camp_admin_value.one } check_variable = { camp_active_site_count = 0 } }
 			set_country_flag = camp_rework_belgium_concessions_reformed
 			set_country_flag = camp_rework_reformed_legacy
 			set_variable = { concession_labor_burden = 0 }
@@ -3461,4 +3588,5 @@ camp_rework_complete_belgium_concession_reform = {
 		camp_rework_expose_first_colonial_evidence = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
+	camp_rework_clear_legacy_closure_attempt = yes
 }

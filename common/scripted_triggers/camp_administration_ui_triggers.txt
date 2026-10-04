@@ -18,6 +18,8 @@ camp_admin_has_open_picker = {
 	}
 }
 camp_admin_can_set_priority = {
+	exists = yes
+	has_country_flag = camp_admin_initialized
 	camp_rework_country_is_eligible = yes
 	NOT = { has_country_flag = camp_admin_reforming }
 	OR = {
@@ -29,6 +31,8 @@ camp_admin_can_set_priority = {
 	has_political_power > camp_admin_policy_quote_floor
 }
 camp_admin_can_set_budget = {
+	exists = yes
+	has_country_flag = camp_admin_initialized
 	camp_rework_country_is_eligible = yes
 	OR = {
 		check_variable = { camp_admin_control_requested = constant:camp_admin_budget.maintenance }
@@ -47,6 +51,8 @@ camp_admin_can_set_budget = {
 	}
 }
 camp_admin_can_set_mandate = {
+	exists = yes
+	has_country_flag = camp_admin_initialized
 	camp_rework_country_is_eligible = yes
 	NOT = { has_country_flag = camp_admin_reforming }
 	OR = {
@@ -68,12 +74,64 @@ camp_admin_has_selected_operating_site = {
 		check_variable = { camp_admin_responsible_country = PREV.id }
 	}
 }
-camp_admin_can_change_selected_role = {
+camp_admin_has_selected_proven_operating_site = {
 	camp_admin_has_selected_operating_site = yes
+	var:camp_selected_state_id = { camp_origin_host_provenance_ready = yes }
+}
+camp_admin_selected_site_has_custody = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = { check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero } }
+}
+camp_admin_selected_site_has_labor_purpose = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = {
+		OR = {
+			check_variable = { camp_admin_role = constant:camp_admin_role.labor }
+			check_variable = { camp_admin_role = constant:camp_admin_role.penal }
+		}
+	}
+}
+camp_admin_country_work_mandate_ready = {
+	check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody }
+}
+camp_admin_can_toggle_selected_work = {
+	camp_admin_has_selected_proven_operating_site = yes
+	camp_admin_selected_site_has_custody = yes
+	camp_admin_selected_site_has_labor_purpose = yes
+	camp_admin_country_work_mandate_ready = yes
+}
+camp_admin_killing_role_offer_visible = {
+	camp_admin_can_use_radical_mandate = yes
+	OR = { camp_admin_country_nazi_authority = yes camp_rework_country_can_use_radicalized_route = yes }
+}
+camp_admin_killing_role_mandate_ready = {
+	check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical }
+}
+camp_admin_killing_role_existing = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = {
+		OR = {
+			check_variable = { camp_admin_role = constant:camp_admin_role.killing }
+			extermination_camp > 0
+		}
+	}
+}
+camp_admin_killing_role_level_ready = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = { concentration_camp > 0 }
+}
+camp_admin_killing_role_funds_ready = {
+	has_political_power > camp_admin_role_quote_floor
+}
+camp_admin_can_change_selected_role = {
+	camp_admin_has_selected_proven_operating_site = yes
 	has_political_power > camp_admin_role_quote_floor
 	check_variable = { var = camp_admin_control_requested value = constant:camp_admin_role.custody compare = greater_than_or_equals }
 	check_variable = { var = camp_admin_control_requested value = constant:camp_admin_role.killing compare = less_than_or_equals }
-	var:camp_selected_state_id = { NOT = { check_variable = { camp_admin_role = camp_admin_control_requested } } }
+	var:camp_selected_state_id = {
+		NOT = { check_variable = { camp_admin_role = camp_admin_control_requested } }
+		NOT = { extermination_camp > 0 }
+	}
 	OR = {
 		check_variable = { camp_admin_control_requested = constant:camp_admin_role.custody }
 		AND = {
@@ -89,11 +147,68 @@ camp_admin_can_change_selected_role = {
 			check_variable = { camp_admin_control_requested = constant:camp_admin_role.killing }
 			camp_admin_can_use_radical_mandate = yes
 			check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical }
+			OR = {
+				camp_admin_country_nazi_authority = yes
+				camp_rework_country_can_use_radicalized_route = yes
+			}
+			var:camp_selected_state_id = {
+				concentration_camp > 0
+				check_variable = { building_level@extermination_camp < constant:genocide_camp_level.maximum }
+			}
 		}
 	}
 }
 camp_admin_can_release_selected_site = {
-	camp_admin_has_selected_operating_site = yes
+	camp_admin_has_selected_proven_operating_site = yes
 	camp_rework_country_can_reform = yes
-	var:camp_selected_state_id = { check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero } }
+	var:camp_selected_state_id = {
+		check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+		camp_admin_site_rows_reconciled = yes
+	}
+}
+
+# STATE. Display uncertainty without mutating provenance or assigning victims.
+camp_admin_gui_site_record_visible = {
+	camp_admin_site_is_original_record = yes
+	OR = { camp_admin_site_authority_is_valid = yes has_state_flag = camp_admin_closed }
+}
+# STATE, PREV is display actor. Closed archive data is not productive custody.
+# Funded civilian replacement retains its separate existing registry contract.
+camp_admin_gui_site_has_current_output = {
+	camp_admin_site_is_original_record = yes
+	camp_admin_site_authority_is_valid = yes
+	OR = {
+		camp_admin_has_supported_workforce = yes
+		AND = {
+			check_variable = { camp_admin_civilian_workforce_k > constant:camp_admin_value.zero }
+			PREV = { is_in_array = { array = camp_admin_civilian_states value = PREV } }
+		}
+	}
+}
+camp_admin_gui_host_records_uncertain = {
+	OR = {
+		has_state_flag = camp_origin_ambiguous
+		has_state_flag = camp_origin_records_unresolved
+		has_state_flag = camp_origin_baseline_unverified
+		has_state_flag = camp_origin_transaction_unresolved
+		has_state_flag = camp_origin_counter_regressed
+		has_state_flag = camp_origin_single_origin_reconciliation_pending
+		AND = {
+			# Exact aligned zero-live history has no held claimant for a later
+			# unrelated territorial loss. Sticky reasons above remain visible.
+			NOT = {
+				AND = {
+					camp_admin_known_site_ready_for_reform = yes
+					check_variable = { camp_admin_detainees_k = constant:camp_admin_value.zero }
+					check_variable = { camp_occ_remaining_k = constant:camp_admin_value.zero }
+				}
+			}
+			OR = {
+				check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+				check_variable = { camp_occ_remaining_k > constant:camp_admin_value.zero }
+				check_variable = { camp_admin_row_count > constant:camp_admin_value.zero }
+			}
+			NOT = { camp_origin_host_provenance_ready = yes }
+		}
+	}
 }

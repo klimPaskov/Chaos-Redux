@@ -21,7 +21,7 @@ The system never offers a protected-class target selector. State selection is ba
 5. The registered-state processor applies the resolved population loss once, reports it through the shared Deaths helpers, updates labor and resistance pressure, and deepens hidden evidence.
 6. The responsible-country processor updates guard, transport, supply, administrative overextension, stability, legitimacy, reform, and country-specific pressure.
 7. Enemy capture, inspection, public use, outbreak exposure, crisis exposure, or a country legal route can reveal evidence. Ordinary operation does not create passive foreign condemnation.
-8. Discovery reads `genocide_responsible_country`, exposes stored hidden atrocity and cover-up pressure, and records the state as discovered without recurring report spam. A discoverer that controls the state while still at war with the responsible country receives an event option to dismantle every camp level, free surviving prisoners into its manpower pool, and preserve the evidence.
+8. Discovery reads `genocide_responsible_country`, exposes stored hidden atrocity and cover-up pressure, and records the state as discovered without recurring report spam. A discoverer that controls the state while still at war with the responsible country receives an event option to dismantle every camp level, release surviving prisoners in place without creating manpower, and preserve the evidence.
 9. Reform and dismantlement freeze expansion, close active sites, remove active registration, preserve the historical record, and convert active burdens into reform, redress, or legacy outcomes.
 
 ## Site Types and State Pools
@@ -165,7 +165,7 @@ Generic authoritarian users require a real occupation, resistance, wartime, doct
 
 ## Player Actions and Dispatcher
 
-The final 2026-07-11 inventory contains 84 player actions: 29 Germany/Japan/Soviet actions, 43 U.K./U.S./France/Italy/Belgium actions, and 12 generic actions. The closing actions are `fr_support_refugee_and_rescue_networks`, `bel_negotiate_colonial_strike_settlement`, and `generic_inspect_active_site`. The same files contain 41 missions; system show, hide, open, and close are four separate controls. The final decision/mission re-audit passed, and all 32 country action slots in the system use the same native cooldown gates as their corresponding normal decisions.
+The legacy inventory contains 84 player actions: 29 Germany/Japan/Soviet actions, 43 U.K./U.S./France/Italy/Belgium actions, and 12 generic actions. The same files contain 41 missions. The administration cutover retires duplicate routine purchases and timers after `camp_admin_initialized` while retaining explicit authority, crisis, evidence, review, release and redress choices. Identifier dispositions and remaining audit limits are recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/decision_cutover_handoff_2026-09-25.md`; the current re-audit is not complete.
 
 All country actions use `camp_rework_route_country_specific_action`. State actions persist their target through the normal country variable `camp_rework_action_state_id`; `camp_rework_prepare_selected_action_state` resolves the pointer, while `camp_rework_dispatch_prepare_colonial_selection` and `camp_rework_dispatch_restore_colonial_selection` adapt subject-controlled states to the existing country payloads without overwriting the player's system selection.
 
@@ -263,7 +263,7 @@ The system sprites derive from frozen ImageGen sources in `docs/assets/system_ca
 
 This system is a cross-event rework rather than a standalone `chaosx.nr<ID>` event. The event workbook remains aligned through the existing Soviet Collapse Event Log row, whose event-details cell matches `chaosx.events_log.window.event_details.soviet_collapse`. Super-event research and final presentation disposition live in `docs/super_events/system_camp_repression_rework_super_event_research.md`; implementation status lives in `docs/plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md` and `completion_report.md`.
 
-The final decision/mission audit passed. All 15 Part 7 and cross-cutting scenario contracts passed static trace with `ScenarioContracts=15 Failed=0`; `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md` records the evidence. No engine-runtime scenario execution occurred in this environment, so rendered GUI behavior, AI choices, timed outcomes, and numeric runtime deltas remain an explicit validation gap for the parent final gate.
+The earlier 15 Part 7 and cross-cutting scenario contracts passed static trace with `ScenarioContracts=15 Failed=0`; `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md` records that historical evidence. The accepted national-administration redesign has additional population movement, dated historical calibration, visual, AI and event acceptance gates recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/implementation_execution_2026-09-25.md`. Source traces do not establish engine-runtime behavior.
 
 ## Maintenance Rules
 

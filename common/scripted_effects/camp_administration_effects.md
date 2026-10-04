@@ -13,6 +13,7 @@ State admission through `camp_admin_admit_detainees` is explicit: the caller sup
 The helper clamps against source membership, free physical capacity, the state civilian floor, and a population share ceiling; it returns `camp_admin_admission_accepted_k` and consumes the proof.
 There is no automatic intake from a pressure score or from the entire state population.
 Site initialization creates an empty cohort and copies the existing registered responsible authority once into `camp_admin_responsible_country`.
+It also registers immutable original-authority site metadata through `camp_admin_register_known_site`.
 That immutable evidence pointer and cumulative records survive capture and closure.
 
 Country controls: `camp_admin_priority` industry=1, works=2, extraction=3; `camp_admin_mandate` custody=1, coercive=2, radical=3; `camp_admin_budget` maintenance=1, development=2, priority=3.
@@ -21,11 +22,18 @@ Radical mandate requires `camp_admin_can_use_radical_mandate`, which combines th
 Site role `camp_admin_role` is custody=1, labor=2, penal=3, killing=4.
 Only labor or penal roles plus an explicit coercive/radical national mandate produce forced-work output.
 Violence mortality requires both killing-center role and a currently permitted radical mandate.
+Institutional mortality is a separate experiment-site cause requested once from the same guarded site-month pass after custody, labor and violence, only while the country-specific Auschwitz or Pingfang authority, policy and funded support gates hold. It can continue after a one-use research award and never advances that award.
 `camp_admin_site_suspended` suppresses productive allocations without ending custody, maintenance or its mortality obligations.
 State cohort: `camp_admin_detainees_k`; capacity `camp_admin_capacity_k`; supported fraction `camp_admin_support_ratio`; allocations `camp_admin_industry_k`, `camp_admin_works_k`, `camp_admin_extraction_k` are mutually exclusive portions of surviving workforce.
+The state aggregate is backed by state-owned aligned custody rows: `camp_admin_row_ids`, `camp_admin_row_origins`, `camp_admin_row_authorities`, `camp_admin_row_occupation_roots`, `camp_admin_row_amounts_k`, `camp_admin_row_deaths_k`, `camp_admin_row_arrival_deaths_k`, `camp_admin_row_released_k`, `camp_admin_row_removed_k`, and `camp_admin_row_statuses`.
+`camp_admin_next_row_id` is monotonic and `camp_admin_row_count` must equal every array length; rows are append-only, with active status 1, exhausted status 0, and inverse-void status -1.
+Each accepted local admission appends its own origin row with the current state as origin, original site authority, and occupation root 0, including when an imported row already exists.
+Existing aggregate detainees are adopted once as a local row when the row ledger initializes; no population changes during adoption.
 Country display totals use `camp_admin_total_detainees_k`, `camp_admin_total_workforce_k`, `camp_admin_month_deaths_k`, `camp_admin_total_deaths_k`, and `camp_admin_industrial_factor`.
 Cause enum: custody=1, labor=2, violence=3, institutional=4.
 Each cause has state and responsible-country `camp_admin_month_<cause>_deaths_k` and `camp_admin_total_<cause>_deaths_k`.
+`camp_admin_month_arrival_deaths_k` and `camp_admin_total_arrival_deaths_k` are subsets of the violence cause, never a fifth additive death category.
+The one-chain `camp_admin_arrival_phase_contract = 1` input adds only the measured `camp_admin_death_actual_k` to those state/country subtotals and only the actual selected-row slice to `camp_admin_row_arrival_deaths_k`; `camp_admin_record_deaths` clears the input after every accepted or rejected request.
 
 ## Public helpers and parent insertion points
 
@@ -34,9 +42,15 @@ Each cause has state and responsible-country `camp_admin_month_<cause>_deaths_k`
 `camp_admin_monthly_country = yes`: country; bounded iteration of `camp_active_site_states`, maintenance before development, cause outcomes, refresh and one calendar-month guard.
 Parent must replace the legacy state percent-death pulse, not run both paths.
 `camp_admin_record_deaths = yes`: state; temporary `camp_admin_death_requested_k`, `camp_admin_death_cause`, `camp_admin_death_contract = 1`; output `camp_admin_death_actual_k`; finite cohort and physical floor bounded.
-`camp_admin_release_survivors = yes`: state; releases all surviving detainees in place, records release totals, clears allocations, preserves physical population; returns temporary `camp_admin_release_actual_k`.
+An optional positive `camp_admin_death_row_id` restricts that death request to one live custody row; zero consumes live rows newest first after the one measured physical loss.
+The row deaths and aggregate decline by the same actual receipt, while the existing shared Deaths projection runs once for that receipt and retains the original responsible authority.
+`camp_admin_release_survivors = yes`: state; releases all surviving detainees in place, records release totals, clears allocations, preserves physical population, and closes automatic census enrollment at that site; returns temporary `camp_admin_release_actual_k`.
 `camp_admin_release_detainees = yes`: state; bounded release of temporary `camp_admin_release_requested_k`, returns actual surviving amount and consumes the request; the full release helper delegates here.
-`camp_admin_close_site = yes`: state; release, remove modifiers, cancel support and active project references, preserve responsibility and cumulative records; call before current pointers and registry membership are erased.
+`camp_admin_close_site = yes`: state, releases proved survivors and stops output/project references without changing population or historical responsibility.
+An uncertain voluntary target remains open with custody unchanged.
+An uncertain terminal target stops operations while retaining frozen rows and zero claimed survivor release, with `camp_origin_ambiguity_terminal` marking its records.
+Terminal authority is supplied by actual control loss, a ceased original country, or the parent-owned one-shot `camp_origin_terminal_close_contract = 1` before the call.
+The terminal contract is consumed on return, and the parent must invoke closure before pointers and active registry membership are removed.
 `camp_admin_begin_reform = yes`: country; freeze admissions, release survivors, use paid civilian workforce replacement through the economy slot.
 `camp_admin_reform_site = yes`: state; same-authority voluntary closure preserves a surviving-worker conversion target in `camp_admin_civilian_states`, without requiring national reform.
 `camp_admin_reopen_site = yes`: state; only the same retained authority with valid control can reopen an empty location; neither cohorts nor historical records reset.
@@ -51,7 +65,11 @@ Capacity is 25,000 per physical camp building, a 5,000 fallback for an explicitl
 Intake also cannot exceed 20 percent of local civilian population minus existing detainees, the documented local source membership, or noncommitted headroom after `camp_occ_remaining_k` is reserved.
 Capacity does not manufacture an intake source; country owners consume their declared source allowance by `camp_admin_admission_accepted_k` only.
 The initial migration marker is `camp_admin_migration_v1`; it does not seed detainees from pressure, infer historical deaths or reset country-owner admissions.
-If outside population loss makes an existing cohort larger than the remaining host population, the difference enters `camp_admin_external_attrition_k` without another physical debit or invented cause.
+`camp_admin_refresh_capacity` reconciles the common physical-host observer before using living custody.
+The observer compares net decline, shared territorial Deaths growth and combined membership headroom.
+At one proved positive row it retains a bounded conservative outside-retirement request, which the existing custody owner commits to that exact row and acknowledges without changing population or a death cause.
+The accepted actual retirement enters `camp_admin_external_attrition_k`.
+Mixed, unverified or transaction-quarantined hosts retain their last verified rows and aggregate rather than allocating an unlabelled loss among origins.
 
 The existing exact civilian loss helper computes an accepted amount before its engine primitive runs.
 To provide a measured receipt, `camp_admin_record_deaths` invokes `apply_exact_state_civilian_population_loss` with logging off, measures `state_population_k` before and after, then invokes `chaos_meter_register_deaths` with `chaos_deaths_apply_state_pop = 0` once for that actual loss.
@@ -63,7 +81,21 @@ The Deaths-disabled setting suppresses the entire foundation mortality transacti
 
 Closing releases living people in place, removes state output, refreshes original-authority national output immediately and cancels matching project pointers.
 It does not erase `camp_admin_responsible_country`, cumulative cause records, external attrition, admission or release history.
+The `camp_admin_census_intake_closed` site flag prevents an automatic census from immediately detaining the same released population again; bounded partial releases, including the Soviet engineer program, do not set that full-site flag.
 Different-authority reopening and locations already reserved for civilian conversion are deliberately rejected; a later distinct institution requires an explicit new authority-phase ledger instead of overwriting historical blame or counting the state in both workforce registries.
+Release and reform consume only current row survivors, update row release totals, and never add population or reverse the recorded row deaths.
+Voluntary site reform refreshes capacity and reconciles any external population loss before setting the 65 percent civilian replacement target, so the target comes from the survivors that can actually be released rather than the earlier aggregate.
+After refresh, site reform requires the current aligned custody rows to reconcile before it creates a replacement target or closes the site. If the records are inconsistent, that site stays open and its living custody remains in place. Major and civil national reform callers use a bounded preflight before advancing their policy state; legacy timed dismantlement paths have their own lifecycle audit.
+Unlabelled outside loss never uses newest-first or proportional original-cohort retirement.
+Only the uniquely attributable pending row can take the conservative ledger-only retirement path, with its positive immutable ID and full before/after acknowledgment.
+Sticky mixed-origin ambiguity requires a complete source-labelled recovery provider, which is not present in this package.
+Repeated observation, a new import, growth and closure cannot clear that ambiguity.
+
+Known package deaths capture the common opening sequence/population/shared Deaths image, complete the measured physical debit, row/aggregate commit and single shared projection, then adjust only the common measured baseline.
+The next refresh therefore cannot retire the same physical death as another outside loss.
+Admission, release and supported workforce require fresh provenance, while `camp_admin_site_is_operational` remains the lifecycle/authority predicate so ambiguous sites stay visible to observation and all-site guards.
+`camp_admin_country_sites_ready_for_reform` checks both the existing custody-site list and the occupation-host list.
+The occupation union reads the named owner's actual bounded rows even if a host's aggregate or registration marker was lost, and permits structurally valid empty history when no sticky unresolved origin remains.
 National reform and selected voluntary reform preserve surviving-worker replacement targets; four funded work programs convert 25 percent each into sustainable civilian work, with duration determined by each surviving civilian group and the required conversion work.
 These people already remain civilians in the same state, so conversion adds no population and restores no deaths.
 Infrastructure constructed by a completed works project remains after closure and reform.
@@ -122,6 +154,37 @@ subtract_from_variable = { local_host_source_remaining_k = camp_admin_admission_
 
 This helper never authorizes an unknown source cohort; the caller's historical intake contract must identify the local membership and persist consumed headroom across closure/reopening.
 
+## Occupation-origin custody receipt
+
+`camp_admin_preflight_import = yes` is a side-effect-free state-scope quote for an active Auschwitz killing-center site.
+The caller supplies temporary `camp_admin_import_requested_people` as a positive integer, `camp_admin_import_origin` as the actual original state, `camp_admin_import_authority` as the original authority country, and `camp_admin_import_occupation_root_id` as a positive occupation root ID.
+The original authority must equal the immutable site authority and directly control the destination; the site must be the package-designated state 88, operational, have an `extermination_camp` building and carry the `killing` role. The optional Mengele experiment marker is not an admission gate.
+The supplied original state must remain an occupation-registered state so the row cannot accept a country scope or an untracked origin.
+The quote checks aligned rows, the current live-row sum, the next row slot, the physical capacity, the 20 percent postcredit population share, the host population floor, existing occupation reservation, and the maximum single receipt without changing durable state.
+It returns temporary `camp_admin_import_preflight_valid = 1` and `camp_admin_import_preflight_row_id` on success, or zero values on failure, and snapshots the quoted inputs and precredit physical population.
+
+After the occupation transaction has measured an exact destination physical credit, call `camp_admin_bind_import = yes` in that same destination state and effect chain.
+Bind verifies that the observed whole-person population difference equals the quoted request and that the quote, input identity, row slot, live-row sum, site, and authority still match.
+On success it appends one row with the original state, original authority, occupation root ID, and exact credited survivors, increments `camp_admin_detainees_k` and `camp_admin_total_admitted_k`, then returns temporary `camp_admin_import_bind_accepted_people`, `camp_admin_import_bound_row_id`, and `camp_admin_import_bind_pending_inverse = 1`.
+It calls no physical population or Deaths effect, consumes the quote, and a repeated bind in the same chain leaves the row unchanged.
+
+If the caller cannot commit its source occupation row, invoke `camp_admin_inverse_import_bind = yes` in the destination before undoing the physical destination credit and source debit.
+The inverse verifies the returned last row's ID, live amount, origin, authority, root, and aggregate headroom, voids that row once, subtracts only its custody addition, and returns `camp_admin_import_inverse_accepted_people`.
+The caller must compare this receipt with `camp_admin_import_bind_accepted_people`, verify both physical inverse receipts, and block retry on any mismatch.
+The caller commits the source occupation row and state aggregate only after bind succeeds; it does not append a destination occupation row.
+No population or Deaths effect belongs in preflight, bind, inverse, release, or reform.
+
+Example caller order for one named route:
+
+```txt
+# Source sets origin, original authority, occupation root and requested whole people.
+event_target:camp_occ_custody_destination = { camp_admin_preflight_import = yes }
+# If valid, the occupation owner performs one measured source debit and destination credit.
+event_target:camp_occ_custody_destination = { camp_admin_bind_import = yes }
+# Compare bind receipt with both physical receipts, then commit only the source row.
+# On rejection, call camp_admin_inverse_import_bind if a bind succeeded, then undo physical receipts.
+```
+
 ## Institutional slot and award boundary
 
 Independent flags: `camp_admin_economy_slot_active` and `camp_admin_institution_slot_active`.
@@ -149,3 +212,32 @@ Future extension: a supported construction-queue query could permit the construc
 `camp_admin_initialize_cause_records_<cause>` and `camp_admin_record_cause_<cause>` use explicit custody, labor, violence and institutional suffixes and are called with `= yes`.
 They keep the caller scope, original cause ledger names, initialization guards and actual measured receipt input unchanged.
 No input default, target, tuning value or cleanup is added.
+
+## Lasting site metadata
+
+Acceptance: the parent's bounded 2026-10-03 archive implementation decision within the accepted complete Locations, lasting Records and origin-pause contract.
+`camp_admin_known_site_states` is a country-owned duplicate-free array of state scopes belonging to the already stored immutable `camp_admin_responsible_country`.
+It is never cleared or moved during capture, annexation, evidence resolution, closure, reform or country initialization.
+It is separate from active work and civilian replacement registries and creates no cohort, dated history, release, population change or Deaths entry.
+
+| Helper | Scope and inputs/defaults | Outputs and side effects | Callers |
+|---|---|---|---|
+| `camp_admin_register_known_site` | State; already initialized site and existing immutable country pointer, no inferred authority/default | Idempotently appends the state to that country's known array; no live-country requirement, no source-state write | Site initialization, foundation close, integration close, terminal unregister, startup bootstrap |
+| `camp_admin_site_is_original_record` | State, PREV is inspecting country; no inputs/defaults | Read-only initialized site and original pointer equality | Archive reform and display |
+| `camp_admin_site_rows_aligned` | State; existing sparse custody rows | Read-only structural/authority/aggregate validation using temporary inspection values | Current action readiness and archive preflight |
+| `camp_admin_known_site_ready_for_reform` | State, PREV original registry owner | Read-only aligned custody plus combined-host provenance; permits valid empty history without treating later unrelated territorial loss as surviving victims; sticky ambiguity, unverified baseline, transaction/counter reasons and pending reconciliation still reject | Full bounded known/custody/occupation national reform union |
+
+`camp_admin_site_rows_reconciled` retains its strict fresh action proof by composing row alignment with `camp_origin_host_provenance_ready`.
+Archive preflight does not force a never-initialized occupation schema on a custody-only country; the independent `camp_occ_states` pass still inspects the actual occupation owner when host markers are absent.
+The known array has no history-row cap and uses native scope-array iterators rather than a numeric loop over state IDs.
+Native setters on a ceased country's stored scope remain an engine evidence limit; source fixtures preserve that actor's metadata without requiring `exists = yes` or transferring it to a current controller.
+
+```txt
+# State scope, before teardown discards any legacy membership/pointer.
+camp_admin_register_known_site = yes
+# Country scope: every known, active custody and occupation host is checked.
+if = { limit = { camp_admin_country_sites_ready_for_reform = yes } camp_admin_begin_reform = yes }
+```
+
+Evidence and remaining integration limits are in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_closed_site_archive_integration_2026-10-03.md`.
+No tuning constants, icons, localisation keys or recovery provider are added by this metadata contract.
