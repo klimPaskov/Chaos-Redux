@@ -1,0 +1,39 @@
+# ============================================================================
+# CHAOS REDUX - HOSTILE CAPTURE PRESSURE CONSTANTS
+# ============================================================================
+# Tuning for the hostile-capture adapter in humanitarian_capture_effects.txt.
+# When an enemy captures a state, a bounded share of its live population
+# gains flight pressure and the state receives one food-safety assessment.
+# Values are population shares and campaign pacing, not historical totals.
+# ============================================================================
+
+humanitarian_capture_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Share of the live state population that starts to flee an ordinary
+	# hostile capture. The committed nuclear-strike adapter uses 0.05.
+	base_population_fraction = 0.03
+	# The occupier's ideology and conduct scale the share inside this range.
+	minimum_multiplier = 0.50
+	maximum_multiplier = 2.00
+	neutral_multiplier = 1.00
+	# Same ruling ideology as the owner and no harsh occupation conduct.
+	shared_ideology_adjustment = -0.40
+	# A fascist or communist occupier of a country with another ideology.
+	hostile_ideology_adjustment = 0.40
+	# Occupation profiles resolved from the state's current occupation law.
+	protective_conduct_adjustment = -0.30
+	harsh_conduct_adjustment = 0.40
+	brutal_conduct_adjustment = 0.80
+	# Keep this share of the live population out of the request.
+	protected_origin_share = 0.20
+	# Smaller requests are ignored rather than registering a state.
+	minimum_request_people = 1000
+	# Only states at least this large (thousands) feed the adapter.
+	minimum_state_population_k = 100
+	# One state answers at most one hostile capture in this window.
+	cooldown_days = 30
+}

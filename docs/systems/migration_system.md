@@ -121,6 +121,11 @@ Migration accepts exact owner-proven pressure and transaction requests from pers
 
 An adapter must prove state, people, actor, cause, route or custody context, generation, revision, and request ownership as required by the receiving contract. An event flag, generic severity, or ideology is not a substitute for those facts.
 
+Ordinary wars create refugees through the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.
+When an enemy that is not the owner, a faction partner or in a subject relationship with it captures a state, `on_state_control_changed` requests war flight pressure equal to the live population times a bounded share, scaled by the occupier's conduct and ruling ideology within a fixed range and capped above the protected origin floor.
+A minimum state size, a minimum request and a per-state cooldown keep the registry bounded, and liberation by the owner adds no flight.
+This covers wars created by event owners, such as civil wars and collapse wars, without editing their files.
+
 ## Assets and mapmode
 
 Migration assets use `migration_*` filenames and sprite identifiers. `interface/migration_system.gfx` owns the category, decision, state-modifier, and achievement sprites; `interface/chaosx_texticons.gfx` owns the migration Deaths texticon; `interface/migration_report_pictures.gfx` and `interface/migration_report_header.gui` own the compact migration report art consumer; `interface/mapmodes_interface.gfx` owns the two migration mapmode button states.

@@ -82,6 +82,9 @@ Famine accepts explicit, owner-proven changes from occupation conduct, extractio
 
 Famine can create a migration flight request only after the famine state and affected people are proven. That connection does not merge the two mechanics.
 
+A hostile capture of a state queues one food-safety assessment through `famine_enqueue_food_observation_assessment` from the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.
+The ordinary food job then reads the occupation law through `famine_resolve_occupation_profile` and decides whether a real food problem exists; the capture itself adds no famine stage and no deaths.
+
 The famine evacuation action proves an active famine problem and route request, then crosses narrow migration-owned availability, trapped-obligation, exact-transfer, and mission-finalization seams. Famine decision script does not inspect or mutate migration reception load, preparation state, displacement state, cohort records, mission subjects, deadlines, slot ledgers, or mission flags.
 
 Famine also owns the versioned `famine_to_migration_*` destination-food-safety projection. It publishes only from initialized famine facts and otherwise invalidates the receipt; it never treats an untracked state as implicitly stable. Migration consumes this projection for bounded registered reception states and adjacent destination candidates without reading raw famine variables.

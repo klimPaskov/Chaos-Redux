@@ -1,0 +1,67 @@
+# ============================================================================
+# CHAOS REDUX - HOSTILE CAPTURE TRIGGERS
+# ============================================================================
+# Pure Boolean helpers for the hostile-capture adapter. They read the state
+# that just changed controller and the saved new controller; they write no
+# persistent state.
+# ============================================================================
+
+# STATE scope: the state whose controller just changed. Event targets
+# humanitarian_capture_new_controller (the on_state_control_changed ROOT) and
+# humanitarian_capture_owner (this state's owner) are saved by the caller.
+# True only for an enemy capture: the new controller now holds the state, is
+# at war with its owner, and is neither the owner, a faction partner nor in a
+# subject relationship with the owner. A liberation by the owner or a handover
+# to an ally is never a hostile capture.
+humanitarian_capture_is_hostile = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_event_target = humanitarian_capture_new_controller
+		event_target:humanitarian_capture_new_controller = { humanitarian_country_is_valid = yes }
+		is_controlled_by = event_target:humanitarian_capture_new_controller
+		NOT = { is_owned_by = event_target:humanitarian_capture_new_controller }
+		OWNER = {
+			has_war_with = event_target:humanitarian_capture_new_controller
+			NOT = { is_in_faction_with = event_target:humanitarian_capture_new_controller }
+			NOT = { is_subject_of = event_target:humanitarian_capture_new_controller }
+		}
+		has_event_target = humanitarian_capture_owner
+		OWNER = { tag = event_target:humanitarian_capture_owner }
+		event_target:humanitarian_capture_new_controller = {
+			NOT = { is_subject_of = event_target:humanitarian_capture_owner }
+		}
+	}
+}
+
+# STATE scope. The state is large enough and outside its capture cooldown.
+humanitarian_capture_state_is_eligible = {
+	hidden_trigger = {
+		state_population_k > constant:humanitarian_capture_pressure.minimum_state_population_k
+		OR = {
+			NOT = { has_variable = humanitarian_capture_cooldown_until_date }
+			check_variable = { var = global.date value = humanitarian_capture_cooldown_until_date compare = greater_than_or_equals }
+		}
+	}
+}
+
+# COUNTRY scope: the new controller. Event target humanitarian_capture_owner
+# is the captured state's owner. True when both share a ruling ideology.
+humanitarian_capture_occupier_shares_owner_ideology = {
+	hidden_trigger = {
+		OR = {
+			AND = { has_government = fascism event_target:humanitarian_capture_owner = { has_government = fascism } }
+			AND = { has_government = communism event_target:humanitarian_capture_owner = { has_government = communism } }
+			AND = { has_government = democratic event_target:humanitarian_capture_owner = { has_government = democratic } }
+			AND = { has_government = neutrality event_target:humanitarian_capture_owner = { has_government = neutrality } }
+		}
+	}
+}
+
+# COUNTRY scope: the new controller. A fascist or communist occupier of a
+# country with another ruling ideology.
+humanitarian_capture_occupier_ideology_is_hostile = {
+	hidden_trigger = {
+		OR = { has_government = fascism has_government = communism }
+		NOT = { humanitarian_capture_occupier_shares_owner_ideology = yes }
+	}
+}

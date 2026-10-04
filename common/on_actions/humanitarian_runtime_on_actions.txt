@@ -51,11 +51,15 @@ on_actions = {
 		effect = {
 			# FROM.FROM is the state; ROOT is the new controller and FROM the old.
 			FROM = { save_event_target_as = migration_previous_controller }
+			ROOT = { save_event_target_as = humanitarian_capture_new_controller }
 			# Corridor identity is invalidated before generic state registration
 			# cleanup; control transfer is never submitted as an attack receipt.
+			# A hostile capture then adds bounded war flight pressure and one food
+			# assessment for this state only; a liberation adds nothing.
 			FROM.FROM = {
 				humanitarian_corridor_handle_state_control_change = yes
 				humanitarian_handle_state_control_change = yes
+				humanitarian_handle_hostile_capture = yes
 			}
 		}
 	}

@@ -1,0 +1,139 @@
+# ============================================================================
+# CHAOS REDUX - HOSTILE CAPTURE ADAPTER
+# ============================================================================
+# Ordinary wars create refugees and occupation hunger through this adapter.
+# on_state_control_changed calls it for the one state that changed hands.
+# A hostile capture adds bounded war flight pressure to the state and queues
+# one food-safety assessment, so the famine owner can read the occupation law.
+# It moves nobody, adds no famine stage and no deaths, and never scans the
+# world: the work is limited to the changed state, a population gate and a
+# per-state cooldown. A liberation by the owner adds no flight; the existing
+# return paths act on their own.
+# ============================================================================
+
+# STATE scope: the state whose controller just changed.
+# Input: event target humanitarian_capture_new_controller, the new controller.
+# Output: temporary humanitarian_capture_result (1 when the capture was
+# answered), declared by callers that read it.
+humanitarian_handle_hostile_capture = {
+	set_temp_variable = { humanitarian_capture_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_event_target = humanitarian_capture_new_controller
+		}
+		OWNER = { save_event_target_as = humanitarian_capture_owner }
+		if = {
+			limit = {
+				humanitarian_capture_is_hostile = yes
+				humanitarian_capture_state_is_eligible = yes
+			}
+			# The cooldown starts with the attempt, so a front that keeps changing
+			# hands cannot stack repeated flight requests on one state.
+			set_temp_variable = { chaosx_date_days = constant:humanitarian_capture_pressure.cooldown_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { humanitarian_capture_cooldown_until_date = global.date }
+			add_to_variable = { humanitarian_capture_cooldown_until_date = chaosx_date_offset }
+			# Outputs of the nested helpers are declared here so they survive them.
+			set_temp_variable = { humanitarian_capture_request_people = constant:humanitarian_population.zero }
+			set_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_population.zero }
+			set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
+			set_temp_variable = { famine_occupation_extra_extraction = constant:famine_food_component.zero }
+			set_temp_variable = { famine_occupation_extra_vulnerability = constant:famine_food_component.zero }
+			set_temp_variable = { famine_occupation_extra_governance = constant:famine_food_component.zero }
+			set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.zero }
+			humanitarian_capture_calculate_flight_request = yes
+			if = {
+				limit = { check_variable = { var = humanitarian_capture_request_people value = constant:humanitarian_capture_pressure.minimum_request_people compare = greater_than_or_equals } }
+				set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_pressure_request_amount = humanitarian_capture_request_people }
+				set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+				migration_request_war_pressure = yes
+			}
+			# One assessment only: the famine owner reads the occupation law and
+			# decides whether a real food problem exists.
+			famine_enqueue_food_observation_assessment = yes
+			set_temp_variable = { humanitarian_capture_result = constant:humanitarian_runtime.one }
+		}
+	}
+	# Clear the whole request envelope after every attempt.
+	set_temp_variable = { humanitarian_capture_request_people = constant:humanitarian_population.zero }
+	set_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+}
+
+# STATE scope: the captured state, with the two capture event targets saved.
+# Formula: request = population * base_fraction * clamp(multiplier, min, max),
+# capped at the population above the protected origin floor. The multiplier
+# starts neutral, moves for a shared or hostile ruling ideology, and moves for
+# the occupation conduct resolved from the state's current occupation law.
+# Output: temporary humanitarian_capture_request_people.
+humanitarian_capture_calculate_flight_request = {
+	set_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.neutral_multiplier }
+	set_temp_variable = { humanitarian_capture_conduct_harsh = constant:humanitarian_runtime.zero }
+	famine_resolve_occupation_profile = yes
+	if = {
+		limit = { check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.protective compare = equals } }
+		add_to_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.protective_conduct_adjustment }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.extraction compare = equals }
+				check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.forced_labor compare = equals }
+			}
+		}
+		add_to_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.harsh_conduct_adjustment }
+		set_temp_variable = { humanitarian_capture_conduct_harsh = constant:humanitarian_runtime.one }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.collective_punishment compare = equals }
+				check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.population_transfer compare = equals }
+				check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.exterminatory compare = equals }
+			}
+		}
+		add_to_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.brutal_conduct_adjustment }
+		set_temp_variable = { humanitarian_capture_conduct_harsh = constant:humanitarian_runtime.one }
+	}
+	# Evidence of harsh conduct outweighs a shared ideology.
+	if = {
+		limit = {
+			check_variable = { var = humanitarian_capture_conduct_harsh value = constant:humanitarian_runtime.zero compare = equals }
+			event_target:humanitarian_capture_new_controller = { humanitarian_capture_occupier_shares_owner_ideology = yes }
+		}
+		add_to_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.shared_ideology_adjustment }
+	}
+	else_if = {
+		limit = { event_target:humanitarian_capture_new_controller = { humanitarian_capture_occupier_ideology_is_hostile = yes } }
+		add_to_temp_variable = { humanitarian_capture_multiplier = constant:humanitarian_capture_pressure.hostile_ideology_adjustment }
+	}
+	clamp_temp_variable = {
+		var = humanitarian_capture_multiplier
+		min = constant:humanitarian_capture_pressure.minimum_multiplier
+		max = constant:humanitarian_capture_pressure.maximum_multiplier
+	}
+	set_temp_variable = { humanitarian_capture_population = state_population_k }
+	multiply_temp_variable = { humanitarian_capture_population = constant:humanitarian_population.people_per_k }
+	round_temp_variable = humanitarian_capture_population
+	set_temp_variable = { humanitarian_capture_request_people = humanitarian_capture_population }
+	multiply_temp_variable = { humanitarian_capture_request_people = constant:humanitarian_capture_pressure.base_population_fraction }
+	multiply_temp_variable = { humanitarian_capture_request_people = humanitarian_capture_multiplier }
+	# Never request more than the population above the protected origin floor.
+	set_temp_variable = { humanitarian_capture_movable_population = humanitarian_capture_population }
+	set_temp_variable = { humanitarian_capture_protected_floor = humanitarian_capture_population }
+	multiply_temp_variable = { humanitarian_capture_protected_floor = constant:humanitarian_capture_pressure.protected_origin_share }
+	round_temp_variable = humanitarian_capture_protected_floor
+	subtract_from_temp_variable = { humanitarian_capture_movable_population = humanitarian_capture_protected_floor }
+	clamp_temp_variable = {
+		var = humanitarian_capture_request_people
+		min = constant:humanitarian_population.zero
+		max = humanitarian_capture_movable_population
+	}
+	round_temp_variable = humanitarian_capture_request_people
+}
