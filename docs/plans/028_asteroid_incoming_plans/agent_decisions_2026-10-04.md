@@ -312,3 +312,11 @@ Basis: Part 10 makes three achievements depend on this updater, and nothing else
 
 Decision: the Collector check no longer requires the player to be independent, and its tooltip says sites held by your subjects do not count.
 Basis: Part 10 says only that subject control does not count; `any_controlled_state` and `asteroid_incoming_count_controlled_mineral_fragments` already count direct control only.
+
+### The trajectory-locked notice names the target and date
+
+Decision: at the lock, `global.asteroid_incoming_expected_impact_date` is the current date plus `asteroid_incoming_runtime.lock_duration_days`, converted with `chaosx_convert_days_to_date_offset`, and the `chaosx.nr28.4` resolver delay is injected from the same constant through `meta_effect` with an integer literal instead of a written `days = 2`.
+`chaosx.news.30.d` names the original target state, its country, its continent and that date in plain text, and says nothing about fragments.
+The date is cleared by `asteroid_incoming_resolve_miss`, `asteroid_incoming_fail_closed_transaction` and `asteroid_incoming_cleanup_finished_transaction`.
+The preparedness event `chaosx.nr28.3` keeps its existing text, because a popup left open past the impact would read the cleared date.
+Basis: Part 8 (Observer trajectory notice) and Part 7 (Observer information) require the notice to name the intended target and impact date, and a single constant keeps the announced day and the real delay equal.

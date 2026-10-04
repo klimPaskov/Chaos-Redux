@@ -321,6 +321,7 @@ asteroid_incoming_resolve_miss = {
 	set_variable = { global.asteroid_incoming_outcome = constant:asteroid_incoming_event.history_payload_miss }
 	set_variable = { global.asteroid_incoming_close_passage_date = global.date }
 	set_variable = { global.asteroid_incoming_close_passage_day = global.num_days }
+	clear_variable = global.asteroid_incoming_expected_impact_date
 	set_global_flag = asteroid_incoming_miss_recorded
 	if = {
 		limit = { NOT = { has_global_flag = asteroid_incoming_miss_news_sent } }
@@ -594,6 +595,13 @@ asteroid_incoming_accept_selected_target = {
 			}
 			set_variable = { global.asteroid_incoming_expected_impact_day = global.asteroid_incoming_lock_expires_day }
 			set_variable = { global.asteroid_incoming_lock_date = global.date }
+			# The announced impact date and the resolver delay below both read
+			# lock_duration_days, so the notice always names the real impact day.
+			set_temp_variable = { chaosx_date_days = constant:asteroid_incoming_runtime.lock_duration_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.asteroid_incoming_expected_impact_date = global.date }
+			add_to_variable = { global.asteroid_incoming_expected_impact_date = chaosx_date_offset }
 			set_global_flag = asteroid_incoming_target_locked
 			clr_global_flag = asteroid_incoming_board_ready
 			set_variable = { global.asteroid_incoming_preparedness = 0 }
@@ -603,7 +611,14 @@ asteroid_incoming_accept_selected_target = {
 				set_global_flag = asteroid_incoming_lock_news_sent
 			}
 			event_target:asteroid_incoming_locked_country = { country_event = { id = chaosx.nr28.3 } }
-			event_target:asteroid_incoming_chooser = { country_event = { id = chaosx.nr28.4 days = 2 } }
+			# An event delay takes a literal, so the constant is injected as an integer.
+			set_temp_variable = { asteroid_incoming_resolver_delay_days = constant:asteroid_incoming_runtime.lock_duration_days }
+			meta_effect = {
+				text = {
+					event_target:asteroid_incoming_chooser = { country_event = { id = chaosx.nr28.4 days = [RESOLVER_DELAY_DAYS] } }
+				}
+				RESOLVER_DELAY_DAYS = "[?asteroid_incoming_resolver_delay_days|.0]"
+			}
 		}
 	}
 }
@@ -2168,5 +2183,6 @@ asteroid_incoming_cleanup_finished_transaction = {
 	clear_global_event_target = asteroid_incoming_locked_state
 	clear_global_event_target = asteroid_incoming_backup_capital_state
 	clear_global_event_target = asteroid_incoming_chooser
+	clear_variable = global.asteroid_incoming_expected_impact_date
 	set_global_flag = asteroid_incoming_transaction_resolved
 }
