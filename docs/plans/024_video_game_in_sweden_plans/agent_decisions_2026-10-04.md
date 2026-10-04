@@ -88,3 +88,12 @@ Protected shifts cut output cost by 60%, a preparedness charter by 25%, and sepa
 Option `.12.a` raises Reliance by `exhibition_gain` (6) and adds exhibition war support, `.12.b` also sets protected shifts, and `.12.c` records the civic network that lowers the cost factor.
 The live costs appear in the category header during Evolution II.
 Basis: spec part 2 civilian tradeoffs and Evolution II choices, spec part 3 balance targets (costs large enough to justify Protect Essential Shifts).
+
+## D11. Evolution choices last and contained evolutions file their own conclusion
+
+Decision: formal auxiliary doctrine caps Reliance at `auxiliary_reliance_cap` (55) on choice and blocks gains past that level while Evolution I lasts, so the officer opening at 62 becomes a contained staff culture.
+Competitive command culture keeps its Reliance rise and commander roll and carries the strongest package.
+Red-team supervision also sets `enemy_mismatch_reduced`, which removes the enemy-behaviour incident family, matching the red-team decision.
+`video_game_in_sweden_close_ordinary_program` sets `conclusion_officer_culture` from Evolution I and `conclusion_craze_contained` from Evolution II, and report `.20` shows matching text and options with Validated Wargaming Methods or Municipal Campaign Clubs as the finite aftermath.
+Incident frequency and evolution pacing effects of these choices are wired with the incident and pacing items.
+Basis: spec part 2 Evolution I and II choices, Evolution I and II conclusions and resolution states 2 and 3.

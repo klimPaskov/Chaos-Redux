@@ -285,6 +285,24 @@ video_game_in_sweden_change_reliance = {
 		min = 0
 		max = constant:video_game_in_sweden_value.maximum
 	}
+	# A formal auxiliary doctrine debriefs every session against field reports,
+	# so during the staff-culture stage gains stop at its ceiling.
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_formal_auxiliary_doctrine
+			has_country_flag = video_game_in_sweden_evolution_i_active
+			check_variable = { video_game_in_sweden_reliance_next > constant:video_game_in_sweden_reliance.auxiliary_reliance_cap }
+		}
+		set_temp_variable = { video_game_in_sweden_reliance_ceiling = constant:video_game_in_sweden_reliance.auxiliary_reliance_cap }
+		if = {
+			limit = { check_variable = { simulation_reliance > constant:video_game_in_sweden_reliance.auxiliary_reliance_cap } }
+			set_temp_variable = { video_game_in_sweden_reliance_ceiling = simulation_reliance }
+		}
+		clamp_temp_variable = {
+			var = video_game_in_sweden_reliance_next
+			max = video_game_in_sweden_reliance_ceiling
+		}
+	}
 	set_variable = { simulation_reliance = video_game_in_sweden_reliance_next }
 	# Consumed arithmetic input. Zero prevents accidental reuse within this chain.
 	set_temp_variable = { video_game_in_sweden_reliance_delta = 0 }
@@ -676,13 +694,14 @@ video_game_in_sweden_reset_program_package = {
 	clr_country_flag = video_game_in_sweden_exercise_at_war
 }
 
+# COUNTRY scope. Finite aftermath of an ordinary conclusion: civic clubs for a
+# public outcome, validated training methods for a staff outcome.
 video_game_in_sweden_add_ordinary_aftermath = {
 	if = {
 		limit = {
-			check_variable = {
-				var = video_game_in_sweden_route
-				value = constant:video_game_in_sweden_value.route_commercial
-				compare = equals
+			OR = {
+				check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_cultural compare = equals }
+				check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_craze_contained compare = equals }
 			}
 		}
 		set_temp_variable = { video_game_in_sweden_aftermath_days = constant:video_game_in_sweden_timing.ordinary_aftermath_days }
@@ -2378,21 +2397,30 @@ video_game_in_sweden_close_program = {
 	}
 }
 
+# COUNTRY scope. Ordinary conclusion. The baseline trial closes by route,
+# while a contained staff culture or national craze files its own outcome.
 video_game_in_sweden_close_ordinary_program = {
 	set_country_flag = video_game_in_sweden_program_closing
 	clr_country_flag = video_game_in_sweden_program_active
-	set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_validated }
 	if = {
+		limit = { has_country_flag = video_game_in_sweden_evolution_ii_active }
+		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_craze_contained }
+	}
+	else_if = {
+		limit = { has_country_flag = video_game_in_sweden_evolution_i_active }
+		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_officer_culture }
+	}
+	else_if = {
 		limit = {
 			check_variable = {
 				var = video_game_in_sweden_route
 				value = constant:video_game_in_sweden_value.route_commercial
 				compare = equals
-				}
+			}
 		}
 		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_cultural }
 	}
-	if = {
+	else_if = {
 		limit = {
 			check_variable = {
 				var = video_game_in_sweden_route
@@ -2401,6 +2429,9 @@ video_game_in_sweden_close_ordinary_program = {
 			}
 		}
 		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_officer }
+	}
+	else = {
+		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_validated }
 	}
 	country_event = { id = chaosx.nr24.20 days = 1 }
 }

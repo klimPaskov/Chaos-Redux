@@ -105,6 +105,11 @@ The ordinary conclusion branches by opening and by the last useful institutional
 
 The baseline can therefore finish as a complete low-scale event rather than requiring the player to chase a route escalation.
 
+The same conclusion action closes a contained Evolution I or Evolution II, and report `chaosx.nr24.20` files a phase-specific outcome.
+A contained staff culture is validated and retired (`.20.f`): army experience, Rulebook Commander removal and Validated Wargaming Methods for 120 days.
+A contained national craze becomes a cultural institution (`.20.g`): political power and Municipal Campaign Clubs for 120 days.
+Baseline trials keep their route outcomes (`.20.a` to `.20.c`).
+
 ## Programme package
 
 One country dynamic modifier, `video_game_in_sweden_program_package` ("Campaign Cabinet Programme"), carries every finite action payoff and the Evolution II public costs.
@@ -173,6 +178,11 @@ Evolution I requires Chaos at least 200, a 120-day delay, and a valid early prog
 Its event entry is `chaosx.nr24.11`.
 
 The staff college turns the cabinet into professional culture through rankings, repeated scenarios, and a dispute over what the tables measure.
+
+The evolution event offers three lasting choices.
+Formal auxiliary doctrine (`chaosx.nr24.11.a`) caps Reliance at 55 and stops gains past that level while the staff culture lasts, with a small planning and adaptation package.
+Competitive command culture (`.11.b`) raises Reliance by 11, gives the strongest planning and army-experience package and rolls the 35 percent Rulebook Commander chance.
+Independent red-team supervision (`.11.c`) lowers Reliance by 10, files the red-team review, trades planning for adaptation and stops enemy-behaviour incidents.
 
 The primary actions are:
 

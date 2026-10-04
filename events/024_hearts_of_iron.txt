@@ -101,8 +101,14 @@ country_event = {
 			modifier = { factor = constant:video_game_in_sweden_ai_route.rules_revision_commercial has_country_flag = video_game_in_sweden_commercial_route }
 			modifier = { factor = constant:video_game_in_sweden_ai_route.rules_revision_officer has_country_flag = video_game_in_sweden_officer_route }
 		}
-		set_country_flag = video_game_in_sweden_formal_auxiliary_doctrine
 		army_experience = constant:video_game_in_sweden_award.evolution_i_auxiliary_experience
+		custom_effect_tooltip = video_game_evolution_i_auxiliary_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_formal_auxiliary_doctrine
+			# Debriefed sessions pull Reliance back to the lower half of Doctrine.
+			set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.auxiliary_reliance_cap }
+			video_game_in_sweden_cap_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.11.b
@@ -113,12 +119,13 @@ country_event = {
 			modifier = { factor = constant:video_game_in_sweden_ai_route.officer_league_commercial has_country_flag = video_game_in_sweden_commercial_route }
 			modifier = { factor = constant:video_game_in_sweden_ai_route.officer_league_officer has_country_flag = video_game_in_sweden_officer_route }
 		}
-		set_country_flag = video_game_in_sweden_competitive_command_culture
 		add_command_power = constant:video_game_in_sweden_award.evolution_i_command_power
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.officer_league_gain }
-		video_game_in_sweden_change_reliance = yes
+		custom_effect_tooltip = video_game_evolution_i_competitive_tt
 		custom_effect_tooltip = video_game_rulebook_commander_chance_tt
 		hidden_effect = {
+			set_country_flag = video_game_in_sweden_competitive_command_culture
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.officer_league_gain }
+			video_game_in_sweden_change_reliance = yes
 			set_temp_variable = { video_game_in_sweden_commander_chance = constant:video_game_in_sweden_award.commander_chance_competitive_culture }
 			video_game_in_sweden_roll_rulebook_commander = yes
 		}
@@ -132,10 +139,14 @@ country_event = {
 			modifier = { factor = constant:video_game_in_sweden_ai_route.red_team_commercial has_country_flag = video_game_in_sweden_commercial_route }
 			modifier = { factor = constant:video_game_in_sweden_ai_route.red_team_officer has_country_flag = video_game_in_sweden_officer_route }
 		}
-		set_country_flag = video_game_in_sweden_red_team_complete
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.red_team_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_change_reliance = yes
+		custom_effect_tooltip = video_game_evolution_i_red_team_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_red_team_complete
+			set_country_flag = video_game_in_sweden_enemy_mismatch_reduced
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.red_team_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_change_reliance = yes
+		}
 	}
 }
 
@@ -233,7 +244,15 @@ country_event = {
 country_event = {
 	id = chaosx.nr24.20
 	title = chaosx.nr24.20.t
-	desc = chaosx.nr24.20.d
+	desc = {
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_officer_culture compare = equals } }
+		text = chaosx.nr24.20.officer_culture_d
+	}
+	desc = {
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_craze_contained compare = equals } }
+		text = chaosx.nr24.20.craze_d
+	}
+	desc = { text = chaosx.nr24.20.d }
 	picture = GFX_report_event_024_video_game_in_sweden_release
 	is_triggered_only = yes
 	trigger = {
@@ -245,38 +264,76 @@ country_event = {
 		}
 	}
 
+	# Baseline trial, filed by route.
 	option = {
 		name = chaosx.nr24.20.a
-		trigger = { check_variable = { var = video_game_in_sweden_route value = constant:video_game_in_sweden_value.route_controlled compare = equals } }
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_validated compare = equals } }
 		ai_chance = { base = 1 }
-		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_validated }
 		add_stability = constant:video_game_in_sweden_effect.ordinary_stability
-		video_game_in_sweden_close_program = yes
 		army_experience = constant:video_game_in_sweden_award.ordinary_controlled_army_experience
-		video_game_in_sweden_add_ordinary_aftermath = yes
+		custom_effect_tooltip = video_game_conclusion_methods_tt
+		hidden_effect = {
+			video_game_in_sweden_close_program = yes
+			video_game_in_sweden_add_ordinary_aftermath = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.20.b
-		trigger = { check_variable = { var = video_game_in_sweden_route value = constant:video_game_in_sweden_value.route_commercial compare = equals } }
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_cultural compare = equals } }
 		ai_chance = { base = 1 }
-		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_cultural }
 		add_stability = constant:video_game_in_sweden_effect.ordinary_stability
-		video_game_in_sweden_close_program = yes
 		add_political_power = constant:video_game_in_sweden_award.ordinary_commercial_political_power
-		video_game_in_sweden_add_ordinary_aftermath = yes
-		country_event = { id = chaosx.nr24.21 days = 1 }
+		custom_effect_tooltip = video_game_conclusion_clubs_tt
+		hidden_effect = {
+			video_game_in_sweden_close_program = yes
+			video_game_in_sweden_add_ordinary_aftermath = yes
+			country_event = { id = chaosx.nr24.21 days = 1 }
+		}
 	}
 	option = {
 		name = chaosx.nr24.20.c
-		trigger = { check_variable = { var = video_game_in_sweden_route value = constant:video_game_in_sweden_value.route_officer compare = equals } }
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_officer compare = equals } }
 		ai_chance = { base = 1 }
-		set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_officer }
 		add_stability = constant:video_game_in_sweden_effect.ordinary_stability
-		video_game_in_sweden_validate_commander = yes
-		video_game_in_sweden_close_program = yes
 		army_experience = constant:video_game_in_sweden_award.ordinary_officer_army_experience
 		add_command_power = constant:video_game_in_sweden_award.ordinary_officer_command_power
-		video_game_in_sweden_add_ordinary_aftermath = yes
+		custom_effect_tooltip = video_game_conclusion_commander_tt
+		custom_effect_tooltip = video_game_conclusion_methods_tt
+		hidden_effect = {
+			video_game_in_sweden_validate_commander = yes
+			video_game_in_sweden_close_program = yes
+			video_game_in_sweden_add_ordinary_aftermath = yes
+		}
+	}
+	# Evolution I contained: the officer culture is validated and retired.
+	option = {
+		name = chaosx.nr24.20.f
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_officer_culture compare = equals } }
+		ai_chance = { base = 1 }
+		add_stability = constant:video_game_in_sweden_effect.ordinary_stability
+		army_experience = constant:video_game_in_sweden_award.officer_culture_army_experience
+		custom_effect_tooltip = video_game_conclusion_commander_tt
+		custom_effect_tooltip = video_game_conclusion_methods_tt
+		hidden_effect = {
+			video_game_in_sweden_validate_commander = yes
+			video_game_in_sweden_close_program = yes
+			video_game_in_sweden_add_ordinary_aftermath = yes
+		}
+	}
+	# Evolution II contained: the national craze becomes a cultural institution.
+	option = {
+		name = chaosx.nr24.20.g
+		trigger = { check_variable = { var = video_game_in_sweden_conclusion value = constant:video_game_in_sweden_value.conclusion_craze_contained compare = equals } }
+		ai_chance = { base = 1 }
+		add_stability = constant:video_game_in_sweden_effect.ordinary_stability
+		add_political_power = constant:video_game_in_sweden_award.craze_contained_political_power
+		custom_effect_tooltip = video_game_conclusion_commander_tt
+		custom_effect_tooltip = video_game_conclusion_clubs_tt
+		hidden_effect = {
+			video_game_in_sweden_validate_commander = yes
+			video_game_in_sweden_close_program = yes
+			video_game_in_sweden_add_ordinary_aftermath = yes
+		}
 	}
 }
 
