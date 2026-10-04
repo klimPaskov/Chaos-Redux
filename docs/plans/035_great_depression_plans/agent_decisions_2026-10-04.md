@@ -321,3 +321,15 @@ Disposition: implemented for the three milestones in the acceptance; two spec mi
 - Agent decision: the origin is copied into `global.great_depression_news_origin` from the global activation-source event target when the news is queued, because retirement clears that event target in the same pulse; the text names the origin only when that variable exists.
 - Agent decision on art: all three use `GFX_news_event_great_depression`. The registered recovery and boom-collapse pictures are 210x176 report images and would not fill the 397x153 news frame; dedicated news art for these milestones is an asset follow-up.
 - Accepted and queued: spec part 7 also lists news for the failure of a major recovery conference and the formation of a major clearing or protectionist bloc. Neither has a single transition point in the current source that marks "failure" or "major" formation, so they need a design pass before news can hang on them; the lead's acceptance for this round did not include them.
+
+## D20. Receipt-based country scars at recovery (round 2, item 8)
+
+Disposition: implemented.
+
+- Basis: spec part 4 "Recovery scars" (a real source receipt and a mitigation path for each scar) and "Recovery legacy budget".
+- Agent decision on receipts: `great_depression_emergency_credit_requested`, `great_depression_external_supervision_accepted`, `great_depression_foreign_support_active` and `great_depression_capital_outflows_restricted` are never reset between episodes, so they cannot prove a use in the closing episode. The actions now also write per-family episode receipts (`great_depression_scar_debt_episode_id`, `_foreign_episode_id`, `_controls_episode_id`), and only a receipt matching the closing episode counts.
+- Agent decision on Labor Bitterness: the same security-force and broken-occupation flags already earn the Labor Scar political aftermath (D18). Labor Bitterness is earned only when that aftermath was not chosen, for example when an emergency government that settled outranked it, so one cause never yields two penalties.
+- Agent decision on priority: Debt Overhang, Foreign Credit Dependence, Emergency Controls, Labor Bitterness, Policy Fatigue; the first match is earned. Policy Fatigue needs `great_depression_country_scar.policy_fatigue_switches` = 2 doctrine switches in one episode.
+- Removal paths: a later strong recovery under the matching doctrine (or with the controls removed, a Social Compact aftermath, or no doctrine switch) clears an older scar, and a newly earned scar replaces it. Each scar carries one bounded modifier.
+- Art: the five spirits alias installed vanilla textures (`idea_AST_liberty_loans`, `idea_generic_foreign_capital`, `idea_can_wartime_prices_and_trade_board`, `idea_ICE_general_strike`, `idea_NOR_optimistic_cabinet_ns`), each confirmed present in the base install.
+- AI: no weight changed.

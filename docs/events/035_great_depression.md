@@ -174,6 +174,23 @@ The offsets are the `legacy_*` keys of `great_depression_hidden_component`, so n
 
 `great_depression_post_recovery` is the temporary safeguard: it is added when an episode closes with the recovery watch running, removed when the watch expires, and removed when any new episode, including a relapse, is committed.
 
+### Country recovery scars
+
+Besides the hollow-recovery scar, `great_depression_apply_country_scar` gives at most one country scar per recovery, earned only from receipts the closing episode recorded.
+The actions that can leave a scar write an episode receipt when they are taken: Request Emergency Credit writes `great_depression_scar_debt_episode_id`, Accept External Supervision and Request Foreign Support write `great_depression_scar_foreign_episode_id`, and Establish Emergency Production Board, Ration Strategic Inputs and Restrict Capital Outflows write `great_depression_scar_controls_episode_id`.
+
+| Scar | Earned when | Cleared by a later strong recovery |
+| --- | --- | --- |
+| Debt Overhang | emergency credit in this episode with no public-obligation restructuring or international debt conference | under Austerity or Finance and Trade |
+| Foreign Credit Dependence | external supervision or foreign support in this episode | under Finance and Trade or Direct State Planning |
+| Emergency Controls | emergency controls in this episode and Remove Emergency Controls never taken | under Let the Market Clear, or one that removed the controls |
+| Labor Bitterness | security forces or broken occupations that did not already become the Labor Scar aftermath | under Emergency Public Works, or one that left a Social Compact |
+| Policy Fatigue | `great_depression_country_scar.policy_fatigue_switches` or more doctrine switches | with no doctrine switch |
+
+The first match in that order is earned, and a newly earned scar replaces any older one, so scars never stack.
+The recovery report's option shows the scar the episode left.
+The five scar spirits alias installed vanilla national-spirit art through Event 35 sprite names.
+
 ### Lasting district outcomes
 
 After the summary is frozen, `great_depression_apply_durable_state_outcomes` gives at most two registered centers a lasting district outcome (accepted addendum B3), reading only the frozen center arrays.

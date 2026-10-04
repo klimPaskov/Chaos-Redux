@@ -5392,8 +5392,8 @@ great_depression_queue_recovery_report = {
 }
 
 # COUNTRY scope. Option tooltip for the recovery report: the doctrine legacy,
-# the hollow-recovery scar, the post-recovery safeguard, and the political
-# aftermath this episode left.
+# the hollow-recovery scar, the post-recovery safeguard, and the country scar
+# and political aftermath this episode left.
 great_depression_show_recovery_report_ideas = {
 	if = {
 		limit = { has_idea = great_depression_legacy_public_works }
@@ -5428,6 +5428,29 @@ great_depression_show_recovery_report_ideas = {
 		show_ideas_tooltip = great_depression_post_recovery
 	}
 	if = {
+		limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.none compare = greater_than } }
+		if = {
+			limit = { has_idea = great_depression_scar_debt_overhang }
+			show_ideas_tooltip = great_depression_scar_debt_overhang
+		}
+		if = {
+			limit = { has_idea = great_depression_scar_foreign_credit_dependence }
+			show_ideas_tooltip = great_depression_scar_foreign_credit_dependence
+		}
+		if = {
+			limit = { has_idea = great_depression_scar_emergency_controls }
+			show_ideas_tooltip = great_depression_scar_emergency_controls
+		}
+		if = {
+			limit = { has_idea = great_depression_scar_labor_bitterness }
+			show_ideas_tooltip = great_depression_scar_labor_bitterness
+		}
+		if = {
+			limit = { has_idea = great_depression_scar_policy_fatigue }
+			show_ideas_tooltip = great_depression_scar_policy_fatigue
+		}
+	}
+	if = {
 		limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.none compare = greater_than } }
 		if = {
 			limit = { has_idea = great_depression_aftermath_social_compact }
@@ -5453,6 +5476,151 @@ great_depression_show_recovery_report_ideas = {
 			limit = { has_idea = great_depression_aftermath_labor_scar }
 			show_ideas_tooltip = great_depression_aftermath_labor_scar
 		}
+	}
+}
+
+# COUNTRY scope. Episode receipts for the country recovery scars. The action
+# that can leave a lasting scar records the episode it was taken in, so only
+# a use during the closing episode counts at recovery.
+great_depression_record_debt_scar_receipt = {
+	if = {
+		limit = { has_variable = great_depression_active_episode_id }
+		set_variable = { great_depression_scar_debt_episode_id = great_depression_active_episode_id }
+	}
+}
+
+great_depression_record_foreign_scar_receipt = {
+	if = {
+		limit = { has_variable = great_depression_active_episode_id }
+		set_variable = { great_depression_scar_foreign_episode_id = great_depression_active_episode_id }
+	}
+}
+
+great_depression_record_controls_scar_receipt = {
+	if = {
+		limit = { has_variable = great_depression_active_episode_id }
+		set_variable = { great_depression_scar_controls_episode_id = great_depression_active_episode_id }
+	}
+}
+
+# COUNTRY scope, in the recovery transaction after the political aftermath and
+# before the active episode id is cleared. At most one country scar besides the
+# hollow-recovery scar, earned only from this episode's own receipts:
+# unrestructured emergency credit (Debt Overhang), external supervision or
+# foreign support (Foreign Credit Dependence), emergency controls never
+# removed (Emergency Controls), security forces or broken occupations that did
+# not already become the Labor Scar aftermath (Labor Bitterness), and repeated
+# doctrine switches (Policy Fatigue). A strong recovery under the matching
+# doctrine clears an older scar, and a newly earned scar replaces it.
+great_depression_apply_country_scar = {
+	set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.none }
+	if = {
+		limit = {
+			check_variable = { var = great_depression_scar_debt_episode_id value = great_depression_active_episode_id compare = equals }
+			NOT = { has_country_flag = great_depression_public_obligations_restructured }
+			NOT = { has_country_flag = great_depression_international_debt_conference_complete }
+		}
+		set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.debt_overhang }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_scar_foreign_episode_id value = great_depression_active_episode_id compare = equals } }
+		set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.foreign_credit_dependence }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = great_depression_scar_controls_episode_id value = great_depression_active_episode_id compare = equals }
+			NOT = { has_country_flag = great_depression_emergency_controls_removed }
+		}
+		set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.emergency_controls }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = great_depression_security_forces_deployed
+				has_country_flag = great_depression_occupations_broken
+			}
+			NOT = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.labor_scar compare = equals } }
+		}
+		set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.labor_bitterness }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_last_completed_doctrine_switch_count value = constant:great_depression_country_scar.policy_fatigue_switches compare = greater_than_or_equals } }
+		set_variable = { great_depression_last_completed_country_scar = constant:great_depression_country_scar.policy_fatigue }
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.strong compare = equals } }
+		if = {
+			limit = {
+				has_idea = great_depression_scar_debt_overhang
+				OR = {
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.austerity_and_retrenchment compare = equals }
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals }
+				}
+			}
+			remove_ideas = great_depression_scar_debt_overhang
+		}
+		if = {
+			limit = {
+				has_idea = great_depression_scar_foreign_credit_dependence
+				OR = {
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals }
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.direct_state_planning compare = equals }
+				}
+			}
+			remove_ideas = great_depression_scar_foreign_credit_dependence
+		}
+		if = {
+			limit = {
+				has_idea = great_depression_scar_emergency_controls
+				OR = {
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.let_the_market_clear compare = equals }
+					has_country_flag = great_depression_emergency_controls_removed
+				}
+			}
+			remove_ideas = great_depression_scar_emergency_controls
+		}
+		if = {
+			limit = {
+				has_idea = great_depression_scar_labor_bitterness
+				OR = {
+					check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.emergency_public_works compare = equals }
+					check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.social_compact compare = equals }
+				}
+			}
+			remove_ideas = great_depression_scar_labor_bitterness
+		}
+		if = {
+			limit = {
+				has_idea = great_depression_scar_policy_fatigue
+				check_variable = { var = great_depression_last_completed_doctrine_switch_count value = constant:great_depression_api.zero compare = equals }
+			}
+			remove_ideas = great_depression_scar_policy_fatigue
+		}
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.none compare = greater_than } }
+		remove_ideas = great_depression_scar_debt_overhang
+		remove_ideas = great_depression_scar_foreign_credit_dependence
+		remove_ideas = great_depression_scar_emergency_controls
+		remove_ideas = great_depression_scar_labor_bitterness
+		remove_ideas = great_depression_scar_policy_fatigue
+		if = {
+			limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.debt_overhang compare = equals } }
+			add_ideas = great_depression_scar_debt_overhang
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.foreign_credit_dependence compare = equals } }
+			add_ideas = great_depression_scar_foreign_credit_dependence
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.emergency_controls compare = equals } }
+			add_ideas = great_depression_scar_emergency_controls
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_country_scar value = constant:great_depression_country_scar.labor_bitterness compare = equals } }
+			add_ideas = great_depression_scar_labor_bitterness
+		}
+		else = { add_ideas = great_depression_scar_policy_fatigue }
 	}
 }
 
@@ -5835,6 +6003,7 @@ great_depression_try_complete_recovery = {
 		}
 		great_depression_apply_durable_state_outcomes = yes
 		great_depression_apply_political_aftermath = yes
+		great_depression_apply_country_scar = yes
 		great_depression_remove_emergency_government_rule = yes
 		great_depression_clear_registered_center_runtime = yes
 		great_depression_clear_center_resolution_receipts = yes
