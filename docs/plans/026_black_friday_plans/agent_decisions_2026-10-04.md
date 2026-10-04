@@ -283,3 +283,21 @@ Basis: immediate voluntary payments with constant amounts (spec Part 4 families)
 No AI weight changes.
 
 Disposition: implemented (source). Live display and payment during a sale are `needs_live_game`.
+
+## D18. Event 019 Infantry Spawn charges the sale price
+
+Decision: the Event 019 purchases read the Black Friday price (`price_table_version` 7).
+
+- Scaled formation requests keep the owner's cached cost variables. `infantry_spawn_refresh_request_costs` applies the table ratio to the seven rounded field costs before the nine request modes copy and adjust them, so every mode, the `infantry_spawn_can_pay_*_request` triggers, the payment, and the Muster Board read the sale-priced cache. The request transaction refreshes before paying and its rollback refunds the paid temps, so a refund never returns more than was paid. `black_friday_price_table_refresh_owner_quotes` refreshes each `infantry_spawn_participant` when the sale starts and ends.
+- Fixed costs move to the price table: the five `infantry_spawn_request_cost.base_*` amounts that management actions pay (the scaled request field costs still start from the ordinary constants, so the sale is applied once), the four prototype preservation amounts, the six claimant response amounts (Stability with its 1% step), 24 derivative decision amounts, and the two zombie rally band amounts. Triggers compare against the table price, payments subtract it, and the cost texts show it. The rail corridor and prototype fuel checks compare fuel against the table price instead of a fixed thousands value.
+- Each paid action credits one achievement family; a committed request credits by the resources it actually paid.
+
+Kept at ordinary amounts, with reason:
+- Equipment that changes hands (zombie containment infantry equipment, the golem material agreement's coal golems and support equipment): D11 transfer rule. The golem agreement credits only its Political Power.
+- Claimant demand acceptance: the amounts are the claimant's terms; lowering them would change what was demanded (spec Part 4 qualifying test, identity).
+- Lot obligation settlement and standardization requisition tranches: they pay down a liability already incurred rather than buy a new action.
+- Family management payments routed to unit family providers live in the provider owners' files and are listed for their adoption.
+
+Basis: the D11 and D15 patterns (constant amounts in the table; cached scaled costs apply the table ratio in their refresh). No AI weight changes.
+
+Disposition: implemented (source); provider family management `owner adoption pending`. Live request display and payment at 50 and 75 percent are `needs_live_game`.

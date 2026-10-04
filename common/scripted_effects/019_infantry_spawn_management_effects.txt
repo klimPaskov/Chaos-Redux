@@ -414,46 +414,46 @@ infantry_spawn_select_most_unsustainable_prototype_lot = {
 
 infantry_spawn_pay_base_army_experience_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_request_cost.base_army_experience }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_request_cost_base_army_experience }
 	army_experience = infantry_spawn_negative_payment
 }
 
 infantry_spawn_pay_base_infantry_equipment_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_request_cost.base_infantry_equipment }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_request_cost_base_infantry_equipment }
 	add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_negative_payment }
 }
 
 infantry_spawn_pay_base_support_equipment_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_request_cost.base_support_equipment }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_request_cost_base_support_equipment }
 	add_equipment_to_stockpile = { type = support_equipment amount = infantry_spawn_negative_payment }
 }
 
 infantry_spawn_pay_base_trains_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_request_cost.base_trains }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_request_cost_base_trains }
 	add_equipment_to_stockpile = { type = train_equipment amount = infantry_spawn_negative_payment }
 }
 
 infantry_spawn_pay_base_fuel_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_request_cost.base_fuel }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_request_cost_base_fuel }
 	add_fuel = infantry_spawn_negative_payment
 }
 
 infantry_spawn_pay_prototype_preservation_cost = {
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_prototype.preserve_army_experience_cost }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_prototype_preserve_army_experience_cost }
 	army_experience = infantry_spawn_negative_payment
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_prototype.preserve_support_equipment_cost }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_prototype_preserve_support_equipment_cost }
 	add_equipment_to_stockpile = { type = support_equipment amount = infantry_spawn_negative_payment }
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_prototype.preserve_train_cost }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_prototype_preserve_train_cost }
 	add_equipment_to_stockpile = { type = train_equipment amount = infantry_spawn_negative_payment }
 	set_temp_variable = { infantry_spawn_negative_payment = 0 }
-	subtract_from_temp_variable = { infantry_spawn_negative_payment = constant:infantry_spawn_prototype.preserve_fuel_cost }
+	subtract_from_temp_variable = { infantry_spawn_negative_payment = global.black_friday_price_infantry_spawn_prototype_preserve_fuel_cost }
 	add_fuel = infantry_spawn_negative_payment
 }
 
@@ -473,6 +473,9 @@ infantry_spawn_start_selected_lot_audit = {
 		}
 		infantry_spawn_pay_base_army_experience_cost = yes
 		infantry_spawn_pay_base_support_equipment_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_audit_target_lot_uid = infantry_spawn_management_target_lot_uid }
 		set_variable = { infantry_spawn_audit_mission_days = constant:infantry_spawn_timer.audit_base_days }
 		if = {
@@ -572,6 +575,9 @@ infantry_spawn_assign_selected_lot_territorial_role = {
 			NOT = { has_country_flag = infantry_spawn_audit_decision_running }
 		}
 		infantry_spawn_pay_base_support_equipment_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_lot_status_entries^infantry_spawn_lot_row_index = constant:infantry_spawn_lot_state.territorial }
 		add_to_variable = { infantry_spawn_muster_control = constant:infantry_spawn_control.territorial_assignment }
 		add_to_variable = { infantry_spawn_management_congestion_relief = constant:infantry_spawn_congestion.territorial_relief }
@@ -596,6 +602,9 @@ infantry_spawn_start_selected_lot_training = {
 		}
 		infantry_spawn_pay_base_infantry_equipment_cost = yes
 		infantry_spawn_pay_base_support_equipment_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_training_target_lot_uid = infantry_spawn_management_target_lot_uid }
 		set_variable = { infantry_spawn_training_mission_days = constant:infantry_spawn_timer.training_cycle_days }
 		set_variable = { infantry_spawn_lot_status_entries^infantry_spawn_lot_row_index = constant:infantry_spawn_lot_state.training }
@@ -4468,6 +4477,9 @@ infantry_spawn_start_specialist_preservation = {
 			NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
 		}
 		infantry_spawn_pay_base_support_equipment_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_specialist_target_lot_uid = infantry_spawn_management_target_lot_uid }
 		set_variable = { infantry_spawn_specialist_mission_days = constant:infantry_spawn_timer.standardization_days }
 		set_temp_variable = { infantry_spawn_demobilization_resistance_days = infantry_spawn_lot_demobilization_resistance_entries^infantry_spawn_lot_row_index }
@@ -4611,6 +4623,9 @@ infantry_spawn_start_muster_districts = {
 		infantry_spawn_pay_base_army_experience_cost = yes
 		infantry_spawn_pay_base_support_equipment_cost = yes
 		infantry_spawn_pay_base_trains_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_muster_district_mission_days = constant:infantry_spawn_timer.officer_search_days }
 		if = { limit = { is_major = yes } add_to_variable = { infantry_spawn_muster_district_mission_days = constant:infantry_spawn_timer.audit_large_country_bonus_days } }
 		if = { limit = { infantry_spawn_congestion_is_severe = yes } add_to_variable = { infantry_spawn_muster_district_mission_days = constant:infantry_spawn_timer.audit_stacked_penalty_days } }
@@ -4665,6 +4680,9 @@ infantry_spawn_start_integration_staff_search = {
 	if = {
 		limit = { NOT = { has_country_flag = infantry_spawn_integration_staff_search_running } }
 		infantry_spawn_pay_base_army_experience_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_officer_search_mission_days = constant:infantry_spawn_timer.officer_search_days }
 		set_country_flag = infantry_spawn_integration_staff_search_running
 		add_ideas = infantry_spawn_officer_reassignment_burden
@@ -4758,6 +4776,9 @@ infantry_spawn_start_rail_corridor_mission = {
 		}
 		infantry_spawn_pay_base_trains_cost = yes
 		infantry_spawn_pay_base_fuel_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_rail_corridor_target_state = infantry_spawn_lot_origin_state_entries^infantry_spawn_lot_row_index }
 		infantry_spawn_achievement_start_rail_proof = yes
 		set_variable = { infantry_spawn_rail_corridor_mission_days = constant:infantry_spawn_timer.rail_corridor_days }
@@ -5087,6 +5108,9 @@ infantry_spawn_start_prototype_maintenance_trial = {
 			infantry_spawn_can_execute_selected_prototype_preservation = yes
 		}
 		infantry_spawn_pay_prototype_preservation_cost = yes
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_prototype_target_lot_uid = infantry_spawn_management_target_lot_uid }
 		set_variable = { infantry_spawn_prototype_mission_days = constant:infantry_spawn_timer.prototype_trial_base_days }
 		if = {
@@ -5329,6 +5353,36 @@ infantry_spawn_refresh_request_costs = {
 	round_variable = infantry_spawn_request_field_train_cost
 	round_variable = infantry_spawn_request_field_fuel_cost
 	round_variable = infantry_spawn_request_field_manpower_cost
+	# Black Friday: the field costs, and every request mode copied from them,
+	# use the ratio the sale price table currently holds, rounded up and never
+	# above the ordinary cost.
+	set_temp_variable = { black_friday_price_ratio = constant:black_friday_event.ratio_basis }
+	if = {
+		limit = { has_variable = global.black_friday_price_table_ratio }
+		set_temp_variable = { black_friday_price_ratio = global.black_friday_price_table_ratio }
+	}
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_xp_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_xp_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_infantry_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_infantry_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_support_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_support_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_truck_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_truck_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_train_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_train_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_fuel_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_fuel_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = infantry_spawn_request_field_manpower_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { infantry_spawn_request_field_manpower_cost = black_friday_price_payable }
 
 	set_variable = { infantry_spawn_request_mobile_xp_cost = infantry_spawn_request_field_xp_cost }
 	set_variable = { infantry_spawn_request_mobile_infantry_cost = infantry_spawn_request_field_infantry_cost }
@@ -6500,6 +6554,23 @@ infantry_spawn_request_random_formation = {
 		set_country_flag = infantry_spawn_last_request_succeeded
 		clr_country_flag = infantry_spawn_last_request_failed
 		infantry_spawn_record_management_success = yes
+		# The committed request paid its quote; credit its primary resource family.
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.fuel }
+		if = { limit = { check_variable = { infantry_spawn_request_paid_xp_cost > 0 } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience } }
+		if = { limit = { check_variable = { infantry_spawn_request_paid_manpower_cost > 0 } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower } }
+		if = { limit = { check_variable = { infantry_spawn_request_paid_train_cost > 0 } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains } }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { infantry_spawn_request_paid_infantry_cost > 0 }
+					check_variable = { infantry_spawn_request_paid_support_cost > 0 }
+					check_variable = { infantry_spawn_request_paid_truck_cost > 0 }
+				}
+			}
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		}
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 	}
 	else = {
 		infantry_spawn_rollback_management_request_transaction = yes

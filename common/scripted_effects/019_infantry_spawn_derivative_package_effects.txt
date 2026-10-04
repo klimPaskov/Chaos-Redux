@@ -6227,15 +6227,18 @@ infantry_spawn_derivative_rally_zombie_band = {
 		limit = {
 			infantry_spawn_derivative_is_zombie = yes
 			NOT = { has_country_flag = infantry_spawn_derivative_reinforcement_cooldown }
-			NOT = { has_manpower < constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost }
-			check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_derivative_reinforcement.zombie_infantry_equipment_cost compare = greater_than_or_equals }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_manpower_cost } NOT = { has_manpower < infantry_spawn_sale_price_check }
+			check_variable = { var = num_equipment@infantry_equipment value = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_infantry_equipment_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_manpower_cost }
 		add_manpower = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_reinforcement.zombie_infantry_equipment_cost }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_infantry_equipment_cost }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_derivative_negative_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		infantry_spawn_derivative_materialize_one_family_formation = yes
 		if = {
 			limit = { check_variable = { infantry_spawn_derivative_materialization_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
@@ -6248,8 +6251,8 @@ infantry_spawn_derivative_rally_zombie_band = {
 		}
 		else_if = {
 			limit = { check_variable = { infantry_spawn_derivative_materialization_rollback_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
-			add_manpower = constant:infantry_spawn_derivative_reinforcement.zombie_manpower_cost
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_reinforcement.zombie_infantry_equipment_cost }
+			add_manpower = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_manpower_cost
+			add_equipment_to_stockpile = { type = infantry_equipment amount = global.black_friday_price_infantry_spawn_derivative_reinforcement_zombie_infantry_equipment_cost }
 		}
 	}
 }
@@ -6312,11 +6315,14 @@ infantry_spawn_derivative_rotate_collective_commands = {
 	if = {
 		limit = { infantry_spawn_derivative_can_rotate_collective_commands = yes }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.collective_rotate_commands_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_collective_rotate_commands_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.collective_rotate_commands_cp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_collective_rotate_commands_cp }
 		add_command_power = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		clr_country_flag = infantry_spawn_derivative_collective_central_muster
 		set_country_flag = infantry_spawn_derivative_collective_rotating_commands
 		add_stability = constant:infantry_spawn_derivative_expansion.governance_stability_shift
@@ -6331,11 +6337,14 @@ infantry_spawn_derivative_centralize_collective_muster = {
 	if = {
 		limit = { infantry_spawn_derivative_can_centralize_collective_muster = yes }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.collective_centralize_muster_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_collective_centralize_muster_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.collective_centralize_muster_xp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_collective_centralize_muster_xp }
 		army_experience = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		clr_country_flag = infantry_spawn_derivative_collective_rotating_commands
 		set_country_flag = infantry_spawn_derivative_collective_central_muster
 		set_temp_variable = { infantry_spawn_derivative_governance_shift = constant:infantry_spawn_derivative_package_value.zero }
@@ -6350,11 +6359,14 @@ infantry_spawn_derivative_ratify_species_compacts = {
 	if = {
 		limit = { infantry_spawn_derivative_can_ratify_species_compacts = yes }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.species_ratify_compacts_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_species_ratify_compacts_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.species_ratify_compacts_cp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_species_ratify_compacts_cp }
 		add_command_power = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		clr_country_flag = infantry_spawn_derivative_species_family_primacy
 		set_country_flag = infantry_spawn_derivative_species_compact_governance
 		add_stability = constant:infantry_spawn_derivative_expansion.governance_stability_shift
@@ -6369,11 +6381,14 @@ infantry_spawn_derivative_proclaim_family_primacy = {
 	if = {
 		limit = { infantry_spawn_derivative_can_proclaim_family_primacy = yes }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.species_proclaim_primacy_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_species_proclaim_primacy_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.species_proclaim_primacy_xp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_species_proclaim_primacy_xp }
 		army_experience = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		clr_country_flag = infantry_spawn_derivative_species_compact_governance
 		set_country_flag = infantry_spawn_derivative_species_family_primacy
 		set_temp_variable = { infantry_spawn_derivative_governance_shift = constant:infantry_spawn_derivative_package_value.zero }
@@ -6419,14 +6434,17 @@ infantry_spawn_derivative_offer_zombie_containment = {
 		}
 		FROM = { save_event_target_as = infantry_spawn_derivative_diplomacy_target_scope }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_containment_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_zombie_containment_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_containment_manpower }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_zombie_containment_manpower }
 		add_manpower = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_containment_equipment }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_derivative_negative_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		event_target:infantry_spawn_derivative_diplomacy_target_scope = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:infantry_spawn_derivative_decision_cost.zombie_containment_equipment producer = ROOT }
 		}
@@ -6442,11 +6460,14 @@ infantry_spawn_derivative_offer_ghost_border_recognition = {
 		}
 		FROM = { save_event_target_as = infantry_spawn_derivative_diplomacy_target_scope }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.ghost_recognition_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_ghost_recognition_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.ghost_recognition_cp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_ghost_recognition_cp }
 		add_command_power = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_country_flag = infantry_spawn_derivative_ghost_anchor_network_established
 		infantry_spawn_derivative_register_diplomatic_agreement = yes
 	}
@@ -6460,11 +6481,14 @@ infantry_spawn_derivative_offer_golem_material_agreement = {
 		}
 		FROM = { save_event_target_as = infantry_spawn_derivative_diplomacy_target_scope }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_golem_material_agreement_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_coal }
 		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = infantry_spawn_derivative_negative_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+		black_friday_credit_sale_purchase = yes
 		event_target:infantry_spawn_derivative_diplomacy_target_scope = {
 			set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
 			subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_material_agreement_support }
@@ -7019,14 +7043,17 @@ infantry_spawn_derivative_start_zombie_district_integration = {
 			FROM = { infantry_spawn_derivative_zombie_state_can_be_integrated = yes }
 		}
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_integration_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_zombie_integration_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_integration_manpower }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_zombie_integration_manpower }
 		add_manpower = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.zombie_integration_equipment }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_zombie_integration_equipment }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_derivative_negative_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_derivative_integration_mode = constant:infantry_spawn_derivative_integration_mode.zombie_muster }
 		set_variable = { infantry_spawn_derivative_integration_days = constant:infantry_spawn_derivative_timer.zombie_integration_days }
 		if = {
@@ -7044,11 +7071,14 @@ infantry_spawn_derivative_start_ghost_district_integration = {
 			FROM = { infantry_spawn_derivative_ghost_state_can_be_integrated = yes }
 		}
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.ghost_integration_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_ghost_integration_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.ghost_integration_cp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_ghost_integration_cp }
 		add_command_power = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_derivative_integration_mode = constant:infantry_spawn_derivative_integration_mode.ghost_anchor }
 		set_variable = { infantry_spawn_derivative_integration_days = constant:infantry_spawn_derivative_timer.ghost_integration_days }
 		if = {
@@ -7066,14 +7096,17 @@ infantry_spawn_derivative_start_golem_district_integration = {
 			FROM = { infantry_spawn_derivative_golem_state_can_be_integrated = yes }
 		}
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_integration_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_golem_integration_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_integration_coal }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_golem_integration_coal }
 		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = infantry_spawn_derivative_negative_cost }
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.golem_integration_trains }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_golem_integration_trains }
 		add_equipment_to_stockpile = { type = train_equipment amount = infantry_spawn_derivative_negative_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_derivative_integration_mode = constant:infantry_spawn_derivative_integration_mode.golem_foundry }
 		set_variable = { infantry_spawn_derivative_integration_days = constant:infantry_spawn_derivative_timer.golem_integration_days }
 		if = {
@@ -7253,15 +7286,18 @@ infantry_spawn_derivative_suppress_fragmentation = {
 		limit = {
 			infantry_spawn_derivative_package_is_active = yes
 			NOT = { has_country_flag = infantry_spawn_derivative_fragmentation_cooldown }
-			NOT = { has_political_power < constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_pp }
-			check_variable = { var = army_experience value = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp compare = greater_than_or_equals }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_infantry_spawn_derivative_decision_cost_suppress_fragmentation_pp } NOT = { has_political_power < infantry_spawn_sale_price_check }
+			check_variable = { var = army_experience value = global.black_friday_price_infantry_spawn_derivative_decision_cost_suppress_fragmentation_xp compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_pp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_suppress_fragmentation_pp }
 		add_political_power = infantry_spawn_derivative_negative_cost
 		set_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_package_value.zero }
-		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = constant:infantry_spawn_derivative_decision_cost.suppress_fragmentation_xp }
+		subtract_from_temp_variable = { infantry_spawn_derivative_negative_cost = global.black_friday_price_infantry_spawn_derivative_decision_cost_suppress_fragmentation_xp }
 		army_experience = infantry_spawn_derivative_negative_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		add_stability = constant:infantry_spawn_derivative_reward.stability_medium
 		add_command_power = constant:infantry_spawn_derivative_reward.command_power_medium
 		set_country_flag = infantry_spawn_derivative_fragmentation_suppressed

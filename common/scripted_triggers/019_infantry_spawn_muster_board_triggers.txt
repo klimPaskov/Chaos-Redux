@@ -55,15 +55,15 @@ infantry_spawn_can_execute_selected_lot_audit = {
 	infantry_spawn_selected_lot_is_unresolved = yes
 	NOT = { infantry_spawn_selected_lot_is_anomalous = yes }
 	check_variable = { infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index = constant:infantry_spawn_lot_state.auditing }
-	check_variable = { var = army_experience value = constant:infantry_spawn_request_cost.base_army_experience compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = army_experience value = global.black_friday_price_infantry_spawn_request_cost_base_army_experience compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_request_cost_base_support_equipment compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_execute_selected_lot_territorial_assignment = {
 	infantry_spawn_can_assign_territorial_role = yes
 	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
 	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_request_cost_base_support_equipment compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_execute_selected_lot_training = {
@@ -73,8 +73,8 @@ infantry_spawn_can_execute_selected_lot_training = {
 	check_variable = { var = infantry_spawn_lot_status_entries^infantry_spawn_selected_lot_index value = constant:infantry_spawn_lot_state.training compare = less_than }
 	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
 	NOT = { has_country_flag = infantry_spawn_training_cycle_running }
-	check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_request_cost.base_infantry_equipment compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@infantry_equipment value = global.black_friday_price_infantry_spawn_request_cost_base_infantry_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_request_cost_base_support_equipment compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_execute_selected_lot_standardization = {
@@ -119,7 +119,7 @@ infantry_spawn_can_execute_selected_lot_specialist_preservation = {
 	NOT = { has_country_flag = infantry_spawn_audit_decision_running }
 	NOT = { has_country_flag = infantry_spawn_specialist_preservation_running }
 	NOT = { has_country_flag = infantry_spawn_demobilization_running }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_request_cost.base_support_equipment compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_request_cost_base_support_equipment compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_execute_selected_lot_demobilization = {
@@ -138,10 +138,10 @@ infantry_spawn_can_execute_selected_lot_emergency_integration = {
 }
 
 infantry_spawn_can_pay_prototype_preservation_cost = {
-	check_variable = { var = army_experience value = constant:infantry_spawn_prototype.preserve_army_experience_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_prototype.preserve_support_equipment_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = constant:infantry_spawn_prototype.preserve_train_cost compare = greater_than_or_equals }
-	check_variable = { var = fuel_k value = constant:infantry_spawn_prototype.preserve_fuel_cost_k compare = greater_than_or_equals }
+	check_variable = { var = army_experience value = global.black_friday_price_infantry_spawn_prototype_preserve_army_experience_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_prototype_preserve_support_equipment_cost compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@train_equipment value = global.black_friday_price_infantry_spawn_prototype_preserve_train_cost compare = greater_than_or_equals }
+	set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_infantry_spawn_prototype_preserve_fuel_cost } NOT = { has_fuel < infantry_spawn_sale_price_check }
 }
 
 infantry_spawn_can_execute_selected_prototype_preservation = {

@@ -671,6 +671,16 @@ not used as substitutes.
   generated-template locks.
 - Cluster handling: Event 19 remains unclustered.
 
+## Black Friday prices
+
+During a Black Friday sale (Event 026) the Formation Ledger, claimant, and derivative actions charge the sale price, and the shown price, the requirement, and the payment read the same value.
+
+- Scaled formation requests: `infantry_spawn_refresh_request_costs` applies the ratio the Black Friday price table currently holds (`global.black_friday_price_table_ratio`) to the seven rounded field costs before every request mode copies them, using the table's rounding rule. A request refreshes its costs when it is paid, the Muster Board refreshes them when it opens, and Black Friday refreshes every participant when the sale starts and ends. A rolled-back request refunds the amounts it actually paid.
+- Fixed management costs (`infantry_spawn_request_cost.base_*` for audits, role assignments, training, muster districts, and the rail corridor), prototype preservation (`infantry_spawn_prototype.preserve_*_cost`), the four claimant responses (recognition, counter-command, discrediting, and arrest), the derivative governance, diplomacy, integration, and fragmentation decisions (`infantry_spawn_derivative_decision_cost`), and the zombie rally band (`infantry_spawn_derivative_reinforcement`) read their `global.black_friday_price_<group>_<key>` table entry.
+- Equipment that changes hands keeps its ordinary amount: the infantry equipment sent with zombie containment and the coal golem and support equipment exchanged in the golem material agreement.
+- Accepting a claimant's demand pays the claimant's own terms, and settling lot obligations or standardization requisition tranches pays down an existing liability, so these keep their ordinary amounts.
+- Each paid action credits one Black Friday achievement family through `black_friday_credit_sale_purchase`.
+
 ## Tuning surfaces
 
 Gameplay tuning is centralized under:

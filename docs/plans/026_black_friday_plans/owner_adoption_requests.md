@@ -300,6 +300,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 100
 
 #### Event 019 Infantry Spawn (custom costs; derivative native costs converted)
 
+Converted (agent decision D18): scaled formation requests, fixed management and prototype costs, claimant responses, derivative decisions, and the zombie rally band. Remaining with other owners: the family management payments that `infantry_spawn_derivative_pay_current_family_management` routes to each unit family provider (`chaos_unit_family_provider_<id>_event19_*` in the provider owners' files, such as Events 002, 010, and 012). The line list below predates the conversion.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 53.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |

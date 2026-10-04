@@ -419,7 +419,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 010 | 0 | 35 | converted (D17): the 84 `death_decision_cost` payments of the human response, compact, custodianship, and Black Book actions read the price table in their triggers, payments, and texts; Death's soul power (special chaos actor meter) and custodial capacity (earned policy capacity) are `not_a_purchase_cost` |
 | Event 011 | 0 | 56 | queued: Event 26 conversion tranche 2 |
 | Event 018 | 0 | 100 | queued: Event 26 conversion tranche 2 |
-| Event 019 | 0 | 53 | derivative native converted (D5); custom queued: tranche 2 |
+| Event 019 | 0 | 53 | derivative native converted (D5); scaled formation requests, fixed management and prototype costs, claimant responses, derivative decisions, and the zombie rally band converted (D18); equipment that changes hands, claimant demand terms, and lot obligation and requisition settlements are `not_a_purchase_cost`; family management payments through the unit family providers stay with each provider's owner (`owner adoption pending`) |
 | Genocide crisis (custom) | 0 | 4 | native converted (D5); the Command Power, Army Experience, and Political Power payments of 16 decisions read the price table (D16); the three camp-system payments they call are Camps `owner adoption pending` |
 | Event 001 | 0 | 5 | partial bounded adapters; remainder owner adoption pending |
 | Event 007 | 0 | 17 | partial bounded adapters; remainder owner adoption pending |

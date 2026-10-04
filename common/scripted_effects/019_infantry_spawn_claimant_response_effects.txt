@@ -8,9 +8,12 @@
 infantry_spawn_recognize_selected_claimant = {
 	if = {
 		limit = { infantry_spawn_can_recognize_selected_claimant = yes }
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_response.recognition_political_power }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_response_recognition_political_power }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		add_political_power = infantry_spawn_claimant_response_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+		black_friday_credit_sale_purchase = yes
 		set_variable = { infantry_spawn_claimant_status_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_status.recognized }
 		add_to_variable = { infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_response.recognition_influence_gain }
 		set_country_flag = infantry_spawn_claimant_formal_appointment
@@ -21,12 +24,15 @@ infantry_spawn_recognize_selected_claimant = {
 infantry_spawn_counter_command_selected_claimant = {
 	if = {
 		limit = { infantry_spawn_can_counter_command_selected_claimant = yes }
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_cost.counter_command_army_experience }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_cost_counter_command_army_experience }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		army_experience = infantry_spawn_claimant_response_cost
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_cost.counter_command_command_power }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_cost_counter_command_command_power }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		add_command_power = infantry_spawn_claimant_response_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		subtract_from_variable = { infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_response.counter_command_influence_loss }
 		clamp_variable = { var = infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index min = constant:infantry_spawn_claimant.influence_minimum max = constant:infantry_spawn_claimant.influence_maximum }
 		add_to_variable = { infantry_spawn_muster_control = constant:infantry_spawn_claimant_response.counter_command_control_gain }
@@ -48,9 +54,12 @@ infantry_spawn_counter_command_selected_claimant = {
 infantry_spawn_discredit_selected_claimant = {
 	if = {
 		limit = { infantry_spawn_can_discredit_selected_claimant = yes }
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_cost.discredit_political_power }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_cost_discredit_political_power }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		add_political_power = infantry_spawn_claimant_response_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+		black_friday_credit_sale_purchase = yes
 		subtract_from_variable = { infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index = constant:infantry_spawn_claimant_response.discredit_influence_loss }
 		clamp_variable = { var = infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index min = constant:infantry_spawn_claimant.influence_minimum max = constant:infantry_spawn_claimant.influence_maximum }
 		add_to_variable = { infantry_spawn_muster_control = constant:infantry_spawn_claimant_response.discredit_control_gain }
@@ -70,12 +79,15 @@ infantry_spawn_discredit_selected_claimant = {
 infantry_spawn_arrest_selected_claimant = {
 	if = {
 		limit = { infantry_spawn_can_arrest_selected_claimant = yes }
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_cost.arrest_command_power }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_cost_arrest_command_power }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		add_command_power = infantry_spawn_claimant_response_cost
-		set_temp_variable = { infantry_spawn_claimant_response_cost = constant:infantry_spawn_claimant_cost.arrest_stability }
+		set_temp_variable = { infantry_spawn_claimant_response_cost = global.black_friday_price_infantry_spawn_claimant_cost_arrest_stability }
 		multiply_temp_variable = { infantry_spawn_claimant_response_cost = -1 }
 		add_stability = infantry_spawn_claimant_response_cost
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		if = {
 			limit = { check_variable = { var = infantry_spawn_claimant_influence_entries^infantry_spawn_selected_claimant_index value = constant:infantry_spawn_claimant_response.arrest_influence_ceiling compare = less_than } }
 			infantry_spawn_execute_selected_claimant_failed_coup = yes
