@@ -191,7 +191,9 @@ The state is then judged through `brilliant_scientist_evaluate_defeat_after_glob
 The AI considers the escape only past the surrender threshold, when the failsafe would otherwise be the next step, and never takes it on the deliberate-use route.
 
 The Directorate GUI's Singularity line reports supervised disarmament after a surrender and the escape after it happens.
-Neither alternative writes a separate Events Log row: Event 016 records its firing and evolutions in the shared log, and these terminal outcomes surface through the KRG report events, the world news events, and the Directorate status line, like the other Kruger State terminal outcomes.
+Each alternative also appends one Event 016 row to the shared Events Log history through `brilliant_scientist_krg_record_singularity_alternative_history`, which calls the shared system-row API `record_events_log_system_history_entry` with the payloads in `brilliant_scientist_singularity_history` (1 for the surrender, 2 for the escape).
+The surrender row names the Kruger State as actor and the offering country as secondary actor; the escape row names the Kruger State.
+`GetEventsLogHistoryEventName` titles these rows "Brilliant Scientist: Survivable Surrender" and "Brilliant Scientist: Kruger Vanishes", and `GetEventsLogEventDetailDescription` shows the matching outcome text when the row's details are opened from history; every other Event 016 row keeps the ordinary event name and details.
 
 ## Main implementation files
 
