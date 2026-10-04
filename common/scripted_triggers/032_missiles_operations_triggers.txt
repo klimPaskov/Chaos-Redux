@@ -69,6 +69,28 @@ missiles_target_country_supports_operation = {
 	}
 }
 
+# COUNTRY scope. Maintenance stays reachable during war: in the operations
+# phase it shows while no strike can be prepared, while a human has not begun
+# choosing a target, or for the AI, so a worn-down program is never stuck
+# between hidden preparation and hidden maintenance. Target selection and
+# preparation replace it once a human starts choosing a target.
+missiles_maintenance_actions_are_visible = {
+	OR = {
+		has_country_flag = missiles_program_phase_maintenance
+		AND = {
+			has_country_flag = missiles_program_phase_operations
+			OR = {
+				is_ai = yes
+				NOT = { missiles_country_can_prepare_operation = yes }
+				AND = {
+					NOT = { has_country_flag = missiles_target_selected }
+					NOT = { has_country_flag = missiles_target_country_page_open }
+				}
+			}
+		}
+	}
+}
+
 missiles_ordinary_preparation_action_is_visible = {
 	has_country_flag = missiles_program_phase_operations
 	missiles_country_can_prepare_operation = yes

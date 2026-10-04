@@ -119,6 +119,11 @@ on_actions = {
 						}
 					}
 				}
+
+				# Both participants move between the maintenance and operations
+				# views at the war boundary instead of waiting for another action.
+				ROOT = { if = { limit = { has_country_flag = missiles_program_initialized } missiles_set_program_phases = yes } }
+				FROM = { if = { limit = { has_country_flag = missiles_program_initialized } missiles_set_program_phases = yes } }
 			}
 		}
 	}
@@ -148,6 +153,13 @@ on_actions = {
 					limit = { has_country_flag = missiles_program_initialized has_variable = missiles_achievement_current_war_id check_variable = { var = missiles_achievement_current_war_id value = constant:missiles_program_value.zero compare = greater_than } }
 					clr_country_flag = chaosx_032_achievement_at_war_with_major
 					chaosx_032_achievement_record_war_resolution = yes
+				}
+				# Peace ends the war operations view and any unfinished target
+				# choice; an operation already in preparation keeps its target.
+				if = {
+					limit = { has_country_flag = missiles_program_initialized }
+					missiles_clear_target = yes
+					missiles_set_program_phases = yes
 				}
 			}
 		}

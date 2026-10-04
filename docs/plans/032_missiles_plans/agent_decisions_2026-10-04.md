@@ -48,3 +48,12 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
 - Pre-existing ROOT-binding defects found in the capture path are repaired here because they decide whether the former controller's captured-site marker clears: the former controller and a scuttled site's controller now refresh through the new immediate receiver `chaosx.nr32.7`; `missiles_cleanup_operation` compares against `PREV.missiles_active_operation_id`; `missiles_scuttle_site` records the removed site id from the state (`PREV.id`) instead of the country.
 - Network totals use controlled states and skip unresolved captured sites, so integrated sites in occupied states count toward site count and capacity.
 - MCP probability inspection for the new AI weights was not re-attempted after the `INTERNAL_ERROR` recorded under item 2.
+
+## Item 4: wartime maintenance and war/peace phase refresh
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`).
+
+- The four maintenance actions use `missiles_maintenance_actions_are_visible`: always in the maintenance phase, and in the operations phase when no strike can be prepared, when a human has neither selected a target nor opened the country selector, or for the AI. The AI has no decision-list budget, so it can replenish and secure codes during a war without first exhausting its reserve.
+- Human operations view without a target: the target selector plus four maintenance actions, plus network restoration when severed, is at most six actions. Once a human opens the selector or picks a target, maintenance steps aside for selection and preparation.
+- `on_war_relation_added` refreshes the phases of ROOT and FROM when they own a program; `on_peace` refreshes the country making peace and clears an unfinished target choice (`missiles_clear_target` keeps the target of an operation already in preparation). No world iteration is added.
+- Replenishment, readiness, guidance, and launch-code effects refresh phases, and `missiles_resolve_warning_queue_receipt` refreshes phases instead of forcing the operations view, which previously put a peacetime country into the operations phase after a warning closed.
