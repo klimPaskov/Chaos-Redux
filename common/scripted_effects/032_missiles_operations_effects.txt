@@ -1526,13 +1526,12 @@ missiles_scuttle_site = {
 	set_variable = { missiles_site_controller_id = constant:missiles_event.zero }
 	remove_from_array = { array = ROOT.missiles_launch_site_states value = THIS }
 	ROOT = {
-		set_variable = { missiles_achievement_removed_site_id = THIS.id }
+		set_variable = { missiles_achievement_removed_site_id = PREV.id }
 		missiles_recalculate_network = yes
 		missiles_rebalance_site_custody = yes
 		if = {
-			limit = { NOT = { any_controlled_state = { has_state_flag = missiles_site_captured } } }
-			clr_country_flag = missiles_captured_site_unresolved
-			if = { limit = { NOT = { has_country_flag = missiles_rogue_command_active } } clr_country_flag = missiles_incident_active }
+			limit = { has_country_flag = missiles_captured_site_unresolved }
+			missiles_finish_captured_site_resolution = yes
 		}
 		missiles_refresh_program_status_idea = yes
 		if = { limit = { has_country_flag = missiles_rogue_command_active } missiles_close_rogue_incident = yes }
@@ -1575,15 +1574,7 @@ missiles_scuttle_site_from_current_controller = {
 			}
 			remove_from_array = { array = missiles_launch_site_states value = PREV }
 			set_variable = { missiles_achievement_removed_site_id = PREV.id }
-			missiles_recalculate_network = yes
-			missiles_rebalance_site_custody = yes
-			if = {
-				limit = { NOT = { any_controlled_state = { has_state_flag = missiles_site_captured } } }
-				clr_country_flag = missiles_captured_site_unresolved
-				if = { limit = { NOT = { has_country_flag = missiles_rogue_command_active } } clr_country_flag = missiles_incident_active }
-			}
-			missiles_refresh_program_status_idea = yes
-			if = { limit = { has_country_flag = missiles_rogue_command_active } missiles_close_rogue_incident = yes }
+			set_country_flag = missiles_refresh_close_rogue_requested
 		}
 	}
 	set_state_flag = missiles_site_scuttled
@@ -1600,6 +1591,12 @@ missiles_scuttle_site_from_current_controller = {
 	set_variable = { missiles_site_operation_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_owner_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_controller_id = constant:missiles_event.zero }
+	# The controller's network, captured-site marker, and rogue closure refresh
+	# with ROOT bound to the controller once the site record is retired.
+	if = {
+		limit = { has_event_target = missiles_site_scuttle_controller }
+		event_target:missiles_site_scuttle_controller = { country_event = { id = chaosx.nr32.7 } }
+	}
 }
 
 missiles_cleanup_site = {
@@ -5125,7 +5122,7 @@ missiles_cleanup_operation = {
 		for_each_scope_loop = {
 			array = missiles_operation_sites
 			if = {
-				limit = { has_variable = missiles_site_operation_id check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals } }
+				limit = { has_variable = missiles_site_operation_id check_variable = { var = missiles_site_operation_id value = PREV.missiles_active_operation_id compare = equals } }
 				set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
 				set_variable = { missiles_site_operation_allocation = constant:missiles_program_value.zero }
 			}
@@ -5439,9 +5436,9 @@ missiles_handle_site_control_changed = {
 			set_country_flag = missiles_site_lost_to_capture
 			set_country_flag = missiles_site_compromise_active
 			missiles_clamp_program_values = yes
-			missiles_recalculate_network = yes
-			missiles_rebalance_site_custody = yes
-			missiles_refresh_program_status_idea = yes
+			# ROOT is the new controller here; the former controller's network
+			# refreshes through its own immediate receiver.
+			country_event = { id = chaosx.nr32.7 }
 		}
 		set_variable = { missiles_site_captured_reserve = missiles_captured_reserve_amount }
 		set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
@@ -5451,6 +5448,8 @@ missiles_handle_site_control_changed = {
 		clr_state_flag = missiles_site_active
 		clr_state_flag = missiles_site_hardened
 		clr_state_flag = missiles_site_rogue
+		clr_state_flag = missiles_site_suspended
+		clr_state_flag = missiles_site_capture_resolved
 		FROM = {
 			for_each_scope_loop = {
 				array = chaosx_032_empty_silos_tracking_attackers
@@ -5517,6 +5516,7 @@ missiles_handle_site_control_changed = {
 			set_variable = { missiles_last_incident_closed = constant:missiles_program_value.zero }
 			set_country_flag = missiles_incident_history
 			missiles_recalculate_network = yes
+			missiles_select_next_captured_site = yes
 			missiles_refresh_program_status_idea = yes
 		}
 		set_variable = { missiles_site_capture_incident_id = ROOT.missiles_current_incident_id }
@@ -5542,32 +5542,57 @@ missiles_reconcile_released_country_sites = {
 	}
 }
 
+# -----------------------------------------------------------------------------
+# Captured-site resolution
+# -----------------------------------------------------------------------------
+# A captured site is resolved once, by exactly one of four state-targeted
+# decisions: hold it inactive under guard, secure and study it, integrate it,
+# or scuttle it. Guarded and studied sites keep their sealed weapons in
+# missiles_captured_reserve_held; integration moves them into Operational
+# Reserve once and scuttling destroys them once. The decisions show one
+# captured state at a time through missiles_captured_site_focus.
+
 missiles_guard_captured_site = {
-	# STATE scope. Custody remains physical and unavailable to operations.
+	# STATE scope; ROOT is the capturing program. The site stays inactive and
+	# isolated, and its custody remains physical and unavailable to operations.
 	if = {
-		limit = { has_state_flag = missiles_site_captured is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
+		limit = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
 		set_state_flag = missiles_site_isolated
 		set_state_flag = missiles_site_compromised
+		set_state_flag = missiles_site_capture_resolved
 		clr_state_flag = missiles_site_active
 		add_to_variable = { missiles_site_security = constant:missiles_tuning.site_security_gain }
 		clamp_variable = { var = missiles_site_security min = constant:missiles_program_value.zero max = constant:missiles_program_value.maximum }
 		set_variable = { missiles_site_last_guard_date = global.date }
-		ROOT = { set_country_flag = missiles_captured_site_guarded missiles_refresh_program_status_idea = yes }
+		missiles_refresh_site_flags = yes
+		ROOT = {
+			set_country_flag = missiles_captured_site_guarded
+			missiles_finish_captured_site_resolution = yes
+		}
 	}
 }
 
 missiles_study_captured_site = {
-	# STATE scope. Study improves recovery knowledge but does not activate the
-	# site or grant a complete missile technology step.
+	# STATE scope. Engineers secure the site and study its guidance equipment
+	# and records. The site stays inactive; study never grants a complete
+	# missile technology step.
 	if = {
-		limit = { has_state_flag = missiles_site_captured is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
+		limit = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		set_state_flag = missiles_site_isolated
+		set_state_flag = missiles_site_compromised
+		set_state_flag = missiles_site_capture_resolved
+		set_state_flag = missiles_site_capture_studied
+		clr_state_flag = missiles_site_active
 		add_to_variable = { missiles_site_security = constant:missiles_tuning.site_security_gain }
 		clamp_variable = { var = missiles_site_security min = constant:missiles_program_value.zero max = constant:missiles_program_value.maximum }
-		set_state_flag = missiles_site_capture_studied
+		missiles_refresh_site_flags = yes
 		ROOT = {
+			if = { limit = { NOT = { has_variable = missiles_guidance_training } } set_variable = { missiles_guidance_training = constant:missiles_program_value.zero } }
 			add_to_variable = { missiles_guidance_training = constant:missiles_program_value.guidance_training_gain }
+			if = { limit = { has_variable = missiles_guidance_score } add_to_variable = { missiles_guidance_score = constant:missiles_program_value.guidance_training_gain } }
 			set_country_flag = missiles_captured_site_study_complete
 			missiles_clamp_program_values = yes
+			missiles_finish_captured_site_resolution = yes
 		}
 	}
 }
@@ -5577,10 +5602,9 @@ missiles_integrate_captured_site = {
 	# grants technology; the controller must already possess a guided program.
 	if = {
 		limit = {
-			has_state_flag = missiles_site_captured
+			missiles_site_awaits_capture_resolution = yes
 			is_controlled_by = ROOT
-			NOT = { has_state_flag = missiles_site_scuttled }
-			ROOT = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals } }
+			ROOT = { missiles_country_can_integrate_captured_site = yes }
 		}
 		if = {
 			limit = {
@@ -5597,6 +5621,7 @@ missiles_integrate_captured_site = {
 		}
 		clr_state_flag = missiles_site_captured
 		clr_state_flag = missiles_site_isolated
+		clr_state_flag = missiles_site_capture_resolved
 		set_state_flag = missiles_site_compromised
 		set_state_flag = missiles_site_active
 		set_variable = { missiles_site_owner_id = ROOT.id }
@@ -5605,17 +5630,82 @@ missiles_integrate_captured_site = {
 		missiles_refresh_site_flags = yes
 		ROOT = {
 			set_country_flag = missiles_captured_site_integrated
-			missiles_recalculate_network = yes
-			missiles_rebalance_site_custody = yes
-			if = {
-				limit = { NOT = { any_controlled_state = { has_state_flag = missiles_site_captured } } }
-				clr_country_flag = missiles_captured_site_unresolved
-				clr_country_flag = missiles_incident_active
-				clr_country_flag = missiles_program_capture_shell
-			}
-			missiles_refresh_program_status_idea = yes
+			missiles_finish_captured_site_resolution = yes
 		}
 	}
+}
+
+missiles_scuttle_captured_site = {
+	# STATE scope. The shared scuttle receipt destroys the site and its sealed
+	# weapons once and retires the state from the site registry.
+	if = {
+		limit = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		missiles_scuttle_site = yes
+		ROOT = { set_country_flag = missiles_captured_site_scuttled }
+	}
+}
+
+# COUNTRY scope. Rebuilds the one-entry decision focus with the first captured
+# state this country controls that still awaits resolution.
+missiles_select_next_captured_site = {
+	clear_array = missiles_captured_site_focus
+	set_temp_variable = { missiles_captured_focus_break = constant:missiles_program_value.zero }
+	for_each_scope_loop = {
+		array = missiles_launch_site_states
+		break = missiles_captured_focus_break
+		if = {
+			limit = {
+				missiles_site_awaits_capture_resolution = yes
+				is_controlled_by = PREV
+			}
+			PREV = { add_to_array = { array = missiles_captured_site_focus value = PREV } }
+			set_temp_variable = { missiles_captured_focus_break = constant:missiles_program_value.one }
+		}
+	}
+}
+
+# COUNTRY scope with ROOT bound to the same country. Clears the unresolved
+# marker and closes the capture incident once no controlled captured state
+# awaits resolution, then refreshes the network and the program phase.
+missiles_finish_captured_site_resolution = {
+	missiles_select_next_captured_site = yes
+	if = {
+		limit = { NOT = { missiles_country_has_unresolved_captured_site = yes } }
+		clr_country_flag = missiles_captured_site_unresolved
+		if = {
+			limit = {
+				has_country_flag = missiles_incident_active
+				check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.site_capture compare = equals }
+			}
+			missiles_close_current_incident = yes
+		}
+	}
+	missiles_recalculate_network = yes
+	missiles_rebalance_site_custody = yes
+	missiles_refresh_program_status_idea = yes
+}
+
+# COUNTRY scope, run through the immediate hidden receiver chaosx.nr32.7 so
+# ROOT is this country. Lifecycle callers that act on another country's
+# program (a former controller or a scuttled site's controller) use it instead
+# of calling ROOT-bound network helpers from a foreign ROOT.
+missiles_refresh_program_from_receiver = {
+	if = {
+		limit = { has_country_flag = missiles_program_initialized }
+		missiles_recalculate_network = yes
+		missiles_rebalance_site_custody = yes
+		if = {
+			limit = { has_country_flag = missiles_captured_site_unresolved }
+			missiles_finish_captured_site_resolution = yes
+		}
+		if = {
+			limit = { has_country_flag = missiles_refresh_close_rogue_requested }
+			clr_country_flag = missiles_refresh_close_rogue_requested
+			if = { limit = { has_country_flag = missiles_rogue_command_active } missiles_close_rogue_incident = yes }
+		}
+		missiles_refresh_program_status_idea = yes
+	}
+	clr_country_flag = missiles_refresh_close_rogue_requested
 }
 
 missiles_preflight_country_split = {

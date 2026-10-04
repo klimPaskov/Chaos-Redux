@@ -80,3 +80,13 @@ The mission `available` blocks combine the matching `*_is_due` trigger with the 
 Cancel triggers depend on the project and its objective, never on the current program phase, so a war, peace, incident, or warning does not abort unrelated construction or repair.
 A suspended site carries `missiles_site_suspended`, which `missiles_site_can_launch` rejects; routine `missiles_restore_readiness` maintenance leaves a site under an active repair mission to that mission.
 `.tools/test_event32_project_missions.py` pins the producer, due-date, timeout, completion, and cancellation contract for all six missions.
+
+## Captured-site resolution
+
+`missiles_handle_site_control_changed` marks a captured site with `missiles_site_captured`, credits its surviving reserve to the new controller's `missiles_captured_reserve_held`, sets `missiles_captured_site_unresolved`, and selects the decision focus with `missiles_select_next_captured_site`.
+The four STATE-scope resolutions are `missiles_guard_captured_site`, `missiles_study_captured_site`, `missiles_integrate_captured_site`, and `missiles_scuttle_captured_site`; each is gated by `missiles_site_awaits_capture_resolution` so a state resolves once.
+Guard and study set `missiles_site_capture_resolved` and keep the site isolated and inactive with its weapons still held; integration clears the capture and moves `missiles_site_captured_reserve` into Operational Reserve once; scuttling reuses `missiles_scuttle_site`, which debits the held receipt once and retires the state.
+Every route ends in `missiles_finish_captured_site_resolution`, which refocuses the next awaiting state, clears `missiles_captured_site_unresolved` when none remains, and closes the current incident only when it is the site-capture incident.
+Lifecycle code that runs under another country's ROOT (the former controller in the capture handler, and the controller in `missiles_scuttle_site_from_current_controller`) fires the immediate hidden receiver `chaosx.nr32.7`, whose `missiles_refresh_program_from_receiver` recalculates that country's network, custody, captured-site marker, and requested rogue closure with ROOT bound correctly.
+`missiles_cleanup_operation` matches site allocations against `PREV.missiles_active_operation_id`, so it clears the right markers when another country's ROOT calls it.
+`.tools/test_event32_captured_sites.py` pins the decision, resolution, reserve, budget, and receiver contract.

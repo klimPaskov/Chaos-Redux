@@ -791,7 +791,10 @@ missiles_program_management_category = {
 
 	missiles_inspect_incident = {
 		icon = GFX_decision_032_missiles_inspect_incident
-		visible = { has_country_flag = missiles_program_phase_incident }
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			NOT = { has_country_flag = missiles_captured_site_unresolved }
+		}
 		available = { has_country_flag = missiles_incident_active }
 		fire_only_once = no
 		complete_effect = {
@@ -836,6 +839,7 @@ missiles_program_management_category = {
 				has_country_flag = missiles_program_phase_maintenance
 			}
 			missiles_country_can_manage_program = yes
+			NOT = { has_country_flag = missiles_captured_site_unresolved }
 			NOT = { has_active_mission = missiles_site_repair_mission }
 			FROM = { missiles_site_can_be_suspended = yes }
 		}
@@ -877,6 +881,190 @@ missiles_program_management_category = {
 			base = @m32_ai_urgent
 			modifier = { factor = 3 has_war = yes }
 			modifier = { factor = 0 has_country_flag = missiles_operation_active }
+		}
+	}
+
+	# Captured-site resolution. One captured state is offered at a time through
+	# missiles_captured_site_focus; each resolution is final for that state.
+	missiles_guard_captured_site = {
+		icon = GFX_decision_032_missiles_isolate_site
+		state_target = yes
+		target_array = missiles_captured_site_focus
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+			FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+		}
+		target_trigger = { FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_captured_site_requirements_tt
+				FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > @m32_command_low
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_guard_captured_site
+		complete_effect = {
+			custom_effect_tooltip = missiles_guard_captured_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				FROM = { missiles_guard_captured_site = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 2 NOT = { missiles_country_can_integrate_captured_site = yes } NOT = { has_war = yes } }
+			modifier = { factor = 2 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.restrained_deterrent compare = equals } }
+			modifier = { factor = 0.5 missiles_country_can_integrate_captured_site = yes }
+		}
+	}
+
+	missiles_study_captured_site = {
+		icon = GFX_decision_032_missiles_improve_guidance
+		state_target = yes
+		target_array = missiles_captured_site_focus
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+			FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+		}
+		target_trigger = { FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_captured_site_requirements_tt
+				FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+			}
+		}
+		custom_cost_trigger = {
+			has_air_experience > @m32_air_xp_low
+			has_manpower > @m32_manpower_standard
+			has_equipment = { support_equipment > @m32_support_standard }
+		}
+		custom_cost_text = missiles_cost_study_captured_site
+		complete_effect = {
+			custom_effect_tooltip = missiles_study_captured_site_effect_tt
+			hidden_effect = {
+				air_experience = @m32_air_xp_low_negative
+				add_manpower = @m32_manpower_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				FROM = { missiles_study_captured_site = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 2 NOT = { missiles_country_can_integrate_captured_site = yes } }
+			modifier = { factor = 2 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.counterforce_guardian compare = equals } }
+			modifier = { factor = 0.5 has_war = yes missiles_country_can_integrate_captured_site = yes }
+		}
+	}
+
+	missiles_integrate_captured_site = {
+		icon = GFX_decision_032_missiles_establish_secondary_site
+		state_target = yes
+		target_array = missiles_captured_site_focus
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+			FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+		}
+		target_trigger = { FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_captured_site_requirements_tt
+				FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+			}
+			custom_trigger_tooltip = {
+				tooltip = missiles_integrate_captured_site_requirements_tt
+				missiles_country_can_integrate_captured_site = yes
+			}
+		}
+		custom_cost_trigger = {
+			command_power > @m32_command_high
+			has_manpower > @m32_manpower_high
+			has_equipment = { support_equipment > @m32_support_high }
+			has_fuel > @m32_fuel_standard
+		}
+		custom_cost_text = missiles_cost_integrate_captured_site
+		complete_effect = {
+			custom_effect_tooltip = missiles_integrate_captured_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_high_negative
+				add_manpower = @m32_manpower_high_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
+				add_fuel = @m32_fuel_standard_negative
+				FROM = { missiles_integrate_captured_site = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 0 NOT = { missiles_country_can_integrate_captured_site = yes } }
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 0.5 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.brittle_command compare = equals } }
+		}
+	}
+
+	missiles_scuttle_captured_site = {
+		icon = GFX_decision_032_missiles_scuttle_site
+		state_target = yes
+		target_array = missiles_captured_site_focus
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+			FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_captured_site_unresolved
+		}
+		target_trigger = { FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_captured_site_requirements_tt
+				FROM = { missiles_site_awaits_capture_resolution = yes is_controlled_by = ROOT }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > @m32_command_standard
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_scuttle_captured_site
+		complete_effect = {
+			custom_effect_tooltip = missiles_scuttle_captured_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				FROM = { missiles_scuttle_captured_site = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 4 has_war = yes NOT = { missiles_country_can_integrate_captured_site = yes } }
+			modifier = { factor = 2 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.brittle_command compare = equals } }
+			modifier = { factor = 2 FROM = { NOT = { is_owned_by = ROOT } } has_war = yes }
 		}
 	}
 

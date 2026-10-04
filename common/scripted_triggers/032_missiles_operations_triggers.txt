@@ -723,3 +723,28 @@ missiles_network_can_be_restored = {
 	NOT = { has_country_flag = missiles_rogue_command_active }
 	missiles_country_has_active_site = yes
 }
+
+# -----------------------------------------------------------------------------
+# Captured-site resolution
+# -----------------------------------------------------------------------------
+
+# STATE scope. A captured site that has not yet been guarded, studied,
+# integrated, or scuttled.
+missiles_site_awaits_capture_resolution = {
+	has_state_flag = missiles_site_captured
+	NOT = { has_state_flag = missiles_site_capture_resolved }
+	NOT = { has_state_flag = missiles_site_scuttled }
+}
+
+# COUNTRY scope.
+missiles_country_has_unresolved_captured_site = {
+	any_controlled_state = { missiles_site_awaits_capture_resolution = yes }
+}
+
+# COUNTRY scope. Only a guided national program can bring captured launchers
+# into service; a capture-only program can guard, study, or scuttle them.
+missiles_country_can_integrate_captured_site = {
+	NOT = { has_country_flag = missiles_program_capture_shell }
+	has_variable = missiles_program_stage
+	check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals }
+}

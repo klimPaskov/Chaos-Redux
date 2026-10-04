@@ -828,9 +828,11 @@ missiles_recalculate_network = {
 	set_variable = { missiles_active_site_count = constant:missiles_event.zero }
 	set_variable = { missiles_total_site_capacity = constant:missiles_event.zero }
 	clear_array = missiles_network_strategic_regions
-	every_owned_state = {
+	# Controlled states, so an integrated site in an occupied state counts;
+	# an unresolved captured site adds no capacity until it is integrated.
+	every_controlled_state = {
 		limit = {
-			is_controlled_by = ROOT
+			NOT = { has_state_flag = missiles_site_captured }
 			OR = {
 				has_state_flag = missiles_site_active
 				has_state_flag = missiles_site_hardened
