@@ -204,3 +204,13 @@ The shared scripted localisation receives four entries placed ahead of the ordin
 
 Evidence: `common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt` (`brilliant_scientist_singularity_history`), `common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt`, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` (four entries only), `localisation/english/016_brilliant_scientist_evolutions_l_english.yml`, `docs/events/016_brilliant_scientist/systems/super_events_and_aftermath.md`.
 Needs live game: the two rows' titles and details in the Events Log history tab.
+
+## D19. AI programme review stops cycling without real work
+
+The AI continuation check for the programme review counted a suspended programme as replicable and compared the replicated-family count with the published count, so a suspended and damaged programme, or one replicated only at an earlier stage, could keep the free review control cycling indefinitely.
+`brilliant_scientist_refresh_directorate_project_selection` now also derives two board-wide flags with the reviewed-programme rules, `brilliant_scientist_directorate_replication_candidate_exists` and `brilliant_scientist_directorate_publication_candidate_exists`, and `brilliant_scientist_ai_any_project_has_board_work` reads them together with the live payment and permission checks.
+No order weight changes: the review control keeps its base and its two zero factors, and only the condition of the continuation zero factor is corrected.
+Known limit: while the only candidate programme's own stage order is running, the review can still cycle until that order completes, because stage starts do not refresh the board flags; this is a short, cost-free loop and does not block any order.
+Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, candidate `brilliant_scientist_review_next_directorate_project`, source the project board file) returned `INTERNAL_ERROR` and was not retried; the change is a source-reviewed correction of a zero-factor condition only.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_project_triggers.txt`, `docs/events/016_brilliant_scientist/systems/directorate.md`.

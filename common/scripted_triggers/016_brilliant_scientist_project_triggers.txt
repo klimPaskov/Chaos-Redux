@@ -281,34 +281,19 @@ brilliant_scientist_ai_selected_project_has_board_work = {
 }
 
 # COUNTRY scope. AI review continuation: some recorded programme still needs a
-# board order, so cycling the review can reach it.
+# board order, so cycling the review can reach it. The replication and
+# publication candidates are derived with the reviewed-programme flags, so a
+# suspended programme or one replicated only at an earlier stage never keeps
+# the review cycling.
 brilliant_scientist_ai_any_project_has_board_work = {
 	OR = {
 		AND = {
+			has_country_flag = brilliant_scientist_directorate_replication_candidate_exists
 			brilliant_scientist_can_pay_independent_replication = yes
-			any_of = {
-				array = brilliant_scientist_project_stage_entries
-				value = brilliant_scientist_ai_review_stage
-				index = brilliant_scientist_ai_review_index
-				check_variable = {
-					var = brilliant_scientist_ai_review_stage
-					value = constant:brilliant_scientist_project_stage.prototype
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_ai_review_index
-					value = brilliant_scientist_ai_review_stage
-					compare = less_than
-				}
-			}
 		}
 		AND = {
+			has_country_flag = brilliant_scientist_directorate_publication_candidate_exists
 			brilliant_scientist_directorate_publication_is_permitted = yes
-			check_variable = {
-				var = brilliant_scientist_independently_replicated_family_count
-				value = brilliant_scientist_project_published_families^num
-				compare = greater_than
-			}
 		}
 		any_of = {
 			array = brilliant_scientist_project_suspended_families

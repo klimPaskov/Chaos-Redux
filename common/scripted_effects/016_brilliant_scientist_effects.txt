@@ -1278,6 +1278,47 @@ brilliant_scientist_refresh_directorate_project_selection = {
 			clear_variable = brilliant_scientist_directorate_selected_project_stage
 		}
 	}
+	# Board-wide candidates for the AI review: some unsuspended programme can
+	# still be replicated at its current stage, or some replicated programme
+	# is still unpublished. The review stops cycling when neither exists.
+	clr_country_flag = brilliant_scientist_directorate_replication_candidate_exists
+	clr_country_flag = brilliant_scientist_directorate_publication_candidate_exists
+	for_each_loop = {
+		array = brilliant_scientist_project_stage_entries
+		value = brilliant_scientist_directorate_candidate_stage
+		index = brilliant_scientist_directorate_candidate_index
+		break = brilliant_scientist_directorate_candidate_break
+		set_temp_variable = { brilliant_scientist_directorate_candidate_family = brilliant_scientist_directorate_candidate_index }
+		add_to_temp_variable = { brilliant_scientist_directorate_candidate_family = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_directorate_candidate_stage
+					value = constant:brilliant_scientist_project_stage.prototype
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_directorate_candidate_index
+					value = brilliant_scientist_directorate_candidate_stage
+					compare = less_than
+				}
+				NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_directorate_candidate_family } }
+			}
+			set_country_flag = brilliant_scientist_directorate_replication_candidate_exists
+		}
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_directorate_candidate_stage > constant:brilliant_scientist_project_stage.none }
+				check_variable = {
+					var = brilliant_scientist_independent_project_stage_entries^brilliant_scientist_directorate_candidate_index
+					value = brilliant_scientist_directorate_candidate_stage
+					compare = greater_than_or_equals
+				}
+				NOT = { is_in_array = { array = brilliant_scientist_project_published_families value = brilliant_scientist_directorate_candidate_family } }
+			}
+			set_country_flag = brilliant_scientist_directorate_publication_candidate_exists
+		}
+	}
 }
 
 # COUNTRY scope. Inputs: temporary family and requested stage. The request may

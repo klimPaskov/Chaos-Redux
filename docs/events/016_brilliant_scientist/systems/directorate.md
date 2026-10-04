@@ -197,6 +197,8 @@ A suspended programme cannot begin its next stage: every Deployment, Weaponizati
 
 The review selector stops while the reviewed programme has work the AI can act on: affordable replication, permitted publication, a resumable suspension, or active damage.
 It is blocked when no recorded programme needs board work, so the AI does not cycle without purpose.
+`brilliant_scientist_refresh_directorate_project_selection` also derives two board-wide candidate flags with the same rules as the reviewed-programme flags: `brilliant_scientist_directorate_replication_candidate_exists` (an unsuspended programme at Prototype or later whose independent stage is behind its current stage) and `brilliant_scientist_directorate_publication_candidate_exists` (a programme replicated at its current stage and not yet published).
+The continuation check reads these flags with the live payment and publication-permission checks, so a suspended programme, or one replicated only at an earlier stage, never keeps the review cycling.
 The order weights are unchanged, except that the AI suspends or cancels only a damaged programme or under compromised or lost control.
 
 ## AI and balance
