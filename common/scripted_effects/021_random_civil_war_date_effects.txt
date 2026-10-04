@@ -1,14 +1,13 @@
 # Event 021 date-unit conversion.
 # ANY scope. Caller initializes event021_date_offset with a duration in days.
-# In-place output is an encoded date offset. Fractional hours round up so a
-# due-date comparison cannot resolve before the requested duration has passed.
+# In-place output is an encoded date offset. The shared
+# chaosx_convert_days_to_date_offset helper does the arithmetic and rounds
+# fractional hours up, so a due-date comparison cannot resolve before the
+# requested duration has passed. Its output is created here before the call
+# so the value survives the helper's return.
 event021_days_to_date_offset = {
-	multiply_temp_variable = { event021_date_offset = constant:event021_calendar.hours_per_day }
-	set_temp_variable = { event021_date_unrounded_hours = event021_date_offset }
-	round_temp_variable = event021_date_offset
-	if = {
-		limit = { check_variable = { var = event021_date_offset value = event021_date_unrounded_hours compare = less_than } }
-		add_to_temp_variable = { event021_date_offset = constant:event021_calendar.hour_step }
-	}
-	divide_temp_variable = { event021_date_offset = constant:event021_calendar.hours_per_date_unit }
+	set_temp_variable = { chaosx_date_days = event021_date_offset }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_temp_variable = { event021_date_offset = chaosx_date_offset }
 }

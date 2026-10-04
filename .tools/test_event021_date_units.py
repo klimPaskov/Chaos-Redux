@@ -11,7 +11,8 @@ from test_event021_evolution_log import ROOT, parse
 
 EFFECT_DIR = 'common/scripted_effects/'
 DATE_SOURCE = EFFECT_DIR + '021_random_civil_war_date_effects.txt'
-CALENDAR_SOURCE = 'common/script_constants/021_random_civil_war_date_constants.txt'
+CALENDAR_SOURCE = 'common/script_constants/chaosx_date_units_constants.txt'
+SHARED_SOURCE = EFFECT_DIR + 'chaosx_dynamic_effects.txt'
 SOURCES = [EFFECT_DIR + '021_random_civil_war_' + name + '.txt' for name in (
     'effects', 'parent_effects', 'decision_effects', 'evidence_effects', 'treaty_effects')]
 DATE_KEY = re.compile(r'(?:date|until|deadline|expiry)$')
@@ -35,8 +36,8 @@ def blocks(nodes):
 class Clock:
     def __init__(self, days):
         self.temporary = {'event021_date_offset': Decimal(str(days))}
-        category = dict(parse(source(CALENDAR_SOURCE)))['event021_calendar']
-        self.constants = {f'constant:event021_calendar.{key}': Decimal(data)
+        category = dict(parse(source(CALENDAR_SOURCE)))['chaosx_date_units']
+        self.constants = {f'constant:chaosx_date_units.{key}': Decimal(data)
                           for key, data in category if key != 'schema'}
 
     def value(self, token):
@@ -44,6 +45,9 @@ class Clock:
 
     def run(self, nodes):
         for key, data in nodes:
+            if key == 'chaosx_convert_days_to_date_offset':
+                self.call(dict(parse(source(SHARED_SOURCE)))[key])
+                continue
             if key == 'round_temp_variable':
                 self.temporary[data] = self.temporary[data].to_integral_value(rounding=ROUND_HALF_UP)
             elif key == 'if':
@@ -64,11 +68,15 @@ class Clock:
                 else:
                     raise AssertionError(f'Unsupported calendar effect {key}')
 
-    def offset(self):
+    def call(self, helper):
+        # Conservative scripted-effect boundary: only temporaries that existed
+        # before the call survive its return.
         caller = set(self.temporary)
-        helper = dict(parse(source(DATE_SOURCE)))['event021_days_to_date_offset']
         self.run(helper)
         self.temporary = {k: v for k, v in self.temporary.items() if k in caller}
+
+    def offset(self):
+        self.call(dict(parse(source(DATE_SOURCE)))['event021_days_to_date_offset'])
         return self.temporary['event021_date_offset']
 
 

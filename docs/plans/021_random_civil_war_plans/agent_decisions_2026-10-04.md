@@ -98,3 +98,11 @@ Decision: Offer Emergency Terms shows political power, command power, and rifles
 Support the Government and Support the Opposition state that the sponsor ships 150 rifles and 100 arrive after transport and handling losses, using the existing gate and transfer constants, without changing either amount.
 Their descriptions, and Monitor the Border's, name the live target through `event021_GetSupportGovernmentTarget`, `event021_GetSupportOppositionTarget`, and `event021_GetExposureSourceName`, with neutral fallbacks when no target is recorded.
 Basis: the 2026-09-26 decision and localisation audit findings and the decisions skill's three-inline-value limit.
+
+## D10. The private date converter wraps the shared helper
+
+Decision: keep `event021_days_to_date_offset` and its 41 call sites, but make it a thin wrapper that hands the days to the shared `chaosx_convert_days_to_date_offset` and copies the result back, creating the shared output before the call so it survives the return.
+The duplicate `event021_calendar` constants and their file `common/script_constants/021_random_civil_war_date_constants.txt` are removed because nothing else uses them.
+`.tools/test_event021_date_units.py` now runs the wrapper through the shared helper and the shared `chaosx_date_units` constants and still passes.
+The shared registry row in `chaosx_dynamic_effects.md` was updated with a single-row edit.
+Basis: the harness rule that day and date arithmetic uses the shared converter, and the lead's round-1 assignment.
