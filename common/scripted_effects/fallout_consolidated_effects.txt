@@ -16438,7 +16438,7 @@ fallout_manual_apply_state_aggregate_consequence = {
 	}
 	set_temp_variable = { chaos_fallout_duration_days = constant:fallout_manual_aggregate.fallout_duration_days }
 	chaos_meter_apply_nuclear_fallout_to_state = yes
-	remove_dynamic_modifier = { modifier = nuclear_fallout_state }
+	if = { limit = { has_dynamic_modifier = { modifier = nuclear_fallout_state } } remove_dynamic_modifier = { modifier = nuclear_fallout_state } }
 }
 
 # Supported scope: STATE
@@ -18072,7 +18072,7 @@ fallout_nzl_close_quiet_seas_patrol_window = {
 	clear_variable = fallout_nzl_sea_road_patrol_window_generation
 	if = {
 		limit = { has_dynamic_modifier = fallout_nzl_quiet_seas_patrol_window }
-		remove_dynamic_modifier = { modifier = fallout_nzl_quiet_seas_patrol_window }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_nzl_quiet_seas_patrol_window } } remove_dynamic_modifier = { modifier = fallout_nzl_quiet_seas_patrol_window } }
 	}
 }
 
@@ -22322,7 +22322,7 @@ fallout_event_908_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_908_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_908_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_908_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_908_result_partial }
 		else = { set_state_flag = fallout_event_908_result_failure }
@@ -23039,7 +23039,7 @@ fallout_event_534_apply_result_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_534_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_534_threshold.result_exposure_failure }
 			set_state_flag = fallout_event_534_memory_result_failure
-			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } }
 			set_temp_variable = { fallout_event_534_modifier_days = constant:fallout_event_534_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_ammunition_winter_failed days = fallout_event_534_modifier_days }
 			set_temp_variable = { fallout_event_534_modifier_days = 0 }
@@ -23178,7 +23178,7 @@ fallout_event_534_apply_callback_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_534_threshold.callback_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_534_threshold.callback_exposure_failure }
 			set_state_flag = fallout_event_534_memory_callback_failure
-			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_534_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } }
 			set_temp_variable = { fallout_event_534_modifier_days = constant:fallout_event_534_timing.callback_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_ammunition_winter_callback_failed days = fallout_event_534_modifier_days }
 			set_temp_variable = { fallout_event_534_modifier_days = 0 }
@@ -24164,7 +24164,7 @@ fallout_event_450_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_450_threshold.result_exposure_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_450_threshold.result_supply_failure } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_450_THRESHOLD_RESULT_BUILDING_DAMAGE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_450_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_450_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			set_state_flag = fallout_event_450_wolf_breach
 		}
 		fallout_event_450_apply_failure_deaths = yes
@@ -24268,7 +24268,7 @@ fallout_event_450_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_450_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_450_threshold.callback_war_support_failure
-		var:fallout_event_450_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_450_threshold.callback_reclamation_failure } if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_450_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_450_threshold.callback_exposure_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_450_THRESHOLD_CALLBACK_BUILDING_DAMAGE } }
+		var:fallout_event_450_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_450_threshold.callback_reclamation_failure } if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_450_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_450_threshold.callback_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_450_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
 		fallout_event_450_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_ash_wolves_pack_pressure_current min = constant:fallout_event_450_threshold.ledger_minimum max = constant:fallout_event_450_threshold.ledger_maximum }
@@ -24798,7 +24798,7 @@ fallout_event_554_apply_result_effects = {
 		if = {
 			limit = { check_variable = { ROOT.fallout_event_554_result_outcome = constant:fallout_event_outcome_type.failure } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_554_RESULT_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_554_RESULT_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_554_RESULT_BUILDING_DAMAGE_FAILURE } } }
 			if = { limit = { NOT = { has_state_category = wasteland } } air_winter_degrade_state_category = yes }
 		}
 		if = { limit = { check_variable = { ROOT.fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } add_building_construction = { type = infrastructure level = constant:fallout_event_554_result.building_repair_success instant_build = yes } }
@@ -24939,7 +24939,7 @@ fallout_event_554_apply_callback_effects = {
 		clamp_variable = { var = air_winter_disease_pressure min = constant:fallout_event_554_threshold.minimum_disease_pressure max = constant:fallout_event_554_threshold.maximum_disease_pressure }
 		air_winter_apply_disease_modifier = yes
 		if = { limit = { check_variable = { ROOT.fallout_event_554_result_outcome = constant:fallout_event_outcome_type.success } } add_building_construction = { type = infrastructure level = constant:fallout_event_554_result.building_repair_success instant_build = yes } }
-		if = { limit = { check_variable = { ROOT.fallout_event_554_result_outcome = constant:fallout_event_outcome_type.failure } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_554_RESULT_BUILDING_DAMAGE_CALLBACK_FAILURE } }
+		if = { limit = { check_variable = { ROOT.fallout_event_554_result_outcome = constant:fallout_event_outcome_type.failure } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_554_RESULT_BUILDING_DAMAGE_CALLBACK_FAILURE } } }
 		set_state_flag = fallout_event_554_memory_callback_recorded
 	}
 	if = { limit = { check_variable = { fallout_event_554_result_outcome = constant:fallout_event_outcome_type.failure } } fallout_event_554_apply_callback_failure_deaths = yes }
@@ -27119,7 +27119,7 @@ fallout_event_726_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_726_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_726_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_726_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_726_result_partial }
 		else = { set_state_flag = fallout_event_726_result_failure }
@@ -27851,9 +27851,9 @@ fallout_event_464_apply_result_effects = {
 			subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.result_state_water_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.result_state_disease_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.result_supply_failure } }
-			if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			set_state_flag = fallout_event_464_crossing_failure
 		}
 		fallout_event_464_apply_failure_deaths = yes
@@ -27960,7 +27960,7 @@ fallout_event_464_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_464_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_464_threshold.callback_war_support_failure
-		var:fallout_event_464_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_464_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_464_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
+		var:fallout_event_464_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_464_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_464_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_464_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_464_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_464_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_464_threshold.minimum_railway } if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } } else = { if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_464_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } } }
 		fallout_event_464_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_bridge_that_moved_crossing_damage_current min = constant:fallout_event_464_threshold.ledger_minimum max = constant:fallout_event_464_threshold.ledger_maximum }
@@ -28439,7 +28439,7 @@ fallout_event_628_apply_result_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_628_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_628_threshold.result_exposure_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_628_threshold.result_disease_failure }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_628_THRESHOLD_BUILDING_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_628_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			set_state_flag = fallout_event_628_memory_failure
 			set_temp_variable = { fallout_event_628_modifier_days = constant:fallout_event_628_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_canal_failed days = fallout_event_628_modifier_days }
@@ -28775,7 +28775,7 @@ fallout_event_628_apply_callback_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_628_threshold.callback_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_628_threshold.callback_exposure_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_628_threshold.callback_disease_failure }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_628_THRESHOLD_BUILDING_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_628_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			set_state_flag = fallout_event_628_memory_callback_failure
 			set_temp_variable = { fallout_event_628_modifier_days = constant:fallout_event_628_timing.callback_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_canal_reviewed_failed days = fallout_event_628_modifier_days }
@@ -28817,15 +28817,15 @@ fallout_event_628_clear_state_reservation = {
 		limit = { has_variable = fallout_event_628_target_state_id }
 		var:fallout_event_628_target_state_id = {
 			clr_state_flag = fallout_event_628_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_canal_joint }
-			remove_dynamic_modifier = { modifier = fallout_canal_upstream }
-			remove_dynamic_modifier = { modifier = fallout_canal_guard }
-			remove_dynamic_modifier = { modifier = fallout_canal_council }
-			remove_dynamic_modifier = { modifier = fallout_canal_partial }
-			remove_dynamic_modifier = { modifier = fallout_canal_failed }
-			remove_dynamic_modifier = { modifier = fallout_canal_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_canal_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_canal_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_joint } } remove_dynamic_modifier = { modifier = fallout_canal_joint } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_upstream } } remove_dynamic_modifier = { modifier = fallout_canal_upstream } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_guard } } remove_dynamic_modifier = { modifier = fallout_canal_guard } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_council } } remove_dynamic_modifier = { modifier = fallout_canal_council } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_partial } } remove_dynamic_modifier = { modifier = fallout_canal_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_failed } } remove_dynamic_modifier = { modifier = fallout_canal_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_reviewed } } remove_dynamic_modifier = { modifier = fallout_canal_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_canal_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_canal_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_canal_reviewed_failed } }
 		}
 	}
 }
@@ -29410,7 +29410,7 @@ fallout_event_520_apply_result_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_520_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_520_threshold.result_exposure_failure }
 			set_state_flag = fallout_event_520_memory_command_failed
-			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_520_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_520_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_520_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_520_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } }
 			set_temp_variable = { fallout_event_520_modifier_days = constant:fallout_event_520_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_captain_failed days = fallout_event_520_modifier_days }
 			set_temp_variable = { fallout_event_520_modifier_days = 0 }
@@ -30307,7 +30307,7 @@ fallout_event_768_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_768_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_768_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_768_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_768_result_partial }
 		else = { set_state_flag = fallout_event_768_result_failure }
@@ -30930,7 +30930,7 @@ fallout_event_436_apply_result_effects = {
 		add_to_variable = { fallout_children_return_claim_current = constant:fallout_event_436_threshold.result_return_failure }
 		add_to_variable = { fallout_children_cohort_current = constant:fallout_event_436_threshold.result_cohort_failure }
 		set_temp_variable = { fallout_event_436_state_modifier_days = constant:fallout_event_436_timing.result_modifier_days }
-		var:fallout_event_436_target_state_id = { subtract_from_variable = { air_winter_reclamation = constant:fallout_event_436_threshold.result_reclamation_failure } if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_436_threshold.result_supply_failure } } if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } } add_to_variable = { air_winter_exposure = constant:fallout_event_436_threshold.result_exposure_failure } clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_436_THRESHOLD_BUILDING_DAMAGE_FAILURE } } else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_436_THRESHOLD_BUILDING_DAMAGE_FAILURE } } set_state_flag = fallout_event_436_children_failed add_dynamic_modifier = { modifier = fallout_children_failure days = fallout_event_436_state_modifier_days } }
+		var:fallout_event_436_target_state_id = { subtract_from_variable = { air_winter_reclamation = constant:fallout_event_436_threshold.result_reclamation_failure } if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_436_threshold.result_supply_failure } } if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } } add_to_variable = { air_winter_exposure = constant:fallout_event_436_threshold.result_exposure_failure } clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_436_THRESHOLD_BUILDING_DAMAGE_FAILURE } } else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_436_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } set_state_flag = fallout_event_436_children_failed add_dynamic_modifier = { modifier = fallout_children_failure days = fallout_event_436_state_modifier_days } }
 		set_temp_variable = { fallout_event_436_state_modifier_days = 0 }
 		fallout_event_436_apply_failure_deaths = yes
 	}
@@ -32594,7 +32594,7 @@ fallout_event_915_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_915_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_915_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_915_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_915_result_partial }
 		else = { set_state_flag = fallout_event_915_result_failure }
@@ -33547,7 +33547,7 @@ fallout_event_719_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_719_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_719_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_719_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_719_result_partial }
 		else = { set_state_flag = fallout_event_719_result_failure }
@@ -34576,7 +34576,7 @@ fallout_event_880_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_880_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_880_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_880_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_880_result_partial }
 		else = { set_state_flag = fallout_event_880_result_failure }
@@ -35611,7 +35611,7 @@ fallout_event_922_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_922_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_922_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_922_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_922_result_partial }
 		else = { set_state_flag = fallout_event_922_result_failure }
@@ -36289,7 +36289,7 @@ fallout_event_387_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_387_threshold.state_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_387_THRESHOLD_MEDICAL_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_387_THRESHOLD_MEDICAL_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_387_THRESHOLD_MEDICAL_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_387_memory_antibiotics_failed
 			set_temp_variable = { fallout_event_387_state_modifier_days = constant:fallout_event_387_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_counterfeit_antibiotics_unsafe days = fallout_event_387_state_modifier_days }
@@ -37368,7 +37368,7 @@ fallout_event_572_apply_callback_effects = {
 		}
 		if = { limit = { check_variable = { ROOT.fallout_event_572_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_reclamation = constant:fallout_event_572_threshold.callback_reclamation_success } subtract_from_variable = { air_winter_exposure = constant:fallout_event_572_threshold.callback_exposure_success } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_572_threshold.callback_disease_success } }
 		else_if = { limit = { check_variable = { ROOT.fallout_event_572_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_reclamation = constant:fallout_event_572_threshold.callback_reclamation_partial } add_to_variable = { air_winter_exposure = constant:fallout_event_572_threshold.callback_exposure_partial } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_572_threshold.callback_disease_partial } }
-		else = { subtract_from_variable = { air_winter_reclamation = constant:fallout_event_572_threshold.callback_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_572_threshold.callback_exposure_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_572_threshold.callback_disease_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_572_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		else = { subtract_from_variable = { air_winter_reclamation = constant:fallout_event_572_threshold.callback_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_572_threshold.callback_exposure_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_572_threshold.callback_disease_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_572_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -37776,7 +37776,7 @@ fallout_event_338_apply_result_effects = {
 			if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_338_threshold.state_contamination_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_338_THRESHOLD_STATE_INFRASTRUCTURE_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_338_THRESHOLD_STATE_INFRASTRUCTURE_DAMAGE_FAILURE } }
 			set_state_flag = fallout_event_338_memory_lost
 			set_temp_variable = { fallout_event_338_state_modifier_days = constant:fallout_event_338_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_dead_city_permit_contaminated days = fallout_event_338_state_modifier_days }
@@ -38268,7 +38268,7 @@ fallout_event_485_apply_result_effects = {
 			if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_485_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_485_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_485_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_485_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_485_memory_water_failed
 			set_temp_variable = { fallout_event_485_modifier_days = constant:fallout_event_485_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_desalination_night_shift_failed days = fallout_event_485_modifier_days }
@@ -39067,7 +39067,7 @@ fallout_event_705_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_705_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_705_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_705_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_705_result_partial }
 		else = { set_state_flag = fallout_event_705_result_failure }
@@ -42716,13 +42716,13 @@ fallout_reset_state_grade_modifier_receipt_for_retry = {
 	clr_state_flag = fallout_grade_modifier_evaluated
 	clr_state_flag = fallout_grade_modifier_applied
 	clr_state_flag = fallout_altered_biosphere_modifier_applied
-	remove_dynamic_modifier = { modifier = fallout_grade_1_state }
-	remove_dynamic_modifier = { modifier = fallout_grade_2_state }
-	remove_dynamic_modifier = { modifier = fallout_grade_3_state }
-	remove_dynamic_modifier = { modifier = fallout_grade_4_state }
-	remove_dynamic_modifier = { modifier = fallout_grade_5_state }
-	remove_dynamic_modifier = { modifier = fallout_grade_6_state }
-	remove_dynamic_modifier = { modifier = fallout_altered_biosphere_state }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_1_state } } remove_dynamic_modifier = { modifier = fallout_grade_1_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_2_state } } remove_dynamic_modifier = { modifier = fallout_grade_2_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_3_state } } remove_dynamic_modifier = { modifier = fallout_grade_3_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_4_state } } remove_dynamic_modifier = { modifier = fallout_grade_4_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_5_state } } remove_dynamic_modifier = { modifier = fallout_grade_5_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_grade_6_state } } remove_dynamic_modifier = { modifier = fallout_grade_6_state } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_altered_biosphere_state } } remove_dynamic_modifier = { modifier = fallout_altered_biosphere_state } }
 }
 
 # Supported scope: STATE. Output is the temporary category enum selected from
@@ -46420,7 +46420,7 @@ fallout_event_443_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_443_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_443_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_443_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_443_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_443_empty_village_failed
 			add_dynamic_modifier = { modifier = fallout_empty_village_failure days = fallout_event_443_state_modifier_days }
 		}
@@ -48120,7 +48120,7 @@ fallout_event_796_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_796_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_796_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_796_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_796_result_partial }
 		else = { set_state_flag = fallout_event_796_result_failure }
@@ -61633,7 +61633,7 @@ fallout_orientation_apply_capital_result = {
 			var:fallout_orientation_state_target = {
 				if = {
 					limit = { infrastructure > constant:fallout_orientation_runtime.zero }
-					damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_ORIENTATION_RUNTIME_BUILDING_DAMAGE }
+					if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_ORIENTATION_RUNTIME_BUILDING_DAMAGE } }
 				}
 			}
 		}
@@ -61760,7 +61760,7 @@ fallout_orientation_apply_resource_result = {
 			var:fallout_orientation_state_target = {
 				if = {
 					limit = { infrastructure > constant:fallout_orientation_runtime.zero }
-					damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_ORIENTATION_RUNTIME_BUILDING_DAMAGE }
+					if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_ORIENTATION_RUNTIME_BUILDING_DAMAGE } }
 					set_variable = { ROOT.fallout_orientation_current_result_building_damage_applied = constant:fallout_orientation_runtime.one }
 				}
 			}
@@ -63485,7 +63485,7 @@ fallout_event_831_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_831_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_831_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_831_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_831_result_partial }
 		else = { set_state_flag = fallout_event_831_result_failure }
@@ -64452,7 +64452,7 @@ fallout_event_691_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_691_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_691_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_691_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_691_result_partial }
 		else = { set_state_flag = fallout_event_691_result_failure }
@@ -65239,7 +65239,7 @@ fallout_event_478_apply_result_effects = {
 			if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_478_threshold.result_supply_failure } }
 			if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_478_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_478_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_478_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_478_memory_frost_failed
 			set_temp_variable = { fallout_event_478_modifier_days = constant:fallout_event_478_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_false_spring_losses_failed days = fallout_event_478_modifier_days }
@@ -66142,7 +66142,7 @@ fallout_event_894_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_894_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_894_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_894_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_894_result_partial }
 		else = { set_state_flag = fallout_event_894_result_failure }
@@ -68890,7 +68890,7 @@ fallout_event_684_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_684_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_684_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_684_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_684_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_684_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_684_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_684_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_684_result_partial }
 		else = { set_state_flag = fallout_event_684_result_failure }
@@ -69917,7 +69917,7 @@ fallout_event_852_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_852_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_852_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_852_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_852_result_partial }
 		else = { set_state_flag = fallout_event_852_result_failure }
@@ -72106,9 +72106,9 @@ fallout_event_471_apply_result_effects = {
 			subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.result_state_water_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.result_state_disease_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.result_supply_failure } }
-			if = { limit = { rail_way > constant:fallout_event_runtime.zero } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			if = { limit = { rail_way > constant:fallout_event_runtime.zero } if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			set_state_flag = fallout_event_471_exposure_failure
 		}
 		fallout_event_471_apply_failure_deaths = yes
@@ -72215,7 +72215,7 @@ fallout_event_471_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_471_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_471_threshold.callback_war_support_failure
-		var:fallout_event_471_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_471_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_471_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_runtime.zero } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
+		var:fallout_event_471_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_471_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_471_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_471_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_471_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_471_threshold.callback_exposure_failure } if = { limit = { rail_way > constant:fallout_event_runtime.zero } if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } } else = { if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_471_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } } }
 		fallout_event_471_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_first_unmasked_day_public_exposure_current min = constant:fallout_event_471_threshold.ledger_minimum max = constant:fallout_event_471_threshold.ledger_maximum }
@@ -74372,7 +74372,7 @@ fallout_event_775_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_775_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_775_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_775_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_775_result_partial }
 		else = { set_state_flag = fallout_event_775_result_failure }
@@ -75184,7 +75184,7 @@ fallout_event_663_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
 		clamp_variable = { var = air_winter_exposure min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
-		if = { limit = { check_variable = { fallout_event_663_result_outcome = constant:fallout_event_outcome_type.failure } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_RESULT_NAVAL_BASE_DAMAGE } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_RESULT_INFRASTRUCTURE_DAMAGE } }
+		if = { limit = { check_variable = { fallout_event_663_result_outcome = constant:fallout_event_outcome_type.failure } } if = { limit = { check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_RESULT_NAVAL_BASE_DAMAGE } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_RESULT_INFRASTRUCTURE_DAMAGE } } }
 		set_state_flag = fallout_event_663_registry_committed
 		clr_state_flag = fallout_event_663_registry_reserved
 	}
@@ -75618,7 +75618,7 @@ fallout_event_663_apply_callback_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
 		clamp_variable = { var = air_winter_exposure min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:fallout_event_runtime.zero max = constant:fallout_event_663_threshold.maximum_grade }
-		if = { limit = { check_variable = { ROOT.fallout_event_663_callback_outcome = constant:fallout_event_outcome_type.failure } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_CALLBACK_NAVAL_BASE_DAMAGE } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_CALLBACK_INFRASTRUCTURE_DAMAGE } }
+		if = { limit = { check_variable = { ROOT.fallout_event_663_callback_outcome = constant:fallout_event_outcome_type.failure } } if = { limit = { check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_CALLBACK_NAVAL_BASE_DAMAGE } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_663_THRESHOLD_CALLBACK_INFRASTRUCTURE_DAMAGE } } }
 		set_state_flag = fallout_event_663_memory_closed
 		clr_state_flag = fallout_event_663_registry_reserved
 		clr_state_flag = fallout_event_663_registry_committed
@@ -76593,7 +76593,7 @@ fallout_event_824_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_824_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_824_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_824_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_824_result_partial }
 		else = { set_state_flag = fallout_event_824_result_failure }
@@ -77641,7 +77641,7 @@ fallout_event_782_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_782_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_782_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_782_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_782_result_partial }
 		else = { set_state_flag = fallout_event_782_result_failure }
@@ -78754,15 +78754,15 @@ fallout_event_747_clear_state_reservation = {
 		limit = { has_variable = fallout_event_747_target_state_id }
 		var:fallout_event_747_target_state_id = {
 			clr_state_flag = fallout_event_747_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_health_authority_health_compact }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_inspection_capacity }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_isolation_readiness }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_humanitarian_service }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_partial }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_failed }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_health_compact } } remove_dynamic_modifier = { modifier = fallout_health_authority_health_compact } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_inspection_capacity } } remove_dynamic_modifier = { modifier = fallout_health_authority_inspection_capacity } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_isolation_readiness } } remove_dynamic_modifier = { modifier = fallout_health_authority_isolation_readiness } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_humanitarian_service } } remove_dynamic_modifier = { modifier = fallout_health_authority_humanitarian_service } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_partial } } remove_dynamic_modifier = { modifier = fallout_health_authority_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_failed } } remove_dynamic_modifier = { modifier = fallout_health_authority_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_reviewed } } remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_health_authority_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_health_authority_reviewed_failed } }
 		}
 	}
 }
@@ -80593,7 +80593,7 @@ fallout_event_492_apply_result_effects = {
 			if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_492_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@naval_base value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = naval_base damage = @CR_SC_FALLOUT_EVENT_492_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_492_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_492_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_492_memory_ice_failed
 			set_temp_variable = { fallout_event_492_modifier_days = constant:fallout_event_492_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_ice_melt_rations_failed days = fallout_event_492_modifier_days }
@@ -81476,7 +81476,7 @@ fallout_event_838_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_838_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_838_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_838_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_838_result_partial }
 		else = { set_state_flag = fallout_event_838_result_failure }
@@ -82303,7 +82303,7 @@ fallout_event_243_apply_failure_deaths_and_damage = {
 				}
 				if = {
 					limit = { check_variable = { ROOT.fallout_event_243_selected_branch = constant:fallout_event_243_branch.cannibalize_industrial_line } }
-					damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_243_RESULT_INDUSTRY_FAILURE_BUILDING_DAMAGE }
+					if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_243_RESULT_INDUSTRY_FAILURE_BUILDING_DAMAGE } }
 				}
 				else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_243_RESULT_MICROGRID_FAILURE_BUILDING_DAMAGE } }
 				set_variable = { ROOT.fallout_event_243_failure_damage_applied = constant:fallout_event_runtime.one }
@@ -83489,7 +83489,7 @@ fallout_event_803_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_803_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_803_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_803_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_803_result_partial }
 		else = { set_state_flag = fallout_event_803_result_failure }
@@ -84509,7 +84509,7 @@ fallout_event_845_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_845_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_845_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_845_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_845_result_partial }
 		else = { set_state_flag = fallout_event_845_result_failure }
@@ -85179,7 +85179,7 @@ fallout_event_345_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_345_threshold.state_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_345_THRESHOLD_FACILITY_DAMAGE_FAILURE } }
-		else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_345_THRESHOLD_FACILITY_DAMAGE_FAILURE } }
+		else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_345_THRESHOLD_FACILITY_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_345_memory_manual_failed
 			set_temp_variable = { fallout_event_345_state_modifier_days = constant:fallout_event_345_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_manual_protocol_unsafe days = fallout_event_345_state_modifier_days }
@@ -85696,7 +85696,7 @@ fallout_event_380_apply_result_effects = {
 			if = { limit = { check_variable = { var = non_damaged_building_level@supply_node value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = supply_node damage = @CR_SC_FALLOUT_EVENT_380_THRESHOLD_MARKET_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_380_THRESHOLD_MARKET_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_380_THRESHOLD_MARKET_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_380_THRESHOLD_MARKET_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_380_THRESHOLD_MARKET_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_380_memory_market_hub_failed
 			set_temp_variable = { fallout_event_380_state_modifier_days = constant:fallout_event_380_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_market_under_viaduct_unsafe days = fallout_event_380_state_modifier_days }
@@ -86214,7 +86214,7 @@ fallout_event_506_apply_result_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_506_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_506_threshold.result_exposure_failure }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_506_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_506_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_506_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_506_memory_checkpoint_failed
 			set_temp_variable = { fallout_event_506_modifier_days = constant:fallout_event_506_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_km12_checkpoint_failed days = fallout_event_506_modifier_days }
@@ -87150,15 +87150,15 @@ fallout_event_614_clear_state_reservation = {
 		limit = { has_variable = fallout_event_614_target_state_id }
 		var:fallout_event_614_target_state_id = {
 			clr_state_flag = fallout_event_614_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_surface_council }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_tunnel_autonomy }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_military_integration }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_evacuation }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_partial }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_failed }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_surface_council } } remove_dynamic_modifier = { modifier = fallout_metro_republic_surface_council } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_tunnel_autonomy } } remove_dynamic_modifier = { modifier = fallout_metro_republic_tunnel_autonomy } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_military_integration } } remove_dynamic_modifier = { modifier = fallout_metro_republic_military_integration } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_evacuation } } remove_dynamic_modifier = { modifier = fallout_metro_republic_evacuation } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_partial } } remove_dynamic_modifier = { modifier = fallout_metro_republic_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_failed } } remove_dynamic_modifier = { modifier = fallout_metro_republic_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_reviewed } } remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_metro_republic_reviewed_failed } }
 		}
 	}
 }
@@ -88882,7 +88882,7 @@ fallout_event_527_apply_result_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_527_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_527_threshold.result_exposure_failure }
 			set_state_flag = fallout_event_527_memory_result_failure
-			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } }
 			set_temp_variable = { fallout_event_527_modifier_days = constant:fallout_event_527_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_missing_patrol_failed days = fallout_event_527_modifier_days }
 			set_temp_variable = { fallout_event_527_modifier_days = 0 }
@@ -89021,7 +89021,7 @@ fallout_event_527_apply_callback_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_527_threshold.callback_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_527_threshold.callback_exposure_failure }
 			set_state_flag = fallout_event_527_memory_callback_failure
-			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_527_THRESHOLD_BUILDING_DAMAGE_FAILURE } } } }
 			set_temp_variable = { fallout_event_527_modifier_days = constant:fallout_event_527_timing.callback_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_missing_patrol_callback_failed days = fallout_event_527_modifier_days }
 			set_temp_variable = { fallout_event_527_modifier_days = 0 }
@@ -89789,7 +89789,7 @@ fallout_event_887_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_887_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_887_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_887_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_887_result_partial }
 		else = { set_state_flag = fallout_event_887_result_failure }
@@ -90559,7 +90559,7 @@ fallout_event_635_apply_result_effects = {
 			add_to_variable = { air_winter_refugee_pressure = constant:fallout_event_635_threshold.result_refugee_failure }
 			if = { limit = { check_variable = { ROOT.fallout_event_635_selected_branch = constant:fallout_event_635_branch.return_plan } } add_to_variable = { air_winter_exposure = constant:fallout_event_635_threshold.return_plan_exposure_failure } }
 			if = { limit = { check_variable = { ROOT.fallout_event_635_selected_branch = constant:fallout_event_635_branch.open_pass_community } } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_635_threshold.open_pass_disease_failure } }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_635_THRESHOLD_BUILDING_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_635_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			set_state_flag = fallout_event_635_memory_failure
 			set_temp_variable = { fallout_event_635_modifier_days = constant:fallout_event_635_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_mountain_pass_failed_state days = fallout_event_635_modifier_days }
@@ -91000,7 +91000,7 @@ fallout_event_635_apply_callback_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_635_threshold.callback_exposure_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_635_threshold.callback_disease_failure }
 			add_to_variable = { air_winter_refugee_pressure = constant:fallout_event_635_threshold.callback_refugee_failure }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_635_THRESHOLD_BUILDING_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_635_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 			set_state_flag = fallout_event_635_memory_callback_failure
 			set_temp_variable = { fallout_event_635_modifier_days = constant:fallout_event_635_timing.callback_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_mountain_pass_reviewed_failed_state days = fallout_event_635_modifier_days }
@@ -91975,7 +91975,7 @@ fallout_event_761_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_761_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_761_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_761_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_761_result_partial }
 		else = { set_state_flag = fallout_event_761_result_failure }
@@ -92999,7 +92999,7 @@ fallout_event_873_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_873_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_873_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_873_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_873_result_partial }
 		else = { set_state_flag = fallout_event_873_result_failure }
@@ -96583,7 +96583,7 @@ fallout_event_579_apply_target_state_effects = {
 			add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.result_reclamation_failure }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.result_exposure_failure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.result_disease_failure }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_BUILDING_DAMAGE_FAILURE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
 		}
 		if = {
 			limit = { check_variable = { ROOT.fallout_event_579_selected_branch = constant:fallout_event_579_branch.upstream_command } has_variable = fallout_state_supply_access_current }
@@ -96607,7 +96607,7 @@ fallout_event_579_apply_target_state_effects = {
 			limit = { check_variable = { ROOT.fallout_event_579_selected_branch = constant:fallout_event_579_branch.emergency_hold } }
 			if = { limit = { check_variable = { ROOT.fallout_event_579_result_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_success } }
 			else_if = { limit = { check_variable = { ROOT.fallout_event_579_result_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_partial } }
-			else = { add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_HOLD_FAILURE_BUILDING_DAMAGE } }
+			else = { add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_HOLD_FAILURE_BUILDING_DAMAGE } } }
 		}
 		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		clamp_variable = { var = air_winter_food_reserve min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -96925,7 +96925,7 @@ fallout_event_579_apply_callback_effects = {
 	var:fallout_event_579_target_state_id = {
 		if = { limit = { has_variable = fallout_state_supply_access_current } if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_579_threshold.callback_state_supply_success } else_if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_579_threshold.callback_state_supply_partial } else = { add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_579_threshold.callback_state_supply_failure } } } } }
 		if = { limit = { has_variable = air_winter_food_reserve } if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_food_reserve = constant:fallout_event_579_threshold.callback_state_food_success } else_if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_food_reserve = constant:fallout_event_579_threshold.callback_state_food_partial } else = { add_to_variable = { air_winter_food_reserve = constant:fallout_event_579_threshold.callback_state_food_failure } } } } }
-		if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_success } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_success } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_success } } else_if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_partial } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_partial } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_partial } } else = { add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_success } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_success } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_success } } else_if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_partial } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_partial } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_partial } } else = { add_to_variable = { air_winter_reclamation = constant:fallout_event_579_threshold.callback_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.callback_exposure_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_579_threshold.callback_disease_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = {
 			limit = { check_variable = { ROOT.fallout_event_579_selected_branch = constant:fallout_event_579_branch.upstream_command } has_variable = fallout_state_supply_access_current }
 			if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_579_threshold.command_supply_success } }
@@ -96948,7 +96948,7 @@ fallout_event_579_apply_callback_effects = {
 			limit = { check_variable = { ROOT.fallout_event_579_selected_branch = constant:fallout_event_579_branch.emergency_hold } }
 			if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.success } } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_success } }
 			else_if = { limit = { check_variable = { ROOT.fallout_event_579_callback_outcome = constant:fallout_event_outcome_type.partial } } add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_partial } }
-			else = { add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_HOLD_FAILURE_BUILDING_DAMAGE } }
+			else = { add_to_variable = { air_winter_exposure = constant:fallout_event_579_threshold.hold_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_579_THRESHOLD_HOLD_FAILURE_BUILDING_DAMAGE } } }
 		}
 		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		clamp_variable = { var = air_winter_food_reserve min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -97979,18 +97979,18 @@ fallout_event_586_abort_on_generation_change = {
 			var:fallout_event_586_target_state_id = {
 				clr_state_flag = fallout_event_586_registry_reserved
 				clr_state_flag = fallout_event_586_registry_committed
-				remove_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor }
-				remove_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor }
-				remove_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor }
-				remove_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor } }
 			}
 		}
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_result_success }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_result_partial }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_result_failed }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_success }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_success } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_success } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_partial } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_partial } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_failed } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_failed } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_success } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_success } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed } }
 		clr_country_flag = fallout_event_586_chain_committed
 		clr_country_flag = fallout_old_airfield_chain_pending
 		clr_country_flag = fallout_event_586_callback_scheduled
@@ -98026,10 +98026,10 @@ fallout_event_586_clear_state_reservation = {
 	var:fallout_event_586_target_state_id = {
 		clr_state_flag = fallout_event_586_registry_reserved
 		set_state_flag = fallout_event_586_registry_committed
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor }
-		remove_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_civil_corridor } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_military_corridor } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_courier_corridor } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor } } remove_dynamic_modifier = { modifier = fallout_old_airfield_consortium_corridor } }
 	}
 }
 
@@ -98062,12 +98062,12 @@ fallout_event_586_cleanup = {
 			clr_country_flag = fallout_event_586_cancellation_history_recorded
 			clr_country_flag = fallout_event_586_result_cleanup_released
 			clr_country_flag = fallout_event_586_callback_cleanup_released
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_result_success }
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_result_partial }
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_result_failed }
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_success }
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial }
-			remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_success } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_success } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_partial } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_result_failed } } remove_dynamic_modifier = { modifier = fallout_old_airfield_result_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_success } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_success } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed } } remove_dynamic_modifier = { modifier = fallout_old_airfield_callback_failed } }
 			set_country_flag = fallout_old_airfield_chain_completed
 			fallout_event_586_clear_state_reservation = yes
 			fallout_event_586_clear_frozen = yes
@@ -98777,7 +98777,7 @@ fallout_event_901_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_901_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_901_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_901_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_901_result_partial }
 		else = { set_state_flag = fallout_event_901_result_failure }
@@ -99488,7 +99488,7 @@ fallout_event_373_apply_result_effects = {
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@radar_station value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = radar_station damage = @CR_SC_FALLOUT_EVENT_373_THRESHOLD_WEATHER_STATION_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_373_THRESHOLD_WEATHER_STATION_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_373_THRESHOLD_WEATHER_STATION_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_373_THRESHOLD_WEATHER_STATION_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_373_memory_weather_station_failed
 			set_temp_variable = { fallout_event_373_state_modifier_days = constant:fallout_event_373_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_old_weather_station_unsafe days = fallout_event_373_state_modifier_days }
@@ -100441,15 +100441,15 @@ fallout_event_740_clear_state_reservation = {
 		limit = { has_variable = fallout_event_740_target_state_id }
 		var:fallout_event_740_target_state_id = {
 			clr_state_flag = fallout_event_740_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_reopen_city }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_scientific_access }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_military_salvage }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_permanent_memorial }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_partial }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_failed }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_reopen_city } } remove_dynamic_modifier = { modifier = fallout_sealed_city_reopen_city } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_scientific_access } } remove_dynamic_modifier = { modifier = fallout_sealed_city_scientific_access } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_military_salvage } } remove_dynamic_modifier = { modifier = fallout_sealed_city_military_salvage } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_permanent_memorial } } remove_dynamic_modifier = { modifier = fallout_sealed_city_permanent_memorial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_partial } } remove_dynamic_modifier = { modifier = fallout_sealed_city_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_failed } } remove_dynamic_modifier = { modifier = fallout_sealed_city_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_reviewed } } remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_sealed_city_reviewed_failed } }
 		}
 	}
 }
@@ -101057,7 +101057,7 @@ fallout_event_408_apply_result_effects = {
 			if = { limit = { has_variable = fallout_state_supply_access_current } subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_408_threshold.result_supply_failure } }
 			if = { limit = { has_variable = fallout_state_supply_access_current } clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_408_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_408_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_408_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_408_memory_bloom_failed
 			set_temp_variable = { fallout_event_408_modifier_days = constant:fallout_event_408_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_orchard_flowers_failed days = fallout_event_408_modifier_days }
@@ -102008,7 +102008,7 @@ fallout_event_817_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_817_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_817_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_817_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_817_result_partial }
 		else = { set_state_flag = fallout_event_817_result_failure }
@@ -102976,7 +102976,7 @@ fallout_event_698_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_698_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_698_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_698_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_698_result_partial }
 		else = { set_state_flag = fallout_event_698_result_failure }
@@ -103963,7 +103963,7 @@ fallout_event_789_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_789_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_789_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_789_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_789_result_partial }
 		else = { set_state_flag = fallout_event_789_result_failure }
@@ -104983,7 +104983,7 @@ fallout_event_866_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_866_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_866_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_866_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_866_result_partial }
 		else = { set_state_flag = fallout_event_866_result_failure }
@@ -106037,7 +106037,7 @@ fallout_event_929_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_929_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_929_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_929_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_929_result_partial }
 		else = { set_state_flag = fallout_event_929_result_failure }
@@ -106791,7 +106791,7 @@ fallout_event_600_apply_result_effects = {
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@radar_station value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = radar_station damage = @CR_SC_FALLOUT_EVENT_600_THRESHOLD_RADIO_STATION_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_600_THRESHOLD_RADIO_STATION_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_600_THRESHOLD_RADIO_STATION_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_600_THRESHOLD_RADIO_STATION_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_600_memory_radio_station_failed
 			set_temp_variable = { fallout_event_600_state_modifier_days = constant:fallout_event_600_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe days = fallout_event_600_state_modifier_days }
@@ -106981,12 +106981,12 @@ fallout_event_600_abort_on_generation_change = {
 				var:fallout_event_600_target_state_id = {
 					clr_state_flag = fallout_event_600_registry_reserved
 					clr_state_flag = fallout_event_600_registry_committed
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay }
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net }
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription }
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial }
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe }
-					remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } }
+					if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } }
 				}
 				fallout_event_600_clear_frozen = yes
 			}
@@ -107013,12 +107013,12 @@ fallout_event_600_abort_on_generation_change = {
 			var:fallout_event_600_target_state_id = {
 				clr_state_flag = fallout_event_600_registry_reserved
 				clr_state_flag = fallout_event_600_registry_committed
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } }
 			}
 		}
 		clr_country_flag = fallout_event_600_chain_committed
@@ -107084,12 +107084,12 @@ fallout_event_600_cleanup = {
 			var:fallout_event_600_target_state_id = {
 				clr_state_flag = fallout_event_600_registry_reserved
 				set_state_flag = fallout_event_600_registry_committed
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe }
-				remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_public_relay } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_maritime_defense_net } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_harbor_subscription } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_partial } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_unsafe } }
+				if = { limit = { has_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } } remove_dynamic_modifier = { modifier = fallout_radio_island_chain_island_federation } }
 			}
 			clear_variable = fallout_event_600_registry_generation
 			clear_variable = fallout_event_600_registry_owner
@@ -107182,18 +107182,18 @@ fallout_event_114_clear_state_modifiers = {
 	if = {
 		limit = { check_variable = { fallout_event_114_result_state_id > 0 } }
 		var:fallout_event_114_result_state_id = {
-			remove_dynamic_modifier = { modifier = fallout_rail_protected_corridor }
-			remove_dynamic_modifier = { modifier = fallout_rail_forced_labor_corridor }
-			remove_dynamic_modifier = { modifier = fallout_rail_abandoned_corridor }
-			remove_dynamic_modifier = { modifier = fallout_rail_neighbor_access }
-			remove_dynamic_modifier = { modifier = fallout_rail_route_fragmented }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_protected_corridor } } remove_dynamic_modifier = { modifier = fallout_rail_protected_corridor } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_forced_labor_corridor } } remove_dynamic_modifier = { modifier = fallout_rail_forced_labor_corridor } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_abandoned_corridor } } remove_dynamic_modifier = { modifier = fallout_rail_abandoned_corridor } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_neighbor_access } } remove_dynamic_modifier = { modifier = fallout_rail_neighbor_access } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_route_fragmented } } remove_dynamic_modifier = { modifier = fallout_rail_route_fragmented } }
 		}
 	}
 }
 
 fallout_event_114_clear_country_modifiers = {
-	remove_dynamic_modifier = { modifier = fallout_rail_heroic_crew }
-	remove_dynamic_modifier = { modifier = fallout_rail_atrocity_memory }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_heroic_crew } } remove_dynamic_modifier = { modifier = fallout_rail_heroic_crew } }
+	if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_atrocity_memory } } remove_dynamic_modifier = { modifier = fallout_rail_atrocity_memory } }
 }
 
 fallout_event_114_refresh_corridor_state = {
@@ -107532,7 +107532,7 @@ fallout_event_114_apply_result_effects = {
 			fallout_event_114_apply_deaths = yes
 			var:fallout_event_114_result_state_id = {
 				set_variable = { fallout_rail_corridor_control = constant:fallout_event_114_control.none }
-				damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_PROTECTED_FAILURE_BUILDING_DAMAGE }
+				if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_PROTECTED_FAILURE_BUILDING_DAMAGE } }
 				set_state_flag = fallout_rail_protected_failure_memory
 				set_temp_variable = { fallout_event_114_modifier_days = constant:fallout_event_114_timing.fragmented_modifier_days }
 				add_dynamic_modifier = { modifier = fallout_rail_route_fragmented days = fallout_event_114_modifier_days }
@@ -107598,7 +107598,7 @@ fallout_event_114_apply_result_effects = {
 			fallout_event_114_apply_deaths = yes
 			var:fallout_event_114_result_state_id = {
 				set_variable = { fallout_rail_corridor_control = constant:fallout_event_114_control.none }
-				damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_FORCED_FAILURE_BUILDING_DAMAGE }
+				if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_FORCED_FAILURE_BUILDING_DAMAGE } }
 				set_state_flag = fallout_rail_forced_failure_memory
 				set_temp_variable = { fallout_event_114_modifier_days = constant:fallout_event_114_timing.fragmented_modifier_days }
 				add_dynamic_modifier = { modifier = fallout_rail_route_fragmented days = fallout_event_114_modifier_days }
@@ -107618,7 +107618,7 @@ fallout_event_114_apply_result_effects = {
 			add_stability = constant:fallout_event_114_result.abandon_success_stability
 			var:fallout_event_114_result_state_id = {
 				set_variable = { fallout_rail_corridor_control = constant:fallout_event_114_control.none }
-				damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_SUCCESS_BUILDING_DAMAGE }
+				if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_SUCCESS_BUILDING_DAMAGE } }
 				set_state_flag = fallout_rail_abandoned_memory
 				set_temp_variable = { fallout_event_114_modifier_days = constant:fallout_event_114_timing.modifier_days }
 				add_dynamic_modifier = { modifier = fallout_rail_abandoned_corridor days = fallout_event_114_modifier_days }
@@ -107635,7 +107635,7 @@ fallout_event_114_apply_result_effects = {
 			add_stability = constant:fallout_event_114_result.abandon_partial_stability
 			var:fallout_event_114_result_state_id = {
 				set_variable = { fallout_rail_corridor_control = constant:fallout_event_114_control.none }
-				damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_PARTIAL_BUILDING_DAMAGE }
+				if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_PARTIAL_BUILDING_DAMAGE } }
 				set_state_flag = fallout_rail_abandoned_memory
 				set_temp_variable = { fallout_event_114_modifier_days = constant:fallout_event_114_timing.modifier_days }
 				add_dynamic_modifier = { modifier = fallout_rail_abandoned_corridor days = fallout_event_114_modifier_days }
@@ -107652,7 +107652,7 @@ fallout_event_114_apply_result_effects = {
 			fallout_event_114_apply_deaths = yes
 			var:fallout_event_114_result_state_id = {
 				set_variable = { fallout_rail_corridor_control = constant:fallout_event_114_control.none }
-				damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_FAILURE_BUILDING_DAMAGE }
+				if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_114_RESULT_ABANDON_FAILURE_BUILDING_DAMAGE } }
 				set_state_flag = fallout_rail_abandoned_failure_memory
 				set_temp_variable = { fallout_event_114_modifier_days = constant:fallout_event_114_timing.fragmented_modifier_days }
 				add_dynamic_modifier = { modifier = fallout_rail_route_fragmented days = fallout_event_114_modifier_days }
@@ -108270,8 +108270,8 @@ fallout_event_621_apply_result_effects = {
 			subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_621_threshold.result_failure_supply }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_621_threshold.result_failure_exposure }
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_621_threshold.result_failure_disease }
-			damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_RESULT_RAIL_DAMAGE }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_RESULT_INFRASTRUCTURE_DAMAGE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_RESULT_RAIL_DAMAGE } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_RESULT_INFRASTRUCTURE_DAMAGE } }
 			set_state_flag = fallout_event_621_memory_failure
 			set_temp_variable = { fallout_event_621_modifier_days = constant:fallout_event_621_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_rail_spine_failed days = fallout_event_621_modifier_days }
@@ -108563,8 +108563,8 @@ fallout_event_621_apply_callback_effects = {
 		var:fallout_event_621_target_state_id = {
 			subtract_from_variable = { fallout_state_supply_access_current = constant:fallout_event_621_threshold.callback_failure_supply }
 			add_to_variable = { air_winter_exposure = constant:fallout_event_621_threshold.callback_failure_exposure }
-			damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_CALLBACK_RAIL_DAMAGE }
-			damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_CALLBACK_INFRASTRUCTURE_DAMAGE }
+			if = { limit = { check_variable = { var = non_damaged_building_level@rail_way value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = rail_way damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_CALLBACK_RAIL_DAMAGE } }
+			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_621_THRESHOLD_CALLBACK_INFRASTRUCTURE_DAMAGE } }
 			set_state_flag = fallout_event_621_memory_review_failure
 			set_temp_variable = { fallout_event_621_modifier_days = constant:fallout_event_621_timing.callback_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_failed days = fallout_event_621_modifier_days }
@@ -108599,15 +108599,15 @@ fallout_event_621_clear_state_reservation = {
 		limit = { has_variable = fallout_event_621_target_state_id }
 		var:fallout_event_621_target_state_id = {
 			clr_state_flag = fallout_event_621_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_central }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_depot }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_military }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_merchant }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_partial }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_failed }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_central } } remove_dynamic_modifier = { modifier = fallout_rail_spine_central } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_depot } } remove_dynamic_modifier = { modifier = fallout_rail_spine_depot } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_military } } remove_dynamic_modifier = { modifier = fallout_rail_spine_military } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_merchant } } remove_dynamic_modifier = { modifier = fallout_rail_spine_merchant } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_partial } } remove_dynamic_modifier = { modifier = fallout_rail_spine_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_failed } } remove_dynamic_modifier = { modifier = fallout_rail_spine_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_reviewed } } remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_rail_spine_reviewed_failed } }
 		}
 	}
 }
@@ -109144,7 +109144,7 @@ fallout_event_394_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_394_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_394_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_394_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_394_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_394_memory_ration_legitimacy_failed
 			set_temp_variable = { fallout_event_394_state_modifier_days = constant:fallout_event_394_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_ration_thief_mandate_broken days = fallout_event_394_state_modifier_days }
@@ -110720,7 +110720,7 @@ fallout_event_810_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_810_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_810_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_810_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_810_result_partial }
 		else = { set_state_flag = fallout_event_810_result_failure }
@@ -111398,7 +111398,7 @@ fallout_event_366_apply_result_effects = {
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@nuclear_reactor value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = nuclear_reactor damage = @CR_SC_FALLOUT_EVENT_366_THRESHOLD_REACTOR_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_366_THRESHOLD_REACTOR_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_366_THRESHOLD_REACTOR_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_366_THRESHOLD_REACTOR_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_366_memory_reactor_failed
 			set_temp_variable = { fallout_event_366_state_modifier_days = constant:fallout_event_366_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_reactor_without_a_country_unsafe days = fallout_event_366_state_modifier_days }
@@ -111900,7 +111900,7 @@ fallout_event_415_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_415_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_415_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_415_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_415_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_415_memory_refugee_failed
 			set_temp_variable = { fallout_event_415_state_modifier_days = constant:fallout_event_415_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_refugee_train_broken days = fallout_event_415_state_modifier_days }
@@ -113189,7 +113189,7 @@ fallout_event_754_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_754_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_754_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_754_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_754_result_partial }
 		else = { set_state_flag = fallout_event_754_result_failure }
@@ -114209,7 +114209,7 @@ fallout_event_859_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_859_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_859_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_859_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_859_result_partial }
 		else = { set_state_flag = fallout_event_859_result_failure }
@@ -115176,7 +115176,7 @@ fallout_event_712_apply_result_effects = {
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		air_winter_apply_disease_modifier = yes
-		if = { limit = { check_variable = { var = ROOT.fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_712_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+		if = { limit = { check_variable = { var = ROOT.fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_712_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } set_state_flag = fallout_event_712_result_success }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_712_result_partial }
 		else = { set_state_flag = fallout_event_712_result_failure }
@@ -118688,7 +118688,7 @@ fallout_event_656_apply_result_effects = {
 		add_to_variable = { air_winter_reclamation = fallout_event_656_state_reclamation_delta }
 		add_to_variable = { air_winter_exposure = fallout_event_656_state_exposure_delta }
 		add_to_variable = { air_winter_disease_pressure = fallout_event_656_state_disease_delta }
-		if = { limit = { check_variable = { ROOT.fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_656_RESULT_INFRASTRUCTURE_FAILURE } }
+		if = { limit = { check_variable = { ROOT.fallout_event_656_result_outcome = constant:fallout_event_outcome_type.failure } } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_656_RESULT_INFRASTRUCTURE_FAILURE } } }
 		clamp_variable = { var = air_winter_food_reserve min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -120992,7 +120992,7 @@ fallout_event_422_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_422_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_422_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_422_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_422_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_422_memory_ship_failed
 			set_temp_variable = { fallout_event_422_state_modifier_days = constant:fallout_event_422_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_ship_dock_broken days = fallout_event_422_state_modifier_days }
@@ -121682,7 +121682,7 @@ fallout_event_429_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_429_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_429_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_429_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_429_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_429_specialists_failed
 			add_dynamic_modifier = { modifier = fallout_skilled_failure days = fallout_event_429_state_modifier_days }
 		}
@@ -122692,7 +122692,7 @@ fallout_event_457_apply_result_effects = {
 			add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.result_state_disease_failure }
 			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.result_supply_failure } }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_457_THRESHOLD_RESULT_BUILDING_DAMAGE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_457_THRESHOLD_RESULT_BUILDING_DAMAGE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_457_THRESHOLD_RESULT_BUILDING_DAMAGE } } }
 			set_state_flag = fallout_event_457_flood_breach
 		}
 		fallout_event_457_apply_failure_deaths = yes
@@ -122799,7 +122799,7 @@ fallout_event_457_apply_callback_effects = {
 		fallout_survival_apply_cohesion_delta = yes
 		add_stability = constant:fallout_event_457_threshold.callback_stability_failure
 		add_war_support = constant:fallout_event_457_threshold.callback_war_support_failure
-		var:fallout_event_457_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_457_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.callback_exposure_failure } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_457_THRESHOLD_CALLBACK_BUILDING_DAMAGE } }
+		var:fallout_event_457_target_state_id = { add_to_variable = { air_winter_reclamation = constant:fallout_event_457_threshold.callback_reclamation_failure } subtract_from_variable = { air_winter_water_security = constant:fallout_event_457_threshold.callback_state_water_failure } add_to_variable = { air_winter_disease_pressure = constant:fallout_event_457_threshold.callback_state_disease_failure } if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_457_threshold.callback_supply_failure } } add_to_variable = { air_winter_exposure = constant:fallout_event_457_threshold.callback_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_457_THRESHOLD_CALLBACK_BUILDING_DAMAGE } } }
 		fallout_event_457_apply_callback_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_thaw_water_flood_pressure_current min = constant:fallout_event_457_threshold.ledger_minimum max = constant:fallout_event_457_threshold.ledger_maximum }
@@ -124288,15 +124288,15 @@ fallout_event_607_clear_state_reservation = {
 		limit = { has_variable = fallout_event_607_target_state_id }
 		var:fallout_event_607_target_state_id = {
 			clr_state_flag = fallout_event_607_registry_reserved
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial }
-			remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial } }
+			if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed } }
 		}
 	}
 }
@@ -124347,15 +124347,15 @@ fallout_event_607_abort_on_generation_change = {
 		if = { limit = { has_country_flag = fallout_event_607_cost_paid NOT = { has_country_flag = fallout_event_607_result_history_recorded } } fallout_event_607_refund_branch_cost = yes }
 		fallout_event_607_clear_state_reservation = yes
 		if = { limit = { has_variable = fallout_event_607_target_state_id } var:fallout_event_607_target_state_id = { clr_state_flag = fallout_event_607_registry_committed } }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial }
-		remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_recognized } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_centralized } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_military } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_rotating } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_partial } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_failed } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_partial } }
+		if = { limit = { has_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed } } remove_dynamic_modifier = { modifier = fallout_tunnel_ward_committees_reviewed_failed } }
 		clr_country_flag = fallout_event_607_chain_committed
 		clr_country_flag = fallout_event_607_chain_pending
 		clr_country_flag = fallout_event_607_callback_scheduled
@@ -124768,7 +124768,7 @@ fallout_event_359_apply_result_effects = {
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@radar_station value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = radar_station damage = @CR_SC_FALLOUT_EVENT_359_THRESHOLD_ARCHIVE_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_359_THRESHOLD_ARCHIVE_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_359_THRESHOLD_ARCHIVE_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_359_THRESHOLD_ARCHIVE_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_359_memory_archive_failed
 			set_temp_variable = { fallout_event_359_state_modifier_days = constant:fallout_event_359_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_vault_of_voices_unsafe days = fallout_event_359_state_modifier_days }
@@ -125446,7 +125446,7 @@ fallout_event_107_apply_callback_effects = {
 		set_temp_variable = { fallout_event_107_modifier_days = constant:fallout_event_107_timing.compact_modifier_days }
 		add_dynamic_modifier = { modifier = fallout_water_compact days = fallout_event_107_modifier_days }
 		if = { limit = { has_country_flag = fallout_event_107_contamination_memory } clr_country_flag = fallout_event_107_contamination_memory }
-		var:fallout_event_107_intake_state_id = { set_state_flag = fallout_event_107_water_compact_memory remove_dynamic_modifier = { modifier = fallout_water_intake_contaminated } }
+		var:fallout_event_107_intake_state_id = { set_state_flag = fallout_event_107_water_compact_memory if = { limit = { has_dynamic_modifier = { modifier = fallout_water_intake_contaminated } } remove_dynamic_modifier = { modifier = fallout_water_intake_contaminated } } }
 	}
 	else_if = {
 		limit = { check_variable = { fallout_event_107_result_outcome = constant:fallout_event_outcome_type.partial } }
@@ -125887,7 +125887,7 @@ fallout_event_513_apply_result_effects = {
 		add_to_variable = { fallout_nursery_accident_risk_current = constant:fallout_event_513_threshold.result_accident_risk_failure }
 		add_to_variable = { fallout_nursery_civic_trust_current = constant:fallout_event_513_threshold.result_civic_trust_failure }
 		add_to_variable = { fallout_nursery_memory_current = constant:fallout_event_513_threshold.result_nursery_memory_failure }
-		var:fallout_event_513_target_state_id = { if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_513_threshold.result_state_supply_failure } } add_to_variable = { air_winter_shelter_capacity = constant:fallout_event_513_threshold.result_shelter_failure } add_to_variable = { air_winter_reclamation = constant:fallout_event_513_threshold.result_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_513_threshold.result_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_513_THRESHOLD_RESULT_BUILDING_DAMAGE_FAILURE } } else = { damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_513_THRESHOLD_RESULT_BUILDING_DAMAGE_FAILURE } } set_state_flag = fallout_event_513_memory_failed set_temp_variable = { fallout_event_513_modifier_days = constant:fallout_event_513_timing.result_modifier_days } add_dynamic_modifier = { modifier = fallout_513_failed days = fallout_event_513_modifier_days } set_temp_variable = { fallout_event_513_modifier_days = 0 } }
+		var:fallout_event_513_target_state_id = { if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = constant:fallout_event_513_threshold.result_state_supply_failure } } add_to_variable = { air_winter_shelter_capacity = constant:fallout_event_513_threshold.result_shelter_failure } add_to_variable = { air_winter_reclamation = constant:fallout_event_513_threshold.result_reclamation_failure } add_to_variable = { air_winter_exposure = constant:fallout_event_513_threshold.result_exposure_failure } if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_513_THRESHOLD_RESULT_BUILDING_DAMAGE_FAILURE } } else = { if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_513_THRESHOLD_RESULT_BUILDING_DAMAGE_FAILURE } } } set_state_flag = fallout_event_513_memory_failed set_temp_variable = { fallout_event_513_modifier_days = constant:fallout_event_513_timing.result_modifier_days } add_dynamic_modifier = { modifier = fallout_513_failed days = fallout_event_513_modifier_days } set_temp_variable = { fallout_event_513_modifier_days = 0 } }
 		fallout_event_513_apply_failure_deaths = yes
 	}
 	clamp_variable = { var = fallout_nursery_arms_discipline_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
@@ -128695,7 +128695,7 @@ fallout_event_352_apply_result_effects = {
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_352_THRESHOLD_FACILITY_DAMAGE_FAILURE } }
 			else_if = { limit = { check_variable = { var = non_damaged_building_level@synthetic_refinery value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = synthetic_refinery damage = @CR_SC_FALLOUT_EVENT_352_THRESHOLD_FACILITY_DAMAGE_FAILURE } }
-			else = { damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_352_THRESHOLD_FACILITY_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@arms_factory value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = arms_factory damage = @CR_SC_FALLOUT_EVENT_352_THRESHOLD_FACILITY_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_352_memory_machine_failed
 			set_temp_variable = { fallout_event_352_state_modifier_days = constant:fallout_event_352_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_working_machine_unsafe days = fallout_event_352_state_modifier_days }
@@ -129330,7 +129330,7 @@ fallout_event_401_apply_result_effects = {
 			add_to_variable = { air_winter_exposure = constant:fallout_event_401_threshold.result_exposure_failure }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			if = { limit = { check_variable = { var = non_damaged_building_level@infrastructure value = constant:fallout_event_runtime.zero compare = greater_than } } damage_building = { type = infrastructure damage = @CR_SC_FALLOUT_EVENT_401_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
-			else = { damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_401_THRESHOLD_BUILDING_DAMAGE_FAILURE } }
+			else = { if = { limit = { check_variable = { var = non_damaged_building_level@industrial_complex value = constant:fallout_runtime.zero compare = greater_than } } damage_building = { type = industrial_complex damage = @CR_SC_FALLOUT_EVENT_401_THRESHOLD_BUILDING_DAMAGE_FAILURE } } }
 			set_state_flag = fallout_event_401_memory_calendar_failed
 			set_temp_variable = { fallout_event_401_state_modifier_days = constant:fallout_event_401_timing.result_modifier_days }
 			add_dynamic_modifier = { modifier = fallout_year_zero_calendar_broken days = fallout_event_401_state_modifier_days }
