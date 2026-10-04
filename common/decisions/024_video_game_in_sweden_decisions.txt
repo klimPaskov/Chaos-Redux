@@ -16,7 +16,7 @@ video_game_in_sweden_program_category = {
 			video_game_in_sweden_is_baseline = yes
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			has_army_size = { size > constant:video_game_in_sweden_value.zero }
 			video_game_in_sweden_can_pay_controlled_exercise = yes
 		}
@@ -45,8 +45,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_logistics_review_complete }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
-			num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_logistics_module = yes
 			custom_trigger_tooltip = {
 				tooltip = video_game_logistics_capacity_tt
@@ -59,7 +58,12 @@ video_game_in_sweden_program_category = {
 		days_remove = constant:video_game_in_sweden_timing.baseline_repeat_cooldown_days
 		fire_only_once = yes
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = 2
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_logistics_supply video_game_in_sweden_has_campaign_supply_gap = yes }
@@ -95,7 +99,7 @@ video_game_in_sweden_program_category = {
 			}
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_expand_access = yes
 		}
 		custom_cost_text = video_game_expand_access_cost
@@ -106,7 +110,12 @@ video_game_in_sweden_program_category = {
 		# which may come after the staff-culture stage has begun.
 		fire_only_once = no
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = 1
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_expand_peace has_war = no }
@@ -127,7 +136,7 @@ video_game_in_sweden_program_category = {
 			video_game_in_sweden_can_conclude_low_value = yes
 		}
 		available = {
-			video_game_in_sweden_can_conclude_low_value = yes
+			hidden_trigger = { video_game_in_sweden_can_conclude_low_value = yes }
 		}
 		fire_only_once = yes
 		cancel_if_not_visible = yes
@@ -151,7 +160,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_global_flag = events_log_disabled_evolution_24_24_1 }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_no_active_mission = yes
 			video_game_in_sweden_can_pay_rules_revision = yes
 		}
@@ -222,7 +231,7 @@ video_game_in_sweden_program_category = {
 			}
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_no_active_mission = yes
 			video_game_in_sweden_can_pay_followup = yes
 			custom_trigger_tooltip = {
@@ -236,7 +245,12 @@ video_game_in_sweden_program_category = {
 		fire_only_once = yes
 		# Starting the re-test hides the row; the term still runs to its end.
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = constant:video_game_in_sweden_ai.validation_caution
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_field_supply video_game_in_sweden_has_campaign_supply_gap = yes }
@@ -257,7 +271,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_red_team_complete }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_no_active_mission = yes
 			video_game_in_sweden_can_pay_red_team = yes
 		}
@@ -288,7 +302,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_officer_league_complete }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_no_active_mission = yes
 			video_game_in_sweden_can_pay_officer_league = yes
 		}
@@ -318,9 +332,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_global_flag = events_log_disabled_evolution_24_24_2 }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
-			has_stability > constant:video_game_in_sweden_effect.stable_program_stability
-			num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_national_league = yes
 			custom_trigger_tooltip = {
 				tooltip = video_game_national_league_requirements_tt
@@ -363,7 +375,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_protected_shifts }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_protect_shifts = yes
 		}
 		modifier = { civilian_factory_use = @VIDEO_GAME_DECISION_FACTORY_BURDEN }
@@ -373,7 +385,12 @@ video_game_in_sweden_program_category = {
 		days_remove = constant:video_game_in_sweden_timing.protect_shifts_burden_days
 		fire_only_once = yes
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = 1
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_protect_war has_war = yes }
@@ -395,7 +412,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_preparedness_clubs }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_preparedness_clubs = yes
 		}
 		custom_cost_text = video_game_preparedness_clubs_cost
@@ -432,13 +449,12 @@ video_game_in_sweden_program_category = {
 			}
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			# The supply and partner rules are shown only through their tooltips.
 			custom_trigger_tooltip = {
 				tooltip = video_game_foreign_supply_tt
 				hidden_trigger = { NOT = { video_game_in_sweden_has_campaign_supply_gap = yes } }
 			}
-			num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero
 			video_game_in_sweden_can_pay_foreign_licenses = yes
 			custom_trigger_tooltip = {
 				tooltip = video_game_foreign_partner_tt
@@ -452,7 +468,12 @@ video_game_in_sweden_program_category = {
 		days_remove = constant:video_game_in_sweden_timing.foreign_license_burden_days
 		fire_only_once = no
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = constant:video_game_in_sweden_ai.foreign_interest
 			modifier = { factor = constant:video_game_in_sweden_ai_route.foreign_licenses_controlled has_country_flag = video_game_in_sweden_controlled_route }
@@ -480,7 +501,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_separate_policy }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_separate_policy = yes
 		}
 		custom_cost_text = video_game_separate_policy_cost
@@ -565,7 +586,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
 		}
 		available = {
-			video_game_in_sweden_can_begin_narrow_reality_audit = yes
+			hidden_trigger = { video_game_in_sweden_can_begin_narrow_reality_audit = yes }
 			video_game_in_sweden_can_pay_narrow_reality_audit = yes
 			custom_trigger_tooltip = {
 				tooltip = video_game_narrow_reality_audit_requirements_tt
@@ -601,12 +622,8 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_logistics_review_complete }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_advanced_logistics = yes
-			custom_trigger_tooltip = {
-				tooltip = video_game_logistics_capacity_tt
-				hidden_trigger = { num_of_civilian_factories_available_for_projects > constant:video_game_in_sweden_value.zero }
-			}
 		}
 		modifier = { civilian_factory_use = @VIDEO_GAME_DECISION_FACTORY_BURDEN }
 		custom_cost_text = video_game_advanced_logistics_review_cost
@@ -616,7 +633,12 @@ video_game_in_sweden_program_category = {
 		# Completion files the review and hides the row. The office stays reserved
 		# for its full term, so only a lost host cancels the reservation.
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = constant:video_game_in_sweden_ai.audit_review
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_logistics_supply video_game_in_sweden_has_campaign_supply_gap = yes }
@@ -633,7 +655,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_red_team_complete }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_adjudicators = yes
 		}
 		custom_cost_text = video_game_independent_adjudicators_cost
@@ -660,7 +682,7 @@ video_game_in_sweden_program_category = {
 			}
 		}
 		available = {
-			video_game_in_sweden_can_use_dual_track = yes
+			hidden_trigger = { video_game_in_sweden_can_use_dual_track = yes }
 			video_game_in_sweden_can_pay_dual_track = yes
 			custom_trigger_tooltip = {
 				tooltip = video_game_dual_track_requirements_tt
@@ -673,7 +695,12 @@ video_game_in_sweden_program_category = {
 		days_remove = constant:video_game_in_sweden_timing.dual_track_burden_days
 		fire_only_once = yes
 		cancel_if_not_visible = no
-		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = video_game_host_lost_tt
+				NOT = { video_game_in_sweden_is_current_host = yes }
+			}
+		}
 		ai_will_do = {
 			base = 2
 			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_dual_stable has_stability > constant:video_game_in_sweden_effect.public_program_stability }
@@ -705,7 +732,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_dual_track_independent_plans }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			video_game_in_sweden_can_pay_dual_track_plans = yes
 		}
 		custom_cost_text = video_game_dual_track_independent_plans_cost
@@ -726,7 +753,7 @@ video_game_in_sweden_program_category = {
 			NOT = { has_country_flag = video_game_in_sweden_dual_track_differences_resolved }
 		}
 		available = {
-			video_game_in_sweden_is_current_host = yes
+			hidden_trigger = { video_game_in_sweden_is_current_host = yes }
 			has_country_flag = video_game_in_sweden_dual_track_independent_plans
 			video_game_in_sweden_can_pay_dual_track_resolve = yes
 		}
@@ -862,14 +889,19 @@ video_game_in_sweden_program_category = {
 		}
 		cancel_trigger = {
 			OR = {
-				NOT = { video_game_in_sweden_is_current_host = yes }
-				video_game_in_sweden_is_disabled = yes
+				custom_trigger_tooltip = {
+					tooltip = video_game_program_ended_tt
+					OR = {
+						NOT = { video_game_in_sweden_is_current_host = yes }
+						video_game_in_sweden_is_disabled = yes
+						has_global_flag = events_log_disabled_evolution_24_24_1
+						has_global_flag = world_end
+					}
+				}
 				custom_trigger_tooltip = {
 					tooltip = video_game_mission_lost_ground_tt
 					video_game_in_sweden_mission_lost_ground = yes
 				}
-				has_global_flag = events_log_disabled_evolution_24_24_1
-				has_global_flag = world_end
 			}
 		}
 		cancel_effect = {
@@ -897,14 +929,19 @@ video_game_in_sweden_program_category = {
 		}
 		cancel_trigger = {
 			OR = {
-				NOT = { video_game_in_sweden_is_current_host = yes }
-				video_game_in_sweden_is_disabled = yes
+				custom_trigger_tooltip = {
+					tooltip = video_game_program_ended_tt
+					OR = {
+						NOT = { video_game_in_sweden_is_current_host = yes }
+						video_game_in_sweden_is_disabled = yes
+						has_global_flag = events_log_disabled_evolution_24_24_3
+						has_global_flag = world_end
+					}
+				}
 				custom_trigger_tooltip = {
 					tooltip = video_game_mission_lost_ground_tt
 					video_game_in_sweden_mission_lost_ground = yes
 				}
-				has_global_flag = events_log_disabled_evolution_24_24_3
-				has_global_flag = world_end
 			}
 		}
 		cancel_effect = {
@@ -932,14 +969,19 @@ video_game_in_sweden_program_category = {
 		}
 		cancel_trigger = {
 			OR = {
-				NOT = { video_game_in_sweden_is_current_host = yes }
-				video_game_in_sweden_is_disabled = yes
+				custom_trigger_tooltip = {
+					tooltip = video_game_program_ended_tt
+					OR = {
+						NOT = { video_game_in_sweden_is_current_host = yes }
+						video_game_in_sweden_is_disabled = yes
+						has_global_flag = events_log_disabled_evolution_24_24_3
+						has_global_flag = world_end
+					}
+				}
 				custom_trigger_tooltip = {
 					tooltip = video_game_mission_lost_ground_tt
 					video_game_in_sweden_mission_lost_ground = yes
 				}
-				has_global_flag = events_log_disabled_evolution_24_24_3
-				has_global_flag = world_end
 			}
 		}
 		cancel_effect = {
@@ -966,11 +1008,14 @@ video_game_in_sweden_program_category = {
 			hidden_effect = { video_game_in_sweden_complete_restriction_mission = yes }
 		}
 		cancel_trigger = {
-			OR = {
-				NOT = { video_game_in_sweden_is_current_host = yes }
-				video_game_in_sweden_is_disabled = yes
-				has_global_flag = events_log_disabled_evolution_24_24_3
-				has_global_flag = world_end
+			custom_trigger_tooltip = {
+				tooltip = video_game_program_ended_tt
+				OR = {
+					NOT = { video_game_in_sweden_is_current_host = yes }
+					video_game_in_sweden_is_disabled = yes
+					has_global_flag = events_log_disabled_evolution_24_24_3
+					has_global_flag = world_end
+				}
 			}
 		}
 		cancel_effect = {

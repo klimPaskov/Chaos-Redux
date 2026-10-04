@@ -270,3 +270,19 @@ The officer-competition check is one trigger, `video_game_in_sweden_has_officer_
 Probability surface: the incident family `random_list` gains three peacetime entries; no existing weight changed. The MCP comparison is blocked (see R2-8).
 Basis: round 2 lead decision 2, decision map incident pool, spec parts 1 to 3.
 Disposition: `implemented`; draw frequencies in a live campaign are needs_live_game.
+
+### R2-3. Decision requirements show each condition once and never the host internals
+
+Finding: the narrow-reassessment and dual-track rows listed `video_game_in_sweden_can_begin_narrow_reality_audit` and `video_game_in_sweden_can_use_dual_track` as raw requirements beside custom tooltips that already evaluate them (the D24 and D26 defect class); 16 `available` blocks, 7 decision `cancel_trigger` blocks and 4 mission `cancel_trigger` blocks used `video_game_in_sweden_is_current_host`, whose tooltip expands into event-target, tag, `exists`, `original_tag` and capitulation lines; the mission cancel triggers also showed the raw global flags `events_log_disabled_evolution_24_24_1` (unlocalised) and `world_end`; and the logistics, national-league and foreign-licence rows repeated their factory or stability requirement two or three times.
+Decision:
+- Every `available` host check is a `hidden_trigger`. The category's own `visible` block already requires the current host, so a visible host line could never be the reason a shown row is blocked.
+- Decision cancel triggers show one localised line, `video_game_host_lost_tt`.
+- Each mission cancel trigger shows `video_game_program_ended_tt` (host lost, event or stage switched off, or the world has ended) beside the existing lost-ground line.
+- The narrow-audit, dual-track and conclude-trial checks are `hidden_trigger`, as the begin-audit row already was; their custom tooltips or `visible` blocks state the requirement.
+- Logistics module: the raw factory line is removed, and `video_game_in_sweden_can_pay_logistics_module` no longer checks the factory, because that cost row shows no factory. `video_game_logistics_capacity_tt` remains the single factory requirement.
+- Advanced logistics review: the factory tooltip is removed, because its cost row and cost check already include the factory.
+- National league: the raw stability and factory lines are removed; stability stays in its tooltip and the factory in the cost check.
+- Foreign licences: the raw factory line is removed; the cost check keeps it.
+Which rows can be taken does not change: every removed visible line is still evaluated in `available`, and `can_pay_*` cost checks stay visible in `available`, as lead decision 6 requires.
+Basis: round 2 lead decision 6, D24 and D26 precedent, CLAUDE.md player-visible requirement rule, chaos-redux-decisions-missions trigger clarity.
+Disposition: `implemented`; the rendered tooltip wording is needs_live_game.
