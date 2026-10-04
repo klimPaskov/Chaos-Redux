@@ -40,7 +40,7 @@ Invalid response context closes only its matching receipt and preserves any resu
 | Offer protection | Immediate host event | 35 Political Power | Diplomatic access without war; creates full, limited, or refused protection memory |
 | Attempt assassination | 90 days | 100 Political Power | Meaningful dangerous-project threat, hostile motive, and intelligence access; always produces attribution on a nonfailure |
 | Publicly challenge the programme | Immediate host event | 35 Political Power | Authenticated observation, exposed research, detected operations, or a strategic project; host chooses demonstration, denial, publication, observers, sabotage explanation, or threat |
-| Build a counter-Kruger programme | 120 days | 60 Political Power + 250 support equipment | Intelligence access, a project evidence receipt, and an active host project; records a family-specific countermeasure and improves later operations against the same host |
+| Build a counter-Kruger programme | 120 days | 60 Political Power + 250 support equipment | Intelligence access, a project evidence receipt, and an active host project; installs a standing family countermeasure (see [Counter-Kruger countermeasures](#counter-kruger-countermeasures)) and improves later operations against the same host or the Kruger State formed from it |
 
 Diplomatic approaches use host events `.100` and `.110`. Covert routes use detected host events and paired actor reports across `.120` through `.181`.
 
@@ -58,9 +58,38 @@ After at least one resolved Prototype, the first detected operation that resolve
 
 The public challenge is a separate actor-owned operation with its own per-host resolution ledger. It requires the public-challenge interest threshold plus diplomatic or intelligence access and one of four evidence sources: a successful observation, exposed research, detected foreign operations, or a strategic project. The challenge is immediately delivered to the current host as `chaosx.nr16.190`, and the six host answers apply distinct Mandate, Exposure, Dependence, Project Capacity, Grievance, and diplomatic-memory consequences before the actor receives `chaosx.nr16.191`. The host confrontation uses the sovereignty-confrontation card and the actor's after-action report uses the Directorate dossier card. It does not steal a project stage, create a special-project reward, or move Doctor Kruger, and its public detection is recorded in the normal foreign-operation history.
 
-The counter-Kruger programme is a separate one-use actor operation. It requires the counter-program interest threshold, intelligence access, an active host project, a prior observation, recruitment, theft, public-challenge, or strategic-project evidence receipt, and 250 support equipment. The 120-day operation selects the host's most advanced family through the existing project-target helper; a successful result records the host and family in the actor's countermeasure arrays, while a partial result records only a failed family study. The actor's later operation score against that same host receives the bounded `countermeasure_previous` bonus, and the programme never grants a project stage, a second Kruger, or a unit. A detected operation opens `chaosx.nr16.193` before the actor report `.194`; the host response uses the machine-security incident card and the actor report uses the Directorate dossier card, while the dedicated response still avoids the generic controlled-exchange reaction so countermeasure work cannot accidentally become a full project-theory reward.
+The counter-Kruger programme is a separate one-use actor operation. It requires the counter-program interest threshold, intelligence access, an active host project, a prior observation, recruitment, theft, public-challenge, or strategic-project evidence receipt, and 250 support equipment. The 120-day operation selects the host's most advanced family through the existing project-target helper; a successful result records the host and family in the actor's countermeasure arrays, while a partial result records only a failed family study. The actor's later operation score against that same host, or against the Kruger State formed from it (`brilliant_scientist_foreign_has_countermeasure_against_operation_host`), receives the bounded `countermeasure_previous` bonus. A success also installs the studied family's standing countermeasure, described below. The programme never grants a project stage, a second Kruger, or a unit. A detected operation opens `chaosx.nr16.193` before the actor report `.194`; the host response uses the machine-security incident card and the actor report uses the Directorate dossier card, while the dedicated response still avoids the generic controlled-exchange reaction so countermeasure work cannot accidentally become a full project-theory reward.
 
 The host-facing foreign-operation reports (`chaosx.nr16.100`, `.110`, `.120`, `.130`, `.140`, `.150`, `.160`, `.170`, and `.180`) append the same retained host-archetype clause used by the Directorate reports. Universities, industrial hosts, militarized states, threatened governments, colonial administrations, refugee networks, and the default host therefore read invitations, observation, recruitment, theft, sabotage, defection, extraction, and assassination through their own institutional pressures. Actor after-action reports (`.101`, `.111`, `.121`, `.131`, `.141`, `.151`, `.161`, `.171`, and `.181`) use `GetBrilliantScientistForeignHostFlavorClause` to read the carried host target, so the reporting country does not accidentally substitute its own archetype or lose the original context.
+
+## Counter-Kruger countermeasures
+
+A successful counter-Kruger programme calls `brilliant_scientist_countermeasure_record_family` on the actor. It sets one standing flag, `brilliant_scientist_countermeasure_<family>`, for the studied family and installs that family's effect once; a second study of the same family changes nothing.
+The countermeasure answers Kruger's methods wherever they are used, because those methods travel with him, so a countermeasure built against one host also applies to the Kruger State formed from it and to any later host.
+Every consumer runs inside an existing action scope. There is no world scan, meter, GUI, or focus.
+Values live in `brilliant_scientist_countermeasure` (`common/script_constants/016_brilliant_scientist_foreign_constants.txt`); raid weights and idea values are mirrored as file-scoped values where the field rejects constants.
+
+| Family | Consumer | Effect |
+|---|---|---|
+| Teleportation | Portal raid success formula (`brilliant_scientist_portal_countermeasure`, state scope) and `brilliant_scientist_seal_recaptured_portal_breach` | Portal raids against the holder's states have -15% success chance; sealing a recaptured breach costs 10 Command Power instead of 25 (`brilliant_scientist_can_pay_portal_sealing`, `GetBrilliantScientistPortalSealingCost`) |
+| Biological Weapons | All eighteen Event 016 biological raid success formulas (`brilliant_scientist_biological_countermeasure`, state scope) | Biological raids against the holder's states have -15% success chance |
+| Temporal | `brilliant_scientist_commit_bounded_temporal_action` | While the user is at war with a holder (`brilliant_scientist_temporal_user_faces_countermeasure`, enemies only), each bounded temporal intervention adds 10 more temporal debt, with a tooltip line |
+| Singularity | `brilliant_scientist_singularity_surrender_offer_target_is_valid` | The holder can offer an armed Kruger State a survivable surrender from 50% surrender progress instead of 75% |
+| Robotics | Spirit `brilliant_scientist_countermeasure_anti_machine_warfare` | +10% attack against `KRG` |
+| Cloning | Spirit `brilliant_scientist_countermeasure_clone_identity_screening` | +10% defense against `KRG` |
+| Paleogenetics | Spirit `brilliant_scientist_countermeasure_creature_containment` | +8% defense and +4% attack against `KRG` |
+| Xenobiological Synthesis | Spirit `brilliant_scientist_countermeasure_organism_control_jamming` | +6% defense and +6% breakthrough against `KRG` |
+| Alien Arms | Spirit `brilliant_scientist_countermeasure_alien_arms_shielding` | +5% attack and +8% breakthrough against `KRG` |
+| Computation | Dynamic modifier `brilliant_scientist_counter_kruger_studies` | +10% decryption |
+| Electronics | Same modifier | +10% air detection |
+| Materials | Same modifier | -15% factory damage from air attack |
+| Rocketry | Same modifier | +15% static anti-air damage |
+| High Energy | Same modifier | +15% factory repair speed |
+| Biomedical | Same modifier | -5% army attrition |
+
+The five combat spirits use `targeted_modifier` with `tag = KRG` because vanilla notes in `common/dynamic_modifiers/aat_dynamic_modifiers.txt` that targeted modifiers do not work inside dynamic modifiers. They therefore act against the fixed-tag Kruger State only; a host transformed into the Kruger State in place keeps its own tag and is not covered by them.
+The six conventional values share one modifier whose values are country variables written by the record helper, so a country that studied several conventional families shows one line in its national modifiers.
+The programme's report `chaosx.nr16.194` names the studied family and its effect through `brilliant_scientist_countermeasure_result_tt` and `GetBrilliantScientistCountermeasureEffect`.
 
 ## Transfer and assassination safety
 
@@ -147,7 +176,9 @@ Country pointers alone do not prove popup generation identity after annexation a
 
 Invitation, protection, observation, recruitment, theft, sabotage, defection, extraction, and assassination reports use `GFX_report_event_016_brilliant_scientist_appointment`.
 Public challenge uses `GFX_report_event_016_brilliant_scientist_sovereignty_confrontation`, counter-program detection uses `GFX_report_event_016_brilliant_scientist_incident_machine_security`, and their actor reports use `GFX_report_event_016_brilliant_scientist_directorate_dossier`.
-This receipt checkpoint changes no art or sprite registration.
+The countermeasure spirits and the Counter-Kruger Studies modifier reuse registered vanilla sprites: `GFX_idea_generic_radio_concern`, `GFX_idea_generic_secret_police`, `GFX_idea_generic_wall_line`, `GFX_idea_generic_radar`, `GFX_idea_generic_armor`, and `GFX_idea_generic_spy_intel`. No new art or sprite registration is needed.
+- Countermeasure spirits: `common/ideas/016_brilliant_scientist_countermeasure_ideas.txt`
+- Counter-Kruger Studies modifier: `common/dynamic_modifiers/016_brilliant_scientist_countermeasure_modifiers.txt`
 
 - Category icon: `GFX_decision_category_SOV_soviet_academy_of_sciences`
 - Decision icons: registered vanilla research, political-discourse, operation, and infiltration sprites

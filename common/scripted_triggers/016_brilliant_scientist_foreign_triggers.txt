@@ -541,3 +541,50 @@ brilliant_scientist_foreign_operation_target_remains_valid = {
 	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
 	NOT = { has_global_flag = world_end }
 }
+
+# ---------------------------------------------------------------------------
+# Counter-Kruger countermeasures
+# ---------------------------------------------------------------------------
+# A successful counter-Kruger programme leaves one standing country flag per
+# studied family, brilliant_scientist_countermeasure_<family>. Consumers read
+# it only inside their own action scopes; nothing scans the world.
+
+# Actor scope with event_target:brilliant_scientist_foreign_operation_host.
+# A countermeasure built against a host also covers the Kruger State formed
+# from that host.
+brilliant_scientist_foreign_has_countermeasure_against_operation_host = {
+	OR = {
+		is_in_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_foreign_operation_host }
+		AND = {
+			event_target:brilliant_scientist_foreign_operation_host = { brilliant_scientist_is_kruger_sovereign_country = yes }
+			has_event_target = brilliant_scientist_kruger_state_former_host_persistent
+			is_in_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_kruger_state_former_host_persistent }
+		}
+	}
+}
+
+# STATE scope, used by raid success formulas on the target state.
+brilliant_scientist_state_owner_has_portal_countermeasure = {
+	OWNER = { has_country_flag = brilliant_scientist_countermeasure_teleportation }
+}
+
+brilliant_scientist_state_owner_has_biological_countermeasure = {
+	OWNER = { has_country_flag = brilliant_scientist_countermeasure_biological_weapons }
+}
+
+# COUNTRY scope on a country using a bounded temporal action. Only the
+# countries it is at war with are checked.
+brilliant_scientist_temporal_user_faces_countermeasure = {
+	any_enemy_country = { has_country_flag = brilliant_scientist_countermeasure_temporal }
+}
+
+# COUNTRY scope on a country sealing a Portal breach.
+brilliant_scientist_can_pay_portal_sealing = {
+	OR = {
+		AND = {
+			has_country_flag = brilliant_scientist_countermeasure_teleportation
+			command_power > constant:brilliant_scientist_countermeasure.sealing_command_power_floor
+		}
+		command_power > constant:brilliant_scientist_portal_lifecycle.sealing_command_power_floor
+	}
+}

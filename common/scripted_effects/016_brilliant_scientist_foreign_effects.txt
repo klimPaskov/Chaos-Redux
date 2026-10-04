@@ -687,7 +687,7 @@ brilliant_scientist_foreign_calculate_operation_outcome = {
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.prior_recruitment }
 	}
 	if = {
-		limit = { is_in_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_foreign_operation_host } }
+		limit = { brilliant_scientist_foreign_has_countermeasure_against_operation_host = yes }
 		add_to_temp_variable = { brilliant_scientist_foreign_success_score = constant:brilliant_scientist_foreign_score.countermeasure_previous }
 	}
 	if = {
@@ -1202,15 +1202,122 @@ brilliant_scientist_foreign_apply_assassination_result = {
 	}
 }
 
+# COUNTRY scope on the actor. Input: the actor's
+# brilliant_scientist_foreign_selected_project_family. Turns the studied family
+# into its standing countermeasure flag and, where the family has one, its
+# national effect. Each family is recorded once; a repeated study changes
+# nothing. Consumers:
+#   teleportation - Portal raid success penalty and cheaper breach sealing
+#   biological weapons - Event 016 biological raid success penalty
+#   temporal - extra debt on bounded temporal actions by enemies
+#   singularity - earlier survivable surrender offer
+#   cloning, robotics, paleogenetics, xenobiological synthesis, alien arms -
+#     a Kruger State-targeted combat spirit
+#   computation, electronics, materials, rocketry, high energy, biomedical -
+#     one value in the Counter-Kruger Studies modifier
+brilliant_scientist_countermeasure_record_family = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.computation } }
+		set_country_flag = brilliant_scientist_countermeasure_computation
+		set_variable = { brilliant_scientist_countermeasure_decryption = constant:brilliant_scientist_countermeasure.computation_decryption }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.electronics } }
+		set_country_flag = brilliant_scientist_countermeasure_electronics
+		set_variable = { brilliant_scientist_countermeasure_air_detection = constant:brilliant_scientist_countermeasure.electronics_air_detection }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.materials } }
+		set_country_flag = brilliant_scientist_countermeasure_materials
+		set_variable = { brilliant_scientist_countermeasure_industry_air_damage = constant:brilliant_scientist_countermeasure.materials_industry_air_damage }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		set_country_flag = brilliant_scientist_countermeasure_rocketry
+		set_variable = { brilliant_scientist_countermeasure_static_anti_air = constant:brilliant_scientist_countermeasure.rocketry_static_anti_air_damage }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		set_country_flag = brilliant_scientist_countermeasure_high_energy
+		set_variable = { brilliant_scientist_countermeasure_industry_repair = constant:brilliant_scientist_countermeasure.high_energy_industry_repair }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		set_country_flag = brilliant_scientist_countermeasure_biomedical
+		set_variable = { brilliant_scientist_countermeasure_army_attrition = constant:brilliant_scientist_countermeasure.biomedical_army_attrition }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		set_country_flag = brilliant_scientist_countermeasure_teleportation
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.cloning } }
+		set_country_flag = brilliant_scientist_countermeasure_cloning
+		if = { limit = { NOT = { has_idea = brilliant_scientist_countermeasure_clone_identity_screening } } add_ideas = brilliant_scientist_countermeasure_clone_identity_screening }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.robotics } }
+		set_country_flag = brilliant_scientist_countermeasure_robotics
+		if = { limit = { NOT = { has_idea = brilliant_scientist_countermeasure_anti_machine_warfare } } add_ideas = brilliant_scientist_countermeasure_anti_machine_warfare }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		set_country_flag = brilliant_scientist_countermeasure_paleogenetics
+		if = { limit = { NOT = { has_idea = brilliant_scientist_countermeasure_creature_containment } } add_ideas = brilliant_scientist_countermeasure_creature_containment }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		set_country_flag = brilliant_scientist_countermeasure_xenobiological_synthesis
+		if = { limit = { NOT = { has_idea = brilliant_scientist_countermeasure_organism_control_jamming } } add_ideas = brilliant_scientist_countermeasure_organism_control_jamming }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		set_country_flag = brilliant_scientist_countermeasure_biological_weapons
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		set_country_flag = brilliant_scientist_countermeasure_alien_arms
+		if = { limit = { NOT = { has_idea = brilliant_scientist_countermeasure_alien_arms_shielding } } add_ideas = brilliant_scientist_countermeasure_alien_arms_shielding }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.temporal } }
+		set_country_flag = brilliant_scientist_countermeasure_temporal
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.singularity } }
+		set_country_flag = brilliant_scientist_countermeasure_singularity
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_countermeasure_computation
+				has_country_flag = brilliant_scientist_countermeasure_electronics
+				has_country_flag = brilliant_scientist_countermeasure_materials
+				has_country_flag = brilliant_scientist_countermeasure_rocketry
+				has_country_flag = brilliant_scientist_countermeasure_high_energy
+				has_country_flag = brilliant_scientist_countermeasure_biomedical
+			}
+		}
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = brilliant_scientist_counter_kruger_studies } } }
+			add_dynamic_modifier = { modifier = brilliant_scientist_counter_kruger_studies }
+		}
+		force_update_dynamic_modifier = yes
+	}
+}
+
 # COUNTRY scope on the actor. A counter-Kruger programme records the exact
-# family it studied and gives later operations against the same host a bounded
-# intelligence advantage without copying the host's project stage or reward.
+# family it studied, installs that family's standing countermeasure, and gives
+# later operations against the same host (or the Kruger State formed from it)
+# a bounded intelligence advantage without copying the host's project stage or
+# reward.
 brilliant_scientist_foreign_apply_counter_program_result = {
 	if = {
 		limit = { check_variable = { brilliant_scientist_foreign_last_operation_result = constant:brilliant_scientist_foreign_result.success } }
 		set_country_flag = brilliant_scientist_foreign_countermeasure_ready
 		add_to_array = { array = brilliant_scientist_foreign_countermeasure_targets value = event_target:brilliant_scientist_foreign_operation_host }
 		add_to_array = { array = brilliant_scientist_foreign_countermeasure_families value = brilliant_scientist_foreign_selected_project_family }
+		brilliant_scientist_countermeasure_record_family = yes
 		event_target:brilliant_scientist_foreign_operation_host = {
 			if = {
 				limit = { event_target:brilliant_scientist_foreign_operation_actor = { check_variable = { brilliant_scientist_foreign_last_operation_detected > constant:brilliant_scientist_value.zero } } }

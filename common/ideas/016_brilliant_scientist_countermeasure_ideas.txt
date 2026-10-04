@@ -1,0 +1,84 @@
+# Static database fields in this file do not accept script-constant tokens.
+# These file-scoped values mirror brilliant_scientist_countermeasure in
+# common/script_constants/016_brilliant_scientist_foreign_constants.txt.
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ROBOTICS_ATTACK = 0.10
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_CLONING_DEFENSE = 0.10
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_PALEOGENETICS_DEFENSE = 0.08
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_PALEOGENETICS_ATTACK = 0.04
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_XENOBIOLOGICAL_DEFENSE = 0.06
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_XENOBIOLOGICAL_BREAKTHROUGH = 0.06
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ALIEN_ARMS_ATTACK = 0.05
+@CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ALIEN_ARMS_BREAKTHROUGH = 0.08
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 COUNTER-KRUGER COMBAT COUNTERMEASURES
+# ============================================================================
+# A successful counter-Kruger programme against a cloning, robotics,
+# paleogenetics, xenobiological synthesis, or alien arms project installs one
+# permanent spirit whose targeted modifier works against the Kruger State tag.
+# Targeted modifiers do not work inside dynamic modifiers (vanilla
+# aat_dynamic_modifiers.txt), so these stay ideas. Granted only by
+# brilliant_scientist_countermeasure_record_family.
+# ============================================================================
+
+ideas = {
+	country = {
+		brilliant_scientist_countermeasure_anti_machine_warfare = {
+			picture = generic_radio_concern
+			allowed = { always = no }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			targeted_modifier = {
+				tag = KRG
+				attack_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ROBOTICS_ATTACK
+			}
+		}
+
+		brilliant_scientist_countermeasure_clone_identity_screening = {
+			picture = generic_secret_police
+			allowed = { always = no }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			targeted_modifier = {
+				tag = KRG
+				defense_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_CLONING_DEFENSE
+			}
+		}
+
+		brilliant_scientist_countermeasure_creature_containment = {
+			picture = generic_wall_line
+			allowed = { always = no }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			targeted_modifier = {
+				tag = KRG
+				defense_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_PALEOGENETICS_DEFENSE
+				attack_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_PALEOGENETICS_ATTACK
+			}
+		}
+
+		brilliant_scientist_countermeasure_organism_control_jamming = {
+			picture = generic_radar
+			allowed = { always = no }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			targeted_modifier = {
+				tag = KRG
+				defense_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_XENOBIOLOGICAL_DEFENSE
+				breakthrough_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_XENOBIOLOGICAL_BREAKTHROUGH
+			}
+		}
+
+		brilliant_scientist_countermeasure_alien_arms_shielding = {
+			picture = generic_armor
+			allowed = { always = no }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			targeted_modifier = {
+				tag = KRG
+				attack_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ALIEN_ARMS_ATTACK
+				breakthrough_bonus_against = @CR_SC_BRILLIANT_SCIENTIST_COUNTERMEASURE_ALIEN_ARMS_BREAKTHROUGH
+			}
+		}
+	}
+}

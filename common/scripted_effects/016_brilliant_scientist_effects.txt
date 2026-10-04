@@ -4061,11 +4061,18 @@ brilliant_scientist_bind_temporal_target = {
 }
 
 # COUNTRY scope. Input temporary sync cost/debt gain after the exact target
-# binder. Output temp brilliant_scientist_temporal_action_committed.
+# binder. Output temp brilliant_scientist_temporal_action_committed. While the
+# user is at war with a country that has studied Kruger's temporal work, the
+# intervention leaves extra debt.
 brilliant_scientist_commit_bounded_temporal_action = {
 	set_temp_variable = { brilliant_scientist_temporal_action_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_temporal_action_is_ready = yes }
+		if = {
+			limit = { brilliant_scientist_temporal_user_faces_countermeasure = yes }
+			custom_effect_tooltip = brilliant_scientist_temporal_countermeasure_debt_tt
+			add_to_temp_variable = { brilliant_scientist_temporal_debt_gain = constant:brilliant_scientist_countermeasure.temporal_extra_debt }
+		}
 		subtract_from_variable = { brilliant_scientist_temporal_sync_capacity = brilliant_scientist_temporal_sync_cost }
 		add_to_variable = { brilliant_scientist_temporal_debt = brilliant_scientist_temporal_debt_gain }
 		add_to_array = {

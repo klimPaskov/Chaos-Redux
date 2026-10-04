@@ -29,6 +29,8 @@
 @CR_SC_PORTAL_RAID_CRITICAL_STRENGTH_DAMAGE = 0.01
 @CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
 @CR_SC_PORTAL_RAID_HEAVY_DAMAGE = 2
+# Mirrors constant:brilliant_scientist_countermeasure.portal_raid_success_penalty.
+@CR_SC_PORTAL_RAID_COUNTERMEASURE_WEIGHT = -0.15
 
 types = {
 	brilliant_scientist_portal_facility_raid = {
@@ -154,6 +156,22 @@ types = {
 				organisation = { weight = 0.10 start_weight = -0.10 reference = 100 }
 				strength = { weight = 0.15 start_weight = -0.15 reference = 1.0 }
 				recon = { weight = 0.10 reference = 10 }
+				# A defender that has studied Kruger's teleportation work detects
+				# portal openings before the raiders arrive.
+				brilliant_scientist_portal_countermeasure = {
+					scope = state
+					formula = {
+						base = 0
+						modifier = {
+							brilliant_scientist_state_owner_has_portal_countermeasure = yes
+							add = 1
+						}
+					}
+					weight = @CR_SC_PORTAL_RAID_COUNTERMEASURE_WEIGHT
+					reference = 1
+					can_actor_affect = no
+					can_target_affect = no
+				}
 			}
 			critical = {
 				base = @CR_SC_PORTAL_RAID_CRITICAL_BASE
@@ -392,6 +410,22 @@ types = {
 				organisation = { weight = 0.10 start_weight = -0.10 reference = 100 }
 				strength = { weight = 0.15 start_weight = -0.15 reference = 1.0 }
 				recon = { weight = 0.10 reference = 10 }
+				# A defender that has studied Kruger's teleportation work detects
+				# portal openings before the raiders arrive.
+				brilliant_scientist_portal_countermeasure = {
+					scope = state
+					formula = {
+						base = 0
+						modifier = {
+							brilliant_scientist_state_owner_has_portal_countermeasure = yes
+							add = 1
+						}
+					}
+					weight = @CR_SC_PORTAL_RAID_COUNTERMEASURE_WEIGHT
+					reference = 1
+					can_actor_affect = no
+					can_target_affect = no
+				}
 			}
 			critical = {
 				base = @CR_SC_PORTAL_RAID_CRITICAL_BASE
