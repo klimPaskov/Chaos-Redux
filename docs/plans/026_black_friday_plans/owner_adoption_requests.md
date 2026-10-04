@@ -294,6 +294,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 56.
 
 #### Event 018 Resources Found
 
+Converted (agent decision D20). No Event 018 cost remains queued. The line list below predates the conversion.
+
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 100.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |

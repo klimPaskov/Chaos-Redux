@@ -285,6 +285,49 @@ resources_found_prepare_decision_project = {
 	if = { limit = { check_variable = { resources_found_decision_cost_trains < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_trains = constant:resources_found_value.zero } }
 	if = { limit = { check_variable = { resources_found_decision_cost_convoys < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_convoys = constant:resources_found_value.zero } }
 	if = { limit = { check_variable = { resources_found_decision_cost_fuel < constant:resources_found_value.zero } } set_variable = { resources_found_decision_cost_fuel = constant:resources_found_value.zero } }
+	# Black Friday: every spent resource is charged at the ratio the sale price
+	# table currently holds, rounded up and never above the ordinary cost.
+	# Civilian and military factories are availability and project burdens, not
+	# spending, and keep their size.
+	set_temp_variable = { black_friday_price_ratio = constant:black_friday_event.ratio_basis }
+	if = {
+		limit = { has_variable = global.black_friday_price_table_ratio }
+		set_temp_variable = { black_friday_price_ratio = global.black_friday_price_table_ratio }
+	}
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_command }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_command = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_army_xp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_infantry }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_infantry = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_support }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_support = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_anti_tank }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_anti_tank = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_trucks }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_trucks = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_trains }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_convoys = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = resources_found_decision_cost_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { resources_found_decision_cost_fuel = black_friday_price_payable }
 	set_variable = { resources_found_decision_cost_fuel_k = resources_found_decision_cost_fuel }
 	resources_found_assign_active_project_preview_slots = yes
 }
@@ -445,6 +488,8 @@ resources_found_record_decision_cost_preview_context = {
 			}
 		}
 	}
+	# A Black Friday price change makes the stored estimates stale.
+	set_variable = { resources_found_decision_preview_sale_ratio = global.black_friday_price_table_ratio }
 	set_country_flag = resources_found_decision_cost_preview_ready
 }
 
@@ -604,6 +649,42 @@ resources_found_pay_decision_project_cost = {
 	set_temp_variable = { resources_found_decision_spend = resources_found_decision_cost_fuel }
 	multiply_temp_variable = { resources_found_decision_spend = constant:resources_found_value.negative_one }
 	add_fuel = resources_found_decision_spend
+	# Credit the project toward Black Friday by its primary spent resource.
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	if = {
+		limit = {
+			NOT = { check_variable = { resources_found_decision_cost_command > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_army_xp > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_manpower > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_infantry > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_support > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_anti_tank > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_trucks > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_trains > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_convoys > constant:resources_found_value.zero } }
+			NOT = { check_variable = { resources_found_decision_cost_fuel > constant:resources_found_value.zero } }
+		}
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+	}
+	if = { limit = { check_variable = { resources_found_decision_cost_fuel > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.fuel } }
+	if = { limit = { check_variable = { resources_found_decision_cost_command > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power } }
+	if = { limit = { check_variable = { resources_found_decision_cost_army_xp > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience } }
+	if = { limit = { check_variable = { resources_found_decision_cost_manpower > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.manpower } }
+	if = { limit = { check_variable = { resources_found_decision_cost_convoys > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.convoy } }
+	if = { limit = { check_variable = { resources_found_decision_cost_trains > constant:resources_found_value.zero } } set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.trains } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { resources_found_decision_cost_infantry > constant:resources_found_value.zero }
+				check_variable = { resources_found_decision_cost_support > constant:resources_found_value.zero }
+				check_variable = { resources_found_decision_cost_anti_tank > constant:resources_found_value.zero }
+				check_variable = { resources_found_decision_cost_trucks > constant:resources_found_value.zero }
+			}
+		}
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	}
+	black_friday_credit_sale_purchase = yes
 }
 
 # COUNTRY scope. Canonical closure launchers. Event options and decisions use

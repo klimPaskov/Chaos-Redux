@@ -196,6 +196,14 @@ The permanent runtime inventory, dimensions, animation frame counts, fallbacks, 
 
 The exact-estimate refresh controls reuse `GFX_decision_generic_research`. The internal clock category and its nine non-rendered missions require no category art, mission icons, or localisation.
 
+## Black Friday prices
+
+During a Black Friday sale (Event 026) every Resources Found project, trade, concession, containment, cave, and anti-cave action charges the sale price.
+`resources_found_prepare_decision_project`, the one calculator used by the cost estimates and by payment, applies the ratio the Black Friday price table currently holds (`global.black_friday_price_table_ratio`) to every spent resource after country and field scaling and rounding: Political Power, Command Power, Army Experience, manpower, infantry, support, and anti-tank equipment, trucks, trains, convoys, and fuel, rounded up and never above the ordinary cost.
+Civilian and military factory amounts are availability and project burdens rather than spending and keep their size.
+The estimate context records the table ratio (`resources_found_decision_preview_sale_ratio`), so a sale starting or ending makes stored estimates stale like any other context change, and Black Friday refreshes the estimates of every country that has them when the sale starts and ends; a busy project queue keeps them stale until the next refresh, which blocks priced projects instead of charging a different price than shown.
+Each paid project credits one Black Friday achievement family by its primary spent resource.
+
 ## Balance notes
 
 The baseline discovery is economically valuable immediately but requires 90 to 240-day development projects and real industrial, transport, equipment, fuel, labor, stability, or political commitments to reach mature output. Foreign Pressure rises with material value rather than elapsed time alone. Safety lowers accident and incident risk but competes with extraction time and production commitments.

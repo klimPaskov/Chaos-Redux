@@ -1663,6 +1663,12 @@ black_friday_price_table_refresh_owner_quotes = {
 		limit = { has_variable = secret_alliance_cost_scale }
 		secret_alliance_refresh_dynamic_costs = yes
 	}
+	# Event 018 project estimates (a busy project queue keeps them stale, and the
+	# owner then blocks priced projects until the estimates are refreshed)
+	every_country = {
+		limit = { has_country_flag = resources_found_decision_cost_preview_ready }
+		resources_found_refresh_decision_cost_previews = yes
+	}
 }
 
 # ANY scope. Builds the table once per price_table_version: at the active sale

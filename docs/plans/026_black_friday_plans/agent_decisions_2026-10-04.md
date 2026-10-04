@@ -317,3 +317,13 @@ Kept at ordinary values: the Stability and War Support floors (diplomacy, manhun
 Basis: the D15 cached-cost pattern and spec Part 4 (event options with payment and Stability or War Support payments are purchases; floors and penalties are not). No AI weight changes.
 
 Disposition: implemented (source). Live display and payment during a sale are `needs_live_game`.
+
+## D20. Event 018 Resources Found charges the sale price
+
+Decision: `resources_found_prepare_decision_project`, the single calculator behind every Event 018 cost estimate and payment, applies the ratio the Black Friday price table holds to the eleven spent resources after country and field scaling and rounding. The estimates, the `resources_found_decision_has_*_inputs` affordability triggers, and `resources_found_pay_decision_project_cost` therefore show, require, and charge the same sale price.
+The owner's estimate context, which already blocks priced projects when country scale, war, field, depth, risk, contract, or infrastructure changes, also records the table ratio, so estimates taken at another price are stale rather than wrong. `black_friday_price_table_refresh_owner_quotes` refreshes the estimates of every country with `resources_found_decision_cost_preview_ready` at sale start and end; the owner's refresh skips a busy project queue, which leaves priced projects blocked until the next refresh instead of charging a price that differs from the shown one.
+Civilian and military factory amounts are availability checks and project burdens and keep their size. Each paid project credits one achievement family by its primary spent resource.
+
+Basis: the D15 and D19 cached-cost pattern; the owner's fail-closed estimate context. No AI weight changes; no Event 018 payment is refunded.
+
+Disposition: implemented (source). Live estimate refresh and payment during a sale are `needs_live_game`.
