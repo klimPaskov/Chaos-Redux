@@ -1449,7 +1449,11 @@ sov_nuclear_bombs_event_ai_has_retaliation_duty = {
 }
 
 # The Evolution IV emergency holds and at least one current enemy nuclear major
-# offers a lower-consequence endpoint, or such a target is already selected.
+# offers a lower-consequence endpoint inside the Soviet delivery ceiling, or
+# such a target is already selected. The reach test matches the selector's AI
+# weight, so the AI never holds the retaliation board without a state it would
+# mark. `ROOT = { PREV = { ... } }` re-enters the state with the Soviet actor
+# as PREV, the launcher that the delivery access trigger reads.
 sov_nuclear_bombs_event_ai_has_first_use_candidate = {
 	sov_nuclear_bombs_event_prospective_first_use_gate = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_coercion_open }
@@ -1459,20 +1463,24 @@ sov_nuclear_bombs_event_ai_has_first_use_candidate = {
 			is_major = yes
 			has_tech = atomic_research
 			has_tech = nukes
-			any_controlled_state = { sov_nuclear_bombs_event_state_is_major_first_use_candidate = yes }
+			any_controlled_state = {
+				sov_nuclear_bombs_event_state_is_major_first_use_candidate = yes
+				ROOT = { PREV = { sov_nuclear_bombs_event_state_has_delivery_access = yes } }
+			}
 		}
 	}
 }
 
-# Custody work is finite: one completed audit (repeated only after a later
-# custody dispute and a full audit interval), one hardened depot that holds
-# devices when a depot can be hardened, and one line of release authority once
-# Evolution II makes a release-capable job possible.
+# Custody work is finite: one completed audit (repeated only after a full audit
+# interval for a later custody dispute that an audit can close), one hardened
+# depot that holds devices when a depot can be hardened, and one line of
+# release authority once Evolution II makes a release-capable job possible.
 sov_nuclear_bombs_event_ai_has_custody_duty = {
 	OR = {
 		NOT = { has_country_flag = sov_nuclear_bombs_stockpile_audited }
 		AND = {
 			has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
+			sov_nuclear_bombs_native_custody_reconciles = yes
 			OR = {
 				NOT = { has_variable = sov_nuclear_bombs_last_audit_day }
 				AND = {

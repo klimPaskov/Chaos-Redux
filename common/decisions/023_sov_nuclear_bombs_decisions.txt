@@ -158,7 +158,10 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_phase_custody = yes } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_stockpile_audit_pending set_country_flag = sov_nuclear_bombs_stockpile_audit_cancelled }
-		ai_will_do = { base = 1.20 modifier = { factor = 2.00 check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
+		# After the first audit, the AI repeats it during a custody dispute only
+		# when the books would balance, so it does not pay for an audit that
+		# cannot close the dispute.
+		ai_will_do = { base = 1.20 modifier = { factor = 0 has_country_flag = sov_nuclear_bombs_stockpile_audited NOT = { sov_nuclear_bombs_native_custody_reconciles = yes } } modifier = { factor = 2.00 check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
 	}
 
 	sov_nuclear_bombs_harden_storage_site = {

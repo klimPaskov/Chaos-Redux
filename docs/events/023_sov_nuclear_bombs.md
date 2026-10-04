@@ -55,9 +55,9 @@ The router is one deterministic first-match table and writes at most one phase:
 | 2 | Opening doctrine, locked command, or live work (`sov_nuclear_bombs_event_navigation_is_protected`) | Held; a displaced staged test, strike or dossier board is restored |
 | 3 | Atomic Moratorium | Moratorium 8 |
 | 4 | Custody collapse | Collapse 7 |
-| 5 | Retaliation duty or an Evolution IV first-use candidate | Retaliation 6 |
+| 5 | Retaliation duty or an Evolution IV first-use candidate inside the delivery ceiling | Retaliation 6 |
 | 6 | Uninvestigated test failure | Test 3 |
-| 7 | Custody duty: first audit, a dispute after a full audit interval, one hardened depot holding devices, release authority from Evolution II | Custody 1 |
+| 7 | Custody duty: first audit, a dispute that an audit can close after a full audit interval, one hardened depot holding devices, release authority from Evolution II | Custody 1 |
 | 8 | Production duty: reactor entitlement, crews, exercise, authentication, or a replacement deficit | Production 2 |
 | 9 | Test purpose: one test per attained stage with a ready, reachable test site | Test 3 |
 | 10 | Coercion purpose: Evolution II, device backing and a current independent enemy minor not yet coerced this stage | Coercion 4 |
@@ -66,7 +66,7 @@ The router is one deterministic first-match table and writes at most one phase:
 Rows 3 to 5 apply at once; rows 6 to 11 respect the existing 14-day `phase_action_cooldown` as a navigation dwell with one coalesced retry on the due day.
 The router never pays, grants, reserves, launches, settles or applies consequences, and it never iterates over every country or state.
 Evolution and incoming-attack phase writes go through `sov_nuclear_bombs_apply_event_phase_request`, so they never replace live work, a moratorium, a custody collapse or the opening doctrine for any actor.
-AI eligibility follows the same purposes: assembly needs a replacement deficit below the attained stage's grant reference, the survey ignores sites that cannot host a test, hardening ignores empty depots, and coercion selection weighs only states whose counterpart is an independent minor at war with the Union and absent from the stage list `sov_nuclear_bombs_ai_coerced_target_ids`, which a new attained stage empties.
+AI eligibility follows the same purposes: assembly needs a replacement deficit below the attained stage's grant reference, a repeated stockpile audit needs a dispute that the audit can close (`sov_nuclear_bombs_native_custody_reconciles`), the survey ignores sites that cannot host a test, hardening ignores empty depots, and coercion selection weighs only states whose counterpart is an independent minor at war with the Union and absent from the stage list `sov_nuclear_bombs_ai_coerced_target_ids`, which a new attained stage empties.
 Because custody is the idle board, the AI enters the Atomic Moratorium only with a restraint reason (`sov_nuclear_bombs_event_ai_has_restraint_reason`: a demonstrated or employed arsenal, a serious nuclear crisis or test accident, or a verified restraint agreement), disperses a reserve once per attained stage (`sov_nuclear_bombs_ai_dispersal_stage`), and marks only retaliation or first-use states its bomber force can reach.
 A survey raises readiness once; moving the survey to another site while the first holds no device only changes the selected test ground.
 Aborting a prepared strike gives up its marked target unless a coercion dossier still owns that state.

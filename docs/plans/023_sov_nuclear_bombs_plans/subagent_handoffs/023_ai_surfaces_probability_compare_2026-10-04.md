@@ -91,3 +91,21 @@ The before source for this surface is `HEAD` `ab3470be58d3231e495e305dbe5f308a66
 | `P23_NAV_COERCION_TWO_MINORS_ONE_STAGE` | One dossier against each enemy minor, then no coercion purpose and zero selection weight until the next attained stage |
 | `P23_NAV_COERCION_NEW_STAGE` | The stage list empties on the first dossier of the new stage; every enemy minor except a verified settlement counterpart is eligible again |
 | `P23_NAV_COERCION_NONWAR_COUNTERPART` | Zero selection weight for a state whose dossier would name a government not at war with the Union |
+
+## Review additions, third pass (decisions R8 and R9)
+
+One narrow `hoi4_probability_inspect` call (`adapter = decision_ai_will_do`, `source = { path = common/decisions/023_sov_nuclear_bombs_decisions.txt }`, `candidatePool = ["sov_nuclear_bombs_audit_stockpile"]`) again returned `INTERNAL_ERROR` with `artifactCount = 0`; it was not retried and the compare stays `blocked`.
+The before source for these surfaces is `HEAD` `1cebd5393e82e8661fab4d92e35c5807d8b15cdc` (`common/decisions/023_sov_nuclear_bombs_decisions.txt`, `common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt`), readable with `git show`.
+
+| Surface | Before | After |
+| --- | --- | --- |
+| `sov_nuclear_bombs_audit_stockpile` | Base 1.20, x2.00 below 70 integrity, on every visible custody visit | `factor = 0` after the first audit unless `sov_nuclear_bombs_native_custody_reconciles` holds |
+| Router custody duty, dispute row | A national custody dispute after a full audit interval | The same, only while `sov_nuclear_bombs_native_custody_reconciles` holds |
+| Router first-use candidate | Any lower-consequence state of an enemy nuclear major | The same, only for a state inside `sov_nuclear_bombs_event_state_has_delivery_access` with the Soviet actor as launcher |
+
+| Scenario | Expected after-source result |
+| --- | --- |
+| `P23_NAV_AUDIT_DISPUTE_UNRESOLVABLE` | After the first audit, zero audit weight and no custody duty while the native stockpile stays below operational, assigned and reserved custody |
+| `P23_NAV_AUDIT_DISPUTE_RESOLVABLE` | Once the stockpile covers custody again, the router's custody row applies after the audit interval and the audit keeps base 1.20 |
+| `P23_NAV_IV_MAJOR_PROSPECTIVE_UNREACHABLE` | Every candidate state is beyond the delivery ceiling: no row 5, the router continues to rows 6 to 11 |
+| `P23_NAV_IV_MAJOR_PROSPECTIVE_VALID` | Unchanged: a reachable candidate enters phase 6 at once |

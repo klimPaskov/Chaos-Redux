@@ -195,9 +195,39 @@ Disposition: `implemented`.
 
 ### Remaining risks recorded, not changed
 
-- The router's Evolution IV first-use candidate (`sov_nuclear_bombs_event_ai_has_first_use_candidate`) does not test bomber reach, while the selector gives unreachable states zero AI weight. If every candidate state lies outside the delivery ceiling, the AI holds the retaliation board without marking a target until the emergency ends. Disposition: `unresolved`; it needs a launcher-from-ROOT variant of `sov_nuclear_bombs_event_state_has_delivery_access`, and live evidence of how often it occurs (`needs_live_game`).
+- The router's Evolution IV first-use candidate (`sov_nuclear_bombs_event_ai_has_first_use_candidate`) does not test bomber reach, while the selector gives unreachable states zero AI weight. If every candidate state lies outside the delivery ceiling, the AI holds the retaliation board without marking a target until the emergency ends. Disposition: `implemented` by R8 in the third pass below.
 - The AI reaches certified delivery crews only with ten deployed strategic bombers (D2). No Event 23 AI strategy raises Soviet strategic bomber production; the vanilla default ratio applies. Part 5 allows ("may") such a production shift. Disposition: `unresolved`; a bounded `ai_strategy` would need its own probability baseline once the MCP route works.
 - A refunded vanilla raid leaves its booked device in the expended bucket while the native stockpile holds a surplus (D3 tolerance); it does not count as combat use or affect the achievements. Disposition: `accepted` under D3.
+
+## Round 1 review, third pass (skeptical reviewer, 2026-10-05)
+
+Scope: every Round 1 commit from `aa1435e5c` to `280df0b95`, the review fixes `444500295` and `de11430be`, and the Event 028 edit `d4ef004ca`, read with `git show` against the installed raid, effect, trigger and building documentation, the offline wiki's scope rules and the vanilla AI strategy files.
+A mechanical pass over `HEAD` found balanced braces in every Event 23 script file and no unresolved helper call, `constant:` reference, localisation key or event id.
+The raid override still differs from the installed vanilla file only by its header and the six modifiers; the 27 promoted DDS files are real ARGB textures behind LFS pointers (21 achievement files at 64x64 and six decision icons at the vanilla 33x32 decision size); the Event 5 bridge brackets every literal transfer and release in the Event 5 effects except KMB's own concession release of KHA, which the generic `on_release_as_puppet` and `on_state_control_changed` hooks already reconcile.
+The catalog row queued by D9 matches the in-game details and evolution localisation.
+One narrow `hoi4_probability_inspect` call (`decision_ai_will_do`, the decisions file, `candidatePool = ["sov_nuclear_bombs_audit_stockpile"]`) again returned `INTERNAL_ERROR` with `artifactCount = 0`; it was not retried.
+
+### R8. The first-use candidate needs a reachable state
+
+Finding: the router enters the retaliation board at once for an Evolution IV first-use candidate, but `sov_nuclear_bombs_event_ai_has_first_use_candidate` counted enemy-major states outside the delivery ceiling, while R4 gives those states zero selector weight; with every candidate out of reach the AI held phase 6 for the whole emergency and never marked a target, and custody, production and test work stayed closed to it.
+Decision: each candidate state must also pass `sov_nuclear_bombs_event_state_has_delivery_access` with the Soviet actor as launcher, entered through `ROOT = { PREV = { ... } }` so the trigger's `PREV` is the actor (offline `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, PREV usage: the scope tree is a stack and `PREV` inside `ROOT` is the scope it was entered from).
+An already selected target keeps its own exact-endpoint check through `sov_nuclear_bombs_event_selected_major_first_use_target_is_valid`.
+Source scenario walk: at Evolution IV with the full emergency and one enemy nuclear major whose lower-consequence states all lie beyond the 1000-unit ceiling, the router now skips row 5 and continues to test-failure, custody, production, test and coercion purposes; when a front advance brings one such state inside the ceiling, the next review (30-day maintenance or any seam) enters phase 6 and the selector has a weighted state.
+Disposition: `implemented`; AI emergency behaviour `needs_live_game`.
+
+### R9. The AI repeats a stockpile audit only when it can close the dispute
+
+Finding: `9aac54b6b` made "Audit the Stockpile" visible again during a national custody dispute, and the router's custody duty re-enters custody for that dispute after every full audit interval; the decision's AI weight (base 1.20, x2.00 below 70 integrity) had no dispute condition, so a dispute that an audit cannot close (a shortfall reaching reserved devices, a disputed reservation or an Event 5 bucket mismatch) made the AI pay the security cost for a futile 120-day audit on every cycle and pull its board back to custody each time.
+Decision: after the first audit, the AI weight is zero unless `sov_nuclear_bombs_native_custody_reconciles` holds, which is the exact condition under which a completed audit clears the dispute, and the router's dispute row requires the same predicate.
+The first audit, the human decision and the audit's effect are unchanged; base and multiplier are unchanged.
+Source scenario walk: a reserved device's native bomb leaves the stockpile while no Event 23 delivery is pending, so the refresh sets the national dispute; the AI audited once, and 120 days later neither the router nor the decision weight returns to the audit while the stockpile stays short; when a vanilla reactor bomb later covers the shortfall, the predicate holds, the router's custody row applies after the audit interval and the AI audit closes the dispute.
+Probability: before source is `HEAD` `1cebd5393e82e8661fab4d92e35c5807d8b15cdc` (`common/decisions/023_sov_nuclear_bombs_decisions.txt`, `common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt`), readable with `git show`; MCP compare `blocked` (see D11).
+Disposition: `implemented`; AI dispute behaviour `needs_live_game`.
+
+### Remaining risks recorded, not changed
+
+- The strategic-bomber production risk recorded in the second pass stands: the vanilla default AI keeps a small strategic bomber unit ratio and SOV has strategic bomber designs in `common/ai_equipment/SOV_planes.txt`, so ten deployed bombers are reachable but not guaranteed. Disposition: `unresolved`, for the Round 2 owner with a probability baseline.
+- A Soviet nuclear stockpile reduced by another event or system outside raids (for example a scripted bomb removal) is booked as expended like a raid draw. Disposition: `accepted` under D3, which tolerates surpluses and books every shortfall above reserved custody the same way.
 
 ## Round 2 (2026-10-04)
 
