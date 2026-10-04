@@ -111,3 +111,11 @@ Decision: before sources for every changed AI surface were frozen in `probabilit
 The MCP `probability_inspect` route (`decision_ai_will_do`, narrow source path, with and without a candidate pool) returned `INTERNAL_ERROR` with no artifact, so the MCP evaluate and compare passes are recorded as an exact blocker rather than retried.
 No numeric weight or deferred evolution timing (120/120/180/90) changed (lead's D8).
 Disposition: `blocked` on the server error for the MCP compare; source-level evidence recorded.
+
+## D9. Default enablement and catalog promotion
+
+Decision: Event 23 stays enabled in new games through `check_variable = { event_id = constant:sov_nuclear_bombs_event.id }` in `event_log_event_is_reworked_default_enabled`, which is already committed in `HEAD` (since `3098ed9d2`).
+The shared working tree carried another workstream's uncommitted hunk in `common/scripted_triggers/chaosx_settings_triggers.txt` that removed this line while adding Event 42's line; after re-reading the file, one minimal Edit restored the Event 23 line in the working tree, so the remaining uncommitted hunk is only Event 42's addition and nothing Event 23-related needs committing there.
+The catalog promotion (Status `To Be Reworked` to `Needs Testing`, Cluster ID and World-End Scenario blank) is queued in [catalog_changes_pending.md](catalog_changes_pending.md); the workbook and its CSV exports are untouched.
+Basis: the lead's D9, applied after the priority 1 and 2 gameplay commits of this round.
+Disposition: enablement `implemented` in `HEAD`; catalog row `accepted and queued` for the workbook owner.
