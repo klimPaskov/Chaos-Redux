@@ -48,8 +48,8 @@ spriteTypes = {
 	spriteType = { name = "GFX_025_expedition_rivals_panel" texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_rivals_panel.dds" }
 	spriteType = { name = "GFX_025_expedition_action_tray" texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_action_tray.dds" }
 	spriteType = { name = "GFX_025_expedition_sector_map" texturefile = "gfx/interface/025_alien_technology_in_antarctica/board_sector_map_025.dds" }
-	spriteType = { name = "GFX_025_expedition_phase_banner" texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_phase_banner.dds" noOfFrames = 8 }
-	spriteType = { name = "GFX_025_expedition_phase_banner_static" texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_phase_banner_static.dds" }
+	# Static fallback (frame 000) for GFX_025_expedition_phase_banner_animated.
+	spriteType = { name = "GFX_025_expedition_phase_banner" texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_phase_banner_static.dds" }
 	frameAnimatedSpriteType = {
 		name = "GFX_025_expedition_phase_banner_animated"
 		texturefile = "gfx/interface/025_alien_technology_in_antarctica/expedition_phase_banner.dds"
@@ -123,14 +123,63 @@ spriteTypes = {
 	spriteType = { name = "GFX_025_expedition_control_history" texturefile = "gfx/interface/025_alien_technology_in_antarctica/control_history.dds" noOfFrames = 4 effectFile = "gfx/FX/buttonstate.lua" }
 	spriteType = { name = "GFX_025_expedition_control_details" texturefile = "gfx/interface/025_alien_technology_in_antarctica/control_details.dds" noOfFrames = 4 effectFile = "gfx/FX/buttonstate.lua" }
 	spriteType = { name = "GFX_025_expedition_control_close" texturefile = "gfx/interface/025_alien_technology_in_antarctica/control_close.dds" noOfFrames = 4 effectFile = "gfx/FX/buttonstate.lua" }
+	spriteType = { name = "GFX_025_expedition_control_animation" texturefile = "gfx/interface/025_alien_technology_in_antarctica/control_animation.dds" noOfFrames = 4 effectFile = "gfx/FX/buttonstate.lua" }
 
-	# Evolution overlays use the delivered native-alpha static fallbacks. No
-	# transform-only animation is registered for the four optional evolution
-	# loops; the phase banner above is the accepted real frame-sheet animation.
-	spriteType = { name = "GFX_025_expedition_signal_static" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_signal_static.dds" alwaystransparent = yes }
-	spriteType = { name = "GFX_025_expedition_survivor_static" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_survivor_trace_static.dds" alwaystransparent = yes }
-	spriteType = { name = "GFX_025_expedition_fragment_static" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_fragment_instability_static.dds" alwaystransparent = yes }
-	spriteType = { name = "GFX_025_expedition_dependence_static" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_dependence_static.dds" alwaystransparent = yes }
+	# Evolution overlays. Each is a real eight-frame 3528x271 sheet of 441x271
+	# frames drawn over the sector map at its displayed size, with frame 000 as
+	# the static fallback shown while the viewer has board animation switched
+	# off. Signal, survivor trace, dependence and militarisation pulse at 4 fps;
+	# the fragment field flickers at 6 fps.
+	spriteType = { name = "GFX_025_expedition_signal" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_signal_static.dds" alwaystransparent = yes }
+	frameAnimatedSpriteType = {
+		name = "GFX_025_expedition_signal_animated"
+		texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_signal_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 4
+		looping = yes
+		play_on_show = yes
+		alwaystransparent = yes
+	}
+	spriteType = { name = "GFX_025_expedition_survivor" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_survivor_trace_static.dds" alwaystransparent = yes }
+	frameAnimatedSpriteType = {
+		name = "GFX_025_expedition_survivor_animated"
+		texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_survivor_trace_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 4
+		looping = yes
+		play_on_show = yes
+		alwaystransparent = yes
+	}
+	spriteType = { name = "GFX_025_expedition_fragment" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_fragment_instability_static.dds" alwaystransparent = yes }
+	frameAnimatedSpriteType = {
+		name = "GFX_025_expedition_fragment_animated"
+		texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_fragment_instability_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 6
+		looping = yes
+		play_on_show = yes
+		alwaystransparent = yes
+	}
+	spriteType = { name = "GFX_025_expedition_dependence" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_dependence_static.dds" alwaystransparent = yes }
+	frameAnimatedSpriteType = {
+		name = "GFX_025_expedition_dependence_animated"
+		texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_dependence_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 4
+		looping = yes
+		play_on_show = yes
+		alwaystransparent = yes
+	}
+	spriteType = { name = "GFX_025_expedition_militarised" texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_militarised_static.dds" alwaystransparent = yes }
+	frameAnimatedSpriteType = {
+		name = "GFX_025_expedition_militarised_animated"
+		texturefile = "gfx/interface/025_alien_technology_in_antarctica/overlay_militarised_sheet.dds"
+		noOfFrames = 8
+		animation_rate_fps = 4
+		looping = yes
+		play_on_show = yes
+		alwaystransparent = yes
+	}
 
 	# Event 025 achievements use independent normal, grey, and ineligible DDS
 	# triplets. The achievement definitions retain the stable IDs while the

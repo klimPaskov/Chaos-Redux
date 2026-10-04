@@ -45,6 +45,15 @@ scripted_gui = {
 					set_country_flag = events_log_event_details_open
 					refresh_events_log_system_history_views = yes
 				}
+				# Per-viewer animation setting for the phase banner and the
+				# evolution overlays; the static frames are shown while it is off.
+				nr25_board_animation_click = {
+					if = {
+						limit = { has_country_flag = chaosx_nr25_animations_disabled }
+						clr_country_flag = chaosx_nr25_animations_disabled
+					}
+					else = { set_country_flag = chaosx_nr25_animations_disabled }
+				}
 				nr25_board_close_click = {
 					clr_country_flag = chaosx_nr25_board_confirmation_open
 					clear_variable = chaosx_nr25_pending_action_slot
@@ -95,6 +104,7 @@ scripted_gui = {
 				nr25_board_history_click_enabled = { NOT = { has_country_flag = chaosx_nr25_board_confirmation_open } }
 				nr25_board_details_click_enabled = { NOT = { has_country_flag = chaosx_nr25_board_confirmation_open } }
 				nr25_board_close_click_enabled = { always = yes }
+				nr25_board_animation_click_enabled = { always = yes }
 
 			# A sector remains a visible selection surface throughout the live
 			# race. The parent action helper supplies the state-specific blocked
@@ -303,17 +313,45 @@ scripted_gui = {
 				}
 			}
 
+			nr25_signal_animated_visible = {
+				has_global_flag = chaosx_nr25_evolution_active_signal
+				NOT = { has_country_flag = chaosx_nr25_animations_disabled }
+			}
 			nr25_signal_static_visible = {
 				has_global_flag = chaosx_nr25_evolution_active_signal
+				has_country_flag = chaosx_nr25_animations_disabled
+			}
+			nr25_survivor_animated_visible = {
+				has_global_flag = chaosx_nr25_evolution_something_survived
+				NOT = { has_country_flag = chaosx_nr25_animations_disabled }
 			}
 			nr25_survivor_static_visible = {
 				has_global_flag = chaosx_nr25_evolution_something_survived
+				has_country_flag = chaosx_nr25_animations_disabled
+			}
+			nr25_fragment_animated_visible = {
+				has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+				NOT = { has_country_flag = chaosx_nr25_animations_disabled }
 			}
 			nr25_fragment_static_visible = {
 				has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+				has_country_flag = chaosx_nr25_animations_disabled
+			}
+			nr25_dependence_animated_visible = {
+				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				NOT = { has_country_flag = chaosx_nr25_animations_disabled }
 			}
 			nr25_dependence_static_visible = {
 				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				has_country_flag = chaosx_nr25_animations_disabled
+			}
+			nr25_militarised_animated_visible = {
+				has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+				NOT = { has_country_flag = chaosx_nr25_animations_disabled }
+			}
+			nr25_militarised_static_visible = {
+				has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+				has_country_flag = chaosx_nr25_animations_disabled
 			}
 			nr25_board_phase_banner_animated_visible = {
 			NOT = { has_country_flag = chaosx_nr25_animations_disabled }

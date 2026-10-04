@@ -153,7 +153,7 @@ Event 025 does not create a Kruger country, Warren Kruger, Directorate state, Ev
 The visual inventory and its remaining consumer gaps, provisional paths, and MCP limitations are recorded in docs/assets/025_alien_technology_in_antarctica/visual_asset_audit.md.
 
 The phase banner is a real eight-frame asset package with a static disabled-animation fallback.
-Four static-only evolution overlays remain pending animation work under the user's no-simplifications requirement.
+Each evolution (signal, survivor trace, militarised zones, fragment field, Dependence) has its own real eight-frame map overlay with a frame-000 static fallback; the header animation control switches the viewer between animated and static presentation.
 
 Event 025 uses the following dedicated GFX files and consumers.
 

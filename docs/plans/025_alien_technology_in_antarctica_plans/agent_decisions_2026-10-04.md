@@ -305,3 +305,19 @@ MCP route record: `hoi4_probability_inspect` with `adapter = decision_ai_will_do
 | `common/decisions/025_alien_technology_in_antarctica_missions.txt` | `58d0bf81b779d30d399acb3bb40e563f92a2a19fb27dbb0b9c5127c32921a821` |
 | `common/scripted_triggers/025_alien_technology_in_antarctica_triggers.txt` | `975d71468d6978572c2874fd7dfef6944e2db64eb230959612be90a82fe9d05a` |
 | `events/025_alien_technology_in_antarctica.txt` | `9d968ac7bad33b48bc490f9190e1590317b84d76719b71b3a218a4b7ecdf8c5c` |
+
+## D20. Evolution overlay animations and the board animation control
+
+Disposition: `implemented`.
+
+Basis: spec 008's evolution overlays (including the militarised-zone overlay), spec 010's recommended loops, the frame-animation skill, and the lead's direction that the four loops and the missing militarised overlay are owed work.
+
+Decision:
+
+- Every evolution has an eight-frame overlay over the sector map: a signal pulse at the hub (I), a footprint trail with a mist figure that gathers and dissolves at its end (II), warships sweeping searchlights over red security zones with blinking beacons and radar pings (III), a field of alien shards whose cracks flicker and discharge (IV), and border circuit tendrils that carry a light pulse to the coast (V).
+- Frames are drawn at the map's displayed size (441x271, scale 1) instead of the old 700x430 canvases at scale 0.63, which keeps each sheet at 3528x271.
+- The overlays avoid marking any single sector: the signal sits on the hub, shards are spread through all six wedges, and the trail, tendrils and ships follow coasts and borders, so no overlay reveals the hidden core sector.
+- Four overlays use one generated base layer plus eight generated motion layers, because the image tool cannot hold fixed elements (footprints, shards, tendrils, ships) still across separate generations; the signal uses eight full frames aligned on the hub. Each frame still has its own generated visual state.
+- Frame 000 of each loop replaces the old static overlays, two of which had painted checkerboard pixels.
+- A fifth header control toggles `chaosx_nr25_animations_disabled`, which nothing could set before, so the phase banner and overlay statics are reachable. The deadline text box narrows from 160 to 128 pixels to make room; its longest text, "Recovery resolved", still fits.
+- Static fallbacks take the animated sprites' base names, and the unused eight-frame banner registration under the base name is replaced by the banner's static frame.
