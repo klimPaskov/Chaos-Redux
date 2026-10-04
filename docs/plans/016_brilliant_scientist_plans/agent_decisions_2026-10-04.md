@@ -149,3 +149,12 @@ Each such clause is now `NOT = { AND = { provider valid, stage completed } }`.
 A scripted comparison confirmed that all 41 wrapped clauses match the `AND` branch of their enable blocks; enable blocks and modifier values are unchanged.
 
 Evidence: `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`.
+
+## D13. Biological raid AI zero factors
+
+The 18 Event 016 biological raids zeroed their AI weight with `NOT = { ready unlocked target_valid }`, a NOR that applied only when all three conditions failed together.
+Each zero factor is now `NOT = { AND = { ... } }`, so it applies whenever any of the three fails.
+A scripted comparison confirmed that each wrapped condition set is identical to that raid's `available` gate, so the change only zeroes weights for raids that are already unavailable; no eligible raid's selection probability changes, and no other weight is touched.
+Probability evidence: the HOI4 MCP exposes no raid adapter (`hoi4.probability_inspect` lists decision, mission, focus, technology, event, random-list, strategy, and custom-pool adapters only), and one narrow `hoi4.probability_inspect` call on `brilliant_scientist_anthrax_battlefield_biological_raid` returned `INTERNAL_ERROR`; it was not retried.
+
+Evidence: `common/raids/016_brilliant_scientist_biological_raids.txt`.
