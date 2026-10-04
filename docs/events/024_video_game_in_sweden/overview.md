@@ -298,11 +298,28 @@ It checks for seven incident families: terrain, supply, enemy action, template f
 
 Only currently valid families enter the weighted incident pool. The pool avoids the last family when another valid family exists and starts a new family cycle after all valid families have appeared.
 
-Each incident has a concrete response pair or response set, a 45-day incident cooldown, and a route-aware recovery effect.
+After the 45-day cooldown (20 days during Trust the Model) a due incident fires on a maintenance check with a 60% base chance.
+The chance is multiplied by Reliance state (Instrument 0.6, Habit 0.85, Doctrine 1.0, Worldview 1.25), an officer league or competitive culture (1.25), auxiliary doctrine, a red team and field validation (0.8 each) and an active Trust the Model surge (1.25), clamped between 10 and 100%.
+Incidents pause during a severe crisis, restriction enforcement and recovery.
 
-Trust Model uses a shorter 20-day incident cooldown while its special campaign is active.
+Family weights live in `video_game_in_sweden_incident`.
+Supply mismatches weigh twice the other families, terrain falls to a quarter after a successful field validation, enemy-behaviour reports rise with competitive culture, template reports rise with officer competition and a dismissed template report and fall after restriction, workplace reports rise by a quarter per national league season and fall to a quarter with protected shifts, and party reports rise with exhibitions or appropriation and halve with preparedness, a civic network or separate policy.
 
-Incidents can record overconfidence, lower Reliance, cancel a compromised mission, or open a recovery action without creating an irreversible crisis.
+Every response applies the timed Cabinet Mismatch modifier (`video_game_in_sweden_mismatch_penalty`), priced when the incident is drawn so the report shows the exact cost of each answer.
+Severity is the Reliance-state factor (0.5 to 1.5) times war (1.5), Chaos 600 or higher (1.25), a prior relevant validation (0.75) and one tenth more per earlier mismatch up to half again, capped at 2.5.
+Admitting the error halves the penalty and its duration, and dismissing it pays in full; the penalty lasts 30 to 90 days.
+
+| Family | Penalty lines |
+| --- | --- |
+| Terrain | Army attack and army speed |
+| Supply | Supply consumption and organisation recovery |
+| Enemy behaviour | Planning speed and maximum planning |
+| Template | Faster training now, weaker terrain adaptation |
+| Diplomatic | Political power gain and monthly opinion gain |
+| Workplace | Factory output |
+| Party | Stability and political power gain |
+
+Admitting answers also lower Reliance and may file a review, protect shifts, separate play from policy or close the licence office, while dismissing answers raise Reliance and make that family more common.
 
 When an evolution becomes disabled, the handler cancels the active mission, removes temporary route ideas and modifiers, clears transient targets, and returns to the last permitted phase or baseline.
 

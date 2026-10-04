@@ -365,127 +365,185 @@ country_event = {
 		}
 	}
 
+	# Each family has a correcting response and a dismissing one. The penalty of
+	# each was priced when the incident was drawn; dismissing costs more.
 	option = {
 		name = chaosx.nr24.30.terrain_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals } }
 		ai_chance = { base = 1 }
-		set_country_flag = video_game_in_sweden_incident_admitted
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.field_validation_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_terrain_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_incident_admitted
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.field_validation_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.terrain_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals } }
 		ai_chance = { base = 1 }
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_gain }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_terrain_dismiss_tt
+		hidden_effect = {
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.supply_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_supply compare = equals } }
 		ai_chance = { base = 1 }
-		set_country_flag = video_game_in_sweden_incident_admitted
-		set_country_flag = video_game_in_sweden_logistics_review_complete
-		set_country_flag = video_game_in_sweden_logistics_mismatch_reduced
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.logistics_review_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_supply_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_incident_admitted
+			set_country_flag = video_game_in_sweden_logistics_review_complete
+			set_country_flag = video_game_in_sweden_logistics_mismatch_reduced
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.logistics_review_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.supply_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_supply compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_supply_crisis has_country_flag = video_game_in_sweden_supply_crisis } }
-		set_country_flag = video_game_in_sweden_supply_crisis
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_supply_overconfidence }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_supply_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_supply_crisis
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_supply_overconfidence }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.enemy_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_enemy_red_team has_country_flag = video_game_in_sweden_red_team_complete } }
-		set_country_flag = video_game_in_sweden_incident_admitted
-		set_country_flag = video_game_in_sweden_red_team_complete
-		set_country_flag = video_game_in_sweden_enemy_mismatch_reduced
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.red_team_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_enemy_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_incident_admitted
+			set_country_flag = video_game_in_sweden_red_team_complete
+			set_country_flag = video_game_in_sweden_enemy_mismatch_reduced
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.red_team_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.enemy_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_enemy compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_enemy_supply has_country_flag = video_game_in_sweden_supply_crisis } }
-		set_country_flag = video_game_in_sweden_enemy_adaptation
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_enemy_overconfidence }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_enemy_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_enemy_adaptation
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_enemy_overconfidence }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.template_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_template compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_template_separate has_country_flag = video_game_in_sweden_separate_policy } }
-		set_country_flag = video_game_in_sweden_access_restricted
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_template_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_access_restricted
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.template_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_template compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_template_supply has_country_flag = video_game_in_sweden_supply_crisis } }
-		set_country_flag = video_game_in_sweden_template_craze
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_template_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_template_craze
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.diplomatic_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_diplomatic compare = equals } }
 		ai_chance = { base = 1 }
-		set_country_flag = video_game_in_sweden_foreign_pool_exhausted
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_diplomatic_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_foreign_pool_exhausted
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.diplomatic_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_diplomatic compare = equals } }
 		ai_chance = { base = 1 }
-		set_country_flag = video_game_in_sweden_diplomatic_category_error
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_diplomatic_overconfidence }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_diplomatic_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_diplomatic_category_error
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_diplomatic_overconfidence }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.workplace_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_workplace compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_workplace_protected has_country_flag = video_game_in_sweden_protected_shifts } }
-		set_country_flag = video_game_in_sweden_protected_shifts
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.protect_shifts_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_workplace_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_protected_shifts
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.protect_shifts_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.workplace_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_workplace compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_workplace_war has_war = yes } }
-		set_country_flag = video_game_in_sweden_workplace_distraction
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_workplace_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_workplace_distraction
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.party_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_party_democratic has_government = democratic } }
-		set_country_flag = video_game_in_sweden_separate_policy
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
-		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_party_admit_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_separate_policy
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_admit }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
+			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 	option = {
 		name = chaosx.nr24.30.party_b
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
 		ai_chance = { base = 1 modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_party_supply has_country_flag = video_game_in_sweden_supply_crisis } }
-		set_country_flag = video_game_in_sweden_party_appropriation
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
-		video_game_in_sweden_adjust_incident_reliance = yes
+		custom_effect_tooltip = video_game_incident_party_dismiss_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_party_appropriation
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.national_league_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
 	}
 }
 

@@ -103,6 +103,8 @@ video_game_in_sweden_value = {
 	result_full = 1
 	result_partial = 2
 	result_failed = 3
+	incident_admit = 1
+	incident_dismiss = 2
 	conclusion_officer_culture = 8
 	conclusion_craze_contained = 9
 }
@@ -205,19 +207,75 @@ video_game_in_sweden_timing = {
 	separate_policy_evolution_delay_days = 90
 }
 
+# Model-mismatch incidents. Family weights are relative draws, frequency
+# factors scale the chance that a due incident fires on a maintenance check,
+# and severity factors scale the timed Cabinet Mismatch penalty. Penalty
+# amounts are positive magnitudes; the apply helper gives each its sign.
 video_game_in_sweden_incident = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	terrain_weight = 2.0
-	supply_weight = 3.0
-	enemy_weight = 2.0
-	template_weight = 2.0
-	diplomatic_weight = 2.0
-	workplace_weight = 2.0
-	party_weight = 2.0
+	terrain_weight = 100
+	supply_weight = 200
+	enemy_weight = 100
+	template_weight = 100
+	diplomatic_weight = 100
+	workplace_weight = 100
+	party_weight = 100
+	terrain_validated_factor = 0.25
+	enemy_competitive_factor = 1.5
+	template_officer_factor = 1.5
+	template_craze_factor = 1.5
+	template_restricted_factor = 0.5
+	diplomatic_error_factor = 1.5
+	workplace_season_step = 0.25
+	workplace_protected_factor = 0.25
+	party_exhibition_factor = 1.5
+	party_appropriation_factor = 1.5
+	party_preparedness_factor = 0.5
+	party_separate_factor = 0.5
+	fire_chance = 60
+	fire_chance_min = 10
+	fire_chance_max = 100
+	frequency_instrument = 0.6
+	frequency_habit = 0.85
+	frequency_doctrine = 1.0
+	frequency_worldview = 1.25
+	frequency_officer = 1.25
+	frequency_auxiliary = 0.8
+	frequency_red_team = 0.8
+	frequency_field_validated = 0.8
+	frequency_trust_model = 1.25
+	severity_instrument = 0.5
+	severity_habit = 0.75
+	severity_doctrine = 1.0
+	severity_worldview = 1.5
+	severity_war = 1.5
+	severity_high_chaos = 1.25
+	severity_validated = 0.75
+	severity_repeat_step = 0.1
+	severity_repeat_max = 0.5
+	severity_max = 2.5
+	response_admit = 0.5
+	response_dismiss = 1.0
+	penalty_base_days = 30
+	penalty_min_days = 30
+	penalty_max_days = 90
+	terrain_attack = 0.05
+	terrain_speed = 0.03
+	supply_consumption = 0.05
+	supply_org = 0.05
+	enemy_planning = 0.05
+	enemy_max_planning = 0.05
+	template_training = 0.04
+	template_adaptability = 0.06
+	diplomatic_political_power = 0.05
+	diplomatic_opinion = 0.15
+	workplace_output = 0.05
+	party_stability = 0.03
+	party_political_power = 0.05
 }
 
 video_game_in_sweden_cost = {

@@ -97,3 +97,14 @@ Red-team supervision also sets `enemy_mismatch_reduced`, which removes the enemy
 `video_game_in_sweden_close_ordinary_program` sets `conclusion_officer_culture` from Evolution I and `conclusion_craze_contained` from Evolution II, and report `.20` shows matching text and options with Validated Wargaming Methods or Municipal Campaign Clubs as the finite aftermath.
 Incident frequency and evolution pacing effects of these choices are wired with the incident and pacing items.
 Basis: spec part 2 Evolution I and II choices, Evolution I and II conclusions and resolution states 2 and 3.
+
+## D12. Incidents carry priced, timed penalties and route-aware frequency
+
+Decision: every incident response applies one timed Cabinet Mismatch modifier whose values are country variables set for the incident family, so the latest mismatch replaces an earlier one instead of stacking.
+The penalty is priced when the incident is drawn, from a severity that multiplies the Reliance-state, war, high-Chaos, prior-validation and repetition factors, so the report tooltip shows the exact cost of each answer and nothing hidden appears after the choice.
+Admitting halves both size and duration; durations stay within 30 to 90 days.
+Because maintenance runs every 30 days, a cooldown scale could not change frequency, so a due incident instead fires with a percentage chance scaled by Reliance, officer competition, auxiliary doctrine, red team, field validation and Trust the Model.
+Family weights were rescaled to hundreds so the random draw never depends on fractional weights.
+The previously unread template, access, diplomatic and party flags now scale their family's weight, and the 0/1 temporary sentinels in incident selection were replaced by direct trigger checks.
+Incidents pause during restriction enforcement and recovery through the live-package trigger.
+Basis: spec part 3 incident severity and decision map penalties (one to three months), P24-I1 to I5, lead item on incident consequences.
