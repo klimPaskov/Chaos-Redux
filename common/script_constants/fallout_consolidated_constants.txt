@@ -2870,8 +2870,11 @@ fallout_manual_aggregate = {
 	# prestrike state population. Additional province strikes add only a very
 	# small amount and the complete batch is capped at ninety-five percent.
 	# The later manual rewrite reconciles only the remaining grade delta.
+	# Each additional strike adds 0.000005 (one 200000th), which is below the
+	# 0.00001 variable precision, so the additional strike count is divided
+	# by this value instead of multiplied by a per-strike rate.
 	death_percent_base = 0.900
-	death_percent_per_additional_strike = 0.000005
+	death_percent_additional_strike_divisor = 200000
 	death_percent_max = 0.950
 	fallout_intensity_base = 3.50
 	fallout_intensity_per_additional_strike = 0.25
@@ -3988,7 +3991,7 @@ fallout_event_534_threshold = {
 	minimum_cohesion = 18
 	minimum_command_power = 8
 	minimum_army_experience = 5
-	minimum_war_support = 15
+	minimum_war_support = 0.15
 	minimum_viability = 0
 	maximum_viability = 100
 	weight_divisor = 100
@@ -4126,7 +4129,7 @@ fallout_event_534_threshold = {
 	callback_manpower_partial = 15
 	callback_manpower_failure = 0
 	ai_reduce_patrols_readiness = 40
-	ai_melt_war_support = 55
+	ai_melt_war_support = 0.55
 	ai_trade_crime_pressure = 38
 	ai_seize_alignment = 30
 	upper_bound = 1000
@@ -5771,7 +5774,7 @@ fallout_event_628_threshold = {
 	ai_winter_factor = 10
 	ai_military_factor = 9
 	ai_low_water_threshold = 25
-	ai_high_war_support_threshold = 55
+	ai_high_war_support_threshold = 0.55
 	ai_winter_exposure_threshold = 45
 	ai_low_medicine_threshold = 20
 	upper_bound = 1000
@@ -6050,7 +6053,7 @@ fallout_event_520_threshold = {
 	callback_manpower_failure = 0
 	ai_compromise_mandate = 32
 	ai_replace_loyalty = 22
-	ai_arrest_war_support = 48
+	ai_arrest_war_support = 0.48
 	ai_autonomy_field = 34
 	upper_bound = 1000
 }
@@ -27374,7 +27377,7 @@ fallout_event_506_threshold = {
 	callback_corridor_failure = -8
 	ai_pay_checkpoint_supply = 25
 	ai_negotiate_water_pass_trust = 35
-	ai_attack_checkpoint_war_support = 45
+	ai_attack_checkpoint_war_support = 0.45
 	ai_hire_guard_band_scrap = 18
 	upper_bound = 1000
 }
@@ -28168,7 +28171,7 @@ fallout_event_527_threshold = {
 	minimum_cohesion = 18
 	minimum_command_power = 8
 	minimum_army_experience = 5
-	minimum_war_support = 15
+	minimum_war_support = 0.15
 	minimum_viability = 0
 	maximum_viability = 100
 	weight_divisor = 100
@@ -28306,7 +28309,7 @@ fallout_event_527_threshold = {
 	callback_manpower_partial = 15
 	callback_manpower_failure = 0
 	ai_search_intelligence = 40
-	ai_retaliate_war_support = 55
+	ai_retaliate_war_support = 0.55
 	ai_coverup_fear = 38
 	ai_wait_contact = 30
 	upper_bound = 1000
@@ -30952,7 +30955,7 @@ fallout_event_579_threshold = {
 	ai_winter_factor = 12
 	ai_military_factor = 8
 	ai_low_water_threshold = 25
-	ai_high_war_support_threshold = 55
+	ai_high_war_support_threshold = 0.55
 	ai_winter_exposure_threshold = 45
 	upper_bound = 1000
 }
@@ -40545,7 +40548,7 @@ fallout_event_513_threshold = {
 	callback_failure_death_percent = 0.0015
 	ai_central_armory_power = 18
 	ai_family_registry_trust = 35
-	ai_militia_custody_war_support = 48
+	ai_militia_custody_war_support = 0.48
 	ai_disarm_accident_risk = 42
 	upper_bound = 1000
 }

@@ -1240,10 +1240,11 @@ air_cleanliness_treaty_issue_invitations = {
 				}
 			}
 		}
+		set_temp_variable = { chaosx_date_days = constant:air_cleanliness_treaty_runtime.invitation_scan_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.air_cleanliness_treaty_next_invitation_scan_date = global.date }
-		add_to_variable = {
-			global.air_cleanliness_treaty_next_invitation_scan_date = constant:air_cleanliness_treaty_runtime.invitation_scan_days
-		}
+		add_to_variable = { global.air_cleanliness_treaty_next_invitation_scan_date = chaosx_date_offset }
 	}
 }
 
@@ -16384,7 +16385,7 @@ fallout_manual_apply_state_aggregate_consequence = {
 	}
 
 	set_temp_variable = { chaos_state_deaths_percent = fallout_manual_additional_state_strikes }
-	multiply_temp_variable = { chaos_state_deaths_percent = constant:fallout_manual_aggregate.death_percent_per_additional_strike }
+	divide_temp_variable = { chaos_state_deaths_percent = constant:fallout_manual_aggregate.death_percent_additional_strike_divisor }
 	add_to_temp_variable = { chaos_state_deaths_percent = constant:fallout_manual_aggregate.death_percent_base }
 	clamp_temp_variable = {
 		var = chaos_state_deaths_percent
@@ -22874,7 +22875,7 @@ fallout_event_534_schedule_result = {
 		set_variable = { fallout_event_534_frozen_scrap = fallout_survival_current_entries^4 }
 		set_variable = { fallout_event_534_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_534_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_534_frozen_war_support = war_support }
+		set_variable = { fallout_event_534_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_534_frozen_command_power = command_power }
 		set_variable = { fallout_event_534_frozen_army_experience = army_experience }
 		set_variable = { fallout_event_534_frozen_state_supply = constant:fallout_event_runtime.zero }
@@ -22945,7 +22946,7 @@ fallout_event_534_choose_branch = {
 fallout_event_534_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.seize_private_arms }
 	if = { limit = { check_variable = { var = fallout_ammunition_winter_arms_readiness_current value = constant:fallout_event_534_threshold.ai_reduce_patrols_readiness compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_534_cost.reduce_patrols_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_534_cost.reduce_patrols_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.reduce_patrols } }
-	else_if = { limit = { check_variable = { var = war_support value = constant:fallout_event_534_threshold.ai_melt_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_534_cost.melt_civilian_metal_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_534_cost.melt_civilian_metal_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.melt_civilian_metal } }
+	else_if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_534_threshold.ai_melt_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_534_cost.melt_civilian_metal_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_534_cost.melt_civilian_metal_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.melt_civilian_metal } }
 	else_if = { limit = { check_variable = { var = fallout_ammunition_winter_crime_pressure_current value = constant:fallout_event_534_threshold.ai_trade_crime_pressure compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_534_cost.trade_food_food compare = greater_than_or_equals } } set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.trade_food } }
 	else_if = { limit = { check_variable = { var = fallout_ammunition_winter_militia_alignment_current value = constant:fallout_event_534_threshold.ai_seize_alignment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_534_requested_branch = constant:fallout_event_534_branch.seize_private_arms } }
 	fallout_event_534_schedule_result = yes
@@ -28184,7 +28185,7 @@ fallout_event_628_snapshot_registry = {
 	set_variable = { fallout_event_628_frozen_medicine = fallout_survival_current_entries^3 }
 	set_variable = { fallout_event_628_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_628_frozen_cohesion = fallout_survival_cohesion_current }
-	set_variable = { fallout_event_628_frozen_war_support = war_support }
+	set_variable = { fallout_event_628_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_628_frozen_state_food = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_628_frozen_state_supply = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_628_frozen_adaptation = constant:fallout_event_runtime.zero }
@@ -28535,7 +28536,7 @@ fallout_event_628_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_guard_priority }
 	if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } } add_to_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_military_factor } }
 	if = { limit = { has_war = yes } add_to_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_military_factor } }
-	if = { limit = { check_variable = { var = war_support value = constant:fallout_event_628_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_military_factor } }
+	if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_628_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_military_factor } }
 	if = { limit = { check_variable = { var = fallout_event_628_ai_score value = fallout_event_628_ai_best_score compare = greater_than } fallout_event_628_guard_branch_affordable = yes } set_temp_variable = { fallout_event_628_ai_best_score = fallout_event_628_ai_score } set_temp_variable = { fallout_event_628_requested_branch = constant:fallout_event_628_branch.gate_guard } }
 	set_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_council_priority }
 	if = { limit = { OR = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } } } add_to_temp_variable = { fallout_event_628_ai_score = constant:fallout_event_628_threshold.ai_winter_factor } }
@@ -28840,7 +28841,7 @@ fallout_event_628_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_628_target_state_id }
 		var:fallout_event_628_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_628_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_628_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_628_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -28888,7 +28889,7 @@ fallout_event_628_abort_on_generation_change = {
 		set_variable = { fallout_event_628_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_628_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_628_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_628_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -29247,7 +29248,7 @@ fallout_event_520_schedule_result = {
 		set_variable = { fallout_event_520_frozen_scrap = fallout_survival_current_entries^4 }
 		set_variable = { fallout_event_520_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_520_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_520_frozen_war_support = war_support }
+		set_variable = { fallout_event_520_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_520_frozen_command_power = command_power }
 		set_variable = { fallout_event_520_frozen_loyalty = fallout_captain_loyalty_current }
 		set_variable = { fallout_event_520_frozen_mandate = fallout_captain_mission_mandate_current }
@@ -29317,7 +29318,7 @@ fallout_event_520_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.grant_field_autonomy }
 	if = { limit = { check_variable = { var = fallout_captain_mission_mandate_current value = constant:fallout_event_520_threshold.ai_compromise_mandate compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_520_cost.compromise_food compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_520_cost.compromise_fuel compare = greater_than_or_equals } } set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.compromise_mission } }
 	else_if = { limit = { check_variable = { var = fallout_captain_loyalty_current value = constant:fallout_event_520_threshold.ai_replace_loyalty compare = less_than } check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_520_cost.replace_scrap compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_520_cost.replace_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.replace_captain } }
-	else_if = { limit = { check_variable = { var = war_support value = constant:fallout_event_520_threshold.ai_arrest_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_520_cost.arrest_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_520_cost.arrest_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.arrest_captain } }
+	else_if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_520_threshold.ai_arrest_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_520_cost.arrest_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_520_cost.arrest_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.arrest_captain } }
 	else_if = { limit = { check_variable = { var = fallout_captain_field_autonomy_current value = constant:fallout_event_520_threshold.ai_autonomy_field compare = greater_than_or_equals } } set_temp_variable = { fallout_event_520_requested_branch = constant:fallout_event_520_branch.grant_field_autonomy } }
 	fallout_event_520_schedule_result = yes
 	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_520_pay_branch_cost = yes }
@@ -36630,7 +36631,7 @@ fallout_event_572_snapshot_registry = {
 	set_variable = { fallout_event_572_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_572_frozen_cohesion = fallout_survival_cohesion_current }
 	set_variable = { fallout_event_572_frozen_equipment = fallout_survival_current_entries^6 }
-	set_variable = { fallout_event_572_frozen_war_support = war_support }
+	set_variable = { fallout_event_572_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_572_frozen_command_power = command_power }
 	set_variable = { fallout_event_572_frozen_army_experience = army_experience }
 	set_variable = { fallout_event_572_frozen_civic_trust = fallout_county_fair_civic_trust }
@@ -39981,9 +39982,9 @@ fallout_event_230_apply_result_effects = {
 	fallout_survival_apply_cohesion_delta = yes
 	add_stability = fallout_event_230_delta_cohesion
 	var:fallout_event_230_destination_state_id = {
-		if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_230_delta_destination_shelter } }
-		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = ROOT.fallout_event_230_delta_adaptation } }
-		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_230_delta_reclamation } }
+		if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = fallout_event_230_delta_destination_shelter } }
+		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = fallout_event_230_delta_adaptation } }
+		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = fallout_event_230_delta_reclamation } }
 		if = { limit = { has_variable = air_winter_shelter_capacity } clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
 		if = { limit = { has_variable = air_winter_adaptation } clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
 		if = { limit = { has_variable = air_winter_reclamation } clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
@@ -40148,8 +40149,8 @@ fallout_event_230_apply_callback_effects = {
 	fallout_survival_apply_cohesion_delta = yes
 	add_stability = fallout_event_230_delta_cohesion
 	var:fallout_event_230_destination_state_id = {
-		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = ROOT.fallout_event_230_delta_adaptation } }
-		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_230_delta_reclamation } }
+		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = fallout_event_230_delta_adaptation } }
+		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = fallout_event_230_delta_reclamation } }
 		set_state_flag = fallout_event_230_callback_recorded
 		if = { limit = { has_variable = air_winter_adaptation } clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
 		if = { limit = { has_variable = air_winter_reclamation } clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum } }
@@ -58350,8 +58351,8 @@ fallout_event_schedule_selected_relationship_candidate = {
 				index = fallout_event_relationship_partner_candidate_index
 				if = {
 					limit = {
-						check_variable = { var = fallout_event_relationship_partner_candidate_id value = ROOT.fallout_event_requested_candidate_id compare = equals }
-						check_variable = { var = fallout_event_candidate_transaction_key_entries^fallout_event_relationship_partner_candidate_index value = ROOT.fallout_event_requested_transaction_key compare = equals }
+						check_variable = { var = fallout_event_relationship_partner_candidate_id value = fallout_event_requested_candidate_id compare = equals }
+						check_variable = { var = fallout_event_candidate_transaction_key_entries^fallout_event_relationship_partner_candidate_index value = fallout_event_requested_transaction_key compare = equals }
 						check_variable = { fallout_event_candidate_class_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_class.relationship }
 						check_variable = { fallout_event_candidate_bilateral_opportunity_entries^fallout_event_relationship_partner_candidate_index = constant:fallout_event_runtime.one }
 					}
@@ -60854,7 +60855,6 @@ fallout_orientation_begin_component = {
 			limit = {
 				NOT = {
 					var:fallout_successor_assignment_capital_state = {
-						exists = yes
 						is_owned_and_controlled_by = ROOT
 						fallout_successor_assignment_capital_row_is_current = yes
 					}
@@ -66197,14 +66197,14 @@ fallout_event_256_schedule_result = {
 				set_variable = { fallout_event_256_viability = fallout_event_256_target_viability }
 				var:fallout_event_256_opening_target = {
 					set_state_flag = fallout_event_256_fever_registry_committed
-					set_variable = { ROOT.fallout_event_256_registry_generation = ROOT.fallout_event_runtime_generation }
-					set_variable = { ROOT.fallout_event_256_registry_owner = ROOT }
-					set_variable = { ROOT.fallout_event_256_viability = ROOT.fallout_event_256_target_viability }
-					set_variable = { ROOT.fallout_event_256_frozen_shelter = fallout_pretransition_air_winter_shelter_capacity }
-					set_variable = { ROOT.fallout_event_256_frozen_exposure = fallout_pretransition_air_winter_exposure }
-					set_variable = { ROOT.fallout_event_256_frozen_adaptation = fallout_pretransition_air_winter_adaptation }
-					set_variable = { ROOT.fallout_event_256_frozen_reclamation = fallout_pretransition_air_winter_reclamation }
-					set_variable = { ROOT.fallout_event_256_frozen_disease = air_winter_disease_pressure }
+					set_variable = { fallout_event_256_registry_generation = ROOT.fallout_event_runtime_generation }
+					set_variable = { fallout_event_256_registry_owner = ROOT }
+					set_variable = { fallout_event_256_viability = fallout_event_256_target_viability }
+					set_variable = { fallout_event_256_frozen_shelter = fallout_pretransition_air_winter_shelter_capacity }
+					set_variable = { fallout_event_256_frozen_exposure = fallout_pretransition_air_winter_exposure }
+					set_variable = { fallout_event_256_frozen_adaptation = fallout_pretransition_air_winter_adaptation }
+					set_variable = { fallout_event_256_frozen_reclamation = fallout_pretransition_air_winter_reclamation }
+					set_variable = { fallout_event_256_frozen_disease = air_winter_disease_pressure }
 				}
 				set_country_flag = fallout_event_256_chain_committed
 			}
@@ -66459,11 +66459,11 @@ fallout_event_256_apply_result_effects = {
 	if = {
 		limit = { check_variable = { fallout_event_256_result_state_id > 0 } }
 		var:fallout_event_256_result_state_id = {
-			add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_256_delta_disease }
-			add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_256_delta_shelter }
-			add_to_variable = { air_winter_exposure = ROOT.fallout_event_256_delta_exposure }
-			add_to_variable = { air_winter_adaptation = ROOT.fallout_event_256_delta_adaptation }
-			add_to_variable = { air_winter_reclamation = ROOT.fallout_event_256_delta_reclamation }
+			add_to_variable = { air_winter_disease_pressure = fallout_event_256_delta_disease }
+			add_to_variable = { air_winter_shelter_capacity = fallout_event_256_delta_shelter }
+			add_to_variable = { air_winter_exposure = fallout_event_256_delta_exposure }
+			add_to_variable = { air_winter_adaptation = fallout_event_256_delta_adaptation }
+			add_to_variable = { air_winter_reclamation = fallout_event_256_delta_reclamation }
 			clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -66588,11 +66588,11 @@ fallout_event_256_apply_callback_effects = {
 	if = {
 		limit = { check_variable = { fallout_event_256_result_state_id > 0 } }
 		var:fallout_event_256_result_state_id = {
-			add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_256_delta_disease }
-			add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_256_delta_shelter }
-			add_to_variable = { air_winter_exposure = ROOT.fallout_event_256_delta_exposure }
-			add_to_variable = { air_winter_adaptation = ROOT.fallout_event_256_delta_adaptation }
-			add_to_variable = { air_winter_reclamation = ROOT.fallout_event_256_delta_reclamation }
+			add_to_variable = { air_winter_disease_pressure = fallout_event_256_delta_disease }
+			add_to_variable = { air_winter_shelter_capacity = fallout_event_256_delta_shelter }
+			add_to_variable = { air_winter_exposure = fallout_event_256_delta_exposure }
+			add_to_variable = { air_winter_adaptation = fallout_event_256_delta_adaptation }
+			add_to_variable = { air_winter_reclamation = fallout_event_256_delta_reclamation }
 			clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -68308,11 +68308,11 @@ fallout_event_684_apply_result_effects = {
 	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_684_delta_supply }
 	var:fallout_event_684_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
-		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_684_delta_shelter }
-		add_to_variable = { air_winter_exposure = ROOT.fallout_event_684_delta_exposure }
-		add_to_variable = { air_winter_adaptation = ROOT.fallout_event_684_delta_adaptation }
-		add_to_variable = { air_winter_reclamation = ROOT.fallout_event_684_delta_reclamation }
-		add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_684_delta_disease }
+		add_to_variable = { air_winter_shelter_capacity = fallout_event_684_delta_shelter }
+		add_to_variable = { air_winter_exposure = fallout_event_684_delta_exposure }
+		add_to_variable = { air_winter_adaptation = fallout_event_684_delta_adaptation }
+		add_to_variable = { air_winter_reclamation = fallout_event_684_delta_reclamation }
+		add_to_variable = { air_winter_disease_pressure = fallout_event_684_delta_disease }
 		clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -68500,11 +68500,11 @@ fallout_event_684_apply_callback_effects = {
 	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_684_callback_supply_delta }
 	var:fallout_event_684_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
-		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_684_callback_shelter_delta }
-		add_to_variable = { air_winter_exposure = ROOT.fallout_event_684_callback_exposure_delta }
-		add_to_variable = { air_winter_adaptation = ROOT.fallout_event_684_callback_adaptation_delta }
-		add_to_variable = { air_winter_reclamation = ROOT.fallout_event_684_callback_reclamation_delta }
-		add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_684_callback_disease_delta }
+		add_to_variable = { air_winter_shelter_capacity = fallout_event_684_callback_shelter_delta }
+		add_to_variable = { air_winter_exposure = fallout_event_684_callback_exposure_delta }
+		add_to_variable = { air_winter_adaptation = fallout_event_684_callback_adaptation_delta }
+		add_to_variable = { air_winter_reclamation = fallout_event_684_callback_reclamation_delta }
+		add_to_variable = { air_winter_disease_pressure = fallout_event_684_callback_disease_delta }
 		clamp_variable = { var = air_winter_shelter_capacity min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -74356,7 +74356,7 @@ fallout_event_663_snapshot_target = {
 	set_variable = { fallout_event_663_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_663_frozen_cohesion = fallout_survival_cohesion_current }
 	set_variable = { fallout_event_663_frozen_stability = stability }
-	set_variable = { fallout_event_663_frozen_war_support = war_support }
+	set_variable = { fallout_event_663_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_663_frozen_lock_trust = fallout_great_lakes_lock_trust_current }
 	set_variable = { fallout_event_663_frozen_convoy = fallout_great_lakes_convoy_throughput_current }
 	set_variable = { fallout_event_663_frozen_ice_protocol = fallout_great_lakes_ice_protocol_current }
@@ -75113,7 +75113,7 @@ fallout_event_663_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_663_target_state_id }
 		var:fallout_event_663_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_663_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_663_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_663_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -75161,7 +75161,7 @@ fallout_event_663_abort_on_generation_change = {
 		set_variable = { fallout_event_663_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_663_state_is_eligible = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_663_state_is_eligible = yes }
 				set_variable = { ROOT.fallout_event_663_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -78207,7 +78207,7 @@ fallout_event_747_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_747_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_747_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_747_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -78512,7 +78512,7 @@ fallout_event_677_calculate_outcome = {
 	set_temp_variable = { fallout_event_677_target_exposure = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_677_target_disease = constant:fallout_event_runtime.zero }
 	set_temp_variable = { fallout_event_677_target_cohesion = fallout_survival_cohesion_current }
-	set_temp_variable = { fallout_event_677_target_war_support = war_support }
+	set_temp_variable = { fallout_event_677_target_war_support = has_war_support }
 	multiply_temp_variable = { fallout_event_677_target_war_support = constant:fallout_event_677_threshold.war_support_scale }
 	set_temp_variable = { fallout_event_677_target_army_experience = army_experience }
 	clamp_temp_variable = { var = fallout_event_677_target_army_experience min = constant:fallout_event_677_threshold.minimum_grade max = constant:fallout_event_677_threshold.maximum_grade }
@@ -78721,7 +78721,7 @@ fallout_event_677_schedule_result = {
 				if = { limit = { NOT = { has_variable = fallout_hungry_battalion_civil_military_trust_current } } set_variable = { fallout_hungry_battalion_civil_military_trust_current = constant:fallout_event_677_threshold.default_ledger_grade } }
 				if = { limit = { NOT = { has_variable = fallout_hungry_battalion_civilian_hunger_current } } set_variable = { fallout_hungry_battalion_civilian_hunger_current = constant:fallout_event_677_threshold.default_ledger_grade } }
 				set_variable = { fallout_event_677_frozen_cohesion = fallout_survival_cohesion_current }
-				set_variable = { fallout_event_677_frozen_war_support = war_support }
+				set_variable = { fallout_event_677_frozen_war_support = has_war_support }
 				set_variable = { fallout_event_677_frozen_army_experience = army_experience }
 				set_variable = { fallout_event_677_frozen_ration_discipline = fallout_hungry_battalion_ration_discipline_current }
 				set_variable = { fallout_event_677_frozen_battalion_loyalty = fallout_hungry_battalion_battalion_loyalty_current }
@@ -78768,7 +78768,7 @@ fallout_event_677_choose_ai_branch_and_schedule_result = {
 	set_variable = { fallout_event_677_ai_adaptation = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_677_ai_reclamation = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_677_ai_cohesion = fallout_survival_cohesion_current }
-	set_variable = { fallout_event_677_ai_war_support = war_support }
+	set_variable = { fallout_event_677_ai_war_support = has_war_support }
 	multiply_variable = { fallout_event_677_ai_war_support = constant:fallout_event_677_threshold.war_support_scale }
 	set_variable = { fallout_event_677_ai_army_experience = army_experience }
 	set_variable = { fallout_event_677_ai_ration_discipline = constant:fallout_event_677_threshold.default_ledger_grade }
@@ -81884,11 +81884,11 @@ fallout_event_243_apply_result_effects = {
 	set_temp_variable = { fallout_survival_cohesion_delta = fallout_event_243_delta_cohesion }
 	fallout_survival_apply_cohesion_delta = yes
 	var:fallout_event_243_transformer_state_id = {
-		if = { limit = { has_variable = air_winter_exposure } add_to_variable = { air_winter_exposure = ROOT.fallout_event_243_delta_exposure } }
-		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_243_delta_reclamation } }
-		if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_243_delta_shelter } }
-		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = ROOT.fallout_event_243_delta_adaptation } }
-		set_temp_variable = { fallout_state_supply_access_delta = ROOT.fallout_event_243_delta_supply }
+		if = { limit = { has_variable = air_winter_exposure } add_to_variable = { air_winter_exposure = fallout_event_243_delta_exposure } }
+		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = fallout_event_243_delta_reclamation } }
+		if = { limit = { has_variable = air_winter_shelter_capacity } add_to_variable = { air_winter_shelter_capacity = fallout_event_243_delta_shelter } }
+		if = { limit = { has_variable = air_winter_adaptation } add_to_variable = { air_winter_adaptation = fallout_event_243_delta_adaptation } }
+		set_temp_variable = { fallout_state_supply_access_delta = fallout_event_243_delta_supply }
 		fallout_state_apply_supply_access_delta = yes
 		air_winter_event_refresh_state = yes
 	}
@@ -82042,9 +82042,9 @@ fallout_event_243_apply_callback_effects = {
 	}
 	else = { set_temp_variable = { fallout_event_243_callback_supply_delta = constant:fallout_event_243_result.callback_failure_supply } set_temp_variable = { fallout_event_243_callback_reclamation_delta = constant:fallout_event_243_result.callback_failure_reclamation } }
 	var:fallout_event_243_transformer_state_id = {
-		set_temp_variable = { fallout_state_supply_access_delta = ROOT.fallout_event_243_callback_supply_delta }
+		set_temp_variable = { fallout_state_supply_access_delta = fallout_event_243_callback_supply_delta }
 		fallout_state_apply_supply_access_delta = yes
-		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = ROOT.fallout_event_243_callback_reclamation_delta } }
+		if = { limit = { has_variable = air_winter_reclamation } add_to_variable = { air_winter_reclamation = fallout_event_243_callback_reclamation_delta } }
 		set_state_flag = fallout_event_243_callback_institution_recorded
 		air_winter_event_refresh_state = yes
 	}
@@ -85415,7 +85415,6 @@ fallout_event_506_calculate_outcome = {
 	add_to_temp_variable = { fallout_event_506_viability = fallout_event_506_component }
 	set_temp_variable = { fallout_event_506_component = fallout_event_506_frozen_war_support }
 	multiply_temp_variable = { fallout_event_506_component = constant:fallout_event_506_threshold.war_support_weight }
-	divide_temp_variable = { fallout_event_506_component = constant:fallout_event_506_threshold.weight_divisor }
 	add_to_temp_variable = { fallout_event_506_viability = fallout_event_506_component }
 	set_temp_variable = { fallout_event_506_component = fallout_event_506_frozen_state_supply }
 	multiply_temp_variable = { fallout_event_506_component = constant:fallout_event_506_threshold.state_supply_weight }
@@ -85498,7 +85497,7 @@ fallout_event_506_schedule_result = {
 		set_variable = { fallout_event_506_frozen_scrap = fallout_survival_current_entries^4 }
 		set_variable = { fallout_event_506_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_506_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_506_frozen_war_support = war_support }
+		set_variable = { fallout_event_506_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_506_frozen_trust = fallout_km12_trust_current }
 		set_variable = { fallout_event_506_frozen_raider_strength = fallout_km12_raider_strength_current }
 		set_variable = { fallout_event_506_frozen_state_supply = constant:fallout_event_runtime.zero }
@@ -85566,7 +85565,7 @@ fallout_event_506_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.pay_checkpoint }
 	if = { limit = { check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_506_cost.pay_checkpoint_food compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^2 value = constant:fallout_event_506_cost.pay_checkpoint_water compare = greater_than_or_equals } } set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.pay_checkpoint } }
 	else_if = { limit = { check_variable = { var = fallout_km12_trust_current value = constant:fallout_event_506_threshold.ai_negotiate_water_pass_trust compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^2 value = constant:fallout_event_506_cost.negotiate_water_pass_water compare = greater_than_or_equals } } set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.negotiate_water_pass } }
-	else_if = { limit = { check_variable = { var = war_support value = constant:fallout_event_506_threshold.ai_attack_checkpoint_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_506_cost.attack_checkpoint_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.attack_checkpoint } }
+	else_if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_506_threshold.ai_attack_checkpoint_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_506_cost.attack_checkpoint_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.attack_checkpoint } }
 	else_if = { limit = { check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_506_cost.hire_guard_band_scrap compare = greater_than_or_equals } } set_temp_variable = { fallout_event_506_requested_branch = constant:fallout_event_506_branch.hire_guard_band } }
 	fallout_event_506_schedule_result = yes
 	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_506_pay_branch_cost = yes }
@@ -86602,7 +86601,7 @@ fallout_event_614_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_614_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_614_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_614_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -86885,7 +86884,7 @@ fallout_event_642_snapshot_registry = {
 	set_variable = { fallout_event_642_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_642_frozen_cohesion = fallout_survival_cohesion_current }
 	set_variable = { fallout_event_642_frozen_stability = stability }
-	set_variable = { fallout_event_642_frozen_war_support = war_support }
+	set_variable = { fallout_event_642_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_642_frozen_state_food = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_642_frozen_state_supply = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_642_frozen_adaptation = constant:fallout_event_runtime.zero }
@@ -87739,7 +87738,7 @@ fallout_event_642_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_642_target_state_id }
 		var:fallout_event_642_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_642_state_receipt_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_642_state_receipt_is_current = yes }
 				set_variable = { ROOT.fallout_event_642_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -87770,7 +87769,7 @@ fallout_event_642_abort_on_generation_change = {
 		set_variable = { fallout_event_642_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_642_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_642_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_642_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -88144,7 +88143,7 @@ fallout_event_527_schedule_result = {
 		set_variable = { fallout_event_527_frozen_scrap = fallout_survival_current_entries^4 }
 		set_variable = { fallout_event_527_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_527_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_527_frozen_war_support = war_support }
+		set_variable = { fallout_event_527_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_527_frozen_command_power = command_power }
 		set_variable = { fallout_event_527_frozen_army_experience = army_experience }
 		set_variable = { fallout_event_527_frozen_state_supply = constant:fallout_event_runtime.zero }
@@ -88215,7 +88214,7 @@ fallout_event_527_choose_branch = {
 fallout_event_527_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.wait_for_contact }
 	if = { limit = { check_variable = { var = fallout_missing_patrol_intelligence_current value = constant:fallout_event_527_threshold.ai_search_intelligence compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_527_cost.search_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_527_cost.search_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.search_ruins } }
-	else_if = { limit = { check_variable = { var = war_support value = constant:fallout_event_527_threshold.ai_retaliate_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_527_cost.retaliate_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_527_cost.retaliate_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.retaliate_border } }
+	else_if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_527_threshold.ai_retaliate_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_527_cost.retaliate_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_527_cost.retaliate_equipment compare = greater_than_or_equals } } set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.retaliate_border } }
 	else_if = { limit = { check_variable = { var = fallout_missing_patrol_fear_current value = constant:fallout_event_527_threshold.ai_coverup_fear compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_527_cost.cover_food compare = greater_than_or_equals } } set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.cover_up } }
 	else_if = { limit = { check_variable = { var = fallout_missing_patrol_contact_current value = constant:fallout_event_527_threshold.ai_wait_contact compare = greater_than_or_equals } } set_temp_variable = { fallout_event_527_requested_branch = constant:fallout_event_527_branch.wait_for_contact } }
 	fallout_event_527_schedule_result = yes
@@ -89709,7 +89708,7 @@ fallout_event_635_snapshot_registry = {
 	set_variable = { fallout_event_635_frozen_shelter = fallout_survival_current_entries^8 }
 	set_variable = { fallout_event_635_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_635_frozen_cohesion = fallout_survival_cohesion_current }
-	set_variable = { fallout_event_635_frozen_war_support = war_support }
+	set_variable = { fallout_event_635_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_635_frozen_state_shelter = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_635_frozen_state_supply = constant:fallout_event_runtime.zero }
 	set_variable = { fallout_event_635_frozen_state_refugee = constant:fallout_event_runtime.zero }
@@ -90132,7 +90131,7 @@ fallout_event_635_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_military_priority }
 	if = { limit = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.warlord_command } } add_to_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_military_factor } }
 	if = { limit = { has_war = yes } add_to_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_military_factor } }
-	if = { limit = { check_variable = { var = war_support value = constant:fallout_event_635_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_military_factor } }
+	if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_635_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_military_factor } }
 	if = { limit = { check_variable = { var = fallout_event_635_ai_score value = fallout_event_635_ai_best_score compare = greater_than } fallout_event_635_military_branch_affordable = yes } set_temp_variable = { fallout_event_635_ai_best_score = fallout_event_635_ai_score } set_temp_variable = { fallout_event_635_requested_branch = constant:fallout_event_635_branch.military_colony } }
 	set_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_open_priority }
 	if = { limit = { OR = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.nomad_convoy } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } } add_to_temp_variable = { fallout_event_635_ai_score = constant:fallout_event_635_threshold.ai_shelter_factor } }
@@ -90497,7 +90496,7 @@ fallout_event_635_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_635_target_state_id }
 		var:fallout_event_635_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_635_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_635_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_635_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -90531,7 +90530,7 @@ fallout_event_635_abort_on_generation_change = {
 		set_variable = { fallout_event_635_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_635_state_is_eligible = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_635_state_is_eligible = yes }
 				set_variable = { ROOT.fallout_event_635_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -94859,7 +94858,7 @@ fallout_event_649_schedule_result = {
 		set_variable = { fallout_event_649_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_649_frozen_scrap = fallout_survival_current_entries^4 }
 		set_variable = { fallout_event_649_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_649_frozen_war_support = war_support }
+		set_variable = { fallout_event_649_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_649_frozen_command_power = command_power }
 		set_variable = { fallout_event_649_frozen_stability = stability }
 		if = { limit = { has_variable = fallout_event_649_intelligence_exposure } set_variable = { fallout_event_649_frozen_exposure = fallout_event_649_intelligence_exposure } }
@@ -95717,7 +95716,7 @@ fallout_event_579_snapshot_registry = {
 	set_variable = { fallout_event_579_frozen_power = fallout_survival_current_entries^6 }
 	set_variable = { fallout_event_579_frozen_recognition = fallout_survival_current_entries^9 }
 	set_variable = { fallout_event_579_frozen_cohesion = fallout_survival_cohesion_current }
-	set_variable = { fallout_event_579_frozen_war_support = war_support }
+	set_variable = { fallout_event_579_frozen_war_support = has_war_support }
 	set_variable = { fallout_event_579_frozen_generation = global.fallout_transition_generation }
 	set_variable = { fallout_event_579_target_state_id = fallout_event_dispatch_issued_target }
 	var:fallout_event_579_target_state_id = {
@@ -95909,7 +95908,7 @@ fallout_event_579_choose_ai_branch_and_schedule_result = {
 		set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.river_cooperatives }
 	}
 	else_if = {
-		limit = { check_variable = { var = war_support value = constant:fallout_event_579_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } fallout_event_579_command_branch_affordable = yes }
+		limit = { check_variable = { var = has_war_support value = constant:fallout_event_579_threshold.ai_high_war_support_threshold compare = greater_than_or_equals } fallout_event_579_command_branch_affordable = yes }
 		set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.upstream_command }
 	}
 	else_if = { limit = { fallout_event_579_cooperative_branch_affordable = yes } set_temp_variable = { fallout_event_579_requested_branch = constant:fallout_event_579_branch.river_cooperatives } }
@@ -97361,7 +97360,7 @@ fallout_event_586_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_586_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_586_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_586_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -99893,7 +99892,7 @@ fallout_event_740_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_740_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_740_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_740_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -106389,7 +106388,7 @@ fallout_event_600_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_600_radio_station_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_600_radio_station_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_600_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -107536,7 +107535,7 @@ fallout_event_621_calculate_outcome = {
 	else_if = {
 		limit = { check_variable = { fallout_event_621_selected_branch = constant:fallout_event_621_branch.military_guard } }
 		if = { limit = { has_war = yes } add_to_temp_variable = { fallout_event_621_grade = constant:fallout_event_621_threshold.military_war_bonus } }
-		if = { limit = { check_variable = { var = war_support value = constant:fallout_event_621_threshold.military_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_621_grade = constant:fallout_event_621_threshold.military_war_support_bonus } }
+		if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_621_threshold.military_war_support_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_621_grade = constant:fallout_event_621_threshold.military_war_support_bonus } }
 		if = { limit = { check_variable = { var = fallout_event_621_frozen_cohesion value = constant:fallout_event_621_threshold.military_cohesion_threshold compare = less_than } } subtract_from_temp_variable = { fallout_event_621_grade = constant:fallout_event_621_threshold.military_cohesion_penalty } }
 	}
 	else = {
@@ -108049,7 +108048,7 @@ fallout_event_621_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_621_target_state_id }
 		var:fallout_event_621_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_621_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -108097,7 +108096,7 @@ fallout_event_621_abort_on_generation_change = {
 		set_variable = { fallout_event_621_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_621_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_621_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -118223,7 +118222,7 @@ fallout_event_656_schedule_result = {
 		set_variable = { fallout_event_656_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_656_frozen_cohesion = fallout_survival_cohesion_current }
 		set_variable = { fallout_event_656_frozen_stability = stability }
-		set_variable = { fallout_event_656_frozen_war_support = war_support }
+		set_variable = { fallout_event_656_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_656_frozen_topsoil = fallout_second_dust_bowl_topsoil_retention_current }
 		set_variable = { fallout_event_656_frozen_windbreak = fallout_second_dust_bowl_windbreak_coverage_current }
 		set_variable = { fallout_event_656_frozen_farm_mobility = fallout_second_dust_bowl_farm_mobility_current }
@@ -118564,7 +118563,7 @@ fallout_event_656_abort_on_generation_change = {
 		limit = { has_variable = fallout_event_656_target_state_id }
 		var:fallout_event_656_target_state_id = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_656_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_656_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_656_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -118612,7 +118611,7 @@ fallout_event_656_abort_on_generation_change = {
 		set_variable = { fallout_event_656_opening_target_is_current = constant:fallout_event_runtime.zero }
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_656_state_is_eligible = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_656_state_is_eligible = yes }
 				set_variable = { ROOT.fallout_event_656_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -123738,7 +123737,7 @@ fallout_event_607_abort_on_generation_change = {
 		}
 		var:fallout_event_dispatch_issued_target = {
 			if = {
-				limit = { exists = yes owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_607_state_is_current = yes }
+				limit = { owner = { tag = ROOT } is_controlled_by = ROOT fallout_event_607_state_is_current = yes }
 				set_variable = { ROOT.fallout_event_607_opening_target_is_current = constant:fallout_event_runtime.one }
 			}
 		}
@@ -125180,7 +125179,7 @@ fallout_event_513_schedule_result = {
 		set_variable = { fallout_event_513_frozen_food = fallout_survival_current_entries^1 }
 		set_variable = { fallout_event_513_frozen_recognition = fallout_survival_current_entries^9 }
 		set_variable = { fallout_event_513_frozen_cohesion = fallout_survival_cohesion_current }
-		set_variable = { fallout_event_513_frozen_war_support = war_support }
+		set_variable = { fallout_event_513_frozen_war_support = has_war_support }
 		set_variable = { fallout_event_513_frozen_arms_discipline = fallout_nursery_arms_discipline_current }
 		set_variable = { fallout_event_513_frozen_accident_risk = fallout_nursery_accident_risk_current }
 		set_variable = { fallout_event_513_frozen_civic_trust = fallout_nursery_civic_trust_current }
@@ -125249,7 +125248,7 @@ fallout_event_513_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.disarm_nursery }
 	if = { limit = { check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_513_cost.central_armory_power compare = greater_than_or_equals } check_variable = { var = fallout_nursery_civic_trust_current value = constant:fallout_event_513_threshold.ai_central_armory_power compare = less_than } } set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.central_armory } }
 	else_if = { limit = { check_variable = { var = fallout_nursery_civic_trust_current value = constant:fallout_event_513_threshold.ai_family_registry_trust compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_513_cost.family_registry_scrap compare = greater_than_or_equals } } set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.family_registry } }
-	else_if = { limit = { check_variable = { var = war_support value = constant:fallout_event_513_threshold.ai_militia_custody_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_513_cost.militia_custody_fuel compare = greater_than_or_equals } } set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.militia_custody } }
+	else_if = { limit = { check_variable = { var = has_war_support value = constant:fallout_event_513_threshold.ai_militia_custody_war_support compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_513_cost.militia_custody_fuel compare = greater_than_or_equals } } set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.militia_custody } }
 	else_if = { limit = { check_variable = { var = fallout_nursery_accident_risk_current value = constant:fallout_event_513_threshold.ai_disarm_accident_risk compare = greater_than_or_equals } } set_temp_variable = { fallout_event_513_requested_branch = constant:fallout_event_513_branch.disarm_nursery } }
 	fallout_event_513_schedule_result = yes
 	if = { limit = { check_variable = { fallout_event_transaction_accepted = constant:fallout_event_runtime.one } } fallout_event_513_pay_branch_cost = yes }
@@ -126847,17 +126846,17 @@ fallout_event_670_apply_result_effects = {
 	clamp_variable = { var = fallout_work_for_rations_maintenance_current min = constant:fallout_event_runtime.zero max = constant:fallout_event_670_threshold.maximum_grade }
 	set_temp_variable = { fallout_event_670_modifier_days = constant:fallout_event_670_timing.grievance_modifier_days }
 	var:fallout_event_670_harvest_state_id = {
-		if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = ROOT.fallout_event_670_delta_supply } }
-		add_to_variable = { air_winter_exposure = ROOT.fallout_event_670_delta_exposure }
-		add_to_variable = { air_winter_adaptation = ROOT.fallout_event_670_delta_adaptation }
-		add_to_variable = { air_winter_reclamation = ROOT.fallout_event_670_delta_reclamation }
-		add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_670_delta_disease }
+		if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = fallout_event_670_delta_supply } }
+		add_to_variable = { air_winter_exposure = fallout_event_670_delta_exposure }
+		add_to_variable = { air_winter_adaptation = fallout_event_670_delta_adaptation }
+		add_to_variable = { air_winter_reclamation = fallout_event_670_delta_reclamation }
+		add_to_variable = { air_winter_disease_pressure = fallout_event_670_delta_disease }
 		clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 		clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_adaptation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_reclamation min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 		clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
-		add_to_variable = { fallout_event_670_harvest_reserve = ROOT.fallout_event_670_delta_harvest }
+		add_to_variable = { fallout_event_670_harvest_reserve = fallout_event_670_delta_harvest }
 		if = { limit = { check_variable = { var = ROOT.fallout_event_670_selected_branch value = constant:fallout_event_670_branch.universal_duty compare = equals } } set_state_flag = fallout_event_670_memory_universal_duty }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_670_selected_branch value = constant:fallout_event_670_branch.paid_labor compare = equals } } set_state_flag = fallout_event_670_memory_paid_labor }
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_670_selected_branch value = constant:fallout_event_670_branch.refugee_work_program compare = equals } } set_state_flag = fallout_event_670_memory_refugee_work_program }
@@ -126983,9 +126982,9 @@ fallout_event_670_apply_callback_effects = {
 		set_temp_variable = { fallout_event_670_callback_labor_delta = constant:fallout_event_670_result.callback_success_labor }
 		set_temp_variable = { fallout_event_670_callback_production_delta = constant:fallout_event_670_result.callback_success_production }
 		var:fallout_event_670_harvest_state_id = {
-			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = ROOT.fallout_event_670_callback_supply_delta } }
-			add_to_variable = { air_winter_exposure = ROOT.fallout_event_670_callback_exposure_delta }
-			add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_670_callback_disease_delta }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = fallout_event_670_callback_supply_delta } }
+			add_to_variable = { air_winter_exposure = fallout_event_670_callback_exposure_delta }
+			add_to_variable = { air_winter_disease_pressure = fallout_event_670_callback_disease_delta }
 			clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -127007,9 +127006,9 @@ fallout_event_670_apply_callback_effects = {
 		set_temp_variable = { fallout_event_670_callback_labor_delta = constant:fallout_event_670_result.callback_partial_labor }
 		set_temp_variable = { fallout_event_670_callback_production_delta = constant:fallout_event_670_result.callback_partial_production }
 		var:fallout_event_670_harvest_state_id = {
-			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = ROOT.fallout_event_670_callback_supply_delta } }
-			add_to_variable = { air_winter_exposure = ROOT.fallout_event_670_callback_exposure_delta }
-			add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_670_callback_disease_delta }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = fallout_event_670_callback_supply_delta } }
+			add_to_variable = { air_winter_exposure = fallout_event_670_callback_exposure_delta }
+			add_to_variable = { air_winter_disease_pressure = fallout_event_670_callback_disease_delta }
 			clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
@@ -127029,9 +127028,9 @@ fallout_event_670_apply_callback_effects = {
 		set_temp_variable = { fallout_event_670_callback_labor_delta = constant:fallout_event_670_result.callback_failure_labor }
 		set_temp_variable = { fallout_event_670_callback_production_delta = constant:fallout_event_670_result.callback_failure_production }
 		var:fallout_event_670_harvest_state_id = {
-			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = ROOT.fallout_event_670_callback_supply_delta } }
-			add_to_variable = { air_winter_exposure = ROOT.fallout_event_670_callback_exposure_delta }
-			add_to_variable = { air_winter_disease_pressure = ROOT.fallout_event_670_callback_disease_delta }
+			if = { limit = { has_variable = fallout_state_supply_access_current } add_to_variable = { fallout_state_supply_access_current = fallout_event_670_callback_supply_delta } }
+			add_to_variable = { air_winter_exposure = fallout_event_670_callback_exposure_delta }
+			add_to_variable = { air_winter_disease_pressure = fallout_event_670_callback_disease_delta }
 			clamp_variable = { var = fallout_state_supply_access_current min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 			clamp_variable = { var = air_winter_exposure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
 			clamp_variable = { var = air_winter_disease_pressure min = constant:air_winter_ledger.minimum max = constant:air_winter_ledger.maximum }
