@@ -87,6 +87,109 @@ brilliant_scientist_refresh_containment_facility_count = {
 	}
 }
 
+# COUNTRY scope. Rebuilds the three institutional-capture proof counters from
+# permanent campaign history only; nothing here writes new history, so the
+# result is the same however often it runs. Callers: government-control
+# refresh (every measure change), the evolution pulse, takeover resolution,
+# and host transformation, so every reader of
+# brilliant_scientist_institutional_capture_is_proven sees current values.
+# - Warned incidents: recorded project incident reports, a loyalty review that
+#   found Kruger loyalists, one that found transformed personnel, and detected
+#   foreign operations against the programme.
+# - Captured domains: military command, civil administration, communications
+#   and logistics, laboratory security, clone replacement, machine
+#   administration, and temporal authority.
+# - Statewide domains: every captured domain except laboratory security held
+#   only through Kruger's private guard, which never reaches beyond the site.
+brilliant_scientist_recompute_institutional_capture_record = {
+	set_variable = { brilliant_scientist_warned_incident_count = brilliant_scientist_project_incident_count }
+	if = {
+		limit = { has_country_flag = brilliant_scientist_last_loyalty_review_found_kruger_loyalists }
+		add_to_variable = { brilliant_scientist_warned_incident_count = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { has_country_flag = brilliant_scientist_last_loyalty_review_found_transformed_personnel }
+		add_to_variable = { brilliant_scientist_warned_incident_count = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_foreign_operations_detected > constant:brilliant_scientist_value.zero } }
+		add_to_variable = { brilliant_scientist_warned_incident_count = constant:brilliant_scientist_value.one }
+	}
+
+	set_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.zero }
+	set_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.zero }
+	# Military command.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_sovereign_science_authority
+				has_country_flag = brilliant_scientist_compartmentalized_military_office_established
+			}
+		}
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Civil administration.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_kruger_selected_institutions
+				has_country_flag = brilliant_scientist_ethics_chair_dismissed
+			}
+		}
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Communications and logistics.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_electronics_deployment_completed
+				has_country_flag = brilliant_scientist_teleportation_deployment_completed
+			}
+		}
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Laboratory security: the internal security section under Kruger's
+	# delegated authority is national; a private guard alone is local.
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_internal_security_section_established
+			has_country_flag = brilliant_scientist_technical_authority_delegated
+		}
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_security_posture_private
+				has_country_flag = brilliant_scientist_evolution_ii_policy_private_guard
+			}
+		}
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Clone replacement.
+	if = {
+		limit = { has_country_flag = brilliant_scientist_cloning_deployment_completed }
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Machine administration.
+	if = {
+		limit = { has_country_flag = brilliant_scientist_robotics_deployment_completed }
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+	# Temporal authority.
+	if = {
+		limit = { has_country_flag = brilliant_scientist_temporal_deployment_completed }
+		add_to_variable = { brilliant_scientist_captured_domain_count = constant:brilliant_scientist_value.one }
+		add_to_variable = { brilliant_scientist_statewide_captured_domain_count = constant:brilliant_scientist_value.one }
+	}
+}
+
 # COUNTRY scope. Stores exact scores for script use and later history audits;
 # player-facing text describes only the broad outcome and named causes.
 brilliant_scientist_calculate_containment_scores = {
@@ -442,6 +545,7 @@ brilliant_scientist_resolve_full_kruger_rebellion = {
 }
 
 brilliant_scientist_resolve_institutional_takeover = {
+	brilliant_scientist_recompute_institutional_capture_record = yes
 	if = {
 		limit = { brilliant_scientist_institutional_capture_is_proven = yes }
 		brilliant_scientist_transform_host_into_kruger_state = yes

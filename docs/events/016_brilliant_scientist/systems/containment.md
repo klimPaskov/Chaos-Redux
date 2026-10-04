@@ -58,6 +58,34 @@ The score margin has four useful regions:
 
 When Kruger can resist but no viable country territory exists, the result is a noncountry laboratory crisis. This is its own specified outcome and does not transfer arbitrary land.
 
+## Institutional capture proof
+
+`brilliant_scientist_institutional_capture_is_proven` gates the concession response, the concession decision, the takeover outcome, and the host transformation.
+It requires the current host, final technical authority, extreme Dependence (90 or more), a government control score of 29 or less, at least three warned incidents, at least four captured domains, and at least one statewide domain.
+Its custom tooltip, `brilliant_scientist_institutional_capture_proven_tt`, states those conditions in player language.
+
+`brilliant_scientist_recompute_institutional_capture_record` rebuilds the three counters from permanent history and writes nothing else, so repeated runs are harmless.
+It runs at the end of every government-control refresh (every measure change), in the evolution pulse before the Evolution IV readiness check, at the start of takeover resolution, and at the start of the host transformation.
+
+| Counter | Source history |
+| --- | --- |
+| `brilliant_scientist_warned_incident_count` | `brilliant_scientist_project_incident_count`, plus one each for a loyalty review that found Kruger loyalists or transformed personnel, plus one when `brilliant_scientist_foreign_operations_detected` is above zero |
+| `brilliant_scientist_captured_domain_count` | One per captured domain below |
+| `brilliant_scientist_statewide_captured_domain_count` | Every captured domain except laboratory security held only through Kruger's private guard |
+
+| Domain | History flags |
+| --- | --- |
+| Military command | `brilliant_scientist_sovereign_science_authority` or `brilliant_scientist_compartmentalized_military_office_established` |
+| Civil administration | `brilliant_scientist_kruger_selected_institutions` or `brilliant_scientist_ethics_chair_dismissed` |
+| Communications and logistics | `brilliant_scientist_electronics_deployment_completed` or `brilliant_scientist_teleportation_deployment_completed` |
+| Laboratory security | Statewide: `brilliant_scientist_internal_security_section_established` with `brilliant_scientist_technical_authority_delegated`; local only: `brilliant_scientist_security_posture_private` or `brilliant_scientist_evolution_ii_policy_private_guard` |
+| Clone replacement | `brilliant_scientist_cloning_deployment_completed` |
+| Machine administration | `brilliant_scientist_robotics_deployment_completed` |
+| Temporal authority | `brilliant_scientist_temporal_deployment_completed` |
+
+Takeover therefore stays rare: it needs extreme Dependence and collapsing control on top of a long run of dangerous deployments, institutional concessions, and visible warnings.
+Territory never feeds the proof, so a failed formation plan cannot turn into a takeover.
+
 ## Persistent history and cleanup
 
 The host records the selected action, action date, outcome, outcome date, and an irreversible `ever_*` flag for the exact result. Project learning already reproduced by national institutions remains available to aftermath consumers. Personal project history remains on `KRG_warren_kruger`. Active Directorate facility markers become former-site markers on nonsovereign departure, preserving later theft, cleanup, and aftermath hooks.

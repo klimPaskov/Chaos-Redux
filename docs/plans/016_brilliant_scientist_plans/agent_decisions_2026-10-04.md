@@ -61,3 +61,17 @@ The success and critical-success actor tooltips say the formation arrives under-
 
 Evidence: `common/script_constants/016_brilliant_scientist_raid_lifecycle_constants.txt`, `common/scripted_effects/016_brilliant_scientist_raid_effects.txt`, `localisation/english/chaosx_raids_l_english.yml` (two lines), `docs/events/016_brilliant_scientist/systems/portal_raider_api.md`.
 Needs live game: the spawned cadre's initial strength readout.
+
+## D4. Institutional-capture proof counters
+
+Decision: the three never-written proof counters are rebuilt by `brilliant_scientist_recompute_institutional_capture_record` from permanent history only.
+
+- Warned incidents: recorded project incident reports (`brilliant_scientist_project_incident_count`), plus one for a loyalty review that found Kruger loyalists, one for a review that found transformed personnel, and one once foreign operations against the programme have been detected. The loyalty-review flags record the latest finding, so each finding counts once.
+- Domains: military command (final technical authority or the compartmentalized military office), civil administration (Kruger-selected institutions or a dismissed ethics chair), communications and logistics (Electronics or Teleportation deployment), laboratory security (the internal security section under delegated authority, or Kruger's private guard), clone replacement (Cloning deployment), machine administration (Robotics deployment), and temporal authority (Temporal deployment).
+- Statewide domains: every captured domain except laboratory security held only through the private guard.
+
+Triggers cannot run effects, so "before every caller" is met by recomputing at every writer boundary that can change the inputs or precede a reader: the end of every government-control refresh (every Mandate, Dependence, Exposure, Independent Capacity, and Grievance change), the evolution pulse before the Evolution IV check, takeover resolution, and host transformation.
+The gate is wrapped in a plain-language custom tooltip.
+Military command is satisfied whenever the gate's own final-authority requirement holds, so the effective bar is three further domains, which keeps takeover rare.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_containment_effects.txt`, `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_effects/016_brilliant_scientist_evolution_effects.txt`, `common/scripted_effects/016_brilliant_scientist_country_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_triggers.txt`, `localisation/english/016_brilliant_scientist_containment_l_english.yml`, `docs/events/016_brilliant_scientist/systems/containment.md`.

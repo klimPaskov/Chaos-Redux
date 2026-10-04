@@ -749,37 +749,41 @@ brilliant_scientist_foreign_can_attempt_assassination = {
 # Institutional capture and formation inputs
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope. The input counters are deliberately explicit proof records;
+# COUNTRY scope. The input counters are explicit proof records rebuilt from
+# permanent history by brilliant_scientist_recompute_institutional_capture_record;
 # territory failure or small-country status can never satisfy this gate.
 brilliant_scientist_institutional_capture_is_proven = {
-	brilliant_scientist_is_current_host = yes
-	has_country_flag = brilliant_scientist_sovereign_science_authority
-	check_variable = {
-		var = brilliant_scientist_dependence
-		value = constant:brilliant_scientist_institutional_capture.dependence_minimum
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = brilliant_scientist_institutional_capture_proven_tt
+		brilliant_scientist_is_current_host = yes
+		has_country_flag = brilliant_scientist_sovereign_science_authority
+		check_variable = {
+			var = brilliant_scientist_dependence
+			value = constant:brilliant_scientist_institutional_capture.dependence_minimum
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_government_control_score
+			value = constant:brilliant_scientist_institutional_capture.control_maximum
+			compare = less_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_warned_incident_count
+			value = constant:brilliant_scientist_institutional_capture.warned_incidents_minimum
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_captured_domain_count
+			value = constant:brilliant_scientist_institutional_capture.captured_domains_minimum
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = brilliant_scientist_statewide_captured_domain_count
+			value = constant:brilliant_scientist_institutional_capture.statewide_domains_minimum
+			compare = greater_than_or_equals
+		}
+		NOT = { has_global_flag = world_end }
 	}
-	check_variable = {
-		var = brilliant_scientist_government_control_score
-		value = constant:brilliant_scientist_institutional_capture.control_maximum
-		compare = less_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_warned_incident_count
-		value = constant:brilliant_scientist_institutional_capture.warned_incidents_minimum
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_captured_domain_count
-		value = constant:brilliant_scientist_institutional_capture.captured_domains_minimum
-		compare = greater_than_or_equals
-	}
-	check_variable = {
-		var = brilliant_scientist_statewide_captured_domain_count
-		value = constant:brilliant_scientist_institutional_capture.statewide_domains_minimum
-		compare = greater_than_or_equals
-	}
-	NOT = { has_global_flag = world_end }
 }
 
 # COUNTRY scope. Set the input counters only after an explicit territory plan
