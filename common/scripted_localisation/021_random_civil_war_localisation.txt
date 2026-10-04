@@ -153,6 +153,73 @@ defined_text = {
 	text = { localization_key = event021_priority_front_none }
 }
 
+# The neighboring civil war a border-monitoring country is watching.
+defined_text = {
+	name = event021_GetExposureSourceName
+	text = {
+		trigger = {
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = { exists = yes }
+		}
+		localization_key = event021_exposure_source_named
+	}
+	text = { localization_key = event021_exposure_source_fallback }
+}
+
+# The side Support the Government reaches: the neighboring war's government
+# itself, or the government fighting the neighboring claimant.
+defined_text = {
+	name = event021_GetSupportGovernmentTarget
+	text = {
+		trigger = {
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				has_country_flag = random_civil_war_government_side
+			}
+		}
+		localization_key = event021_exposure_source_named
+	}
+	text = {
+		trigger = {
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				has_country_flag = random_civil_war_opposition_side
+			}
+		}
+		localization_key = event021_support_target_government_against
+	}
+	text = { localization_key = event021_support_target_government_fallback }
+}
+
+# The side Support the Opposition reaches: the neighboring claimant itself,
+# or the claimants fighting the neighboring government.
+defined_text = {
+	name = event021_GetSupportOppositionTarget
+	text = {
+		trigger = {
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				has_country_flag = random_civil_war_opposition_side
+			}
+		}
+		localization_key = event021_exposure_source_named
+	}
+	text = {
+		trigger = {
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				has_country_flag = random_civil_war_government_side
+			}
+		}
+		localization_key = event021_support_target_opposition_against
+	}
+	text = { localization_key = event021_support_target_opposition_fallback }
+}
+
 # The state Set the Priority Front will choose, in the same order as
 # event021_resolve_priority_front_target.
 defined_text = {

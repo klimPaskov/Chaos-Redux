@@ -91,3 +91,10 @@ A shortfall rejects an opening, trims optional rows, skips a frozen Fracture Cas
 Fracture Cascade holds tags per frozen country so a Maximum batch cannot overcommit, and releases each hold right after that country's commit.
 Basis: the lead's round-1 assignment, the offline Country creation warning about running out of dynamic countries, and the 2026-10-03 tag-capacity audit that left this blocked.
 Contract: `common/scripted_effects/021_random_civil_war_dynamic_tag_effects.md`.
+
+## D9. Decision text tidy
+
+Decision: Offer Emergency Terms shows political power, command power, and rifles inline, and its cost tooltip names the manpower the talks also commit; every gate and payment is unchanged.
+Support the Government and Support the Opposition state that the sponsor ships 150 rifles and 100 arrive after transport and handling losses, using the existing gate and transfer constants, without changing either amount.
+Their descriptions, and Monitor the Border's, name the live target through `event021_GetSupportGovernmentTarget`, `event021_GetSupportOppositionTarget`, and `event021_GetExposureSourceName`, with neutral fallbacks when no target is recorded.
+Basis: the 2026-09-26 decision and localisation audit findings and the decisions skill's three-inline-value limit.
