@@ -9,8 +9,8 @@
 #   to the existing transactional helpers.
 # - Selectable missions use real deadlines and distinct completion, timeout,
 #   and cancellation paths. Active-mission gates keep each category bounded.
-# - Existing generic decision art is reused; no GUI, asset, event, focus, or
-#   localisation file is owned by this implementation surface.
+# - Initiating actions and real objectives use separate bespoke Event 039
+#   decision and mission sprites from the event's icon registry.
 # ============================================================================
 
 # The mission divisions threshold field requires a file-local literal.
@@ -1032,7 +1032,7 @@ murder_mystery_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_witness_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1041,14 +1041,14 @@ murder_mystery_investigation_category = {
 		desc = murder_mystery_hold_government_quarter_desc
 		icon = GFX_mission_039_murder_mystery_hold_government_quarter
 		activation = { always = no }
-		available = { OR = { has_capitulated = yes NOT = { has_variable = murder_mystery_objective_state } var:murder_mystery_objective_state = { NOT = { is_controlled_by = ROOT } } } }
+		available = { OR = { has_capitulated = yes NOT = { murder_mystery_objective_original_capital_is_held = yes } } }
 		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
 		selectable_mission = no
 		is_good = yes
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_quarter_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1058,19 +1058,24 @@ murder_mystery_investigation_category = {
 		icon = GFX_mission_039_murder_mystery_secure_evidence_convoy
 		activation = { always = no }
 		available = {
-			OR = {
-				NOT = { has_variable = murder_mystery_objective_state }
-				var:murder_mystery_objective_state = { NOT = { is_controlled_by = ROOT } }
-				NOT = { has_equipment = { train_equipment > constant:murder_mystery_value.zero } }
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_objective_rail_route_tt
+				murder_mystery_objective_rail_route_is_intact = yes
+			}
+			has_equipment = { train_equipment > constant:murder_mystery_value.zero }
+		}
+		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_origin_state state = var:murder_mystery_objective_state } }
+		selectable_mission = no
+		is_good = no
+		days_mission_timeout = constant:murder_mystery_action_tuning.objective_evidence_days
+		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
+		timeout_effect = {
+			hidden_effect = {
+				if = { limit = { murder_mystery_objective_state_is_held = yes } murder_mystery_decision_resolve_objective_partial = yes }
+				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
-		selectable_mission = no
-		is_good = yes
-		days_mission_timeout = constant:murder_mystery_action_tuning.objective_evidence_days
-		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
-		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1081,8 +1086,7 @@ murder_mystery_investigation_category = {
 		activation = { always = no }
 		available = {
 			OR = {
-				NOT = { has_variable = murder_mystery_objective_state }
-				var:murder_mystery_objective_state = { NOT = { is_controlled_by = ROOT } }
+				NOT = { murder_mystery_objective_state_is_held = yes }
 				check_variable = { var = murder_mystery_route_security value = constant:murder_mystery_value.twenty compare = less_than }
 			}
 		}
@@ -1092,7 +1096,7 @@ murder_mystery_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_route_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1102,11 +1106,11 @@ murder_mystery_investigation_category = {
 		icon = GFX_mission_039_murder_mystery_place_supplied_divisions
 		activation = { always = no }
 		available = {
-			has_variable = murder_mystery_objective_state
-			var:murder_mystery_objective_state = { is_controlled_by = ROOT }
+			murder_mystery_objective_rail_route_is_intact = yes
+			var:murder_mystery_objective_state = { supply_node > constant:murder_mystery_value.zero }
 			divisions_in_state = { state = var:murder_mystery_objective_state size > @murder_mystery_objective_required_divisions }
 		}
-		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
+		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_origin_state state = var:murder_mystery_objective_state } }
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_divisions_days
@@ -1117,7 +1121,7 @@ murder_mystery_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1126,14 +1130,25 @@ murder_mystery_investigation_category = {
 		desc = murder_mystery_keep_capital_connected_desc
 		icon = GFX_mission_039_murder_mystery_keep_capital_connected
 		activation = { always = no }
-		available = { OR = { has_capitulated = yes capital_scope = { NOT = { is_controlled_by = ROOT } } NOT = { has_equipment = { train_equipment > constant:murder_mystery_value.zero } } } }
-		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_objective_rail_route_tt
+				murder_mystery_objective_rail_route_is_intact = yes
+			}
+			has_equipment = { train_equipment > constant:murder_mystery_value.zero }
+		}
+		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_origin_state state = var:murder_mystery_objective_state } }
 		selectable_mission = no
-		is_good = yes
+		is_good = no
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_capital_days
-		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
-		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
+		timeout_effect = {
+			hidden_effect = {
+				if = { limit = { murder_mystery_objective_original_capital_is_held = yes } murder_mystery_decision_resolve_objective_partial = yes }
+				else = { murder_mystery_decision_resolve_objective_failure = yes }
+			}
+		}
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1159,7 +1174,7 @@ murder_mystery_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1182,7 +1197,7 @@ murder_mystery_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_attack_window_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 }
@@ -1539,7 +1554,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_revolt_prevention_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1549,12 +1564,12 @@ murder_mystery_foreign_cell_investigation_category = {
 		icon = GFX_mission_039_murder_mystery_secure_depots_rail_hubs
 		activation = { always = no }
 		available = {
-			has_variable = murder_mystery_objective_state
-			var:murder_mystery_objective_state = { is_controlled_by = ROOT }
+			murder_mystery_objective_rail_route_is_intact = yes
+			var:murder_mystery_objective_state = { supply_node > constant:murder_mystery_value.zero }
 			divisions_in_state = { state = var:murder_mystery_objective_state size > @murder_mystery_objective_required_divisions }
 			has_equipment = { train_equipment > constant:murder_mystery_value.zero }
 		}
-		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
+		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_origin_state state = var:murder_mystery_objective_state } }
 		selectable_mission = no
 		is_good = no
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_depot_days
@@ -1565,7 +1580,7 @@ murder_mystery_foreign_cell_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1590,7 +1605,7 @@ murder_mystery_foreign_cell_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1611,7 +1626,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_local_government_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1636,7 +1651,7 @@ murder_mystery_foreign_cell_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
@@ -1659,7 +1674,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_parent_border_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress } }
+		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 }
@@ -2287,7 +2302,7 @@ murder_mystery_brotherhood_operations_category = {
 			OR = {
 				has_capitulated = yes
 				NOT = { has_country_flag = murder_mystery_assassin_state }
-				capital_scope = { NOT = { is_controlled_by = ROOT } }
+				NOT = { murder_mystery_objective_original_capital_is_held = yes }
 			}
 		}
 		highlight_states = { highlight_state_targets = { state = var:murder_mystery_objective_state } }
@@ -2296,7 +2311,7 @@ murder_mystery_brotherhood_operations_category = {
 		days_mission_timeout = constant:murder_mystery_action_tuning.objective_opening_war_days
 		complete_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_failure = yes } }
 		timeout_effect = { hidden_effect = { murder_mystery_decision_resolve_objective_success = yes } }
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress has_global_flag = murder_mystery_assassin_state_defeated } }
+		cancel_trigger = { OR = { NOT = { murder_mystery_objective_owner_is_valid = yes } has_global_flag = murder_mystery_assassin_state_defeated } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 }
@@ -3013,10 +3028,9 @@ murder_mystery_world_without_leaders_category = {
 		icon = GFX_mission_039_murder_mystery_complete_terminal_sector
 		activation = { always = no }
 		available = {
-			has_global_flag = murder_mystery_terminal_war_active
-			OR = {
-				murder_mystery_terminal_victory_is_ready = yes
-				NOT = { murder_mystery_terminal_target_is_valid = yes }
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_objective_sector_complete_tt
+				murder_mystery_objective_sector_is_complete = yes
 			}
 		}
 		selectable_mission = no
@@ -3026,16 +3040,13 @@ murder_mystery_world_without_leaders_category = {
 		timeout_effect = {
 			hidden_effect = {
 				if = {
-					limit = {
-						has_global_flag = murder_mystery_terminal_war_active
-						has_variable = murder_mystery_selected_terminal_sector
-					}
+					limit = { murder_mystery_objective_sector_has_partial_result = yes }
 					murder_mystery_decision_resolve_objective_partial = yes
 				}
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { OR = { NOT = { has_country_flag = murder_mystery_objective_active } has_country_flag = murder_mystery_cleanup_in_progress has_global_flag = murder_mystery_terminal_defeat_resolved } }
+		cancel_trigger = { OR = { NOT = { murder_mystery_objective_owner_is_valid = yes } NOT = { has_global_flag = murder_mystery_terminal_war_active } } }
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 

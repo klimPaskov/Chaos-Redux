@@ -1,0 +1,41 @@
+# ============================================================================
+# EVENT 039 - CHARACTER OWNERSHIP PREDICATES
+# ============================================================================
+# COUNTRY scope. Country existence and exact recruited-roster identity are
+# separate checks. No CHARACTER scope uses the country-only exists trigger.
+# The selected owner and character are current registry results, not ROOT.
+
+murder_mystery_selected_character_is_recruited = {
+	has_event_target = murder_mystery_selected_target_owner
+	has_event_target = murder_mystery_selected_target_character
+	event_target:murder_mystery_selected_target_owner = {
+		exists = yes
+		any_character = {
+			is_character = event_target:murder_mystery_selected_target_character
+		}
+	}
+}
+
+murder_mystery_registration_character_is_recruited = {
+	exists = yes
+	has_event_target = murder_mystery_target_registration_character
+	any_character = {
+		is_character = event_target:murder_mystery_target_registration_character
+	}
+}
+
+# COUNTRY transaction caller. A newly allocated country can be landless.
+# Allocation provenance, not COUNTRY exists, authorizes the first transfer.
+murder_mystery_assassin_candidate_is_reserved = {
+	has_event_target = murder_mystery_assassin_state_candidate
+	has_variable = global.murder_mystery_candidate_allocation_generation
+	check_variable = { var = global.murder_mystery_candidate_allocation_generation value = constant:murder_mystery_value.zero compare = greater_than }
+	event_target:murder_mystery_assassin_state_candidate = {
+		original_tag = AXS
+		has_country_flag = murder_mystery_assassin_state_candidate
+		has_variable = murder_mystery_candidate_allocation_generation
+		check_variable = { var = murder_mystery_candidate_allocation_generation value = global.murder_mystery_candidate_allocation_generation compare = equals }
+		NOT = { has_country_flag = murder_mystery_assassin_state_active }
+	}
+	NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+}

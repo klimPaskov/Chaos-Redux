@@ -1,0 +1,190 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MOVEMENT SUCCESSION
+# ============================================================================
+# Overview:
+# - Installs one existing route successor package for the Assassin State.
+# - Verifies the ruling leader before the registered founder is captured.
+# - Does not retire characters or create countries. Character disposition and
+#   capture receipts remain owned by the integration transaction.
+
+# COUNTRY scope. Resolve the actual ruler without selecting another party's
+# leader. The native COUNTRY trait operation addresses the sitting leader.
+# Output: a chain-local character target and country-local success flag.
+murder_mystery_capture_current_ruling_character = {
+	clr_country_flag = murder_mystery_ruling_character_resolved
+	set_temp_variable = { murder_mystery_ruling_character_matches = constant:murder_mystery_value.zero }
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = murder_mystery_ruling_selection_authorized
+		}
+		# An inherited anchor is not identity proof. Fail closed instead of
+		# selecting one of several tagged characters or modifying their jobs.
+		if = {
+			limit = {
+				NOT = {
+					any_character = { has_trait = murder_mystery_ruling_selection_anchor }
+				}
+			}
+			add_country_leader_trait = murder_mystery_ruling_selection_anchor
+			every_character = {
+				limit = {
+					is_country_leader = yes
+					has_trait = murder_mystery_ruling_selection_anchor
+				}
+				add_to_temp_variable = { murder_mystery_ruling_character_matches = constant:murder_mystery_value.one }
+				save_event_target_as = murder_mystery_current_ruling_character
+			}
+			remove_country_leader_trait = murder_mystery_ruling_selection_anchor
+			if = {
+				limit = {
+					check_variable = { var = murder_mystery_ruling_character_matches value = constant:murder_mystery_value.one compare = equals }
+					has_event_target = murder_mystery_current_ruling_character
+					any_character = { is_character = event_target:murder_mystery_current_ruling_character }
+				}
+				set_country_flag = murder_mystery_ruling_character_resolved
+			}
+		}
+	}
+	clr_country_flag = murder_mystery_ruling_selection_authorized
+}
+
+# COUNTRY scope. Input: the current movement route flags and neutrality party.
+# COUNTRY candidate after transfer. No historical recruitment or roster theft.
+murder_mystery_register_candidate_founder = {
+	clr_country_flag = murder_mystery_first_knife_registered
+	clr_country_flag = murder_mystery_target_registration_succeeded
+	clr_country_flag = murder_mystery_ruling_character_resolved
+	if = {
+		limit = {
+			exists = yes
+			murder_mystery_assassin_candidate_is_reserved = yes
+			tag = event_target:murder_mystery_assassin_state_candidate
+			has_country_flag = murder_mystery_assassin_state
+			has_country_leader = { name = MURDER_MYSTERY_FIRST_KNIFE_NAME ruling_only = yes }
+		}
+		clear_global_event_target = murder_mystery_first_knife_character
+		set_country_flag = murder_mystery_ruling_selection_authorized
+		murder_mystery_capture_current_ruling_character = yes
+		if = {
+			limit = { has_country_flag = murder_mystery_ruling_character_resolved }
+			event_target:murder_mystery_current_ruling_character = {
+				set_character_flag = murder_mystery_first_knife_character
+				save_global_event_target_as = murder_mystery_first_knife_character
+				save_global_event_target_as = murder_mystery_target_registration_character
+			}
+			set_variable = { murder_mystery_target_registration_id = constant:murder_mystery_value.first_knife_target_id }
+			set_variable = { murder_mystery_target_registration_disposition = constant:murder_mystery_target_disposition.eligible_named_target }
+			set_variable = { murder_mystery_target_registration_role = constant:murder_mystery_target_role.national_leadership }
+			set_variable = { murder_mystery_target_registration_protection = constant:murder_mystery_target_protection.normal }
+			set_variable = { murder_mystery_target_registration_generation = global.murder_mystery_transaction_sequence }
+			murder_mystery_register_safe_target = yes
+			clear_global_event_target = murder_mystery_target_registration_character
+			if = {
+				limit = { has_country_flag = murder_mystery_target_registration_succeeded }
+				set_country_flag = murder_mystery_first_knife_registered
+				set_variable = { murder_mystery_first_knife_generation = murder_mystery_target_registration_generation }
+			}
+			clear_variable = murder_mystery_target_registration_id
+			clear_variable = murder_mystery_target_registration_disposition
+			clear_variable = murder_mystery_target_registration_role
+			clear_variable = murder_mystery_target_registration_protection
+			clear_variable = murder_mystery_target_registration_generation
+		}
+	}
+}
+
+# COUNTRY scope. Input: the current movement route flags and neutrality party.
+# Output: murder_mystery_capture_successor_verified after a ruling-leader check.
+# Reusing a successor name follows native create_country_leader idempotence.
+murder_mystery_install_movement_successor = {
+	clr_country_flag = murder_mystery_capture_successor_verified
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = murder_mystery_assassin_state
+			has_government = neutrality
+		}
+		if = {
+			limit = { has_country_flag = murder_mystery_cells_without_masters_route }
+			create_country_leader = {
+				name = MURDER_MYSTERY_CELLS_WITHOUT_MASTERS_SUCCESSOR_NAME
+				desc = MURDER_MYSTERY_CELLS_WITHOUT_MASTERS_SUCCESSOR_DESC
+				picture = GFX_portrait_039_cells_without_masters
+				ideology = despotism
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = murder_mystery_necessary_mask_route }
+			create_country_leader = {
+				name = MURDER_MYSTERY_NECESSARY_MASK_SUCCESSOR_NAME
+				desc = MURDER_MYSTERY_NECESSARY_MASK_SUCCESSOR_DESC
+				picture = GFX_portrait_039_necessary_mask
+				ideology = despotism
+			}
+		}
+		else = {
+			create_country_leader = {
+				name = MURDER_MYSTERY_HIDDEN_HAND_SUCCESSOR_NAME
+				desc = MURDER_MYSTERY_HIDDEN_HAND_SUCCESSOR_DESC
+				picture = GFX_portrait_039_hidden_hand
+				ideology = despotism
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_country_flag = murder_mystery_cells_without_masters_route
+						has_country_leader = { ruling_only = yes name = MURDER_MYSTERY_CELLS_WITHOUT_MASTERS_SUCCESSOR_NAME }
+					}
+					AND = {
+						NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+						has_country_flag = murder_mystery_necessary_mask_route
+						has_country_leader = { ruling_only = yes name = MURDER_MYSTERY_NECESSARY_MASK_SUCCESSOR_NAME }
+					}
+					AND = {
+						NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+						NOT = { has_country_flag = murder_mystery_necessary_mask_route }
+						has_country_leader = { ruling_only = yes name = MURDER_MYSTERY_HIDDEN_HAND_SUCCESSOR_NAME }
+					}
+				}
+			}
+			set_country_flag = murder_mystery_capture_successor_verified
+		}
+	}
+}
+
+# COUNTRY investigator. A living central country keeps its government,
+# territory, forces, foreign network, route and runtime after founder capture.
+murder_mystery_apply_live_central_capture_shock = {
+	clr_country_flag = murder_mystery_live_central_after_capture
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_core_capture_committed
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = {
+				exists = yes
+				has_country_flag = murder_mystery_assassin_state
+				check_variable = { num_owned_states > constant:murder_mystery_value.zero }
+			}
+		}
+		set_country_flag = murder_mystery_live_central_after_capture
+		clr_country_flag = murder_mystery_permanent_resolution_ready
+		if = {
+			limit = { NOT = { has_global_flag = murder_mystery_capture_shock_applied } }
+			set_global_flag = murder_mystery_capture_shock_applied
+			event_target:murder_mystery_assassin_state = {
+				set_temp_variable = { murder_mystery_capture_cohesion_loss = murder_mystery_brotherhood_cohesion }
+				multiply_temp_variable = { murder_mystery_capture_cohesion_loss = constant:murder_mystery_capture_shock.cohesion_ratio }
+				clamp_temp_variable = { var = murder_mystery_capture_cohesion_loss min = constant:murder_mystery_capture_shock.cohesion_minimum max = constant:murder_mystery_capture_shock.cohesion_maximum }
+				subtract_from_variable = { murder_mystery_brotherhood_cohesion = murder_mystery_capture_cohesion_loss }
+				set_temp_variable = { murder_mystery_capture_reach_loss = murder_mystery_network_reach }
+				multiply_temp_variable = { murder_mystery_capture_reach_loss = constant:murder_mystery_capture_shock.reach_ratio }
+				clamp_temp_variable = { var = murder_mystery_capture_reach_loss min = constant:murder_mystery_capture_shock.reach_minimum max = constant:murder_mystery_capture_shock.reach_maximum }
+				subtract_from_variable = { murder_mystery_network_reach = murder_mystery_capture_reach_loss }
+				murder_mystery_clamp_country_values = yes
+			}
+		}
+	}
+}

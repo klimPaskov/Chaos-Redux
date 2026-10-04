@@ -498,8 +498,8 @@ murder_mystery_reconcile_target_registry = {
 			set_temp_variable = { murder_mystery_target_registry_row_generation = global.murder_mystery_target_generation_entries^murder_mystery_target_registry_index }
 			if = {
 				limit = {
-					check_variable = { var = murder_mystery_target_registry_row_id value = constant:murder_mystery_value.zero compare = less_than_or_equals }
 					OR = {
+						check_variable = { var = murder_mystery_target_registry_row_id value = constant:murder_mystery_value.zero compare = less_than_or_equals }
 						check_variable = { var = murder_mystery_target_registry_row_disposition value = constant:murder_mystery_target_disposition.unknown compare = less_than_or_equals }
 						check_variable = { var = murder_mystery_target_registry_row_disposition value = constant:murder_mystery_value.maximum_target_disposition compare = greater_than }
 						check_variable = { var = murder_mystery_target_registry_row_role value = constant:murder_mystery_target_role.none compare = less_than_or_equals }
@@ -513,11 +513,28 @@ murder_mystery_reconcile_target_registry = {
 				}
 				set_temp_variable = { murder_mystery_target_registry_row_invalid = constant:murder_mystery_value.one }
 			}
-			var:global.murder_mystery_target_owner_entries^murder_mystery_target_registry_index = {
-				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_target_registry_row_invalid = constant:murder_mystery_value.one } } }
-			}
-			var:global.murder_mystery_target_subject_entries^murder_mystery_target_registry_index = {
-				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_target_registry_row_invalid = constant:murder_mystery_value.one } } }
+			if = {
+				# Consumed rows are tombstones, even after the character or owner
+				# is gone. Losing their row must not make the same ID reusable.
+				limit = { check_variable = { var = murder_mystery_target_registry_row_used value = constant:murder_mystery_value.zero compare = equals } }
+				var:global.murder_mystery_target_owner_entries^murder_mystery_target_registry_index = {
+					if = { limit = { NOT = { exists = yes } } set_temp_variable = { murder_mystery_target_registry_row_invalid = constant:murder_mystery_value.one } }
+				}
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = murder_mystery_target_registry_row_disposition value = constant:murder_mystery_target_disposition.eligible_named_target compare = equals }
+							check_variable = { var = murder_mystery_target_registry_row_disposition value = constant:murder_mystery_target_disposition.eligible_opening_leader compare = equals }
+						}
+					}
+					var:global.murder_mystery_target_subject_entries^murder_mystery_target_registry_index = { save_event_target_as = murder_mystery_reconciled_character }
+					var:global.murder_mystery_target_owner_entries^murder_mystery_target_registry_index = {
+						if = {
+							limit = { NOT = { any_character = { is_character = event_target:murder_mystery_reconciled_character } } }
+							set_temp_variable = { murder_mystery_target_registry_row_invalid = constant:murder_mystery_value.one }
+						}
+					}
+				}
 			}
 			if = {
 				limit = { check_variable = { var = murder_mystery_target_registry_row_invalid value = constant:murder_mystery_value.one compare = equals } }
@@ -536,6 +553,7 @@ murder_mystery_reconcile_target_registry = {
 }
 
 murder_mystery_validate_selected_target = {
+	save_event_target_as = murder_mystery_target_validation_actor
 	clr_country_flag = murder_mystery_selected_target_validated
 	clr_country_flag = murder_mystery_selected_target_invalid
 	clr_country_flag = murder_mystery_selected_target_retired
@@ -546,7 +564,10 @@ murder_mystery_validate_selected_target = {
 	clear_variable = murder_mystery_selected_target_disposition
 	clear_variable = murder_mystery_selected_target_role
 	clear_variable = murder_mystery_selected_target_protection
+	clear_variable = murder_mystery_selected_target_used
+	clear_variable = murder_mystery_selected_target_generation
 	clear_global_event_target = murder_mystery_selected_target_owner
+	clear_global_event_target = murder_mystery_selected_target_character
 	if = {
 		limit = {
 			murder_mystery_target_registry_is_aligned = yes
@@ -560,15 +581,20 @@ murder_mystery_validate_selected_target = {
 			set_temp_variable = { murder_mystery_target_registry_row_id = global.murder_mystery_target_id_entries^murder_mystery_target_registry_index }
 			if = {
 				limit = { check_variable = { var = murder_mystery_target_registry_row_id value = murder_mystery_selected_target_id compare = equals } }
-				set_temp_variable = { murder_mystery_target_registry_match = constant:murder_mystery_value.one }
+				add_to_temp_variable = { murder_mystery_target_registry_match = constant:murder_mystery_value.one }
 				set_variable = { murder_mystery_selected_target_disposition = global.murder_mystery_target_disposition_entries^murder_mystery_target_registry_index }
 				set_variable = { murder_mystery_selected_target_role = global.murder_mystery_target_role_entries^murder_mystery_target_registry_index }
 				set_variable = { murder_mystery_selected_target_protection = global.murder_mystery_target_protection_entries^murder_mystery_target_registry_index }
+				set_variable = { murder_mystery_selected_target_used = global.murder_mystery_target_used_entries^murder_mystery_target_registry_index }
+				set_variable = { murder_mystery_selected_target_generation = global.murder_mystery_target_generation_entries^murder_mystery_target_registry_index }
 				var:global.murder_mystery_target_owner_entries^murder_mystery_target_registry_index = {
 					if = {
 						limit = { exists = yes }
 						save_global_event_target_as = murder_mystery_selected_target_owner
-						if = { limit = { tag = ROOT } ROOT = { set_country_flag = murder_mystery_selected_target_owner_validated } }
+						if = {
+							limit = { tag = event_target:murder_mystery_target_validation_actor }
+							event_target:murder_mystery_target_validation_actor = { set_country_flag = murder_mystery_selected_target_owner_validated }
+						}
 					}
 				}
 				if = {
@@ -579,10 +605,7 @@ murder_mystery_validate_selected_target = {
 						}
 					}
 					var:global.murder_mystery_target_subject_entries^murder_mystery_target_registry_index = {
-						if = {
-							limit = { exists = yes }
-							save_global_event_target_as = murder_mystery_selected_target_character
-						}
+						save_global_event_target_as = murder_mystery_selected_target_character
 					}
 				}
 			}
@@ -594,24 +617,76 @@ murder_mystery_validate_selected_target = {
 				limit = {
 					has_event_target = murder_mystery_selected_target_owner
 					has_country_flag = murder_mystery_target_owner_callback_passed
+					# The government capture callback authorizes only the exact
+					# registered founder owned by the recorded central country.
+					check_variable = { var = murder_mystery_selected_target_id value = constant:murder_mystery_value.first_knife_target_id compare = equals }
+					murder_mystery_selected_character_is_recruited = yes
+					has_event_target = murder_mystery_assassin_state
+					event_target:murder_mystery_assassin_state = {
+						exists = yes
+						tag = event_target:murder_mystery_selected_target_owner
+						has_country_flag = murder_mystery_first_knife_registered
+					}
+					event_target:murder_mystery_selected_target_character = { has_character_flag = murder_mystery_first_knife_character }
 				}
 				set_country_flag = murder_mystery_selected_target_owner_validated
 			}
 			if = {
-				limit = { check_variable = { var = murder_mystery_selected_target_protection value = constant:murder_mystery_target_protection.protected compare = greater_than_or_equals } }
+				limit = {
+					OR = {
+						check_variable = { var = murder_mystery_selected_target_protection value = constant:murder_mystery_target_protection.protected compare = greater_than_or_equals }
+						check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.temporarily_protected compare = equals }
+						check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.permanently_protected compare = equals }
+					}
+				}
 				set_country_flag = murder_mystery_selected_target_protected
 			}
 			if = {
-				limit = { check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.already_removed compare = equals } }
+				limit = {
+					OR = {
+						check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.already_removed compare = equals }
+						check_variable = { var = murder_mystery_selected_target_used value = constant:murder_mystery_value.one compare = equals }
+					}
+				}
 				set_country_flag = murder_mystery_selected_target_retired
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.owner_managed compare = equals } }
+				set_country_flag = murder_mystery_selected_target_owner_managed
+			}
+			if = {
+				limit = { NOT = { has_variable = murder_mystery_selected_target_expected_generation } }
+				set_variable = { murder_mystery_selected_target_expected_generation = murder_mystery_selected_target_generation }
 			}
 			if = {
 				limit = {
 					NOT = { has_country_flag = murder_mystery_selected_target_retired }
-					NOT = { check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.unknown } }
+					check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.unknown compare = greater_than }
+					check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_value.maximum_target_disposition compare = less_than_or_equals }
+					check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_target_role.none compare = greater_than }
+					check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_value.maximum_target_role compare = less_than_or_equals }
+					check_variable = { var = murder_mystery_selected_target_protection value = constant:murder_mystery_target_protection.normal compare = greater_than_or_equals }
+					check_variable = { var = murder_mystery_selected_target_protection value = constant:murder_mystery_target_protection.hardened compare = less_than_or_equals }
+					check_variable = { var = murder_mystery_selected_target_used value = constant:murder_mystery_value.zero compare = equals }
+					check_variable = { var = murder_mystery_selected_target_generation value = constant:murder_mystery_value.zero compare = greater_than }
+					check_variable = { var = murder_mystery_selected_target_generation value = murder_mystery_selected_target_expected_generation compare = equals }
+					has_event_target = murder_mystery_selected_target_owner
+					OR = {
+						AND = {
+							check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_named_target compare = equals }
+							murder_mystery_selected_character_is_recruited = yes
+						}
+						AND = {
+							check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_opening_leader compare = equals }
+							murder_mystery_selected_character_is_recruited = yes
+						}
+						check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.generic_office_only compare = equals }
+						check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.owner_managed compare = equals }
+					}
 				}
 				set_country_flag = murder_mystery_selected_target_validated
 			}
+			else = { set_country_flag = murder_mystery_selected_target_invalid }
 		}
 		else = {
 			set_country_flag = murder_mystery_selected_target_invalid
@@ -642,7 +717,6 @@ murder_mystery_prepare_safe_target_action = {
 	murder_mystery_approve_selected_target_owner = yes
 	clr_country_flag = murder_mystery_safe_target_action_valid
 	clr_country_flag = murder_mystery_safe_target_action_generic_fallback
-	clr_country_flag = murder_mystery_selected_target_is_core_offender
 	if = {
 		limit = { murder_mystery_selected_target_allows_named_action = yes }
 		set_country_flag = murder_mystery_safe_target_action_valid
@@ -728,10 +802,15 @@ murder_mystery_clear_selected_target_context = {
 	clr_country_flag = murder_mystery_selected_target_owner_managed
 	clr_country_flag = murder_mystery_safe_target_action_valid
 	clr_country_flag = murder_mystery_safe_target_action_generic_fallback
+	clr_country_flag = murder_mystery_selected_target_is_core_offender
+	clr_country_flag = murder_mystery_target_owner_callback_passed
 	clear_variable = murder_mystery_selected_target_id
 	clear_variable = murder_mystery_selected_target_disposition
 	clear_variable = murder_mystery_selected_target_role
 	clear_variable = murder_mystery_selected_target_protection
+	clear_variable = murder_mystery_selected_target_used
+	clear_variable = murder_mystery_selected_target_generation
+	clear_variable = murder_mystery_selected_target_expected_generation
 	if = { limit = { has_event_target = murder_mystery_selected_target_owner } clear_global_event_target = murder_mystery_selected_target_owner }
 	if = { limit = { has_event_target = murder_mystery_selected_target_character } clear_global_event_target = murder_mystery_selected_target_character }
 }
@@ -1409,8 +1488,7 @@ murder_mystery_begin_assassin_state_transaction = {
 	if = {
 		limit = {
 			murder_mystery_assassin_state_preflight_is_valid = yes
-			has_event_target = murder_mystery_assassin_state_candidate
-			event_target:murder_mystery_assassin_state_candidate = { exists = yes }
+			murder_mystery_assassin_candidate_is_reserved = yes
 		}
 		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
 		set_variable = { global.murder_mystery_assassin_state_transaction_sequence = global.murder_mystery_transaction_sequence }
@@ -1966,6 +2044,7 @@ murder_mystery_cleanup_terminal_registry = {
 # ---------------------------------------------------------------------------
 
 murder_mystery_cleanup_country_runtime = {
+	murder_mystery_decision_cancel_bound_objectives = yes
 	murder_mystery_rollback_action_transaction = yes
 	murder_mystery_clear_selected_target_context = yes
 	clr_country_flag = murder_mystery_action_cooldown_active
@@ -2001,6 +2080,15 @@ murder_mystery_cleanup_transient_runtime = {
 	if = { limit = { has_global_flag = murder_mystery_derivative_transaction_active } murder_mystery_rollback_derivative_transaction = yes }
 	if = { limit = { has_global_flag = murder_mystery_terminal_activation_in_progress } murder_mystery_rollback_world_end_activation = yes }
 	if = { limit = { has_event_target = murder_mystery_original_host } event_target:murder_mystery_original_host = { murder_mystery_cleanup_country_runtime = yes } }
+	if = { limit = { has_event_target = murder_mystery_assassin_state } event_target:murder_mystery_assassin_state = { murder_mystery_cleanup_country_runtime = yes } }
+	for_each_scope_loop = {
+		array = global.murder_mystery_cell_country_entries
+		murder_mystery_cleanup_country_runtime = yes
+	}
+	for_each_scope_loop = {
+		array = global.murder_mystery_derivative_country_entries
+		murder_mystery_cleanup_country_runtime = yes
+	}
 	if = { limit = { has_event_target = murder_mystery_assassin_state_candidate } clear_global_event_target = murder_mystery_assassin_state_candidate }
 	if = { limit = { has_event_target = murder_mystery_derivative_country_candidate } clear_global_event_target = murder_mystery_derivative_country_candidate }
 	if = { limit = { has_event_target = murder_mystery_terminal_target } clear_global_event_target = murder_mystery_terminal_target }

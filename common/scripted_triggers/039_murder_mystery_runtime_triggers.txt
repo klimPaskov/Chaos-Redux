@@ -318,8 +318,13 @@ murder_mystery_selected_target_is_registered = {
 	has_variable = murder_mystery_selected_target_id
 	has_variable = murder_mystery_selected_target_disposition
 	has_variable = murder_mystery_selected_target_role
+	has_variable = murder_mystery_selected_target_generation
+	has_variable = murder_mystery_selected_target_expected_generation
+	has_variable = murder_mystery_selected_target_used
 	NOT = { has_country_flag = murder_mystery_selected_target_invalid }
 	NOT = { has_country_flag = murder_mystery_selected_target_retired }
+	check_variable = { var = murder_mystery_selected_target_used value = constant:murder_mystery_value.zero compare = equals }
+	check_variable = { var = murder_mystery_selected_target_generation value = murder_mystery_selected_target_expected_generation compare = equals }
 	check_variable = { var = murder_mystery_selected_target_id value = constant:murder_mystery_value.zero compare = greater_than }
 	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.unknown compare = greater_than }
 	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_value.maximum_target_disposition compare = less_than_or_equals }
@@ -330,6 +335,7 @@ murder_mystery_selected_target_is_registered = {
 
 murder_mystery_selected_target_allows_named_action = {
 	murder_mystery_selected_target_is_registered = yes
+	murder_mystery_selected_character_is_recruited = yes
 	has_country_flag = murder_mystery_selected_target_owner_approved
 	NOT = { has_country_flag = murder_mystery_selected_target_protected }
 	NOT = { has_country_flag = murder_mystery_selected_target_owner_managed }
@@ -341,6 +347,7 @@ murder_mystery_selected_target_allows_named_action = {
 
 murder_mystery_selected_target_allows_opening_action = {
 	murder_mystery_selected_target_is_registered = yes
+	murder_mystery_selected_character_is_recruited = yes
 	has_country_flag = murder_mystery_selected_target_owner_approved
 	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_opening_leader compare = equals }
 	NOT = { has_country_flag = murder_mystery_selected_target_protected }
@@ -355,6 +362,8 @@ murder_mystery_selected_target_allows_generic_office = {
 	NOT = { has_country_flag = murder_mystery_selected_target_invalid }
 	NOT = { has_country_flag = murder_mystery_selected_target_retired }
 	NOT = { has_country_flag = murder_mystery_selected_target_protected }
+	check_variable = { var = murder_mystery_selected_target_used value = constant:murder_mystery_value.zero compare = equals }
+	check_variable = { var = murder_mystery_selected_target_generation value = murder_mystery_selected_target_expected_generation compare = equals }
 	OR = {
 		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.generic_office_only compare = equals }
 		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.owner_managed compare = equals }
@@ -369,6 +378,7 @@ murder_mystery_selected_target_is_fail_closed = {
 
 murder_mystery_target_registry_is_aligned = {
 	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = constant:murder_mystery_registry.maximum_target_rows compare = less_than_or_equals }
 	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_disposition_entries^num compare = equals }
 	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_role_entries^num compare = equals }
 	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_owner_entries^num compare = equals }

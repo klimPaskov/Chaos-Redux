@@ -1,0 +1,84 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 OBJECTIVE RECEIPTS
+# ============================================================================
+# Overview:
+# - Validates the recipient and persistent state pointers for objective missions.
+# - Reads existing bounded country registries and actor-owned scope variables.
+# - Contains no character mutation, payment, or whole-world iteration.
+
+# COUNTRY scope. A missing or retired runtime cannot publish mission rewards.
+murder_mystery_objective_owner_is_valid = {
+	hidden_trigger = {
+		exists = yes
+		has_country_flag = murder_mystery_country_runtime_initialized
+		has_country_flag = murder_mystery_objective_active
+		has_variable = murder_mystery_objective_owner
+		var:murder_mystery_objective_owner = { exists = yes tag = PREV }
+		has_global_flag = murder_mystery_runtime_active
+		NOT = { has_global_flag = murder_mystery_runtime_resolved }
+		NOT = { has_global_flag = murder_mystery_cleanup_in_progress }
+		NOT = { has_country_flag = murder_mystery_country_loss_recorded }
+		num_of_controlled_states > constant:murder_mystery_value.zero
+	}
+}
+
+# COUNTRY scope. Control includes every province of the stored state.
+murder_mystery_objective_state_is_held = {
+	has_variable = murder_mystery_objective_state
+	var:murder_mystery_objective_state = { is_owned_and_controlled_by = ROOT }
+	has_full_control_of_state = var:murder_mystery_objective_state
+}
+
+# COUNTRY scope. Both endpoints must still belong to the actor and the rail
+# route is restricted to allied territory using the installed native predicate.
+murder_mystery_objective_rail_route_is_intact = {
+	has_variable = murder_mystery_objective_origin_state
+	murder_mystery_objective_state_is_held = yes
+	var:murder_mystery_objective_origin_state = { is_owned_and_controlled_by = ROOT }
+	has_full_control_of_state = var:murder_mystery_objective_origin_state
+	has_railway_connection = {
+		build_only_on_allied = yes
+		start_state = var:murder_mystery_objective_origin_state
+		target_state = var:murder_mystery_objective_state
+	}
+}
+
+# COUNTRY scope. Checks the capital captured at mission start, rather than a
+# replacement capital selected automatically after the original was lost.
+murder_mystery_objective_original_capital_is_held = {
+	has_variable = murder_mystery_objective_origin_state
+	var:murder_mystery_objective_origin_state = { is_owned_and_controlled_by = ROOT }
+	has_full_control_of_state = var:murder_mystery_objective_origin_state
+}
+
+# COUNTRY scope inside the mission's bounded sector snapshot. Only a real
+# capitulation, removal, or subject settlement can satisfy a country outcome.
+murder_mystery_objective_sector_country_is_resolved = {
+	OR = {
+		NOT = { exists = yes }
+		has_capitulated = yes
+		is_subject_of = ROOT
+	}
+}
+
+# COUNTRY scope. A missing selector or an empty sector does not prove success.
+murder_mystery_objective_sector_is_complete = {
+	has_global_flag = murder_mystery_terminal_war_active
+	has_variable = murder_mystery_objective_sector
+	check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_value.zero compare = greater_than }
+	check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_terminal.maximum_registry_rows compare = less_than_or_equals }
+	all_of_scopes = {
+		array = murder_mystery_objective_sector_countries
+		murder_mystery_objective_sector_country_is_resolved = yes
+	}
+}
+
+murder_mystery_objective_sector_has_partial_result = {
+	has_global_flag = murder_mystery_terminal_war_active
+	has_variable = murder_mystery_objective_sector
+	check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_terminal.maximum_registry_rows compare = less_than_or_equals }
+	any_of_scopes = {
+		array = murder_mystery_objective_sector_countries
+		murder_mystery_objective_sector_country_is_resolved = yes
+	}
+}
