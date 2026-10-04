@@ -213,7 +213,6 @@ brilliant_scientist_krg_foreign_policy_category = {
 		}
 		target_trigger = {
 			FROM = {
-				exists = yes
 				is_controlled_by = ROOT
 				NOT = { has_state_flag = brilliant_scientist_krg_laboratory_corridor }
 			}
@@ -227,7 +226,7 @@ brilliant_scientist_krg_foreign_policy_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
-				FROM = { NOT = { exists = yes is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_laboratory_corridor } } }
+				FROM = { NOT = { AND = { is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_laboratory_corridor } } } }
 			}
 		}
 		remove_effect = {
@@ -252,7 +251,6 @@ brilliant_scientist_krg_foreign_policy_category = {
 		}
 		target_trigger = {
 			FROM = {
-				exists = yes
 				is_controlled_by = ROOT
 				OR = {
 					has_state_flag = brilliant_scientist_primary_facility
@@ -276,14 +274,15 @@ brilliant_scientist_krg_foreign_policy_category = {
 				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
 				FROM = {
 					NOT = {
-						exists = yes
-						is_controlled_by = ROOT
-						OR = {
-							has_state_flag = brilliant_scientist_primary_facility
-							has_state_flag = brilliant_scientist_secondary_facility
-							has_state_flag = brilliant_scientist_krg_prototype_works_reopened
+						AND = {
+							is_controlled_by = ROOT
+							OR = {
+								has_state_flag = brilliant_scientist_primary_facility
+								has_state_flag = brilliant_scientist_secondary_facility
+								has_state_flag = brilliant_scientist_krg_prototype_works_reopened
+							}
+							NOT = { has_state_flag = brilliant_scientist_krg_recovered_archive }
 						}
-						NOT = { has_state_flag = brilliant_scientist_krg_recovered_archive }
 					}
 				}
 			}

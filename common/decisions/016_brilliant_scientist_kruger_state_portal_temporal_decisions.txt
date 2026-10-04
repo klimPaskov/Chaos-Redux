@@ -251,7 +251,7 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 			has_country_flag = brilliant_scientist_focus_unlock_paid_strategic_insertions
 			has_country_flag = brilliant_scientist_krg_terminal_supply_network_linked
 		}
-		target_trigger = { FROM = { exists = yes is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_recent_strategic_insertion } } }
+		target_trigger = { FROM = { is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_recent_strategic_insertion } } }
 		visible = { brilliant_scientist_krg_decisions_are_active = yes has_country_flag = brilliant_scientist_focus_unlock_paid_strategic_insertions }
 		available = { brilliant_scientist_krg_can_pay_foreign_operation_cost = yes command_power > constant:brilliant_scientist_krg_cost.command_power_standard_gate }
 		cost = constant:brilliant_scientist_krg_cost.pp_heavy
@@ -260,7 +260,7 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 			brilliant_scientist_krg_pay_foreign_operation_cost = yes
 			add_command_power = constant:brilliant_scientist_krg_cost.command_power_standard_spend
 		}
-		cancel_trigger = { OR = { NOT = { brilliant_scientist_krg_decisions_are_active = yes } FROM = { NOT = { exists = yes is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_recent_strategic_insertion } } } } }
+		cancel_trigger = { OR = { NOT = { brilliant_scientist_krg_decisions_are_active = yes } FROM = { NOT = { AND = { is_controlled_by = ROOT NOT = { has_state_flag = brilliant_scientist_krg_recent_strategic_insertion } } } } } }
 		remove_effect = {
 			set_temp_variable = { brilliant_scientist_krg_recent_insertion_days = constant:brilliant_scientist_krg_timing.reenable_standard_days }
 			FROM = { set_state_flag = { flag = brilliant_scientist_krg_recent_strategic_insertion days = brilliant_scientist_krg_recent_insertion_days } }
