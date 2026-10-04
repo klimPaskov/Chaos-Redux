@@ -555,8 +555,34 @@ sov_nuclear_bombs_command_category = {
 		name = sov_nuclear_bombs_prepare_limited_strike
 		desc = sov_nuclear_bombs_prepare_limited_strike_desc
 		icon = GFX_decision_sov_nuclear_decision_strike_preparation
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_limited_strike_prepared } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_limited_strike_requirements_tt sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_unreserved_device = yes sov_nuclear_bombs_event_has_valid_limited_strike_target = yes event_target:sov_nuclear_bombs_selected_state = { NOT = { controller = { is_major = yes } } } } }
+		# A coercion dossier prepares a nonnuclear target. Outside a confirmed
+		# exchange, a selected nuclear-major state is prepared only under the
+		# Evolution IV first-use emergency; release still needs certification and
+		# a separate final authorization.
+		visible = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			sov_nuclear_bombs_event_no_active_project = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_limited_strike_prepared }
+			OR = {
+				has_country_flag = sov_nuclear_bombs_coercion_open
+				AND = {
+					has_country_flag = sov_nuclear_bombs_retaliation_target_selected
+					sov_nuclear_bombs_event_has_evolution_iv = yes
+					NOT = { has_global_flag = sov_nuclear_bombs_major_exchange_active }
+				}
+			}
+		}
+		available = {
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_coercion_open }
+				custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_limited_strike_requirements_tt sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_unreserved_device = yes sov_nuclear_bombs_event_has_valid_limited_strike_target = yes event_target:sov_nuclear_bombs_selected_state = { NOT = { controller = { is_major = yes } } } }
+			}
+			else = {
+				custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_first_use_emergency_requirements_tt sov_nuclear_bombs_event_first_use_emergency = yes }
+				custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_first_use_authority_requirements_tt sov_nuclear_bombs_event_first_use_authority_is_ready = yes }
+				custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_first_use_target_requirements_tt sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_can_prepare_major_first_use = yes }
+			}
+		}
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_release_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_release
 		cost = 0
@@ -659,7 +685,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_authorize_selected_strike = yes }
-		ai_will_do = { base = 0.10 modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_can_authorize_first_use = yes } modifier = { factor = 0.00 NOT = { sov_nuclear_bombs_event_has_evolution_iii = yes } } }
+		ai_will_do = { base = 0.10 modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_can_authorize_first_use = yes } modifier = { factor = 0 sov_nuclear_bombs_event_ai_prepared_major_strike_is_unguarded = yes } }
 	}
 
 	sov_nuclear_bombs_hold_strike = {
@@ -798,10 +824,12 @@ sov_nuclear_bombs_command_category = {
 		icon = GFX_decision_sov_nuclear_decision_target_selection
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_evolution_iii = yes has_global_flag = sov_nuclear_bombs_major_exchange_active OR = { NOT = { has_country_flag = sov_nuclear_bombs_retaliation_target_selected } AND = { has_country_flag = sov_nuclear_bombs_retaliation_target_selected NOT = { sov_nuclear_bombs_event_has_valid_major_strike_target = yes } } } NOT = { has_country_flag = sov_nuclear_bombs_retaliation_authorized } }
-		target_root_trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
-		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_major_strike_target = yes } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_retaliation_target_requirements_tt sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes FROM = { sov_nuclear_bombs_event_state_is_valid_major_strike_target = yes } } }
+		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_evolution_iii = yes OR = { has_global_flag = sov_nuclear_bombs_major_exchange_active AND = { sov_nuclear_bombs_event_prospective_first_use_gate = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } } } OR = { NOT = { has_country_flag = sov_nuclear_bombs_retaliation_target_selected } AND = { has_country_flag = sov_nuclear_bombs_retaliation_target_selected NOT = { sov_nuclear_bombs_event_has_valid_major_strike_target = yes } } } NOT = { has_country_flag = sov_nuclear_bombs_retaliation_authorized } }
+		# Outside a confirmed exchange the pool is the Evolution IV first-use pool,
+		# which is empty unless every severe condition holds.
+		target_root_trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_evolution_iii = yes OR = { has_global_flag = sov_nuclear_bombs_major_exchange_active AND = { sov_nuclear_bombs_event_prospective_first_use_gate = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } } } }
+		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_major_strike_target = yes } OR = { has_global_flag = sov_nuclear_bombs_major_exchange_active FROM = { sov_nuclear_bombs_event_state_can_prepare_major_first_use = yes } } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_retaliation_target_requirements_tt sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes FROM = { sov_nuclear_bombs_event_state_is_valid_major_strike_target = yes } OR = { has_global_flag = sov_nuclear_bombs_major_exchange_active FROM = { sov_nuclear_bombs_event_state_can_prepare_major_first_use = yes } } } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_command_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_command
 		cost = 0

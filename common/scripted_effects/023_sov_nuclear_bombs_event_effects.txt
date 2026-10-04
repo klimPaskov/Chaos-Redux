@@ -2472,13 +2472,19 @@ sov_nuclear_bombs_send_private_signal = {
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.private_signal_readiness }
 }
 
+# Country scope. Stages one combat strike once: a nonnuclear coercion target,
+# or a selected nuclear-major state under the Evolution IV first-use emergency.
+# Release still needs the strike mission, certification and final authorization.
 sov_nuclear_bombs_prepare_limited_strike = {
 	if = {
 		limit = {
-			sov_nuclear_bombs_event_has_valid_limited_strike_target = yes
 			sov_nuclear_bombs_event_has_unreserved_device = yes
 			sov_nuclear_bombs_event_no_active_project = yes
 			NOT = { has_country_flag = sov_nuclear_bombs_limited_strike_prepared }
+			OR = {
+				sov_nuclear_bombs_event_has_valid_limited_strike_target = yes
+				sov_nuclear_bombs_event_can_prepare_major_first_use = yes
+			}
 		}
 		set_variable = { sov_nuclear_bombs_pending_action_type = constant:sov_nuclear_bombs_action.combat_strike }
 		sov_nuclear_bombs_stage_action_context = yes

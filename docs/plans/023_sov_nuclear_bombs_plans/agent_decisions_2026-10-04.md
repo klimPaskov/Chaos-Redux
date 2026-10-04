@@ -62,3 +62,17 @@ Supporting AI eligibility changes, all recorded for the probability compare: the
 Two player-facing repairs ride with the router because it depends on them: the survey can be repeated while the surveyed site holds no device, and the instrumented proof test now requires the same reachable endpoint its preparation helper already required, so it can no longer take the cost without starting a test.
 Basis: the parent acceptance recorded in the addendum, Part 9 AI design goals and hard blockers, and the lead's D5.
 Disposition: `implemented`; AI campaign behaviour `needs_live_game`; probability compare recorded with D11.
+
+## D6. Evolution II and Evolution IV use routes
+
+Decision: the final-authorization AI block below Evolution III is replaced by a target-class guard, and the Evolution IV prospective first use against a nuclear major is connected to the existing selector and preparation actions.
+The new AI modifier is `factor = 0` under `sov_nuclear_bombs_event_ai_prepared_major_strike_is_unguarded`: the staged state belongs to a nuclear major and the staged first-use gate (`sov_nuclear_bombs_event_can_authorize_first_use`) does not hold.
+A prepared Evolution II strike on a nonnuclear minor or breakaway therefore keeps its existing weight, while no AI releases against a major outside the Evolution IV emergency; no numeric weight changed.
+The shared emergency core `sov_nuclear_bombs_event_first_use_emergency` now backs both the unchanged staged gate `sov_nuclear_bombs_event_severe_first_use_gate` (which also checks that a staged state exists before reading it) and the new `sov_nuclear_bombs_event_prospective_first_use_gate`, which adds one line of release authority, unsuspended orders, no verified stand-down and an unreserved device.
+Outside a confirmed exchange, `sov_nuclear_bombs_select_retaliation_target` is visible and has a non-empty pool only under that prospective gate and with no coercion dossier open; the pool (`sov_nuclear_bombs_event_state_can_prepare_major_first_use`) holds lower-consequence states of a nuclear major at war with the Union and not under Soviet control, with capitals and populous states admitted only after an enemy strike on a populated Soviet state.
+Below Evolution IV, or at Evolution IV with any severe condition missing (including at 1100 Chaos), the pool is empty.
+`sov_nuclear_bombs_prepare_limited_strike` is visible for that marked state at Evolution IV outside an exchange, lists the emergency, authority and target requirements as three separate lines, and its helper stages the existing combat context once through `sov_nuclear_bombs_event_can_prepare_major_first_use` before entering authorization 5.
+Certification, the separate final authorization, the strike-preparation mission's validity check and the runtime `sov_nuclear_bombs_action_major_first_use_gate_is_valid` guard remain the release checks; no exchange receipt is fabricated and `authorize_retaliation` is not used as an alias.
+The selector's `target_root_trigger` now carries the exchange-or-emergency gate, so the world state scan no longer runs daily while neither applies.
+Basis: README non-negotiables, Part 5 (Evolution IV first use only under severe strategic loss), Part 9 hard blockers, the closure addendum's prospective-connection section, and the lead's D6.
+Disposition: `implemented`; native release `needs_live_game`; probability compare recorded with D11.
