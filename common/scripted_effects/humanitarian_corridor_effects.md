@@ -88,7 +88,7 @@ The same callback first calls `migration_reception_front_intent_handle_control_c
 
 ## Relief-obstruction hooks
 
-`humanitarian_corridor_reject_offer` and the response-deadline branch of `humanitarian_corridor_expire` call `famine_condemn_corridor_obstruction` on the origin before cleanup clears the corridor identity. Only an evacuation corridor from a famine or catastrophic famine state with measured people condemns the receiving country, once per route generation.
+`humanitarian_corridor_reject_offer` and the response-deadline branch of `humanitarian_corridor_expire` call `famine_condemn_corridor_obstruction` on the origin before cleanup clears the corridor identity. Expiry condemns only a genuine unanswered lapse: the deadline has passed while the origin, counterpart and offered route were otherwise still acceptable. Only an evacuation corridor from a famine or catastrophic famine state with measured people condemns the receiving country, once per route generation.
 
 ## Receiver-front reception intent hooks
 

@@ -814,9 +814,20 @@ humanitarian_corridor_expire = {
 			limit = { check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals } }
 			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
 			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
-			# Letting the request lapse unanswered obstructs relief like a refusal.
-			set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-			famine_condemn_corridor_obstruction = yes
+			# Letting a still-acceptable request lapse unanswered obstructs relief
+			# like a refusal; an offer that became invalid is nobody's refusal.
+			if = {
+				limit = {
+					has_variable = humanitarian_corridor_offer_deadline
+					check_variable = { var = global.date value = humanitarian_corridor_offer_deadline compare = greater_than_or_equals }
+					# Everything but the deadline still allowed acceptance.
+					humanitarian_state_is_valid = yes
+					humanitarian_corridor_counterpart_is_valid = yes
+					humanitarian_corridor_offer_route_is_valid = yes
+				}
+				set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
+				famine_condemn_corridor_obstruction = yes
+			}
 		}
 		if = {
 			limit = {
