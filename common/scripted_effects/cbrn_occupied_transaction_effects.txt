@@ -119,7 +119,8 @@ cbrn_occupied_begin_selected_program = {
 				NOT = { has_state_flag = cbrn_occupied_mask_escrow_active }
 			}
 			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
-			cbrn_quote_occupied_state_mask_reservation = yes
+			# Scripted trigger, evaluated in a limit for its quote output.
+			if = { limit = { cbrn_quote_occupied_state_mask_reservation = yes } }
 			set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
 			set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
 			set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }

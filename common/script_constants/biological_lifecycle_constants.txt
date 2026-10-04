@@ -221,6 +221,21 @@ bio_lifecycle_evidence = {
 	doomsday_floor = 100
 }
 
+# Weekly death fractions in bio_lifecycle_agent_profile are stored multiplied
+# by scale because variables keep only five decimals and the low bands need
+# six. bio_lifecycle_register_current_agent_weekly_deaths hands scale to
+# chaos_meter_register_state_civilian_deaths_percent as
+# chaos_state_deaths_percent_divisor, which divides once the state
+# population is counted in people.
+bio_lifecycle_death_rate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	scale = 10000
+}
+
 bio_lifecycle_agent_profile = {
 	schema = {
 		any_key = yes
@@ -241,9 +256,9 @@ bio_lifecycle_agent_profile = {
 		base_spread_chance = 10
 		base_detection_chance = 15
 		medical_points_per_intensity = 0.15
-		weekly_death_low = 0.000004
-		weekly_death_medium = 0.00007
-		weekly_death_high = 0.00022
+		weekly_death_low = 0.04
+		weekly_death_medium = 0.70
+		weekly_death_high = 2.20
 		death_cap_fraction = 0.025
 		persistence_mult = 1.45
 		spread_seed_mult = 0.65
@@ -261,9 +276,9 @@ bio_lifecycle_agent_profile = {
 		base_spread_chance = 45
 		base_detection_chance = 25
 		medical_points_per_intensity = 0.20
-		weekly_death_low = 0.000006
-		weekly_death_medium = 0.00010
-		weekly_death_high = 0.00028
+		weekly_death_low = 0.06
+		weekly_death_medium = 1.00
+		weekly_death_high = 2.80
 		death_cap_fraction = 0.065
 		persistence_mult = 1.15
 		spread_seed_mult = 0.90
@@ -281,9 +296,9 @@ bio_lifecycle_agent_profile = {
 		base_spread_chance = 22
 		base_detection_chance = 10
 		medical_points_per_intensity = 0.12
-		weekly_death_low = 0.000001
-		weekly_death_medium = 0.000015
-		weekly_death_high = 0.00006
+		weekly_death_low = 0.01
+		weekly_death_medium = 0.15
+		weekly_death_high = 0.60
 		death_cap_fraction = 0.015
 		persistence_mult = 0.95
 		spread_seed_mult = 0.75
@@ -301,9 +316,9 @@ bio_lifecycle_agent_profile = {
 		base_spread_chance = 55
 		base_detection_chance = 10
 		medical_points_per_intensity = 0.25
-		weekly_death_low = 0.000008
-		weekly_death_medium = 0.00015
-		weekly_death_high = 0.00038
+		weekly_death_low = 0.08
+		weekly_death_medium = 1.50
+		weekly_death_high = 3.80
 		death_cap_fraction = 0.12
 		persistence_mult = 1.75
 		spread_seed_mult = 0.95

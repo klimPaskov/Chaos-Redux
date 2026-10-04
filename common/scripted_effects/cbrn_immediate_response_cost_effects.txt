@@ -108,7 +108,8 @@ cbrn_execute_emergency_distribution_order = {
 	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
 	if = {
 		limit = { cbrn_country_can_pay_emergency_state_mask_distribution = yes }
-		cbrn_quote_emergency_distribution_fee = yes
+		# The payment gate above runs cbrn_quote_emergency_distribution_fee, a
+		# scripted trigger; its declared outputs carry into this block.
 		set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 		black_friday_allocate_owner_transaction = yes
 		set_temp_variable = { cbrn_response_transaction = black_friday_owner_transaction_id }
@@ -166,7 +167,8 @@ cbrn_execute_hospital_response_order = {
 	set_temp_variable = { cbrn_hospital_mask_sealed = constant:cbrn_math.zero }
 	if = {
 		limit = { cbrn_country_hospital_response_payment_ready = yes }
-		cbrn_quote_hospital_response_bundle = yes
+		# The payment gate above runs cbrn_quote_hospital_response_bundle, a
+		# scripted trigger; its declared outputs carry into this block.
 		set_temp_variable = { black_friday_owner_transaction_id = constant:universal_cost_framework.zero }
 		black_friday_allocate_owner_transaction = yes
 		set_temp_variable = { cbrn_response_transaction = black_friday_owner_transaction_id }

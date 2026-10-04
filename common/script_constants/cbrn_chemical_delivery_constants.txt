@@ -205,11 +205,18 @@ cbrn_chemical_continuing_death = {
 		data = fixed_point
 	}
 
+	# The class death fractions are stored multiplied by scale because
+	# variables keep only five decimals and the fractions need six.
+	# cbrn_delivery.4 hands scale to
+	# chaos_meter_register_state_civilian_deaths_percent as
+	# chaos_state_deaths_percent_divisor, which divides once the state
+	# population is counted in people.
+	scale = 1000
 	trace = 0
-	local = 0.000001
-	serious = 0.000003
-	severe = 0.000006
-	catastrophic = 0.000012
+	local = 0.001
+	serious = 0.003
+	severe = 0.006
+	catastrophic = 0.012
 	period_days = 30
 	cap_factor = 2.00
 	choking_mult = 0.75

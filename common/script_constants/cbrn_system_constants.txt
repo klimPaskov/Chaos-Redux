@@ -438,6 +438,23 @@ cbrn_protection_output = {
 	contamination_decon_factor = 0.50
 }
 
+# Agent-class tactical_lethality and strategic_lethality are death fractions
+# stored multiplied by scale because variables keep only five decimals and
+# the exposure chain multiplies them by further fractions. The exposure
+# resolver divides the military fraction by scale before its output bound.
+# The civilian fraction stays scaled through its caps and reaches
+# chaos_meter_register_state_civilian_deaths_percent with scale as
+# chaos_state_deaths_percent_divisor, which divides once the state
+# population is counted in people.
+cbrn_agent_lethality = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	scale = 1000
+}
+
 cbrn_agent_class_profile = {
 	schema = {
 		any_key = yes
@@ -456,8 +473,8 @@ cbrn_agent_class_profile = {
 		evidence_mult = 1.00
 		condemnation_mult = 1.00
 		duration_mult = 0.40
-		tactical_lethality = 0.000040
-		strategic_lethality = 0.000120
+		tactical_lethality = 0.040
+		strategic_lethality = 0.120
 	}
 	blister = {
 		disruption_mult = 0.80
@@ -466,8 +483,8 @@ cbrn_agent_class_profile = {
 		evidence_mult = 1.00
 		condemnation_mult = 1.40
 		duration_mult = 1.50
-		tactical_lethality = 0.000030
-		strategic_lethality = 0.000080
+		tactical_lethality = 0.030
+		strategic_lethality = 0.080
 	}
 	nerve = {
 		disruption_mult = 1.40
@@ -476,8 +493,8 @@ cbrn_agent_class_profile = {
 		evidence_mult = 1.10
 		condemnation_mult = 2.00
 		duration_mult = 0.80
-		tactical_lethality = 0.000150
-		strategic_lethality = 0.000400
+		tactical_lethality = 0.150
+		strategic_lethality = 0.400
 	}
 	incapacitating = {
 		disruption_mult = 1.10
@@ -486,8 +503,8 @@ cbrn_agent_class_profile = {
 		evidence_mult = 0.80
 		condemnation_mult = 0.80
 		duration_mult = 0.20
-		tactical_lethality = 0.000003
-		strategic_lethality = 0.000003
+		tactical_lethality = 0.003
+		strategic_lethality = 0.003
 	}
 }
 

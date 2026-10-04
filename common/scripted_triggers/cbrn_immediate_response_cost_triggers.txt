@@ -41,8 +41,15 @@ cbrn_quote_immediate_response_component = {
 		set_temp_variable = { universal_cost_quote_final_cost = cbrn_response_component_quoted }
 		set_temp_variable = { universal_cost_quote_valid = cbrn_response_component_valid }
 		set_temp_variable = { universal_cost_quote_resource_kind = cbrn_response_component_kind }
-		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.zero }
-		universal_cost_check_quote_affordable = yes
+		set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.result_no_op }
+		# Trigger-side form of universal_cost_check_quote_affordable, which is a
+		# scripted effect and cannot run inside this scripted trigger.
+		set_temp_variable = { universal_cost_affordability_resource_kind = universal_cost_quote_resource_kind }
+		set_temp_variable = { universal_cost_affordability_amount = universal_cost_quote_final_cost }
+		if = {
+			limit = { universal_cost_component_is_affordable = yes }
+			set_temp_variable = { universal_cost_quote_affordable = constant:universal_cost_framework.result_success }
+		}
 		set_temp_variable = { cbrn_response_component_affordable = universal_cost_quote_affordable }
 	}
 	always = yes

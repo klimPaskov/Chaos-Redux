@@ -98,7 +98,12 @@ cbrn_air_cleanliness_update_chemical_state_contribution = {
 			set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_chem_bp }
 			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
 			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
-			air_contamination_apply_delta_bp = yes
+			# The shared Air Cleanliness update is country scope and can fire
+			# world news, so the state's owner runs it.
+			if = {
+				limit = { OWNER = { exists = yes } }
+				OWNER = { air_contamination_apply_delta_bp = yes }
+			}
 		}
 	}
 }
@@ -131,7 +136,12 @@ cbrn_air_cleanliness_clear_chemical_state_contribution = {
 			set_temp_variable = { air_contamination_source_current_bp = global.air_contamination_chem_bp }
 			set_temp_variable = { air_chaos_reason_increase = constant:chaos_meter_history_reason.world_state.air_contamination_rise }
 			set_temp_variable = { air_chaos_reason_decrease = constant:chaos_meter_history_reason.world_state.air_contamination_fall }
-			air_contamination_apply_delta_bp = yes
+			# The shared Air Cleanliness update is country scope and can fire
+			# world news, so the state's owner runs it.
+			if = {
+				limit = { OWNER = { exists = yes } }
+				OWNER = { air_contamination_apply_delta_bp = yes }
+			}
 		}
 		clear_variable = cbrn_chemical_air_contribution_bp
 	}

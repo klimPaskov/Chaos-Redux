@@ -84,11 +84,12 @@ Percentage-based state registration helper:
 
 Biowarfare registration path:
 
-- `bio_lifecycle_register_current_agent_weekly_deaths` in `common/scripted_effects/biological_lifecycle_effects.txt` registers each active agent's weekly deaths in its state through `chaos_meter_register_state_civilian_deaths_percent` with the `biowarfare_outbreak` reason.
+- `bio_lifecycle_register_current_agent_weekly_deaths` in `common/scripted_effects/biological_lifecycle_effects.txt` registers each active agent's weekly deaths in its state through `chaos_meter_register_state_civilian_deaths_percent` with the `biowarfare_outbreak` reason. The agent weekly death fractions are stored multiplied by `bio_lifecycle_death_rate.scale`, which the call passes as `chaos_state_deaths_percent_divisor`.
 
 Chemical registration path:
 
-- `cbrn_dispatch_apply_state_consequences` in `common/scripted_effects/cbrn_consequence_effects.txt` registers the civilian death fraction of an accepted chemical action through `chaos_meter_register_state_civilian_deaths_percent` with the `chemical_attack` reason.
+- `cbrn_dispatch_apply_state_consequences` in `common/scripted_effects/cbrn_consequence_effects.txt` registers the civilian death fraction of an accepted chemical action through `chaos_meter_register_state_civilian_deaths_percent` with the `chemical_attack` reason. The fraction is carried multiplied by `cbrn_agent_lethality.scale`, which the call passes as `chaos_state_deaths_percent_divisor`.
+- `cbrn_delivery.4` in `events/cbrn_chemical_delivery_events.txt` registers the continuing deaths of a contaminated state with the `chemical_attack` reason; its class fractions are stored multiplied by `cbrn_chemical_continuing_death.scale`, which the call passes as `chaos_state_deaths_percent_divisor`.
 
 Camp administration path:
 

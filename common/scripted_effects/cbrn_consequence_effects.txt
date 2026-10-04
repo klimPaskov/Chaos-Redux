@@ -130,7 +130,10 @@ cbrn_dispatch_apply_first_exposure_shock = {
 		multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_first_use_civilian_casualty_mult }
 		clamp_temp_variable = { var = cbrn_action_disruption min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.disruption_max }
 		clamp_temp_variable = { var = cbrn_action_military_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.military_death_fraction_max }
-		clamp_temp_variable = { var = cbrn_action_civilian_death_fraction min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.civilian_death_fraction_max }
+		# The civilian fraction is carried scaled by cbrn_agent_lethality.scale.
+		set_temp_variable = { cbrn_civilian_death_fraction_bound = constant:cbrn_action_output_bounds.civilian_death_fraction_max }
+		multiply_temp_variable = { cbrn_civilian_death_fraction_bound = constant:cbrn_agent_lethality.scale }
+		clamp_temp_variable = { var = cbrn_action_civilian_death_fraction min = constant:cbrn_math.zero max = cbrn_civilian_death_fraction_bound }
 
 		set_temp_variable = { cbrn_first_use_shock_days = constant:cbrn_chemical_first_use.shock_days }
 		round_temp_variable = cbrn_first_use_shock_days
@@ -249,6 +252,7 @@ cbrn_dispatch_apply_state_consequences = {
 			set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.chemical_cap_factor }
 			set_temp_variable = { chaos_state_deaths_exact_percent = constant:cbrn_proof.supplied }
 			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+			set_temp_variable = { chaos_state_deaths_percent_divisor = constant:cbrn_agent_lethality.scale }
 			chaos_meter_register_state_civilian_deaths_percent = yes
 			set_temp_variable = { cbrn_action_civilian_deaths = chaos_deaths_change }
 		}

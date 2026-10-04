@@ -316,6 +316,8 @@ Defaults: none. Validation is fail-closed. The continuous ordinary-air route ret
 
 Outputs include `cbrn_action_result`, `cbrn_action_reject_reason`, victim event target/proof when known, payload ratio, clamped release efficiency, dose, disruption, military and civilian death fractions, exposed share, contamination points/duration, medical burden, evidence, attribution, Condemnation base, friendly risk, `cbrn_action_vehicle_sealing_applied`, and source label. The vehicle-sealing proof is set only when the attacker has `vehicle_overpressure_and_sealed_compartments` and the verified route is armored delivery; it reduces friendly crew exposure without changing target harm, evidence, attribution, or Condemnation.
 
+The military death fraction is a real strength ratio. The civilian death fraction is carried multiplied by `cbrn_agent_lethality.scale` through its episode and output caps, and `cbrn_dispatch_apply_state_consequences` passes that scale to `chaos_meter_register_state_civilian_deaths_percent` as `chaos_state_deaths_percent_divisor`, so the division happens after the state population is counted in people.
+
 Side effects: no persistent gameplay mutation. Rejected calls return zero consequence outputs. Accepted calls must immediately pass to `cbrn_dispatch_chemical_action_record` before the action context is reset.
 
 Example:
@@ -343,7 +345,7 @@ The public action-record wrapper owns these private temporary calculators:
 | --- | --- |
 | `cbrn_reset_action_outputs` | Resets every action result, proof, consequence output, attribution value, vehicle-sealing proof, and source label to its rejected, missing, unknown, or zero default. |
 | `cbrn_set_route_profile_from_action` | Maps the validated delivery-route enum to disruption, civilian exposure, contamination, medical burden, evidence, Condemnation, and duration baselines. Unsupported routes retain zero values and are rejected before calculation. |
-| `cbrn_set_agent_class_profile_from_action` | Maps the chemical class to disruption, persistence, medical, evidence, Condemnation, duration, and tactical/strategic lethality multipliers. |
+| `cbrn_set_agent_class_profile_from_action` | Maps the chemical class to disruption, persistence, medical, evidence, Condemnation, duration, and tactical/strategic lethality multipliers. Lethality is stored multiplied by `cbrn_agent_lethality.scale` because the unscaled fractions fall below the five-decimal variable precision. |
 | `cbrn_set_chemical_agent_profile_from_action` | Applies the distinct chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral-agent potency, persistence, evidence, and source-profile values. |
 | `cbrn_set_action_source_label` | Chooses battlefield, persistent-contamination, strategic-raid, or nerve-suppression source classification from the validated route and severity. |
 | `cbrn_set_action_attribution_from_evidence` | Converts the current episode evidence score into unknown, suspected, probable, or confirmed attribution without changing evidence. |
@@ -844,6 +846,8 @@ The outer caller declares the returned fields before use.
 Outside Black Friday it preserves the ordinary price; an active sale requires the registered canonical source and whole-unit quote, with invalid pricing blocked.
 The aggregate hospital mask quote uses `custom_adapter` only for price calculation; its concrete oldest-first allocation separately establishes exact stock affordability and never pays that aggregate kind.
 `universal_cost_quote_valid` is explicitly supplied before native affordability checking.
+That check uses the scripted trigger `universal_cost_component_is_affordable`, because the effect-side `universal_cost_check_quote_affordable` cannot run inside a scripted trigger.
+The quote helpers in this file are scripted triggers; `cbrn_execute_emergency_distribution_order` and `cbrn_execute_hospital_response_order` read the outputs that their payment gate computes in the `if` limit and never call a quote as an effect.
 
 `cbrn_quote_emergency_distribution_fee` returns the current PP fee and its source/validity/affordability; the existing physical mask quote and issue remain unchanged.
 A recorded PP fee precedes physical issue.
@@ -1263,8 +1267,8 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 | Effect | Scope and contract |
 | --- | --- |
 | `cbrn_chemical_set_air_contribution_from_class` | State scope. Converts the exact canonical contamination class into the configured Air Cleanliness contribution and applies only the delta to the state and global component totals. |
-| `cbrn_air_cleanliness_update_chemical_state_contribution` | State scope. Reads the temporary `cbrn_air_contribution_value`, stores it as the state's `cbrn_chemical_air_contribution_bp`, and applies only the delta to the global chemical Air Cleanliness total and affected-state count. While Air Cleanliness is disabled it stores the state value without changing the global totals. |
-| `cbrn_air_cleanliness_clear_chemical_state_contribution` | State scope. Removes the state's stored chemical Air Cleanliness contribution from the global chemical total and affected-state count, then clears the state value. |
+| `cbrn_air_cleanliness_update_chemical_state_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Reads the temporary `cbrn_air_contribution_value`, stores it as the state's `cbrn_chemical_air_contribution_bp`, and applies only the delta to the global chemical Air Cleanliness total and affected-state count. While Air Cleanliness is disabled it stores the state value without changing the global totals. |
+| `cbrn_air_cleanliness_clear_chemical_state_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Removes the state's stored chemical Air Cleanliness contribution from the global chemical total and affected-state count, then clears the state value. |
 | `cbrn_chemical_refresh_state_modifier`, `cbrn_chemical_refresh_continuing_death_profile`, and `cbrn_chemical_schedule_continuing_deaths` | State scope. Derive the presentation modifier and the exact continuing-death profile and schedule from the canonical contamination receipt. |
 | `cbrn_chemical_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
 
@@ -1276,9 +1280,9 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 
 | Effect | Scope and contract |
 | --- | --- |
-| `bio_lifecycle_set_current_agent_air_contribution` | State scope. Maps the current agent's intensity band to the centralized receipt contribution for the active agent slot and applies only the delta to the global biological total and affected-state count. An agent slot without an active state flag contributes zero. |
+| `bio_lifecycle_set_current_agent_air_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Maps the current agent's intensity band to the centralized receipt contribution for the active agent slot and applies only the delta to the global biological total and affected-state count. An agent slot without an active state flag contributes zero. |
 | `bio_lifecycle_update_current_agent_air_contribution_from_slot` | State scope. Reads the active agent slot's stored intensity and calls `bio_lifecycle_set_current_agent_air_contribution`. |
-| `bio_lifecycle_clear_current_agent_air_contribution` | State scope. Removes only the current agent slot's stored receipt and its share of the global biological total. It does not alter incubation, deaths, attribution, or treatment ledgers. |
+| `bio_lifecycle_clear_current_agent_air_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Removes only the current agent slot's stored receipt and its share of the global biological total. It does not alter incubation, deaths, attribution, or treatment ledgers. |
 | `bio_lifecycle_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for active biological episodes; it is not a periodic country or world pulse. |
 
 The biological effect does not reuse the chemical contamination ledger and does not turn weaponized zombies into ordinary pathogen receipts. Shared lifecycle helpers remain in the biological files.

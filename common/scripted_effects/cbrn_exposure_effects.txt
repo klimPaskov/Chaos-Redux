@@ -534,6 +534,8 @@ cbrn_calculate_chemical_action_outputs = {
 		multiply_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_medical_designer_effect.antidote_nerve_death_mult }
 	}
 	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = cbrn_action_military_death_floor }
+	# Lethality is scaled; strength damage and its bound use the real fraction.
+	divide_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_agent_lethality.scale }
 	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = @CR_SC_CBRN_MATH_ZERO max = constant:cbrn_action_output_bounds.military_death_fraction_max }
 
 	set_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_route_civilian_exposed_fraction }
@@ -623,6 +625,8 @@ cbrn_calculate_chemical_action_outputs = {
 		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.strategic compare = greater_than_or_equals } }
 		set_temp_variable = { cbrn_action_death_cap = constant:cbrn_episode_death_cap.strategic_chemical }
 	}
+	# The civilian fraction stays scaled until the state Deaths helper divides it.
+	multiply_temp_variable = { cbrn_action_death_cap = constant:cbrn_agent_lethality.scale }
 	clamp_temp_variable = { var = cbrn_action_civilian_death_fraction min = @CR_SC_CBRN_MATH_ZERO max = cbrn_action_death_cap }
 
 	set_temp_variable = { cbrn_action_contamination_points = cbrn_route_contamination_points }

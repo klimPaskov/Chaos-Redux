@@ -2088,6 +2088,9 @@ bio_lifecycle_register_current_agent_weekly_deaths = {
 		set_temp_variable = { chaos_state_deaths_exact_percent = constant:bio_lifecycle_math.one }
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
 		set_temp_variable = { chaos_deaths_change = constant:bio_lifecycle_math.zero }
+		# The weekly rates are stored scaled; the shared helper divides after
+		# counting the state population in people.
+		set_temp_variable = { chaos_state_deaths_percent_divisor = constant:bio_lifecycle_death_rate.scale }
 		chaos_meter_register_state_civilian_deaths_percent = yes
 		if = {
 			limit = { check_variable = { chaos_deaths_change > constant:bio_lifecycle_math.zero } }
