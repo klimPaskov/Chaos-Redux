@@ -381,7 +381,7 @@ The detailed scenario records in this section retain earlier bounded projections
 - Asset handoffs and manifests are implemented and retained as provenance and wiring evidence.
 - The inherited-liability consumer tranche is implemented and parent-adopted with a corrected national inheritance rule; see D4 in `agent_decisions_2026-10-04.md` and the adoption section of `subagent_handoffs/inherited_liability_consumer_implementation_2026-10-03.md`.
 - Hidden-row paid paths, corridor restoration, breakup and scar, secured-value salvage, and multi-region inherited priority are blocked on Event 34, which has no per-region project or corridor system; they are closed for Event 35 rather than queued.
-- Missing mapped project producers remain accepted and queued under the user's full package requirement.
+- The missing mapped project producers are implemented: finance restoration, transport integration, and international reconstruction all have producers, and Rescue Strategic Industry has its Stabilization closers; see D6 in `agent_decisions_2026-10-04.md`.
 - Exact Event 34 multi-state producer history and secured-value payload remain blocked on that owner's missing source data; Event 35 must not manufacture them from aggregate counts.
 
 ## Skills and subagents

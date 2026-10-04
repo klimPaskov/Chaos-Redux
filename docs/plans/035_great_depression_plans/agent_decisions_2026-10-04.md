@@ -133,3 +133,28 @@ The shared cluster documents treat no-delay `country_event` dispatch as synchron
 `chaosx.nr35.1` therefore records the newest history sequence as a dispatch floor, and an independent start schedules the hidden `chaosx.nr35.10` one hour later.
 That callback fills the newest countryless Event 35 row at or above the floor with the country and its starting Severity, which works whether dispatch is synchronous (the row is one above the floor) or queued (the row is at the floor), and an older stale row below the floor is never touched.
 If no such row exists, it records a full row itself.
+
+## D8. Opening news picture
+
+Disposition: implemented (commit `7704873f7`).
+
+`chaosx.news.40` uses `GFX_news_event_great_depression`, the Event 35 news art that `chaosx.news.95` already uses, instead of the generic gathering-protest picture.
+
+## Commit index
+
+| Decision | Commit |
+| --- | --- |
+| D1 super-event slot 105 | `0efa5b56c` |
+| D2 partner target rules | `0b18abb41` |
+| D3 incident state picker | `1bc0522df` |
+| D4 inherited-liability adoption | `c398021a9` |
+| D5 Event Log wiring | `a5a01b54e` |
+| D6 doctrine projects and producers | `97d28a7a4` |
+| D7 and the D5 amendment, Negative Economy cluster and deferred history completion | `0c0d4f8d7` |
+| D8 opening news picture | `7704873f7` |
+
+## Remaining limits
+
+- needs_live_game: super-event 105 display, the single history row on a random and on a cluster firing, the Event Details evolution toggles, the cluster appearing and firing, and the new decisions' tooltips and map targeting.
+- The HOI4 MCP probability routes (`hoi4.probability_inspect`, `hoi4.decision_inspect`) rejected every call this round, so no numeric before/after AI evidence exists for D2, D3 or D6.
+- Event 35 has no event-pool availability hook, so the normal pool and the Negative Economy trigger row can still select it when no country is a valid independent target; the firing then does nothing. Adding that hook means editing the shared pool evaluator and is left for the event-system owner.
