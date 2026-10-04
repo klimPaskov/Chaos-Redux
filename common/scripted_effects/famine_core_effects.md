@@ -15,6 +15,12 @@ Simulation clocks, stock mutation, stage commits, mortality, flight and presenta
 | `famine_register_active_state` | Exact valid state under an ordinary famine owner. | Existing simulation-active flag and registry result. | Retains ordinary registration and candidate-capacity dirty marking after common insertion. |
 | `famine_enqueue_food_observation_assessment` | Exact valid state with a genuine material assessment. | Existing sparse registry membership and `famine_food_observation_pending_job` only when simulation is not already active. | No query-caused active/category flags. `famine_process_registered_state` consumes the pending job before ordinary activation/evaluation. Cleanup clears pending markers. |
 
+Stored famine dates are copies of `global.date`, which counts one game hour as 0.00001.
+Day counts therefore pass through the shared `chaosx_convert_days_to_date_offset` helper before they are added to a date, and date differences are compared with converted thresholds or turned back into days with `chaosx_convert_date_offset_to_days`.
+`famine_schedule_next_mortality_date` (state scope, input temporary `famine_mortality_interval` in days) sets `famine_food_next_mortality_date`.
+`famine_set_mission_relief_deadline` and `famine_set_mission_route_hold_deadline` (state scope, no inputs) set the relief and route-hold mission deadlines from `famine_mission_timing`.
+Stage candidate and recovery timers compare the elapsed date difference with the converted day threshold, and `famine_food_exposure_days` stores whole elapsed days.
+
 Temporary return fields must be declared in the caller before invoking the shared helper so their lifetime spans the parent effect chain.
 The evaluator and observer declare `famine_food_reserve_score_relief_output`, `famine_food_score_raw` and `famine_requested_food_stage` before the relevant calls.
 

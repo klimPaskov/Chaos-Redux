@@ -6,6 +6,37 @@
 # the exact transfer request. A missing, stale, or invalid destination leaves
 # the marker at zero and therefore fails the transfer closed.
 
+# STATE scope. Mission deadlines are stored dates. Date variables count one
+# game hour as 0.00001, so each day count passes through
+# chaosx_convert_days_to_date_offset before it is added to global.date.
+
+# Set migration_mission_evacuation_deadline evacuation_protection_days after today.
+migration_set_mission_evacuation_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:migration_mission_timing.evacuation_protection_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { migration_mission_evacuation_deadline = global.date }
+	add_to_variable = { migration_mission_evacuation_deadline = chaosx_date_offset }
+}
+
+# Set migration_mission_reception_observation_deadline reception_observation_days after today.
+migration_set_mission_reception_observation_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:migration_mission_timing.reception_observation_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { migration_mission_reception_observation_deadline = global.date }
+	add_to_variable = { migration_mission_reception_observation_deadline = chaosx_date_offset }
+}
+
+# Set migration_mission_return_deadline return_route_observation_days after today.
+migration_set_mission_return_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:migration_mission_timing.return_route_observation_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { migration_mission_return_deadline = global.date }
+	add_to_variable = { migration_mission_return_deadline = chaosx_date_offset }
+}
+
 # STATE scope at the selected physical origin. Stage the new organized-
 # evacuation cohort before any population debit so the atomic preflight can
 # prove an exact current host. A failed preflight/zero-debit attempt removes
@@ -51,8 +82,7 @@ migration_decision_finalize_organized_evacuation = {
 			}
 			set_state_flag = migration_mission_evacuation_subject
 			set_variable = { migration_mission_evacuation_cohort_id = migration_cohort_id_result }
-			set_variable = { migration_mission_evacuation_deadline = global.date }
-			add_to_variable = { migration_mission_evacuation_deadline = constant:migration_mission_timing.evacuation_protection_days }
+			migration_set_mission_evacuation_deadline = yes
 			ROOT = {
 				migration_claim_mission_slot = yes
 				set_country_flag = migration_mission_evacuation_active

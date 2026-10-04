@@ -10,4 +10,6 @@
 
 `migration_decision_record_medical_reception_receipt` records the durable exact arrival exposure receipt only after the transfer projection, destination bind, reception delta, and history result are valid and the persisted origin is outbreak-exposed at arrival. It does not create a route, cohort, ledger, or service by itself.
 
+`migration_set_mission_evacuation_deadline`, `migration_set_mission_reception_observation_deadline` and `migration_set_mission_return_deadline` are STATE-scoped and take no inputs. Each sets its mission deadline the matching `migration_mission_timing` day count after today, converting the days to date units through the shared `chaosx_convert_days_to_date_offset` helper because a stored date counts one game hour as 0.00001.
+
 None of these adapters selects destinations, mutates flight/trapped ledgers, unregisters a positive row, or replaces the exact transfer core. The core remains responsible for measured origin debit, survivor credit, route deaths, cohort host/history, generation, and paired-obligation reconciliation.

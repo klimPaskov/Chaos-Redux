@@ -1799,15 +1799,18 @@ famine_transition_food_stage = {
 		}
 		if = {
 			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } }
-			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.acute_shortage_interval_days }
+			set_temp_variable = { famine_mortality_interval = constant:famine_mortality.acute_shortage_interval_days }
+			famine_schedule_next_mortality_date = yes
 		}
 		else_if = {
 			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine   compare = equals } }
-			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.famine_interval_days }
+			set_temp_variable = { famine_mortality_interval = constant:famine_mortality.famine_interval_days }
+			famine_schedule_next_mortality_date = yes
 		}
 		else_if = {
 			limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } }
-			add_to_variable = { famine_food_next_mortality_date = constant:famine_mortality.catastrophic_interval_days }
+			set_temp_variable = { famine_mortality_interval = constant:famine_mortality.catastrophic_interval_days }
+			famine_schedule_next_mortality_date = yes
 		}
 		if = {
 			limit = {
@@ -2070,8 +2073,11 @@ famine_evaluate_food_security = {
 		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.acute_shortage   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.acute_shortage_candidate_days } }
 		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.famine   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.famine_candidate_days } }
 		if = { limit = { check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.catastrophic_famine   compare = equals } } set_temp_variable = { famine_food_candidate_days = constant:famine_food_timing.catastrophic_candidate_days } }
+		set_temp_variable = { chaosx_date_days = famine_food_candidate_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		if = {
-			limit = { check_variable = { var = famine_food_stage_candidate_elapsed value = famine_food_candidate_days compare = greater_than_or_equals } }
+			limit = { check_variable = { var = famine_food_stage_candidate_elapsed value = chaosx_date_offset compare = greater_than_or_equals } }
 			famine_transition_food_stage = yes
 		}
 	}
@@ -2088,7 +2094,10 @@ famine_evaluate_food_security = {
 			if = { limit = { NOT = { has_variable = famine_food_recovery_since_date } } set_variable = { famine_food_recovery_since_date = global.date } }
 			set_temp_variable = { famine_food_recovery_elapsed = global.date }
 			subtract_from_temp_variable = { famine_food_recovery_elapsed = famine_food_recovery_since_date }
-			if = { limit = { check_variable = { var = famine_food_recovery_elapsed value = famine_food_recovery_days compare = greater_than_or_equals } } famine_transition_food_stage = yes }
+			set_temp_variable = { chaosx_date_days = famine_food_recovery_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			if = { limit = { check_variable = { var = famine_food_recovery_elapsed value = chaosx_date_offset compare = greater_than_or_equals } } famine_transition_food_stage = yes }
 		}
 		else = { clear_variable = famine_food_recovery_since_date }
 	}
@@ -2101,6 +2110,10 @@ famine_evaluate_food_security = {
 		limit = { famine_food_stage_requires_mortality = yes }
 		set_temp_variable = { famine_food_exposure_elapsed = global.date }
 		subtract_from_temp_variable = { famine_food_exposure_elapsed = famine_food_stage_started_date }
+		set_temp_variable = { chaosx_date_offset = famine_food_exposure_elapsed }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { famine_food_exposure_elapsed = chaosx_date_days }
 		clamp_temp_variable = { var = famine_food_exposure_elapsed min = constant:humanitarian_runtime.zero max = constant:famine_food_timing.maximum_exposure_days }
 		set_variable = { famine_food_exposure_days = famine_food_exposure_elapsed }
 		famine_apply_mortality = yes
@@ -2516,6 +2529,19 @@ famine_requisition_reserves = {
 }
 
 
+# STATE scope. Input: temporary famine_mortality_interval, a day count. Sets
+# famine_food_next_mortality_date that many days after today. Date variables
+# count one game hour as 0.00001, so the interval passes through
+# chaosx_convert_days_to_date_offset before it is added to global.date.
+famine_schedule_next_mortality_date = {
+	set_temp_variable = { chaosx_date_days = famine_mortality_interval }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { famine_food_next_mortality_date = global.date }
+	add_to_variable = { famine_food_next_mortality_date = chaosx_date_offset }
+}
+
+
 # One mortality pulse is one call to the shared exact state-loss helper. The
 # helper applies the protected floor, records one famine reason, and returns
 # the actual applied result; this effect never performs a second debit.
@@ -2636,8 +2662,7 @@ famine_apply_mortality = {
 				set_temp_variable = { famine_mortality_result = state_civilian_population_loss_applied }
 				famine_record_exact_mortality_condemnation = yes
 			}
-			set_variable = { famine_food_next_mortality_date = global.date }
-			add_to_variable = { famine_food_next_mortality_date = famine_mortality_interval }
+			famine_schedule_next_mortality_date = yes
 		}
 	}
 }
@@ -2831,6 +2856,28 @@ famine_initialize_runtime = {
 		if = { limit = { NOT = { has_variable = global.famine_historical_profile_anchor_states_count } } set_variable = { global.famine_historical_profile_anchor_states_count = global.famine_historical_profile_anchor_states^num } }
 		set_global_flag = famine_runtime_initialized
 	}
+}
+
+# STATE scope. Mission deadlines are stored dates. Date variables count one
+# game hour as 0.00001, so each day count passes through
+# chaosx_convert_days_to_date_offset before it is added to global.date.
+
+# Set famine_mission_relief_deadline relief_delivery_observation_days after today.
+famine_set_mission_relief_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:famine_mission_timing.relief_delivery_observation_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { famine_mission_relief_deadline = global.date }
+	add_to_variable = { famine_mission_relief_deadline = chaosx_date_offset }
+}
+
+# Set famine_mission_route_hold_deadline repair_route_hold_days after today.
+famine_set_mission_route_hold_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:famine_mission_timing.repair_route_hold_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { famine_mission_route_hold_deadline = global.date }
+	add_to_variable = { famine_mission_route_hold_deadline = chaosx_date_offset }
 }
 
 famine_claim_mission_slot = {

@@ -80,12 +80,17 @@ migration_spontaneous_movement_calculate_request = {
 	}
 }
 
-# STATE scope. Persists the one-date/cooldown guard before the route draw. A
+# STATE scope. Persists the one-date/cooldown guard before the route draw. The
+# cooldown day count is converted to date units (one game hour is 0.00001)
+# before it is added to global.date. A
 # save/reload therefore cannot replay the same day’s attempt.
 migration_spontaneous_movement_mark_attempt = {
 	set_variable = { migration_spontaneous_movement_last_date = global.date }
+	set_temp_variable = { chaosx_date_days = constant:migration_spontaneous_movement.cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { migration_spontaneous_movement_cooldown_until_date = global.date }
-	add_to_variable = { migration_spontaneous_movement_cooldown_until_date = constant:migration_spontaneous_movement.cooldown_days }
+	add_to_variable = { migration_spontaneous_movement_cooldown_until_date = chaosx_date_offset }
 }
 
 # STATE scope. Add only the positive amount needed to bring the trapped ledger
