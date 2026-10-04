@@ -40,4 +40,4 @@ The analyzer flags Chaos Warfare as starved in every scenario (intended, no vali
 
 ## Remaining gap
 
-DR-A03 still ranks Army first because air-heavy industry cannot be told apart from land industry by factory counts alone; Air holds second place. DR-A05 cannot see planned dockyards, so a fully landlocked country gains Navy weight only once it controls a coastal state. Both are listed under future plans in the overview.
+DR-A03 still ranks Army first because air-heavy industry cannot be told apart from land industry by factory counts alone; Air holds second place. DR-A05 cannot see planned dockyards, so a fully landlocked country gains Navy weight only once it controls a coastal state. Both gaps are closed by decisions D17 (maritime plan for a landlocked country) and D18 (air-centred industry); see `probability_domain_round2_2026-10-05.md`.
