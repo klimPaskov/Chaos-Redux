@@ -37,6 +37,8 @@ The 1933 source ceiling of 5,700 people is not the same population and date as t
 This is evidence of missing policy timing and origin-preserving living movement, not permission to tune a generic monthly death rate to the Danish total.
 No accepted gameplay exception or Sweden transfer was added here; that requires a source and route contract that preserves one physical debit, destination credit and original responsibility.
 
+Superseding disposition, 2026-10-04 (agent decision 6 in `docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md`): implemented. Danish-origin rows are deferred from the generic campaign until the October 1943 order, and the dated rescue moves 0.94 of each living Danish home row to Sweden through the exact movement receipt in escape mode. `danish_rescue_source_tests.py` runs the production monthly pass: the pre-change rule reproduces these 2,859 deaths, while deferral plus rescue leaves 81 deaths and 3,940 escaped from the same 4,192 allocated people. The generic campaign fraction is unchanged and Denmark is still not added to the thirteen-state subtotal.
+
 ## Provenance and limits
 
 Installed vanilla state files `history/states/110-Norway.txt` lines 3–5 and 21 (SHA-256 `76f33f262e6d38e835ceeae09c6131b4864b204f242af59c29ab9ee20965acaf`), `9-Czechoslovakia.txt` lines 2–4, 13 and 36–39 (`0305620291a5478cedb34f4c710c50b1e7cf2810baedb6f91d5a59706568cc45`), `75-Moravia.txt` lines 2–4, 13 and 28–31 (`70cd11433ea48f8c27022bc80410febbad1786a5905ca06e89ef563fead1ec6d`), and `108-Eastern Serbia.txt` lines 3–4, 13 and 26 (`18389a1054b83c86c9c43003194c4ae649b6fda518f861d0e7a867d3052b7067`) supply installed IDs, names, initial populations and owners.

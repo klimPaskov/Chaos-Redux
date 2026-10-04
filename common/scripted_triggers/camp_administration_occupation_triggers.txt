@@ -30,6 +30,44 @@ camp_occ_state_can_pulse = {
 	# External receipts retire exposure before each distinct campaign transaction.
 	# A generic occupation law is not a second debit of that transaction.
 }
+# STATE, row origin. USHMM: the largely independent Danish government kept
+# Danish Jews out of German deportation until the order of October 1943, so
+# the campaign does not reach a Danish-origin row before then.
+camp_occ_origin_campaign_deferred = {
+	is_core_of = DEN
+	date < 1943.10.1
+}
+# Any scope. The escape across the Oresund follows the October 1943 order
+# (USHMM: about 7,200 people reached Sweden in September and October 1943).
+# A Danish cohort first exposed later flees at its first exposed month.
+camp_occ_danish_rescue_window_open = {
+	NOT = { date < 1943.10.1 }
+}
+# Any scope. Sweden exists and remains a refuge: not a German subject or
+# faction member, not at war with Denmark, and either neutral or fighting Germany.
+camp_occ_danish_refuge_available = {
+	country_exists = SWE
+	SWE = {
+		NOT = { is_subject_of = GER }
+		NOT = { is_in_faction_with = GER }
+		NOT = { has_war_with = DEN }
+		OR = {
+			has_war = no
+			has_war_with = GER
+		}
+	}
+}
+# STATE, refuge destination held by Sweden itself and outside the camp registry.
+camp_occ_rescue_refuge_state_valid = {
+	is_owned_and_controlled_by = SWE
+	NOT = { has_state_flag = camp_occ_registered }
+}
+# STATE, Danish home state hosting a Danish-origin row under German control.
+camp_occ_danish_rescue_source_ready = {
+	is_core_of = DEN
+	camp_occ_state_has_current_authority = yes
+	NOT = { has_state_flag = camp_occ_danish_rescue_done }
+}
 camp_occ_country_has_records = {
 	OR = { check_variable = { camp_occ_states^num > 0 } check_variable = { camp_occ_eligible_states^num > 0 } }
 }

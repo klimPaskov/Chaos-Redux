@@ -23,6 +23,7 @@ camp_occ_initialize_records = {
 	set_variable = { camp_occ_total_released_k = 0 }
 	set_variable = { camp_occ_total_moved_out_k = 0 }
 	set_variable = { camp_occ_total_moved_in_k = 0 }
+	set_variable = { camp_occ_total_escaped_k = 0 }
 }
 
 # Country-owned sparse rows. All arrays are append-only and aligned; IDs, not indexes, identify cohorts.
@@ -400,10 +401,20 @@ camp_occ_transfer_survivors_exact = {
 				if = {
 					limit = {
 						camp_origin_host_provenance_ready = yes
-						is_controlled_by = var:camp_occ_transfer_authority
 						OR = {
-							NOT = { has_state_flag = camp_occ_registered }
-							AND = { camp_occ_state_has_current_authority = yes check_variable = { camp_occ_responsible_country = camp_occ_transfer_authority } }
+							AND = {
+								NOT = { check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid } }
+								is_controlled_by = var:camp_occ_transfer_authority
+								OR = {
+									NOT = { has_state_flag = camp_occ_registered }
+									AND = { camp_occ_state_has_current_authority = yes check_variable = { camp_occ_responsible_country = camp_occ_transfer_authority } }
+								}
+							}
+							# Escape mode: a refuge outside the authority's control.
+							AND = {
+								check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid }
+								camp_occ_rescue_refuge_state_valid = yes
+							}
 						}
 					}
 					set_temp_variable = { camp_occ_transfer_destination_valid = constant:camp_occ_value.transfer_valid }
@@ -492,6 +503,7 @@ camp_occ_transfer_survivors_exact = {
 		}
 	}
 	set_temp_variable = { camp_occ_transfer_route_proven = 0 }
+	set_temp_variable = { camp_occ_transfer_escape = 0 }
 	set_temp_variable = { camp_occ_transfer_requested_people = 0 }
 	set_temp_variable = { camp_occ_transfer_row_id = 0 }
 }
@@ -521,28 +533,45 @@ camp_occ_commit_transfer_rows = {
 		subtract_from_temp_variable = { camp_occ_transfer_new_row_index = constant:camp_occ_value.row_index_step }
 		set_variable = { camp_occ_row_moved_in_k^camp_occ_transfer_new_row_index = camp_occ_transfer_amount_k }
 		add_to_variable = { camp_occ_total_moved_in_k = camp_occ_transfer_amount_k }
+		if = {
+			limit = { check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid } }
+			# Escaped beyond the authority's reach: the arrival row is retired as
+			# released at the refuge, keeping its origin, root and authority.
+			set_variable = { camp_occ_row_released_k^camp_occ_transfer_new_row_index = camp_occ_transfer_amount_k }
+			set_variable = { camp_occ_row_amounts_k^camp_occ_transfer_new_row_index = 0 }
+			set_variable = { camp_occ_row_statuses^camp_occ_transfer_new_row_index = constant:camp_occ_row_status.released }
+			add_to_variable = { camp_occ_total_escaped_k = camp_occ_transfer_amount_k }
+		}
 	}
 	subtract_from_variable = { camp_occ_remaining_k = camp_occ_transfer_amount_k }
 	add_to_variable = { camp_occ_total_moved_out_k = camp_occ_transfer_amount_k }
 	set_variable = { camp_occ_observed_population_k = state_population_k }
+	if = {
+		limit = { check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid } }
+		add_to_variable = { camp_occ_total_escaped_k = camp_occ_transfer_amount_k }
+	}
+	# An escape refuge is outside the authority's control and never joins its registry.
 	event_target:camp_occ_transfer_destination = {
 		if = {
-			limit = { NOT = { has_state_flag = camp_occ_registered } }
-			set_state_flag = camp_occ_registered
-			set_variable = { camp_occ_responsible_country = camp_occ_transfer_authority }
-			set_variable = { camp_occ_cohort_origin_state = camp_occ_transfer_origin }
-			set_variable = { camp_occ_profile_id = camp_occ_transfer_profile }
-			set_variable = { camp_occ_initial_k = 0 }
-			set_variable = { camp_occ_remaining_k = 0 }
-			camp_occ_initialize_records = yes
-			set_variable = { camp_occ_native_row_id = camp_occ_appended_row_id }
-			var:camp_occ_responsible_country = { add_to_array = { array = camp_occ_states value = PREV } camp_rework_register_country_for_monthly_pulse = yes }
+			limit = { NOT = { check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid } } }
+			if = {
+				limit = { NOT = { has_state_flag = camp_occ_registered } }
+				set_state_flag = camp_occ_registered
+				set_variable = { camp_occ_responsible_country = camp_occ_transfer_authority }
+				set_variable = { camp_occ_cohort_origin_state = camp_occ_transfer_origin }
+				set_variable = { camp_occ_profile_id = camp_occ_transfer_profile }
+				set_variable = { camp_occ_initial_k = 0 }
+				set_variable = { camp_occ_remaining_k = 0 }
+				camp_occ_initialize_records = yes
+				set_variable = { camp_occ_native_row_id = camp_occ_appended_row_id }
+				var:camp_occ_responsible_country = { add_to_array = { array = camp_occ_states value = PREV } camp_rework_register_country_for_monthly_pulse = yes }
+			}
+			add_to_variable = { camp_occ_remaining_k = camp_occ_transfer_amount_k }
+			add_to_variable = { camp_occ_initial_k = camp_occ_transfer_amount_k }
+			add_to_variable = { camp_occ_total_moved_in_k = camp_occ_transfer_amount_k }
+			set_variable = { camp_occ_observed_population_k = state_population_k }
+			set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
 		}
-		add_to_variable = { camp_occ_remaining_k = camp_occ_transfer_amount_k }
-		add_to_variable = { camp_occ_initial_k = camp_occ_transfer_amount_k }
-		add_to_variable = { camp_occ_total_moved_in_k = camp_occ_transfer_amount_k }
-		set_variable = { camp_occ_observed_population_k = state_population_k }
-		set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
 	}
 }
 
@@ -1210,12 +1239,17 @@ camp_occ_monthly_country = {
 			if = { limit = { NOT = { camp_occ_state_has_current_authority = yes } } camp_occ_close_state = yes }
 		}
 		camp_occ_try_lodz_auschwitz_transfer = yes
+		if = { limit = { original_tag = GER camp_occ_danish_rescue_window_open = yes } camp_occ_try_danish_rescue = yes }
 		set_temp_variable = { camp_occ_month_row_index = camp_occ_row_ids^num }
 		while_loop_effect = {
 			limit = { check_variable = { camp_occ_month_row_index > 0 } }
 			subtract_from_temp_variable = { camp_occ_month_row_index = constant:camp_occ_value.row_index_step }
 			if = {
-				limit = { check_variable = { camp_occ_row_amounts_k^camp_occ_month_row_index > 0 } check_variable = { camp_occ_row_statuses^camp_occ_month_row_index = constant:camp_occ_row_status.active } }
+				limit = {
+					check_variable = { camp_occ_row_amounts_k^camp_occ_month_row_index > 0 }
+					check_variable = { camp_occ_row_statuses^camp_occ_month_row_index = constant:camp_occ_row_status.active }
+					var:camp_occ_row_origins^camp_occ_month_row_index = { NOT = { camp_occ_origin_campaign_deferred = yes } }
+				}
 				set_temp_variable = { camp_occ_active_row_index = camp_occ_month_row_index }
 				set_temp_variable = { camp_occ_active_row_id = camp_occ_row_ids^camp_occ_month_row_index }
 				set_temp_variable = { camp_occ_requested_k = camp_occ_row_amounts_k^camp_occ_month_row_index }
@@ -1230,6 +1264,76 @@ camp_occ_monthly_country = {
 			}
 		}
 		if = { limit = { original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
+	}
+}
+
+# Country, responsible German authority, from the October 1943 order. Each
+# living Danish-origin row still at its home state sends its escaping share
+# (camp_occ_rescue.danish_escape_share) to Sweden once, through the exact
+# movement receipt in escape mode: one measured debit and one measured credit,
+# origin and responsibility kept, no death recorded. Without a valid refuge
+# nothing moves and nothing is recorded.
+camp_occ_try_danish_rescue = {
+	if = {
+		limit = { camp_occ_danish_refuge_available = yes }
+		set_temp_variable = { camp_occ_rescue_refuge_state = constant:camp_occ_rescue.refuge_anchor_state }
+		if = {
+			limit = { var:camp_occ_rescue_refuge_state = { camp_occ_rescue_refuge_state_valid = yes } }
+			var:camp_occ_rescue_refuge_state = { save_event_target_as = camp_occ_rescue_refuge }
+		}
+		else = {
+			SWE = { capital_scope = { if = { limit = { camp_occ_rescue_refuge_state_valid = yes } save_event_target_as = camp_occ_rescue_refuge } } }
+		}
+		if = {
+			limit = { has_event_target = camp_occ_rescue_refuge }
+			set_temp_variable = { camp_occ_rescue_row_index = camp_occ_row_ids^num }
+			while_loop_effect = {
+				limit = { check_variable = { camp_occ_rescue_row_index > 0 } }
+				subtract_from_temp_variable = { camp_occ_rescue_row_index = constant:camp_occ_value.row_index_step }
+				if = {
+					limit = {
+						check_variable = { camp_occ_row_statuses^camp_occ_rescue_row_index = constant:camp_occ_row_status.active }
+						check_variable = { camp_occ_row_amounts_k^camp_occ_rescue_row_index > 0 }
+						var:camp_occ_row_origins^camp_occ_rescue_row_index = { is_core_of = DEN }
+						var:camp_occ_row_hosts^camp_occ_rescue_row_index = { camp_occ_danish_rescue_source_ready = yes }
+					}
+					set_temp_variable = { camp_occ_rescue_requested_people = camp_occ_row_amounts_k^camp_occ_rescue_row_index }
+					multiply_temp_variable = { camp_occ_rescue_requested_people = constant:camp_occ_rescue.danish_escape_share }
+					multiply_temp_variable = { camp_occ_rescue_requested_people = constant:camp_occ_value.people_per_k }
+					# Whole people, never above the escaping share of the finite row.
+					set_temp_variable = { camp_occ_rescue_ceiling_people = camp_occ_rescue_requested_people }
+					round_temp_variable = camp_occ_rescue_requested_people
+					if = {
+						limit = { check_variable = { camp_occ_rescue_requested_people > camp_occ_rescue_ceiling_people } }
+						subtract_from_temp_variable = { camp_occ_rescue_requested_people = constant:camp_occ_value.one_person }
+					}
+					if = {
+						limit = { check_variable = { camp_occ_rescue_requested_people > 0 } }
+						set_temp_variable = { camp_occ_rescue_row_id = camp_occ_row_ids^camp_occ_rescue_row_index }
+						set_temp_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_invalid }
+						var:camp_occ_row_hosts^camp_occ_rescue_row_index = {
+							event_target:camp_occ_rescue_refuge = { camp_occ_stage_transfer_destination = yes }
+							set_temp_variable = { camp_occ_transfer_route_proven = constant:camp_occ_value.transfer_valid }
+							set_temp_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid }
+							set_temp_variable = { camp_occ_transfer_row_id = camp_occ_rescue_row_id }
+							set_temp_variable = { camp_occ_transfer_requested_people = camp_occ_rescue_requested_people }
+							camp_occ_transfer_survivors_exact = yes
+							if = {
+								limit = { check_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_valid } }
+								set_state_flag = camp_occ_danish_rescue_done
+								set_temp_variable = { camp_occ_rescue_record_state = THIS.id }
+							}
+						}
+						if = {
+							limit = { check_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_valid } }
+							set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.escape }
+							set_temp_variable = { camp_admin_record_state_id = camp_occ_rescue_record_state }
+							camp_admin_record_history = yes
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
