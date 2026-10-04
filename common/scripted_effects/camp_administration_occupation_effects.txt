@@ -348,3 +348,37 @@ camp_occ_historical_setup = {
 		JAP = { every_controlled_state = { camp_occ_track_controlled_state = yes } }
 	}
 }
+
+# Provenance library exact occupation-row dependency.
+camp_occ_distribute_known_origin_removal = {
+	set_temp_variable = { camp_occ_known_outside_actual_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_origin_single_reconciliation_accepted = constant:camp_admin_value.zero }
+	if = {
+		limit = {
+			has_state_flag = camp_origin_single_origin_reconciliation_pending
+			NOT = { has_state_flag = camp_origin_ambiguous }
+			check_variable = { camp_origin_pending_single_family = constant:camp_origin_family.occupation }
+			camp_origin_host_rows_valid = yes
+		}
+		set_temp_variable = { camp_occ_known_outside_index = camp_origin_pending_single_row_id }
+		subtract_from_temp_variable = { camp_occ_known_outside_index = constant:camp_occ_value.row_first_id }
+		set_temp_variable = { camp_occ_known_outside_actual_k = camp_origin_pending_single_removal_k }
+		var:camp_occ_responsible_country = {
+			set_temp_variable = { camp_occ_row_after_k = camp_occ_row_amounts_k^camp_occ_known_outside_index }
+			subtract_from_temp_variable = { camp_occ_row_after_k = camp_occ_known_outside_actual_k }
+			set_variable = { camp_occ_row_amounts_k^camp_occ_known_outside_index = camp_occ_row_after_k }
+			set_temp_variable = { camp_occ_row_removed_after_k = camp_occ_row_removed_k^camp_occ_known_outside_index }
+			add_to_temp_variable = { camp_occ_row_removed_after_k = camp_occ_known_outside_actual_k }
+			set_variable = { camp_occ_row_removed_k^camp_occ_known_outside_index = camp_occ_row_removed_after_k }
+			add_to_variable = { camp_occ_total_exposure_removed_k = camp_occ_known_outside_actual_k }
+			add_to_variable = { camp_occ_month_exposure_removed_k = camp_occ_known_outside_actual_k }
+		}
+		subtract_from_variable = { camp_occ_remaining_k = camp_occ_known_outside_actual_k }
+		add_to_variable = { camp_occ_total_exposure_removed_k = camp_occ_known_outside_actual_k }
+		add_to_variable = { camp_occ_month_exposure_removed_k = camp_occ_known_outside_actual_k }
+		set_temp_variable = { camp_origin_single_reconcile_contract = constant:camp_admin_value.one }
+		set_temp_variable = { camp_origin_single_reconcile_sequence = camp_origin_observation_sequence }
+		set_temp_variable = { camp_origin_single_reconcile_amount_k = camp_occ_known_outside_actual_k }
+		camp_origin_acknowledge_single_origin_reconciliation = yes
+	}
+}

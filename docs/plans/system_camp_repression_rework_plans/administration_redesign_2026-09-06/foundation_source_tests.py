@@ -139,7 +139,7 @@ class Runtime:
             elif k=='save_event_target_as': self.targets[v]=s
             elif k in ('set_country_flag','set_state_flag'): self.scopes[s]['flags'].add(v)
             elif k in ('clr_country_flag','clr_state_flag'): self.scopes[s]['flags'].discard(v)
-            elif k in ('clear_variable','clear_temp_variable'): (self.temp if k=='clear_temp_variable' else self.scopes[s]).pop(v,None)
+            elif k=='clear_variable': self.scopes[s].pop(v,None)
             elif k in ('add_dynamic_modifier','remove_dynamic_modifier'):
                 getattr(self.scopes[s]['mods'],'add' if k.startswith('add') else 'discard')(get(v,'modifier'))
             elif k=='add_to_array': self.scopes[s]['arrays'].setdefault(get(v,'array'),[]).append(self.target(get(v,'value'),s,prev))
