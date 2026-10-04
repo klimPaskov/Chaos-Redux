@@ -4334,6 +4334,31 @@ fire_event_by_temp_id_no_cluster = {
 			update_last_fired_event_display = yes
 		}
 		else = {
+			# Acid Rain consumes this country-owned origin receipt in its receiver.
+			# A queued manual request remains forced until that receiver consumes it.
+			if = {
+				limit = { check_variable = { event_fire_record_id = constant:acid_rain_event.id } }
+				if = {
+					limit = {
+						OR = {
+							check_variable = { events_log_manual_event_detail_trigger > constant:acid_rain_runtime.zero }
+							AND = {
+								has_country_flag = event_cluster_member_fire_context
+								check_variable = { event_cluster_pending_batch_manual > constant:acid_rain_runtime.zero }
+							}
+						}
+					}
+					set_country_flag = acid_rain_launch_forced
+					clr_country_flag = acid_rain_launch_authorized
+				}
+				else = {
+					if = {
+						limit = { NOT = { has_country_flag = acid_rain_launch_forced } }
+						set_country_flag = acid_rain_launch_authorized
+					}
+				}
+			}
+
 			if = {
 				limit = { check_variable = { event_fire_record_id = 4 } }
 				random_war_fire_current_context = yes

@@ -10,23 +10,93 @@
 #   header and event ledger       x=24..876, y=12..62
 #   world map                     x=24..584, y=74..374
 #   front/global card stack       x=604..876, y=74..374
-#   coverage meter and region rows x=24..584, y=390..500
+#   coverage meter and region rows x=24..584, y=390..508
 #   national Preparedness strip   x=24..876, y=508..552
 #   footer controls               x=24..876, y=560..594
 #
 # Decorative map layers, cards, frames, markers, pips, and text are
-# click-through. Only the named refresh and close buttons own click regions.
+# click-through. Only refresh, close, and the country-owned motion toggle
+# own click regions. Static partners share each animated consumer's bounds.
 # ============================================================================
 
 @ACID_RAIN_GUI_WIDTH = 900
 @ACID_RAIN_GUI_HEIGHT = 600
 @ACID_RAIN_GUI_MAP_WIDTH = 560
 @ACID_RAIN_GUI_MAP_HEIGHT = 300
+@ACID_RAIN_GUI_MAP_FIT_SCALE = 0.3188
+@ACID_RAIN_GUI_MAP_FIT_X = 13
+@ACID_RAIN_GUI_MAP_FIT_Y = 0
+@ACID_RAIN_GUI_MAP_MARKER_SCALE = 0.356866
 @ACID_RAIN_GUI_CARD_WIDTH = 272
 @ACID_RAIN_GUI_CARD_HEIGHT = 86
 @ACID_RAIN_GUI_COVERAGE_WIDTH = 560
+@ACID_RAIN_GUI_INLAY_WIDTH = 500
+@ACID_RAIN_GUI_INLAY_HEIGHT = 92
 
 guiTypes = {
+	# Native decision-category attachment. The existing world board below keeps
+	# its geometry and is instantiated separately in the player's main context.
+	containerWindowType = {
+		name = "acid_rain_category_inlay"
+		orientation = upper_left
+		position = { x = 0 y = 0 }
+		size = { width = @ACID_RAIN_GUI_INLAY_WIDTH height = @ACID_RAIN_GUI_INLAY_HEIGHT }
+		clipping = yes
+		background = { name = "acid_rain_category_inlay_background" quadTextureSprite = "GFX_tiled_window_transparent" }
+		instantTextBoxType = {
+			name = "acid_rain_category_phase"
+			position = { x = 12 y = 4 }
+			font = "hoi_14mbs"
+			text = "acid_rain_category_phase"
+			maxWidth = 472
+			maxHeight = 20
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "acid_rain_category_coverage"
+			position = { x = 12 y = 28 }
+			font = "hoi_12mbs"
+			text = "acid_rain_category_coverage"
+			maxWidth = 235
+			maxHeight = 18
+			fixedsize = yes
+			alwaystransparent = yes
+			pdx_tooltip = "acid_rain_gui_coverage_tt"
+		}
+		instantTextBoxType = {
+			name = "acid_rain_category_preparedness"
+			position = { x = 255 y = 28 }
+			font = "hoi_12mbs"
+			text = "acid_rain_category_preparedness"
+			maxWidth = 220
+			maxHeight = 18
+			fixedsize = yes
+			alwaystransparent = yes
+			pdx_tooltip = "acid_rain_gui_preparedness_tt"
+		}
+		instantTextBoxType = {
+			name = "acid_rain_category_status"
+			position = { x = 12 y = 56 }
+			font = "hoi_12mbs"
+			text = "acid_rain_category_status"
+			maxWidth = 334
+			maxHeight = 28
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		buttonType = {
+			name = "acid_rain_category_open"
+			position = { x = 364 y = 54 }
+			quadTextureSprite = "GFX_button_123x34"
+			buttonText = "acid_rain_category_open"
+			buttonFont = "hoi_12mbs"
+			pdx_tooltip = "acid_rain_gui_open_tt"
+			clicksound = decisions_ui_button
+			oversound = ui_menu_over
+		}
+	}
+
 	containerWindowType = {
 		name = "acid_rain_world_window"
 		# Center the upper-left origin explicitly. With a centered screen anchor,
@@ -45,9 +115,10 @@ guiTypes = {
 		# Header: identity, current phase, and the four required global ledgers.
 		instantTextBoxType = {
 			name = "acid_rain_world_title"
+			orientation = upper_left
 			position = { x = 24 y = 10 }
 			font = "hoi_20b"
-			text = "EVENT 033  |  ACID RAIN"
+			text = "acid_rain_world_title"
 			format = left
 			vertical_alignment = center
 			maxWidth = 300
@@ -57,9 +128,10 @@ guiTypes = {
 		}
 		instantTextBoxType = {
 			name = "acid_rain_world_phase"
+			orientation = upper_left
 			position = { x = 330 y = 12 }
 			font = "hoi_16mbs"
-			text = "PHASE  [?global.acid_rain_gui_phase|0]"
+			text = "acid_rain_world_phase"
 			format = left
 			vertical_alignment = center
 			maxWidth = 220
@@ -69,9 +141,10 @@ guiTypes = {
 		}
 		instantTextBoxType = {
 			name = "acid_rain_world_global_ledger"
+			orientation = upper_left
 			position = { x = 24 y = 39 }
 			font = "hoi_12mbs"
-			text = "GLOBAL AIR  [?global.acid_rain_gui_current_air_contamination_bp|0]  |  ADDED  [?global.acid_rain_gui_lifetime_air_added_bp|0]  |  ALLOWANCE  [?global.acid_rain_gui_air_allowance_remaining_bp|0]  |  EVENT DEATHS  [?global.acid_rain_gui_global_deaths|0]"
+			text = "acid_rain_world_global_ledger"
 			format = left
 			vertical_alignment = center
 			maxWidth = 790
@@ -88,16 +161,18 @@ guiTypes = {
 			orientation = upper_right
 			clicksound = click_close
 			oversound = ui_menu_over
-			pdx_tooltip = "CLOSE"
+			pdx_tooltip = "acid_rain_gui_close_tt"
 		}
 
 		# ------------------------------------------------------------------------
-		# WORLD MAP: all layers are full-map presentation sprites. The source
-		# handoff uses a 1672x941 composition, so 0.335 maps it to 560px wide;
-		# the 300px panel clips the unused lower edge without moving the anchors.
+		# WORLD MAP: matched 1672x941 layers uniformly fit inside 560x300.
+		# Whole-pixel centering differs by less than one pixel at opposite edges.
+		# Existing marker anchors follow the same affine fit, including icon scale.
+		# The global atmospheric animation has its own native 560x300 canvas.
 		# ------------------------------------------------------------------------
 		containerWindowType = {
 			name = "acid_rain_map_panel"
+			orientation = upper_left
 			position = { x = 24 y = 74 }
 			size = { width = @ACID_RAIN_GUI_MAP_WIDTH height = @ACID_RAIN_GUI_MAP_HEIGHT }
 			clipping = yes
@@ -108,78 +183,78 @@ guiTypes = {
 			iconType = {
 				name = "acid_rain_map_base"
 				spriteType = "GFX_acid_rain_map_base"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_1"
 				spriteType = "GFX_acid_rain_region_overlay_1"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_2"
 				spriteType = "GFX_acid_rain_region_overlay_2"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_3"
 				spriteType = "GFX_acid_rain_region_overlay_3"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_4"
 				spriteType = "GFX_acid_rain_region_overlay_4"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_5"
 				spriteType = "GFX_acid_rain_region_overlay_5"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_6"
 				spriteType = "GFX_acid_rain_region_overlay_6"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_region_overlay_7"
 				spriteType = "GFX_acid_rain_region_overlay_7"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_visited_veil"
 				spriteType = "GFX_acid_rain_visited_veil"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_ordinary_veil"
 				spriteType = "GFX_acid_rain_ordinary_veil"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_warning_veil"
 				spriteType = "GFX_acid_rain_warning_veil"
-				position = { x = 0 y = 0 }
-				scale = 0.335
+				position = { x = @ACID_RAIN_GUI_MAP_FIT_X y = @ACID_RAIN_GUI_MAP_FIT_Y }
+				scale = @ACID_RAIN_GUI_MAP_FIT_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
@@ -190,68 +265,148 @@ guiTypes = {
 				alwaystransparent = yes
 			}
 
+			iconType = {
+				name = "acid_rain_map_global_veil_static"
+				spriteType = "GFX_acid_rain_global_static"
+				position = { x = 0 y = 0 }
+				scale = 1.0
+				alwaystransparent = yes
+			}
+
 			# Three reviewed region anchors avoid implying exact province geometry.
 			iconType = {
 				name = "acid_rain_map_front_1_marker"
 				spriteType = "GFX_acid_rain_front_animated"
-				position = { x = 148 y = 130 }
-				scale = 0.375
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_1_marker_static"
+				spriteType = "GFX_acid_rain_front_static"
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_1_warning_marker"
 				spriteType = "GFX_acid_rain_warning_animated"
-				position = { x = 148 y = 130 }
-				scale = 0.375
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_1_warning_marker_static"
+				spriteType = "GFX_acid_rain_warning_static"
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_1_severe_marker"
 				spriteType = "GFX_acid_rain_severe_animated"
-				position = { x = 148 y = 130 }
-				scale = 0.375
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_1_severe_marker_static"
+				spriteType = "GFX_acid_rain_severe_static"
+				position = { x = 154 y = 124 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_2_marker"
 				spriteType = "GFX_acid_rain_front_animated"
-				position = { x = 276 y = 157 }
-				scale = 0.375
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_2_marker_static"
+				spriteType = "GFX_acid_rain_front_static"
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_2_warning_marker"
 				spriteType = "GFX_acid_rain_warning_animated"
-				position = { x = 276 y = 157 }
-				scale = 0.375
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_2_warning_marker_static"
+				spriteType = "GFX_acid_rain_warning_static"
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_2_severe_marker"
 				spriteType = "GFX_acid_rain_severe_animated"
-				position = { x = 276 y = 157 }
-				scale = 0.375
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_2_severe_marker_static"
+				spriteType = "GFX_acid_rain_severe_static"
+				position = { x = 276 y = 149 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_3_marker"
 				spriteType = "GFX_acid_rain_front_animated"
-				position = { x = 408 y = 112 }
-				scale = 0.375
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_3_marker_static"
+				spriteType = "GFX_acid_rain_front_static"
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_3_warning_marker"
 				spriteType = "GFX_acid_rain_warning_animated"
-				position = { x = 408 y = 112 }
-				scale = 0.375
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_3_warning_marker_static"
+				spriteType = "GFX_acid_rain_warning_static"
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 			iconType = {
 				name = "acid_rain_map_front_3_severe_marker"
 				spriteType = "GFX_acid_rain_severe_animated"
-				position = { x = 408 y = 112 }
-				scale = 0.375
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
+				alwaystransparent = yes
+			}
+
+			iconType = {
+				name = "acid_rain_map_front_3_severe_marker_static"
+				spriteType = "GFX_acid_rain_severe_static"
+				position = { x = 401 y = 107 }
+				scale = @ACID_RAIN_GUI_MAP_MARKER_SCALE
 				alwaystransparent = yes
 			}
 
@@ -259,7 +414,7 @@ guiTypes = {
 				name = "acid_rain_map_title"
 				position = { x = 12 y = 8 }
 				font = "hoi_14mbs"
-				text = "WORLD FOOTPRINT"
+				text = "acid_rain_map_title"
 				format = left
 				maxWidth = 230
 				maxHeight = 18
@@ -270,7 +425,7 @@ guiTypes = {
 				name = "acid_rain_map_legend"
 				position = { x = 12 y = 278 }
 				font = "hoi_10"
-				text = "VISITED  /  ACTIVE  /  WARNING  /  GLOBAL"
+				text = "acid_rain_map_legend"
 				format = left
 				maxWidth = 350
 				maxHeight = 16
@@ -285,6 +440,7 @@ guiTypes = {
 		# ------------------------------------------------------------------------
 		containerWindowType = {
 			name = "acid_rain_front_stack"
+			orientation = upper_left
 			position = { x = 604 y = 74 }
 			size = { width = @ACID_RAIN_GUI_CARD_WIDTH height = @ACID_RAIN_GUI_MAP_HEIGHT }
 			clipping = yes
@@ -296,7 +452,7 @@ guiTypes = {
 				name = "acid_rain_front_stack_title"
 				position = { x = 12 y = 7 }
 				font = "hoi_14mbs"
-				text = "ACTIVE WEATHER"
+				text = "acid_rain_front_stack_title"
 				format = left
 				maxWidth = 180
 				maxHeight = 18
@@ -313,21 +469,45 @@ guiTypes = {
 				iconType = {
 					name = "acid_rain_front_card_1_marker"
 					spriteType = "GFX_acid_rain_front_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_1_marker_static"
+					spriteType = "GFX_acid_rain_front_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_1_warning_marker"
 					spriteType = "GFX_acid_rain_warning_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_1_warning_marker_static"
+					spriteType = "GFX_acid_rain_warning_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_1_severe_marker"
 					spriteType = "GFX_acid_rain_severe_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_1_severe_marker_static"
+					spriteType = "GFX_acid_rain_severe_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
@@ -335,9 +515,9 @@ guiTypes = {
 					name = "acid_rain_front_card_1_identity"
 					position = { x = 12 y = 8 }
 					font = "hoi_14mbs"
-					text = "FRONT  [?global.acid_rain_gui_front_1_id|0]  /  REGION  [?global.acid_rain_gui_front_1_region|0]"
+					text = "acid_rain_front_card_1_identity"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 18
 					fixedsize = yes
 					alwaystransparent = yes
@@ -346,9 +526,9 @@ guiTypes = {
 					name = "acid_rain_front_card_1_band"
 					position = { x = 12 y = 30 }
 					font = "hoi_12mbs"
-					text = "BAND  [?global.acid_rain_gui_front_1_intensity|0]  /  STATES  [?global.acid_rain_gui_front_1_active_states|0]"
+					text = "acid_rain_front_card_1_band"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -357,9 +537,9 @@ guiTypes = {
 					name = "acid_rain_front_card_1_window"
 					position = { x = 12 y = 49 }
 					font = "hoi_12mbs"
-					text = "WINDOW  [?global.acid_rain_gui_front_1_movement_days|0] DAYS  /  NEXT  [?global.acid_rain_gui_front_1_next_region|0]"
+					text = "acid_rain_front_card_1_window"
 					format = left
-					maxWidth = 230
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -369,9 +549,9 @@ guiTypes = {
 					name = "acid_rain_front_card_1_severe_status"
 					position = { x = 12 y = 67 }
 					font = "hoi_10"
-					text = "SEVERE CELLS  [?global.acid_rain_gui_front_1_severe_state_count|0]"
+					text = "acid_rain_front_card_1_severe_status"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 14
 					fixedsize = yes
 					alwaystransparent = yes
@@ -388,21 +568,45 @@ guiTypes = {
 				iconType = {
 					name = "acid_rain_front_card_2_marker"
 					spriteType = "GFX_acid_rain_front_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_2_marker_static"
+					spriteType = "GFX_acid_rain_front_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_2_warning_marker"
 					spriteType = "GFX_acid_rain_warning_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_2_warning_marker_static"
+					spriteType = "GFX_acid_rain_warning_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_2_severe_marker"
 					spriteType = "GFX_acid_rain_severe_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_2_severe_marker_static"
+					spriteType = "GFX_acid_rain_severe_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
@@ -410,9 +614,9 @@ guiTypes = {
 					name = "acid_rain_front_card_2_identity"
 					position = { x = 12 y = 8 }
 					font = "hoi_14mbs"
-					text = "FRONT  [?global.acid_rain_gui_front_2_id|0]  /  REGION  [?global.acid_rain_gui_front_2_region|0]"
+					text = "acid_rain_front_card_2_identity"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 18
 					fixedsize = yes
 					alwaystransparent = yes
@@ -421,9 +625,9 @@ guiTypes = {
 					name = "acid_rain_front_card_2_band"
 					position = { x = 12 y = 30 }
 					font = "hoi_12mbs"
-					text = "BAND  [?global.acid_rain_gui_front_2_intensity|0]  /  STATES  [?global.acid_rain_gui_front_2_active_states|0]"
+					text = "acid_rain_front_card_2_band"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -432,9 +636,9 @@ guiTypes = {
 					name = "acid_rain_front_card_2_window"
 					position = { x = 12 y = 49 }
 					font = "hoi_12mbs"
-					text = "WINDOW  [?global.acid_rain_gui_front_2_movement_days|0] DAYS  /  NEXT  [?global.acid_rain_gui_front_2_next_region|0]"
+					text = "acid_rain_front_card_2_window"
 					format = left
-					maxWidth = 230
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -444,9 +648,9 @@ guiTypes = {
 					name = "acid_rain_front_card_2_severe_status"
 					position = { x = 12 y = 67 }
 					font = "hoi_10"
-					text = "SEVERE CELLS  [?global.acid_rain_gui_front_2_severe_state_count|0]"
+					text = "acid_rain_front_card_2_severe_status"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 14
 					fixedsize = yes
 					alwaystransparent = yes
@@ -463,21 +667,45 @@ guiTypes = {
 				iconType = {
 					name = "acid_rain_front_card_3_marker"
 					spriteType = "GFX_acid_rain_front_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_3_marker_static"
+					spriteType = "GFX_acid_rain_front_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_3_warning_marker"
 					spriteType = "GFX_acid_rain_warning_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_3_warning_marker_static"
+					spriteType = "GFX_acid_rain_warning_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
 				iconType = {
 					name = "acid_rain_front_card_3_severe_marker"
 					spriteType = "GFX_acid_rain_severe_animated"
-					position = { x = 238 y = 9 }
+					position = { x = 232 y = 9 }
+					scale = 0.3
+					alwaystransparent = yes
+				}
+
+				iconType = {
+					name = "acid_rain_front_card_3_severe_marker_static"
+					spriteType = "GFX_acid_rain_severe_static"
+					position = { x = 232 y = 9 }
 					scale = 0.3
 					alwaystransparent = yes
 				}
@@ -485,9 +713,9 @@ guiTypes = {
 					name = "acid_rain_front_card_3_identity"
 					position = { x = 12 y = 8 }
 					font = "hoi_14mbs"
-					text = "FRONT  [?global.acid_rain_gui_front_3_id|0]  /  REGION  [?global.acid_rain_gui_front_3_region|0]"
+					text = "acid_rain_front_card_3_identity"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 18
 					fixedsize = yes
 					alwaystransparent = yes
@@ -496,9 +724,9 @@ guiTypes = {
 					name = "acid_rain_front_card_3_band"
 					position = { x = 12 y = 30 }
 					font = "hoi_12mbs"
-					text = "BAND  [?global.acid_rain_gui_front_3_intensity|0]  /  STATES  [?global.acid_rain_gui_front_3_active_states|0]"
+					text = "acid_rain_front_card_3_band"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -507,9 +735,9 @@ guiTypes = {
 					name = "acid_rain_front_card_3_window"
 					position = { x = 12 y = 49 }
 					font = "hoi_12mbs"
-					text = "WINDOW  [?global.acid_rain_gui_front_3_movement_days|0] DAYS  /  NEXT  [?global.acid_rain_gui_front_3_next_region|0]"
+					text = "acid_rain_front_card_3_window"
 					format = left
-					maxWidth = 230
+					maxWidth = 210
 					maxHeight = 16
 					fixedsize = yes
 					alwaystransparent = yes
@@ -519,9 +747,9 @@ guiTypes = {
 					name = "acid_rain_front_card_3_severe_status"
 					position = { x = 12 y = 67 }
 					font = "hoi_10"
-					text = "SEVERE CELLS  [?global.acid_rain_gui_front_3_severe_state_count|0]"
+					text = "acid_rain_front_card_3_severe_status"
 					format = left
-					maxWidth = 220
+					maxWidth = 210
 					maxHeight = 14
 					fixedsize = yes
 					alwaystransparent = yes
@@ -539,7 +767,7 @@ guiTypes = {
 					name = "acid_rain_global_card_status"
 					position = { x = 14 y = 10 }
 					font = "hoi_16mbs"
-					text = "GLOBAL LAYER ACTIVE"
+					text = "acid_rain_global_card_status"
 					format = left
 					maxWidth = 238
 					maxHeight = 22
@@ -551,7 +779,7 @@ guiTypes = {
 					name = "acid_rain_global_card_transition"
 					position = { x = 14 y = 39 }
 					font = "hoi_12mbs"
-					text = "SINCE  [?global.acid_rain_gui_global_days_since_transition|0] DAYS  /  MINIMUM  [?global.acid_rain_gui_global_minimum_remaining_days|0]"
+					text = "acid_rain_global_card_transition"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -562,7 +790,7 @@ guiTypes = {
 					name = "acid_rain_global_card_window"
 					position = { x = 14 y = 61 }
 					font = "hoi_12mbs"
-					text = "NEXT DISSIPATION  [?global.acid_rain_gui_global_next_dissipation_days|0] DAYS"
+					text = "acid_rain_global_card_window"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -573,7 +801,7 @@ guiTypes = {
 					name = "acid_rain_global_card_superstorms"
 					position = { x = 14 y = 85 }
 					font = "hoi_12mbs"
-					text = "SUPERSTORMS  [?global.acid_rain_gui_global_superstorm_count|0]  /  STRONGEST  [?global.acid_rain_gui_global_strongest_band|0]"
+					text = "acid_rain_global_card_superstorms"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -584,7 +812,7 @@ guiTypes = {
 					name = "acid_rain_global_card_list_title"
 					position = { x = 14 y = 113 }
 					font = "hoi_10"
-					text = "BOUNDED SUPERSTORM LIST"
+					text = "acid_rain_global_card_list_title"
 					format = left
 					maxWidth = 238
 					maxHeight = 14
@@ -595,7 +823,7 @@ guiTypes = {
 					name = "acid_rain_global_superstorm_1"
 					position = { x = 14 y = 132 }
 					font = "hoi_12mbs"
-					text = "1.  [?global.acid_rain_gui_superstorm_1_name|0]  /  [?global.acid_rain_gui_superstorm_1_band|0]"
+					text = "acid_rain_global_superstorm_1"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -606,7 +834,7 @@ guiTypes = {
 					name = "acid_rain_global_superstorm_2"
 					position = { x = 14 y = 153 }
 					font = "hoi_12mbs"
-					text = "2.  [?global.acid_rain_gui_superstorm_2_name|0]  /  [?global.acid_rain_gui_superstorm_2_band|0]"
+					text = "acid_rain_global_superstorm_2"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -617,7 +845,7 @@ guiTypes = {
 					name = "acid_rain_global_superstorm_3"
 					position = { x = 14 y = 174 }
 					font = "hoi_12mbs"
-					text = "3.  [?global.acid_rain_gui_superstorm_3_name|0]  /  [?global.acid_rain_gui_superstorm_3_band|0]"
+					text = "acid_rain_global_superstorm_3"
 					format = left
 					maxWidth = 238
 					maxHeight = 18
@@ -628,7 +856,7 @@ guiTypes = {
 					name = "acid_rain_global_card_hint"
 					position = { x = 14 y = 222 }
 					font = "hoi_10"
-					text = "GLOBAL WEATHER REPLACES ORDINARY FRONTS"
+					text = "acid_rain_global_card_hint"
 					format = left
 					maxWidth = 238
 					maxHeight = 16
@@ -647,7 +875,7 @@ guiTypes = {
 					name = "acid_rain_empty_card_status"
 					position = { x = 16 y = 86 }
 					font = "hoi_16mbs"
-					text = "NO ACTIVE FRONT"
+					text = "acid_rain_empty_card_status"
 					format = center
 					maxWidth = 240
 					maxHeight = 24
@@ -658,7 +886,7 @@ guiTypes = {
 					name = "acid_rain_empty_card_hint"
 					position = { x = 16 y = 121 }
 					font = "hoi_12mbs"
-					text = "WAITING FOR THE NEXT WEATHER TRANSITION"
+					text = "acid_rain_empty_card_hint"
 					format = center
 					maxWidth = 240
 					maxHeight = 36
@@ -675,8 +903,9 @@ guiTypes = {
 		# ------------------------------------------------------------------------
 		containerWindowType = {
 			name = "acid_rain_coverage_panel"
+			orientation = upper_left
 			position = { x = 24 y = 390 }
-			size = { width = @ACID_RAIN_GUI_COVERAGE_WIDTH height = 110 }
+			size = { width = @ACID_RAIN_GUI_COVERAGE_WIDTH height = 118 }
 			clipping = yes
 			background = {
 				name = "acid_rain_coverage_panel_background"
@@ -686,7 +915,7 @@ guiTypes = {
 				name = "acid_rain_coverage_label"
 				position = { x = 14 y = 7 }
 				font = "hoi_14mbs"
-				text = "WORLD COVERAGE"
+				text = "acid_rain_coverage_label"
 				format = left
 				maxWidth = 190
 				maxHeight = 18
@@ -698,7 +927,7 @@ guiTypes = {
 				name = "acid_rain_coverage_value"
 				position = { x = 300 y = 7 }
 				font = "hoi_14mbs"
-				text = "[?global.acid_rain_gui_coverage_percent|0]%%  |  [?global.acid_rain_gui_coverage_touched|0] / [?global.acid_rain_gui_coverage_eligible|0]"
+				text = "acid_rain_coverage_value"
 				format = right
 				maxWidth = 245
 				maxHeight = 18
@@ -788,7 +1017,7 @@ guiTypes = {
 				name = "acid_rain_region_row_1"
 				position = { x = 14 y = 60 }
 				font = "hoi_12mbs"
-				text = "EUROPE  [?global.acid_rain_gui_region_1_touched|0] / [?global.acid_rain_gui_region_1_eligible|0]"
+				text = "acid_rain_region_row_1"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -800,7 +1029,7 @@ guiTypes = {
 				name = "acid_rain_region_row_2"
 				position = { x = 14 y = 74 }
 				font = "hoi_12mbs"
-				text = "MIDDLE EAST  [?global.acid_rain_gui_region_2_touched|0] / [?global.acid_rain_gui_region_2_eligible|0]"
+				text = "acid_rain_region_row_2"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -812,7 +1041,7 @@ guiTypes = {
 				name = "acid_rain_region_row_3"
 				position = { x = 14 y = 88 }
 				font = "hoi_12mbs"
-				text = "ASIA  [?global.acid_rain_gui_region_3_touched|0] / [?global.acid_rain_gui_region_3_eligible|0]"
+				text = "acid_rain_region_row_3"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -824,7 +1053,7 @@ guiTypes = {
 				name = "acid_rain_region_row_4"
 				position = { x = 14 y = 102 }
 				font = "hoi_12mbs"
-				text = "AFRICA  [?global.acid_rain_gui_region_4_touched|0] / [?global.acid_rain_gui_region_4_eligible|0]"
+				text = "acid_rain_region_row_4"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -836,7 +1065,7 @@ guiTypes = {
 				name = "acid_rain_region_row_5"
 				position = { x = 286 y = 60 }
 				font = "hoi_12mbs"
-				text = "AUSTRALIA / PACIFIC  [?global.acid_rain_gui_region_5_touched|0] / [?global.acid_rain_gui_region_5_eligible|0]"
+				text = "acid_rain_region_row_5"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -848,7 +1077,7 @@ guiTypes = {
 				name = "acid_rain_region_row_6"
 				position = { x = 286 y = 74 }
 				font = "hoi_12mbs"
-				text = "NORTH AMERICA  [?global.acid_rain_gui_region_6_touched|0] / [?global.acid_rain_gui_region_6_eligible|0]"
+				text = "acid_rain_region_row_6"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -860,7 +1089,7 @@ guiTypes = {
 				name = "acid_rain_region_row_7"
 				position = { x = 286 y = 88 }
 				font = "hoi_12mbs"
-				text = "SOUTH AMERICA  [?global.acid_rain_gui_region_7_touched|0] / [?global.acid_rain_gui_region_7_eligible|0]"
+				text = "acid_rain_region_row_7"
 				format = left
 				maxWidth = 230
 				maxHeight = 14
@@ -925,6 +1154,7 @@ guiTypes = {
 		# ------------------------------------------------------------------------
 		containerWindowType = {
 			name = "acid_rain_national_strip"
+			orientation = upper_left
 			position = { x = 24 y = 508 }
 			size = { width = 852 height = 44 }
 			clipping = yes
@@ -944,7 +1174,7 @@ guiTypes = {
 				name = "acid_rain_preparedness_value"
 				position = { x = 45 y = 4 }
 				font = "hoi_14mbs"
-				text = "PREP  [?acid_rain_gui_preparedness|0]%%"
+				text = "acid_rain_preparedness_value"
 				format = left
 				maxWidth = 125
 				maxHeight = 18
@@ -954,6 +1184,7 @@ guiTypes = {
 			}
 			iconType = {
 				name = "acid_rain_preparedness_component_pip_1"
+				pdx_tooltip = "acid_rain_gui_component_1_tt"
 				spriteType = "GFX_acid_rain_component_pip"
 				position = { x = 178 y = 7 }
 				scale = 0.55
@@ -961,6 +1192,7 @@ guiTypes = {
 			}
 			iconType = {
 				name = "acid_rain_preparedness_component_pip_2"
+				pdx_tooltip = "acid_rain_gui_component_2_tt"
 				spriteType = "GFX_acid_rain_component_pip"
 				position = { x = 197 y = 7 }
 				scale = 0.55
@@ -968,6 +1200,7 @@ guiTypes = {
 			}
 			iconType = {
 				name = "acid_rain_preparedness_component_pip_3"
+				pdx_tooltip = "acid_rain_gui_component_3_tt"
 				spriteType = "GFX_acid_rain_component_pip"
 				position = { x = 216 y = 7 }
 				scale = 0.55
@@ -975,6 +1208,7 @@ guiTypes = {
 			}
 			iconType = {
 				name = "acid_rain_preparedness_component_pip_4"
+				pdx_tooltip = "acid_rain_gui_component_4_tt"
 				spriteType = "GFX_acid_rain_component_pip"
 				position = { x = 235 y = 7 }
 				scale = 0.55
@@ -984,19 +1218,20 @@ guiTypes = {
 				name = "acid_rain_national_warning"
 				position = { x = 265 y = 5 }
 				font = "hoi_10"
-				text = "WARN  [?acid_rain_gui_current_warning_state_count|0]"
+				text = "acid_rain_national_warning"
 				format = left
 				maxWidth = 95
 				maxHeight = 16
 				fixedsize = yes
 				alwaystransparent = yes
-				pdx_tooltip = "acid_rain_gui_severe_cell_tt"
+				pdx_tooltip = "acid_rain_gui_national_warning_tt"
 			}
 			instantTextBoxType = {
 				name = "acid_rain_national_exposed"
+				pdx_tooltip = "acid_rain_gui_national_exposed_tt"
 				position = { x = 359 y = 5 }
 				font = "hoi_10"
-				text = "EXPOSED  [?acid_rain_gui_exposed_state_count|0]"
+				text = "acid_rain_national_exposed"
 				format = left
 				maxWidth = 100
 				maxHeight = 16
@@ -1005,9 +1240,10 @@ guiTypes = {
 			}
 			instantTextBoxType = {
 				name = "acid_rain_national_severe"
+				pdx_tooltip = "acid_rain_gui_national_severe_tt"
 				position = { x = 458 y = 5 }
 				font = "hoi_10"
-				text = "SEVERE  [?acid_rain_gui_severe_warning_state_count|0]"
+				text = "acid_rain_national_severe"
 				format = left
 				maxWidth = 105
 				maxHeight = 16
@@ -1016,9 +1252,10 @@ guiTypes = {
 			}
 			instantTextBoxType = {
 				name = "acid_rain_national_aftermath"
+				pdx_tooltip = "acid_rain_gui_national_aftermath_tt"
 				position = { x = 563 y = 5 }
 				font = "hoi_10"
-				text = "AFTER  [?acid_rain_gui_aftermath_state_count|0]"
+				text = "acid_rain_national_aftermath"
 				format = left
 				maxWidth = 90
 				maxHeight = 16
@@ -1027,9 +1264,10 @@ guiTypes = {
 			}
 			instantTextBoxType = {
 				name = "acid_rain_national_deaths"
+				pdx_tooltip = "acid_rain_gui_national_deaths_tt"
 				position = { x = 653 y = 5 }
 				font = "hoi_10"
-				text = "DEATHS  [?acid_rain_gui_event_deaths|0]"
+				text = "acid_rain_national_deaths"
 				format = left
 				maxWidth = 105
 				maxHeight = 16
@@ -1038,9 +1276,10 @@ guiTypes = {
 			}
 			instantTextBoxType = {
 				name = "acid_rain_national_prevented"
+				pdx_tooltip = "acid_rain_gui_national_prevented_tt"
 				position = { x = 758 y = 5 }
 				font = "hoi_10"
-				text = "SAVED  [?acid_rain_gui_deaths_prevented|0]"
+				text = "acid_rain_national_prevented"
 				format = left
 				maxWidth = 88
 				maxHeight = 16
@@ -1051,36 +1290,49 @@ guiTypes = {
 				name = "acid_rain_national_contamination"
 				position = { x = 45 y = 24 }
 				font = "hoi_10"
-				text = "LOCAL AIR CONTAMINATION  [?acid_rain_gui_current_contamination_bp|0]  |  COMPONENT PIPS  0-4"
+				text = "acid_rain_national_contamination"
 				format = left
 				maxWidth = 790
 				maxHeight = 14
 				fixedsize = yes
 				alwaystransparent = yes
-				pdx_tooltip = "acid_rain_gui_preparedness_tt"
+				pdx_tooltip = "acid_rain_gui_contamination_tt"
 			}
 		}
 
-		# Footer keeps the action surface explicit without adding navigation into
-		# shared event-log or event-details ownership.
+		# Footer exposes presentation controls only. The motion preference is
+		# country-owned and does not change weather, forecasts, or gameplay.
 		buttonType = {
 			name = "acid_rain_world_refresh"
+			orientation = upper_left
 			position = { x = 24 y = 560 }
 			quadTextureSprite = "GFX_button_123x34"
-			buttonText = "REFRESH"
+			buttonText = "acid_rain_world_refresh"
 			buttonFont = "hoi_12mbs"
 			clicksound = decisions_ui_button
 			oversound = ui_menu_over
 			pdx_tooltip = "acid_rain_gui_refresh_tt"
 		}
+		buttonType = {
+			name = "acid_rain_world_motion"
+			orientation = upper_left
+			position = { x = 753 y = 560 }
+			quadTextureSprite = "GFX_button_123x34"
+			buttonText = "acid_rain_world_motion"
+			buttonFont = "hoi_12mbs"
+			clicksound = decisions_ui_button
+			oversound = ui_menu_over
+			pdx_tooltip = "acid_rain_gui_motion_tt"
+		}
 		instantTextBoxType = {
 			name = "acid_rain_world_read_only_hint"
+			orientation = upper_left
 			position = { x = 165 y = 566 }
 			font = "hoi_10"
-			text = "READ ONLY  |  DECISIONS REMAIN THE ACTION SURFACE"
+			text = "acid_rain_world_read_only_hint"
 			format = left
 			vertical_alignment = center
-			maxWidth = 690
+			maxWidth = 568
 			maxHeight = 18
 			fixedsize = yes
 			alwaystransparent = yes

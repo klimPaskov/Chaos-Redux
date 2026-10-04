@@ -1249,6 +1249,15 @@ scripted_gui = {
 				}
 			}
 
+			events_log_event_detail_open_acid_rain_map_button_click = {
+				if = {
+					limit = {
+						check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:acid_rain_event.id compare = equals }
+					}
+					acid_rain_gui_open_from_event_details = yes
+				}
+			}
+
 			events_log_event_detail_rival_member_previous_button_click = {
 				if = {
 					limit = {
@@ -1494,6 +1503,17 @@ scripted_gui = {
 			}
 			events_log_event_detail_open_abnormal_map_button_click_enabled = {
 				has_global_flag = natural_disaster_evolution_iii_logged
+			}
+			events_log_event_detail_open_acid_rain_map_button_visible = {
+				check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:acid_rain_event.id compare = equals }
+			}
+			events_log_event_detail_open_acid_rain_map_button_click_enabled = {
+				check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:acid_rain_event.id compare = equals }
+				has_variable = global.acid_rain_generation_id
+				check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.formation compare = greater_than_or_equals }
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.closed compare = less_than_or_equals }
+				NOT = { has_global_flag = acid_rain_migration_failed_closed }
 			}
 			events_log_event_detail_rival_member_previous_button_visible = {
 				check_variable = {

@@ -96,29 +96,12 @@ chaosx_acid_rain_decision_category = {
 			acid_rain_country_has_free_project_slot = yes
 			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_shelter_active } }
 			check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
+					hidden_trigger = { acid_rain_country_can_pay_project_shelter = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_project_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_project_shelter = yes }
+		custom_cost_text = acid_rain_project_shelter_cost
 		fire_only_once = no
-		days_remove = var:acid_rain_quote_duration_days?1
+		days_remove = var:acid_rain_shelter_next_days
 		complete_effect = {
 			set_variable = { acid_rain_selected_project = constant:acid_rain_project.shelter }
 			acid_rain_refresh_project_quote = yes
@@ -161,29 +144,12 @@ chaosx_acid_rain_decision_category = {
 			acid_rain_country_has_free_project_slot = yes
 			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_water_active } }
 			check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
+					hidden_trigger = { acid_rain_country_can_pay_project_water = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_project_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_project_water = yes }
+		custom_cost_text = acid_rain_project_water_cost
 		fire_only_once = no
-		days_remove = var:acid_rain_quote_duration_days?1
+		days_remove = var:acid_rain_water_next_days
 		complete_effect = {
 			set_variable = { acid_rain_selected_project = constant:acid_rain_project.water }
 			acid_rain_refresh_project_quote = yes
@@ -227,29 +193,12 @@ chaosx_acid_rain_decision_category = {
 			acid_rain_country_has_free_project_slot = yes
 			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_medical_active } }
 			check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
+					hidden_trigger = { acid_rain_country_can_pay_project_medical = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_project_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_project_medical = yes }
+		custom_cost_text = acid_rain_project_medical_cost
 		fire_only_once = no
-		days_remove = var:acid_rain_quote_duration_days?1
+		days_remove = var:acid_rain_medical_next_days
 		complete_effect = {
 			set_variable = { acid_rain_selected_project = constant:acid_rain_project.medical }
 			acid_rain_refresh_project_quote = yes
@@ -293,29 +242,12 @@ chaosx_acid_rain_decision_category = {
 			acid_rain_country_has_free_project_slot = yes
 			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_transport_active } }
 			check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
+					hidden_trigger = { acid_rain_country_can_pay_project_transport = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_project_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_project_transport = yes }
+		custom_cost_text = acid_rain_project_transport_cost
 		fire_only_once = no
-		days_remove = var:acid_rain_quote_duration_days?1
+		days_remove = var:acid_rain_transport_next_days
 		complete_effect = {
 			set_variable = { acid_rain_selected_project = constant:acid_rain_project.transport }
 			acid_rain_refresh_project_quote = yes
@@ -366,27 +298,10 @@ chaosx_acid_rain_decision_category = {
 				has_country_flag = acid_rain_country_exposure_active
 				has_country_flag = acid_rain_country_severe_forecast_active
 			}
+					hidden_trigger = { acid_rain_country_can_pay_action_shelter = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_action_shelter = yes }
+		custom_cost_text = acid_rain_urgent_shelter_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_urgent_cost.shelter_days
 		complete_effect = {
@@ -424,27 +339,10 @@ chaosx_acid_rain_decision_category = {
 				has_country_flag = acid_rain_country_exposure_active
 				has_country_flag = acid_rain_country_severe_forecast_active
 			}
+					hidden_trigger = { acid_rain_country_can_pay_action_water = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_action_water = yes }
+		custom_cost_text = acid_rain_urgent_water_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_urgent_cost.water_days
 		complete_effect = {
@@ -483,27 +381,10 @@ chaosx_acid_rain_decision_category = {
 				has_country_flag = acid_rain_country_exposure_active
 				has_country_flag = acid_rain_country_severe_forecast_active
 			}
+					hidden_trigger = { acid_rain_country_can_pay_action_medical = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_action_medical = yes }
+		custom_cost_text = acid_rain_urgent_medical_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_urgent_cost.medical_days
 		complete_effect = {
@@ -542,27 +423,10 @@ chaosx_acid_rain_decision_category = {
 				has_country_flag = acid_rain_country_exposure_active
 				has_country_flag = acid_rain_country_severe_forecast_active
 			}
+					hidden_trigger = { acid_rain_country_can_pay_action_transport = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_action_transport = yes }
+		custom_cost_text = acid_rain_urgent_transport_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_urgent_cost.transport_days
 		complete_effect = {
@@ -616,6 +480,7 @@ chaosx_acid_rain_decision_category = {
 					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_great_power compare = less_than }
 				}
 			}
+					hidden_trigger = { acid_rain_country_can_pay_action_evacuate = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -635,29 +500,23 @@ chaosx_acid_rain_decision_category = {
 			}
 		}
 		on_map_mode = map_and_decisions_view
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_action_evacuate = yes }
+		custom_cost_text = acid_rain_urgent_evacuate_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_urgent_cost.evacuation_days
 		complete_effect = {
+			clear_variable = acid_rain_selected_action_state
+			FROM = {
+				if = {
+					limit = {
+						acid_rain_state_is_frozen_valid = yes
+						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = acid_rain_action_lock }
+					}
+					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
+				}
+			}
 			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_evacuate_land }
 			acid_rain_refresh_urgent_action_quote = yes
 			acid_rain_start_urgent_action = yes
@@ -696,6 +555,7 @@ chaosx_acid_rain_decision_category = {
 					has_country_flag = acid_rain_country_severe_forecast_active
 				}
 			}
+					hidden_trigger = { acid_rain_country_can_pay_recovery_transport = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -715,29 +575,23 @@ chaosx_acid_rain_decision_category = {
 			}
 		}
 		on_map_mode = map_and_decisions_view
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_recovery_transport = yes }
+		custom_cost_text = acid_rain_recovery_transport_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_recovery_cost.transport_days
 		complete_effect = {
+			clear_variable = acid_rain_selected_action_state
+			FROM = {
+				if = {
+					limit = {
+						acid_rain_state_is_frozen_valid = yes
+						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = acid_rain_action_lock }
+					}
+					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
+				}
+			}
 			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_transport }
 			acid_rain_refresh_recovery_action_quote = yes
 			acid_rain_start_recovery_action = yes
@@ -768,6 +622,7 @@ chaosx_acid_rain_decision_category = {
 					has_country_flag = acid_rain_country_severe_forecast_active
 				}
 			}
+					hidden_trigger = { acid_rain_country_can_pay_recovery_decontaminate = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -787,29 +642,23 @@ chaosx_acid_rain_decision_category = {
 			}
 		}
 		on_map_mode = map_and_decisions_view
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_recovery_decontaminate = yes }
+		custom_cost_text = acid_rain_recovery_decontaminate_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_recovery_cost.decontaminate_days
 		complete_effect = {
+			clear_variable = acid_rain_selected_action_state
+			FROM = {
+				if = {
+					limit = {
+						acid_rain_state_is_frozen_valid = yes
+						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = acid_rain_action_lock }
+					}
+					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
+				}
+			}
 			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_decontaminate_land }
 			acid_rain_refresh_recovery_action_quote = yes
 			acid_rain_start_recovery_action = yes
@@ -840,6 +689,7 @@ chaosx_acid_rain_decision_category = {
 					has_country_flag = acid_rain_country_severe_forecast_active
 				}
 			}
+					hidden_trigger = { acid_rain_country_can_pay_recovery_industry = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -859,29 +709,23 @@ chaosx_acid_rain_decision_category = {
 			}
 		}
 		on_map_mode = map_and_decisions_view
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_recovery_industry = yes }
+		custom_cost_text = acid_rain_recovery_industry_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_recovery_cost.industry_days
 		complete_effect = {
+			clear_variable = acid_rain_selected_action_state
+			FROM = {
+				if = {
+					limit = {
+						acid_rain_state_is_frozen_valid = yes
+						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = acid_rain_action_lock }
+					}
+					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
+				}
+			}
 			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_industry }
 			acid_rain_refresh_recovery_action_quote = yes
 			acid_rain_start_recovery_action = yes
@@ -917,27 +761,10 @@ chaosx_acid_rain_decision_category = {
 			}
 			check_variable = { acid_rain_active_projects = constant:acid_rain_runtime.zero }
 			check_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
+					hidden_trigger = { acid_rain_country_can_pay_recovery_demobilize = yes }
 		}
-		custom_cost_trigger = {
-			has_variable = acid_rain_quote_duration_days
-			has_variable = acid_rain_quote_political_power
-			has_variable = acid_rain_quote_civilian_factories
-			has_variable = acid_rain_quote_manpower
-			has_variable = acid_rain_quote_support
-			has_variable = acid_rain_quote_train
-			has_variable = acid_rain_quote_convoy
-			has_variable = acid_rain_quote_motorized
-			has_variable = acid_rain_quote_fuel
-			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
-			NOT = { has_political_power < acid_rain_quote_political_power }
-			NOT = { has_manpower < acid_rain_quote_manpower }
-			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
-			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
-			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
-			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
-			NOT = { has_fuel < acid_rain_quote_fuel }
-		}
-		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		custom_cost_trigger = { acid_rain_country_can_pay_recovery_demobilize = yes }
+		custom_cost_text = acid_rain_recovery_demobilize_cost
 		fire_only_once = no
 		days_remove = constant:acid_rain_recovery_cost.demobilize_days
 		complete_effect = {

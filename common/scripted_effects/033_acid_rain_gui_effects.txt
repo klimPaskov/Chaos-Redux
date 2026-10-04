@@ -1,32 +1,94 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 033 ACID RAIN GUI PROJECTION
 # ============================================================================
-# This file is a read model only. It copies managed Event 33 state into global
-# presentation variables and the current country's four component frame values.
+# COUNTRY SCOPE. This file copies managed Event 33 state into presentation
+# variables. Open/close flags and the viewing generation belong to the caller.
+# Country counts come from the runtime owner's controller-aware edge publisher.
 # It never selects a state, changes a front, spends a cost, applies mortality,
 # adds contamination, advances a timer, or writes a gameplay receipt.
 # ============================================================================
 
+@acid_rain_gui_floor_half = 0.5
+
 acid_rain_gui_open_from_event_details = {
-	set_country_flag = acid_rain_event_details_gui_open
-	acid_rain_gui_refresh_read_only = yes
+	acid_rain_gui_open_world_window = yes
+	if = {
+		limit = { has_country_flag = acid_rain_gui_window_open }
+		set_country_flag = acid_rain_event_details_gui_open
+	}
+}
+
+acid_rain_gui_open_from_category = {
+	acid_rain_gui_open_world_window = yes
+}
+
+# No runtime setup or repair is allowed here. Missing/invalid records fail closed.
+acid_rain_gui_open_world_window = {
+	acid_rain_gui_close_event_details_view = yes
+	if = {
+		limit = {
+			exists = yes
+			is_ai = no
+			has_variable = global.acid_rain_generation_id
+			check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.formation compare = greater_than_or_equals }
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.closed compare = less_than_or_equals }
+			NOT = { has_global_flag = acid_rain_migration_failed_closed }
+		}
+		acid_rain_gui_refresh_read_only = yes
+		set_variable = { acid_rain_gui_view_generation = global.acid_rain_generation_id }
+		set_country_flag = acid_rain_gui_window_open
+	}
 }
 
 acid_rain_gui_close_event_details_view = {
 	clr_country_flag = acid_rain_event_details_gui_open
+	clr_country_flag = acid_rain_gui_window_open
+	clear_variable = acid_rain_gui_view_generation
+}
+
+# COUNTRY SCOPE. A presentation preference only; absent flag means motion on.
+# Keep the preference across close/reopen and episode generations.
+acid_rain_gui_toggle_motion = {
+	if = {
+		limit = {
+			exists = yes
+			is_ai = no
+			has_country_flag = acid_rain_gui_window_open
+			has_variable = acid_rain_gui_view_generation
+			has_variable = global.acid_rain_generation_id
+			check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
+			check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.formation compare = greater_than_or_equals }
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.closed compare = less_than_or_equals }
+			NOT = { has_global_flag = acid_rain_migration_failed_closed }
+		}
+		if = {
+			limit = { has_country_flag = acid_rain_gui_motion_disabled }
+			clr_country_flag = acid_rain_gui_motion_disabled
+		}
+		else = { set_country_flag = acid_rain_gui_motion_disabled }
+	}
+	else = { acid_rain_gui_close_event_details_view = yes }
 }
 
 acid_rain_gui_refresh_read_only = {
-	set_variable = { global.acid_rain_gui_window_visible = constant:acid_rain_runtime.zero }
 	if = {
 		limit = {
-			OR = {
-				has_global_flag = acid_rain_runtime_active
-				has_global_flag = acid_rain_dissipation_pending
+			has_country_flag = acid_rain_gui_window_open
+			NOT = {
+				AND = {
+					check_variable = { global.acid_rain_generation_id > constant:acid_rain_runtime.zero }
+					check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
+					check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.formation compare = greater_than_or_equals }
+					check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.closed compare = less_than_or_equals }
+					NOT = { has_global_flag = acid_rain_migration_failed_closed }
+				}
 			}
 		}
-		set_variable = { global.acid_rain_gui_window_visible = constant:acid_rain_runtime.one }
+		acid_rain_gui_close_event_details_view = yes
 	}
+	set_variable = { acid_rain_gui_projection_generation = global.acid_rain_generation_id }
 
 	set_variable = { global.acid_rain_gui_phase = global.acid_rain_phase }
 	set_variable = { global.acid_rain_gui_current_air_contamination_bp = global.air_contamination_bp }
@@ -36,7 +98,6 @@ acid_rain_gui_refresh_read_only = {
 	clamp_temp_variable = { var = acid_rain_gui_air_allowance min = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_air_allowance_remaining_bp = acid_rain_gui_air_allowance }
 	set_variable = { global.acid_rain_gui_global_deaths = global.acid_rain_total_deaths }
-	set_variable = { global.acid_rain_gui_refresh_enabled = constant:acid_rain_runtime.one }
 	set_variable = { acid_rain_gui_preparedness = constant:acid_rain_preparedness.minimum }
 	set_variable = { acid_rain_gui_current_warning_state_count = constant:acid_rain_runtime.zero }
 	set_variable = { acid_rain_gui_exposed_state_count = constant:acid_rain_runtime.zero }
@@ -46,40 +107,35 @@ acid_rain_gui_refresh_read_only = {
 	set_variable = { acid_rain_gui_deaths_prevented = constant:chaos_meter_deaths.zero }
 	set_variable = { acid_rain_gui_current_contamination_bp = global.air_contamination_bp }
 	if = {
-		limit = { has_variable = acid_rain_preparedness }
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_preparedness }
 		set_variable = { acid_rain_gui_preparedness = acid_rain_preparedness }
 	}
 	if = {
-		limit = { has_variable = acid_rain_event_deaths }
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_event_deaths }
 		set_variable = { acid_rain_gui_event_deaths = acid_rain_event_deaths }
 	}
 	if = {
-		limit = { has_variable = acid_rain_prevented_deaths }
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_prevented_deaths }
 		set_variable = { acid_rain_gui_deaths_prevented = acid_rain_prevented_deaths }
 	}
-	for_each_scope_loop = {
-		array = global.acid_rain_frozen_states
-		if = {
-			limit = { is_controlled_by = ROOT }
-			if = {
-				limit = { has_state_flag = acid_rain_front_target }
-				add_to_variable = { acid_rain_gui_current_warning_state_count = constant:acid_rain_runtime.loop_increment }
-			}
-			if = {
-				limit = { has_state_flag = acid_rain_touched }
-				add_to_variable = { acid_rain_gui_exposed_state_count = constant:acid_rain_runtime.loop_increment }
-			}
-			if = {
-				limit = { has_state_flag = acid_rain_severe_cell_target }
-				add_to_variable = { acid_rain_gui_severe_warning_state_count = constant:acid_rain_runtime.loop_increment }
-			}
-			if = {
-				limit = { has_state_flag = acid_rain_aftercare_unresolved }
-				add_to_variable = { acid_rain_gui_aftermath_state_count = constant:acid_rain_runtime.loop_increment }
-			}
-		}
+	if = {
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_active_exposed_states }
+		set_variable = { acid_rain_gui_exposed_state_count = acid_rain_active_exposed_states }
 	}
-
+	# COUNTRY SCOPE. The runtime owner publishes these controller-aware counts
+	# on state edges. Refresh consumes them without recomputing gameplay facts.
+	if = {
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_current_warning_state_count }
+		set_variable = { acid_rain_gui_current_warning_state_count = acid_rain_current_warning_state_count }
+	}
+	if = {
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_severe_warning_state_count }
+		set_variable = { acid_rain_gui_severe_warning_state_count = acid_rain_severe_warning_state_count }
+	}
+	if = {
+		limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_aftermath_state_count }
+		set_variable = { acid_rain_gui_aftermath_state_count = acid_rain_aftermath_state_count }
+	}
 	set_variable = { global.acid_rain_gui_coverage_eligible = global.acid_rain_total_valid_states }
 	set_variable = { global.acid_rain_gui_coverage_touched = global.acid_rain_total_touched_states }
 	set_variable = { global.acid_rain_gui_coverage_percent = constant:acid_rain_runtime.zero }
@@ -88,7 +144,19 @@ acid_rain_gui_refresh_read_only = {
 		set_temp_variable = { acid_rain_gui_coverage_value = global.acid_rain_total_touched_states }
 		multiply_temp_variable = { acid_rain_gui_coverage_value = constant:acid_rain_runtime.preparedness_precision }
 		divide_temp_variable = { acid_rain_gui_coverage_value = global.acid_rain_total_valid_states }
+		# round(value - 0.5), clamped at zero, floors nonnegative percentages.
+		# Raw-count recheck also prevents fixed-point division from implying 100%.
+		subtract_from_temp_variable = { acid_rain_gui_coverage_value = @acid_rain_gui_floor_half }
 		round_temp_variable = acid_rain_gui_coverage_value
+		clamp_temp_variable = { var = acid_rain_gui_coverage_value min = constant:acid_rain_runtime.zero max = constant:acid_rain_runtime.preparedness_precision }
+		if = {
+			limit = {
+				check_variable = { var = global.acid_rain_total_touched_states value = global.acid_rain_total_valid_states compare = not_equals }
+				check_variable = { var = acid_rain_gui_coverage_value value = constant:acid_rain_runtime.preparedness_precision compare = greater_than_or_equals }
+			}
+			set_temp_variable = { acid_rain_gui_coverage_value = constant:acid_rain_runtime.preparedness_precision }
+			subtract_from_temp_variable = { acid_rain_gui_coverage_value = constant:acid_rain_runtime.one }
+		}
 		set_variable = { global.acid_rain_gui_coverage_percent = acid_rain_gui_coverage_value }
 	}
 
@@ -131,24 +199,30 @@ acid_rain_gui_refresh_read_only = {
 	chaosx_convert_date_offset_to_days = yes
 	set_variable = { global.acid_rain_gui_global_next_dissipation_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_global_superstorm_count = global.acid_rain_superstorm_count }
+	# The list includes current forecast and active records; the headline retains
+	# the gameplay owner's separate count of active superstorms.
+	set_variable = { global.acid_rain_gui_superstorm_list_count = global.acid_rain_superstorm_ids^num }
+	clamp_variable = { var = global.acid_rain_gui_superstorm_list_count min = constant:acid_rain_runtime.zero max = constant:acid_rain_event.max_superstorms }
+	set_variable = { global.acid_rain_gui_superstorm_overflow_count = global.acid_rain_gui_superstorm_list_count }
+	subtract_from_variable = { global.acid_rain_gui_superstorm_overflow_count = constant:acid_rain_runtime.three }
+	clamp_variable = { var = global.acid_rain_gui_superstorm_overflow_count min = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_runtime.zero }
 	if = {
 		limit = { check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
-		set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.superstorm }
+		set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.global }
+		if = {
+			limit = { check_variable = { global.acid_rain_gui_global_superstorm_count > constant:acid_rain_runtime.zero } }
+			set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.superstorm }
+		}
 	}
 
-	for_loop_effect = {
-		start = constant:acid_rain_region.first
-		end = constant:acid_rain_runtime.region_loop_end
-		value = acid_rain_gui_region_index
-		set_variable = { global.acid_rain_gui_region_1_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_2_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_3_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_4_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_5_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_6_visible = constant:acid_rain_runtime.zero }
-		set_variable = { global.acid_rain_gui_region_7_visible = constant:acid_rain_runtime.zero }
-	}
+	set_variable = { global.acid_rain_gui_region_1_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_2_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_3_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_4_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_5_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_6_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_region_7_visible = constant:acid_rain_runtime.zero }
 	# The seven rows are explicit because GUI variable names are static tokens.
 	set_variable = { global.acid_rain_gui_region_1_eligible = global.acid_rain_region_valid_entries^1 }
 	set_variable = { global.acid_rain_gui_region_1_touched = global.acid_rain_region_touched_entries^1 }
@@ -217,13 +291,17 @@ acid_rain_gui_refresh_read_only = {
 	set_variable = { global.acid_rain_gui_front_2_severe_state_count = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_front_3_severe_state_count = constant:acid_rain_runtime.zero }
 
-	# Each card is a bounded projection of one stable front slot.
-	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.one }
-	acid_rain_gui_project_front_1 = yes
-	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.two }
-	acid_rain_gui_project_front_2 = yes
-	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.three }
-	acid_rain_gui_project_front_3 = yes
+	# Retained front ledgers must not revive ordinary cards during global rain
+	# or aftercare. Projection never changes the underlying front state.
+	if = {
+		limit = {
+			has_global_flag = acid_rain_runtime_active
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global_warning compare = less_than_or_equals }
+		}
+		acid_rain_gui_project_front_1 = yes
+		acid_rain_gui_project_front_2 = yes
+		acid_rain_gui_project_front_3 = yes
+	}
 
 	set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_superstorm_2_visible = constant:acid_rain_runtime.zero }
@@ -234,31 +312,58 @@ acid_rain_gui_refresh_read_only = {
 	set_variable = { global.acid_rain_gui_superstorm_1_band = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_superstorm_2_band = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_superstorm_3_band = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_1_status = constant:acid_rain_runtime.two }
+	set_variable = { global.acid_rain_gui_superstorm_2_status = constant:acid_rain_runtime.two }
+	set_variable = { global.acid_rain_gui_superstorm_3_status = constant:acid_rain_runtime.two }
 	if = {
-		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.zero compare = greater_than } }
+		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.zero compare = greater_than } }
 		set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.one }
 		set_variable = { global.acid_rain_gui_superstorm_1_name = global.acid_rain_superstorm_ids^0 }
-		set_variable = { global.acid_rain_gui_superstorm_1_band = global.acid_rain_superstorm_target_count_entries^1 }
+		set_temp_variable = { acid_rain_gui_superstorm_slot = global.acid_rain_gui_superstorm_1_name }
+		# The legacy _band display field carries the stored target-state count.
+		set_variable = { global.acid_rain_gui_superstorm_1_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
+		set_variable = { global.acid_rain_gui_superstorm_1_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
 	}
 	if = {
-		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.one compare = greater_than } }
+		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.one compare = greater_than } }
 		set_variable = { global.acid_rain_gui_superstorm_2_visible = constant:acid_rain_runtime.one }
 		set_variable = { global.acid_rain_gui_superstorm_2_name = global.acid_rain_superstorm_ids^1 }
-		set_variable = { global.acid_rain_gui_superstorm_2_band = global.acid_rain_superstorm_target_count_entries^2 }
+		set_temp_variable = { acid_rain_gui_superstorm_slot = global.acid_rain_gui_superstorm_2_name }
+		# The legacy _band display field carries the stored target-state count.
+		set_variable = { global.acid_rain_gui_superstorm_2_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
+		set_variable = { global.acid_rain_gui_superstorm_2_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
 	}
 	if = {
-		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.two compare = greater_than } }
+		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.two compare = greater_than } }
 		set_variable = { global.acid_rain_gui_superstorm_3_visible = constant:acid_rain_runtime.one }
 		set_variable = { global.acid_rain_gui_superstorm_3_name = global.acid_rain_superstorm_ids^2 }
-		set_variable = { global.acid_rain_gui_superstorm_3_band = global.acid_rain_superstorm_target_count_entries^3 }
+		set_temp_variable = { acid_rain_gui_superstorm_slot = global.acid_rain_gui_superstorm_3_name }
+		# The legacy _band display field carries the stored target-state count.
+		set_variable = { global.acid_rain_gui_superstorm_3_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
+		set_variable = { global.acid_rain_gui_superstorm_3_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
 	}
 
-	# These local frame values belong to the current decision-category country.
-	# The four numbers are presentation-only copies of managed Preparedness.
-	set_variable = { acid_rain_gui_component_1_tier = acid_rain_shelter_tier }
-	set_variable = { acid_rain_gui_component_2_tier = acid_rain_water_tier }
-	set_variable = { acid_rain_gui_component_3_tier = acid_rain_medical_tier }
-	set_variable = { acid_rain_gui_component_4_tier = acid_rain_transport_tier }
+	# Managed tiers are 0-4. Native strip frames are 1-5. Clamp UI copies only.
+	set_variable = { acid_rain_gui_component_1_tier = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_component_2_tier = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_component_3_tier = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_component_4_tier = constant:acid_rain_runtime.zero }
+	if = { limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_shelter_tier } set_variable = { acid_rain_gui_component_1_tier = acid_rain_shelter_tier } }
+	if = { limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_water_tier } set_variable = { acid_rain_gui_component_2_tier = acid_rain_water_tier } }
+	if = { limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_medical_tier } set_variable = { acid_rain_gui_component_3_tier = acid_rain_medical_tier } }
+	if = { limit = { has_country_flag = acid_rain_country_registered has_variable = acid_rain_transport_tier } set_variable = { acid_rain_gui_component_4_tier = acid_rain_transport_tier } }
+	clamp_variable = { var = acid_rain_gui_component_1_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_variable = { var = acid_rain_gui_component_2_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_variable = { var = acid_rain_gui_component_3_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_variable = { var = acid_rain_gui_component_4_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	set_variable = { acid_rain_gui_component_1_frame = acid_rain_gui_component_1_tier }
+	set_variable = { acid_rain_gui_component_2_frame = acid_rain_gui_component_2_tier }
+	set_variable = { acid_rain_gui_component_3_frame = acid_rain_gui_component_3_tier }
+	set_variable = { acid_rain_gui_component_4_frame = acid_rain_gui_component_4_tier }
+	add_to_variable = { acid_rain_gui_component_1_frame = constant:acid_rain_runtime.one }
+	add_to_variable = { acid_rain_gui_component_2_frame = constant:acid_rain_runtime.one }
+	add_to_variable = { acid_rain_gui_component_3_frame = constant:acid_rain_runtime.one }
+	add_to_variable = { acid_rain_gui_component_4_frame = constant:acid_rain_runtime.one }
 }
 
 acid_rain_gui_project_front_1 = {
@@ -274,9 +379,7 @@ acid_rain_gui_project_front_1 = {
 	set_variable = { global.acid_rain_gui_front_1_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_1_next_region = global.acid_rain_front_next_region_entries^1 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_1_warning = constant:acid_rain_runtime.one } }
-	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
-	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.one compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
-	set_variable = { global.acid_rain_gui_front_1_active_states = acid_rain_gui_front_state_count }
+	set_variable = { global.acid_rain_gui_front_1_active_states = global.acid_rain_front_active_state_count_entries^1 }
 	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
 	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }
@@ -298,9 +401,7 @@ acid_rain_gui_project_front_2 = {
 	set_variable = { global.acid_rain_gui_front_2_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_2_next_region = global.acid_rain_front_next_region_entries^2 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_2_warning = constant:acid_rain_runtime.one } }
-	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
-	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.two compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
-	set_variable = { global.acid_rain_gui_front_2_active_states = acid_rain_gui_front_state_count }
+	set_variable = { global.acid_rain_gui_front_2_active_states = global.acid_rain_front_active_state_count_entries^2 }
 	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
 	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }
@@ -322,9 +423,7 @@ acid_rain_gui_project_front_3 = {
 	set_variable = { global.acid_rain_gui_front_3_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_3_next_region = global.acid_rain_front_next_region_entries^3 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_3_warning = constant:acid_rain_runtime.one } }
-	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
-	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.three compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
-	set_variable = { global.acid_rain_gui_front_3_active_states = acid_rain_gui_front_state_count }
+	set_variable = { global.acid_rain_gui_front_3_active_states = global.acid_rain_front_active_state_count_entries^3 }
 	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
 	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }

@@ -609,6 +609,7 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     modifiers_path = repo_root / "common/dynamic_modifiers/033_acid_rain_dynamic_modifiers.txt"
     constants_path = repo_root / "common/script_constants/033_acid_rain_constants.txt"
     decisions_path = repo_root / "common/decisions/033_acid_rain_decisions.txt"
+    shared_population_path = repo_root / "common/scripted_effects/chaosx_dynamic_effects.txt"
     effects = effects_path.read_text(encoding="utf-8-sig")
     triggers = triggers_path.read_text(encoding="utf-8-sig")
     on_actions = on_actions_path.read_text(encoding="utf-8-sig")
@@ -618,6 +619,31 @@ def source_contract(repo_root: Path) -> dict[str, object]:
     modifiers = modifiers_path.read_text(encoding="utf-8-sig")
     constants = constants_path.read_text(encoding="utf-8-sig")
     decisions = decisions_path.read_text(encoding="utf-8-sig")
+    shared_population = shared_population_path.read_text(encoding="utf-8-sig")
+
+    # The public applied amount must come from physical state readback before
+    # registration; source ordering is not a claim of observed engine behavior.
+    exact_helper = shared_population.split("apply_exact_state_civilian_population_loss = {", 1)[1].split(
+        "\n}\n", 1
+    )[0]
+    physical_call = "apply_state_population_loss_without_recruitable_manpower_gain = yes"
+    readback = "set_temp_variable = { state_civilian_population_loss_after_people = state_population_k }"
+    observed_delta = "subtract_from_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_after_people }"
+    death_call = "chaos_meter_register_deaths = yes"
+    assert exact_helper.count(physical_call) == 1
+    assert exact_helper.count(death_call) == 1
+    assert exact_helper.index(physical_call) < exact_helper.index(readback) < exact_helper.index(observed_delta) < exact_helper.index(death_call)
+    assert "set_temp_variable = { chaos_deaths_change = state_civilian_population_loss_applied }" in exact_helper
+    assert "set_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.zero }" in exact_helper
+    assert "set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.one }" in exact_helper
+    assert "chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.one" not in exact_helper
+    assert "state_civilian_population_loss_available_unrounded" in exact_helper
+    assert "state_civilian_population_loss_minimum_unrounded" in exact_helper
+    assert "value = state_civilian_population_loss_minimum_unrounded compare = less_than" in exact_helper
+    assert "add_to_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.one }" in exact_helper
+    assert exact_helper.index("round_temp_variable = state_civilian_population_loss_applied") < exact_helper.index("max = state_civilian_population_loss_available")
+    after_readback = exact_helper[exact_helper.index(observed_delta):]
+    assert "limit = { check_variable = { state_civilian_population_loss_applied > constant:chaos_meter_deaths.zero } }" in after_readback
 
     required_effect_fragments = (
         "acid_rain_apply_state_pulse = {",
@@ -823,6 +849,8 @@ def source_contract(repo_root: Path) -> dict[str, object]:
         "modifiers_sha256": hashlib.sha256(modifiers_path.read_bytes()).hexdigest(),
         "constants_sha256": hashlib.sha256(constants_path.read_bytes()).hexdigest(),
         "decisions_sha256": hashlib.sha256(decisions_path.read_bytes()).hexdigest(),
+        "shared_population_helper_sha256": hashlib.sha256(shared_population_path.read_bytes()).hexdigest(),
+        "shared_population_helper_contract": "physical_loss_then_observed_readback_then_record_only_deaths",
         "exact_population_gateway_calls": effects.count("apply_exact_state_civilian_population_loss = yes"),
         "air_gateway_calls": effects.count("air_contamination_apply_delta_bp = yes"),
         "pulse_deduplication": "monotonic_per_state_generation_key",

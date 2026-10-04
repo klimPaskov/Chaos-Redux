@@ -8,6 +8,7 @@
 # ============================================================================
 
 @acid_rain_033_achievement_zero = 0
+@acid_rain_033_achievement_schema_version = 2
 @acid_rain_033_achievement_one = 1
 @acid_rain_033_achievement_three = 3
 @acid_rain_033_achievement_five = 5
@@ -22,25 +23,38 @@
 acid_rain_033_achievement_input_generation_is_current = {
 	has_variable = acid_rain_033_input_generation
 	has_variable = global.acid_rain_generation_id
+	check_variable = { var = acid_rain_033_input_generation value = @acid_rain_033_achievement_zero compare = greater_than }
 	check_variable = { var = acid_rain_033_input_generation value = global.acid_rain_generation_id compare = equals }
 }
 
 acid_rain_033_achievement_generation_is_current = {
+	acid_rain_033_achievement_input_generation_is_current = yes
 	has_country_flag = acid_rain_033_achievement_tracking_initialized
+	check_variable = { var = acid_rain_033_achievement_schema_version value = @acid_rain_033_achievement_schema_version compare = equals }
 	has_variable = acid_rain_033_achievement_generation_id
 	has_variable = global.acid_rain_generation_id
 	check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals }
 }
 
+# STATE SCOPE. Never consume a state's old-generation ledger or stale scope pointer.
+acid_rain_033_achievement_state_generation_is_current = {
+	acid_rain_033_achievement_input_generation_is_current = yes
+	has_state_flag = acid_rain_033_achievement_state_registered
+	check_variable = { var = acid_rain_033_achievement_state_generation_id value = global.acid_rain_generation_id compare = equals }
+}
+
 acid_rain_033_achievement_campaign_is_valid = {
 	exists = yes
-	acid_rain_033_achievement_generation_is_current = yes
+	has_country_flag = acid_rain_033_achievement_tracking_initialized
+	check_variable = { var = acid_rain_033_achievement_schema_version value = @acid_rain_033_achievement_schema_version compare = equals }
+	check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals }
 	NOT = { has_country_flag = acid_rain_033_achievement_debug_disqualified }
 	NOT = { has_country_flag = acid_rain_033_achievement_force_disqualified }
 	NOT = { has_country_flag = acid_rain_033_achievement_scenario_disqualified }
 	NOT = { has_country_flag = acid_rain_033_achievement_migration_disqualified }
 	NOT = { has_country_flag = acid_rain_033_achievement_admin_disqualified }
 	NOT = { has_country_flag = acid_rain_033_achievement_country_ceased }
+	NOT = { has_country_flag = acid_rain_033_achievement_baseline_invalid }
 }
 
 acid_rain_033_before_the_first_drop_criteria = {
@@ -64,6 +78,7 @@ acid_rain_033_shelters_held_criteria = {
 acid_rain_033_three_evacuations_criteria = {
 	acid_rain_033_achievement_campaign_is_valid = yes
 	NOT = { has_country_flag = acid_rain_033_achievement_three_evacuations_disqualified }
+	NOT = { has_country_flag = acid_rain_033_achievement_evacuation_threshold_unresolved }
 	check_variable = { var = acid_rain_033_achievement_valid_evacuation_state_count value = 3 compare = greater_than_or_equals }
 }
 
@@ -75,7 +90,8 @@ acid_rain_033_railways_still_run_criteria = {
 	check_variable = { var = acid_rain_033_achievement_formation_capital_id value = 0 compare = greater_than }
 	check_variable = { var = acid_rain_033_achievement_exposure_days value = 120 compare = greater_than_or_equals }
 	check_variable = { var = acid_rain_033_achievement_reroute_count value = 3 compare = greater_than_or_equals }
-	check_variable = { var = acid_rain_033_achievement_route_check_count value = 1 compare = greater_than }
+	check_variable = { var = acid_rain_033_achievement_route_check_count value = 1 compare = greater_than_or_equals }
+	check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = 1 compare = equals }
 }
 
 acid_rain_033_under_one_sky_criteria = {
@@ -102,8 +118,8 @@ acid_rain_033_five_states_few_dead_criteria = {
 	NOT = { has_country_flag = acid_rain_033_achievement_five_states_few_dead_disqualified }
 	check_variable = { var = acid_rain_033_achievement_event_start_population_valid value = 1 compare = equals }
 	check_variable = { var = acid_rain_033_achievement_touched_state_count value = 5 compare = greater_than_or_equals }
-	check_variable = { var = acid_rain_033_achievement_closure_kind value = 1 compare = equals }
-	check_variable = { var = acid_rain_033_achievement_closure_deaths_scaled value = acid_rain_033_achievement_closure_population_scaled compare = less_than }
+	check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = 1 compare = equals }
+	check_variable = { var = acid_rain_033_achievement_closure_deaths value = acid_rain_033_achievement_closure_death_ceiling compare = less_than }
 }
 
 acid_rain_033_small_state_civil_defense_criteria = {
@@ -114,7 +130,7 @@ acid_rain_033_small_state_civil_defense_criteria = {
 	check_variable = { var = acid_rain_033_achievement_preparedness_peak value = 60 compare = greater_than_or_equals }
 	check_variable = { var = acid_rain_033_achievement_first_exposure_day value = 0 compare = greater_than }
 	check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = 1 compare = equals }
-	check_variable = { var = acid_rain_033_achievement_max_aftermath_tier value = 3 compare = less_than }
+	check_variable = { var = acid_rain_033_achievement_closure_tier3_count value = 0 compare = equals }
 }
 
 acid_rain_033_two_regions_ready_criteria = {
@@ -130,54 +146,45 @@ acid_rain_033_no_severe_ruins_criteria = {
 	check_variable = { var = acid_rain_033_achievement_tier3_row_count value = 1 compare = greater_than_or_equals }
 	check_variable = { var = acid_rain_033_achievement_tier3_resolved_count value = acid_rain_033_achievement_tier3_row_count compare = greater_than_or_equals }
 	check_variable = { var = acid_rain_033_achievement_tier3_deadline_missed value = 0 compare = equals }
+	check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = 1 compare = equals }
 }
 
 acid_rain_033_before_the_first_drop_is_complete = {
-	acid_rain_033_before_the_first_drop_criteria = yes
 	has_country_flag = acid_rain_033_before_the_first_drop_receipt
 }
 
 acid_rain_033_shelters_held_is_complete = {
-	acid_rain_033_shelters_held_criteria = yes
 	has_country_flag = acid_rain_033_shelters_held_receipt
 }
 
 acid_rain_033_three_evacuations_is_complete = {
-	acid_rain_033_three_evacuations_criteria = yes
 	has_country_flag = acid_rain_033_three_evacuations_receipt
 }
 
 acid_rain_033_railways_still_run_is_complete = {
-	acid_rain_033_railways_still_run_criteria = yes
 	has_country_flag = acid_rain_033_railways_still_run_receipt
 }
 
 acid_rain_033_under_one_sky_is_complete = {
-	acid_rain_033_under_one_sky_criteria = yes
 	has_country_flag = acid_rain_033_under_one_sky_receipt
 }
 
 acid_rain_033_after_the_clouds_is_complete = {
-	acid_rain_033_after_the_clouds_criteria = yes
 	has_country_flag = acid_rain_033_after_the_clouds_receipt
 }
 
 acid_rain_033_five_states_few_dead_is_complete = {
-	acid_rain_033_five_states_few_dead_criteria = yes
 	has_country_flag = acid_rain_033_five_states_few_dead_receipt
 }
 
 acid_rain_033_small_state_civil_defense_is_complete = {
-	acid_rain_033_small_state_civil_defense_criteria = yes
 	has_country_flag = acid_rain_033_small_state_civil_defense_receipt
 }
 
 acid_rain_033_two_regions_ready_is_complete = {
-	acid_rain_033_two_regions_ready_criteria = yes
 	has_country_flag = acid_rain_033_two_regions_ready_receipt
 }
 
 acid_rain_033_no_severe_ruins_is_complete = {
-	acid_rain_033_no_severe_ruins_criteria = yes
 	has_country_flag = acid_rain_033_no_severe_ruins_receipt
 }
