@@ -6,6 +6,7 @@
 #   detailed-event cutoff 6.
 # - Profile tiers, stance tokens, consent replies, and Event 6 history
 #   payloads for the post-wave foreign reaction queue.
+# - Remnant petition window, reply and outcome tokens.
 # - Dispatch spacing, the 13-day human response window, and the queue
 #   deadline margin. Event timeout fields mirror the response window as a
 #   file-scoped @-constant because `timeout_days` rejects script constants.
@@ -109,4 +110,40 @@ independence_wave_foreign_history = {
 	mediation = 32
 	containment = 33
 	network_aid = 34
+	# The surviving former host is the primary actor for a remnant guarantee.
+	remnant_guarantee = 35
+}
+
+# Remnant petition: a 30-day window opened by the remnant host response, one
+# petition per host country identity, and a 13-day answer window.
+independence_wave_remnant_petition = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	window_days = 30
+	response_timeout_days = 13
+}
+
+independence_wave_remnant_petition_reply = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	refuse = 0
+	accept = 1
+}
+
+independence_wave_remnant_petition_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	accepted = 1
+	refused = 2
+	lapsed = 3
 }

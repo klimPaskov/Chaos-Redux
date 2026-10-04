@@ -1297,3 +1297,245 @@ independence_wave_foreign_reaction_record_history = {
 	set_temp_variable = { events_log_system_secondary_actor = 0 }
 	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
 }
+
+# ---------------------------------------------------------------------------
+# Remnant petition
+# ---------------------------------------------------------------------------
+# A remnant former host that chose legal continuity or a regional charter may,
+# within 30 days, ask the highest-interest government around it for a
+# guarantee. The petition is paid once per country identity, reaches one
+# recipient, and never protects a released country.
+
+# COUNTRY scope: the host, from its remnant host response (ROOT is the host).
+# Consumes the outside-guarantee opportunity and opens the window when the
+# host has not used its petition yet and a qualifying recipient exists.
+independence_wave_remnant_petition_open_window = {
+	clr_country_flag = independence_wave_host_response_outside_guarantee_opportunity_open
+	clr_country_flag = independence_wave_remnant_petition_window
+	clear_variable = independence_wave_remnant_petition_candidate
+	if = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = independence_wave_remnant_petition_used }
+			has_variable = independence_wave_host_response_plan_id
+		}
+		set_variable = { independence_wave_remnant_petition_plan_id = independence_wave_host_response_plan_id }
+		independence_wave_remnant_petition_select_candidate = yes
+		if = {
+			limit = { has_variable = independence_wave_remnant_petition_candidate }
+			set_temp_variable = { independence_wave_remnant_petition_window_days = constant:independence_wave_remnant_petition.window_days }
+			set_country_flag = {
+				flag = independence_wave_remnant_petition_window
+				days = independence_wave_remnant_petition_window_days
+			}
+		}
+	}
+}
+
+# COUNTRY scope: the host. Ranks the neighbors and allies of the host with the
+# accepted interest score and stores the first highest-scoring recipient at or
+# above the detailed cutoff.
+independence_wave_remnant_petition_select_candidate = {
+	save_event_target_as = independence_wave_petition_host
+	set_temp_variable = { independence_wave_petition_wave_input = independence_wave_remnant_petition_plan_id }
+	set_temp_variable = { independence_wave_petition_best_score = constant:independence_wave_foreign_interest.no_score }
+	every_neighbor_country = { independence_wave_remnant_petition_consider_recipient = yes }
+	every_allied_country = { independence_wave_remnant_petition_consider_recipient = yes }
+	if = {
+		limit = { check_variable = { var = independence_wave_petition_best_score value = constant:independence_wave_foreign_interest.detailed_cutoff compare = greater_than_or_equals } }
+		set_variable = { independence_wave_remnant_petition_candidate = event_target:independence_wave_petition_best_recipient }
+	}
+}
+
+# COUNTRY scope: a candidate recipient. Strictly greater keeps the first
+# candidate on a tie (neighbors before allies).
+independence_wave_remnant_petition_consider_recipient = {
+	if = {
+		limit = { is_valid_independence_wave_remnant_petition_recipient = yes }
+		save_event_target_as = independence_wave_petition_recipient
+		set_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.floor }
+		if = {
+			limit = { is_neighbor_of = event_target:independence_wave_petition_host }
+			add_to_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.direct_stake }
+		}
+		if = {
+			limit = { is_ally_with = event_target:independence_wave_petition_host }
+			add_to_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.recorded_relationship }
+		}
+		if = {
+			limit = { has_independence_wave_petition_strategic_fit = yes }
+			add_to_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.strategic_fit }
+		}
+		if = {
+			limit = { has_independence_wave_petition_political_fit = yes }
+			add_to_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.political_fit }
+		}
+		if = {
+			limit = { has_independence_wave_petition_conflict = yes }
+			add_to_temp_variable = { independence_wave_petition_score = constant:independence_wave_foreign_interest.conflict_penalty }
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_petition_score value = independence_wave_petition_best_score compare = greater_than } }
+			set_temp_variable = { independence_wave_petition_best_score = independence_wave_petition_score }
+			save_event_target_as = independence_wave_petition_best_recipient
+		}
+	}
+}
+
+# COUNTRY scope: the host taking the petition decision (ROOT is the host).
+# The decision pays the standard diplomatic cost. Uses the host's one
+# petition and opens the recipient's answer window.
+independence_wave_remnant_petition_submit = {
+	if = {
+		limit = {
+			has_open_independence_wave_remnant_petition_window = yes
+			is_valid_independence_wave_remnant_petition_candidate_for_root = yes
+		}
+		set_country_flag = independence_wave_remnant_petition_used
+		clr_country_flag = independence_wave_remnant_petition_window
+		set_country_flag = independence_wave_remnant_petition_pending
+		clear_variable = independence_wave_remnant_petition_outcome
+		set_variable = { independence_wave_remnant_petition_recipient = independence_wave_remnant_petition_candidate }
+		set_temp_variable = { independence_wave_petition_wave_input = independence_wave_remnant_petition_plan_id }
+		var:independence_wave_remnant_petition_recipient = {
+			set_country_flag = independence_wave_remnant_petition_received
+			set_variable = { independence_wave_remnant_petition_from = ROOT }
+			set_variable = { independence_wave_remnant_petition_received_plan_id = independence_wave_petition_wave_input }
+			if = {
+				limit = { is_ai = yes }
+				country_event = { id = chaosx.nr6.64 }
+			}
+			else = { country_event = { id = chaosx.nr6.69 } }
+		}
+	}
+}
+
+# COUNTRY scope: the recipient (ROOT is the recipient). Input: temporary
+# `independence_wave_remnant_petition_reply_input`. A guarantee needs the
+# acceptance requirements to still hold; anything else gives no protection.
+# The host is told the result once.
+independence_wave_remnant_petition_resolve = {
+	set_temp_variable = { independence_wave_remnant_petition_result = constant:independence_wave_remnant_petition_outcome.lapsed }
+	if = {
+		limit = { has_current_independence_wave_remnant_petition = yes }
+		var:independence_wave_remnant_petition_from = { save_event_target_as = independence_wave_petition_host }
+		if = {
+			limit = {
+				check_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.accept }
+				can_independence_wave_remnant_petition_accept = yes
+			}
+			independence_wave_decision_pay_diplomatic_standard = yes
+			event_target:independence_wave_petition_host = {
+				ROOT = { give_guarantee = PREV }
+				# The host's transit concession takes effect only with the guarantee.
+				give_military_access = ROOT
+				add_opinion_modifier = { target = ROOT modifier = independence_wave_remnant_petition_guarantor }
+			}
+			add_ai_strategy = {
+				type = protect
+				id = event_target:independence_wave_petition_host
+				value = @CR_SC_INDEPENDENCE_WAVE_FOREIGN_AI_STRATEGY_STANDARD
+			}
+			set_temp_variable = { independence_wave_remnant_petition_result = constant:independence_wave_remnant_petition_outcome.accepted }
+			independence_wave_remnant_petition_record_history = yes
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.refuse } }
+			event_target:independence_wave_petition_host = {
+				add_opinion_modifier = { target = ROOT modifier = independence_wave_remnant_petition_refused }
+			}
+			set_temp_variable = { independence_wave_remnant_petition_result = constant:independence_wave_remnant_petition_outcome.refused }
+		}
+	}
+	independence_wave_remnant_petition_notify_host = yes
+}
+
+# COUNTRY scope: the recipient. Closes its side of the petition and tells a
+# living host that is still waiting for this recipient. Input: temporary
+# `independence_wave_remnant_petition_result`.
+independence_wave_remnant_petition_notify_host = {
+	if = {
+		limit = {
+			has_variable = independence_wave_remnant_petition_from
+			var:independence_wave_remnant_petition_from = {
+				exists = yes
+				has_country_flag = independence_wave_remnant_petition_pending
+				has_variable = independence_wave_remnant_petition_recipient
+				check_variable = { var = independence_wave_remnant_petition_recipient value = PREV.id compare = equals }
+			}
+		}
+		var:independence_wave_remnant_petition_from = {
+			clr_country_flag = independence_wave_remnant_petition_pending
+			set_variable = { independence_wave_remnant_petition_outcome = independence_wave_remnant_petition_result }
+			country_event = { id = chaosx.nr6.70 }
+		}
+	}
+	clr_country_flag = independence_wave_remnant_petition_received
+	clear_variable = independence_wave_remnant_petition_from
+}
+
+# COUNTRY scope: an AI recipient answering through the hidden router (ROOT is
+# the recipient). Guarantees at peace for an ally or a government of the same
+# outlook when it can; otherwise refuses.
+independence_wave_remnant_petition_resolve_ai = {
+	set_temp_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.refuse }
+	if = {
+		limit = { has_current_independence_wave_remnant_petition = yes }
+		save_event_target_as = independence_wave_petition_recipient
+		var:independence_wave_remnant_petition_from = { save_event_target_as = independence_wave_petition_host }
+		if = {
+			limit = {
+				has_war = no
+				can_independence_wave_remnant_petition_accept = yes
+				OR = {
+					is_ally_with = event_target:independence_wave_petition_host
+					has_independence_wave_petition_political_fit = yes
+				}
+			}
+			set_temp_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.accept }
+		}
+	}
+	independence_wave_remnant_petition_resolve = yes
+}
+
+# COUNTRY scope: the recipient. One public Event 6 row naming the surviving
+# host as the beneficiary and this government as the guarantor.
+independence_wave_remnant_petition_record_history = {
+	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
+	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
+	set_temp_variable = { events_log_system_payload = constant:independence_wave_foreign_history.remnant_guarantee }
+	set_temp_variable = { events_log_system_secondary_actor = THIS.id }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_plan.loop_increment }
+	event_target:independence_wave_petition_host = {
+		set_temp_variable = { events_log_system_actor = THIS.id }
+	}
+	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_plan.loop_increment }
+	record_events_log_system_history_entry = yes
+	refresh_events_log_system_history_views = yes
+	set_temp_variable = { events_log_system_event_id = 0 }
+	set_temp_variable = { events_log_system_event_type = 0 }
+	set_temp_variable = { events_log_system_payload = 0 }
+	set_temp_variable = { events_log_system_actor = 0 }
+	set_temp_variable = { events_log_system_has_actor = 0 }
+	set_temp_variable = { events_log_system_secondary_actor = 0 }
+	set_temp_variable = { events_log_system_has_secondary_actor = 0 }
+}
+
+# COUNTRY scope: a country that is annexed (`on_annex` FROM) or released again
+# (`on_release_as_free` / `on_release_as_puppet` ROOT). A recipient's open
+# petition lapses and its host is told; a host's petition state and identity
+# receipt end with the country identity.
+independence_wave_remnant_petition_end_identity = {
+	if = {
+		limit = { has_country_flag = independence_wave_remnant_petition_received }
+		set_temp_variable = { independence_wave_remnant_petition_result = constant:independence_wave_remnant_petition_outcome.lapsed }
+		independence_wave_remnant_petition_notify_host = yes
+	}
+	clr_country_flag = independence_wave_remnant_petition_used
+	clr_country_flag = independence_wave_remnant_petition_window
+	clr_country_flag = independence_wave_remnant_petition_pending
+	clear_variable = independence_wave_remnant_petition_candidate
+	clear_variable = independence_wave_remnant_petition_recipient
+	clear_variable = independence_wave_remnant_petition_plan_id
+	clear_variable = independence_wave_remnant_petition_outcome
+}

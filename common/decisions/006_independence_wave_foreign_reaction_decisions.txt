@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 REMNANT PETITION DECISION
+# Overview:
+# - A remnant former host on the legal-continuity or regional-charter
+#   settlement may ask the highest-interest government around it for a
+#   guarantee once per country identity, within 30 days of its host response.
+# - The recipient is ranked when the window opens and named in the decision.
+# - The host pays the standard diplomatic cost. The recipient answers in
+#   chaosx.nr6.69 (or the hidden router for AI) and the host learns the
+#   result in chaosx.nr6.70.
+# - The AI petitions only under a real threat.
+# ============================================================================
+
+independence_wave_remnant_petition_category = {
+	independence_wave_petition_foreign_guarantee = {
+		name = independence_wave_petition_foreign_guarantee
+		desc = independence_wave_petition_foreign_guarantee_desc
+		icon = GFX_decision_independence_wave_recognition_actions
+		visible = {
+			has_open_independence_wave_remnant_petition_window = yes
+			has_variable = independence_wave_remnant_petition_candidate
+		}
+		available = {
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			custom_trigger_tooltip = {
+				tooltip = independence_wave_petition_foreign_guarantee_recipient_tt
+				is_valid_independence_wave_remnant_petition_candidate_for_root = yes
+			}
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		complete_effect = {
+			independence_wave_decision_pay_diplomatic_standard = yes
+			custom_effect_tooltip = independence_wave_petition_foreign_guarantee_tt
+			hidden_effect = { independence_wave_remnant_petition_submit = yes }
+		}
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = {
+				factor = constant:independence_wave_decision_ai.blocked
+				NOT = { has_independence_wave_remnant_threat = yes }
+			}
+		}
+	}
+}

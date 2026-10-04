@@ -73,3 +73,22 @@ Decisions:
 MCP route evidence: `hoi4.event_inspect` (`mode = trace`, selector `{kind = event, eventId = chaosx.nr6.64}`, depth 1, helpers off) returned `EVENT_INSPECTED_PARTIAL` with 0 blocking diagnostics at revision `aa7908432d2dd3a6a99128a55ffcc50718398ab33c42d437ce1f7a0fbd2e2810` (whole-workspace helper projections deferred). A plain-string selector is rejected by the schema.
 
 Needs live game: hidden routing and dispatch spacing, the timeout defaults, `send_equipment` with `target = PREV`, tag-targeted receipts inside the stance chain, and the barrier hand-off with a human host and a human actor.
+
+## D4. Foreign reactions step 3: remnant petitions (`.69`/`.70`)
+
+Disposition: `implemented`.
+
+Basis: the accepted contract (Remnant petition) and the lead's round-1 item 4.
+
+Decisions:
+
+- The remnant host response consumes `independence_wave_host_response_outside_guarantee_opportunity_open` and opens a 30-day window (`independence_wave_remnant_petition.window_days`) only when the host has not petitioned in its current identity and a qualifying recipient exists; otherwise the opportunity ends without a decision.
+- Recipient ranking is deterministic and bounded: the host's `every_neighbor_country`, then `every_allied_country`, scored with the accepted families against the host (frontier 4, alliance 3, access or a great power's continental reach 2, shared ideology 1, war or a claim on the host's land -3, cutoff 6); the first highest score wins and is named in the decision, so the counterpart is explicit before the host pays.
+- Recipient validity: living, sovereign, not the host, not at war with it, not already guaranteeing it, not a state released from it, more than ten divisions, reach (frontier, continent or access), and no other petition answered in the same wave.
+- The host pays the standard diplomatic cost through the decision; the recipient pays the standard cost only when it accepts. The guarantee is the real engine guarantee, and the host grants military access only in that branch, which is the contingent transit concession.
+- Identity epoch: there is no durable generation receipt for vanilla host countries, so the explicit flag `independence_wave_remnant_petition_used` is the epoch receipt. It is set on submission and cleared only by the native lifecycle callbacks `on_annex` (FROM) and `on_release_as_free` / `on_release_as_puppet` (ROOT); no wave id stands in for it.
+- AI hosts petition only under a real threat (war, or a neighbor holding or justifying a war goal against them). AI recipients accept at peace when allied with the host or sharing its outlook and able to pay, through the hidden router `.64`; human recipients answer `.69`, which declines after 13 days. `.70` reports accepted, declined or lapsed to the host.
+- An accepted petition writes Event 6 history payload 35 with the host as the primary actor. Petitions never touch recognition receipts or Statehood values of released countries.
+- The petition does not hold the report/reset barrier: it belongs to the host's identity epoch, not to the foreign queue, and its window and answer close on their own timers.
+
+Needs live game: decision visibility and the named recipient, AI threat gating, `give_guarantee` from a `ROOT = { ... PREV }` chain, the access concession, and the `.70` text for each outcome.

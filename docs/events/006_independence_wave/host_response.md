@@ -47,6 +47,8 @@ Each severe choice applies the partition-crisis idea for 180 days.
 
 Each remnant choice applies the emergency-government idea for 365 days.
 
+The outside-guarantee opportunity of either remnant choice becomes a 30-day petition window for one foreign guarantee, described in `foreign_reactions.md`.
+
 The AI resolver uses only current-wave primary-host rows with matching generations, aligned host-relation arrays, current hostility and domestic-pressure values, and the host's current war state.
 
 At peace with low pressure and hostility, an AI remnant chooses regional identity; a remnant under pressure chooses legal continuity.

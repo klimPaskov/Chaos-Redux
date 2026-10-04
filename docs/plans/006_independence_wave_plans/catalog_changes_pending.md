@@ -22,4 +22,15 @@ Event details text: no change. The in-game Event Details text (`chaosx.events_lo
 
 New Event 6 history entries (Event Log): recognition, guarantee, mediation, containment, aid; text in `localisation/english/006_independence_wave_foreign_reaction_l_english.yml` (`independence_wave.history.foreign.*`).
 
-Reserved and not yet implemented: `.69` remnant petition recipient and `.70` host outcome notice.
+## 2026-10-04: remnant petitions (D4)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+| ID | Type | Title | Notes |
+| --- | --- | --- | --- |
+| `.69` | Country | A Petition for Protection | Recipient answers a remnant former host: Decline the petition / Guarantee the host |
+| `.70` | Country | An Answer to Our Petition | Host learns whether the guarantee was given, declined or lapsed |
+
+New decision for remnant former hosts: "Petition [recipient] for a Guarantee" in the category "A Foreign Guarantee".
+
+New Event 6 history entry: remnant guarantee (`independence_wave.history.foreign.remnant_guarantee`).

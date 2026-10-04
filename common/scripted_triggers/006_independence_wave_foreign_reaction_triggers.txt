@@ -349,3 +349,160 @@ can_independence_wave_foreign_offer_deliver_arms_limited = {
 		NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Remnant petition
+# ---------------------------------------------------------------------------
+# A remnant former host may ask one government for a guarantee once per
+# country identity. The flag `independence_wave_remnant_petition_used` is the
+# identity receipt; it is cleared only when the country is annexed or released
+# again. A petition protects the host and never recognizes a released country.
+
+# Host scope. The remnant settlement chosen in the current host response.
+has_independence_wave_remnant_petition_route = {
+	OR = {
+		has_country_flag = independence_wave_host_response_remnant_legal_continuity
+		has_country_flag = independence_wave_host_response_remnant_regional_identity
+	}
+}
+
+# Host scope. The 30-day window opened by this host's latest host response.
+has_open_independence_wave_remnant_petition_window = {
+	exists = yes
+	has_country_flag = independence_wave_remnant_petition_window
+	NOT = { has_country_flag = independence_wave_remnant_petition_used }
+	has_independence_wave_remnant_petition_route = yes
+	has_variable = independence_wave_remnant_petition_plan_id
+	has_variable = independence_wave_host_response_resolved_plan_id
+	check_variable = { var = independence_wave_remnant_petition_plan_id value = independence_wave_host_response_resolved_plan_id compare = equals }
+}
+
+# Host scope with ROOT as the host (decision). The ranked recipient chosen
+# when the window opened can still receive the petition.
+is_valid_independence_wave_remnant_petition_candidate_for_root = {
+	has_variable = independence_wave_remnant_petition_candidate
+	var:independence_wave_remnant_petition_candidate = {
+		exists = yes
+		is_subject = no
+		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
+		NOT = { has_guaranteed = ROOT }
+		NOT = { has_country_flag = independence_wave_remnant_petition_received }
+	}
+}
+
+# Host scope. A real threat that makes a guarantee useful to the AI.
+has_independence_wave_remnant_threat = {
+	OR = {
+		has_war = yes
+		any_neighbor_country = {
+			OR = {
+				has_wargoal_against = PREV
+				is_justifying_wargoal_against = PREV
+			}
+		}
+	}
+}
+
+# Recipient scope. Event target: `independence_wave_petition_host`. Temporary
+# input: `independence_wave_petition_wave_input`, the host's window plan id.
+is_valid_independence_wave_remnant_petition_recipient = {
+	exists = yes
+	is_subject = no
+	NOT = { tag = event_target:independence_wave_petition_host }
+	NOT = { has_war_with = event_target:independence_wave_petition_host }
+	NOT = { has_guaranteed = event_target:independence_wave_petition_host }
+	NOT = { has_country_flag = independence_wave_remnant_petition_received }
+	NOT = {
+		AND = {
+			has_variable = independence_wave_remnant_petition_received_plan_id
+			check_variable = { var = independence_wave_remnant_petition_received_plan_id value = independence_wave_petition_wave_input compare = equals }
+		}
+	}
+	# A state released from this host is never asked to protect it.
+	NOT = {
+		AND = {
+			has_variable = independence_wave_former_host
+			check_variable = { var = independence_wave_former_host value = event_target:independence_wave_petition_host compare = equals }
+		}
+	}
+	num_divisions > constant:independence_wave_foreign_capacity.guarantee_min_divisions
+	OR = {
+		is_neighbor_of = event_target:independence_wave_petition_host
+		is_on_same_continent_as = event_target:independence_wave_petition_host
+		has_military_access_to = event_target:independence_wave_petition_host
+		event_target:independence_wave_petition_host = { has_military_access_to = PREV }
+	}
+}
+
+# Recipient scope. Event targets: `independence_wave_petition_host` and
+# `independence_wave_petition_recipient` (this country).
+has_independence_wave_petition_political_fit = {
+	OR = {
+		AND = {
+			has_government = democratic
+			event_target:independence_wave_petition_host = { has_government = democratic }
+		}
+		AND = {
+			has_government = communism
+			event_target:independence_wave_petition_host = { has_government = communism }
+		}
+		AND = {
+			has_government = fascism
+			event_target:independence_wave_petition_host = { has_government = fascism }
+		}
+		AND = {
+			has_government = neutrality
+			event_target:independence_wave_petition_host = { has_government = neutrality }
+		}
+	}
+}
+
+has_independence_wave_petition_strategic_fit = {
+	OR = {
+		has_military_access_to = event_target:independence_wave_petition_host
+		event_target:independence_wave_petition_host = { has_military_access_to = PREV }
+		AND = {
+			is_major = yes
+			is_on_same_continent_as = event_target:independence_wave_petition_host
+		}
+	}
+}
+
+has_independence_wave_petition_conflict = {
+	OR = {
+		has_war = yes
+		event_target:independence_wave_petition_host = {
+			any_owned_state = { is_claimed_by = event_target:independence_wave_petition_recipient }
+		}
+	}
+}
+
+# Recipient scope. The open petition from a living host that still waits for
+# this country's answer.
+has_current_independence_wave_remnant_petition = {
+	has_country_flag = independence_wave_remnant_petition_received
+	has_variable = independence_wave_remnant_petition_from
+	var:independence_wave_remnant_petition_from = {
+		exists = yes
+		has_country_flag = independence_wave_remnant_petition_pending
+		has_variable = independence_wave_remnant_petition_recipient
+		check_variable = { var = independence_wave_remnant_petition_recipient value = PREV.id compare = equals }
+		NOT = { has_war_with = PREV }
+	}
+}
+
+# Recipient scope with ROOT as the recipient. The guarantee can be given now:
+# valid access, no hostility, credible capacity and the standard cost.
+can_independence_wave_remnant_petition_accept = {
+	has_current_independence_wave_remnant_petition = yes
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+	num_divisions > constant:independence_wave_foreign_capacity.guarantee_min_divisions
+	NOT = { has_guaranteed = var:independence_wave_remnant_petition_from }
+	OR = {
+		is_neighbor_of = var:independence_wave_remnant_petition_from
+		is_on_same_continent_as = var:independence_wave_remnant_petition_from
+		has_military_access_to = var:independence_wave_remnant_petition_from
+		var:independence_wave_remnant_petition_from = { has_military_access_to = ROOT }
+	}
+}

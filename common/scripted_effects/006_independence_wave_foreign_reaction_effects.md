@@ -3,7 +3,8 @@
 Source: `common/scripted_effects/006_independence_wave_foreign_reaction_effects.txt`.
 Triggers: `common/scripted_triggers/006_independence_wave_foreign_reaction_triggers.txt`.
 Constants: `common/script_constants/006_independence_wave_foreign_reaction_constants.txt`.
-Events: `events/006_independence_wave_foreign_reaction_events.txt` (`chaosx.nr6.64` to `.68`, `.71`, `.72`).
+Events: `events/006_independence_wave_foreign_reaction_events.txt` (`chaosx.nr6.64` to `.72`).
+Decision: `common/decisions/006_independence_wave_foreign_reaction_decisions.txt` (remnant petition).
 Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 
 ## Lifecycle effects
@@ -94,6 +95,32 @@ All stance effects run in actor scope with ROOT as the actor and the receipt tar
 ### `independence_wave_foreign_reaction_resolve_ai_offer`
 
 - Scope: an AI released country. Accepts below the patron dominance warning, limits below dependency, refuses beyond it.
+
+## Remnant petition effects
+
+### `independence_wave_remnant_petition_open_window`
+
+- Scope: the host, called from `independence_wave_host_response_apply_current_action` when a remnant settlement sets the outside-guarantee opportunity.
+- Consumes the opportunity flag. When the host has not used its petition (`independence_wave_remnant_petition_used`), stores `independence_wave_remnant_petition_plan_id`, ranks a recipient through `independence_wave_remnant_petition_select_candidate`, and opens the timed `independence_wave_remnant_petition_window` flag for `independence_wave_remnant_petition.window_days` only when a recipient qualifies.
+
+### `independence_wave_remnant_petition_select_candidate` / `independence_wave_remnant_petition_consider_recipient`
+
+- Scope: the host / each neighbor and ally of the host. Event targets `independence_wave_petition_host`, `independence_wave_petition_recipient`, `independence_wave_petition_best_recipient`.
+- Output: host variable `independence_wave_remnant_petition_candidate`, the first highest-scoring recipient at or above the cutoff.
+
+### `independence_wave_remnant_petition_submit`
+
+- Scope: the host taking `independence_wave_petition_foreign_guarantee` (ROOT is the host). Sets the identity receipt, the pending flag and `independence_wave_remnant_petition_recipient`, marks the recipient (`independence_wave_remnant_petition_received`, `_from`, `_received_plan_id`) and sends it `.69` or, for AI, `.64`.
+
+### `independence_wave_remnant_petition_resolve` / `independence_wave_remnant_petition_resolve_ai`
+
+- Scope: the recipient (ROOT is the recipient). Input: temporary `independence_wave_remnant_petition_reply_input`.
+- Acceptance pays the standard diplomatic cost, gives the real guarantee, makes the host grant military access, adds opinions and a `protect` AI strategy, and records history payload 35. Refusal adds the host's refusal opinion. An invalid petition lapses without effect.
+- Always calls `independence_wave_remnant_petition_notify_host`, which stores the outcome on a waiting host and sends `.70`.
+
+### `independence_wave_remnant_petition_end_identity`
+
+- Scope: an annexed country (`on_annex` FROM) or a released country (`on_release_as_free` / `on_release_as_puppet` ROOT). Lapses an open received petition and clears the host's petition state and identity receipt.
 
 ## Example
 

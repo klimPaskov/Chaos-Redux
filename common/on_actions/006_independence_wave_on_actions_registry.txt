@@ -46,6 +46,8 @@ on_actions = {
 
 	on_release_as_free = {
 		effect = {
+			# A released country starts a new identity with no remnant petition used.
+			ROOT = { independence_wave_remnant_petition_end_identity = yes }
 			ROOT = { independence_wave_join_offer_if_eligible = yes }
 			FROM = { independence_wave_join_offer_if_eligible = yes }
 		}
@@ -53,6 +55,7 @@ on_actions = {
 
 	on_release_as_puppet = {
 		effect = {
+			ROOT = { independence_wave_remnant_petition_end_identity = yes }
 			ROOT = { independence_wave_join_offer_if_eligible = yes }
 			FROM = { independence_wave_join_offer_if_eligible = yes }
 		}
@@ -68,9 +71,10 @@ on_actions = {
 # ============================================================================
 	on_annex = {
 		effect = {
-			# A foreign reaction receipt or open patron offer held by the annexed
-			# country closes once before the country disappears.
+			# A foreign reaction receipt, open patron offer or remnant petition held
+			# by the annexed country closes once before the country disappears.
 			FROM = { independence_wave_foreign_reaction_release_annexed_country = yes }
+			FROM = { independence_wave_remnant_petition_end_identity = yes }
 			if = {
 				limit = { FROM = { is_independence_wave_active_country = yes } }
 				FROM = {

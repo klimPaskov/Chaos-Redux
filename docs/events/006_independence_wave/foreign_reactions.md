@@ -4,7 +4,7 @@ After an Independence Wave report, the governments with a real stake in the new 
 
 ## Accepted design
 
-Acceptance basis: the accepted contract `docs/specs/006_independence_wave_specs/specs/006_foreign_reactions_and_remnant_petitions_contract.md` (user selections of 2026-09-27 and the 2026-10-03 continuation instruction), implemented under the agent decisions recorded in `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md` (D2 and D3).
+Acceptance basis: the accepted contract `docs/specs/006_independence_wave_specs/specs/006_foreign_reactions_and_remnant_petitions_contract.md` (user selections of 2026-09-27 and the 2026-10-03 continuation instruction), implemented under the agent decisions recorded in `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md` (D2, D3 and D4).
 
 ## Flow
 
@@ -104,8 +104,24 @@ Dynamic reason, host and cost text lives in `common/scripted_localisation/006_in
 - Engine guarantees given to the target's former host cannot be enumerated, so a guarantor of the host qualifies only through another source.
 - Live verification of the hidden routing, the timeout defaults, and tag-targeted receipts inside the stance chain is required in game.
 
+## Remnant petitions
+
+A remnant former host that chose legal continuity (`.62` first option) or a regional charter (`.62` second option) may ask one foreign government to guarantee what is left of its territory.
+
+1. The remnant host response consumes `independence_wave_host_response_outside_guarantee_opportunity_open` through `independence_wave_remnant_petition_open_window`.
+2. If the host has not petitioned before in its current identity, the host's neighbors, then its allies, are ranked with the same 4/3/2/1 families against the host: frontier, alliance, access or a great power's continental reach, shared ideology, and the -3 penalty for war or a claim on the host's land. The first highest-scoring government at 6 or more becomes the named recipient.
+3. With a recipient, a 30-day window opens the decision "Petition [recipient] for a Guarantee" in the category "A Foreign Guarantee". The host pays the standard diplomatic cost. The AI takes it only under a real threat: war, or a neighbor holding or justifying a war goal against it.
+4. The recipient answers in `.69` (13 days, declining by default) or, as AI, through the hidden router: it guarantees at peace when allied with the host or sharing its outlook and when it can pay the standard cost, has more than ten divisions and can reach the host.
+5. Acceptance creates the real engine guarantee, and only then does the host grant the recipient military access, its promised concession. Declining or an invalid petition creates no protection. `.70` tells the host the result.
+6. A recipient answers at most one petition per wave, a state released from the host is never asked, and a government that already guarantees the host is not asked again.
+7. The host may petition once per country identity: the flag `independence_wave_remnant_petition_used` is cleared only when the country is annexed or released again. An unused window simply expires.
+
+Petitions protect the host and never recognize or reward a released country. An accepted petition writes Event 6 history payload 35 with the host as the primary actor and the guarantor as the counterpart.
+
+The petition reuses `GFX_report_event_006_asset_002_host_crisis` for `.69` and `.70`, the existing diplomacy category icon and recognition decision icon, and the opinion modifiers `independence_wave_remnant_petition_guarantor` and `independence_wave_remnant_petition_refused`.
+Source: `common/decisions/006_independence_wave_foreign_reaction_decisions.txt`, `common/decisions/categories/006_independence_wave_foreign_reaction_categories.txt`, and the petition sections of the foreign reaction effects and triggers.
+
 ## Future plans
 
-- Remnant petitions (`.69`/`.70`): a remnant former host asks one high-interest government for a guarantee.
 - Package-authored contact profiles for admitted packages (named sponsors, corridors, old claims) to feed the relationship and strategic families.
 - A summary news item that groups low-interest attention by region.

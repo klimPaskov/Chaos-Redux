@@ -292,6 +292,12 @@ independence_wave_host_response_apply_current_action = {
 			limit = { check_variable = { var = independence_wave_host_response_action_input value = constant:independence_wave_host_response_action.remnant_regional_identity compare = equals } }
 			set_country_flag = independence_wave_host_response_remnant_regional_identity
 		}
+		# The remnant's outside-guarantee opportunity becomes a 30-day petition
+		# window when the host can still petition and a recipient qualifies.
+		if = {
+			limit = { has_country_flag = independence_wave_host_response_outside_guarantee_opportunity_open }
+			independence_wave_remnant_petition_open_window = yes
+		}
 		independence_wave_host_response_apply_state_claim_policy = yes
 		independence_wave_host_response_update_primary_child_ledgers = yes
 		independence_wave_host_response_complete_current_host = yes

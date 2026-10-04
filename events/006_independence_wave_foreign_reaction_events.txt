@@ -1,8 +1,12 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 FOREIGN REACTION EVENTS
 # Overview:
-# - .64 hidden router: dispatches an actor's one reaction per wave and
-#   answers a patron offer for an AI released country.
+# - .64 hidden router: dispatches an actor's one reaction per wave, answers a
+#   patron offer for an AI released country, and answers a remnant petition
+#   for an AI recipient.
+# - .69 remnant petition: the chosen government decides whether to guarantee
+#   a remnant former host. The first option declines, which the 13-day
+#   timeout selects. .70 tells the host the result.
 # - .72 hidden deadline: closes a queue whose receipts outlived every answer.
 # - .65 neighbor, .66 regional power, .67 great power and .68 earlier-wave
 #   state: one top-target choice per actor. The first option is the
@@ -16,9 +20,11 @@
 
 add_namespace = chaosx.nr6
 
-# `timeout_days` rejects script constants; this mirrors
-# `independence_wave_foreign_reaction_timing.response_timeout_days`.
+# `timeout_days` rejects script constants; these mirror
+# `independence_wave_foreign_reaction_timing.response_timeout_days` and
+# `independence_wave_remnant_petition.response_timeout_days`.
 @CR_SC_INDEPENDENCE_WAVE_FOREIGN_REACTION_TIMEOUT_DAYS = 13
+@CR_SC_INDEPENDENCE_WAVE_REMNANT_PETITION_TIMEOUT_DAYS = 13
 
 country_event = {
 	id = chaosx.nr6.64
@@ -34,7 +40,14 @@ country_event = {
 			# An invalid offer still closes once and frees the waiting actor.
 			independence_wave_foreign_reaction_resolve_ai_offer = yes
 		}
-		else_if = {
+		if = {
+			limit = {
+				is_ai = yes
+				has_country_flag = independence_wave_remnant_petition_received
+			}
+			independence_wave_remnant_petition_resolve_ai = yes
+		}
+		if = {
 			limit = {
 				has_country_flag = independence_wave_foreign_reaction_pending
 				NOT = { has_country_flag = independence_wave_foreign_reaction_routed }
@@ -274,4 +287,43 @@ country_event = {
 			independence_wave_foreign_reaction_resolve_offer = yes
 		}
 	}
+}
+
+# Remnant petition: the chosen government answers a remnant former host.
+country_event = {
+	id = chaosx.nr6.69
+	title = chaosx.nr6.69.t
+	desc = chaosx.nr6.69.d
+	picture = GFX_report_event_006_asset_002_host_crisis
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_REMNANT_PETITION_TIMEOUT_DAYS
+
+	option = {
+		name = chaosx.nr6.69.a
+		custom_effect_tooltip = chaosx.nr6.69.a.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.refuse }
+			independence_wave_remnant_petition_resolve = yes
+		}
+	}
+	option = {
+		name = chaosx.nr6.69.b
+		trigger = { can_independence_wave_remnant_petition_accept = yes }
+		custom_effect_tooltip = chaosx.nr6.69.b.tt
+		hidden_effect = {
+			set_temp_variable = { independence_wave_remnant_petition_reply_input = constant:independence_wave_remnant_petition_reply.accept }
+			independence_wave_remnant_petition_resolve = yes
+		}
+	}
+}
+
+# Remnant petition result for the host.
+country_event = {
+	id = chaosx.nr6.70
+	title = chaosx.nr6.70.t
+	desc = chaosx.nr6.70.d
+	picture = GFX_report_event_006_asset_002_host_crisis
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr6.70.a }
 }
