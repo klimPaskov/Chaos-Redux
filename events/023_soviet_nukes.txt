@@ -96,6 +96,20 @@ country_event = {
 	}
 }
 
+# Coalesced AI phase-navigation receiver. Review requests from completion
+# seams, event-driven phase requests and SOV maintenance schedule it once. It
+# has no trigger so it always consumes its own scheduling flag, including after
+# a human takeover; the router applies the AI and actor guards itself.
+country_event = {
+	id = chaosx.nr23.182
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = sov_nuclear_bombs_ai_navigation_scheduled
+		sov_nuclear_bombs_ai_route_existing_phase = yes
+	}
+}
+
 country_event = {
 	id = chaosx.nr23.100
 	title = chaosx.nr23.100.t
@@ -438,6 +452,7 @@ country_event = {
 		clr_country_flag = sov_nuclear_bombs_moratorium_verification_pending
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
+		sov_nuclear_bombs_ai_request_phase_review = yes
 	}
 }
 
@@ -506,6 +521,7 @@ country_event = {
 		clear_global_event_target = sov_nuclear_bombs_standdown_partner
 		clear_global_event_target = sov_nuclear_bombs_standdown_actor
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
+		sov_nuclear_bombs_ai_request_phase_review = yes
 	}
 }
 
@@ -581,6 +597,7 @@ country_event = {
 		clear_global_event_target = sov_nuclear_bombs_coercion_actor
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
+		sov_nuclear_bombs_ai_request_phase_review = yes
 	}
 }
 

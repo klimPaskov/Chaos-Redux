@@ -9,32 +9,34 @@
 
 on_actions = {
 	on_daily_SOV = {
-				effect = {
-					if = {
-						limit = { has_country_flag = sov_nuclear_bombs_event_active }
-						sov_nuclear_bombs_reconcile_unreturned_native_delivery = yes
-						# Also books any vanilla raid draw and refreshes the native snapshot.
-						sov_nuclear_bombs_refresh_ledger_reconciliation = yes
-						sov_nuclear_bombs_achievement_refresh_receipts = yes
-						if = {
-							limit = { NOT = { has_variable = sov_nuclear_bombs_maintenance_day_counter } }
-							set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
-						}
-						add_to_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.one }
-						if = {
-							limit = { check_variable = { var = sov_nuclear_bombs_maintenance_day_counter value = constant:sov_nuclear_bombs_tuning.maintenance_interval_days compare = greater_than_or_equals } }
-							set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
-							sov_nuclear_bombs_apply_routine_maintenance = yes
-						}
-					}
+		effect = {
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_event_active }
+				sov_nuclear_bombs_reconcile_unreturned_native_delivery = yes
+				# Also books any vanilla raid draw and refreshes the native snapshot.
+				sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+				sov_nuclear_bombs_achievement_refresh_receipts = yes
 				if = {
-					limit = {
-						has_country_flag = sov_nuclear_bombs_atomic_delivery_context
-						NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
-					}
-					clr_country_flag = sov_nuclear_bombs_atomic_delivery_context
+					limit = { NOT = { has_variable = sov_nuclear_bombs_maintenance_day_counter } }
+					set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
+				}
+				add_to_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.one }
+				if = {
+					limit = { check_variable = { var = sov_nuclear_bombs_maintenance_day_counter value = constant:sov_nuclear_bombs_tuning.maintenance_interval_days compare = greater_than_or_equals } }
+					set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
+					sov_nuclear_bombs_apply_routine_maintenance = yes
+					# The same interval lets the AI notice idle work that changed outside a seam.
+					sov_nuclear_bombs_ai_request_phase_review = yes
 				}
 			}
+			if = {
+				limit = {
+					has_country_flag = sov_nuclear_bombs_atomic_delivery_context
+					NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+				}
+				clr_country_flag = sov_nuclear_bombs_atomic_delivery_context
+			}
+		}
 	}
 
 	# Event 023 observes the exact state-control transaction used by Event 005.
@@ -163,7 +165,9 @@ on_actions = {
 									set_variable = { sov_nuclear_bombs_major_receipt_candidate_target_id = id }
 									sov_nuclear_bombs_record_major_exchange_receipt = yes
 								}
-								set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+								# Live work keeps its board; the AI is reviewed instead.
+								set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.retaliation }
+								sov_nuclear_bombs_apply_event_phase_request = yes
 							}
 						}
 					}
@@ -202,7 +206,9 @@ on_actions = {
 									set_variable = { sov_nuclear_bombs_major_receipt_candidate_target_id = id }
 									sov_nuclear_bombs_record_major_exchange_receipt = yes
 								}
-								set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+								# Live work keeps its board; the AI is reviewed instead.
+								set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.retaliation }
+								sov_nuclear_bombs_apply_event_phase_request = yes
 							}
 						}
 					}

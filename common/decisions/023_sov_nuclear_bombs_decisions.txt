@@ -75,8 +75,8 @@ sov_nuclear_bombs_command_category = {
 		icon = GFX_decision_sov_nuclear_decision_target_selection
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = { sov_nuclear_bombs_event_can_open_command = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected } NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } }
-		target_root_trigger = { sov_nuclear_bombs_event_can_open_command = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } }
+		visible = { is_ai = no sov_nuclear_bombs_event_can_open_command = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected } NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } }
+		target_root_trigger = { is_ai = no sov_nuclear_bombs_event_can_open_command = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } }
 		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes } }
 		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_target_state_requirements_tt sov_nuclear_bombs_event_can_open_command = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes } } }
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_can_open_command = yes } NOT = { OR = { sov_nuclear_bombs_event_phase_opening = yes sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_production = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_phase_coercion = yes } } has_country_flag = sov_nuclear_bombs_coercion_open has_country_flag = sov_nuclear_bombs_collapse_active FROM = { NOT = { sov_nuclear_bombs_event_state_is_valid_command_target = yes } } } }
@@ -184,7 +184,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_phase_custody = yes } NOT = { sov_nuclear_bombs_event_selected_storage_site_is_valid = yes } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_storage_hardening_pending set_country_flag = sov_nuclear_bombs_storage_hardening_cancelled sov_nuclear_bombs_clear_selected_state = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 1.80 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = 1.00 modifier = { factor = 0 FROM = { NOT = { check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } } } modifier = { factor = 1.80 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_disperse_reserve_package = {
@@ -364,7 +364,7 @@ sov_nuclear_bombs_command_category = {
 		icon = GFX_decision_sov_nuclear_decision_test_site_survey
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_no_active_project = yes OR = { NOT = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } NOT = { sov_nuclear_bombs_event_selected_test_site_is_valid = yes } } }
+		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_no_active_project = yes OR = { NOT = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } NOT = { sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes } } }
 		target_root_trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
 		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_test_site = yes } }
 		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_test_site_requirements_tt sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes FROM = { sov_nuclear_bombs_event_state_is_valid_test_site = yes } } }
@@ -373,7 +373,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_logistics_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_test_state } sov_nuclear_bombs_survey_remote_test_state = yes }
-		ai_will_do = { base = 1.30 modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_test_failure } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
+		ai_will_do = { base = 1.30 modifier = { factor = 0 FROM = { NOT = { sov_nuclear_bombs_event_state_is_ready_test_site = yes } } } modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_test_failure } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
 	}
 
 	sov_nuclear_bombs_prepare_instrumented_proof_test = {
@@ -381,7 +381,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_prepare_instrumented_proof_test_desc
 		icon = GFX_decision_sov_nuclear_decision_public_test
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_selected_test_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
-		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.minimum_test_readiness compare = greater_than_or_equals } }
+		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes sov_nuclear_bombs_event_has_selected_test_delivery_route = yes check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.minimum_test_readiness compare = greater_than_or_equals } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_security
 		cost = 0
@@ -494,7 +494,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } sov_nuclear_bombs_prepare_coercion = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 1.30 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = 1.00 modifier = { factor = 0 has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage check_variable = { var = sov_nuclear_bombs_ai_coercion_attempt_stage value = sov_nuclear_bombs_evolution_stage compare = greater_than_or_equals } FROM = { controller = { check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_ai_coercion_attempt_target_id compare = equals } } } } modifier = { factor = 1.30 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_close_coercion_target = {

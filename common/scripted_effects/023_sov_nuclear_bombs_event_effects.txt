@@ -330,7 +330,9 @@ sov_nuclear_bombs_verify_pending_reactor_construction = {
 				set_country_flag = sov_nuclear_bombs_reactor_entitlement_consumed
 				set_country_flag = sov_nuclear_bombs_fissile_production_completed
 				clr_country_flag = sov_nuclear_bombs_reactor_production_completion_pending
-				set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
+				# The reactor job returns a human board to production; the AI is reviewed.
+				if = { limit = { is_ai = no } set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production } }
+				sov_nuclear_bombs_ai_request_phase_review = yes
 				add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.production_complete_readiness }
 				add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.production_complete_integrity }
 				clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
@@ -371,6 +373,7 @@ sov_nuclear_bombs_verify_pending_reactor_construction = {
 			}
 			clr_country_flag = sov_nuclear_bombs_reactor_production_completion_pending
 			set_country_flag = sov_nuclear_bombs_reactor_construction_cancelled
+			sov_nuclear_bombs_ai_request_phase_review = yes
 			clear_global_event_target = sov_nuclear_bombs_pending_reactor_state
 			clear_variable = sov_nuclear_bombs_pending_reactor_state_id
 		}
@@ -601,6 +604,7 @@ sov_nuclear_bombs_set_custody_doctrine = {
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 		clear_variable = sov_nuclear_bombs_pending_doctrine
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_apply_doctrine_reform = {
@@ -656,6 +660,7 @@ sov_nuclear_bombs_apply_doctrine_reform = {
 		clr_country_flag = sov_nuclear_bombs_doctrine_reform_cancelled
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 # Stage the exact action context required by the shared native delivery
@@ -1145,6 +1150,7 @@ sov_nuclear_bombs_finalize_confirmed_native_delivery = {
 		clr_country_flag = sov_nuclear_bombs_native_delivery_confirmed
 		sov_nuclear_bombs_try_evolution_progression = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_clear_selected_state = {
@@ -1193,6 +1199,8 @@ sov_nuclear_bombs_prepare_test = {
 		set_country_flag = sov_nuclear_bombs_test_prepared
 		set_country_flag = sov_nuclear_bombs_test_mission_active
 		activate_mission = sov_nuclear_bombs_proof_test_mission
+		# One AI test purpose per attained stage, recorded only once preparation starts.
+		if = { limit = { is_ai = yes } set_variable = { sov_nuclear_bombs_ai_proof_attempt_stage = sov_nuclear_bombs_evolution_stage } }
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.prepare_test_readiness }
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.prepare_test_integrity }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
@@ -1217,6 +1225,7 @@ sov_nuclear_bombs_resolve_test = {
 			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 		}
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_test = {
@@ -1229,6 +1238,7 @@ sov_nuclear_bombs_cancel_test = {
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.cancel_test_readiness }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_prepare_coercion = {
@@ -1259,6 +1269,12 @@ sov_nuclear_bombs_prepare_coercion = {
 			}
 		}
 		SOV = { save_global_event_target_as = sov_nuclear_bombs_coercion_actor }
+		# One AI dossier per target and attained stage.
+		if = {
+			limit = { is_ai = yes }
+			set_variable = { sov_nuclear_bombs_ai_coercion_attempt_stage = sov_nuclear_bombs_evolution_stage }
+			if = { limit = { has_event_target = sov_nuclear_bombs_coercion_target } set_variable = { sov_nuclear_bombs_ai_coercion_attempt_target_id = event_target:sov_nuclear_bombs_coercion_target.id } }
+		}
 		if = {
 			limit = {
 				has_event_target = sov_nuclear_bombs_coercion_target
@@ -1323,6 +1339,7 @@ sov_nuclear_bombs_close_coercion_target = {
 		sov_nuclear_bombs_clear_selected_state = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_send_ultimatum = {
@@ -1657,6 +1674,7 @@ sov_nuclear_bombs_resolve_coercion_response = {
 			sov_nuclear_bombs_clear_selected_state = yes
 		}
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_ultimatum_response = {
@@ -1685,6 +1703,7 @@ sov_nuclear_bombs_cancel_ultimatum_response = {
 	clr_country_flag = sov_nuclear_bombs_coercion_open
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_select_standdown_partner = {
@@ -1817,6 +1836,7 @@ sov_nuclear_bombs_resolve_hotline = {
 		clear_global_event_target = sov_nuclear_bombs_standdown_partner
 		clear_global_event_target = sov_nuclear_bombs_standdown_actor
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_set_atomic_moratorium = {
@@ -1842,6 +1862,7 @@ sov_nuclear_bombs_set_atomic_moratorium = {
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 	country_event = { id = chaosx.nr23.160 days = constant:sov_nuclear_bombs_duration.verification }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_try_evolution_progression = {
@@ -1853,7 +1874,8 @@ sov_nuclear_bombs_try_evolution_progression = {
 		set_variable = { sov_nuclear_bombs_cumulative_produced = constant:sov_nuclear_bombs_evolution.total_i }
 		set_variable = { sov_nuclear_bombs_reactor_entitlement_count = constant:sov_nuclear_bombs_evolution.reactors_i }
 		set_country_flag = sov_nuclear_bombs_evolution_i_active
-		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
+		set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.production }
+		sov_nuclear_bombs_apply_event_phase_request = yes
 		set_variable = { sov_nuclear_bombs_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_i }
 		sov_nuclear_bombs_record_evolution = yes
 	}
@@ -1865,7 +1887,8 @@ sov_nuclear_bombs_try_evolution_progression = {
 		set_variable = { sov_nuclear_bombs_cumulative_produced = constant:sov_nuclear_bombs_evolution.total_ii }
 		set_variable = { sov_nuclear_bombs_reactor_entitlement_count = constant:sov_nuclear_bombs_evolution.reactors_ii }
 		set_country_flag = sov_nuclear_bombs_evolution_ii_active
-		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
+		set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.coercion }
+		sov_nuclear_bombs_apply_event_phase_request = yes
 		set_variable = { sov_nuclear_bombs_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_ii }
 		sov_nuclear_bombs_record_evolution = yes
 	}
@@ -1877,7 +1900,8 @@ sov_nuclear_bombs_try_evolution_progression = {
 		set_variable = { sov_nuclear_bombs_cumulative_produced = constant:sov_nuclear_bombs_evolution.total_iii }
 		set_variable = { sov_nuclear_bombs_reactor_entitlement_count = constant:sov_nuclear_bombs_evolution.reactors_iii }
 		set_country_flag = sov_nuclear_bombs_evolution_iii_active
-		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+		set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.retaliation }
+		sov_nuclear_bombs_apply_event_phase_request = yes
 		set_variable = { sov_nuclear_bombs_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iii }
 		sov_nuclear_bombs_record_evolution = yes
 	}
@@ -1890,7 +1914,8 @@ sov_nuclear_bombs_try_evolution_progression = {
 		set_variable = { sov_nuclear_bombs_reactor_entitlement_count = constant:sov_nuclear_bombs_evolution.reactors_iv }
 		set_country_flag = sov_nuclear_bombs_evolution_iv_active
 		set_global_flag = sov_nuclear_bombs_evolution_iv_world_gate_opened
-		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.authorization }
+		set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.authorization }
+		sov_nuclear_bombs_apply_event_phase_request = yes
 		set_variable = { sov_nuclear_bombs_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iv }
 		sov_nuclear_bombs_record_evolution = yes
 	}
@@ -1977,6 +2002,7 @@ sov_nuclear_bombs_open_collapse_recovery = {
 		}
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_restore_selected_site = {
@@ -2021,6 +2047,7 @@ sov_nuclear_bombs_finalize_collapse = {
 		set_country_flag = sov_nuclear_bombs_custody_resolution_recorded
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_complete_production_mission = {
@@ -2058,6 +2085,7 @@ sov_nuclear_bombs_complete_production_mission = {
 		sov_nuclear_bombs_try_evolution_progression = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_production_mission = {
@@ -2072,6 +2100,7 @@ sov_nuclear_bombs_cancel_production_mission = {
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_expand_reactor_program = {
@@ -2161,8 +2190,10 @@ sov_nuclear_bombs_audit_stockpile = {
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 	}
 	set_country_flag = sov_nuclear_bombs_stockpile_audited
+	set_variable = { sov_nuclear_bombs_last_audit_day = global.num_days }
 	add_to_variable = { sov_nuclear_bombs_integrity = 2 }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_harden_storage = {
@@ -2178,6 +2209,7 @@ sov_nuclear_bombs_harden_storage = {
 	set_country_flag = sov_nuclear_bombs_storage_hardened
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 # Reserve dispersion locks the automatically selected source before its mission
@@ -2246,6 +2278,7 @@ sov_nuclear_bombs_disperse_reserve = {
 	}
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_centralize_authority = {
@@ -2254,6 +2287,7 @@ sov_nuclear_bombs_centralize_authority = {
 	add_to_variable = { sov_nuclear_bombs_readiness = 3 }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_delegate_retaliation = {
@@ -2264,6 +2298,7 @@ sov_nuclear_bombs_delegate_retaliation = {
 	sov_nuclear_bombs_set_posture = yes
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_begin_production = {
@@ -2344,6 +2379,7 @@ sov_nuclear_bombs_complete_delivery_crews = {
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_delivery_crews = {
@@ -2351,6 +2387,7 @@ sov_nuclear_bombs_cancel_delivery_crews = {
 	set_country_flag = sov_nuclear_bombs_delivery_crews_preparation_cancelled
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_complete_command_exercise = {
@@ -2369,6 +2406,7 @@ sov_nuclear_bombs_complete_command_exercise = {
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_command_exercise = {
@@ -2376,6 +2414,7 @@ sov_nuclear_bombs_cancel_command_exercise = {
 	set_country_flag = sov_nuclear_bombs_command_exercise_cancelled
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_strengthen_authentication = {
@@ -2384,6 +2423,7 @@ sov_nuclear_bombs_strengthen_authentication = {
 	add_to_variable = { sov_nuclear_bombs_readiness = -2 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_survey_remote_test_state = {
@@ -2419,6 +2459,7 @@ sov_nuclear_bombs_investigate_test_failure = {
 	add_to_variable = { sov_nuclear_bombs_readiness = -4 }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_send_private_signal = {
@@ -2482,6 +2523,7 @@ sov_nuclear_bombs_accept_partial_settlement = {
 			country_event = { id = chaosx.nr23.162 days = constant:sov_nuclear_bombs_duration.verification }
 		}
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_adjust_demand = {
@@ -2548,6 +2590,7 @@ sov_nuclear_bombs_back_down = {
 		add_to_variable = { sov_nuclear_bombs_credibility = constant:sov_nuclear_bombs_tuning.ultimatum_credibility_loss }
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_technical_certification = {
@@ -2620,6 +2663,7 @@ sov_nuclear_bombs_abort_and_recover = {
 	clear_variable = sov_nuclear_bombs_pending_action_type
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.abort_readiness }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_limit_retaliation = {
@@ -2627,6 +2671,7 @@ sov_nuclear_bombs_limit_retaliation = {
 	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
 	sov_nuclear_bombs_set_posture = yes
 	add_to_variable = { sov_nuclear_bombs_readiness = -4 }
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_preserve_reserve = {
@@ -2681,6 +2726,7 @@ sov_nuclear_bombs_suspend_release_orders = {
 	add_to_variable = { sov_nuclear_bombs_readiness = -8 }
 	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
 	sov_nuclear_bombs_set_posture = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_seal_reserve = {
@@ -2689,6 +2735,7 @@ sov_nuclear_bombs_seal_reserve = {
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
 	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
 	sov_nuclear_bombs_set_posture = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_invite_observers = {
@@ -2741,6 +2788,7 @@ sov_nuclear_bombs_reactivate_arsenal = {
 		add_to_variable = { sov_nuclear_bombs_readiness = 4 }
 	}
 	sov_nuclear_bombs_refresh_world_threat_source = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 # The following helpers are the completion paths for the ordinary decisions
@@ -2762,6 +2810,8 @@ sov_nuclear_bombs_prepare_public_test_mission = {
 		set_country_flag = sov_nuclear_bombs_test_prepared
 		set_country_flag = sov_nuclear_bombs_test_mission_active
 		activate_mission = sov_nuclear_bombs_proof_test_mission
+		# One AI test purpose per attained stage, recorded only once preparation starts.
+		if = { limit = { is_ai = yes } set_variable = { sov_nuclear_bombs_ai_proof_attempt_stage = sov_nuclear_bombs_evolution_stage } }
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.prepare_test_readiness }
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.prepare_test_integrity }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
@@ -2799,6 +2849,7 @@ sov_nuclear_bombs_complete_strike_preparation = {
 			clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 		}
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_authorize_selected_strike = {
@@ -2829,6 +2880,7 @@ sov_nuclear_bombs_authorize_selected_strike = {
 		}
 		else_if = { limit = { NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending } } sov_nuclear_bombs_abort_and_recover = yes }
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_complete_retaliation_window = {
@@ -2861,6 +2913,7 @@ sov_nuclear_bombs_complete_retaliation_window = {
 			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
 		}
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_retaliation_window = {
@@ -2874,6 +2927,7 @@ sov_nuclear_bombs_cancel_retaliation_window = {
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.abort_readiness }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_rail_security = {
@@ -2884,6 +2938,7 @@ sov_nuclear_bombs_cancel_rail_security = {
 	sov_nuclear_bombs_clear_selected_state = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.collapse }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_breakaway_operationalization = {
@@ -2952,6 +3007,7 @@ sov_nuclear_bombs_complete_rail_security = {
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_complete_joint_custody_transfer = {
@@ -2984,6 +3040,7 @@ sov_nuclear_bombs_complete_joint_custody_transfer = {
 		sov_nuclear_bombs_clear_selected_state = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_joint_custody_transfer = {
@@ -2993,6 +3050,7 @@ sov_nuclear_bombs_cancel_joint_custody_transfer = {
 	sov_nuclear_bombs_clear_selected_state = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.collapse }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_prepare_dismantlement_mission = {
@@ -3071,6 +3129,7 @@ sov_nuclear_bombs_complete_dismantlement = {
 		sov_nuclear_bombs_clear_selected_state = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_cancel_dismantlement = {
@@ -3082,6 +3141,7 @@ sov_nuclear_bombs_cancel_dismantlement = {
 	sov_nuclear_bombs_clear_selected_state = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
 sov_nuclear_bombs_start_breakaway_technical_access = {
@@ -3302,5 +3362,196 @@ sov_nuclear_bombs_disable_selected_devices = {
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.collapse_disable_integrity }
 		set_country_flag = sov_nuclear_bombs_devices_disabled
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# AI phase navigation
+# ----------------------------------------------------------------------------
+# The Soviet AI never opens the paid command board. Completion and cancel
+# seams, event-driven phase requests and the existing 30-day SOV maintenance
+# interval ask for one coalesced review. The hidden receiver chaosx.nr23.182
+# runs the router with SOV as ROOT. The router only moves the phase variable:
+# it never pays, grants, reserves, launches, settles or applies consequences,
+# and it never replaces live work. Human navigation stays on the board.
+
+# Any scope. Marks one pending review for an AI Soviet actor and schedules the
+# receiver once; later requests coalesce into the scheduled review.
+sov_nuclear_bombs_ai_request_phase_review = {
+	SOV = {
+		if = {
+			limit = {
+				sov_nuclear_bombs_event_actor_is_valid = yes
+				is_ai = yes
+			}
+			set_country_flag = sov_nuclear_bombs_ai_navigation_pending
+			if = {
+				limit = { NOT = { has_country_flag = sov_nuclear_bombs_ai_navigation_scheduled } }
+				set_country_flag = sov_nuclear_bombs_ai_navigation_scheduled
+				country_event = { id = chaosx.nr23.182 days = constant:sov_nuclear_bombs_duration.timer_floor }
+			}
+		}
+	}
+}
+
+# Country scope (the Soviet actor). Evolution, reactor completion and incoming
+# attack phase writes use this request. A human board moves only when no live
+# work, moratorium, custody collapse or opening doctrine owns it; an AI actor
+# is reviewed by the router instead of being moved directly.
+# Input: temporary sov_nuclear_bombs_requested_phase.
+sov_nuclear_bombs_apply_event_phase_request = {
+	if = {
+		limit = {
+			is_ai = no
+			has_variable = sov_nuclear_bombs_phase
+			NOT = { sov_nuclear_bombs_event_navigation_is_protected = yes }
+			NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+			NOT = { has_country_flag = sov_nuclear_bombs_collapse_active }
+			NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+		}
+		set_variable = { sov_nuclear_bombs_phase = sov_nuclear_bombs_requested_phase }
+	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+
+# Country scope, ROOT is the Soviet actor. One deterministic first-match table:
+#  1. human, invalid or non-Soviet actor: clear navigation fields only
+#  2. opening doctrine, locked command or live work: hold (restore a displaced
+#     staged board) and wait for the owning seam or maintenance review
+#  3. moratorium 8, collapse 7, retaliation duty 6, Evolution IV first-use
+#     candidate 6: entered at once
+#  4. uninvestigated test failure 3, custody duty 1, production duty 2, test
+#     purpose 3, coercion purpose 4, otherwise custody 1: discretionary moves
+#     that respect the existing phase action cooldown as a dwell
+sov_nuclear_bombs_ai_route_existing_phase = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { tag = SOV }
+				is_ai = no
+				NOT = { sov_nuclear_bombs_event_actor_is_valid = yes }
+			}
+		}
+		clr_country_flag = sov_nuclear_bombs_ai_navigation_pending
+		clr_country_flag = sov_nuclear_bombs_ai_navigation_blocked
+		clear_variable = sov_nuclear_bombs_ai_navigation_due_day
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = sov_nuclear_bombs_phase }
+				has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected
+				has_country_flag = sov_nuclear_bombs_command_locked
+				sov_nuclear_bombs_event_navigation_is_protected = yes
+			}
+		}
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_test_prepared NOT = { sov_nuclear_bombs_event_phase_test = yes } }
+			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.test }
+		}
+		else_if = {
+			limit = { has_country_flag = sov_nuclear_bombs_limited_strike_prepared NOT = { sov_nuclear_bombs_event_phase_authorization = yes } }
+			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.authorization }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = sov_nuclear_bombs_coercion_open
+					has_country_flag = sov_nuclear_bombs_coercion_settlement_open
+				}
+				NOT = { sov_nuclear_bombs_event_phase_coercion = yes }
+			}
+			set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
+		}
+		set_country_flag = sov_nuclear_bombs_ai_navigation_blocked
+	}
+	else = {
+		clr_country_flag = sov_nuclear_bombs_ai_navigation_blocked
+		set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.custody }
+		set_temp_variable = { sov_nuclear_bombs_ai_target_urgent = constant:sov_nuclear_bombs_ledger.zero }
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.moratorium }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_urgent = constant:sov_nuclear_bombs_ledger.one }
+		}
+		else_if = {
+			limit = { has_country_flag = sov_nuclear_bombs_collapse_active }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.collapse }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_urgent = constant:sov_nuclear_bombs_ledger.one }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					sov_nuclear_bombs_event_ai_has_retaliation_duty = yes
+					sov_nuclear_bombs_event_ai_has_first_use_candidate = yes
+				}
+			}
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.retaliation }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_urgent = constant:sov_nuclear_bombs_ledger.one }
+		}
+		else_if = {
+			limit = {
+				has_country_flag = sov_nuclear_bombs_test_failure
+				NOT = { has_country_flag = sov_nuclear_bombs_test_failure_investigated }
+			}
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.test }
+		}
+		else_if = {
+			limit = { sov_nuclear_bombs_event_ai_has_custody_duty = yes }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.custody }
+		}
+		else_if = {
+			limit = { sov_nuclear_bombs_event_ai_has_production_duty = yes }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.production }
+		}
+		else_if = {
+			limit = { sov_nuclear_bombs_event_ai_has_test_purpose = yes }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.test }
+		}
+		else_if = {
+			limit = { sov_nuclear_bombs_event_ai_has_coercion_purpose = yes }
+			set_temp_variable = { sov_nuclear_bombs_ai_target_phase = constant:sov_nuclear_bombs_phase.coercion }
+		}
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_phase value = sov_nuclear_bombs_ai_target_phase compare = equals } }
+			clr_country_flag = sov_nuclear_bombs_ai_navigation_pending
+		}
+		else = {
+			set_temp_variable = { sov_nuclear_bombs_ai_navigation_today = global.num_days }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = sov_nuclear_bombs_ai_target_urgent value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+						NOT = { has_variable = sov_nuclear_bombs_ai_navigation_due_day }
+						check_variable = { var = sov_nuclear_bombs_ai_navigation_today value = sov_nuclear_bombs_ai_navigation_due_day compare = greater_than_or_equals }
+					}
+				}
+				# Same rule as the board: a new task family starts without the
+				# previous family's selections.
+				sov_nuclear_bombs_clear_selected_state = yes
+				sov_nuclear_bombs_clear_selected_test_state = yes
+				set_variable = { sov_nuclear_bombs_phase = sov_nuclear_bombs_ai_target_phase }
+				if = {
+					limit = { check_variable = { var = sov_nuclear_bombs_ai_target_urgent value = constant:sov_nuclear_bombs_ledger.zero compare = equals } }
+					set_variable = { sov_nuclear_bombs_ai_navigation_due_day = sov_nuclear_bombs_ai_navigation_today }
+					add_to_variable = { sov_nuclear_bombs_ai_navigation_due_day = constant:sov_nuclear_bombs_duration.phase_action_cooldown }
+				}
+				clr_country_flag = sov_nuclear_bombs_ai_navigation_pending
+			}
+			else = {
+				# Dwell: one coalesced retry on the day the current family may change.
+				set_temp_variable = { sov_nuclear_bombs_ai_navigation_wait = sov_nuclear_bombs_ai_navigation_due_day }
+				subtract_from_temp_variable = { sov_nuclear_bombs_ai_navigation_wait = sov_nuclear_bombs_ai_navigation_today }
+				if = {
+					limit = { check_variable = { var = sov_nuclear_bombs_ai_navigation_wait value = constant:sov_nuclear_bombs_duration.timer_floor compare = less_than } }
+					set_temp_variable = { sov_nuclear_bombs_ai_navigation_wait = constant:sov_nuclear_bombs_duration.timer_floor }
+				}
+				if = {
+					limit = { NOT = { has_country_flag = sov_nuclear_bombs_ai_navigation_scheduled } }
+					set_country_flag = sov_nuclear_bombs_ai_navigation_scheduled
+					country_event = { id = chaosx.nr23.182 days = sov_nuclear_bombs_ai_navigation_wait }
+				}
+			}
+		}
 	}
 }
