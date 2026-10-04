@@ -92,3 +92,10 @@ Disposition: accepted and implemented by the round-1 reviewer under the same gra
     The specification asks for a proven, deliberate obstruction, so `famine_condemn_corridor_obstruction` also requires `humanitarian_corridor_full_request_headroom_is_valid`; a stale capacity revision fails closed and condemns nothing.
 13. **Plainer intent and integration text.**
     The three receiver-front intent lines and the integration effect tooltip were reworded so they say what has and has not happened yet.
+14. **Country-wide policy decisions never read a selected state.**
+    The cost tranche added `FROM = { is_controlled_by = ROOT }` to the `available` blocks and start preflights of `migration_open_departure_routes`, `migration_restrict_departure` and `migration_controlled_medical_reception`, which have no `state_target`, so `FROM` is not a state there and the three decisions could never be taken.
+    The checks were removed from both places; the preflights keep every country condition and the fee bundle, which matches the decisions as they stood before the tranche.
+15. **The refusal decision warns about condemnation.**
+    `migration_reject_corridor_offer_desc` now says that refusing, or leaving the request unanswered, while the civilians are starving and we have room for all of them is condemned as obstruction of relief, so the consequence from decision 12 is visible before the player chooses.
+
+Probability evidence for decision 14: `hoi4_decision_inspect`, mode `inspect`, decision `migration_open_departure_routes`, scenario `open_departure_country_wide` (actor GER), returned `DECISION_ANALYZED_PARTIAL` at source revision `7465d9e9edb0e09c27c76935fc7c1465c8c2412831d54f03017d1130d73b10d0`, report hash `f220318323df323feb99ab9b6102b5b01f346ff09da173c5b2eaa02bd0757e97`, with the coverage check failing on unbound inputs, so it is not engine evidence. No `ai_will_do` value changed; the change restores eligibility, and the same-scenario numeric comparison stays blocked as recorded above.

@@ -27,7 +27,7 @@ The departure and reception policy guards validate the two internal policy dimen
 
 ## Legacy decision start and receipt guards
 
-The following COUNTRY-scope hidden Boolean helpers are decision-owner preflights. Each rechecks its original visible/available/target conditions, selected-state control by ROOT, and the exact current inclusive fee profile before the matching `complete_effect` body can write policy, services, receipts, transfers, reports, or phase state.
+The following COUNTRY-scope hidden Boolean helpers are decision-owner preflights. Each rechecks its original visible/available/target conditions, selected-state control by ROOT, and the exact current inclusive fee profile before the matching `complete_effect` body can write policy, services, receipts, transfers, reports, or phase state. Open departure routes, restrict departure and controlled medical reception are country-wide decisions without a selected state, so their preflights and `available` blocks never read `FROM`; they recheck only the country conditions and the fee.
 
 | Start trigger | Decision |
 |---|---|
