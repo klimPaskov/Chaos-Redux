@@ -791,6 +791,8 @@ event021_country_can_manage_exposure = {
 	has_country_flag = random_civil_war_neighbor_exposure
 	NOT = { has_global_flag = events_log_disabled_evolution_21_21_2 }
 	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { event021_country_can_manage_settlement = yes }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	has_variable = random_civil_war_exposure_source_country_scope
 	var:random_civil_war_exposure_source_country_scope = {
@@ -844,6 +846,7 @@ event021_exposure_government_target_viable = {
 			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_government_side }
 			var:random_civil_war_exposure_source_country_scope = {
 				exists = yes
+				NOT = { has_country_flag = random_civil_war_sponsor_commitment_received }
 				NOT = { has_capitulated = yes }
 				num_of_controlled_states > constant:random_civil_war_value.zero
 				OR = {
@@ -858,6 +861,7 @@ event021_exposure_government_target_viable = {
 				has_variable = random_civil_war_host_country_scope
 				var:random_civil_war_host_country_scope = {
 					exists = yes
+					NOT = { has_country_flag = random_civil_war_sponsor_commitment_received }
 					NOT = { has_capitulated = yes }
 					num_of_controlled_states > constant:random_civil_war_value.zero
 					OR = {
@@ -876,6 +880,7 @@ event021_exposure_opposition_target_viable = {
 			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_opposition_side }
 			var:random_civil_war_exposure_source_country_scope = {
 				exists = yes
+				NOT = { has_country_flag = random_civil_war_sponsor_commitment_received }
 				NOT = { has_capitulated = yes }
 				num_of_controlled_states > constant:random_civil_war_value.zero
 				OR = {
@@ -890,6 +895,7 @@ event021_exposure_opposition_target_viable = {
 				has_variable = random_civil_war_opposition_actor_scope
 				var:random_civil_war_opposition_actor_scope = {
 					exists = yes
+					NOT = { has_country_flag = random_civil_war_sponsor_commitment_received }
 					NOT = { has_capitulated = yes }
 					num_of_controlled_states > constant:random_civil_war_value.zero
 					OR = {
@@ -947,6 +953,19 @@ event021_priority_front_depot_target_valid = {
 	}
 }
 
+event021_secure_rail_mission_target_valid = {
+	has_variable = random_civil_war_rail_mission_state
+	var:random_civil_war_rail_mission_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+		OR = {
+			supply_node > constant:random_civil_war_value.zero
+			infrastructure > constant:event021_mission_tuning.rail_infrastructure_gate
+		}
+	}
+}
+
 event021_country_can_manage_opening = {
 	event021_country_can_manage_crisis = yes
 	NOT = { has_country_flag = random_civil_war_multifront_active }
@@ -974,8 +993,16 @@ event021_country_can_prevent_fracture = {
 	random_civil_war_is_normal_human_country = yes
 	has_global_flag = random_civil_war_evolution_iii_active
 	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { event021_country_can_manage_settlement = yes }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	has_country_flag = random_civil_war_global_registered
+	NOT = {
+		AND = {
+			event021_country_can_manage_exposure = yes
+			NOT = { has_country_flag = event021_neighbor_action_used }
+		}
+	}
 	OR = {
 		random_civil_war_pressure_is_exposed = yes
 		has_country_flag = random_civil_war_external_war_evidence_active
@@ -1001,6 +1028,18 @@ event021_country_can_manage_settlement = {
 		has_country_flag = event021_settlement_pending
 		has_country_flag = event021_settlement_talks_open
 	}
+}
+
+event021_country_can_resolve_sponsor_repayment = {
+	event021_country_can_manage_settlement = yes
+	has_country_flag = random_civil_war_settlement_obligation_active
+	check_variable = {
+		var = random_civil_war_settlement_obligation
+		value = constant:event021_settlement_obligation.sponsor_repayment
+		compare = equals
+	}
+	has_variable = random_civil_war_settlement_sponsor_scope
+	NOT = { has_country_flag = event021_sponsor_disengagement_used }
 }
 
 event021_country_can_offer_settlement = {

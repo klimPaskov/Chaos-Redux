@@ -273,8 +273,8 @@ event021_prepare_exposure_sponsor_commitment = {
 # the selected government or claimant stores the paired commitment evidence.
 event021_record_received_sponsor_commitment = {
 	set_country_flag = random_civil_war_sponsor_commitment_received
-	set_variable = { random_civil_war_sponsor_scope = ROOT }
 	set_variable = { random_civil_war_sponsor_id = ROOT.id }
+	set_variable = { random_civil_war_sponsor_scope = ROOT }
 	set_variable = { random_civil_war_sponsor_recipient_id = THIS.id }
 	set_variable = { ROOT.random_civil_war_sponsor_recipient_id = THIS.id }
 	set_variable = { ROOT.random_civil_war_sponsor_recipient_scope = THIS }
@@ -402,9 +402,33 @@ event021_decision_offer_mediation = {
 event021_decision_end_sponsor_commitment = {
 	set_country_flag = random_civil_war_sponsor_repaid
 	set_country_flag = event021_sponsor_disengagement_used
+	if = {
+		limit = { has_variable = random_civil_war_settlement_sponsor_scope }
+		var:random_civil_war_settlement_sponsor_scope = {
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = random_civil_war_sponsor_commitment_active
+					check_variable = {
+						var = random_civil_war_sponsor_recipient_id
+						value = ROOT.id
+						compare = equals
+					}
+				}
+				clr_country_flag = random_civil_war_sponsor_commitment_active
+				clr_country_flag = event021_sponsor_recorded
+				clear_variable = random_civil_war_sponsor_recipient_id
+				clear_variable = random_civil_war_sponsor_front_id
+				clear_variable = random_civil_war_sponsor_support_amount
+				clear_variable = random_civil_war_sponsor_commitment_start_date
+				clear_variable = random_civil_war_sponsor_commitment_until
+				clear_variable = random_civil_war_sponsor_recipient_scope
+			}
+		}
+	}
 	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.sponsor }
 	event021_clear_fracture_evidence = yes
-	event021_clear_sponsor_commitment_receipt = yes
+	event021_clear_received_sponsor_commitment_receipt = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.disengage_pressure_relief }
 	event021_reduce_pressure = yes
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.disengage_authority_gain }
@@ -452,33 +476,52 @@ event021_decision_review_regional_administration = {
 	event021_refresh_country_state = yes
 }
 
+# COUNTRY scope. The selected hold target is stored on the country. The state-
+# control hook can resolve a broken continuous hold immediately, while the
+# timeout path rechecks the exact state, current capital, supply, and defense
+# receipt. The active flag makes timeout/complete idempotent.
 event021_mission_hold_capital_complete = {
-	clr_country_flag = event021_hold_capital_mission_active
-	set_country_flag = event021_hold_capital_success
-	clr_country_flag = event021_hold_capital_failed
-	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_authority_gain }
-	event021_add_authority = yes
-	set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.mission_government_gain }
-	event021_add_same_tag_government_leverage = yes
-	event021_refresh_country_state = yes
+	if = {
+		limit = { has_country_flag = event021_hold_capital_mission_active }
+		clr_country_flag = event021_hold_capital_mission_active
+		set_country_flag = event021_hold_capital_success
+		clr_country_flag = event021_hold_capital_failed
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_authority_gain }
+		event021_add_authority = yes
+		set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.mission_government_gain }
+		event021_add_same_tag_government_leverage = yes
+		event021_refresh_country_state = yes
+	}
+	clear_variable = event021_hold_capital_mission_target_state
 }
 
 event021_mission_hold_capital_timeout = {
-	clr_country_flag = event021_hold_capital_mission_active
-	set_country_flag = event021_hold_capital_failed
-	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_failure_authority_loss }
-	event021_add_authority = yes
-	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mission_failure_pressure_gain }
-	event021_reduce_pressure = yes
-	set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.mission_claimant_gain }
-	event021_add_same_tag_claimant_leverage = yes
-	event021_refresh_country_state = yes
+	if = {
+		limit = { has_country_flag = event021_hold_capital_mission_active }
+		clr_country_flag = event021_hold_capital_mission_active
+		set_country_flag = event021_hold_capital_failed
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_failure_authority_loss }
+		event021_add_authority = yes
+		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mission_failure_pressure_gain }
+		event021_reduce_pressure = yes
+		set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.mission_claimant_gain }
+		event021_add_same_tag_claimant_leverage = yes
+		event021_refresh_country_state = yes
+	}
+	clear_variable = event021_hold_capital_mission_target_state
 }
 
 event021_mission_hold_capital_resolve = {
 	if = {
 		limit = {
-			capital_scope = {
+			has_country_flag = event021_hold_capital_mission_active
+			has_variable = event021_hold_capital_mission_target_state
+			OR = {
+				has_country_flag = event021_capital_defense_active
+				has_country_flag = event021_capital_held
+			}
+			var:event021_hold_capital_mission_target_state = {
+				is_capital = yes
 				is_controlled_by = ROOT
 				infrastructure > constant:random_civil_war_value.zero
 				supply_node > constant:random_civil_war_value.zero
@@ -486,63 +529,72 @@ event021_mission_hold_capital_resolve = {
 		}
 		event021_mission_hold_capital_complete = yes
 	}
-	else = { event021_mission_hold_capital_timeout = yes }
+	else_if = {
+		limit = { has_country_flag = event021_hold_capital_mission_active }
+		event021_mission_hold_capital_timeout = yes
+	}
 }
 
+# COUNTRY scope. The rail mission is bound to its planned rail state and fails
+# once if state control changes during its timer. The lost receipt prevents an
+# automatic retry loop; reconstruction remains available through the separate
+# administration action.
 event021_mission_secure_rail_complete = {
-	clr_country_flag = event021_secure_rail_mission_active
-	set_country_flag = event021_rail_spine_secured
 	if = {
-		limit = { has_variable = random_civil_war_rail_mission_state }
-		var:random_civil_war_rail_mission_state = {
-			if = {
-				limit = {
-					is_owned_by = ROOT
-					is_controlled_by = ROOT
-					is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
-					infrastructure < constant:event021_action_tuning.maximum_infrastructure
+		limit = { has_country_flag = event021_secure_rail_mission_active }
+		clr_country_flag = event021_secure_rail_mission_active
+		set_country_flag = event021_rail_spine_secured
+		if = {
+			limit = { has_variable = random_civil_war_rail_mission_state }
+			var:random_civil_war_rail_mission_state = {
+				if = {
+					limit = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+						infrastructure < constant:event021_action_tuning.maximum_infrastructure
+					}
+					add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+					set_state_flag = event021_reconstruction_rail_repaired
+					set_state_flag = event021_rail_spine_restored
 				}
-				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
-				set_state_flag = event021_reconstruction_rail_repaired
-				set_state_flag = event021_rail_spine_restored
 			}
 		}
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:event021_action_tuning.rail_train_recovery }
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.rail_authority_gain }
+		event021_add_authority = yes
+		set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.reconstruction_relief }
+		event021_reduce_pressure = yes
+		event021_refresh_country_state = yes
 	}
-	add_equipment_to_stockpile = { type = train_equipment amount = constant:event021_action_tuning.rail_train_recovery }
-	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.rail_authority_gain }
-	event021_add_authority = yes
-	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.reconstruction_relief }
-	event021_reduce_pressure = yes
-	event021_refresh_country_state = yes
 }
 
 event021_mission_secure_rail_timeout = {
-	clr_country_flag = event021_secure_rail_mission_active
-	set_country_flag = event021_rail_spine_lost
-	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_failure_authority_loss }
-	event021_add_authority = yes
-	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mission_failure_pressure_gain }
-	event021_reduce_pressure = yes
-	event021_refresh_country_state = yes
+	if = {
+		limit = { has_country_flag = event021_secure_rail_mission_active }
+		clr_country_flag = event021_secure_rail_mission_active
+		set_country_flag = event021_rail_spine_lost
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.mission_failure_authority_loss }
+		event021_add_authority = yes
+		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mission_failure_pressure_gain }
+		event021_reduce_pressure = yes
+		event021_refresh_country_state = yes
+	}
 }
 
 event021_mission_secure_rail_resolve = {
 	if = {
 		limit = {
-			has_variable = random_civil_war_rail_mission_state
-			var:random_civil_war_rail_mission_state = {
-				is_owned_by = ROOT
-				is_controlled_by = ROOT
-				is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
-				OR = {
-					supply_node > constant:random_civil_war_value.zero
-					infrastructure > constant:event021_mission_tuning.rail_infrastructure_gate
-				}
-			}
+			has_country_flag = event021_secure_rail_mission_active
+			event021_secure_rail_mission_target_valid = yes
+			NOT = { has_country_flag = event021_rail_spine_lost }
 		}
 		event021_mission_secure_rail_complete = yes
 	}
-	else = { event021_mission_secure_rail_timeout = yes }
+	else_if = {
+		limit = { has_country_flag = event021_secure_rail_mission_active }
+		event021_mission_secure_rail_timeout = yes
+	}
 }
 
 event021_mission_hold_settlement_terms_complete = {
@@ -577,6 +629,7 @@ event021_mission_hold_settlement_terms_resolve = {
 
 event021_cleanup_decision_state = {
 	clr_country_flag = event021_hold_capital_mission_active
+	clear_variable = event021_hold_capital_mission_target_state
 	clr_country_flag = event021_secure_rail_mission_active
 	clr_country_flag = event021_settlement_terms_mission_active
 	clr_country_flag = event021_arsenal_action_used
@@ -613,6 +666,7 @@ event021_cleanup_decision_state = {
 	}
 	clr_country_flag = random_civil_war_disarmament_complete
 	event021_clear_sponsor_commitment_receipt = yes
+	clear_variable = random_civil_war_settlement_sponsor_scope
 	clear_variable = random_civil_war_rail_mission_state
 	clear_variable = random_civil_war_rail_mission_state_id
 	clr_country_flag = random_civil_war_sponsor_repaid

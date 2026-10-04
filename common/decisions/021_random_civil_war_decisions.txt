@@ -420,6 +420,7 @@ event021_civil_war_crisis_category = {
 			event021_exposure_government_target_valid = yes
 			event021_exposure_government_target_viable = yes
 			NOT = { has_country_flag = event021_neighbor_action_used }
+			NOT = { has_country_flag = random_civil_war_sponsor_commitment_active }
 		}
 		available = {
 			custom_trigger_tooltip = {
@@ -430,6 +431,7 @@ event021_civil_war_crisis_category = {
 				event021_exposure_government_target_valid = yes
 				event021_exposure_government_target_viable = yes
 				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { has_country_flag = random_civil_war_sponsor_commitment_active }
 				NOT = { has_political_power < constant:event021_action_cost.government_support_political_power_gate }
 				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.government_support_infantry_gate } }
 				NOT = { has_equipment = { convoy < constant:event021_action_cost.government_support_convoys_gate } }
@@ -481,6 +483,7 @@ event021_civil_war_crisis_category = {
 			event021_exposure_opposition_target_valid = yes
 			event021_exposure_opposition_target_viable = yes
 			NOT = { has_country_flag = event021_neighbor_action_used }
+			NOT = { has_country_flag = random_civil_war_sponsor_commitment_active }
 		}
 		available = {
 			custom_trigger_tooltip = {
@@ -491,6 +494,7 @@ event021_civil_war_crisis_category = {
 				event021_exposure_opposition_target_valid = yes
 				event021_exposure_opposition_target_viable = yes
 				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { has_country_flag = random_civil_war_sponsor_commitment_active }
 				NOT = { has_political_power < constant:event021_action_cost.opposition_support_political_power_gate }
 				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.opposition_support_infantry_gate } }
 				NOT = { has_equipment = { convoy < constant:event021_action_cost.opposition_support_convoys_gate } }
@@ -584,13 +588,11 @@ event021_civil_war_crisis_category = {
 		icon = GFX_decision_event021_emergency_settlement
 		ai_hint_pp_cost = @event021_ai_pp_low
 		visible = {
-			event021_country_can_manage_settlement = yes
-			has_country_flag = random_civil_war_sponsor_commitment_active
-			NOT = { has_country_flag = event021_sponsor_disengagement_used }
+			event021_country_can_resolve_sponsor_repayment = yes
 		}
 		available = {
 			hidden_trigger = {
-				NOT = { has_country_flag = event021_sponsor_disengagement_used }
+				event021_country_can_resolve_sponsor_repayment = yes
 				NOT = { has_political_power < constant:event021_action_cost.disengage_political_power_gate }
 				NOT = { command_power < constant:event021_action_cost.disengage_command_power_gate }
 			}
@@ -780,24 +782,34 @@ event021_civil_war_crisis_category = {
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = event021_hold_capital_requirement_tt
-				capital_scope = {
-					is_controlled_by = ROOT
-					infrastructure > constant:random_civil_war_value.zero
-					supply_node > constant:random_civil_war_value.zero
+				AND = {
+					capital_scope = {
+						is_controlled_by = ROOT
+						infrastructure > constant:random_civil_war_value.zero
+						supply_node > constant:random_civil_war_value.zero
+					}
+					OR = {
+						has_country_flag = event021_capital_defense_active
+						has_country_flag = event021_capital_held
+					}
 				}
-			}
-			OR = {
-				has_country_flag = event021_capital_defense_active
-				has_country_flag = event021_capital_held
 			}
 		}
 		cancel_trigger = {
 			OR = {
 				NOT = { event021_country_can_manage_crisis = yes }
 				has_country_flag = event021_settlement_resolved
+				has_country_flag = event021_hold_capital_failed
 			}
 		}
-		complete_effect = { set_country_flag = event021_hold_capital_mission_active }
+		cancel_effect = {
+			clr_country_flag = event021_hold_capital_mission_active
+			clear_variable = event021_hold_capital_mission_target_state
+		}
+		complete_effect = {
+			set_country_flag = event021_hold_capital_mission_active
+			capital_scope = { set_variable = { ROOT.event021_hold_capital_mission_target_state = THIS } }
+		}
 		timeout_effect = { event021_mission_hold_capital_resolve = yes }
 		ai_will_do = {
 			base = constant:event021_ai.base_mission
@@ -816,7 +828,9 @@ event021_civil_war_crisis_category = {
 		fire_only_once = no
 		activation = {
 			event021_country_can_manage_reconstruction = yes
+			event021_secure_rail_mission_target_valid = yes
 			NOT = { has_country_flag = event021_rail_spine_secured }
+			NOT = { has_country_flag = event021_rail_spine_lost }
 			NOT = { has_country_flag = event021_secure_rail_mission_active }
 			NOT = {
 				AND = {
@@ -831,7 +845,8 @@ event021_civil_war_crisis_category = {
 			}
 		}
 		available = {
-			has_variable = random_civil_war_rail_mission_state
+			event021_secure_rail_mission_target_valid = yes
+			NOT = { has_country_flag = event021_rail_spine_lost }
 			NOT = {
 				AND = {
 					has_variable = random_civil_war_rail_mission_state
@@ -859,6 +874,7 @@ event021_civil_war_crisis_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { event021_country_can_manage_reconstruction = yes }
+				has_country_flag = event021_rail_spine_lost
 				AND = {
 					has_variable = random_civil_war_rail_mission_state
 					var:random_civil_war_rail_mission_state = {
@@ -870,6 +886,7 @@ event021_civil_war_crisis_category = {
 				}
 			}
 		}
+		cancel_effect = { clr_country_flag = event021_secure_rail_mission_active }
 		complete_effect = { set_country_flag = event021_secure_rail_mission_active }
 		timeout_effect = { event021_mission_secure_rail_resolve = yes }
 		ai_will_do = {
@@ -906,6 +923,7 @@ event021_civil_war_crisis_category = {
 				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
 			}
 		}
+		cancel_effect = { clr_country_flag = event021_settlement_terms_mission_active }
 		complete_effect = { set_country_flag = event021_settlement_terms_mission_active }
 		timeout_effect = { event021_mission_hold_settlement_terms_resolve = yes }
 		ai_will_do = {

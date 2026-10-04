@@ -30,10 +30,35 @@ on_actions = {
 		}
 	}
 
-	# Event-driven receipts, not whole-world periodic reviews.
+	# Event-driven receipts, not whole-world periodic reviews. State-control
+	# changes interrupt the exact active capital/rail hold target by its saved
+	# state pointer before the existing continuity receipt is updated.
 	on_state_control_changed = {
 		effect = {
-			FROM = { event021_record_capital_continuity = yes }
+			FROM.FROM = { save_event_target_as = event021_mission_control_changed_state }
+			FROM = {
+				if = {
+					limit = {
+						has_country_flag = event021_hold_capital_mission_active
+						has_variable = event021_hold_capital_mission_target_state
+						var:event021_hold_capital_mission_target_state = {
+							state = event_target:event021_mission_control_changed_state
+						}
+					}
+					event021_mission_hold_capital_timeout = yes
+				}
+				if = {
+					limit = {
+						has_country_flag = event021_secure_rail_mission_active
+						has_variable = random_civil_war_rail_mission_state
+						var:random_civil_war_rail_mission_state = {
+							state = event_target:event021_mission_control_changed_state
+						}
+					}
+					event021_mission_secure_rail_timeout = yes
+				}
+				event021_record_capital_continuity = yes
+			}
 		}
 	}
 
