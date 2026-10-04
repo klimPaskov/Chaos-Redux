@@ -35,6 +35,36 @@ chaosx_nr25_enroll_holder = {
 	}
 }
 
+# Any scope. Enrols every recorded Event 036 recoverer that still exists and
+# still holds its recovery in the holder watch, whenever it recovered it. Runs
+# when the Antarctic race opens and again when Evolution V activates; both the
+# enrolment and the aftermath opening are idempotent, so the post-opening
+# Event 036 path and these calls never double a holder. When Evolution V is
+# already active, a recoverer outside a live race opens its aftermath and
+# receives the holder notice at once.
+chaosx_nr25_enroll_event036_recoverers = {
+	for_each_scope_loop = {
+		array = global.chaosx_alien_recovery_event036_recoverers
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = chaosx_alien_recovery_event036_recorded
+				chaosx_nr25_holds_alien_material = yes
+			}
+			chaosx_nr25_enroll_holder = yes
+			if = {
+				limit = {
+					has_global_flag = chaosx_nr25_evolution_technology_changes_users
+					NOT = { has_country_flag = chaosx_nr25_aftermath_open }
+					NOT = { chaosx_nr25_race_pulse_owns_country = yes }
+				}
+				chaosx_nr25_open_holder_aftermath = yes
+				country_event = { id = chaosx.nr25.221 days = 1 }
+			}
+		}
+	}
+}
+
 # COUNTRY scope. One outstanding watch pulse per holder.
 chaosx_nr25_schedule_holder_pulse = {
 	if = {

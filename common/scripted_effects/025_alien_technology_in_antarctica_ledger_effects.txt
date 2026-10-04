@@ -417,6 +417,12 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 			set_country_flag = chaosx_alien_recovery_036_propulsion_family
 		}
 		set_global_flag = chaosx_alien_recovery_036_recorded
+		# Bounded registry of Event 036 recoverers, so an Antarctic race that
+		# opens later can still enrol them in the Evolution V holder watch.
+		if = {
+			limit = { NOT = { is_in_array = { array = global.chaosx_alien_recovery_event036_recoverers value = THIS } } }
+			add_to_array = { array = global.chaosx_alien_recovery_event036_recoverers value = THIS }
+		}
 		if = {
 			limit = { NOT = { has_global_flag = chaosx_alien_recovery_world_event036_count_initialized } }
 			set_variable = { global.chaosx_alien_recovery_world_event036_count = constant:chaosx_nr25_value.zero }
@@ -522,6 +528,8 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 	}
 	# After an Antarctic race, an Event 036 recovery is compatible alien
 	# material: the country joins the holder watch so Evolution V reaches it.
+	# A recovery made before the race opened is enrolled from the recoverer
+	# registry when the race opens (chaosx_nr25_enroll_event036_recoverers).
 	if = {
 		limit = {
 			has_global_flag = chaosx_nr25_opening_super_event_fired

@@ -16,6 +16,7 @@ When the same country's applied Event 025 reward is in the flight, propulsion an
 | `chaosx_alien_recovery_event025_result`, `_field`, `_tier`, `_overlap` | Country variables | Historical Event 025 receipt, written once |
 | `chaosx_alien_recovery_event025_reward_applied` / `_reward_pending` | Country flags | Whether the Event 025 reward was really granted; achievements and reports read these |
 | `chaosx_alien_recovery_event036_*` | Country variables and flags | The matching Event 036 receipt |
+| `global.chaosx_alien_recovery_event036_recoverers` | Global array of countries | Every country that recorded an Event 036 recovery, added once by `chaosx_alien_recovery_ledger_resolve_event036`; read by `chaosx_nr25_enroll_event036_recoverers` |
 | `chaosx_alien_recovery_result`, `_result_field`, `_result_tier`, `_result_overlap`, `_result_source_event`, `_reward_applied` | Country variables | Latest ledger call only; reset at the start of every call |
 | `chaosx_alien_recovery_reward_applied_flag`, `chaosx_alien_recovery_reward_pending` | Country flags | Latest ledger call only; never use them as history |
 | `chaosx_alien_recovery_*_output` | Temporary variables | Same-chain copies of the latest call, named apart from the country variables so they never shadow them |
@@ -87,5 +88,5 @@ The reward bridge is covered by source review only; physical-custody tests do no
 
 ## Future work
 
-Event 036 holders join the holder watch through the Event 036 resolver once Event 025 has fired; a holder that recovers Event 036 material before Event 025 fires is not enrolled.
+Event 036 holders join the holder watch through the Event 036 resolver once Event 025 has fired. A country that recovered Event 036 material earlier is kept in `global.chaosx_alien_recovery_event036_recoverers` and enrolled by `chaosx_nr25_enroll_event036_recoverers` when Event 025 opens and again when Evolution V activates; if Evolution V is already active it opens its aftermath and receives the holder notice (`chaosx.nr25.221`) at once. Both paths are idempotent. A recovery recorded in a save made before the registry existed is not in the array and is not enrolled retroactively.
 No additional country, portrait, formation, unrelated equipment, or technology copy is authorized by this ledger.

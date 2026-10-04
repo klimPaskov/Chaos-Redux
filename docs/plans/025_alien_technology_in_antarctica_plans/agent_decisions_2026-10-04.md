@@ -482,3 +482,15 @@ Decision:
 Source reads: P11 (Evolution IV, trailing in the survey phase, integrity 60, Scientific Capacity 1): fragment recovery 37, cutting 26, mapping 21, distributing 19, against the core rush 1.2. A leading expedition in final recovery: the core rush 29, stabilising 16 (36 on a failing wreck with scientific capacity), cutting 3, mapping 6, distributing 4.
 
 MCP route record: `hoi4_probability_inspect` (`decision_ai_will_do`, the evolution decisions file, a three-decision pool) returned `INTERNAL_ERROR`; it was attempted once. The compare route was not reached because its scenario schema is not exposed (D23).
+
+## D29. Earlier Event 036 recoveries join the Evolution V holder watch
+
+Disposition: `implemented`; closes the open edge left by D10.
+
+Basis: spec 004 (Evolution V reaches every country holding recovered Event 025 material or a compatible Event 036 recovery) and D10's recorded limit that an Event 036 recoverer from before the race opened was never enrolled.
+
+Decision:
+
+- `chaosx_alien_recovery_ledger_resolve_event036` adds each newly recorded recoverer once to the bounded global array `global.chaosx_alien_recovery_event036_recoverers` (an array rather than one event target, because each Event 036 firing records a separate random country).
+- `chaosx_nr25_enroll_event036_recoverers` walks only that array and enrols each recoverer that still exists and still holds its recovery through `chaosx_nr25_enroll_holder`. It runs when Event 25 opens (before evolved openings, so an Evolution V opening already sees the holder) and again when Evolution V activates. If Evolution V is already active, a recoverer outside a live race opens its aftermath and receives the holder notice `chaosx.nr25.221` at once; otherwise the notice arrives through the existing Evolution V activation loop. Enrolment and aftermath opening are idempotent, so the post-opening resolver path never doubles a holder.
+- The ledger markdown documents the new array. Limit: a recovery recorded in a save from before the array existed is not enrolled retroactively, because finding it would need a world scan.
