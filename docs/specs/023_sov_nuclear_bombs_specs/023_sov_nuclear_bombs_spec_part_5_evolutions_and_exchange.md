@@ -432,6 +432,16 @@ The prospective gate adds one line of release authority, unsuspended orders, no 
 Outside a confirmed exchange the existing retaliation selector offers only lower-consequence states of an enemy nuclear major not under Soviet control under the prospective gate, and the existing strike preparation stages that marked state once before authorization.
 Certification, a separate final authorization and the runtime first-use guard decide release, and no exchange receipt is created by preparation.
 
+## Accepted exchange stage ladder (2026-10-05)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover and the lead's round 2 decision 3; agent decisions and dispositions are in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Decision R2-6, `implemented`.
+The public exchange stage is `global.sov_nuclear_bombs_exchange_stage`, which only advances: Nuclear Confrontation (1) when a hotline or a retaliation window opens between the Union and another nuclear major, Limited Exchange (2, `major_exchange_stage`) at the first confirmed detonation between the Union and a nuclear major, Expanding Exchange (3) at `exchange_expanding_detonations` such detonations or when a second opposing nuclear major takes part, and General Exchange (4) at `exchange_general_detonations`.
+Detonations are counted in `global.sov_nuclear_bombs_exchange_detonations` on the existing major-power receipt path, with no new scan or pulse.
+Reaching General Exchange sets `sov_nuclear_bombs_general_exchange_reached` once, which disqualifies Firebreak; it never sets `world_end`, and Fallout stays with the shared route.
+The stage appears as the "Exchange" line in the Soviet Nuclear Command header and in the hotline and stand-down descriptions.
+The retaliation window keeps its fixed mission timer, so Expanding Exchange does not shorten it; the reason is recorded in R2-6.
+
 ## Writing direction
 
 Evolution text should describe changes in actual behavior: reactor compounds expanding, foreign bomber patrols, dispersed command, armed delivery crews, breakaway depots, shortened response time, and the first confirmed exchange.

@@ -1793,6 +1793,10 @@ sov_nuclear_bombs_prepare_hotline = {
 		set_country_flag = sov_nuclear_bombs_hotline_open
 		set_country_flag = sov_nuclear_bombs_retaliation_window_mission_active
 		activate_mission = sov_nuclear_bombs_retaliation_window_mission
+		# A hotline with an opposing nuclear major is at least a Nuclear
+		# Confrontation; a later stage is kept.
+		set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.exchange_confrontation_stage }
+		sov_nuclear_bombs_advance_exchange_stage = yes
 		add_to_variable = { sov_nuclear_bombs_telephone_rounds = constant:sov_nuclear_bombs_ledger.one }
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.hotline_readiness }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
@@ -2867,6 +2871,16 @@ sov_nuclear_bombs_authorize_retaliation = {
 			limit = { has_country_flag = sov_nuclear_bombs_action_reservation_active }
 			set_country_flag = sov_nuclear_bombs_retaliation_window_mission_active
 			activate_mission = sov_nuclear_bombs_retaliation_window_mission
+			# A retaliation window against a nuclear major is at least a Nuclear
+			# Confrontation; a later stage is kept.
+			if = {
+				limit = {
+					has_variable = sov_nuclear_bombs_action_state
+					var:sov_nuclear_bombs_action_state = { sov_nuclear_bombs_event_target_is_nuclear_major = yes }
+				}
+				set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.exchange_confrontation_stage }
+				sov_nuclear_bombs_advance_exchange_stage = yes
+			}
 		}
 		else = {
 			clr_country_flag = sov_nuclear_bombs_retaliation_authorized

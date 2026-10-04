@@ -256,6 +256,7 @@ sov_nuclear_bombs_record_major_exchange_receipt = {
 			has_variable = sov_nuclear_bombs_major_receipt_candidate_actor_id
 			has_variable = sov_nuclear_bombs_major_receipt_candidate_target_id
 		}
+		sov_nuclear_bombs_record_exchange_detonation = yes
 		if = {
 			limit = {
 				NOT = { has_variable = global.sov_nuclear_bombs_major_receipt_count }
@@ -296,6 +297,73 @@ sov_nuclear_bombs_record_major_exchange_receipt = {
 		clear_variable = sov_nuclear_bombs_major_receipt_candidate_actor_id
 		clear_variable = sov_nuclear_bombs_major_receipt_candidate_target_id
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+	}
+}
+
+# Country scope (the Soviet actor), called once for every recorded
+# major-power receipt, which is one confirmed detonation between the Union
+# and another nuclear major in either direction. Counts the detonations,
+# notes a second opposing major, and advances the public exchange stage:
+# Limited from the first detonation, Expanding at the expanding count or with
+# a second opposing major, General at the general count. General is a
+# consequence stage only; it never sets world_end, and Fallout stays with
+# the shared route.
+sov_nuclear_bombs_record_exchange_detonation = {
+	if = {
+		limit = { NOT = { has_variable = global.sov_nuclear_bombs_exchange_detonations } }
+		set_variable = { global.sov_nuclear_bombs_exchange_detonations = constant:sov_nuclear_bombs_ledger.zero }
+	}
+	add_to_variable = { global.sov_nuclear_bombs_exchange_detonations = constant:sov_nuclear_bombs_ledger.one }
+	# The opposing major is whichever side of the receipt is not the Union.
+	set_temp_variable = { sov_nuclear_bombs_exchange_partner_id = sov_nuclear_bombs_major_receipt_candidate_actor_id }
+	if = {
+		limit = { check_variable = { var = THIS.id value = sov_nuclear_bombs_major_receipt_candidate_actor_id compare = equals } }
+		set_temp_variable = { sov_nuclear_bombs_exchange_partner_id = sov_nuclear_bombs_major_receipt_candidate_target_id }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.sov_nuclear_bombs_exchange_first_partner_id } }
+		set_variable = { global.sov_nuclear_bombs_exchange_first_partner_id = sov_nuclear_bombs_exchange_partner_id }
+	}
+	else_if = {
+		limit = { NOT = { check_variable = { var = global.sov_nuclear_bombs_exchange_first_partner_id value = sov_nuclear_bombs_exchange_partner_id compare = equals } } }
+		set_global_flag = sov_nuclear_bombs_exchange_second_opponent_joined
+	}
+	set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.major_exchange_stage }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = sov_nuclear_bombs_exchange_second_opponent_joined
+				check_variable = { var = global.sov_nuclear_bombs_exchange_detonations value = constant:sov_nuclear_bombs_tuning.exchange_expanding_detonations compare = greater_than_or_equals }
+			}
+		}
+		set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.exchange_expanding_stage }
+	}
+	if = {
+		limit = { check_variable = { var = global.sov_nuclear_bombs_exchange_detonations value = constant:sov_nuclear_bombs_tuning.exchange_general_detonations compare = greater_than_or_equals } }
+		set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.exchange_general_stage }
+	}
+	sov_nuclear_bombs_advance_exchange_stage = yes
+}
+
+# Any scope. Raises global.sov_nuclear_bombs_exchange_stage to the temporary
+# sov_nuclear_bombs_requested_exchange_stage and never lowers it. Reaching
+# General records sov_nuclear_bombs_general_exchange_reached once, which
+# disqualifies Firebreak.
+sov_nuclear_bombs_advance_exchange_stage = {
+	if = {
+		limit = { NOT = { has_variable = global.sov_nuclear_bombs_exchange_stage } }
+		set_variable = { global.sov_nuclear_bombs_exchange_stage = constant:sov_nuclear_bombs_ledger.zero }
+	}
+	if = {
+		limit = { check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = sov_nuclear_bombs_requested_exchange_stage compare = less_than } }
+		set_variable = { global.sov_nuclear_bombs_exchange_stage = sov_nuclear_bombs_requested_exchange_stage }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_general_stage compare = greater_than_or_equals }
+			NOT = { has_global_flag = sov_nuclear_bombs_general_exchange_reached }
+		}
+		set_global_flag = sov_nuclear_bombs_general_exchange_reached
 	}
 }
 

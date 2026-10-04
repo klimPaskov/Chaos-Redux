@@ -436,3 +436,58 @@ defined_text = {
 		localization_key = sov_nuclear_bombs_reserve_situation_available
 	}
 }
+
+# Public exchange stage (Part 5), read from global.sov_nuclear_bombs_exchange_stage,
+# which only advances. The category line appears for the Soviet command once
+# a Nuclear Confrontation has begun and stays empty before that.
+defined_text = {
+	name = GetSovietNuclearBombsCategoryExchangeStage
+	text = {
+		trigger = {
+			tag = SOV
+			has_variable = global.sov_nuclear_bombs_exchange_stage
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_confrontation_stage compare = greater_than_or_equals }
+		}
+		localization_key = sov_nuclear_bombs_exchange_stage_category_line
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = sov_nuclear_bombs_exchange_stage_empty
+	}
+}
+
+defined_text = {
+	name = GetSovietNuclearBombsExchangeStageName
+	text = {
+		trigger = {
+			has_variable = global.sov_nuclear_bombs_exchange_stage
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_general_stage compare = greater_than_or_equals }
+		}
+		localization_key = sov_nuclear_bombs_exchange_stage_general
+	}
+	text = {
+		trigger = {
+			has_variable = global.sov_nuclear_bombs_exchange_stage
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_expanding_stage compare = greater_than_or_equals }
+		}
+		localization_key = sov_nuclear_bombs_exchange_stage_expanding
+	}
+	text = {
+		trigger = {
+			has_variable = global.sov_nuclear_bombs_exchange_stage
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.major_exchange_stage compare = greater_than_or_equals }
+		}
+		localization_key = sov_nuclear_bombs_exchange_stage_limited
+	}
+	text = {
+		trigger = {
+			has_variable = global.sov_nuclear_bombs_exchange_stage
+			check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_confrontation_stage compare = greater_than_or_equals }
+		}
+		localization_key = sov_nuclear_bombs_exchange_stage_confrontation
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = sov_nuclear_bombs_exchange_stage_none
+	}
+}

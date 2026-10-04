@@ -150,6 +150,12 @@ Event 23 contributes the canonical `world_threat_source_sov_nuclear_bombs` sourc
 
 The first confirmed multi-major exchange opens exactly one nonterminal Event 23 super-event and records its one-time global exchange state. Testing, threats, failed launches, accidents, minor coercion, and a single major striking a nonnuclear minor do not qualify. The exchange super-event is separate from Fallout and Final Silence and does not itself apply terminal consequences.
 
+The public exchange stage (`global.sov_nuclear_bombs_exchange_stage`) only advances.
+A hotline or a retaliation window against a nuclear major records a Nuclear Confrontation (`exchange_confrontation_stage`).
+Every major-power receipt is one confirmed detonation between the Union and another nuclear major; `sov_nuclear_bombs_record_exchange_detonation` counts it in `global.sov_nuclear_bombs_exchange_detonations` and records the stage: Limited Exchange from the first detonation (`major_exchange_stage`), Expanding Exchange at `exchange_expanding_detonations` (3) or when a second opposing nuclear major is involved (`sov_nuclear_bombs_exchange_second_opponent_joined`), and General Exchange at `exchange_general_detonations` (6).
+General Exchange sets `sov_nuclear_bombs_general_exchange_reached` once, which disqualifies Firebreak; it is a consequence stage only and never sets `world_end`.
+The Soviet Nuclear Command header shows an "Exchange" line once a confrontation begins, and the hotline and stand-down descriptions name the current stage.
+
 ## Event log, Event Details, and achievements
 
 Event 23 is registered in the shared event log, actor mapping, details selectors, evolution history, and evolution preview rows. The Event Details preview includes all four evolutions and maps them to the correct Chaos tiers without creating a scenario or world-end row. Event response events and dynamic localisations use privacy-safe actor, site, target, phase, deadline, posture, knowledge, and custody text.
