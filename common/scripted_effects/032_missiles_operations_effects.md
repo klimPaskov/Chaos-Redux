@@ -98,3 +98,10 @@ Nuclear and thermonuclear warheads are held with `add_nuclear_bombs`, biological
 Chemical agent is only proven sufficient by `missiles_check_chemical_payload_stock`, which builds the same CBRN action context as the release-time debit without debiting.
 `missiles_consume_special_payload` consumes a held warhead first and clears the escrow before any direct debit path; `missiles_release_operation_payload`, called once from `missiles_cleanup_operation`, returns any warhead still held after an abort, cancellation, invalidation, capture, or removed-country cleanup.
 `.tools/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.
+
+## Evolution pacing
+
+`missiles_register_program` keeps every live programme in `global.missiles_program_registry` (first package, scenario package, capture shell, civil-war child); `missiles_cleanup_removed_country` removes it and rehomes a removed evolution host through `missiles_requeue_pending_evolution_jobs`.
+`missiles_measure_evolution_pressure` recounts programmes, operational programmes, wars, vulnerability, low readiness, overstock, unmaintained advanced programmes, payload owners, and responder/war pairs over that registry and publishes unscoped temporaries for the `missiles_evolution_*_is_eligible` and `*_pressure_is_high` triggers; `global.missiles_launch_total` counts committed launches.
+`missiles_evaluate_evolution_unlocks` (firing fallback) and `missiles_run_evolution_job` (`chaosx.nr32.190` on `global.missiles_evolution_host`) clear disabled pending state, recount, arm newly eligible tracks through `missiles_arm_evolution_track`, and commit at most one due track through `missiles_commit_evolution_track`, which sets the shared evolution-log temporaries, requires `is_current_evolution_enabled`, records the unlock, and refreshes each programme through `chaosx.nr32.8`.
+Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolution_pacing` (spread, first-firing stagger, job stagger, and eligibility thresholds).

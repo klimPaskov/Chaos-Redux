@@ -461,176 +461,581 @@ missiles_record_evolution_unlock = {
 		set_temp_variable = { events_log_evolution_tier = current_chaos_tier_value }
 		set_temp_variable = { events_log_evolution_has_actor = constant:missiles_event.zero }
 		record_events_log_evolution_entry = yes
-		set_global_flag = missiles_evolution_unlock_recorded_this_pulse
+		missiles_clear_evolution_track_pending = yes
 	}
 }
 
-missiles_schedule_evolution_track = {
-	# missiles_evolution_delay_days is a day count, while every due date below
-	# is a stored date, so the delay is converted once before it is added.
+
+# -----------------------------------------------------------------------------
+# Evolution pacing: live eligibility, bounded delayed jobs, and one commit
+# -----------------------------------------------------------------------------
+# A track that first becomes eligible arms one delayed job. The delay is its
+# base MTTH from missiles_evolution_timing, halved under high pressure,
+# lengthened when few programmes can use it, and spread at random between
+# three quarters and five quarters of that value. The first high-chaos pulse
+# arms short, staggered jobs instead. The job runs on a living programme host
+# (chaosx.nr32.190), recounts pressure live over global.missiles_program_registry
+# (no world scan), and commits at most one due track per run through the shared
+# evolution log. Every Event 32 firing repeats the same evaluation as a
+# fallback. Disabling a track clears its pending state at the next evaluation.
+
+# COUNTRY scope. Durable membership in the bounded programme registry.
+missiles_register_program = {
+	if = {
+		limit = {
+			has_country_flag = missiles_program_initialized
+			NOT = { has_country_flag = missiles_program_cleanup_complete }
+			NOT = { is_in_array = { array = global.missiles_program_registry value = THIS } }
+		}
+		add_to_array = { array = global.missiles_program_registry value = THIS }
+	}
+}
+
+# Any scope. Bounded live recount over the programme registry. Outputs the
+# unscoped temporaries read by the missiles_evolution_*_is_eligible triggers.
+missiles_measure_evolution_pressure = {
+	set_temp_variable = { missiles_pressure_programs = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_operational = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_war = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_vulnerable = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_low_readiness = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_overstocked = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_unmaintained = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_payload_owners = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_pressure_hostile_pairs = constant:missiles_program_value.zero }
+	for_each_scope_loop = {
+		array = global.missiles_program_registry
+		if = {
+			limit = { missiles_country_can_manage_program = yes }
+			add_to_temp_variable = { missiles_pressure_programs = constant:missiles_program_value.one }
+			if = { limit = { has_war = yes } add_to_temp_variable = { missiles_pressure_war = constant:missiles_program_value.one } }
+			if = { limit = { missiles_program_is_vulnerable = yes } add_to_temp_variable = { missiles_pressure_vulnerable = constant:missiles_program_value.one } }
+			if = { limit = { missiles_program_owns_special_payload = yes } add_to_temp_variable = { missiles_pressure_payload_owners = constant:missiles_program_value.one } }
+			if = {
+				limit = { missiles_program_is_operational = yes }
+				add_to_temp_variable = { missiles_pressure_operational = constant:missiles_program_value.one }
+				if = { limit = { check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.baseline_launch_readiness_gate compare = less_than } } add_to_temp_variable = { missiles_pressure_low_readiness = constant:missiles_program_value.one } }
+				if = { limit = { check_variable = { var = missiles_operational_reserve value = missiles_total_site_capacity compare = greater_than } } add_to_temp_variable = { missiles_pressure_overstocked = constant:missiles_program_value.one } }
+				if = {
+					limit = {
+						check_variable = { var = missiles_program_stage value = constant:missiles_stage.advanced compare = greater_than_or_equals }
+						NOT = { has_country_flag = missiles_guidance_improved }
+					}
+					add_to_temp_variable = { missiles_pressure_unmaintained = constant:missiles_program_value.one }
+				}
+			}
+			if = {
+				limit = {
+					missiles_program_can_answer_retaliation = yes
+					any_of_scopes = {
+						array = global.missiles_program_registry
+						missiles_program_is_operational = yes
+						has_war_with = PREV
+					}
+				}
+				add_to_temp_variable = { missiles_pressure_hostile_pairs = constant:missiles_program_value.one }
+			}
+		}
+	}
+	# Shares of the current programme pool, not fixed country counts.
+	set_temp_variable = { missiles_pressure_operational_share = missiles_pressure_operational }
+	divide_temp_variable = { var = missiles_pressure_operational_share value = missiles_pressure_programs if_zero = constant:missiles_program_value.one }
+	set_temp_variable = { missiles_pressure_unmaintained_share = missiles_pressure_unmaintained }
+	divide_temp_variable = { var = missiles_pressure_unmaintained_share value = missiles_pressure_operational if_zero = constant:missiles_program_value.one }
+	set_temp_variable = { missiles_pressure_launches = constant:missiles_program_value.zero }
+	if = { limit = { has_variable = global.missiles_launch_total } set_temp_variable = { missiles_pressure_launches = global.missiles_launch_total } }
+}
+
+missiles_clear_disabled_evolution_pending = {
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+		clr_global_flag = missiles_evolution_rogue_launch_commands_pending
+		clear_variable = global.missiles_evolution_rogue_launch_commands_due_date
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+		clr_global_flag = missiles_evolution_unreliable_guidance_pending
+		clear_variable = global.missiles_evolution_unreliable_guidance_due_date
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_32_1_1 }
+		clr_global_flag = missiles_evolution_saturation_pending
+		clear_variable = global.missiles_evolution_saturation_due_date
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+		clr_global_flag = missiles_evolution_special_warheads_pending
+		clear_variable = global.missiles_evolution_special_warheads_due_date
+	}
+	if = {
+		limit = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+		clr_global_flag = missiles_evolution_automatic_retaliation_pending
+		clear_variable = global.missiles_evolution_automatic_retaliation_due_date
+	}
+}
+
+# Input temp missiles_evolution_selection. Clears that track's pending job.
+missiles_clear_evolution_track_pending = {
+	if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.rogue_commands compare = equals } }
+		clr_global_flag = missiles_evolution_rogue_launch_commands_pending
+		clear_variable = global.missiles_evolution_rogue_launch_commands_due_date
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.unreliable_guidance compare = equals } }
+		clr_global_flag = missiles_evolution_unreliable_guidance_pending
+		clear_variable = global.missiles_evolution_unreliable_guidance_due_date
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.saturation compare = equals } }
+		clr_global_flag = missiles_evolution_saturation_pending
+		clear_variable = global.missiles_evolution_saturation_due_date
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.special_warheads compare = equals } }
+		clr_global_flag = missiles_evolution_special_warheads_pending
+		clear_variable = global.missiles_evolution_special_warheads_due_date
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.automatic_retaliation compare = equals } }
+		clr_global_flag = missiles_evolution_automatic_retaliation_pending
+		clear_variable = global.missiles_evolution_automatic_retaliation_due_date
+	}
+}
+
+# Inputs: missiles_evolution_selection and the pressure-adjusted base delay in
+# missiles_evolution_delay_days. Arms the pending flag, due date, and job.
+missiles_arm_evolution_track = {
+	if = {
+		limit = { check_variable = { var = missiles_pressure_programs value = constant:missiles_evolution_pressure.minimum_operational_programs compare = less_than } }
+		multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_lengthening_multiplier }
+	}
+	set_temp_variable_to_random = { var = missiles_evolution_spread }
+	multiply_temp_variable = { missiles_evolution_spread = constant:missiles_evolution_pacing.spread_width }
+	add_to_temp_variable = { missiles_evolution_spread = constant:missiles_evolution_pacing.spread_min }
+	multiply_temp_variable = { missiles_evolution_delay_days = missiles_evolution_spread }
+	if = {
+		limit = { NOT = { has_global_flag = missiles_evolution_first_pulse_done } }
+		# The first high-chaos firing gives the new programmes time to settle,
+		# then opens eligible tracks one after another rather than on one day.
+		set_temp_variable = { missiles_evolution_stagger = missiles_evolution_armed }
+		multiply_temp_variable = { missiles_evolution_stagger = constant:missiles_evolution_pacing.first_fire_stagger_days }
+		set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pacing.first_fire_delay_days }
+		add_to_temp_variable = { missiles_evolution_delay_days = missiles_evolution_stagger }
+	}
+	round_temp_variable = missiles_evolution_delay_days
+	clamp_temp_variable = { var = missiles_evolution_delay_days min = constant:missiles_evolution_pacing.minimum_delay_days }
+	add_to_temp_variable = { missiles_evolution_armed = constant:missiles_program_value.one }
 	set_temp_variable = { chaosx_date_days = missiles_evolution_delay_days }
 	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 	chaosx_convert_days_to_date_offset = yes
 	set_temp_variable = { missiles_evolution_delay_offset = chaosx_date_offset }
 	if = {
-		limit = {
-			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.saturation compare = equals }
-		}
-		if = {
-			limit = { has_global_flag = events_log_disabled_evolution_32_1_1 }
-			clr_global_flag = missiles_evolution_saturation_pending
-		}
-		else_if = {
-			limit = { NOT = { has_global_flag = missiles_evolution_saturation_unlocked } NOT = { has_global_flag = missiles_evolution_saturation_pending } }
-			set_global_flag = missiles_evolution_saturation_pending
-			set_variable = { global.missiles_evolution_saturation_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_saturation_due_date = missiles_evolution_delay_offset }
-		}
-		else_if = {
-			limit = { has_global_flag = missiles_evolution_saturation_pending check_variable = { var = global.date value = global.missiles_evolution_saturation_due_date compare = greater_than_or_equals } }
-			missiles_record_evolution_unlock = yes
-			clr_global_flag = missiles_evolution_saturation_pending
-		}
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.rogue_commands compare = equals } }
+		set_global_flag = missiles_evolution_rogue_launch_commands_pending
+		set_variable = { global.missiles_evolution_rogue_launch_commands_due_date = global.date }
+		add_to_variable = { global.missiles_evolution_rogue_launch_commands_due_date = missiles_evolution_delay_offset }
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.unreliable_guidance compare = equals } }
-		if = {
-			limit = { has_global_flag = events_log_disabled_evolution_32_2_1 }
-			clr_global_flag = missiles_evolution_unreliable_guidance_pending
-		}
-		else_if = {
-			limit = { NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked } NOT = { has_global_flag = missiles_evolution_unreliable_guidance_pending } }
-			set_global_flag = missiles_evolution_unreliable_guidance_pending
-			set_variable = { global.missiles_evolution_unreliable_guidance_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_unreliable_guidance_due_date = missiles_evolution_delay_offset }
-		}
-		else_if = {
-			limit = { has_global_flag = missiles_evolution_unreliable_guidance_pending check_variable = { var = global.date value = global.missiles_evolution_unreliable_guidance_due_date compare = greater_than_or_equals } }
-			missiles_record_evolution_unlock = yes
-			clr_global_flag = missiles_evolution_unreliable_guidance_pending
-		}
+		set_global_flag = missiles_evolution_unreliable_guidance_pending
+		set_variable = { global.missiles_evolution_unreliable_guidance_due_date = global.date }
+		add_to_variable = { global.missiles_evolution_unreliable_guidance_due_date = missiles_evolution_delay_offset }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.saturation compare = equals } }
+		set_global_flag = missiles_evolution_saturation_pending
+		set_variable = { global.missiles_evolution_saturation_due_date = global.date }
+		add_to_variable = { global.missiles_evolution_saturation_due_date = missiles_evolution_delay_offset }
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.special_warheads compare = equals } }
-		if = {
-			limit = { has_global_flag = events_log_disabled_evolution_32_3_1 }
-			clr_global_flag = missiles_evolution_special_warheads_pending
-		}
-		else_if = {
-			limit = { NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked } NOT = { has_global_flag = missiles_evolution_special_warheads_pending } }
-			set_global_flag = missiles_evolution_special_warheads_pending
-			set_variable = { global.missiles_evolution_special_warheads_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_special_warheads_due_date = missiles_evolution_delay_offset }
-		}
-		else_if = {
-			limit = { has_global_flag = missiles_evolution_special_warheads_pending check_variable = { var = global.date value = global.missiles_evolution_special_warheads_due_date compare = greater_than_or_equals } }
-			missiles_record_evolution_unlock = yes
-			clr_global_flag = missiles_evolution_special_warheads_pending
-		}
-	}
-	else_if = {
-		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.rogue_commands compare = equals } }
-		if = {
-			limit = { has_global_flag = events_log_disabled_evolution_32_4_1 }
-			clr_global_flag = missiles_evolution_rogue_launch_commands_pending
-		}
-		else_if = {
-			limit = { NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked } NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_pending } }
-			set_global_flag = missiles_evolution_rogue_launch_commands_pending
-			set_variable = { global.missiles_evolution_rogue_launch_commands_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_rogue_launch_commands_due_date = missiles_evolution_delay_offset }
-		}
-		else_if = {
-			limit = { has_global_flag = missiles_evolution_rogue_launch_commands_pending check_variable = { var = global.date value = global.missiles_evolution_rogue_launch_commands_due_date compare = greater_than_or_equals } }
-			missiles_record_evolution_unlock = yes
-			clr_global_flag = missiles_evolution_rogue_launch_commands_pending
-		}
+		set_global_flag = missiles_evolution_special_warheads_pending
+		set_variable = { global.missiles_evolution_special_warheads_due_date = global.date }
+		add_to_variable = { global.missiles_evolution_special_warheads_due_date = missiles_evolution_delay_offset }
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.automatic_retaliation compare = equals } }
-		if = {
-			limit = { has_global_flag = events_log_disabled_evolution_32_5_1 }
-			clr_global_flag = missiles_evolution_automatic_retaliation_pending
+		set_global_flag = missiles_evolution_automatic_retaliation_pending
+		set_variable = { global.missiles_evolution_automatic_retaliation_due_date = global.date }
+		add_to_variable = { global.missiles_evolution_automatic_retaliation_due_date = missiles_evolution_delay_offset }
+	}
+	set_temp_variable = { missiles_evolution_job_days = missiles_evolution_delay_days }
+	missiles_queue_evolution_job = yes
+}
+
+# Input temp missiles_evolution_selection. One guarded commit through the
+# shared evolution log, then every programme refreshes its access with ROOT
+# bound to itself.
+missiles_commit_evolution_track = {
+	set_temp_variable = { events_log_evolution_event_id = constant:missiles_event.id }
+	set_temp_variable = { events_log_evolution_type = missiles_evolution_selection }
+	set_temp_variable = { events_log_evolution_stage = constant:missiles_event.one }
+	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
+	get_current_chaos_tier_value = yes
+	set_temp_variable = { events_log_evolution_tier = current_chaos_tier_value }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		missiles_record_evolution_unlock = yes
+		add_to_temp_variable = { missiles_evolution_commits = constant:missiles_program_value.one }
+		for_each_scope_loop = {
+			array = global.missiles_program_registry
+			if = { limit = { exists = yes } country_event = { id = chaosx.nr32.8 } }
 		}
-		else_if = {
-			limit = { NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked } NOT = { has_global_flag = missiles_evolution_automatic_retaliation_pending } }
-			set_global_flag = missiles_evolution_automatic_retaliation_pending
-			set_variable = { global.missiles_evolution_automatic_retaliation_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_automatic_retaliation_due_date = missiles_evolution_delay_offset }
+	}
+	missiles_clear_evolution_track_pending = yes
+}
+
+# COUNTRY scope through chaosx.nr32.8: ROOT is the programme being refreshed.
+missiles_refresh_evolution_access_from_receiver = {
+	if = {
+		limit = { has_country_flag = missiles_program_initialized NOT = { has_country_flag = missiles_program_cleanup_complete } }
+		missiles_evaluate_country_evolution_adoption = yes
+		missiles_assign_ai_profile = yes
+		missiles_refresh_program_status_idea = yes
+	}
+}
+
+# Keeps the evolution host a living registered programme. The current host is
+# kept while valid; otherwise the first living registry entry takes over.
+missiles_select_evolution_host = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.missiles_evolution_host }
+				NOT = { var:global.missiles_evolution_host = { exists = yes has_country_flag = missiles_program_initialized NOT = { has_country_flag = missiles_program_cleanup_complete } } }
+			}
 		}
-		else_if = {
-			limit = { has_global_flag = missiles_evolution_automatic_retaliation_pending check_variable = { var = global.date value = global.missiles_evolution_automatic_retaliation_due_date compare = greater_than_or_equals } }
-			missiles_record_evolution_unlock = yes
-			clr_global_flag = missiles_evolution_automatic_retaliation_pending
+		clear_variable = global.missiles_evolution_host
+		set_temp_variable = { missiles_evolution_host_break = constant:missiles_program_value.zero }
+		for_each_scope_loop = {
+			array = global.missiles_program_registry
+			break = missiles_evolution_host_break
+			if = {
+				limit = { exists = yes has_country_flag = missiles_program_initialized NOT = { has_country_flag = missiles_program_cleanup_complete } }
+				set_variable = { global.missiles_evolution_host = THIS }
+				set_temp_variable = { missiles_evolution_host_break = constant:missiles_program_value.one }
+			}
 		}
 	}
 }
 
+# Input temp missiles_evolution_job_days. Queues one delayed job on the host.
+missiles_queue_evolution_job = {
+	missiles_select_evolution_host = yes
+	if = {
+		limit = { has_variable = global.missiles_evolution_host }
+		var:global.missiles_evolution_host = { country_event = { id = chaosx.nr32.190 days = missiles_evolution_job_days } }
+	}
+}
+
+# Input temp chaosx_date_offset holding a stored due date. Queues a job for the
+# remaining whole days, at least one.
+missiles_queue_evolution_job_at_offset = {
+	subtract_from_temp_variable = { var = chaosx_date_offset value = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_temp_variable = { missiles_evolution_job_days = chaosx_date_days }
+	clamp_temp_variable = { var = missiles_evolution_job_days min = constant:missiles_evolution_pacing.minimum_delay_days }
+	missiles_queue_evolution_job = yes
+}
+
+# Re-queues every pending job on a new host after the old host is removed.
+missiles_requeue_pending_evolution_jobs = {
+	if = {
+		limit = { has_global_flag = missiles_evolution_rogue_launch_commands_pending has_variable = global.missiles_evolution_rogue_launch_commands_due_date }
+		set_temp_variable = { chaosx_date_offset = global.missiles_evolution_rogue_launch_commands_due_date }
+		missiles_queue_evolution_job_at_offset = yes
+	}
+	if = {
+		limit = { has_global_flag = missiles_evolution_unreliable_guidance_pending has_variable = global.missiles_evolution_unreliable_guidance_due_date }
+		set_temp_variable = { chaosx_date_offset = global.missiles_evolution_unreliable_guidance_due_date }
+		missiles_queue_evolution_job_at_offset = yes
+	}
+	if = {
+		limit = { has_global_flag = missiles_evolution_saturation_pending has_variable = global.missiles_evolution_saturation_due_date }
+		set_temp_variable = { chaosx_date_offset = global.missiles_evolution_saturation_due_date }
+		missiles_queue_evolution_job_at_offset = yes
+	}
+	if = {
+		limit = { has_global_flag = missiles_evolution_special_warheads_pending has_variable = global.missiles_evolution_special_warheads_due_date }
+		set_temp_variable = { chaosx_date_offset = global.missiles_evolution_special_warheads_due_date }
+		missiles_queue_evolution_job_at_offset = yes
+	}
+	if = {
+		limit = { has_global_flag = missiles_evolution_automatic_retaliation_pending has_variable = global.missiles_evolution_automatic_retaliation_due_date }
+		set_temp_variable = { chaosx_date_offset = global.missiles_evolution_automatic_retaliation_due_date }
+		missiles_queue_evolution_job_at_offset = yes
+	}
+}
+
+# Firing pulse (fallback) and first-eligibility arming.
 missiles_evaluate_evolution_unlocks = {
 	if = {
-		limit = {
-			has_global_flag = missiles_program_ever_initialized
-			has_variable = global.missiles_firing_guided_count
-		}
-		set_global_flag = missiles_evolution_unlock_recorded_this_pulse
-		# Rogue Launch Commands: a live vulnerable command structure is enough to
-		# open the delayed track; no incident is manufactured at unlock time.
+		limit = { has_global_flag = missiles_program_ever_initialized }
+		missiles_clear_disabled_evolution_pending = yes
+		missiles_measure_evolution_pressure = yes
+		set_temp_variable = { missiles_evolution_commits = constant:missiles_program_value.zero }
+		set_temp_variable = { missiles_evolution_armed = constant:missiles_program_value.zero }
 		if = {
 			limit = {
-				check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_rogue compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_vulnerable_count value = constant:missiles_evolution_pressure.minimum_operational_programs compare = greater_than_or_equals }
+				NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
-			set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.rogue_days }
-			if = { limit = { check_variable = { var = global.missiles_firing_vulnerable_count value = constant:missiles_evolution_pressure.minimum_mature_programs compare = greater_than_or_equals } } multiply_temp_variable = { var = missiles_evolution_delay_days value = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
-			missiles_schedule_evolution_track = yes
+			if = {
+				limit = { missiles_evolution_rogue_launch_commands_is_eligible = yes }
+				if = {
+					limit = { NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_pending } }
+					set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.rogue_days }
+					if = { limit = { missiles_evolution_rogue_launch_commands_pressure_is_high = yes } multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
+					missiles_arm_evolution_track = yes
+				}
+				else_if = {
+					limit = {
+						check_variable = { var = global.date value = global.missiles_evolution_rogue_launch_commands_due_date compare = greater_than_or_equals }
+						check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = equals }
+					}
+					missiles_commit_evolution_track = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = missiles_evolution_rogue_launch_commands_pending
+					check_variable = { var = global.date value = global.missiles_evolution_rogue_launch_commands_due_date compare = greater_than_or_equals }
+				}
+				missiles_clear_evolution_track_pending = yes
+			}
 		}
-		# Unreliable Guidance follows global strain after guided programs exist.
 		if = {
 			limit = {
-				check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_guidance compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_guided_count value = constant:missiles_evolution_pressure.minimum_operational_programs compare = greater_than_or_equals }
+				NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
-			set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.guidance_days }
-			if = { limit = { check_variable = { var = global.missiles_firing_war_count value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals } } multiply_temp_variable = { var = missiles_evolution_delay_days value = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
-			missiles_schedule_evolution_track = yes
+			if = {
+				limit = { missiles_evolution_unreliable_guidance_is_eligible = yes }
+				if = {
+					limit = { NOT = { has_global_flag = missiles_evolution_unreliable_guidance_pending } }
+					set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.guidance_days }
+					if = { limit = { missiles_evolution_unreliable_guidance_pressure_is_high = yes } multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
+					missiles_arm_evolution_track = yes
+				}
+				else_if = {
+					limit = {
+						check_variable = { var = global.date value = global.missiles_evolution_unreliable_guidance_due_date compare = greater_than_or_equals }
+						check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = equals }
+					}
+					missiles_commit_evolution_track = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = missiles_evolution_unreliable_guidance_pending
+					check_variable = { var = global.date value = global.missiles_evolution_unreliable_guidance_due_date compare = greater_than_or_equals }
+				}
+				missiles_clear_evolution_track_pending = yes
+			}
 		}
-		# Saturation Arsenals requires a meaningful guided and wartime pool.
 		if = {
 			limit = {
-				check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_saturation compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_guided_count value = constant:missiles_evolution_pressure.minimum_mature_programs compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_war_count value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }
+				NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
-			set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.saturation_days }
-			if = { limit = { check_variable = { var = global.missiles_firing_mature_count value = constant:missiles_evolution_pressure.minimum_mature_programs compare = greater_than_or_equals } } multiply_temp_variable = { var = missiles_evolution_delay_days value = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
-			missiles_schedule_evolution_track = yes
+			if = {
+				limit = { missiles_evolution_saturation_is_eligible = yes }
+				if = {
+					limit = { NOT = { has_global_flag = missiles_evolution_saturation_pending } }
+					set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.saturation_days }
+					if = { limit = { missiles_evolution_saturation_pressure_is_high = yes } multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
+					missiles_arm_evolution_track = yes
+				}
+				else_if = {
+					limit = {
+						check_variable = { var = global.date value = global.missiles_evolution_saturation_due_date compare = greater_than_or_equals }
+						check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = equals }
+					}
+					missiles_commit_evolution_track = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = missiles_evolution_saturation_pending
+					check_variable = { var = global.date value = global.missiles_evolution_saturation_due_date compare = greater_than_or_equals }
+				}
+				missiles_clear_evolution_track_pending = yes
+			}
 		}
-		# Special Warheads requires an existing owner; the evolution never grants
-		# payload stock, technology, or a delivery system by itself.
 		if = {
 			limit = {
-				check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_special compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_payload_owner_count value = constant:missiles_evolution_pressure.minimum_payload_owners compare = greater_than_or_equals }
+				NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
-			set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.special_days }
-			missiles_schedule_evolution_track = yes
+			if = {
+				limit = { missiles_evolution_special_warheads_is_eligible = yes }
+				if = {
+					limit = { NOT = { has_global_flag = missiles_evolution_special_warheads_pending } }
+					set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.special_days }
+					if = { limit = { missiles_evolution_special_warheads_pressure_is_high = yes } multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
+					missiles_arm_evolution_track = yes
+				}
+				else_if = {
+					limit = {
+						check_variable = { var = global.date value = global.missiles_evolution_special_warheads_due_date compare = greater_than_or_equals }
+						check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = equals }
+					}
+					missiles_commit_evolution_track = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = missiles_evolution_special_warheads_pending
+					check_variable = { var = global.date value = global.missiles_evolution_special_warheads_due_date compare = greater_than_or_equals }
+				}
+				missiles_clear_evolution_track_pending = yes
+			}
 		}
-		# Automatic Retaliation has an explicit 900-chaos gate in addition to its
-		# two-program support requirement. It only queues warnings after unlock.
 		if = {
 			limit = {
-				check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_retaliation compare = greater_than_or_equals }
-				check_variable = { var = global.missiles_firing_retaliation_count value = constant:missiles_evolution_pressure.minimum_retaliation_programs compare = greater_than_or_equals }
+				NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
-			set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.retaliation_days }
-			missiles_schedule_evolution_track = yes
+			if = {
+				limit = { missiles_evolution_automatic_retaliation_is_eligible = yes }
+				if = {
+					limit = { NOT = { has_global_flag = missiles_evolution_automatic_retaliation_pending } }
+					set_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_timing.retaliation_days }
+					if = { limit = { missiles_evolution_automatic_retaliation_pressure_is_high = yes } multiply_temp_variable = { missiles_evolution_delay_days = constant:missiles_evolution_pressure.delay_shortening_multiplier } }
+					missiles_arm_evolution_track = yes
+				}
+				else_if = {
+					limit = {
+						check_variable = { var = global.date value = global.missiles_evolution_automatic_retaliation_due_date compare = greater_than_or_equals }
+						check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = equals }
+					}
+					missiles_commit_evolution_track = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = missiles_evolution_automatic_retaliation_pending
+					check_variable = { var = global.date value = global.missiles_evolution_automatic_retaliation_due_date compare = greater_than_or_equals }
+				}
+				missiles_clear_evolution_track_pending = yes
+			}
 		}
-		clr_global_flag = missiles_evolution_unlock_recorded_this_pulse
+		set_global_flag = missiles_evolution_first_pulse_done
+	}
+}
+
+# Delayed job (chaosx.nr32.190). Commits at most one due, still-eligible track
+# per run, drops a due track whose eligibility has lapsed, and re-queues itself
+# when another track is already due.
+missiles_run_evolution_job = {
+	if = {
+		limit = { has_global_flag = missiles_program_ever_initialized }
+		missiles_clear_disabled_evolution_pending = yes
+		missiles_measure_evolution_pressure = yes
+		set_temp_variable = { missiles_evolution_commits = constant:missiles_program_value.zero }
+		set_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.zero }
+		if = {
+			limit = {
+				has_global_flag = missiles_evolution_rogue_launch_commands_pending
+				check_variable = { var = global.date value = global.missiles_evolution_rogue_launch_commands_due_date compare = greater_than_or_equals }
+			}
+			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
+			if = {
+				limit = { check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = greater_than } }
+				add_to_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.one }
+			}
+			else_if = {
+				limit = { missiles_evolution_rogue_launch_commands_is_eligible = yes }
+				missiles_commit_evolution_track = yes
+			}
+			else = {
+				missiles_clear_evolution_track_pending = yes
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = missiles_evolution_unreliable_guidance_pending
+				check_variable = { var = global.date value = global.missiles_evolution_unreliable_guidance_due_date compare = greater_than_or_equals }
+			}
+			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
+			if = {
+				limit = { check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = greater_than } }
+				add_to_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.one }
+			}
+			else_if = {
+				limit = { missiles_evolution_unreliable_guidance_is_eligible = yes }
+				missiles_commit_evolution_track = yes
+			}
+			else = {
+				missiles_clear_evolution_track_pending = yes
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = missiles_evolution_saturation_pending
+				check_variable = { var = global.date value = global.missiles_evolution_saturation_due_date compare = greater_than_or_equals }
+			}
+			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
+			if = {
+				limit = { check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = greater_than } }
+				add_to_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.one }
+			}
+			else_if = {
+				limit = { missiles_evolution_saturation_is_eligible = yes }
+				missiles_commit_evolution_track = yes
+			}
+			else = {
+				missiles_clear_evolution_track_pending = yes
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = missiles_evolution_special_warheads_pending
+				check_variable = { var = global.date value = global.missiles_evolution_special_warheads_due_date compare = greater_than_or_equals }
+			}
+			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
+			if = {
+				limit = { check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = greater_than } }
+				add_to_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.one }
+			}
+			else_if = {
+				limit = { missiles_evolution_special_warheads_is_eligible = yes }
+				missiles_commit_evolution_track = yes
+			}
+			else = {
+				missiles_clear_evolution_track_pending = yes
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = missiles_evolution_automatic_retaliation_pending
+				check_variable = { var = global.date value = global.missiles_evolution_automatic_retaliation_due_date compare = greater_than_or_equals }
+			}
+			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
+			if = {
+				limit = { check_variable = { var = missiles_evolution_commits value = constant:missiles_program_value.zero compare = greater_than } }
+				add_to_temp_variable = { missiles_evolution_due_remaining = constant:missiles_program_value.one }
+			}
+			else_if = {
+				limit = { missiles_evolution_automatic_retaliation_is_eligible = yes }
+				missiles_commit_evolution_track = yes
+			}
+			else = {
+				missiles_clear_evolution_track_pending = yes
+			}
+		}
+		if = {
+			limit = { check_variable = { var = missiles_evolution_due_remaining value = constant:missiles_program_value.zero compare = greater_than } }
+			set_temp_variable = { missiles_evolution_job_days = constant:missiles_evolution_pacing.job_stagger_days }
+			missiles_queue_evolution_job = yes
+		}
 	}
 }
 
@@ -5251,6 +5656,8 @@ missiles_commit_operation = {
 		limit = { missiles_operation_can_be_committed = yes }
 		set_country_flag = missiles_operation_committed
 		set_variable = { missiles_operation_commit_date = global.date }
+		if = { limit = { NOT = { has_variable = global.missiles_launch_total } } set_variable = { global.missiles_launch_total = constant:missiles_program_value.zero } }
+		add_to_variable = { global.missiles_launch_total = constant:missiles_program_value.one }
 		set_variable = { missiles_operation_state = constant:missiles_operation_state.committed }
 		set_variable = { missiles_operation_evidence = constant:missiles_evidence.committed }
 		clr_country_flag = missiles_guidance_recalibrated_next_launch
@@ -5538,6 +5945,7 @@ missiles_initialize_capture_shell = {
 		set_country_flag = missiles_program_initialized
 		set_country_flag = missiles_program_capture_shell
 		set_country_flag = missiles_site_compromise_active
+		missiles_register_program = yes
 		set_variable = { missiles_program_stage = constant:missiles_stage.none }
 		set_variable = { missiles_launch_readiness = constant:missiles_program_value.initial_readiness }
 		subtract_from_variable = { missiles_launch_readiness = constant:missiles_tuning.program_capture_readiness_loss }
@@ -5939,6 +6347,7 @@ missiles_finalize_civil_war_split_child = {
 			set_country_flag = missiles_program_initialized
 			add_to_variable = { global.missiles_program_count = constant:missiles_program_value.one }
 		}
+		missiles_register_program = yes
 		set_variable = { missiles_program_stage = event_target:missiles_civil_war_parent.missiles_civil_war_split_original_stage }
 		set_variable = { missiles_reserve_cap = event_target:missiles_civil_war_parent.missiles_civil_war_split_original_reserve_cap }
 		set_variable = { missiles_guidance_training = event_target:missiles_civil_war_parent.missiles_civil_war_split_original_guidance_training }
@@ -6100,6 +6509,16 @@ missiles_cleanup_removed_country = {
 			NOT = { has_country_flag = missiles_program_cleanup_complete }
 		}
 		set_country_flag = missiles_program_cleanup_complete
+		remove_from_array = { array = global.missiles_program_registry value = THIS }
+		# A removed evolution host hands its pending jobs to a living programme.
+		if = {
+			limit = {
+				has_variable = global.missiles_evolution_host
+				check_variable = { var = global.missiles_evolution_host value = THIS compare = equals }
+			}
+			clear_variable = global.missiles_evolution_host
+			missiles_requeue_pending_evolution_jobs = yes
+		}
 		if = {
 			limit = { has_country_flag = missiles_operation_active }
 			missiles_abort_operation = yes
