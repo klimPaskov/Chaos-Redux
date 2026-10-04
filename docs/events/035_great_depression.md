@@ -155,6 +155,25 @@ Its title, description, and option text follow the frozen Strong, Uneven, or Hol
 The description states the reopened, restructured, liquidated, and, for a hollow recovery, abandoned center counts and the peak Severity, names the institution the final doctrine leaves behind and its lasting weakness (`GetGreatDepressionRecoveryInstitution`), and names the lasting cost (`GetGreatDepressionRecoveryLoss`: the Event 35 factory levels lost, idle abandoned works, or no loss).
 The single option shows the recovery ideas the country now holds through `great_depression_show_recovery_report_ideas`, and its AI weight is `great_depression_event_option_weight.recovery_report`.
 
+### Recovery legacies
+
+A completed episode leaves at most one doctrine legacy, chosen from the final doctrine by `great_depression_add_recovery_legacy`, which first removes every other legacy.
+Each legacy pairs a benefit with a countervailing cost, and in every later episode `great_depression_apply_recovery_legacy_pressure` (called by `great_depression_rebuild_hidden_components`) eases one hidden pressure and adds a weakness only under the condition that exposes it.
+The offsets are the `legacy_*` keys of `great_depression_hidden_component`, so no doctrine route grants immunity.
+
+| Legacy | Idea benefit and cost | Later-episode relief | Later-episode weakness |
+| --- | --- | --- | --- |
+| Public Works | infrastructure construction speed, higher consumer goods | demand stress | fiscal stress while Severity is at or above Deep Depression |
+| Strategic Industry | military factory output, slower civilian factory construction | industrial stress | demand stress in peacetime |
+| Finance and Trade | trade opinion, higher minimum export | credit stress | trade stress while Financial Contagion, foreign exposure, or worldwide pressure is active |
+| Austerity | lower consumer goods, lower stability | fiscal stress | social stress while a registered center is Idled, Shuttered, or Abandoned |
+| Direct State Planning | building construction speed, larger line-change efficiency loss | trade stress | fiscal stress in Stabilization and Recovery |
+| Market-Clear | lower consumer goods, lower starting production efficiency | industrial stress while stability is above the medium floor | demand stress while a registered center is Idled, Shuttered, or Abandoned |
+
+`great_depression_resolve_recovery_outcome` sets `great_depression_recovery_hollow` for a Hollow result and clears it for a Strong or Uneven one, so the latest recovery decides whether the country is more exposed to contagion conversion and worldwide pressure.
+
+`great_depression_post_recovery` is the temporary safeguard: it is added when an episode closes with the recovery watch running, removed when the watch expires, and removed when any new episode, including a relapse, is committed.
+
 ## National Breakdown and Social Collapse
 
 Baseline National Breakdown opens only after sustained severe failure and runs through a warning, prevention mission, proof gate, and one recorded outcome in `chaosx.nr35.6`.

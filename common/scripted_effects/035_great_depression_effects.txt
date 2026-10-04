@@ -3713,6 +3713,8 @@ great_depression_initialize_new_crisis = {
 				great_depression_register_late_worldwide_country = yes
 			}
 			set_country_flag = great_depression_ever_started
+			# A relapse or any new episode ends the post-recovery safeguard.
+			remove_ideas = great_depression_post_recovery
 			clr_country_flag = great_depression_transition_pending
 			set_variable = { great_depression_call_episode_id = great_depression_active_episode_id }
 			set_variable = { great_depression_call_started = constant:great_depression_api.one }
@@ -4322,6 +4324,103 @@ great_depression_apply_maximum_failure_center_consequence = {
 # severity pulse. The player never sees these component values. They keep
 # credit, demand, trade, industry, fiscal capacity, social order, and wartime
 # strain responsive to the usable economy and to the bounded center registry.
+# COUNTRY scope, called by great_depression_rebuild_hidden_components. A
+# recovery legacy from an earlier episode eases one hidden pressure, and its
+# weakness adds pressure only under the condition that exposes it, so a later
+# episode is easier on the legacy's own ground without any route granting
+# immunity. A country holds at most one legacy, so one branch applies.
+great_depression_apply_recovery_legacy_pressure = {
+	set_temp_variable = { great_depression_legacy_closed_center_count = constant:great_depression_api.zero }
+	if = {
+		limit = {
+			OR = {
+				has_idea = great_depression_legacy_austerity
+				has_idea = great_depression_legacy_market_clear
+			}
+			has_variable = great_depression_center_state_ids^num
+		}
+		for_loop_effect = {
+			start = 0
+			end = great_depression_center_state_ids^num
+			value = great_depression_legacy_center_index
+			var:great_depression_center_state_ids^great_depression_legacy_center_index = {
+				if = {
+					limit = {
+						OR = {
+							has_state_flag = great_depression_center_idled
+							has_state_flag = great_depression_center_shuttered
+							has_state_flag = great_depression_center_abandoned
+						}
+					}
+					add_to_temp_variable = { great_depression_legacy_closed_center_count = constant:great_depression_api.one }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_public_works }
+		add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.legacy_public_works_demand_relief }
+		if = {
+			limit = { check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals } }
+			add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.legacy_public_works_deep_upkeep }
+		}
+	}
+	else_if = {
+		limit = { has_idea = great_depression_legacy_strategic_industry }
+		add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.legacy_strategic_industry_relief }
+		if = {
+			limit = { has_war = no }
+			add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.legacy_strategic_industry_peacetime_demand }
+		}
+	}
+	else_if = {
+		limit = { has_idea = great_depression_legacy_finance_and_trade }
+		add_to_variable = { great_depression_hidden_credit_stress = constant:great_depression_hidden_component.legacy_finance_credit_relief }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = great_depression_evolution_financial_contagion
+					has_country_flag = great_depression_contagion_exposure_open
+					has_country_flag = great_depression_worldwide_pressure_active
+				}
+			}
+			add_to_variable = { great_depression_hidden_trade_stress = constant:great_depression_hidden_component.legacy_finance_foreign_trade }
+		}
+	}
+	else_if = {
+		limit = { has_idea = great_depression_legacy_austerity }
+		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.legacy_austerity_fiscal_relief }
+		if = {
+			limit = { check_variable = { var = great_depression_legacy_closed_center_count value = constant:great_depression_api.zero compare = greater_than } }
+			add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.legacy_austerity_unemployment_social }
+		}
+	}
+	else_if = {
+		limit = { has_idea = great_depression_legacy_direct_state_planning }
+		add_to_variable = { great_depression_hidden_trade_stress = constant:great_depression_hidden_component.legacy_planning_logistics_relief }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+					check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals }
+				}
+			}
+			add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.legacy_planning_administrative_fiscal }
+		}
+	}
+	else_if = {
+		limit = { has_idea = great_depression_legacy_market_clear }
+		if = {
+			limit = { has_stability > constant:great_depression_thresholds.social_medium_stability_floor }
+			add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.legacy_market_clear_stable_relief }
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_legacy_closed_center_count value = constant:great_depression_api.zero compare = greater_than } }
+			add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.legacy_market_clear_regional_demand }
+		}
+	}
+}
+
 great_depression_rebuild_hidden_components = {
 	set_variable = { great_depression_hidden_credit_stress = constant:great_depression_api.zero }
 	set_variable = { great_depression_hidden_demand_stress = constant:great_depression_api.zero }
@@ -4589,6 +4688,8 @@ great_depression_rebuild_hidden_components = {
 			add_to_variable = { great_depression_hidden_war_stress = constant:great_depression_hidden_component.war_arsenal_relief }
 		}
 	}
+
+	great_depression_apply_recovery_legacy_pressure = yes
 
 	# Inherited regional liabilities. The boom's credit hangover above is a
 	# national fact, so regional credit facts only add to it. The flat inherited
@@ -4952,6 +5053,7 @@ great_depression_process_recovery_watch = {
 							}
 						}
 						clr_country_flag = great_depression_recovery_watch_active
+						remove_ideas = great_depression_post_recovery
 					}
 				}
 			}
@@ -5245,6 +5347,13 @@ great_depression_resolve_recovery_outcome = {
 		set_variable = { great_depression_recovery_outcome = constant:great_depression_recovery_outcome.strong }
 	}
 	set_variable = { great_depression_last_recovery_result = great_depression_recovery_outcome }
+	# The latest result decides whether the country carries a hollow recovery
+	# into later contagion and worldwide-pressure exposure.
+	if = {
+		limit = { check_variable = { var = great_depression_recovery_outcome value = constant:great_depression_recovery_outcome.hollow compare = equals } }
+		set_country_flag = great_depression_recovery_hollow
+	}
+	else = { clr_country_flag = great_depression_recovery_hollow }
 }
 
 # COUNTRY scope. This evaluator is called both from national recovery and from
@@ -5494,6 +5603,11 @@ great_depression_try_complete_recovery = {
 			set_country_flag = great_depression_last_recovery_no_center_loss
 		}
 		great_depression_add_recovery_legacy = yes
+		# The temporary safeguard lasts while the recovery watch runs.
+		if = {
+			limit = { has_country_flag = great_depression_recovery_watch_active }
+			add_ideas = great_depression_post_recovery
+		}
 		great_depression_clear_registered_center_runtime = yes
 		great_depression_clear_center_resolution_receipts = yes
 		clear_variable = great_depression_selected_center_state
