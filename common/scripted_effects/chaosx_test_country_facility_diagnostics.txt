@@ -1,0 +1,35 @@
+# Temporary CXT facility diagnostics for a native construction rejection.
+# STATE context after transfer; ROOT is CXT and the caller supplies the current
+# building token. Reads only, guarded by the existing explicit setup trace flag.
+# Remove this helper and its call once the native rejection is identified.
+
+chaosx_test_country_trace_facility_candidate = {
+	if = {
+		limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+		log = "CXT_FACILITY_GATE context state=[This.GetName] type=[?chaosx_test_country_current_facility.GetTokenKey] actor=[ROOT.GetTag]"
+		OWNER = { log = "CXT_FACILITY_GATE owner=[This.GetTag]" }
+		CONTROLLER = { log = "CXT_FACILITY_GATE controller=[This.GetTag]" }
+		ROOT = {
+			if = {
+				limit = { has_dlc = "Gotterdammerung" }
+				log = "CXT_FACILITY_GATE dlc_gotterdammerung=yes"
+			}
+			else = { log = "CXT_FACILITY_GATE dlc_gotterdammerung=no" }
+		}
+		if = {
+			limit = { chaosx_test_country_state_meets_facility_requirements = yes }
+			log = "CXT_FACILITY_GATE shared_placement=yes"
+		}
+		else = { log = "CXT_FACILITY_GATE shared_placement=no" }
+		meta_effect = {
+			text = {
+				if = {
+					limit = { can_construct_building = [FACILITY] }
+					log = "CXT_FACILITY_GATE native_can_construct=yes type=[FACILITY]"
+				}
+				else = { log = "CXT_FACILITY_GATE native_can_construct=no type=[FACILITY]" }
+			}
+			FACILITY = "[?chaosx_test_country_current_facility.GetTokenKey]"
+		}
+	}
+}
