@@ -330,3 +330,11 @@ The two state passes (enclave intelligence and imperial reaches) are one-time `e
 
 Probability evidence: no weighted surface changed, so no `hoi4.probability_inspect` call was made.
 Needs live game: land-fort placement on border provinces, the starting efficiency of the laser line, the federation faction under Deeper Factions (deprecated `create_faction`), the dual-citizenship state modifier, and the per-landing results in a real landing.
+
+## D26. Implementation wording removed from player-facing Event 016 text
+
+Disposition: implemented under the full-authority mandate as the round 2 lead's fifth item.
+
+Player-visible strings no longer use receipt, provider, DLC, board-chain, registry-repair, cleanup, world-transition, or "exact ... ledger" wording. The no-special-project Prototype rows are titled "Build the ... Prototype" and the six Singularity component rows "Build the Singularity ...", their descriptions and requirements describe what the order does, the component completion tooltips say the component is complete and cannot arm or fire the device on its own, the native integration descriptions say the special project is complete and Prototype capacity is committed, and the Mengele Singularity requirement and stage tooltips describe component special projects instead of naming the DLC. Narrative uses of "ledger" (personnel ledgers, the Restoration Ledger focus, the identity ledger) and "registry" as an in-world institution stay. Keys are unchanged and every edited file keeps its UTF-8 BOM.
+
+Evidence: `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `016_brilliant_scientist_focus_l_english.yml`, `016_brilliant_scientist_requirement_flags_l_english.yml`, `016_mengele_singularity_stage_l_english.yml`, `016_mengele_teleportation_stage_l_english.yml`, `016_mengele_native_prototype_selection_l_english.yml`, `016_mengele_singularity_construction_l_english.yml`, and `016_mengele_singularity_terminal_l_english.yml`.
