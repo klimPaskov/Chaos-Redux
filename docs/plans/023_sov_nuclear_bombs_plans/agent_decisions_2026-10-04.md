@@ -29,3 +29,14 @@ No Chaos, Fallout or death consequence is called a second time; the native callb
 Basis: the dispute flag was never cleared, so one natural raid permanently blocked moratorium, collapse finalisation, complete accounting and the clean-ledger achievements, while "The Bomb Never Fell" stayed earnable after nuking; spec Part 7 requires shared, single consequences.
 The vanilla raid collects its device at creation (`common/raids/_documentation.md`, `essential_equipment`).
 Disposition: `implemented`; raid timing and refunds `needs_live_game`.
+
+## D4. Soviet AI does not use vanilla nuclear raids while Event 23 is active
+
+Decision: `common/raids/nuclear_raids.txt` overrides the installed vanilla file with one added modifier at the start of each of the six raid types' `ai_will_do` (`nuclear_strike`, `nuclear_missile_strike`, `nuclear_missile_strike_submarine`, `thermonuclear_strike`, `thermonuclear_missile_strike`, `thermonuclear_missile_strike_submarine`).
+The modifier is `factor = 0` under `sov_nuclear_bombs_native_raid_ai_restrained` (SOV, AI, Event 23 actor valid).
+All other vanilla content is copied unchanged below a four-line header comment.
+Human players and every other country keep vanilla raid behaviour.
+Basis: README non-negotiables and Part 9 (no AI major exchange below Evolution IV, no use from high Chaos alone); the vanilla raid weight (base 1, x2 against majors, x2 for SOV on missile and thermonuclear types) is the only engine-side lever, and installed `common/raids/_documentation.md` documents `ai_will_do` with FROM as the target country and "AI only wants to do raids if resulting AI weight is > 0".
+Soviet AI nuclear use therefore runs only through the Event 23 decision chain.
+Probability: before-source of the vanilla file is archived as `probability_source_snapshots/ai_surfaces_before_2026-10-04/before_vanilla_nuclear_raids.txt`; the compare is recorded with item D11.
+Disposition: `implemented`; AI raid behaviour `needs_live_game`.
