@@ -2584,6 +2584,11 @@ cannibalism_complete_global_cleanup = {
 		for_each_scope_loop = {
 			array = global.cannibalism_actor_countries
 			clear_variable = cannibalism_larder_effective_capacity
+			cannibalism_clear_hidden_hoards = yes
+			if = {
+				limit = { has_active_mission = cannibalism_unified_hoard_seizure_mission }
+				remove_mission = cannibalism_unified_hoard_seizure_mission
+			}
 		}
 		clear_variable = global.cannibalism_unification_host_generation
 		clear_global_event_target = cannibalism_unification_host
@@ -3377,6 +3382,7 @@ cannibalism_clear_all_current_country_mission_runtime = {
 	if = { limit = { has_active_mission = cannibalism_unified_larder_mission } remove_mission = cannibalism_unified_larder_mission }
 	if = { limit = { has_active_mission = cannibalism_unified_war_machine_mission } remove_mission = cannibalism_unified_war_machine_mission }
 	if = { limit = { has_active_mission = cannibalism_unified_counterwar_mission } remove_mission = cannibalism_unified_counterwar_mission }
+	if = { limit = { has_active_mission = cannibalism_unified_hoard_seizure_mission } remove_mission = cannibalism_unified_hoard_seizure_mission }
 	if = { limit = { has_active_mission = cannibalism_wendigo_terminal_hunt_mission } remove_mission = cannibalism_wendigo_terminal_hunt_mission }
 
 	cannibalism_clear_logistics_mission = yes
@@ -3392,6 +3398,7 @@ cannibalism_clear_all_current_country_mission_runtime = {
 	cannibalism_unified_clear_larder_mission = yes
 	cannibalism_unified_clear_war_machine_mission = yes
 	cannibalism_unified_clear_counterwar_mission = yes
+	cannibalism_clear_hoard_seizure = yes
 	cannibalism_unregister_current_country_objective_observer_if_idle = yes
 
 	if = {
@@ -3415,6 +3422,7 @@ cannibalism_reset_current_country_incarnation_state = {
 	cannibalism_clear_all_current_country_mission_runtime = yes
 	cannibalism_gui_reset_current_viewer = yes
 	cannibalism_clear_integrated_history_and_targets = yes
+	cannibalism_clear_hidden_hoards = yes
 	cannibalism_clear_current_policy = yes
 	clr_country_flag = cannibalism_opening_policy_chosen
 	clr_country_flag = cannibalism_evolution_i_report_scheduled
@@ -12786,6 +12794,7 @@ cannibalism_prepare_larder_transfer_quote = {
 	set_temp_variable = { cannibalism_transfer_loss_fraction = constant:cannibalism_larder_logistics.zero }
 	set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.zero }
 	set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_hoard_amount = constant:cannibalism_larder_logistics.zero }
 	if = {
 		limit = { cannibalism_larder_transfer_context_is_valid = yes }
 		if = {
@@ -12829,7 +12838,26 @@ cannibalism_prepare_larder_transfer_quote = {
 		}
 		set_temp_variable = { cannibalism_transfer_retention = constant:cannibalism_larder_logistics.one }
 		subtract_from_temp_variable = { cannibalism_transfer_retention = cannibalism_transfer_loss_fraction }
+		# A concealing warlord keeps part of the dispatch in a cache at its own
+		# captured capital. The cache never travels, so it suffers no route loss.
+		if = {
+			limit = {
+				check_variable = { cannibalism_transfer_concealment_share > constant:cannibalism_larder_logistics.zero }
+				has_event_target = cannibalism_larder_source_capital
+				check_variable = { var = cannibalism_larder_source_capital_captured value = constant:cannibalism_larder_logistics.one compare = equals }
+			}
+			set_temp_variable = { cannibalism_transfer_hoard_amount = cannibalism_transfer_dispatch }
+			multiply_temp_variable = { cannibalism_transfer_hoard_amount = cannibalism_transfer_concealment_share }
+			if = {
+				limit = { check_variable = { cannibalism_transfer_hoard_amount < constant:cannibalism_hoard.minimum_amount } }
+				set_temp_variable = { cannibalism_transfer_hoard_amount = constant:cannibalism_larder_logistics.zero }
+			}
+			else = {
+				event_target:cannibalism_larder_source_capital = { save_event_target_as = cannibalism_transfer_hoard_state }
+			}
+		}
 		set_temp_variable = { cannibalism_transfer_received = cannibalism_transfer_dispatch }
+		subtract_from_temp_variable = { cannibalism_transfer_received = cannibalism_transfer_hoard_amount }
 		multiply_temp_variable = { cannibalism_transfer_received = cannibalism_transfer_retention }
 		set_temp_variable = { cannibalism_transfer_result = constant:cannibalism_larder_logistics.one }
 	}
@@ -12837,6 +12865,29 @@ cannibalism_prepare_larder_transfer_quote = {
 	set_temp_variable = { cannibalism_larder_destination_capital_captured = constant:cannibalism_larder_logistics.zero }
 	set_temp_variable = { cannibalism_transfer_constructor_context = constant:cannibalism_larder_logistics.zero }
 	set_temp_variable = { cannibalism_transfer_route_fraction = constant:cannibalism_larder_logistics.zero }
+	set_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_larder_logistics.zero }
+}
+
+# Donor COUNTRY scope before a post-reveal quote. Input:
+# cannibalism_concealment_autonomy_bargain (1 for an autonomy tribute).
+# Output: cannibalism_transfer_concealment_share, the fraction of the dispatch
+# the warlord hides. Hoarders and autonomy bargains conceal; others ship it all.
+cannibalism_prepare_current_warlord_concealment_share = {
+	set_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.zero }
+	if = {
+		limit = { check_variable = { cannibalism_warlord_personality = constant:cannibalism_personality.hoarder } }
+		add_to_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.hoarder_share }
+	}
+	if = {
+		limit = { check_variable = { cannibalism_concealment_autonomy_bargain > constant:cannibalism_hoard.zero } }
+		add_to_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.autonomy_share }
+	}
+	clamp_temp_variable = {
+		var = cannibalism_transfer_concealment_share
+		min = constant:cannibalism_hoard.zero
+		max = constant:cannibalism_hoard.maximum_share
+	}
+	set_temp_variable = { cannibalism_concealment_autonomy_bargain = constant:cannibalism_hoard.zero }
 }
 
 # Country donor snapshot. Inputs: current donor variables and three origin flags.
@@ -13491,7 +13542,16 @@ cannibalism_add_current_warlord_larder_to_unified_host = {
 			add_to_variable = { cannibalism_larder = cannibalism_transfer_received }
 		}
 		set_temp_variable = { cannibalism_transfer_committed = constant:cannibalism_larder_logistics.one }
+		if = {
+			limit = {
+				check_variable = { cannibalism_transfer_hoard_amount > constant:cannibalism_larder_logistics.zero }
+				has_event_target = cannibalism_transfer_hoard_state
+			}
+			cannibalism_conceal_current_warlord_hoard = yes
+		}
 	}
+	# The concealed amount belongs to this one commit.
+	set_temp_variable = { cannibalism_transfer_hoard_amount = constant:cannibalism_larder_logistics.zero }
 }
 
 cannibalism_absorb_current_warlord_into_unified_host = {
@@ -13551,6 +13611,8 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 		event_target:cannibalism_unification_host = { save_event_target_as = cannibalism_larder_destination_country }
 		cannibalism_capture_current_larder_transfer_capitals = yes
 		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
+		set_temp_variable = { cannibalism_concealment_autonomy_bargain = constant:cannibalism_hoard.zero }
+		cannibalism_prepare_current_warlord_concealment_share = yes
 		cannibalism_prepare_larder_transfer_quote = yes
 		set_temp_variable = { cannibalism_absorbed_warlord_was_human = 0 }
 		if = { limit = { is_ai = no } set_temp_variable = { cannibalism_absorbed_warlord_was_human = 1 } }
@@ -13674,6 +13736,8 @@ cannibalism_bargain_current_warlord_autonomy = {
 			add_to_temp_variable = { cannibalism_integration_larder_factor = constant:cannibalism_warlord_contract.manipulation_autonomy_tribute_relief }
 		}
 		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
+		set_temp_variable = { cannibalism_concealment_autonomy_bargain = constant:cannibalism_hoard.one }
+		cannibalism_prepare_current_warlord_concealment_share = yes
 		cannibalism_prepare_larder_transfer_quote = yes
 		cannibalism_add_current_warlord_larder_to_unified_host = yes
 		if = {
@@ -13751,6 +13815,513 @@ cannibalism_challenge_unified_host = {
 			event_target:cannibalism_unification_host = { declare_war_on = { target = ROOT type = annex_everything } }
 		}
 	}
+}
+
+# ---------------------------------------------------------------------------
+# Hidden hoards
+# ---------------------------------------------------------------------------
+# A hoarder, or a warlord bargaining for autonomy, hides part of its dispatched
+# Larder in a cache at its own capital (cannibalism_prepare_larder_transfer_quote
+# and cannibalism_add_current_warlord_larder_to_unified_host). The cache record
+# lives on that STATE; the host lists its cache states in cannibalism_hoard_states.
+# The host answers each new shortfall in chaosx.nr14.82 by confronting the
+# warlord, tolerating the cache or buying the stores back. The audit focus opens
+# an investigation that locates caches and reopens their review, and the seizure
+# focus opens a timed seizure mission against one located cache at a time.
+# Records clear on the host's incarnation reset and the final cleanup.
+# Full contract: docs/events/014_cannibalism/hidden_hoards.md
+
+@CANNIBALISM_HOARD_REVIEW_HOURS = 24
+@CANNIBALISM_HOARD_MILD_AUTONOMY = 0.10
+@CANNIBALISM_HOARD_SEVERE_AUTONOMY = 0.20
+@CANNIBALISM_HOARD_TOLERATE_AUTONOMY = -0.10
+
+# STATE scope. Removes this state's cache record.
+cannibalism_clear_current_state_hoard = {
+	clear_variable = cannibalism_hoard_amount
+	clear_variable = cannibalism_hoard_owner
+	clear_variable = cannibalism_hoard_owner_generation
+	clear_variable = cannibalism_hoard_name
+	clear_variable = cannibalism_hoard_host
+	clear_variable = cannibalism_hoard_host_generation
+	clr_state_flag = cannibalism_hoard_reviewed
+	clr_state_flag = cannibalism_hoard_tolerated
+	clr_state_flag = cannibalism_hoard_located
+	clr_state_flag = cannibalism_hoard_seizure_target
+}
+
+# Donor COUNTRY scope inside a committed transfer. Inputs:
+# cannibalism_transfer_hoard_amount, event_target:cannibalism_transfer_hoard_state
+# (the donor's frozen capital) and event_target:cannibalism_larder_destination_country.
+# A cache already recorded there for the same host incarnation grows; any other
+# record is replaced. The host then queues a shortfall review.
+cannibalism_conceal_current_warlord_hoard = {
+	set_temp_variable = { cannibalism_hoard_new_name = cannibalism_warlord_name_index }
+	set_temp_variable = { cannibalism_hoard_new_owner_generation = cannibalism_actor_generation }
+	set_temp_variable = { cannibalism_hoard_new_host_generation = event_target:cannibalism_larder_destination_country.cannibalism_actor_generation }
+	save_event_target_as = cannibalism_hoard_new_owner
+	event_target:cannibalism_transfer_hoard_state = {
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = cannibalism_hoard_host }
+					NOT = { check_variable = { var = cannibalism_hoard_host value = event_target:cannibalism_larder_destination_country compare = equals } }
+					NOT = { check_variable = { var = cannibalism_hoard_host_generation value = cannibalism_hoard_new_host_generation compare = equals } }
+				}
+			}
+			cannibalism_clear_current_state_hoard = yes
+		}
+		add_to_variable = { cannibalism_hoard_amount = cannibalism_transfer_hoard_amount }
+		set_variable = { cannibalism_hoard_owner = event_target:cannibalism_hoard_new_owner }
+		set_variable = { cannibalism_hoard_owner_generation = cannibalism_hoard_new_owner_generation }
+		set_variable = { cannibalism_hoard_name = cannibalism_hoard_new_name }
+		set_variable = { cannibalism_hoard_host = event_target:cannibalism_larder_destination_country }
+		set_variable = { cannibalism_hoard_host_generation = cannibalism_hoard_new_host_generation }
+		clr_state_flag = cannibalism_hoard_reviewed
+		save_event_target_as = cannibalism_hoard_new_state
+	}
+	event_target:cannibalism_larder_destination_country = {
+		if = {
+			limit = { NOT = { is_in_array = { array = cannibalism_hoard_states value = event_target:cannibalism_hoard_new_state } } }
+			add_to_array = { array = cannibalism_hoard_states value = event_target:cannibalism_hoard_new_state }
+		}
+		cannibalism_schedule_hoard_review = yes
+	}
+}
+
+# Host COUNTRY scope. Drops listed states that no longer hold a cache of this
+# host's current incarnation.
+cannibalism_prune_current_host_hoards = {
+	set_temp_variable = { cannibalism_hoard_prune_index = cannibalism_hoard_states^num }
+	while_loop_effect = {
+		limit = { check_variable = { cannibalism_hoard_prune_index > constant:cannibalism_hoard.zero } }
+		subtract_from_temp_variable = { cannibalism_hoard_prune_index = constant:cannibalism_hoard.one }
+		set_temp_variable = { cannibalism_hoard_prune_keep = constant:cannibalism_hoard.zero }
+		var:cannibalism_hoard_states^cannibalism_hoard_prune_index = {
+			if = {
+				limit = { cannibalism_state_hoard_belongs_to_prev = yes }
+				set_temp_variable = { cannibalism_hoard_prune_keep = constant:cannibalism_hoard.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { cannibalism_hoard_prune_keep < constant:cannibalism_hoard.one } }
+			remove_from_array = { array = cannibalism_hoard_states index = cannibalism_hoard_prune_index }
+		}
+	}
+}
+
+# Host COUNTRY scope. Queues one shortfall review at a time. The timed pending
+# flag lets a later concealment queue a review if an earlier one never fired.
+cannibalism_schedule_hoard_review = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = cannibalism_hoard_review_pending }
+			cannibalism_current_host_has_unreviewed_hoard = yes
+		}
+		set_temp_variable = { cannibalism_hoard_review_pending_days = constant:cannibalism_hoard.review_pending_days }
+		set_country_flag = { flag = cannibalism_hoard_review_pending days = cannibalism_hoard_review_pending_days }
+		country_event = { id = chaosx.nr14.82 hours = @CANNIBALISM_HOARD_REVIEW_HOURS }
+	}
+}
+
+# Host COUNTRY scope. Input: event_target:cannibalism_hoard_target_state.
+# Outputs: event_target:cannibalism_hoard_target_owner and
+# cannibalism_hoard_target_is_governor (1 while the owner is the same live
+# autonomous governor serving this host).
+cannibalism_load_hoard_target_owner = {
+	set_temp_variable = { cannibalism_hoard_target_owner_captured = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	event_target:cannibalism_hoard_target_state = {
+		if = {
+			limit = { has_variable = cannibalism_hoard_owner }
+			var:cannibalism_hoard_owner = { save_event_target_as = cannibalism_hoard_target_owner }
+			set_temp_variable = { cannibalism_hoard_target_owner_captured = constant:cannibalism_hoard.one }
+		}
+	}
+	if = {
+		limit = { cannibalism_hoard_target_owner_is_live_governor = yes }
+		set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.one }
+	}
+}
+
+# Host COUNTRY scope, immediate block of chaosx.nr14.82. Picks the first cache
+# that awaits review and stores what the event text and options show.
+cannibalism_select_next_hoard_review = {
+	cannibalism_prune_current_host_hoards = yes
+	clear_variable = cannibalism_hoard_review_state
+	clear_variable = cannibalism_hoard_review_owner
+	clr_country_flag = cannibalism_hoard_review_governor
+	clr_country_flag = cannibalism_hoard_review_located
+	set_temp_variable = { cannibalism_hoard_review_found = constant:cannibalism_hoard.zero }
+	for_each_scope_loop = {
+		array = cannibalism_hoard_states
+		if = {
+			limit = {
+				check_variable = { cannibalism_hoard_review_found < constant:cannibalism_hoard.one }
+				cannibalism_state_hoard_belongs_to_prev = yes
+				NOT = { has_state_flag = cannibalism_hoard_reviewed }
+			}
+			set_temp_variable = { cannibalism_hoard_review_found = constant:cannibalism_hoard.one }
+			save_event_target_as = cannibalism_hoard_target_state
+		}
+	}
+	if = {
+		limit = { check_variable = { cannibalism_hoard_review_found > constant:cannibalism_hoard.zero } }
+		set_variable = { cannibalism_hoard_review_state = event_target:cannibalism_hoard_target_state }
+		set_temp_variable = { cannibalism_hoard_review_confront_share = constant:cannibalism_hoard.confront_recovery }
+		event_target:cannibalism_hoard_target_state = {
+			set_temp_variable = { cannibalism_hoard_review_amount_value = cannibalism_hoard_amount }
+			set_temp_variable = { cannibalism_hoard_review_name_value = cannibalism_hoard_name }
+			if = {
+				limit = { has_state_flag = cannibalism_hoard_located }
+				PREV = { set_country_flag = cannibalism_hoard_review_located }
+				set_temp_variable = { cannibalism_hoard_review_confront_share = constant:cannibalism_hoard.located_confront_recovery }
+			}
+		}
+		set_variable = { cannibalism_hoard_review_amount = cannibalism_hoard_review_amount_value }
+		set_variable = { cannibalism_hoard_review_name = cannibalism_hoard_review_name_value }
+		cannibalism_load_hoard_target_owner = yes
+		if = {
+			limit = { check_variable = { cannibalism_hoard_target_is_governor > constant:cannibalism_hoard.zero } }
+			set_country_flag = cannibalism_hoard_review_governor
+			set_variable = { cannibalism_hoard_review_owner = event_target:cannibalism_hoard_target_owner }
+		}
+		set_variable = { cannibalism_hoard_review_confront_amount = cannibalism_hoard_review_amount }
+		multiply_variable = { cannibalism_hoard_review_confront_amount = cannibalism_hoard_review_confront_share }
+		set_variable = { cannibalism_hoard_review_bargain_amount = cannibalism_hoard_review_amount }
+		multiply_variable = { cannibalism_hoard_review_bargain_amount = constant:cannibalism_hoard.bargain_recovery }
+		set_variable = { cannibalism_hoard_bargain_command_cost = cannibalism_hoard_review_amount }
+		multiply_variable = { cannibalism_hoard_bargain_command_cost = constant:cannibalism_hoard.bargain_command_per_larder }
+		clamp_variable = {
+			var = cannibalism_hoard_bargain_command_cost
+			min = constant:cannibalism_hoard.bargain_command_minimum
+			max = constant:cannibalism_hoard.bargain_command_maximum
+		}
+		set_variable = { cannibalism_hoard_bargain_command_gate = cannibalism_hoard_bargain_command_cost }
+		subtract_from_variable = { cannibalism_hoard_bargain_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	}
+}
+
+# Host COUNTRY scope. Loads the reviewed cache into the shared hoard targets.
+# Output: cannibalism_hoard_target_valid (1 while the cache is still on record).
+cannibalism_load_hoard_review_target = {
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
+	if = {
+		limit = { has_variable = cannibalism_hoard_review_state }
+		var:cannibalism_hoard_review_state = {
+			save_event_target_as = cannibalism_hoard_target_state
+			if = {
+				limit = { cannibalism_state_hoard_belongs_to_prev = yes }
+				set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.one }
+			}
+		}
+		cannibalism_load_hoard_target_owner = yes
+	}
+}
+
+# Host COUNTRY scope. Input: event_target:cannibalism_hoard_target_state.
+# Removes the cache record and its listing.
+cannibalism_close_target_hoard = {
+	event_target:cannibalism_hoard_target_state = {
+		if = {
+			limit = { cannibalism_state_hoard_belongs_to_prev = yes }
+			cannibalism_clear_current_state_hoard = yes
+		}
+	}
+	if = {
+		limit = { is_in_array = { array = cannibalism_hoard_states value = event_target:cannibalism_hoard_target_state } }
+		remove_from_array = { array = cannibalism_hoard_states value = event_target:cannibalism_hoard_target_state }
+	}
+}
+
+# Host COUNTRY scope. Inputs: event_target:cannibalism_hoard_target_state and
+# cannibalism_hoard_recovery_share (0 to 1). Credits that share of the cache to
+# the host's Larder, then closes the record. Output: cannibalism_hoard_recovered.
+cannibalism_recover_target_hoard = {
+	set_temp_variable = { cannibalism_hoard_recovered = constant:cannibalism_hoard.zero }
+	event_target:cannibalism_hoard_target_state = {
+		if = {
+			limit = { cannibalism_state_hoard_belongs_to_prev = yes }
+			set_temp_variable = { cannibalism_hoard_recovered = cannibalism_hoard_amount }
+			multiply_temp_variable = { cannibalism_hoard_recovered = cannibalism_hoard_recovery_share }
+		}
+	}
+	if = {
+		limit = { check_variable = { cannibalism_hoard_recovered > constant:cannibalism_hoard.zero } }
+		add_to_variable = { cannibalism_larder = cannibalism_hoard_recovered }
+		cannibalism_clamp_and_publish_current_larder = yes
+	}
+	cannibalism_close_target_hoard = yes
+}
+
+# Host COUNTRY scope after cannibalism_load_hoard_target_owner. Input:
+# cannibalism_hoard_resistance_level (mild or severe). A live governor moves
+# toward independence; otherwise the cache's old guard stirs unrest in the
+# cache state while the host owns it.
+cannibalism_apply_target_hoard_resistance = {
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_is_governor > constant:cannibalism_hoard.zero } }
+		event_target:cannibalism_hoard_target_owner = {
+			if = {
+				limit = { check_variable = { cannibalism_hoard_resistance_level > constant:cannibalism_hoard.resistance_mild } }
+				add_autonomy_ratio = { value = @CANNIBALISM_HOARD_SEVERE_AUTONOMY localization = cannibalism_hoard_autonomy_reason }
+			}
+			else = {
+				add_autonomy_ratio = { value = @CANNIBALISM_HOARD_MILD_AUTONOMY localization = cannibalism_hoard_autonomy_reason }
+			}
+		}
+	}
+	else = {
+		set_temp_variable = { cannibalism_hoard_unrest_days = constant:cannibalism_hoard.unrest_days }
+		if = {
+			limit = { check_variable = { cannibalism_hoard_resistance_level > constant:cannibalism_hoard.resistance_mild } }
+			multiply_temp_variable = { cannibalism_hoard_unrest_days = constant:cannibalism_hoard.severe_unrest_factor }
+		}
+		event_target:cannibalism_hoard_target_state = {
+			if = {
+				limit = { is_owned_by = PREV }
+				add_dynamic_modifier = { modifier = cannibalism_hoard_guard_unrest days = cannibalism_hoard_unrest_days }
+			}
+		}
+	}
+}
+
+# Host COUNTRY scope. Input: cannibalism_hoard_authority_change. Authority is a
+# unified-host meter; the transformed Wendigo host has none.
+cannibalism_apply_hoard_authority_change = {
+	if = {
+		limit = { is_cannibalism_unified_country = yes }
+		add_to_variable = { cannibalism_unified_authority = cannibalism_hoard_authority_change }
+		cannibalism_unified_focus_clamp_values = yes
+	}
+}
+
+# Host COUNTRY scope. Marks the reviewed cache answered, clears the review
+# context and queues the next review.
+cannibalism_finish_hoard_review = {
+	if = {
+		limit = { has_variable = cannibalism_hoard_review_state }
+		var:cannibalism_hoard_review_state = {
+			if = {
+				limit = {
+					cannibalism_state_hoard_belongs_to_prev = yes
+					# A cache located after this review opened gets its own located review.
+					OR = {
+						NOT = { has_state_flag = cannibalism_hoard_located }
+						PREV = { has_country_flag = cannibalism_hoard_review_located }
+					}
+				}
+				set_state_flag = cannibalism_hoard_reviewed
+			}
+		}
+	}
+	clear_variable = cannibalism_hoard_review_state
+	clear_variable = cannibalism_hoard_review_owner
+	clear_variable = cannibalism_hoard_review_amount
+	clear_variable = cannibalism_hoard_review_name
+	clear_variable = cannibalism_hoard_review_confront_amount
+	clear_variable = cannibalism_hoard_review_bargain_amount
+	clear_variable = cannibalism_hoard_bargain_command_cost
+	clear_variable = cannibalism_hoard_bargain_command_gate
+	clr_country_flag = cannibalism_hoard_review_governor
+	clr_country_flag = cannibalism_hoard_review_located
+	clr_country_flag = cannibalism_hoard_review_pending
+	cannibalism_schedule_hoard_review = yes
+}
+
+# chaosx.nr14.82 option: demand the cache now. Recovers part of it, destroys the
+# rest and provokes the warlord's followers.
+cannibalism_confront_reviewed_hoard = {
+	cannibalism_load_hoard_review_target = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.confront_recovery }
+		if = {
+			limit = { event_target:cannibalism_hoard_target_state = { has_state_flag = cannibalism_hoard_located } }
+			set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.located_confront_recovery }
+		}
+		set_temp_variable = { cannibalism_hoard_resistance_level = constant:cannibalism_hoard.resistance_mild }
+		cannibalism_apply_target_hoard_resistance = yes
+		cannibalism_recover_target_hoard = yes
+		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.confront_authority }
+		cannibalism_apply_hoard_authority_change = yes
+	}
+	cannibalism_finish_hoard_review = yes
+}
+
+# chaosx.nr14.82 option: leave the cache where it is. A live governor grows
+# more loyal; the host's authority suffers.
+cannibalism_tolerate_reviewed_hoard = {
+	cannibalism_load_hoard_review_target = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		event_target:cannibalism_hoard_target_state = { set_state_flag = cannibalism_hoard_tolerated }
+		if = {
+			limit = { check_variable = { cannibalism_hoard_target_is_governor > constant:cannibalism_hoard.zero } }
+			event_target:cannibalism_hoard_target_owner = {
+				add_autonomy_ratio = { value = @CANNIBALISM_HOARD_TOLERATE_AUTONOMY localization = cannibalism_hoard_autonomy_reason }
+			}
+		}
+		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.tolerate_authority }
+		cannibalism_apply_hoard_authority_change = yes
+	}
+	cannibalism_finish_hoard_review = yes
+}
+
+# chaosx.nr14.82 option: pay the quoted Command Power and recover most of the
+# cache without force.
+cannibalism_bargain_reviewed_hoard = {
+	cannibalism_load_hoard_review_target = yes
+	if = {
+		limit = {
+			check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero }
+			command_power > cannibalism_hoard_bargain_command_gate
+		}
+		set_temp_variable = { cannibalism_current_cost = cannibalism_hoard_bargain_command_cost }
+		cannibalism_pay_current_command_cost = yes
+		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.bargain_recovery }
+		cannibalism_recover_target_hoard = yes
+	}
+	cannibalism_finish_hoard_review = yes
+}
+
+# Unified host decision: locate every cache still hidden and reopen its review.
+cannibalism_unified_execute_hoard_investigation = {
+	set_temp_variable = { cannibalism_current_cost = cannibalism_unified_hoard_investigation_command_cost }
+	cannibalism_pay_current_command_cost = yes
+	set_temp_variable = { cannibalism_current_cost = cannibalism_unified_hoard_investigation_army_experience_cost }
+	cannibalism_pay_current_army_experience_cost = yes
+	cannibalism_prune_current_host_hoards = yes
+	for_each_scope_loop = {
+		array = cannibalism_hoard_states
+		if = {
+			limit = {
+				cannibalism_state_hoard_belongs_to_prev = yes
+				NOT = { has_state_flag = cannibalism_hoard_located }
+			}
+			set_state_flag = cannibalism_hoard_located
+			clr_state_flag = cannibalism_hoard_reviewed
+		}
+	}
+	cannibalism_schedule_hoard_review = yes
+	cannibalism_unified_record_command_operation = yes
+}
+
+# Unified host decision: send troops to break open one located cache. Input:
+# event_target:cannibalism_unified_decision_state.
+cannibalism_unified_execute_hoard_seizure = {
+	set_temp_variable = { cannibalism_current_cost = cannibalism_unified_hoard_seizure_command_cost }
+	cannibalism_pay_current_command_cost = yes
+	set_temp_variable = { cannibalism_current_cost = cannibalism_unified_hoard_seizure_support_cost }
+	cannibalism_pay_current_support_equipment_cost = yes
+	event_target:cannibalism_unified_decision_state = { set_state_flag = cannibalism_hoard_seizure_target }
+	set_variable = { cannibalism_hoard_seizure_state = event_target:cannibalism_unified_decision_state }
+	set_variable = { cannibalism_hoard_seizure_duration = constant:cannibalism_hoard.seizure_days }
+	set_country_flag = cannibalism_hoard_seizure_active
+	activate_mission = cannibalism_unified_hoard_seizure_mission
+	cannibalism_unified_record_command_operation = yes
+}
+
+# Host COUNTRY scope. Loads the seizure target into the shared hoard targets.
+# Output: cannibalism_hoard_target_valid.
+cannibalism_load_hoard_seizure_target = {
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
+	if = {
+		limit = { has_variable = cannibalism_hoard_seizure_state }
+		var:cannibalism_hoard_seizure_state = {
+			save_event_target_as = cannibalism_hoard_target_state
+			if = {
+				limit = { cannibalism_state_hoard_belongs_to_prev = yes }
+				set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.one }
+			}
+		}
+		cannibalism_load_hoard_target_owner = yes
+	}
+}
+
+cannibalism_clear_hoard_seizure = {
+	if = {
+		limit = { has_variable = cannibalism_hoard_seizure_state }
+		var:cannibalism_hoard_seizure_state = { clr_state_flag = cannibalism_hoard_seizure_target }
+	}
+	clear_variable = cannibalism_hoard_seizure_state
+	clear_variable = cannibalism_hoard_seizure_duration
+	clr_country_flag = cannibalism_hoard_seizure_active
+}
+
+# Seizure mission success: the force took the whole cache. Breaking a tolerated
+# cache still angers its warlord's followers.
+cannibalism_complete_hoard_seizure = {
+	cannibalism_load_hoard_seizure_target = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		if = {
+			limit = { event_target:cannibalism_hoard_target_state = { has_state_flag = cannibalism_hoard_tolerated } }
+			set_temp_variable = { cannibalism_hoard_resistance_level = constant:cannibalism_hoard.resistance_mild }
+			cannibalism_apply_target_hoard_resistance = yes
+		}
+		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.seizure_success_recovery }
+		cannibalism_recover_target_hoard = yes
+		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.seizure_success_authority }
+		cannibalism_apply_hoard_authority_change = yes
+	}
+	cannibalism_clear_hoard_seizure = yes
+}
+
+# Seizure mission timeout with a weak force: half the cache, and resistance.
+cannibalism_partial_hoard_seizure = {
+	cannibalism_load_hoard_seizure_target = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		set_temp_variable = { cannibalism_hoard_resistance_level = constant:cannibalism_hoard.resistance_mild }
+		cannibalism_apply_target_hoard_resistance = yes
+		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.seizure_partial_recovery }
+		cannibalism_recover_target_hoard = yes
+	}
+	cannibalism_clear_hoard_seizure = yes
+}
+
+# Seizure mission timeout with no force: the guards scatter the cache, the
+# warlord's followers resist and the host loses authority.
+cannibalism_fail_hoard_seizure = {
+	cannibalism_load_hoard_seizure_target = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		set_temp_variable = { cannibalism_hoard_resistance_level = constant:cannibalism_hoard.resistance_severe }
+		cannibalism_apply_target_hoard_resistance = yes
+		cannibalism_close_target_hoard = yes
+		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.seizure_failure_authority }
+		cannibalism_apply_hoard_authority_change = yes
+	}
+	cannibalism_clear_hoard_seizure = yes
+}
+
+# Host COUNTRY scope. Clears every cache this host recorded and its review and
+# seizure context. Runs on the host's incarnation reset and the final cleanup.
+cannibalism_clear_hidden_hoards = {
+	for_each_scope_loop = {
+		array = cannibalism_hoard_states
+		if = {
+			limit = {
+				has_variable = cannibalism_hoard_host
+				check_variable = { var = cannibalism_hoard_host value = PREV compare = equals }
+			}
+			cannibalism_clear_current_state_hoard = yes
+		}
+	}
+	clear_array = cannibalism_hoard_states
+	cannibalism_clear_hoard_seizure = yes
+	clear_variable = cannibalism_hoard_review_state
+	clear_variable = cannibalism_hoard_review_owner
+	clear_variable = cannibalism_hoard_review_amount
+	clear_variable = cannibalism_hoard_review_name
+	clear_variable = cannibalism_hoard_review_confront_amount
+	clear_variable = cannibalism_hoard_review_bargain_amount
+	clear_variable = cannibalism_hoard_bargain_command_cost
+	clear_variable = cannibalism_hoard_bargain_command_gate
+	clr_country_flag = cannibalism_hoard_review_governor
+	clr_country_flag = cannibalism_hoard_review_located
+	clr_country_flag = cannibalism_hoard_review_pending
 }
 
 # ============================================================================
@@ -14073,6 +14644,10 @@ cannibalism_unified_refresh_command_profile = {
 	set_variable = { cannibalism_unified_command_mission_success_authority = constant:cannibalism_unified_profile.authority_medium }
 	set_variable = { cannibalism_unified_command_mission_partial_authority = constant:cannibalism_unified_profile.authority_small }
 	set_variable = { cannibalism_unified_command_mission_failure_authority = constant:cannibalism_unified_operation.authority_loss }
+	set_variable = { cannibalism_unified_hoard_investigation_command_cost = constant:cannibalism_unified_decision_cost.hoard_investigation_command }
+	set_variable = { cannibalism_unified_hoard_investigation_army_experience_cost = constant:cannibalism_unified_decision_cost.hoard_investigation_army_experience }
+	set_variable = { cannibalism_unified_hoard_seizure_command_cost = constant:cannibalism_unified_decision_cost.hoard_seizure_command }
+	set_variable = { cannibalism_unified_hoard_seizure_support_cost = constant:cannibalism_unified_decision_cost.hoard_seizure_support }
 	set_variable = { cannibalism_unified_command_mission_failure_hostility = constant:cannibalism_unified_profile.zero }
 
 	# Opening convergence turns the first offices into actual operating capacity.
@@ -15056,6 +15631,8 @@ cannibalism_unified_refresh_hostility_pressure = {
 	add_to_variable = { cannibalism_unified_ultimatum_command_cost = cannibalism_unified_hostility_command_surcharge }
 	add_to_variable = { cannibalism_unified_border_incident_command_cost = cannibalism_unified_hostility_command_surcharge }
 	add_to_variable = { cannibalism_unified_counterwar_conversion_command_cost = cannibalism_unified_hostility_command_surcharge }
+	add_to_variable = { cannibalism_unified_hoard_investigation_command_cost = cannibalism_unified_hostility_command_surcharge }
+	add_to_variable = { cannibalism_unified_hoard_seizure_command_cost = cannibalism_unified_hostility_command_surcharge }
 	add_to_variable = { cannibalism_unified_absorb_larder_cost = cannibalism_unified_hostility_larder_surcharge }
 	add_to_variable = { cannibalism_unified_command_larder_cost = cannibalism_unified_hostility_larder_surcharge }
 	add_to_variable = { cannibalism_unified_legion_larder_cost = cannibalism_unified_hostility_larder_surcharge }
@@ -15208,6 +15785,12 @@ cannibalism_unified_refresh_affordability_gates = {
 	subtract_from_variable = { cannibalism_unified_counterwar_conversion_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
 	set_variable = { cannibalism_unified_counterwar_conversion_fuel_gate = cannibalism_unified_counterwar_conversion_fuel_cost }
 	subtract_from_variable = { cannibalism_unified_counterwar_conversion_fuel_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_hoard_investigation_command_gate = cannibalism_unified_hoard_investigation_command_cost }
+	subtract_from_variable = { cannibalism_unified_hoard_investigation_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_hoard_investigation_army_experience_gate = cannibalism_unified_hoard_investigation_army_experience_cost }
+	subtract_from_variable = { cannibalism_unified_hoard_investigation_army_experience_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
+	set_variable = { cannibalism_unified_hoard_seizure_command_gate = cannibalism_unified_hoard_seizure_command_cost }
+	subtract_from_variable = { cannibalism_unified_hoard_seizure_command_gate = constant:cannibalism_unified_affordability.fixed_point_gate_step }
 }
 
 cannibalism_unified_refresh_operational_profiles = {

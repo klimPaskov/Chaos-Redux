@@ -906,3 +906,62 @@ country_event = {
 		custom_effect_tooltip = cannibalism_captured_hannibal_battle_death_tt
 	}
 }
+
+# A submitting warlord's stores arrived short, or investigators traced the
+# missing stores to a cache. The host decides how to answer the warlord.
+# cannibalism_select_next_hoard_review picks the cache and quotes the options.
+country_event = {
+	id = chaosx.nr14.82
+	title = chaosx.nr14.82.t
+	desc = chaosx.nr14.82.d
+	picture = GFX_report_event_cannibalism_warlord_submission
+	is_triggered_only = yes
+	trigger = { cannibalism_current_host_can_review_hoards = yes }
+
+	immediate = {
+		hidden_effect = { cannibalism_select_next_hoard_review = yes }
+	}
+
+	option = {
+		name = chaosx.nr14.82.a
+		ai_chance = {
+			base = constant:cannibalism_unified_decision_ai.high
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_break }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_hoard_review_located }
+			modifier = {
+				factor = constant:cannibalism_unified_decision_ai.cautious_factor
+				has_country_flag = cannibalism_hoard_review_governor
+				has_war = yes
+			}
+		}
+		custom_effect_tooltip = cannibalism_hoard_review_confront_tt
+		hidden_effect = { cannibalism_confront_reviewed_hoard = yes }
+	}
+
+	option = {
+		name = chaosx.nr14.82.b
+		ai_chance = {
+			base = constant:cannibalism_unified_decision_ai.standard
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_keep }
+			modifier = {
+				factor = constant:cannibalism_unified_decision_ai.preferred_factor
+				has_country_flag = cannibalism_hoard_review_governor
+				has_war = yes
+			}
+		}
+		custom_effect_tooltip = cannibalism_hoard_review_tolerate_tt
+		hidden_effect = { cannibalism_tolerate_reviewed_hoard = yes }
+	}
+
+	option = {
+		name = chaosx.nr14.82.c
+		trigger = { command_power > cannibalism_hoard_bargain_command_gate }
+		ai_chance = {
+			base = constant:cannibalism_unified_decision_ai.high
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_chain }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+		custom_effect_tooltip = cannibalism_hoard_review_bargain_tt
+		hidden_effect = { cannibalism_bargain_reviewed_hoard = yes }
+	}
+}

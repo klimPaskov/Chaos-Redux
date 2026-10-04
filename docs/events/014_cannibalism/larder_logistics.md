@@ -31,6 +31,7 @@ The route fraction retains the existing 1.00 opening factor, .85 retained-comman
 Dispatch is the donor store multiplied by that route fraction.
 The received amount is dispatch times (1 - min(.60, distance / 10000)).
 The donor loses dispatch once, the recipient gains received once and the difference is transit loss.
+A hoarder or an autonomy bargain conceals part of the dispatch in a cache at its own captured capital before it travels; the received amount is then (dispatch - concealed) times the retention, and [Hidden hoards](hidden_hoards.md) documents the cache, the host's review and the recovery actions.
 Capacity overflow is discarded only at the completed recipient transaction boundary.
 The existing route fraction is bounded to 0–1 and a negative donor store cannot produce a transfer.
 Distance units are the engine map metric, with no unsupported physical unit label.

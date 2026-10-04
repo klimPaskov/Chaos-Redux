@@ -130,3 +130,20 @@ Decision:
 - The window is shown only to the transformed host, so showing identification there tells the host what the enemy knows without leaking anything to other viewers.
 - The title drops "Winter", because the full title did not fit the 410-pixel header box.
 - The page flag is view state only and clears with the other view state on an incarnation reset.
+
+## D10. Hidden hoards
+
+Disposition: `implemented`.
+
+Basis: spec part 7 says hidden hoards can create warlord loyalty events, the lead treated that line as an accepted requirement, and the shipped `CBL_audit_the_submitted_hosts` and `CBL_seize_the_hidden_hoards` tooltips promised investigations and seizure missions that did not exist.
+
+Decision:
+
+- Only a hoarder or an autonomy bargain conceals: 0.30 and 0.20 of the dispatch, capped at 0.45 together. The cache comes out of the dispatch before route loss, so the donor's single debit, the host's single receipt and the cache add up; the CBL and Wendigo constructors conceal nothing.
+- The cache record lives on the donor's capital state, keyed to the host and its actor generation, and the host keeps only a list of cache states. This survives the donor's annexation and needs no aligned arrays.
+- The loyalty event fires when the shortfall is noticed, one review at a time: confront (immediate partial recovery and resistance), tolerate (the cache stays; a governor grows more loyal; authority falls) or bargain (Command Power scaled by the cache for most of it).
+- "Loyalty" and "resistance" use real engine levers: a live governor's HOI4 autonomy, and a timed state modifier with resistance target and local supply penalties on host-owned cache states. Dispositions are not changed by a hoard, so a puppet never turns into an enemy through this system.
+- The investigation locates every unlocated cache and reopens its review with a better confront share, which gives the audit focus a use on every warlord-settlement route; the seizure mission is Break-the-Warlords only, as the focus tree already gates it.
+- The seizure mission requires the host's own divisions in the cache state: two for the whole cache, one for half at the deadline, none loses it. The AI opens a seizure only where two of its divisions already stand, so it never starts a mission it cannot complete; the same target trigger gates player and AI.
+- The three new decision and mission icons were generated in the unified decision icon style instead of reusing existing textures, keeping the spec's one-to-one unified decision asset contract.
+- The transformed Wendigo host records caches and answers reviews, but has no unified authority and no investigation or seizure.

@@ -1523,6 +1523,107 @@ cannibalism_unified_command_category = {
 		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor FROM = { is_major = yes } } }
 	}
 
+	# Hidden hoards: locate the caches warlords concealed during submission.
+	cannibalism_unified_investigate_hidden_hoards = {
+		icon = GFX_decision_cannibalism_unified_investigate_hidden_hoards
+		visible = {
+			cannibalism_unified_command_category_is_visible = yes
+			has_country_flag = cannibalism_unified_hidden_hoard_investigations_open
+		}
+		available = {
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_investigate_hidden_hoards_target_tt hidden_trigger = { cannibalism_current_host_has_unlocated_hoard = yes } }
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_investigate_hidden_hoards_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_hoard_investigation = yes } }
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_command_operation_slot_available = yes } }
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_hoard_investigation = yes } }
+		custom_cost_text = cannibalism_unified_investigate_hidden_hoards_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_unified_investigate_hidden_hoards_effect_tt
+			hidden_effect = { cannibalism_unified_execute_hoard_investigation = yes }
+		}
+		ai_will_do = {
+			base = constant:cannibalism_unified_decision_ai.high
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_break }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+	}
+
+	# Hidden hoards: a timed seizure of one located cache.
+	cannibalism_unified_seize_hidden_hoard = {
+		icon = GFX_decision_cannibalism_unified_seize_hidden_hoard
+		state_target = yes
+		target_array = cannibalism_hoard_states
+		on_map_mode = map_and_decisions_view
+		target_root_trigger = { cannibalism_unified_can_pay_hoard_seizure = yes }
+		target_trigger = { FROM = { cannibalism_state_is_seizable_root_hoard = yes } }
+		visible = { FROM = { cannibalism_state_is_seizable_root_hoard = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_seize_hidden_hoard_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_hoard_seizure = yes } }
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_command_operation_slot_available = yes } }
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_hoard_seizure = yes } }
+		custom_cost_text = cannibalism_unified_seize_hidden_hoard_cost_text
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_unified_seize_hidden_hoard_effect_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = cannibalism_unified_decision_state }
+				cannibalism_unified_execute_hoard_seizure = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:cannibalism_unified_decision_ai.high
+			# The AI opens a seizure only where its force already stands, so it
+			# never starts a mission it cannot finish.
+			modifier = {
+				factor = constant:cannibalism_unified_decision_ai.invalid_factor
+				NOT = {
+					meta_trigger = {
+						text = {
+							divisions_in_state = { state = [STATE] size > [ABOVE] }
+						}
+						STATE = "[FROM.GetID]"
+						ABOVE = "[?constant:cannibalism_hoard.seizure_divisions_above|0]"
+					}
+				}
+			}
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+		}
+	}
+
+	cannibalism_unified_hoard_seizure_mission = {
+		icon = GFX_decision_cannibalism_unified_hoard_seizure_mission
+		days_mission_timeout = cannibalism_hoard_seizure_duration
+		is_good = no
+		fire_only_once = no
+		activation = { has_country_flag = cannibalism_hoard_seizure_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_unified_hoard_seizure_mission_objective_tt
+				hidden_trigger = { cannibalism_hoard_seizure_force_in_place = yes }
+			}
+		}
+		cancel_trigger = { cannibalism_hoard_seizure_is_invalid = yes }
+		cancel_effect = {
+			custom_effect_tooltip = cannibalism_unified_hoard_seizure_mission_cancel_tt
+			hidden_effect = { cannibalism_clear_hoard_seizure = yes }
+		}
+		complete_effect = {
+			custom_effect_tooltip = cannibalism_unified_hoard_seizure_mission_success_tt
+			hidden_effect = { cannibalism_complete_hoard_seizure = yes }
+		}
+		timeout_effect = {
+			if = {
+				limit = { cannibalism_hoard_seizure_force_partial = yes }
+				custom_effect_tooltip = cannibalism_unified_hoard_seizure_mission_partial_tt
+				hidden_effect = { cannibalism_partial_hoard_seizure = yes }
+			}
+			else = {
+				custom_effect_tooltip = cannibalism_unified_hoard_seizure_mission_failure_tt
+				hidden_effect = { cannibalism_fail_hoard_seizure = yes }
+			}
+		}
+	}
+
 	cannibalism_unified_issue_continental_command = {
 		icon = GFX_decision_cannibalism_unified_issue_continental_command
 		visible = { cannibalism_unified_command_category_is_visible = yes }

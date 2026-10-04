@@ -4194,6 +4194,134 @@ cannibalism_unified_is_valid_purge_rival_target = {
 	NOT = { has_country_flag = cannibalism_unified_rival_purge_target }
 }
 
+# ---------------------------------------------------------------------------
+# Hidden hoards (docs/events/014_cannibalism/hidden_hoards.md)
+# ---------------------------------------------------------------------------
+
+# STATE scope entered directly from the host COUNTRY scope (PREV = host). True
+# while this state holds a cache recorded for the host's current incarnation.
+cannibalism_state_hoard_belongs_to_prev = {
+	has_variable = cannibalism_hoard_amount
+	check_variable = { cannibalism_hoard_amount > constant:cannibalism_hoard.zero }
+	has_variable = cannibalism_hoard_host
+	check_variable = { var = cannibalism_hoard_host value = PREV compare = equals }
+	check_variable = { var = cannibalism_hoard_host_generation value = PREV.cannibalism_actor_generation compare = equals }
+}
+
+# Host COUNTRY scope after cannibalism_load_hoard_target_owner. True while the
+# cache owner is the same live autonomous warlord governor serving this host.
+cannibalism_hoard_target_owner_is_live_governor = {
+	check_variable = { cannibalism_hoard_target_owner_captured > constant:cannibalism_hoard.zero }
+	has_event_target = cannibalism_hoard_target_owner
+	event_target:cannibalism_hoard_target_owner = {
+		exists = yes
+		is_cannibalism_warlord_country = yes
+		has_country_flag = cannibalism_autonomous_warlord_governor
+		is_subject_of = PREV
+		has_variable = cannibalism_actor_generation
+		check_variable = { var = cannibalism_actor_generation value = event_target:cannibalism_hoard_target_state.cannibalism_hoard_owner_generation compare = equals }
+	}
+}
+
+# Host COUNTRY scope. True while a cache of this host awaits review.
+cannibalism_current_host_has_unreviewed_hoard = {
+	any_of_scopes = {
+		array = cannibalism_hoard_states
+		cannibalism_state_hoard_belongs_to_prev = yes
+		NOT = { has_state_flag = cannibalism_hoard_reviewed }
+	}
+}
+
+# Host COUNTRY scope. True while a cache of this host is still unlocated.
+cannibalism_current_host_has_unlocated_hoard = {
+	any_of_scopes = {
+		array = cannibalism_hoard_states
+		cannibalism_state_hoard_belongs_to_prev = yes
+		NOT = { has_state_flag = cannibalism_hoard_located }
+	}
+}
+
+# Host COUNTRY scope. The revealed unification or Wendigo host can answer a
+# shortfall while one awaits review.
+cannibalism_current_host_can_review_hoards = {
+	OR = {
+		is_cannibalism_unified_country = yes
+		is_cannibalism_wendigo_hannibal_country = yes
+	}
+	has_global_flag = cannibalism_reveal_complete
+	NOT = { has_global_flag = world_end }
+	cannibalism_current_host_has_unreviewed_hoard = yes
+}
+
+cannibalism_unified_can_pay_hoard_investigation = {
+	cannibalism_unified_command_category_is_visible = yes
+	has_country_flag = cannibalism_unified_hidden_hoard_investigations_open
+	command_power > cannibalism_unified_hoard_investigation_command_gate
+	has_army_experience > cannibalism_unified_hoard_investigation_army_experience_gate
+}
+
+cannibalism_unified_can_pay_hoard_seizure = {
+	cannibalism_unified_command_category_is_visible = yes
+	has_country_flag = cannibalism_unified_hoard_seizure_missions_open
+	NOT = { has_country_flag = cannibalism_hoard_seizure_active }
+	command_power > cannibalism_unified_hoard_seizure_command_gate
+	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_hoard_seizure_support_cost } }
+}
+
+# STATE scope entered directly from the ROOT host (FROM of the seizure
+# decision). A located, answered cache in territory the host or one of its
+# subjects controls.
+cannibalism_state_is_seizable_root_hoard = {
+	cannibalism_state_hoard_belongs_to_prev = yes
+	has_state_flag = cannibalism_hoard_located
+	has_state_flag = cannibalism_hoard_reviewed
+	NOT = { has_state_flag = cannibalism_hoard_seizure_target }
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+# Host COUNTRY scope. The full seizure force stands in the cache state.
+cannibalism_hoard_seizure_force_in_place = {
+	has_variable = cannibalism_hoard_seizure_state
+	meta_trigger = {
+		text = {
+			divisions_in_state = { state = var:cannibalism_hoard_seizure_state size > [ABOVE] }
+		}
+		ABOVE = "[?constant:cannibalism_hoard.seizure_divisions_above|0]"
+	}
+}
+
+# Host COUNTRY scope. At least one division stands in the cache state.
+cannibalism_hoard_seizure_force_partial = {
+	has_variable = cannibalism_hoard_seizure_state
+	divisions_in_state = { state = var:cannibalism_hoard_seizure_state size > 0 }
+}
+
+# Host COUNTRY scope. The running seizure lost its target or its access.
+cannibalism_hoard_seizure_is_invalid = {
+	OR = {
+		NOT = { cannibalism_unified_decisions_are_open = yes }
+		NOT = { has_country_flag = cannibalism_hoard_seizure_active }
+		NOT = { has_variable = cannibalism_hoard_seizure_state }
+		AND = {
+			has_variable = cannibalism_hoard_seizure_state
+			var:cannibalism_hoard_seizure_state = {
+				OR = {
+					NOT = { cannibalism_state_hoard_belongs_to_prev = yes }
+					NOT = {
+						OR = {
+							is_controlled_by = ROOT
+							CONTROLLER = { is_subject_of = ROOT }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 cannibalism_unified_can_pay_command_operation = {
 	cannibalism_unified_command_category_is_visible = yes
 	check_variable = {

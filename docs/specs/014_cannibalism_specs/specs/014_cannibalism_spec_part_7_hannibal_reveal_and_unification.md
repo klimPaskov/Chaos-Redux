@@ -216,7 +216,9 @@ The route should reward resistance without undermining the core requirement that
 Disposition (audit finding E014-FINAL-04): implemented.
 Acceptance basis: parent acceptance on 2026-10-04 of capacity 1200 plus 100 per controlled state plus 50 per administrative contract point, ceiling 5000, ordinary cap 2000, and route-fraction transfers that lose up to 60 percent with capital distance; a donor without a capturable capital ships at the maximum loss (agent decision recorded in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`).
 Implementation evidence: `docs/events/014_cannibalism/larder_logistics.md` and the Event014 Larder logistics commit; engine behaviour of the native distance read remains for live verification.
-The hidden-hoard loyalty-event line is tracked as a separate accepted requirement.
+Disposition (hidden hoards and warlord loyalty events): implemented.
+Acceptance basis: the lead's 2026-10-04 delegated decision that the hidden-hoard line is an accepted requirement, with the design recorded as agent decision D10 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`.
+Implementation evidence: `docs/events/014_cannibalism/hidden_hoards.md` (concealment at transfer, the `chaosx.nr14.82` confront, tolerate or bargain review, the audit-focus investigation and the seizure-focus mission) and the probability evidence in `docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-04_hidden_hoards_probability.md`; engine behaviour of the seizure force check and autonomy changes remains for live verification.
 
 ### Focus integration
 
@@ -462,4 +464,4 @@ All matches before the reveal flag must be removed or made internal-only.
 
 ## Unified decision asset closure
 
-All 38 unified decisions have a one-to-one deterministic asset contract: decision ID, `GFX_decision_<decision_id>` sprite, source PNG, processed transparent PNG, and `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline decision, focus, idea, or unrelated icon.
+All 41 unified decisions and missions have a one-to-one deterministic asset contract: decision ID, `GFX_decision_<decision_id>` sprite, source PNG, processed transparent PNG, and `gfx/interface/decisions/014_cannibalism/decision_<decision_id>.dds`. No unified decision reuses a baseline decision, focus, idea, or unrelated icon. The three hidden-hoard icons follow the same contract (`docs/plans/014_cannibalism_plans/subagent_handoffs/2026-10-04_hidden_hoard_icons.md`).
