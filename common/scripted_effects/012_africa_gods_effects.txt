@@ -1870,20 +1870,7 @@ gods_of_africa_create_demand_contract = {
 			}
 			set_variable = { gods_of_africa_demand_amount = event_target:africa_host.gods_of_africa_contract_amount }
 			set_variable = { gods_of_africa_demand_remaining = event_target:africa_host.gods_of_africa_contract_amount }
-			set_variable = { gods_of_africa_partial_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
-			multiply_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_numerator }
-			divide_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_denominator }
-			if = {
-				limit = { set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family } gods_of_africa_family_is_equipment = yes }
-				set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_partial_payment_amount }
-				gods_of_africa_floor_equipment_amount = yes
-				set_variable = { gods_of_africa_partial_payment_amount = gods_of_africa_equipment_amount }
-			}
-			if = {
-				limit = { check_variable = { gods_of_africa_partial_payment_amount < constant:gods_of_africa_value.one } }
-				set_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_value.one }
-			}
-			gods_of_africa_set_partial_capacity_requirement = yes
+			gods_of_africa_compute_partial_payment_amount = yes
 			set_variable = { gods_of_africa_demand_band = event_target:africa_host.gods_of_africa_contract_band }
 			set_variable = { gods_of_africa_demand_deadline = event_target:africa_host.gods_of_africa_contract_deadline }
 			set_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.open }
@@ -1909,6 +1896,28 @@ gods_of_africa_create_demand_contract = {
 		}
 		add_to_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.one }
 	}
+}
+
+# COUNTRY scope on a participant. The partial shipment is a fixed ratio of the
+# contract's own total (gods_of_africa_demand_amount, in the units of
+# gods_of_africa_demand_family): whole units for equipment, never below one,
+# with its capacity requirement refreshed. Contract creation and a partly
+# delivered accepted substitute that becomes the terms both call this.
+gods_of_africa_compute_partial_payment_amount = {
+	set_variable = { gods_of_africa_partial_payment_amount = gods_of_africa_demand_amount }
+	multiply_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_numerator }
+	divide_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_transaction.partial_payment_ratio_denominator }
+	if = {
+		limit = { set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family } gods_of_africa_family_is_equipment = yes }
+		set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_partial_payment_amount }
+		gods_of_africa_floor_equipment_amount = yes
+		set_variable = { gods_of_africa_partial_payment_amount = gods_of_africa_equipment_amount }
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_partial_payment_amount < constant:gods_of_africa_value.one } }
+		set_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_value.one }
+	}
+	gods_of_africa_set_partial_capacity_requirement = yes
 }
 
 gods_of_africa_dispatch_next_demand = {
@@ -2387,8 +2396,12 @@ gods_of_africa_resolve_substitute = {
 				check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero }
 			}
 			# Part of the accepted substitute arrived. The substitute becomes the
-			# terms of the contract and its remaining balance stays owed.
+			# terms of the contract and its remaining balance stays owed. Its
+			# own total and partial shipment replace the original family's, so
+			# the mission and the partial payment stay in the substitute's units.
 			set_country_flag = gods_of_africa_contract_substitute_terms
+			set_variable = { gods_of_africa_demand_amount = gods_of_africa_substitute_amount }
+			gods_of_africa_compute_partial_payment_amount = yes
 			clr_country_flag = gods_of_africa_substitute_offered
 			clr_country_flag = gods_of_africa_negotiation_open
 			clear_variable = gods_of_africa_substitute_family

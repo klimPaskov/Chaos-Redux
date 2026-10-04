@@ -258,3 +258,13 @@ Decisions:
   War and occupation conduct marks, the war Wrath floor (50) and the outstanding-hostility mark stay exactly as before, as the lead required.
 - One war produces one Wrath gain: the wartime cancellation applies the breach gain (20) when an agreed contract or any live agreement stands, otherwise the ordinary war gain (10), and sets the per-war flag `gods_of_africa_agreement_war_breach_recorded`, which the owner review's agreement observation reads; the flag clears at peace.
 - `gods_of_africa_retire_interrupted_contract` closes a contract as broken by war only when the participant attacked Africa; otherwise it retires it.
+
+## L21. A partly delivered substitute is re-based as the contract's own terms
+
+Disposition: `implemented`.
+
+Basis: the round 2 remaining-work list (priority 2); L3 already made a partly delivered accepted substitute the contract terms, but left the original family's total and partial shipment in place.
+
+Decision: when part of an accepted substitute arrives, `gods_of_africa_resolve_substitute` sets `gods_of_africa_demand_amount` to the substitute amount and calls the new `gods_of_africa_compute_partial_payment_amount`, the same helper contract creation now uses (partial ratio constants, whole units for equipment, never below one, capacity requirement refreshed).
+The mission then shows the substitute family with matching remaining and total figures, and a partial payment is half of the substitute rather than an infantry-sized half clamped to the whole tank balance.
+The rejected and failed substitute paths are unchanged.
