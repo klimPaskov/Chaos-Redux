@@ -136,3 +136,11 @@ No Git action or game launch was performed by this worker.
 
 Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-state-ledgers`, and `chaos-redux-subagents`.
 No skill was created or modified.
+
+## Agent decision 2026-10-04: fully hidden retirement
+
+Disposition: implemented, superseding the "unchanged AI scores" and "visible until administration starts" parts of the 2026-10-03 retirement above.
+Decision basis: `docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md` entry 4. Before administration started, the three purchases stayed visible and clickable while the Mengele programme was active, completed instantly with no `days_remove`, and only refunded their own cost, so the player saw a decision that did nothing and the AI (weight `silence_dissenting_file`) retook it after every re-enable.
+Change: each of the three IDs keeps its block for save compatibility with `allowed`, `visible`, `target_root_trigger` and `available` set to `always = no` and `ai_will_do = { base = 0 }`. The unreachable completion refunds the charged Black Friday price variable instead of the ordinary constant, so a stale completion could never refund a different amount than it charged. Nothing else in the Mengele category changed, and the two inert import helpers are unchanged.
+Fixture: `source_tests.py` now asserts the four `always = no` gates and zero AI weight structurally and through the harness `always` primitive, and checks the original decision freeze outside the owned blocks admitting only the Black Friday owner's `cost = constant:<category>.<key>` to `cost = global.black_friday_price_<category>_<key>` substitution (commit `c0cb6b007`). Result: 33 scenarios passed.
+AI: the import AI audit is a zero-eligibility result; see `mengele_import_ai_handoff.md`.

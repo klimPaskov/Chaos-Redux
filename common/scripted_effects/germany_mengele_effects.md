@@ -46,19 +46,18 @@ Acceptance basis: on 2026-10-03 the parent accepted retirement of `import_subjec
 The existing paid national `germany_transfer_prisoners_to_experiment_site` order through `camp_rework_germany_apply_exact_cohort_transfer` remains the approved exact cohort transfer.
 No replacement foreign cohort, shipping route, selector, reward or restoration provider is authorized by this disposition.
 
-The three decisions retain their identifiers, native cost constants, native re-enable timing, target metadata and AI score blocks.
-Their `visible`, `target_root_trigger`, and `available` gates reject initialized administration.
-Active and restricted programme predicates require the historical operational state-88 administration gate, so this version has no valid pre-cutover purchase context.
-The retirement does not authorize any wider programme or pre-cutover purchase route.
+The three decisions retain their identifiers, native costs, native re-enable timing and target metadata for save compatibility.
+Since the 2026-10-04 agent decision (`docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md`, entry 4) they are fully hidden: `allowed`, `visible`, `target_root_trigger` and `available` are `always = no` and `ai_will_do` is zero, so no player or AI can see, target or take them before or after administration starts.
+The retirement does not authorize any wider programme or replacement purchase route.
 
 | Retired decision | Native cost and stale refund | Final completion |
 |---|---|---|
-| `import_subjects_from_japanese_china` | `germany_mengele_decision.import_japanese_china_subjects_cost`, 80 PP | Matching native PP refund only |
-| `import_subjects_from_india` | `germany_mengele_decision.import_indian_subjects_cost`, 75 PP | Matching native PP refund only |
-| `import_subjects_from_africa` | `germany_mengele_decision.import_african_subjects_cost`, 75 PP | Matching native PP refund only |
+| `import_subjects_from_japanese_china` | `global.black_friday_price_germany_mengele_decision_import_japanese_china_subjects_cost` | Refund of that charged price only |
+| `import_subjects_from_india` | `global.black_friday_price_germany_mengele_decision_import_indian_subjects_cost` | Refund of that charged price only |
+| `import_subjects_from_africa` | `global.black_friday_price_germany_mengele_decision_import_african_subjects_cost` | Refund of that charged price only |
 
-The scalar refund body is a trusted native paid-completion callback.
-It assumes the engine has charged that decision's unchanged native PP cost before invoking `complete_effect`.
+The scalar refund body is unreachable while the decisions are hidden and remains only as a trusted native paid-completion callback.
+It assumes the engine has charged that decision's native PP price before invoking `complete_effect`.
 It creates no source marker, report event, equipment charge, success flag, scripted cooldown, death, benefit or research outcome.
 Each additional stale paid callback receives its own matching refund.
 Calling a refund body without a native charge is outside this callback contract.

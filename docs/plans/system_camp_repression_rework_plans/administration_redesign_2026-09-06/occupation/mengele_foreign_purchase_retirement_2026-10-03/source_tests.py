@@ -75,9 +75,20 @@ def run_cases():
     effect_path = 'common/scripted_effects/germany_mengele_effects.txt'
     decisions_bytes, decisions = read_owned(decision_path, IDS)
     effects_bytes, helpers = read_owned(effect_path, HELPERS)
-    for current, before_name, identifiers in ((decisions_bytes, 'before_germany_mengele_decisions.txt', IDS),
-                                             (effects_bytes, 'shared_current_outside_baseline_germany_mengele_effects.txt', HELPERS)):
-        assert mask_owned(current, identifiers) == mask_owned((HERE / before_name).read_bytes(), identifiers)
+    assert mask_owned(effects_bytes, HELPERS).replace(b'\r\n', b'\n') == mask_owned((HERE / 'shared_current_outside_baseline_germany_mengele_effects.txt').read_bytes(), HELPERS).replace(b'\r\n', b'\n')
+    # Against the original decision freeze, the only outside change admitted is
+    # the Black Friday owner's 2026-10-04 cost substitution (commit c0cb6b007):
+    # cost = constant:<category>.<key> became
+    # cost = global.black_friday_price_<category>_<key>.
+    old_decisions = mask_owned((HERE / 'before_germany_mengele_decisions.txt').read_bytes(), IDS).decode('utf-8-sig').replace('\r\n', '\n').splitlines()
+    new_decisions = mask_owned(decisions_bytes, IDS).decode('utf-8-sig').replace('\r\n', '\n').splitlines()
+    cost_line = re.compile(r'^(\t*)cost = constant:([a-z_]+)\.([a-z_]+)$')
+    for tag, a, b, c, d in difflib.SequenceMatcher(None, old_decisions, new_decisions, autojunk=False).get_opcodes():
+        if tag != 'equal':
+            assert tag == 'replace' and b - a == d - c, ('Unreviewed decision edit', tag, old_decisions[a:b], new_decisions[c:d])
+            for old_line, new_line in zip(old_decisions[a:b], new_decisions[c:d]):
+                match = cost_line.match(old_line)
+                assert match and new_line == match.group(1) + 'cost = global.black_friday_price_' + match.group(2) + '_' + match.group(3), (old_line, new_line)
     old_outside = mask_owned((HERE / 'before_germany_mengele_effects.txt').read_bytes(), HELPERS).decode('utf-8-sig').splitlines()
     new_outside = mask_owned(effects_bytes, HELPERS).decode('utf-8-sig').splitlines()
     shared_outputs = ('mengele_clone_deployment_command_power_spend', 'black_friday_owner_transaction_id',
@@ -110,9 +121,11 @@ def run_cases():
     for identifier in IDS:
         decision = decisions[identifier]
         before = parse(block_bytes((HERE / 'before_germany_mengele_decisions.txt').read_bytes(), identifier)[2].decode('utf-8-sig'))[0][2]
-        assert get(decision, 'cost') == get(before, 'cost')
         assert get(decision, 'days_re_enable') == get(before, 'days_re_enable')
-        assert get(decision, 'ai_will_do') == get(before, 'ai_will_do')
+        # Agent decision 2026-10-04: fully hidden. No player or AI eligibility.
+        for gate in ('allowed', 'visible', 'target_root_trigger', 'available'):
+            assert get(decision, gate) == [('always', '=', 'no')], (identifier, gate)
+        assert get(decision, 'ai_will_do') == [('base', '=', '0')]
         completion = get(decision, 'complete_effect')
         assert completion == [('add_political_power', '=', get(decision, 'cost'))]
         for programme in ('active', 'restricted'):
@@ -123,12 +136,13 @@ def run_cases():
                 # supplied below only to stress stale callback inertness.
                 runtime.triggers['germany_mengele_program_active'] = [('always', '=', 'yes' if programme == 'active' else 'no')]
                 runtime.triggers['germany_mengele_restricted_program_active'] = [('always', '=', 'yes' if programme == 'restricted' else 'no')]
-                for gate in ('visible', 'target_root_trigger'):
-                    cutover = next(entry for entry in get(decision, gate) if entry == ('NOT', '=', [('has_country_flag', '=', 'camp_admin_initialized')]))
-                    assert not runtime.cond([cutover], 'GER')
-                assert not runtime.cond(get(get(decision, 'available'), 'hidden_trigger'), 'GER')
-                for gate in ('visible', 'target_root_trigger'):
+                # Engine primitive: an empty trigger body is true, so always = yes/no
+                # evaluates as the engine does.
+                runtime.triggers['always'] = []
+                runtime.scopes['GER']['flags'].discard('camp_admin_initialized')
+                for gate in ('allowed', 'visible', 'target_root_trigger', 'available'):
                     assert not runtime.cond(get(decision, gate), 'GER')
+                runtime.scopes['GER']['flags'].add('camp_admin_initialized')
                 cost = runtime.val(get(decision, 'cost'), 'GER')
                 before_scopes = deepcopy(runtime.scopes)
                 for _ in range(2):
@@ -139,7 +153,8 @@ def run_cases():
                     assert runtime.scopes == before_scopes
                 assert runtime.debits == 0 and runtime.logged == 0 and not runtime.awards
                 assert 'last_country_event' not in runtime.temp
-                results.append({'case': f'{identifier}_{programme}_{target}_paid_replay',
+                results.append({'case': f'{identifier}_{programme}_{target}_hidden_and_paid_replay',
+                                'player_or_ai_eligible': False, 'ai_weight': 0,
                                 'refund_pp': cost, 'net_pp_change': 0, 'physical_debits': 0,
                                 'report_events': 0, 'native_cooldown': 'not modeled'})
     for helper in HELPERS:

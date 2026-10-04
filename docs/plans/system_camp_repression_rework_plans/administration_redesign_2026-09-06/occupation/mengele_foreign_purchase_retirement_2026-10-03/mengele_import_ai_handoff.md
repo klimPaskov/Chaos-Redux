@@ -14,4 +14,8 @@ Source review confirms the three before/after `ai_will_do` blocks are byte-ident
 
 The after decision snapshot SHA-256 is `4425e12b2afe38eb62426095ee30eb765a3e5f02c041f2c1ac40127e4436d33d`. It gates the three decisions on `NOT camp_admin_initialized` in visibility, target-root eligibility, and hidden availability while preserving AI scores and refunding only the native PP cost for stale completions. Both shared import helpers now only zero scratch input, so source review shows no transfer or benefit payload if a stale choice remains available during a state/country flag transition; the source fixtures report net PP change 0. This audit has not established engine-side AI candidate exclusion after initialization.
 
+## Zero-eligibility result, 2026-10-04
 
+**Disposition:** resolved by eligibility, superseding the unresolved disposition above for every date.
+The three IDs now carry `allowed = { always = no }`, `visible = { always = no }`, `target_root_trigger = { always = no }`, `available = { always = no }` and `ai_will_do = { base = 0 }` (agent decision 2026-10-04, `docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md` entry 4).
+`allowed` is checked at game start and on load, so the decisions are disabled for every country and every save; the AI candidate pool for these IDs is empty and their selection probability is zero in every scenario. No baseline-versus-after probability comparison is needed for a pool with no eligible member, and the queued baseline job above is not retried.
