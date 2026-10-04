@@ -145,3 +145,13 @@ Disposition: implemented (commit "Add Back and Details to the Acid Rain world ma
 HOI4 script cannot open the decisions panel, so the Part 6 category return is a Back button that closes the map and reveals the view it was opened from: the Acid Rain decision category, or Event Details when the map was opened there; its tooltip names that view.
 Details closes the map and opens the Event Log on the Event 33 Event Details page through the shared entry points (`open_events_log_events_tab`, `get_event_type`, `events_log_add_event_details_entry`); it is hidden when the map was opened from Event Details, where Back already returns there.
 Footer order is Refresh, Back, Details, the shortened hint, and the motion toggle; `hoi4.gui_render` scenario `event033_footer_nav_1366` (1366x768, UI scale 1, normal and hover, source revision `e5defa54f5953522`) shows the four buttons evenly spaced with separate click regions and the hint unclipped.
+
+### D19. Region index for region-bounded work
+
+Disposition: implemented (commit "Scan only the affected region in Acid Rain front work").
+When the frozen registry forms, `acid_rain_build_region_index` copies its states into `global.acid_rain_region_ordered_states` grouped by region, each group in registry order, with half-open bounds in `global.acid_rain_region_index_start_entries` and `global.acid_rain_region_index_end_entries`; `acid_rain_prepare_region_cursor` returns a region's bounds and rebuilds the index when it belongs to another generation, which also covers saves made before the index existed.
+Front region commitment, warning publication, arrival, departure, forced coverage, footprint growth, footprint retirement, front completion and all five severe-cell pool scans now read only the front's region slice through `for_loop_effect` and `var:` element scoping, a pattern already used across the mod.
+Every state a front targets lies in its current region, because targets are only touched inside region-filtered scans and all of a front's targets are released before its region changes; within a region the slice keeps registry order, so the same states are visited in the same order and coverage, first and second visits, retirement and dissipation behave as before.
+Superstorm region activity reads the live superstorm target array instead of the registry; superstorm candidate pools stay world-wide because a superstorm may start in any region.
+The registry clear also drops the index generation so a cleared registry is never read through a stale index.
+The world-wide passes that remain are once-per-transition work (runtime start, global transition, legacy adoption, superstorm forecast creation and cleanup).
