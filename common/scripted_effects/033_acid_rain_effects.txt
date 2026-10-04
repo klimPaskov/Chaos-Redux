@@ -1820,9 +1820,10 @@ acid_rain_prepare_front_warning = {
 			}
 		}
 		acid_rain_stamp_current_callback_chain = yes
-		if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.one compare = equals } } country_event = { id = chaosx.nr33.21 days = constant:acid_rain_runtime.warning_days } }
-		else_if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.two compare = equals } } country_event = { id = chaosx.nr33.22 days = constant:acid_rain_runtime.warning_days } }
-		else_if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.three compare = equals } } country_event = { id = chaosx.nr33.23 days = constant:acid_rain_runtime.warning_days } }
+		set_temp_variable = { acid_rain_warning_event_days = constant:acid_rain_runtime.warning_days }
+		if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.one compare = equals } } country_event = { id = chaosx.nr33.21 days = acid_rain_warning_event_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.two compare = equals } } country_event = { id = chaosx.nr33.22 days = acid_rain_warning_event_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_front_id value = constant:acid_rain_runtime.three compare = equals } } country_event = { id = chaosx.nr33.23 days = acid_rain_warning_event_days } }
 	}
 	else = {
 		set_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = global.date }
@@ -4638,7 +4639,8 @@ acid_rain_bind_host_and_schedule_worker = {
 		set_global_flag = acid_rain_host_worker_scheduled
 		event_target:acid_rain_runtime_host = {
 			acid_rain_stamp_current_callback_chain = yes
-			country_event = { id = chaosx.nr33.20 days = constant:acid_rain_runtime.worker_days }
+			set_temp_variable = { acid_rain_worker_event_days = constant:acid_rain_runtime.worker_days }
+			country_event = { id = chaosx.nr33.20 days = acid_rain_worker_event_days }
 		}
 	}
 }

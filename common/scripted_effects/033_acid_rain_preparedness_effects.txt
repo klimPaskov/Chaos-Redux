@@ -1139,16 +1139,20 @@ acid_rain_apply_recovery_result = {
 	}
 	else = {
 		clr_state_flag = acid_rain_aftercare_recovered
-		if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_1 days = constant:acid_rain_response.aftercare_recovery_window_days } }
-		else_if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_2 days = constant:acid_rain_response.aftercare_recovery_window_days } }
-		else = { add_dynamic_modifier = { modifier = acid_rain_aftermath_3 days = constant:acid_rain_response.aftercare_recovery_window_days } }
+		# Timed modifier durations take a variable, not a constant token.
+		set_temp_variable = { acid_rain_aftermath_window_days = constant:acid_rain_response.aftercare_recovery_window_days }
+		if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_1 days = acid_rain_aftermath_window_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_2 days = acid_rain_aftermath_window_days } }
+		else = { add_dynamic_modifier = { modifier = acid_rain_aftermath_3 days = acid_rain_aftermath_window_days } }
 	}
 	acid_rain_033_achievement_record_recovery_completion = yes
 	set_variable = { acid_rain_last_recovery_action = acid_rain_selected_action }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = constant:acid_rain_preparedness.urgent_transport_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = constant:acid_rain_preparedness.urgent_water_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = constant:acid_rain_preparedness.urgent_water_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_industry days = constant:acid_rain_preparedness.urgent_water_effect_days } }
+	set_temp_variable = { acid_rain_recovery_transport_days = constant:acid_rain_preparedness.urgent_transport_effect_days }
+	set_temp_variable = { acid_rain_recovery_bonus_days = constant:acid_rain_preparedness.urgent_water_effect_days }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = acid_rain_recovery_transport_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_industry days = acid_rain_recovery_bonus_days } }
 	CONTROLLER = {
 		if = { limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } } set_country_flag = acid_rain_recovery_tail_active }
 		else = { clr_country_flag = acid_rain_recovery_tail_active }
