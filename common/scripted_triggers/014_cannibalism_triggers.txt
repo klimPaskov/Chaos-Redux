@@ -855,6 +855,10 @@ cannibalism_ui_integrated_history_is_aligned = {
 # Host COUNTRY scope inside a history row. Input: the native list index
 # cannibalism_loyalty_index. Copies the aligned row into temporary values
 # for the history getters; it never changes the stored history.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_ui_history_name, cannibalism_ui_history_origin,
+# cannibalism_ui_history_origin_state, cannibalism_ui_history_disposition,
+# cannibalism_ui_history_date.
 cannibalism_ui_load_integrated_history_row = {
 	cannibalism_ui_integrated_history_is_aligned = yes
 	check_variable = { cannibalism_loyalty_index < cannibalism_integrated_history_generation^num }
@@ -878,6 +882,9 @@ cannibalism_ui_live_warlord_row_is_current = {
 # Host COUNTRY scope inside a continental target row. Input: the native list
 # index cannibalism_continental_index. Copies the aligned row into temporary
 # values for the target getters.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_ui_target_country, cannibalism_ui_target_kind,
+# cannibalism_ui_target_date, cannibalism_ui_target_generation.
 cannibalism_ui_load_continental_target_row = {
 	check_variable = { var = cannibalism_continental_target_kind^num value = cannibalism_continental_target_country^num compare = equals }
 	check_variable = { var = cannibalism_continental_target_date^num value = cannibalism_continental_target_country^num compare = equals }

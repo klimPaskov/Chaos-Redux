@@ -17,6 +17,7 @@ The CBL host can later investigate to locate the caches and, on the Break the Wa
    The donor still loses the full dispatch once; the host receives `(dispatch - hoard) x retention` once; the hoard is the third bucket.
    A cache below 20 Larder is not worth hiding and ships normally.
    The CBL and Wendigo constructors never set a share, so the opening host and the primary Wendigo donor conceal nothing.
+   The absorbing and bargaining callers own the share and the cache amount before these helpers run, so both survive the helper return (`helper_output_ownership.md`).
 2. Record. On a committed transfer, `cannibalism_conceal_current_warlord_hoard` writes the cache on the capital STATE: `cannibalism_hoard_amount`, `_owner` (the warlord country), `_owner_generation`, `_name` (the warlord's name index, kept for the event after the tag is annexed), `_host` and `_host_generation`.
    The host lists its cache states in the country array `cannibalism_hoard_states`.
    A second concealment by the same host's warlords at the same capital adds to the cache; a record from another host or an older host incarnation is replaced.

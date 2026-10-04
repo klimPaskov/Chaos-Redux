@@ -30,6 +30,8 @@ on_actions = {
 		effect = {
 			if = {
 				limit = { has_country_flag = chaosx_test_country_initialized }
+				# Own the cannibalism_register_cxt_test_content outputs read after it returns.
+				set_temp_variable = { chaosx_test_country_extension_registration_added = 0 }
 				cannibalism_register_cxt_test_content = yes
 				if = {
 					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
@@ -192,7 +194,12 @@ on_actions = {
 		effect = {
 			if = {
 				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				# Own the cannibalism_invalidate_spread_entries_for_current_state_lifecycle outputs read after it returns.
+				set_temp_variable = { cannibalism_spread_route = 0 }
 				FROM.FROM = { cannibalism_invalidate_spread_entries_for_current_state_lifecycle = yes }
+				# Own the cannibalism_handle_state_control_recovery outputs read after it returns.
+				set_temp_variable = { cannibalism_control_change_node_source_generation = 0 }
+				set_temp_variable = { cannibalism_control_change_recovery_context_valid = 0 }
 				cannibalism_handle_state_control_recovery = yes
 				cannibalism_try_enqueue_occupation_turnover_from_control_change = yes
 				cannibalism_try_enqueue_conquest_from_control_change = yes

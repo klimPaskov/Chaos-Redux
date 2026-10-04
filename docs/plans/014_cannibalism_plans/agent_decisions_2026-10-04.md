@@ -182,3 +182,28 @@ Decision:
 - The province checks read `any_province_building_level` with the same meta-trigger pattern as the siege victory-point check, because a province filter has no state variable.
 - Tooltips say the forts go to the capital's or anchor's victory points and that the port work moves to a held coastal state when the capital has no coast.
 - Placement on the map is `needs_live_game`; the source now matches every vanilla provincial construction.
+
+## R2-3. Every consumed helper output is caller-owned
+
+Disposition: `implemented`.
+
+Basis: lead round 2 decision R2-3, the `chaos-redux-events` skill (Helper output lifetime), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` line 440 and the vanilla SWE lerp helper, which returns through a regular variable for the same reason.
+
+Decision:
+
+- Each caller that reads a helper output after the call sets it to the helper's own default immediately before the call; temporary arrays are owned with `clear_temp_array`. This covers the hidden-hoard answers, consumption and recruitment transactions, origin operations including the March raid, warlord recruitment, the spread queue, scenario setup, the Wendigo counterwar, pulse rehoming, the scoring loops, the Event 19 provider manifest and the revealed-window scripted-localisation loaders. The helper definitions carry a `Caller-owned outputs` comment, and `docs/events/014_cannibalism/helper_output_ownership.md` lists every output with its default.
+- Values a helper accumulates or adjusts (the scenario node count, the starting units of a scenario warlord, the planned scenario arrays) are owned once by the outer frame and never reset per call. Inputs and cursors such as `cannibalism_spread_queue_index` are never reset.
+- When several helpers in one caller write the same values (prefire context, the scenario wrapper, the spread processor), the caller owns them once before the first call, so a later helper cannot erase an earlier helper's result.
+- The origin-specialist recruit owns its template at the scavenger warband, so an actor without an origin flag raises a valid unit instead of naming a missing spawn effect.
+- The source review found a second defect in the same path: the spread queue audit loads every stored row into the shared route, route parameters and the four spread scopes, so a new route checked while another route was in flight was tested against the last stored row's target and, when that row had ended, could be queued with the old row's scopes. `cannibalism_check_spread_target_state_availability` now keeps the request's route and scopes across the audit and restores them, and `cannibalism_enqueue_spread_entry` computes the route parameters after the check. No tuning, AI weight or probability-bearing value changed.
+
+Scan evidence: a fixed-point helper-output scan (call-graph summaries of temporary writes and inputs across every scripted effect and trigger in the mod, run against the Event 014 effects, triggers, events, decisions, focus, on_actions, scripted GUI, ideas and scripted localisation) found 141 call sites with unowned consumed outputs at e5c3bb072 (134 real, the rest the scenario recursion below) and, after the fix, only the 13 reviewed false positives below.
+
+Reviewed false positives (13 sites, scenario setup only): `cannibalism_scenario_initialize_current_country`, `cannibalism_scenario_initialize_required_actors` and the five `cannibalism_scenario_setup_*` helpers appear to consume scenario scale values, `cannibalism_scenario_use_preflight_plan` and `cannibalism_scenario_setup_failed` from `cannibalism_initialize_current_country`, `cannibalism_scenario_initialize_required_actors`, `cannibalism_scenario_seed_additional_source_states` and the two distribution helpers.
+They come from the static path `cannibalism_initialize_current_country` -> `cannibalism_initialize_new_country_incarnation` -> `cannibalism_setup_prefire_evolution_iii_opening` -> `cannibalism_scenario_setup_convergence`, which writes those values in the evolution III opening.
+That path never runs inside a scenario setup: `cannibalism_scenario_prepare_scale` and `trigger_cannibalism_scenario` zero `cannibalism_prefire_evolution_iii_pending`, and the opening's own convergence setup only uses the already active first host (`low_countries = 1`).
+The values are owned by the two scenario entries (`trigger_cannibalism_scenario` and `cannibalism_setup_prefire_evolution_iii_opening`), and the inner helpers only read or adjust that storage.
+
+Also reviewed and left unchanged: the evolution scheduling calls in `cannibalism_try_schedule_evolutions` (exclusive branches; the third branch sets its own log inputs), and the `chaosx_convert_*` date helpers, whose callers already own `chaosx_date_days` and `chaosx_date_offset`.
+
+Runtime behaviour of temporary storage across scripted-effect returns remains `needs_live_game`; the change is correct under both the conservative frame model and an engine that keeps helper-created temporaries.

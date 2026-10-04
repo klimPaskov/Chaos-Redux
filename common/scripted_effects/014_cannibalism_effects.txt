@@ -1008,6 +1008,11 @@ cannibalism_resolve_captured_hannibal_outcome = {
 # Prefire context and deterministic target selection
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_prefire_evolution,
+# cannibalism_prefire_evolution_i_enabled,
+# cannibalism_prefire_evolution_ii_enabled,
+# cannibalism_prefire_evolution_iii_pending, cannibalism_prefire_ready.
 cannibalism_clear_prefire_context = {
 	clr_global_flag = cannibalism_prefire_pending_ready
 	clr_global_flag = cannibalism_prefire_pending_evolution_i
@@ -1027,6 +1032,12 @@ cannibalism_clear_prefire_context = {
 }
 
 cannibalism_prepare_random_event_fire = {
+	# Own the prefire outputs written by the clear and refresh helpers.
+	set_temp_variable = { cannibalism_prefire_ready = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_i_enabled = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_ii_enabled = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_iii_pending = 0 }
 	cannibalism_clear_prefire_context = yes
 	if = {
 		limit = { cannibalism_automatic_event_is_available = yes }
@@ -1079,6 +1090,11 @@ cannibalism_prepare_random_event_fire = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_prefire_evolution,
+# cannibalism_prefire_evolution_i_enabled,
+# cannibalism_prefire_evolution_ii_enabled,
+# cannibalism_prefire_evolution_iii_pending.
 cannibalism_refresh_prefire_evolution_state = {
 	set_temp_variable = { cannibalism_prefire_evolution = 0 }
 	set_temp_variable = { cannibalism_prefire_evolution_i_enabled = 0 }
@@ -1115,6 +1131,8 @@ cannibalism_refresh_prefire_evolution_state = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_host_score.
 cannibalism_score_current_host = {
 	save_event_target_as = cannibalism_scored_host
 	set_temp_variable = { cannibalism_host_score = constant:cannibalism_host_weight.base }
@@ -1336,6 +1354,8 @@ cannibalism_select_first_host = {
 	clear_temp_array = cannibalism_host_score_pool
 	every_country = {
 		limit = { cannibalism_can_be_origin = yes }
+		# Own the cannibalism_score_current_host outputs read after it returns.
+		set_temp_variable = { cannibalism_host_score = constant:cannibalism_host_weight.base }
 		cannibalism_score_current_host = yes
 		add_to_temp_array = { cannibalism_host_scope_pool = THIS }
 		add_to_temp_array = { cannibalism_host_score_pool = cannibalism_host_score }
@@ -1370,6 +1390,8 @@ cannibalism_select_first_host = {
 	clear_temp_array = cannibalism_host_score_pool
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_state_score.
 cannibalism_score_current_state = {
 	set_temp_variable = { cannibalism_state_score = constant:cannibalism_state_weight.base }
 	if = {
@@ -1454,6 +1476,8 @@ cannibalism_score_current_state = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_state_selected.
 cannibalism_select_highest_risk_state = {
 	save_event_target_as = cannibalism_state_host
 	clear_temp_array = cannibalism_state_scope_pool
@@ -1463,6 +1487,8 @@ cannibalism_select_highest_risk_state = {
 			cannibalism_state_is_valid_origin = yes
 			NOT = { cannibalism_state_has_active_cell = yes }
 		}
+		# Own the cannibalism_score_current_state outputs read after it returns.
+		set_temp_variable = { cannibalism_state_score = constant:cannibalism_state_weight.base }
 		cannibalism_score_current_state = yes
 		add_to_temp_array = { cannibalism_state_scope_pool = THIS }
 		add_to_temp_array = { cannibalism_state_score_pool = cannibalism_state_score }
@@ -1591,6 +1617,8 @@ cannibalism_initialize_global_runtime = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_actor_register_result.
 cannibalism_register_current_country_actor = {
 	set_temp_variable = { cannibalism_actor_register_result = 0 }
 	if = {
@@ -1682,6 +1710,8 @@ cannibalism_register_current_state_node = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_node_retire_result.
 cannibalism_retire_current_state_node = {
 	set_temp_variable = { cannibalism_node_retire_result = 0 }
 	if = {
@@ -1797,6 +1827,9 @@ cannibalism_schedule_next_pulse = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_pulse_callback_retire_result,
+# cannibalism_rehome_pulse_days, cannibalism_rehome_pulse_immediate.
 cannibalism_retire_current_pulse_callback = {
 	set_temp_variable = { cannibalism_pulse_callback_retire_result = 0 }
 	set_temp_variable = { cannibalism_rehome_pulse_immediate = 0 }
@@ -1824,9 +1857,15 @@ cannibalism_retire_current_pulse_callback = {
 }
 
 cannibalism_rehome_current_pulse_callback = {
+	# Own the cannibalism_retire_current_pulse_callback outputs read after it returns.
+	set_temp_variable = { cannibalism_pulse_callback_retire_result = 0 }
+	set_temp_variable = { cannibalism_rehome_pulse_days = 0 }
+	set_temp_variable = { cannibalism_rehome_pulse_immediate = 0 }
 	cannibalism_retire_current_pulse_callback = yes
 	if = {
 		limit = { check_variable = { cannibalism_pulse_callback_retire_result > 0 } }
+		# Own the cannibalism_find_replacement_pulse_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_replacement_anchor_found = 0 }
 		cannibalism_find_replacement_pulse_anchor = yes
 		if = {
 			limit = {
@@ -2091,6 +2130,8 @@ cannibalism_refresh_world_threat_source = {
 	refresh_world_threat_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_replacement_anchor_found.
 cannibalism_find_replacement_pulse_anchor = {
 	set_temp_variable = { cannibalism_replacement_anchor_found = 0 }
 	if = {
@@ -3516,9 +3557,13 @@ cannibalism_reset_current_country_incarnation_state = {
 	cannibalism_clear_march_raid_receipt = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_actor_register_result.
 cannibalism_initialize_current_country = {
 	save_event_target_as = cannibalism_current_actor
 	save_event_target_as = cannibalism_node_source_actor
+	# Own the cannibalism_register_current_country_actor outputs read after it returns.
+	set_temp_variable = { cannibalism_actor_register_result = 0 }
 	cannibalism_register_current_country_actor = yes
 	if = {
 		limit = { check_variable = { cannibalism_actor_register_result > 0 } }
@@ -3681,6 +3726,8 @@ cannibalism_begin_from_prefire_context = {
 		}
 		cannibalism_initialize_global_runtime = yes
 		event_target:cannibalism_first_host = {
+			# Own the cannibalism_initialize_current_country outputs read after it returns.
+			set_temp_variable = { cannibalism_actor_register_result = 0 }
 			cannibalism_initialize_current_country = yes
 			if = {
 				limit = { check_variable = { cannibalism_actor_register_result > 0 } }
@@ -4053,6 +4100,9 @@ cannibalism_set_consumption_parameters_from_context = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_consumption_result,
+# cannibalism_population_loss_applied.
 cannibalism_prepare_consumption_context = {
 	set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
 	set_temp_variable = { cannibalism_population_loss_applied = 0 }
@@ -4183,6 +4233,8 @@ cannibalism_consume_current_state = {
 			set_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }
 			set_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }
 			set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.one }
+			# Own the apply_exact_state_civilian_population_loss outputs read after it returns.
+			set_temp_variable = { chaos_deaths_record_state_ledger = 0 }
 			apply_exact_state_civilian_population_loss = yes
 			set_temp_variable = { cannibalism_population_loss_applied = state_civilian_population_loss_applied }
 			if = {
@@ -4492,6 +4544,8 @@ cannibalism_set_current_state_stage = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_recovery_start_allowed.
 cannibalism_begin_current_state_recovery = {
 	set_temp_variable = { cannibalism_recovery_start_allowed = 0 }
 	if = {
@@ -4500,6 +4554,8 @@ cannibalism_begin_current_state_recovery = {
 			cannibalism_current_node_identity_matches = yes
 		}
 		cannibalism_achievement_record_cell_suppression = yes
+		# Own the cannibalism_retire_current_state_node outputs read after it returns.
+		set_temp_variable = { cannibalism_node_retire_result = 0 }
 		cannibalism_retire_current_state_node = yes
 		if = {
 			limit = { check_variable = { cannibalism_node_retire_result > 0 } }
@@ -4597,6 +4653,8 @@ cannibalism_apply_chaos_change = {
 # Candidate selection and creation context
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_candidate_found.
 cannibalism_select_warlord_candidate_state = {
 	set_temp_variable = { cannibalism_warlord_candidate_found = 0 }
 	set_temp_variable = { cannibalism_warlord_best_candidate_score = -1 }
@@ -4642,6 +4700,11 @@ cannibalism_select_warlord_candidate_state = {
 
 # State scope. Origins are derived from geography and operational conditions;
 # all eight dormant tags are origin-agnostic reusable slots.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_selected_warlord_origin,
+# cannibalism_selected_warlord_region,
+# cannibalism_warlord_starting_experience,
+# cannibalism_warlord_starting_frenzy, cannibalism_warlord_starting_units.
 cannibalism_prepare_warlord_creation_context = {
 	set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.none }
 	if = {
@@ -5213,6 +5276,8 @@ cannibalism_mark_transferred_states_for_current_warlord = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_setup_result.
 cannibalism_setup_current_warlord_country = {
 	set_temp_variable = { cannibalism_warlord_setup_result = 0 }
 	if = {
@@ -5272,6 +5337,8 @@ cannibalism_setup_current_warlord_country = {
 			popup = no
 		}
 
+		# Own the cannibalism_register_current_country_actor outputs read after it returns.
+		set_temp_variable = { cannibalism_actor_register_result = 0 }
 		cannibalism_register_current_country_actor = yes
 		if = {
 			limit = { check_variable = { cannibalism_actor_register_result > 0 } }
@@ -5300,6 +5367,9 @@ cannibalism_setup_current_warlord_country = {
 			country_lock_all_division_template = yes
 			event_target:cannibalism_warlord_origin_state = { save_event_target_as = cannibalism_consumption_target_state }
 			set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.warlord_creation }
+			# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+			set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+			set_temp_variable = { cannibalism_population_loss_applied = 0 }
 			cannibalism_prepare_consumption_context = yes
 			if = {
 				limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
@@ -5456,6 +5526,8 @@ cannibalism_create_selected_warlord_country_from_current_state = {
 			save_event_target_as = cannibalism_warlord_new_country
 			set_variable = { cannibalism_warlord_slot_index = cannibalism_warlord_slot_index }
 			set_capital = { state = event_target:cannibalism_warlord_origin_state remember_old_capital = no }
+			# Own the cannibalism_setup_current_warlord_country outputs read after it returns.
+			set_temp_variable = { cannibalism_warlord_setup_result = 0 }
 			cannibalism_setup_current_warlord_country = yes
 		}
 		if = {
@@ -5476,6 +5548,8 @@ cannibalism_create_selected_warlord_country_from_current_state = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cba = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cba }
 	set_global_flag = cannibalism_slot_cba_in_use
@@ -5487,6 +5561,8 @@ cannibalism_allocate_slot_cba = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbb = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbb }
 	set_global_flag = cannibalism_slot_cbb_in_use
@@ -5498,6 +5574,8 @@ cannibalism_allocate_slot_cbb = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbc = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbc }
 	set_global_flag = cannibalism_slot_cbc_in_use
@@ -5509,6 +5587,8 @@ cannibalism_allocate_slot_cbc = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbd = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbd }
 	set_global_flag = cannibalism_slot_cbd_in_use
@@ -5520,6 +5600,8 @@ cannibalism_allocate_slot_cbd = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbe = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbe }
 	set_global_flag = cannibalism_slot_cbe_in_use
@@ -5531,6 +5613,8 @@ cannibalism_allocate_slot_cbe = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbf = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbf }
 	set_global_flag = cannibalism_slot_cbf_in_use
@@ -5542,6 +5626,8 @@ cannibalism_allocate_slot_cbf = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbg = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbg }
 	set_global_flag = cannibalism_slot_cbg_in_use
@@ -5553,6 +5639,8 @@ cannibalism_allocate_slot_cbg = {
 	cannibalism_create_selected_warlord_country_from_current_state = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_creation_result.
 cannibalism_allocate_slot_cbh = {
 	set_temp_variable = { cannibalism_warlord_slot_index = constant:cannibalism_slot.cbh }
 	set_global_flag = cannibalism_slot_cbh_in_use
@@ -5582,6 +5670,8 @@ cannibalism_try_form_warlord_country = {
 			NOT = { has_global_flag = cannibalism_convergence_active }
 			cannibalism_has_free_warlord_slot = yes
 		}
+		# Own the cannibalism_select_warlord_candidate_state outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_candidate_found = 0 }
 		cannibalism_select_warlord_candidate_state = yes
 		if = {
 			limit = {
@@ -5589,6 +5679,12 @@ cannibalism_try_form_warlord_country = {
 				has_event_target = cannibalism_warlord_origin_state
 			}
 			event_target:cannibalism_warlord_origin_state = {
+				# Own the cannibalism_prepare_warlord_creation_context outputs read after it returns.
+				set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.none }
+				set_temp_variable = { cannibalism_selected_warlord_region = constant:cannibalism_region.unknown }
+				set_temp_variable = { cannibalism_warlord_starting_experience = constant:cannibalism_warlord_start.weak_experience }
+				set_temp_variable = { cannibalism_warlord_starting_frenzy = constant:cannibalism_warlord_start.weak_frenzy }
+				set_temp_variable = { cannibalism_warlord_starting_units = constant:cannibalism_warlord_start.weak_units }
 				cannibalism_prepare_warlord_creation_context = yes
 				cannibalism_allocate_warlord_slot_for_current_state = yes
 			}
@@ -6857,6 +6953,9 @@ cannibalism_muster_wendigo_pack_from_enemy_death_receipt_effect = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_enemy_death_receipt.muster_population_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -7914,6 +8013,8 @@ cannibalism_execute_selected_prisoner_feeding = {
 		}
 		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_integration.prisoner_feeding_people }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.prisoner_feeding }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
@@ -9049,6 +9150,19 @@ cannibalism_resolve_compact_vigilance = {
 # Shared scale and runtime preparation
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_prefire_evolution,
+# cannibalism_prefire_evolution_i_enabled,
+# cannibalism_prefire_evolution_ii_enabled,
+# cannibalism_scenario_cell_strength, cannibalism_scenario_command_integrity,
+# cannibalism_scenario_cult_cohesion, cannibalism_scenario_field_hunger,
+# cannibalism_scenario_mark_external_route,
+# cannibalism_scenario_network_alignment, cannibalism_scenario_node_stage,
+# cannibalism_scenario_selected_intensity, cannibalism_scenario_selected_type,
+# cannibalism_scenario_target_countries,
+# cannibalism_scenario_target_silent_hosts,
+# cannibalism_scenario_target_states, cannibalism_scenario_target_warlords,
+# cannibalism_prefire_evolution_iii_pending.
 cannibalism_scenario_prepare_scale = {
 	set_temp_variable = { cannibalism_scenario_selected_type = triggerable_scenarios_cannibalism_type }
 	set_temp_variable = { cannibalism_scenario_selected_intensity = triggerable_scenarios_intensity }
@@ -9139,6 +9253,8 @@ cannibalism_scenario_prepare_scale = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_source_found.
 cannibalism_scenario_select_source_country = {
 	set_temp_variable = { cannibalism_scenario_source_found = 0 }
 	if = {
@@ -9163,6 +9279,12 @@ cannibalism_scenario_select_source_country = {
 # Atomic manual-launch preflight
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_required_island_states,
+# cannibalism_scenario_required_island_warlord_states,
+# cannibalism_scenario_required_march_states,
+# cannibalism_scenario_required_siege_states,
+# cannibalism_scenario_required_warlord_slots.
 cannibalism_scenario_prepare_preflight_requirements = {
 	set_temp_variable = { cannibalism_scenario_required_island_states = 0 }
 	set_temp_variable = { cannibalism_scenario_required_island_warlord_states = 0 }
@@ -9231,6 +9353,8 @@ cannibalism_scenario_prepare_preflight_requirements = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_planned_warlord_slot_count.
 cannibalism_scenario_plan_available_warlord_slots = {
 	set_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 0 }
 	if = {
@@ -9299,6 +9423,14 @@ cannibalism_scenario_plan_available_warlord_slots = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_preflight_result,
+# cannibalism_scenario_use_preflight_plan,
+# cannibalism_scenario_planned_actor_countries,
+# cannibalism_scenario_planned_island_states,
+# cannibalism_scenario_planned_siege_states,
+# cannibalism_scenario_planned_march_states,
+# cannibalism_scenario_planned_warlord_slots.
 cannibalism_scenario_build_manual_preflight_plan = {
 	set_temp_variable = { cannibalism_scenario_preflight_result = 0 }
 	set_temp_variable = { cannibalism_scenario_use_preflight_plan = 0 }
@@ -9308,6 +9440,8 @@ cannibalism_scenario_build_manual_preflight_plan = {
 	clear_temp_array = cannibalism_scenario_planned_march_states
 	clear_temp_array = cannibalism_scenario_planned_warlord_slots
 	set_temp_variable = { cannibalism_scenario_planned_actor_count = 0 }
+	# Own the cannibalism_scenario_select_source_country outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_source_found = 0 }
 	cannibalism_scenario_select_source_country = yes
 	if = {
 		limit = {
@@ -9339,6 +9473,12 @@ cannibalism_scenario_build_manual_preflight_plan = {
 				compare = equals
 			}
 		}
+		# Own the cannibalism_scenario_prepare_preflight_requirements outputs read after it returns.
+		set_temp_variable = { cannibalism_scenario_required_island_states = 0 }
+		set_temp_variable = { cannibalism_scenario_required_island_warlord_states = 0 }
+		set_temp_variable = { cannibalism_scenario_required_march_states = 0 }
+		set_temp_variable = { cannibalism_scenario_required_siege_states = 0 }
+		set_temp_variable = { cannibalism_scenario_required_warlord_slots = 0 }
 		cannibalism_scenario_prepare_preflight_requirements = yes
 		set_temp_variable = { cannibalism_scenario_planned_island_count = 0 }
 		set_temp_variable = { cannibalism_scenario_planned_island_warlord_count = 0 }
@@ -9385,6 +9525,8 @@ cannibalism_scenario_build_manual_preflight_plan = {
 			add_to_temp_array = { cannibalism_scenario_planned_march_states = THIS }
 			add_to_temp_variable = { cannibalism_scenario_planned_march_count = 1 }
 		}
+		# Own the cannibalism_scenario_plan_available_warlord_slots outputs read after it returns.
+		set_temp_variable = { cannibalism_scenario_planned_warlord_slot_count = 0 }
 		cannibalism_scenario_plan_available_warlord_slots = yes
 
 		if = {
@@ -9490,6 +9632,9 @@ cannibalism_scenario_record_new_actor_nodes = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_actor_initialization_result,
+# cannibalism_scenario_actor_was_new.
 cannibalism_scenario_initialize_current_country = {
 	set_temp_variable = { cannibalism_scenario_actor_initialization_result = 0 }
 	set_temp_variable = { cannibalism_scenario_actor_was_new = 0 }
@@ -9504,6 +9649,8 @@ cannibalism_scenario_initialize_current_country = {
 		clr_country_flag = cannibalism_local_victory
 		clr_country_flag = cannibalism_external_reinfection_protected
 		clr_country_flag = cannibalism_country_cleanup_complete
+		# Own the cannibalism_select_highest_risk_state outputs read after it returns.
+		set_temp_variable = { cannibalism_state_selected = 0 }
 		cannibalism_select_highest_risk_state = yes
 		if = {
 			limit = {
@@ -9511,6 +9658,8 @@ cannibalism_scenario_initialize_current_country = {
 				has_event_target = cannibalism_selected_state
 			}
 			event_target:cannibalism_selected_state = { save_event_target_as = cannibalism_initial_state }
+			# Own the cannibalism_initialize_current_country outputs read after it returns.
+			set_temp_variable = { cannibalism_actor_register_result = 0 }
 			cannibalism_initialize_current_country = yes
 			if = {
 				limit = { check_variable = { cannibalism_actor_register_result > 0 } }
@@ -9546,12 +9695,18 @@ cannibalism_scenario_authorize_requested_evolutions = {
 	set_temp_variable = { cannibalism_evolution_transition_authorized = 0 }
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_actor_setup_result,
+# cannibalism_scenario_nodes_created.
 cannibalism_scenario_initialize_required_actors = {
 	set_temp_variable = { cannibalism_scenario_actor_count = 0 }
 	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
 	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	set_temp_variable = { cannibalism_scenario_source_was_new = 0 }
 	event_target:cannibalism_scenario_source_country = {
+		# Own the cannibalism_scenario_initialize_current_country outputs read after it returns.
+		set_temp_variable = { cannibalism_scenario_actor_initialization_result = 0 }
+		set_temp_variable = { cannibalism_scenario_actor_was_new = 0 }
 		cannibalism_scenario_initialize_current_country = yes
 		if = {
 			limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
@@ -9580,6 +9735,9 @@ cannibalism_scenario_initialize_required_actors = {
 					check_variable = { cannibalism_scenario_actor_count < cannibalism_scenario_target_countries }
 					NOT = { tag = event_target:cannibalism_scenario_source_country }
 				}
+				# Own the cannibalism_scenario_initialize_current_country outputs read after it returns.
+				set_temp_variable = { cannibalism_scenario_actor_initialization_result = 0 }
+				set_temp_variable = { cannibalism_scenario_actor_was_new = 0 }
 				cannibalism_scenario_initialize_current_country = yes
 				if = {
 					limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
@@ -9604,6 +9762,9 @@ cannibalism_scenario_initialize_required_actors = {
 				cannibalism_scenario_valid_source_country = yes
 				NOT = { tag = event_target:cannibalism_scenario_source_country }
 			}
+			# Own the cannibalism_scenario_initialize_current_country outputs read after it returns.
+			set_temp_variable = { cannibalism_scenario_actor_initialization_result = 0 }
+			set_temp_variable = { cannibalism_scenario_actor_was_new = 0 }
 			cannibalism_scenario_initialize_current_country = yes
 			if = {
 				limit = { check_variable = { cannibalism_scenario_actor_initialization_result > 0 } }
@@ -9634,6 +9795,8 @@ cannibalism_scenario_initialize_required_actors = {
 # Node selection and canonical maturation
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_node_setup_result.
 cannibalism_scenario_seed_current_state = {
 	set_temp_variable = { cannibalism_scenario_node_setup_result = 0 }
 	if = {
@@ -9680,12 +9843,16 @@ cannibalism_scenario_seed_additional_source_states = {
 			}
 			check_variable = { cannibalism_scenario_setup_failed < 1 }
 		}
+		# Own the cannibalism_select_highest_risk_state outputs read after it returns.
+		set_temp_variable = { cannibalism_state_selected = 0 }
 		event_target:cannibalism_scenario_source_country = { cannibalism_select_highest_risk_state = yes }
 		if = {
 			limit = {
 				check_variable = { cannibalism_state_selected > 0 }
 				has_event_target = cannibalism_selected_state
 			}
+			# Own the cannibalism_scenario_seed_current_state outputs read after it returns.
+			set_temp_variable = { cannibalism_scenario_node_setup_result = 0 }
 			event_target:cannibalism_selected_state = { cannibalism_scenario_seed_current_state = yes }
 			if = {
 				limit = { check_variable = { cannibalism_scenario_node_setup_result < 1 } }
@@ -9698,6 +9865,8 @@ cannibalism_scenario_seed_additional_source_states = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_state_found.
 cannibalism_scenario_select_island_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	if = {
@@ -9729,6 +9898,8 @@ cannibalism_scenario_select_island_state = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_state_found.
 cannibalism_scenario_select_siege_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	if = {
@@ -9760,6 +9931,8 @@ cannibalism_scenario_select_siege_state = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scenario_state_found.
 cannibalism_scenario_select_march_state = {
 	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	if = {
@@ -9823,6 +9996,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cba }
 			cannibalism_slot_cba_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cba outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cba = yes
 	}
 	else_if = {
@@ -9830,6 +10005,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbb }
 			cannibalism_slot_cbb_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbb outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbb = yes
 	}
 	else_if = {
@@ -9837,6 +10014,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbc }
 			cannibalism_slot_cbc_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbc outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbc = yes
 	}
 	else_if = {
@@ -9844,6 +10023,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbd }
 			cannibalism_slot_cbd_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbd outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbd = yes
 	}
 	else_if = {
@@ -9851,6 +10032,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbe }
 			cannibalism_slot_cbe_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbe outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbe = yes
 	}
 	else_if = {
@@ -9858,6 +10041,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbf }
 			cannibalism_slot_cbf_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbf outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbf = yes
 	}
 	else_if = {
@@ -9865,6 +10050,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbg }
 			cannibalism_slot_cbg_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbg outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbg = yes
 	}
 	else_if = {
@@ -9872,6 +10059,8 @@ cannibalism_scenario_allocate_next_planned_warlord_slot = {
 			check_variable = { cannibalism_scenario_planned_slot_index = constant:cannibalism_slot.cbh }
 			cannibalism_slot_cbh_available = yes
 		}
+		# Own the cannibalism_allocate_slot_cbh outputs read after it returns.
+		set_temp_variable = { cannibalism_warlord_creation_result = 0 }
 		cannibalism_allocate_slot_cbh = yes
 	}
 	if = {
@@ -9895,9 +10084,17 @@ cannibalism_scenario_form_selected_warlord = {
 		}
 		event_target:cannibalism_scenario_selected_state = {
 			CONTROLLER = { save_event_target_as = cannibalism_state_host }
+			# Own the cannibalism_scenario_seed_current_state outputs read after it returns.
+			set_temp_variable = { cannibalism_scenario_node_setup_result = 0 }
 			cannibalism_scenario_seed_current_state = yes
 			if = {
 				limit = { check_variable = { cannibalism_scenario_node_setup_result > 0 } }
+				# Own the creation context read by the slot allocation.
+				set_temp_variable = { cannibalism_selected_warlord_origin = constant:cannibalism_origin.none }
+				set_temp_variable = { cannibalism_selected_warlord_region = constant:cannibalism_region.unknown }
+				set_temp_variable = { cannibalism_warlord_starting_experience = constant:cannibalism_warlord_start.weak_experience }
+				set_temp_variable = { cannibalism_warlord_starting_frenzy = constant:cannibalism_warlord_start.weak_frenzy }
+				set_temp_variable = { cannibalism_warlord_starting_units = constant:cannibalism_warlord_start.weak_units }
 				cannibalism_prepare_warlord_creation_context = yes
 				if = {
 					limit = { check_variable = { cannibalism_scenario_use_preflight_plan > 0 } }
@@ -9935,16 +10132,22 @@ cannibalism_scenario_form_selected_warlord = {
 }
 
 cannibalism_scenario_form_next_island_warlord = {
+	# Own the cannibalism_scenario_select_island_state outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	cannibalism_scenario_select_island_state = yes
 	cannibalism_scenario_form_selected_warlord = yes
 }
 
 cannibalism_scenario_form_next_siege_warlord = {
+	# Own the cannibalism_scenario_select_siege_state outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	cannibalism_scenario_select_siege_state = yes
 	cannibalism_scenario_form_selected_warlord = yes
 }
 
 cannibalism_scenario_form_next_march_warlord = {
+	# Own the cannibalism_scenario_select_march_state outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_state_found = 0 }
 	cannibalism_scenario_select_march_state = yes
 	cannibalism_scenario_form_selected_warlord = yes
 }
@@ -10002,6 +10205,9 @@ cannibalism_scenario_create_convergence_distribution = {
 
 cannibalism_scenario_setup_discipline_collapse = {
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
+	# Own the cannibalism_scenario_initialize_required_actors outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	cannibalism_scenario_initialize_required_actors = yes
 	if = {
 		limit = { check_variable = { cannibalism_scenario_actor_setup_result > 0 } }
@@ -10015,6 +10221,9 @@ cannibalism_scenario_setup_discipline_collapse = {
 
 cannibalism_scenario_setup_ritual_cells = {
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
+	# Own the cannibalism_scenario_initialize_required_actors outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	cannibalism_scenario_initialize_required_actors = yes
 	if = {
 		limit = { check_variable = { cannibalism_scenario_actor_setup_result > 0 } }
@@ -10029,6 +10238,9 @@ cannibalism_scenario_setup_ritual_cells = {
 cannibalism_scenario_setup_silent_islands = {
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
 	set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
+	# Own the actor setup result and the node count every seeded island adds to.
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	cannibalism_scenario_initialize_required_actors = yes
 	set_temp_variable = { cannibalism_scenario_island_states_seeded = 0 }
 	set_temp_variable = { cannibalism_scenario_warlords_created = 0 }
@@ -10044,6 +10256,8 @@ cannibalism_scenario_setup_silent_islands = {
 				}
 				check_variable = { cannibalism_scenario_setup_failed < 1 }
 			}
+			# Own the cannibalism_scenario_select_island_state outputs read after it returns.
+			set_temp_variable = { cannibalism_scenario_state_found = 0 }
 			cannibalism_scenario_select_island_state = yes
 			if = {
 				limit = {
@@ -10051,6 +10265,8 @@ cannibalism_scenario_setup_silent_islands = {
 					has_event_target = cannibalism_scenario_selected_state
 				}
 				event_target:cannibalism_scenario_source_country = { save_event_target_as = cannibalism_node_source_actor }
+				# Own the cannibalism_scenario_seed_current_state outputs read after it returns.
+				set_temp_variable = { cannibalism_scenario_node_setup_result = 0 }
 				event_target:cannibalism_scenario_selected_state = { cannibalism_scenario_seed_current_state = yes }
 				if = {
 					limit = { check_variable = { cannibalism_scenario_node_setup_result > 0 } }
@@ -10088,6 +10304,9 @@ cannibalism_scenario_setup_silent_islands = {
 cannibalism_scenario_setup_warlord_states = {
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
 	set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
+	# Own the cannibalism_scenario_initialize_required_actors outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	cannibalism_scenario_initialize_required_actors = yes
 	set_temp_variable = { cannibalism_scenario_warlords_created = 0 }
 	if = {
@@ -10110,6 +10329,9 @@ cannibalism_scenario_setup_warlord_states = {
 cannibalism_scenario_setup_convergence = {
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
 	set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
+	# Own the cannibalism_scenario_initialize_required_actors outputs read after it returns.
+	set_temp_variable = { cannibalism_scenario_actor_setup_result = 0 }
+	set_temp_variable = { cannibalism_scenario_nodes_created = 0 }
 	cannibalism_scenario_initialize_required_actors = yes
 	set_temp_variable = { cannibalism_scenario_warlords_created = 0 }
 	if = {
@@ -10190,7 +10412,33 @@ cannibalism_setup_prefire_evolution_iii_opening = {
 trigger_cannibalism_scenario = {
 	set_temp_variable = { cannibalism_scenario_setup_failed = 0 }
 	set_temp_variable = { cannibalism_scenario_setup_result = 0 }
+	# Own the scale values every setup helper reads.
+	set_temp_variable = { cannibalism_scenario_selected_type = 0 }
+	set_temp_variable = { cannibalism_scenario_selected_intensity = 0 }
+	set_temp_variable = { cannibalism_scenario_target_countries = constant:cannibalism_scenario_scale.low_countries }
+	set_temp_variable = { cannibalism_scenario_target_states = constant:cannibalism_scenario_scale.low_states }
+	set_temp_variable = { cannibalism_scenario_target_warlords = constant:cannibalism_scenario_scale.low_warlords }
+	set_temp_variable = { cannibalism_scenario_target_silent_hosts = constant:cannibalism_scenario_scale.low_silent_hosts }
+	set_temp_variable = { cannibalism_scenario_field_hunger = constant:cannibalism_scenario_scale.low_field_hunger }
+	set_temp_variable = { cannibalism_scenario_command_integrity = constant:cannibalism_scenario_scale.low_command_integrity }
+	set_temp_variable = { cannibalism_scenario_cell_strength = constant:cannibalism_scenario_scale.low_cell_strength }
+	set_temp_variable = { cannibalism_scenario_cult_cohesion = constant:cannibalism_scenario_scale.low_cult_cohesion }
+	set_temp_variable = { cannibalism_scenario_network_alignment = constant:cannibalism_scenario_scale.low_network }
+	set_temp_variable = { cannibalism_scenario_node_stage = constant:cannibalism_state_stage.compromised_garrison }
+	set_temp_variable = { cannibalism_scenario_mark_external_route = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_i_enabled = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_ii_enabled = 0 }
+	set_temp_variable = { cannibalism_prefire_evolution_iii_pending = 0 }
 	cannibalism_scenario_prepare_scale = yes
+	# Own the preflight result and the planned arrays the setup helpers consume.
+	set_temp_variable = { cannibalism_scenario_preflight_result = 0 }
+	set_temp_variable = { cannibalism_scenario_use_preflight_plan = 0 }
+	clear_temp_array = cannibalism_scenario_planned_actor_countries
+	clear_temp_array = cannibalism_scenario_planned_island_states
+	clear_temp_array = cannibalism_scenario_planned_siege_states
+	clear_temp_array = cannibalism_scenario_planned_march_states
+	clear_temp_array = cannibalism_scenario_planned_warlord_slots
 	cannibalism_scenario_build_manual_preflight_plan = yes
 	if = {
 		limit = {
@@ -10284,6 +10532,10 @@ trigger_cannibalism_scenario = {
 # Route normalization
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_parameters_valid,
+# cannibalism_spread_delay_days, cannibalism_spread_node_strength,
+# cannibalism_spread_node_type, cannibalism_spread_node_stage.
 cannibalism_set_spread_parameters_from_route = {
 	set_temp_variable = { cannibalism_spread_parameters_valid = 0 }
 	set_temp_variable = { cannibalism_spread_delay_days = 0 }
@@ -10357,6 +10609,8 @@ cannibalism_set_spread_parameters_from_route = {
 # positive row identities, legal route/status values, live-row scope payloads,
 # exact state metadata, unique live IDs, and one live row per target state.
 # A malformed ledger is left untouched and exposes a durable failure flag.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_queue_validation_result.
 cannibalism_validate_spread_queue = {
 	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	# Own loaded context across row-helper returns. Route is assigned per row below.
@@ -10523,13 +10777,44 @@ cannibalism_validate_spread_queue = {
 # Normalized target-state scope is event_target:cannibalism_spread_target_state.
 # This authoritative scan rejects a duplicate even if the state's cache flag is
 # missing. A cache flag without a matching live row is exposed as corruption.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_target_available,
+# cannibalism_spread_queue_validation_result.
 cannibalism_check_spread_target_state_availability = {
 	set_temp_variable = { cannibalism_spread_target_available = 0 }
 	set_temp_variable = { cannibalism_spread_target_live_row_count = 0 }
+	# The queue audit loads every stored row into the shared spread route and
+	# scopes. Keep this request's route and scopes and restore them after it.
+	set_temp_variable = { cannibalism_spread_request_route = cannibalism_spread_route }
+	set_temp_variable = { cannibalism_spread_request_scopes_saved = 0 }
+	if = {
+		limit = {
+			has_event_target = cannibalism_spread_source_country
+			has_event_target = cannibalism_spread_source_state
+			has_event_target = cannibalism_spread_target_country
+			has_event_target = cannibalism_spread_target_state
+		}
+		event_target:cannibalism_spread_source_country = { save_event_target_as = cannibalism_spread_request_source_country }
+		event_target:cannibalism_spread_source_state = { save_event_target_as = cannibalism_spread_request_source_state }
+		event_target:cannibalism_spread_target_country = { save_event_target_as = cannibalism_spread_request_target_country }
+		event_target:cannibalism_spread_target_state = { save_event_target_as = cannibalism_spread_request_target_state }
+		set_temp_variable = { cannibalism_spread_request_scopes_saved = 1 }
+	}
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
+	set_temp_variable = { cannibalism_spread_route = cannibalism_spread_request_route }
+	if = {
+		limit = { check_variable = { cannibalism_spread_request_scopes_saved > 0 } }
+		event_target:cannibalism_spread_request_source_country = { save_event_target_as = cannibalism_spread_source_country }
+		event_target:cannibalism_spread_request_source_state = { save_event_target_as = cannibalism_spread_source_state }
+		event_target:cannibalism_spread_request_target_country = { save_event_target_as = cannibalism_spread_target_country }
+		event_target:cannibalism_spread_request_target_state = { save_event_target_as = cannibalism_spread_target_state }
+	}
 	if = {
 		limit = {
 			check_variable = { cannibalism_spread_queue_validation_result > 0 }
+			check_variable = { cannibalism_spread_request_scopes_saved > 0 }
 			has_event_target = cannibalism_spread_target_state
 		}
 		set_temp_variable = { cannibalism_spread_queue_index = 0 }
@@ -10672,10 +10957,22 @@ cannibalism_rebuild_spread_pending_ledgers = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_enqueue_result.
 cannibalism_enqueue_spread_entry = {
 	set_temp_variable = { cannibalism_spread_enqueue_result = 0 }
-	cannibalism_set_spread_parameters_from_route = yes
+	# Own the availability outputs read after the check returns.
+	set_temp_variable = { cannibalism_spread_target_available = 0 }
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_check_spread_target_state_availability = yes
+	# The queue audit inside the check loads stored rows into the same route
+	# parameters, so they are computed for this request only after it.
+	set_temp_variable = { cannibalism_spread_parameters_valid = 0 }
+	set_temp_variable = { cannibalism_spread_delay_days = 0 }
+	set_temp_variable = { cannibalism_spread_node_strength = 0 }
+	set_temp_variable = { cannibalism_spread_node_type = constant:cannibalism_node_type.formation }
+	set_temp_variable = { cannibalism_spread_node_stage = constant:cannibalism_state_stage.compromised_garrison }
+	cannibalism_set_spread_parameters_from_route = yes
 	if = {
 		limit = {
 			check_variable = { cannibalism_spread_parameters_valid > 0 }
@@ -10723,6 +11020,8 @@ cannibalism_enqueue_spread_entry = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_pending_clear_result.
 cannibalism_clear_loaded_spread_pending_state = {
 	set_temp_variable = { cannibalism_spread_pending_clear_result = 0 }
 	if = {
@@ -10814,6 +11113,8 @@ cannibalism_clear_loaded_spread_pending_state = {
 # External activation, arrival, and containment
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_external_activation_result.
 cannibalism_activate_current_country_from_external_spread = {
 	set_temp_variable = { cannibalism_external_activation_result = 0 }
 	set_temp_variable = { cannibalism_spread_was_local_victory = 0 }
@@ -10821,6 +11122,8 @@ cannibalism_activate_current_country_from_external_spread = {
 		limit = { has_country_flag = cannibalism_local_victory }
 		set_temp_variable = { cannibalism_spread_was_local_victory = 1 }
 	}
+	# Own the cannibalism_register_current_country_actor outputs read after it returns.
+	set_temp_variable = { cannibalism_actor_register_result = 0 }
 	cannibalism_register_current_country_actor = yes
 	if = {
 		limit = { check_variable = { cannibalism_actor_register_result > 0 } }
@@ -10861,6 +11164,8 @@ cannibalism_activate_current_country_from_external_spread = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_country_arrival_result.
 cannibalism_apply_loaded_spread_to_current_country = {
 	set_temp_variable = { cannibalism_spread_country_arrival_result = 0 }
 	if = {
@@ -10887,6 +11192,8 @@ cannibalism_apply_loaded_spread_to_current_country = {
 		set_temp_variable = { cannibalism_spread_country_arrival_result = 1 }
 	}
 	else = {
+		# Own the cannibalism_activate_current_country_from_external_spread outputs read after it returns.
+		set_temp_variable = { cannibalism_external_activation_result = 0 }
 		cannibalism_activate_current_country_from_external_spread = yes
 		if = {
 			limit = { check_variable = { cannibalism_external_activation_result > 0 } }
@@ -10931,9 +11238,13 @@ cannibalism_apply_loaded_spread_to_current_state = {
 	set_variable = { cannibalism_external_route_type = cannibalism_spread_route }
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_arrival_applied.
 cannibalism_resolve_loaded_spread_arrival = {
 	set_temp_variable = { cannibalism_spread_arrival_applied = 0 }
 	event_target:cannibalism_spread_target_country = {
+		# Own the cannibalism_apply_loaded_spread_to_current_country outputs read after it returns.
+		set_temp_variable = { cannibalism_spread_country_arrival_result = 0 }
 		cannibalism_apply_loaded_spread_to_current_country = yes
 	}
 	if = {
@@ -11001,6 +11312,16 @@ cannibalism_resolve_loaded_spread_containment = {
 # Queue resolution and post-iteration compaction
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_expected_spread_id, cannibalism_spread_route,
+# cannibalism_spread_source_generation,
+# cannibalism_spread_source_country_context_loaded,
+# cannibalism_spread_source_state_context_loaded,
+# cannibalism_spread_target_country_context_loaded,
+# cannibalism_spread_target_state_context_loaded,
+# cannibalism_spread_parameters_valid, cannibalism_spread_delay_days,
+# cannibalism_spread_node_strength, cannibalism_spread_node_type,
+# cannibalism_spread_node_stage.
 cannibalism_load_spread_entry_context = {
 	set_temp_variable = { cannibalism_expected_spread_id = global.cannibalism_spread_queue_id_entries^cannibalism_spread_queue_index }
 	set_temp_variable = { cannibalism_spread_route = global.cannibalism_spread_queue_route_entries^cannibalism_spread_queue_index }
@@ -11055,6 +11376,11 @@ cannibalism_finalize_loaded_spread_entry = {
 				check_variable = { cannibalism_spread_terminal_status = constant:cannibalism_spread_status.invalidated }
 			}
 		}
+		# Own the cannibalism_load_spread_entry_context outputs read after it returns.
+		set_temp_variable = { cannibalism_spread_route = 0 }
+		set_temp_variable = { cannibalism_spread_source_country_context_loaded = 0 }
+		set_temp_variable = { cannibalism_spread_source_generation = 0 }
+		set_temp_variable = { cannibalism_spread_target_state_context_loaded = 0 }
 		cannibalism_load_spread_entry_context = yes
 		if = {
 			limit = {
@@ -11065,6 +11391,8 @@ cannibalism_finalize_loaded_spread_entry = {
 				}
 			}
 			set_variable = { global.cannibalism_spread_queue_status_entries^cannibalism_spread_queue_index = cannibalism_spread_terminal_status }
+			# Own the cannibalism_clear_loaded_spread_pending_state outputs read after it returns.
+			set_temp_variable = { cannibalism_spread_pending_clear_result = 0 }
 			cannibalism_clear_loaded_spread_pending_state = yes
 			if = {
 				limit = { check_variable = { cannibalism_spread_pending_clear_result > 0 } }
@@ -11097,6 +11425,8 @@ cannibalism_resolve_loaded_spread_entry = {
 			set_temp_variable = { cannibalism_spread_terminal_status = constant:cannibalism_spread_status.contained }
 		}
 		else = {
+			# Own the cannibalism_resolve_loaded_spread_arrival outputs read after it returns.
+			set_temp_variable = { cannibalism_spread_arrival_applied = 0 }
 			cannibalism_resolve_loaded_spread_arrival = yes
 			if = {
 				limit = { check_variable = { cannibalism_spread_arrival_applied > 0 } }
@@ -11108,6 +11438,20 @@ cannibalism_resolve_loaded_spread_entry = {
 }
 
 cannibalism_process_spread_queue = {
+	# Own the validation result and the row context the resolver reads.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
+	set_temp_variable = { cannibalism_expected_spread_id = 0 }
+	set_temp_variable = { cannibalism_spread_route = 0 }
+	set_temp_variable = { cannibalism_spread_source_generation = 0 }
+	set_temp_variable = { cannibalism_spread_source_country_context_loaded = 0 }
+	set_temp_variable = { cannibalism_spread_source_state_context_loaded = 0 }
+	set_temp_variable = { cannibalism_spread_target_country_context_loaded = 0 }
+	set_temp_variable = { cannibalism_spread_target_state_context_loaded = 0 }
+	set_temp_variable = { cannibalism_spread_parameters_valid = 0 }
+	set_temp_variable = { cannibalism_spread_delay_days = 0 }
+	set_temp_variable = { cannibalism_spread_node_strength = 0 }
+	set_temp_variable = { cannibalism_spread_node_type = constant:cannibalism_node_type.formation }
+	set_temp_variable = { cannibalism_spread_node_stage = constant:cannibalism_state_stage.compromised_garrison }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -11139,6 +11483,8 @@ cannibalism_process_spread_queue = {
 }
 
 cannibalism_compact_spread_queue = {
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -11179,6 +11525,8 @@ cannibalism_compact_spread_queue = {
 # Physical automatic route producers
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_route.
 cannibalism_set_automatic_spread_route_from_source_state = {
 	# The generic border pulse proves only adjacent wartime retreat. Other route
 	# labels belong exclusively to their action-specific producers.
@@ -11211,7 +11559,11 @@ cannibalism_try_enqueue_current_actor_border_spread = {
 		}
 		if = {
 			limit = { check_variable = { cannibalism_automatic_spread_candidate_found > 0 } }
+			# Own the cannibalism_set_automatic_spread_route_from_source_state outputs read after it returns.
+			set_temp_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.retreat }
 			cannibalism_set_automatic_spread_route_from_source_state = yes
+			# Own the cannibalism_enqueue_spread_entry outputs read after it returns.
+			set_temp_variable = { cannibalism_spread_enqueue_result = 0 }
 			cannibalism_enqueue_spread_entry = yes
 			if = {
 				limit = { check_variable = { cannibalism_spread_enqueue_result > 0 } }
@@ -11277,6 +11629,9 @@ cannibalism_try_enqueue_convoy_from_naval_invasion = {
 # sequence in that state. If another controlled state is available, returning
 # personnel also create an occupation-turnover warning there; containment can
 # then stop the rear-area route without erasing the liberated state's trauma.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_control_change_node_source_generation,
+# cannibalism_control_change_recovery_context_valid.
 cannibalism_handle_state_control_recovery = {
 	set_temp_variable = { cannibalism_control_change_recovery_context_valid = 0 }
 	if = {
@@ -11311,6 +11666,8 @@ cannibalism_handle_state_control_recovery = {
 				limit = { has_state_flag = cannibalism_warlord_state }
 				set_temp_variable = { cannibalism_control_change_was_warlord_state = 1 }
 			}
+			# Own the cannibalism_begin_current_state_recovery outputs read after it returns.
+			set_temp_variable = { cannibalism_recovery_start_allowed = 0 }
 			cannibalism_begin_current_state_recovery = yes
 			if = {
 				limit = {
@@ -11551,9 +11908,14 @@ cannibalism_try_enqueue_local_victory_survivors = {
 # Player and AI actions that use the same queue/cost API
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_expected_spread_row_found,
+# cannibalism_spread_queue_validation_result.
 cannibalism_find_expected_spread_row_for_screening = {
 	set_temp_variable = { cannibalism_expected_spread_row_found = 0 }
 	set_temp_variable = { cannibalism_screening_requested_spread_id = cannibalism_expected_spread_id }
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	set_temp_variable = { cannibalism_expected_spread_id = cannibalism_screening_requested_spread_id }
 	if = {
@@ -11592,6 +11954,9 @@ cannibalism_find_expected_spread_row_for_screening = {
 
 cannibalism_try_pay_humane_route_screening_cost = {
 	set_temp_variable = { cannibalism_humane_screening_result = 0 }
+	# Own the cannibalism_find_expected_spread_row_for_screening outputs read after it returns.
+	set_temp_variable = { cannibalism_expected_spread_row_found = 0 }
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_find_expected_spread_row_for_screening = yes
 	if = {
 		limit = {
@@ -11623,6 +11988,9 @@ cannibalism_try_pay_humane_route_screening_cost = {
 
 cannibalism_try_pay_hard_route_screening_cost = {
 	set_temp_variable = { cannibalism_hard_screening_result = 0 }
+	# Own the cannibalism_find_expected_spread_row_for_screening outputs read after it returns.
+	set_temp_variable = { cannibalism_expected_spread_row_found = 0 }
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_find_expected_spread_row_for_screening = yes
 	if = {
 		limit = {
@@ -11707,6 +12075,8 @@ cannibalism_execute_deliberate_foreign_seed = {
 			CONTROLLER = { save_event_target_as = cannibalism_spread_target_country }
 		}
 		set_temp_variable = { cannibalism_spread_route = constant:cannibalism_spread_route.deliberate_seed }
+		# Own the cannibalism_enqueue_spread_entry outputs read after it returns.
+		set_temp_variable = { cannibalism_spread_enqueue_result = 0 }
 		cannibalism_enqueue_spread_entry = yes
 		if = {
 			limit = { check_variable = { cannibalism_spread_enqueue_result > 0 } }
@@ -11762,6 +12132,8 @@ cannibalism_execute_deliberate_foreign_seed = {
 # tombstones for the normal post-iteration compactor.
 cannibalism_invalidate_spread_entries_for_current_country_lifecycle = {
 	save_event_target_as = cannibalism_spread_lifecycle_country
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -11810,8 +12182,12 @@ cannibalism_invalidate_spread_entries_for_current_country_lifecycle = {
 
 # State scope. Control transfer invalidates rows whose physical source or target
 # is this exact state before recovery or a replacement route is considered.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_spread_route.
 cannibalism_invalidate_spread_entries_for_current_state_lifecycle = {
 	save_event_target_as = cannibalism_spread_lifecycle_state
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -11864,6 +12240,8 @@ cannibalism_invalidate_spread_entries_for_current_state_lifecycle = {
 cannibalism_reconcile_current_state_spread_lifecycle = {
 	save_event_target_as = cannibalism_spread_lifecycle_state
 	set_temp_variable = { cannibalism_spread_state_live_row_count = 0 }
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -11904,6 +12282,8 @@ cannibalism_reconcile_current_state_spread_lifecycle = {
 }
 
 cannibalism_reconcile_current_country_spread_lifecycle = {
+	# Own the cannibalism_validate_spread_queue outputs read after it returns.
+	set_temp_variable = { cannibalism_spread_queue_validation_result = 0 }
 	cannibalism_validate_spread_queue = yes
 	if = {
 		limit = { check_variable = { cannibalism_spread_queue_validation_result > 0 } }
@@ -12308,6 +12688,9 @@ cannibalism_try_start_global_defeat_aftermath = {
 # no recurring country scan is created.
 # ============================================================================
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scored_target_countries,
+# cannibalism_scored_target_values.
 cannibalism_get_unified_scored_targets = {
 	clear_temp_array = cannibalism_scored_target_countries
 	clear_temp_array = cannibalism_scored_target_values
@@ -12318,6 +12701,9 @@ cannibalism_get_unified_scored_targets = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_scored_target_countries,
+# cannibalism_scored_target_values.
 cannibalism_get_wendigo_scored_targets = {
 	clear_temp_array = cannibalism_scored_target_countries
 	clear_temp_array = cannibalism_scored_target_values
@@ -12442,6 +12828,9 @@ cannibalism_wendigo_apply_new_scored_enemy_priority = {
 }
 
 cannibalism_unified_apply_scored_campaign_priorities = {
+	# Own the scored arrays the getter fills.
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
 	cannibalism_get_unified_scored_targets = yes
 	set_temp_variable = { cannibalism_scored_target_index = 0 }
 	while_loop_effect = {
@@ -12461,6 +12850,9 @@ cannibalism_unified_apply_scored_campaign_priorities = {
 }
 
 cannibalism_wendigo_apply_scored_enemy_priorities = {
+	# Own the scored arrays the getter fills.
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
 	cannibalism_get_wendigo_scored_targets = yes
 	set_temp_variable = { cannibalism_scored_target_index = 0 }
 	while_loop_effect = {
@@ -12482,6 +12874,9 @@ cannibalism_wendigo_apply_scored_enemy_priorities = {
 # One-shot post-lock helper. The reserved super-event effect should call this
 # instead of applying the Wendigo branch to every country indiscriminately.
 cannibalism_wendigo_apply_scored_terminal_priorities = {
+	# Own the scored arrays the getter fills.
+	clear_temp_array = cannibalism_scored_target_countries
+	clear_temp_array = cannibalism_scored_target_values
 	cannibalism_get_wendigo_scored_targets = yes
 	set_temp_variable = { cannibalism_scored_target_index = 0 }
 	while_loop_effect = {
@@ -12546,6 +12941,8 @@ cannibalism_wendigo_apply_scored_terminal_priorities = {
 # Weighted host selection
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_current_unification_host_score.
 cannibalism_calculate_current_unification_host_score = {
 	set_temp_variable = { cannibalism_current_unification_host_score = constant:cannibalism_unification.base_host_score }
 	if = {
@@ -12633,6 +13030,8 @@ cannibalism_calculate_current_unification_host_score = {
 
 cannibalism_consider_current_unification_host_candidate = {
 	set_temp_variable = { cannibalism_current_unification_host_id = THIS.id }
+	# Own the cannibalism_calculate_current_unification_host_score outputs read after it returns.
+	set_temp_variable = { cannibalism_current_unification_host_score = constant:cannibalism_unification.base_host_score }
 	cannibalism_calculate_current_unification_host_score = yes
 	if = {
 		limit = {
@@ -12787,6 +13186,8 @@ cannibalism_apply_initial_larder_inheritance = {
 
 # Donor. Quote only. Invalid context fails closed; a missing capital capture or
 # unwritten distance quotes at constant distance_loss_maximum.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_transfer_hoard_amount.
 cannibalism_prepare_larder_transfer_quote = {
 	set_temp_variable = { cannibalism_transfer_distance = constant:cannibalism_larder_logistics.minus_one }
 	set_temp_variable = { cannibalism_transfer_dispatch = constant:cannibalism_larder_logistics.zero }
@@ -12872,6 +13273,8 @@ cannibalism_prepare_larder_transfer_quote = {
 # cannibalism_concealment_autonomy_bargain (1 for an autonomy tribute).
 # Output: cannibalism_transfer_concealment_share, the fraction of the dispatch
 # the warlord hides. Hoarders and autonomy bargains conceal; others ship it all.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_transfer_concealment_share.
 cannibalism_prepare_current_warlord_concealment_share = {
 	set_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.zero }
 	if = {
@@ -13137,6 +13540,9 @@ cannibalism_migrate_runtime_references_to_unified_country = {
 # recipient records the donor. Output temps: cannibalism_integration_donor_generation
 # (0 without an actor generation) and cannibalism_integration_origin_state
 # (0 without a recorded origin state).
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_integration_donor_generation,
+# cannibalism_integration_origin_state.
 cannibalism_capture_current_integration_history_identity = {
 	set_temp_variable = { cannibalism_integration_donor_generation = 0 }
 	set_temp_variable = { cannibalism_integration_origin_state = 0 }
@@ -13419,6 +13825,9 @@ cannibalism_create_unified_country_from_selected_host = {
 			}
 			# Spread rows are validated before the reveal. After the public flag the
 			# constructor always completes; an unmigrated row is invalidated when due.
+			# Own the cannibalism_capture_current_integration_history_identity outputs read after it returns.
+			set_temp_variable = { cannibalism_integration_donor_generation = 0 }
+			set_temp_variable = { cannibalism_integration_origin_state = 0 }
 			event_target:cannibalism_unification_host = { cannibalism_capture_current_integration_history_identity = yes }
 			CBL = {
 				cannibalism_apply_initial_larder_inheritance = yes
@@ -13612,7 +14021,11 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 		cannibalism_capture_current_larder_transfer_capitals = yes
 		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
 		set_temp_variable = { cannibalism_concealment_autonomy_bargain = constant:cannibalism_hoard.zero }
+		# Own the cannibalism_prepare_current_warlord_concealment_share outputs read after it returns.
+		set_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.zero }
 		cannibalism_prepare_current_warlord_concealment_share = yes
+		# Own the cannibalism_prepare_larder_transfer_quote outputs read after it returns.
+		set_temp_variable = { cannibalism_transfer_hoard_amount = constant:cannibalism_larder_logistics.zero }
 		cannibalism_prepare_larder_transfer_quote = yes
 		set_temp_variable = { cannibalism_absorbed_warlord_was_human = 0 }
 		if = { limit = { is_ai = no } set_temp_variable = { cannibalism_absorbed_warlord_was_human = 1 } }
@@ -13636,6 +14049,9 @@ cannibalism_absorb_current_warlord_into_unified_host = {
 						set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
 						set_variable = { cannibalism_integration_disposition = cannibalism_requested_warlord_disposition }
 						cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
+						# Own the cannibalism_capture_current_integration_history_identity outputs read after it returns.
+						set_temp_variable = { cannibalism_integration_donor_generation = 0 }
+						set_temp_variable = { cannibalism_integration_origin_state = 0 }
 						event_target:cannibalism_absorbed_warlord = { cannibalism_capture_current_integration_history_identity = yes }
 						cannibalism_record_integrated_warlord_slot = yes
 						if = {
@@ -13737,7 +14153,11 @@ cannibalism_bargain_current_warlord_autonomy = {
 		}
 		set_temp_variable = { cannibalism_transfer_route_fraction = cannibalism_integration_larder_factor }
 		set_temp_variable = { cannibalism_concealment_autonomy_bargain = constant:cannibalism_hoard.one }
+		# Own the cannibalism_prepare_current_warlord_concealment_share outputs read after it returns.
+		set_temp_variable = { cannibalism_transfer_concealment_share = constant:cannibalism_hoard.zero }
 		cannibalism_prepare_current_warlord_concealment_share = yes
+		# Own the cannibalism_prepare_larder_transfer_quote outputs read after it returns.
+		set_temp_variable = { cannibalism_transfer_hoard_amount = constant:cannibalism_larder_logistics.zero }
 		cannibalism_prepare_larder_transfer_quote = yes
 		cannibalism_add_current_warlord_larder_to_unified_host = yes
 		if = {
@@ -13926,6 +14346,8 @@ cannibalism_schedule_hoard_review = {
 # Outputs: event_target:cannibalism_hoard_target_owner and
 # cannibalism_hoard_target_is_governor (1 while the owner is the same live
 # autonomous governor serving this host).
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_hoard_target_is_governor.
 cannibalism_load_hoard_target_owner = {
 	set_temp_variable = { cannibalism_hoard_target_owner_captured = constant:cannibalism_hoard.zero }
 	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
@@ -13978,6 +14400,8 @@ cannibalism_select_next_hoard_review = {
 		}
 		set_variable = { cannibalism_hoard_review_amount = cannibalism_hoard_review_amount_value }
 		set_variable = { cannibalism_hoard_review_name = cannibalism_hoard_review_name_value }
+		# Own the cannibalism_load_hoard_target_owner outputs read after it returns.
+		set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
 		cannibalism_load_hoard_target_owner = yes
 		if = {
 			limit = { check_variable = { cannibalism_hoard_target_is_governor > constant:cannibalism_hoard.zero } }
@@ -14002,6 +14426,9 @@ cannibalism_select_next_hoard_review = {
 
 # Host COUNTRY scope. Loads the reviewed cache into the shared hoard targets.
 # Output: cannibalism_hoard_target_valid (1 while the cache is still on record).
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_hoard_target_is_governor,
+# cannibalism_hoard_target_valid.
 cannibalism_load_hoard_review_target = {
 	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	if = {
@@ -14130,6 +14557,9 @@ cannibalism_finish_hoard_review = {
 # chaosx.nr14.82 option: demand the cache now. Recovers part of it, destroys the
 # rest and provokes the warlord's followers.
 cannibalism_confront_reviewed_hoard = {
+	# Own the cannibalism_load_hoard_review_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
@@ -14152,6 +14582,9 @@ cannibalism_confront_reviewed_hoard = {
 # chaosx.nr14.82 option: leave the cache where it is. A live governor grows
 # more loyal; the host's authority suffers.
 cannibalism_tolerate_reviewed_hoard = {
+	# Own the cannibalism_load_hoard_review_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
@@ -14171,6 +14604,8 @@ cannibalism_tolerate_reviewed_hoard = {
 # chaosx.nr14.82 option: pay the quoted Command Power and recover most of the
 # cache without force.
 cannibalism_bargain_reviewed_hoard = {
+	# Own the cannibalism_load_hoard_review_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
 	if = {
 		limit = {
@@ -14224,6 +14659,9 @@ cannibalism_unified_execute_hoard_seizure = {
 
 # Host COUNTRY scope. Loads the seizure target into the shared hoard targets.
 # Output: cannibalism_hoard_target_valid.
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_hoard_target_is_governor,
+# cannibalism_hoard_target_valid.
 cannibalism_load_hoard_seizure_target = {
 	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	if = {
@@ -14252,6 +14690,9 @@ cannibalism_clear_hoard_seizure = {
 # Seizure mission success: the force took the whole cache. Breaking a tolerated
 # cache still angers its warlord's followers.
 cannibalism_complete_hoard_seizure = {
+	# Own the cannibalism_load_hoard_seizure_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_seizure_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
@@ -14270,6 +14711,9 @@ cannibalism_complete_hoard_seizure = {
 
 # Seizure mission timeout with a weak force: half the cache, and resistance.
 cannibalism_partial_hoard_seizure = {
+	# Own the cannibalism_load_hoard_seizure_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_seizure_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
@@ -14284,6 +14728,9 @@ cannibalism_partial_hoard_seizure = {
 # Seizure mission timeout with no force: the guards scatter the cache, the
 # warlord's followers resist and the host loses authority.
 cannibalism_fail_hoard_seizure = {
+	# Own the cannibalism_load_hoard_seizure_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_seizure_target = yes
 	if = {
 		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
@@ -16199,6 +16646,8 @@ cannibalism_unified_execute_feeding_capital = {
 	cannibalism_unified_record_larder_operation = yes
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_unified_consumption_result.
 cannibalism_unified_execute_state_consumption = {
 	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	if = {
@@ -16207,6 +16656,9 @@ cannibalism_unified_execute_state_consumption = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = cannibalism_unified_population_cost_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = cannibalism_unified_consumption_mode }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -16239,6 +16691,8 @@ cannibalism_unified_execute_rapid_consumption = {
 	set_temp_variable = { cannibalism_unified_convoy_cost = 0 }
 	set_temp_variable = { cannibalism_unified_fuel_cost = 0 }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.feeding }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = {
 		limit = { check_variable = { cannibalism_unified_consumption_result > 0 } has_country_flag = cannibalism_unified_state_exhaustion_risk }
@@ -16260,6 +16714,8 @@ cannibalism_unified_execute_managed_consumption = {
 	set_temp_variable = { cannibalism_unified_convoy_cost = 0 }
 	set_temp_variable = { cannibalism_unified_fuel_cost = 0 }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.silent_larder }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = {
 		limit = { check_variable = { cannibalism_unified_consumption_result > 0 } has_country_flag = cannibalism_unified_organized_resistance_risk }
@@ -16282,6 +16738,8 @@ cannibalism_unified_execute_mobile_consumption = {
 	set_temp_variable = { cannibalism_unified_convoy_cost = constant:cannibalism_unified_profile.zero }
 	set_temp_variable = { cannibalism_unified_fuel_cost = constant:cannibalism_unified_profile.zero }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.feeding }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = { limit = { check_variable = { cannibalism_unified_consumption_result > 0 } } add_to_variable = { cannibalism_world_hostility = cannibalism_unified_mobile_hostility_gain } cannibalism_unified_focus_clamp_values = yes }
 }
@@ -16295,6 +16753,8 @@ cannibalism_unified_execute_battlefield_consumption = {
 	set_temp_variable = { cannibalism_unified_convoy_cost = 0 }
 	set_temp_variable = { cannibalism_unified_fuel_cost = 0 }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.battlefield }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = {
 		limit = { check_variable = { cannibalism_unified_consumption_result > 0 } }
@@ -16415,6 +16875,9 @@ cannibalism_unified_execute_recruitment = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = cannibalism_unified_population_cost_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -16891,6 +17354,8 @@ cannibalism_unified_execute_terminal_consumption = {
 	set_temp_variable = { cannibalism_unified_train_cost = 0 }
 	set_temp_variable = { cannibalism_unified_support_cost = 0 }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.feeding }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = {
 		limit = { check_variable = { cannibalism_unified_consumption_result > 0 } }
@@ -16909,6 +17374,8 @@ cannibalism_unified_execute_locked_terminal_consumption = {
 	set_temp_variable = { cannibalism_unified_support_cost = 0 }
 	set_temp_variable = { cannibalism_unified_consumption_mode = constant:cannibalism_consumption_mode.feeding }
 	set_temp_variable = { cannibalism_unified_skip_operation_record = 1 }
+	# Own the cannibalism_unified_execute_state_consumption outputs read after it returns.
+	set_temp_variable = { cannibalism_unified_consumption_result = 0 }
 	cannibalism_unified_execute_state_consumption = yes
 	if = {
 		limit = { check_variable = { cannibalism_unified_consumption_result > 0 } }
@@ -18005,6 +18472,8 @@ cannibalism_spawn_warlord_recruitment_template_13 = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_origin_template.
 cannibalism_prepare_current_warlord_origin_specialist_template = {
 	if = {
 		limit = { has_country_flag = cannibalism_origin_island_host }
@@ -18020,6 +18489,11 @@ cannibalism_prepare_current_warlord_origin_specialist_template = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_warlord_recruitment_cooldown_days,
+# cannibalism_warlord_unit_start_equipment,
+# cannibalism_warlord_unit_start_experience,
+# cannibalism_warlord_unit_start_manpower.
 cannibalism_prepare_warlord_recruitment_contract = {
 	set_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_decision.unit_start_experience }
 	set_temp_variable = { cannibalism_warlord_unit_start_equipment = constant:cannibalism_warlord_decision.unit_start_equipment }
@@ -18099,6 +18573,9 @@ cannibalism_prepare_warlord_recruitment_contract = {
 cannibalism_spawn_selected_warlord_recruitment_unit = {
 	if = {
 		limit = { check_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist } }
+		# Own the template read after the helper returns. An actor without an
+		# origin raises a scavenger warband.
+		set_temp_variable = { cannibalism_warlord_origin_template = constant:cannibalism_recruitment_template.scavenger_warband }
 		event_target:cannibalism_warlord_recruitment_actor = { cannibalism_prepare_current_warlord_origin_specialist_template = yes }
 		meta_effect = {
 			text = { cannibalism_spawn_warlord_recruitment_template_[TEMPLATE] = yes }
@@ -18149,6 +18626,11 @@ cannibalism_record_current_warlord_recruitment = {
 
 cannibalism_execute_warlord_recruitment_transaction = {
 	set_temp_variable = { cannibalism_warlord_recruitment_result = 0 }
+	# Own the cannibalism_prepare_warlord_recruitment_contract outputs read after it returns.
+	set_temp_variable = { cannibalism_warlord_recruitment_cooldown_days = constant:cannibalism_warlord_decision.recruitment_state_cooldown_days }
+	set_temp_variable = { cannibalism_warlord_unit_start_equipment = constant:cannibalism_warlord_decision.unit_start_equipment }
+	set_temp_variable = { cannibalism_warlord_unit_start_experience = constant:cannibalism_warlord_decision.unit_start_experience }
+	set_temp_variable = { cannibalism_warlord_unit_start_manpower = constant:cannibalism_warlord_decision.unit_start_manpower }
 	cannibalism_prepare_warlord_recruitment_contract = yes
 	if = {
 		limit = {
@@ -18161,6 +18643,9 @@ cannibalism_execute_warlord_recruitment_transaction = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = cannibalism_warlord_recruitment_population_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -18305,6 +18790,8 @@ cannibalism_consume_selected_state_for_larder = {
 		save_event_target_as = cannibalism_warlord_recruitment_actor
 		event_target:cannibalism_warlord_recruitment_state = { save_event_target_as = cannibalism_consumption_target_state }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.feeding }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
@@ -18335,6 +18822,8 @@ cannibalism_intensify_selected_feeding_district = {
 		save_event_target_as = cannibalism_warlord_recruitment_actor
 		event_target:cannibalism_warlord_recruitment_state = { save_event_target_as = cannibalism_consumption_target_state }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.silent_larder }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = { check_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.applied } }
@@ -18458,6 +18947,14 @@ cannibalism_synchronize_attack_with_target_warlord = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_origin_operation_convoy_recovery,
+# cannibalism_origin_operation_duration_bonus,
+# cannibalism_origin_operation_infantry_recovery,
+# cannibalism_origin_operation_larder_recovery,
+# cannibalism_origin_operation_support_recovery,
+# cannibalism_origin_operation_train_recovery,
+# cannibalism_origin_operation_truck_recovery.
 cannibalism_prepare_warlord_origin_operation_contract = {
 	set_temp_variable = { cannibalism_origin_operation_duration_bonus = 0 }
 	set_temp_variable = { cannibalism_origin_operation_larder_recovery = 0 }
@@ -18612,6 +19109,14 @@ cannibalism_record_warlord_major_victory_harvest = {
 cannibalism_begin_island_convoy_ambush_operation = {
 	if = {
 		limit = { cannibalism_warlord_can_pay_island_operation_cost = yes }
+		# Own the cannibalism_prepare_warlord_origin_operation_contract outputs read after it returns.
+		set_temp_variable = { cannibalism_origin_operation_convoy_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_duration_bonus = 0 }
+		set_temp_variable = { cannibalism_origin_operation_infantry_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_larder_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_support_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_train_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_truck_recovery = 0 }
 		cannibalism_prepare_warlord_origin_operation_contract = yes
 		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.island_operation_larder_cost }
 		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.island_operation_command_spend }
@@ -18626,6 +19131,14 @@ cannibalism_begin_island_convoy_ambush_operation = {
 cannibalism_begin_siege_relief_ambush_operation = {
 	if = {
 		limit = { cannibalism_warlord_can_pay_siege_operation_cost = yes }
+		# Own the cannibalism_prepare_warlord_origin_operation_contract outputs read after it returns.
+		set_temp_variable = { cannibalism_origin_operation_convoy_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_duration_bonus = 0 }
+		set_temp_variable = { cannibalism_origin_operation_infantry_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_larder_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_support_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_train_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_truck_recovery = 0 }
 		cannibalism_prepare_warlord_origin_operation_contract = yes
 		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.siege_operation_larder_cost }
 		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.siege_operation_command_spend }
@@ -18654,6 +19167,14 @@ cannibalism_begin_march_supply_raid_operation = {
 			has_event_target = cannibalism_march_raid_target_state
 			event_target:cannibalism_march_raid_target_state = { cannibalism_warlord_march_raid_target_is_valid = yes }
 		}
+		# Own the cannibalism_prepare_warlord_origin_operation_contract outputs read after it returns.
+		set_temp_variable = { cannibalism_origin_operation_convoy_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_duration_bonus = 0 }
+		set_temp_variable = { cannibalism_origin_operation_infantry_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_larder_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_support_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_train_recovery = 0 }
+		set_temp_variable = { cannibalism_origin_operation_truck_recovery = 0 }
 		cannibalism_prepare_warlord_origin_operation_contract = yes
 		set_temp_variable = { cannibalism_warlord_operation_larder_cost = constant:cannibalism_warlord_decision.march_operation_larder_cost }
 		set_temp_variable = { cannibalism_warlord_operation_command_spend = constant:cannibalism_warlord_decision.march_operation_command_spend }
@@ -19675,6 +20196,8 @@ cannibalism_designate_selected_wendigo_anchor = {
 			cannibalism_wendigo_can_pay_designate_anchor_cost = yes
 			event_target:cannibalism_wendigo_decision_state = { cannibalism_state_can_become_wendigo_anchor = yes }
 		}
+		# Own the cannibalism_register_current_wendigo_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_wendigo_anchor_registration_result = 0 }
 		event_target:cannibalism_wendigo_decision_state = { cannibalism_register_current_wendigo_anchor = yes }
 		if = {
 			limit = { check_variable = { cannibalism_wendigo_anchor_registration_result > 0 } }
@@ -19722,6 +20245,9 @@ cannibalism_feed_selected_wendigo_anchor = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.feed_anchor_population_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.feeding }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -19787,6 +20313,9 @@ cannibalism_train_wendigo_pack_from_selected_anchor = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.train_pack_population_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.recruitment }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -19825,6 +20354,9 @@ cannibalism_accelerate_wendigo_countdown_from_selected_anchor = {
 		set_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_wendigo_decision.accelerate_population_k }
 		multiply_temp_variable = { cannibalism_consumption_exact_request_people = constant:cannibalism_consumption.population_people_per_k }
 		set_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.silent_larder }
+		# Own the cannibalism_prepare_consumption_context outputs read after it returns.
+		set_temp_variable = { cannibalism_consumption_result = constant:cannibalism_consumption_result.invalid_scope }
+		set_temp_variable = { cannibalism_population_loss_applied = 0 }
 		cannibalism_prepare_consumption_context = yes
 		if = {
 			limit = {
@@ -19920,6 +20452,8 @@ cannibalism_freeze_selected_wendigo_supply_corridor = {
 # Array-backed counterwar target selection and effects
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_wendigo_counterwar_anchor_score.
 cannibalism_calculate_current_counterwar_anchor_score = {
 	set_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_base_score }
 	if = {
@@ -19939,6 +20473,8 @@ cannibalism_calculate_current_counterwar_anchor_score = {
 	add_to_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = cannibalism_wendigo_counterwar_strength_component }
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_wendigo_counterwar_anchor_found.
 cannibalism_select_counterwar_anchor = {
 	set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
 	set_temp_variable = { cannibalism_wendigo_counterwar_best_score = 0 }
@@ -19957,6 +20493,8 @@ cannibalism_select_counterwar_anchor = {
 					NOT = { has_state_flag = cannibalism_wendigo_recruitment_site_broken }
 				}
 			}
+			# Own the cannibalism_calculate_current_counterwar_anchor_score outputs read after it returns.
+			set_temp_variable = { cannibalism_wendigo_counterwar_anchor_score = constant:cannibalism_wendigo_decision.selection_base_score }
 			cannibalism_calculate_current_counterwar_anchor_score = yes
 			if = {
 				limit = {
@@ -19980,6 +20518,8 @@ cannibalism_identify_counterwar_anchor = {
 		limit = { cannibalism_can_identify_any_wendigo_anchor = yes }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 1 }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		# Own the cannibalism_select_counterwar_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
 		cannibalism_select_counterwar_anchor = yes
 		if = {
 			limit = {
@@ -20038,6 +20578,8 @@ cannibalism_assault_selected_counterwar_anchor = {
 		limit = { cannibalism_can_pay_wendigo_anchor_assault_cost = yes }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		# Own the cannibalism_select_counterwar_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
 		cannibalism_select_counterwar_anchor = yes
 		if = {
 			limit = {
@@ -20076,6 +20618,8 @@ cannibalism_disrupt_selected_wendigo_anchor_logistics = {
 		limit = { cannibalism_can_pay_wendigo_logistics_disruption_cost = yes }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 0 }
+		# Own the cannibalism_select_counterwar_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
 		cannibalism_select_counterwar_anchor = yes
 		if = {
 			limit = {
@@ -20118,6 +20662,8 @@ cannibalism_break_selected_wendigo_recruitment_site = {
 		limit = { cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_unidentified = 0 }
 		set_temp_variable = { cannibalism_wendigo_counterwar_require_active_site = 1 }
+		# Own the cannibalism_select_counterwar_anchor outputs read after it returns.
+		set_temp_variable = { cannibalism_wendigo_counterwar_anchor_found = 0 }
 		cannibalism_select_counterwar_anchor = yes
 		if = {
 			limit = {
@@ -20202,6 +20748,8 @@ cannibalism_break_wendigo_transformation_route = {
 # Deterministic live-Wendigo selection
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_current_wendigo_merge_host_score.
 cannibalism_calculate_current_wendigo_merge_host_score = {
 	set_temp_variable = { cannibalism_current_wendigo_merge_host_score = constant:cannibalism_wendigo_merge.base_host_score }
 	if = {
@@ -20231,6 +20779,8 @@ cannibalism_calculate_current_wendigo_merge_host_score = {
 
 cannibalism_consider_current_wendigo_merge_host_candidate = {
 	set_temp_variable = { cannibalism_current_wendigo_merge_host_id = THIS.id }
+	# Own the cannibalism_calculate_current_wendigo_merge_host_score outputs read after it returns.
+	set_temp_variable = { cannibalism_current_wendigo_merge_host_score = constant:cannibalism_wendigo_merge.base_host_score }
 	cannibalism_calculate_current_wendigo_merge_host_score = yes
 	if = {
 		limit = {
@@ -20290,6 +20840,8 @@ cannibalism_select_wendigo_merge_host = {
 # Initial transformation anchors
 # ---------------------------------------------------------------------------
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_current_wendigo_anchor_score.
 cannibalism_calculate_current_wendigo_anchor_score = {
 	set_temp_variable = { cannibalism_current_wendigo_anchor_score = constant:cannibalism_wendigo_anchor.base_score }
 	if = {
@@ -20305,6 +20857,8 @@ cannibalism_calculate_current_wendigo_anchor_score = {
 	if = { limit = { rail_way > 0 } add_to_temp_variable = { cannibalism_current_wendigo_anchor_score = constant:cannibalism_wendigo_anchor.rail_score } }
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_wendigo_anchor_registration_result.
 cannibalism_register_current_wendigo_anchor = {
 	set_temp_variable = { cannibalism_wendigo_anchor_registration_result = 0 }
 	# Own exact-population results before entering the host country scope.
@@ -20379,6 +20933,8 @@ cannibalism_select_next_initial_wendigo_anchor = {
 					compare = greater_than_or_equals
 				}
 			}
+			# Own the cannibalism_calculate_current_wendigo_anchor_score outputs read after it returns.
+			set_temp_variable = { cannibalism_current_wendigo_anchor_score = constant:cannibalism_wendigo_anchor.base_score }
 			cannibalism_calculate_current_wendigo_anchor_score = yes
 			if = {
 				limit = {
@@ -20591,6 +21147,9 @@ cannibalism_absorb_primary_warlord_donor_into_wendigo = {
 				set_variable = { cannibalism_integration_personality = cannibalism_inherited_warlord_personality }
 				set_variable = { cannibalism_integration_disposition = constant:cannibalism_warlord_disposition.host_commander }
 				cannibalism_apply_absorbed_warlord_inheritance_to_unified_host = yes
+				# Own the cannibalism_capture_current_integration_history_identity outputs read after it returns.
+				set_temp_variable = { cannibalism_integration_donor_generation = 0 }
+				set_temp_variable = { cannibalism_integration_origin_state = 0 }
 				event_target:cannibalism_primary_warlord_donor = { cannibalism_capture_current_integration_history_identity = yes }
 				cannibalism_record_integrated_warlord_slot = yes
 				cannibalism_create_integrated_warlord_commander = yes
@@ -20957,6 +21516,8 @@ cannibalism_try_start_wendigo_countdown = {
 	}
 }
 
+# Caller-owned outputs, set by each caller before the call when it reads them
+# afterwards: cannibalism_wendigo_countdown_progress_change.
 cannibalism_calculate_wendigo_countdown_progress_change = {
 	set_temp_variable = { cannibalism_wendigo_countdown_progress_change = constant:cannibalism_wendigo_countdown.weekly_base }
 	set_temp_variable = { cannibalism_wendigo_countdown_component = global.cannibalism_wendigo_active_anchor_count }
@@ -21036,6 +21597,8 @@ cannibalism_process_wendigo_transformation_pulse = {
 			limit = { has_country_flag = cannibalism_wendigo_countdown_active }
 			if = {
 				limit = { cannibalism_wendigo_can_start_countdown = yes }
+				# Own the cannibalism_calculate_wendigo_countdown_progress_change outputs read after it returns.
+				set_temp_variable = { cannibalism_wendigo_countdown_progress_change = constant:cannibalism_wendigo_countdown.weekly_base }
 				cannibalism_calculate_wendigo_countdown_progress_change = yes
 				add_to_variable = { cannibalism_wendigo_transformation_progress = cannibalism_wendigo_countdown_progress_change }
 			}
@@ -21637,6 +22200,12 @@ chaos_unit_family_provider_523_event19_spawn_unit = {
 }
 
 chaos_unit_family_provider_523_event19_reconcile_sustainment = {
+	# Own the obligation manifest the shared queue and record helpers fill.
+	clear_temp_array = infantry_spawn_provider_manifest_profile_entries
+	clear_temp_array = infantry_spawn_provider_manifest_per_battalion_entries
+	clear_temp_array = infantry_spawn_provider_manifest_component_count_entries
+	clear_temp_array = infantry_spawn_provider_manifest_scale_kind_entries
+	set_temp_variable = { infantry_spawn_provider_manifest_invalid = 0 }
 	infantry_spawn_clear_provider_obligation_manifest = yes
 	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
 	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event14_cannibal_irregulars.template_manpower }

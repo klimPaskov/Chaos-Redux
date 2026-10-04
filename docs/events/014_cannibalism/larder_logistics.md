@@ -97,6 +97,7 @@ Operational profile refresh calls the calculation-only capacity API, whose contr
 
 Scope pointers are regular effect-chain targets, with no new global target.
 All quote/proof/commit outputs are allocated inline by the four owners before helpers/scopes.
+The absorption and autonomy owners also own the hidden share `cannibalism_transfer_concealment_share` before `cannibalism_prepare_current_warlord_concealment_share` and the cache amount `cannibalism_transfer_hoard_amount` before the quote (`helper_output_ownership.md`).
 The source generation, route input and constructor context are temporary.
 Private scratch fields used only inside capacity/quote calculation need no caller allocation.
 Regular targets clear with their effect chain, and fresh zero capture proofs prevent stale target reuse within a chain.

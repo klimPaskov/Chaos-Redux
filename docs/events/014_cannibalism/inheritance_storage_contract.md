@@ -179,5 +179,5 @@ Installed `set_temp_variable` documentation lines 7820-7839 and the CHI native e
 
 The parent owns final source review, commit and runtime claims.
 Any expansion into Larder scaling, Network data helpers, scored selection, or broader generation gates belongs to a separate owner tranche.
-A later source contract audit can extend conservative storage coverage to remaining Event014 APIs without assuming this bounded repair covers the full event.
+The round 2 repair extends the same caller-owned storage to every other Event 014 helper output read after its call; `helper_output_ownership.md` lists those helpers, their outputs and defaults.
 No mechanic simplification or replacement is introduced.
