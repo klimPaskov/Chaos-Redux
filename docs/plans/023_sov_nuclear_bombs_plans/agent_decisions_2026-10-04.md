@@ -76,3 +76,13 @@ Certification, the separate final authorization, the strike-preparation mission'
 The selector's `target_root_trigger` now carries the exchange-or-emergency gate, so the world state scan no longer runs daily while neither applies.
 Basis: README non-negotiables, Part 5 (Evolution IV first use only under severe strategic loss), Part 9 hard blockers, the closure addendum's prospective-connection section, and the lead's D6.
 Disposition: `implemented`; native release `needs_live_game`; probability compare recorded with D11.
+
+## D5b. AI inventory ceiling for device assembly
+
+Decision: `sov_nuclear_bombs_assemble_device_batch` gives zero AI weight unless `sov_nuclear_bombs_event_ai_has_production_deficit` holds.
+The ceiling is the attained stage's grant reference `sov_nuclear_bombs_cumulative_produced` (100, 175, 275, 400 or 600) less the event-wide transferred, missing and dismantled devices; intact Soviet custody is the actor's operational, assigned and reserved devices.
+Only expended devices therefore create a deficit, and an indivisible batch may overshoot it once before assembly stops again.
+The router's production duty uses the same predicate, so the AI does not enter production for assembly alone without a deficit.
+Player production, batch arithmetic, grants and the ledger are unchanged.
+Basis: the closure addendum's inventory policy (parent-accepted 2026-10-03), Part 9 production AI ("should not build bombs without regard to delivery, reactors, and security"; priority falls when the stockpile exceeds the posture cap), and the lead's item list.
+Disposition: `implemented`; probability compare recorded with D11.

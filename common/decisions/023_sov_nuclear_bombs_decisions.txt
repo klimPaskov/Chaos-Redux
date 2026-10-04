@@ -312,7 +312,9 @@ sov_nuclear_bombs_command_category = {
 				if = { limit = { has_country_flag = sov_nuclear_bombs_production_mission_active } sov_nuclear_bombs_pay_security_cost = yes }
 			}
 		}
-		ai_will_do = { base = 0.80 modifier = { factor = 1.50 check_variable = { var = sov_nuclear_bombs_readiness value = 50 compare = less_than } } }
+		# The AI assembles only to replace expended devices up to the attained
+		# stage's grant reference; player production is unchanged.
+		ai_will_do = { base = 0.80 modifier = { factor = 0 NOT = { sov_nuclear_bombs_event_ai_has_production_deficit = yes } } modifier = { factor = 1.50 check_variable = { var = sov_nuclear_bombs_readiness value = 50 compare = less_than } } }
 	}
 
 	sov_nuclear_bombs_prepare_delivery_crews = {
