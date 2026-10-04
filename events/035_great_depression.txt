@@ -30,10 +30,15 @@ country_event = {
 		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
 		name = chaosx.nr35.2.a
 		if = {
+			limit = { has_country_flag = great_depression_first_spread_news_pending }
+			news_event = { id = chaosx.nr35.15 days = 2 }
+			clr_country_flag = great_depression_first_spread_news_pending
+		}
+		else_if = {
 			limit = { has_country_flag = great_depression_news_pending }
 			news_event = { id = chaosx.news.40 days = 2 }
-			clr_country_flag = great_depression_news_pending
 		}
+		clr_country_flag = great_depression_news_pending
 		clr_country_flag = great_depression_report_pending
 		show_ideas_tooltip = great_depression_active
 	}
@@ -229,5 +234,99 @@ country_event = {
 		clr_country_flag = great_depression_recovery_report_pending
 		clear_variable = great_depression_recovery_report_episode_id
 		great_depression_show_recovery_report_ideas = yes
+	}
+}
+
+# Financial Contagion report for the origin. Queued once per episode by
+# great_depression_queue_contagion_activation_report when the evolution
+# activates on a crisis already under way. The most exposed partner and the
+# partner count were frozen when it was queued.
+country_event = {
+	id = chaosx.nr35.12
+	title = chaosx.nr35.12.t
+	desc = chaosx.nr35.12.d
+	picture = GFX_report_event_great_depression_contagion
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_active
+		has_country_flag = great_depression_evolution_financial_contagion
+		check_variable = { var = great_depression_contagion_report_episode_id value = great_depression_active_episode_id compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr35.12.a
+		ai_chance = { base = constant:great_depression_event_option_weight.contagion_report }
+		show_ideas_tooltip = great_depression_economic_contagion
+	}
+}
+
+# Social Collapse report. Queued once per episode by
+# great_depression_queue_social_collapse_activation_report when the evolution
+# activates on a crisis already under way, after the primary movement is chosen.
+country_event = {
+	id = chaosx.nr35.13
+	title = chaosx.nr35.13.t
+	desc = chaosx.nr35.13.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_active
+		has_country_flag = great_depression_evolution_social_collapse
+		check_variable = { var = great_depression_social_report_episode_id value = great_depression_active_episode_id compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr35.13.a
+		ai_chance = { base = constant:great_depression_event_option_weight.social_collapse_report }
+	}
+}
+
+# Exposed-partner report. A source queues it once per source episode when this
+# country's exposure to that source becomes material. It names the origin and
+# the relationship and never treats this country as being in a depression.
+country_event = {
+	id = chaosx.nr35.14
+	title = chaosx.nr35.14.t
+	desc = chaosx.nr35.14.d
+	picture = GFX_report_event_great_depression_contagion
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_exposure_report_queued
+		has_variable = great_depression_exposure_report_origins^num
+		check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_api.zero compare = greater_than }
+	}
+
+	immediate = {
+		hidden_effect = { great_depression_open_exposed_partner_report = yes }
+	}
+
+	option = {
+		name = chaosx.nr35.14.a
+		ai_chance = { base = constant:great_depression_event_option_weight.exposure_report }
+		hidden_effect = { great_depression_close_exposed_partner_report = yes }
+	}
+}
+
+# World news for the first full depression that one origin episode spreads to
+# another country. The converted country's own report sends it in place of the
+# ordinary national news, so FROM is the newly struck country.
+news_event = {
+	id = chaosx.nr35.15
+	title = chaosx.nr35.15.t
+	desc = chaosx.nr35.15.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.15.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
 	}
 }

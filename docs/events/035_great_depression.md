@@ -167,6 +167,10 @@ Coup, separatist, and civil-conflict outcomes require distinct actor, severity, 
 
 The coup and regional-autonomy branches use `chaosx.nr35.4` and `chaosx.nr35.5`; failed extreme routes do not invent a fallback faction or civil war.
 
+When Social Collapse activates on a crisis already under way, `great_depression_queue_social_collapse_activation_report` chooses the primary movement through the deterministic `great_depression_select_social_actor` and queues `chaosx.nr35.13` once per episode, with the social-collapse picture.
+The report names the movement family (trade-union coalition, communist councils, syndicalist occupation, nationalist mass movement, military emergency faction, traditional authority, regional autonomy, business and creditor coalition, or rural protest) through `GetGreatDepressionMovementFamily`, and the incident ladder later uses the same movement.
+A disabled evolution never activates, so it queues no report.
+
 ## Bounded incident pools
 
 `common/scripted_effects/035_great_depression_incident_effects.txt` owns the ordinary incident clocks, state and partner selectors, complete candidate pools, receipt history, and qualitative application adapters.
@@ -202,6 +206,19 @@ Provider support is counted once per globally unique source episode through a bo
 Conversion calls the fail-closed API with the proved source and receipt and deepens an existing compatible crisis rather than duplicating it.
 
 Event 34 suppliers enter through the supplier adapter and retain their own Overheating and contract-risk rules.
+
+When Financial Contagion activates on a crisis already under way, `great_depression_queue_contagion_activation_report` queues `chaosx.nr35.12` for the origin once per episode, a day later, with the contagion picture.
+It freezes the partner count and the partner at the highest exposure stage when it is queued, so the report names the most exposed partner and how many partner economies are tied to the origin, or says that none is tied closely enough yet, and it never shows conversion odds.
+An episode that opens with the evolution already active is covered by its opening report instead.
+
+When a partner first joins the origin's material exposure set, `great_depression_queue_exposed_partner_report` queues `chaosx.nr35.14` for that partner.
+The targeted receipt `great_depression_exposure_report_from_<source tag>` holds the source episode id, so one source episode reports to a partner once.
+The partner keeps a short queue of origins and relationships capped at the contagion source cap, so two origins reaching it in the same week each get a report.
+The report names the origin and the relationship (shared border, alliance, faction, overlord and subject, emergency agreement, or supply contract), describes the local bank and trade pressure, and points to the exposed-economy responses without treating the partner as being in a depression.
+
+The first contagion conversion that opens a full depression from one source episode is marked by `great_depression_mark_first_contagion_spread`.
+The source keeps the episode id in `great_depression_first_spread_news_episode_id`, and the converted country's opening report sends the world news `chaosx.nr35.15` in place of the ordinary `chaosx.news.40`, naming the newly struck country and the origin.
+Later conversions from the same episode keep the ordinary news, and a deepened crisis never counts as a first spread.
 
 ## The Second Great Depression
 

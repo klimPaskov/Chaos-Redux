@@ -15,3 +15,8 @@ The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only edi
 
 - No change to the Event Details, Evo I, Evo II or Evo III texts.
 - For any event listing kept outside the main row, Event 35 gained the report `chaosx.nr35.11` (A Strong Recovery, An Uneven Recovery, or A Hollow Recovery), shown once to the recovering country when an episode closes.
+
+## 2026-10-05: evolution reports, exposed-partner report and first-spread news
+
+- No change to the Event Details or evolution detail texts.
+- For any event listing kept outside the main row, Event 35 gained the reports `chaosx.nr35.12` (Contagion in the Credit Markets), `chaosx.nr35.13` (The Movement Takes Shape) and `chaosx.nr35.14` (Pressure from the origin, shown to an exposed partner), and the world news `chaosx.nr35.15` (Depression Spreads to the newly struck country).
