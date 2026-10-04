@@ -1623,64 +1623,59 @@ great_depression_can_start_withdraw_from_international_commitments = {
 	great_depression_action_slot_is_open = yes
 }
 
+# STATE scope. Called as FROM = { ... } inside the state-targeted center
+# decisions, so each wrapper checks only its target state. The decision
+# owner checks great_depression_action_slot_is_open in country scope.
 great_depression_can_start_center_protection = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_protection_target_is_valid = yes
 }
 
 great_depression_can_start_center_reopen = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_reopen_target_is_valid = yes
 }
 
 great_depression_can_start_center_rebuild = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_rebuild_target_is_valid = yes
 }
 
 great_depression_can_start_center_restructure = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_restructure_target_is_valid = yes
 }
 
 great_depression_can_start_center_abandon = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_abandon_target_is_valid = yes
 }
 
 great_depression_can_start_lasting_capacity_conversion = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_lasting_capacity_target_is_valid = yes
 }
 
 great_depression_can_start_regional_works_program = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_public_works_target_is_valid = yes
 }
 
 great_depression_can_start_strategic_plant_network = {
-	great_depression_action_slot_is_open = yes
 	great_depression_strategic_center_target_is_valid = yes
 }
 
 great_depression_can_start_industry_consolidation = {
-	great_depression_action_slot_is_open = yes
 	great_depression_center_consolidation_target_is_valid = yes
 }
 
 great_depression_can_start_industry_trusteeship = {
-	great_depression_action_slot_is_open = yes
 	great_depression_trusteeship_target_is_valid = yes
 }
 
 great_depression_can_start_failed_asset_reorganization = {
-	great_depression_action_slot_is_open = yes
 	great_depression_failed_asset_target_is_valid = yes
 }
 
+# COUNTRY scope. Human players need their selected center to remain a valid
+# target, while the AI may negotiate from any valid center, matching the
+# state-targeted center responses.
 great_depression_can_start_negotiate_with_strike_committees = {
 	great_depression_action_slot_is_open = yes
-	great_depression_selected_center_target_is_valid = yes
+	any_controlled_state = { great_depression_selected_center_target_is_valid = yes }
 }
 
 # Root-side aliases for the evolution action matrix. Target validity remains in
@@ -2231,7 +2226,6 @@ great_depression_emergency_government_mandate_objective_is_met = {
 # country. This prevents a stale center or transferred state from receiving a
 # later incident receipt.
 great_depression_incident_state_target_is_valid = {
-	exists = yes
 	impassable = no
 	is_owned_by = ROOT
 	is_controlled_by = ROOT
