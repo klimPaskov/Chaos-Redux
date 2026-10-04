@@ -3496,10 +3496,15 @@ random_terror_actor_key_unit_to_action_state = {
 	}
 }
 
+# A focus reward that reuses an actor helper sets the temp variable
+# random_terror_focus_context first, so completing a focus never starts the
+# decision cooldown.
 random_terror_actor_action_common = {
-	set_temp_variable = { random_terror_actor_action_lock_duration = constant:random_terror_tuning.actor_action_cooldown_days }
-	set_country_flag = { flag = random_terror_actor_action_lock days = random_terror_actor_action_lock_duration }
-	set_country_flag = random_terror_actor_action_recorded
+	if = {
+		limit = { NOT = { check_variable = { random_terror_focus_context = constant:random_terror_value.one } } }
+		set_temp_variable = { random_terror_actor_action_lock_duration = constant:random_terror_tuning.actor_action_cooldown_days }
+		set_country_flag = { flag = random_terror_actor_action_lock days = random_terror_actor_action_lock_duration }
+	}
 	add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
 	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	random_terror_clamp_actor_values = yes
@@ -3652,7 +3657,6 @@ random_terror_actor_ideological_mobilization = {
 }
 
 random_terror_actor_absorb_actor = {
-	set_country_flag = random_terror_community_rejection_recorded
 	random_terror_actor_action_common = yes
 }
 
@@ -3801,15 +3805,10 @@ random_terror_create_final_jihad_command_faction = {
 }
 
 random_terror_actor_join_jihadist_international = {
-	if = {
-		limit = { has_global_flag = random_terror_evolution_4_unlocked }
-		set_country_flag = random_terror_jihad_membership_action_recorded
-	}
 	random_terror_actor_action_common = yes
 }
 
 random_terror_actor_call_coordinated_uprising = {
-	set_country_flag = random_terror_coordinated_uprising_called
 	random_terror_actor_action_common = yes
 }
 
@@ -3836,9 +3835,6 @@ random_terror_actor_accelerate_revelation = {
 		else = {
 			random_terror_schedule_false_revelation = yes
 		}
-	}
-	else = {
-		set_country_flag = random_terror_revelation_gate_failed
 	}
 }
 
@@ -6585,6 +6581,10 @@ random_terror_clear_actor_runtime = {
 		random_terror_security_state
 		random_terror_claimed_authority
 		random_terror_recognized_enclave
+		random_terror_international_mandate
+		random_terror_local_revolt
+		random_terror_mass_defection
+		random_terror_failed_rule
 		random_terror_presence_of_the_entity
 		random_terror_world_in_revolt
 		random_terror_supply_through_ruin
@@ -6732,7 +6732,6 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_terminal_player_command
 	clr_country_flag = random_terror_terminal_resister
 	clr_country_flag = random_terror_actor_action_lock
-	clr_country_flag = random_terror_actor_action_recorded
 	clr_country_flag = random_terror_actor_absorption_offer_pending
 	clr_country_flag = random_terror_absorption_offer_pending
 	clr_country_flag = random_terror_sponsor_contact_pending

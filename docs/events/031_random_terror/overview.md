@@ -131,6 +131,8 @@ Repair a Captured Depot rebuilds the depot as an arms factory, or as infrastruct
 Relocate the Network moves a cell out of a crisis state its government has swept (`random_terror_cell_relocated`), so the next government raid there can at best be a partial success.
 Military Reinforcement keeps the government's state from falling into Lost Local Control for `reinforcement_days` (`random_terror_state_reinforced`).
 When focuses reuse these helpers without a target state, the formation forms in the actor's own provinces and the building work goes to a damaged depot or the capital.
+A focus reward sets the temp variable `random_terror_focus_context` before it reuses a helper, so `random_terror_actor_action_common` skips the decision cooldown and completing a focus never locks the actor's decisions.
+The retirement cleanup also removes International Mandate and the Local Revolt, Mass Defection and Failed Rule spirits, so a reused carrier starts without them.
 
 Each one-person carrier history recruits its leader and a small roleless candidate pool from `common/characters/031_random_terror_characters.txt`: JLX the jihadist pool, JNX the clandestine and three criminal candidates, JOX the military and three criminal candidates, and JPX the revolutionary and millenarian pools.
 A fresh actor package (`random_terror_select_actor_leader`) promotes one random candidate or the history leader, never the outgoing one, and removes the leader role of the pooled leader it replaces, with `random_terror_leader_slot` recording the current candidate.
