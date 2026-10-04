@@ -272,6 +272,27 @@ class OccupationAccountingTests(unittest.TestCase):
         self.assertNotIn('every_state =', EFFECTS)
         self.assertNotIn('every_country =', EFFECTS)
 
+    def test_german_home_origin_stays_out_of_occupation_membership(self):
+        seed = EFFECTS.split('camp_occ_seed_assign_state = {', 1)[1].split('camp_occ_track_controlled_state = {', 1)[0]
+        register = EFFECTS.split('camp_occ_register_cohort = {', 1)[1].split('camp_occ_backfill_cohort_origin = {', 1)[0]
+        retry = EFFECTS.split('camp_occ_try_register_current_state = {', 1)[1].split('camp_occ_on_state_control_changed = {', 1)[0]
+        gate = TRIGGERS.split('camp_occ_has_foreign_german_campaign_origin = {', 1)[1].split('camp_occ_state_has_current_authority = {', 1)[0]
+        self.assertIn('PREV = { original_tag = GER }', seed)
+        self.assertIn('set_state_flag = camp_occ_home_german_origin', seed)
+        self.assertIn('NOT = { has_state_flag = camp_occ_home_german_origin }', gate)
+        self.assertIn('camp_occ_has_foreign_german_campaign_origin = yes', register)
+        self.assertIn('camp_occ_has_foreign_german_campaign_origin = yes', retry)
+        self.assertNotIn('is_core_of = GER', gate)
+        home = int(constant('ger') * 1000)
+        foreign = int(constant('pol') * 1000)
+        self.assertEqual(home, 525000)
+        self.assertEqual(foreign, 3000000)
+        RESULT['german_home_origin_exclusion'] = {
+            'home_source_people_reserved_for_domestic_path': home,
+            'foreign_polish_source_still_occupation_eligible_before_control_and_headroom': foreign,
+            'dynamic_core_changes_do_not_change_seeded_origin_classification': True,
+        }
+
 RESULT = {'evidence_kind': 'source-linked arithmetic model, not engine execution'}
 if __name__ == '__main__':
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(OccupationAccountingTests)

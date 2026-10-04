@@ -1,0 +1,113 @@
+{
+  "task": {
+    "taskId": "camp_famine_oct3:job_97cb7ecb2844ea56b41fd5d537faa44aa47c1af705256a9b795edca355c2a829",
+    "status": "working",
+    "ttl": 86400000,
+    "createdAt": "2026-10-03T10:54:56.346Z",
+    "lastUpdatedAt": "2026-10-03T10:54:56.346Z",
+    "pollInterval": 250
+  },
+  "args": {
+    "workspaceId": "camp_famine_oct3",
+    "adapter": "event_option_ai_chance",
+    "source": {
+      "path": "events/soviet_gulag.txt",
+      "snapshotPath": "docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/mcp/soviet_famine_2026-10-03/before_soviet_gulag.txt",
+      "expectedSourceHash": "773c927aee19767055da26922c72b88aaa30335b751ec8b58423615081937a31",
+      "identifier": "soviet_gulag.1.a"
+    },
+    "candidatePool": [
+      "soviet_gulag.1.a",
+      "soviet_gulag.1.c",
+      "soviet_gulag.1.b"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "soviet_famine_shortfall_gate_sweep_2026_10_03",
+      "description": "Named deterministic SOV gate-sensitivity context. The adapter exposes scope.has_equipment only as one compound input, so its 0..1 range is a coarse sensitivity and cannot prove separate motorized, train, or support equipment quote boundaries. Famine pressure is swept around zero. Active-mission presence remains declared as an unresolved input in the main scenario fixture.",
+      "surfaceHint": "event_option_ai_chance",
+      "scenarios": [
+        {
+          "id": "SOV-gate-boundary-sensitivity",
+          "actor": "SOV",
+          "date": "1942.7.1",
+          "state": {
+            "original_tag": "SOV",
+            "has_government": "communism",
+            "has_war": true,
+            "is_ai": true,
+            "famine_pressure": 1,
+            "variable.famine_pressure": 1,
+            "political_power": 30,
+            "motorized_equipment_1": 120,
+            "train_equipment_1": 18,
+            "support_equipment_1": 180
+          },
+          "flags": [
+            "sov_famine_crisis_active"
+          ],
+          "scopes": {
+            "root": {
+              "id": "SOV",
+              "type": "country",
+              "actor": "SOV",
+              "state": {
+                "original_tag": "SOV",
+                "has_government": "communism",
+                "has_war": true,
+                "is_ai": true,
+                "famine_pressure": 1,
+                "variable.famine_pressure": 1,
+                "political_power": 30,
+                "motorized_equipment_1": 120,
+                "train_equipment_1": 18,
+                "support_equipment_1": 180
+              },
+              "flags": [
+                "sov_famine_crisis_active"
+              ]
+            }
+          },
+          "uncertainInputs": [
+            {
+              "path": "variable.famine_pressure",
+              "range": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
+              "path": "scope.has_equipment",
+              "range": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "sweep": {
+      "paths": [
+        "variable.famine_pressure",
+        "scope.has_equipment"
+      ],
+      "steps": 5,
+      "pairwise": true,
+      "findRankReversals": true
+    },
+    "metrics": [
+      "conditional_probability",
+      "raw_value"
+    ],
+    "outputs": [
+      "json",
+      "ranking",
+      "matrix",
+      "sensitivity",
+      "threshold",
+      "unresolved"
+    ],
+    "refresh": true
+  }
+}

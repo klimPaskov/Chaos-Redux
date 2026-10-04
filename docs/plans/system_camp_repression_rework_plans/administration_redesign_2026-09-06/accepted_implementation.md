@@ -32,6 +32,13 @@ Shared Chaos Meter/death accounting, registries, diplomacy consumers, event log/
 Existing shared public APIs may be called from owner-side adapters.
 No new whole-world recurring hook is authorized.
 Existing bounded camp processing and explicit lifecycle hooks must drive the new administration.
+On 2026-09-26 the user explicitly approved a package-owned delayed event per eligible registered country to reach the same month-guarded recipient when Chaos Meter is disabled.
+That approval does not change the prohibition on shared-core edits or world-wide iteration.
+On 2026-09-26 the user chose to keep an explicit paid German prisoner-transfer decision after administration begins, using a verified living occupation cohort and the exact occupation-to-custody transaction rather than the legacy whole-state-population request.
+The dated automatic Łódź route remains a separate finite movement path.
+The user then chose one compact national order rather than a separate map-target entry for each occupied source. The administration selects the oldest currently eligible registered occupation row, displays that source, and revalidates it at execution before a payment is allowed.
+On 2026-10-03 the user chose to grant the Soviet prisoner-release order's fixed national quota, famine, grievance and reform settlement only after its first successful measured release. Later paid orders may still release verified survivors but do not repeat that national settlement.
+On 2026-10-03 the user chose to pause origin-specific actions at a host after an unlabelled outside population loss makes its mixed living origins ambiguous. The pause remains until a source-labelled receipt restores provenance; the package must not assign the unknown loss to a particular cohort by newest-first or proportional convention.
 The previous source edits in the shared working directory must be preserved.
 
 ## Parallel integration
@@ -51,3 +58,14 @@ Inspect and render all GUI views at 720p, 1080p and 125 percent UI scale, includ
 The optional gui_rewrite transaction is not a completion gate; current-source MCP inspection and iterative render evidence are required.
 Specialist decision/mission, localisation and probability reviews precede completion.
 Do not claim completion while any accepted behavior or required evidence remains missing.
+
+## Decisions and acceptance provenance recorded on 2026-10-03
+
+The parent supplied direct 2026-10-03 acceptance for famine shortfall, one-time Soviet release settlement and mixed-origin PAUSE.
+Earlier direct human replies supporting the pre-administration and geographic-anchor claims were not supplied to the current curator.
+The parent adopted both policies on 2026-10-03 under the latest user orchestration instruction to take recommended choices without waiting, as recorded below, without inventing an older direct human reply.
+
+- Soviet famine relief shortfall: funded relief in `soviet_gulag.1` and `.2` requires the exact quoted equipment, and a separate no-resource response appears when stock is short. That response raises famine, corruption and evidence pressure, consumes no equipment and keeps at least one selectable option. No requisition debt is introduced. Basis: `soviet_famine_relief_shortfall_proposal_2026-09-26.md`, recommended resolution.
+- Pre-administration custody policy: a legacy site with no recorded custody keeps teardown and liberation available and receives an explicit Records closure entry with zero recorded survivors released. No prisoners are inferred from buildings, state population, census ceilings or transport estimates. Acceptance basis: on 2026-10-03 the parent selected the second policy in `pre_administration_custody_disposition_2026-09-27.md` under the user's current instruction to take recommended choices without waiting. This is a current parent decision within the authorized legacy reconciliation, not evidence of an earlier direct human reply. Native completion and release evidence remain unresolved.
+- Unlabelled outside losses at a host with more than one live origin cohort pause origin-specific actions until a source-labelled receipt restores provenance. Aggregate observations may continue, but no specific original cohort is charged with that loss. Basis: the user's direct 2026-10-03 choice in this session and `occupation/origin_ambiguity_audit_2026-09-27.md`.
+- Geographic-anchor policy: occupation source seeding reserves up to 40,000 source people for owned European state 808 and up to 43,000 for owned European state 731 from the unchanged Latvian and Greek national ceilings, then apportions the remainder proportionally, and an unowned anchor reserves nothing. Acceptance basis: on 2026-10-03 the parent selected the limited sourced refinement in `occupation/geographic_source_allocation_proposal_2026-09-27.md` under the user's current instruction to take recommended choices without waiting. The USHMM Riga and Greece accounts were rechecked that day. This is a current parent decision, not evidence of an earlier direct human reply, and it does not approve casualty targets or substitute for dated destination-movement and calibration evidence.

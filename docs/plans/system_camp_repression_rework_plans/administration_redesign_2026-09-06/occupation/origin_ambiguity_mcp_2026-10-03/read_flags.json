@@ -1,0 +1,52 @@
+{
+  "request": {
+    "name": "hoi4.reference_read",
+    "args": {
+      "id": "bb6c6275c19a0ee85057eeb1e04f508b6dccf68ffefaff646276d0a128b3cdcb",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "startLine": 102,
+      "maxLines": 25
+    }
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_origin_architecture_oct3\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "camp_origin_architecture_oct3",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "bb6c6275c19a0ee85057eeb1e04f508b6dccf68ffefaff646276d0a128b3cdcb",
+        "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+        "source": "wiki",
+        "title": "Data structures",
+        "heading": "Flags",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+        "startLine": 102,
+        "endLine": 126,
+        "excerpt": "## Flags <a id=\"Flags\"></a> In this case, flags are used in the sense of a computer variable that is used to set data to and later read it from, commonly but not necessarily of a boolean value (i.e. either 0 or 1). For editing the flags used for representing countries in-game, see [Country creation]",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 102,
+        "sectionEndLine": 126,
+        "startColumn": 1,
+        "text": "## Flags <a id=\"Flags\"></a>\n\nIn this case, flags are used in the sense of a computer variable that is used to set data to and later read it from, commonly but not necessarily of a boolean value (i.e. either 0 or 1). For editing the flags used for representing countries in-game, see [Country creation](<Country creation - Hearts of Iron 4 Wiki.md>) for the starting flags and [cosmetic tags](<Cosmetic tag modding - Hearts of Iron 4 Wiki.md>) for changing them in the middle of the game.\n\nFlags within PDXScript are a 32-bit signed integer, ranging from -2147483648 to 2147483647. A flag can only be set to a specific value (Potentially for a certain amount of days), modified in an additive way by a certain value and read, no other operations can be done. [Variables](#Variables) serve as a more operational alternative, with far more capacity for changing (Such as multiplication or non-integer values, reading game values, being able to set to other database entries rather than numbers, etc). Flags are still recommended to use as a boolean value, as these are more optimised than the variables, and so using variables will lead to an unnecessary increase in memory usage and will lead to the game running slower compared to flags.\n\nFlags are divided into 5 scopes:\n\n- Global. These can be read from anywhere in the game, without the need for scoping.\n- Country. These are assigned to individual countries, being impossible to assign or read elsewhere. A country flag can have different values depending on which country it's checked in.\n- State. These are assigned to individual states, being impossible to assign or read elsewhere. A state flag can have different values depending on which state it's checked in.\n- Character. These are assigned to individual characters, being impossible to assign or read elsewhere. A character flag can have different values depending on which character it's checked in.\n- Military industrial organisation. The `mio` shortnening is used in code for them, such as `set_mio_flag`.\n\nIn general, the same principles apply to them with little changes. While unit leader flags exist, these are marked as deprecated and are likely to be removed within the next updates.\n\nA flag can be set in *any* [effect](<Effects - Hearts of Iron 4 Wiki.md>) block. There is no file where flags need to be defined, they will exist if set and stop existing when cleared.\nThe simplest formatting for setting a flag is `set_country_flag = my_flag_name`. This will create the country flag (If it did not exist otherwise) and set it to be a value of 1. *This has no tooltip* and so it will be invisible to the player. [custom_effect_tooltip](<Effects - Hearts of Iron 4 Wiki.md>) may be used to tell the player that something will be done, if wanting to keep them in the know.\nAfterwards, that flag can be checked with `has_country_flag = my_flag_name` as a trigger. This is set to be true if the flag was set, regardless of which value it has. This will create a tooltip using the flag's name as the [localisation key](<Localisation - Hearts of Iron 4 Wiki.md>). As such, `my_flag_name: \"Has my flag\"` will make that appear when the country flag is checked.\nIf a flag is no longer useful, it can be cleared by using `clr_country_flag = my_flag_name`, which'll mark it as no longer being set. This also has no tooltip and the player will not be aware unless specifically told with the custom effect tooltip that the flag was cleared.\n\nThe exact same principles apply with global, state, and character flags. The only differences are in the used effects/triggers (In which case the word `country` is swapped with the type's name like `set_global_flag`, `has_state_flag`, or `clr_character_flag`) scopes in which they can be set and where they can be checked. For global flags, it can be done in any scope rather than the 'global' scope: it can be set in either country, state, character, or rare other scopes.\n\nFlags can also be targeted towards a certain country. This is usually done by appending the `@TAG` to the name of the flag, though it can be placed anywhere within the tag name except for the first character. For example, `set_country_flag = my_targeted_flag_@PREV` will set it to be targeted towards the country represented by PREV, which we'll take as TAG. *This just appends the PREV's tag to the flag's name*. After this, `has_country_flag = my_targeted_flag_TAG` will come up as true for the same country it was set in. This can be used to create dynamic flags without relying on [meta effects](<Effects - Hearts of Iron 4 Wiki.md#Meta_effects>). You cannot have more than one target specifier in a single tag, You can only use @ROOT, @PREV, @FROM, and @THIS, even @PREV.PREV does not work. Both of these restrictions do not apply to targeted variables, so those may be a more flexible alternative if you need.\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    }
+  }
+}

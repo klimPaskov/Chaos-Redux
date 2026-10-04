@@ -2,9 +2,11 @@
 
 Snapshot: 2026-09-06.
 
-Disposition: accepted and queued.
+Disposition: superseded for current implementation status by [completion.md](completion.md) and [resume_packet.md](resume_packet.md). This dated inventory remains historical planning evidence.
 
-This is a documentation-only reconciliation of the accepted administration redesign against the current source tree.
+This is a documentation-only reconciliation of the accepted administration redesign against the source tree inspected on 2026-09-06. Present-tense findings below describe that snapshot and do not override later source, timer, GUI, institutional-loss, or MCP evidence.
+
+Current readers should use [the package timer contract](../../../camp_administration_dispatch.md), [the institutional-loss mechanic](../../../camp_institutional_mortality.md), [the current MCP audit](institutional_mortality_mcp_audit_2026-09-27.md), and [the current-source Germany option review](ai_evidence/ger_mengele_10_full_source_2026-09-27/review.md) alongside the two current-status documents above.
 
 It does not claim gameplay completion, engine validation, or GUI completion.
 
@@ -16,11 +18,11 @@ The accepted source is [accepted_implementation.md](accepted_implementation.md),
 
 The accepted contract requires automatic administration driven by priority, mandate and budget; quiet maintenance and eligible development; separate economic and institutional slots; finite surviving cohorts; exact-once loss records; bounded 50–100 percent limited-use research awards with a two-award annual cap; centralized payments and quotes; administration, locations and records views; and reform that releases survivors without restoring deaths or deleting civilian infrastructure.
 
-Every accepted redesign item remains `accepted and queued` here until current source and required scenario, specialist and MCP evidence prove that item.
+Each item's `accepted and queued` disposition below describes the September 6 snapshot. The current disposition and remaining validation limits are maintained in `resume_packet.md` and `completion.md`.
 
 ## Source-of-truth map
 
-| Layer | Path | Current evidence | Disposition |
+| Layer | Path | Snapshot evidence | Snapshot disposition |
 | --- | --- | --- | --- |
 | Accepted design | `docs\plans\system_camp_repression_rework_plans\administration_redesign_2026-09-06\accepted_implementation.md` | Explicit user acceptance and integration boundary. | Accepted and queued. |
 | Current system description | `docs\systems\cbrn_warfare\genocide\genocide_crisis_system.md` | Describes the legacy 84-action, 41-mission, 32-slot and five-tab package. | Historical/current runtime evidence; stale for the accepted redesign. |
@@ -159,7 +161,7 @@ Legacy visibility flags `genocide_decisions_visible`, `genocide_gulag_decisions_
 
 The old Germany and Japan experiment-transfer routes must obey the new historical and institutional gates, including the Mengele Auschwitz hidden-before-1943-05-30 rule, controlled state and operational site.
 
-The new `camp_admin_country_mengele_historical_gate` is present at `common\scripted_triggers\camp_administration_country_triggers.txt:68`, but the older `germany_transfer_prisoners_to_experiment_site` route still uses its own legacy variables and costs.
+The 2026-09-06 review found `camp_admin_country_mengele_historical_gate` in `common\scripted_triggers\camp_administration_country_triggers.txt`; at that time the older `germany_transfer_prisoners_to_experiment_site` route still used legacy variables and costs. This finding is superseded by the user's 2026-09-26 exact-cohort choice and its current source in `docs/camp_exact_cohort_transfer.md`.
 
 The GUI four-slot availability flags and the new country action-one/action-two trigger surface are inconsistent until parent integration resolves them.
 

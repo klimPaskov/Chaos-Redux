@@ -1,5 +1,7 @@
 # Camp administration redesign AI audit
 
+Current 2026-09-26 German exact-cohort transfer evidence is in `ai_evidence/transfer_decision_baseline_2026-09-26.md`. The transfer ID is no longer retired after administration; the older baseline statements below describe the 2026-09-06 source and are not current gameplay dispositions.
+
 Audit mode: read-only baseline before owner edits, with a later same-scenario comparison required after the final source notification.
 
 Audit date: 2026-09-06.

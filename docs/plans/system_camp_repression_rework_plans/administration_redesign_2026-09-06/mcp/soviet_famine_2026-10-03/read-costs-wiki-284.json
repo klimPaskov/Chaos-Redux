@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "0a37b9f1ad43a16c2d85d25b307d261fcc9e60292b4e164c335c03816535e4d8",
+      "revision": "7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162",
+      "source": "wiki",
+      "title": "Decision modding",
+      "heading": "Decision cost",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 284,
+      "endLine": 336,
+      "excerpt": "### Decision cost <a id=\"Decision_cost\"></a> In order to assign a political power cost to a decision, the `cost = <int>` argument is used. The cost can be assigned a [variable](<Data structures - Hearts of Iron 4 Wiki.md>). As an example of a decision which is assigned a cost of 50 political power:",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 284,
+      "sectionEndLine": 336,
+      "startColumn": 1,
+      "text": "### Decision cost <a id=\"Decision_cost\"></a>\n\nIn order to assign a political power cost to a decision, the `cost = <int>` argument is used. The cost can be assigned a [variable](<Data structures - Hearts of Iron 4 Wiki.md>). As an example of a decision which is assigned a cost of 50 political power:\n\n```text\nfind_resources = {\n    develop_infrastructure = {\n        cost = 50\n        available = {\n            has_manpower > 499\n        }\n        complete_effect = {\n            random_owned_state = {\n                 add_building_construction = { type = infrastructure level = 2 instant_build = yes }\n            }\n            add_manpower = -500\n        }\n    }\n}\n```\n\nAlternatively, a decision can also take a custom localisation string as the cost. This is done with the following:\n\n```text\ncustom_cost_trigger = {\n    <triggers>\n}\ncustom_cost_text = <localisation key>\n```\n\nIf custom_cost_trigger is fulfilled, then <localisation key> will be used for localisation, otherwise, <localisation key>_blocked will be. <localisation key>_tooltip will be used when hovering over the cost. Using the example of the following:\n\n```text\ncustom_cost_trigger = {\n    command_power > 14\n}\ncustom_cost_text = decision_cost_CP_15\n```\n\nThe localisation file will have the following:\n\n```yaml\nl_english:\n decision_cost_CP_15: \"£command_power  §Y15§!\"\n decision_cost_CP_15_blocked: \"£command_power  §R15§!\"\n decision_cost_CP_15_tooltip: \"It costs £command_power  §Y15§! to take the decision\"\n```\n\nIn order to show icons, [text icons](<Localisation - Hearts of Iron 4 Wiki.md#Text_icons>) are used.\n**A custom cost will not actually cost anything**, and what you set it to cost will have to be subtracted within the `complete_effect` of the decision, preferably as a hidden effect.\n\nAs the custom cost can't be used in conjunction with the regular cost, if it includes political power, the AI will not be aware that it should save up an amount of it before taking the decision. This can be remidified with `ai_hint_pp_cost = 100`: this attribute will make the AI think that the decision will use 100 political power regardless of whether it does or not, making sure it will save up that much before trying to use it. This must be a constant amount rather than being a variable.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

@@ -1,0 +1,83 @@
+# Finite regional civilian exposure, separate from camp custody and core occupation-law deaths.
+# Sources, geographic approximation and calibration limits: paired effects documentation.
+camp_occ_value = {
+	schema = { any_key = yes data = fixed_point }
+	people_per_k = 1000
+	one_person = 1
+	negative_one = -1
+	row_first_id = 1
+	row_index_step = 1
+	transfer_invalid = 0
+	transfer_valid = 1
+	minimum_population_k = 0.001
+	maximum_receipt_k = 1000
+	japan_exposure_share = 0.9
+	# Deterministic incremental campaign attrition, not random odds or target quotas.
+	japan_campaign_monthly_fraction = 0.001
+	german_campaign_monthly_fraction = 0.025
+	# The dated movement offers the remaining proven living row; site throughput and exact receipts still bound every wave.
+	lodz_auschwitz_living_share = 1.0
+	# A separately ordered movement draws from a proven living occupation row, never whole state population.
+	manual_auschwitz_living_share = 0.05
+	manual_order_minimum_people = 1000
+	# Generic deprivation is already represented by shared occupation-law mortality.
+	deprivation_monthly_fraction = 0
+}
+# Killing-center arrival throughput is distinct from resident detention places.
+# The fraction requests violence against a bound living row; only physical receipts count.
+camp_occ_arrival = {
+	schema = { any_key = yes data = fixed_point }
+	throughput_per_supported_level_k = 75
+	violence_request_fraction = 0.65
+	max_batches_per_month = 12
+}
+camp_occ_row_status = {
+	schema = { any_key = yes data = int }
+	active = 1
+	released = 2
+}
+camp_occ_profile = {
+	schema = { any_key = yes data = int }
+	japan = 1
+	germany = 2
+}
+camp_occ_cause = {
+	schema = { any_key = yes data = int }
+	campaign_violence = 1
+	deprivation = 2
+}
+# USHMM country estimates circa 1933, in thousands; these are source ceilings, never loss targets.
+# The Soviet number covers EUROPEAN USSR only; its seed must exclude Asian states.
+camp_occ_origin_k = {
+	schema = { any_key = yes data = fixed_point }
+	pol = 3000
+	sov = 2525
+	rom = 756
+	lat = 95.6
+	lit = 155
+	est = 4.56
+	ger = 525
+	hun = 445
+	cze = 357
+	aus = 191
+	eng = 300
+	fra = 250
+	hol = 156
+	bel = 60
+	den = 5.7
+	nor = 1.4
+	gre = 73
+	yug = 68
+	ita = 48
+	bul = 48.5
+	alb = 0.2
+}
+# Sourced city concentrations reserved inside the unchanged national ceilings (thousands).
+# USHMM: about 40,000 Jews in prewar Riga; about 43,000 in Salonika. State IDs are vanilla.
+camp_occ_origin_anchor = {
+	schema = { any_key = yes data = fixed_point }
+	lat_state = 808
+	lat_k = 40
+	gre_state = 731
+	gre_k = 43
+}

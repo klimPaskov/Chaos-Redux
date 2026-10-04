@@ -1,0 +1,116 @@
+# Camp administration: current authority, finite cohorts, and independent slots.
+camp_admin_site_is_operational = {
+	has_state_flag = camp_admin_initialized
+	has_state_flag = camp_rework_site_active
+	NOT = { has_state_flag = camp_admin_closed }
+	has_variable = camp_admin_responsible_country
+	camp_admin_site_authority_is_valid = yes
+	var:camp_admin_responsible_country = {
+		exists = yes
+		camp_rework_country_is_eligible = yes
+		NOT = { has_country_flag = camp_admin_reforming }
+	}
+}
+camp_admin_can_use_radical_mandate = {
+	camp_rework_country_is_eligible = yes
+	OR = { camp_rework_country_can_use_radicalized_route = yes camp_admin_country_can_radicalize = yes }
+	NOT = { has_country_flag = camp_admin_reforming }
+	NOT = { has_government = democratic }
+}
+camp_admin_has_supported_workforce = {
+	camp_admin_site_is_operational = yes
+	camp_origin_host_provenance_ready = yes
+	check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+	check_variable = { camp_admin_support_ratio > constant:camp_admin_value.zero }
+}
+camp_admin_economy_slot_is_free = {
+	NOT = { has_country_flag = camp_admin_economy_slot_active }
+}
+camp_admin_institution_slot_is_free = {
+	NOT = { has_country_flag = camp_admin_institution_slot_active }
+}
+camp_admin_site_authority_is_valid = {
+	has_variable = camp_admin_responsible_country
+	OR = {
+		is_controlled_by = var:camp_admin_responsible_country
+		AND = {
+			has_state_flag = camp_admin_subject_authority
+			CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country }
+		}
+	}
+}
+
+# STATE scope. Rebuild the live custody sum from aligned rows without changing
+# persistent data, so national release availability matches its payment guard.
+camp_admin_site_rows_reconciled = {
+	set_temp_variable = { camp_admin_reconcile_rows_ready = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_reconcile_live_k = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_reconcile_next_row_id = camp_admin_row_count }
+	add_to_temp_variable = { camp_admin_reconcile_next_row_id = constant:camp_admin_value.one }
+	if = {
+		limit = {
+			has_state_flag = camp_admin_rows_initialized
+			has_variable = camp_admin_responsible_country
+			check_variable = { camp_admin_next_row_id = camp_admin_reconcile_next_row_id }
+			check_variable = { camp_admin_row_count = camp_admin_row_ids^num }
+			check_variable = { camp_admin_row_origins^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_authorities^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_occupation_roots^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_amounts_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_deaths_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_arrival_deaths_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_released_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_removed_k^num = camp_admin_row_count }
+			check_variable = { camp_admin_row_statuses^num = camp_admin_row_count }
+		}
+		set_temp_variable = { camp_admin_reconcile_rows_ready = constant:camp_admin_value.one }
+		all_of = {
+			array = camp_admin_row_amounts_k
+			value = camp_admin_reconcile_row_amount_k
+			index = camp_admin_reconcile_row_index
+			if = {
+				limit = { check_variable = { camp_admin_row_statuses^camp_admin_reconcile_row_index = constant:camp_admin_value.one } }
+				if = {
+					limit = {
+						OR = {
+							NOT = { check_variable = { camp_admin_row_authorities^camp_admin_reconcile_row_index = camp_admin_responsible_country } }
+							check_variable = { camp_admin_reconcile_row_amount_k < constant:camp_admin_value.zero }
+						}
+					}
+					set_temp_variable = { camp_admin_reconcile_rows_ready = constant:camp_admin_value.zero }
+				}
+				add_to_temp_variable = { camp_admin_reconcile_live_k = camp_admin_reconcile_row_amount_k }
+			}
+			if = {
+				limit = {
+					NOT = { check_variable = { camp_admin_row_statuses^camp_admin_reconcile_row_index = constant:camp_admin_value.one } }
+					NOT = { check_variable = { camp_admin_reconcile_row_amount_k = constant:camp_admin_value.zero } }
+				}
+				set_temp_variable = { camp_admin_reconcile_rows_ready = constant:camp_admin_value.zero }
+			}
+		}
+	}
+	check_variable = { camp_admin_reconcile_rows_ready = constant:camp_admin_value.one }
+	check_variable = { camp_admin_reconcile_live_k = camp_admin_detainees_k }
+	camp_origin_host_provenance_ready = yes
+}
+
+# COUNTRY scope. A national reform may advance only when every site that the
+# shared reform effect can close has a current, reconciled custody ledger.
+camp_admin_country_sites_ready_for_reform = {
+	all_of_scopes = {
+		array = camp_occ_states
+		camp_origin_occupation_host_ready_for_reform = yes
+	}
+	all_of_scopes = {
+		array = camp_active_site_states
+		if = {
+			limit = {
+				has_state_flag = camp_admin_initialized
+				NOT = { has_state_flag = camp_admin_closed }
+				camp_admin_site_authority_is_valid = yes
+			}
+			camp_admin_site_rows_reconciled = yes
+		}
+	}
+}

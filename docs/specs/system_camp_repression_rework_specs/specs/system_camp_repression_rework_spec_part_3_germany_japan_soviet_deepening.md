@@ -317,6 +317,12 @@ It should cost:
 - administrator purge risk;
 - famine pressure.
 
+### Prisoner-release settlement
+
+The accepted prisoner-release settlement is recorded in the [administration implementation contract](../../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/accepted_implementation.md): the user's 2026-10-03 choice grants the fixed national quota, famine, grievance and reform settlement once, after the first paid order measures a positive release from reconciled living Gulag rows. Later paid orders may release other recorded survivors without repeating that national settlement. A rejected zero-release execution returns its Political Power cost, creates no people or army reserve, and does not close intake or set a success cooldown.
+Current implementation evidence is the [five routed source cases and qualified handoff](../../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/soviet_release_integrity_2026-09-27.md), including the first one-person release and a later paid one-person release with no repeated settlement.
+That evidence records current behavior separately from the user's acceptance basis, and native click/refund/cooldown, array-gate interpretation and campaign execution remain unresolved.
+
 ### Soviet Collapse bridge
 
 During Union Crisis:

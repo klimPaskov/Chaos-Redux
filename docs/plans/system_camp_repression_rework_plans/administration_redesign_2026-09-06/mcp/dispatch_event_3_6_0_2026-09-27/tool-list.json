@@ -1,0 +1,372 @@
+{
+  "server": {
+    "name": "hoi4-agent-tools",
+    "version": "3.6.0",
+    "websiteUrl": "https://github.com/klimPaskov/hoi4-agent-tools"
+  },
+  "selected": [
+    {
+      "name": "hoi4.reference_search",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "query": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "sources": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "game_doc",
+                "wiki",
+                "script_doc"
+              ]
+            }
+          },
+          "limit": {
+            "default": 6,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.reference_read",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "startLine": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "startColumn": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "maxLines": {
+            "default": 40,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 80
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.reference_context",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "surface": {
+            "type": "string",
+            "enum": [
+              "general",
+              "event",
+              "decision",
+              "idea",
+              "focus",
+              "technology",
+              "gui",
+              "map",
+              "localisation",
+              "ai"
+            ]
+          },
+          "question": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 160
+          },
+          "limit": {
+            "default": 16,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 24
+          }
+        },
+        "required": [
+          "surface"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.event_inspect",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "scan",
+              "roots",
+              "trace",
+              "explain_path",
+              "state_flow",
+              "lint",
+              "impact",
+              "helper_expansion"
+            ]
+          },
+          "selector": {
+            "description": "Event selector; see docs/events.md."
+          },
+          "from": {
+            "description": "Event selector; see docs/events.md."
+          },
+          "to": {
+            "description": "Event selector; see docs/events.md."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "upstream",
+              "downstream",
+              "both"
+            ]
+          },
+          "maxDepth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "maxNodes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5000
+          },
+          "maxEdges": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20000
+          },
+          "expandHelpers": {
+            "type": "boolean"
+          },
+          "stateSubject": {
+            "description": "State kind and name."
+          },
+          "impactSubject": {
+            "description": "Impact kind and name."
+          },
+          "helperExpansion": {
+            "description": "Bounded helper paths; opaque continuationUri resumes the same source and roots. See docs/events.md."
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "mode"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.event_render",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "overview",
+              "neighborhood",
+              "options",
+              "entries",
+              "reachability",
+              "timing",
+              "state",
+              "targets",
+              "scope",
+              "terminals",
+              "unresolved"
+            ]
+          },
+          "selector": {
+            "description": "Event selector; see docs/events.md."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "upstream",
+              "downstream",
+              "both"
+            ]
+          },
+          "maxDepth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 64
+          },
+          "maxNodes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 240
+          },
+          "expandHelpers": {
+            "type": "boolean"
+          },
+          "includeHtml": {
+            "type": "boolean"
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "view"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.event_compare",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "before": {
+            "description": "Cached revision or graph artifact URI."
+          },
+          "after": {
+            "description": "Cached revision or graph artifact URI."
+          },
+          "proposedSources": {
+            "minItems": 1,
+            "maxItems": 64,
+            "type": "array",
+            "items": {
+              "description": "In-memory source overlay; never written."
+            }
+          },
+          "selector": {
+            "description": "Event selector; see docs/events.md."
+          },
+          "maxChainNodes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5000
+          },
+          "render": {
+            "type": "boolean"
+          },
+          "maxRenderNodes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 240
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.job_inspect",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "jobId": {
+            "type": "string",
+            "pattern": "^job_[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "jobId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "hoi4.job_cancel",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "jobId": {
+            "type": "string",
+            "pattern": "^job_[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "jobId"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      }
+    }
+  ]
+}

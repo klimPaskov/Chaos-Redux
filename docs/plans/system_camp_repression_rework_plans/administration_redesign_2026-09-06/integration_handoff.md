@@ -59,7 +59,8 @@ Source membership, chronological campaign authority, and nonoverlap with custody
 ## Retired candidates and compatibility
 
 Generic candidates gated out after `camp_admin_initialized`: `generic_expand_labor_quotas`, `generic_redirect_labor_to_construction`, `generic_redirect_labor_to_resource_extraction`, `generic_allocate_additional_guards`, `generic_reduce_labor_quotas`, `generic_upgrade_existing_site_to_radicalized_atrocity_site`, `generic_labor_project_cycle`, `generic_reform_and_dismantlement`.
-Genocide-crisis candidates gated out after initialization: `germany_intensify_extermination_policy`, `germany_transfer_prisoners_to_experiment_site`, `genocide_intensify_deportations`, `genocide_redirect_trains_and_supplies`, `japan_transfer_prisoners_to_experimental_facilities`, `sov_raise_forced_labor_quotas`.
+The 2026-09-25 cutover gated these genocide-crisis candidates after initialization: `germany_intensify_extermination_policy`, `germany_transfer_prisoners_to_experiment_site`, `genocide_intensify_deportations`, `genocide_redirect_trains_and_supplies`, `japan_transfer_prisoners_to_experimental_facilities`, `sov_raise_forced_labor_quotas`.
+On 2026-09-26 the German transfer ID was repurposed as the user-retained paid exact-cohort decision after initialization; its former pre-initialization whole-state route is retired. The other five dispositions remain as recorded here, and `docs/camp_exact_cohort_transfer.md` is the current transfer contract.
 Visibility, availability and applicable mission activation receive the gate; numerical `ai_will_do` clauses are unchanged.
 The exact candidate list was sent to the probability owner for same-scenario final comparison.
 

@@ -1,0 +1,1459 @@
+# Wider persecution and occupation consequences: finite noncustody cohorts, actual receipts,
+# immutable authority records, conservative outside-loss reconciliation and bounded processing.
+# Public contract, historical sources and limitations: camp_administration_occupation_effects.md.
+
+camp_occ_initialize_country = {
+	if = {
+		limit = { NOT = { has_country_flag = camp_occ_initialized } }
+		set_country_flag = camp_occ_initialized
+		clear_array = camp_occ_states
+		clear_array = camp_occ_eligible_states
+		camp_occ_initialize_records = yes
+	}
+}
+camp_occ_initialize_records = {
+	set_variable = { camp_occ_total_deaths_k = 0 }
+	set_variable = { camp_occ_month_deaths_k = 0 }
+	set_variable = { camp_occ_total_campaign_violence_k = 0 }
+	set_variable = { camp_occ_month_campaign_violence_k = 0 }
+	set_variable = { camp_occ_total_deprivation_k = 0 }
+	set_variable = { camp_occ_month_deprivation_k = 0 }
+	set_variable = { camp_occ_total_exposure_removed_k = 0 }
+	set_variable = { camp_occ_month_exposure_removed_k = 0 }
+	set_variable = { camp_occ_total_released_k = 0 }
+	set_variable = { camp_occ_total_moved_out_k = 0 }
+	set_variable = { camp_occ_total_moved_in_k = 0 }
+}
+
+# Country-owned sparse rows. All arrays are append-only and aligned; IDs, not indexes, identify cohorts.
+# State camp_occ_remaining_k remains the aggregate live reservation read by custody admission.
+camp_occ_initialize_rows = {
+	if = {
+		limit = { NOT = { has_country_flag = camp_occ_rows_initialized } }
+		set_country_flag = camp_occ_rows_initialized
+		clear_array = camp_occ_row_ids
+		clear_array = camp_occ_row_root_ids
+		clear_array = camp_occ_row_origins
+		clear_array = camp_occ_row_hosts
+		clear_array = camp_occ_row_authorities
+		clear_array = camp_occ_row_profiles
+		clear_array = camp_occ_row_amounts_k
+		clear_array = camp_occ_row_deaths_k
+		clear_array = camp_occ_row_removed_k
+		clear_array = camp_occ_row_released_k
+		clear_array = camp_occ_row_moved_out_k
+		clear_array = camp_occ_row_moved_in_k
+		clear_array = camp_occ_row_statuses
+		set_variable = { camp_occ_next_row_id = constant:camp_occ_value.row_first_id }
+		for_each_scope_loop = { array = camp_occ_states camp_occ_adopt_legacy_state_row = yes }
+	}
+}
+
+# Country. Inputs are one-shot temporary scope/value tokens staged by a state caller.
+camp_occ_append_row = {
+	set_temp_variable = { camp_occ_appended_row_id = camp_occ_next_row_id }
+	if = { limit = { check_variable = { camp_occ_append_root_id = 0 } } set_temp_variable = { camp_occ_append_root_id = camp_occ_appended_row_id } }
+	add_to_array = { array = camp_occ_row_ids value = camp_occ_appended_row_id }
+	add_to_array = { array = camp_occ_row_root_ids value = camp_occ_append_root_id }
+	add_to_array = { array = camp_occ_row_origins value = camp_occ_append_origin }
+	add_to_array = { array = camp_occ_row_hosts value = camp_occ_append_host }
+	add_to_array = { array = camp_occ_row_authorities value = THIS }
+	add_to_array = { array = camp_occ_row_profiles value = camp_occ_append_profile }
+	add_to_array = { array = camp_occ_row_amounts_k value = camp_occ_append_amount_k }
+	add_to_array = { array = camp_occ_row_deaths_k value = 0 }
+	add_to_array = { array = camp_occ_row_removed_k value = 0 }
+	add_to_array = { array = camp_occ_row_released_k value = 0 }
+	add_to_array = { array = camp_occ_row_moved_out_k value = 0 }
+	add_to_array = { array = camp_occ_row_moved_in_k value = 0 }
+	add_to_array = { array = camp_occ_row_statuses value = constant:camp_occ_row_status.active }
+	add_to_variable = { camp_occ_next_row_id = constant:camp_occ_value.row_index_step }
+	set_variable = { camp_occ_row_count = camp_occ_row_ids^num }
+}
+
+# State. The old state-keyed row is the sole cohort in a pre-row country.
+camp_occ_adopt_legacy_state_row = {
+	camp_occ_backfill_cohort_origin = yes
+	if = {
+		limit = { has_state_flag = camp_occ_registered NOT = { has_variable = camp_occ_native_row_id } }
+		set_temp_variable = { camp_occ_append_origin = camp_occ_cohort_origin_state }
+		set_temp_variable = { camp_occ_append_host = THIS }
+		set_temp_variable = { camp_occ_append_profile = camp_occ_profile_id }
+		set_temp_variable = { camp_occ_append_amount_k = camp_occ_remaining_k }
+		set_temp_variable = { camp_occ_append_root_id = 0 }
+		set_temp_variable = { camp_occ_legacy_deaths_k = camp_occ_total_deaths_k }
+		set_temp_variable = { camp_occ_legacy_removed_k = camp_occ_total_exposure_removed_k }
+		set_temp_variable = { camp_occ_legacy_released_k = camp_occ_total_released_k }
+		set_temp_variable = { camp_occ_legacy_closed = 0 }
+		if = { limit = { has_state_flag = camp_occ_closed } set_temp_variable = { camp_occ_legacy_closed = 1 } }
+		var:camp_occ_responsible_country = {
+			camp_occ_append_row = yes
+			set_temp_variable = { camp_occ_legacy_row_index = camp_occ_row_count }
+			subtract_from_temp_variable = { camp_occ_legacy_row_index = constant:camp_occ_value.row_index_step }
+			set_variable = { camp_occ_row_deaths_k^camp_occ_legacy_row_index = camp_occ_legacy_deaths_k }
+			set_variable = { camp_occ_row_removed_k^camp_occ_legacy_row_index = camp_occ_legacy_removed_k }
+			set_variable = { camp_occ_row_released_k^camp_occ_legacy_row_index = camp_occ_legacy_released_k }
+			if = { limit = { check_variable = { camp_occ_legacy_closed = 1 } } set_variable = { camp_occ_row_statuses^camp_occ_legacy_row_index = constant:camp_occ_row_status.released } }
+		}
+		set_variable = { camp_occ_native_row_id = camp_occ_appended_row_id }
+	}
+}
+camp_occ_reset_month_records = {
+	set_variable = { camp_occ_month_deaths_k = 0 }
+	set_variable = { camp_occ_month_campaign_violence_k = 0 }
+	set_variable = { camp_occ_month_deprivation_k = 0 }
+	set_variable = { camp_occ_month_exposure_removed_k = 0 }
+}
+
+# State; one-shot explicit source contract, never repopulates an exhausted or closed cohort.
+camp_occ_register_cohort = {
+	set_temp_variable = { camp_occ_admitted_k = 0 }
+	if = {
+		limit = {
+			check_variable = { camp_occ_source_proven = 1 }
+			check_variable = { camp_occ_source_requested_k > 0 }
+			check_variable = { camp_occ_source_membership_k > 0 }
+			has_variable = camp_occ_source_authority
+			NOT = { has_state_flag = camp_occ_registered }
+			is_controlled_by = var:camp_occ_source_authority
+			CONTROLLER = { camp_occ_authority_has_campaign = yes }
+			OR = {
+				AND = { check_variable = { camp_occ_source_profile = constant:camp_occ_profile.japan } camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
+				AND = { check_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany } camp_occ_has_foreign_german_campaign_origin = yes CONTROLLER = { original_tag = GER } }
+			}
+		}
+		set_temp_variable = { camp_occ_admitted_k = state_population_k }
+		subtract_from_temp_variable = { camp_occ_admitted_k = constant:camp_occ_value.minimum_population_k }
+		if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_admitted_k = camp_admin_detainees_k } }
+		clamp_temp_variable = { var = camp_occ_admitted_k min = 0 max = camp_occ_source_membership_k }
+		clamp_temp_variable = { var = camp_occ_admitted_k min = 0 max = camp_occ_source_requested_k }
+		if = {
+			limit = { check_variable = { camp_occ_admitted_k > 0 } }
+			set_state_flag = camp_occ_registered
+			set_variable = { camp_occ_responsible_country = camp_occ_source_authority }
+			# Stable provenance for the cohort even if a later approved route moves survivors.
+			set_variable = { camp_occ_cohort_origin_state = THIS }
+			set_variable = { camp_occ_profile_id = camp_occ_source_profile }
+			set_variable = { camp_occ_initial_k = camp_occ_admitted_k }
+			set_variable = { camp_occ_remaining_k = camp_occ_admitted_k }
+			set_variable = { camp_occ_observed_population_k = state_population_k }
+			set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
+			camp_occ_initialize_records = yes
+			set_temp_variable = { camp_occ_append_origin = THIS }
+			set_temp_variable = { camp_occ_append_host = THIS }
+			set_temp_variable = { camp_occ_append_profile = camp_occ_profile_id }
+			set_temp_variable = { camp_occ_append_amount_k = camp_occ_admitted_k }
+			set_temp_variable = { camp_occ_append_root_id = 0 }
+			var:camp_occ_responsible_country = {
+				camp_occ_initialize_country = yes
+				camp_occ_initialize_rows = yes
+				camp_occ_append_row = yes
+				add_to_array = { array = camp_occ_states value = PREV }
+				camp_rework_register_country_for_monthly_pulse = yes
+			}
+			set_variable = { camp_occ_native_row_id = camp_occ_appended_row_id }
+			var:camp_occ_responsible_country = {
+				if = { limit = { original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
+			}
+		}
+	}
+	set_temp_variable = { camp_occ_source_proven = 0 }
+	set_temp_variable = { camp_occ_source_requested_k = 0 }
+	set_temp_variable = { camp_occ_source_membership_k = 0 }
+	set_temp_variable = { camp_occ_source_authority = 0 }
+	set_temp_variable = { camp_occ_source_profile = 0 }
+}
+
+# State: rows created before the origin marker existed were immobile and therefore began here.
+# Backfill only those rows; never overwrite a recorded origin or infer one from current control.
+camp_occ_backfill_cohort_origin = {
+	if = {
+		limit = { has_state_flag = camp_occ_registered NOT = { has_variable = camp_occ_cohort_origin_state } }
+		set_variable = { camp_occ_cohort_origin_state = THIS }
+	}
+}
+
+# State: outside declines remove exposure conservatively; never assign deaths or blame from them.
+camp_occ_reconcile_external_population = {
+	if = { limit = { has_variable = camp_occ_responsible_country } var:camp_occ_responsible_country = { camp_occ_initialize_rows = yes } }
+	set_temp_variable = { camp_occ_external_removed_k = camp_occ_observed_population_k }
+		subtract_from_temp_variable = { camp_occ_external_removed_k = state_population_k }
+		# Net population can hide recorded deaths behind growth or inward transfers.
+		# This all-cause delta removes exposure only; it never establishes a perpetrator.
+		set_temp_variable = { camp_occ_external_recorded_k = chaos_state_civilian_deaths_total }
+		subtract_from_temp_variable = { camp_occ_external_recorded_k = camp_occ_observed_state_deaths }
+		divide_temp_variable = { camp_occ_external_recorded_k = constant:camp_occ_value.people_per_k }
+		clamp_temp_variable = { var = camp_occ_external_recorded_k min = 0 }
+		clamp_temp_variable = { var = camp_occ_external_removed_k min = camp_occ_external_recorded_k }
+		# Revalidate current noncustody membership even if another owner changed reservations.
+		set_temp_variable = { camp_occ_current_headroom_k = state_population_k }
+		subtract_from_temp_variable = { camp_occ_current_headroom_k = constant:camp_occ_value.minimum_population_k }
+		if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_current_headroom_k = camp_admin_detainees_k } }
+		clamp_temp_variable = { var = camp_occ_current_headroom_k min = 0 }
+		set_temp_variable = { camp_occ_membership_shortfall_k = camp_occ_remaining_k }
+		subtract_from_temp_variable = { camp_occ_membership_shortfall_k = camp_occ_current_headroom_k }
+		clamp_temp_variable = { var = camp_occ_membership_shortfall_k min = 0 }
+		clamp_temp_variable = { var = camp_occ_external_removed_k min = camp_occ_membership_shortfall_k }
+		clamp_temp_variable = { var = camp_occ_external_removed_k min = 0 max = camp_occ_remaining_k }
+		subtract_from_variable = { camp_occ_remaining_k = camp_occ_external_removed_k }
+		# Retire the same measured exposure from exact rows at this host.
+		if = { limit = { check_variable = { camp_occ_external_removed_k > 0 } } camp_occ_distribute_external_removal = yes }
+		add_to_variable = { camp_occ_total_exposure_removed_k = camp_occ_external_removed_k }
+		add_to_variable = { camp_occ_month_exposure_removed_k = camp_occ_external_removed_k }
+		var:camp_occ_responsible_country = {
+			add_to_variable = { camp_occ_total_exposure_removed_k = camp_occ_external_removed_k }
+			add_to_variable = { camp_occ_month_exposure_removed_k = camp_occ_external_removed_k }
+		}
+		set_variable = { camp_occ_observed_population_k = state_population_k }
+		set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
+}
+
+# State. Only the original authority's bounded rows may occupy this state.
+# One live origin here keeps the exact newest-first row record. With several
+# origins the unlabelled loss cannot name its cohort: living rows are reduced pro
+# rata as an estimate, and the removal is written to the unknown-origin pool
+# instead of any origin's removal record.
+camp_occ_distribute_external_removal = {
+	save_event_target_as = camp_occ_row_current_host
+	set_temp_variable = { camp_occ_row_external_left_k = camp_occ_external_removed_k }
+	set_temp_variable = { camp_occ_host_mixed_origin = 0 }
+	set_temp_variable = { camp_occ_host_live_k = 0 }
+	set_temp_variable = { camp_occ_host_first_origin = 0 }
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_row_scan_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_row_scan_index > 0 } }
+			subtract_from_temp_variable = { camp_occ_row_scan_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = {
+					var:camp_occ_row_hosts^camp_occ_row_scan_index = { state = event_target:camp_occ_row_current_host }
+					check_variable = { camp_occ_row_amounts_k^camp_occ_row_scan_index > 0 }
+				}
+				add_to_temp_variable = { camp_occ_host_live_k = camp_occ_row_amounts_k^camp_occ_row_scan_index }
+				if = {
+					limit = { check_variable = { camp_occ_host_first_origin = 0 } }
+					set_temp_variable = { camp_occ_host_first_origin = camp_occ_row_origins^camp_occ_row_scan_index }
+				}
+				else_if = {
+					limit = { NOT = { check_variable = { camp_occ_row_origins^camp_occ_row_scan_index = camp_occ_host_first_origin } } }
+					set_temp_variable = { camp_occ_host_mixed_origin = constant:camp_occ_value.transfer_valid }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_occ_host_mixed_origin = constant:camp_occ_value.transfer_valid } }
+		camp_occ_distribute_unknown_origin_removal = yes
+	}
+	else = { camp_occ_distribute_known_origin_removal = yes }
+}
+
+# State, after camp_occ_distribute_external_removal's host scan.
+camp_occ_distribute_unknown_origin_removal = {
+	set_state_flag = camp_occ_origin_estimated
+	set_temp_variable = { camp_occ_host_live_left_k = camp_occ_host_live_k }
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_row_scan_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_row_scan_index > 0 } check_variable = { camp_occ_row_external_left_k > 0 } }
+			subtract_from_temp_variable = { camp_occ_row_scan_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = {
+					var:camp_occ_row_hosts^camp_occ_row_scan_index = { state = event_target:camp_occ_row_current_host }
+					check_variable = { camp_occ_row_amounts_k^camp_occ_row_scan_index > 0 }
+				}
+				set_temp_variable = { camp_occ_row_before_k = camp_occ_row_amounts_k^camp_occ_row_scan_index }
+				# The last live row takes the rounding remainder, so the estimate conserves the loss.
+				set_temp_variable = { camp_occ_row_retired_k = camp_occ_row_external_left_k }
+				if = {
+					limit = { check_variable = { camp_occ_host_live_left_k > camp_occ_row_before_k } }
+					set_temp_variable = { camp_occ_row_share = camp_occ_row_before_k }
+					divide_temp_variable = { camp_occ_row_share = camp_occ_host_live_k }
+					set_temp_variable = { camp_occ_row_retired_k = camp_occ_external_removed_k }
+					multiply_temp_variable = { camp_occ_row_retired_k = camp_occ_row_share }
+				}
+				clamp_temp_variable = { var = camp_occ_row_retired_k min = 0 max = camp_occ_row_before_k }
+				clamp_temp_variable = { var = camp_occ_row_retired_k min = 0 max = camp_occ_row_external_left_k }
+				set_temp_variable = { camp_occ_row_after_k = camp_occ_row_before_k }
+				subtract_from_temp_variable = { camp_occ_row_after_k = camp_occ_row_retired_k }
+				set_variable = { camp_occ_row_amounts_k^camp_occ_row_scan_index = camp_occ_row_after_k }
+				subtract_from_temp_variable = { camp_occ_host_live_left_k = camp_occ_row_before_k }
+				subtract_from_temp_variable = { camp_occ_row_external_left_k = camp_occ_row_retired_k }
+			}
+		}
+	}
+	set_temp_variable = { camp_occ_unknown_removed_k = camp_occ_external_removed_k }
+	subtract_from_temp_variable = { camp_occ_unknown_removed_k = camp_occ_row_external_left_k }
+	add_to_variable = { camp_occ_unknown_origin_removed_k = camp_occ_unknown_removed_k }
+	var:camp_occ_responsible_country = { add_to_variable = { camp_occ_total_unknown_origin_removed_k = camp_occ_unknown_removed_k } }
+}
+
+# State. A single live origin at this host: the loss belongs to that cohort.
+camp_occ_distribute_known_origin_removal = {
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_row_scan_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_row_scan_index > 0 } check_variable = { camp_occ_row_external_left_k > 0 } }
+			subtract_from_temp_variable = { camp_occ_row_scan_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = {
+					var:camp_occ_row_hosts^camp_occ_row_scan_index = { state = event_target:camp_occ_row_current_host }
+					check_variable = { camp_occ_row_amounts_k^camp_occ_row_scan_index > 0 }
+				}
+				set_temp_variable = { camp_occ_row_retired_k = camp_occ_row_external_left_k }
+				clamp_temp_variable = { var = camp_occ_row_retired_k min = 0 max = camp_occ_row_amounts_k^camp_occ_row_scan_index }
+				set_temp_variable = { camp_occ_row_after_k = camp_occ_row_amounts_k^camp_occ_row_scan_index }
+				subtract_from_temp_variable = { camp_occ_row_after_k = camp_occ_row_retired_k }
+				set_variable = { camp_occ_row_amounts_k^camp_occ_row_scan_index = camp_occ_row_after_k }
+				set_temp_variable = { camp_occ_row_removed_after_k = camp_occ_row_removed_k^camp_occ_row_scan_index }
+				add_to_temp_variable = { camp_occ_row_removed_after_k = camp_occ_row_retired_k }
+				set_variable = { camp_occ_row_removed_k^camp_occ_row_scan_index = camp_occ_row_removed_after_k }
+				subtract_from_temp_variable = { camp_occ_row_external_left_k = camp_occ_row_retired_k }
+			}
+		}
+	}
+}
+
+# State. Resolve one immutable country row against this physical host before any loss.
+camp_occ_prove_active_row = {
+	set_temp_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_active_row_remaining_k = 0 }
+	save_event_target_as = camp_occ_row_current_host
+	if = {
+		limit = { has_variable = camp_occ_responsible_country check_variable = { camp_occ_active_row_id > 0 } }
+		var:camp_occ_responsible_country = {
+			if = {
+				limit = {
+					check_variable = { var = camp_occ_active_row_index value = 0 compare = greater_than_or_equals }
+					check_variable = { camp_occ_active_row_index < camp_occ_row_ids^num }
+					check_variable = { camp_occ_row_ids^camp_occ_active_row_index = camp_occ_active_row_id }
+					check_variable = { camp_occ_row_statuses^camp_occ_active_row_index = constant:camp_occ_row_status.active }
+					var:camp_occ_row_hosts^camp_occ_active_row_index = { state = event_target:camp_occ_row_current_host }
+					var:camp_occ_row_authorities^camp_occ_active_row_index = { tag = PREV }
+				}
+				set_temp_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_valid }
+				set_temp_variable = { camp_occ_active_row_remaining_k = camp_occ_row_amounts_k^camp_occ_active_row_index }
+			}
+		}
+	}
+}
+
+# State, called only from a named, source-validated route. The target must be an actual state.
+camp_occ_stage_transfer_destination = {
+	save_event_target_as = camp_occ_transfer_destination
+}
+
+# State. Positive physical credit with owner/controller recruitable-manpower reconciliation.
+# Input camp_occ_credit_request_people; output camp_occ_credit_actual_people.
+camp_occ_apply_population_credit = {
+	set_temp_variable = { camp_occ_credit_actual_people = 0 }
+	if = {
+		limit = { check_variable = { camp_occ_credit_request_people > 0 } }
+		set_temp_variable = { camp_occ_credit_before_people = state_population_k }
+		multiply_temp_variable = { camp_occ_credit_before_people = constant:camp_occ_value.people_per_k }
+		round_temp_variable = camp_occ_credit_before_people
+		OWNER = { set_temp_variable = { camp_occ_credit_owner_before_k = manpower_k } }
+		if = { limit = { NOT = { is_owned_and_controlled_by = OWNER } } CONTROLLER = { set_temp_variable = { camp_occ_credit_controller_before_k = manpower_k } } }
+		add_manpower = var:camp_occ_credit_request_people
+		set_temp_variable = { camp_occ_credit_actual_people = state_population_k }
+		multiply_temp_variable = { camp_occ_credit_actual_people = constant:camp_occ_value.people_per_k }
+		round_temp_variable = camp_occ_credit_actual_people
+		subtract_from_temp_variable = { camp_occ_credit_actual_people = camp_occ_credit_before_people }
+		clamp_temp_variable = { var = camp_occ_credit_actual_people min = 0 }
+		OWNER = {
+			set_temp_variable = { camp_occ_credit_owner_gain_people = manpower_k }
+			subtract_from_temp_variable = { camp_occ_credit_owner_gain_people = camp_occ_credit_owner_before_k }
+			multiply_temp_variable = { camp_occ_credit_owner_gain_people = constant:camp_occ_value.people_per_k }
+			round_temp_variable = camp_occ_credit_owner_gain_people
+			clamp_temp_variable = { var = camp_occ_credit_owner_gain_people min = 0 max = camp_occ_credit_actual_people }
+			if = {
+				limit = { check_variable = { camp_occ_credit_owner_gain_people > 0 } }
+				set_temp_variable = { camp_occ_credit_owner_correction = camp_occ_credit_owner_gain_people }
+				multiply_temp_variable = { camp_occ_credit_owner_correction = constant:camp_occ_value.negative_one }
+				add_manpower = var:camp_occ_credit_owner_correction
+			}
+		}
+		if = {
+			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+			CONTROLLER = {
+				set_temp_variable = { camp_occ_credit_controller_gain_people = manpower_k }
+				subtract_from_temp_variable = { camp_occ_credit_controller_gain_people = camp_occ_credit_controller_before_k }
+				multiply_temp_variable = { camp_occ_credit_controller_gain_people = constant:camp_occ_value.people_per_k }
+				round_temp_variable = camp_occ_credit_controller_gain_people
+				clamp_temp_variable = { var = camp_occ_credit_controller_gain_people min = 0 max = camp_occ_credit_actual_people }
+				if = {
+					limit = { check_variable = { camp_occ_credit_controller_gain_people > 0 } }
+					set_temp_variable = { camp_occ_credit_controller_correction = camp_occ_credit_controller_gain_people }
+					multiply_temp_variable = { camp_occ_credit_controller_correction = constant:camp_occ_value.negative_one }
+					add_manpower = var:camp_occ_credit_controller_correction
+				}
+			}
+		}
+	}
+}
+
+# State. Shared low-level loss does not write Deaths; the measured receipt is in whole people.
+camp_occ_apply_population_debit = {
+	set_temp_variable = { camp_occ_debit_actual_people = 0 }
+	if = {
+		limit = { check_variable = { camp_occ_debit_request_people > 0 } }
+		set_temp_variable = { camp_occ_debit_before_people = state_population_k }
+		multiply_temp_variable = { camp_occ_debit_before_people = constant:camp_occ_value.people_per_k }
+		round_temp_variable = camp_occ_debit_before_people
+		set_temp_variable = { state_population_transaction_loss = camp_occ_debit_request_people }
+		set_temp_variable = { state_population_transaction_contract_supplied = constant:camp_occ_value.transfer_valid }
+		apply_state_population_loss_without_recruitable_manpower_gain = yes
+		set_temp_variable = { camp_occ_debit_actual_people = state_population_k }
+		multiply_temp_variable = { camp_occ_debit_actual_people = constant:camp_occ_value.people_per_k }
+		round_temp_variable = camp_occ_debit_actual_people
+		set_temp_variable = { camp_occ_debit_measured_people = camp_occ_debit_before_people }
+		subtract_from_temp_variable = { camp_occ_debit_measured_people = camp_occ_debit_actual_people }
+		set_temp_variable = { camp_occ_debit_actual_people = camp_occ_debit_measured_people }
+		clamp_temp_variable = { var = camp_occ_debit_actual_people min = 0 }
+	}
+}
+
+# State source. Route adapter supplies proof, exact row ID and integer people, then stages a destination.
+# The route flag is consumed; source/destination receipts must match before any cohort metadata commits.
+camp_occ_transfer_survivors_exact = {
+	set_temp_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_transfer_preflight_valid = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_transfer_committed_people = 0 }
+	set_temp_variable = { camp_occ_transfer_destination_valid = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_transfer_source_debit_people = 0 }
+	set_temp_variable = { camp_occ_transfer_destination_credit_people = 0 }
+	set_temp_variable = { camp_occ_transfer_destination_undone_people = 0 }
+	set_temp_variable = { camp_occ_transfer_source_restored_people = 0 }
+	set_temp_variable = { camp_occ_active_row_id = 0 }
+	set_temp_variable = { camp_occ_active_row_index = constant:camp_occ_value.negative_one }
+	if = {
+		limit = {
+			check_variable = { camp_occ_transfer_route_proven = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_transfer_requested_people > 0 }
+			has_event_target = camp_occ_transfer_destination
+			camp_occ_state_has_current_authority = yes
+			NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
+			NOT = { state = event_target:camp_occ_transfer_destination }
+		}
+		set_temp_variable = { camp_occ_transfer_rounded_people = camp_occ_transfer_requested_people }
+		round_temp_variable = camp_occ_transfer_rounded_people
+		if = {
+			limit = { check_variable = { camp_occ_transfer_rounded_people = camp_occ_transfer_requested_people } }
+			set_temp_variable = { camp_occ_transfer_source_available_people = state_population_k }
+			subtract_from_temp_variable = { camp_occ_transfer_source_available_people = constant:camp_occ_value.minimum_population_k }
+			if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_transfer_source_available_people = camp_admin_detainees_k } }
+			multiply_temp_variable = { camp_occ_transfer_source_available_people = constant:camp_occ_value.people_per_k }
+			round_temp_variable = camp_occ_transfer_source_available_people
+			set_temp_variable = { camp_occ_transfer_aggregate_people = camp_occ_remaining_k }
+			multiply_temp_variable = { camp_occ_transfer_aggregate_people = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { camp_occ_transfer_max_people = constant:camp_occ_value.maximum_receipt_k }
+			multiply_temp_variable = { camp_occ_transfer_max_people = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { camp_occ_transfer_authority = camp_occ_responsible_country }
+			set_temp_variable = { camp_occ_transfer_source_state = THIS }
+			var:camp_occ_responsible_country = {
+				set_temp_variable = { camp_occ_transfer_rows_aligned = constant:camp_occ_value.transfer_invalid }
+				if = {
+					limit = {
+						check_variable = { camp_occ_row_root_ids^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_origins^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_hosts^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_authorities^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_profiles^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_amounts_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_deaths_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_removed_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_released_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_moved_out_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_moved_in_k^num = camp_occ_row_ids^num }
+						check_variable = { camp_occ_row_statuses^num = camp_occ_row_ids^num }
+					}
+					set_temp_variable = { camp_occ_transfer_rows_aligned = constant:camp_occ_value.transfer_valid }
+				}
+				set_temp_variable = { camp_occ_transfer_scan_index = camp_occ_row_ids^num }
+				while_loop_effect = {
+					limit = { check_variable = { camp_occ_transfer_scan_index > 0 } }
+					subtract_from_temp_variable = { camp_occ_transfer_scan_index = constant:camp_occ_value.row_index_step }
+					if = {
+						limit = { check_variable = { camp_occ_row_ids^camp_occ_transfer_scan_index = camp_occ_transfer_row_id } }
+						set_temp_variable = { camp_occ_active_row_index = camp_occ_transfer_scan_index }
+						set_temp_variable = { camp_occ_active_row_id = camp_occ_transfer_row_id }
+					}
+				}
+			}
+			camp_occ_prove_active_row = yes
+			set_temp_variable = { camp_occ_transfer_row_people = camp_occ_active_row_remaining_k }
+			multiply_temp_variable = { camp_occ_transfer_row_people = constant:camp_occ_value.people_per_k }
+			event_target:camp_occ_transfer_destination = {
+				if = {
+					limit = {
+						is_controlled_by = var:camp_occ_transfer_authority
+						OR = {
+							NOT = { has_state_flag = camp_occ_registered }
+							AND = { camp_occ_state_has_current_authority = yes check_variable = { camp_occ_responsible_country = camp_occ_transfer_authority } }
+						}
+					}
+					set_temp_variable = { camp_occ_transfer_destination_valid = constant:camp_occ_value.transfer_valid }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_valid }
+					check_variable = { camp_occ_transfer_rows_aligned = constant:camp_occ_value.transfer_valid }
+					check_variable = { camp_occ_transfer_destination_valid = constant:camp_occ_value.transfer_valid }
+					check_variable = { camp_occ_transfer_requested_people < camp_occ_transfer_source_available_people }
+					check_variable = { var = camp_occ_transfer_requested_people value = camp_occ_transfer_max_people compare = less_than_or_equals }
+					check_variable = { var = camp_occ_transfer_requested_people value = camp_occ_transfer_row_people compare = less_than_or_equals }
+					check_variable = { var = camp_occ_transfer_requested_people value = camp_occ_transfer_aggregate_people compare = less_than_or_equals }
+				}
+				set_temp_variable = { camp_occ_transfer_preflight_valid = constant:camp_occ_value.transfer_valid }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_occ_transfer_preflight_valid = constant:camp_occ_value.transfer_valid } }
+		set_temp_variable = { camp_occ_debit_request_people = camp_occ_transfer_requested_people }
+		camp_occ_apply_population_debit = yes
+		set_temp_variable = { camp_occ_transfer_source_debit_people = camp_occ_debit_actual_people }
+		if = {
+			limit = { check_variable = { camp_occ_transfer_source_debit_people > 0 } }
+			set_temp_variable = { camp_occ_credit_request_people = camp_occ_transfer_source_debit_people }
+			event_target:camp_occ_transfer_destination = { camp_occ_apply_population_credit = yes }
+			set_temp_variable = { camp_occ_transfer_destination_credit_people = camp_occ_credit_actual_people }
+		}
+		if = {
+			limit = {
+				check_variable = { camp_occ_transfer_source_debit_people = camp_occ_transfer_requested_people }
+				check_variable = { camp_occ_transfer_destination_credit_people = camp_occ_transfer_source_debit_people }
+			}
+			camp_occ_commit_transfer_rows = yes
+			set_temp_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_valid }
+			set_temp_variable = { camp_occ_transfer_committed_people = camp_occ_transfer_source_debit_people }
+		}
+		else = {
+			# Undo the actual destination credit first, then restore the actual source debit.
+			if = {
+				limit = { check_variable = { camp_occ_transfer_destination_credit_people > 0 } }
+				set_temp_variable = { camp_occ_debit_request_people = camp_occ_transfer_destination_credit_people }
+				event_target:camp_occ_transfer_destination = { camp_occ_apply_population_debit = yes }
+				set_temp_variable = { camp_occ_transfer_destination_undone_people = camp_occ_debit_actual_people }
+			}
+			if = {
+				limit = { check_variable = { camp_occ_transfer_source_debit_people > 0 } }
+				set_temp_variable = { camp_occ_credit_request_people = camp_occ_transfer_source_debit_people }
+				camp_occ_apply_population_credit = yes
+				set_temp_variable = { camp_occ_transfer_source_restored_people = camp_occ_credit_actual_people }
+			}
+			if = {
+				limit = { OR = { NOT = { check_variable = { camp_occ_transfer_destination_undone_people = camp_occ_transfer_destination_credit_people } } NOT = { check_variable = { camp_occ_transfer_source_restored_people = camp_occ_transfer_source_debit_people } } } }
+				set_state_flag = camp_occ_transfer_rollback_failed
+			}
+		}
+	}
+	set_temp_variable = { camp_occ_transfer_route_proven = 0 }
+	set_temp_variable = { camp_occ_transfer_requested_people = 0 }
+	set_temp_variable = { camp_occ_transfer_row_id = 0 }
+}
+
+# State source. Commit only after an exact, zero-residual physical receipt.
+camp_occ_commit_transfer_rows = {
+	set_temp_variable = { camp_occ_transfer_amount_k = camp_occ_transfer_source_debit_people }
+	divide_temp_variable = { camp_occ_transfer_amount_k = constant:camp_occ_value.people_per_k }
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_transfer_root_id = camp_occ_row_root_ids^camp_occ_active_row_index }
+		set_temp_variable = { camp_occ_transfer_profile = camp_occ_row_profiles^camp_occ_active_row_index }
+		set_temp_variable = { camp_occ_transfer_origin = camp_occ_row_origins^camp_occ_active_row_index }
+		set_temp_variable = { camp_occ_transfer_row_after_k = camp_occ_row_amounts_k^camp_occ_active_row_index }
+		subtract_from_temp_variable = { camp_occ_transfer_row_after_k = camp_occ_transfer_amount_k }
+		set_variable = { camp_occ_row_amounts_k^camp_occ_active_row_index = camp_occ_transfer_row_after_k }
+		set_temp_variable = { camp_occ_transfer_moved_out_after_k = camp_occ_row_moved_out_k^camp_occ_active_row_index }
+		add_to_temp_variable = { camp_occ_transfer_moved_out_after_k = camp_occ_transfer_amount_k }
+		set_variable = { camp_occ_row_moved_out_k^camp_occ_active_row_index = camp_occ_transfer_moved_out_after_k }
+		add_to_variable = { camp_occ_total_moved_out_k = camp_occ_transfer_amount_k }
+		set_temp_variable = { camp_occ_append_origin = camp_occ_transfer_origin }
+		set_temp_variable = { camp_occ_append_host = event_target:camp_occ_transfer_destination }
+		set_temp_variable = { camp_occ_append_profile = camp_occ_transfer_profile }
+		set_temp_variable = { camp_occ_append_amount_k = camp_occ_transfer_amount_k }
+		set_temp_variable = { camp_occ_append_root_id = camp_occ_transfer_root_id }
+		camp_occ_append_row = yes
+		set_temp_variable = { camp_occ_transfer_new_row_index = camp_occ_row_count }
+		subtract_from_temp_variable = { camp_occ_transfer_new_row_index = constant:camp_occ_value.row_index_step }
+		set_variable = { camp_occ_row_moved_in_k^camp_occ_transfer_new_row_index = camp_occ_transfer_amount_k }
+		add_to_variable = { camp_occ_total_moved_in_k = camp_occ_transfer_amount_k }
+	}
+	subtract_from_variable = { camp_occ_remaining_k = camp_occ_transfer_amount_k }
+	add_to_variable = { camp_occ_total_moved_out_k = camp_occ_transfer_amount_k }
+	set_variable = { camp_occ_observed_population_k = state_population_k }
+	event_target:camp_occ_transfer_destination = {
+		if = {
+			limit = { NOT = { has_state_flag = camp_occ_registered } }
+			set_state_flag = camp_occ_registered
+			set_variable = { camp_occ_responsible_country = camp_occ_transfer_authority }
+			set_variable = { camp_occ_cohort_origin_state = camp_occ_transfer_origin }
+			set_variable = { camp_occ_profile_id = camp_occ_transfer_profile }
+			set_variable = { camp_occ_initial_k = 0 }
+			set_variable = { camp_occ_remaining_k = 0 }
+			camp_occ_initialize_records = yes
+			set_variable = { camp_occ_native_row_id = camp_occ_appended_row_id }
+			var:camp_occ_responsible_country = { add_to_array = { array = camp_occ_states value = PREV } camp_rework_register_country_for_monthly_pulse = yes }
+		}
+		add_to_variable = { camp_occ_remaining_k = camp_occ_transfer_amount_k }
+		add_to_variable = { camp_occ_initial_k = camp_occ_transfer_amount_k }
+		add_to_variable = { camp_occ_total_moved_in_k = camp_occ_transfer_amount_k }
+		set_variable = { camp_occ_observed_population_k = state_population_k }
+		set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
+	}
+}
+
+# State. Read-only source quote for a named whole-person custody import request.
+camp_occ_preflight_custody_source = {
+	set_temp_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_active_row_id = 0 }
+	set_temp_variable = { camp_occ_active_row_index = constant:camp_occ_value.negative_one }
+	set_temp_variable = { camp_occ_custody_rounded_people = camp_occ_custody_requested_people }
+	round_temp_variable = camp_occ_custody_rounded_people
+	set_temp_variable = { camp_occ_custody_source_available_people = state_population_k }
+	subtract_from_temp_variable = { camp_occ_custody_source_available_people = constant:camp_occ_value.minimum_population_k }
+	if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_custody_source_available_people = camp_admin_detainees_k } }
+	multiply_temp_variable = { camp_occ_custody_source_available_people = constant:camp_occ_value.people_per_k }
+	round_temp_variable = camp_occ_custody_source_available_people
+	set_temp_variable = { camp_occ_custody_source_remaining_before_k = camp_occ_remaining_k }
+	set_temp_variable = { camp_occ_custody_source_aggregate_people = camp_occ_remaining_k }
+	multiply_temp_variable = { camp_occ_custody_source_aggregate_people = constant:camp_occ_value.people_per_k }
+	set_temp_variable = { camp_occ_custody_authority = camp_occ_responsible_country }
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_custody_rows_aligned = constant:camp_occ_value.transfer_invalid }
+		if = {
+			limit = {
+				check_variable = { camp_occ_row_root_ids^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_origins^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_hosts^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_authorities^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_profiles^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_amounts_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_deaths_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_removed_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_released_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_moved_out_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_moved_in_k^num = camp_occ_row_ids^num }
+				check_variable = { camp_occ_row_statuses^num = camp_occ_row_ids^num }
+			}
+			set_temp_variable = { camp_occ_custody_rows_aligned = constant:camp_occ_value.transfer_valid }
+		}
+		set_temp_variable = { camp_occ_custody_scan_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_custody_scan_index > 0 } }
+			subtract_from_temp_variable = { camp_occ_custody_scan_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = { check_variable = { camp_occ_row_ids^camp_occ_custody_scan_index = camp_occ_custody_row_id } }
+				set_temp_variable = { camp_occ_active_row_index = camp_occ_custody_scan_index }
+				set_temp_variable = { camp_occ_active_row_id = camp_occ_custody_row_id }
+			}
+		}
+	}
+	camp_occ_prove_active_row = yes
+	set_temp_variable = { camp_occ_custody_row_before_k = camp_occ_active_row_remaining_k }
+	set_temp_variable = { camp_occ_custody_row_people = camp_occ_active_row_remaining_k }
+	multiply_temp_variable = { camp_occ_custody_row_people = constant:camp_occ_value.people_per_k }
+	if = {
+		limit = {
+			check_variable = { camp_occ_custody_requested_people > 0 }
+			check_variable = { camp_occ_custody_rounded_people = camp_occ_custody_requested_people }
+			check_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_custody_rows_aligned = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_custody_requested_people < camp_occ_custody_source_available_people }
+			check_variable = { var = camp_occ_custody_requested_people value = camp_occ_custody_row_people compare = less_than_or_equals }
+			check_variable = { var = camp_occ_custody_requested_people value = camp_occ_custody_source_aggregate_people compare = less_than_or_equals }
+		}
+		var:camp_occ_responsible_country = {
+			set_temp_variable = { camp_occ_custody_origin = camp_occ_row_origins^camp_occ_active_row_index }
+			set_temp_variable = { camp_occ_custody_root_id = camp_occ_row_root_ids^camp_occ_active_row_index }
+		}
+		if = { limit = { check_variable = { camp_occ_custody_root_id > 0 } } set_temp_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_valid } }
+	}
+}
+
+# State. A distinct same-chain destination target for occupation-to-custody movement.
+camp_occ_stage_custody_destination = {
+	save_event_target_as = camp_occ_custody_destination
+}
+
+# Source state. Inverse the exact custody bind before undoing either physical population effect.
+# A failed inverse is quarantined rather than deleting population underneath a live custody row.
+camp_occ_rollback_custody_transaction = {
+	set_temp_variable = { camp_occ_custody_can_undo_physical = constant:camp_occ_value.transfer_valid }
+	if = {
+		limit = { check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_occ_value.transfer_valid } }
+		event_target:camp_occ_custody_destination = { camp_admin_inverse_import_bind = yes }
+		set_temp_variable = { camp_occ_custody_inverse_people = camp_admin_import_inverse_accepted_people }
+		if = {
+			limit = { NOT = { check_variable = { camp_occ_custody_inverse_people = camp_occ_custody_requested_people } } }
+			set_temp_variable = { camp_occ_custody_can_undo_physical = constant:camp_occ_value.transfer_invalid }
+		}
+	}
+	else_if = {
+		limit = { OR = { check_variable = { camp_occ_custody_bind_people > 0 } check_variable = { camp_occ_custody_bound_row_id > 0 } } }
+		set_temp_variable = { camp_occ_custody_can_undo_physical = constant:camp_occ_value.transfer_invalid }
+	}
+	if = {
+		limit = { check_variable = { camp_occ_custody_can_undo_physical = constant:camp_occ_value.transfer_valid } }
+		if = {
+			limit = { check_variable = { camp_occ_custody_destination_credit_people > 0 } }
+			set_temp_variable = { camp_occ_debit_request_people = camp_occ_custody_destination_credit_people }
+			event_target:camp_occ_custody_destination = { camp_occ_apply_population_debit = yes }
+			set_temp_variable = { camp_occ_custody_destination_undone_people = camp_occ_debit_actual_people }
+		}
+		if = {
+			limit = { check_variable = { camp_occ_custody_source_debit_people > 0 } }
+			set_temp_variable = { camp_occ_credit_request_people = camp_occ_custody_source_debit_people }
+			camp_occ_apply_population_credit = yes
+			set_temp_variable = { camp_occ_custody_source_restored_people = camp_occ_credit_actual_people }
+		}
+		if = {
+			limit = {
+				check_variable = { camp_occ_custody_destination_undone_people = camp_occ_custody_destination_credit_people }
+				check_variable = { camp_occ_custody_source_restored_people = camp_occ_custody_source_debit_people }
+			}
+			set_temp_variable = { camp_occ_custody_rollback_complete = constant:camp_occ_value.transfer_valid }
+		}
+	}
+	if = { limit = { check_variable = { camp_occ_custody_rollback_complete = constant:camp_occ_value.transfer_invalid } } set_state_flag = camp_occ_custody_rollback_failed }
+}
+
+# Source state. Inputs: custody route proof, exact occupation row ID, positive whole people,
+# and camp_occ_custody_destination staged from the actual destination state.
+# Outputs survive input cleanup: result, committed people, physical and bind receipts, rollback.
+camp_occ_transfer_to_custody_exact = {
+	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_custody_preflight_valid = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_custody_committed_people = 0 }
+	set_temp_variable = { camp_occ_custody_source_debit_people = 0 }
+	set_temp_variable = { camp_occ_custody_destination_credit_people = 0 }
+	set_temp_variable = { camp_occ_custody_bind_people = 0 }
+	set_temp_variable = { camp_occ_custody_bound_row_id = 0 }
+	set_temp_variable = { camp_occ_custody_inverse_people = 0 }
+	set_temp_variable = { camp_occ_custody_destination_undone_people = 0 }
+	set_temp_variable = { camp_occ_custody_source_restored_people = 0 }
+	set_temp_variable = { camp_occ_custody_rollback_complete = constant:camp_occ_value.transfer_invalid }
+	if = {
+		limit = {
+			check_variable = { camp_occ_custody_route_proven = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_custody_requested_people > 0 }
+			has_event_target = camp_occ_custody_destination
+			camp_occ_state_has_current_authority = yes
+			NOT = { state = event_target:camp_occ_custody_destination }
+			NOT = { has_state_flag = camp_occ_custody_rollback_failed }
+			NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
+			NOT = { check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_occ_value.transfer_valid } }
+		}
+		camp_occ_preflight_custody_source = yes
+		if = {
+			limit = { check_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_valid } }
+			set_temp_variable = { camp_admin_import_requested_people = camp_occ_custody_requested_people }
+			set_temp_variable = { camp_admin_import_origin = camp_occ_custody_origin }
+			set_temp_variable = { camp_admin_import_authority = camp_occ_custody_authority }
+			set_temp_variable = { camp_admin_import_occupation_root_id = camp_occ_custody_root_id }
+			event_target:camp_occ_custody_destination = { camp_admin_preflight_import = yes }
+			if = {
+				limit = { check_variable = { camp_admin_import_preflight_valid = constant:camp_occ_value.transfer_valid } }
+				set_temp_variable = { camp_occ_custody_preflight_valid = constant:camp_occ_value.transfer_valid }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { camp_occ_custody_preflight_valid = constant:camp_occ_value.transfer_valid } }
+		set_temp_variable = { camp_occ_debit_request_people = camp_occ_custody_requested_people }
+		camp_occ_apply_population_debit = yes
+		set_temp_variable = { camp_occ_custody_source_debit_people = camp_occ_debit_actual_people }
+		if = {
+			limit = { check_variable = { camp_occ_custody_source_debit_people = camp_occ_custody_requested_people } }
+			set_temp_variable = { camp_occ_credit_request_people = camp_occ_custody_source_debit_people }
+			event_target:camp_occ_custody_destination = { camp_occ_apply_population_credit = yes }
+			set_temp_variable = { camp_occ_custody_destination_credit_people = camp_occ_credit_actual_people }
+			if = {
+				limit = { check_variable = { camp_occ_custody_destination_credit_people = camp_occ_custody_source_debit_people } }
+				event_target:camp_occ_custody_destination = { camp_admin_bind_import = yes }
+				set_temp_variable = { camp_occ_custody_bind_people = camp_admin_import_bind_accepted_people }
+				set_temp_variable = { camp_occ_custody_bound_row_id = camp_admin_import_bound_row_id }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { camp_occ_custody_source_debit_people = camp_occ_custody_requested_people }
+				check_variable = { camp_occ_custody_destination_credit_people = camp_occ_custody_source_debit_people }
+				check_variable = { camp_occ_custody_bind_people = camp_occ_custody_destination_credit_people }
+				check_variable = { camp_occ_custody_bound_row_id > 0 }
+				check_variable = { camp_admin_import_bind_pending_inverse = constant:camp_occ_value.transfer_valid }
+			}
+			camp_occ_prove_active_row = yes
+			if = {
+				limit = {
+					camp_occ_state_has_current_authority = yes
+					check_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_valid }
+					check_variable = { camp_occ_active_row_remaining_k = camp_occ_custody_row_before_k }
+					check_variable = { camp_occ_remaining_k = camp_occ_custody_source_remaining_before_k }
+				}
+				camp_occ_commit_transfer_to_custody = yes
+				set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_valid }
+				set_temp_variable = { camp_occ_custody_committed_people = camp_occ_custody_source_debit_people }
+				set_temp_variable = { camp_admin_import_bind_pending_inverse = 0 }
+			}
+		}
+		if = {
+			limit = { check_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid } }
+			camp_occ_rollback_custody_transaction = yes
+		}
+	}
+	set_temp_variable = { camp_occ_custody_route_proven = 0 }
+	set_temp_variable = { camp_occ_custody_row_id = 0 }
+	set_temp_variable = { camp_occ_custody_requested_people = 0 }
+	set_temp_variable = { camp_admin_import_preflight_valid = 0 }
+}
+
+# Source state. Only one measured, fully bound custody receipt may retire this row.
+camp_occ_commit_transfer_to_custody = {
+	set_temp_variable = { camp_occ_custody_amount_k = camp_occ_custody_source_debit_people }
+	divide_temp_variable = { camp_occ_custody_amount_k = constant:camp_occ_value.people_per_k }
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_custody_row_after_k = camp_occ_row_amounts_k^camp_occ_active_row_index }
+		subtract_from_temp_variable = { camp_occ_custody_row_after_k = camp_occ_custody_amount_k }
+		set_variable = { camp_occ_row_amounts_k^camp_occ_active_row_index = camp_occ_custody_row_after_k }
+		set_temp_variable = { camp_occ_custody_moved_out_after_k = camp_occ_row_moved_out_k^camp_occ_active_row_index }
+		add_to_temp_variable = { camp_occ_custody_moved_out_after_k = camp_occ_custody_amount_k }
+		set_variable = { camp_occ_row_moved_out_k^camp_occ_active_row_index = camp_occ_custody_moved_out_after_k }
+		add_to_variable = { camp_occ_total_moved_out_k = camp_occ_custody_amount_k }
+	}
+	subtract_from_variable = { camp_occ_remaining_k = camp_occ_custody_amount_k }
+	add_to_variable = { camp_occ_total_moved_out_k = camp_occ_custody_amount_k }
+	set_variable = { camp_occ_observed_population_k = state_population_k }
+}
+
+# State: requested amount is never the receipt. Shared helper debits once with logging disabled.
+camp_occ_record_deaths = {
+	set_temp_variable = { camp_occ_actual_k = 0 }
+	camp_occ_prove_active_row = yes
+	if = {
+		limit = {
+			camp_occ_state_can_pulse = yes
+			check_variable = { camp_occ_active_row_valid = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_loss_contract = 1 }
+			check_variable = { camp_occ_requested_k > 0 }
+			check_variable = { camp_occ_loss_cause = constant:camp_occ_cause.campaign_violence }
+		}
+		camp_occ_reconcile_external_population = yes
+		camp_occ_prove_active_row = yes
+		set_temp_variable = { camp_occ_before_k = state_population_k }
+		set_temp_variable = { camp_occ_request_k = camp_occ_requested_k }
+		clamp_temp_variable = { var = camp_occ_request_k min = 0 max = camp_occ_remaining_k }
+		clamp_temp_variable = { var = camp_occ_request_k min = 0 max = camp_occ_active_row_remaining_k }
+		clamp_temp_variable = { var = camp_occ_request_k min = 0 max = constant:camp_occ_value.maximum_receipt_k }
+		set_temp_variable = { state_civilian_population_loss_requested = camp_occ_request_k }
+		multiply_temp_variable = { state_civilian_population_loss_requested = constant:camp_occ_value.people_per_k }
+		# The shared API rounds to people; never round above the finite cohort request.
+		set_temp_variable = { camp_occ_request_people_ceiling = state_civilian_population_loss_requested }
+		round_temp_variable = state_civilian_population_loss_requested
+		if = {
+			limit = { check_variable = { state_civilian_population_loss_requested > camp_occ_request_people_ceiling } }
+			subtract_from_temp_variable = { state_civilian_population_loss_requested = constant:camp_occ_value.one_person }
+		}
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_occ_value.minimum_population_k }
+		if = { limit = { has_variable = camp_admin_detainees_k } add_to_temp_variable = { state_civilian_population_loss_minimum_remaining = camp_admin_detainees_k } }
+		multiply_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:camp_occ_value.people_per_k }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = 0 }
+		set_temp_variable = { state_civilian_population_loss_target_country = camp_occ_responsible_country }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
+		apply_exact_state_civilian_population_loss = yes
+		set_temp_variable = { camp_occ_actual_k = camp_occ_before_k }
+		subtract_from_temp_variable = { camp_occ_actual_k = state_population_k }
+		clamp_temp_variable = { var = camp_occ_actual_k min = 0 }
+		subtract_from_variable = { camp_occ_remaining_k = camp_occ_actual_k }
+		var:camp_occ_responsible_country = {
+			set_temp_variable = { camp_occ_row_after_k = camp_occ_row_amounts_k^camp_occ_active_row_index }
+			subtract_from_temp_variable = { camp_occ_row_after_k = camp_occ_actual_k }
+			set_variable = { camp_occ_row_amounts_k^camp_occ_active_row_index = camp_occ_row_after_k }
+			set_temp_variable = { camp_occ_row_deaths_after_k = camp_occ_row_deaths_k^camp_occ_active_row_index }
+			add_to_temp_variable = { camp_occ_row_deaths_after_k = camp_occ_actual_k }
+			set_variable = { camp_occ_row_deaths_k^camp_occ_active_row_index = camp_occ_row_deaths_after_k }
+		}
+		set_variable = { camp_occ_observed_population_k = state_population_k }
+		if = {
+			limit = { check_variable = { camp_occ_actual_k > 0 } }
+			set_temp_variable = { chaos_deaths_change = camp_occ_actual_k }
+			multiply_temp_variable = { chaos_deaths_change = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.occupation_repression }
+			set_temp_variable = { chaos_deaths_is_civilian = 1 }
+			set_temp_variable = { chaos_deaths_apply_state_pop = 0 }
+			set_temp_variable = { chaos_deaths_record_state_ledger = 1 }
+			set_temp_variable = { chaos_deaths_target_country = camp_occ_responsible_country }
+			set_temp_variable = { chaos_deaths_has_target_country = 1 }
+			chaos_meter_register_deaths = yes
+			# Advance after projection so the next reconciliation excludes this exact own receipt.
+			set_variable = { camp_occ_observed_state_deaths = chaos_state_civilian_deaths_total }
+			camp_occ_project_receipt = yes
+			var:camp_occ_responsible_country = { camp_occ_project_receipt = yes }
+		}
+	}
+	set_temp_variable = { camp_occ_loss_contract = 0 }
+	set_temp_variable = { camp_occ_requested_k = 0 }
+	set_temp_variable = { camp_occ_loss_cause = 0 }
+}
+camp_occ_project_receipt = {
+	add_to_variable = { camp_occ_month_deaths_k = camp_occ_actual_k }
+	add_to_variable = { camp_occ_total_deaths_k = camp_occ_actual_k }
+	add_to_variable = { camp_occ_month_campaign_violence_k = camp_occ_actual_k }
+	add_to_variable = { camp_occ_total_campaign_violence_k = camp_occ_actual_k }
+}
+
+# Country. The first registered source that passes an exact one-person row
+# preflight is the oldest currently eligible source for the compact order.
+camp_occ_refresh_manual_transfer_source = {
+	clear_variable = camp_occ_manual_source_state_id
+	for_each_scope_loop = {
+		array = camp_occ_states
+		if = {
+			limit = {
+				camp_occ_manual_transfer_live_source_ready = yes
+				PREV = { NOT = { has_variable = camp_occ_manual_source_state_id } }
+			}
+			set_temp_variable = { camp_occ_custody_row_id = camp_occ_native_row_id }
+			set_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.one_person }
+			camp_occ_preflight_custody_source = yes
+			set_temp_variable = { camp_occ_manual_probe_people = camp_occ_custody_row_before_k }
+			multiply_temp_variable = { camp_occ_manual_probe_people = constant:camp_occ_value.manual_auschwitz_living_share }
+			multiply_temp_variable = { camp_occ_manual_probe_people = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { camp_occ_manual_probe_ceiling_people = camp_occ_manual_probe_people }
+			round_temp_variable = camp_occ_manual_probe_people
+			if = {
+				limit = { check_variable = { camp_occ_manual_probe_people > camp_occ_manual_probe_ceiling_people } }
+				subtract_from_temp_variable = { camp_occ_manual_probe_people = constant:camp_occ_value.one_person }
+			}
+			set_temp_variable = { camp_occ_manual_source_margin_limit = camp_occ_custody_source_available_people }
+			subtract_from_temp_variable = { camp_occ_manual_source_margin_limit = constant:camp_occ_value.one_person }
+			clamp_temp_variable = { var = camp_occ_manual_source_margin_limit min = 0 }
+			clamp_temp_variable = { var = camp_occ_manual_probe_people min = 0 max = camp_occ_manual_source_margin_limit }
+			clamp_temp_variable = { var = camp_occ_manual_probe_people min = 0 max = camp_occ_custody_row_people }
+			clamp_temp_variable = { var = camp_occ_manual_probe_people min = 0 max = camp_occ_custody_source_aggregate_people }
+			if = {
+				limit = {
+					check_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_valid }
+					check_variable = { var = camp_occ_manual_probe_people value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals }
+				}
+				PREV = { set_variable = { camp_occ_manual_source_state_id = PREV } }
+			}
+		}
+	}
+	set_temp_variable = { camp_occ_custody_row_id = 0 }
+	set_temp_variable = { camp_occ_custody_requested_people = 0 }
+}
+
+# Country ROOT with the oldest selected state. Quote its living native row and
+# site-88 headroom; the paid caller acts only after an exact custody receipt.
+camp_occ_try_manual_auschwitz_transfer = {
+	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
+	set_temp_variable = { camp_occ_custody_committed_people = 0 }
+	if = {
+		limit = {
+			camp_occ_manual_transfer_country_ready = yes
+			camp_occ_manual_transfer_can_pay = yes
+			has_variable = camp_occ_manual_source_state_id
+			var:camp_occ_manual_source_state_id = { camp_occ_manual_transfer_live_source_ready = yes }
+		}
+		88 = {
+			camp_admin_refresh_capacity = yes
+			set_temp_variable = { camp_occ_manual_free_capacity_k = camp_admin_capacity_k }
+			subtract_from_temp_variable = { camp_occ_manual_free_capacity_k = camp_admin_detainees_k }
+			clamp_temp_variable = { var = camp_occ_manual_free_capacity_k min = 0 max = constant:camp_occ_value.maximum_receipt_k }
+			set_temp_variable = { camp_occ_manual_share_headroom_k = state_population_k }
+			multiply_temp_variable = { camp_occ_manual_share_headroom_k = constant:camp_admin_value.maximum_population_share }
+			subtract_from_temp_variable = { camp_occ_manual_share_headroom_k = camp_admin_detainees_k }
+			clamp_temp_variable = { var = camp_occ_manual_share_headroom_k min = 0 }
+			clamp_temp_variable = { var = camp_occ_manual_free_capacity_k min = 0 max = camp_occ_manual_share_headroom_k }
+			camp_occ_stage_custody_destination = yes
+		}
+		if = {
+			limit = { check_variable = { camp_occ_manual_free_capacity_k > 0 } }
+			var:camp_occ_manual_source_state_id = {
+				set_temp_variable = { camp_occ_custody_row_id = camp_occ_native_row_id }
+				set_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.one_person }
+				camp_occ_preflight_custody_source = yes
+				if = {
+					limit = { check_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_valid } }
+					set_temp_variable = { camp_occ_custody_requested_people = camp_occ_custody_row_before_k }
+					multiply_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.manual_auschwitz_living_share }
+					clamp_temp_variable = { var = camp_occ_custody_requested_people min = 0 max = camp_occ_manual_free_capacity_k }
+					multiply_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.people_per_k }
+					set_temp_variable = { camp_occ_manual_request_ceiling_people = camp_occ_custody_requested_people }
+					round_temp_variable = camp_occ_custody_requested_people
+					if = {
+						limit = { check_variable = { camp_occ_custody_requested_people > camp_occ_manual_request_ceiling_people } }
+						subtract_from_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.one_person }
+					}
+					set_temp_variable = { camp_occ_manual_source_margin_limit = camp_occ_custody_source_available_people }
+					subtract_from_temp_variable = { camp_occ_manual_source_margin_limit = constant:camp_occ_value.one_person }
+					clamp_temp_variable = { var = camp_occ_manual_source_margin_limit min = 0 }
+					clamp_temp_variable = { var = camp_occ_custody_requested_people min = 0 max = camp_occ_manual_source_margin_limit }
+					clamp_temp_variable = { var = camp_occ_custody_requested_people min = 0 max = camp_occ_custody_row_people }
+					clamp_temp_variable = { var = camp_occ_custody_requested_people min = 0 max = camp_occ_custody_source_aggregate_people }
+					if = {
+						limit = { check_variable = { var = camp_occ_custody_requested_people value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals } }
+						set_temp_variable = { camp_occ_custody_route_proven = constant:camp_occ_value.transfer_valid }
+						camp_occ_transfer_to_custody_exact = yes
+					}
+				}
+			}
+		}
+	}
+	camp_occ_apply_killing_arrival_loss = yes
+	set_temp_variable = { camp_occ_custody_route_proven = 0 }
+	set_temp_variable = { camp_occ_custody_row_id = 0 }
+	set_temp_variable = { camp_occ_custody_requested_people = 0 }
+}
+
+# Country after a committed exact custody transfer. Arrival violence applies only
+# to the newly bound row at the physical destination; the measured loss is a
+# subset of the existing killing-center cause and never a transfer death.
+camp_occ_apply_killing_arrival_loss = {
+	set_temp_variable = { camp_occ_arrival_actual_k = 0 }
+	if = {
+		limit = {
+			check_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_valid }
+			check_variable = { camp_occ_custody_committed_people > 0 }
+			check_variable = { camp_occ_custody_bound_row_id > 0 }
+			camp_occ_authority_has_campaign = yes
+			has_event_target = camp_occ_custody_destination
+			NOT = { has_global_flag = settings_chaos_deaths_disabled }
+			event_target:camp_occ_custody_destination = { camp_occ_killing_destination_active = yes }
+		}
+		set_temp_variable = { camp_occ_arrival_death_request_people = camp_occ_custody_committed_people }
+		multiply_temp_variable = { camp_occ_arrival_death_request_people = constant:camp_occ_arrival.violence_request_fraction }
+		set_temp_variable = { camp_occ_arrival_death_request_ceiling_people = camp_occ_arrival_death_request_people }
+		round_temp_variable = camp_occ_arrival_death_request_people
+		if = {
+			limit = { check_variable = { camp_occ_arrival_death_request_people > camp_occ_arrival_death_request_ceiling_people } }
+			subtract_from_temp_variable = { camp_occ_arrival_death_request_people = constant:camp_occ_value.one_person }
+		}
+		if = {
+			limit = { check_variable = { camp_occ_arrival_death_request_people > 0 } }
+			set_temp_variable = { camp_admin_death_requested_k = camp_occ_arrival_death_request_people }
+			divide_temp_variable = { camp_admin_death_requested_k = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { camp_admin_death_row_id = camp_occ_custody_bound_row_id }
+			set_temp_variable = { camp_admin_death_cause = constant:camp_admin_cause.violence }
+			set_temp_variable = { camp_admin_death_contract = constant:camp_admin_value.one }
+			set_temp_variable = { camp_admin_arrival_phase_contract = constant:camp_admin_value.one }
+			event_target:camp_occ_custody_destination = { camp_admin_record_deaths = yes }
+			set_temp_variable = { camp_occ_arrival_actual_k = camp_admin_death_actual_k }
+		}
+	}
+}
+
+# Country scope. Reserve one share of a proven living Lodz row during the documented
+# August-September 1944 window. The pending share is a movement ceiling, not a death quota.
+# Supported monthly throughput and resident capacity are recalculated for every wave.
+camp_occ_try_lodz_auschwitz_transfer = {
+	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
+	if = {
+		limit = {
+			date > 1944.9.30
+			has_variable = camp_occ_lodz_pending_people
+		}
+		clear_variable = camp_occ_lodz_pending_people
+		clear_variable = camp_occ_lodz_source_row_id
+	}
+	if = {
+		limit = {
+			original_tag = GER
+			date > 1944.8.8
+			date < 1944.10.1
+			camp_occ_authority_has_campaign = yes
+			87 = {
+				is_controlled_by = PREV
+				camp_occ_state_has_current_authority = yes
+				has_variable = camp_occ_native_row_id
+				check_variable = { camp_occ_remaining_k > 0 }
+			}
+			88 = { camp_occ_killing_destination_active = yes }
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = camp_occ_lodz_auschwitz_transfer_recorded }
+				NOT = { has_variable = camp_occ_lodz_pending_people }
+			}
+			87 = {
+				set_temp_variable = { camp_occ_custody_row_id = camp_occ_native_row_id }
+				set_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.one_person }
+				camp_occ_preflight_custody_source = yes
+				if = {
+					limit = { check_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_valid } }
+					set_temp_variable = { camp_occ_lodz_pending_request_people = camp_occ_custody_row_before_k }
+					multiply_temp_variable = { camp_occ_lodz_pending_request_people = constant:camp_occ_value.lodz_auschwitz_living_share }
+					multiply_temp_variable = { camp_occ_lodz_pending_request_people = constant:camp_occ_value.people_per_k }
+					set_temp_variable = { camp_occ_lodz_pending_ceiling_people = camp_occ_lodz_pending_request_people }
+					round_temp_variable = camp_occ_lodz_pending_request_people
+					if = {
+						limit = { check_variable = { camp_occ_lodz_pending_request_people > camp_occ_lodz_pending_ceiling_people } }
+						subtract_from_temp_variable = { camp_occ_lodz_pending_request_people = constant:camp_occ_value.one_person }
+					}
+					if = {
+						limit = { check_variable = { camp_occ_lodz_pending_request_people > 0 } }
+						PREV = {
+							set_variable = { camp_occ_lodz_pending_people = camp_occ_lodz_pending_request_people }
+							set_variable = { camp_occ_lodz_source_row_id = PREV.camp_occ_native_row_id }
+							set_country_flag = camp_occ_lodz_auschwitz_transfer_recorded
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { camp_occ_lodz_pending_people > 0 } }
+			88 = {
+				set_temp_variable = { camp_occ_lodz_monthly_throughput_people = non_damaged_building_level@extermination_camp }
+				multiply_temp_variable = { camp_occ_lodz_monthly_throughput_people = constant:camp_occ_arrival.throughput_per_supported_level_k }
+				multiply_temp_variable = { camp_occ_lodz_monthly_throughput_people = camp_admin_support_ratio }
+				multiply_temp_variable = { camp_occ_lodz_monthly_throughput_people = constant:camp_occ_value.people_per_k }
+			}
+			set_temp_variable = { camp_occ_lodz_batch_count = 0 }
+			set_temp_variable = { camp_occ_lodz_monthly_moved_people = 0 }
+			set_temp_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_valid }
+			while_loop_effect = {
+				limit = {
+					check_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_valid }
+					check_variable = { camp_occ_lodz_pending_people > 0 }
+					check_variable = { camp_occ_lodz_monthly_throughput_people > 0 }
+					check_variable = { camp_occ_lodz_batch_count < constant:camp_occ_arrival.max_batches_per_month }
+					87 = { camp_occ_state_has_current_authority = yes }
+					88 = { camp_occ_killing_destination_active = yes }
+				}
+				add_to_temp_variable = { camp_occ_lodz_batch_count = constant:camp_occ_value.row_index_step }
+				88 = {
+					camp_admin_refresh_capacity = yes
+					set_temp_variable = { camp_occ_lodz_free_capacity_k = camp_admin_capacity_k }
+					subtract_from_temp_variable = { camp_occ_lodz_free_capacity_k = camp_admin_detainees_k }
+					set_temp_variable = { camp_occ_lodz_share_headroom_k = state_population_k }
+					multiply_temp_variable = { camp_occ_lodz_share_headroom_k = constant:camp_admin_value.maximum_population_share }
+					subtract_from_temp_variable = { camp_occ_lodz_share_headroom_k = camp_admin_detainees_k }
+					clamp_temp_variable = { var = camp_occ_lodz_share_headroom_k min = 0 }
+					clamp_temp_variable = { var = camp_occ_lodz_free_capacity_k min = 0 max = camp_occ_lodz_share_headroom_k }
+					camp_occ_stage_custody_destination = yes
+				}
+				87 = {
+					set_temp_variable = { camp_occ_custody_row_id = PREV.camp_occ_lodz_source_row_id }
+					set_temp_variable = { camp_occ_custody_requested_people = constant:camp_occ_value.one_person }
+					camp_occ_preflight_custody_source = yes
+				}
+				if = {
+					limit = { check_variable = { camp_occ_custody_source_valid = constant:camp_occ_value.transfer_invalid } }
+					set_temp_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_invalid }
+				}
+				set_temp_variable = { camp_occ_lodz_wave_ceiling_people = camp_occ_lodz_free_capacity_k }
+				multiply_temp_variable = { camp_occ_lodz_wave_ceiling_people = constant:camp_occ_value.people_per_k }
+				clamp_temp_variable = { var = camp_occ_lodz_wave_ceiling_people min = 0 max = camp_occ_lodz_pending_people }
+				clamp_temp_variable = { var = camp_occ_lodz_wave_ceiling_people min = 0 max = camp_occ_lodz_monthly_throughput_people }
+				set_temp_variable = { camp_occ_lodz_live_row_people = camp_occ_custody_row_before_k }
+				multiply_temp_variable = { camp_occ_lodz_live_row_people = constant:camp_occ_value.people_per_k }
+				clamp_temp_variable = { var = camp_occ_lodz_wave_ceiling_people min = 0 max = camp_occ_lodz_live_row_people }
+				set_temp_variable = { camp_occ_lodz_source_headroom_people = camp_occ_custody_source_available_people }
+				subtract_from_temp_variable = { camp_occ_lodz_source_headroom_people = constant:camp_occ_value.one_person }
+				clamp_temp_variable = { var = camp_occ_lodz_source_headroom_people min = 0 }
+				clamp_temp_variable = { var = camp_occ_lodz_wave_ceiling_people min = 0 max = camp_occ_lodz_source_headroom_people }
+				set_temp_variable = { camp_occ_lodz_wave_before_round_people = camp_occ_lodz_wave_ceiling_people }
+				round_temp_variable = camp_occ_lodz_wave_ceiling_people
+				if = {
+					limit = { check_variable = { camp_occ_lodz_wave_ceiling_people > camp_occ_lodz_wave_before_round_people } }
+					subtract_from_temp_variable = { camp_occ_lodz_wave_ceiling_people = constant:camp_occ_value.one_person }
+				}
+				if = {
+					limit = {
+						check_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_valid }
+						check_variable = { camp_occ_lodz_wave_ceiling_people > 0 }
+					}
+					87 = {
+						set_temp_variable = { camp_occ_custody_row_id = PREV.camp_occ_lodz_source_row_id }
+						set_temp_variable = { camp_occ_custody_requested_people = camp_occ_lodz_wave_ceiling_people }
+						set_temp_variable = { camp_occ_custody_route_proven = constant:camp_occ_value.transfer_valid }
+						camp_occ_transfer_to_custody_exact = yes
+					}
+					if = {
+						limit = { check_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_valid } }
+						subtract_from_variable = { camp_occ_lodz_pending_people = camp_occ_custody_committed_people }
+						subtract_from_temp_variable = { camp_occ_lodz_monthly_throughput_people = camp_occ_custody_committed_people }
+						add_to_temp_variable = { camp_occ_lodz_monthly_moved_people = camp_occ_custody_committed_people }
+						camp_occ_apply_killing_arrival_loss = yes
+					}
+					else = { set_temp_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_invalid } }
+				}
+				else = { set_temp_variable = { camp_occ_lodz_continue = constant:camp_occ_value.transfer_invalid } }
+			}
+			if = {
+				limit = { check_variable = { camp_occ_lodz_monthly_moved_people > 0 } }
+				set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.killing_center_transfer }
+				set_temp_variable = { camp_admin_record_state_id = 87 }
+				camp_admin_record_history = yes
+			}
+		}
+	}
+}
+
+camp_occ_monthly_country = {
+	camp_occ_initialize_country = yes
+	camp_occ_initialize_rows = yes
+	camp_admin_prepare_month_key = yes
+	if = {
+		limit = { NOT = { check_variable = { camp_occ_last_month = camp_admin_month_key } } }
+		set_variable = { camp_occ_last_month = camp_admin_month_key }
+		camp_occ_reset_month_records = yes
+		for_each_scope_loop = { array = camp_occ_eligible_states camp_occ_try_register_current_state = yes }
+		for_each_scope_loop = {
+			array = camp_occ_states
+			camp_occ_backfill_cohort_origin = yes
+			camp_occ_reset_month_records = yes
+			camp_occ_reconcile_external_population = yes
+			if = { limit = { NOT = { camp_occ_state_has_current_authority = yes } } camp_occ_close_state = yes }
+		}
+		camp_occ_try_lodz_auschwitz_transfer = yes
+		set_temp_variable = { camp_occ_month_row_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_month_row_index > 0 } }
+			subtract_from_temp_variable = { camp_occ_month_row_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = { check_variable = { camp_occ_row_amounts_k^camp_occ_month_row_index > 0 } check_variable = { camp_occ_row_statuses^camp_occ_month_row_index = constant:camp_occ_row_status.active } }
+				set_temp_variable = { camp_occ_active_row_index = camp_occ_month_row_index }
+				set_temp_variable = { camp_occ_active_row_id = camp_occ_row_ids^camp_occ_month_row_index }
+				set_temp_variable = { camp_occ_requested_k = camp_occ_row_amounts_k^camp_occ_month_row_index }
+				if = {
+					limit = { check_variable = { camp_occ_row_profiles^camp_occ_month_row_index = constant:camp_occ_profile.japan } }
+					multiply_temp_variable = { camp_occ_requested_k = constant:camp_occ_value.japan_campaign_monthly_fraction }
+				}
+				else = { multiply_temp_variable = { camp_occ_requested_k = constant:camp_occ_value.german_campaign_monthly_fraction } }
+				set_temp_variable = { camp_occ_loss_cause = constant:camp_occ_cause.campaign_violence }
+				set_temp_variable = { camp_occ_loss_contract = 1 }
+				var:camp_occ_row_hosts^camp_occ_month_row_index = { camp_occ_record_deaths = yes }
+			}
+		}
+		if = { limit = { original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
+	}
+}
+
+# Closure releases surviving exposure in place and permanently prevents reseeding this state row.
+camp_occ_close_state = {
+	camp_occ_backfill_cohort_origin = yes
+	if = {
+		limit = { has_state_flag = camp_occ_registered NOT = { has_state_flag = camp_occ_closed } }
+		camp_occ_reconcile_external_population = yes
+		set_temp_variable = { camp_occ_release_k = camp_occ_remaining_k }
+		camp_occ_release_rows_at_host = yes
+		add_to_variable = { camp_occ_total_released_k = camp_occ_release_k }
+		var:camp_occ_responsible_country = { add_to_variable = { camp_occ_total_released_k = camp_occ_release_k } }
+		set_variable = { camp_occ_remaining_k = 0 }
+		set_state_flag = camp_occ_closed
+	}
+}
+
+# State. Release only the living rows physically present here, preserving all death receipts.
+camp_occ_release_rows_at_host = {
+	save_event_target_as = camp_occ_row_current_host
+	var:camp_occ_responsible_country = {
+		set_temp_variable = { camp_occ_row_release_index = camp_occ_row_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { camp_occ_row_release_index > 0 } }
+			subtract_from_temp_variable = { camp_occ_row_release_index = constant:camp_occ_value.row_index_step }
+			if = {
+				limit = { var:camp_occ_row_hosts^camp_occ_row_release_index = { state = event_target:camp_occ_row_current_host } check_variable = { camp_occ_row_amounts_k^camp_occ_row_release_index > 0 } }
+				set_temp_variable = { camp_occ_row_released_after_k = camp_occ_row_released_k^camp_occ_row_release_index }
+				add_to_temp_variable = { camp_occ_row_released_after_k = camp_occ_row_amounts_k^camp_occ_row_release_index }
+				set_variable = { camp_occ_row_released_k^camp_occ_row_release_index = camp_occ_row_released_after_k }
+				set_variable = { camp_occ_row_amounts_k^camp_occ_row_release_index = 0 }
+				set_variable = { camp_occ_row_statuses^camp_occ_row_release_index = constant:camp_occ_row_status.released }
+			}
+		}
+	}
+}
+camp_occ_close_country = {
+	set_country_flag = camp_occ_country_closed
+	clear_variable = camp_occ_manual_source_state_id
+	clear_variable = camp_occ_lodz_pending_people
+	clear_variable = camp_occ_lodz_source_row_id
+	for_each_scope_loop = { array = camp_occ_states camp_occ_close_state = yes }
+}
+
+# State, PREV = origin country. Records one one-time source assignment of
+# temp camp_occ_origin_assigned_input_k, bounded by the country's unassigned residual.
+camp_occ_seed_assign_state = {
+	set_state_flag = camp_occ_origin_assigned
+	set_variable = { camp_occ_origin_country = PREV }
+	if = { limit = { PREV = { original_tag = GER } } set_state_flag = camp_occ_home_german_origin }
+	set_variable = { camp_occ_origin_observed_population_k = state_population_k }
+	set_variable = { camp_occ_origin_observed_state_deaths = chaos_state_civilian_deaths_total }
+	set_variable = { camp_occ_origin_ceiling_k = camp_occ_origin_assigned_input_k }
+	clamp_variable = { var = camp_occ_origin_ceiling_k min = 0 max = PREV.camp_occ_origin_unassigned_k }
+	set_temp_variable = { camp_occ_origin_assigned_k = camp_occ_origin_ceiling_k }
+	PREV = { subtract_from_variable = { camp_occ_origin_unassigned_k = camp_occ_origin_assigned_k } }
+}
+
+# Country of origin, one-time source snapshot. The denominator includes ALL its European owned
+# states, so partial occupation cannot concentrate a whole national cohort into the occupied share.
+# Optional temp inputs camp_occ_origin_anchor_state_input and camp_occ_origin_anchor_input_k
+# reserve a sourced city concentration for one owned European state inside the same ceiling;
+# an unowned anchor reserves nothing. Both inputs are consumed.
+camp_occ_seed_origin = {
+	if = {
+		limit = { NOT = { has_country_flag = camp_occ_origin_seeded } }
+		set_country_flag = camp_occ_origin_seeded
+		set_variable = { camp_occ_origin_initial_ceiling_k = camp_occ_origin_ceiling_input_k }
+		set_variable = { camp_occ_origin_unassigned_k = camp_occ_origin_initial_ceiling_k }
+		set_variable = { camp_occ_origin_proportional_k = camp_occ_origin_initial_ceiling_k }
+		if = {
+			limit = { check_variable = { camp_occ_origin_anchor_state_input > 0 } }
+			set_variable = { camp_occ_origin_anchor_state = camp_occ_origin_anchor_state_input }
+			if = {
+				limit = {
+					var:camp_occ_origin_anchor_state = {
+						is_owned_by = PREV
+						is_on_continent = europe
+						NOT = { has_state_flag = camp_occ_origin_assigned }
+					}
+				}
+				set_temp_variable = { camp_occ_origin_assigned_input_k = camp_occ_origin_anchor_input_k }
+				clamp_temp_variable = { var = camp_occ_origin_assigned_input_k min = 0 max = camp_occ_origin_initial_ceiling_k }
+				var:camp_occ_origin_anchor_state = {
+					set_state_flag = camp_occ_origin_sourced_anchor
+					camp_occ_seed_assign_state = yes
+				}
+				subtract_from_variable = { camp_occ_origin_proportional_k = camp_occ_origin_assigned_k }
+			}
+			else = { clear_variable = camp_occ_origin_anchor_state }
+		}
+		set_temp_variable = { camp_occ_origin_population_k = 0 }
+		every_owned_state = {
+			limit = { is_on_continent = europe NOT = { has_state_flag = camp_occ_origin_sourced_anchor } }
+			add_to_temp_variable = { camp_occ_origin_population_k = state_population_k }
+		}
+		if = {
+			limit = { check_variable = { camp_occ_origin_population_k > 0 } }
+			divide_temp_variable = { camp_occ_origin_population_k = constant:camp_occ_value.people_per_k }
+			every_owned_state = {
+				limit = { is_on_continent = europe NOT = { has_state_flag = camp_occ_origin_assigned } }
+				set_temp_variable = { camp_occ_origin_share = state_population_k }
+				divide_temp_variable = { camp_occ_origin_share = camp_occ_origin_population_k }
+				set_temp_variable = { camp_occ_origin_assigned_input_k = PREV.camp_occ_origin_proportional_k }
+				divide_temp_variable = { camp_occ_origin_assigned_input_k = constant:camp_occ_value.people_per_k }
+				multiply_temp_variable = { camp_occ_origin_assigned_input_k = camp_occ_origin_share }
+				camp_occ_seed_assign_state = yes
+			}
+		}
+	}
+	set_temp_variable = { camp_occ_origin_anchor_state_input = 0 }
+	set_temp_variable = { camp_occ_origin_anchor_input_k = 0 }
+}
+
+# State; event-driven registry insertion, distinct from population admission.
+camp_occ_track_controlled_state = {
+	if = {
+		limit = {
+			OR = {
+				AND = { has_state_flag = camp_occ_origin_assigned CONTROLLER = { original_tag = GER } }
+				AND = { camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
+			}
+		}
+		CONTROLLER = {
+			camp_occ_initialize_country = yes
+			if = {
+				limit = { NOT = { is_in_array = { array = camp_occ_eligible_states value = PREV } } }
+				add_to_array = { array = camp_occ_eligible_states value = PREV }
+			}
+			camp_rework_register_country_for_monthly_pulse = yes
+		}
+		camp_occ_try_register_current_state = yes
+	}
+}
+camp_occ_try_register_current_state = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_occ_registered }
+			CONTROLLER = { camp_occ_authority_has_campaign = yes }
+		}
+		set_temp_variable = { camp_occ_source_authority = CONTROLLER }
+		set_temp_variable = { camp_occ_source_proven = 0 }
+		set_temp_variable = { camp_occ_source_requested_k = 0 }
+		if = {
+			limit = { camp_occ_has_foreign_german_campaign_origin = yes CONTROLLER = { original_tag = GER } }
+			set_temp_variable = { camp_occ_source_requested_k = camp_occ_origin_ceiling_k }
+			set_temp_variable = { camp_occ_pre_enrollment_decline_k = camp_occ_origin_observed_population_k }
+			subtract_from_temp_variable = { camp_occ_pre_enrollment_decline_k = state_population_k }
+			set_temp_variable = { camp_occ_pre_enrollment_recorded_k = chaos_state_civilian_deaths_total }
+			subtract_from_temp_variable = { camp_occ_pre_enrollment_recorded_k = camp_occ_origin_observed_state_deaths }
+			divide_temp_variable = { camp_occ_pre_enrollment_recorded_k = constant:camp_occ_value.people_per_k }
+			clamp_temp_variable = { var = camp_occ_pre_enrollment_recorded_k min = 0 }
+			clamp_temp_variable = { var = camp_occ_pre_enrollment_decline_k min = camp_occ_pre_enrollment_recorded_k }
+			clamp_temp_variable = { var = camp_occ_pre_enrollment_decline_k min = 0 max = camp_occ_source_requested_k }
+			subtract_from_temp_variable = { camp_occ_source_requested_k = camp_occ_pre_enrollment_decline_k }
+			set_temp_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany }
+			set_temp_variable = { camp_occ_source_proven = 1 }
+		}
+		else_if = {
+			limit = { camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
+			# Snapshot actual present civilians; no claim that this fraction is a historical census.
+			set_temp_variable = { camp_occ_source_requested_k = state_population_k }
+			multiply_temp_variable = { camp_occ_source_requested_k = constant:camp_occ_value.japan_exposure_share }
+			set_temp_variable = { camp_occ_source_profile = constant:camp_occ_profile.japan }
+			set_temp_variable = { camp_occ_source_proven = 1 }
+		}
+		set_temp_variable = { camp_occ_source_membership_k = camp_occ_source_requested_k }
+		camp_occ_register_cohort = yes
+	}
+}
+camp_occ_on_state_control_changed = {
+	camp_occ_backfill_cohort_origin = yes
+	if = {
+		limit = { has_state_flag = camp_occ_registered NOT = { camp_occ_state_has_current_authority = yes } }
+		camp_occ_close_state = yes
+	}
+	camp_occ_track_controlled_state = yes
+	if = {
+		limit = { has_variable = camp_occ_responsible_country }
+		var:camp_occ_responsible_country = {
+			if = { limit = { exists = yes original_tag = GER } camp_occ_refresh_manual_transfer_source = yes }
+		}
+	}
+}
+
+# Explicit historical countries, once from existing setup; no recurring world scan.
+camp_occ_historical_setup = {
+	if = {
+		limit = { NOT = { has_global_flag = camp_occ_historical_seeded } }
+		set_global_flag = camp_occ_historical_seeded
+		POL = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.pol } camp_occ_seed_origin = yes }
+		SOV = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.sov } camp_occ_seed_origin = yes }
+		ROM = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.rom } camp_occ_seed_origin = yes }
+		LAT = {
+			set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.lat }
+			set_temp_variable = { camp_occ_origin_anchor_state_input = constant:camp_occ_origin_anchor.lat_state }
+			set_temp_variable = { camp_occ_origin_anchor_input_k = constant:camp_occ_origin_anchor.lat_k }
+			camp_occ_seed_origin = yes
+		}
+		LIT = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.lit } camp_occ_seed_origin = yes }
+		EST = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.est } camp_occ_seed_origin = yes }
+		GER = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.ger } camp_occ_seed_origin = yes }
+		HUN = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.hun } camp_occ_seed_origin = yes }
+		CZE = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.cze } camp_occ_seed_origin = yes }
+		AUS = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.aus } camp_occ_seed_origin = yes }
+		ENG = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.eng } camp_occ_seed_origin = yes }
+		FRA = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.fra } camp_occ_seed_origin = yes }
+		HOL = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.hol } camp_occ_seed_origin = yes }
+		BEL = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.bel } camp_occ_seed_origin = yes }
+		DEN = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.den } camp_occ_seed_origin = yes }
+		NOR = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.nor } camp_occ_seed_origin = yes }
+		GRE = {
+			set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.gre }
+			set_temp_variable = { camp_occ_origin_anchor_state_input = constant:camp_occ_origin_anchor.gre_state }
+			set_temp_variable = { camp_occ_origin_anchor_input_k = constant:camp_occ_origin_anchor.gre_k }
+			camp_occ_seed_origin = yes
+		}
+		YUG = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.yug } camp_occ_seed_origin = yes }
+		ITA = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.ita } camp_occ_seed_origin = yes }
+		BUL = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.bul } camp_occ_seed_origin = yes }
+		ALB = { set_temp_variable = { camp_occ_origin_ceiling_input_k = constant:camp_occ_origin_k.alb } camp_occ_seed_origin = yes }
+		GER = { every_controlled_state = { camp_occ_track_controlled_state = yes } }
+		JAP = { every_controlled_state = { camp_occ_track_controlled_state = yes } }
+	}
+}

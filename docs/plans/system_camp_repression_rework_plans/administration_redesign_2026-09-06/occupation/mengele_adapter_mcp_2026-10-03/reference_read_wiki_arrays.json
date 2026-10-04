@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "c3969d9492489ab0f70fb860a54b9a1aaa1f80fc78012fe3ffbc13dc4c857e72",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki",
+      "title": "Data structures",
+      "heading": "Arguments",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 1205,
+      "endLine": 1244,
+      "excerpt": "### Arguments <a id=\"Arguments\"></a> The following arguments exist for arrays. Similarly to variables, temporary versions exist by replacing `array` with `temp_array`.",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 1078,
+      "sectionEndLine": 1327,
+      "startColumn": 1,
+      "text": "        check_variable = { num_owned_controlled_states < PREV.num_owned_controlled_states }\n    }\n}\n```\n\nThe following effects also exist in addition used, with arrays. While some are nominally unrelated to arrays, they are often used in conjunction.\n\nArray-related effects:\n\n| Name | Parameters | Examples | Description | Notes |\n| --- | --- | --- | --- | --- |\n| for_each_loop | `array = <array>`<br>The array to check.<br> `value = <variable>`<br>The name of the temporary variable where the value of the currently-selected element is stored.<br> `index = <variable>`<br>The name of the temporary variable where the index of the currently-selected element is stored.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `<effects>`<br> An effect block. | *(example below)* | Runs an effect once for every element in the array. | The scope does not change from the one this is checked in by default, requiring one of [scopes](<Scopes - Hearts of Iron 4 Wiki.md>). You cannot remove any elements in the array with the effects block whilst the loop is running. |\n| for_each_scope_loop | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `tooltip = <loc>` <br>If defined, the effect will output a tooltip for sub effects using this localization as title.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for every scope within the array. | Equivalent to a `every_<...>` effect scope type, with additional `break`. Since this changes scopes, PREV would, unless there's deeper scoping, refer to the scope the effect is executed in. |\n| random_scope_in_array | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `limit = { <triggers> }`<br>An AND trigger block deciding which scopes can be picked.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for a random scope within the array. | Equivalent to a `random_<...>` effect scope type, with additional `break`. Since this changes scopes, PREV would, unless there's deeper scoping, refer to the scope this effect is executed in. |\n| while_loop_effect | `limit = { <triggers> }`<br>An AND trigger block deciding when the effect would repeat.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects as long as the limit is fulfilled. | The limit is only checked at the beginning and once the effect block is executed. Can't run for more than 1000 times by default[5]. |\n| for_loop_effect | `start = <decimal>/<variable>`<br>The value at which the evaluation starts. Default to 0.<br> `end = <decimal>/<variable>`<br>The value at which the evaluation ends. Default to 0.<br> `compare = <compare type>`<br>How the currently-evaluated value must compare with the `end` for the for loop to continue. Defaults to `less_than`, leading to the end value never being picked.<br> `add = <variable>`<br>How much is being added to the `start` value for every iteration. Defaults to 1.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `value = <variable>`<br>The name of the temporary variable where the current value of evaluation is stored.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects as long as the limit is fulfilled. | The limit is only checked at the beginning and once the effect block is executed. Can't run for more than 1000 times by default[5]. Comparison types are the same as used in check_variable. |\n\n**Example: for_each_loop**\n\n```text\nfor_each_loop = {\n    array = temp_numbers\n    value = v\n    break = break\n    random_list = {\n        10 = { add_political_power = v }\n        10 = {\n            divide_temp_variable = { v = 100 }\n            add_stability = v\n        }\n        10 = {\n            divide_temp_variable = { v = 100 }\n            add_war_support = v\n        }\n    }\n}\n```\n\n**Example: for_each_scope_loop**\n",
+      "nextLine": 1245,
+      "nextColumn": 1
+    }
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "startLine": 1252,
+    "endLine": 1277,
+    "text": "## add_equipment_to_stockpile\n\n* Supported Scopes: COUNTRY\n* Supported Targets: any\n\n```\nAdd or remove equipment from country stockpiles.\nExample:\nadd_equipment_to_stockpile = {\n\ttype = strat_bomber_equipment_2\n\tamount = 100 # May be a variable. Equipment will be removed if the value is negative.\n\tproducer = USA # Optional. If not specified the effect will be applied to all creators.\n}\n```\n\n## add_extra_state_shared_building_slots\n\n* Supported Scopes: STATE\n* Supported Targets: none\n\n```\nadd extra shared building slot to state\n```\n\n## add_faction_goal\n",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "sha256": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "startLine": 1854,
+    "endLine": 1866,
+    "text": "## add_political_power\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none\n\n```\nadd political power to country\n```\n\n## add_popularity\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\script_concept_documentation.md",
+    "sha256": "884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7",
+    "startLine": 216,
+    "endLine": 243,
+    "text": "## Script Constants\nScript constants are a way to define constants in scripts that can be reused in any script file (except for other script constants files).\nIn general, script constants can be used instead of the script macro operator `@` that is file local.\nNote that the script constants has a negligible load time impact and no runtime performance cost.\nLike many other concepts, the script constant is only supported where explicitly stated that it is supported. However, all scoped variables\naccepts script constants that are pointing to a single fixed point value, by using the prefix `constant:`.\n\n#### Reloading\nA script constant is a bit specific when it comes to reloading the database.\nIt's not enough to reload the script constant database itself since script constants are injected into the script on load.\nInstead one have to first reload the script constant database, and then reload the database that uses the script constant.\n\n#### Example\nIn the script constant file, the following constant file definition is made:\n```\nnumeric_constants = {\n    schema = {\n        any_key = yes\n        data = fixed_point # floating point\n    }\n\tpi = 3.14159\n\te = 2.71828\n}\n```\n\nThese can then be used in a script file like this:\n```\nsome_scoped_variable = constant:numeric_constants.pi",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\script_constants\\documentation.md",
+    "sha256": "e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c",
+    "startLine": 1,
+    "endLine": 33,
+    "text": "# Constants\nConstants are a way to define simple and complex script values\nthat are reusable in different files in the scripts.\nOnly entries that are documented to support these script constant\ncan utilize it.\n\nAll scoped variables can access script constants by using the `constant:` prefix.\n\nNote that reloading the script database is not enough to propagate the constants.\nThe script that uses the constants has to be reloaded after the script constant database has been reloaded.\n\nA script constant have the following format:\n\n```python\ncategory_name = {\n    # Mandatory to be the first entry\n    schema = {\n        # specific name of the key mutually exclusive with any_key\n        key = foobar \n        # Accept any key of alphabetic characters (no dots), mutually exclusive with key\n        any_key = yes\n        \n        # The data sepecification\n        data = int # integer\n        data = fixed_point # floating point\n        # or\n        data = { SCHEMA_OBJECTS } # complex schema entry\n    }\n\n    # All the data entries that matches the specified schema.\n    DATA*\n}\n```",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\decisions\\AFG.txt",
+    "sha256": "dabc91c3f7fb1810d64d91d07147e827068d42540326ce10554a0752ee48d7a7",
+    "startLine": 1685,
+    "endLine": 1750,
+    "text": "\tAFG_recruit_turkestan_legion = {\n\t\ticon = GFX_decision_generic_prepare_civil_war\n\t\n\t\tallowed = {\n\t\t\toriginal_tag = AFG\n\t\t}\n\t\t\n\t\tvisible = {\n\t\t\thidden_trigger = { #Otherwise this will show up in the cancel trigger tooltip\n\t\t\t\thas_completed_focus = AFG_form_the_turkestan_legion\n\t\t\t\tOR = {\n\t\t\t\t\thas_government = fascism\n\t\t\t\t\thas_government = neutrality\n\t\t\t\t}\n\t\t\t}\n\t\t\tNOT = { \n\t\t\t\tFROM = { has_state_flag = AFG_recruited_turkestan_legion_here }\n\t\t\t\thas_war_with = FROM.owner\n\t\t\t}\n\n\t\t}\n\t\tavailable = {\n\t\t\tFROM = {\n\t\t\t\tNOT = {\n\t\t\t\t\thas_state_flag = AFG_recruited_turkestan_legion_here\n\t\t\t\t}\n\t\t\t}\n\t\t\tNOT = { has_country_flag = AFG_recruiting_turkestan_legion }\n\t\t\t\n\t\t\thas_equipment = {\n\t\t\t\tinfantry_equipment > 1999\n\t\t\t}\t\n\t\t}\n\n\t\ttarget_root_trigger = {\n\t\t\toriginal_tag = AFG\n\t\t}\n\t\tstate_target = yes\n\t\ttargets = { 49 229 651 586 732 830 742 405 823 831 584 619 249 137 676 329 1000 }\n\t    target_trigger = {   \n\t    }\n\t    on_map_mode = map_and_decisions_view \n\t\t\n\t    custom_cost_trigger = {\n\t    \tcommand_power > 24.9\n\t    \thas_equipment = { infantry_equipment > 1999 }\n\t    }\n\t\t\n\t\tcustom_cost_text = decision_cost_cp_25_ie_2000\n\t\t\n\t\tfire_only_once = yes\n\t\tdays_remove = 30\n\t\tcancel_if_not_visible = yes\n\t\tcomplete_effect = {\n\t\t\tadd_command_power = -25\n\t\t\tadd_equipment_to_stockpile = {\n\t\t\t\ttype = infantry_equipment\n\t\t\t\tamount = -2000\n\t\t\t}\n\t\t\thidden_effect = {\n\t\t\t\tset_country_flag = AFG_recruiting_turkestan_legion\n\t\t\t}\n\t\t}\n\t\tremove_effect = {\n\t\t\thidden_effect = {\n\t\t\t\tclr_country_flag = AFG_recruiting_turkestan_legion",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\decisions\\_documentation.md",
+    "sha256": "5e7e686b5582f32c38d898d805e17171e88f3bfeee4a030deb1884f9726de019",
+    "startLine": 1,
+    "endLine": 28,
+    "text": "# Country Decisions\n\nDecisions are made available to countries that fulfill the right conditions.\nSome triggers are only checked once per day, once per frame or once per game.\n\n`allowed`:\n- Scope: THIS = Country\n- Checked once per game at start (or when save is loaded)\n- Used to filter out decisions that will never be available to a given country (usually checks `original_tag = XXX`)\n- Important to use on performance-heavy decisions (especially targeted decisions) to avoid unnecessary computations\n\n`visible`:\n- Scope: THIS = Country, FROM = Country/State (if targeted)\n- Checked each frame when the interface is refreshed if allowed was true\n- Used to filter out decisions that should appear in decision interface (they may still be greyed out, see `available` next)\n- Caveat: this trigger can become performance heavy for targeted decisions, see `target_root_trigger` and `target_trigger`.\n\n`available`:\n- Scope: THIS = Country, FROM = Country/State (if targeted)\n- Checked each frame when the interface is refreshed if both allowed and visible were true\n- Used to indicate if a visible decision can be taken right now and it not, what the player should do to be able to.\n  No condition should be impossible to match at this point (for example, do not require completion of locked out focus)\n\n`target_root_trigger`:\n- Scope: THIS = Country\n- Checked once per day (updated in one of the 24 hourly ticks depending on country), if allowed was true\n- Used to lessen the impact of targeted decisions that cannot be restricted by `targets` and `allowed`.\n  Since targeted decisions are checked against each state/country in the game each frame in the `visible` trigger, this offers a way to do a pre-check once a day.",
+    "route": "local direct read after bounded source-lookup timeout or limited documentation retrieval"
+  }
+]

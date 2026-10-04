@@ -1,0 +1,77 @@
+{
+    "read_date":  "2026-10-03",
+    "connected_server":  {
+                             "name":  "hoi4-agent-tools",
+                             "version":  "3.6.0",
+                             "configured_process":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/bin/stdio.js",
+                             "package_json":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/package.json",
+                             "package_json_sha256":  "d37643fee016f45af737074c2a9a4a7f4069854ab579ff9c7cc87e560539c36b"
+                         },
+    "schema_files":  [
+                         {
+                             "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/schemas/probability.js",
+                             "sha256":  "de7aeb8fcfebfdfc7df6ce48e01808c64d371d590932916dc456cb8d7c73df20",
+                             "relevant_sections":  "probabilityScenarioSchema lines 142-205; probabilityScenarioSetSchema lines 210-219; probabilitySourceSchema lines 263-289; inspect/evaluate request shapes lines 464-486; compare request shape lines 525-542"
+                         },
+                         {
+                             "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/schemas/probability-requests.js",
+                             "sha256":  "d136f1dfebbebf4a1eff02874838ff6bd3ba1c57c388348afb825da2ff25b252",
+                             "relevant_sections":  "nested scenario/source declarations lines 8-13; inspect request lines 24-43; evaluate request lines 44-67; compare request lines 118-141"
+                         },
+                         {
+                             "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/core/condition-schema.js",
+                             "sha256":  "ac3df801615394ede2a6e14ab722daeb60700f887b2251d564ef4b354bc51a12",
+                             "relevant_sections":  "ConditionControlMapSchema lines 2-4"
+                         },
+                         {
+                             "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/mcp/tools/probability.js",
+                             "sha256":  "e7c587f35673e7e40474fac10a05f661ce98bca8b97323cd02cb482132c62759",
+                             "relevant_sections":  "read-only probability tool registrations and input schemas lines 80-127"
+                         }
+                     ],
+    "accepted_scenario_shape":  {
+                                    "scenario_set":  [
+                                                         "schemaVersion=\u00271.0\u0027 (default)",
+                                                         "id (required)",
+                                                         "workspaceId (optional)",
+                                                         "description (optional)",
+                                                         "surfaceHint (optional)",
+                                                         "scenarios (1..10000 required)"
+                                                     ],
+                                    "scenario_fields":  [
+                                                            "id (required)",
+                                                            "label, prevalence, actor, date",
+                                                            "controls: map from positive numeric state id strings to three-letter country tags",
+                                                            "state: record of string keys to scalar or flat array of scalar values (string, number, boolean, null)",
+                                                            "flags, eventTargets",
+                                                            "scopes: typed bindings with id, optional type/actor/state/flags/eventTargets/weight",
+                                                            "scopePools: declared enumeration or weighted candidate bindings with completeness metadata",
+                                                            "candidateOverrides (accepted by schema but not used as live proof)",
+                                                            "uncertainInputs, correlations, and scheduled set/addFlags/clearFlags changes"
+                                                        ],
+                                    "compare":  "Requires one scenarioSet and either both before/after source selectors or both custom-pool manifests. A frozen source selector may bind path plus snapshotPath and expectedSourceHash. The source schema also accepts identifier and line for narrow source selection.",
+                                    "inspect":  "Accepts adapter, source or customPoolManifest, candidatePool, refresh and workspaceId; it does not accept scenarioSet.",
+                                    "external_factor_limit":  "Schema acceptance does not prove that the Clausewitz probability adapter can resolve these fields, array invariants, helper conditions, strategy factors or current campaign state; results must retain adapter unresolved items and pool completeness."
+                                },
+    "task_use":  "No native MCP task or job was requested. The connected wrapper calls returned no task id or continuation handle; exposed server task capabilities are not treated as client negotiation evidence.",
+    "adapter_implementation_review":  [
+                                          {
+                                              "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/probability/source-analysis.js",
+                                              "sha256":  "e0116d2961139d556f09c477d43a55167222d6ba98188008109046ea218d6b11",
+                                              "relevant_sections":  "randomCandidates lines 251-270; sourceContexts and snapshot selection lines 319-360",
+                                              "finding":  "direct_random discovers only Clausewitz assignments whose key is random with a scalar chance; random_scope_in_array is not enumerated as a direct_random candidate. sourceContexts with a frozen snapshot selects exactly one file."
+                                          },
+                                          {
+                                              "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/probability/adapters.js",
+                                              "sha256":  "8ec6a390c5ec1280e083a8cbdaba19f0f7e72ba0d62bf8aa4ac5c70041d4b4d4",
+                                              "relevant_sections":  "direct_random adapter lines 196-217",
+                                              "finding":  "Adapter models independent chance blocks, with eligibility=false; the declared random_scope_in_array selector is not a uniform or categorical weighted-pool adapter."
+                                          },
+                                          {
+                                              "path":  "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/hoi4_agent_tools/core/condition-evaluator.js",
+                                              "sha256":  "032c88eb4dc9cc0a0fd113dfeb1a354aca8df553bb0e240ffa5ee9a337b07377",
+                                              "relevant_sections":  "array membership and scripted-trigger branch lines 209-256",
+                                              "finding":  "Evaluator supports explicit array membership and declared scripted triggers in these lines; no any_of_scopes/all_of_scopes array-loop evaluator branch is present. Scenario schema acceptance of state/scope arrays is not semantic support for the loop filters."
+                                          }
+                                      ]
+}

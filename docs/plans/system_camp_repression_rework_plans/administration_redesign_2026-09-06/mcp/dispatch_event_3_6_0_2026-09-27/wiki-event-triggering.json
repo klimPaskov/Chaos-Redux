@@ -1,0 +1,33 @@
+{
+  "status": "ok",
+  "code": "OK",
+  "workspaceId": "camp_dispatch_event",
+  "filesScanned": [],
+  "proposedFiles": [],
+  "changedFiles": [],
+  "diagnostics": [],
+  "artifacts": [],
+  "validation": {
+    "passed": true,
+    "checks": []
+  },
+  "blockers": [],
+  "data": {
+    "id": "8bbe2e58d576588f859f7562369979e50455130015df94bceca9edb2bb7bf627",
+    "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d",
+    "source": "wiki",
+    "title": "Event modding",
+    "heading": "Triggering",
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Event modding - Hearts of Iron 4 Wiki.md",
+    "startLine": 117,
+    "endLine": 150,
+    "excerpt": "### Triggering <a id=\"Triggering\"></a> The `trigger = { ... }` block of [triggers](<Triggers - Hearts of Iron 4 Wiki.md>) is used to declare conditions that must be met so that the event is possible to appear. If it's false, there's no way to fire the event aside from using [the console command](<Co",
+    "authority": "Offline Paradox Wiki snapshot",
+    "sectionStartLine": 117,
+    "sectionEndLine": 150,
+    "startColumn": 1,
+    "text": "### Triggering <a id=\"Triggering\"></a>\n\nThe `trigger = { ... }` block of [triggers](<Triggers - Hearts of Iron 4 Wiki.md>) is used to declare conditions that must be met so that the event is possible to appear. If it's false, there's no way to fire the event aside from using [the console command](<Console commands - Hearts of Iron 4 Wiki.md>). This will look like the following:\n\n```text\ntrigger = {\n    tag = GER\n    has_political_power > 100\n}\n```\n\nIf the event is fired in console, the trigger will be written into it as the contents of a regular trigger tooltip, highlighting which conditions were met and which were not.\n\nBy default, the event will fire automatically. This consists of the trigger being checked every 20 days.[1] If it is true, it changes to checking the `mean_time_to_happen = { ... }` daily. That is a modified MTTH block: it is evaluated for a country and returns an amount of days; if the returned amount of days is `M` the chance for an event to fire on that day is `1-2^{-{\\frac {1}{M}}}`, making this a median time to happen. If the trigger is false on a daily check, it reverts to checking the trigger every 20 days.\n\n`mean_time_to_happen = { ... }` has the attributes of `days`, `months`, and `years` to decide the base amount of days. A month is interpreted as being 30 days, a year is interpreted as being 365 days. If the amount of days should be dynamic, `modifier = { ... }` serves as a trigger block with additional attributes of `add = 123` (adding that amount of days) and `factor = 0.2` (multiplying the amount of days by the specified number). The modifiers are evaluated in the order that they're placed in, and they support [variables](<Data structures - Hearts of Iron 4 Wiki.md>) in the argument. An example mean time to happen looks like the following:\n\n```text\nmean_time_to_happen = {\n    days = 10\n    years = 1  # 375 days as the base.\n    modifier = {\n        factor = 0.2        #  Takes 20% as much to fire for POL, or 75 days.\n        tag = POL\n    }\n}\n```\n\nThe automatic firing can be disabled by adding `is_triggered_only = yes` into the event. This doesn't prevent any other way to fire the event, whether by the [effect used to do so](#Effect), an [on action](<On actions - Hearts of Iron 4 Wiki.md>)'s `random_events`, [a border war](<Effects - Hearts of Iron 4 Wiki.md#Border_wars>), or anything else. This is entirely unrelated to `trigger = { ... }`: the conditions within must still be fulfilled for either of these to be possible to fire an event. If the [effect used to fire an event](#Effect) (e.g. country_event or state_event) is set with a delay, then the trigger must be true when the event is intended to be fired.\n\n`fire_only_once = yes` makes the event impossible to fire more than once. This is checked within the event itself: a country getting the event will also prevent any other country from receiving it. This is bypassed by using [the console command](<Console commands - Hearts of Iron 4 Wiki.md>).\n\n`major = yes` is used to make the event fire for every country once any country receives it. **This is done in every news event**, since news events are purely a graphical reskin of country events. In case of overlap with `fire_only_once = yes`, the latter will take priority and remove any effect of the event being major, making it only appear for the country receiving it for the first time. Countries other than the first country receiving it will ignore `trigger = { ... }`. To make only some countries get the event shown while it's still major, `show_major = { ... }` is used as a [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) block that makes the event show up only if it's true. If `fire_for_sender = no` is also added, the event will fire for every country that meets `show_major` aside from the country that was intended to receive it.\n",
+    "nextLine": null,
+    "nextColumn": null
+  }
+}

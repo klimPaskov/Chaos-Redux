@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "f5635006e4d2c3732011c24450956040d6557a69fa1282570dc80657030cb145",
+      "revision": "7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162",
+      "source": "wiki",
+      "title": "Decision modding",
+      "heading": "Decision examples",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 387,
+      "endLine": 464,
+      "excerpt": "## Decision examples <a id=\"Decision_examples\"></a> QAT_category and BHR_category are assumed to already have been created within any `/Hearts of Iron IV/common/decisions/categories/*.txt` file.",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 387,
+      "sectionEndLine": 464,
+      "startColumn": 1,
+      "text": "## Decision examples <a id=\"Decision_examples\"></a>\n\nQAT_category and BHR_category are assumed to already have been created within any `/Hearts of Iron IV/common/decisions/categories/*.txt` file.\n\n```text\nQAT_category = {\n    QAT_example = {\n        allowed = {\n            tag = QAT\n        }\n        icon = QAT_example      #For GFX_decision_QAT_example\n        fire_only_once = yes\n        days_remove = 100\n        war_with_on_remove = BHR\n        modifier = {\n            training_time_factor = -0.3\n        }\n        remove_effect = {\n            create_wargoal = {\n                target = BHR\n                type = puppet_focus_wargoal\n            }\n        }\n        cancel_trigger = {\n            OMA = {\n                is_subject_of = BHR\n            }\n        }\n        cancel_effect = {\n            BHR = {\n                puppet = ROOT\n            }\n        }\n    }\n}\n```\n\n```text\nBHR_category = {\n    BHR_example = {\n        allowed = {\n            tag = BHR\n        }\n        visible = {\n            has_war_with = QAT\n        }\n        available = {\n            QAT = {\n                surrender_progress > 0.5\n            }\n        }\n        icon = GFX_decision_BHR_example\n        priority = 10\n        days_re_enable = 200\n        custom_cost_trigger = {\n            has_command_power > 14\n        }\n        custom_cost_text = decision_cost_CP_15\n        war_with_on_complete = OMA\n        fixed_random_seed = no\n        complete_effect = {\n            hidden_effect = {\n                add_command_power = -15\n            }\n            annex_country = { target = QAT }\n            random = {\n                chance = 50\n                OMA = { load_oob = \"OMA_prepared\" }\n            }\n            declare_war_on = {\n                target = OMA\n                type = annex_everything\n            }\n        }\n    }\n}\n```\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

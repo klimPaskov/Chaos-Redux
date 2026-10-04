@@ -1,0 +1,68 @@
+{
+  "source": {
+    "path": "events/germany_mengele.txt",
+    "inlineClausewitz": "country_event = {\r\n\tid = germany_mengele.10\r\n\ttitle = germany_mengele.10.t\r\n\tdesc = germany_mengele.10.d\r\n\tpicture = GFX_report_event_generic_biowarfare\r\n\tis_triggered_only = yes\r\n\r\n\timmediate = {\n\t\tif = {\n\t\t\tlimit = { germany_mengele_program_active = yes }\n\t\t\tset_country_flag = germany_mengele_report_without_names\r\n\t\t\tgermany_mengele_register_experiment_deaths = yes\r\n\t\t\tset_temp_variable = { mengele_chaos_change = constant:germany_mengele_chaos.reports }\r\n\t\t\tset_temp_variable = { mengele_chaos_reason = constant:chaos_meter_history_reason.special.mengele_reports }\r\n\t\t\tgermany_mengele_add_chaos = yes\r\n\t\t\tset_temp_variable = { mengele_condemnation_add = constant:germany_mengele_condemnation.reports }\r\n\t\t\tgermany_mengele_add_condemnation = yes\r\n\t\t\tset_temp_variable = { mengele_stage_value = constant:germany_mengele_stage.reports }\r\n\t\t\tgermany_mengele_record_stage = yes\r\n\t\t}\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = germany_mengele.10.a\r\n\t\ttrigger = { germany_mengele_program_active = yes }\r\n\t\tai_chance = { base = 15 }\r\n\t\tset_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.reports_without_names_continue }\r\n\t\tgermany_mengele_add_autonomy = yes\r\n\t\tcountry_event = { id = germany_mengele.11 days = 95 random_days = 45 }\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = germany_mengele.10.b\r\n\t\ttrigger = { germany_mengele_program_active = yes }\r\n\t\tai_chance = { base = 65 }\r\n\t\tset_country_flag = germany_mengele_berlin_restrictions_issued\r\n\t\tset_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.reports_without_names_restrict }\r\n\t\tgermany_mengele_add_autonomy = yes\r\n\t\tadd_political_power = constant:germany_mengele_decision_value.complete_records_political_power\r\n\t\tcountry_event = { id = germany_mengele.11 days = 120 random_days = 45 }\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = germany_mengele.10.c\r\n\t\ttrigger = { germany_mengele_program_active = yes }\r\n\t\tai_chance = { base = 20 }\r\n\t\tif = {\n\t\t\tlimit = { NOT = { has_active_mission = germany_auschwitz_military_review_mission } }\n\t\t\tcamp_rework_germany_start_military_review_mission = yes\n\t\t}\n\t\tset_temp_variable = { mengele_autonomy_delta = constant:germany_mengele_autonomy.military_review_reduction }\r\n\t\tgermany_mengele_add_autonomy = yes\r\n\t\tcountry_event = { id = germany_mengele.11 days = 150 random_days = 45 }\r\n\t}\r\n\r\n\toption = {\r\n\t\tname = germany_mengele.10.closed\r\n\t\ttrigger = { NOT = { germany_mengele_program_active = yes } }\r\n\t\tai_chance = { base = 100 }\r\n\t}\r\n}"
+  },
+  "candidatePool": [
+    "germany_mengele.10.a",
+    "germany_mengele.10.b",
+    "germany_mengele.10.c",
+    "germany_mengele.10.closed"
+  ],
+  "scenarioSet": {
+    "schemaVersion": "1.0",
+    "id": "ger_mengele_10_declared_pool_2026_09_27",
+    "scenarios": [
+      {
+        "id": "ger_1943_06_01_full_authority_assumed",
+        "actor": "GER",
+        "date": "1943.6.1",
+        "state": {
+          "has_government": "fascism"
+        },
+        "flags": [
+          "germany_mengele_program_authorized"
+        ],
+        "candidateOverrides": {
+          "germany_mengele.10.a": true,
+          "germany_mengele.10.b": true,
+          "germany_mengele.10.c": true,
+          "germany_mengele.10.closed": false
+        }
+      },
+      {
+        "id": "ger_1943_05_29_pre_gate_assumed",
+        "actor": "GER",
+        "date": "1943.5.29",
+        "state": {
+          "has_government": "fascism"
+        },
+        "flags": [],
+        "candidateOverrides": {
+          "germany_mengele.10.a": false,
+          "germany_mengele.10.b": false,
+          "germany_mengele.10.c": false,
+          "germany_mengele.10.closed": true
+        }
+      },
+      {
+        "id": "ger_1943_06_01_captured_site_assumed",
+        "actor": "GER",
+        "date": "1943.6.1",
+        "state": {
+          "has_government": "fascism"
+        },
+        "flags": [
+          "germany_mengele_program_authorized"
+        ],
+        "candidateOverrides": {
+          "germany_mengele.10.a": false,
+          "germany_mengele.10.b": false,
+          "germany_mengele.10.c": false,
+          "germany_mengele.10.closed": true
+        }
+      }
+    ]
+  },
+  "sourceHash": "ac48b5263e9e4d771af09e359924d00bcfa34d74aeadfa10fa83e14d2b5cc7fc"
+}

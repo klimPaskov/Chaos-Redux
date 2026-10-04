@@ -37,6 +37,9 @@ def load(relative):
     return parse((ROOT_DIR / relative).read_text(encoding='utf-8-sig'))
 
 constants = {}
+for name, value in re.findall(r'^(@[A-Z_]+)\s*=\s*(-?\d+(?:\.\d+)?)',
+        (ROOT_DIR / 'common/scripted_effects/camp_administration_effects.txt').read_text(encoding='utf-8-sig'), re.M):
+    constants[name] = float(value)
 for filename in ('camp_administration_constants.txt', 'camp_administration_civil_constants.txt', 'camp_administration_ui_constants.txt'):
     for category, _, entries in load('common/script_constants/' + filename):
         for key, _, value in entries:
@@ -70,9 +73,15 @@ class VM:
         self.countries = {root.tag: root, 'ENG': Scope('ENG'), 'GER': Scope('GER', 'fascism')}
     def value(self, token, scope):
         if token == 'ROOT': return self.root
+        if token == 'THIS': return scope
         if token.startswith('event_target:'): return self.targets[token[13:]]
         if token.startswith('constant:'):
             return constants[token[9:]]
+        if token.startswith('@'): return constants[token]
+        if token.endswith('^num'): return len(scope.values.get(token[:-4], []))
+        if '^' in token:
+            array, index = token.split('^', 1)
+            return scope.values[array][int(self.value(index, scope))]
         if token.startswith('ROOT.'):
             return self.root.values.get(token[5:], 0)
         if token.startswith('PREV.'):
@@ -109,6 +118,13 @@ class VM:
             return scope.tag == (target.tag if isinstance(target,Scope) else target)
         if key == 'is_ai': return scope.values.get('is_ai',False) == (value == 'yes')
         if key == 'political_power': return self.compare(scope.values.get('political_power',0),op,self.value(value,scope))
+        if key == 'has_political_power': return self.compare(scope.values.get('political_power',0),op,self.value(value,scope))
+        if key == 'has_equipment':
+            equipment, operator, amount = value[0]
+            stock = scope.values.get('equipment', {}).get(equipment, 0)
+            if equipment == 'support_equipment_1': stock = scope.values.get('support', stock)
+            return self.compare(stock,operator,self.value(amount,scope))
+        if key == 'has_manpower': return self.compare(scope.values.get('manpower',0),op,self.value(value,scope))
         if key == 'has_government': return scope.government == value
         if key == 'has_war': return scope.war == (value == 'yes')
         if key == 'has_cosmetic_tag': return scope.cosmetic == value
@@ -116,7 +132,9 @@ class VM:
             target = self.value(value, scope)
             return scope.subject == (target.tag if isinstance(target, Scope) else target)
         if key == 'is_controlled_by': return scope.controller == self.value(value, scope)
-        if key == 'is_core_of': return value in scope.values.get('cores', [])
+        if key == 'is_core_of':
+            target = self.value(value, scope)
+            return (target.tag if isinstance(target, Scope) else target) in scope.values.get('cores', [])
         if key == 'exists': return value == 'yes'
         if key in ('has_country_flag', 'has_state_flag'): return value in scope.flags
         if key == 'has_variable': return value in self.temp or value in scope.values
@@ -159,6 +177,14 @@ class VM:
                     self.run([row for row in value if row[0]!='array'],target)
                 self.previous_scope=previous_scope
                 continue
+            if key == 'while_loop_effect':
+                args = {k:v for k,_,v in value}
+                for _ in range(10000):
+                    if not self.check(args['limit'], scope): break
+                    self.run([row for row in value if row[0] != 'limit'], scope)
+                else:
+                    raise AssertionError('Unbounded source loop')
+                continue
             if key.startswith('var:'): self.run(value, self.value(key, scope)); continue
             if key in ('set_state_flag', 'set_country_flag'): scope.flags.add(value); continue
             if key in ('clr_state_flag', 'clr_country_flag'): scope.flags.discard(value); continue
@@ -166,23 +192,36 @@ class VM:
             if key == 'remove_mission': scope.values.setdefault('removed_missions', []).append(value); continue
             if key == 'clear_variable': scope.values.pop(value, None); continue
             if key == 'clear_temp_variable': self.temp.pop(value, None); continue
+            if key == 'clear_array': scope.values[value] = []; continue
+            if key == 'add_to_array':
+                args = {k:v for k,_,v in value}
+                scope.values.setdefault(args['array'], []).append(self.value(args['value'], scope))
+                continue
             if key == 'remove_support_equipment_from_stockpile':
                 scope.values['num_equipment@support_equipment'] -= self.temp['equipment_stockpile_removal_amount']
                 continue
             if key == 'add_political_power': scope.values['political_power'] += self.value(value, scope); continue
             if key.endswith('_variable'):
                 target = self.temp if '_temp_' in key else scope.values
-                if key.startswith('clamp_'):
+                if key.startswith('round_'):
+                    target[value] = int(self.value(value, scope) + 0.5)
+                elif key.startswith('clamp_'):
                     args = {k: v for k, _, v in value}; var = args['var']
                     target[var] = max(self.value(args.get('min', '-1000000000'), scope), min(target.get(var, 0), self.value(args.get('max', '1000000000'), scope)))
                 else:
                     var, _, token = value[0]; number = self.value(token, scope)
                     if isinstance(number, str): number = 0
-                    if key.startswith('set_'): target[var] = number
-                    elif key.startswith('add_to_'): target[var] = target.get(var, 0) + number
-                    elif key.startswith('subtract_from_'): target[var] = target.get(var, 0) - number
-                    elif key.startswith('multiply_'): target[var] = target.get(var, 0) * number
+                    previous_value = self.value(var, scope)
+                    if isinstance(previous_value, str): previous_value = 0
+                    if key.startswith('set_'): updated = number
+                    elif key.startswith('add_to_'): updated = previous_value + number
+                    elif key.startswith('subtract_from_'): updated = previous_value - number
+                    elif key.startswith('multiply_'): updated = previous_value * number
                     else: raise ValueError(key)
+                    if '^' in var and target is scope.values:
+                        array, index = var.split('^', 1)
+                        target[array][int(self.value(index, scope))] = updated
+                    else: target[var] = updated
                 continue
             raise ValueError(f'Unsupported effect {key}')
 
@@ -201,6 +240,122 @@ authority('ENG', 'camp_administration_civil_british_authority', '1940.5.15', '19
 authority('USA', 'camp_administration_civil_usa_authority', '1942.2.18', '1942.2.19')
 authority('RAJ', 'camp_administration_civil_raj_authority', '1939.9.2', '1939.9.3', subject='ENG')
 authority('ITA', 'camp_administration_civil_italian_authority', '1940.6.9', '1940.6.10', government='fascism')
+for category, _, entries in load('common/script_constants/camp_repression_rework_constants.txt'):
+    if category in ('camp_rework_burden', 'camp_rework_country_value', 'camp_rework_threshold', 'camp_rework_cost', 'camp_rework_equipment_cost', 'camp_rework_colonial'):
+        for key, _, value in entries:
+            if isinstance(value, str):
+                try: constants[f'{category}.{key}'] = float(value)
+                except ValueError: pass
+effects.update({key: value for key, _, value in load('common/scripted_effects/camp_repression_rework_effects.txt')
+                if key == 'camp_rework_recalculate_burdens'})
+italy_guard = Scope('ITA', 'fascism', values={'camp_active_site_count':3, 'camp_radicalized_site_count':0,
+    'camp_overstretch':0, 'camp_contaminated_site_count':0, 'camp_active_site_states':[]})
+italy_vm = VM(italy_guard, '1942.5.1')
+italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
+base_guard = italy_guard.values['camp_guard_burden']
+italy_guard.flags.add('camp_rework_italy_security_battalions_active')
+italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
+active_guard = italy_guard.values['camp_guard_burden']
+italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
+assert italy_guard.values['camp_guard_burden'] == active_guard
+italy_guard.flags.add('camp_admin_civil_initialized')
+italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
+assert italy_guard.values['camp_guard_burden'] == base_guard
+italy_guard.flags.remove('camp_admin_civil_initialized')
+italy_guard.flags.remove('camp_rework_italy_security_battalions_active')
+italy_vm.run(effects['camp_rework_recalculate_burdens'], italy_guard)
+assert italy_guard.values['camp_guard_burden'] == base_guard
+assert active_guard == base_guard + constants['camp_rework_country_value.overstretch_minor']
+results.append({'scenario':'italian_security_guard_burden_survives_recalculation_without_stacking',
+    'baseline':base_guard,'active':active_guard,'after_cutover':base_guard,'passed':True})
+
+security_triggers = {key: value for key, _, value in load('common/scripted_triggers/camp_repression_rework_triggers.txt')}
+triggers['is_italy_libya_repression_pool_state'] = security_triggers['is_italy_libya_repression_pool_state']
+security_ready = security_triggers['camp_rework_italy_security_battalions_resources_ready']
+security_stock = Scope('ITA', 'fascism', values={
+    'manpower':constants['camp_rework_cost.guard_manpower'],
+    'equipment':{
+        'infantry_equipment':constants['camp_rework_equipment_cost.infantry_equipment'],
+        'support_equipment_1':constants['camp_rework_equipment_cost.support_equipment'],
+    },
+})
+security_vm = VM(security_stock)
+assert security_vm.check(security_ready, security_stock)
+for stock, key in (('manpower', None), ('equipment', 'infantry_equipment'), ('equipment', 'support_equipment_1')):
+    if key is None:
+        security_stock.values[stock] -= 1
+        assert not security_vm.check(security_ready, security_stock)
+        security_stock.values[stock] += 1
+    else:
+        security_stock.values[stock][key] -= 1
+        assert not security_vm.check(security_ready, security_stock)
+        security_stock.values[stock][key] += 1
+results.append({'scenario':'italian_security_exact_manpower_and_equipment_quote_is_affordable',
+    'quote_manpower':security_stock.values['manpower'], 'passed':True})
+triggers['camp_rework_italy_security_battalions_site_ready'] = security_triggers['camp_rework_italy_security_battalions_site_ready']
+triggers['is_valid_camp_active_site_state'] = []  # Registered active camp fixture; region and responsibility are source checks.
+italy_actor = Scope('ITA', 'fascism')
+site = Scope('LIB', controller=italy_actor, values={'cores':['LBA'], 'genocide_responsible_country':italy_actor})
+site_vm = VM(italy_actor)
+assert site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
+site.values['cores'] = ['ETH']
+assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
+site.values['cores'] = ['LBA']
+site.controller = Scope('GER')
+assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
+site.controller = italy_actor
+site.values['cores'].append('ITA')
+assert not site_vm.check(triggers['camp_rework_italy_security_battalions_site_ready'], site)
+results.append({'scenario':'italian_security_site_requires_responsible_direct_control_and_libyan_noncore_state','passed':True})
+
+# Execute the production success effect and the Italy bridge's actual
+# local-to-national pressure comparison. A successful paid repeat must give
+# real relief when pressures are equal, while preserving evidence and floors.
+colonial_effects = {key: value for key, _, value in load('common/scripted_effects/camp_repression_colonial_country_effects.txt')}
+effects['camp_rework_complete_italy_security_sweep'] = colonial_effects['camp_rework_complete_italy_security_sweep']
+effects['camp_rework_italy_clear_security_sweep_state'] = []  # Local modifier lifecycle has a separate source test.
+def italy_branch(entries):
+    for key, _, value in entries:
+        limit = next((sub for subkey, _, sub in value if subkey == 'limit'), []) if isinstance(value, list) else []
+        if key == 'else_if' and any(k == 'original_tag' and v == 'ITA' for k, _, v in limit):
+            return value
+        if isinstance(value, list):
+            found = italy_branch(value)
+            if found is not None: return found
+    return None
+italy_bridge = italy_branch(colonial_effects['camp_rework_update_colonial_country_monthly_bridge'])
+assert italy_bridge is not None
+pressure_bridge = next(value for key, _, value in italy_bridge if key == 'if' and 'libyan_resistance_pressure' in str(value) and 'camp_policy_resistance_pressure' in str(value))
+effects['camp_rework_update_colonial_country_monthly_bridge'] = [('if', '=', pressure_bridge)]
+triggers['camp_rework_italy_security_sweep_requirements_met'] = []  # Valid supplied garrison fixture.
+for policy_before, local_before, policy_after, local_after in ((12, 12, 9, 9), (1, 1, 0, 0), (15, 10, 10, 7)):
+    italy = Scope('ITA', 'fascism', values={'camp_policy_resistance_pressure':policy_before,
+        'libyan_resistance_pressure':local_before, 'camp_policy_evidence':0, 'ita_security_sweep_state_id':1})
+    vm = VM(italy, '1942.5.1')
+    vm.run(effects['camp_rework_complete_italy_security_sweep'], italy)
+    assert italy.values['camp_policy_resistance_pressure'] == policy_after
+    assert italy.values['libyan_resistance_pressure'] == local_after
+    assert italy.values['camp_policy_evidence'] == constants['camp_rework_country_value.evidence_minor']
+    assert 'ita_security_sweep_state_id' not in italy.values
+results.append({'scenario':'italian_successful_security_sweep_reduces_local_and_reconciled_policy_pressure_without_negative_stock',
+    'equal_pressure_after':9,'floor_after':0,'high_policy_after':10,'passed':True})
+
+# The failure branch may physically harm a site only while Italy still has
+# direct control and remains the recorded responsible authority.
+triggers['camp_rework_italy_security_sweep_requirements_met'] = [('has_country_flag', '=', 'mock_success')]
+effects['camp_rework_colonial_apply_major_harm_to_current_state'] = [('add_to_variable', '=', [('mock_harm', '=', '1')])]
+for direct, libya, expected_harm in ((True, True, 1), (False, True, 0), (True, False, 0)):
+    italy = Scope('ITA', 'fascism', values={'libyan_resistance_pressure':5, 'camp_policy_evidence':0,
+        'camp_policy_resistance_pressure':5})
+    site = Scope('LIB', controller=italy if direct else Scope('GER'), values={'genocide_responsible_country':italy, 'cores':['LBA'] if libya else ['ETH']})
+    italy.values['ita_security_sweep_state_id'] = site
+    vm = VM(italy, '1942.5.1')
+    vm.run(effects['camp_rework_complete_italy_security_sweep'], italy)
+    assert site.values.get('mock_harm', 0) == expected_harm
+    assert italy.values['camp_policy_evidence'] == constants['camp_rework_country_value.evidence_major']
+    assert 'ita_security_sweep_state_id' not in italy.values
+results.append({'scenario':'italian_failed_security_sweep_harms_site_only_under_direct_responsible_control',
+    'direct_libyan_site_harm':1,'captured_site_harm':0,'non_libyan_site_harm':0,'passed':True})
 usa = Scope('USA'); vm = VM(usa, '1944.12.18'); assert not vm.check(triggers['camp_administration_civil_usa_authority'], usa)
 raj = Scope('RAJ'); vm = VM(raj); assert not vm.check(triggers['camp_administration_civil_raj_authority'], raj)
 results.append({'scenario': 'USA_end_authority_and_RAJ_independence', 'passed': True})
@@ -214,6 +369,10 @@ vm=VM(usa,'1948.7.1');assert not vm.check(triggers['camp_administration_civil_ac
 vm.date='1948.7.2';assert vm.check(triggers['camp_administration_civil_action_two_visible'],usa)
 usa.government='fascism';assert not vm.check(triggers['camp_administration_civil_action_two_visible'],usa)
 results.append({'scenario':'property_claims_date_and_government','passed':True})
+early_usa=Scope('USA',values={'camp_admin_civil_admitted_k':120})
+vm=VM(early_usa,'1942.2.18');assert not vm.check(triggers['camp_administration_civil_action_two_visible'],early_usa)
+vm.date='1942.2.19';assert vm.check(triggers['camp_administration_civil_action_two_visible'],early_usa)
+results.append({'scenario':'usa_review_cannot_terminate_authority_before_historical_start','passed':True})
 
 country = Scope('ENG'); vm = VM(country)
 site = Scope(controller=country, values={'camp_admin_responsible_country': country, 'state_population_k': 100,
@@ -254,6 +413,29 @@ decision_ids = {key for _, _, content in load('common/decisions/camp_repression_
 assert set(country.values['removed_missions']) <= decision_ids
 assert 'ita_desert_road_project_state_id' not in country.values
 results.append({'scenario':'terminal_cancel_ids_and_target_cleanup','passed':True})
+integration_source = (ROOT_DIR / 'common/scripted_effects/camp_administration_integration_effects.txt').read_text(encoding='utf-8-sig')
+terminal_close = integration_source.split('camp_admin_integration_close_country = {', 1)[1].split('# State scope, literal history-kind constant.', 1)[0]
+for mission in ('usa_court_review_period', 'usa_redress_commission_work'):
+    assert f'has_active_mission = {mission}' in terminal_close
+    assert f'remove_mission = {mission}' in terminal_close
+assert 'camp_rework_usa_cancel_security_sunset = yes' in terminal_close
+colonial_source = (ROOT_DIR / 'common/scripted_effects/camp_repression_colonial_country_effects.txt').read_text(encoding='utf-8-sig')
+usa_cancel = colonial_source.split('camp_rework_usa_cancel_security_sunset = {', 1)[1].split('camp_rework_usa_begin_relocation_termination = {', 1)[0]
+assert 'has_active_mission = usa_security_authority_sunset' in usa_cancel
+assert 'remove_mission = usa_security_authority_sunset' in usa_cancel
+assert 'clr_country_flag = camp_rework_usa_authority_active' in usa_cancel
+assert 'clr_country_flag = camp_rework_democratic_emergency_authorized' in usa_cancel
+civil_source = (ROOT_DIR / 'common/scripted_effects/camp_administration_civil_effects.txt').read_text(encoding='utf-8-sig')
+assert civil_source.count('camp_rework_usa_cancel_security_sunset = yes') == 2
+usa_sunset_decision = (ROOT_DIR / 'common/decisions/camp_repression_colonial_country_decisions.txt').read_text(encoding='utf-8-sig').split('usa_security_authority_sunset = {', 1)[1].split('usa_redress_commission_work = {', 1)[0]
+assert 'cancel_trigger = {' in usa_sunset_decision and 'NOT = { has_country_flag = camp_rework_usa_authority_active }' in usa_sunset_decision
+usa_timeout = colonial_source.split('camp_rework_complete_usa_security_sunset = {', 1)[1].split('camp_rework_complete_usa_redress_commission = {', 1)[0]
+assert 'has_country_flag = camp_rework_usa_authority_active' in usa_timeout
+assert 'NOT = { has_country_flag = camp_admin_civil_review_active }' in usa_timeout
+rework_source = (ROOT_DIR / 'common/scripted_effects/camp_repression_rework_effects.txt').read_text(encoding='utf-8-sig')
+assert 'camp_admin_integration_close_country = yes' in rework_source.split('camp_rework_exclude_special_country = {', 1)[1][:1500]
+assert 'camp_admin_integration_close_country = yes' in rework_source.split('camp_rework_on_country_annexed = {', 1)[1]
+results.append({'scenario':'usa_terminal_missions_removed_without_timeout_effects','passed':True})
 country.flags.add('camp_admin_civil_policy_authorized')
 country.values.update(camp_admin_civil_intake_ceiling_k=27,camp_admin_civil_admitted_k=26.5)
 site.controller = country

@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "ab2b62a1e95fe5c84560ceedca6723cea6918faf69b08fd399709a2afbf8efe6",
+      "revision": "917cd261f7da51fe4d8687c5d7663e768a09c5c101ac130ce646bc64637aa818",
+      "source": "wiki",
+      "title": "AI modding",
+      "heading": "MTTH blocks",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\AI modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 26,
+      "endLine": 37,
+      "excerpt": "## MTTH blocks <a id=\"MTTH_blocks\"></a> MTTH blocks, named in the game within `/Hearts of Iron IV/common/mtth/`, are a way to assign a dynamic value to some block, whether it's a [country = { ... } in a focus tree to assign which countries can get it](<National focus modding - Hearts of Iron 4 Wiki.",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 26,
+      "sectionEndLine": 37,
+      "startColumn": 1,
+      "text": "## MTTH blocks <a id=\"MTTH_blocks\"></a>\n\nMTTH blocks, named in the game within `/Hearts of Iron IV/common/mtth/`, are a way to assign a dynamic value to some block, whether it's a [country = { ... } in a focus tree to assign which countries can get it](<National focus modding - Hearts of Iron 4 Wiki.md#Focus_tree>), a dynamically-changing variable value (as in `/Hearts of Iron IV/common/mtth/`), a [mean-time-to-happen value for an event](<Event modding - Hearts of Iron 4 Wiki.md#Triggering>), et cetera. As MTTH blocks are spread throughout the entire game, it's incredibly important to know how one works. Its most common application, however, is assigning a base AI weight to a database entry such as a national focus or a technology.\n\nIn most cases, marked with ai_will_do, the approach taken by the game is generating a decimal number between 0 and the value of the ai_will_do block, and picking the entry with the highest value. There can be other modifiers applied after the ai_will_do value, such as the ones applied within [AI strategy plans](#AI_strategy_plans) towards focuses and research or the ones that get defined within [Defines](<Defines - Hearts of Iron 4 Wiki.md>), which'll multiply the value you get. This can include different ai_will_do values such as what's done with country leader traits and with ideas or characters that use them.\nEvent options, instead, use ai_chance, which uses probability-proportional-to-size sampling with a virtual roll of d00 being the final deciding factor. Due to that, in the end, an event option cannot have a probability which isn't a multiple of 1/100 to be picked, although the total sum of each option's weights can be vastly different from 100. In other words, if one option has a value of 1, while the other has a value of 999, the probability for the first option to be picked will be 1% rather than 0.1%.\n\nA MTTH block begins with an assumed value of 1. Further manipulations are done from that value as a starting point. There are 3 value-modifying arguments that can be done, `add`, `base`, and `factor`, done like `factor = 0.3`, `base = 10`, or `add = 5`. `add` adds the specified argument to the value, `factor` *multiplies* it, and `base`, typically done in the start before any changes, sets it to a different number entirely, akin to multiplying by 0 and adding the number.\nIn order for an operation to apply conditionally, a `modifier = { ... }` block is used. This also functions as a [trigger block](<Triggers - Hearts of Iron 4 Wiki.md>), with the default scope (thus also ROOT) being the country for which the MTTH block is evaluated. Depending on the MTTH block, [there may be additional scopes marked with FROM](<Decision modding - Hearts of Iron 4 Wiki.md#Targeted_decisions>) [or FROM.FROM other than the default.](#AI_peace) The value-modifying arguments function as regular arguments, they can be put in anywhere directly within the `modifier = { ... }` block with almost no difference, whether it's in the end, the beginning, or between triggers.\n\n[Variables](<Data structures - Hearts of Iron 4 Wiki.md>) can be used within the value-modifying arguments as well. If using a temporary variable that is defined within the `modifier = { ... }` trigger block, then the value-modifying argument of the modifier has to be after the definition of the variable in order for the variable to apply as defined. Variables can also be used outside of the `modifier = { ... }` block and directly inside of the MTTH block itself.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

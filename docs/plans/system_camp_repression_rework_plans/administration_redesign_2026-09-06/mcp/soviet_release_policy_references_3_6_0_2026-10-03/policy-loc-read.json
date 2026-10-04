@@ -1,0 +1,33 @@
+{
+  "status": "ok",
+  "code": "OK",
+  "workspaceId": "camp_sov_release",
+  "filesScanned": [],
+  "proposedFiles": [],
+  "changedFiles": [],
+  "diagnostics": [],
+  "artifacts": [],
+  "validation": {
+    "passed": true,
+    "checks": []
+  },
+  "blockers": [],
+  "data": {
+    "id": "8466af7164ce523520ef7e725d7711b333cc284bf7a70f0eeb7834993db17bb8",
+    "revision": "1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064",
+    "source": "wiki",
+    "title": "Localisation",
+    "heading": "Scripted localisation",
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Localisation - Hearts of Iron 4 Wiki.md",
+    "startLine": 656,
+    "endLine": 705,
+    "excerpt": "## Scripted localisation <a id=\"Scripted_localisation\"></a> Scripted localisation is similar to creating your own namespaces. It is defined in `/Hearts of Iron IV/common/scripted_localisation/*.txt` and used in localisation in a similar manner to namespaces. However, unlike namespaces, by default th",
+    "authority": "Offline Paradox Wiki snapshot",
+    "sectionStartLine": 656,
+    "sectionEndLine": 705,
+    "startColumn": 1,
+    "text": "## Scripted localisation <a id=\"Scripted_localisation\"></a>\n\nScripted localisation is similar to creating your own namespaces. It is defined in `/Hearts of Iron IV/common/scripted_localisation/*.txt` and used in localisation in a similar manner to namespaces. However, unlike namespaces, by default the current scope is assumed when using scripted localisation, making scoping optional.\nAn example of a scripted localisation definition is:\n\n```text\ndefined_text = {\n    name = mod_scripted_loc\n    text = {\n        trigger = {\n            tag = FRA\n        }\n        localization_key = FRA_localization_key\n    }\n    text = {\n        localization_key = mod_localization_key\n    }\n}\n```\n\nThis consists of these entries:\n\n- `name = my_scripted_loc` - The name of the scripted localisation used to refer to it within regular localisation.\n- `text = { ... }` - A possible choice for localisation. The game picks the topmost `text = { ... }` block to serve as the localisation's output. In particular, these are used in the example:\n  - `trigger = { ... }` is the trigger block evaluated for the checked scope, using this scripted localisation if true. [Temporary variables](<Data structures - Hearts of Iron 4 Wiki.md>) set in this trigger block will remain set when displaying the localisation key, allowing math to be done between different variables or using scripted localisation recursively (such as to display every element of an [array](<Data structures - Hearts of Iron 4 Wiki.md>)).\n  - `localization_key = my_loc_key` (Note the American spelling with Z rather than the British spelling with S used elsewhere) assigns the localisation key to be used with this scripted localisation option.\n\nThe example above will show the FRA_localization_key localisation key for France and the mod_localization_key one otherwise as a backup. **The first localization key that meets the triggers will be used**, meaning it is often more intuitive to specify localisation entries with more specific requirements first before those with more general triggers. In localisation, that example can be used as\n\n```yaml\nl_english:\n some_localisation: \"[mod_scripted_loc]\"\n FRA_localization_key: \"France-exclusive localisation\"\n mod_localization_key: \"Generic localisation\"\n```\n\nScripted localisation also allows randomisation of the localisation key that would be chosen, using [random_list](<Effects - Hearts of Iron 4 Wiki.md>). For example, the following code will give a 60% and a 40% chance respectively for mod_localization_key_1 or mod_localization_key_2 to be chosen when this scripted localisation entry is used:\n\n```text\ndefined_text = {\n    name = mod_scripted_loc\n    text = {\n        random_list = {\n            30 = { localization_key = mod_localization_key_1 }\n            20 = { localization_key = mod_localization_key_2 }\n        }\n    }\n}\n```\n",
+    "nextLine": null,
+    "nextColumn": null
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "status": "declared_source_test_inputs",
+  "evidence_type": "source-level production-helper mock scenarios; not save observations or HOI4 engine results",
+  "fixture_basis": {
+    "actor": "USA",
+    "date": "1942.7.1",
+    "state_id": 378,
+    "state_name": "California",
+    "state_metadata_source": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/history/states/378-California.txt",
+    "state_id_line": 3,
+    "state_owner_line": 15,
+    "normal_owner": "USA",
+    "declared_source_test_controller": "USA",
+    "political_power_before_native_click": 100,
+    "native_political_power_cost": 20,
+    "camp_active_site_count": 1,
+    "support_equipment_quote": 180,
+    "living_rows": [
+      {
+        "origin_state_id": 378,
+        "authority": "USA",
+        "status": 1,
+        "amount_k": 4
+      }
+    ],
+    "country_flags": [
+      "camp_rework_usa_authority_active",
+      "camp_rework_inspection_active",
+      "camp_rework_managed_network_visible"
+    ],
+    "state_flags": [
+      "camp_rework_site_active",
+      "camp_admin_initialized"
+    ],
+    "omitted_country_flags": [
+      "camp_admin_civil_initialized",
+      "camp_gui_country_action_2_cooldown"
+    ],
+    "source_helpers": "The test harness calls camp_admin_initialize_site and the production camp_admin_append_row, then executes the production USA release selector, action, dispatcher, router, monthly bridge and cooldown mapper. The declared camp_active_site_count equals the existing active-site registry length in each case. The interpreter deterministically chooses the first candidate only as its random_scope_in_array primitive mock."
+  },
+  "cases": [
+    {
+      "id": "verified",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 181 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows", "flags": "fixture_basis.state_flags" },
+      "action": "native decision; pre-payment availability must pass; exact receipt must be positive"
+    },
+    {
+      "id": "zero",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 0, "living_rows": [] },
+      "action": "availability and stale action reject without debit, relief, reform, or scripted cooldown"
+    },
+    {
+      "id": "ambiguous",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows", "flags": ["camp_origin_ambiguous"] },
+      "action": "mixed-origin provenance pause; stale native cost is refunded"
+    },
+    {
+      "id": "malformed",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows", "mutation": "remove one aligned camp_admin_row_origins element" },
+      "action": "row preflight rejects; stale native cost is refunded"
+    },
+    {
+      "id": "capture",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "JAP", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+      "action": "direct control gate rejects; stale native cost is refunded"
+    },
+    {
+      "id": "stock-short",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 179 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+      "action": "inclusive quote gate rejects one-short stock"
+    },
+    {
+      "id": "exact-stock",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+      "action": "inclusive quote gate accepts exactly 180 and spends that quote once after a positive release receipt"
+    },
+    {
+      "id": "civil-cutover",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180, "flags": ["camp_admin_civil_initialized"] },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+      "action": "stale native click after engine PP payment refunds and performs no order effects"
+    },
+    {
+      "id": "gui-stale-refund",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 180 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+      "mutation_after_gui_pp_debit": { "country_flags": ["camp_admin_civil_initialized"] },
+      "action": "actual GUI payment helper runs before the declared stale-state input; production route rejects and refunds"
+    },
+    {
+      "id": "ai-verified",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": true, "political_power": 100, "support_equipment_1": 180 },
+      "registry": [
+        { "id": 378, "owner": "USA", "controller": "JAP", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" },
+        { "id": 377, "owner": "USA", "controller": "USA", "detainees_k": 4, "living_rows": "fixture_basis.living_rows" }
+      ],
+      "action": "production AI selector rejects the captured row and chooses the valid row from camp_active_site_states"
+    },
+    {
+      "id": "replay",
+      "country": { "tag": "USA", "original_tag": "USA", "is_ai": false, "political_power": 100, "support_equipment_1": 0 },
+      "state": { "id": 378, "owner": "USA", "controller": "USA", "detainees_k": 0, "living_rows": [] },
+      "action": "replay after a completed release rejects, refunds a stale native charge, and cannot repeat relief or release history"
+    }
+  ],
+  "mcp_limit": "These helper-test inputs are not an accepted probability scenarioSet. The connected probability_inspect route timed out before returning its required-input schema. The live adapter's support for aligned row arrays and provenance scopes is unresolved; no array contents are forced into MCP scenario inputs."
+}

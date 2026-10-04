@@ -1,0 +1,37 @@
+{
+  "resourceTemplates": [
+    {
+      "name": "artifact",
+      "title": "HOI4 review artifact",
+      "uriTemplate": "hoi4-agent://workspace/{workspaceId}/artifact/{sha256}/{provenanceHash}/{name}",
+      "description": "Complete plans, diagnostics, layouts, previews, event graphs, routes, state and scope reports, comparisons, and diffs. Reads accept zero-based byte offset and positive byte length query selectors; each response reports its exact byte range and continuation URI in _meta.",
+      "_meta": {
+        "io.github.klimpaskov/hoi4-agent-tools.artifact-byte-range": {
+          "version": 1,
+          "unit": "byte",
+          "maxChunkSize": 1048576,
+          "selectors": {
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "length": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1048576,
+              "default": 1048576
+            },
+            "metadata": {
+              "type": "string",
+              "enum": [
+                "manifest"
+              ],
+              "optional": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}

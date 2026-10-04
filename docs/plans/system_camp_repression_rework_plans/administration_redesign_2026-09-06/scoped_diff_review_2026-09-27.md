@@ -1,0 +1,12 @@
+# Camps package diff boundary review
+
+Status: provisional current-working-tree review; the package remains incomplete and no scoped commit was staged or created.
+The shared tree contains concurrent work, so filename matching alone is not proof of ownership. Every mixed file still needs a hunk-level review before a finished-plan commit.
+
+The tracked gameplay diff contains 50 paths with camp administration, camp repression or genocide-crisis identifiers under `common/`, `events/`, `interface/` and English localisation. These include the package decisions, effects, triggers, constants, scripted GUI and the existing three-view native window. The package plan also has untracked source tests, references and MCP artifacts. The current [completion report](completion.md) and [resume packet](resume_packet.md) distinguish those source and declared-fixture results from engine acceptance.
+
+The shared `common/on_actions/chaosx_on_actions_chaos_meter.txt` diff consists of three `equipment_from_heavens_evolution_pulse` additions for another event, not the camp timer. The shared `common/scripted_effects/chaos_meter_effects.txt` diff concerns Soviet nuclear Event 23 state targeting, condemnation and accident handling, not the camp loss adapter. Both files must be excluded from a camps package commit. The camp timer lives in `events/camp_administration_country_events.txt` and package-owned registration effects; the camp loss adapter calls existing shared APIs without modifying their source.
+
+`common/scripted_effects/005_soviet_collapse_effects.txt` is mixed: early hunks around lines 4289–4383 belong to other Soviet-collapse work, while the UWR aftermath hunk around line 22028 contains camp receipt gating and target rechecks documented in [the UWR handoff](uwr_aftermath_receipt_handoff_2026-09-27.md). If the full plan reaches commit readiness, stage only reviewed package-relevant hunks from this mixed file. The same hunk-level ownership review is required for any Germany Mengele or other reused package file touched concurrently.
+
+The current source scope deliberately excludes core Chaos Meter accounting, its registry and shared event-log, settings, diplomacy and super-event frameworks. This review does not claim those unrelated dirty files are clean or that the package diff is ready to commit. The four pending user policies, native timer and population receipts, historical calibration and partial GUI/AI routes in `resume_packet.md` remain completion gates.

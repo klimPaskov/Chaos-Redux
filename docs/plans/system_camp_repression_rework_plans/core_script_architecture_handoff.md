@@ -345,7 +345,7 @@ No pool trigger may select a protected class.
 | camp_rework_recalculate_site_values | state | current phase/type/buildings/traits/responsible context | Writes local output, resistance, evidence, foreign exposure, and monthly death pressure |
 | camp_rework_calculate_monthly_deaths | state | state values and responsible-country values | Sets temporary camp_deaths_percent, camp_deaths_mult, camp_deaths_cap_factor, camp_deaths_reason |
 | camp_rework_register_state_deaths | state | camp_deaths_percent; optional multiplier/cap/reason | Calls chaos_meter_register_state_civilian_deaths_percent; writes camp_site_last_month_deaths and genocide_last_state_deaths; credits responsibility; defaults multiplier 1 and type-appropriate reason/cap |
-| camp_rework_register_exact_state_deaths | state | camp_exact_deaths and reason | Calls chaos_meter_register_deaths with civilian/state-pop/OWNER target inputs, then performs the same output/credit contract |
+| camp_rework_register_exact_state_deaths | state within the German Mengele country event | camp_exact_deaths and reason | Calls chaos_meter_register_deaths with civilian/state-pop/ROOT target inputs, then performs the same output/credit contract; the sole indexed caller enters state 88 from the responsible country |
 | camp_rework_apply_monthly_state_effects | state | none | Recalculate site, resolve tiers, consume ongoing stockpile where relevant, make one Deaths call, update pressure/evidence, no routine popup |
 | camp_rework_apply_country_monthly_pressure | country | aggregated active sites | Rebuilds national values, applies dynamic modifiers, calls bounded country bridge logic |
 | camp_rework_sync_legacy_compatibility_values | country | canonical values/counts | One-way projections into still-used genocide_* fields |
@@ -433,11 +433,11 @@ For an exact event-authored amount, camp_rework_register_exact_state_deaths sets
 - chaos_deaths_change = camp_exact_deaths
 - chaos_deaths_is_civilian = 1
 - chaos_deaths_apply_state_pop = 1
-- chaos_deaths_target_country = OWNER
+- chaos_deaths_target_country = ROOT, the German event actor, even when state 88 retains Polish ownership
 - chaos_deaths_has_target_country = 1
 - chaos_deaths_reason = supplied reason
 
-It calls chaos_meter_register_deaths and performs the same state/perpetrator post-processing. germany_mengele_register_experiment_deaths should use this adapter for state 88.
+It calls chaos_meter_register_deaths and performs the same state/perpetrator post-processing. `germany_mengele_register_experiment_deaths` is the adapter's only indexed caller and enters state 88 from the responsible country. A new caller with a different root contract must receive an explicit target design rather than inherit this one.
 
 ### 8.4 Biological contamination exception
 

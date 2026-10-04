@@ -1,0 +1,84 @@
+{
+  "version": {
+    "name": "hoi4-agent-tools",
+    "version": "3.6.0",
+    "websiteUrl": "https://github.com/klimPaskov/hoi4-agent-tools"
+  },
+  "capabilities": {
+    "logging": {},
+    "prompts": {
+      "listChanged": true
+    },
+    "resources": {
+      "listChanged": true
+    },
+    "tools": {
+      "listChanged": true
+    },
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": {
+        "tools": {
+          "call": {}
+        }
+      }
+    }
+  },
+  "clientTasksRequested": false,
+  "probabilityInspectSchema": {
+    "type": "object",
+    "properties": {
+      "workspaceId": {
+        "default": "current",
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "adapter": {
+        "type": "string",
+        "enum": [
+          "event_mean_time_to_happen",
+          "event_option_ai_chance",
+          "decision_ai_will_do",
+          "mission_ai_will_do",
+          "national_focus_ai_will_do",
+          "technology_ai_will_do",
+          "doctrine_ai_will_do",
+          "direct_random",
+          "random_list",
+          "ai_strategy_factor",
+          "custom_weighted_pool"
+        ]
+      },
+      "source": {
+        "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+      },
+      "customPoolManifest": {
+        "description": "Declared custom weighted pool and state transitions."
+      },
+      "candidatePool": {
+        "maxItems": 100000,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "refresh": {
+        "type": "boolean"
+      }
+    },
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false
+  },
+  "probabilityToolNames": [
+    "hoi4.probability_inspect",
+    "hoi4.probability_evaluate",
+    "hoi4.probability_sweep",
+    "hoi4.probability_simulate",
+    "hoi4.probability_sequence",
+    "hoi4.probability_compare",
+    "hoi4.probability_render"
+  ]
+}

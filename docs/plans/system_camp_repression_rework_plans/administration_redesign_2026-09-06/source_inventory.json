@@ -412,12 +412,10 @@
         {
           "ids": [
             "germany_intensify_extermination_policy",
-            "germany_transfer_prisoners_to_experiment_site",
             "genocide_intensify_deportations",
             "genocide_redirect_trains_and_supplies",
             "japan_transfer_prisoners_to_experimental_facilities",
             "sov_deport_suspected_opposition_groups",
-            "sov_confiscate_food_from_disloyal_regions",
             "sov_raise_forced_labor_quotas"
           ],
           "accepted_plan_disposition": "replaced",
@@ -437,12 +435,59 @@
         "japan_destroy_occupation_records",
         "sov_purge_camp_administrators",
         "sov_destroy_gulag_records",
+        "sov_confiscate_food_from_disloyal_regions",
+        "germany_transfer_prisoners_to_experiment_site",
         "genocide_publicize_survivor_testimony",
         "genocide_support_resistance_networks",
         "genocide_prepare_tribunal_records"
       ],
-      "reason": "Legacy routes cannot remain a second administration or payment bus; meaningful evidence, crisis and foreign-response outcomes may survive behind new authority and target gates.",
-      "implementation_status": "accepted and queued"
+      "reason": "Legacy routes cannot remain a second administration or payment bus. Soviet food confiscation remains a distinct famine crisis trigger. The user's explicit 2026-09-26 decision retains a separate paid German prisoner transfer after administration begins; current source calls the exact occupation-to-custody transaction from a proven living occupation row. Routine site growth, policy multipliers, logistics purchases, and institutional setup move to the accepted administration layer.",
+      "per_id_review_2026_09_25": [
+        {
+          "id": "germany_intensify_extermination_policy",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "The repeatable command-power action sets the legacy extermination multiplier and crisis counters; national repression policy and output are governed by administration mandate and continuing support."
+        },
+        {
+          "id": "germany_transfer_prisoners_to_experiment_site",
+          "disposition": "retained_explicit_paid_exact_cohort_transfer_after_camp_admin_initialized",
+          "acceptance_basis": "The user explicitly chose this paid post-administration German decision and then one compact national order with the oldest eligible source on 2026-09-26, recorded in accepted_implementation.md.",
+          "evidence": "The decision requires camp_admin_initialized and uses one national order: a bounded country selector preflights the oldest eligible registered occupation row and scripted localisation names that source. The effect quotes 5% of its proven living row, caps it by state-88 capacity and population-share headroom, then calls camp_occ_transfer_to_custody_exact. The caller charges 35 political power, 5 army experience, 180 support equipment and 18 trains only after a valid positive custody receipt; the prior manpower debit was retired to meet the four-cost limit. This is current source evidence, not engine proof.",
+          "validation_limit": "Exact population and row conservation, cost timing, selected-source display, AI selection and live engine behavior remain unproved. The dated automatic Lodz route is separate."
+        },
+        {
+          "id": "genocide_intensify_deportations",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "AI-only repeatable policy multiplier and finite-site pressure; routine pressure is owned by automatic administration."
+        },
+        {
+          "id": "genocide_redirect_trains_and_supplies",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "AI-only timed transport-priority purchase and state pressure; logistics and support are owned by administration."
+        },
+        {
+          "id": "japan_transfer_prisoners_to_experimental_facilities",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "The old target route can instant-build a camp before registering experimentation; Japan's accepted Pingfang program uses the bounded institutional slot and supported site."
+        },
+        {
+          "id": "sov_deport_suspected_opposition_groups",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "The targeted action creates a Gulag pressure site; site network growth and finite monthly processing are owned by administration."
+        },
+        {
+          "id": "sov_confiscate_food_from_disloyal_regions",
+          "disposition": "retained_explicit_famine_crisis",
+          "evidence": "The effect records state famine pressure and activates the Soviet famine-event route; it is not routine site expansion and has no administration cutover guard."
+        },
+        {
+          "id": "sov_raise_forced_labor_quotas",
+          "disposition": "replaced_after_camp_admin_initialized",
+          "evidence": "The targeted repeatable action raises legacy forced-labor pressure at a site; automatic administration owns continuing output and quota pressure."
+        }
+      ],
+      "unresolved_routes": [],
+      "implementation_status": "German paid post-administration exact-cohort route accepted with current source evidence; engine and probability validation pending"
     },
     "cbrn_occupation": {
       "source": "common\\decisions\\cbrn_occupation_decisions.txt",
@@ -493,7 +538,6 @@
       "fr_gurs_legacy_review",
       "fr_refugee_pressure_response",
       "fr_post_liberation_reckoning",
-      "ita_colonial_security_sweep",
       "ita_desert_camp_closure",
       "ita_postwar_colonial_compensation",
       "bel_colonial_strike_response",
@@ -512,15 +556,16 @@
       "uk_complete_raj_military_works",
       "fr_north_africa_rail_labor_project",
       "ita_desert_road_labor_project",
+      "ita_colonial_security_sweep",
       "bel_congo_resource_quota_cycle",
       "bel_congo_transport_corridor_project"
     ],
     "reason": "Automatic maintenance, eligible development and authorized institution work must not require routine clicks or ordinary completion popups.",
-    "implementation_status": "accepted and queued",
+    "implementation_status": "implemented with source evidence; engine validation pending",
     "current_cleanup_evidence": [
       "camp_admin_integration_cancel_routine_projects removes generic_labor_project_cycle and generic_reform_and_dismantlement.",
-      "camp_administration_civil_cancel_routine_projects removes the identified UK, USA, France, Italy and Belgium routine project missions.",
-      "The remaining mission completion effects require parent-owned quieting or explicit retention review."
+      "camp_administration_civil_cancel_routine_projects removes seven UK, France, Italy and Belgium routine project or sweep missions; Italy's sunk resource cost and Libya resistance pressure remain, but its active-sweep flag is cleared.",
+      "The retained mission completion effects still require engine scenario review."
     ]
   },
   "country_bridges": [
@@ -880,7 +925,7 @@
         "common\\scripted_effects\\genocide_crisis_effects.txt"
       ],
       "status": "retire or merge",
-      "reason": "Legacy genocide_decision_cost routes overlap canonical actions and lack the full administration slot and finite-cohort contract."
+      "reason": "Most legacy genocide_decision_cost routes overlap canonical actions and lack the full administration slot and finite-cohort contract. The retained German paid transfer is a current source exception: it draws from a proven occupation row through the exact custody transaction, with engine validation pending."
     },
     {
       "family": "lifecycle",
@@ -908,9 +953,9 @@
     },
     {
       "surface": "germany_transfer_prisoners_to_experiment_site and japan_transfer_prisoners_to_experimental_facilities",
-      "risk": "Old experiment routes use legacy variables/costs and do not prove the new 1943-05-30, authority, controlled-institution and award gates.",
-      "required_action": "Retire or route through country programs and finite cohort admission.",
-      "status": "accepted and queued"
+      "risk": "Germany's repurposed paid route has source-level authority, date, controlled-institution, living occupation-row and exact custody-transfer gates, but engine conservation and AI probability remain unproved. Japan's old transfer remains a legacy route.",
+      "required_action": "Validate the German exact transaction and AI scenario; keep Japan's legacy transfer retired after administration initialization.",
+      "status": "German source route implemented under explicit 2026-09-26 user decision; engine proof pending; Japan accepted and queued"
     },
     {
       "surface": "camp_admin_country_mengele_historical_gate",

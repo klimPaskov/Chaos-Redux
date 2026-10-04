@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "0ea147cf7808d8e1c0b7d3272e6003848c400734c0547a7a11f6d04ff35d98be",
+      "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d",
+      "source": "wiki",
+      "title": "Event modding",
+      "heading": "Options",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Event modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 153,
+      "endLine": 179,
+      "excerpt": "### Options <a id=\"Options\"></a> An event option is added with an `option = { ... }` block. An event option is an [effect](<Effects - Hearts of Iron 4 Wiki.md>) block, with a few extra options:",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 151,
+      "sectionEndLine": 179,
+      "startColumn": 1,
+      "text": "An event option is added with an `option = { ... }` block. An event option is an [effect](<Effects - Hearts of Iron 4 Wiki.md>) block, with a few extra options:\n\n`name` decides the localisation key used for the option, such as `name = my_option_name`. It is not possible to make the option name depend on the triggers in the same way it's possible for event titles, instead, completely different event options can be used, disabling each one with a name that shouldn't be used.\n\n`trigger = { ... }` is a [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) block, deciding when the option is visible to be picked. If the trigger is false at the time of being fired, it will not appear until the event is fired again. Additionally, for major events, `original_recipient_only = yes` can be used to ensure that only the country that fired the event has this option available, with others not having it.\n\n`ai_chance = { ... }` is a block deciding the [AI chance](<AI modding - Hearts of Iron 4 Wiki.md>) for event options: deciding in a proportional way which option to pick. The AI chance in event options do not have to add up to 100, as it is proportional. It is structured in a near-identical way to the mean time to happen. If unset, assumed to be 1. The probability of each option is its weight divided by the sum of all option weights. If all options have a weight of zero, the first one is chosen. The randomized choice is made by rolling a d100, so options can't have an effective non-zero probability below 1%. The choice remains consistent across reloads, based on unique game seed, in-game time, country, and unit leader.\n\nAs a MTTH block, the attributes are in the form of `base = 10`, `factor = 0.1`, `add = 10`, with `modifier = { ... }` serving as trigger blocks:\n\n```text\nai_chance = {\n    base = 10.5\n\n    # If the country is Germany, set the value to 0,\n    # causing an early end of the evaluation.\n    modifier = { tag = GER factor = 0 }\n    modifier = { is_major = yes add = 1 }\n    modifier = {\n        factor = 3\n        add = 2.5\n        tag = FRA\n    }\n    factor = 2\n}\n```\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

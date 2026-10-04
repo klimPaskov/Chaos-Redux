@@ -1,0 +1,41 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"camp_famine_oct3\"}"
+    }
+  ],
+  "structuredContent": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "camp_famine_oct3",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "21ff847245747e215d1cb8b5ace4abb3044f2269b53952c53b9bade4b8a2d21f",
+      "revision": "7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162",
+      "source": "wiki",
+      "title": "Decision modding",
+      "heading": "Triggers",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Decision modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 83,
+      "endLine": 110,
+      "excerpt": "### Triggers <a id=\"Triggers\"></a> Usually, it is desirable to restrict the decision so that it might not always be possible to take, such as restricting it to a certain country. In order to do that, there are several [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) blocks, serving different purpose",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 83,
+      "sectionEndLine": 110,
+      "startColumn": 1,
+      "text": "### Triggers <a id=\"Triggers\"></a>\n\nUsually, it is desirable to restrict the decision so that it might not always be possible to take, such as restricting it to a certain country. In order to do that, there are several [trigger](<Triggers - Hearts of Iron 4 Wiki.md>) blocks, serving different purposes. A decision will only be available or visible if the corresponding conditions are met in both the category and the decision.\n\n`allowed` is a trigger block that checks only at the game's start or when loading a save, primarily used to restrict a decision to a country (As `tag = BHR` or `original_tag = POL`) and/or a DLC (As `has_dlc = \"One Step Back\"`). If a decision's or a category's allowed is unfulfilled, it will never appear unless it becomes true on the save being reloaded or decisions themselves being reloaded. If left out, assumes to be always allowed. **This only checks once!**\n\n```text\nallowed = {\n    original_tag = BHR\n}\n```\n\n`visible` is a trigger block that continuously checks every frame if allowed was met, required to make the decision or the entire category be visible in the decision selection screen. In case for targeted decisions, both FROM and ROOT can be checked here, but using target_trigger is recommended when possible for optimisation purposes. It is preferable to put country or DLC checks into allowed instead. **Does nothing for missions!**\n\n```text\nvisible = {\n    is_subject = no\n}\n```\n\n`available` is a trigger block that continuously checks every frame if visible was met, required to be possible to actually take the decisions. If false, the decision (or, in case of categories, decisions within) will remain visible (unless set otherwise), but will be greyed out and be impossible to complete. This is applied on top of the political power cost. Applied differently for missions.\n\n```text\navailable = {\n    has_war = yes\n}\n```\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+}

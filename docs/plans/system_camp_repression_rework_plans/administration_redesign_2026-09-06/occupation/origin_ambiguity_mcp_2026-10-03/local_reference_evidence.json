@@ -1,0 +1,90 @@
+[
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "from": 1069,
+    "to": 1082,
+    "sha256": "62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4",
+    "text": "## Arrays <a id=\"Arrays\"></a>\n\nArrays are similar to variables, but they instead store a collection of variables.\nAn array in the game is structured with indexes starting from 0. `arrayname^0` as a variable refers to the first item of `arrayname`, `arrayname^1` refers to the second item in the array, and so on. In order to obtain the total amount of items within the given array, `arrayname^num` is used. An array is assumed to have no elements by default, if not already created, with add_to_array or add_to_temp_array usually being used to create an array.\n\nTemporary and regular arrays exist, with the same distinction between them as in variables: temp arrays can be set and modified in triggers and effects, are unscoped, and cleared after the effect/trigger block ends; regular arrays can only be set or modified in effects, are linked to a specific scope, and persist forever until cleared manually.\n\nA single element of an array is considered a variable in every regard: `set_variable = { arrayname^0 = 10 }` will set the first element to be equal to 10 (with `set_temp_variable` used for temporary arrays), `check_variable = { arrayname^0 > 10 }` is also valid syntax, and `[?arrayname^0]` will print the value of the element in localisation. However, the element must already exist for it to be edited. **There is no simple way to print an entire array in localisation**, however a recursive scripted localisation can be used, which modifies the value of a temporary variable by one until hitting the array's size each time that it's used.\n\n### Arguments <a id=\"Arguments\"></a>\n\nThe following arguments exist for arrays. Similarly to variables, temporary versions exist by replacing `array` with `temp_array`.\n\nArguments for modifying arrays:",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "from": 1216,
+    "to": 1220,
+    "sha256": "62273F37ED30E5479ACB331A8973F48DADC1867C4913C8A940E3E790E7AF32D4",
+    "text": "| for_each_loop | `array = <array>`<br>The array to check.<br> `value = <variable>`<br>The name of the temporary variable where the value of the currently-selected element is stored.<br> `index = <variable>`<br>The name of the temporary variable where the index of the currently-selected element is stored.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `<effects>`<br> An effect block. | *(example below)* | Runs an effect once for every element in the array. | The scope does not change from the one this is checked in by default, requiring one of [scopes](<Scopes - Hearts of Iron 4 Wiki.md>). You cannot remove any elements in the array with the effects block whilst the loop is running. |\n| for_each_scope_loop | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `tooltip = <loc>` <br>If defined, the effect will output a tooltip for sub effects using this localization as title.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for every scope within the array. | Equivalent to a `every_<...>` effect scope type, with additional `break`. Since this changes scopes, PREV would, unless there's deeper scoping, refer to the scope the effect is executed in. |\n| random_scope_in_array | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `limit = { <triggers> }`<br>An AND trigger block deciding which scopes can be picked.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for a random scope within the array. | Equivalent to a `random_<...>` effect scope type, with additional `break`. Since this changes scopes, PREV would, unless there's deeper scoping, refer to the scope this effect is executed in. |\n| while_loop_effect | `limit = { <triggers> }`<br>An AND trigger block deciding when the effect would repeat.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects as long as the limit is fulfilled. | The limit is only checked at the beginning and once the effect block is executed. Can't run for more than 1000 times by default[5]. |\n| for_loop_effect | `start = <decimal>/<variable>`<br>The value at which the evaluation starts. Default to 0.<br> `end = <decimal>/<variable>`<br>The value at which the evaluation ends. Default to 0.<br> `compare = <compare type>`<br>How the currently-evaluated value must compare with the `end` for the for loop to continue. Defaults to `less_than`, leading to the end value never being picked.<br> `add = <variable>`<br>How much is being added to the `start` value for every iteration. Defaults to 1.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `value = <variable>`<br>The name of the temporary variable where the current value of evaluation is stored.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects as long as the limit is fulfilled. | The limit is only checked at the beginning and once the effect block is executed. Can't run for more than 1000 times by default[5]. Comparison types are the same as used in check_variable. |",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Scopes - Hearts of Iron 4 Wiki.md",
+    "from": 25,
+    "to": 40,
+    "sha256": "18EF5249E4991F5427ECA9EC4A2F66DD47F51E26A491C730ADC622F1F5DB1B49",
+    "text": "**Scopes** change the currently-selected entity where the [effects](<Effects - Hearts of Iron 4 Wiki.md>) should apply or which is checked by the [triggers](<Triggers - Hearts of Iron 4 Wiki.md>). Each one must follow the same formatting of `scope = { <contents> }`.\n\nWhen a scope is used as for effects, each effect inside of the scope's block is executed. Conversely, when a scope is used as for triggers, it serves as a logical conjunction, requiring every trigger in the scope's block to be met for that scope to evaluate as true.\n\nIn addition to serving as blocks for effects or triggers, some scopes can also serve as targets of effects or triggers: e.g. `transfer_state_to = ROOT` or `owns_state = 123`.\n However, only [some dual scopes](#Dual_scopes) can be used as a target. For scopes that cannot be used as targets, [PREV](#PREV_usage), [Variables](<Data structures - Hearts of Iron 4 Wiki.md>), or [Event targets](<Data structures - Hearts of Iron 4 Wiki.md>) can be used to get around this limitation.\n\n## Types <a id=\"Types\"></a>\n\nScopes can be thought of as divided into 3 types by purpose:\n\n- Trigger scopes - those that can only be used in trigger blocks, failing when put within an effect block.\n- Effect scopes - those that can only be used in effect blocks, failing when put within a trigger block.\n- Dual scopes - those that can be put in both trigger and effect blocks without issues.\n\nIt is to be noted that trigger or effect scopes cannot ever be used as targets. That is strictly limited to [some dual scopes](#Dual_scopes).",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Scopes - Hearts of Iron 4 Wiki.md",
+    "from": 739,
+    "to": 750,
+    "sha256": "18EF5249E4991F5427ECA9EC4A2F66DD47F51E26A491C730ADC622F1F5DB1B49",
+    "text": "*See also: [Arrays](<Data structures - Hearts of Iron 4 Wiki.md>)*\n\n[Arrays](<Data structures - Hearts of Iron 4 Wiki.md>) can be used to create a generic selection of scopes meeting the criteria. These scopes exist for checking conditions on elements of an array or executing effects on them:\n\nArray-related scopes:\n\n| Name | Type | Parameters | Examples | Description | Notes |\n| --- | --- | --- | --- | --- | --- |\n| any_of_scopes | Trigger | `array = <array>`<br>The array to check.<br> `tooltip = <localisation key>`<br>The localisation key used for the trigger.<br> `<triggers>`<br> An AND trigger block. | *(example below)* | Checks if any value within the array fulfills the triggers, halting and returning true if that's the case, scoping into each element in the array. | Appending `_NOT` to the tooltip's key (such as has_more_states_than_any_other_major_tt_NOT in the example) results in the localisation key used if this any_of_scopes is put inside of `NOT = { ... }`. |\n| all_of_scopes | Trigger | `array = <array>`<br>The array to check.<br> `tooltip = <localisation key>`<br>The localisation key used for the trigger.<br> `<triggers>`<br> An AND trigger block. | *(example below)* | Checks if every value within the array fulfills the triggers, halting and returning false if any one doesn't, scoping into each element in the array. | Appending `_NOT` to the tooltip's key (such as has_more_states_than_every_other_major_tt_NOT in the example) results in the localisation key used if this any_of_scopes is put inside of `NOT = { ... }`. |\n| for_each_scope_loop | Effect | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for every scope within the array. | Equivalent to a `every_<...>` effect scope type, with additional `break`. |\n| random_scope_in_array | Effect | `array = <array>`<br>The array to check.<br> `break = <variable>`<br>The temporary variable that can be set to be not 0 to instantly break the loop.<br> `limit = { <triggers> }`<br>An AND trigger block deciding which scopes can be picked.<br> `<effects>`<br> An effect block. | *(example below)* | Runs the effects for a random scope within the array. | Equivalent to a `random_<...>` effect scope type, with additional `break`. |",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\On actions - Hearts of Iron 4 Wiki.md",
+    "from": 450,
+    "to": 464,
+    "sha256": "6822ADC85A374A1C1364F2DEF6F32C6D66DA9FB0280319DDD6AF4B84B33D882A",
+    "text": "| on_state_control_changed | Trigger the following commands when a state's controller changes. | *(example below)* | ROOT is new controller, FROM is old controller, FROM.FROM is state ID. | 1.4 |\n\n**Example: on_state_control_changed**\n\n```text\non_state_control_changed = {\n    effect = {\n        if = {\n            limit = {\n                FROM.FROM = { state = 123 }\n            }\n            if =  {\n                limit = {\n                    tag = BHR\n                }",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\On actions - Hearts of Iron 4 Wiki.md",
+    "from": 257,
+    "to": 259,
+    "sha256": "6822ADC85A374A1C1364F2DEF6F32C6D66DA9FB0280319DDD6AF4B84B33D882A",
+    "text": "| on_annex | Trigger the following commands whenever a country is annexed. | *(example below)* | ROOT is winner, FROM gets annexed. For civil wars **on_civil_war_end** is also fired. | 1.3.3 |\n| on_civil_war_end_before_annexation | Trigger the following commands just before FROM gets annexed, meaning the country and everything it owns still exists. | *(example below)* | ROOT is winner, FROM gets annexed. It will also fire **on_annex** and **on_civil_war_end**. | 1.6 |\n| on_civil_war_end | Trigger the following commands whenever a civil war ends. | *(example below)* | ROOT is civil war winner, FROM gets annexed. This will also fire **on_annex**. | 1.0 |",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+    "from": 3363,
+    "to": 3363,
+    "sha256": "997DDB09BFD63EFB41A425149C46BD812D5F8953217A403386B2F6C85196AA0C",
+    "text": "| add_manpower | `<int> / <variable>`<br>The amount to add. | `add_manpower = 10000` | Adds the specified amount of total population to the current state. | Note that when using negative manpower it will, besides reducing the population, also add directly to the recruitable manpower of the state. Which will increase your manpower | 1.0 |",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "from": 1468,
+    "to": 1477,
+    "sha256": "2CDC93D26775990468EED167442F7A416B13059FB8FE07D139B54250B79209AF",
+    "text": "## add_manpower\n\n* Supported Scopes: STATE, COUNTRY\n* Supported Targets: none\n\n```\nAdds manpower to the country in scope or locally on a state if in state scope\n```\n\n## add_mastery",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\defines\\00_defines.lua",
+    "from": 25,
+    "to": 25,
+    "sha256": "405A24CE579815443CAFE052CFF1361E20C712CA8182E3F10CCBF45330DD4BE4",
+    "text": "\tMAX_EFFECT_ITERATION = 1000,\t\t\t\t\t-- maximum allowed iteration for loop effects",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_effects\\AST_scripted_effects.txt",
+    "from": 1020,
+    "to": 1033,
+    "sha256": "BBAC8AC8EAF87912E4188655E6E4C1941DB1DD0A839F6F3A51D3A9E80B2C802A",
+    "text": "\tcustom_effect_tooltip = AST_dividing_the_pacific_ast_gain_tt \t\n\t#If MAL/Singapore/SIA isn't controlled by JAP or AST, add AST state claims\n\tMAL = {\n\t\tevery_core_state = {\n\t\t\tlimit = { \n\t\t\t\tNOT = {\n\t\t\t\t\tis_controlled_by = AST\n\t\t\t\t\tis_controlled_by = JAP\t\t\t\t\n\t\t\t\t}\n\t\t\t}\n\t\tset_state_flag = AST_claims_to_ast\n\t\tadd_claim_by = AST \n\t\t}\n\t}",
+    "method": "direct local read"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_effects\\AST_scripted_effects.txt",
+    "from": 1118,
+    "to": 1129,
+    "sha256": "BBAC8AC8EAF87912E4188655E6E4C1941DB1DD0A839F6F3A51D3A9E80B2C802A",
+    "text": "\t        OR = {\n\t            BRM = { \n\t            \tOR = {\n\t            \t\tis_subject_of = AST \n\t            \t\thas_country_flag = AST_brm_puppet_to_jap\n\t            \t}\n\t            }\n\t            any_state = {\n\t                is_core_of = BRM\n\t                OR = {\n\t\t                is_controlled_by = AST\n\t\t                has_state_flag = AST_transfer_to_jap",
+    "method": "direct local read"
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "country_trigger_sha256": "2a4a63a60f1335a4e45eab059f66a9b6619e231c1ed95324bfc959c9b9bfaa76",
+  "before_manifest": "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\occupation\\before_country_quote_boundary_2026-10-03\\source_manifest.json",
+  "reference_reads": [
+    {
+      "id": "1d55490d9a71c1001c4f320d8c7396dc574795b5a8e9eef0bc53addb7f40db55",
+      "revision": "538525747f0c285062c9ce8db14b4e07c3cf6bac1013115fa4f57291cb4ebdda",
+      "source": "game_doc",
+      "title": "dynamic variables documentation",
+      "heading": "num_equipment",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\dynamic_variables_documentation.md",
+      "startLine": 557,
+      "endLine": 559,
+      "excerpt": "### num_equipment * description: number of equipment in country. example num_equipment@infantry_equipment",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 557,
+      "sectionEndLine": 559,
+      "startColumn": 1,
+      "text": "### num_equipment\n* description: number of equipment in country. example num_equipment@infantry_equipment\n",
+      "nextLine": null,
+      "nextColumn": null
+    },
+    {
+      "id": "86b499a2becd3eec3146fb6fd7acad586ab3448c7dc92fe35b8548be3177357d",
+      "revision": "538525747f0c285062c9ce8db14b4e07c3cf6bac1013115fa4f57291cb4ebdda",
+      "source": "game_doc",
+      "title": "dynamic variables documentation",
+      "heading": "has_political_power",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\dynamic_variables_documentation.md",
+      "startLine": 431,
+      "endLine": 434,
+      "excerpt": "### has_political_power * description: check amount of political power * (Auto generated using the trigger with same name)",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 431,
+      "sectionEndLine": 434,
+      "startColumn": 1,
+      "text": "### has_political_power\n* description: check amount of political power\n* (Auto generated using the trigger with same name)\n",
+      "nextLine": null,
+      "nextColumn": null
+    },
+    {
+      "id": "27f6d55d9a3f19f3964168d5f6248574ce2c828a7e015abddb771732135f3cb5",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki",
+      "title": "Data structures",
+      "heading": "Operators",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 555,
+      "endLine": 579,
+      "excerpt": "### Operators <a id=\"Operators\"></a> The following is a list of variable-related effects and triggers. Variable-modifying effects have an equivalent for temporary variables, with `temp_variable` being used instead of `variable`, and these temporary variable operators are also valid triggers, as desc",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 555,
+      "sectionEndLine": 692,
+      "startColumn": 1,
+      "text": "### Operators <a id=\"Operators\"></a>\n\nThe following is a list of variable-related effects and triggers. Variable-modifying effects have an equivalent for temporary variables, with `temp_variable` being used instead of `variable`, and these temporary variable operators are also valid triggers, as described above. Every operator can be used with variables that do not exist, assuming a value of 0 unless a null-coalescing operator is used.\n\nVariable-related arguments:\n\n| Name | Parameters | Examples | Description | Notes |  |\n| --- | --- | --- | --- | --- | --- |\n| set_variable | `var = <variable>`<br>The variable to modify or create.<br> `value = <decimal>/<variable>`<br>The value to set the variable to.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`set_temp_variable = { temp_var = ROOT.overlord }` | Sets a variable's value to the specified amount, creating it if not defined. | Shortened version exists with `set_variable = { <variable> = <value> }`. |  |\n| set_variable_to_random | `var = <variable>`<br>The variable to modify or create.<br> `min = <decimal>`<br>The minimum possible value, defaults to 0.<br> `max = <decimal>`<br>The maximum possible value, defaults to 1.<br> `integer = <bool>`<br>Sets if the variable *must* be an integer or if it can be decimal. Defaults to false.<br> | *(example below)*`set_temp_variable_to_random = my_var` | Sets a variable's value to the specified amount, creating it if not defined. The result will be greater than or equal than the minimum and strictly less than the maximum. | Shortened version exists with `set_variable_to_random = <variable>`, setting it to a decimal between 0 and 1. Can be used in triggers. |  |\n| clear_variable | `<variable>`<br>Variable to clear. | `clear_variable = my_variable` | Clears the value from the memory entirely. | Can only be used on regular variables. |  |\n| check_variable | `var = <variable>`<br>Variable to compare.<br> `value = <decimal>/<variable>`<br>The value to compare the variable to.<br> `compare = <compare type>/<variable>`<br>The comparison type. Variants are `equals`, `not_equals`, `less_than`, `less_than_or_equals`, `greater_than`, and `greater_than_or_equals`. Defaults to `greater_than_or_equals`. | *(example below)*`check_variable = { var_name > 10 }` | Compares the value of a variable. Used as a trigger. | Temporary and regular formatting use the exact same formatting. Shortened variant exists as `check_variable = { <variable> < <value> }`, where the operator in the middle is an equality sign (=), greater than sign (>), or a lesser than sign (<). The comparison type is always strict in this case: `check_variable = { var_name > 10 }` will come up as false if `var_name` is exactly 10. |  |\n| has_variable | `<variable>`<br>Variable to check. | `has_variable = my_variable` | Checks if the value was set, regardless of its amount. Used as a trigger. | A variable is considered set even if its value is 0, as long as it wasn't cleared. |  |\n| add_to_variable | `var = <variable>`<br>The variable to add to.<br> `value = <decimal>/<variable>`<br>The value to add to the variable.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`add_to_temp_variable = { temp_var = num_owned_states }` | Increases a variable's value by the specified amount, creating it if not defined. | Shortened version exists with `add_to_variable = { <variable> = <value> }`. |  |\n| subtract_from_variable | `var = <variable>`<br>The variable to subtract from.<br> `value = <decimal>/<variable>`<br>The value to subtract from the variable.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`subtract_from_temp_variable = { temp_var = num_owned_states }` | Decreases a variable's value by the specified amount, creating it if not defined. | Shortened version exists with `subtract_from_variable = { <variable> = <value> }`. Equivalent to adding a negative amount. |  |\n| multiply_variable | `var = <variable>`<br>The variable to multiply.<br> `value = <decimal>/<variable>`<br>The value to multiply the variable by.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`multiply_temp_variable = { temp_var = num_owned_states }` | Multiplies a variable's value by the specified amount. | Shortened version exists with `multiply_variable = { <variable> = <value> }`. |  |\n| divide_variable | `var = <variable>`<br>The variable to divide.<br> `value = <decimal>/<variable>`<br>The value to divide the variable by.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`divide_temp_variable = { temp_var = num_owned_states }` | Divides a variable's value by the specified amount. | Shortened version exists with `divide_variable = { <variable> = <value> }`. |  |\n| modulo_variable | `var = <variable>`<br>The variable to modulo.<br> `value = <decimal>/<variable>`<br>The value to modulo the variable by.<br> `tooltip = localisation_key`Localisation used by the operation. Optional. | *(example below)*`modulo_temp_variable = { temp_var = num_controlled_states }` | Makes the variable become the remainder of Euclidean division of the variable by the specified value. | Shortened version exists with `modulo_variable = { <variable> = <value> }`. |  |\n| round_variable | `<variable>`<br>The variable to round. | `round_variable = my_variable``round_temp_variable = temp` | Rounds the variable towards the closest integer value. | If exactly between two integers (Such as 1.5), the option with lager absolute val gets chosen ( if -1.5,will be -2 ). |  |\n| clamp_variable | `var = <variable>`<br>The variable to clamp.<br> `min = <decimal>/<variable>`<br>The minimum value of the variable after the clamp.<br> `max = <decimal>/<variable>`<br>The maximum value of the variable after the clamp. | *(example below)* *(example below)* | Clamps the variable to ensure its value is between the two specified numbers, raising to the minimum if smaller or lowering to the maximum if larger. | Either min or max can be omitted, in which case it'll not be checked. Does nothing if the variable is already in the range between min and max. **This only changes the current value of the variable**, it can still go beyond the minimum or the maximum after the clamp. |  |\n| career_profile_set_temp_playthrough_variable | `var = <variable>`<br>The variable to modify or create. `value = <decimal>/<variable>`<br>The value to set the variable to. | *(example below)* | Sets a temporary variable to a value or another variable. |  | ??? |\n| career_profile_set_temp_variable | `var = <variable>`<br>The variable to modify or create. `value = <decimal>/<variable>`<br>The value to set the variable to. | *(example below)* | Sets a temporary variable to a value or another variable. |  | ??? |\n\n**Example: set_variable**\n",
+      "nextLine": 580,
+      "nextColumn": 1
+    }
+  ],
+  "source_tests": 18,
+  "limits": "Native readers are mocked, actual production predicates and authorization effects execute; no runtime or probability proof."
+}
