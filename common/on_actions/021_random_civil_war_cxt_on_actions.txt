@@ -61,6 +61,14 @@ on_actions = {
 				event021_handle_annexed_country = yes
 			}
 			event021_adopt_successor_roster = yes
+			if = {
+				limit = { has_event_target = event021_successor_roster_adoption_complete }
+				event021_external_post_adoption = yes
+			}
+			else_if = {
+				limit = { has_country_flag = random_civil_war_successor_roster_pending }
+				event021_external_clear_queue = yes
+			}
 		}
 	}
 }

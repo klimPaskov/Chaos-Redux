@@ -594,7 +594,10 @@ event021_reserve_target = {
 # The parent calls `event021_reserve_state` once per selected state.
 event021_begin_opening_transaction = {
 	if = {
-		limit = { NOT = { has_global_flag = random_civil_war_plan_active } }
+		limit = {
+			NOT = { has_global_flag = random_civil_war_plan_active }
+			NOT = { event021_external_queue_blocks_new_crisis = yes }
+		}
 		set_global_flag = random_civil_war_plan_active
 		set_global_flag = random_civil_war_plan_seed_pending
 		set_global_flag = random_civil_war_planning_lock

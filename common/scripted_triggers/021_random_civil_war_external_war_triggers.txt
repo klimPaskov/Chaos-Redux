@@ -1,0 +1,163 @@
+# ============================================================================
+# EVENT 021 ORDINARY-SUCCESSOR EXTERNAL-WAR RELATION TRIGGERS
+# Pre-annex snapshot: call on the disappearing government predecessor after
+# event021_external_successor is saved as the ordinary opposition successor.
+# Post-adoption and event checks: call on the successor, after roster adoption.
+# These predicates never infer a named war identity from a hostile relation.
+# ============================================================================
+
+# COUNTRY scope. An unresolved human continuity queue or open prompt temporarily
+# holds its owner out of every new-crisis entry path. The receipt is derived from
+# the live queue lifecycle rather than a fixed country list or expiry duration.
+event021_external_queue_blocks_new_crisis = {
+	OR = {
+		has_country_flag = random_civil_war_external_snapshot_pending
+		has_country_flag = random_civil_war_external_queue_ready
+		has_country_flag = random_civil_war_external_prompt_in_flight
+	}
+}
+
+event021_external_snapshot_context_valid = {
+	random_civil_war_is_normal_human_country = yes
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_government_side
+	has_variable = random_civil_war_crisis_id
+	has_event_target = event021_external_successor
+	event_target:event021_external_successor = {
+		random_civil_war_is_normal_human_country = yes
+		has_country_flag = random_civil_war_opposition_actor
+		has_country_flag = random_civil_war_successor_claimed
+		NOT = { has_country_flag = random_civil_war_event6_front_active }
+		has_variable = random_civil_war_crisis_id
+		check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+		has_variable = random_civil_war_host_country_scope
+		var:random_civil_war_host_country_scope = { tag = event_target:event021_external_predecessor }
+	}
+}
+
+# COUNTRY scope on the successor. A repeated annex callback must preserve the
+# first live-war snapshot for this crisis instead of replacing it after the
+# predecessor's wars have ended.
+event021_external_snapshot_matches_crisis = {
+	has_country_flag = random_civil_war_external_snapshot_pending
+	has_variable = random_civil_war_external_snapshot_crisis_id
+	check_variable = {
+		var = random_civil_war_external_snapshot_crisis_id
+		value = event_target:event021_external_predecessor.random_civil_war_crisis_id
+		compare = equals
+	}
+}
+
+# COUNTRY scope on one live predecessor enemy. PREV is the predecessor.
+event021_external_enemy_is_same_crisis_front = {
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_opposition_actor
+	has_variable = random_civil_war_crisis_id
+	check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+	has_variable = random_civil_war_host_country_scope
+	var:random_civil_war_host_country_scope = { tag = event_target:event021_external_predecessor }
+}
+
+# COUNTRY scope on the adopted successor. All durable receipts live here.
+event021_external_queue_receipt_valid = {
+	random_civil_war_is_normal_human_country = yes
+	NOT = { has_capitulated = yes }
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_successor_claimed
+	has_country_flag = random_civil_war_government_side
+	has_country_flag = random_civil_war_external_snapshot_pending
+	has_country_flag = random_civil_war_external_queue_ready
+	has_variable = random_civil_war_crisis_id
+	has_variable = random_civil_war_external_snapshot_crisis_id
+	check_variable = { var = random_civil_war_crisis_id value = random_civil_war_external_snapshot_crisis_id compare = equals }
+	has_variable = random_civil_war_external_successor_scope
+	var:random_civil_war_external_successor_scope = { tag = PREV }
+	NOT = { is_ai = yes }
+}
+
+# COUNTRY scope on a human successor during the pre-adoption snapshot phase.
+# This receipt keeps an unrelated rollback from deleting the live predecessor
+# roster before the successor has completed normal roster adoption.
+event021_external_snapshot_receipt_valid = {
+	random_civil_war_is_normal_human_country = yes
+	NOT = { has_capitulated = yes }
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_successor_claimed
+	has_country_flag = random_civil_war_external_snapshot_pending
+	has_country_flag = random_civil_war_successor_roster_pending
+	has_country_flag = random_civil_war_successor_government_role_pending
+	has_variable = random_civil_war_crisis_id
+	has_variable = random_civil_war_external_snapshot_crisis_id
+	check_variable = { var = random_civil_war_crisis_id value = random_civil_war_external_snapshot_crisis_id compare = equals }
+	has_variable = random_civil_war_external_successor_scope
+	var:random_civil_war_external_successor_scope = { tag = PREV }
+	NOT = { is_ai = yes }
+}
+
+event021_external_current_relation_missing = {
+	event021_external_queue_receipt_valid = yes
+	has_variable = random_civil_war_external_current_opponent_scope
+	var:random_civil_war_external_current_opponent_scope = {
+		exists = yes
+		NOT = { tag = PREV }
+	}
+	NOT = { has_war_with = var:random_civil_war_external_current_opponent_scope }
+	can_declare_war_on = var:random_civil_war_external_current_opponent_scope
+}
+
+# The country-local prompt pointer must still match the live queue head.
+event021_external_prompt_opponent_matches_current = {
+	has_variable = random_civil_war_external_prompt_opponent_scope
+	has_variable = random_civil_war_external_current_opponent_scope
+	var:random_civil_war_external_current_opponent_scope = {
+		exists = yes
+		tag = var:ROOT.random_civil_war_external_prompt_opponent_scope
+	}
+}
+
+event021_external_prompt_context_valid = {
+	event021_external_queue_receipt_valid = yes
+	has_country_flag = random_civil_war_external_prompt_in_flight
+	has_variable = random_civil_war_external_prompt_crisis_id
+	check_variable = {
+		var = random_civil_war_external_prompt_crisis_id
+		value = random_civil_war_crisis_id
+		compare = equals
+	}
+	event021_external_prompt_opponent_matches_current = yes
+}
+
+event021_external_prompt_receipt_valid = {
+	event021_external_prompt_context_valid = yes
+	event021_external_current_relation_missing = yes
+}
+
+# COUNTRY scope. An unresolved prompt remains dismissible even if annex cleanup
+# or later campaign changes invalidate its queue. All declaration choices use
+# event021_external_prompt_receipt_valid instead, so this gate grants no war
+# action and uses the live in-flight receipt rather than a timeout or roster.
+event021_external_prompt_event_visible = {
+	has_country_flag = random_civil_war_external_prompt_in_flight
+}
+
+event021_external_core_goal_valid = {
+	event021_external_prompt_receipt_valid = yes
+	var:random_civil_war_external_prompt_opponent_scope = {
+		any_owned_state = {
+			is_core_of = ROOT
+			is_controlled_by = PREV
+		}
+	}
+}
+
+event021_external_claim_goal_valid = {
+	event021_external_prompt_receipt_valid = yes
+	var:random_civil_war_external_prompt_opponent_scope = {
+		any_owned_state = {
+			is_claimed_by = ROOT
+			is_controlled_by = PREV
+		}
+	}
+}

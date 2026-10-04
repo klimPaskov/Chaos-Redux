@@ -1,0 +1,176 @@
+# ============================================================================
+# EVENT 021 ORDINARY-SUCCESSOR EXTERNAL-WAR RELATION FALLBACK
+# Call snapshot on the disappearing predecessor before scripted white peace or
+# natural annexation, with event021_external_successor bound to the winner.
+# Call post-adoption on that successor after lifecycle and roster adoption.
+# Queue cleanup refreshes country-local target membership. An already-open human
+# prompt keeps its crisis receipt as a quarantine until that prompt resolves.
+# Annex teardown clears its queue but preserves this in-flight receipt so a
+# delayed or surviving stale card cannot declare without fresh live validation.
+# Option visibility is fixed when the card opens; an already-open card may keep
+# stale choices visible, but their effects revalidate and safely advance state.
+# Dispatch is the only prompt writer and requires no prompt to be in flight,
+# so later crises cannot replace the country-local prompt receipt while its card
+# remains unresolved.
+# The queue is country-local. A declaration here starts a new war by choice.
+# ============================================================================
+
+
+event021_external_close_prompt_receipt = {
+	clear_variable = random_civil_war_external_prompt_crisis_id
+	clear_variable = random_civil_war_external_prompt_opponent_scope
+	clr_country_flag = random_civil_war_external_prompt_in_flight
+}
+
+event021_external_clear_queue_receipts = {
+	clear_array = random_civil_war_external_enemies
+	clear_variable = random_civil_war_external_snapshot_crisis_id
+	clear_variable = random_civil_war_external_successor_scope
+	clear_variable = random_civil_war_external_current_opponent_scope
+	clr_country_flag = random_civil_war_external_snapshot_pending
+	clr_country_flag = random_civil_war_external_queue_ready
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_external_prompt_in_flight } }
+		clear_variable = random_civil_war_external_prompt_crisis_id
+		clear_variable = random_civil_war_external_prompt_opponent_scope
+	}
+}
+
+event021_external_clear_queue = {
+	event021_external_clear_queue_receipts = yes
+	event021_refresh_target_pool_membership = yes
+}
+
+# COUNTRY scope: disappearing predecessor. The regular target names successor.
+# Repeated pre-annex calls rebuild the same deduplicated live relation snapshot.
+event021_external_snapshot_predecessor = {
+	save_event_target_as = event021_external_predecessor
+	if = {
+		limit = { event021_external_snapshot_context_valid = yes }
+		event_target:event021_external_successor = {
+			if = {
+				limit = { NOT = { event021_external_snapshot_matches_crisis = yes } }
+				event021_external_clear_queue = yes
+				set_variable = { random_civil_war_external_snapshot_crisis_id = event_target:event021_external_predecessor.random_civil_war_crisis_id }
+				set_variable = { random_civil_war_external_successor_scope = event_target:event021_external_successor }
+				set_country_flag = random_civil_war_external_snapshot_pending
+				event021_refresh_target_pool_membership = yes
+			}
+		}
+		every_enemy_country = {
+			limit = {
+				exists = yes
+				NOT = { tag = event_target:event021_external_successor }
+				NOT = { event021_external_enemy_is_same_crisis_front = yes }
+			}
+			save_event_target_as = event021_external_snapshot_enemy
+			event_target:event021_external_successor = {
+				if = {
+					limit = {
+						NOT = { is_in_array = { array = random_civil_war_external_enemies value = event_target:event021_external_snapshot_enemy } }
+					}
+					add_to_array = { array = random_civil_war_external_enemies value = event_target:event021_external_snapshot_enemy }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope: successor immediately after event021_adopt_successor_roster.
+event021_external_post_adoption = {
+	if = {
+		limit = {
+			random_civil_war_is_normal_human_country = yes
+			has_country_flag = random_civil_war_active
+			has_country_flag = random_civil_war_successor_claimed
+			has_country_flag = random_civil_war_government_side
+			has_country_flag = random_civil_war_external_snapshot_pending
+			has_variable = random_civil_war_crisis_id
+			has_variable = random_civil_war_external_snapshot_crisis_id
+			check_variable = { var = random_civil_war_crisis_id value = random_civil_war_external_snapshot_crisis_id compare = equals }
+			has_variable = random_civil_war_external_successor_scope
+			var:random_civil_war_external_successor_scope = { tag = PREV }
+			NOT = { random_civil_war_has_terminal_lock = yes }
+			NOT = { is_ai = yes }
+		}
+		set_country_flag = random_civil_war_external_queue_ready
+		event021_external_dispatch_next = yes
+	}
+	else = { event021_external_clear_queue = yes }
+}
+
+# COUNTRY scope: successor. Remove invalid heads until one eligible opponent is
+# queued, then fire one hidden dispatch event. The in-flight flag serializes the
+# single prompt slot and is set before firing; no per-enemy event loop fires.
+event021_external_dispatch_next = {
+	if = {
+		limit = { event021_external_queue_receipt_valid = yes }
+		while_loop_effect = {
+			limit = {
+				NOT = { has_country_flag = random_civil_war_external_prompt_in_flight }
+				check_variable = { var = random_civil_war_external_enemies^num value = constant:random_civil_war_value.zero compare = greater_than }
+			}
+			clear_variable = random_civil_war_external_current_opponent_scope
+			set_variable = { random_civil_war_external_current_opponent_scope = random_civil_war_external_enemies^0 }
+			if = {
+				limit = { event021_external_current_relation_missing = yes }
+				set_variable = { random_civil_war_external_prompt_crisis_id = random_civil_war_crisis_id }
+				set_variable = { random_civil_war_external_prompt_opponent_scope = random_civil_war_external_current_opponent_scope }
+				set_country_flag = random_civil_war_external_prompt_in_flight
+				country_event = { id = chaosx.nr21_external.1 }
+			}
+			else = {
+				remove_from_array = { array = random_civil_war_external_enemies index = 0 }
+				clear_variable = random_civil_war_external_current_opponent_scope
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = random_civil_war_external_prompt_in_flight }
+				check_variable = { var = random_civil_war_external_enemies^num value = constant:random_civil_war_value.zero compare = equals }
+			}
+			event021_external_clear_queue = yes
+		}
+	}
+	else = { event021_external_clear_queue = yes }
+}
+
+# COUNTRY scope: successor after either prompt choice or a stale hidden dispatch.
+event021_external_advance_queue = {
+	if = {
+		limit = {
+			event021_external_prompt_receipt_valid = yes
+			check_variable = { var = random_civil_war_external_enemies^num value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		remove_from_array = { array = random_civil_war_external_enemies index = 0 }
+		clear_variable = random_civil_war_external_current_opponent_scope
+		event021_external_close_prompt_receipt = yes
+		event021_external_dispatch_next = yes
+	}
+	else_if = {
+		limit = {
+			event021_external_queue_receipt_valid = yes
+			event021_external_prompt_context_valid = yes
+			check_variable = { var = random_civil_war_external_enemies^num value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		remove_from_array = { array = random_civil_war_external_enemies index = 0 }
+		clear_variable = random_civil_war_external_current_opponent_scope
+		event021_external_close_prompt_receipt = yes
+		event021_external_dispatch_next = yes
+	}
+	else_if = {
+		limit = {
+			event021_external_queue_receipt_valid = yes
+			has_country_flag = random_civil_war_external_prompt_in_flight
+		}
+		# A prompt from an earlier crisis may share the same opponent as the
+		# current head. Close only that stale prompt; never consume the new row.
+		event021_external_close_prompt_receipt = yes
+		event021_external_dispatch_next = yes
+	}
+	else_if = {
+		limit = { NOT = { event021_external_queue_receipt_valid = yes } }
+		event021_external_close_prompt_receipt = yes
+		event021_external_clear_queue = yes
+	}
+}

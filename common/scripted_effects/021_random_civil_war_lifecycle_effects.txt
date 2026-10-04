@@ -11,6 +11,8 @@
 #   Event 021 crisis host, while an explicit successor transaction rebinds
 #   surviving host-linked rows instead of unregistering them;
 # - aligned front arrays are removed by one shared row index in reverse order;
+# - annex teardown clears Event 021 external-war queue receipts after its own
+#   target-count removal, without running the separate target refresh twice;
 # - the Event 006 adapter cleanup clears only Event 021 bridge state and keeps
 #   Event 006 package identity/content state intact.
 #
@@ -179,6 +181,10 @@ event021_handle_annexed_country = {
 		}
 		subtract_from_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.one }
 	}
+	# Preserve an unresolved prompt's country-local quarantine across annexation.
+	# Queue/snapshot receipts are cleared below; any already-open choice rechecks
+	# live state before declaring, because option visibility may not refresh.
+	event021_external_clear_queue_receipts = yes
 
 	# Remove the disappearing country from the persistent review registry.
 	if = {

@@ -1,0 +1,57 @@
+# ============================================================================
+# EVENT 021 EXTERNAL-WAR RELATION PROMPT
+# The adopted successor's queue fires the hidden dispatcher, then one ordinary
+# country event. Each choice revalidates the current crisis and opponent.
+# ============================================================================
+add_namespace = chaosx.nr21_external
+
+country_event = {
+	id = chaosx.nr21_external.1
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { event021_external_prompt_receipt_valid = yes }
+			country_event = { id = chaosx.nr21_external.2 }
+		}
+		else = { event021_external_advance_queue = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21_external.2
+	title = chaosx_nr21_external_2_title
+	desc = chaosx_nr21_external_2_desc
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { event021_external_prompt_event_visible = yes }
+	# HOI4 assumes the first option if a player event closes without a choice.
+	option = {
+		name = chaosx_nr21_external_2_decline
+		hidden_effect = { event021_external_advance_queue = yes }
+	}
+	option = {
+		name = chaosx_nr21_external_2_core
+		trigger = { event021_external_core_goal_valid = yes }
+		custom_effect_tooltip = chaosx_nr21_external_2_core_tt
+		hidden_effect = {
+			if = {
+				limit = { event021_external_core_goal_valid = yes }
+				declare_war_on = { target = var:random_civil_war_external_prompt_opponent_scope type = take_core_state }
+			}
+			event021_external_advance_queue = yes
+		}
+	}
+	option = {
+		name = chaosx_nr21_external_2_claim
+		trigger = { event021_external_claim_goal_valid = yes }
+		custom_effect_tooltip = chaosx_nr21_external_2_claim_tt
+		hidden_effect = {
+			if = {
+				limit = { event021_external_claim_goal_valid = yes }
+				declare_war_on = { target = var:random_civil_war_external_prompt_opponent_scope type = take_claimed_state }
+			}
+			event021_external_advance_queue = yes
+		}
+	}
+}

@@ -174,6 +174,7 @@ random_civil_war_country_can_be_target = {
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	random_civil_war_successor_grace_clear = yes
+	NOT = { event021_external_queue_blocks_new_crisis = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -203,6 +204,7 @@ random_civil_war_country_can_be_scenario_target = {
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	random_civil_war_successor_grace_clear = yes
+	NOT = { event021_external_queue_blocks_new_crisis = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -405,6 +407,9 @@ random_civil_war_opening_plan_valid = {
 	has_global_flag = random_civil_war_plan_active
 	has_event_target = random_civil_war_host_country
 	has_event_target = random_civil_war_anchor_state
+	event_target:random_civil_war_host_country = {
+		NOT = { event021_external_queue_blocks_new_crisis = yes }
+	}
 	check_variable = {
 		var = global.random_civil_war_plan_state_count
 		value = constant:random_civil_war_capacity.minimum_remnant_states
@@ -564,6 +569,7 @@ random_civil_war_recurrence_valid = {
 	random_civil_war_is_normal_human_country = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	random_civil_war_successor_grace_clear = yes
+	NOT = { event021_external_queue_blocks_new_crisis = yes }
 	OR = {
 		NOT = { has_country_flag = random_civil_war_recent_target }
 		AND = {
