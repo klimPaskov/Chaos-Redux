@@ -27,7 +27,10 @@ At the same existing country refresh boundary, it calls the shared cost projecti
 These are display-only cost amounts, not new mechanic values, stockpiles, or authority for availability or payment.
 The preparation owner and cost color selectors read fresh constants instead.
 
-The neutral `humanitarian_refresh_decision_phase_from_country` dispatcher lives in `famine_decision_phase_effects.txt` so the existing scheduler call remains source-compatible while the two phase owners stay separate.
+The neutral `humanitarian_refresh_decision_phase_from_country` dispatcher lives in `humanitarian_runtime_effects.txt` so the existing scheduler call remains source-compatible while the two phase owners stay separate.
+
+The country phase and active-country registration also call `humanitarian_project_legacy_cost_quote` for the 15 legacy fee display amounts, separately from the three Open Reception quotes.
+Those normal text values never govern cost readiness, payment, refund or paid-action matching and create no registry, periodic world scan, category reveal or additional mechanic value.
 
 The quote consumer is `common/scripted_localisation/migration_reception_preparation_cost_scripted_localisation.txt`, which resolves six ready/blocked keys in `localisation/english/migration_l_english.yml`.
 Its existing political-power, support-equipment, and fuel texticons remain unchanged; no new asset or scripted-GUI layout is introduced.

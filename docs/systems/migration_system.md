@@ -81,6 +81,17 @@ The existing active-country registration and country phase provider share a disp
 `localisation/english/migration_l_english.yml` owns the six ready/blocked cost labels and request wording, reusing the existing `£pol_power`, `£support_equipment_text_icon`, and `£GFX_fuel_texticon` consumers.
 The action retains `GFX_migration_decision_open_border`; no new art or sprite consumer is required.
 
+## Paid decision work
+
+The 15 legacy migration actions share neutral central fee tuning and pure inclusive cost components/profiles with the famine decision owner, without sharing a category or mechanic lifecycle.
+Availability, the native custom-cost branch, resource colors and final payment use the same exact country-payer bundle; display-only quotes are not payment authority.
+Immediate actions validate their whole activation before writes, while delayed paid work uses independent action/state/payer receipts before its existing continuation.
+Corridor negotiation preserves deferred payment after a successful offer and rechecks its full fee before preparation, submission and debit.
+Receipt cleanup touches only its matching or invalid state-local work and does not erase another state, action or valid payer's receipt.
+The existing movement refunds require a matching paid action and zero measured origin debit; real physical transfer does not receive a blanket late-failure refund.
+Workers' support-equipment prerequisite remains non-spendable, and no fee, cooldown, numeric AI factor, headline value, category, asset or global scheduler is added by this ownership boundary.
+Native callback exclusivity, same-payer replay behavior and the mandatory probability comparison remain unresolved evidence gates, not assumed proofs.
+
 ## Borders and trapped populations
 
 Closed borders do not erase a cohort. A valid closure creates or maintains trapped population and produces real humanitarian, diplomatic, security, political, reception, and mortality consequences through their respective owners.

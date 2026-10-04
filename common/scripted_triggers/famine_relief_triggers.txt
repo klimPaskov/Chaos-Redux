@@ -135,8 +135,8 @@ famine_relief_has_land_candidate = {
 	hidden_trigger = {
 		famine_relief_recipient_is_valid = yes
 		ROOT = {
-			has_equipment = { convoy > constant:famine_relief_logistics.minimum_land_convoys }
-			has_fuel > constant:famine_relief_logistics.minimum_land_fuel
+			humanitarian_cost_convoy_light_is_affordable = yes
+			humanitarian_cost_fuel_light_is_affordable = yes
 		}
 		any_of_scopes = {
 			array = global.famine_relief_registered_donor_states
@@ -157,9 +157,9 @@ famine_relief_has_sea_candidate = {
 		naval_base > 0
 		any_province_building_level = { province = { all_provinces = yes limit_to_naval_base = yes } building = naval_base level > @FAMINE_NON_DAMAGED_MINIMUM }
 		ROOT = {
-			has_equipment = { convoy > constant:famine_relief_logistics.minimum_sea_convoys }
-			has_equipment = { support_equipment > constant:famine_relief_logistics.minimum_sea_escort_equipment }
-			has_fuel > constant:famine_relief_logistics.minimum_sea_fuel
+			humanitarian_cost_convoy_heavy_is_affordable = yes
+			humanitarian_cost_support_light_is_affordable = yes
+			humanitarian_cost_fuel_heavy_is_affordable = yes
 		}
 		any_of_scopes = {
 			array = global.famine_relief_registered_donor_states
@@ -182,9 +182,9 @@ famine_relief_has_air_candidate = {
 		air_base > 0
 		non_damaged_building_level = { building = air_base level > @FAMINE_NON_DAMAGED_MINIMUM }
 		ROOT = {
-			has_equipment = { transport_plane_equipment > constant:famine_relief_logistics.minimum_air_transport_planes }
-			has_fuel > constant:famine_relief_logistics.minimum_air_fuel
-			has_air_experience > constant:famine_relief_logistics.minimum_air_experience
+			humanitarian_cost_transport_planes_is_affordable = yes
+			humanitarian_cost_fuel_heavy_is_affordable = yes
+			humanitarian_cost_air_xp_is_affordable = yes
 		}
 		any_of_scopes = {
 			array = global.famine_relief_registered_donor_states
@@ -378,8 +378,8 @@ famine_relief_action_route_inputs_are_valid = {
 					compare = equals
 				}
 				event_target:famine_relief_selection_actor = {
-					has_equipment = { convoy > constant:famine_relief_logistics.minimum_land_convoys }
-					has_fuel > constant:famine_relief_logistics.minimum_land_fuel
+					humanitarian_cost_convoy_light_is_affordable = yes
+					humanitarian_cost_fuel_light_is_affordable = yes
 				}
 			}
 			AND = {
@@ -389,9 +389,9 @@ famine_relief_action_route_inputs_are_valid = {
 					compare = equals
 				}
 				event_target:famine_relief_selection_actor = {
-					has_equipment = { convoy > constant:famine_relief_logistics.minimum_sea_convoys }
-					has_equipment = { support_equipment > constant:famine_relief_logistics.minimum_sea_escort_equipment }
-					has_fuel > constant:famine_relief_logistics.minimum_sea_fuel
+					humanitarian_cost_convoy_heavy_is_affordable = yes
+					humanitarian_cost_support_light_is_affordable = yes
+					humanitarian_cost_fuel_heavy_is_affordable = yes
 				}
 			}
 			AND = {
@@ -401,9 +401,9 @@ famine_relief_action_route_inputs_are_valid = {
 					compare = equals
 				}
 				event_target:famine_relief_selection_actor = {
-					has_equipment = { transport_plane_equipment > constant:famine_relief_logistics.minimum_air_transport_planes }
-					has_fuel > constant:famine_relief_logistics.minimum_air_fuel
-					has_air_experience > constant:famine_relief_logistics.minimum_air_experience
+					humanitarian_cost_transport_planes_is_affordable = yes
+					humanitarian_cost_fuel_heavy_is_affordable = yes
+					humanitarian_cost_air_xp_is_affordable = yes
 				}
 			}
 		}

@@ -35,3 +35,137 @@ famine_select_safe_food_reserve_donor = {
 		}
 	}
 }
+
+# STATE scope. Clear only Famine paid-action receipts whose recorded payer no
+# longer controls this exact state. A recovered food problem does not invalidate
+# a still-controlled funded action that is awaiting its native timed remove.
+famine_clear_stale_paid_decision_receipts = {
+	if = {
+		limit = {
+			has_state_flag = famine_release_reserves_cost_paid
+			OR = {
+				NOT = { has_variable = famine_release_reserves_cost_payer }
+				AND = { has_variable = famine_release_reserves_cost_payer NOT = { var:famine_release_reserves_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_release_reserves_cost_payer NOT = { is_controlled_by = var:famine_release_reserves_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_release_reserves_cost_paid
+		clear_variable = famine_release_reserves_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_emergency_imports_cost_paid
+			OR = {
+				NOT = { has_variable = famine_emergency_imports_cost_payer }
+				AND = { has_variable = famine_emergency_imports_cost_payer NOT = { var:famine_emergency_imports_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_emergency_imports_cost_payer NOT = { is_controlled_by = var:famine_emergency_imports_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_emergency_imports_cost_paid
+		clear_variable = famine_emergency_imports_cost_payer
+		clear_variable = famine_emergency_imports_cost_contract_generation
+		clear_variable = famine_emergency_imports_cost_donor_state
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_repair_relief_route_cost_paid
+			OR = {
+				NOT = { has_variable = famine_repair_relief_route_cost_payer }
+				AND = { has_variable = famine_repair_relief_route_cost_payer NOT = { var:famine_repair_relief_route_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_repair_relief_route_cost_payer NOT = { is_controlled_by = var:famine_repair_relief_route_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_repair_relief_route_cost_paid
+		clear_variable = famine_repair_relief_route_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_escorted_relief_convoy_cost_paid
+			OR = {
+				NOT = { has_variable = famine_escorted_relief_convoy_cost_payer }
+				AND = { has_variable = famine_escorted_relief_convoy_cost_payer NOT = { var:famine_escorted_relief_convoy_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_escorted_relief_convoy_cost_payer NOT = { is_controlled_by = var:famine_escorted_relief_convoy_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_escorted_relief_convoy_cost_paid
+		clear_variable = famine_escorted_relief_convoy_cost_payer
+		clear_variable = famine_escorted_relief_convoy_cost_contract_generation
+		clear_variable = famine_escorted_relief_convoy_cost_donor_state
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_emergency_airlift_cost_paid
+			OR = {
+				NOT = { has_variable = famine_emergency_airlift_cost_payer }
+				AND = { has_variable = famine_emergency_airlift_cost_payer NOT = { var:famine_emergency_airlift_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_emergency_airlift_cost_payer NOT = { is_controlled_by = var:famine_emergency_airlift_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_emergency_airlift_cost_paid
+		clear_variable = famine_emergency_airlift_cost_payer
+		clear_variable = famine_emergency_airlift_cost_contract_generation
+		clear_variable = famine_emergency_airlift_cost_donor_state
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_invite_relief_cost_paid
+			OR = {
+				NOT = { has_variable = famine_invite_relief_cost_payer }
+				AND = { has_variable = famine_invite_relief_cost_payer NOT = { var:famine_invite_relief_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_invite_relief_cost_payer NOT = { is_controlled_by = var:famine_invite_relief_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_invite_relief_cost_paid
+		clear_variable = famine_invite_relief_cost_payer
+		clear_variable = famine_invite_relief_cost_contract_generation
+		clear_variable = famine_invite_relief_cost_donor_state
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_evacuation_cost_paid
+			OR = {
+				NOT = { has_variable = famine_evacuation_cost_payer }
+				AND = { has_variable = famine_evacuation_cost_payer NOT = { var:famine_evacuation_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_evacuation_cost_payer NOT = { is_controlled_by = var:famine_evacuation_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_evacuation_cost_paid
+		clear_variable = famine_evacuation_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_requisition_safer_state_cost_paid
+			OR = {
+				NOT = { has_variable = famine_requisition_safer_state_cost_payer }
+				AND = { has_variable = famine_requisition_safer_state_cost_payer NOT = { var:famine_requisition_safer_state_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_requisition_safer_state_cost_payer NOT = { is_controlled_by = var:famine_requisition_safer_state_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_requisition_safer_state_cost_paid
+		clear_variable = famine_requisition_safer_state_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_conceal_crisis_cost_paid
+			OR = {
+				NOT = { has_variable = famine_conceal_crisis_cost_payer }
+				AND = { has_variable = famine_conceal_crisis_cost_payer NOT = { var:famine_conceal_crisis_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_conceal_crisis_cost_payer NOT = { is_controlled_by = var:famine_conceal_crisis_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_conceal_crisis_cost_paid
+		clear_variable = famine_conceal_crisis_cost_payer
+	}
+	if = {
+		limit = {
+			has_state_flag = famine_maintain_extraction_cost_paid
+			OR = {
+				NOT = { has_variable = famine_maintain_extraction_cost_payer }
+				AND = { has_variable = famine_maintain_extraction_cost_payer NOT = { var:famine_maintain_extraction_cost_payer = { exists = yes } } }
+				AND = { has_variable = famine_maintain_extraction_cost_payer NOT = { is_controlled_by = var:famine_maintain_extraction_cost_payer } }
+			}
+		}
+		clr_state_flag = famine_maintain_extraction_cost_paid
+		clear_variable = famine_maintain_extraction_cost_payer
+	}
+}

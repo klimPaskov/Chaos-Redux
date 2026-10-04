@@ -1,0 +1,212 @@
+# Neutral legacy decision affordability in COUNTRY payer scope.
+# Components accept exact nominal reserves through NOT(native reserve < fee).
+# Profiles compose complete spent tuples without reading cached display quotes.
+# Pure Boolean helpers only. No parameters, variables, flags or payment writes.
+# Owner callers separately prove actor, state, route and non-spend requirements.
+
+humanitarian_cost_pp_light_is_affordable = {
+	hidden_trigger = { NOT = { has_political_power < constant:humanitarian_legacy_cost.pp_light } }
+}
+
+humanitarian_cost_pp_standard_is_affordable = {
+	hidden_trigger = { NOT = { has_political_power < constant:humanitarian_legacy_cost.pp_standard } }
+}
+
+humanitarian_cost_pp_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_political_power < constant:humanitarian_legacy_cost.pp_heavy } }
+}
+
+humanitarian_cost_train_light_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { train_equipment < constant:humanitarian_legacy_cost.train_light } } }
+}
+
+humanitarian_cost_train_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { train_equipment < constant:humanitarian_legacy_cost.train_heavy } } }
+}
+
+humanitarian_cost_convoy_light_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { convoy < constant:humanitarian_legacy_cost.convoy_light } } }
+}
+
+humanitarian_cost_convoy_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { convoy < constant:humanitarian_legacy_cost.convoy_heavy } } }
+}
+
+humanitarian_cost_support_light_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { support_equipment < constant:humanitarian_legacy_cost.support_light } } }
+}
+
+humanitarian_cost_support_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { support_equipment < constant:humanitarian_legacy_cost.support_heavy } } }
+}
+
+humanitarian_cost_infantry_light_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { infantry_equipment < constant:humanitarian_legacy_cost.infantry_light } } }
+}
+
+humanitarian_cost_infantry_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { infantry_equipment < constant:humanitarian_legacy_cost.infantry_heavy } } }
+}
+
+humanitarian_cost_fuel_light_is_affordable = {
+	hidden_trigger = { NOT = { has_fuel < constant:humanitarian_legacy_cost.fuel_light } }
+}
+
+humanitarian_cost_fuel_heavy_is_affordable = {
+	hidden_trigger = { NOT = { has_fuel < constant:humanitarian_legacy_cost.fuel_heavy } }
+}
+
+humanitarian_cost_transport_planes_is_affordable = {
+	hidden_trigger = { NOT = { has_equipment = { transport_plane_equipment < constant:humanitarian_legacy_cost.transport_planes } } }
+}
+
+humanitarian_cost_air_xp_is_affordable = {
+	hidden_trigger = { NOT = { has_air_experience < constant:humanitarian_legacy_cost.air_xp } }
+}
+
+humanitarian_cost_pp20_support50_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_support_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_convoy10_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_convoy_heavy_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp10_train5_fuel1000_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_light_is_affordable = yes
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_convoy10_support50_fuel1000_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_convoy_heavy_is_affordable = yes
+		humanitarian_cost_support_light_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_planes5_fuel1000_airxp10_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_transport_planes_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+		humanitarian_cost_air_xp_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_convoy5_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_convoy_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_train10_fuel1000_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_train_heavy_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_train5_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp10_infantry100_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_light_is_affordable = yes
+		humanitarian_cost_infantry_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp10_train5_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_light_is_affordable = yes
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_infantry250_fuel1000_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_infantry_heavy_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_train10_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_train_heavy_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp35_infantry100_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_heavy_is_affordable = yes
+		humanitarian_cost_infantry_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_support100_infantry100_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_support_heavy_is_affordable = yes
+		humanitarian_cost_infantry_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp10_convoy5_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_light_is_affordable = yes
+		humanitarian_cost_convoy_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp20_support100_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_standard_is_affordable = yes
+		humanitarian_cost_support_heavy_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp35_train5_convoy5_fuel500_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_heavy_is_affordable = yes
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_convoy_light_is_affordable = yes
+		humanitarian_cost_fuel_light_is_affordable = yes
+	}
+}
+
+humanitarian_cost_pp35_train10_fuel1000_is_affordable = {
+	hidden_trigger = {
+		humanitarian_cost_pp_heavy_is_affordable = yes
+		humanitarian_cost_train_heavy_is_affordable = yes
+		humanitarian_cost_fuel_heavy_is_affordable = yes
+	}
+}

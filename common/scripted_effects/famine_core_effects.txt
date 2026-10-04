@@ -479,6 +479,11 @@ famine_register_active_state = {
 	if = {
 		limit = { check_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one } }
 		set_state_flag = famine_food_security_active
+		OWNER = { if = { limit = { humanitarian_country_is_valid = yes } humanitarian_project_legacy_cost_quote = yes } }
+		if = {
+			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+			CONTROLLER = { if = { limit = { humanitarian_country_is_valid = yes } humanitarian_project_legacy_cost_quote = yes } }
+		}
 		migration_mark_reception_capacity_dirty_if_candidate = yes
 		set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
 	}
@@ -2932,6 +2937,7 @@ famine_refresh_dynamic_modifiers = {
 }
 
 famine_cleanup_state_registration = {
+	famine_clear_stale_paid_decision_receipts = yes
 	clr_state_flag = famine_food_observation_pending_job
 	clr_state_flag = famine_food_assessment_current
 	clr_state_flag = famine_food_observation_pending_material
@@ -2995,6 +3001,7 @@ famine_consume_registered_state_reassessment = {
 }
 
 famine_handle_state_control_change = {
+	famine_clear_stale_paid_decision_receipts = yes
 	famine_invalidate_migration_food_safety = yes
 	famine_relief_unregister_donor_state = yes
 	famine_relief_cleanup_state = yes

@@ -8,7 +8,7 @@ This is an implementation handoff for parent review, not a final system completi
 
 | File | Identifiers |
 | --- | --- |
-| `common/script_constants/famine_relief_constants.txt` | `famine_relief_route_mode`, `famine_relief_result`, `famine_relief_pool.prob_relief_donor`, `famine_relief_endpoint`, `famine_relief_logistics`, `famine_relief_threshold`, `famine_relief_weight`, `famine_relief_timing` |
+| `common/script_constants/famine_relief_constants.txt` | `famine_relief_route_mode`, `famine_relief_result`, `famine_relief_pool.prob_relief_donor`, `famine_relief_endpoint`, `famine_relief_threshold`, `famine_relief_weight`, `famine_relief_timing` |
 | `common/scripted_triggers/famine_relief_triggers.txt` | actor, donor registration/state, recipient, candidate availability, candidate route, selection relation, action route, route, contract, and delivery predicates |
 | `common/scripted_effects/famine_relief_effects.txt` | registration, unregister, sparse selection, action-proof contract creation, exact delivery, war-corridor recording, and cleanup effects |
 | External wiring | The recovered-state producer, famine decision consumers, mapmode, and player-facing text consume the famine-owned relief contract. |

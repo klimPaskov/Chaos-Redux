@@ -64,6 +64,12 @@ Famine owns its own category and phased actions, including reserve release, emer
 
 Famine missions own relief-route security and reserve-failure deadlines. Migration missions are never counted in famine mission slots or presented as famine actions.
 
+Legacy action fees use `humanitarian_legacy_cost_constants.txt` and the exact inclusive country-payer bundle predicates documented in `humanitarian_legacy_cost_triggers.md`.
+The stable cost getters and texticons display country-local quote values refreshed at existing phase and exact active-state registration boundaries; cached display values do not authorize payment or refunds.
+Delayed work requires its own action/state/payer paid receipt, and relief actions additionally bind the exact paid contract generation, mode and donor before continuation.
+Rejected uncharged setup cannot deliver reserves, grant invitation rewards or claim a refund; funded work keeps its existing risks, and famine evacuation refunds only its matching paid tuple when measured origin debit is zero.
+These are action costs and private ownership evidence, not additional player-facing famine values or a shared decision category.
+
 ## Sparse runtime
 
 The runtime processes registered historical anchors, candidates, and active famine states through the existing host-only coordinator. State changes and exact owner callbacks register or invalidate only affected scopes. No whole-world daily, weekly, or monthly scan is added.

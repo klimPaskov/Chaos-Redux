@@ -286,3 +286,445 @@ migration_decision_voluntary_return_destination_is_valid = {
 		}
 	}
 }
+
+# COUNTRY scope. The decision owner rechecks visible/available/target phase and
+# state requirements with the same payer and current FROM controller before a
+# complete_effect can write policy, service, or paid-work state.
+migration_prepare_evacuation_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		NOT = { has_country_flag = migration_decision_active }
+		NOT = { has_country_flag = migration_decision_resolution }
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_state_is_valid = yes
+			OR = {
+				AND = {
+					famine_to_migration_food_safety_is_valid = yes
+					check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.supply_strain compare = greater_than_or_equals }
+					OR = {
+						check_variable = { var = famine_to_migration_food_exposure_days value = constant:migration_decision_threshold.category_food_exposure_days compare = greater_than_or_equals }
+						check_variable = { var = famine_to_migration_food_incident_count value = constant:migration_decision_threshold.category_food_incidents compare = greater_than_or_equals }
+					}
+				}
+				AND = {
+					has_state_flag = migration_displacement_active
+					OR = {
+						check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+						check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+					}
+				}
+			}
+		}
+		humanitarian_cost_pp10_train5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_prepare_evacuation_cost_paid } }
+	}
+}
+
+migration_open_departure_routes_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		NOT = { has_country_flag = migration_decision_active }
+		NOT = { has_country_flag = migration_decision_resolution }
+		uses_normal_civilian_systems = yes
+		OR = {
+			NOT = { has_variable = migration_departure_policy }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = greater_than }
+		}
+		any_owned_state = {
+			has_state_flag = migration_displacement_active
+			OR = {
+				check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+				check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+			}
+		}
+		FROM = { is_controlled_by = ROOT }
+		humanitarian_cost_pp10_train5_fuel500_is_affordable = yes
+	}
+}
+
+migration_restrict_departure_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		NOT = { has_country_flag = migration_decision_active }
+		NOT = { has_country_flag = migration_decision_resolution }
+		uses_normal_civilian_systems = yes
+		OR = {
+			NOT = { has_variable = migration_departure_policy }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = less_than }
+		}
+		any_owned_state = {
+			has_state_flag = migration_displacement_active
+			OR = {
+				check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+				check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+			}
+		}
+		FROM = { is_controlled_by = ROOT }
+		humanitarian_cost_pp10_infantry100_fuel500_is_affordable = yes
+	}
+}
+
+migration_close_border_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		OR = {
+			hidden_trigger = { NOT = { has_country_flag = migration_decision_active } }
+			AND = { has_country_flag = migration_decision_active has_variable = migration_reception_policy }
+		}
+		NOT = { has_country_flag = migration_decision_resolution }
+		OR = {
+			NOT = { has_variable = migration_reception_policy }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = less_than }
+		}
+		uses_normal_civilian_systems = yes
+		migration_decision_reception_host_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_reception_state_host_is_valid = yes
+		}
+		humanitarian_cost_pp20_infantry250_fuel1000_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_close_border_cost_paid } }
+	}
+}
+
+migration_evacuate_vulnerable_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		OR = {
+			NOT = { has_variable = migration_reception_load }
+			NOT = { check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_state_is_valid = yes
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_pp20_train5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_evacuate_vulnerable_cost_paid } }
+	}
+}
+
+migration_evacuate_workers_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		OR = {
+			NOT = { has_variable = migration_reception_load }
+			NOT = { check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_state_is_valid = yes
+			has_state_flag = migration_displacement_active
+			has_state_flag = migration_evacuation_prepared
+		}
+		humanitarian_cost_train_heavy_is_affordable = yes
+		has_equipment = { support_equipment > 50 }
+		humanitarian_cost_pp20_train10_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_evacuate_workers_cost_paid } }
+	}
+}
+
+migration_negotiate_corridor_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		OR = {
+			NOT = { has_variable = migration_reception_load }
+			NOT = { check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+		FROM = {
+			is_controlled_by = ROOT
+			humanitarian_corridor_origin_is_valid = yes
+			infrastructure > constant:humanitarian_population.zero
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				infrastructure > constant:humanitarian_population.zero
+				CONTROLLER = { has_war_with = ROOT }
+			}
+		}
+		humanitarian_cost_pp35_infantry100_fuel500_is_affordable = yes
+	}
+}
+
+migration_controlled_medical_reception_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		NOT = { has_country_flag = migration_medical_reception_active }
+		has_country_flag = migration_displacement_country_active
+		check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+		any_owned_state = { migration_decision_reception_exposure_receipt_is_valid = yes }
+		migration_country_has_free_mission_slot = yes
+		OR = {
+			NOT = { has_variable = migration_reception_policy }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.quarantine compare = equals }
+		}
+		uses_normal_civilian_systems = yes
+		num_of_civilian_factories > constant:humanitarian_population.zero
+		migration_country_has_free_mission_slot = yes
+		FROM = { is_controlled_by = ROOT humanitarian_state_is_valid = yes }
+		humanitarian_cost_pp20_support100_infantry100_is_affordable = yes
+	}
+}
+
+migration_distribute_arrivals_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		migration_decision_reception_host_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			has_state_flag = migration_displacement_active
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				OWNER = { tag = ROOT }
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.stable compare = equals }
+				NOT = { has_state_flag = migration_persecution_active }
+				NOT = { has_state_flag = migration_bombing_active }
+				NOT = { has_state_flag = migration_population_trapped }
+				NOT = { genocide_state_has_active_camps = yes }
+				NOT = { is_valid_camp_active_site_state = yes }
+				NOT = { cbrn_state_has_chemical_contamination = yes }
+				NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				NOT = { black_plague_state_is_infected_or_worse = yes }
+				CONTROLLER = { NOT = { has_war_with = ROOT } }
+			}
+		}
+		uses_normal_civilian_systems = yes
+		num_of_civilian_factories > constant:humanitarian_population.zero
+		humanitarian_cost_train_light_is_affordable = yes
+		humanitarian_cost_pp10_train5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_distribute_arrivals_cost_paid } }
+	}
+}
+
+migration_transit_only_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		OR = {
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+		}
+		migration_decision_reception_host_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_reception_state_host_is_valid = yes
+			any_neighbor_state = {
+				humanitarian_state_is_valid = yes
+				OWNER = { NOT = { tag = ROOT } humanitarian_country_is_valid = yes }
+				OWNER = { migration_reception_capacity_is_valid = yes }
+				OWNER = { migration_decision_reception_policy_allows_admission = yes }
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.stable compare = equals }
+				NOT = { has_state_flag = migration_persecution_active }
+				NOT = { has_state_flag = migration_bombing_active }
+				NOT = { has_state_flag = migration_population_trapped }
+				NOT = { genocide_state_has_active_camps = yes }
+				NOT = { is_valid_camp_active_site_state = yes }
+				NOT = { cbrn_state_has_chemical_contamination = yes }
+				NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				NOT = { black_plague_state_is_infected_or_worse = yes }
+				CONTROLLER = { NOT = { has_war_with = ROOT } }
+			}
+		}
+		uses_normal_civilian_systems = yes
+		humanitarian_cost_pp10_convoy5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_transit_only_cost_paid } }
+	}
+}
+
+migration_enforce_closure_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_active
+		NOT = { has_country_flag = migration_decision_resolution }
+		has_country_flag = migration_displacement_country_active
+		check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = equals }
+		migration_decision_reception_host_is_valid = yes
+		FROM = { is_controlled_by = ROOT migration_decision_reception_state_host_is_valid = yes }
+		uses_normal_civilian_systems = yes
+		OR = { has_government = fascism has_government = communism has_government = neutrality }
+		humanitarian_cost_pp20_infantry250_fuel1000_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_enforce_closure_cost_paid } }
+	}
+}
+
+migration_local_integration_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_resolution
+		NOT = { has_country_flag = migration_decision_active }
+		migration_decision_reception_host_is_valid = yes
+		has_variable = migration_reception_load
+		has_variable = migration_reception_capacity
+		NOT = { check_variable = { var = migration_reception_load value = migration_reception_capacity compare = greater_than } }
+		uses_normal_civilian_systems = yes
+		num_of_civilian_factories > constant:humanitarian_population.zero
+		check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+			has_variable = migration_current_cohort_id
+			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+		}
+		humanitarian_cost_pp20_support100_fuel500_is_affordable = yes
+	}
+}
+
+migration_third_country_resettlement_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_resolution
+		NOT = { has_country_flag = migration_decision_active }
+		migration_decision_reception_load_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_exact_hosted_cohort_is_valid = yes
+			has_variable = migration_state_reception_load
+			check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+			any_neighbor_state = {
+				OWNER = {
+					NOT = { tag = ROOT }
+					humanitarian_country_is_valid = yes
+					migration_reception_capacity_is_valid = yes
+					migration_decision_reception_policy_allows_admission = yes
+				}
+				is_controlled_by = OWNER
+				infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+				famine_to_migration_food_safety_is_valid = yes
+				check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.stable compare = equals }
+				NOT = { has_state_flag = migration_persecution_active }
+				NOT = { has_state_flag = migration_bombing_active }
+				NOT = { has_state_flag = migration_population_trapped }
+				NOT = { genocide_state_has_active_camps = yes }
+				NOT = { is_valid_camp_active_site_state = yes }
+				NOT = { cbrn_state_has_chemical_contamination = yes }
+				NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				NOT = { black_plague_state_is_infected_or_worse = yes }
+			}
+		}
+		humanitarian_cost_pp35_train5_convoy5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_third_country_resettlement_cost_paid } }
+	}
+}
+
+migration_voluntary_return_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_resolution
+		NOT = { has_country_flag = migration_decision_active }
+		migration_decision_reception_host_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_reception_state_host_is_valid = yes
+		}
+		humanitarian_cost_pp20_train5_fuel500_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_voluntary_return_cost_paid } }
+	}
+}
+
+migration_forced_repatriation_can_start = {
+	hidden_trigger = {
+		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
+		has_country_flag = migration_decision_resolution
+		NOT = { has_country_flag = migration_decision_active }
+		migration_decision_reception_host_is_valid = yes
+		FROM = {
+			is_controlled_by = ROOT
+			migration_decision_reception_state_host_is_valid = yes
+		}
+		uses_normal_civilian_systems = yes
+		OR = { has_government = fascism has_government = communism has_government = neutrality }
+		humanitarian_cost_pp35_train10_fuel1000_is_affordable = yes
+		NOT = { FROM = { has_state_flag = migration_forced_repatriation_cost_paid } }
+	}
+}
+
+# COUNTRY scope. Delayed migration continuations require the action-specific
+# state receipt, its recorded existing payer, and current state control.
+migration_prepare_evacuation_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_prepare_evacuation_cost_paid has_variable = migration_prepare_evacuation_cost_payer var:migration_prepare_evacuation_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_close_border_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_close_border_cost_paid has_variable = migration_close_border_cost_payer var:migration_close_border_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_evacuate_vulnerable_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_evacuate_vulnerable_cost_paid has_variable = migration_evacuate_vulnerable_cost_payer var:migration_evacuate_vulnerable_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_evacuate_workers_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_evacuate_workers_cost_paid has_variable = migration_evacuate_workers_cost_payer var:migration_evacuate_workers_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_distribute_arrivals_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_distribute_arrivals_cost_paid has_variable = migration_distribute_arrivals_cost_payer var:migration_distribute_arrivals_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_transit_only_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_transit_only_cost_paid has_variable = migration_transit_only_cost_payer var:migration_transit_only_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_enforce_closure_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_enforce_closure_cost_paid has_variable = migration_enforce_closure_cost_payer var:migration_enforce_closure_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_third_country_resettlement_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_third_country_resettlement_cost_paid has_variable = migration_third_country_resettlement_cost_payer var:migration_third_country_resettlement_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_voluntary_return_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_voluntary_return_cost_paid has_variable = migration_voluntary_return_cost_payer var:migration_voluntary_return_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_forced_repatriation_cost_receipt_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_forced_repatriation_cost_paid has_variable = migration_forced_repatriation_cost_payer var:migration_forced_repatriation_cost_payer = { exists = yes tag = ROOT } }
+	}
+}
+
+migration_negotiate_corridor_cost_pending_is_valid = {
+	hidden_trigger = {
+		FROM = { humanitarian_state_is_valid = yes is_controlled_by = ROOT has_state_flag = migration_negotiate_corridor_cost_pending has_variable = migration_negotiate_corridor_cost_payer var:migration_negotiate_corridor_cost_payer = { exists = yes tag = ROOT } }
+	}
+}

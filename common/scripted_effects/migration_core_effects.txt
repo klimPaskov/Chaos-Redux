@@ -561,6 +561,7 @@ migration_register_active_country = {
 	set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.zero }
 	if = {
 		limit = { humanitarian_country_is_valid = yes }
+		humanitarian_project_legacy_cost_quote = yes
 		migration_project_reception_preparation_cost_quote = yes
 		if = {
 			limit = {
@@ -2046,6 +2047,7 @@ migration_refresh_dynamic_modifiers = {
 }
 
 migration_cleanup_state_registration = {
+	migration_clear_stale_paid_decision_receipts = yes
 	clr_state_flag = migration_control_change_pending
 	clr_state_flag = migration_nuclear_reassessment_pending
 	if = {
@@ -2145,6 +2147,7 @@ migration_consume_registered_state_reassessment = {
 }
 
 migration_handle_state_control_change = {
+	migration_clear_stale_paid_decision_receipts = yes
 	migration_cleanup_mission_subjects_after_control_change = yes
 	if = {
 		limit = { humanitarian_state_is_valid = yes }
