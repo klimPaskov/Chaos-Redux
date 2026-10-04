@@ -3,8 +3,8 @@
 # ============================================================================
 # State-targeted response decisions pay the standard material bundle at one
 # of three population bands. These helpers expose the exact rounded stockpile
-# amounts to custom_cost_text while keeping the calculation in the same bands
-# used by black_plague_begin_shared_state_action.
+# amounts to custom_cost_text from the same Black Friday price table entries
+# that black_plague_begin_shared_state_action pays and the band triggers check.
 # ============================================================================
 
 defined_text = {
@@ -12,23 +12,20 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
-			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.metropolitan }
+			set_temp_variable = { black_plague_shared_support_quote = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_support_equipment }
 		}
 		localization_key = black_plague_shared_support_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
-			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.large }
+			set_temp_variable = { black_plague_shared_support_quote = global.black_friday_price_black_plague_shared_cost_scaled_large_support_equipment }
 		}
 		localization_key = black_plague_shared_support_amount_value
 	}
 	text = {
 		trigger = {
-			set_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_cost.standard_support_equipment }
-			multiply_temp_variable = { black_plague_shared_support_quote = constant:black_plague_shared_scale.minimum }
+			set_temp_variable = { black_plague_shared_support_quote = global.black_friday_price_black_plague_shared_cost_scaled_min_support_equipment }
 			always = yes
 		}
 		localization_key = black_plague_shared_support_amount_value
@@ -40,22 +37,20 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.standard_motorized_equipment }
-			multiply_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_scale.metropolitan }
+			set_temp_variable = { black_plague_shared_motorized_quote = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_motorized_equipment }
 		}
 		localization_key = black_plague_shared_motorized_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.standard_motorized_equipment }
-			multiply_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_scale.large }
+			set_temp_variable = { black_plague_shared_motorized_quote = global.black_friday_price_black_plague_shared_cost_scaled_large_motorized_equipment }
 		}
 		localization_key = black_plague_shared_motorized_amount_value
 	}
 	text = {
 		trigger = {
-			set_temp_variable = { black_plague_shared_motorized_quote = constant:black_plague_shared_cost.scaled_min_motorized_equipment }
+			set_temp_variable = { black_plague_shared_motorized_quote = global.black_friday_price_black_plague_shared_cost_scaled_min_motorized_equipment }
 			always = yes
 		}
 		localization_key = black_plague_shared_motorized_amount_value
@@ -67,23 +62,20 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.metropolitan_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
-			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.metropolitan }
+			set_temp_variable = { black_plague_shared_fuel_quote = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_fuel }
 		}
 		localization_key = black_plague_shared_fuel_amount_value
 	}
 	text = {
 		trigger = {
 			check_variable = { var = state_population_k value = constant:black_plague_shared_scale.large_population_k compare = greater_than_or_equals }
-			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
-			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.large }
+			set_temp_variable = { black_plague_shared_fuel_quote = global.black_friday_price_black_plague_shared_cost_scaled_large_fuel }
 		}
 		localization_key = black_plague_shared_fuel_amount_value
 	}
 	text = {
 		trigger = {
-			set_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_cost.standard_fuel }
-			multiply_temp_variable = { black_plague_shared_fuel_quote = constant:black_plague_shared_scale.minimum }
+			set_temp_variable = { black_plague_shared_fuel_quote = global.black_friday_price_black_plague_shared_cost_scaled_min_fuel }
 			always = yes
 		}
 		localization_key = black_plague_shared_fuel_amount_value
@@ -103,7 +95,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_command_power = constant:black_plague_last_response.hold_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_command_power = global.black_friday_price_black_plague_last_response_hold_command_power } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_command_power_value
 	}
 }
@@ -111,7 +103,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldFuelQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_fuel = constant:black_plague_last_response.hold_fuel } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_fuel = global.black_friday_price_black_plague_last_response_hold_fuel } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_fuel_value
 	}
 }
@@ -119,7 +111,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldInfantryEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_infantry_equipment = constant:black_plague_last_response.hold_infantry_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_infantry_equipment = global.black_friday_price_black_plague_last_response_hold_infantry_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_infantry_equipment_value
 	}
 }
@@ -127,7 +119,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldManpowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_manpower = constant:black_plague_last_response.hold_manpower } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_manpower = global.black_friday_price_black_plague_last_response_hold_manpower } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_manpower_value
 	}
 }
@@ -135,7 +127,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldMotorizedEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_motorized_equipment = constant:black_plague_last_response.hold_motorized_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_motorized_equipment = global.black_friday_price_black_plague_last_response_hold_motorized_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_motorized_equipment_value
 	}
 }
@@ -143,7 +135,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldStabilityCostQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_stability_cost = constant:black_plague_last_response.hold_stability_cost } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_stability_cost = global.black_friday_price_black_plague_last_response_hold_stability_cost } multiply_temp_variable = { black_plague_020_quote_last_response_hold_stability_cost = constant:black_plague_response_value.negative_one } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_stability_cost_value
 	}
 }
@@ -151,7 +143,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldSupportEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_support_equipment = constant:black_plague_last_response.hold_support_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_support_equipment = global.black_friday_price_black_plague_last_response_hold_support_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_support_equipment_value
 	}
 }
@@ -159,7 +151,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldTrainsQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_trains = constant:black_plague_last_response.hold_trains } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_trains = global.black_friday_price_black_plague_last_response_hold_trains } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_trains_value
 	}
 }
@@ -167,7 +159,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseHoldWarSupportCostQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_war_support_cost = constant:black_plague_last_response.hold_war_support_cost } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_hold_war_support_cost = global.black_friday_price_black_plague_last_response_hold_war_support_cost } multiply_temp_variable = { black_plague_020_quote_last_response_hold_war_support_cost = constant:black_plague_response_value.negative_one } always = yes }
 		localization_key = black_plague_020_quote_last_response_hold_war_support_cost_value
 	}
 }
@@ -183,7 +175,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_command_power = constant:black_plague_last_response.refuge_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_command_power = global.black_friday_price_black_plague_last_response_refuge_command_power } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_command_power_value
 	}
 }
@@ -191,7 +183,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeFuelQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_fuel = constant:black_plague_last_response.refuge_fuel } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_fuel = global.black_friday_price_black_plague_last_response_refuge_fuel } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_fuel_value
 	}
 }
@@ -199,7 +191,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeInfantryEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_infantry_equipment = constant:black_plague_last_response.refuge_infantry_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_infantry_equipment = global.black_friday_price_black_plague_last_response_refuge_infantry_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_infantry_equipment_value
 	}
 }
@@ -207,7 +199,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeManpowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_manpower = constant:black_plague_last_response.refuge_manpower } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_manpower = global.black_friday_price_black_plague_last_response_refuge_manpower } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_manpower_value
 	}
 }
@@ -215,7 +207,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeMotorizedEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_motorized_equipment = constant:black_plague_last_response.refuge_motorized_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_motorized_equipment = global.black_friday_price_black_plague_last_response_refuge_motorized_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_motorized_equipment_value
 	}
 }
@@ -223,7 +215,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeStabilityCostQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_stability_cost = constant:black_plague_last_response.refuge_stability_cost } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_stability_cost = global.black_friday_price_black_plague_last_response_refuge_stability_cost } multiply_temp_variable = { black_plague_020_quote_last_response_refuge_stability_cost = constant:black_plague_response_value.negative_one } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_stability_cost_value
 	}
 }
@@ -231,7 +223,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeSupportEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_support_equipment = constant:black_plague_last_response.refuge_support_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_support_equipment = global.black_friday_price_black_plague_last_response_refuge_support_equipment } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_support_equipment_value
 	}
 }
@@ -239,7 +231,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeTrainsQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_trains = constant:black_plague_last_response.refuge_trains } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_trains = global.black_friday_price_black_plague_last_response_refuge_trains } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_trains_value
 	}
 }
@@ -247,7 +239,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020LastResponseRefugeWarSupportCostQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_war_support_cost = constant:black_plague_last_response.refuge_war_support_cost } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_last_response_refuge_war_support_cost = global.black_friday_price_black_plague_last_response_refuge_war_support_cost } multiply_temp_variable = { black_plague_020_quote_last_response_refuge_war_support_cost = constant:black_plague_response_value.negative_one } always = yes }
 		localization_key = black_plague_020_quote_last_response_refuge_war_support_cost_value
 	}
 }
@@ -279,7 +271,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountryCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_command_power = constant:black_plague_shared_cost.country_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_command_power = global.black_friday_price_black_plague_shared_cost_country_command_power } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_command_power_value
 	}
 }
@@ -287,7 +279,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountryFuelQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_fuel = constant:black_plague_shared_cost.country_fuel } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_fuel = global.black_friday_price_black_plague_shared_cost_country_fuel } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_fuel_value
 	}
 }
@@ -295,7 +287,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountryInfantryEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_infantry_equipment = constant:black_plague_shared_cost.country_infantry_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_infantry_equipment = global.black_friday_price_black_plague_shared_cost_country_infantry_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_infantry_equipment_value
 	}
 }
@@ -303,7 +295,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountryManpowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_manpower = constant:black_plague_shared_cost.country_manpower } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_manpower = global.black_friday_price_black_plague_shared_cost_country_manpower } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_manpower_value
 	}
 }
@@ -311,7 +303,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountryMotorizedEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_motorized_equipment = constant:black_plague_shared_cost.country_motorized_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_motorized_equipment = global.black_friday_price_black_plague_shared_cost_country_motorized_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_motorized_equipment_value
 	}
 }
@@ -319,7 +311,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostCountrySupportEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_support_equipment = constant:black_plague_shared_cost.country_support_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_country_support_equipment = global.black_friday_price_black_plague_shared_cost_country_support_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_country_support_equipment_value
 	}
 }
@@ -343,7 +335,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostStandardCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_command_power = constant:black_plague_shared_cost.standard_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_command_power = global.black_friday_price_black_plague_shared_cost_standard_command_power } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_standard_command_power_value
 	}
 }
@@ -351,7 +343,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedCostStandardTrainsQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_trains = constant:black_plague_shared_cost.standard_trains } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_cost_standard_trains = global.black_friday_price_black_plague_shared_cost_standard_trains } always = yes }
 		localization_key = black_plague_020_quote_shared_cost_standard_trains_value
 	}
 }
@@ -687,7 +679,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_command_power = constant:black_plague_shared_result.crown_strike_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_command_power = global.black_friday_price_black_plague_shared_result_crown_strike_command_power } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_command_power_value
 	}
 }
@@ -695,7 +687,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeFuelQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_fuel = constant:black_plague_shared_result.crown_strike_fuel } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_fuel = global.black_friday_price_black_plague_shared_result_crown_strike_fuel } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_fuel_value
 	}
 }
@@ -703,7 +695,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeInfantryEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_infantry_equipment = constant:black_plague_shared_result.crown_strike_infantry_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_infantry_equipment = global.black_friday_price_black_plague_shared_result_crown_strike_infantry_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_infantry_equipment_value
 	}
 }
@@ -711,7 +703,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeManpowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_manpower = constant:black_plague_shared_result.crown_strike_manpower } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_manpower = global.black_friday_price_black_plague_shared_result_crown_strike_manpower } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_manpower_value
 	}
 }
@@ -719,7 +711,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeMotorizedEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_motorized_equipment = constant:black_plague_shared_result.crown_strike_motorized_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_motorized_equipment = global.black_friday_price_black_plague_shared_result_crown_strike_motorized_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_motorized_equipment_value
 	}
 }
@@ -735,7 +727,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultCrownStrikeSupportEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_support_equipment = constant:black_plague_shared_result.crown_strike_support_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_crown_strike_support_equipment = global.black_friday_price_black_plague_shared_result_crown_strike_support_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_crown_strike_support_equipment_value
 	}
 }
@@ -751,7 +743,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealCommandPowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_command_power = constant:black_plague_shared_result.royal_seal_command_power } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_command_power = global.black_friday_price_black_plague_shared_result_royal_seal_command_power } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_command_power_value
 	}
 }
@@ -759,7 +751,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealFuelQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_fuel = constant:black_plague_shared_result.royal_seal_fuel } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_fuel = global.black_friday_price_black_plague_shared_result_royal_seal_fuel } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_fuel_value
 	}
 }
@@ -767,7 +759,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealInfantryEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_infantry_equipment = constant:black_plague_shared_result.royal_seal_infantry_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_infantry_equipment = global.black_friday_price_black_plague_shared_result_royal_seal_infantry_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_infantry_equipment_value
 	}
 }
@@ -775,7 +767,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealManpowerQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_manpower = constant:black_plague_shared_result.royal_seal_manpower } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_manpower = global.black_friday_price_black_plague_shared_result_royal_seal_manpower } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_manpower_value
 	}
 }
@@ -783,7 +775,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealMotorizedEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_motorized_equipment = constant:black_plague_shared_result.royal_seal_motorized_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_motorized_equipment = global.black_friday_price_black_plague_shared_result_royal_seal_motorized_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_motorized_equipment_value
 	}
 }
@@ -799,7 +791,7 @@ defined_text = {
 defined_text = {
 	name = GetBlackPlague020SharedResultRoyalSealSupportEquipmentQuote
 	text = {
-		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_support_equipment = constant:black_plague_shared_result.royal_seal_support_equipment } always = yes }
+		trigger = { set_temp_variable = { black_plague_020_quote_shared_result_royal_seal_support_equipment = global.black_friday_price_black_plague_shared_result_royal_seal_support_equipment } always = yes }
 		localization_key = black_plague_020_quote_shared_result_royal_seal_support_equipment_value
 	}
 }

@@ -108,11 +108,13 @@ black_plague_weaponization_trigger_accident = {
 # COUNTRY scope. The four approaches spend support crates and Command Power
 # once when selected; the native decision holds its factory commitment.
 black_plague_weaponization_pay_approach_cost = {
-	set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.approach_support_equipment }
+	set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_weaponization_program_approach_support_equipment }
 	remove_support_equipment_from_stockpile = yes
-	set_temp_variable = { black_plague_weaponization_command_debit = constant:black_plague_weaponization_program.approach_command_power }
+	set_temp_variable = { black_plague_weaponization_command_debit = global.black_friday_price_black_plague_weaponization_program_approach_command_power }
 	multiply_temp_variable = { black_plague_weaponization_command_debit = -1 }
 	add_command_power = black_plague_weaponization_command_debit
+	set_temp_variable = { black_plague_sale_family = constant:universal_cost_family.equipment }
+	black_plague_credit_black_friday_purchase = yes
 }
 
 black_plague_weaponization_choose_safety_first = {
@@ -224,11 +226,13 @@ black_plague_weaponization_complete_program = {
 black_plague_weaponization_expand_stockpile = {
 	if = {
 		limit = { black_plague_weaponization_can_expand_stockpile = yes }
-		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_expansion_support_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_weaponization_program_stockpile_expansion_support_equipment }
 		remove_support_equipment_from_stockpile = yes
-		set_temp_variable = { black_plague_weaponization_expansion_fuel_debit = constant:black_plague_weaponization_program.stockpile_expansion_fuel }
+		set_temp_variable = { black_plague_weaponization_expansion_fuel_debit = global.black_friday_price_black_plague_weaponization_program_stockpile_expansion_fuel }
 		set_temp_variable = { fuel_stockpile_removal_amount = black_plague_weaponization_expansion_fuel_debit }
 		remove_fuel_from_stockpile = yes
+		set_temp_variable = { black_plague_sale_family = constant:universal_cost_family.equipment }
+		black_plague_credit_black_friday_purchase = yes
 		add_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:black_plague_weaponization_program.stockpile_expansion_batch }
 		set_country_flag = black_plague_weaponization_stockpile_active
 		set_country_flag = black_plague_weaponization_stockpile_expansion_history
@@ -248,11 +252,13 @@ black_plague_weaponization_destroy_stockpile = {
 		limit = { black_plague_weaponization_can_destroy_stockpile = yes }
 		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_destroy_amount }
 		remove_plague_bombs_from_stockpile = yes
-		set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_weaponization_program.stockpile_destroy_support_equipment }
+		set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_weaponization_program_stockpile_destroy_support_equipment }
 		remove_support_equipment_from_stockpile = yes
-		set_temp_variable = { black_plague_weaponization_destruction_command_debit = constant:black_plague_weaponization_program.stockpile_destroy_command_power }
+		set_temp_variable = { black_plague_weaponization_destruction_command_debit = global.black_friday_price_black_plague_weaponization_program_stockpile_destroy_command_power }
 		multiply_temp_variable = { black_plague_weaponization_destruction_command_debit = -1 }
 		add_command_power = black_plague_weaponization_destruction_command_debit
+		set_temp_variable = { black_plague_sale_family = constant:universal_cost_family.equipment }
+		black_plague_credit_black_friday_purchase = yes
 		clr_country_flag = black_plague_weaponization_stockpile_active
 		set_country_flag = black_plague_weaponization_stockpile_destroyed_history
 		subtract_from_variable = { black_plague_weaponization_risk = constant:black_plague_weaponization_program.stockpile_destroy_risk_loss }

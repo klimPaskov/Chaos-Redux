@@ -205,3 +205,24 @@ No AI weight changes: the owner's `ai_will_do` blocks still read the same afford
 
 Disposition: implemented (source).
 Live display and payment of an Event 013 action at 50 and 75 percent are `needs_live_game`.
+
+## D13. Event 020 Black Plague human response costs read the sale price
+
+Decision: every Event 020 response project, shared disease action, national programme, last-response mission, and weaponization payment that a country pays charges the Black Friday price.
+Two mechanisms, chosen by how the owner prices the action:
+
+- Population-scaled state quotes stay in Event 020's quote cache. `black_plague_refresh_current_state_response_quotes` applies the ratio the Black Friday price table currently holds (`global.black_friday_price_table_ratio`, recorded by `black_friday_price_table_refresh_entries`) to the components each project spends, with the same rounding rule as the table (`black_friday_price_table_quote`: rounded up, at least one unit, never above the ordinary quote). The ratio is part of the cache key, and `black_friday_price_table_refresh_owner_quotes` (called by the table's apply and restore) refreshes every registered response state and every selected board state through `black_plague_refresh_response_quotes_for_sale`, so the quotes change on the sale's first and last day instead of at the next weekly pulse.
+- Fixed amounts (60 owner constants across `black_plague_response_cost_*`, `black_plague_medical_reserve*`, `black_plague_shared_cost`, `black_plague_shared_result`, `black_plague_last_response`, and `black_plague_weaponization_program`) are registered in the price table (`price_table_version` 4) and read in their triggers, payments, and `Get...Quote` cost texts. Negative Stability and War Support loss constants are stored as positive amounts and negated at payment and display. The shared state actions' three population bands pay the registered band amount, which equals the band's scaled standard bundle rounded up outside a sale.
+
+What a project only requires on hand keeps its ordinary amount: personnel, trucks, convoys, and Medical Reserve that are checked but not consumed, the armored clearance infantry requirement, and the last-response Stability and War Support floors.
+Civilian-factory commitments are static decision modifiers and keep their size, as the CBRN procurement exception (BF-CBRN-013) already records.
+Each paid action credits one achievement family through `black_plague_credit_black_friday_purchase`: equipment for every action that spends support or infantry equipment, trains for the transport purge, and fuel for quarantine.
+No Event 020 payment is refunded, so no paid-amount record is needed.
+
+Basis: the lead's tranche 1 acceptance, spec Part 4 (equipment, fuel, Command Power, Stability, War Support, and custom mechanic currencies such as Medical Reserve are purchase families), and the D11 price-table pattern.
+The quote cache is the owner's existing single source for display, affordability, and payment, so applying the sale inside it keeps the three in agreement without a second quote path.
+AI weights are unchanged; AI affordability reads the same quotes and triggers.
+
+Disposition: implemented (source) for the response, shared, last-response, and weaponization surfaces.
+The Rat Nation and Rat King meter decisions are the remaining Event 020 tranche 1 surface.
+Live display and payment of a response project, a shared band action, and a last-response mission during a sale are `needs_live_game`.

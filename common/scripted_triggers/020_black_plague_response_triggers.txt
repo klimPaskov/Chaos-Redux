@@ -570,7 +570,7 @@ black_plague_response_can_begin_countermeasure_program = {
 		}
 		check_variable = {
 			var = black_plague_medical_reserve
-			value = constant:black_plague_medical_reserve.countermeasure_entry_reserve
+			value = global.black_friday_price_black_plague_medical_reserve_countermeasure_entry_reserve
 			compare = greater_than_or_equals
 		}
 	}
@@ -835,7 +835,7 @@ black_plague_can_pay_demolish_lost_blocks = {
 	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_demolition_motorized } }
 	NOT = { has_equipment = { train_equipment < FROM.black_plague_quote_demolition_trains } }
 	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_demolition_fuel|.0]" }
-	NOT = { has_stability < constant:black_plague_response_cost_demolish_lost_blocks.stability }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_response_cost_demolish_lost_blocks_stability } NOT = { has_stability < black_plague_sale_price_check }
 }
 
 black_plague_can_pay_emergency_hospital = {
@@ -870,7 +870,7 @@ black_plague_can_pay_quarantine = {
 	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_quarantine_support } }
 	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_quarantine_motorized } }
 	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_quarantine_fuel|.0]" }
-	NOT = { command_power < constant:black_plague_response_cost_quarantine.command_power }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_response_cost_quarantine_command_power } NOT = { command_power < black_plague_sale_price_check }
 }
 
 black_plague_can_pay_cordon = {
@@ -886,7 +886,7 @@ black_plague_can_pay_cordon = {
 	NOT = { has_equipment = { support_equipment < FROM.black_plague_quote_cordon_support } }
 	NOT = { has_equipment = { motorized_equipment < FROM.black_plague_quote_cordon_motorized } }
 	meta_trigger = { text = { NOT = { has_fuel < [FUEL] } } FUEL = "[?FROM.black_plague_quote_cordon_fuel|.0]" }
-	NOT = { command_power < constant:black_plague_response_cost_cordon.command_power }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_response_cost_cordon_command_power } NOT = { command_power < black_plague_sale_price_check }
 }
 
 black_plague_can_pay_treatment_reserves = {
@@ -935,9 +935,9 @@ black_plague_can_pay_medical_reserve_batch = {
 	# Personnel and trucks must be available for the batch but are not consumed.
 	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_medical_reserve_cost.civilian_factories }
 	NOT = { has_manpower < constant:black_plague_medical_reserve_requirements.available_manpower }
-	NOT = { has_equipment = { support_equipment < constant:black_plague_medical_reserve_cost.support_equipment } }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_medical_reserve_cost_support_equipment } NOT = { has_equipment = { support_equipment < black_plague_sale_price_check } }
 	NOT = { has_equipment = { motorized_equipment < constant:black_plague_medical_reserve_requirements.available_motorized_equipment } }
-	NOT = { has_fuel < constant:black_plague_medical_reserve_cost.fuel }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_medical_reserve_cost_fuel } NOT = { has_fuel < black_plague_sale_price_check }
 	check_variable = {
 		var = black_plague_medical_reserve_room
 		value = black_plague_medical_reserve_batch
@@ -953,13 +953,13 @@ black_plague_can_pay_countermeasure_program = {
 	}
 	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.countermeasure_setup }
 	NOT = { has_manpower < constant:black_plague_response_cost_countermeasure.manpower }
-	NOT = { has_equipment = { support_equipment < constant:black_plague_response_cost_countermeasure.support_equipment } }
+	set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_response_cost_countermeasure_support_equipment } NOT = { has_equipment = { support_equipment < black_plague_sale_price_check } }
 	NOT = { has_equipment = { motorized_equipment < constant:black_plague_response_cost_countermeasure.motorized_equipment } }
 	NOT = { has_equipment = { train_equipment < constant:black_plague_response_cost_countermeasure.trains } }
 	NOT = { has_fuel < constant:black_plague_response_cost_countermeasure.fuel }
 	check_variable = {
 		var = black_plague_medical_reserve
-		value = constant:black_plague_medical_reserve.countermeasure_entry_reserve
+		value = global.black_friday_price_black_plague_medical_reserve_countermeasure_entry_reserve
 		compare = greater_than_or_equals
 	}
 }

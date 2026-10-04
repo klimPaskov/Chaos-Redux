@@ -32,12 +32,14 @@ black_plague_response_category = {
 		days_mission_timeout = constant:black_plague_shared_duration.emergency_countermeasure_drive
 		days_remove = constant:black_plague_shared_duration.emergency_countermeasure_drive
 		complete_effect = {
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_shared_cost.country_support_equipment }
+			set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_shared_cost_country_support_equipment }
 			remove_support_equipment_from_stockpile = yes
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:black_plague_shared_cost.country_motorized_equipment }
+			set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_shared_cost_country_motorized_equipment }
 			remove_motorized_equipment_from_stockpile = yes
-			set_temp_variable = { fuel_stockpile_removal_amount = constant:black_plague_shared_cost.country_fuel }
+			set_temp_variable = { fuel_stockpile_removal_amount = global.black_friday_price_black_plague_shared_cost_country_fuel }
 			remove_fuel_from_stockpile = yes
+			set_temp_variable = { black_plague_sale_family = constant:universal_cost_family.equipment }
+			black_plague_credit_black_friday_purchase = yes
 			set_country_flag = black_plague_shared_emergency_countermeasure_drive_active
 			set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_shared_result.emergency_countermeasure_gain }
 			black_plague_add_countermeasure_progress = yes
@@ -213,7 +215,7 @@ chaosx_disease_containment_category = {
 		target_trigger = { FROM = { black_plague_shared_can_start_troop_restrictions = yes } }
 		visible = { black_plague_response_decisions_are_visible = yes }
 		available = { FROM = { black_plague_shared_can_start_troop_restrictions = yes } }
-		custom_cost_trigger = { black_plague_shared_country_can_pay_scaled_selected_state = yes NOT = { command_power < constant:black_plague_shared_cost.standard_command_power } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_scaled_selected_state = yes set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_shared_cost_standard_command_power } NOT = { command_power < black_plague_sale_price_check } }
 		custom_cost_text = black_plague_shared_restrict_troop_routes_cost
 		modifier = { civilian_factory_use = 1 }
 		days_remove = constant:black_plague_shared_duration.restrict_troop_routes
@@ -318,7 +320,7 @@ chaosx_disease_containment_category = {
 		target_trigger = { FROM = { black_plague_shared_can_start_transport_seal = yes } }
 		visible = { black_plague_response_decisions_are_visible = yes }
 		available = { FROM = { black_plague_shared_can_start_transport_seal = yes } }
-		custom_cost_trigger = { black_plague_shared_country_can_pay_scaled_selected_state = yes NOT = { command_power < constant:black_plague_shared_cost.country_command_power } }
+		custom_cost_trigger = { black_plague_shared_country_can_pay_scaled_selected_state = yes set_temp_variable = { black_plague_sale_price_check = global.black_friday_price_black_plague_shared_cost_country_command_power } NOT = { command_power < black_plague_sale_price_check } }
 		custom_cost_text = black_plague_shared_seal_all_transport_cost
 		modifier = { civilian_factory_use = 2 }
 		days_remove = constant:black_plague_shared_duration.seal_all_transport

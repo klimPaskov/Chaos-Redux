@@ -29,6 +29,45 @@ black_plague_response_ceil_working_quote = {
 	set_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_rounded }
 }
 
+# STATE scope. Input/output: black_plague_response_quote_working, already
+# rounded up to a whole unit. Applies the Black Friday sale ratio cached in
+# temp black_plague_response_quote_sale_ratio through the shared sale price
+# rule (rounded up, at least one unit, never above the ordinary quote). Only
+# the components an action spends receive it; stock that must only be on hand
+# keeps its ordinary amount.
+black_plague_response_apply_sale_to_working_quote = {
+	set_temp_variable = { black_friday_price_ordinary = black_plague_response_quote_working }
+	set_temp_variable = { black_friday_price_ratio = black_plague_response_quote_sale_ratio }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	black_friday_price_table_quote = yes
+	set_temp_variable = { black_plague_response_quote_working = black_friday_price_payable }
+}
+
+# ANY scope. Black Friday calls this when its sale starts and ends, so every
+# registered response state and every selected board state shows and charges
+# the current price at once instead of after the next weekly response pulse.
+black_plague_refresh_response_quotes_for_sale = {
+	for_each_scope_loop = {
+		array = global.black_plague_response_states
+		if = {
+			limit = { has_state_flag = black_plague_response_quotes_ready }
+			black_plague_refresh_current_state_response_quotes = yes
+		}
+	}
+	for_each_scope_loop = {
+		array = global.black_plague_response_countries
+		if = {
+			limit = { has_variable = black_plague_selected_response_state }
+			var:black_plague_selected_response_state = {
+				if = {
+					limit = { is_controlled_by = PREV }
+					black_plague_refresh_current_state_response_quotes = yes
+				}
+			}
+		}
+	}
+}
+
 # STATE scope. Uses the current state's population and controller progress.
 black_plague_refresh_current_state_response_quotes = {
 	black_plague_ensure_current_state_values = yes
@@ -105,7 +144,31 @@ black_plague_refresh_current_state_response_quotes = {
 		}
 	}
 
+	# Black Friday prices the spent components at the ratio its sale price table
+	# currently holds; a changed ratio refreshes the cached quotes.
+	set_temp_variable = { black_plague_response_quote_sale_ratio = constant:black_friday_event.ratio_basis }
+	if = {
+		limit = { has_variable = global.black_friday_price_table_ratio }
+		set_temp_variable = { black_plague_response_quote_sale_ratio = global.black_friday_price_table_ratio }
+	}
+
 	set_temp_variable = { black_plague_response_quotes_changed = constant:black_plague_response_value.zero }
+	if = {
+		limit = { NOT = { has_variable = black_plague_response_sale_ratio } }
+		set_temp_variable = { black_plague_response_quotes_changed = constant:black_plague_response_value.one }
+	}
+	else_if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = black_plague_response_sale_ratio
+					value = black_plague_response_quote_sale_ratio
+					compare = equals
+				}
+			}
+		}
+		set_temp_variable = { black_plague_response_quotes_changed = constant:black_plague_response_value.one }
+	}
 	if = {
 		limit = { NOT = { has_variable = black_plague_response_population_scale } }
 		set_temp_variable = { black_plague_response_quotes_changed = constant:black_plague_response_value.one }
@@ -174,6 +237,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_variable = { black_plague_response_material_factor = black_plague_response_quote_material_factor }
 		set_variable = { black_plague_response_rat_clearance_factor = black_plague_response_rat_clearance_cost_factor }
 		set_variable = { black_plague_response_quote_owner = CONTROLLER }
+		set_variable = { black_plague_response_sale_ratio = black_plague_response_quote_sale_ratio }
 
 		# Clean the City of Rats
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_clean_city_rats.manpower }
@@ -185,6 +249,7 @@ black_plague_refresh_current_state_response_quotes = {
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_rat_clearance_cost_factor }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_clean_rats_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_clean_city_rats.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -195,6 +260,7 @@ black_plague_refresh_current_state_response_quotes = {
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_rat_clearance_cost_factor }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_clean_rats_fuel = black_plague_response_quote_working }
 
 		# Seal food stores
@@ -205,6 +271,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_seal_food_stores.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_seal_stores_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_seal_food_stores.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -213,6 +280,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_seal_food_stores.fuel }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_seal_stores_fuel = black_plague_response_quote_working }
 
 		# Clear sewers and burrows
@@ -223,6 +291,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_clear_sewers.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_clear_sewers_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_clear_sewers.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -231,6 +300,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_clear_sewers.fuel }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_clear_sewers_fuel = black_plague_response_quote_working }
 
 		# Flea, shelter, and bedding control
@@ -241,6 +311,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_flea_control.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_flea_control_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_flea_control.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -267,6 +338,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_purge_transport.trains }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_transport_purge_trains = black_plague_response_quote_working }
 		set_variable = { black_plague_quote_transport_purge_convoys = constant:black_plague_response_value.zero }
 		if = {
@@ -279,6 +351,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_purge_transport.fuel }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_transport_purge_fuel = black_plague_response_quote_working }
 
 		# Demolition
@@ -289,6 +362,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_demolish_lost_blocks.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_demolition_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_demolish_lost_blocks.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -313,6 +387,7 @@ black_plague_refresh_current_state_response_quotes = {
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_material_factor }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_hospital_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_emergency_hospitals.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -346,6 +421,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_quarantine.fuel }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_quarantine_fuel = black_plague_response_quote_working }
 
 		# Army cordon
@@ -356,6 +432,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_cordon.infantry_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_cordon_infantry = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_cordon.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -379,6 +456,7 @@ black_plague_refresh_current_state_response_quotes = {
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_material_factor }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_treatment_support = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_treatment_reserves.motorized_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -399,6 +477,7 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_purge_liberated_warrens.infantry_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_warren_purge_infantry = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_response_cost_purge_liberated_warrens.support_equipment }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
@@ -428,18 +507,22 @@ black_plague_refresh_current_state_response_quotes = {
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_medical_reserve.flea_control_cost }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_flea_control_medical_reserve = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_medical_reserve.emergency_hospital_cost }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_hospital_medical_reserve = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_medical_reserve.treatment_reserves_cost }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_treatment_medical_reserve = black_plague_response_quote_working }
 		set_temp_variable = { black_plague_response_quote_working = constant:black_plague_medical_reserve.warren_purge_cost }
 		multiply_temp_variable = { black_plague_response_quote_working = black_plague_response_quote_scale }
 		black_plague_response_ceil_working_quote = yes
+		black_plague_response_apply_sale_to_working_quote = yes
 		set_variable = { black_plague_quote_warren_purge_medical_reserve = black_plague_response_quote_working }
 
 		set_state_flag = black_plague_response_quotes_ready
@@ -546,6 +629,17 @@ black_plague_pay_response_cost = {
 		}
 	}
 	set_country_flag = black_plague_response_material_commitment_made
+}
+
+# COUNTRY scope (payer). Credits one Event 020 action paid at the Black Friday
+# sale price toward the Black Friday achievement; a no-op outside a valid
+# natural sale. Every Event 020 action pays materials rather than political
+# power. Input: temp black_plague_sale_family, the action's primary resource
+# family (constant:universal_cost_family.*).
+black_plague_credit_black_friday_purchase = {
+	set_temp_variable = { black_friday_purchase_family_id = black_plague_sale_family }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	black_friday_credit_sale_purchase = yes
 }
 
 # ---------------------------------------------------------------------------
