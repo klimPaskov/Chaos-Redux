@@ -115,3 +115,13 @@ Basis: spec part 3 ("use native or country-specific doctrine preferences where a
 Evidence: `probability_native_preferences_2026-10-05.md` (analyses `probability-3073104d02ab0bddedb3a99e` and `probability-f5be3a5b4624a7ace9ad0003`). Baseline: HEAD `c065f4e31`; the stopped thread's `probability_round2_before/` copy is identical to it and is not committed.
 
 needs_live_game: the AI doctrine mix of minors and of the tagged majors in a real campaign.
+
+## D17. A landlocked country with a maritime plan values Navy
+
+Decision: `doctrine_research_ai_has_maritime_plan` is true for a country without a coastal state that holds a core or claim on a coastal state it does not control, or has or is justifying a war goal against a country that owns a coastal state. It is the last alternative of `doctrine_research_ai_has_naval_capability`, so its state and country scans run only when every other naval check has failed. Inside the Navy scoring block such a country receives the base weight and the strategy weight; the forces, production, industry, war, geography, alliance, and readiness terms still need real ships, dockyards, or a coast. A landlocked country without such a plan keeps Navy at 0 (DR-A04 unchanged).
+
+Basis: spec part 3 ("A future naval plan can justify doctrine adoption before a fleet exists when the plan is explicit through AI strategy, focus route, or country identity") and the DR-A05 failure signal "current coastline is a permanent zero-weight blocker despite an explicit route plan". Vanilla exposes no trigger for planned dockyards, so the plan is read from observable cores, claims, and war goals; a justification in progress counts because it is the AI's own declared plan. The plan disappears with the claim or war goal, so a route that becomes invalid stops raising Navy (the second DR-A05 failure signal).
+
+Evidence: `probability_domain_round2_2026-10-05.md` (analysis `probability-f52aea923ed27276b9b6a643`): DR-A05L Navy 12.0% (was 0%), DR-A04 Navy 0%.
+
+needs_live_game: the cost of the coastal-claim scan for landlocked AI countries on a firing day (expected small: it runs only for countries with no coast, ships, dockyards, convoys, or naval doctrine).

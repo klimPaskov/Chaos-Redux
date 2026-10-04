@@ -126,11 +126,41 @@ doctrine_research_ai_navy_owner_system_ready = {
 }
 
 # Navy is weighted only for a country that can use a fleet now or has a
-# visible naval plan: a coast, dockyards, ships, convoys, or naval doctrine.
+# visible naval plan: a coast, dockyards, ships, convoys, naval doctrine, or a
+# landlocked country's maritime plan. The maritime plan is read last, so its
+# state scan runs only when every other check has failed.
 doctrine_research_ai_has_naval_capability = {
 	OR = {
 		doctrine_research_ai_navy_owner_system_ready = yes
 		doctrine_research_ai_has_navy_strategy_signal = yes
+		doctrine_research_ai_has_maritime_plan = yes
+	}
+}
+
+# A landlocked country plans to reach the sea when it holds a core or claim on
+# a coastal state it does not control, or has or is justifying a war goal
+# against a country that owns a coastal state. Inside the state and country
+# iterators PREV is the country being scored.
+doctrine_research_ai_has_maritime_plan = {
+	NOT = { any_controlled_state = { is_coastal = yes } }
+	OR = {
+		any_state = {
+			OR = {
+				is_core_of = PREV
+				is_claimed_by = PREV
+			}
+			is_coastal = yes
+			NOT = { is_controlled_by = PREV }
+		}
+		any_other_country = {
+			PREV = {
+				OR = {
+					has_wargoal_against = PREV
+					is_justifying_wargoal_against = PREV
+				}
+			}
+			any_owned_state = { is_coastal = yes }
+		}
 	}
 }
 

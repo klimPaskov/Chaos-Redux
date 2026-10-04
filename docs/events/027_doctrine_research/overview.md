@@ -75,7 +75,7 @@ Every Special Forces token lists both Special Forces tracks, is xor-locked with 
 The AI picks a domain, then a Grand Doctrine or a track and subdoctrine, each through a weighted `random_list` over positive scores. The pool is recalculated after every successful choice. Domain scores read capability that belongs to each domain:
 
 - Army: divisions, land templates, military factories, war with divisions, a land front, alliance membership, and the industry focus term when dockyards are a small share of war industry.
-- Navy: scores zero without a coast, dockyards, ships, convoys, or naval doctrine. Otherwise warships, dockyards, the industry focus term when dockyards times 2 reach the military factory count, a war without a land front, a coastal capital, and alliance membership with warships add weight.
+- Navy: scores zero without a coast, dockyards, ships, convoys, naval doctrine, or a maritime plan. A landlocked country has a maritime plan when it holds a core or claim on a coastal state it does not control, or has or is justifying a war goal against a country that owns a coastal state (`doctrine_research_ai_has_maritime_plan`, read only after every other naval check fails); the plan gives Navy the base and strategy weights. Otherwise warships, dockyards, the industry focus term when dockyards times 2 reach the military factory count, a war without a land front, a coastal capital, and alliance membership with warships add weight.
 - Air: deployed air wings, military factories, and war or alliance membership with air wings.
 - Special Forces: readiness, war, production, and alliance terms need templates that field Special Forces battalions. Coast or mountains add a geography term.
 - Chaos Warfare: CBRN programme readiness, divisions, plains or mountains, and a land front.
@@ -155,4 +155,4 @@ These behaviours depend on the live engine and are checked in a live session:
 
 - Register further doctrine domains only through a complete adapter: native folder, Grand Doctrine and track identities, one-step mastery steps, AI selector, cleanup, and localisation.
 - Add the remaining National Breakthroughs members as their reworks land.
-- Read planned naval expansion (dockyard construction, coastal war goals) so a landlocked country with a credible maritime plan can value Navy before it reaches the coast.
+- Read focus-route naval plans, such as planned dockyard construction, once their owners expose them as country flags, so a landlocked country can also value Navy for a plan that has no core, claim, or war goal yet.

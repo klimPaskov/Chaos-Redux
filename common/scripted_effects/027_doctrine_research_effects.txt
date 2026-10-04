@@ -3007,8 +3007,10 @@ doctrine_research_reconcile_country_lifecycle = {
 # - Special Forces readiness, war, production, and alliance terms require
 #   templates that field Special Forces battalions.
 # Navy without a coast, dockyards, ships, convoys, or naval doctrine scores
-# zero. When no capability-weighted domain scores at all, every valid domain
-# falls back to the base weight so the choice is never wasted.
+# zero, unless a landlocked country has a maritime plan (a core, claim, or war
+# goal on the coast), which gives it the base and strategy weights. When no
+# capability-weighted domain scores at all, every valid domain falls back to
+# the base weight so the choice is never wasted.
 doctrine_research_ai_score_domains = {
 	set_temp_variable = { doctrine_research_ai_saved_domain = doctrine_research_selected_domain }
 	set_temp_variable = { doctrine_research_ai_saved_grand = doctrine_research_selected_grand_doctrine }
@@ -3057,7 +3059,10 @@ doctrine_research_ai_score_domains = {
 		if = { limit = { capital_scope = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.geography } }
 		if = { limit = { is_in_faction = yes doctrine_research_ai_has_warships = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.completion } }
-		if = { limit = { doctrine_research_ai_has_navy_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.strategy } }
+		# Without naval readiness or a naval strategy signal, the only way into
+		# this block is a landlocked country's maritime plan, which counts as its
+		# naval strategy. Its forces, war, and geography terms stay at zero.
+		if = { limit = { OR = { doctrine_research_ai_has_navy_strategy_signal = yes NOT = { doctrine_research_ai_navy_owner_system_ready = yes } } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.strategy } }
 		if = { limit = { doctrine_research_ai_navy_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.owner_readiness } }
 	}
 	if = { limit = { doctrine_research_air_has_valid_action = yes }
