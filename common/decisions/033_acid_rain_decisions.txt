@@ -46,6 +46,11 @@
 @acid_rain_ai_transport_aftermath = 1.75
 @acid_rain_ai_industry_aftermath = 1.50
 @acid_rain_ai_environment_main_burden = 1.50
+@acid_rain_ai_component_lead = 0.40
+@acid_rain_ai_heavy_casualties = 1.75
+@acid_rain_ai_large_population = 1.40
+@acid_rain_ai_weak_infrastructure = 1.25
+@acid_rain_ai_late_evacuation = 0.35
 @acid_rain_legacy_mission_retirement_days = 1
 
 chaosx_acid_rain_decision_category = {
@@ -114,6 +119,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_project_shelter
+			modifier = { factor = @acid_rain_ai_component_lead acid_rain_shelter_leads_components = yes }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_water_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_medical_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_transport_tier compare = less_than } }
@@ -163,6 +169,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_project_water
+			modifier = { factor = @acid_rain_ai_component_lead acid_rain_water_leads_components = yes }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_shelter_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_medical_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_transport_tier compare = less_than } }
@@ -213,6 +220,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_project_medical
+			modifier = { factor = @acid_rain_ai_component_lead acid_rain_medical_leads_components = yes }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_shelter_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_water_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_transport_tier compare = less_than } }
@@ -263,6 +271,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_project_transport
+			modifier = { factor = @acid_rain_ai_component_lead acid_rain_transport_leads_components = yes }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_shelter_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_water_tier compare = less_than } }
 			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_medical_tier compare = less_than } }
@@ -406,6 +415,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_urgent_medical
+			modifier = { factor = @acid_rain_ai_heavy_casualties acid_rain_country_casualties_are_heavy = yes }
 			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
 			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
 			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
@@ -512,6 +522,9 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_urgent_evacuation
+			modifier = { factor = @acid_rain_ai_large_population FROM = { check_variable = { var = state_population_k value = constant:acid_rain_ai.large_population_k compare = greater_than_or_equals } } }
+			modifier = { factor = @acid_rain_ai_weak_infrastructure FROM = { infrastructure < constant:acid_rain_ai.weak_infrastructure_level } }
+			modifier = { factor = @acid_rain_ai_late_evacuation FROM = { NOT = { acid_rain_state_evacuation_can_finish_first = yes } } }
 			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
 			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
 			modifier = { factor = @acid_rain_ai_superstorm_target FROM = { has_state_flag = acid_rain_superstorm_target } }

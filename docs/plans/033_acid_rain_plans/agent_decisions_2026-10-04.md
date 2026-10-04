@@ -109,3 +109,11 @@ Event 033 builds the proof bundle in `acid_rain_register_humanitarian_pressure` 
 Registered amounts: each exact positive pulse loss; 0.5 percent of the state population when its aftermath first reaches tier 2 and 1 percent at tier 3; 2 percent when an evacuation of a state with at least 500k people finishes.
 At the famine owner's 20 percent maximum share these are small pressure steps, so the rain adds strain without overriding famine's own drivers.
 The famine and migration owner could not be reached from this run; the append touches no existing famine code and is recorded here for that owner's review.
+
+### D15. Decision AI against Part 8
+
+Disposition: implemented (commit "Bring Acid Rain decision AI in line with Part 8"); probability evidence blocked.
+Projects two tiers above the weakest component score x0.40; Medical Surge scores x1.75 once rain deaths pass 0.02 percent of the starting population; evacuation scores x1.40 for states of at least one million people, x1.25 for infrastructure below 3, and x0.35 when an evacuation started today would finish after impact (each forecast stores the latest useful start day); recovery follows the main burden (D13); Shelter Protocols and the other protections cannot be bought again while in force (D11); the AI no longer demobilizes mid-crisis while projects run (D11).
+Urgent actions that cannot affect any remaining pulse are kept out by visibility: they vanish when no warning, exposure or forecast remains and when dissipation is pending, which is when no further pulse can come; a finer arrival-window test needs per-country departure forecasts that the runtime does not keep.
+The evacuation shelter-tier modifier now reads the country tier; it previously read a state variable that never exists.
+Probability evidence: `hoi4.probability_inspect` (`decision_ai_will_do`, Event 033 decisions file) returned `INTERNAL_ERROR` on 2026-10-04, so no baseline or `probability_compare` pass exists; the exact blocker is this route error.

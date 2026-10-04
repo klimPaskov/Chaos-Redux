@@ -127,6 +127,7 @@ acid_rain_clear_state_runtime_receipts = {
 	clear_variable = acid_rain_acute_attrition
 	clear_variable = acid_rain_acute_truck_attrition
 	clear_variable = acid_rain_humanitarian_tier_registered
+	clear_variable = acid_rain_evacuation_latest_start_day
 	clear_variable = acid_rain_damage_infrastructure_points
 	clear_variable = acid_rain_damage_rail_way_points
 	clear_variable = acid_rain_damage_industrial_complex_points
@@ -3527,6 +3528,12 @@ acid_rain_create_severe_cell = {
 				set_variable = { acid_rain_severe_forecast_id = acid_rain_new_severe_cell_id }
 				set_variable = { acid_rain_severe_forecast_day = global.date }
 				set_variable = { acid_rain_severe_forecast_start_day = global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id }
+				# An evacuation started after this day cannot finish before impact.
+				set_variable = { acid_rain_evacuation_latest_start_day = acid_rain_severe_forecast_start_day }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_urgent_cost.evacuation_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				subtract_from_variable = { acid_rain_evacuation_latest_start_day = chaosx_date_offset }
 				set_variable = { acid_rain_severe_forecast_end_day = global.acid_rain_severe_cell_end_entries^acid_rain_new_severe_cell_id }
 				set_variable = { acid_rain_last_severe_pulse_day = global.date }
 				set_variable = { acid_rain_severe_cell_opening_recorded = constant:acid_rain_runtime.zero }
@@ -4309,6 +4316,12 @@ acid_rain_create_superstorm_forecast = {
 					set_variable = { acid_rain_superstorm_forecast_id = global.acid_rain_superstorm_total_episodes }
 					set_variable = { acid_rain_superstorm_forecast_day = global.date }
 					set_variable = { acid_rain_superstorm_forecast_start_day = global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id }
+					# An evacuation started after this day cannot finish before impact.
+					set_variable = { acid_rain_evacuation_latest_start_day = acid_rain_superstorm_forecast_start_day }
+					set_temp_variable = { chaosx_date_days = constant:acid_rain_urgent_cost.evacuation_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					subtract_from_variable = { acid_rain_evacuation_latest_start_day = chaosx_date_offset }
 					set_variable = { acid_rain_superstorm_forecast_end_day = global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id }
 					set_variable = { acid_rain_last_superstorm_pulse_day = global.date }
 					set_variable = { acid_rain_superstorm_opening_recorded = constant:acid_rain_runtime.zero }
