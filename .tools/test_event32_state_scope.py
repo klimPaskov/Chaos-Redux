@@ -69,13 +69,13 @@ class MissileStateScopeContract(unittest.TestCase):
         self.assertIn(('exists', 'yes'), controller)
 
     def test_site_projects_validate_from_as_a_state(self):
-        for helper, predicate in (
-            ('missiles_begin_survey', 'missiles_state_is_valid_site_target'),
-            ('missiles_begin_secondary_site', 'missiles_state_is_valid_secondary_site'),
+        for helper, predicate, pointer in (
+            ('missiles_begin_survey', 'missiles_state_is_valid_survey_target', 'missiles_survey_site_state'),
+            ('missiles_begin_secondary_site', 'missiles_state_is_valid_secondary_site', 'missiles_secondary_site_state'),
         ):
             guarded = value(OPERATIONS[helper], 'if')
             self.assertEqual(value(value(guarded, 'limit'), 'FROM'), [(predicate, 'yes')])
-            self.assertEqual(value(guarded, 'set_variable'), [('missiles_pending_site_state', 'FROM')])
+            self.assertEqual(value(guarded, 'set_variable'), [(pointer, 'FROM')])
 
     def test_war_anchor_cleanup_is_guarded_at_both_transaction_boundaries(self):
         for helper in ('missiles_scenario_freeze_candidate_arrays', 'missiles_scenario_finish_transaction'):

@@ -785,7 +785,10 @@ missiles_register_site = {
 				log = "MISSILES_SCN015_NATIVE site_end country=[ROOT.GetName] country_id=[?ROOT.id|.0] state_id=[?id|.0] receipt=[?ROOT.missiles_scenario_setup_receipt|.0]"
 			}
 		}
-		add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
+		if = {
+			limit = { NOT = { is_in_array = { array = ROOT.missiles_launch_site_states value = THIS } } }
+			add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
+		}
 		ROOT = {
 			add_to_variable = { missiles_active_site_count = constant:missiles_event.one }
 			add_to_variable = { missiles_total_site_capacity = PREV.missiles_site_capacity }
@@ -903,6 +906,7 @@ missiles_refresh_site_flags = {
 			check_variable = { var = missiles_site_security value = constant:missiles_reserve.site_secure_security_threshold compare = greater_than_or_equals }
 			NOT = { has_state_flag = missiles_site_captured }
 			NOT = { has_state_flag = missiles_site_rogue }
+			NOT = { has_state_flag = missiles_site_suspended }
 		}
 		set_state_flag = missiles_site_hardened
 		clr_state_flag = missiles_site_active

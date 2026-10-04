@@ -370,7 +370,15 @@ country_event = {
 			base = constant:missiles_ai_weight.low
 			modifier = { factor = constant:missiles_ai_factor.prefer_restraint has_country_flag = missiles_false_warning_history }
 		}
-		hidden_effect = { missiles_sever_network = yes }
+		custom_effect_tooltip = missiles_sever_network_effect_tt
+		hidden_effect = {
+			missiles_sever_network = yes
+			missiles_begin_network_restoration = yes
+			if = {
+				limit = { has_country_flag = missiles_network_restoration_active }
+				activate_mission = missiles_retaliation_network_restoration_mission
+			}
+		}
 	}
 	option = {
 		name = chaosx.nr32.80.d

@@ -883,8 +883,14 @@ missiles_restore_readiness = {
 	if = { limit = { NOT = { has_variable = missiles_launch_readiness } } set_variable = { missiles_launch_readiness = constant:missiles_program_value.zero } }
 	add_to_variable = { missiles_launch_readiness = constant:missiles_program_value.repair_readiness_gain }
 	if = { limit = { has_variable = missiles_guidance_score } add_to_variable = { missiles_guidance_score = constant:missiles_program_value.guidance_training_gain } }
+	# Routine maintenance patches the incident site one step; a suspended site
+	# under its own repair programme is left to that mission.
 	if = {
-		limit = { has_variable = missiles_incident_site }
+		limit = {
+			has_variable = missiles_incident_site
+			NOT = { has_active_mission = missiles_site_repair_mission }
+			var:missiles_incident_site = { NOT = { has_state_flag = missiles_site_suspended } }
+		}
 		var:missiles_incident_site = { missiles_repair_site = yes }
 	}
 	if = {
@@ -897,8 +903,11 @@ missiles_restore_readiness = {
 		var:missiles_incident_site = { clear_variable = missiles_site_last_repair_complete }
 		clr_country_flag = missiles_site_repair_requested
 	}
-	clr_country_flag = missiles_site_repair_active
-	set_country_flag = missiles_site_repair_complete
+	if = {
+		limit = { NOT = { has_active_mission = missiles_site_repair_mission } }
+		clr_country_flag = missiles_site_repair_active
+		set_country_flag = missiles_site_repair_complete
+	}
 	clear_variable = missiles_repair_action_complete
 	missiles_clamp_program_values = yes
 	chaosx_032_achievement_prepare_long_reach_snapshot = yes
@@ -924,35 +933,55 @@ missiles_secure_launch_codes = {
 	missiles_clamp_program_values = yes
 }
 
-missiles_begin_survey = {
-	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.secondary_site_mission_days }
-	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-	chaosx_convert_days_to_date_offset = yes
-	set_variable = { missiles_survey_due_date = global.date }
-	add_to_variable = { missiles_survey_due_date = chaosx_date_offset }
-	set_country_flag = missiles_survey_in_progress
-	clr_country_flag = missiles_survey_complete
-	if = { limit = { FROM = { missiles_state_is_valid_site_target = yes } } set_variable = { missiles_pending_site_state = FROM } }
-}
+# Site projects own separate stored states and due dates, so a survey,
+# secondary-site construction, repair, and rogue-site recovery never share a
+# pointer. Each mission completes on the first day its date and objective hold.
 
-missiles_complete_survey = {
+missiles_begin_survey = {
+	# COUNTRY scope from the state-targeted decision; FROM is the surveyed state.
 	if = {
-		limit = { has_variable = missiles_pending_site_state var:missiles_pending_site_state = { missiles_state_is_valid_site_target = yes } }
-		set_variable = { missiles_surveyed_site_state = missiles_pending_site_state }
-		set_country_flag = missiles_survey_complete
-		clr_country_flag = missiles_survey_in_progress
+		limit = { FROM = { missiles_state_is_valid_survey_target = yes } }
+		set_variable = { missiles_survey_site_state = FROM }
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.survey_mission_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { missiles_survey_due_date = global.date }
+		add_to_variable = { missiles_survey_due_date = chaosx_date_offset }
+		set_country_flag = missiles_survey_in_progress
+		clr_country_flag = missiles_survey_complete
 	}
 }
 
+missiles_complete_survey = {
+	# COUNTRY scope (survey mission completion). The surveyed state becomes the
+	# program's launch site with initial capacity.
+	if = {
+		limit = { missiles_survey_target_is_valid = yes }
+		var:missiles_survey_site_state = { missiles_register_site = yes }
+		set_country_flag = missiles_survey_complete
+	}
+	clr_country_flag = missiles_survey_in_progress
+	clear_variable = missiles_survey_due_date
+	clear_variable = missiles_survey_site_state
+	missiles_recalculate_network = yes
+	missiles_rebalance_site_custody = yes
+	missiles_refresh_program_status_idea = yes
+	chaosx_032_achievement_prepare_long_reach_snapshot = yes
+}
+
 missiles_begin_secondary_site = {
-	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.secondary_site_mission_days }
-	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-	chaosx_convert_days_to_date_offset = yes
-	set_variable = { missiles_secondary_site_due_date = global.date }
-	add_to_variable = { missiles_secondary_site_due_date = chaosx_date_offset }
-	set_country_flag = missiles_secondary_site_in_progress
-	clr_country_flag = missiles_secondary_site_complete
-	if = { limit = { FROM = { missiles_state_is_valid_secondary_site = yes } } set_variable = { missiles_pending_site_state = FROM } }
+	# COUNTRY scope from the state-targeted decision; FROM is the new site state.
+	if = {
+		limit = { FROM = { missiles_state_is_valid_secondary_site = yes } }
+		set_variable = { missiles_secondary_site_state = FROM }
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.secondary_site_mission_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { missiles_secondary_site_due_date = global.date }
+		add_to_variable = { missiles_secondary_site_due_date = chaosx_date_offset }
+		set_country_flag = missiles_secondary_site_in_progress
+		clr_country_flag = missiles_secondary_site_complete
+	}
 }
 
 missiles_harden_site = {
@@ -985,38 +1014,107 @@ missiles_expand_capacity = {
 }
 
 missiles_establish_secondary_site = {
-	# COUNTRY scope (mission completion). The only site candidate is the
-	# stored pending state; the country itself is never tested as a state.
+	# COUNTRY scope (mission completion). Only the stored construction state can
+	# become the new site; the country itself is never tested as a state.
 	if = {
-		limit = { has_variable = missiles_pending_site_state }
-		var:missiles_pending_site_state = {
-			if = { limit = { missiles_state_is_valid_secondary_site = yes } missiles_register_site = yes }
-		}
+		limit = { missiles_secondary_site_target_is_valid = yes }
+		var:missiles_secondary_site_state = { missiles_register_site = yes }
+		set_country_flag = missiles_secondary_site_complete
+		set_country_flag = missiles_secondary_site_established
+		clr_country_flag = missiles_secondary_site_justified
 	}
-	set_country_flag = missiles_secondary_site_complete
 	clr_country_flag = missiles_secondary_site_in_progress
-	clr_country_flag = missiles_secondary_site_established
-	clear_variable = missiles_pending_site_state
+	clear_variable = missiles_secondary_site_due_date
+	clear_variable = missiles_secondary_site_state
 	missiles_recalculate_network = yes
 	missiles_rebalance_site_custody = yes
+	missiles_refresh_program_status_idea = yes
 	chaosx_032_achievement_prepare_long_reach_snapshot = yes
 }
 
 missiles_suspend_damaged_site = {
-	# STATE scope.
+	# STATE scope from the state-targeted decision; ROOT is the program country.
+	# The site leaves launch planning until its repair programme ends.
 	if = {
-		limit = { missiles_site_can_repair = yes }
+		limit = { missiles_site_can_be_suspended = yes }
 		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.repair_mission_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 		chaosx_convert_days_to_date_offset = yes
 		ROOT = {
 			set_variable = { missiles_incident_site = PREV }
+			set_variable = { missiles_repair_site_state = PREV }
 			set_country_flag = missiles_site_repair_active
 			set_country_flag = missiles_site_repair_started
 			set_variable = { missiles_site_repair_due_date = global.date }
 			add_to_variable = { missiles_site_repair_due_date = chaosx_date_offset }
 		}
+		set_state_flag = missiles_site_suspended
 		clr_state_flag = missiles_site_active
+		clr_state_flag = missiles_site_hardened
+		missiles_refresh_site_flags = yes
+		ROOT = {
+			missiles_recalculate_network = yes
+			missiles_rebalance_site_custody = yes
+		}
+	}
+}
+
+missiles_complete_site_repair = {
+	# COUNTRY scope (repair mission completion).
+	if = {
+		limit = { missiles_repair_target_is_valid = yes }
+		var:missiles_repair_site_state = {
+			missiles_finish_site_repair = yes
+			ROOT = { set_variable = { chaosx_032_input_repair_site_id = PREV.id } }
+		}
+		set_variable = { chaosx_032_input_repair_is_complete = constant:missiles_program_value.one }
+		chaosx_032_achievement_record_site_repair = yes
+		set_country_flag = missiles_site_repair_complete
+	}
+	clr_country_flag = missiles_site_repair_active
+	clr_country_flag = missiles_site_repair_requested
+	clr_country_flag = missiles_site_repair_started
+	clear_variable = missiles_site_repair_due_date
+	clear_variable = missiles_repair_site_state
+	missiles_recalculate_network = yes
+	missiles_rebalance_site_custody = yes
+	missiles_refresh_program_status_idea = yes
+	chaosx_032_achievement_prepare_long_reach_snapshot = yes
+}
+
+missiles_finish_site_repair = {
+	# STATE scope; ROOT is the repairing program. The repair programme clears
+	# physical damage, recovers lost capacity, and returns the site to service.
+	set_variable = { missiles_site_damage = constant:missiles_program_value.zero }
+	missiles_recover_site_capacity_loss = yes
+	clr_state_flag = missiles_site_suspended
+	clr_state_flag = missiles_site_damaged
+	clr_state_flag = missiles_site_damaged_beyond_use
+	clr_state_flag = missiles_site_compromised
+	clr_state_flag = missiles_site_isolated
+	set_state_flag = missiles_site_active
+	set_variable = { missiles_site_controller_id = ROOT.id }
+	set_variable = { missiles_site_last_repair_complete = constant:missiles_program_value.one }
+	missiles_refresh_site_flags = yes
+}
+
+# STATE scope; ROOT is the program country. A cancelled or expired repair
+# returns the suspended site to service in its current condition.
+missiles_release_suspended_site = {
+	if = {
+		limit = { has_state_flag = missiles_site_suspended }
+		clr_state_flag = missiles_site_suspended
+		if = {
+			limit = {
+				is_controlled_by = ROOT
+				NOT = { has_state_flag = missiles_site_scuttled }
+				NOT = { has_state_flag = missiles_site_captured }
+				NOT = { has_state_flag = missiles_site_rogue }
+				NOT = { has_state_flag = missiles_site_isolated }
+			}
+			set_state_flag = missiles_site_active
+		}
+		missiles_refresh_site_flags = yes
 	}
 }
 
@@ -1085,26 +1183,37 @@ missiles_recover_site_capacity_loss = {
 	set_variable = { missiles_site_capacity_recovery_result = missiles_capacity_recovery_result }
 }
 
-missiles_complete_site_recovery = {
+missiles_begin_site_recovery = {
+	# COUNTRY scope. Loyal forces must hold the rogue site itself.
 	if = {
-		limit = { has_variable = missiles_incident_site }
-		var:missiles_incident_site = { missiles_recover_rogue_site = yes }
-	}
-	else = {
-		random_owned_controlled_state = {
-			limit = { has_state_flag = missiles_site_rogue }
-			missiles_recover_rogue_site = yes
+		limit = {
+			has_country_flag = missiles_rogue_command_active
+			has_variable = missiles_incident_site
 		}
+		set_variable = { missiles_recovery_site_state = missiles_incident_site }
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.site_recovery_mission_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { missiles_site_recovery_due_date = global.date }
+		add_to_variable = { missiles_site_recovery_due_date = chaosx_date_offset }
+		set_country_flag = missiles_site_recovery_active
+		clr_country_flag = missiles_site_recovery_complete
+	}
+}
+
+missiles_complete_site_recovery = {
+	# COUNTRY scope (recovery mission completion).
+	if = {
+		limit = { missiles_recovery_target_is_valid = yes }
+		var:missiles_recovery_site_state = { missiles_recover_rogue_site = yes }
 	}
 	add_to_variable = { missiles_command_control = constant:missiles_program_value.command_loyal_force_gain }
 	clr_country_flag = missiles_site_recovery_active
 	set_country_flag = missiles_site_recovery_complete
+	clear_variable = missiles_site_recovery_due_date
+	clear_variable = missiles_recovery_site_state
 	missiles_clamp_program_values = yes
 	missiles_close_rogue_incident = yes
-}
-
-missiles_send_loyal_forces = {
-	missiles_complete_site_recovery = yes
 }
 
 missiles_recover_rogue_site = {
@@ -2704,30 +2813,43 @@ missiles_cancel_preparation = {
 missiles_cancel_site_survey = {
 	clr_country_flag = missiles_survey_in_progress
 	clear_variable = missiles_survey_due_date
-	if = { limit = { NOT = { has_country_flag = missiles_secondary_site_in_progress } } clear_variable = missiles_pending_site_state }
+	clear_variable = missiles_survey_site_state
 }
 
 missiles_cancel_secondary_site_project = {
 	clr_country_flag = missiles_secondary_site_in_progress
 	clear_variable = missiles_secondary_site_due_date
-	if = { limit = { NOT = { has_country_flag = missiles_survey_in_progress } } clear_variable = missiles_pending_site_state }
+	clear_variable = missiles_secondary_site_state
 }
 
 missiles_cancel_site_repair_project = {
+	if = {
+		limit = { has_variable = missiles_repair_site_state }
+		var:missiles_repair_site_state = { missiles_release_suspended_site = yes }
+	}
 	clr_country_flag = missiles_site_repair_active
 	clr_country_flag = missiles_site_repair_requested
 	clr_country_flag = missiles_site_repair_started
 	clear_variable = missiles_site_repair_due_date
+	clear_variable = missiles_repair_site_state
+	missiles_recalculate_network = yes
+	missiles_rebalance_site_custody = yes
 }
 
 missiles_cancel_site_recovery_project = {
 	clr_country_flag = missiles_site_recovery_active
 	clear_variable = missiles_site_recovery_due_date
+	clear_variable = missiles_recovery_site_state
 }
 
 missiles_cancel_warning_verification = {
 	clr_country_flag = missiles_warning_verification_active
 	clear_variable = missiles_warning_verification_due_date
+}
+
+missiles_cancel_network_restoration = {
+	clr_country_flag = missiles_network_restoration_active
+	clear_variable = missiles_network_restoration_due_date
 }
 
 # -----------------------------------------------------------------------------
@@ -4768,6 +4890,7 @@ missiles_verify_warning = {
 }
 
 missiles_complete_warning_verification = {
+	# COUNTRY scope (verification mission completion).
 	if = {
 		limit = { missiles_warning_is_actionable = yes has_country_flag = missiles_warning_verification_active }
 		if = {
@@ -4784,8 +4907,9 @@ missiles_complete_warning_verification = {
 			set_country_flag = missiles_false_warning_history
 			missiles_resolve_warning_queue_receipt = yes
 		}
-		clr_country_flag = missiles_warning_verification_active
 	}
+	clr_country_flag = missiles_warning_verification_active
+	clear_variable = missiles_warning_verification_due_date
 }
 
 missiles_delay_retaliation = {
@@ -4806,8 +4930,7 @@ missiles_sever_network = {
 	if = {
 		limit = { has_country_flag = missiles_warning_active }
 		set_country_flag = missiles_retaliation_network_severed
-		clr_country_flag = missiles_retaliation_network_active
-		set_variable = { missiles_retaliation_posture = constant:missiles_retaliation_posture.off }
+		missiles_set_retaliation_posture_off = yes
 		subtract_from_variable = { missiles_launch_readiness = constant:missiles_tuning.operation_readiness_loss_retaliation }
 		subtract_from_variable = { missiles_command_control = constant:missiles_resolution.control_retaliation_cost }
 		missiles_clamp_program_values = yes
@@ -4815,14 +4938,33 @@ missiles_sever_network = {
 	}
 }
 
-missiles_restore_retaliation_network = {
+# COUNTRY scope. Starts the timed restoration of a severed network; the
+# mission completes once the date passes and command, readiness, and an
+# active site are back in place.
+missiles_begin_network_restoration = {
 	if = {
-		limit = { has_country_flag = missiles_retaliation_network_severed check_variable = { var = missiles_command_control value = constant:missiles_program_value.secure_command_gate compare = greater_than_or_equals } }
-		clr_country_flag = missiles_retaliation_network_severed
-		set_country_flag = missiles_retaliation_network_active
-		set_variable = { missiles_retaliation_posture = constant:missiles_retaliation_posture.supervised }
-		set_country_flag = missiles_retaliation_network_restored
+		limit = { has_country_flag = missiles_retaliation_network_severed }
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.network_restore_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { missiles_network_restoration_due_date = global.date }
+		add_to_variable = { missiles_network_restoration_due_date = chaosx_date_offset }
+		set_country_flag = missiles_network_restoration_active
 	}
+}
+
+missiles_restore_retaliation_network = {
+	# COUNTRY scope (restoration mission completion).
+	if = {
+		limit = { missiles_network_can_be_restored = yes }
+		clr_country_flag = missiles_retaliation_network_severed
+		set_country_flag = missiles_retaliation_network_restored
+		missiles_set_retaliation_posture_off = yes
+		missiles_set_retaliation_posture_supervised = yes
+	}
+	clr_country_flag = missiles_network_restoration_active
+	clear_variable = missiles_network_restoration_due_date
+	missiles_refresh_program_status_idea = yes
 }
 
 missiles_accept_retaliation_response = {

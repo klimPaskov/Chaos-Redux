@@ -59,5 +59,24 @@ Native `days =` fields, mission timeouts, and timed flags stay in days.
 ## Scope-bound writes
 
 `missiles_suspend_damaged_site` runs in the damaged STATE and writes the repair flags, incident site, and repair due date on its program country `ROOT`, where the repair mission and cleanup read them.
-`missiles_establish_secondary_site` runs in COUNTRY scope at mission completion and registers only its stored `missiles_pending_site_state`; it never evaluates state triggers against the country.
+`missiles_establish_secondary_site` runs in COUNTRY scope at mission completion and registers only its stored `missiles_secondary_site_state`; it never evaluates state triggers against the country.
 The natural-disaster adapter applies its readiness, command, guidance-backlog, and false-warning penalties to the controller from the unscoped temporaries it calculated, because a temporary variable cannot be read through `PREV.`.
+
+## Site and command project missions
+
+Six native missions are goal-style projects: survey, secondary-site construction, site repair, rogue-site recovery, warning verification, and retaliation-network restoration.
+Each activating decision first calls its COUNTRY-scope begin effect, which stores the project's own state pointer, sets its in-progress flag, and stamps a converted due date from `missiles_evolution_timing`; the decision activates the mission only when that flag is set.
+
+| Mission | Begin effect | Stored state | Due date (days) | Completion effect | Cancel and timeout effect |
+| --- | --- | --- | --- | --- | --- |
+| Launch-State Survey | `missiles_begin_survey` | `missiles_survey_site_state` | `survey_mission_days` (60) | `missiles_complete_survey` registers the surveyed state as a launch site | `missiles_cancel_site_survey` |
+| Secondary-Site Construction | `missiles_begin_secondary_site` | `missiles_secondary_site_state` | `secondary_site_mission_days` (90) | `missiles_establish_secondary_site` registers the site and sets `missiles_secondary_site_established` | `missiles_cancel_secondary_site_project` |
+| Launch-Site Recovery (repair) | `missiles_suspend_damaged_site` (STATE) | `missiles_repair_site_state` | `repair_mission_days` (45) | `missiles_complete_site_repair` calls `missiles_finish_site_repair`: damage cleared, one capacity-recovery step, site active again | `missiles_cancel_site_repair_project` releases the suspended site in its current condition |
+| Rogue-Site Recovery | `missiles_begin_site_recovery` | `missiles_recovery_site_state` | `site_recovery_mission_days` (14) | `missiles_complete_site_recovery` retakes the site and closes the rogue incident | `missiles_cancel_site_recovery_project` |
+| Warning Verification | `missiles_verify_warning` | none | `warning_response_days` (3) | `missiles_complete_warning_verification` verifies or exposes the warning | `missiles_cancel_warning_verification` |
+| Retaliation-Network Restoration | `missiles_begin_network_restoration` | none | `network_restore_days` (60) | `missiles_restore_retaliation_network` clears severance and returns to Supervised when the network is available | `missiles_cancel_network_restoration` |
+
+The mission `available` blocks combine the matching `*_is_due` trigger with the project's objective: the surveyed or construction state is still owned, controlled, and suitable; the repair site is still controlled and not captured, rogue, or scuttled; loyal divisions stand in the rogue site's state, with AI countries exempt; the warning is still actionable; or Command Control, readiness, an active site, and the absence of a rogue command allow restoration.
+Cancel triggers depend on the project and its objective, never on the current program phase, so a war, peace, incident, or warning does not abort unrelated construction or repair.
+A suspended site carries `missiles_site_suspended`, which `missiles_site_can_launch` rejects; routine `missiles_restore_readiness` maintenance leaves a site under an active repair mission to that mission.
+`.tools/test_event32_project_missions.py` pins the producer, due-date, timeout, completion, and cancellation contract for all six missions.

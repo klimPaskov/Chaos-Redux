@@ -596,3 +596,130 @@ missiles_country_has_payload_owner_capability = {
 		has_tech = thermonuclear_bombs
 	}
 }
+
+# -----------------------------------------------------------------------------
+# Native site and command project missions
+# -----------------------------------------------------------------------------
+# COUNTRY scope unless stated. Each project owns one stored state and one stored
+# due date; a mission completes on the first day both its date and objective hold.
+
+# STATE scope, ROOT is the program country. A survey founds a new site, so a
+# state already in the country's site registry is not a survey candidate.
+missiles_state_is_valid_survey_target = {
+	missiles_state_is_valid_site_target = yes
+	NOT = { is_in_array = { array = ROOT.missiles_launch_site_states value = THIS } }
+}
+
+missiles_country_can_start_survey = {
+	missiles_country_can_manage_program = yes
+	NOT = { has_country_flag = missiles_program_capture_shell }
+	NOT = { has_country_flag = missiles_survey_in_progress }
+	NOT = { missiles_country_has_active_site = yes }
+}
+
+missiles_survey_target_is_valid = {
+	has_variable = missiles_survey_site_state
+	var:missiles_survey_site_state = { missiles_state_is_valid_site_target = yes }
+}
+
+missiles_survey_is_due = {
+	has_country_flag = missiles_survey_in_progress
+	has_variable = missiles_survey_due_date
+	check_variable = { var = global.date value = missiles_survey_due_date compare = greater_than_or_equals }
+}
+
+# Expansion is justified by redundancy (one working site), by stored weapons
+# exceeding the network's physical capacity, or by the mature-program signal.
+missiles_country_can_start_secondary_site = {
+	missiles_country_has_active_site = yes
+	NOT = { has_country_flag = missiles_secondary_site_in_progress }
+	check_variable = { var = missiles_active_site_count value = constant:missiles_tuning.site_count_maximum compare = less_than }
+	OR = {
+		has_country_flag = missiles_secondary_site_justified
+		check_variable = { var = missiles_active_site_count value = constant:missiles_program_value.two compare = less_than }
+		check_variable = { var = missiles_total_site_capacity value = missiles_operational_reserve compare = less_than }
+	}
+	check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = greater_than_or_equals }
+}
+
+missiles_secondary_site_target_is_valid = {
+	has_variable = missiles_secondary_site_state
+	var:missiles_secondary_site_state = { missiles_state_is_valid_secondary_site = yes }
+}
+
+missiles_secondary_site_is_due = {
+	has_country_flag = missiles_secondary_site_in_progress
+	has_variable = missiles_secondary_site_due_date
+	check_variable = { var = global.date value = missiles_secondary_site_due_date compare = greater_than_or_equals }
+}
+
+# STATE scope, ROOT is the program country. A damaged, wrecked, or compromised
+# national site can be taken out of service for a repair programme. Captured
+# and rogue sites use their own resolution actions.
+missiles_site_can_be_suspended = {
+	is_controlled_by = ROOT
+	is_in_array = { array = ROOT.missiles_launch_site_states value = THIS }
+	NOT = { has_state_flag = missiles_site_scuttled }
+	NOT = { has_state_flag = missiles_site_captured }
+	NOT = { has_state_flag = missiles_site_rogue }
+	NOT = { has_state_flag = missiles_site_suspended }
+	OR = {
+		has_state_flag = missiles_site_damaged
+		has_state_flag = missiles_site_damaged_beyond_use
+		has_state_flag = missiles_site_compromised
+		AND = {
+			has_variable = missiles_site_damage
+			check_variable = { var = missiles_site_damage value = constant:missiles_program_value.zero compare = greater_than }
+		}
+	}
+}
+
+missiles_repair_target_is_valid = {
+	has_variable = missiles_repair_site_state
+	var:missiles_repair_site_state = {
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = missiles_site_scuttled }
+		NOT = { has_state_flag = missiles_site_captured }
+		NOT = { has_state_flag = missiles_site_rogue }
+	}
+}
+
+missiles_site_repair_is_due = {
+	has_country_flag = missiles_site_repair_active
+	has_variable = missiles_site_repair_due_date
+	check_variable = { var = global.date value = missiles_site_repair_due_date compare = greater_than_or_equals }
+}
+
+missiles_recovery_target_is_valid = {
+	has_variable = missiles_recovery_site_state
+	var:missiles_recovery_site_state = {
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = missiles_site_scuttled }
+	}
+}
+
+missiles_site_recovery_is_due = {
+	has_country_flag = missiles_site_recovery_active
+	has_variable = missiles_site_recovery_due_date
+	check_variable = { var = global.date value = missiles_site_recovery_due_date compare = greater_than_or_equals }
+}
+
+missiles_warning_verification_is_due = {
+	has_country_flag = missiles_warning_verification_active
+	has_variable = missiles_warning_verification_due_date
+	check_variable = { var = global.date value = missiles_warning_verification_due_date compare = greater_than_or_equals }
+}
+
+missiles_network_restoration_is_due = {
+	has_country_flag = missiles_network_restoration_active
+	has_variable = missiles_network_restoration_due_date
+	check_variable = { var = global.date value = missiles_network_restoration_due_date compare = greater_than_or_equals }
+}
+
+missiles_network_can_be_restored = {
+	has_country_flag = missiles_retaliation_network_severed
+	check_variable = { var = missiles_command_control value = constant:missiles_program_value.secure_command_gate compare = greater_than_or_equals }
+	check_variable = { var = missiles_launch_readiness value = constant:missiles_tuning.operation_minimum_readiness compare = greater_than_or_equals }
+	NOT = { has_country_flag = missiles_rogue_command_active }
+	missiles_country_has_active_site = yes
+}
