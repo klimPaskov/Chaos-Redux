@@ -387,3 +387,17 @@ Decisions:
 - Paying the whole balance at once remains possible; partial payment is not offered for this family.
 - Reports name the material, not the family, so the existing paid-amount and balance texts apply; a separate `.604` row reports each instalment.
 - The signing decision has constant-backed AI weights (higher under a heavy burden and for loyal allies, lower for rivals and against a weak Africa) and an explicit `factor = 0` on its closed gates.
+
+## L29. Strength reflects supply, fuel, capital loss and a losing war
+
+Disposition: `implemented` (native readings of the army equipment and fuel variables are `needs_live_game`).
+
+Basis: the full spec's "Strength sources" and "Strength losses", acceptance rows STR-02, STR-05, STR-07 and STR-08, and the round 2 remaining-work list (priority 4). Every variable is documented in `dynamic_variables_documentation.md` (`num_equipment_in_armies_k`, `num_target_equipment_in_armies_k`, `fuel_k`, `max_fuel_k`, `surrender_progress`) and the army-equipment pair is already used by `gods_of_africa_quote_mobile_tribute`.
+
+Decisions:
+
+- The military component is multiplied by a sustainment factor from 0.4 (no rifles in the army and empty tanks) to 1 (a fully equipped army and full tanks): rifles in the army against their target weigh 0.6, fuel against capacity 0.4 (`gods_of_africa_strength_sustain`).
+- While an enemy controls Africa's capital the target loses 15 points; the first loss sets `gods_of_africa_strength_immediate` so it is not smoothed away.
+- Surrender progress costs 5, 12 or 20 points above 0.1, 0.25 and 0.4, and above 0.25 forces an immediate recalculation each refresh.
+- Ordinary changes stay smoothed by the existing eight-point step (STR-08).
+- The existing internal-condition penalty near capitulation now reads `surrender_progress` through `check_variable`, because the plain trigger form does not take a script constant.

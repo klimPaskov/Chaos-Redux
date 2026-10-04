@@ -626,6 +626,32 @@ gods_of_africa_refresh_strength = {
 			divide_temp_variable = { gods_of_africa_strength_military = constant:gods_of_africa_strength.component_average_divisor }
 		}
 		clamp_temp_variable = { var = gods_of_africa_strength_military min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
+		# Sustainment (decision L29): an army short of its rifles or of fuel
+		# counts for less than a supplied one of the same size.
+		set_temp_variable = { gods_of_africa_sustain_equipment = constant:gods_of_africa_strength_sustain.full }
+		set_temp_variable = { gods_of_africa_sustain_target = num_target_equipment_in_armies_k@infantry_equipment }
+		if = {
+			limit = { check_variable = { gods_of_africa_sustain_target > constant:gods_of_africa_strength_sustain.none } }
+			set_temp_variable = { gods_of_africa_sustain_equipment = num_equipment_in_armies_k@infantry_equipment }
+			divide_temp_variable = { gods_of_africa_sustain_equipment = gods_of_africa_sustain_target }
+		}
+		clamp_temp_variable = { var = gods_of_africa_sustain_equipment min = constant:gods_of_africa_strength_sustain.none max = constant:gods_of_africa_strength_sustain.full }
+		set_temp_variable = { gods_of_africa_sustain_fuel = constant:gods_of_africa_strength_sustain.full }
+		set_temp_variable = { gods_of_africa_sustain_target = max_fuel_k }
+		if = {
+			limit = { check_variable = { gods_of_africa_sustain_target > constant:gods_of_africa_strength_sustain.none } }
+			set_temp_variable = { gods_of_africa_sustain_fuel = fuel_k }
+			divide_temp_variable = { gods_of_africa_sustain_fuel = gods_of_africa_sustain_target }
+		}
+		clamp_temp_variable = { var = gods_of_africa_sustain_fuel min = constant:gods_of_africa_strength_sustain.none max = constant:gods_of_africa_strength_sustain.full }
+		multiply_temp_variable = { gods_of_africa_sustain_equipment = constant:gods_of_africa_strength_sustain.equipment_share }
+		multiply_temp_variable = { gods_of_africa_sustain_fuel = constant:gods_of_africa_strength_sustain.fuel_share }
+		set_temp_variable = { gods_of_africa_sustain_factor = gods_of_africa_sustain_equipment }
+		add_to_temp_variable = { gods_of_africa_sustain_factor = gods_of_africa_sustain_fuel }
+		multiply_temp_variable = { gods_of_africa_sustain_factor = constant:gods_of_africa_strength_sustain.span }
+		add_to_temp_variable = { gods_of_africa_sustain_factor = constant:gods_of_africa_strength_sustain.floor }
+		multiply_temp_variable = { gods_of_africa_strength_military = gods_of_africa_sustain_factor }
+		set_variable = { gods_of_africa_strength_sustain_factor = gods_of_africa_sustain_factor }
 		set_temp_variable = { gods_of_africa_strength_industry = num_of_civilian_factories }
 		add_to_temp_variable = { gods_of_africa_strength_industry = num_of_military_factories }
 		multiply_temp_variable = { gods_of_africa_strength_industry = constant:gods_of_africa_strength.factories_divisor }
@@ -679,7 +705,7 @@ gods_of_africa_refresh_strength = {
 		set_temp_variable = { gods_of_africa_strength_internal = stability }
 		multiply_temp_variable = { gods_of_africa_strength_internal = 100 }
 		if = {
-			limit = { surrender_progress > constant:africa_action_threshold.near_capitulation }
+			limit = { check_variable = { var = surrender_progress value = constant:africa_action_threshold.near_capitulation compare = greater_than } }
 			subtract_from_temp_variable = { gods_of_africa_strength_internal = constant:africa_measure.medium }
 		}
 		clamp_temp_variable = { var = gods_of_africa_strength_internal min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
@@ -707,6 +733,36 @@ gods_of_africa_refresh_strength = {
 		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_chaos_weight }
 		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
 		divide_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength.weighted_divisor }
+		# A lost capital and a losing war cost Strength directly (decision L29).
+		clr_country_flag = gods_of_africa_strength_capital_lost
+		if = {
+			limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
+			set_country_flag = gods_of_africa_strength_capital_lost
+			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.capital_loss_penalty }
+			# The fall is felt at once the first time the capital is lost.
+			if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_strength_capital_loss_recorded } }
+				set_country_flag = gods_of_africa_strength_capital_loss_recorded
+				set_country_flag = gods_of_africa_strength_immediate
+			}
+		}
+		else = { clr_country_flag = gods_of_africa_strength_capital_loss_recorded }
+		if = {
+			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_severe compare = greater_than } }
+			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_severe_penalty }
+		}
+		else_if = {
+			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_heavy compare = greater_than } }
+			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_heavy_penalty }
+		}
+		else_if = {
+			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_light compare = greater_than } }
+			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_light_penalty }
+		}
+		if = {
+			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_immediate compare = greater_than } }
+			set_country_flag = gods_of_africa_strength_immediate
+		}
 		clamp_temp_variable = { var = gods_of_africa_strength_target min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
 		if = {
 			limit = {
