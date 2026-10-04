@@ -156,3 +156,27 @@ The decision, effect and trigger financial source identities still match that fr
 Resume first by restoring the required HOI4 MCP routes, establishing a confirmed native scenario and cross-file helper binding, and rerunning the recorded BEFORE/AFTER comparisons.
 Then complete the outstanding accepted gameplay and audits above before a source implementation completion commit, final workbook synchronization or asset-workspace removal.
 The two finished independent commits are the visual repair and the reusable skill guidance.
+
+## Disposition update, 2026-10-04
+
+The takeover round implemented the open rows above under the user's standing grant of design authority; each decision and its spec basis is recorded in `agent_decisions_2026-10-04.md` (D1 to D24).
+Implementation evidence is source review and the bounded runtime-observation fixture, which does not establish native or live behaviour.
+
+| Accepted item | Disposition | Evidence and remaining limit |
+| --- | --- | --- |
+| Emergency restriction | implemented | Reserve-limited charges keep their exact payment and the failure fee factor halves them after a failed field validation, audit or dual-track verification (D17, `cc6621527`). Native row presentation and the postpatch probability comparison remain blocked by the MCP probability route. |
+| Full Reality Audit from high-Chaos openings | implemented | The audit no longer needs earlier reviews, and the advanced rail review and independent adjudicators file them during the audit (D5, `4acaceeab`). |
+| Field and audit proof | implemented | Native supplied-division proxy with an active-front alternative (D16, `3b41e9e4c`). Whether `has_railway_connection` accepts a path through allied territory is a live-game check. |
+| Dual-track and restriction missions | implemented | Independent staff plans and resolved differences are required proof (D15, `9ed215e7c`). Native enforcement callbacks remain a live-game check. |
+| Evolution pacing and reach | implemented | Broad public reach gates Evolution II (D4, `bfa800a17`); MTTH-paced progress replaces fixed delays (D14, `18661880e`). Numeric E1A to E3B timing is unverified because the probability route is blocked. |
+| Named incidents and milestone | implemented | Casualties as Counters, the counterplan, the bootleg, production without transport, the perfect offensive, the Evolution III opening incident and the National Final (D13, `f486a3086`). |
+| Commander result | implemented | Event-granted personality trait and a constant-weighted rare roll limited to one commander per programme (D8, `2648a8008`). The Field-Validated Planner reward stays retired by the user's 2026-09-20 request. |
+| Public tradeoffs | implemented | Route, Reliance, choice and season scaling with shift protection, preparedness and separate policy (D10, `faff5b8c5`). Runtime balance is a live-game check. |
+| Foreign access | implemented | Autonomy, overlord, faction and sea-lane rules, AI factors and ridicule embarrassment (D19, `4dc680252`). Native recipient scope is a live-game check. |
+| Action payoffs and recovery | implemented | One variable-driven programme package (D9, `faff5b8c5`), final review, targeted follow-up and cheaper restriction (D17, `cc6621527`). |
+| Boolean state contract | implemented | Incident selection uses direct trigger checks (D12, `0099b0461`). The shared `prefire_ready` temporary stays as the cross-file contract. |
+| Recovery presentation | unresolved | Unchanged by this round; native row and expiry presentation remain a live-game check. |
+| Probability acceptance | blocked | `hoi4.probability_inspect` returned `INTERNAL_ERROR` and `hoi4.probability_compare` rejected the scenario arguments (D23). Source-reasoning orderings are recorded in D23 for the auditor pass. |
+| Host and achievement persistence | unresolved | Civil war, annexation, release, tag change and save persistence still need live evidence. |
+| Presentation and catalogue | implemented | No Event Details or evolution title or body changed (D22), so the workbook row stays aligned and no catalog change is pending. Fresh decision, localisation and completion audits remain due. |
+| Commit and workspace completion | implemented | The round is committed in focused commits from `bfa800a17` to `3b1ec7fa1`. |
