@@ -944,7 +944,10 @@ camp_rework_colonial_expand_current_state = {
 		set_state_flag = camp_rework_expanded_labor_site
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor }
 		camp_rework_register_active_site = yes
-		remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state } }
+			remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+		}
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_major }
 		camp_admin_initialize_site = yes
@@ -959,7 +962,10 @@ camp_rework_colonial_apply_minor_project_to_current_state = {
 			var:genocide_responsible_country = { tag = ROOT }
 			OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } }
 		}
-		remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state } }
+			remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
+		}
 		if = {
 			limit = { camp_admin_site_is_operational = yes ROOT = { NOT = { has_country_flag = camp_admin_economy_slot_active } } }
 			ROOT = {
