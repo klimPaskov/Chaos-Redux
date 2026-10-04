@@ -28,7 +28,7 @@ country_event = {
 
 	immediate = {
 		random_state = {
-			set_temp_variable = { REV.temp_oob_container = owner.id }
+			set_temp_variable = { temp_oob_container = owner }
 			transfer_state_to = REV
 		}
 		REV = {
@@ -38,7 +38,7 @@ country_event = {
 		} # if country doesn't exist, does nothing
 		every_state = {
 			limit = { is_owned_by = REV }
-			transfer_state_to = REV.temp_oob_container
+			transfer_state_to = var:temp_oob_container
 		}
 		every_state = {
 			limit = { is_core_of = SOV }
