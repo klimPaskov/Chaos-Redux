@@ -493,6 +493,17 @@ riches_found_run_foreign_interference_pool = {
 			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_friendly } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_offer_assistance compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_offer_assistance } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_foreign_assistance_offer }
 		}
 		riches_found_record_foreign_interference_evidence = yes
+		# Arming a local group or preparing a seizure is military intervention;
+		# bribes, inspections, sanctions and offers are not.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.foreign_support_armed_group compare = equals }
+					check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.foreign_prepare_seizure compare = equals }
+				}
+			}
+			riches_found_mark_foreign_intervention = yes
+		}
 		riches_found_finish_incident = yes
 	}
 }
@@ -586,6 +597,17 @@ riches_found_apply_raid_consequence = {
 			}
 		}
 		set_state_flag = riches_found_route_damaged
+		riches_found_check_pay_train_route = yes
+	}
+	# Foreign agents and a hostile neighbour are foreign military intervention.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.foreign_agents compare = equals }
+				check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.hostile_neighbor compare = equals }
+			}
+		}
+		riches_found_mark_foreign_intervention = yes
 	}
 	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_contract_records compare = equals } } set_state_flag = riches_found_records_destroyed }
 	if = {

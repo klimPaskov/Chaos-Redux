@@ -210,6 +210,9 @@ Registry integration and unlock/disqualifier validation remain unresolved.
 - `029_close_the_account` requires controlled evacuation and sealing after The Bottomless Account while removing the positive supernatural contribution.
 - `029_the_last_shift` requires evacuation, a valid assistance route, permanent sealing, and avoidance of mass death, purge, reopening, and supernatural agreement.
 
+Claim Jumper reads `riches_found_claim_jumper_settled`, which the occupation settlements, a renegotiated contract, a replaced administration and a completed repair set; every controller change clears it with the Claim Jumper hold window and invalidation, so a later controller must settle and hold the mine itself while the discovery and transfer history stays.
+Foreign military intervention (`riches_found_foreign_intervention_history`) is recorded when foreign agents or a hostile neighbour raid the mine, when a foreign-armed group or seizure incident lands, and when a foreign country at war with the owner takes control; diplomatic and economic interference is not recorded, and No Man Owns the Mountain is disqualified only by an intervention after The Gilded Sovereignty arose.
+Close the Account is not disqualified by a payment warning, and a pay train whose route is damaged while it runs loses its route (`riches_found_pay_train_route_lost`), failing Protect the Pay Train and ending the run of escorted pay trains.
 `interface/029_riches_found.gfx` declares completed, grey, and not-eligible sprite aliases pointing into `gfx/achievements/` for each ID.
 All seven exact IDs are registered in `common/achievements/chaos_redux_achievements.txt` and have Career Profile title and description keys.
 Commit `01bc85ee3c9f25be8bda48dbdd7dc4d0ed1f98fe` records that integration and the persistent exclusivity, transfer, and aggregate-cap disqualifier repairs.

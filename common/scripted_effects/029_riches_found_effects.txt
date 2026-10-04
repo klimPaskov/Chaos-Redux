@@ -1905,10 +1905,29 @@ riches_found_start_requested_mission = {
 	}
 }
 
+# STATE scope. A pay train whose rail or port route is damaged while it runs
+# has lost its route: Protect the Pay Train fails at its deadline and the
+# unbroken run of escorted pay trains ends.
+riches_found_check_pay_train_route = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_pay_train_instance_active
+			has_state_flag = riches_found_route_damaged
+			NOT = { has_state_flag = riches_found_pay_train_route_lost }
+		}
+		set_state_flag = riches_found_pay_train_route_lost
+		clr_state_flag = riches_found_pay_train_route_active
+		set_variable = { riches_found_achievement_pay_train_count = constant:riches_found_value.zero }
+		clr_state_flag = riches_found_achievement_pay_train_sequence_valid
+		clr_state_flag = riches_found_achievement_pay_train_ready
+	}
+}
+
 # STATE scope. The bounded controller pulse advances only active objectives on
 # the current mine. Time-based proofs require the original route/security
 # conditions to remain true and cannot be inherited from before mission start.
 riches_found_refresh_active_mission_progress = {
+	riches_found_check_pay_train_route = yes
 	if = {
 		limit = {
 			has_state_flag = riches_found_mission_protect_pay_train_subject
@@ -2613,6 +2632,24 @@ riches_found_handle_state_control_change = {
 			}
 			add_to_variable = { riches_found_achievement_transfer_count = constant:riches_found_value.one }
 			riches_found_record_achievement_transfer = yes
+			# Claim Jumper rewards the current controller's own settlement and
+			# hold; discovery and transfer history stay with the mine.
+			clr_state_flag = riches_found_claim_jumper_settled
+			clr_state_flag = riches_found_achievement_claim_jumper_ready
+			clr_state_flag = riches_found_achievement_claim_jumper_invalidated
+			set_variable = { riches_found_achievement_claim_jumper_deadline_date = constant:riches_found_value.zero }
+		}
+		if = {
+			limit = {
+				OWNER = { exists = yes }
+				CONTROLLER = { exists = yes }
+				NOT = { is_owned_and_controlled_by = OWNER }
+			}
+			OWNER = { save_event_target_as = riches_found_intervention_owner }
+			if = {
+				limit = { CONTROLLER = { has_war_with = event_target:riches_found_intervention_owner } }
+				riches_found_mark_foreign_intervention = yes
+			}
 		}
 		set_state_flag = riches_found_control_disrupted
 		if = {
@@ -3035,9 +3072,20 @@ riches_found_record_achievement_permanent_seal = {
 	set_state_flag = riches_found_achievement_permanent_seal_recorded
 }
 
+# STATE scope. Foreign military intervention at the mine: a raid by foreign
+# agents or a hostile neighbour, a foreign-armed group or seizure attempt, or
+# capture by a foreign country at war with the owner. Diplomatic and economic
+# interference is not recorded. The history is kept for good; No Man Owns the
+# Mountain asks for a recovery from The Gilded Sovereignty without it, so only
+# an intervention after that authority arose disqualifies the achievement.
 riches_found_record_achievement_foreign_intervention = {
 	set_variable = { riches_found_achievement_foreign_intervention = constant:riches_found_value.one }
-	set_state_flag = riches_found_achievement_foreign_intervention_recorded
+	set_state_flag = riches_found_foreign_intervention_history
+	set_variable = { riches_found_last_foreign_intervention_date = global.date }
+	if = {
+		limit = { has_state_flag = riches_found_achievement_gilded_history }
+		set_state_flag = riches_found_achievement_foreign_intervention_recorded
+	}
 }
 
 riches_found_record_achievement_mass_death = {
@@ -3051,19 +3099,23 @@ riches_found_record_achievement_public_project = {
 
 riches_found_record_achievement_transfer_settlement = {
 	set_state_flag = riches_found_achievement_transfer_settlement_recorded
+	set_state_flag = riches_found_claim_jumper_settled
 	riches_found_record_achievement_settlement = yes
 }
 
 riches_found_record_achievement_contract_renegotiated = {
 	set_state_flag = riches_found_achievement_contract_renegotiated
+	set_state_flag = riches_found_claim_jumper_settled
 }
 
 riches_found_record_achievement_administration_replaced = {
 	set_state_flag = riches_found_achievement_administration_replaced
+	set_state_flag = riches_found_claim_jumper_settled
 }
 
 riches_found_record_achievement_repair_completed = {
 	set_state_flag = riches_found_achievement_repair_completed
+	set_state_flag = riches_found_claim_jumper_settled
 }
 
 riches_found_record_achievement_assistance = {

@@ -76,12 +76,9 @@ riches_found_achievement_claim_jumper_route = {
 	riches_found_mine_is_open_or_regulated = yes
 	check_variable = { var = riches_found_mine_contribution_score value = constant:riches_found_value.zero compare = greater_than }
 	check_variable = { var = riches_found_discoverer value = CONTROLLER compare = not_equals }
-	OR = {
-		has_state_flag = riches_found_achievement_transfer_settlement_recorded
-		has_state_flag = riches_found_achievement_contract_renegotiated
-		has_state_flag = riches_found_achievement_administration_replaced
-		has_state_flag = riches_found_achievement_repair_completed
-	}
+	# The current controller's own settlement: an occupation settlement, a
+	# renegotiated contract, a replaced administration or a repaired shaft.
+	has_state_flag = riches_found_claim_jumper_settled
 	NOT = { has_state_flag = riches_found_mine_permanent_seal }
 	NOT = { has_state_flag = riches_found_mine_collapsed }
 	NOT = { has_state_flag = riches_found_mine_exhausted }
@@ -138,8 +135,6 @@ riches_found_achievement_all_that_glitters_route = {
 		value = constant:riches_found_threshold.aggregate_third_mine
 		compare = greater_than_or_equals
 	}
-	NOT = { has_country_flag = riches_found_achievement_all_glitters_invalidated }
-	NOT = { has_country_flag = riches_found_achievement_all_glitters_forbidden_evolution }
 	NOT = { has_country_flag = riches_found_achievement_all_glitters_permanent_loss }
 	NOT = { check_variable = { var = riches_found_controller_pp_gain value = constant:riches_found_scaling.controller_pp_cap compare = greater_than } }
 	NOT = { check_variable = { var = riches_found_controller_construction value = constant:riches_found_scaling.controller_construction_cap compare = greater_than } }
@@ -192,7 +187,6 @@ riches_found_achievement_account_closure_route = {
 	NOT = { has_state_flag = riches_found_account_predatory_prosperity }
 	NOT = { has_state_flag = riches_found_mine_collapsed }
 	NOT = { has_state_flag = riches_found_achievement_mass_death_recorded }
-	NOT = { has_state_flag = riches_found_account_breach_imminent }
 	check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_value.zero compare = equals }
 	CONTROLLER = {
 		exists = yes
