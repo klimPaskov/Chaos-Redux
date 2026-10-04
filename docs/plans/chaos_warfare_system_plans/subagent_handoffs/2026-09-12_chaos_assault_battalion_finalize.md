@@ -1,6 +1,7 @@
 # Chaos Assault Battalion repair continuation
 
-Status: incomplete working package; adapter maintenance hold continues through coherent 1.10.47 release at this checkpoint.
+Status: superseded as a description of the runtime by commit `802006bf5`; retained as the record of the inherited-geometry repair attempt that preceded it.
+Everything below describes that attempt and its working candidates, not the model the game loads. The 2026-10-04 closeout at the end of this file states what the runtime actually is.
 The parent owns runtime model/entity/GFX/sound wiring and final asset acceptance.
 No in-game validation is claimed.
 
@@ -109,3 +110,21 @@ Support and training show similar intermediate failures.
 `evidence/continuous_role_numeric_preflight_20260912.json` records positive adjacent quaternion dot products, support-hand translation drift below 0.00001 and retained hose ring radii near 0.072 and 0.07776 for the proposed poses.
 These specifications have not been applied in Blender and are not native action acceptance.
 The fresh exact-data body proposal is `evidence/local_body_current_boundary_plan_20260912.json`: 208 local defective faces, 31 simple boundaries and 350 exact alias corner remaps, requiring native landmark comparison before use.
+
+## 2026-10-04 closeout
+
+Commit `802006bf5` did not finish the repair described above; it replaced it. The runtime is a freshly generated gas-masked chemical trooper with a separately generated pistol-grip spray lance, eight distinct actions, the `lance_nozzle` locator and the `chaosx_chem_spray` jet and lingering-cloud particles, installed under `gfx/models/units/chaos_assault_battalion/` and consumed by `gfx/entities/chaos_assault_battalion.asset`. The coat surface, hand contact and hose questions in this handoff belong to the discarded assembly and are not open items against the runtime.
+
+### Audio lineage, settled by measurement
+
+The nine runtime WAVs in `sound/chaos_warfare/chaos_assault_battalion/` were read directly from their RIFF headers on 2026-10-04. All nine are WAVE_FORMAT_IEEE_FLOAT, mono, 44,100 Hz, 32-bit float. They entered the repository in `a48e000bf` on 2026-08-15 and have not changed since.
+
+The 2026-09-12 recovery derivatives under `audio/recovery_20260912/derived/` are PCM signed 16-bit mono 44,100 Hz, and their own `derived_manifest.json` records `status: needs_user_review` with `runtime_wiring: parent-owned; not copied`. Pairwise comparison gives one duration match, the idle breath at 6.2539 s in both, eight mismatches, for example 2.000 s against 0.320 s for the attack and 3.670 s against 0.766 s for the first death, and no byte-identical pair.
+
+The two sets are therefore separate lineages and the shipped audio is the earlier float build. `802006bf5` retimed the entity's sound events against the rebuilt animation lengths; it changed no WAV and did not touch `sound/chaos_assault_battalion_sound.asset`. No runtime file was replaced from an older candidate in this closeout, and none should be without a review that first decides which lineage ships.
+
+### Selection audio, recorded as an engine limitation
+
+There is no per-subunit selection-audio route. The engine's selection cues are the global `select_army`, `select_vehicle` and `select_tank` sound-effect groups in the installed `sound/soundeffects.asset` at lines 1001, 1014 and 1024; no file under the installed `common/` references any of them, so the engine picks one by unit kind with no script hook. Entity audio attaches only to animation-state events. Giving this battalion its own selection cue would mean redefining a global group and replacing every country's infantry selection voice, so the request is closed as an engine limitation rather than implemented.
+
+The package manifest at `docs/assets/chaos_warfare_system/models_3d/chaos_assault_battalion/manifest.json` carries the same reconciliation, including the per-file durations, under `audio_reconciliation`. That path is inside the ignored `docs/assets/` tree, so it is updated on disk and not in version control.

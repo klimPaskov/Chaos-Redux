@@ -97,3 +97,16 @@ Basis: the accepted procurement adapter `docs/plans/026_black_friday_plans/2026-
 `civilian_factory_use` is a static decision-modifier field that rejects a variable, so a discounted commitment would need duplicated ordinary and sale decision definitions, which that accepted adapter did not request for these three actions. Event 026's own `BF-CBRN-008` already carries a fixed one-factory commitment under the same reasoning.
 Parity is verified rather than assumed: the visible tooltip values come from `GetCbrnValueReconditionMasksFactories`, `GetCbrnValueConvertIndustryFactories` and `GetCbrnValueSimplifyFiltersFactories`, which read `cbrn_protection_decision_cost.recondition_masks_factories` (1), `convert_industry_factories` (3) and `simplify_filters_factories` (2), the same values the three `civilian_factory_use` modifiers commit through their file-scoped mirrors, so the displayed price equals the deducted price.
 Only the CBRN rows of the Event 026 registry were edited.
+
+## 10. The assault-battalion audio lineage is settled by measurement, and no runtime file is replaced
+
+Disposition: `implemented`.
+The nine runtime WAVs are WAVE_FORMAT_IEEE_FLOAT mono 44,100 Hz 32-bit float, installed in `a48e000bf` on 2026-08-15 and unchanged since. The 2026-09-12 recovery derivatives are PCM signed 16-bit mono 44,100 Hz, with one duration match, eight mismatches and no byte-identical pair.
+Basis: the headers and data sizes were read directly from each file, and the recovery set's own `derived_manifest.json` records `status: needs_user_review` with `runtime_wiring: parent-owned; not copied`, so the two sets are separate lineages rather than a broken conversion.
+Commit `802006bf5` touched no WAV and not the sound asset; it retimed the entity's sound events against the rebuilt animations, which is what its message calls retimed sound consumers.
+I replaced no runtime file: choosing which lineage ships is a listening decision, and the recovery set is still marked as needing the user's review.
+
+Per-subunit selection audio is recorded as an engine limitation rather than implemented.
+Basis: the engine's selection cues are the global `select_army`, `select_vehicle` and `select_tank` groups in the installed `sound/soundeffects.asset` at lines 1001, 1014 and 1024; no file under the installed `common/` references any of them, and entity audio attaches only to animation-state events, so the only route would replace every country's infantry selection voice.
+
+The package manifest carries the same reconciliation under a new `audio_reconciliation` section and its status now describes the runtime that `802006bf5` produced. `docs/assets/` is listed in `.gitignore`, so that file is updated on disk and cannot be committed.

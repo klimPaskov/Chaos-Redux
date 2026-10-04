@@ -42,9 +42,21 @@ The existing Chaos Battalion large and small counter icons remain untouched and 
 
 ## Audio
 
-The dedicated sound package uses only preserved CC0 source candidates and mechanically converted PCM WAVs.
-The source pages, licenses, transformation command, checksums, and runtime identifiers are recorded in `docs/assets/chaos_warfare_system/models_3d/chaos_assault_battalion/audio/source_manifest.md`.
-Event times in the entity follow the measured spray, step, and landing frames of the rebuilt actions.
+`sound/chaos_assault_battalion_sound.asset` declares nine runtime WAVs under `sound/chaos_warfare/chaos_assault_battalion/` and groups them into the `idle`, `attack`, `move` and `death` sound effects the entity fires.
+
+All nine runtime files were measured directly from their RIFF headers on 2026-10-04: WAVE_FORMAT_IEEE_FLOAT, mono, 44,100 Hz, 32-bit float, with durations of 6.254 s (idle breath), 2.000 s (attack), 0.247/0.247/0.263/0.247 s (the four steps) and 3.670/4.063/3.014 s (the three deaths). They entered the repository in commit `a48e000bf` on 2026-08-15 and have not changed since.
+
+The separate 2026-09-12 recovery set under `audio/recovery_20260912/derived/` is a reviewed candidate set that was never installed. Its files are PCM signed 16-bit mono 44,100 Hz, and its own `derived_manifest.json` records `status: needs_user_review` with `runtime_wiring: parent-owned; not copied`. Comparing the two sets by header and duration, only the idle breath matches the runtime length exactly, at 6.2539 s in both; the other eight differ, for example 2.000 s against 0.320 s for the attack and 3.670 s against 0.766 s for the first death. No runtime file matches an archived file byte for byte.
+
+Both sets are therefore separate lineages, and the runtime audio keeps the earlier float build. The licence and attribution evidence for the recovery candidates is `audio/recovery_20260912/runtime_attribution.txt` with its receipt; the earlier `audio/source_manifest.md` that this section used to cite does not exist.
+
+Commit `802006bf5` rebuilt the model and retimed the entity's sound events to the new animation lengths in `gfx/entities/chaos_assault_battalion.asset`. It changed no WAV and did not touch the sound asset, so event times follow the measured spray, step and landing frames of the rebuilt actions while the nine recordings stay as they were.
+
+### Selection audio is an engine limit
+
+Per-subunit selection audio has no route. The engine's selection cues are the global `select_army`, `select_vehicle` and `select_tank` sound-effect groups defined in the installed `sound/soundeffects.asset` at lines 1001, 1014 and 1024; no file under the installed `common/` references any of them, so the engine chooses one by unit kind with no script hook. Entity audio attaches only to animation-state events, as `event = { ... sound = { soundeffect = ... } }` inside an `animation` block, which the vanilla entity assets use throughout.
+
+A per-subunit selection cue would therefore mean redefining a global group, which would replace every country's infantry selection voice. That is out of scope, so the battalion keeps the vanilla selection cue for its unit kind and gets its character from the idle, move, attack and death events.
 
 ## Live validation boundary
 
