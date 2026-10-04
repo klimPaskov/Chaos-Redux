@@ -148,6 +148,11 @@ video_game_in_sweden_can_pay_adjudicators = {
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.adjudicators_army_experience }
 }
 
+video_game_in_sweden_can_pay_followup = {
+	NOT = { has_army_experience < constant:video_game_in_sweden_cost.followup_army_experience }
+	NOT = { has_equipment = { support_equipment < constant:video_game_in_sweden_cost.followup_support_equipment } }
+}
+
 video_game_in_sweden_can_pay_dual_track_plans = {
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.dual_track_plans_army_experience }
 	NOT = { command_power < constant:video_game_in_sweden_cost.dual_track_plans_command_power }
@@ -171,16 +176,26 @@ video_game_in_sweden_can_pay_dual_track = {
 # consumed output before entry so its storage survives the helper's return.
 # Available-reserve scratch values are local. No persistent state changes.
 video_game_in_sweden_quote_restriction = {
+	# A failed field validation, audit or dual-track verification halves every
+	# nominal charge through the stored fee factor.
+	set_temp_variable = { video_game_in_sweden_restriction_fee_scale = constant:video_game_in_sweden_effect.restriction_full_fee_factor }
+	OR = {
+		NOT = { has_variable = video_game_in_sweden_restriction_fee_factor }
+		set_temp_variable = { video_game_in_sweden_restriction_fee_scale = video_game_in_sweden_restriction_fee_factor }
+	}
+	set_temp_variable = { video_game_in_sweden_restriction_nominal_fee = constant:video_game_in_sweden_cost.restriction_political_power }
+	multiply_temp_variable = { video_game_in_sweden_restriction_nominal_fee = video_game_in_sweden_restriction_fee_scale }
 	set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = has_political_power }
 	clamp_temp_variable = {
 		var = video_game_in_sweden_restriction_political_power_quote
 		min = constant:video_game_in_sweden_value.zero
-		max = constant:video_game_in_sweden_cost.restriction_political_power
+		max = video_game_in_sweden_restriction_nominal_fee
 	}
 	set_temp_variable = { video_game_in_sweden_restriction_available_stability = has_stability }
 	clamp_temp_variable = { var = video_game_in_sweden_restriction_available_stability min = constant:video_game_in_sweden_value.zero max = constant:video_game_in_sweden_value.one }
 	set_temp_variable = { video_game_in_sweden_restriction_stability_quote = constant:video_game_in_sweden_effect.restriction_stability_loss }
 	multiply_temp_variable = { video_game_in_sweden_restriction_stability_quote = -1 }
+	multiply_temp_variable = { video_game_in_sweden_restriction_stability_quote = video_game_in_sweden_restriction_fee_scale }
 	clamp_temp_variable = {
 		var = video_game_in_sweden_restriction_stability_quote
 		min = constant:video_game_in_sweden_value.zero
@@ -190,6 +205,7 @@ video_game_in_sweden_quote_restriction = {
 	clamp_temp_variable = { var = video_game_in_sweden_restriction_available_war_support min = constant:video_game_in_sweden_value.zero max = constant:video_game_in_sweden_value.one }
 	set_temp_variable = { video_game_in_sweden_restriction_war_support_quote = constant:video_game_in_sweden_effect.restriction_war_support_loss }
 	multiply_temp_variable = { video_game_in_sweden_restriction_war_support_quote = -1 }
+	multiply_temp_variable = { video_game_in_sweden_restriction_war_support_quote = video_game_in_sweden_restriction_fee_scale }
 	clamp_temp_variable = {
 		var = video_game_in_sweden_restriction_war_support_quote
 		min = constant:video_game_in_sweden_value.zero
@@ -297,6 +313,18 @@ video_game_in_sweden_has_validation_evidence = {
 		has_country_flag = video_game_in_sweden_field_validation_success
 		has_country_flag = video_game_in_sweden_red_team_complete
 	}
+}
+
+# Evolution III has used its route and nothing is running: no mission, no
+# Trust the Model surge or reassessment. The final review counts this time.
+video_game_in_sweden_evolution_iii_is_idle = {
+	has_country_flag = video_game_in_sweden_evolution_iii_active
+	video_game_in_sweden_no_active_mission = yes
+	NOT = { video_game_in_sweden_evolution_iii_initial_choices_open = yes }
+	NOT = { has_country_flag = video_game_in_sweden_trust_model_active }
+	NOT = { has_country_flag = video_game_in_sweden_mandatory_reassessment_pending }
+	NOT = { has_country_flag = video_game_in_sweden_recovery_active }
+	NOT = { has_country_flag = video_game_in_sweden_restriction_active }
 }
 
 video_game_in_sweden_evolution_iii_initial_choices_open = {

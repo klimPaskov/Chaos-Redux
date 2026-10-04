@@ -843,6 +843,77 @@ country_event = {
 	}
 }
 
+# Final review of an Evolution III programme left without a settled route.
+country_event = {
+	id = chaosx.nr24.36
+	title = chaosx.nr24.36.t
+	desc = chaosx.nr24.36.d
+	picture = GFX_report_event_024_video_game_in_sweden_release
+	is_triggered_only = yes
+	trigger = {
+		video_game_in_sweden_is_current_host = yes
+		NOT = { video_game_in_sweden_is_disabled = yes }
+		NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
+		video_game_in_sweden_evolution_iii_is_idle = yes
+	}
+
+	option = {
+		name = chaosx.nr24.36.a
+		ai_chance = {
+			base = 2
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_restriction_peace has_war = no }
+		}
+		custom_effect_tooltip = video_game_final_review_settle_tt
+		hidden_effect = {
+			video_game_in_sweden_settle_provisional = yes
+		}
+	}
+	option = {
+		name = chaosx.nr24.36.b
+		ai_chance = {
+			base = 1
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_restriction_crisis video_game_in_sweden_is_severe_campaign_crisis = yes }
+		}
+		custom_effect_tooltip = video_game_final_review_restrict_tt
+		hidden_effect = {
+			video_game_in_sweden_start_restriction = yes
+		}
+	}
+}
+
+# Result of the Evolution I targeted follow-up review.
+country_event = {
+	id = chaosx.nr24.37
+	title = chaosx.nr24.37.t
+	desc = {
+		trigger = { has_country_flag = video_game_in_sweden_followup_review_passed }
+		text = chaosx.nr24.37.passed_d
+	}
+	desc = { text = chaosx.nr24.37.inconclusive_d }
+	picture = GFX_report_event_024_video_game_in_sweden_release
+	is_triggered_only = yes
+	trigger = {
+		video_game_in_sweden_is_current_host = yes
+		OR = {
+			has_country_flag = video_game_in_sweden_followup_review_passed
+			has_country_flag = video_game_in_sweden_followup_review_inconclusive
+		}
+	}
+
+	option = {
+		name = chaosx.nr24.37.a
+		trigger = { has_country_flag = video_game_in_sweden_followup_review_passed }
+		ai_chance = { base = 1 }
+		clr_country_flag = video_game_in_sweden_followup_review_passed
+	}
+	option = {
+		name = chaosx.nr24.37.b
+		trigger = { NOT = { has_country_flag = video_game_in_sweden_followup_review_passed } }
+		ai_chance = { base = 1 }
+		clr_country_flag = video_game_in_sweden_followup_review_inconclusive
+	}
+}
+
 country_event = {
 	id = chaosx.nr24.40
 	title = chaosx.nr24.40.t

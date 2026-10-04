@@ -204,6 +204,8 @@ video_game_in_sweden_initialize_program = {
 		set_variable = { video_game_in_sweden_evolution_i_progress = constant:video_game_in_sweden_value.zero }
 		set_variable = { video_game_in_sweden_evolution_ii_progress = constant:video_game_in_sweden_value.zero }
 		set_variable = { video_game_in_sweden_evolution_iii_progress = constant:video_game_in_sweden_value.zero }
+		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_full_fee_factor }
+		set_variable = { video_game_in_sweden_final_review_days = constant:video_game_in_sweden_value.zero }
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_active }
 		clr_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		clr_country_flag = video_game_in_sweden_trust_model_meaningful_war
@@ -1160,6 +1162,84 @@ video_game_in_sweden_do_dual_track_resolve = {
 	video_game_in_sweden_change_reliance = yes
 }
 
+video_game_in_sweden_pay_followup = {
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.followup_army_experience }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	army_experience = video_game_in_sweden_cost
+	set_temp_variable = { video_game_in_sweden_cost = constant:video_game_in_sweden_cost.followup_support_equipment }
+	multiply_temp_variable = { video_game_in_sweden_cost = -1 }
+	add_equipment_to_stockpile = { type = support_equipment amount = video_game_in_sweden_cost }
+}
+
+# COUNTRY scope. Opens the Evolution I targeted follow-up after a partial or
+# failed field validation. A smaller party re-tests the findings for a short
+# term; the result is settled when the term ends.
+video_game_in_sweden_start_followup_review = {
+	video_game_in_sweden_pay_followup = yes
+	clr_country_flag = video_game_in_sweden_followup_review_available
+	set_country_flag = video_game_in_sweden_followup_review_running
+}
+
+# COUNTRY scope. Settles the follow-up at the end of its term. With a supplied
+# region or active front, Stockholm and supply still in place, a partial
+# finding becomes a full validation and a failed one becomes partial, which
+# clears Unresolved Field Findings. Otherwise the earlier finding stands.
+video_game_in_sweden_finish_followup_review = {
+	clr_country_flag = video_game_in_sweden_followup_review_running
+	if = {
+		limit = {
+			video_game_in_sweden_is_current_host = yes
+			video_game_in_sweden_has_front_presence = yes
+			video_game_in_sweden_has_committed_field_resources = yes
+			NOT = { video_game_in_sweden_has_campaign_supply_gap = yes }
+			owns_state = constant:video_game_in_sweden_event.stockholm_state
+			controls_state = constant:video_game_in_sweden_event.stockholm_state
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_field_validation_partial }
+			clr_country_flag = video_game_in_sweden_field_validation_partial
+			set_country_flag = video_game_in_sweden_field_validation_success
+			set_country_flag = video_game_in_sweden_logistics_mismatch_removed
+			set_country_flag = video_game_in_sweden_enemy_mismatch_removed
+			set_variable = { video_game_in_sweden_field_training_days = constant:video_game_in_sweden_timing.field_training_days }
+			video_game_in_sweden_validate_commander = yes
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.followup_partial_loss }
+		}
+		else = {
+			clr_country_flag = video_game_in_sweden_field_validation_failed
+			set_country_flag = video_game_in_sweden_field_validation_partial
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.followup_failed_loss }
+		}
+		if = {
+			limit = { has_dynamic_modifier = video_game_in_sweden_field_failure_penalty }
+			remove_dynamic_modifier = { modifier = video_game_in_sweden_field_failure_penalty }
+		}
+		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+		video_game_in_sweden_change_reliance = yes
+		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_active }
+		set_country_flag = video_game_in_sweden_followup_review_passed
+	}
+	else = {
+		set_country_flag = video_game_in_sweden_followup_review_inconclusive
+	}
+	country_event = { id = chaosx.nr24.37 days = 1 }
+}
+
+# COUNTRY scope. Final review settlement: the cabinet stays only as a
+# supervised comparison instrument for a fixed term and the programme closes.
+video_game_in_sweden_settle_provisional = {
+	set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.doctrine_max }
+	video_game_in_sweden_cap_reliance = yes
+	set_country_flag = video_game_in_sweden_reality_check_disqualified
+	set_variable = { video_game_in_sweden_conclusion = constant:video_game_in_sweden_value.conclusion_dual_track }
+	video_game_in_sweden_close_program = yes
+	set_temp_variable = { video_game_in_sweden_dual_track_package_days = constant:video_game_in_sweden_timing.provisional_settlement_days }
+	add_dynamic_modifier = {
+		modifier = video_game_in_sweden_dual_track_package
+		days = video_game_in_sweden_dual_track_package_days
+	}
+}
+
 video_game_in_sweden_pay_restriction = {
 	# Caller-owned output storage survives the quote helper's return.
 	set_temp_variable = { video_game_in_sweden_restriction_political_power_quote = constant:video_game_in_sweden_value.zero }
@@ -1824,6 +1904,7 @@ video_game_in_sweden_start_narrow_reality_audit = {
 	remove_ideas = video_game_simulation_orthodoxy
 	set_country_flag = video_game_in_sweden_reality_audit_active
 	set_country_flag = video_game_in_sweden_narrow_reality_audit_started
+	clr_country_flag = video_game_in_sweden_followup_review_available
 	set_variable = { video_game_in_sweden_reality_audit_mission_days = constant:video_game_in_sweden_timing.narrow_reality_audit_days }
 	set_variable = { video_game_in_sweden_active_mission = constant:video_game_in_sweden_value.mission_reality_audit }
 	set_variable = { video_game_in_sweden_mission_elapsed_days = 0 }
@@ -2045,6 +2126,7 @@ video_game_in_sweden_failed_field_validation_apply_current = {
 		video_game_in_sweden_clear_mission_state = yes
 		set_country_flag = video_game_in_sweden_field_validation_failed
 		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_restricted }
 		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.failed_field_validation_gain }
 		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
@@ -2130,6 +2212,7 @@ video_game_in_sweden_failed_reality_audit_apply_current = {
 		video_game_in_sweden_clear_mission_state = yes
 		set_country_flag = video_game_in_sweden_reality_audit_failed
 		set_variable = { video_game_in_sweden_audit_result = constant:video_game_in_sweden_value.result_failed }
+		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		set_country_flag = video_game_in_sweden_reality_check_disqualified
 		clr_country_flag = video_game_in_sweden_provisional_dual_track
 		# Orthodoxy returns unresolved. The Reliance already shed at the audit
@@ -2179,6 +2262,7 @@ video_game_in_sweden_failed_dual_track_apply_current = {
 		video_game_in_sweden_clear_mission_state = yes
 		set_country_flag = video_game_in_sweden_dual_track_failed
 		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		clr_country_flag = video_game_in_sweden_dual_track_package_active
 		if = {
 			limit = { has_dynamic_modifier = video_game_in_sweden_dual_track_package }
@@ -2455,6 +2539,7 @@ video_game_in_sweden_close_program = {
 		remove_decision = video_game_advanced_logistics_review
 		remove_decision = video_game_independent_adjudicators
 		remove_decision = video_game_dual_track
+		remove_decision = video_game_targeted_followup
 		remove_decision = video_game_dual_track_independent_plans
 		remove_decision = video_game_dual_track_resolve_differences
 		remove_decision = video_game_restrict_use
@@ -3868,6 +3953,26 @@ video_game_in_sweden_maintenance = {
 		}
 		# Campaign-dependent pacing: eligible evolutions gain progress at their
 		# MTTH pace and fire when the progress reaches the base delay.
+		# An Evolution III programme cannot stay unresolved: idle time after a
+		# route has been used leads to a final review.
+		if = {
+			limit = { video_game_in_sweden_evolution_iii_is_idle = yes }
+			add_to_variable = { video_game_in_sweden_final_review_days = constant:video_game_in_sweden_timing.maintenance_days }
+			if = {
+				limit = {
+					check_variable = {
+						var = video_game_in_sweden_final_review_days
+						value = constant:video_game_in_sweden_timing.final_review_days
+						compare = greater_than_or_equals
+					}
+				}
+				set_variable = { video_game_in_sweden_final_review_days = constant:video_game_in_sweden_value.zero }
+				country_event = { id = chaosx.nr24.36 days = 1 }
+			}
+		}
+		else = {
+			set_variable = { video_game_in_sweden_final_review_days = constant:video_game_in_sweden_value.zero }
+		}
 		video_game_in_sweden_advance_evolution_progress = yes
 		if = {
 			limit = {

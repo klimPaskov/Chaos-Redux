@@ -143,3 +143,11 @@ State ids stay literal in state scopes, `divisions_in_state` and `has_railway_co
 Evidence: installed triggers documentation lists only `unit_organization`, `unit_strength` and template checks for divisions; the vanilla railway graph links 138 and 666 to 141; the proxy mirrors the Chaos Redux independence-wave "supplied division" organisation threshold.
 Live-game check: whether `has_railway_connection` accepts paths through allied territory is needs_live_game.
 Basis: spec part 3 Reality Audit setup (supplied divisions in three regions or equivalent active fronts), reports 16, 22 and 25.
+
+## D17. A final review closes every Evolution III path, with a field follow-up and cheaper restriction
+
+Decision: maintenance counts idle Evolution III time (a route used, no mission, no surge or reassessment, no recovery or restriction), and after `final_review_days` (150) report `.36` offers a provisional settlement (Reliance capped at Doctrine, closure, Independent Staff Comparison for `provisional_settlement_days`) or a forced restriction through the ordinary mission.
+The Evolution I follow-up is a 45-day decision whose remove effect settles the re-test: a partial finding becomes full and a failed one becomes partial when a supplied region or active front, Stockholm and supply hold, clearing the failure penalty; report `.37` files the outcome.
+The narrow reassessment consumes `followup_review_available` as the audit follow-up.
+Failed field validation, audit or dual-track verification sets `video_game_in_sweden_restriction_fee_factor` to `restriction_failure_fee_factor` (0.5); the restriction quote scales each nominal charge by it before limiting the charge to the reserve, so displayed and paid amounts agree.
+Basis: spec part 2 mandatory reassessment ("cannot remain indefinitely in Simulation Orthodoxy"), decision map field-validation and audit result tables, spec part 3 cheaper restriction after failure.

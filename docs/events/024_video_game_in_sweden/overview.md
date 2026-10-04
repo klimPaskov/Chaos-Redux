@@ -274,6 +274,18 @@ A partial or failed audit opens the narrow 90-day recovery audit when the host c
 
 Full validation grants the validated-methods idea for a finite period and begins the Reality Check achievement timer.
 
+### Closing every Evolution III path
+
+An Evolution III programme cannot stay unresolved.
+Once a route has been used and nothing is running (no mission, no Trust the Model surge or reassessment, no recovery or restriction), maintenance counts idle time, and after 150 days report `chaosx.nr24.36` makes the Ministry close the file.
+It either keeps the cabinet as a supervised instrument (Reliance capped at Doctrine, the programme closes and Independent Staff Comparison continues for 120 days) or restricts it by order through the ordinary restriction mission.
+A failed field validation, Reality Audit or dual-track verification halves every restriction charge through the stored fee factor.
+The narrow reassessment is the audit's follow-up review and consumes the follow-up marker.
+
+In Evolution I, a partial or failed field validation opens `video_game_targeted_followup`, a 45-day re-test by a smaller party.
+If a supplied training region or an active front, Stockholm and supply still hold at the end, a partial finding becomes a full validation (Reliance -6) and a failed one becomes partial (Reliance -3), clearing Unresolved Field Findings; otherwise the earlier finding stands.
+Report `chaosx.nr24.37` files the result.
+
 ### Dual track
 
 Dual track tests the cabinet beside normal planning for 120 days with 90 days of proof.
