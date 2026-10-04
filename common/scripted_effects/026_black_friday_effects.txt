@@ -689,10 +689,6 @@ black_friday_clear_active_status = {
 		remove_ideas = black_friday_sale_evolution_i
 		remove_dynamic_modifier = { modifier = black_friday_native_sale }
 		remove_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
-		every_unit_leader = {
-			remove_dynamic_modifier = { modifier = black_friday_native_leader_sale }
-			remove_dynamic_modifier = { modifier = black_friday_native_leader_sale_evolution_i }
-		}
 	}
 }
 
@@ -2183,16 +2179,6 @@ black_friday_refresh_active_cost_modifier = {
 		limit = { has_dynamic_modifier = black_friday_native_sale_evolution_i }
 		remove_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
 	}
-	every_unit_leader = {
-		if = {
-			limit = { has_dynamic_modifier = black_friday_native_leader_sale }
-			remove_dynamic_modifier = { modifier = black_friday_native_leader_sale }
-		}
-		if = {
-			limit = { has_dynamic_modifier = black_friday_native_leader_sale_evolution_i }
-			remove_dynamic_modifier = { modifier = black_friday_native_leader_sale_evolution_i }
-		}
-	}
 	if = {
 		limit = {
 			black_friday_is_active = yes
@@ -2207,40 +2193,10 @@ black_friday_refresh_active_cost_modifier = {
 			}
 			add_ideas = black_friday_sale_evolution_i
 			add_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
-			every_unit_leader = {
-				add_dynamic_modifier = { modifier = black_friday_native_leader_sale_evolution_i }
-			}
 		}
 		else = {
 			add_ideas = black_friday_sale
 			add_dynamic_modifier = { modifier = black_friday_native_sale }
-			every_unit_leader = {
-				add_dynamic_modifier = { modifier = black_friday_native_leader_sale }
-			}
-		}
-	}
-}
-
-# The vanilla unit-leader creation hook supplies the created character scope
-# and its owning country through FROM. This closes the leader surface for
-# commanders recruited while an active sale is already running.
-black_friday_refresh_created_unit_leader = {
-	if = {
-		limit = { FROM = { black_friday_is_active = yes } }
-		remove_dynamic_modifier = { modifier = black_friday_native_leader_sale }
-		remove_dynamic_modifier = { modifier = black_friday_native_leader_sale_evolution_i }
-		if = {
-			limit = {
-				FROM = {
-					check_variable = {
-						global.black_friday_discount_ratio = constant:black_friday_event.evolution_payment_ratio
-					}
-				}
-			}
-			add_dynamic_modifier = { modifier = black_friday_native_leader_sale_evolution_i }
-		}
-		else = {
-			add_dynamic_modifier = { modifier = black_friday_native_leader_sale }
 		}
 	}
 }

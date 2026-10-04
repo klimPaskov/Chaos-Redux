@@ -18,3 +18,19 @@ That drift is accepted as the in-game week and documented rather than corrected,
 
 Disposition: implemented.
 Live date progression remains a `needs_live_game` acceptance item.
+
+## D2. Unit-leader cost factors move to the country sale ideas
+
+Decision: `army_leader_cost_factor`, `navy_leader_cost_factor`, and `promote_cost_factor` are carried by `black_friday_sale` (-0.5) and `black_friday_sale_evolution_i` (-0.75) beside the existing `unit_leader_as_advisor_cp_cost_factor`.
+The leader-scoped dynamic modifiers `black_friday_native_leader_sale` and `black_friday_native_leader_sale_evolution_i`, the `every_unit_leader` loops in activation and expiry, `black_friday_refresh_created_unit_leader`, and `common/on_actions/026_black_friday_on_actions.txt` (the `on_unit_leader_created` hook) are removed.
+
+Basis: vanilla applies these factors in country ideas (`common/ideas/army_spirits.txt:87`, `:121`, `:290`; `common/ideas/SOV.txt:304`, `:1210`; `common/ideas/british_raj.txt:365`).
+The `unit_leader` category in `documentation/modifiers_documentation.md` is a display grouping, not the payer scope.
+A modifier on an existing leader cannot discount recruiting a new one, so the old placement missed the main purchase and ran a leader loop on every country at activation and expiry for no benefit.
+
+Deviation from the lead's acceptance text: `military_leader_cost_factor` is not carried.
+The offline wiki Modifiers page describes it as the cost to recruit any unit leader, and `army_leader_cost_factor` and `navy_leader_cost_factor` as the land and naval cost.
+Carrying all three would apply the sale twice to every recruit (to zero if the engine adds factors, or to a quarter if it multiplies them), while the army and navy factors alone discount each recruit exactly once.
+
+Disposition: implemented.
+The live check that recruiting a general costs half during the sale is `needs_live_game`.
