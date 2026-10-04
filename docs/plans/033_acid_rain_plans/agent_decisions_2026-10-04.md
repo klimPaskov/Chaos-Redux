@@ -63,3 +63,32 @@ The partial share is 50 percent of the full evacuation reduction (`acid_rain_mor
 The finished-evacuation damage-pressure reduction is limited to severe and superstorm pulses for the same reason.
 The disruption modifier `acid_rain_evacuation_disruption` costs 15 percent local factory output, 25 percent local construction speed and 15 percent local supply; it is added at the start, removed at once if the evacuation fails, and removed when the severe episode closes after a finished evacuation, with a 40-day safety duration.
 The evacuation decision requires a free national action slot, because the start transaction already required one and a decision that could be taken without effect is a defect; concurrency (D6) replaces this gate with per-state receipts.
+
+### D9. Registry arrays are created before indexed writes
+
+Disposition: implemented (commit "Create Acid Rain registry arrays before writing their elements").
+An indexed `set_variable` only changes an existing element (Data structures, arrays section of the offline wiki), and every other system in the mod creates its arrays first; 74 Event 033 arrays were only cleared and then written by index.
+Each registry is cleared and resized to its bound when it is initialised; severe-cell and superstorm slots start retired so allocation sees them as free.
+
+### D10. Operation model for D6
+
+Disposition: implemented (commit "Run Acid Rain response operations side by side").
+National families (Shelter Protocols, Water Distribution, Medical Surge, Reroute Transport, demobilization) each hold one row in `acid_rain_op_*_entries` and their own completion event (`chaosx.nr33.42` to `.46`).
+Evacuations and recovery work are state operations held on the state with the paying country as a scope variable, listed in the owner's `acid_rain_op_states`, and completed by the state event `chaosx.nr33.47`; `acid_rain_evacuations_active` and `acid_rain_recovery_ops_active` count operations in progress against the band caps 2/2/4/8 and 1/1/2/3.
+Civilian factory commitments of running operations sum into one variable-valued modifier, `acid_rain_action_commitment`.
+A completed evacuation keeps its protection and disruption until its severe episode closes but no longer occupies an evacuation slot.
+Natural acute closure keeps paid recovery work and demobilization running and releases the rest; administrative closure releases everything.
+
+### D11. Decision visibility and gates (Part 5 category table)
+
+Disposition: implemented (same commit as D10).
+Projects stay visible and payable during warnings and exposure.
+Recovery decisions appear only when no warning, exposure or forecast covers the country, and each targets a state with aftermath and no acute weather of its own.
+Shelter Protocols, Water Distribution and Reroute Transport cannot be bought while their protection is still in force, and Medical Surge waits for medical fatigue to end.
+Demobilization opens whenever no warning, exposure or forecast covers the country and there is apparatus to wind down; it cancels unfinished projects through the normal path, keeps the recovery tail, and grants `acid_rain_demobilized_recovery` (10 percent repair speed, 5 percent construction speed) for 60 days, which also blocks a repeat.
+The AI does not demobilize while the crisis is active and projects are running, so paid projects are not thrown away.
+
+### D12. Two Regions Ready late binding (D4)
+
+Disposition: implemented (same commit as D10).
+When a warning visit is recorded for a state, its controller binds every running urgent operation and evacuation that has no visit yet to that visit; the existing arrival recorder then credits only completion strictly before arrival and rejects starts after arrival.

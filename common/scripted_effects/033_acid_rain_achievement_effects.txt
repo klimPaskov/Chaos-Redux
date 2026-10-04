@@ -2352,11 +2352,17 @@ acid_rain_033_achievement_record_runtime_warning = {
 	set_temp_variable = { acid_rain_033_input_warning_front_id = acid_rain_warning_front_id }
 	set_temp_variable = { acid_rain_033_input_warning_day = acid_rain_warning_day }
 	set_temp_variable = { acid_rain_033_input_warning_has_controlled_state = @acid_rain_033_achievement_one }
-	CONTROLLER = { acid_rain_033_achievement_record_warning_visit = yes }
+	CONTROLLER = {
+		acid_rain_033_achievement_record_warning_visit = yes
+		# A paid urgent operation that is still running binds to this warning
+		# if it has none yet, so it can be credited by finishing before arrival.
+		acid_rain_bind_operations_to_warning = yes
+	}
 }
 
-# COUNTRY SCOPE. One urgent action captures one live warning visit at start.
-# A single national action cannot credit several regions.
+# COUNTRY SCOPE. One urgent action captures one live warning visit at start;
+# a running action without one binds to the next warning instead. A single
+# action cannot credit several regions.
 acid_rain_033_achievement_capture_action_start = {
 	add_to_variable = { acid_rain_033_achievement_action_receipt_sequence = @acid_rain_033_achievement_one }
 	add_to_variable = { global.acid_rain_033_action_receipt_sequence = @acid_rain_033_achievement_one }

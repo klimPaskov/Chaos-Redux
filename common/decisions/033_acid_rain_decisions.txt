@@ -8,6 +8,11 @@
 # below selects a matrix row and calls the runtime API; it never scans the
 # world or substitutes a mortality effect.
 #
+# Every requirement a player sees is a localised custom tooltip; internal
+# checks sit in hidden triggers. acid_rain_start_action rechecks the same
+# gates before any debit. National families run side by side, one each;
+# evacuations and recovery work run per state up to the band caps.
+#
 # Each custom_cost_trigger rebuilds the final quote from the stored row, the
 # same path the start effect debits. The custom_cost_text keys read the
 # persistent acid_rain_cost_<row>_<family> display rows that the quote
@@ -40,9 +45,6 @@
 @acid_rain_ai_water_aftermath = 2.00
 @acid_rain_ai_transport_aftermath = 1.75
 @acid_rain_ai_industry_aftermath = 1.50
-@acid_rain_evacuation_cap_low = 2
-@acid_rain_evacuation_cap_established = 4
-@acid_rain_evacuation_cap_great_power = 8
 @acid_rain_legacy_mission_retirement_days = 1
 
 chaosx_acid_rain_decision_category = {
@@ -71,6 +73,8 @@ chaosx_acid_rain_decision_category = {
 	# -------------------------------------------------------------------------
 	# Four repeatable preparedness projects. Each decision represents the next
 	# tier of one component, so no wall of sixteen tier buttons is exposed.
+	# Projects stay open during warnings and exposure; a tier helps only after
+	# it completes.
 	# -------------------------------------------------------------------------
 	chaosx_acid_rain_project_shelter = {
 		name = chaosx_acid_rain_project_shelter
@@ -79,23 +83,24 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
-			}
 			NOT = { has_country_flag = acid_rain_project_shelter_active }
 			check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_project_slot = yes
-			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_shelter_active } }
-			check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
-					hidden_trigger = { acid_rain_country_can_pay_project_shelter = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_project_slot
+				acid_rain_country_has_free_project_slot = yes
+			}
+			hidden_trigger = {
+				NOT = { has_country_flag = acid_rain_project_shelter_active }
+				check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
+				acid_rain_country_can_pay_project_shelter = yes
+			}
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_project_shelter = yes }
 		custom_cost_text = acid_rain_project_shelter_cost
@@ -127,23 +132,24 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
-			}
 			NOT = { has_country_flag = acid_rain_project_water_active }
 			check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_project_slot = yes
-			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_water_active } }
-			check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
-					hidden_trigger = { acid_rain_country_can_pay_project_water = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_project_slot
+				acid_rain_country_has_free_project_slot = yes
+			}
+			hidden_trigger = {
+				NOT = { has_country_flag = acid_rain_project_water_active }
+				check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
+				acid_rain_country_can_pay_project_water = yes
+			}
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_project_water = yes }
 		custom_cost_text = acid_rain_project_water_cost
@@ -176,23 +182,24 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
-			}
 			NOT = { has_country_flag = acid_rain_project_medical_active }
 			check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_project_slot = yes
-			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_medical_active } }
-			check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
-					hidden_trigger = { acid_rain_country_can_pay_project_medical = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_project_slot
+				acid_rain_country_has_free_project_slot = yes
+			}
+			hidden_trigger = {
+				NOT = { has_country_flag = acid_rain_project_medical_active }
+				check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
+				acid_rain_country_can_pay_project_medical = yes
+			}
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_project_medical = yes }
 		custom_cost_text = acid_rain_project_medical_cost
@@ -225,23 +232,24 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
-			}
 			NOT = { has_country_flag = acid_rain_project_transport_active }
 			check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_project_slot = yes
-			hidden_trigger = { NOT = { has_country_flag = acid_rain_project_transport_active } }
-			check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
-					hidden_trigger = { acid_rain_country_can_pay_project_transport = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_project_slot
+				acid_rain_country_has_free_project_slot = yes
+			}
+			hidden_trigger = {
+				NOT = { has_country_flag = acid_rain_project_transport_active }
+				check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
+				acid_rain_country_can_pay_project_transport = yes
+			}
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_project_transport = yes }
 		custom_cost_text = acid_rain_project_transport_cost
@@ -271,8 +279,9 @@ chaosx_acid_rain_decision_category = {
 	}
 
 	# -------------------------------------------------------------------------
-	# Five urgent action families. Water and evacuation choose their land or
-	# island route inside the same runtime action effect, so neither family has
+	# Five urgent action families. Each national family runs at most once at a
+	# time and different families run side by side. Water and evacuation pick
+	# their land or island route inside the runtime, so neither family has
 	# duplicate visible buttons or a mixed train-plus-convoy debit.
 	# -------------------------------------------------------------------------
 	chaosx_acid_rain_urgent_shelter = {
@@ -282,22 +291,23 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
-			}
+			acid_rain_country_faces_rain = yes
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_action_slot = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
 			}
-					hidden_trigger = { acid_rain_country_can_pay_action_shelter = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_faces_rain
+				acid_rain_country_faces_rain = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_shelter_free
+				acid_rain_shelter_operation_available = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_action_shelter = yes }
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_action_shelter = yes }
 		custom_cost_text = acid_rain_urgent_shelter_cost
@@ -323,22 +333,23 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
-			}
+			acid_rain_country_faces_rain = yes
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_action_slot = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
 			}
-					hidden_trigger = { acid_rain_country_can_pay_action_water = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_faces_rain
+				acid_rain_country_faces_rain = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_water_free
+				acid_rain_water_operation_available = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_action_water = yes }
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_action_water = yes }
 		custom_cost_text = acid_rain_urgent_water_cost
@@ -365,22 +376,23 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
-			}
+			acid_rain_country_faces_rain = yes
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_action_slot = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
 			}
-					hidden_trigger = { acid_rain_country_can_pay_action_medical = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_faces_rain
+				acid_rain_country_faces_rain = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_medical_free
+				acid_rain_medical_operation_available = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_action_medical = yes }
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_action_medical = yes }
 		custom_cost_text = acid_rain_urgent_medical_cost
@@ -407,22 +419,23 @@ chaosx_acid_rain_decision_category = {
 		visible = {
 			acid_rain_country_has_runtime_record = yes
 			acid_rain_runtime_is_active = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
-			}
+			acid_rain_country_faces_rain = yes
 		}
 		available = {
-			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_action_slot = yes
-			OR = {
-				has_country_flag = acid_rain_country_warning_active
-				has_country_flag = acid_rain_country_exposure_active
-				has_country_flag = acid_rain_country_severe_forecast_active
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
 			}
-					hidden_trigger = { acid_rain_country_can_pay_action_transport = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_faces_rain
+				acid_rain_country_faces_rain = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_transport_free
+				acid_rain_transport_operation_available = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_action_transport = yes }
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_action_transport = yes }
 		custom_cost_text = acid_rain_urgent_transport_cost
@@ -452,35 +465,20 @@ chaosx_acid_rain_decision_category = {
 			acid_rain_runtime_is_active = yes
 			OR = {
 				has_country_flag = acid_rain_country_severe_forecast_active
-				any_controlled_state = {
-					acid_rain_state_is_frozen_valid = yes
-					has_variable = acid_rain_target_generation
-					check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-					OR = {
-						has_state_flag = acid_rain_severe_cell_target
-						has_state_flag = acid_rain_superstorm_target
-					}
-				}
+				check_variable = { acid_rain_evacuations_active > constant:acid_rain_runtime.zero }
 			}
 		}
 		available = {
-			acid_rain_country_action_is_not_stale = yes
-			acid_rain_country_has_free_action_slot = yes
-			OR = {
-				AND = {
-					OR = { acid_rain_country_is_fragile = yes acid_rain_country_is_limited = yes }
-					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_low compare = less_than }
-				}
-				AND = {
-					acid_rain_country_is_established = yes
-					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_established compare = less_than }
-				}
-				AND = {
-					acid_rain_country_is_great_power = yes
-					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_great_power compare = less_than }
-				}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_response_open
+				acid_rain_country_has_runtime_record = yes
+				acid_rain_country_action_is_not_stale = yes
 			}
-					hidden_trigger = { acid_rain_country_can_pay_action_evacuate = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_evacuation_cap
+				acid_rain_country_can_open_evacuation = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_action_evacuate = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -488,15 +486,10 @@ chaosx_acid_rain_decision_category = {
 		}
 		target_trigger = {
 			FROM = {
-				acid_rain_state_is_frozen_valid = yes
-				has_variable = acid_rain_target_generation
-				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-				OR = {
-					has_state_flag = acid_rain_severe_cell_target
-					has_state_flag = acid_rain_superstorm_target
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_evacuation_target
+					acid_rain_state_is_evacuation_target = yes
 				}
-				NOT = { has_state_flag = acid_rain_action_lock }
-				is_fully_controlled_by = ROOT
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -508,12 +501,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = {
-						acid_rain_state_is_frozen_valid = yes
-						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-						is_fully_controlled_by = ROOT
-						NOT = { has_state_flag = acid_rain_action_lock }
-					}
+					limit = { acid_rain_state_is_evacuation_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -526,36 +514,39 @@ chaosx_acid_rain_decision_category = {
 			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
 			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
 			modifier = { factor = @acid_rain_ai_superstorm_target FROM = { has_state_flag = acid_rain_superstorm_target } }
-			modifier = { factor = @acid_rain_ai_low_component FROM = { check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_runtime.two compare = less_than } } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_runtime.two compare = less_than } }
 			modifier = { factor = @acid_rain_ai_island_route FROM = { acid_rain_state_is_island_capable = yes } }
 		}
 	}
 
 	# -------------------------------------------------------------------------
-	# Four recovery actions. The first three use the same frozen state target
-	# list and let the runtime quote helper reject an action with no matching
-	# recorded burden. The final action closes national emergency apparatus.
+	# Four recovery actions. They appear only once no warning, exposure or
+	# forecast covers the country, and each targets a state with aftermath and
+	# no acute weather of its own. Recovery operations run side by side up to
+	# the country's band cap. Demobilization winds down the national apparatus.
 	# -------------------------------------------------------------------------
 	chaosx_acid_rain_recovery_transport = {
 		name = chaosx_acid_rain_recovery_transport
 		desc = chaosx_acid_rain_recovery_transport_desc
 		icon = GFX_decision_acid_rain_recovery_transport
 		visible = {
+			acid_rain_country_has_runtime_record = yes
+			NOT = { acid_rain_country_faces_rain = yes }
 			OR = {
 				has_country_flag = acid_rain_recovery_tail_active
 				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
 			}
 		}
 		available = {
-			acid_rain_country_has_free_action_slot = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_clear_of_rain
+				NOT = { acid_rain_country_faces_rain = yes }
 			}
-					hidden_trigger = { acid_rain_country_can_pay_recovery_transport = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_recovery_cap
+				acid_rain_country_can_open_recovery = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_recovery_transport = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -566,12 +557,10 @@ chaosx_acid_rain_decision_category = {
 		}
 		target_trigger = {
 			FROM = {
-				acid_rain_state_is_frozen_valid = yes
-				has_state_flag = acid_rain_aftercare_unresolved
-				has_variable = acid_rain_target_generation
-				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-				NOT = { has_state_flag = acid_rain_action_lock }
-				is_fully_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_recovery_target
+					acid_rain_state_is_recovery_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -583,12 +572,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = {
-						acid_rain_state_is_frozen_valid = yes
-						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-						is_fully_controlled_by = ROOT
-						NOT = { has_state_flag = acid_rain_action_lock }
-					}
+					limit = { acid_rain_state_is_recovery_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -608,21 +592,23 @@ chaosx_acid_rain_decision_category = {
 		desc = chaosx_acid_rain_recovery_decontaminate_desc
 		icon = GFX_decision_acid_rain_recovery_decontaminate
 		visible = {
+			acid_rain_country_has_runtime_record = yes
+			NOT = { acid_rain_country_faces_rain = yes }
 			OR = {
 				has_country_flag = acid_rain_recovery_tail_active
 				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
 			}
 		}
 		available = {
-			acid_rain_country_has_free_action_slot = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_clear_of_rain
+				NOT = { acid_rain_country_faces_rain = yes }
 			}
-					hidden_trigger = { acid_rain_country_can_pay_recovery_decontaminate = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_recovery_cap
+				acid_rain_country_can_open_recovery = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_recovery_decontaminate = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -633,12 +619,10 @@ chaosx_acid_rain_decision_category = {
 		}
 		target_trigger = {
 			FROM = {
-				acid_rain_state_is_frozen_valid = yes
-				has_state_flag = acid_rain_aftercare_unresolved
-				has_variable = acid_rain_target_generation
-				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-				NOT = { has_state_flag = acid_rain_action_lock }
-				is_fully_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_recovery_target
+					acid_rain_state_is_recovery_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -650,12 +634,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = {
-						acid_rain_state_is_frozen_valid = yes
-						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-						is_fully_controlled_by = ROOT
-						NOT = { has_state_flag = acid_rain_action_lock }
-					}
+					limit = { acid_rain_state_is_recovery_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -675,21 +654,23 @@ chaosx_acid_rain_decision_category = {
 		desc = chaosx_acid_rain_recovery_industry_desc
 		icon = GFX_decision_acid_rain_recovery_industry
 		visible = {
+			acid_rain_country_has_runtime_record = yes
+			NOT = { acid_rain_country_faces_rain = yes }
 			OR = {
 				has_country_flag = acid_rain_recovery_tail_active
 				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
 			}
 		}
 		available = {
-			acid_rain_country_has_free_action_slot = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_clear_of_rain
+				NOT = { acid_rain_country_faces_rain = yes }
 			}
-					hidden_trigger = { acid_rain_country_can_pay_recovery_industry = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_recovery_cap
+				acid_rain_country_can_open_recovery = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_recovery_industry = yes }
 		}
 		state_target = any_controlled_state
 		target_root_trigger = {
@@ -700,12 +681,10 @@ chaosx_acid_rain_decision_category = {
 		}
 		target_trigger = {
 			FROM = {
-				acid_rain_state_is_frozen_valid = yes
-				has_state_flag = acid_rain_aftercare_unresolved
-				has_variable = acid_rain_target_generation
-				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-				NOT = { has_state_flag = acid_rain_action_lock }
-				is_fully_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = acid_rain_tt_recovery_target
+					acid_rain_state_is_recovery_target = yes
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -717,12 +696,7 @@ chaosx_acid_rain_decision_category = {
 			clear_variable = acid_rain_selected_action_state
 			FROM = {
 				if = {
-					limit = {
-						acid_rain_state_is_frozen_valid = yes
-						check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-						is_fully_controlled_by = ROOT
-						NOT = { has_state_flag = acid_rain_action_lock }
-					}
+					limit = { acid_rain_state_is_recovery_target = yes }
 					set_variable = { ROOT.acid_rain_selected_action_state = THIS }
 				}
 			}
@@ -743,25 +717,24 @@ chaosx_acid_rain_decision_category = {
 		desc = chaosx_acid_rain_recovery_demobilize_desc
 		icon = GFX_decision_acid_rain_recovery_demobilize
 		visible = {
-			OR = {
-				has_country_flag = acid_rain_recovery_tail_active
-				check_variable = { acid_rain_committed_manpower > constant:acid_rain_runtime.zero }
-				check_variable = { acid_rain_committed_civilian_factories > constant:acid_rain_runtime.zero }
-			}
+			acid_rain_country_has_runtime_record = yes
+			NOT = { acid_rain_country_faces_rain = yes }
+			acid_rain_country_has_apparatus_to_demobilize = yes
 		}
 		available = {
-			NOT = { acid_rain_runtime_is_active = yes }
-			acid_rain_country_has_free_action_slot = yes
-			NOT = {
-				OR = {
-					has_country_flag = acid_rain_country_warning_active
-					has_country_flag = acid_rain_country_exposure_active
-					has_country_flag = acid_rain_country_severe_forecast_active
-				}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_clear_of_rain
+				NOT = { acid_rain_country_faces_rain = yes }
 			}
-			check_variable = { acid_rain_active_projects = constant:acid_rain_runtime.zero }
-			check_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
-					hidden_trigger = { acid_rain_country_can_pay_recovery_demobilize = yes }
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_demobilize_free
+				acid_rain_demobilize_operation_available = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = acid_rain_tt_apparatus
+				acid_rain_country_has_apparatus_to_demobilize = yes
+			}
+			hidden_trigger = { acid_rain_country_can_pay_recovery_demobilize = yes }
 		}
 		custom_cost_trigger = { acid_rain_country_can_pay_recovery_demobilize = yes }
 		custom_cost_text = acid_rain_recovery_demobilize_cost
@@ -774,9 +747,7 @@ chaosx_acid_rain_decision_category = {
 		}
 		ai_will_do = {
 			base = @acid_rain_ai_recovery_demobilize
-			modifier = { factor = 0 has_country_flag = acid_rain_country_warning_active }
-			modifier = { factor = 0 has_country_flag = acid_rain_country_exposure_active }
-			modifier = { factor = 0 has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = 0 acid_rain_runtime_is_active = yes check_variable = { acid_rain_active_projects > constant:acid_rain_runtime.zero } }
 		}
 	}
 }

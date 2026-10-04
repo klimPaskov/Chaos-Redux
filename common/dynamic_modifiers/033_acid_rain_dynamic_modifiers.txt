@@ -4,7 +4,8 @@
 # Acute state bands are mutually exclusive and refreshed only by the bounded
 # Event 33 worker. Aftermath persists after acute weather and is reduced one
 # tier at a time by recovery actions. Country commitment modifiers account for
-# the exact civilian factories quoted by permanent projects and urgent work.
+# the exact civilian factories quoted by permanent projects and running
+# response operations.
 # The two legacy prototype modifiers remain defined only so migration can remove
 # them safely; the Event 33 runtime never applies them.
 # ============================================================================
@@ -154,14 +155,19 @@ acid_rain_evacuation_disruption = {
 	local_supplies_for_controller = constant:acid_rain_modifier.evacuation_supplies
 }
 
-acid_rain_action_commitment_one = {
+# Civilian factories committed by every running response operation. The
+# value is the country's acid_rain_action_civ_committed total, refreshed
+# whenever an operation opens or is released.
+acid_rain_action_commitment = {
 	icon = GFX_decision_category_acid_rain
-	civilian_factory_use = constant:acid_rain_modifier.commitment_one_factory
+	civilian_factory_use = acid_rain_action_civ_committed
 }
 
-acid_rain_action_commitment_two = {
-	icon = GFX_decision_category_acid_rain
-	civilian_factory_use = constant:acid_rain_modifier.commitment_two_factories
+# Crews released by demobilization speed up repairs for a while.
+acid_rain_demobilized_recovery = {
+	icon = GFX_decision_acid_rain_recovery_demobilize
+	repair_speed_factor = constant:acid_rain_modifier.demobilize_repair
+	production_speed_buildings_factor = constant:acid_rain_modifier.demobilize_construction
 }
 
 acid_rain_project_commitment_1_one = { icon = GFX_decision_acid_rain_project_shelter civilian_factory_use = constant:acid_rain_modifier.commitment_one_factory }

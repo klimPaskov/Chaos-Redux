@@ -884,8 +884,9 @@ acid_rain_cancel_project = {
 }
 
 # COUNTRY SCOPE. Demobilization settles every unfinished permanent project
-# through the normal cancellation ledger, then clears temporary national
-# fatigue. Consumed equipment and political power remain spent.
+# through the normal cancellation path, clears temporary national fatigue and
+# grants a bounded repair-speed bonus while the crews return to normal work.
+# Consumed equipment and political power remain spent.
 acid_rain_demobilize_emergency_apparatus = {
 	for_loop_effect = {
 		start = constant:acid_rain_runtime.one
@@ -895,74 +896,225 @@ acid_rain_demobilize_emergency_apparatus = {
 		acid_rain_cancel_project = yes
 	}
 	clr_country_flag = acid_rain_medical_fatigue
-	clr_country_flag = acid_rain_recovery_tail_active
+	set_temp_variable = { acid_rain_demobilized_days = constant:acid_rain_preparedness.demobilize_recovery_days }
+	set_country_flag = { flag = acid_rain_demobilized days = acid_rain_demobilized_days }
+	add_dynamic_modifier = { modifier = acid_rain_demobilized_recovery days = acid_rain_demobilized_days }
 }
 
 # ---------------------------------------------------------------------------
-# National and state-targeted response transaction API
+# Response operations
 # ---------------------------------------------------------------------------
+# Shelter Protocols, Water Distribution, Medical Surge, Reroute Transport and
+# demobilization run as national operations, one per family at a time, in the
+# acid_rain_op_*_entries rows indexed by acid_rain_action.family_*.
+# Evacuations and recovery work run as state operations, one per state, held
+# on the state itself and listed in the owner's acid_rain_op_states array.
+# acid_rain_evacuations_active and acid_rain_recovery_ops_active count the
+# operations in progress against the band caps.
+# Every operation keeps its own paid reservation, schedules its own completion
+# callback and is released exactly once by completion, interruption or cleanup.
+# Completion, release and binding effects never read ROOT, so they run from
+# callbacks and participant loops alike; only acid_rain_start_action expects
+# the deciding country as ROOT.
 
-# COUNTRY SCOPE. Reconstructs the selected state from the frozen registry.
-# The saved state id is the source of truth; the resolved scope variable is
-# rebuilt before each transaction and cleared when commitments are released.
-# Using a regular scope variable permits explicit invalidation on failed lookup.
-acid_rain_resolve_action_target_state = {
-	clear_variable = acid_rain_selected_action_state
-	if = {
-		limit = { has_variable = acid_rain_action_target_state }
-		for_each_scope_loop = {
-			array = global.acid_rain_frozen_states
-			if = {
-				limit = {
-					check_variable = { var = THIS.id value = ROOT.acid_rain_action_target_state compare = equals }
-					acid_rain_state_is_frozen_valid = yes
-				}
-				set_variable = { ROOT.acid_rain_selected_action_state = THIS }
-			}
+# COUNTRY SCOPE. Creates empty operation rows for a new country record.
+acid_rain_initialize_operation_rows = {
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_action.family_rows }
+	clear_array = acid_rain_op_action_entries
+	resize_array = { array = acid_rain_op_action_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_end_day_entries
+	resize_array = { array = acid_rain_op_end_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_generation_entries
+	resize_array = { array = acid_rain_op_generation_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_manpower_entries
+	resize_array = { array = acid_rain_op_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_civ_entries
+	resize_array = { array = acid_rain_op_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_effect_days_entries
+	resize_array = { array = acid_rain_op_effect_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_key_entries
+	resize_array = { array = acid_rain_op_key_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_start_day_entries
+	resize_array = { array = acid_rain_op_start_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_visit_entries
+	resize_array = { array = acid_rain_op_visit_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_region_entries
+	resize_array = { array = acid_rain_op_region_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_front_entries
+	resize_array = { array = acid_rain_op_front_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_warning_day_entries
+	resize_array = { array = acid_rain_op_warning_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_states
+	set_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_action_civ_committed = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_evacuation_cap = constant:acid_rain_action.evacuation_cap_fragile }
+	set_variable = { acid_rain_recovery_cap = constant:acid_rain_action.recovery_cap_fragile }
+	clr_country_flag = acid_rain_national_action_active
+}
+
+# COUNTRY SCOPE. Maps acid_rain_selected_action to its national family.
+# Output: temporary acid_rain_op_family, zero for evacuations and recovery.
+acid_rain_resolve_operation_family = {
+	set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_shelter } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_water } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_water } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_medical } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_transport } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_demobilize } }
+}
+
+# COUNTRY SCOPE. Keeps the aggregate operation flag, the civilian factory
+# commitment modifier and the category gate in step with the operation rows.
+acid_rain_refresh_operation_state = {
+	set_temp_variable = { acid_rain_running_operations = acid_rain_evacuations_active }
+	add_to_temp_variable = { acid_rain_running_operations = acid_rain_recovery_ops_active }
+	for_loop_effect = {
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_rows
+		value = acid_rain_op_scan_family
+		if = {
+			limit = { check_variable = { var = acid_rain_op_action_entries^acid_rain_op_scan_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+			add_to_temp_variable = { acid_rain_running_operations = constant:acid_rain_runtime.loop_increment }
 		}
 	}
+	if = {
+		limit = { check_variable = { var = acid_rain_running_operations value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_country_flag = acid_rain_national_action_active
+	}
+	else = { clr_country_flag = acid_rain_national_action_active }
+	clamp_variable = { var = acid_rain_action_civ_committed min = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_action_civ_committed value = constant:acid_rain_runtime.zero compare = greater_than } }
+		add_dynamic_modifier = { modifier = acid_rain_action_commitment }
+		force_update_dynamic_modifier = yes
+	}
+	else = { remove_dynamic_modifier = { modifier = acid_rain_action_commitment } }
 }
 
-acid_rain_apply_action_effect = {
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_country_flag = { flag = acid_rain_action_shelter_active days = acid_rain_quote_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_country_flag = { flag = acid_rain_action_medical_active days = acid_rain_quote_effect_days } set_temp_variable = { acid_rain_medical_fatigue_days = constant:acid_rain_preparedness.urgent_medical_effect_days } set_country_flag = { flag = acid_rain_medical_fatigue days = acid_rain_medical_fatigue_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_country_flag = { flag = acid_rain_action_transport_active days = acid_rain_quote_effect_days } }
+# COUNTRY SCOPE. Copies one operation's achievement fields into the
+# acid_rain_033_achievement_active_action_* view the achievement recorders
+# read. Input: temporary acid_rain_op_family, or var:acid_rain_selected_action_state
+# when the family is zero.
+acid_rain_load_operation_achievement_view = {
 	if = {
-		limit = {
-			OR = {
-				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
-				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
-			}
-		}
+		limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_variable = { acid_rain_033_achievement_active_action_key = acid_rain_op_key_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_start_day = acid_rain_op_start_day_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_visit = acid_rain_op_visit_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_region = acid_rain_op_region_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_front = acid_rain_op_front_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_warning_day = acid_rain_op_warning_day_entries^acid_rain_op_family }
+	}
+	else_if = {
+		limit = { has_variable = acid_rain_selected_action_state }
 		var:acid_rain_selected_action_state = {
-			if = {
-				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
-				set_state_flag = acid_rain_evacuated
-				set_state_flag = acid_rain_evacuation_receipt
-				set_variable = { acid_rain_evacuation_generation = global.acid_rain_generation_id }
-				set_variable = { acid_rain_evacuation_country_id = CONTROLLER.id }
-				set_variable = { acid_rain_evacuation_completion_day = global.date }
-				acid_rain_033_achievement_record_runtime_evacuation_completion = yes
-				CONTROLLER = { add_to_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.loop_increment } }
+			PREV = {
+				set_variable = { acid_rain_033_achievement_active_action_key = PREV.acid_rain_action_key }
+				set_variable = { acid_rain_033_achievement_active_action_start_day = PREV.acid_rain_action_start_day }
+				set_variable = { acid_rain_033_achievement_active_action_visit = PREV.acid_rain_action_visit }
+				set_variable = { acid_rain_033_achievement_active_action_region = PREV.acid_rain_action_region }
+				set_variable = { acid_rain_033_achievement_active_action_front = PREV.acid_rain_action_front }
+				set_variable = { acid_rain_033_achievement_active_action_warning_day = PREV.acid_rain_action_warning_day }
 			}
 		}
 	}
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } } acid_rain_demobilize_emergency_apparatus = yes }
 }
 
+# COUNTRY SCOPE. Opens the operation that acid_rain_debit_loaded_quote has
+# just paid. Inputs: acid_rain_selected_action, the loaded acid_rain_quote_*
+# temporaries and, for state operations, var:acid_rain_selected_action_state.
+acid_rain_open_operation = {
+	acid_rain_resolve_operation_family = yes
+	acid_rain_033_achievement_capture_action_start = yes
+	set_temp_variable = { acid_rain_op_end_day = global.date }
+	set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_temp_variable = { acid_rain_op_end_day = chaosx_date_offset }
+	add_to_variable = { acid_rain_committed_manpower = acid_rain_quote_manpower }
+	add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_quote_civ }
+	add_to_variable = { acid_rain_action_civ_committed = acid_rain_quote_civ }
+	set_variable = { acid_rain_country_last_action_day = global.date }
+	if = {
+		limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_variable = { acid_rain_op_action_entries^acid_rain_op_family = acid_rain_selected_action }
+		set_variable = { acid_rain_op_end_day_entries^acid_rain_op_family = acid_rain_op_end_day }
+		set_variable = { acid_rain_op_generation_entries^acid_rain_op_family = global.acid_rain_generation_id }
+		set_variable = { acid_rain_op_manpower_entries^acid_rain_op_family = acid_rain_quote_manpower }
+		set_variable = { acid_rain_op_civ_entries^acid_rain_op_family = acid_rain_quote_civ }
+		set_variable = { acid_rain_op_effect_days_entries^acid_rain_op_family = acid_rain_quote_effect_days }
+		set_variable = { acid_rain_op_key_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_key }
+		set_variable = { acid_rain_op_start_day_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_start_day }
+		set_variable = { acid_rain_op_visit_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_visit }
+		set_variable = { acid_rain_op_region_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_region }
+		set_variable = { acid_rain_op_front_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_front }
+		set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_warning_day }
+		if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_shelter compare = equals } } country_event = { id = chaosx.nr33.42 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_water compare = equals } } country_event = { id = chaosx.nr33.43 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_medical compare = equals } } country_event = { id = chaosx.nr33.44 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_transport compare = equals } } country_event = { id = chaosx.nr33.45 days = acid_rain_quote_days } }
+		else = { country_event = { id = chaosx.nr33.46 days = acid_rain_quote_days } }
+	}
+	else = {
+		set_temp_variable = { acid_rain_op_is_evacuation = constant:acid_rain_runtime.zero }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+			}
+			set_temp_variable = { acid_rain_op_is_evacuation = constant:acid_rain_runtime.one }
+			add_to_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.loop_increment }
+		}
+		else = { add_to_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.loop_increment } }
+		var:acid_rain_selected_action_state = {
+			PREV = { add_to_array = { array = acid_rain_op_states value = PREV } }
+			set_state_flag = acid_rain_action_lock
+			set_variable = { acid_rain_action_owner = PREV }
+			set_variable = { acid_rain_action_owner_country_id = PREV.id }
+			set_variable = { acid_rain_action_owner_generation = global.acid_rain_generation_id }
+			set_variable = { acid_rain_action_type = PREV.acid_rain_selected_action }
+			set_variable = { acid_rain_action_start_day = global.date }
+			set_variable = { acid_rain_action_due_day = acid_rain_op_end_day }
+			set_variable = { acid_rain_action_reserved_manpower = acid_rain_quote_manpower }
+			set_variable = { acid_rain_action_reserved_civ = acid_rain_quote_civ }
+			set_variable = { acid_rain_action_key = PREV.acid_rain_033_achievement_active_action_key }
+			set_variable = { acid_rain_action_visit = PREV.acid_rain_033_achievement_active_action_visit }
+			set_variable = { acid_rain_action_region = PREV.acid_rain_033_achievement_active_action_region }
+			set_variable = { acid_rain_action_front = PREV.acid_rain_033_achievement_active_action_front }
+			set_variable = { acid_rain_action_warning_day = PREV.acid_rain_033_achievement_active_action_warning_day }
+			if = {
+				limit = { check_variable = { var = acid_rain_op_is_evacuation value = constant:acid_rain_runtime.one compare = equals } }
+				# Partial severe protection begins after one full day of movement.
+				set_variable = { acid_rain_evacuation_partial_day = global.date }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_preparedness.evacuation_partial_delay_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { acid_rain_evacuation_partial_day = chaosx_date_offset }
+				set_temp_variable = { acid_rain_evacuation_disruption_days = constant:acid_rain_preparedness.evacuation_disruption_max_days }
+				add_dynamic_modifier = { modifier = acid_rain_evacuation_disruption days = acid_rain_evacuation_disruption_days }
+				acid_rain_033_achievement_record_runtime_evacuation_start = yes
+			}
+			state_event = { id = chaosx.nr33.47 days = acid_rain_quote_days trigger_for = controller }
+		}
+	}
+	acid_rain_refresh_operation_state = yes
+}
+
+# COUNTRY SCOPE. Validates, prices, debits and opens the action selected in
+# acid_rain_selected_action. State actions also need
+# var:acid_rain_selected_action_state. The same affordability and gate
+# triggers the decision shows are rechecked here before any debit.
 acid_rain_start_action = {
 	if = {
 		limit = {
 			acid_rain_country_has_runtime_record = yes
-			acid_rain_country_has_free_action_slot = yes
+			acid_rain_selected_operation_can_open = yes
 		}
-	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
@@ -986,7 +1138,7 @@ acid_rain_start_action = {
 		set_temp_variable = { acid_rain_quote_use_saved_target = constant:acid_rain_runtime.one }
 		if = { limit = { acid_rain_prepare_current_row_quote = yes } }
 		set_variable = { acid_rain_selected_action = acid_rain_cost_quote_row }
-	set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
@@ -997,6 +1149,7 @@ acid_rain_start_action = {
 		acid_rain_compute_loaded_ai_reserve_requirements = yes
 		if = {
 			limit = {
+				check_variable = { var = acid_rain_quote_valid value = constant:acid_rain_runtime.one compare = equals }
 				check_variable = { var = acid_rain_quote_days value = constant:acid_rain_runtime.zero compare = greater_than }
 				acid_rain_current_action_requirements_hold = yes
 				acid_rain_country_can_pay_quote = yes
@@ -1006,83 +1159,15 @@ acid_rain_start_action = {
 					AND = {
 						check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals }
 						has_variable = acid_rain_selected_action_state
-						var:acid_rain_selected_action_state = {
-							acid_rain_state_is_frozen_valid = yes
-							is_fully_controlled_by = ROOT
-							check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
-							NOT = { has_state_flag = acid_rain_action_lock }
-							OR = {
-								AND = {
-									OR = {
-										check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
-										check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
-									}
-									OR = {
-										has_state_flag = acid_rain_severe_cell_target
-										has_state_flag = acid_rain_superstorm_target
-									}
-								}
-								AND = {
-									check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
-									check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
-									has_state_flag = acid_rain_aftercare_unresolved
-								}
-							}
-						}
+						acid_rain_selected_state_accepts_action = yes
 					}
 				}
 			}
 			set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero }
 			acid_rain_debit_loaded_quote = yes
-			if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } }
-			add_to_variable = { acid_rain_active_action_families = acid_rain_quote_family_count }
-			set_country_flag = acid_rain_national_action_active
-			set_variable = { acid_rain_active_action = acid_rain_selected_action }
-			acid_rain_033_achievement_capture_action_start = yes
-			set_variable = { acid_rain_action_end_day = global.date }
-			set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
-			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-			chaosx_convert_days_to_date_offset = yes
-			add_to_variable = { acid_rain_action_end_day = chaosx_date_offset }
-			set_variable = { acid_rain_action_generation = global.acid_rain_generation_id }
-			add_to_variable = { acid_rain_committed_manpower = acid_rain_quote_manpower }
-			set_temp_variable = { acid_rain_action_civ_reserve = acid_rain_quote_civ }
-			add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_action_civ_reserve }
-			set_variable = { acid_rain_action_reserved_manpower = acid_rain_quote_manpower }
-			set_variable = { acid_rain_action_reserved_civ = acid_rain_quote_civ }
-			set_variable = { acid_rain_action_reserved_families = acid_rain_quote_family_count }
-			set_variable = { acid_rain_action_stored_effect_days = acid_rain_quote_effect_days }
-			set_variable = { acid_rain_action_stored_target_required = acid_rain_quote_target_required }
-			if = { limit = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_action_commitment_one } }
-			if = { limit = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_action_commitment_two } }
 			if = {
-				limit = {
-					check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals }
-					has_variable = acid_rain_selected_action_state
-				}
-				var:acid_rain_selected_action_state = {
-					set_variable = { ROOT.acid_rain_action_target_state = THIS.id }
-					set_state_flag = acid_rain_action_lock
-					set_variable = { acid_rain_action_owner_generation = global.acid_rain_generation_id }
-					set_variable = { acid_rain_action_owner_country_id = ROOT.id }
-					set_variable = { acid_rain_action_type = ROOT.acid_rain_selected_action }
-					set_variable = { acid_rain_action_start_day = global.date }
-					set_variable = { acid_rain_action_due_day = ROOT.acid_rain_action_end_day }
-					if = {
-						limit = { OR = { check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals } check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals } } }
-						# Partial severe protection begins after one full day of movement.
-						set_variable = { acid_rain_evacuation_partial_day = global.date }
-						set_temp_variable = { chaosx_date_days = constant:acid_rain_preparedness.evacuation_partial_delay_days }
-						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-						chaosx_convert_days_to_date_offset = yes
-						add_to_variable = { acid_rain_evacuation_partial_day = chaosx_date_offset }
-						set_temp_variable = { acid_rain_evacuation_disruption_days = constant:acid_rain_preparedness.evacuation_disruption_max_days }
-						add_dynamic_modifier = { modifier = acid_rain_evacuation_disruption days = acid_rain_evacuation_disruption_days }
-						acid_rain_033_achievement_record_runtime_evacuation_start = yes
-					}
-				}
-			}
-			country_event = { id = chaosx.nr33.40 days = acid_rain_quote_days }
+				limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } }
+				acid_rain_open_operation = yes
 			}
 		}
 	}
@@ -1096,6 +1181,356 @@ acid_rain_start_recovery_action = {
 	acid_rain_start_action = yes
 }
 
+# COUNTRY SCOPE. Applies a finished action. National families act on the
+# country; evacuations and recovery act on var:acid_rain_selected_action_state.
+acid_rain_apply_action_effect = {
+	set_temp_variable = { acid_rain_completed_action_type = acid_rain_selected_action }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_country_flag = { flag = acid_rain_action_shelter_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_country_flag = { flag = acid_rain_action_medical_active days = acid_rain_quote_effect_days } set_temp_variable = { acid_rain_medical_fatigue_days = constant:acid_rain_preparedness.urgent_medical_effect_days } set_country_flag = { flag = acid_rain_medical_fatigue days = acid_rain_medical_fatigue_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_country_flag = { flag = acid_rain_action_transport_active days = acid_rain_quote_effect_days } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+			}
+		}
+		var:acid_rain_selected_action_state = {
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				set_state_flag = acid_rain_evacuated
+				set_state_flag = acid_rain_evacuation_receipt
+				set_variable = { acid_rain_evacuation_generation = global.acid_rain_generation_id }
+				set_variable = { acid_rain_evacuation_country_id = CONTROLLER.id }
+				set_variable = { acid_rain_evacuation_completion_day = global.date }
+				acid_rain_033_achievement_record_runtime_evacuation_completion = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
+		}
+		var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } }
+		acid_rain_demobilize_emergency_apparatus = yes
+	}
+}
+
+# COUNTRY SCOPE. Completes national family acid_rain_op_family when its own
+# callback fires. A stale callback for an earlier operation of the same
+# family finds a later due day or another generation and does nothing.
+acid_rain_complete_national_operation = {
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than }
+			check_variable = { var = acid_rain_op_generation_entries^acid_rain_op_family value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.date value = acid_rain_op_end_day_entries^acid_rain_op_family compare = greater_than_or_equals }
+		}
+		set_variable = { acid_rain_selected_action = acid_rain_op_action_entries^acid_rain_op_family }
+		set_temp_variable = { acid_rain_quote_effect_days = acid_rain_op_effect_days_entries^acid_rain_op_family }
+		acid_rain_load_operation_achievement_view = yes
+		acid_rain_apply_action_effect = yes
+		acid_rain_033_achievement_record_runtime_action = yes
+		if = {
+			limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_water compare = equals } }
+			set_variable = { acid_rain_water_protection_until = global.date }
+			set_temp_variable = { chaosx_date_days = acid_rain_quote_effect_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { acid_rain_water_protection_until = chaosx_date_offset }
+			acid_rain_country_water_context_changed = yes
+		}
+		set_country_flag = acid_rain_action_receipt
+		acid_rain_release_national_operation = yes
+	}
+}
+
+# STATE SCOPE. Completes this state's evacuation or recovery operation when
+# its own callback fires and settles it with the country that paid for it.
+acid_rain_complete_state_operation = {
+	if = {
+		limit = {
+			has_state_flag = acid_rain_action_lock
+			has_variable = acid_rain_action_owner
+			check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.date value = acid_rain_action_due_day compare = greater_than_or_equals }
+		}
+		save_event_target_as = acid_rain_completed_action_state
+		set_temp_variable = { acid_rain_recovery_consequence_generation = acid_rain_action_owner_generation }
+		set_temp_variable = { acid_rain_recovery_consequence_key = acid_rain_action_key }
+		set_temp_variable = { acid_rain_recovery_tier_before = acid_rain_state_aftermath_tier }
+		acid_rain_advance_consequence_interval = yes
+		set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.zero }
+		if = { limit = { acid_rain_state_operation_still_valid = yes } set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.one } }
+		var:acid_rain_action_owner = {
+			set_variable = { acid_rain_selected_action_state = PREV }
+			set_variable = { acid_rain_selected_action = PREV.acid_rain_action_type }
+			set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+			if = {
+				limit = { check_variable = { var = acid_rain_action_target_valid value = constant:acid_rain_runtime.one compare = equals } }
+				acid_rain_load_operation_achievement_view = yes
+				acid_rain_apply_action_effect = yes
+				acid_rain_033_achievement_record_runtime_action = yes
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+							check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+						}
+					}
+					add_to_variable = { acid_rain_evacuations_lifetime = constant:acid_rain_runtime.loop_increment }
+				}
+				else = { event_target:acid_rain_completed_action_state = { acid_rain_record_paid_recovery_consequence = yes } }
+				set_country_flag = acid_rain_action_receipt
+			}
+			else = { set_country_flag = acid_rain_action_interrupted_stale_target }
+			acid_rain_release_state_operation = yes
+			acid_rain_project_country_obligations = yes
+			acid_rain_gui_refresh_read_only = yes
+		}
+	}
+}
+
+# COUNTRY SCOPE. Returns national family acid_rain_op_family's reservation
+# once and frees the family.
+acid_rain_release_national_operation = {
+	if = {
+		limit = { check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_temp_variable = { acid_rain_reserved_manpower = acid_rain_op_manpower_entries^acid_rain_op_family }
+		add_manpower = acid_rain_reserved_manpower
+		subtract_from_variable = { acid_rain_committed_manpower = acid_rain_reserved_manpower }
+		set_temp_variable = { acid_rain_reserved_civ = acid_rain_op_civ_entries^acid_rain_op_family }
+		subtract_from_variable = { acid_rain_committed_civilian_factories = acid_rain_reserved_civ }
+		subtract_from_variable = { acid_rain_action_civ_committed = acid_rain_reserved_civ }
+		set_variable = { acid_rain_op_action_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_end_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_generation_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_manpower_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_civ_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_effect_days_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_key_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_start_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_visit_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_region_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_front_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		acid_rain_refresh_operation_state = yes
+		acid_rain_refresh_country_project_quotes = yes
+		acid_rain_refresh_country_action_quotes = yes
+	}
+}
+
+# COUNTRY SCOPE. Returns the reservation of the state operation in
+# var:acid_rain_selected_action_state once, unlocks the state and lowers the
+# matching in-progress counter. Only the paying country may release it.
+acid_rain_release_state_operation = {
+	if = {
+		limit = {
+			has_variable = acid_rain_selected_action_state
+			var:acid_rain_selected_action_state = {
+				has_state_flag = acid_rain_action_lock
+				check_variable = { var = acid_rain_action_owner_country_id value = PREV.id compare = equals }
+			}
+		}
+		set_temp_variable = { acid_rain_reserved_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_reserved_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_released_type = constant:acid_rain_runtime.zero }
+		var:acid_rain_selected_action_state = {
+			set_temp_variable = { acid_rain_reserved_manpower = acid_rain_action_reserved_manpower }
+			set_temp_variable = { acid_rain_reserved_civ = acid_rain_action_reserved_civ }
+			set_temp_variable = { acid_rain_released_type = acid_rain_action_type }
+			# A failed evacuation ends its disruption now; a finished one keeps
+			# it until the severe episode closes.
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
+			}
+			clear_variable = acid_rain_evacuation_partial_day
+			clr_state_flag = acid_rain_action_lock
+			clear_variable = acid_rain_action_owner
+			clear_variable = acid_rain_action_owner_generation
+			clear_variable = acid_rain_action_owner_country_id
+			clear_variable = acid_rain_action_type
+			clear_variable = acid_rain_action_start_day
+			clear_variable = acid_rain_action_due_day
+			clear_variable = acid_rain_action_reserved_manpower
+			clear_variable = acid_rain_action_reserved_civ
+			clear_variable = acid_rain_action_key
+			clear_variable = acid_rain_action_visit
+			clear_variable = acid_rain_action_region
+			clear_variable = acid_rain_action_front
+			clear_variable = acid_rain_action_warning_day
+			PREV = { remove_from_array = { array = acid_rain_op_states value = PREV } }
+		}
+		add_manpower = acid_rain_reserved_manpower
+		subtract_from_variable = { acid_rain_committed_manpower = acid_rain_reserved_manpower }
+		subtract_from_variable = { acid_rain_committed_civilian_factories = acid_rain_reserved_civ }
+		subtract_from_variable = { acid_rain_action_civ_committed = acid_rain_reserved_civ }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_released_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_released_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+			}
+			subtract_from_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.loop_increment }
+			clamp_variable = { var = acid_rain_evacuations_active min = constant:acid_rain_runtime.zero }
+		}
+		else = {
+			subtract_from_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.loop_increment }
+			clamp_variable = { var = acid_rain_recovery_ops_active min = constant:acid_rain_runtime.zero }
+		}
+		clear_variable = acid_rain_selected_action_state
+		acid_rain_refresh_operation_state = yes
+		acid_rain_refresh_country_project_quotes = yes
+		acid_rain_refresh_country_action_quotes = yes
+	}
+}
+
+# COUNTRY SCOPE. Interrupts running operations and returns their
+# reservations; spent equipment, fuel, trains, convoys, trucks and political
+# power stay spent. Input: temporary acid_rain_keep_recovery_operations, one
+# to keep recovery work and demobilization running through acute dissipation.
+acid_rain_release_running_operations = {
+	for_loop_effect = {
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_rows
+		value = acid_rain_op_release_family
+		set_temp_variable = { acid_rain_op_family = acid_rain_op_release_family }
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than }
+				OR = {
+					check_variable = { var = acid_rain_keep_recovery_operations value = constant:acid_rain_runtime.zero compare = equals }
+					check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_demobilize compare = less_than }
+				}
+			}
+			set_country_flag = acid_rain_action_interrupted_cleanup
+			acid_rain_release_national_operation = yes
+		}
+	}
+	clear_temp_array = acid_rain_op_release_states
+	for_each_scope_loop = {
+		array = acid_rain_op_states
+		add_to_temp_array = { array = acid_rain_op_release_states value = THIS }
+	}
+	for_each_scope_loop = {
+		array = acid_rain_op_release_states
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_keep_recovery_operations value = constant:acid_rain_runtime.zero compare = equals }
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.recovery_transport compare = less_than }
+				}
+			}
+			PREV = {
+				set_variable = { acid_rain_selected_action_state = PREV }
+				set_country_flag = acid_rain_action_interrupted_cleanup
+				acid_rain_release_state_operation = yes
+			}
+		}
+	}
+}
+
+# COUNTRY SCOPE. Interrupts the operation on one state after a controller
+# change. Input: var:acid_rain_selected_action_state.
+acid_rain_interrupt_state_operation = {
+	set_country_flag = acid_rain_action_interrupted_control_change
+	acid_rain_release_state_operation = yes
+}
+
+# COUNTRY SCOPE. Acute dissipation stops new urgent work but preserves every
+# paid permanent project and its scheduled completion event. Recovery work
+# and demobilization keep running when acid_rain_keep_recovery_operations is
+# one; otherwise every operation is released.
+acid_rain_enter_country_recovery_tail = {
+	acid_rain_release_running_operations = yes
+	if = {
+		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
+		set_country_flag = acid_rain_recovery_tail_active
+	}
+	else = { clr_country_flag = acid_rain_recovery_tail_active }
+	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
+	clr_country_flag = acid_rain_country_warning_active
+	clr_country_flag = acid_rain_country_exposure_active
+	clr_country_flag = acid_rain_country_severe_forecast_active
+}
+
+# Called by terminal settlement, invalid tag transitions, and administrative
+# interruption. Every temporary commitment is released once; consumed
+# equipment, fuel, trains, convoys, motorized equipment, and political power
+# remain spent, and unfinished project tiers are not granted.
+acid_rain_cleanup_country_runtime = {
+	acid_rain_033_achievement_mark_admin_disqualified = yes
+	if = { limit = { exists = no } acid_rain_033_achievement_mark_country_ceased = yes }
+	set_temp_variable = { acid_rain_keep_recovery_operations = constant:acid_rain_runtime.zero }
+	acid_rain_release_running_operations = yes
+	for_loop_effect = {
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_runtime.five
+		value = acid_rain_cleanup_project_index
+		set_temp_variable = { acid_rain_selected_project = acid_rain_cleanup_project_index }
+		acid_rain_cancel_project = yes
+	}
+	if = {
+		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
+		set_country_flag = acid_rain_recovery_tail_active
+	}
+	else = { clr_country_flag = acid_rain_recovery_tail_active }
+	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
+	clr_country_flag = acid_rain_country_exposure_active
+	clr_country_flag = acid_rain_country_severe_forecast_active
+}
+
+# COUNTRY SCOPE. Binds running urgent operations that have no warning visit
+# yet to the visit described by the acid_rain_033_input_warning_* temporaries,
+# so an action started before a warning can still be credited for finishing
+# before that warning's arrival. Each operation binds to at most one visit.
+acid_rain_bind_operations_to_warning = {
+	for_loop_effect = {
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_demobilize
+		value = acid_rain_op_bind_family
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_op_action_entries^acid_rain_op_bind_family value = constant:acid_rain_runtime.zero compare = greater_than }
+				check_variable = { var = acid_rain_op_generation_entries^acid_rain_op_bind_family value = global.acid_rain_generation_id compare = equals }
+				check_variable = { var = acid_rain_op_visit_entries^acid_rain_op_bind_family value = constant:acid_rain_runtime.zero compare = equals }
+			}
+			set_variable = { acid_rain_op_visit_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_visit_id }
+			set_variable = { acid_rain_op_region_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_region_id }
+			set_variable = { acid_rain_op_front_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_front_id }
+			set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_day }
+		}
+	}
+	for_each_scope_loop = {
+		array = acid_rain_op_states
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+				check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+				check_variable = { var = acid_rain_action_visit value = constant:acid_rain_runtime.zero compare = equals }
+			}
+			set_variable = { acid_rain_action_visit = acid_rain_033_input_warning_visit_id }
+			set_variable = { acid_rain_action_region = acid_rain_033_input_warning_region_id }
+			set_variable = { acid_rain_action_front = acid_rain_033_input_warning_front_id }
+			set_variable = { acid_rain_action_warning_day = acid_rain_033_input_warning_day }
+		}
+	}
+}
+
+# STATE SCOPE. Lowers the aftermath tier by one and applies the recovery
+# bonus of the finished action. Input: temporary acid_rain_completed_action_type.
 acid_rain_apply_recovery_result = {
 	remove_dynamic_modifier = { modifier = acid_rain_aftermath_1 }
 	remove_dynamic_modifier = { modifier = acid_rain_aftermath_2 }
@@ -1133,196 +1568,17 @@ acid_rain_apply_recovery_result = {
 		else = { add_dynamic_modifier = { modifier = acid_rain_aftermath_3 days = acid_rain_aftermath_window_days } }
 	}
 	acid_rain_033_achievement_record_recovery_completion = yes
-	set_variable = { acid_rain_last_recovery_action = acid_rain_selected_action }
+	set_variable = { acid_rain_last_recovery_action = acid_rain_completed_action_type }
 	set_temp_variable = { acid_rain_recovery_transport_days = constant:acid_rain_preparedness.urgent_transport_effect_days }
 	set_temp_variable = { acid_rain_recovery_bonus_days = constant:acid_rain_preparedness.urgent_water_effect_days }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = acid_rain_recovery_transport_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_industry days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = acid_rain_recovery_transport_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_industry compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_industry days = acid_rain_recovery_bonus_days } }
 	CONTROLLER = {
 		if = { limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } } set_country_flag = acid_rain_recovery_tail_active }
 		else = { clr_country_flag = acid_rain_recovery_tail_active }
 	}
-}
-
-acid_rain_release_current_action_commitments = {
-	if = { limit = { has_country_flag = acid_rain_national_action_active }
-	set_variable = { acid_rain_selected_action = acid_rain_active_action }
-	acid_rain_resolve_action_target_state = yes
-	set_temp_variable = { acid_rain_reserved_manpower = acid_rain_action_reserved_manpower }
-	set_temp_variable = { acid_rain_action_manpower_release = acid_rain_reserved_manpower }
-	multiply_temp_variable = { acid_rain_action_manpower_release = constant:acid_rain_runtime.negative_one }
-	add_to_variable = { acid_rain_committed_manpower = acid_rain_action_manpower_release }
-	add_manpower = acid_rain_reserved_manpower
-	set_temp_variable = { acid_rain_reserved_civ = acid_rain_action_reserved_civ }
-	multiply_temp_variable = { acid_rain_reserved_civ = constant:acid_rain_runtime.negative_one }
-	add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_reserved_civ }
-	if = {
-		limit = { check_variable = { var = acid_rain_action_reserved_civ value = constant:acid_rain_runtime.one compare = equals } }
-		remove_dynamic_modifier = { modifier = acid_rain_action_commitment_one }
-	}
-	if = { limit = { check_variable = { var = acid_rain_action_reserved_civ value = constant:acid_rain_runtime.two compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_action_commitment_two } }
-	set_temp_variable = { acid_rain_active_family_release = acid_rain_action_reserved_families }
-	multiply_temp_variable = { acid_rain_active_family_release = constant:acid_rain_runtime.negative_one }
-	add_to_variable = { acid_rain_active_action_families = acid_rain_active_family_release }
-	if = {
-		limit = { has_variable = acid_rain_selected_action_state }
-		var:acid_rain_selected_action_state = {
-			if = { limit = {
-				check_variable = { var = acid_rain_action_owner_country_id value = ROOT.id compare = equals }
-				check_variable = { var = acid_rain_action_owner_generation value = ROOT.acid_rain_action_generation compare = equals }
-			}
-			# A failed evacuation ends its disruption now; a finished one keeps
-			# it until the severe episode closes.
-			if = {
-				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
-				remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
-			}
-			clear_variable = acid_rain_evacuation_partial_day
-			clr_state_flag = acid_rain_action_lock
-			clear_variable = acid_rain_action_owner_generation
-			clear_variable = acid_rain_action_owner_country_id
-			clear_variable = acid_rain_action_type
-			clear_variable = acid_rain_action_start_day
-			clear_variable = acid_rain_action_due_day
-			}
-		}
-		clear_variable = acid_rain_selected_action_state
-	}
-	clr_country_flag = acid_rain_national_action_active
-	set_variable = { acid_rain_active_action = constant:acid_rain_runtime.zero }
-	clear_variable = acid_rain_action_target_state
-	clear_variable = acid_rain_action_generation
-	clear_variable = acid_rain_action_end_day
-	clear_variable = acid_rain_action_reserved_manpower
-	clear_variable = acid_rain_action_reserved_civ
-	clear_variable = acid_rain_action_reserved_families
-	clear_variable = acid_rain_action_stored_effect_days
-	clear_variable = acid_rain_action_stored_target_required
-	acid_rain_refresh_country_project_quotes = yes
-	acid_rain_refresh_country_action_quotes = yes
-	}
-}
-
-acid_rain_complete_action = {
-	if = {
-		limit = {
-			has_country_flag = acid_rain_national_action_active
-			check_variable = { var = global.date value = acid_rain_action_end_day compare = greater_than_or_equals }
-			check_variable = { var = acid_rain_action_generation value = global.acid_rain_generation_id compare = equals }
-		}
-		set_variable = { acid_rain_selected_action = acid_rain_active_action }
-		set_temp_variable = { acid_rain_quote_effect_days = acid_rain_action_stored_effect_days }
-		set_temp_variable = { acid_rain_quote_target_required = acid_rain_action_stored_target_required }
-		acid_rain_resolve_action_target_state = yes
-		set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.one }
-		if = {
-			limit = { check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals } }
-			set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.zero }
-			if = {
-				limit = { has_variable = acid_rain_selected_action_state }
-				var:acid_rain_selected_action_state = {
-					if = {
-						limit = {
-							acid_rain_state_is_frozen_valid = yes
-							is_controlled_by = ROOT
-							has_state_flag = acid_rain_action_lock
-							check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
-							check_variable = { var = acid_rain_action_owner_country_id value = ROOT.id compare = equals }
-							check_variable = { var = acid_rain_action_type value = ROOT.acid_rain_selected_action compare = equals }
-							OR = {
-								AND = {
-									OR = {
-										check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
-										check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
-									}
-									OR = {
-										has_state_flag = acid_rain_severe_cell_target
-										has_state_flag = acid_rain_superstorm_target
-									}
-								}
-								AND = {
-									check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
-									check_variable = { var = ROOT.acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
-									has_state_flag = acid_rain_aftercare_unresolved
-								}
-							}
-						}
-						set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.one }
-					}
-				}
-			}
-		}
-		if = {
-			limit = { check_variable = { var = acid_rain_action_target_valid value = constant:acid_rain_runtime.one compare = equals } }
-			acid_rain_apply_action_effect = yes
-			acid_rain_033_achievement_record_runtime_action = yes
-			if = {
-				limit = {
-					OR = {
-						check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
-						check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
-					}
-				}
-				add_to_variable = { acid_rain_evacuations_lifetime = constant:acid_rain_runtime.loop_increment }
-			}
-			set_country_flag = acid_rain_action_receipt
-		}
-		else = { set_country_flag = acid_rain_action_interrupted_stale_target }
-		acid_rain_release_current_action_commitments = yes
-	}
-}
-
-# COUNTRY SCOPE. Acute dissipation stops new urgent work but preserves every
-# paid permanent project and its scheduled completion event. Recovery actions
-# stay available while an owned aftermath state remains unresolved.
-acid_rain_enter_country_recovery_tail = {
-	if = {
-		limit = { has_country_flag = acid_rain_national_action_active }
-		set_country_flag = acid_rain_action_interrupted_cleanup
-		acid_rain_release_current_action_commitments = yes
-	}
-	if = {
-		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
-		set_country_flag = acid_rain_recovery_tail_active
-	}
-	else = { clr_country_flag = acid_rain_recovery_tail_active }
-	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
-	clr_country_flag = acid_rain_country_warning_active
-	clr_country_flag = acid_rain_country_exposure_active
-	clr_country_flag = acid_rain_country_severe_forecast_active
-}
-
-# Called by terminal settlement, invalid tag transitions, and administrative
-# interruption. Every temporary commitment is released once; consumed
-# equipment, fuel, trains, convoys, motorized equipment, and political power
-# remain spent, and unfinished project tiers are not granted.
-acid_rain_cleanup_country_runtime = {
-	acid_rain_033_achievement_mark_admin_disqualified = yes
-	if = { limit = { exists = no } acid_rain_033_achievement_mark_country_ceased = yes }
-	if = {
-		limit = { has_country_flag = acid_rain_national_action_active }
-		set_country_flag = acid_rain_action_interrupted_cleanup
-		acid_rain_release_current_action_commitments = yes
-	}
-	for_loop_effect = {
-		start = constant:acid_rain_runtime.one
-		end = constant:acid_rain_runtime.five
-		value = acid_rain_cleanup_project_index
-		set_temp_variable = { acid_rain_selected_project = acid_rain_cleanup_project_index }
-		acid_rain_cancel_project = yes
-	}
-	if = {
-		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
-		set_country_flag = acid_rain_recovery_tail_active
-	}
-	else = { clr_country_flag = acid_rain_recovery_tail_active }
-	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
-	set_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
-	clr_country_flag = acid_rain_country_exposure_active
-	clr_country_flag = acid_rain_country_severe_forecast_active
 }
 
 # ---------------------------------------------------------------------------

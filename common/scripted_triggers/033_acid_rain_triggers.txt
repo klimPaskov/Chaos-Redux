@@ -439,11 +439,6 @@ acid_rain_country_is_great_power = {
 	check_variable = { acid_rain_country_band = constant:acid_rain_country_band.great_power }
 }
 
-acid_rain_country_has_free_action_slot = {
-	NOT = { has_country_flag = acid_rain_national_action_active }
-	check_variable = { acid_rain_active_action_families < constant:acid_rain_urgent_cost.maximum_resource_families }
-}
-
 acid_rain_country_has_free_project_slot = {
 	check_variable = {
 		var = acid_rain_active_projects
@@ -1720,20 +1715,224 @@ acid_rain_quote_recovery_demobilize = {
 	check_variable = { var = acid_rain_quote_valid value = constant:acid_rain_runtime.one compare = equals }
 }
 
-acid_rain_current_action_requirements_hold = {
-	acid_rain_country_has_runtime_record = yes
-	acid_rain_country_has_free_action_slot = yes
-	if = { limit = { check_variable = { var = acid_rain_quote_kind value = constant:acid_rain_runtime.one compare = equals } }
-		acid_rain_country_action_is_not_stale = yes
-		OR = { has_country_flag = acid_rain_country_warning_active has_country_flag = acid_rain_country_exposure_active has_country_flag = acid_rain_country_severe_forecast_active }
+# ---------------------------------------------------------------------------
+# Response operation gates. Decisions show these through localised custom
+# tooltips, and acid_rain_start_action rechecks the same triggers before any
+# debit.
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Acid rain is forecast for, or already falling on, us.
+acid_rain_country_faces_rain = {
+	OR = {
+		has_country_flag = acid_rain_country_warning_active
+		has_country_flag = acid_rain_country_exposure_active
+		has_country_flag = acid_rain_country_severe_forecast_active
+	}
+}
+
+# COUNTRY SCOPE. Input: temporary acid_rain_check_family.
+acid_rain_operation_family_is_free = {
+	check_variable = { var = acid_rain_op_action_entries^acid_rain_check_family value = constant:acid_rain_runtime.zero compare = equals }
+}
+
+acid_rain_shelter_operation_is_free = {
+	set_temp_variable = { acid_rain_check_family = constant:acid_rain_action.family_shelter }
+	acid_rain_operation_family_is_free = yes
+}
+
+acid_rain_water_operation_is_free = {
+	set_temp_variable = { acid_rain_check_family = constant:acid_rain_action.family_water }
+	acid_rain_operation_family_is_free = yes
+}
+
+acid_rain_medical_operation_is_free = {
+	set_temp_variable = { acid_rain_check_family = constant:acid_rain_action.family_medical }
+	acid_rain_operation_family_is_free = yes
+}
+
+acid_rain_transport_operation_is_free = {
+	set_temp_variable = { acid_rain_check_family = constant:acid_rain_action.family_transport }
+	acid_rain_operation_family_is_free = yes
+}
+
+acid_rain_demobilize_operation_is_free = {
+	set_temp_variable = { acid_rain_check_family = constant:acid_rain_action.family_demobilize }
+	acid_rain_operation_family_is_free = yes
+}
+
+# COUNTRY SCOPE. Each national family runs at most once, and a protection
+# that is still in force cannot be bought again.
+acid_rain_shelter_operation_available = {
+	acid_rain_shelter_operation_is_free = yes
+	NOT = { has_country_flag = acid_rain_action_shelter_active }
+}
+
+acid_rain_water_operation_available = {
+	acid_rain_water_operation_is_free = yes
+	NOT = { has_country_flag = acid_rain_action_water_active }
+}
+
+acid_rain_medical_operation_available = {
+	acid_rain_medical_operation_is_free = yes
+	NOT = { has_country_flag = acid_rain_medical_fatigue }
+}
+
+acid_rain_transport_operation_available = {
+	acid_rain_transport_operation_is_free = yes
+	NOT = { has_country_flag = acid_rain_action_transport_active }
+}
+
+acid_rain_demobilize_operation_available = {
+	acid_rain_demobilize_operation_is_free = yes
+	NOT = { has_country_flag = acid_rain_demobilized }
+}
+
+# COUNTRY SCOPE. In-progress caps by country band.
+acid_rain_country_can_open_evacuation = {
+	check_variable = { var = acid_rain_evacuations_active value = acid_rain_evacuation_cap compare = less_than }
+}
+
+acid_rain_country_can_open_recovery = {
+	check_variable = { var = acid_rain_recovery_ops_active value = acid_rain_recovery_cap compare = less_than }
+}
+
+# COUNTRY SCOPE. There is emergency work that demobilization would close.
+acid_rain_country_has_apparatus_to_demobilize = {
+	OR = {
+		check_variable = { acid_rain_active_projects > constant:acid_rain_runtime.zero }
+		check_variable = { acid_rain_committed_manpower > constant:acid_rain_runtime.zero }
+		check_variable = { acid_rain_committed_civilian_factories > constant:acid_rain_runtime.zero }
+		has_country_flag = acid_rain_medical_fatigue
+		has_country_flag = acid_rain_recovery_tail_active
+	}
+}
+
+# COUNTRY SCOPE. The family or cap of acid_rain_selected_action has room.
+acid_rain_selected_operation_can_open = {
+	if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } }
+		acid_rain_shelter_operation_available = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals }
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals }
+			}
+		}
+		acid_rain_water_operation_available = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } }
+		acid_rain_medical_operation_available = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } }
+		acid_rain_transport_operation_available = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+			}
+		}
+		acid_rain_country_can_open_evacuation = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
+		}
+		acid_rain_country_can_open_recovery = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } }
+		acid_rain_demobilize_operation_available = yes
+	}
+	else = { always = no }
+}
+
+# STATE SCOPE, ROOT is the acting country. A state that can be evacuated:
+# a current severe-cell or superstorm forecast that has not struck yet.
+acid_rain_state_is_evacuation_target = {
+	acid_rain_state_is_frozen_valid = yes
+	has_variable = acid_rain_target_generation
+	check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+	is_fully_controlled_by = ROOT
+	NOT = { has_state_flag = acid_rain_action_lock }
+	acid_rain_state_has_live_forecast = yes
+}
+
+# STATE SCOPE, ROOT is the acting country. A state with aftermath and no
+# warning, exposure or forecast of its own.
+acid_rain_state_is_recovery_target = {
+	acid_rain_state_is_frozen_valid = yes
+	has_variable = acid_rain_target_generation
+	check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+	is_fully_controlled_by = ROOT
+	NOT = { has_state_flag = acid_rain_action_lock }
+	acid_rain_state_can_start_local_recovery = yes
+	NOT = { has_state_flag = acid_rain_warning_pending }
+	NOT = { acid_rain_state_has_live_forecast = yes }
+}
+
+# COUNTRY SCOPE, ROOT is the acting country. The state stored in
+# acid_rain_selected_action_state suits acid_rain_selected_action.
+acid_rain_selected_state_accepts_action = {
+	has_variable = acid_rain_selected_action_state
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+			}
+		}
+		var:acid_rain_selected_action_state = { acid_rain_state_is_evacuation_target = yes }
 	}
 	else = {
-		NOT = { OR = { has_country_flag = acid_rain_country_warning_active has_country_flag = acid_rain_country_exposure_active has_country_flag = acid_rain_country_severe_forecast_active } }
-		if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } }
-			NOT = { acid_rain_runtime_is_active = yes }
-			check_variable = { var = acid_rain_active_projects value = constant:acid_rain_runtime.zero compare = equals }
-			check_variable = { var = acid_rain_evacuations_active value = constant:acid_rain_runtime.zero compare = equals }
+		var:acid_rain_selected_action_state = { acid_rain_state_is_recovery_target = yes }
+	}
+}
+
+# STATE SCOPE. The operation running on this state can still complete.
+acid_rain_state_operation_still_valid = {
+	acid_rain_state_is_frozen_valid = yes
+	has_state_flag = acid_rain_action_lock
+	check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+	check_variable = { var = acid_rain_action_owner_country_id value = CONTROLLER.id compare = equals }
+	OR = {
+		AND = {
+			OR = {
+				check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+				check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+			}
+			OR = {
+				has_state_flag = acid_rain_severe_cell_target
+				has_state_flag = acid_rain_superstorm_target
+			}
 		}
+		AND = {
+			check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
+			has_state_flag = acid_rain_aftercare_unresolved
+		}
+	}
+}
+
+# COUNTRY SCOPE. Rechecked by acid_rain_start_action before any debit:
+# the family or cap has room, urgent work needs rain on our territory, and
+# recovery work and demobilization need it to be gone.
+acid_rain_current_action_requirements_hold = {
+	acid_rain_country_has_runtime_record = yes
+	acid_rain_selected_operation_can_open = yes
+	if = {
+		limit = { check_variable = { var = acid_rain_quote_kind value = constant:acid_rain_runtime.one compare = equals } }
+		acid_rain_country_action_is_not_stale = yes
+		acid_rain_country_faces_rain = yes
+	}
+	else = {
+		NOT = { acid_rain_country_faces_rain = yes }
 	}
 }
 

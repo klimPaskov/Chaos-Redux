@@ -815,7 +815,9 @@ def source_contract(repo_root: Path) -> dict[str, object]:
         "acid_rain_recovery_transport",
         "acid_rain_recovery_decontamination",
         "acid_rain_recovery_industry",
-        "acid_rain_action_commitment_one",
+        "acid_rain_action_commitment",
+        "acid_rain_evacuation_disruption",
+        "acid_rain_demobilized_recovery",
     )
     required_modifiers += tuple(
         f"acid_rain_project_commitment_{project}_{tier}"

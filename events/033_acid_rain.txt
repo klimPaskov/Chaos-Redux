@@ -214,11 +214,11 @@ country_event = {
 	}
 }
 
-# One callback serves all nine urgent/recovery actions. The country ledger
-# stores the selected action and its generation, so a stale delayed event is a
-# no-op even after a reload or a second Event 033 generation.
+# Each national response family has its own completion callback. The row
+# for the family stores the paid operation, its due day and its generation, so
+# a callback left over from an earlier operation of the family is a no-op.
 country_event = {
-	id = chaosx.nr33.40
+	id = chaosx.nr33.42
 	hidden = yes
 	is_triggered_only = yes
 	trigger = {
@@ -226,55 +226,110 @@ country_event = {
 			has_global_flag = acid_rain_runtime_active
 			has_global_flag = acid_rain_aftermath_retained
 		}
-		has_country_flag = acid_rain_national_action_active
-		check_variable = { var = global.date value = acid_rain_action_end_day compare = greater_than_or_equals }
-		check_variable = { var = acid_rain_action_generation value = global.acid_rain_generation_id compare = equals }
+		NOT = { acid_rain_shelter_operation_is_free = yes }
 	}
 	immediate = {
-		# Capture the paid transaction before the owner releases its reservation.
-		set_temp_variable = { acid_rain_completed_action = acid_rain_active_action }
-		set_temp_variable = { acid_rain_recovery_consequence_generation = acid_rain_action_generation }
-		set_temp_variable = { acid_rain_recovery_consequence_key = acid_rain_033_achievement_active_action_key }
-		set_temp_variable = { acid_rain_recovery_tier_before = constant:acid_rain_aftermath.zero }
-		acid_rain_resolve_action_target_state = yes
-		if = {
-			limit = { has_variable = acid_rain_selected_action_state }
-			var:acid_rain_selected_action_state = {
-				save_event_target_as = acid_rain_completed_action_state
-				set_temp_variable = { acid_rain_recovery_tier_before = acid_rain_state_aftermath_tier }
-				acid_rain_advance_consequence_interval = yes
-			}
-		}
-		set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.zero }
-		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
-		acid_rain_complete_action = yes
-		if = {
-			limit = { check_variable = { var = acid_rain_action_target_valid value = constant:acid_rain_runtime.one compare = equals } }
-			if = {
-				limit = {
-					OR = {
-						check_variable = { var = acid_rain_completed_action value = constant:acid_rain_action.urgent_water_land compare = equals }
-						check_variable = { var = acid_rain_completed_action value = constant:acid_rain_action.urgent_water_island compare = equals }
-					}
-				}
-				set_variable = { acid_rain_water_protection_until = global.date }
-				set_temp_variable = { chaosx_date_days = acid_rain_quote_effect_days }
-				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-				chaosx_convert_days_to_date_offset = yes
-				add_to_variable = { acid_rain_water_protection_until = chaosx_date_offset }
-				acid_rain_country_water_context_changed = yes
-			}
-			if = {
-				limit = {
-					has_event_target = acid_rain_completed_action_state
-					check_variable = { var = acid_rain_completed_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
-					check_variable = { var = acid_rain_completed_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
-				}
-				event_target:acid_rain_completed_action_state = { acid_rain_record_paid_recovery_consequence = yes }
-			}
-		}
+		set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_shelter }
+		acid_rain_complete_national_operation = yes
 		acid_rain_project_country_obligations = yes
 		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.43
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		NOT = { acid_rain_water_operation_is_free = yes }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_water }
+		acid_rain_complete_national_operation = yes
+		acid_rain_project_country_obligations = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.44
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		NOT = { acid_rain_medical_operation_is_free = yes }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_medical }
+		acid_rain_complete_national_operation = yes
+		acid_rain_project_country_obligations = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.45
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		NOT = { acid_rain_transport_operation_is_free = yes }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_transport }
+		acid_rain_complete_national_operation = yes
+		acid_rain_project_country_obligations = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.46
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		NOT = { acid_rain_demobilize_operation_is_free = yes }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_demobilize }
+		acid_rain_complete_national_operation = yes
+		acid_rain_project_country_obligations = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+# Evacuations and recovery work complete through a state callback on the
+# state they serve. The state stores its paying country, generation and due
+# day, so a stale callback or one after a change of controller does nothing.
+state_event = {
+	id = chaosx.nr33.47
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		has_state_flag = acid_rain_action_lock
+		check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+		check_variable = { var = global.date value = acid_rain_action_due_day compare = greater_than_or_equals }
+	}
+	immediate = {
+		acid_rain_complete_state_operation = yes
 	}
 }
 
