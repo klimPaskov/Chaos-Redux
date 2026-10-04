@@ -66,6 +66,16 @@ The dossier is a one-element native list (`cannibalism_network_selected_country_
 `cannibalism_gui_rebuild_network_selection` drops a selection whose actor or node has retired.
 The Network window is hidden from the reveal onward, and no field names the concealed organizer.
 
+## Host command window
+
+`cannibalism_warlord_command_window` has an Overview page with Larder, Frenzy, Network Alignment and raised formations, and a States page.
+The page is the presentation-only country flag `cannibalism_warlord_gui_states_view`; no gameplay check reads it, and `cannibalism_gui_clear_command_view` clears it on an incarnation reset.
+Opening the States page runs `cannibalism_gui_rebuild_warlord_state_view`, which fills `cannibalism_command_gui_state_entries` from `every_controlled_state` of the viewing Host.
+Each card rechecks control when drawn and shows the state's name, its status (no longer held, liberated and recovering, exhausted or unusable, feeding territory resting or ready, or held ground), its population and its feedings against the exhaustion limit.
+The raid card reads the March Host's own receipt (`cannibalism_march_raid_target_state`, `_date`, `_receipt_result`, `_owner_generation`, `_target_controller`, `_target_controller_generation`), written only by a successful targeted depot raid.
+A receipt from an earlier actor generation of the same tag is not shown, and a controller whose actor generation changed since the strike is shown as a Host that no longer exists.
+Without a receipt the card says no raid was committed.
+
 ## Icons and assets
 
 The dossier reuses existing sprites only: `GFX_cannibalism_network_country_card`, `GFX_cannibalism_network_state_card`, `GFX_cannibalism_network_target_frame`, `GFX_cannibalism_selected_target_overlay_animated` and its static fallback in `interface/014_cannibalism.gfx`, plus the vanilla `GFX_mini_bg` panel and `GFX_flag_small2`.

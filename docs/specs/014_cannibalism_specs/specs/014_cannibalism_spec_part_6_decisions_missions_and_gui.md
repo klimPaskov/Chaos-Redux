@@ -604,6 +604,10 @@ Cannibal countries see:
 - raid target card
 - Network Alignment after Evolution II
 
+Disposition (audit finding E014-FINAL-03, Host command window): implemented.
+Acceptance basis: the parent-approved 2026-10-04 Overview/States composition and agent decision D7 in `docs/plans/014_cannibalism_plans/agent_decisions_2026-10-04.md`.
+Implementation evidence: the Overview page keeps the four value groups; the States page lists every controlled state with its feeding status, population and feedings, and the raid card reads the March Host's strike receipt (`docs/events/014_cannibalism/gui_data_contract.md`).
+
 ### Revealed command window
 
 After Hannibal's reveal:

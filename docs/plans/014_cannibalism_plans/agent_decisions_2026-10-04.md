@@ -83,3 +83,16 @@ Decision: a successful strike sets the timed country flag `cannibalism_march_rai
 The per-state `days_re_enable` stays as the native re-enable value.
 Every target and cost check runs before the single debit, so no refund branch exists; a target that stopped qualifying since selection charges nothing and keeps the earlier receipt.
 The receipt result distinguishes a hub that kept an undamaged level from one put out of action, and its controller generation is stored only when the controller is an Event 014 actor.
+
+## D7. Host command window pages
+
+Disposition: `implemented`.
+
+Basis: audit finding E014-FINAL-03 (warlord part) and the parent-approved 2026-10-04 Overview/States composition.
+
+Decision:
+
+- The States page list is rebuilt when the player opens the page; each card rechecks control when drawn and labels a lost state instead of hiding it, so the list never shows a gap or a stale owner.
+- The command windows keep refreshing every frame, without a `dirty` variable, so the live Larder, Frenzy and Alignment values never freeze.
+- The raid card uses the existing continental target card art instead of a second controlled-state card, so the strike record reads as a different kind of card from the state list.
+- The page flag is view state only and clears with the other view state on an incarnation reset.

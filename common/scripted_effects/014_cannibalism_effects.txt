@@ -7245,6 +7245,23 @@ cannibalism_gui_reset_current_viewer = {
 	clear_variable = cannibalism_network_gui_selected_country
 	clear_variable = cannibalism_network_gui_selected_state
 	add_to_variable = { cannibalism_network_gui_dirty = constant:cannibalism_gui_value.one }
+	cannibalism_gui_clear_command_view = yes
+}
+
+# Viewer COUNTRY scope. Clears the command windows' page flags and lists.
+cannibalism_gui_clear_command_view = {
+	clr_country_flag = cannibalism_warlord_gui_states_view
+	clr_country_flag = cannibalism_revealed_gui_loyalty_view
+	clear_array = cannibalism_command_gui_state_entries
+}
+
+# Viewer COUNTRY scope (the Host). Lists every state the Host controls when
+# the player opens the States page; each card rechecks control when drawn.
+cannibalism_gui_rebuild_warlord_state_view = {
+	clear_array = cannibalism_command_gui_state_entries
+	every_controlled_state = {
+		PREV = { add_to_array = { cannibalism_command_gui_state_entries = PREV } }
+	}
 }
 
 # ---------------------------------------------------------------------------

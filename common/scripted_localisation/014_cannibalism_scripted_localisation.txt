@@ -671,3 +671,84 @@ defined_text = {
 	}
 	text = { localization_key = cannibalism_ui_order_detail_none }
 }
+
+# ============================================================================
+# Host command window: pages, controlled states, and raid target
+# ============================================================================
+
+defined_text = {
+	name = GetCannibalismWarlordOverviewTabSprite
+	text = { trigger = { NOT = { has_country_flag = cannibalism_warlord_gui_states_view } } localization_key = GFX_chaosx_sort_button_100x29_2 }
+	text = { localization_key = GFX_sort_button_100x29 }
+}
+
+defined_text = {
+	name = GetCannibalismWarlordStatesTabSprite
+	text = { trigger = { has_country_flag = cannibalism_warlord_gui_states_view } localization_key = GFX_chaosx_sort_button_100x29_2 }
+	text = { localization_key = GFX_sort_button_100x29 }
+}
+
+# STATE scope of one controlled-state card; ROOT is the viewing Host.
+defined_text = {
+	name = GetCannibalismUiControlledStateStatus
+	text = { trigger = { NOT = { is_controlled_by = ROOT } } localization_key = cannibalism_ui_controlled_state_lost }
+	text = {
+		trigger = {
+			OR = {
+				cannibalism_state_is_liberated_recovery = yes
+				has_state_flag = cannibalism_recovery_active
+			}
+		}
+		localization_key = cannibalism_ui_controlled_state_recovering
+	}
+	text = { trigger = { cannibalism_state_is_unusable_larder = yes } localization_key = cannibalism_ui_controlled_state_exhausted }
+	text = {
+		trigger = {
+			cannibalism_state_is_warlord_consumption_territory = yes
+			has_state_flag = cannibalism_consumption_cooldown
+		}
+		localization_key = cannibalism_ui_controlled_state_cooldown
+	}
+	text = { trigger = { cannibalism_state_is_warlord_consumption_territory = yes } localization_key = cannibalism_ui_controlled_state_feeding }
+	text = { localization_key = cannibalism_ui_controlled_state_held }
+}
+
+# Host COUNTRY scope. Reads the Host's own March raid receipt; a receipt from
+# an earlier actor generation of the same tag is not shown.
+defined_text = {
+	name = GetCannibalismUiRaidTarget
+	text = {
+		trigger = { cannibalism_ui_current_host_has_valid_raid_receipt = yes }
+		localization_key = cannibalism_ui_raid_target_known
+	}
+	text = { trigger = { has_country_flag = cannibalism_origin_march_host } localization_key = cannibalism_ui_raid_target_none_march }
+	text = { localization_key = cannibalism_ui_raid_target_none_other }
+}
+
+defined_text = {
+	name = GetCannibalismUiRaidResult
+	text = {
+		trigger = { check_variable = { cannibalism_march_raid_receipt_result = constant:cannibalism_march_raid_receipt_result.hub_disabled } }
+		localization_key = cannibalism_ui_raid_result_disabled
+	}
+	text = { localization_key = cannibalism_ui_raid_result_damaged }
+}
+
+defined_text = {
+	name = GetCannibalismUiRaidController
+	text = {
+		trigger = {
+			has_variable = cannibalism_march_raid_target_controller
+			has_variable = cannibalism_march_raid_target_controller_generation
+			NOT = {
+				var:cannibalism_march_raid_target_controller = {
+					has_variable = cannibalism_actor_generation
+					check_variable = { var = cannibalism_actor_generation value = ROOT.cannibalism_march_raid_target_controller_generation compare = equals }
+				}
+			}
+		}
+		localization_key = cannibalism_ui_raid_controller_former
+	}
+	text = { trigger = { has_variable = cannibalism_march_raid_target_controller } localization_key = cannibalism_ui_raid_controller_known }
+	text = { localization_key = cannibalism_ui_raid_controller_unknown }
+}

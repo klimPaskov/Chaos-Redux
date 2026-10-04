@@ -814,6 +814,21 @@ cannibalism_ui_current_subject_strength_is_stale = {
 	check_variable = { var = cannibalism_ui_incident_date value = cannibalism_ui_strength_date compare = greater_than }
 }
 
+# Host COUNTRY scope. True when the Host holds a raid receipt written by its
+# current actor generation.
+cannibalism_ui_current_host_has_valid_raid_receipt = {
+	has_variable = cannibalism_march_raid_target_state
+	has_variable = cannibalism_march_raid_date
+	has_variable = cannibalism_march_raid_receipt_result
+	OR = {
+		NOT = { has_variable = cannibalism_march_raid_owner_generation }
+		AND = {
+			has_variable = cannibalism_actor_generation
+			check_variable = { var = cannibalism_march_raid_owner_generation value = cannibalism_actor_generation compare = equals }
+		}
+	}
+}
+
 # STATE or COUNTRY subject scope. True when any dossier record exists.
 cannibalism_ui_current_subject_has_any_record = {
 	OR = {
