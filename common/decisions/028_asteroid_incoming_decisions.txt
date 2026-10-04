@@ -31,11 +31,11 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = {
 				tooltip = asteroid_incoming_blocked_emergency_reserves_tt
 				OR = {
-					asteroid_incoming_has_emergency_supply_reserves_after_cost = yes
+					asteroid_incoming_keeps_reserve_emergency_supply_quote = yes
 					AND = {
 						has_country_flag = asteroid_incoming_medical_mobilization_selected
 						NOT = { has_country_flag = asteroid_incoming_first_medical_response_used }
-						asteroid_incoming_has_prepared_emergency_supply_reserves_after_cost = yes
+						asteroid_incoming_keeps_reserve_prepared_emergency_supply_quote = yes
 					}
 				}
 			}
@@ -53,14 +53,10 @@ asteroid_incoming_recovery_category = {
 				AND = {
 					has_country_flag = asteroid_incoming_medical_mobilization_selected
 					NOT = { has_country_flag = asteroid_incoming_first_medical_response_used }
-					has_manpower > constant:asteroid_incoming_recovery.prepared_decision_manpower
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.prepared_decision_support_equipment }
-					has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment }
+					asteroid_incoming_can_pay_prepared_emergency_supply_quote = yes
 				}
 				AND = {
-					has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-					has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment }
+					asteroid_incoming_can_pay_emergency_supply_quote = yes
 				}
 			}
 		}
@@ -79,11 +75,11 @@ asteroid_incoming_recovery_category = {
 					custom_trigger_tooltip = {
 						tooltip = asteroid_incoming_blocked_emergency_reserves_tt
 						OR = {
-							asteroid_incoming_has_emergency_supply_reserves_after_cost = yes
+							asteroid_incoming_keeps_reserve_emergency_supply_quote = yes
 							AND = {
 								has_country_flag = asteroid_incoming_medical_mobilization_selected
 								NOT = { has_country_flag = asteroid_incoming_first_medical_response_used }
-								asteroid_incoming_has_prepared_emergency_supply_reserves_after_cost = yes
+								asteroid_incoming_keeps_reserve_prepared_emergency_supply_quote = yes
 							}
 						}
 					}
@@ -100,16 +96,12 @@ asteroid_incoming_recovery_category = {
 						has_country_flag = asteroid_incoming_medical_mobilization_selected
 						NOT = { has_country_flag = asteroid_incoming_first_medical_response_used }
 					}
-					add_manpower = constant:asteroid_incoming_recovery.prepared_decision_manpower_negative
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.prepared_decision_support_equipment_negative }
-					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment_negative }
+					asteroid_incoming_pay_prepared_emergency_supply_quote = yes
 					set_country_flag = asteroid_incoming_first_medical_response_used
 					set_country_flag = asteroid_incoming_prepared_medical_response_committed
 				}
 				else = {
-					add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.decision_motorized_equipment_negative }
+					asteroid_incoming_pay_emergency_supply_quote = yes
 				}
 			}
 		}
@@ -149,11 +141,11 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = {
 				tooltip = asteroid_incoming_blocked_transport_reserves_tt
 				OR = {
-					asteroid_incoming_has_rail_recovery_reserves_after_cost = yes
+					asteroid_incoming_keeps_reserve_rail_quote = yes
 					AND = {
 						has_country_flag = asteroid_incoming_transport_dispersion_selected
 						NOT = { has_country_flag = asteroid_incoming_first_rail_response_used }
-						asteroid_incoming_has_prepared_rail_recovery_reserves_after_cost = yes
+						asteroid_incoming_keeps_reserve_prepared_rail_quote = yes
 					}
 				}
 			}
@@ -168,14 +160,10 @@ asteroid_incoming_recovery_category = {
 				AND = {
 					has_country_flag = asteroid_incoming_transport_dispersion_selected
 					NOT = { has_country_flag = asteroid_incoming_first_rail_response_used }
-					has_equipment = { train_equipment > constant:asteroid_incoming_recovery.prepared_decision_train_equipment }
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.prepared_decision_support_equipment }
-					has_fuel > constant:asteroid_incoming_recovery.prepared_decision_fuel
+					asteroid_incoming_can_pay_prepared_rail_quote = yes
 				}
 				AND = {
-					has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-					has_fuel > constant:asteroid_incoming_recovery.decision_fuel
+					asteroid_incoming_can_pay_rail_quote = yes
 				}
 			}
 		}
@@ -191,11 +179,11 @@ asteroid_incoming_recovery_category = {
 					custom_trigger_tooltip = {
 						tooltip = asteroid_incoming_blocked_transport_reserves_tt
 						OR = {
-							asteroid_incoming_has_rail_recovery_reserves_after_cost = yes
+							asteroid_incoming_keeps_reserve_rail_quote = yes
 							AND = {
 								has_country_flag = asteroid_incoming_transport_dispersion_selected
 								NOT = { has_country_flag = asteroid_incoming_first_rail_response_used }
-								asteroid_incoming_has_prepared_rail_recovery_reserves_after_cost = yes
+								asteroid_incoming_keeps_reserve_prepared_rail_quote = yes
 							}
 						}
 					}
@@ -209,16 +197,12 @@ asteroid_incoming_recovery_category = {
 						has_country_flag = asteroid_incoming_transport_dispersion_selected
 						NOT = { has_country_flag = asteroid_incoming_first_rail_response_used }
 					}
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.prepared_decision_train_equipment_negative }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.prepared_decision_support_equipment_negative }
-					add_fuel = constant:asteroid_incoming_recovery.prepared_decision_fuel_negative
+					asteroid_incoming_pay_prepared_rail_quote = yes
 					set_country_flag = asteroid_incoming_first_rail_response_used
 					set_country_flag = asteroid_incoming_prepared_rail_response_committed
 				}
 				else = {
-					add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.decision_train_equipment_negative }
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-					add_fuel = constant:asteroid_incoming_recovery.decision_fuel_negative
+					asteroid_incoming_pay_rail_quote = yes
 				}
 			}
 		}
@@ -258,11 +242,11 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = {
 				tooltip = asteroid_incoming_blocked_emergency_reserves_tt
 				OR = {
-					asteroid_incoming_has_emergency_supply_reserves_after_cost = yes
+					asteroid_incoming_keeps_reserve_emergency_supply_quote = yes
 					AND = {
 						has_country_flag = asteroid_incoming_transport_dispersion_selected
 						NOT = { has_country_flag = asteroid_incoming_first_debris_response_used }
-						asteroid_incoming_has_prepared_emergency_supply_reserves_after_cost = yes
+						asteroid_incoming_keeps_reserve_prepared_emergency_supply_quote = yes
 					}
 				}
 			}
@@ -277,14 +261,10 @@ asteroid_incoming_recovery_category = {
 				AND = {
 					has_country_flag = asteroid_incoming_transport_dispersion_selected
 					NOT = { has_country_flag = asteroid_incoming_first_debris_response_used }
-					has_manpower > constant:asteroid_incoming_recovery.prepared_decision_manpower
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.prepared_decision_support_equipment }
-					has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment }
+					asteroid_incoming_can_pay_prepared_emergency_supply_quote = yes
 				}
 				AND = {
-					has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-					has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-					has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment }
+					asteroid_incoming_can_pay_emergency_supply_quote = yes
 				}
 			}
 		}
@@ -300,11 +280,11 @@ asteroid_incoming_recovery_category = {
 					custom_trigger_tooltip = {
 						tooltip = asteroid_incoming_blocked_emergency_reserves_tt
 						OR = {
-							asteroid_incoming_has_emergency_supply_reserves_after_cost = yes
+							asteroid_incoming_keeps_reserve_emergency_supply_quote = yes
 							AND = {
 								has_country_flag = asteroid_incoming_transport_dispersion_selected
 								NOT = { has_country_flag = asteroid_incoming_first_debris_response_used }
-								asteroid_incoming_has_prepared_emergency_supply_reserves_after_cost = yes
+								asteroid_incoming_keeps_reserve_prepared_emergency_supply_quote = yes
 							}
 						}
 					}
@@ -318,16 +298,12 @@ asteroid_incoming_recovery_category = {
 						has_country_flag = asteroid_incoming_transport_dispersion_selected
 						NOT = { has_country_flag = asteroid_incoming_first_debris_response_used }
 					}
-					add_manpower = constant:asteroid_incoming_recovery.prepared_decision_manpower_negative
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.prepared_decision_support_equipment_negative }
-					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment_negative }
+					asteroid_incoming_pay_prepared_emergency_supply_quote = yes
 					set_country_flag = asteroid_incoming_first_debris_response_used
 					set_country_flag = asteroid_incoming_prepared_debris_response_committed
 				}
 				else = {
-					add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-					add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.decision_motorized_equipment_negative }
+					asteroid_incoming_pay_emergency_supply_quote = yes
 				}
 			}
 		}
@@ -360,7 +336,7 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_emergency_recovery_surface = yes FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_filters_distributed } } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_emergency_action_state_is_valid = yes } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_emergency_supply_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_emergency_supply_quote = yes }
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
@@ -368,9 +344,7 @@ asteroid_incoming_recovery_category = {
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_filters_distributed } }
-			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-			has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment }
+			asteroid_incoming_can_pay_emergency_supply_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_water_filters
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -381,15 +355,13 @@ asteroid_incoming_recovery_category = {
 			if = {
 				limit = {
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_emergency_action_state_is_valid = yes } }
-					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_emergency_supply_reserves_after_cost = yes }
+					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_emergency_supply_quote = yes }
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 					FROM = { NOT = { has_state_flag = asteroid_incoming_filters_distributed } }
 				}
 				FROM = { asteroid_incoming_save_recovery_target = yes }
 				set_country_flag = asteroid_incoming_filters_project_active
-				add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-				add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.decision_motorized_equipment_negative }
+				asteroid_incoming_pay_emergency_supply_quote = yes
 			}
 		}
 		# The native delayed row is paired with one country reservation.
@@ -422,7 +394,7 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_reconstruction_recovery_surface = yes FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt } } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_has_rail_recovery_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_keeps_reserve_rail_quote = yes }
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
@@ -430,9 +402,7 @@ asteroid_incoming_recovery_category = {
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt } }
-			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-			has_fuel > constant:asteroid_incoming_recovery.decision_fuel
+			asteroid_incoming_can_pay_rail_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_supply_spine
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -443,15 +413,13 @@ asteroid_incoming_recovery_category = {
 			if = {
 				limit = {
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_has_rail_recovery_reserves_after_cost = yes }
+					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_keeps_reserve_rail_quote = yes }
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 					FROM = { NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt } }
 				}
 				FROM = { asteroid_incoming_save_recovery_target = yes }
 				set_country_flag = asteroid_incoming_supply_spine_project_active
-				add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.decision_train_equipment_negative }
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-				add_fuel = constant:asteroid_incoming_recovery.decision_fuel_negative
+				asteroid_incoming_pay_rail_quote = yes
 			}
 		}
 		# The native delayed row is paired with one country reservation.
@@ -483,7 +451,7 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_reconstruction_recovery_surface = yes FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_outer_industry_restored } } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_industry_recovery_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_industry_quote = yes }
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
@@ -491,9 +459,7 @@ asteroid_incoming_recovery_category = {
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_outer_industry_restored } }
-			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
+			asteroid_incoming_can_pay_industry_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_outer_industry
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -504,15 +470,13 @@ asteroid_incoming_recovery_category = {
 			if = {
 				limit = {
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_industry_recovery_reserves_after_cost = yes }
+					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_industry_quote = yes }
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 					FROM = { NOT = { has_state_flag = asteroid_incoming_outer_industry_restored } }
 				}
 				FROM = { asteroid_incoming_save_recovery_target = yes }
 				set_country_flag = asteroid_incoming_outer_industry_project_active
-				add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-				add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.decision_train_equipment_negative }
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
+				asteroid_incoming_pay_industry_quote = yes
 			}
 		}
 		# The native delayed row is paired with one country reservation.
@@ -544,7 +508,7 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_reconstruction_recovery_surface = yes FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_workers_rehoused } } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_rehousing_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_rehousing_quote = yes }
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
@@ -552,9 +516,7 @@ asteroid_incoming_recovery_category = {
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_workers_rehoused } }
-			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
-			has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment }
+			asteroid_incoming_can_pay_rehousing_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_worker_rehousing
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -565,15 +527,13 @@ asteroid_incoming_recovery_category = {
 			if = {
 				limit = {
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_state_tt FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes } }
-					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_rehousing_reserves_after_cost = yes }
+					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_keeps_reserve_rehousing_quote = yes }
 					custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 					FROM = { NOT = { has_state_flag = asteroid_incoming_workers_rehoused } }
 				}
 				FROM = { asteroid_incoming_save_recovery_target = yes }
 				set_country_flag = asteroid_incoming_rehousing_project_active
-				add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-				add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.decision_train_equipment_negative }
-				add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_recovery.decision_motorized_equipment_negative }
+				asteroid_incoming_pay_rehousing_quote = yes
 			}
 		}
 		# The native delayed row is paired with one country reservation.
@@ -604,11 +564,10 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_dust_recovery_surface = yes check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } NOT = { has_country_flag = asteroid_incoming_factories_hardened } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_stage_tt check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_reserves_tt asteroid_incoming_has_dust_hardening_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_reserves_tt asteroid_incoming_keeps_reserve_dust_hardening_quote = yes }
 		}
 		custom_cost_trigger = {
-			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
+			asteroid_incoming_can_pay_dust_hardening_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_factory_hardening
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -616,8 +575,7 @@ asteroid_incoming_recovery_category = {
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = decision_asteroid_incoming_harden_factories_against_dust_tt
-			add_manpower = constant:asteroid_incoming_recovery.decision_manpower_negative
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
+			asteroid_incoming_pay_dust_hardening_quote = yes
 		}
 		remove_effect = { asteroid_incoming_harden_factories_against_dust = yes }
 		ai_will_do = {
@@ -632,12 +590,10 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_dust_recovery_surface = yes check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } NOT = { has_country_flag = asteroid_incoming_transport_protected } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_stage_tt check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_has_rail_recovery_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_keeps_reserve_dust_transport_quote = yes }
 		}
 		custom_cost_trigger = {
-			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-			has_fuel > constant:asteroid_incoming_recovery.decision_fuel
+			asteroid_incoming_can_pay_dust_transport_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_transport_protection
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -645,9 +601,7 @@ asteroid_incoming_recovery_category = {
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = decision_asteroid_incoming_protect_transport_reserves_tt
-			add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_recovery.decision_train_equipment_negative }
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-			add_fuel = constant:asteroid_incoming_recovery.decision_fuel_negative
+			asteroid_incoming_pay_dust_transport_quote = yes
 		}
 		remove_effect = { asteroid_incoming_protect_transport_reserves = yes }
 		ai_will_do = {
@@ -661,13 +615,11 @@ asteroid_incoming_recovery_category = {
 		visible = { asteroid_incoming_country_can_recover = yes asteroid_incoming_country_has_dust_recovery_surface = yes check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } NOT = { has_country_flag = asteroid_incoming_observation_network } }
 		available = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_stage_tt check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_observation_capacity_tt has_equipment = { convoy > constant:asteroid_incoming_recovery.decision_convoys } }
-			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_observation_reserves_tt asteroid_incoming_has_observation_reserves_after_cost = yes }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_observation_capacity_tt check_variable = { var = num_equipment@convoy value = global.asteroid_incoming_dust_quote_convoys compare = greater_than } }
+			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_observation_reserves_tt asteroid_incoming_keeps_reserve_dust_observation_quote = yes }
 		}
 		custom_cost_trigger = {
-			has_equipment = { convoy > constant:asteroid_incoming_recovery.decision_convoys }
-			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
-			has_fuel > constant:asteroid_incoming_recovery.decision_fuel
+			asteroid_incoming_can_pay_dust_observation_quote = yes
 		}
 		custom_cost_text = asteroid_incoming_cost_observation_network
 		modifier = { civilian_factory_use = @asteroid_incoming_decision_civilian_factory_use }
@@ -675,9 +627,7 @@ asteroid_incoming_recovery_category = {
 		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = decision_asteroid_incoming_join_observation_network_tt
-			add_equipment_to_stockpile = { type = convoy amount = constant:asteroid_incoming_recovery.decision_convoys_negative }
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_recovery.decision_support_equipment_negative }
-			add_fuel = constant:asteroid_incoming_recovery.decision_fuel_negative
+			asteroid_incoming_pay_dust_observation_quote = yes
 		}
 		remove_effect = { asteroid_incoming_join_observation_network = yes }
 		ai_will_do = {

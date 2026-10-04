@@ -498,25 +498,10 @@ asteroid_incoming_country_has_crater_target = {
 	}
 }
 
-# Availability helpers account for the manually debited custom cost. Keeping
-# these thresholds separate from the public reserve helpers prevents an action
-# from paying successfully while leaving the protected floor behind.
-asteroid_incoming_has_emergency_supply_reserves_after_cost = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_recovery.decision_manpower_after_reserve
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment_after_reserve }
-		has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment_after_reserve }
-	}
-}
-
-asteroid_incoming_has_prepared_emergency_supply_reserves_after_cost = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_recovery.prepared_decision_manpower_after_reserve
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.prepared_decision_support_equipment_after_reserve }
-		has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment_after_reserve }
-	}
-}
-
+# Crater operations keep flat prices. Their availability helpers account for
+# the manually debited cost, so an action cannot pay while leaving the
+# protected floor behind. State and dust projects use the quote checks at the
+# end of this file.
 asteroid_incoming_has_rail_recovery_reserves_after_cost = {
 	hidden_trigger = {
 		has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment_after_reserve }
@@ -525,42 +510,11 @@ asteroid_incoming_has_rail_recovery_reserves_after_cost = {
 	}
 }
 
-asteroid_incoming_has_prepared_rail_recovery_reserves_after_cost = {
-	hidden_trigger = {
-		has_equipment = { train_equipment > constant:asteroid_incoming_recovery.prepared_decision_train_equipment_after_reserve }
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.prepared_decision_support_equipment_after_reserve }
-		has_fuel > constant:asteroid_incoming_recovery.prepared_decision_fuel_after_reserve
-	}
-}
-
 asteroid_incoming_has_industry_recovery_reserves_after_cost = {
 	hidden_trigger = {
 		has_manpower > constant:asteroid_incoming_recovery.decision_manpower_after_reserve
 		has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment_after_reserve }
 		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment_after_reserve }
-	}
-}
-
-asteroid_incoming_has_rehousing_reserves_after_cost = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_recovery.decision_manpower_after_reserve
-		has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment_after_reserve }
-		has_equipment = { motorized_equipment_1 > constant:asteroid_incoming_recovery.decision_motorized_equipment_after_reserve }
-	}
-}
-
-asteroid_incoming_has_dust_hardening_reserves_after_cost = {
-	hidden_trigger = {
-		has_manpower > constant:asteroid_incoming_recovery.decision_manpower_after_reserve
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment_after_reserve }
-	}
-}
-
-asteroid_incoming_has_observation_reserves_after_cost = {
-	hidden_trigger = {
-		has_equipment = { convoy > constant:asteroid_incoming_recovery.decision_convoys_after_reserve }
-		has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment_after_reserve }
-		has_fuel > constant:asteroid_incoming_recovery.decision_fuel_after_reserve
 	}
 }
 
@@ -1276,5 +1230,173 @@ asteroid_incoming_achievement_deadline_open = {
 			value = global.asteroid_incoming_achievement_deadline_day
 			compare = less_than
 		}
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Recovery price checks
+# ----------------------------------------------------------------------------
+# COUNTRY scope. State projects read the quote stored on the target state in
+# FROM; dust projects read the global dust-stage quote. The "can pay" check is
+# the cost check and the "keeps reserve" check is the availability floor, so
+# both always match the cost text and the payment.
+
+asteroid_incoming_can_pay_emergency_supply_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_motorized compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_emergency_supply_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support_reserve compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_motorized_reserve compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_prepared_emergency_supply_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_prepared_manpower_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_prepared_support compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_prepared_motorized compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_prepared_emergency_supply_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_prepared_manpower_reserve_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_prepared_support_reserve compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_prepared_motorized_reserve compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_rail_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support compare = greater_than }
+		check_variable = { var = fuel_k value = FROM.asteroid_incoming_quote_fuel_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_rail_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains_reserve compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support_reserve compare = greater_than }
+		check_variable = { var = fuel_k value = FROM.asteroid_incoming_quote_fuel_reserve_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_prepared_rail_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_prepared_trains compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_prepared_support compare = greater_than }
+		check_variable = { var = fuel_k value = FROM.asteroid_incoming_quote_prepared_fuel_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_prepared_rail_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_prepared_trains_reserve compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_prepared_support_reserve compare = greater_than }
+		check_variable = { var = fuel_k value = FROM.asteroid_incoming_quote_prepared_fuel_reserve_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_industry_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_k compare = greater_than }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_industry_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains_reserve compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = FROM.asteroid_incoming_quote_support_reserve compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_rehousing_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_k compare = greater_than }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_motorized compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_rehousing_quote = {
+	hidden_trigger = {
+		FROM = { has_variable = asteroid_incoming_cost_multiplier }
+		check_variable = { var = manpower_k value = FROM.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+		check_variable = { var = num_equipment@train_equipment value = FROM.asteroid_incoming_quote_trains_reserve compare = greater_than }
+		check_variable = { var = num_equipment@motorized_equipment_1 value = FROM.asteroid_incoming_quote_motorized_reserve compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_dust_hardening_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = manpower_k value = global.asteroid_incoming_dust_quote_manpower_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_dust_hardening_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = manpower_k value = global.asteroid_incoming_dust_quote_manpower_reserve_k compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support_reserve compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_dust_transport_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = num_equipment@train_equipment value = global.asteroid_incoming_dust_quote_trains compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support compare = greater_than }
+		check_variable = { var = fuel_k value = global.asteroid_incoming_dust_quote_fuel_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_dust_transport_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = num_equipment@train_equipment value = global.asteroid_incoming_dust_quote_trains_reserve compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support_reserve compare = greater_than }
+		check_variable = { var = fuel_k value = global.asteroid_incoming_dust_quote_fuel_reserve_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_can_pay_dust_observation_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = num_equipment@convoy value = global.asteroid_incoming_dust_quote_convoys compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support compare = greater_than }
+		check_variable = { var = fuel_k value = global.asteroid_incoming_dust_quote_fuel_k compare = greater_than }
+	}
+}
+
+asteroid_incoming_keeps_reserve_dust_observation_quote = {
+	hidden_trigger = {
+		has_variable = global.asteroid_incoming_dust_cost_multiplier
+		check_variable = { var = num_equipment@convoy value = global.asteroid_incoming_dust_quote_convoys_reserve compare = greater_than }
+		check_variable = { var = num_equipment@support_equipment value = global.asteroid_incoming_dust_quote_support_reserve compare = greater_than }
+		check_variable = { var = fuel_k value = global.asteroid_incoming_dust_quote_fuel_reserve_k compare = greater_than }
 	}
 }

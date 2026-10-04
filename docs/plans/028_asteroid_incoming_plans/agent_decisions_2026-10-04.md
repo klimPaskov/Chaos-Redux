@@ -171,3 +171,30 @@ Only levels that actually disappear are added once to the logistics (naval bases
 Ring and fragment profiles keep their fractional state-aggregate removal.
 New and queued construction in the crater stops through the existing wasteland category and the `asteroid_incoming_main_crater` modifier (no building slots and minus 100 percent construction speed), so no separate construction purge is added.
 Whether province buildings, wrecked railways and queued projects behave this way in the running game remains a live check.
+
+## Recovery prices and transport dispersal (F08)
+
+### One stored quote per affected state
+
+Decision: each affected non-crater state stores one price quote, and the cost text, `custom_cost_trigger`, reserve check and payment all read it.
+The multiplier is one plus 0.01 per impact-profile point plus 0.0005 per thousand people the state lost (at most 0.50), times 1.25 while the controller carries a mission-failure surcharge, bounded between 1.00 and 2.50.
+Quotes are written at impact, refreshed monthly and refreshed at once when a country takes the surcharge, so a controller change or an expired surcharge reaches the price within a month while the displayed price always equals the debit.
+The cost checks compare the engine's `manpower_k`, `fuel_k` and `num_equipment@` values with the stored quote through `check_variable`, so no `meta_trigger` is needed.
+Basis: Part 6 asks for costs that scale with affected population and damage, with no more than four spendable cost types and the reserve floors kept.
+
+### Dust-protection prices
+
+Decision: the three dust-protection projects read one global quote scaled by the dust stage (1.00 residual haze, 1.25 global veil, 1.50 impact winter, 1.75 severe impact winter).
+Basis: Part 6 lists the dust stage as a cost input for national protection.
+
+### Mission-failure surcharge
+
+Decision: an expired mission raises the failing country's repair prices by 25 percent for 180 days through a timed country flag that the quote reads; the cost text marks raised prices.
+Basis: Part 6 "raises future repair costs for a limited period".
+
+### Transport dispersal
+
+Decision: at impact the original target loses 2 percent of its trains, trucks and fuel per main-footprint state it controls, up to 20 percent; Disperse Transport keeps 60 percent of that loss, and the impact report lists both amounts.
+The fixed equipment grant is removed.
+Basis: Part 2 and Part 6 describe dispersal as preserving reserves that the impact would otherwise destroy; a grant with nothing at risk preserved nothing.
+No `ai_will_do` or `ai_chance` value changed, so no probability comparison is required; affordability gates now follow the scaled prices.

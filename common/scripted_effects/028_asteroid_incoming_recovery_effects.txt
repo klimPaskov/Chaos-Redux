@@ -940,6 +940,283 @@ asteroid_incoming_prepare_crater_offensive = {
 }
 
 # ----------------------------------------------------------------------------
+# Recovery prices
+# ----------------------------------------------------------------------------
+# One quote per affected state serves every state project: the cost text, the
+# cost check, the reserve check and the payment all read the same stored
+# amounts. Quotes are written at impact, refreshed by the monthly recovery pass
+# and refreshed at once for a country that takes a mission-failure surcharge.
+
+# STATE SCOPE. Writes asteroid_incoming_cost_multiplier and every quote for
+# this state from its impact profile, its population loss, and its current
+# controller's failure surcharge.
+asteroid_incoming_quote_state_recovery_costs = {
+	set_temp_variable = { asteroid_incoming_cost_term = asteroid_incoming_state_profile }
+	multiply_temp_variable = { asteroid_incoming_cost_term = constant:asteroid_incoming_cost.profile_weight }
+	set_variable = { asteroid_incoming_cost_multiplier = constant:asteroid_incoming_cost.base_multiplier }
+	add_to_variable = { asteroid_incoming_cost_multiplier = asteroid_incoming_cost_term }
+	set_temp_variable = { asteroid_incoming_cost_term = asteroid_incoming_state_population_lost_k }
+	multiply_temp_variable = { asteroid_incoming_cost_term = constant:asteroid_incoming_cost.population_loss_weight_per_k }
+	clamp_temp_variable = {
+		var = asteroid_incoming_cost_term
+		min = constant:asteroid_incoming_runtime.zero
+		max = constant:asteroid_incoming_cost.population_loss_cap
+	}
+	add_to_variable = { asteroid_incoming_cost_multiplier = asteroid_incoming_cost_term }
+	if = {
+		limit = { CONTROLLER = { has_country_flag = asteroid_incoming_repair_costs_raised } }
+		set_temp_variable = { asteroid_incoming_cost_term = constant:asteroid_incoming_cost.base_multiplier }
+		add_to_temp_variable = { asteroid_incoming_cost_term = constant:asteroid_incoming_cost.failure_surcharge }
+		multiply_variable = { asteroid_incoming_cost_multiplier = asteroid_incoming_cost_term }
+	}
+	clamp_variable = {
+		var = asteroid_incoming_cost_multiplier
+		min = constant:asteroid_incoming_cost.minimum_multiplier
+		max = constant:asteroid_incoming_cost.maximum_multiplier
+	}
+
+	set_variable = { asteroid_incoming_quote_manpower = constant:asteroid_incoming_recovery.decision_manpower }
+	set_variable = { asteroid_incoming_quote_support = constant:asteroid_incoming_recovery.decision_support_equipment }
+	set_variable = { asteroid_incoming_quote_motorized = constant:asteroid_incoming_recovery.decision_motorized_equipment }
+	set_variable = { asteroid_incoming_quote_trains = constant:asteroid_incoming_recovery.decision_train_equipment }
+	set_variable = { asteroid_incoming_quote_fuel = constant:asteroid_incoming_recovery.decision_fuel }
+	set_variable = { asteroid_incoming_quote_prepared_manpower = constant:asteroid_incoming_recovery.prepared_decision_manpower }
+	set_variable = { asteroid_incoming_quote_prepared_support = constant:asteroid_incoming_recovery.prepared_decision_support_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_motorized = constant:asteroid_incoming_recovery.prepared_decision_motorized_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_trains = constant:asteroid_incoming_recovery.prepared_decision_train_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_fuel = constant:asteroid_incoming_recovery.prepared_decision_fuel }
+	multiply_variable = { asteroid_incoming_quote_manpower = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_support = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_motorized = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_trains = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_fuel = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_prepared_manpower = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_prepared_support = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_prepared_motorized = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_prepared_trains = asteroid_incoming_cost_multiplier }
+	multiply_variable = { asteroid_incoming_quote_prepared_fuel = asteroid_incoming_cost_multiplier }
+	round_variable = asteroid_incoming_quote_manpower
+	round_variable = asteroid_incoming_quote_support
+	round_variable = asteroid_incoming_quote_motorized
+	round_variable = asteroid_incoming_quote_trains
+	round_variable = asteroid_incoming_quote_fuel
+	round_variable = asteroid_incoming_quote_prepared_manpower
+	round_variable = asteroid_incoming_quote_prepared_support
+	round_variable = asteroid_incoming_quote_prepared_motorized
+	round_variable = asteroid_incoming_quote_prepared_trains
+	round_variable = asteroid_incoming_quote_prepared_fuel
+
+	# Manpower and fuel are compared in thousands, as the engine reports them.
+	set_variable = { asteroid_incoming_quote_manpower_k = asteroid_incoming_quote_manpower }
+	divide_variable = { asteroid_incoming_quote_manpower_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_fuel_k = asteroid_incoming_quote_fuel }
+	divide_variable = { asteroid_incoming_quote_fuel_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_prepared_manpower_k = asteroid_incoming_quote_prepared_manpower }
+	divide_variable = { asteroid_incoming_quote_prepared_manpower_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_prepared_fuel_k = asteroid_incoming_quote_prepared_fuel }
+	divide_variable = { asteroid_incoming_quote_prepared_fuel_k = constant:asteroid_incoming_cost.per_thousand }
+
+	# Reserve floors: what must remain after the payment.
+	set_variable = { asteroid_incoming_quote_manpower_reserve_k = asteroid_incoming_quote_manpower }
+	add_to_variable = { asteroid_incoming_quote_manpower_reserve_k = constant:asteroid_incoming_cost.reserve_manpower }
+	divide_variable = { asteroid_incoming_quote_manpower_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_support_reserve = asteroid_incoming_quote_support }
+	add_to_variable = { asteroid_incoming_quote_support_reserve = constant:asteroid_incoming_cost.reserve_support_equipment }
+	set_variable = { asteroid_incoming_quote_motorized_reserve = asteroid_incoming_quote_motorized }
+	add_to_variable = { asteroid_incoming_quote_motorized_reserve = constant:asteroid_incoming_cost.reserve_motorized_equipment }
+	set_variable = { asteroid_incoming_quote_trains_reserve = asteroid_incoming_quote_trains }
+	add_to_variable = { asteroid_incoming_quote_trains_reserve = constant:asteroid_incoming_cost.reserve_train_equipment }
+	set_variable = { asteroid_incoming_quote_fuel_reserve_k = asteroid_incoming_quote_fuel }
+	add_to_variable = { asteroid_incoming_quote_fuel_reserve_k = constant:asteroid_incoming_cost.reserve_fuel }
+	divide_variable = { asteroid_incoming_quote_fuel_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_prepared_manpower_reserve_k = asteroid_incoming_quote_prepared_manpower }
+	add_to_variable = { asteroid_incoming_quote_prepared_manpower_reserve_k = constant:asteroid_incoming_cost.reserve_manpower }
+	divide_variable = { asteroid_incoming_quote_prepared_manpower_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { asteroid_incoming_quote_prepared_support_reserve = asteroid_incoming_quote_prepared_support }
+	add_to_variable = { asteroid_incoming_quote_prepared_support_reserve = constant:asteroid_incoming_cost.reserve_support_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_motorized_reserve = asteroid_incoming_quote_prepared_motorized }
+	add_to_variable = { asteroid_incoming_quote_prepared_motorized_reserve = constant:asteroid_incoming_cost.reserve_motorized_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_trains_reserve = asteroid_incoming_quote_prepared_trains }
+	add_to_variable = { asteroid_incoming_quote_prepared_trains_reserve = constant:asteroid_incoming_cost.reserve_train_equipment }
+	set_variable = { asteroid_incoming_quote_prepared_fuel_reserve_k = asteroid_incoming_quote_prepared_fuel }
+	add_to_variable = { asteroid_incoming_quote_prepared_fuel_reserve_k = constant:asteroid_incoming_cost.reserve_fuel }
+	divide_variable = { asteroid_incoming_quote_prepared_fuel_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+}
+
+# STATE SCOPE. At impact, a non-crater affected state joins the persistent
+# price list and receives its first quote.
+asteroid_incoming_register_state_recovery_costs = {
+	if = {
+		limit = { NOT = { has_state_flag = asteroid_incoming_main_crater } }
+		if = {
+			limit = { NOT = { is_in_array = { array = global.asteroid_incoming_affected_states value = THIS } } }
+			add_to_array = { array = global.asteroid_incoming_affected_states value = THIS }
+		}
+		asteroid_incoming_quote_state_recovery_costs = yes
+	}
+}
+
+# GLOBAL-HOST SCOPE. Monthly refresh of every affected state's quote, so a
+# controller change or an expired surcharge reaches the price.
+asteroid_incoming_refresh_state_cost_quotes = {
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_affected_states
+		asteroid_incoming_quote_state_recovery_costs = yes
+	}
+}
+
+# COUNTRY SCOPE. Raises this country's repair prices for a limited period
+# after a failed mission and re-quotes the affected states it holds.
+asteroid_incoming_apply_repair_cost_surcharge = {
+	set_temp_variable = { asteroid_incoming_surcharge_days = constant:asteroid_incoming_cost.failure_surcharge_days }
+	set_country_flag = { flag = asteroid_incoming_repair_costs_raised days = asteroid_incoming_surcharge_days }
+	every_controlled_state = {
+		limit = { is_in_array = { array = global.asteroid_incoming_affected_states value = THIS } }
+		asteroid_incoming_quote_state_recovery_costs = yes
+	}
+}
+
+# ANY SCOPE. Global dust-protection prices from the current dust stage. Called
+# whenever the dust stage is recalculated.
+asteroid_incoming_quote_dust_costs = {
+	set_variable = { global.asteroid_incoming_dust_cost_multiplier = constant:asteroid_incoming_cost.dust_residual }
+	if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_veil }
+		set_variable = { global.asteroid_incoming_dust_cost_multiplier = constant:asteroid_incoming_cost.dust_veil }
+	}
+	else_if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_impact_winter }
+		set_variable = { global.asteroid_incoming_dust_cost_multiplier = constant:asteroid_incoming_cost.dust_impact_winter }
+	}
+	else_if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_severe }
+		set_variable = { global.asteroid_incoming_dust_cost_multiplier = constant:asteroid_incoming_cost.dust_severe }
+	}
+	set_variable = { global.asteroid_incoming_dust_quote_manpower = constant:asteroid_incoming_recovery.decision_manpower }
+	set_variable = { global.asteroid_incoming_dust_quote_support = constant:asteroid_incoming_recovery.decision_support_equipment }
+	set_variable = { global.asteroid_incoming_dust_quote_trains = constant:asteroid_incoming_recovery.decision_train_equipment }
+	set_variable = { global.asteroid_incoming_dust_quote_fuel = constant:asteroid_incoming_recovery.decision_fuel }
+	set_variable = { global.asteroid_incoming_dust_quote_convoys = constant:asteroid_incoming_recovery.decision_convoys }
+	multiply_variable = { global.asteroid_incoming_dust_quote_manpower = global.asteroid_incoming_dust_cost_multiplier }
+	multiply_variable = { global.asteroid_incoming_dust_quote_support = global.asteroid_incoming_dust_cost_multiplier }
+	multiply_variable = { global.asteroid_incoming_dust_quote_trains = global.asteroid_incoming_dust_cost_multiplier }
+	multiply_variable = { global.asteroid_incoming_dust_quote_fuel = global.asteroid_incoming_dust_cost_multiplier }
+	multiply_variable = { global.asteroid_incoming_dust_quote_convoys = global.asteroid_incoming_dust_cost_multiplier }
+	round_variable = global.asteroid_incoming_dust_quote_manpower
+	round_variable = global.asteroid_incoming_dust_quote_support
+	round_variable = global.asteroid_incoming_dust_quote_trains
+	round_variable = global.asteroid_incoming_dust_quote_fuel
+	round_variable = global.asteroid_incoming_dust_quote_convoys
+	set_variable = { global.asteroid_incoming_dust_quote_manpower_k = global.asteroid_incoming_dust_quote_manpower }
+	divide_variable = { global.asteroid_incoming_dust_quote_manpower_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { global.asteroid_incoming_dust_quote_fuel_k = global.asteroid_incoming_dust_quote_fuel }
+	divide_variable = { global.asteroid_incoming_dust_quote_fuel_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { global.asteroid_incoming_dust_quote_manpower_reserve_k = global.asteroid_incoming_dust_quote_manpower }
+	add_to_variable = { global.asteroid_incoming_dust_quote_manpower_reserve_k = constant:asteroid_incoming_cost.reserve_manpower }
+	divide_variable = { global.asteroid_incoming_dust_quote_manpower_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { global.asteroid_incoming_dust_quote_support_reserve = global.asteroid_incoming_dust_quote_support }
+	add_to_variable = { global.asteroid_incoming_dust_quote_support_reserve = constant:asteroid_incoming_cost.reserve_support_equipment }
+	set_variable = { global.asteroid_incoming_dust_quote_trains_reserve = global.asteroid_incoming_dust_quote_trains }
+	add_to_variable = { global.asteroid_incoming_dust_quote_trains_reserve = constant:asteroid_incoming_cost.reserve_train_equipment }
+	set_variable = { global.asteroid_incoming_dust_quote_fuel_reserve_k = global.asteroid_incoming_dust_quote_fuel }
+	add_to_variable = { global.asteroid_incoming_dust_quote_fuel_reserve_k = constant:asteroid_incoming_cost.reserve_fuel }
+	divide_variable = { global.asteroid_incoming_dust_quote_fuel_reserve_k = constant:asteroid_incoming_cost.per_thousand }
+	set_variable = { global.asteroid_incoming_dust_quote_convoys_reserve = global.asteroid_incoming_dust_quote_convoys }
+	add_to_variable = { global.asteroid_incoming_dust_quote_convoys_reserve = constant:asteroid_incoming_cost.reserve_convoys }
+}
+
+# COUNTRY SCOPE, quoted state in FROM. Each payment debits exactly the stored
+# quote that the cost text showed and the cost check accepted.
+asteroid_incoming_pay_manpower_amount = {
+	multiply_temp_variable = { asteroid_incoming_payment = constant:asteroid_incoming_cost.negative_one }
+	add_manpower = asteroid_incoming_payment
+}
+
+asteroid_incoming_pay_emergency_supply_quote = {
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_manpower }
+	asteroid_incoming_pay_manpower_amount = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_motorized }
+	multiply_temp_variable = { asteroid_incoming_payment = constant:asteroid_incoming_cost.negative_one }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = asteroid_incoming_payment }
+}
+
+asteroid_incoming_pay_prepared_emergency_supply_quote = {
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_prepared_manpower }
+	asteroid_incoming_pay_manpower_amount = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_prepared_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_prepared_motorized }
+	multiply_temp_variable = { asteroid_incoming_payment = constant:asteroid_incoming_cost.negative_one }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = asteroid_incoming_payment }
+}
+
+asteroid_incoming_pay_rail_quote = {
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = FROM.asteroid_incoming_quote_fuel }
+	remove_fuel_from_stockpile = yes
+}
+
+asteroid_incoming_pay_prepared_rail_quote = {
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_prepared_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_prepared_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = FROM.asteroid_incoming_quote_prepared_fuel }
+	remove_fuel_from_stockpile = yes
+}
+
+asteroid_incoming_pay_industry_quote = {
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_manpower }
+	asteroid_incoming_pay_manpower_amount = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+asteroid_incoming_pay_rehousing_quote = {
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_manpower }
+	asteroid_incoming_pay_manpower_amount = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = FROM.asteroid_incoming_quote_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { asteroid_incoming_payment = FROM.asteroid_incoming_quote_motorized }
+	multiply_temp_variable = { asteroid_incoming_payment = constant:asteroid_incoming_cost.negative_one }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = asteroid_incoming_payment }
+}
+
+# COUNTRY SCOPE. Dust-protection payments read the global dust-stage quote.
+asteroid_incoming_pay_dust_hardening_quote = {
+	set_temp_variable = { asteroid_incoming_payment = global.asteroid_incoming_dust_quote_manpower }
+	asteroid_incoming_pay_manpower_amount = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.asteroid_incoming_dust_quote_support }
+	remove_support_equipment_from_stockpile = yes
+}
+
+asteroid_incoming_pay_dust_transport_quote = {
+	set_temp_variable = { equipment_stockpile_removal_amount = global.asteroid_incoming_dust_quote_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { equipment_stockpile_removal_amount = global.asteroid_incoming_dust_quote_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = global.asteroid_incoming_dust_quote_fuel }
+	remove_fuel_from_stockpile = yes
+}
+
+asteroid_incoming_pay_dust_observation_quote = {
+	set_temp_variable = { asteroid_incoming_payment = global.asteroid_incoming_dust_quote_convoys }
+	multiply_temp_variable = { asteroid_incoming_payment = constant:asteroid_incoming_cost.negative_one }
+	add_equipment_to_stockpile = { type = convoy amount = asteroid_incoming_payment }
+	set_temp_variable = { equipment_stockpile_removal_amount = global.asteroid_incoming_dust_quote_support }
+	remove_support_equipment_from_stockpile = yes
+	set_temp_variable = { fuel_stockpile_removal_amount = global.asteroid_incoming_dust_quote_fuel }
+	remove_fuel_from_stockpile = yes
+}
+
+# ----------------------------------------------------------------------------
 # Mission outcomes
 # ----------------------------------------------------------------------------
 # COUNTRY SCOPE. Each success or failure runs only for the live contract that
@@ -1167,12 +1444,14 @@ asteroid_incoming_reapply_state_impact_damage = {
 	}
 }
 
-# COUNTRY SCOPE. The national consequence of an expired mission.
+# COUNTRY SCOPE. The national consequences of an expired mission: the
+# recovery burden returns and repair prices rise for a limited period.
 asteroid_incoming_apply_mission_failure_to_country = {
 	add_timed_idea = {
 		idea = asteroid_incoming_recovery_burden
 		days = constant:asteroid_incoming_recovery.mission_failure_pressure_days
 	}
+	asteroid_incoming_apply_repair_cost_surcharge = yes
 }
 
 asteroid_incoming_rescue_route_mission_failure = {

@@ -611,6 +611,72 @@ asteroid_incoming_set_preparedness = {
 	}
 }
 
+# COUNTRY SCOPE, the original target, before any state is damaged. The impact
+# destroys a share of the country's trains, trucks and fuel that grows with the
+# main-footprint states it controls, up to a cap. Dispersed transport keeps a
+# constant share of that loss. The lost and preserved amounts stay on the
+# country for its impact report.
+asteroid_incoming_apply_impact_transport_losses = {
+	save_event_target_as = asteroid_incoming_transport_loss_country
+	set_temp_variable = { asteroid_incoming_transport_states = constant:asteroid_incoming_runtime.zero }
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_main_footprint_states
+		if = {
+			limit = { is_controlled_by = event_target:asteroid_incoming_transport_loss_country }
+			add_to_temp_variable = { asteroid_incoming_transport_states = constant:asteroid_incoming_runtime.one }
+		}
+	}
+	set_temp_variable = { asteroid_incoming_transport_loss_share = asteroid_incoming_transport_states }
+	multiply_temp_variable = { asteroid_incoming_transport_loss_share = constant:asteroid_incoming_cost.transport_loss_per_state }
+	clamp_temp_variable = {
+		var = asteroid_incoming_transport_loss_share
+		min = constant:asteroid_incoming_runtime.zero
+		max = constant:asteroid_incoming_cost.transport_loss_cap
+	}
+	set_temp_variable = { asteroid_incoming_lost_trains = num_equipment@train_equipment }
+	multiply_temp_variable = { asteroid_incoming_lost_trains = asteroid_incoming_transport_loss_share }
+	round_temp_variable = asteroid_incoming_lost_trains
+	set_temp_variable = { asteroid_incoming_lost_trucks = num_equipment@motorized_equipment_0 }
+	add_to_temp_variable = { asteroid_incoming_lost_trucks = num_equipment@motorized_equipment_1 }
+	multiply_temp_variable = { asteroid_incoming_lost_trucks = asteroid_incoming_transport_loss_share }
+	round_temp_variable = asteroid_incoming_lost_trucks
+	set_temp_variable = { asteroid_incoming_lost_fuel = fuel_k }
+	multiply_temp_variable = { asteroid_incoming_lost_fuel = constant:asteroid_incoming_cost.per_thousand }
+	multiply_temp_variable = { asteroid_incoming_lost_fuel = asteroid_incoming_transport_loss_share }
+	round_temp_variable = asteroid_incoming_lost_fuel
+	set_variable = { asteroid_incoming_transport_preserved_trains = constant:asteroid_incoming_runtime.zero }
+	set_variable = { asteroid_incoming_transport_preserved_trucks = constant:asteroid_incoming_runtime.zero }
+	set_variable = { asteroid_incoming_transport_preserved_fuel = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { has_country_flag = asteroid_incoming_transport_dispersion_selected }
+		set_variable = { asteroid_incoming_transport_preserved_trains = asteroid_incoming_lost_trains }
+		multiply_variable = { asteroid_incoming_transport_preserved_trains = constant:asteroid_incoming_cost.transport_dispersion_preserved_share }
+		round_variable = asteroid_incoming_transport_preserved_trains
+		set_variable = { asteroid_incoming_transport_preserved_trucks = asteroid_incoming_lost_trucks }
+		multiply_variable = { asteroid_incoming_transport_preserved_trucks = constant:asteroid_incoming_cost.transport_dispersion_preserved_share }
+		round_variable = asteroid_incoming_transport_preserved_trucks
+		set_variable = { asteroid_incoming_transport_preserved_fuel = asteroid_incoming_lost_fuel }
+		multiply_variable = { asteroid_incoming_transport_preserved_fuel = constant:asteroid_incoming_cost.transport_dispersion_preserved_share }
+		round_variable = asteroid_incoming_transport_preserved_fuel
+		subtract_from_temp_variable = { asteroid_incoming_lost_trains = asteroid_incoming_transport_preserved_trains }
+		subtract_from_temp_variable = { asteroid_incoming_lost_trucks = asteroid_incoming_transport_preserved_trucks }
+		subtract_from_temp_variable = { asteroid_incoming_lost_fuel = asteroid_incoming_transport_preserved_fuel }
+		set_country_flag = asteroid_incoming_mobile_reserve_preserved
+	}
+	set_variable = { asteroid_incoming_transport_lost_trains = asteroid_incoming_lost_trains }
+	set_variable = { asteroid_incoming_transport_lost_fuel = asteroid_incoming_lost_fuel }
+	set_temp_variable = { equipment_stockpile_removal_amount = asteroid_incoming_lost_trains }
+	remove_trains_from_stockpile = yes
+	set_temp_variable = { cbrn_motorized_stock_debit_requested = asteroid_incoming_lost_trucks }
+	set_temp_variable = { cbrn_motorized_stock_debit_completed = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { cbrn_motorized_stock_debit_remaining = constant:asteroid_incoming_runtime.zero }
+	cbrn_debit_motorized_stockpile_oldest_first = yes
+	set_variable = { asteroid_incoming_transport_lost_trucks = cbrn_motorized_stock_debit_completed }
+	set_temp_variable = { fuel_stockpile_removal_amount = asteroid_incoming_lost_fuel }
+	remove_fuel_from_stockpile = yes
+	set_country_flag = asteroid_incoming_transport_losses_recorded
+}
+
 # ANY SCOPE. Applies the target country's selected post-impact preparation
 # exactly once. Command continuity changes both severity and duration of the
 # dislocation penalty; transport records bounded mobile reserves; medical
@@ -662,14 +728,7 @@ asteroid_incoming_apply_target_preparedness_aftermath = {
 					days = asteroid_incoming_government_dislocation_days
 				}
 			}
-			if = {
-				limit = { has_country_flag = asteroid_incoming_transport_dispersion_selected }
-				add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_runtime.transport_preserved_train_equipment }
-				add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_runtime.transport_preserved_support_equipment }
-				add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_runtime.transport_preserved_motorized_equipment }
-				add_fuel = constant:asteroid_incoming_runtime.transport_preserved_fuel
-				set_country_flag = asteroid_incoming_mobile_reserve_preserved
-			}
+			asteroid_incoming_apply_impact_transport_losses = yes
 			if = {
 				limit = { has_country_flag = asteroid_incoming_medical_mobilization_selected }
 				add_timed_idea = {
@@ -1318,6 +1377,7 @@ asteroid_incoming_apply_state_profile = {
 		}
 		asteroid_incoming_initialize_state_rescue_burden = yes
 		asteroid_incoming_register_local_emergency = yes
+		asteroid_incoming_register_state_recovery_costs = yes
 		asteroid_incoming_aggregate_current_state = yes
 		asteroid_incoming_maybe_call_secondary_disaster = yes
 	}
@@ -1475,6 +1535,7 @@ asteroid_incoming_set_dust_stage = {
 	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_veil } } set_global_flag = asteroid_incoming_dust_stage_veil }
 	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_impact_winter } } set_global_flag = asteroid_incoming_dust_stage_impact_winter }
 	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_severe } } set_global_flag = asteroid_incoming_dust_stage_severe }
+	asteroid_incoming_quote_dust_costs = yes
 	asteroid_incoming_refresh_country_effects = yes
 }
 
@@ -1626,6 +1687,7 @@ asteroid_incoming_monthly_dust_update = {
 asteroid_incoming_monthly_dust_update_apply = {
 	asteroid_incoming_process_monthly_rescue_deaths = yes
 	asteroid_incoming_process_emergency_closures = yes
+	asteroid_incoming_refresh_state_cost_quotes = yes
 	if = {
 		limit = { check_variable = { global.asteroid_incoming_dust_score > 0 } }
 		set_temp_variable = { asteroid_incoming_old_dust_score = global.asteroid_incoming_dust_score }

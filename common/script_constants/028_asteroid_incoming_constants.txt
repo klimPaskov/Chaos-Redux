@@ -84,10 +84,6 @@ asteroid_incoming_runtime = {
 	government_dislocation_noncapital_days = 90
 	government_dislocation_prepared_capital_days = 100
 	government_dislocation_prepared_noncapital_days = 50
-	transport_preserved_train_equipment = 1
-	transport_preserved_support_equipment = 40
-	transport_preserved_motorized_equipment = 15
-	transport_preserved_fuel = 75
 	opening_air_residual_bp = 50
 	opening_air_veil_bp = 100
 	opening_air_impact_winter_bp = 200
@@ -118,38 +114,25 @@ asteroid_incoming_recovery = {
 	decision_convoys = 20
 	decision_command_power = 5
 	decision_support_equipment_negative = -80
-	decision_motorized_equipment_negative = -60
 	decision_manpower_negative = -800
 	decision_train_equipment_negative = -2
 	decision_fuel_negative = -300
-	decision_convoys_negative = -20
 	decision_command_power_negative = -5
 	prepared_decision_support_equipment = 60
 	prepared_decision_motorized_equipment = 45
 	prepared_decision_manpower = 600
 	prepared_decision_train_equipment = 1
 	prepared_decision_fuel = 225
-	prepared_decision_support_equipment_negative = -60
-	prepared_decision_motorized_equipment_negative = -45
-	prepared_decision_manpower_negative = -600
-	prepared_decision_train_equipment_negative = -1
-	prepared_decision_fuel_negative = -225
-	prepared_decision_manpower_after_reserve = 1600
-	prepared_decision_support_equipment_after_reserve = 160
-	prepared_decision_motorized_equipment_after_reserve = 145
-	prepared_decision_train_equipment_after_reserve = 3
-	prepared_decision_fuel_after_reserve = 725
 
 	minimum_command_power_reserve = 10
 	minimum_convoy_reserve = 20
-	# Availability thresholds include the listed action payment, so the
-	# protected reserve remains after the custom cost is manually subtracted.
+	# Crater-operation availability thresholds include the listed payment, so
+	# the protected reserve remains after the cost is manually subtracted.
+	# State and dust projects use the asteroid_incoming_cost reserves instead.
 	decision_manpower_after_reserve = 1800
 	decision_support_equipment_after_reserve = 180
-	decision_motorized_equipment_after_reserve = 160
 	decision_train_equipment_after_reserve = 4
 	decision_fuel_after_reserve = 800
-	decision_convoys_after_reserve = 40
 	decision_command_power_after_reserve = 15
 
 	mission_route_days = 150
@@ -275,6 +258,49 @@ asteroid_incoming_ai = {
 	desperate_war_support_threshold = 0.35
 	stable_stability_threshold = 0.50
 	target_near_capitulation_threshold = 0.80
+}
+
+# Recovery prices. A state project costs its base amount times the state's
+# multiplier: one, plus the impact profile and the people the state lost,
+# raised while a recent mission-failure surcharge runs, and kept within bounds.
+# Dust-protection projects scale with the global dust stage instead. Reserves
+# are the stock each project must leave behind after payment.
+asteroid_incoming_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_multiplier = 1.00
+	# Per profile point: the catastrophic ring (60) adds 0.60, the outer shock
+	# ring (20) adds 0.20.
+	profile_weight = 0.01
+	# Per thousand people the state lost, up to the cap.
+	population_loss_weight_per_k = 0.0005
+	population_loss_cap = 0.50
+	failure_surcharge = 0.25
+	failure_surcharge_days = 180
+	minimum_multiplier = 1.00
+	maximum_multiplier = 2.50
+	dust_residual = 1.00
+	dust_veil = 1.25
+	dust_impact_winter = 1.50
+	dust_severe = 1.75
+	reserve_manpower = 1000
+	reserve_support_equipment = 100
+	reserve_motorized_equipment = 100
+	reserve_train_equipment = 2
+	reserve_fuel = 500
+	reserve_convoys = 20
+	# Manpower and fuel are reported in thousands.
+	per_thousand = 1000
+	negative_one = -1
+	# Impact transport losses for the original target: this share of its
+	# trains, trucks and fuel per footprint state it controls, up to the cap.
+	# Dispersed transport keeps the preserved share of that loss.
+	transport_loss_per_state = 0.02
+	transport_loss_cap = 0.20
+	transport_dispersion_preserved_share = 0.60
 }
 
 asteroid_incoming_recovery_fraction = {
