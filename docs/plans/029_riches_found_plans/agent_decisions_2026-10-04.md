@@ -52,3 +52,11 @@ A partial result reopens a collapsed mine's upper workings as a partial seal whi
 A collapsed mine with no restoration under way after its recovery date loses development each pulse interval.
 Recovery keeps deliberately sealed deep sections sealed.
 The occupier's reopening no longer recovers a damaged or collapsed mine; it lifts only an undamaged temporary closure.
+
+## D6. One owner for the district evacuation preparation
+
+Evacuate the District resolves its own preparation: its removal period equals the evacuation preparation period, and its removal effect either starts Evacuate the Workforce through `riches_found_start_demons_evacuation` or withdraws the authorization and refunds the exact political power, manpower, trains and convoys it took.
+The decision no longer queues `chaosx.nr29.906` on the same day as its own cleanup, which removed the undefined ordering that could cancel a paid evacuation.
+`chaosx.nr29.906` remains as a thin wrapper around the same guarded helper so a preparation already queued in a running campaign still finishes.
+The decision now requires a free evacuation mission slot and a rail or port route before payment, and its tooltip states that a lost route, slot or mine calls the evacuation off and returns the costs.
+Evacuate the Workforce can start and finish from collapsed workings, because the specification offers it for severe collapse; the mission no longer requires an undamaged active mine or the absence of a severe collapse.

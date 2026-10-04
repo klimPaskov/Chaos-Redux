@@ -497,6 +497,23 @@ riches_found_country_can_start_evacuate_workforce_mission = {
 	NOT = { any_controlled_state = { has_state_flag = riches_found_mission_evacuate_workforce_subject } }
 }
 
+# STATE scope. The paid district evacuation can begin: the authorization is
+# still pending on a registered, nonterminal mine, no other objective runs on
+# it, the controller has a free evacuation slot, and a rail or port route can
+# carry the workers out.
+riches_found_demons_evacuation_can_start = {
+	riches_found_mine_is_registered = yes
+	NOT = { riches_found_mine_is_terminal = yes }
+	has_state_flag = riches_found_demons_evacuation_authorized
+	has_state_flag = riches_found_demons_evacuation_preparation_pending
+	NOT = { riches_found_mission_is_active = yes }
+	CONTROLLER = {
+		exists = yes
+		riches_found_country_can_start_evacuate_workforce_mission = yes
+	}
+	riches_found_state_has_transport_route = yes
+}
+
 riches_found_occupation_mine_can_reopen = {
 	riches_found_mine_is_registered = yes
 	NOT = { has_state_flag = riches_found_mine_permanent_seal }

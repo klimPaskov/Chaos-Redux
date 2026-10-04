@@ -6859,7 +6859,9 @@ decision_riches_found_demons_evacuate_district = {
 	}
 	available = {
 		riches_found_can_afford_demons_evacuate_district = yes
+		riches_found_country_can_start_evacuate_workforce_mission = yes
 		FROM = {
+			OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route }
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
 			riches_found_state_is_active_selected_or_only_mine = yes
@@ -6892,7 +6894,7 @@ decision_riches_found_demons_evacuate_district = {
 	}
 	custom_cost_text = riches_found_cost_demons_evacuate_district
 	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_HEAVY
-	days_remove = constant:riches_found_decision_duration.admin
+	days_remove = constant:riches_found_duration.evacuation_preparation_days
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_demons_evacuate_district_tt
@@ -6908,20 +6910,27 @@ decision_riches_found_demons_evacuate_district = {
 			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 			chaosx_convert_days_to_date_offset = yes
 			add_to_variable = { riches_found_demons_evacuation_preparation_date = chaosx_date_offset }
-			state_event = { id = chaosx.nr29.906 days = constant:riches_found_duration.evacuation_preparation_days trigger_for = controller }
 		}
 	}
 	remove_effect = {
-		FROM = {
-			if = {
-				limit = {
-					has_state_flag = riches_found_demons_evacuation_preparation_pending
-					NOT = { has_state_flag = riches_found_demons_evacuation_ready }
+		# This decision alone resolves the preparation. It starts the
+		# evacuation while the payer still holds a mine that can start it;
+		# otherwise the authorization is withdrawn and every cost returns.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+					riches_found_demons_evacuation_can_start = yes
 				}
-				clr_state_flag = riches_found_demons_evacuation_authorized
-				clr_state_flag = riches_found_demons_evacuation_preparation_pending
-				clear_variable = riches_found_demons_evacuation_preparation_date
 			}
+			FROM = { riches_found_start_demons_evacuation = yes }
+		}
+		else = {
+			FROM = { riches_found_cancel_demons_evacuation_preparation = yes }
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_manpower = constant:riches_found_decision_cost.manpower_emergency
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:riches_found_decision_cost.train_standard }
+			add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_heavy }
 		}
 		FROM = { riches_found_refresh_state_achievement_timers = yes }
 		riches_found_reconcile_controller = yes
@@ -9470,11 +9479,10 @@ mission_riches_found_evacuate_workforce = {
 		any_controlled_state = {
 			has_state_flag = riches_found_mission_evacuate_workforce_subject
 			has_state_flag = riches_found_mine_state
-			riches_found_mine_is_active = yes
+			NOT = { riches_found_mine_is_terminal = yes }
 			has_state_flag = riches_found_demons_evacuation_ready
 			has_state_flag = riches_found_demons_evacuation_route_active
 			OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route }
-			NOT = { has_state_flag = riches_found_severe_collapse }
 			NOT = { has_state_flag = riches_found_demons_evacuation_preparation_pending }
 			check_variable = {
 				var = global.date

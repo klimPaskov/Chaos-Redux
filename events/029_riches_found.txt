@@ -372,6 +372,8 @@ state_event = {
 	}
 }
 
+# Evacuation preparation is resolved by the paying decision's removal effect.
+# This callback only finishes a preparation queued before that ownership moved.
 state_event = {
 	id = chaosx.nr29.906
 	hidden = yes
@@ -379,33 +381,11 @@ state_event = {
 
 	trigger = {
 		has_state_flag = riches_found_mine_state
-		has_state_flag = riches_found_demons_evacuation_authorized
-		has_state_flag = riches_found_demons_evacuation_preparation_pending
-		NOT = { riches_found_mission_is_active = yes }
-		CONTROLLER = {
-			exists = yes
-			riches_found_country_can_start_evacuate_workforce_mission = yes
-		}
-		OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route }
+		riches_found_demons_evacuation_can_start = yes
 	}
 
 	immediate = {
-		hidden_effect = {
-			clr_state_flag = riches_found_demons_evacuation_preparation_pending
-			set_state_flag = riches_found_demons_evacuation_ready
-			set_state_flag = riches_found_demons_evacuation_route_active
-			set_variable = { riches_found_demons_evacuation_completion_date = global.date }
-			set_temp_variable = { chaosx_date_days = constant:riches_found_duration.evacuation_mission_hold_days }
-			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-			chaosx_convert_days_to_date_offset = yes
-			add_to_variable = { riches_found_demons_evacuation_completion_date = chaosx_date_offset }
-			set_temp_variable = { riches_found_input_mission_kind = constant:riches_found_mission_kind.evacuate_workforce }
-			set_temp_variable = { riches_found_input_mission_duration_days = constant:riches_found_duration.evacuation_mission_days }
-			riches_found_start_requested_mission = yes
-			riches_found_refresh_mine_presentation = yes
-			riches_found_refresh_mine_contribution = yes
-			riches_found_refresh_state_achievement_timers = yes
-		}
+		hidden_effect = { riches_found_start_demons_evacuation = yes }
 	}
 }
 
