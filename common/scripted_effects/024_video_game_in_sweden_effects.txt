@@ -248,8 +248,10 @@ video_game_in_sweden_initialize_program = {
 		}
 		video_game_in_sweden_refresh_crisis_state = yes
 		video_game_in_sweden_reset_mission_interruptions = yes
+		video_game_in_sweden_reset_program_package = yes
 		video_game_in_sweden_refresh_reliance_state = yes
 		video_game_in_sweden_record_normal_campaign = yes
+		video_game_in_sweden_refresh_program_package = yes
 		video_game_in_sweden_start_runtime_watch = yes
 	}
 }
@@ -288,6 +290,7 @@ video_game_in_sweden_change_reliance = {
 	set_temp_variable = { video_game_in_sweden_reliance_delta = 0 }
 	video_game_in_sweden_refresh_reliance_state = yes
 	video_game_in_sweden_update_achievement_tracking = yes
+	video_game_in_sweden_refresh_program_package = yes
 }
 
 # COUNTRY scope. Lowers Reliance to the caller's band ceiling and never raises
@@ -309,6 +312,7 @@ video_game_in_sweden_cap_reliance = {
 	}
 	video_game_in_sweden_refresh_reliance_state = yes
 	video_game_in_sweden_update_achievement_tracking = yes
+	video_game_in_sweden_refresh_program_package = yes
 }
 
 video_game_in_sweden_refresh_reliance_state = {
@@ -417,6 +421,259 @@ video_game_in_sweden_refresh_stage_idea = {
 			days = video_game_in_sweden_timed_idea_days
 		}
 	}
+	# Every stage change also changes the programme package.
+	video_game_in_sweden_refresh_program_package = yes
+}
+
+# ----------------------------------------------------------------------------
+# Programme package
+# ----------------------------------------------------------------------------
+# COUNTRY scope. Rebuilds the one Event 24 package modifier from the route,
+# the actions taken, the finite action timers and the Evolution II public
+# tradeoffs. Every amount comes from video_game_in_sweden_package constants.
+# The package is empty during restriction and recovery and is detached when
+# the programme closes, so no bonus survives the programme.
+video_game_in_sweden_refresh_program_package = {
+	set_variable = { video_game_in_sweden_pkg_planning = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_max_planning = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_training = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_army_xp = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_adaptability = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_supply = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_efficiency = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_factory_output = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_political_power = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_recruitable = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_trade_opinion = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_war_support = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_public_output_cost = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_public_attention_cost = constant:video_game_in_sweden_value.zero }
+	if = {
+		limit = { video_game_in_sweden_has_live_program_package = yes }
+		# Route secondary effect for as long as the programme runs.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_controlled_route }
+			subtract_from_variable = { video_game_in_sweden_pkg_training = constant:video_game_in_sweden_package.route_controlled_training }
+		}
+		else_if = {
+			limit = { has_country_flag = video_game_in_sweden_commercial_route }
+			add_to_variable = { video_game_in_sweden_pkg_efficiency = constant:video_game_in_sweden_package.route_commercial_efficiency }
+		}
+		else_if = {
+			limit = { has_country_flag = video_game_in_sweden_officer_route }
+			add_to_variable = { video_game_in_sweden_pkg_army_xp = constant:video_game_in_sweden_package.route_officer_army_xp }
+		}
+		# Controlled exercise. Repeating the same conditions yields less.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_exercise_days > constant:video_game_in_sweden_value.zero } }
+			set_temp_variable = { video_game_in_sweden_pkg_part = constant:video_game_in_sweden_package.exercise_planning }
+			multiply_temp_variable = { video_game_in_sweden_pkg_part = video_game_in_sweden_exercise_strength }
+			add_to_variable = { video_game_in_sweden_pkg_planning = video_game_in_sweden_pkg_part }
+			set_temp_variable = { video_game_in_sweden_pkg_part = constant:video_game_in_sweden_package.exercise_training }
+			multiply_temp_variable = { video_game_in_sweden_pkg_part = video_game_in_sweden_exercise_strength }
+			subtract_from_variable = { video_game_in_sweden_pkg_training = video_game_in_sweden_pkg_part }
+		}
+		# Rail-table review. Finite supply saving.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_logistics_days > constant:video_game_in_sweden_value.zero } }
+			add_to_variable = { video_game_in_sweden_pkg_supply = constant:video_game_in_sweden_package.logistics_supply }
+		}
+		# Rules revisions raise maximum planning, each with an adaptability cost
+		# that validation evidence halves.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_rules_revision_count > constant:video_game_in_sweden_value.zero } }
+			set_temp_variable = { video_game_in_sweden_pkg_stack = video_game_in_sweden_rules_revision_count }
+			clamp_temp_variable = {
+				var = video_game_in_sweden_pkg_stack
+				min = constant:video_game_in_sweden_value.zero
+				max = constant:video_game_in_sweden_package.rules_max_stack
+			}
+			set_temp_variable = { video_game_in_sweden_pkg_part = constant:video_game_in_sweden_package.rules_planning }
+			multiply_temp_variable = { video_game_in_sweden_pkg_part = video_game_in_sweden_pkg_stack }
+			add_to_variable = { video_game_in_sweden_pkg_max_planning = video_game_in_sweden_pkg_part }
+			set_temp_variable = { video_game_in_sweden_pkg_part = constant:video_game_in_sweden_package.rules_adaptability }
+			multiply_temp_variable = { video_game_in_sweden_pkg_part = video_game_in_sweden_pkg_stack }
+			if = {
+				limit = { video_game_in_sweden_has_validation_evidence = yes }
+				multiply_temp_variable = { video_game_in_sweden_pkg_part = constant:video_game_in_sweden_package.rules_validated_adaptability_factor }
+			}
+			add_to_variable = { video_game_in_sweden_pkg_adaptability = video_game_in_sweden_pkg_part }
+		}
+		# A formal officer league.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_officer_league_complete }
+			add_to_variable = { video_game_in_sweden_pkg_planning = constant:video_game_in_sweden_package.league_planning }
+			add_to_variable = { video_game_in_sweden_pkg_army_xp = constant:video_game_in_sweden_package.league_army_xp }
+		}
+		# Evolution I choice: competitive command culture or auxiliary doctrine.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_competitive_command_culture }
+			add_to_variable = { video_game_in_sweden_pkg_planning = constant:video_game_in_sweden_package.competitive_planning }
+			add_to_variable = { video_game_in_sweden_pkg_army_xp = constant:video_game_in_sweden_package.competitive_army_xp }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_formal_auxiliary_doctrine }
+			add_to_variable = { video_game_in_sweden_pkg_planning = constant:video_game_in_sweden_package.auxiliary_planning }
+			add_to_variable = { video_game_in_sweden_pkg_adaptability = constant:video_game_in_sweden_package.auxiliary_adaptability }
+		}
+		# Independent red team: adaptability in exchange for predictable sessions.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_red_team_complete }
+			add_to_variable = { video_game_in_sweden_pkg_adaptability = constant:video_game_in_sweden_package.red_team_adaptability }
+			subtract_from_variable = { video_game_in_sweden_pkg_planning = constant:video_game_in_sweden_package.red_team_planning_cost }
+		}
+		# Successful field validation. Finite training benefit.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_field_training_days > constant:video_game_in_sweden_value.zero } }
+			subtract_from_variable = { video_game_in_sweden_pkg_training = constant:video_game_in_sweden_package.field_training }
+		}
+		# Preparedness charter.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_preparedness_clubs }
+			add_to_variable = { video_game_in_sweden_pkg_recruitable = constant:video_game_in_sweden_package.preparedness_recruitable }
+		}
+		# Foreign licence. Finite trade goodwill at home.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_licence_days > constant:video_game_in_sweden_value.zero } }
+			add_to_variable = { video_game_in_sweden_pkg_trade_opinion = constant:video_game_in_sweden_package.licence_trade_opinion }
+		}
+		# State-backed exhibitions add public war support while the craze lasts.
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_evolution_ii_active
+				has_country_flag = video_game_in_sweden_public_exhibition_program
+			}
+			add_to_variable = { video_game_in_sweden_pkg_war_support = constant:video_game_in_sweden_package.exhibition_war_support }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_evolution_ii_active }
+			video_game_in_sweden_add_public_costs = yes
+		}
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_has_live_program_package = yes
+			NOT = { has_dynamic_modifier = video_game_in_sweden_program_package }
+		}
+		add_dynamic_modifier = { modifier = video_game_in_sweden_program_package }
+	}
+	else_if = {
+		limit = {
+			NOT = { video_game_in_sweden_has_live_program_package = yes }
+			has_dynamic_modifier = video_game_in_sweden_program_package
+		}
+		remove_dynamic_modifier = { modifier = video_game_in_sweden_program_package }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# COUNTRY scope. Evolution II public tradeoffs, called by the package refresh.
+# The productivity and political-attention costs scale by route, the current
+# Reliance state, state-backed exhibitions and the number of national league
+# seasons. Protected shifts and preparedness cut the productivity cost, and a
+# separation of play from policy cuts the attention cost. Outputs are stored as
+# positive percentages-as-fractions for tooltips.
+video_game_in_sweden_add_public_costs = {
+	set_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_route_officer }
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_controlled_route }
+		set_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_route_controlled }
+	}
+	else_if = {
+		limit = { has_country_flag = video_game_in_sweden_commercial_route }
+		set_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_route_commercial }
+	}
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_reliance_worldview }
+		multiply_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_reliance_worldview }
+	}
+	else_if = {
+		limit = { has_country_flag = video_game_in_sweden_reliance_doctrine }
+		multiply_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_reliance_doctrine }
+	}
+	else = {
+		multiply_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_reliance_low }
+	}
+	# An unrestricted exhibition season costs more than a civic network.
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_public_exhibition_program }
+		multiply_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_exhibition_factor }
+	}
+	else_if = {
+		limit = { has_country_flag = video_game_in_sweden_civic_copy_network }
+		multiply_temp_variable = { video_game_in_sweden_public_factor = constant:video_game_in_sweden_package.public_civic_factor }
+	}
+	set_temp_variable = { video_game_in_sweden_public_output = constant:video_game_in_sweden_package.public_output_cost }
+	multiply_temp_variable = { video_game_in_sweden_public_output = video_game_in_sweden_public_factor }
+	set_temp_variable = { video_game_in_sweden_public_seasons = video_game_in_sweden_national_league_seasons }
+	clamp_temp_variable = {
+		var = video_game_in_sweden_public_seasons
+		min = constant:video_game_in_sweden_value.zero
+		max = constant:video_game_in_sweden_package.public_season_stack_max
+	}
+	multiply_temp_variable = { video_game_in_sweden_public_seasons = constant:video_game_in_sweden_package.public_season_output_cost }
+	add_to_temp_variable = { video_game_in_sweden_public_output = video_game_in_sweden_public_seasons }
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_protected_shifts }
+		set_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_value.one }
+		subtract_from_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_package.protect_shifts_output_cut }
+		multiply_temp_variable = { video_game_in_sweden_public_output = video_game_in_sweden_public_keep }
+	}
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_preparedness_clubs }
+		set_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_value.one }
+		subtract_from_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_package.preparedness_output_cut }
+		multiply_temp_variable = { video_game_in_sweden_public_output = video_game_in_sweden_public_keep }
+	}
+	set_temp_variable = { video_game_in_sweden_public_attention = constant:video_game_in_sweden_package.public_attention_cost }
+	multiply_temp_variable = { video_game_in_sweden_public_attention = video_game_in_sweden_public_factor }
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_separate_policy }
+		set_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_value.one }
+		subtract_from_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_package.separate_policy_attention_cut }
+		multiply_temp_variable = { video_game_in_sweden_public_attention = video_game_in_sweden_public_keep }
+	}
+	set_variable = { video_game_in_sweden_public_output_cost = video_game_in_sweden_public_output }
+	set_variable = { video_game_in_sweden_public_attention_cost = video_game_in_sweden_public_attention }
+	subtract_from_variable = { video_game_in_sweden_pkg_factory_output = video_game_in_sweden_public_output }
+	subtract_from_variable = { video_game_in_sweden_pkg_political_power = video_game_in_sweden_public_attention }
+}
+
+# COUNTRY scope. Counts down the finite action timers once per daily watch and
+# keeps the package in step with them.
+video_game_in_sweden_tick_program_package = {
+	if = {
+		limit = { check_variable = { video_game_in_sweden_exercise_days > constant:video_game_in_sweden_value.zero } }
+		subtract_from_variable = { video_game_in_sweden_exercise_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		clamp_variable = { var = video_game_in_sweden_exercise_days min = constant:video_game_in_sweden_value.zero }
+	}
+	if = {
+		limit = { check_variable = { video_game_in_sweden_logistics_days > constant:video_game_in_sweden_value.zero } }
+		subtract_from_variable = { video_game_in_sweden_logistics_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		clamp_variable = { var = video_game_in_sweden_logistics_days min = constant:video_game_in_sweden_value.zero }
+	}
+	if = {
+		limit = { check_variable = { video_game_in_sweden_field_training_days > constant:video_game_in_sweden_value.zero } }
+		subtract_from_variable = { video_game_in_sweden_field_training_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		clamp_variable = { var = video_game_in_sweden_field_training_days min = constant:video_game_in_sweden_value.zero }
+	}
+	if = {
+		limit = { check_variable = { video_game_in_sweden_licence_days > constant:video_game_in_sweden_value.zero } }
+		subtract_from_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		clamp_variable = { var = video_game_in_sweden_licence_days min = constant:video_game_in_sweden_value.zero }
+	}
+	video_game_in_sweden_refresh_program_package = yes
+}
+
+# COUNTRY scope. Clears every package input when a programme starts.
+video_game_in_sweden_reset_program_package = {
+	set_variable = { video_game_in_sweden_exercise_days = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_logistics_days = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_field_training_days = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_rules_revision_count = constant:video_game_in_sweden_value.zero }
+	clear_variable = video_game_in_sweden_exercise_strength
+	clr_country_flag = video_game_in_sweden_exercise_at_war
 }
 
 video_game_in_sweden_add_ordinary_aftermath = {
@@ -873,6 +1130,38 @@ video_game_in_sweden_pay_trust_model = {
 video_game_in_sweden_do_controlled_exercise = {
 	video_game_in_sweden_pay_controlled_exercise = yes
 	set_country_flag = video_game_in_sweden_controlled_exercise_complete
+	# A new war state is a new scenario. Otherwise each repeat teaches less.
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = video_game_in_sweden_exercise_strength }
+				AND = {
+					has_war = yes
+					NOT = { has_country_flag = video_game_in_sweden_exercise_at_war }
+				}
+				AND = {
+					has_war = no
+					has_country_flag = video_game_in_sweden_exercise_at_war
+				}
+			}
+		}
+		set_variable = { video_game_in_sweden_exercise_strength = constant:video_game_in_sweden_value.one }
+	}
+	else = {
+		multiply_variable = { video_game_in_sweden_exercise_strength = constant:video_game_in_sweden_package.exercise_repeat_decay }
+		clamp_variable = {
+			var = video_game_in_sweden_exercise_strength
+			min = constant:video_game_in_sweden_package.exercise_min_strength
+		}
+	}
+	if = {
+		limit = { has_war = yes }
+		set_country_flag = video_game_in_sweden_exercise_at_war
+	}
+	else = {
+		clr_country_flag = video_game_in_sweden_exercise_at_war
+	}
+	set_variable = { video_game_in_sweden_exercise_days = constant:video_game_in_sweden_timing.exercise_benefit_days }
 	if = {
 		limit = { NOT = { has_variable = video_game_in_sweden_controlled_exercise_gain } }
 		set_variable = { video_game_in_sweden_controlled_exercise_gain = constant:video_game_in_sweden_reliance.controlled_exercise_gain }
@@ -887,11 +1176,18 @@ video_game_in_sweden_do_logistics_module = {
 	video_game_in_sweden_pay_logistics_module = yes
 	set_country_flag = video_game_in_sweden_logistics_review_complete
 	set_country_flag = video_game_in_sweden_logistics_mismatch_reduced
-	set_temp_variable = { video_game_in_sweden_reliance_delta = 0 }
-	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.logistics_review_loss }
-	multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+	set_variable = { video_game_in_sweden_logistics_days = constant:video_game_in_sweden_timing.logistics_benefit_days }
+	# Publishers sell the commercial module as proof of realism. Staff routes
+	# treat it as an admission of the earlier simplifications.
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_commercial_route }
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.logistics_marketing_gain }
+	}
+	else = {
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.logistics_review_loss }
+		multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+	}
 	video_game_in_sweden_change_reliance = yes
-	add_equipment_to_stockpile = { type = support_equipment amount = constant:video_game_in_sweden_cost.controlled_exercise_support_return }
 }
 
 # Audit-phase rail review. It files the same logistics proof as the baseline
@@ -928,7 +1224,20 @@ video_game_in_sweden_do_expand_access = {
 video_game_in_sweden_do_rules_revision = {
 	video_game_in_sweden_pay_rules_revision = yes
 	set_country_flag = video_game_in_sweden_rules_revision_complete
-	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_gain }
+	add_to_variable = { video_game_in_sweden_rules_revision_count = constant:video_game_in_sweden_value.one }
+	# Field evidence keeps a revision honest. An auxiliary doctrine halves the
+	# Reliance it adds because sessions are debriefed against field reports.
+	if = {
+		limit = { video_game_in_sweden_has_validation_evidence = yes }
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_validated_gain }
+	}
+	else = {
+		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_gain }
+	}
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_formal_auxiliary_doctrine }
+		divide_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_value.two }
+	}
 	video_game_in_sweden_change_reliance = yes
 	add_to_variable = { video_game_in_sweden_rules_revision_army_experience = constant:video_game_in_sweden_cost.rules_revision_army_experience_increment }
 	add_to_variable = { video_game_in_sweden_rules_revision_command_power = constant:video_game_in_sweden_cost.rules_revision_command_power_increment }
@@ -994,6 +1303,8 @@ video_game_in_sweden_do_national_league = {
 	video_game_in_sweden_change_reliance = yes
 	add_war_support = constant:video_game_in_sweden_effect.national_war_support
 	add_to_variable = { video_game_in_sweden_national_league_seasons = 1 }
+	# Each season adds to the cumulative productivity pressure of the craze.
+	video_game_in_sweden_refresh_program_package = yes
 }
 
 video_game_in_sweden_do_protect_shifts = {
@@ -1521,6 +1832,7 @@ video_game_in_sweden_start_trust_model = {
 video_game_in_sweden_full_field_validation = {
 	video_game_in_sweden_clear_mission_state = yes
 	set_country_flag = video_game_in_sweden_field_validation_success
+	set_variable = { video_game_in_sweden_field_training_days = constant:video_game_in_sweden_timing.field_training_days }
 	set_country_flag = video_game_in_sweden_logistics_mismatch_removed
 	set_country_flag = video_game_in_sweden_enemy_mismatch_removed
 	if = {
@@ -1916,6 +2228,7 @@ video_game_in_sweden_start_recovery = {
 	set_country_flag = video_game_in_sweden_recovery_active
 	video_game_in_sweden_refresh_stage_idea = yes
 	video_game_in_sweden_update_achievement_tracking = yes
+	video_game_in_sweden_refresh_program_package = yes
 }
 
 video_game_in_sweden_close_program = {
@@ -1947,6 +2260,10 @@ video_game_in_sweden_close_program = {
 		if = {
 			limit = { has_dynamic_modifier = video_game_in_sweden_commercial_aftermath }
 			remove_dynamic_modifier = { modifier = video_game_in_sweden_commercial_aftermath }
+		}
+		if = {
+			limit = { has_dynamic_modifier = video_game_in_sweden_program_package }
+			remove_dynamic_modifier = { modifier = video_game_in_sweden_program_package }
 		}
 		clr_country_flag = video_game_in_sweden_model_surge_active
 		clr_country_flag = video_game_in_sweden_dual_track_package_active
@@ -2314,6 +2631,19 @@ video_game_in_sweden_roll_incident = {
 			}
 			country_event = { id = chaosx.nr24.30 days = 1 }
 		}
+	}
+}
+
+# COUNTRY scope. Licence decision body: payment, a bounded partner choice,
+# finite trade goodwill at home and the delayed foreign reply.
+video_game_in_sweden_do_foreign_licenses = {
+	video_game_in_sweden_pay_foreign_licenses = yes
+	video_game_in_sweden_select_foreign_partner = yes
+	set_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_timing.licence_benefit_days }
+	video_game_in_sweden_refresh_program_package = yes
+	if = {
+		limit = { has_event_target = video_game_in_sweden_foreign_partner }
+		country_event = { id = chaosx.nr24.42 days = constant:video_game_in_sweden_timing.foreign_response_delay_days }
 	}
 }
 
@@ -2772,6 +3102,12 @@ video_game_in_sweden_maintenance = {
 			add_to_variable = { video_game_in_sweden_evolution_elapsed_days = constant:video_game_in_sweden_timing.maintenance_days }
 		}
 		video_game_in_sweden_handle_disabled_evolution = yes
+		# Keeping the craze outside government holds Evolution III back longer.
+		set_temp_variable = { video_game_in_sweden_evolution_iii_wait = constant:video_game_in_sweden_timing.evolution_iii_delay_days }
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_separate_policy }
+			add_to_temp_variable = { video_game_in_sweden_evolution_iii_wait = constant:video_game_in_sweden_timing.separate_policy_evolution_delay_days }
+		}
 		if = {
 			limit = { has_country_flag = video_game_in_sweden_trust_model_active }
 			add_to_variable = { video_game_in_sweden_trust_model_days_elapsed = constant:video_game_in_sweden_timing.maintenance_days }
@@ -2893,7 +3229,7 @@ video_game_in_sweden_maintenance = {
 				}
 				check_variable = {
 					var = video_game_in_sweden_evolution_elapsed_days
-					value = constant:video_game_in_sweden_timing.evolution_iii_delay_days
+					value = video_game_in_sweden_evolution_iii_wait
 					compare = greater_than_or_equals
 				}
 				check_variable = {

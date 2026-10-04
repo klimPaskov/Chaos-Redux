@@ -105,6 +105,41 @@ The ordinary conclusion branches by opening and by the last useful institutional
 
 The baseline can therefore finish as a complete low-scale event rather than requiring the player to chase a route escalation.
 
+## Programme package
+
+One country dynamic modifier, `video_game_in_sweden_program_package` ("Campaign Cabinet Programme"), carries every finite action payoff and the Evolution II public costs.
+`video_game_in_sweden_refresh_program_package` rebuilds its variables from the `video_game_in_sweden_package` constants after every Reliance change, after each action and once a day through the bounded runtime watch, which also counts down the timed payoffs.
+The package is attached only while the programme runs outside restriction enforcement and recovery, and closure removes it, so no bonus outlives the programme.
+
+| Source | Effect while active | Duration |
+| --- | --- | --- |
+| Controlled route | 3% faster army training | Programme |
+| Commercial route | +5% factory efficiency growth | Programme |
+| Officer route | +5% army experience gain | Programme |
+| Controlled exercise | +3% planning speed and 5% faster training, halved by each repeat under the same war state down to a quarter | 90 days |
+| Rail-table review | -5% supply consumption | 180 days |
+| Rules revision | +3% maximum planning and -3% terrain adaptation each, up to three; field validation or a red team halves the adaptation cost | Programme |
+| Officer league | +3% planning speed, +5% army experience gain | Programme |
+| Competitive command culture | +3% planning speed, +5% army experience gain | Programme |
+| Formal auxiliary doctrine | +2% planning speed, +2% terrain adaptation | Programme |
+| Independent red team | +5% terrain adaptation, -2% planning speed | Programme |
+| Full field validation | 8% faster army training | 180 days |
+| Preparedness charter | +2% recruitable population | Programme |
+| Foreign licence | +15% trade opinion | 180 days |
+| Public exhibitions in Evolution II | +3% war support | Evolution II |
+
+The rail-table review lowers Reliance on staff routes and raises it by 2 on the commercial route, where publishers market it as proof of realism.
+A rules revision raises Reliance by 9, or by 3 once a field validation or red team has tested the rules, and an official auxiliary doctrine halves either gain.
+
+### Evolution II public costs
+
+While Evolution II runs, the package also carries a factory output cost and a political power gain cost, shown in the category header.
+The output cost starts at 4% and the attention cost at 10%.
+Both scale by route (controlled 0.75, officer 1.0, commercial 1.25), by Reliance state (Habit or lower 0.75, Doctrine 1.0, Worldview 1.25) and by the Evolution II choice (exhibitions 1.25, civic network 0.8).
+Each national league season adds 1.5% to the output cost, for up to four seasons.
+Protected shifts cut the output cost by 60%, a preparedness charter by 25%, and separating play from policy halves the attention cost and adds 90 days to the Evolution III delay.
+The National Strategy Craze idea keeps its recruitment and war-support benefits.
+
 ## Decision category and mission contract
 
 The program uses one normal event-owned decision category named `video_game_in_sweden_program_category`.

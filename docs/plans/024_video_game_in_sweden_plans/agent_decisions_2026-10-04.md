@@ -70,3 +70,21 @@ Assignment is a constant-weighted `random_list` roll through `video_game_in_swed
 The persistent `video_game_in_sweden_rulebook_commander_granted` flag limits the programme to one marked commander, even after validation removes the trait.
 Validation, transfer, retirement and closure removal are unchanged.
 Basis: spec part 2 commander rules (only one commander, rare route result, safe skip) and the installed `random_list` documentation, which accepts variable weights.
+
+## D9. One variable-driven programme package carries the action payoffs
+
+Decision: `video_game_in_sweden_program_package` is the single country dynamic modifier for every finite Event 24 action payoff, rebuilt by `video_game_in_sweden_refresh_program_package` from the `video_game_in_sweden_package` constants.
+It carries the route secondary effect, the controlled exercise (with diminishing repeats until the war state changes), the rail-table supply saving, the rules-revision planning gain and adaptability cost, the officer league, the Evolution I choice package, the red-team trade, the field-validation training benefit, the preparedness recruitment benefit, the licence trade goodwill and the exhibition war support.
+Timed parts count down in the daily runtime watch, and the modifier is detached during restriction, recovery and closure.
+The logistics module no longer refunds support equipment, and on the commercial route it raises Reliance by `logistics_marketing_gain` instead of lowering it.
+Planning values were kept small (3% per source) because the staged ideas already carry 5 to 15% planning speed, which keeps Evolution I near the spec's medium single-digit band above the idea.
+Basis: spec part 3 action outcomes, spec part 2 civilian tradeoffs ("a clear package instead of scattered tiny modifiers") and lead decision 5.
+
+## D10. Evolution II public costs scale by route, Reliance and choice
+
+Decision: the National Strategy Craze idea keeps its recruitment and war-support benefits, and its productivity and political-attention costs move into the programme package.
+Output cost 4% and attention cost 10% are multiplied by route (0.75, 1.0, 1.25), Reliance state (0.75, 1.0, 1.25) and the Evolution II choice (exhibitions 1.25, civic network 0.8), and each national league season adds 1.5% output cost up to four seasons.
+Protected shifts cut output cost by 60%, a preparedness charter by 25%, and separate policy halves the attention cost and adds `separate_policy_evolution_delay_days` (90) to the Evolution III delay.
+Option `.12.a` raises Reliance by `exhibition_gain` (6) and adds exhibition war support, `.12.b` also sets protected shifts, and `.12.c` records the civic network that lowers the cost factor.
+The live costs appear in the category header during Evolution II.
+Basis: spec part 2 civilian tradeoffs and Evolution II choices, spec part 3 balance targets (costs large enough to justify Protect Essential Shifts).
