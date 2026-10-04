@@ -26,3 +26,560 @@ random_terror_focus_raise_formation = {
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_cost.actor_defector_equipment }
 	}
 }
+
+# ----------------------------------------------------------------------------
+# Idea slots.  Every actor carries one stable form in each of three slots,
+# command, economy and legitimacy (Part 6 idea lifecycle table).  A route
+# focus moves a slot with random_terror_set_<slot>_form, which removes every
+# other stable form of that slot, so the tree never stacks two forms of one
+# institution and an actor holds at most three tree spirits.  Input: temp
+# random_terror_idea_form, a random_terror_idea_form constant.
+#
+# The failure overlay owned by random_terror_refresh_actor_lifecycles stays
+# outside the slots.  Looting Spiral and Sponsor Dependency are both economy
+# forms and failure overlays: a slot change removes them only when the overlay
+# does not own them, and a focus that chooses one takes it over from the
+# overlay, so recovery cannot strip a chosen form.
+# ----------------------------------------------------------------------------
+
+random_terror_set_command_form = {
+	if = {
+		limit = {
+			has_idea = random_terror_improvised_command
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.improvised_command } }
+		}
+		remove_ideas = random_terror_improvised_command
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_distributed_command
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.distributed_command } }
+		}
+		remove_ideas = random_terror_distributed_command
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_unified_field_command
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.unified_field_command } }
+		}
+		remove_ideas = random_terror_unified_field_command
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_cadre_authority
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.cadre_authority } }
+		}
+		remove_ideas = random_terror_cadre_authority
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_network_directorate
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.network_directorate } }
+		}
+		remove_ideas = random_terror_network_directorate
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_directorate_general_staff
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.directorate_general_staff } }
+		}
+		remove_ideas = random_terror_directorate_general_staff
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_ideological_state
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.ideological_state } }
+		}
+		remove_ideas = random_terror_ideological_state
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.improvised_command }
+			NOT = { has_idea = random_terror_improvised_command }
+		}
+		add_ideas = random_terror_improvised_command
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.distributed_command }
+			NOT = { has_idea = random_terror_distributed_command }
+		}
+		add_ideas = random_terror_distributed_command
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.unified_field_command }
+			NOT = { has_idea = random_terror_unified_field_command }
+		}
+		add_ideas = random_terror_unified_field_command
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.cadre_authority }
+			NOT = { has_idea = random_terror_cadre_authority }
+		}
+		add_ideas = random_terror_cadre_authority
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.network_directorate }
+			NOT = { has_idea = random_terror_network_directorate }
+		}
+		add_ideas = random_terror_network_directorate
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.directorate_general_staff }
+			NOT = { has_idea = random_terror_directorate_general_staff }
+		}
+		add_ideas = random_terror_directorate_general_staff
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.ideological_state }
+			NOT = { has_idea = random_terror_ideological_state }
+		}
+		add_ideas = random_terror_ideological_state
+	}
+}
+
+random_terror_set_economy_form = {
+	if = {
+		limit = {
+			has_idea = random_terror_captured_economy
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.captured_economy } }
+		}
+		remove_ideas = random_terror_captured_economy
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_external_supply_system
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.external_supply_system } }
+		}
+		remove_ideas = random_terror_external_supply_system
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_directed_war_economy
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.directed_war_economy } }
+		}
+		remove_ideas = random_terror_directed_war_economy
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_civil_administration
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.civil_administration } }
+		}
+		remove_ideas = random_terror_civil_administration
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_patron_development_mission
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.patron_development_mission } }
+		}
+		remove_ideas = random_terror_patron_development_mission
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_looting_spiral
+			NOT = { has_country_flag = random_terror_lifecycle_owns_looting_spiral }
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.looting_spiral } }
+		}
+		remove_ideas = random_terror_looting_spiral
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_sponsor_dependency
+			NOT = { has_country_flag = random_terror_lifecycle_owns_sponsor_dependency }
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.sponsor_dependency } }
+		}
+		remove_ideas = random_terror_sponsor_dependency
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.captured_economy }
+			NOT = { has_idea = random_terror_captured_economy }
+		}
+		add_ideas = random_terror_captured_economy
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.external_supply_system }
+			NOT = { has_idea = random_terror_external_supply_system }
+		}
+		add_ideas = random_terror_external_supply_system
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.directed_war_economy }
+			NOT = { has_idea = random_terror_directed_war_economy }
+		}
+		add_ideas = random_terror_directed_war_economy
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.civil_administration }
+			NOT = { has_idea = random_terror_civil_administration }
+		}
+		add_ideas = random_terror_civil_administration
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.patron_development_mission }
+			NOT = { has_idea = random_terror_patron_development_mission }
+		}
+		add_ideas = random_terror_patron_development_mission
+	}
+	if = {
+		limit = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.looting_spiral } }
+		clr_country_flag = random_terror_lifecycle_owns_looting_spiral
+		if = {
+			limit = { NOT = { has_idea = random_terror_looting_spiral } }
+			add_ideas = random_terror_looting_spiral
+		}
+	}
+	if = {
+		limit = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.sponsor_dependency } }
+		clr_country_flag = random_terror_lifecycle_owns_sponsor_dependency
+		if = {
+			limit = { NOT = { has_idea = random_terror_sponsor_dependency } }
+			add_ideas = random_terror_sponsor_dependency
+		}
+	}
+}
+
+random_terror_set_legitimacy_form = {
+	if = {
+		limit = {
+			has_idea = random_terror_contested_legitimacy
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.contested_legitimacy } }
+		}
+		remove_ideas = random_terror_contested_legitimacy
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_security_state
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.security_state } }
+		}
+		remove_ideas = random_terror_security_state
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_claimed_authority
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.claimed_authority } }
+		}
+		remove_ideas = random_terror_claimed_authority
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_recognized_enclave
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.recognized_enclave } }
+		}
+		remove_ideas = random_terror_recognized_enclave
+	}
+	if = {
+		limit = {
+			has_idea = random_terror_international_mandate
+			NOT = { check_variable = { random_terror_idea_form = constant:random_terror_idea_form.international_mandate } }
+		}
+		remove_ideas = random_terror_international_mandate
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.contested_legitimacy }
+			NOT = { has_idea = random_terror_contested_legitimacy }
+		}
+		add_ideas = random_terror_contested_legitimacy
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.security_state }
+			NOT = { has_idea = random_terror_security_state }
+		}
+		add_ideas = random_terror_security_state
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.claimed_authority }
+			NOT = { has_idea = random_terror_claimed_authority }
+		}
+		add_ideas = random_terror_claimed_authority
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.recognized_enclave }
+			NOT = { has_idea = random_terror_recognized_enclave }
+		}
+		add_ideas = random_terror_recognized_enclave
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_idea_form = constant:random_terror_idea_form.international_mandate }
+			NOT = { has_idea = random_terror_international_mandate }
+		}
+		add_ideas = random_terror_international_mandate
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Map and network helpers.
+# ----------------------------------------------------------------------------
+
+# One military factory in an owned state the command holds with a free slot.
+# When no such slot exists, the seat gains one shared building slot for it.
+random_terror_focus_add_arms_factory = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				free_building_slots = { building = arms_factory size > 0 }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { free_building_slots = { building = arms_factory size > 0 } }
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+	}
+	else = {
+		capital_scope = {
+			add_extra_state_shared_building_slots = 1
+			add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		}
+	}
+}
+
+# One civilian factory, placed as random_terror_focus_add_arms_factory.
+random_terror_focus_add_civilian_factory = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				free_building_slots = { building = industrial_complex size > 0 }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { free_building_slots = { building = industrial_complex size > 0 } }
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+		}
+	}
+	else = {
+		capital_scope = {
+			add_extra_state_shared_building_slots = 1
+			add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+		}
+	}
+}
+
+# Saves random_terror_focus_state: an owned state the command holds that faces
+# an enemy, else one that borders a foreign state, else the seat.
+random_terror_focus_select_border_state = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } }
+			save_event_target_as = random_terror_focus_state
+		}
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				any_neighbor_state = { NOT = { is_owned_by = ROOT } }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { any_neighbor_state = { NOT = { is_owned_by = ROOT } } }
+			save_event_target_as = random_terror_focus_state
+		}
+	}
+	else = {
+		capital_scope = { save_event_target_as = random_terror_focus_state }
+	}
+}
+
+# Hides up to protected_cell_count threatened cells abroad
+# (random_terror_state_is_threatened_cell): the next government raid in each
+# finds only empty safe houses, as after Relocate the Network.
+random_terror_focus_protect_threatened_cells = {
+	set_temp_variable = { random_terror_focus_cells_done = constant:random_terror_value.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = { random_terror_focus_cells_done < constant:random_terror_focus_reward.protected_cell_count }
+			any_state = { random_terror_state_is_threatened_cell = yes }
+		}
+		random_state = {
+			limit = { random_terror_state_is_threatened_cell = yes }
+			set_state_flag = random_terror_cell_relocated
+		}
+		add_to_temp_variable = { random_terror_focus_cells_done = constant:random_terror_value.one }
+	}
+}
+
+# ----------------------------------------------------------------------------
+# Focus rewards.  One effect per focus whose reward needs several steps.  The
+# focus shows a plain custom tooltip, keeps spirit changes and plain resource
+# grants visible, and runs the effect hidden.
+# ----------------------------------------------------------------------------
+
+# Secure the Command Center: anti-air over the seat and radio equipment.
+random_terror_focus_reward_secure_command_center = {
+	capital_scope = {
+		add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+	}
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_focus_command_center_secured
+}
+
+# Seal the Inner Circle: exposed members are cut off, ending Compromised
+# Network, and threatened cells abroad go to ground before the next raid.
+random_terror_focus_reward_seal_inner_circle = {
+	if = {
+		limit = { has_idea = random_terror_compromised_network }
+		remove_ideas = random_terror_compromised_network
+	}
+	random_terror_focus_protect_threatened_cells = yes
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	set_country_flag = random_terror_focus_inner_circle_sealed
+}
+
+# Layered Safehouses: bunkers in the key towns of every held state outside
+# the seat, or in the seat when the command holds nothing else.
+random_terror_focus_reward_layered_safehouses = {
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				NOT = { is_capital = yes }
+			}
+		}
+		every_owned_state = {
+			limit = {
+				is_controlled_by = ROOT
+				NOT = { is_capital = yes }
+			}
+			add_building_construction = {
+				type = bunker
+				level = 1
+				province = { all_provinces = yes limit_to_victory_point = yes }
+				instant_build = yes
+			}
+		}
+	}
+	else = {
+		capital_scope = {
+			add_building_construction = {
+				type = bunker
+				level = 1
+				province = { all_provinces = yes limit_to_victory_point = yes }
+				instant_build = yes
+			}
+		}
+	}
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_safehouses_layered
+}
+
+# Protect the Route: a border state's roads are improved, the external
+# corridor opens and convoys arrive.
+random_terror_focus_reward_protect_route = {
+	set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
+	random_terror_focus_select_border_state = yes
+	event_target:random_terror_focus_state = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+	add_equipment_to_stockpile = { type = convoy_1 amount = constant:random_terror_cost.actor_corridor_convoys }
+	random_terror_actor_open_external_corridor = yes
+	set_country_flag = random_terror_focus_route_protected
+}
+
+# Appoint the Directorate: a Directorate Guard formation musters.
+random_terror_focus_reward_appoint_directorate = {
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.guard_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.guard_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.guard_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.guard_id }
+	random_terror_focus_raise_formation = yes
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
+	set_country_flag = random_terror_focus_directorate_appointed
+}
+
+# Field Radio Discipline: field radios and a timed planning and organization
+# bonus.
+random_terror_focus_reward_field_radio_discipline = {
+	set_temp_variable = { random_terror_focus_modifier_days = constant:random_terror_focus_reward.radio_discipline_days }
+	add_dynamic_modifier = { modifier = random_terror_field_radio_discipline days = random_terror_focus_modifier_days }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
+	set_country_flag = random_terror_focus_field_radio_discipline
+}
+
+# Harden the Defensive Line: bunkers along the border provinces of a state
+# that faces the enemy (else a border state, else the seat).
+random_terror_focus_reward_harden_defensive_line = {
+	random_terror_focus_select_border_state = yes
+	event_target:random_terror_focus_state = {
+		add_building_construction = {
+			type = bunker
+			level = 1
+			province = { all_provinces = yes limit_to_border = yes }
+			instant_build = yes
+		}
+	}
+	set_country_flag = random_terror_focus_defensive_line_hardened
+}
+
+# Unify the Brigades: two territorial brigades muster.
+random_terror_focus_reward_unify_brigades = {
+	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.brigade_experience }
+	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.brigade_equipment }
+	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.brigade_manpower }
+	set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.brigade_id }
+	random_terror_focus_raise_formation = yes
+	random_terror_focus_raise_formation = yes
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	set_country_flag = random_terror_focus_brigades_unified
+}
+
+# Align with the Patron: the patron's instructors train the command's
+# infantry, one research bonus for infantry weapons.
+random_terror_focus_reward_align_patron = {
+	meta_effect = {
+		text = {
+			add_tech_bonus = {
+				name = random_terror_align_with_the_patron
+				bonus = [RT_BONUS]
+				uses = 1
+				category = infantry_weapons
+			}
+		}
+		RT_BONUS = "[?constant:random_terror_focus_reward.patron_training_bonus|.2]"
+	}
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
+	set_country_flag = random_terror_focus_patron_aligned
+}
+
+# Reconcile the Jihadists: the command makes peace with every rival
+# International command it is fighting and ends the doctrinal dispute.
+random_terror_focus_reward_reconcile_jihadists = {
+	every_enemy_country = {
+		limit = {
+			random_terror_is_actor = yes
+			OR = {
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_focus_route_jihadist_international
+			}
+		}
+		ROOT = { white_peace = PREV }
+	}
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_jihadists_reconciled
+}
