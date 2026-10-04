@@ -36,9 +36,9 @@ mission_riches_found_break_claim_war_partial_tt: "§YPartial success:§! The wor
 mission_riches_found_break_claim_war_failure_tt: "§RFailure:§! The court fails and armed claimants return to the field."
 
 mission_riches_found_restore_shaft: "Restore the Shaft"
-mission_riches_found_restore_shaft_desc: "Repair the damaged shaft and raise Mine Development above [?constant:riches_found_decision_threshold.development_ready|0]."
-mission_riches_found_restore_shaft_complete_tt: "§GSuccess:§! The damaged shaft returns to safe operation."
-mission_riches_found_restore_shaft_partial_tt: "§YPartial success:§! Crews recover part of the workings, but major damage remains."
+mission_riches_found_restore_shaft_desc: "Keep a rail or port route open to the mine until the repair crews finish their works."
+mission_riches_found_restore_shaft_complete_tt: "§GSuccess:§! The damaged shaft returns to safe operation. A collapsed mine reopens under regulated terms."
+mission_riches_found_restore_shaft_partial_tt: "§YPartial success:§! Crews recover part of the workings. A collapsed mine reopens its upper workings while the deep sections stay sealed."
 mission_riches_found_restore_shaft_failure_tt: "§RFailure:§! The shaft fails again and the collapse deepens."
 
 mission_riches_found_hold_mine: "Hold the Mine"
@@ -216,7 +216,7 @@ riches_found_cost_gold_quarantine_tooltip: "[This.GetRichesFoundCostPpHeavy] Pol
 
 decision_riches_found_gold_close_temporary: "Close the Mine Temporarily"
 decision_riches_found_gold_close_temporary_desc: "Halt extraction while officials contain the gold sickness."
-decision_riches_found_gold_close_temporary_tt: "Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!"
+decision_riches_found_gold_close_temporary_tt: "Gold Disease pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!  Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!\nExtraction stops. While the mine is closed, Extraction Pressure changes by §G[?constant:riches_found_closure.pressure_decay_per_pulse|0]§! each month, and Revenue Legitimacy slips unless the workers are paid or share in the revenue. After [?constant:riches_found_duration.temporary_closure_days|0] days the mine can be reopened; a closure left in place longer starts to strain the shafts."
 riches_found_cost_gold_close_temporary: "[This.GetRichesFoundCostPpStandard]  [This.GetRichesFoundCostManpowerStandard]  [This.GetRichesFoundCostSupportLight]"
 riches_found_cost_gold_close_temporary_blocked: "$riches_found_cost_gold_close_temporary$"
 riches_found_cost_gold_close_temporary_tooltip: "[This.GetRichesFoundCostPpStandard] Political power\n[This.GetRichesFoundCostManpowerStandard] Manpower\n[This.GetRichesFoundCostSupportLight] Support equipment"
@@ -327,7 +327,7 @@ riches_found_cost_disarm_private_forces_tooltip: "[This.GetRichesFoundCostPpStan
 
 decision_riches_found_temporary_closure: "Temporary Closure"
 decision_riches_found_temporary_closure_desc: "Halt extraction while emergency crews stabilize the mine."
-decision_riches_found_temporary_closure_tt: "Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!  Mine Development: §R[?constant:riches_found_action_delta.negative_8|0]§!  Local Order: §G+[?constant:riches_found_action_delta.positive_4|0]§!"
+decision_riches_found_temporary_closure_tt: "Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!  Mine Development: §R[?constant:riches_found_action_delta.negative_8|0]§!  Local Order: §G+[?constant:riches_found_action_delta.positive_4|0]§!\nExtraction stops. While the mine is closed, Extraction Pressure changes by §G[?constant:riches_found_closure.pressure_decay_per_pulse|0]§! each month, and Revenue Legitimacy slips unless the workers are paid or share in the revenue. After [?constant:riches_found_duration.temporary_closure_days|0] days the mine can be reopened; a closure left in place longer starts to strain the shafts."
 riches_found_cost_temporary_closure: "[This.GetRichesFoundCostPpStandard]  [This.GetRichesFoundCostManpowerStandard]  [This.GetRichesFoundCostSupportLight]"
 riches_found_cost_temporary_closure_blocked: "$riches_found_cost_temporary_closure$"
 riches_found_cost_temporary_closure_tooltip: "[This.GetRichesFoundCostPpStandard] Political power\n[This.GetRichesFoundCostManpowerStandard] Manpower\n[This.GetRichesFoundCostSupportLight] Support equipment"
@@ -355,10 +355,18 @@ riches_found_cost_seal_depths_tooltip: "[This.GetRichesFoundCostPpHeavy] Politic
 
 decision_riches_found_repair: "Repair"
 decision_riches_found_repair_desc: "Shore the damaged workings and restore essential mine infrastructure."
-decision_riches_found_repair_tt: "Extraction Pressure: §G[?constant:riches_found_action_delta.negative_8|0]§!"
+decision_riches_found_repair_tt: "Starts §YRestore the Shaft§!. The repair crews arrive after [?constant:riches_found_decision_duration.long_project|0] days.\nExtraction Pressure: §G[?constant:riches_found_action_delta.negative_8|0]§!"
 riches_found_cost_repair: "[This.GetRichesFoundCostPpStandard]  [This.GetRichesFoundCostManpowerStandard]  [This.GetRichesFoundCostSupportStandard]  [This.GetRichesFoundCostFuelStandard]"
 riches_found_cost_repair_blocked: "$riches_found_cost_repair$"
 riches_found_cost_repair_tooltip: "[This.GetRichesFoundCostPpStandard] Political power\n[This.GetRichesFoundCostManpowerStandard] Manpower\n[This.GetRichesFoundCostSupportStandard] Support equipment\n[This.GetRichesFoundCostFuelStandard] Fuel"
+decision_riches_found_reopen_mine: "Reopen the Mine"
+decision_riches_found_reopen_mine_desc: "Inspect the shafts, call the crews back and restart extraction under regulated terms."
+decision_riches_found_reopen_mine_tt: "After an inspection of [?constant:riches_found_duration.recovery_review_days|0] days the mine returns to regulated operation.\nRevenue Legitimacy: §G+[?constant:riches_found_closure.reopen_legitimacy_add|0]§!\nA suspended contract is reviewed with its partner. The mine cannot be closed again for [?constant:riches_found_closure.reopen_cooldown_days|0] days."
+decision_riches_found_reopen_mine_safe_tt: "Extraction Pressure below [?constant:riches_found_closure.reopen_pressure_maximum|0], a rail or port route to the mine, and Local Order of at least [?constant:riches_found_closure.reopen_order_minimum|0] or a security force on site"
+riches_found_cost_reopen_mine: "[This.GetRichesFoundCostPpLight]  [This.GetRichesFoundCostManpowerStandard]  [This.GetRichesFoundCostSupportStandard]"
+riches_found_cost_reopen_mine_blocked: "$riches_found_cost_reopen_mine$"
+riches_found_cost_reopen_mine_tooltip: "[This.GetRichesFoundCostPpLight] Political power\n[This.GetRichesFoundCostManpowerStandard] Manpower\n[This.GetRichesFoundCostSupportStandard] Support equipment"
+mission_riches_found_restore_shaft_ready_tt: "The repair works at the mine are finished and a rail or port route still serves it"
 
 decision_riches_found_evacuation: "Evacuation"
 decision_riches_found_evacuation_desc: "Move workers and residents away from the dangerous workings."
@@ -418,7 +426,7 @@ riches_found_cost_occupation_strip_equipment_tooltip: "[This.GetRichesFoundCostP
 
 decision_riches_found_occupation_deny_mine: "Deny the Mine"
 decision_riches_found_occupation_deny_mine_desc: "Destroy the mine's productive capacity before it can change hands."
-decision_riches_found_occupation_deny_mine_tt: "Mine Development: §R[?constant:riches_found_action_delta.negative_25|0]§!  Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!  Local Order: §G+[?constant:riches_found_action_delta.positive_4|0]§!"
+decision_riches_found_occupation_deny_mine_tt: "Mine Development: §R[?constant:riches_found_action_delta.negative_25|0]§!  Extraction Pressure: §G[?constant:riches_found_action_delta.negative_20|0]§!  Local Order: §G+[?constant:riches_found_action_delta.positive_4|0]§!\nThe workings are wrecked and closed. They stay damaged until a Restore the Shaft mission repairs them."
 riches_found_cost_occupation_deny_mine: "[This.GetRichesFoundCostPpHeavy]  [This.GetRichesFoundCostCommandStandard]  [This.GetRichesFoundCostInfantryStandard]  [This.GetRichesFoundCostSupportStandard]"
 riches_found_cost_occupation_deny_mine_blocked: "$riches_found_cost_occupation_deny_mine$"
 riches_found_cost_occupation_deny_mine_tooltip: "[This.GetRichesFoundCostPpHeavy] Political power\n[This.GetRichesFoundCostCommandStandard] Command power\n[This.GetRichesFoundCostInfantryStandard] Infantry equipment\n[This.GetRichesFoundCostSupportStandard] Support equipment"

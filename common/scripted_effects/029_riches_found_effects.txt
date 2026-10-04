@@ -638,18 +638,13 @@ riches_found_reconcile_mine_phase = {
 		set_state_flag = riches_found_mine_closed
 	}
 	else = { clr_state_flag = riches_found_mine_closed }
+	# Damage is a persistent physical fact. A collapse always implies it, and
+	# only a completed restoration clears it; repair works in progress and
+	# deliberately sealed sections do not re-derive it.
 	if = {
-		limit = {
-			OR = {
-				has_state_flag = riches_found_mine_partial_seal
-				has_state_flag = riches_found_mine_collapsed
-				has_state_flag = riches_found_mine_damaged
-				has_state_flag = riches_found_repair_started
-			}
-		}
+		limit = { has_state_flag = riches_found_mine_collapsed }
 		set_state_flag = riches_found_mine_damaged
 	}
-	else = { clr_state_flag = riches_found_mine_damaged }
 }
 
 # STATE scope. Removes every member of the authorised state-presentation
@@ -1577,6 +1572,10 @@ riches_found_calculate_mission_duration = {
 		add_to_variable = { riches_found_mission_duration_days = constant:riches_found_duration.mission_damage_delay_days }
 	}
 	if = {
+		limit = { has_state_flag = riches_found_severe_collapse }
+		add_to_variable = { riches_found_mission_duration_days = constant:riches_found_duration.mission_damage_delay_days }
+	}
+	if = {
 		limit = { riches_found_state_has_route_capacity = yes }
 		add_to_variable = { riches_found_mission_duration_days = constant:riches_found_duration.mission_route_reduction_days }
 	}
@@ -1816,20 +1815,8 @@ riches_found_refresh_active_mission_progress = {
 		}
 		set_state_flag = riches_found_pay_train_safe_passage_proven
 	}
-	if = {
-		limit = {
-			has_state_flag = riches_found_mission_restore_shaft_subject
-			has_state_flag = riches_found_mission_restore_shaft_progress
-			has_state_flag = riches_found_repair_started
-			riches_found_state_has_route_capacity = yes
-			NOT = { has_state_flag = riches_found_severe_collapse }
-			check_variable = { var = global.date value = riches_found_mission_progress_date compare = greater_than_or_equals }
-		}
-		set_state_flag = riches_found_shaft_restored
-		set_state_flag = riches_found_shafts_reinforced
-		clr_state_flag = riches_found_mine_damaged
-		clr_state_flag = riches_found_mine_collapsed
-	}
+	# Restore the Shaft reads riches_found_restore_shaft_works_ready directly
+	# in its mission availability; its completion owns the damage cleanup.
 	if = {
 		limit = {
 			has_state_flag = riches_found_mission_hold_mine_subject
@@ -2014,6 +2001,8 @@ riches_found_clear_closure_state = {
 	clr_state_flag = riches_found_raid_crisis
 	clr_state_flag = riches_found_crime_crisis
 	clr_state_flag = riches_found_administration_compromised
+	clr_state_flag = riches_found_closure_review_complete
+	clr_state_flag = riches_found_reopening_in_progress
 	clear_variable = riches_found_closure_start_date
 	clear_variable = riches_found_closure_review_date
 }
@@ -2022,6 +2011,7 @@ riches_found_clear_closure_state = {
 riches_found_clear_collapse_state = {
 	clr_state_flag = riches_found_mine_collapsed
 	clr_state_flag = riches_found_mine_damaged
+	clr_state_flag = riches_found_collapse_harm_recorded
 	clear_variable = riches_found_collapse_date
 	clear_variable = riches_found_collapse_recovery_date
 }
@@ -2056,9 +2046,12 @@ riches_found_begin_temporary_closure = {
 		clr_state_flag = riches_found_achievement_pay_train_sequence_valid
 		clr_state_flag = riches_found_achievement_pay_train_ready
 		set_state_flag = riches_found_mine_temporary_closure
+		set_state_flag = riches_found_closure_history
+		clr_state_flag = riches_found_closure_review_complete
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.temporarily_closed }
 		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_closure_start_date = global.date }
+		set_variable = { riches_found_last_closure_service_date = global.date }
 		set_variable = { riches_found_closure_review_date = global.date }
 		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.temporary_closure_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
@@ -2190,6 +2183,7 @@ riches_found_collapse_mine = {
 			set_variable = { riches_found_operating_state = constant:riches_found_operating_state.collapsed }
 		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_collapse_date = global.date }
+		set_variable = { riches_found_last_closure_service_date = global.date }
 		set_variable = { riches_found_collapse_recovery_date = global.date }
 		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.collapse_recovery_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
@@ -2224,14 +2218,29 @@ riches_found_begin_recovery = {
 }
 
 # STATE scope. Completes recovery and restores a regulated operating state.
+# Deliberately sealed deep sections stay sealed: a partially sealed mine
+# returns to its supervised upper workings rather than full extraction.
 riches_found_complete_recovery = {
 	if = {
 		limit = { has_state_flag = riches_found_recovery_active NOT = { has_state_flag = riches_found_mine_permanent_seal } }
+		set_temp_variable = { riches_found_recovery_keeps_partial_seal = constant:riches_found_value.zero }
+		if = {
+			limit = { has_state_flag = riches_found_mine_partial_seal }
+			set_temp_variable = { riches_found_recovery_keeps_partial_seal = constant:riches_found_value.one }
+		}
 		riches_found_clear_closure_state = yes
 		riches_found_clear_collapse_state = yes
 		riches_found_clear_recovery_state = yes
 		clr_state_flag = riches_found_repair_started
+		clr_state_flag = riches_found_severe_collapse
+		clr_state_flag = riches_found_closure_review_complete
+		clear_variable = riches_found_last_closure_service_date
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated }
+		if = {
+			limit = { check_variable = { riches_found_recovery_keeps_partial_seal = constant:riches_found_value.one } }
+			set_state_flag = riches_found_mine_partial_seal
+			set_variable = { riches_found_operating_state = constant:riches_found_operating_state.partially_sealed }
+		}
 		set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
 		add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
 		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.two }
@@ -2240,6 +2249,105 @@ riches_found_complete_recovery = {
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
 		riches_found_refresh_evolution_gates = yes
+	}
+}
+
+# STATE scope. Called once by the Restore the Shaft mission when its repair
+# works are ready. Damage, route damage and the collapse warning are cleared,
+# a severe collapse ends, and a collapsed mine returns to regulated operation
+# through the shared recovery helpers. A temporary closure is not lifted here;
+# reopening keeps its own safety and order check.
+riches_found_complete_shaft_restoration = {
+	clr_state_flag = riches_found_repair_started
+	set_state_flag = riches_found_shaft_restored
+	set_variable = { riches_found_last_restoration_date = global.date }
+	if = {
+		limit = { has_state_flag = riches_found_mine_collapsed }
+		riches_found_begin_recovery = yes
+		riches_found_complete_recovery = yes
+	}
+	clr_state_flag = riches_found_mine_damaged
+	clr_state_flag = riches_found_route_damaged
+	clr_state_flag = riches_found_severe_collapse
+	clr_state_flag = riches_found_collapse_warning
+	add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.restoration_collapse_relief }
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	riches_found_refresh_evolution_gates = yes
+}
+
+# STATE scope. Called by Restore the Shaft when the works started but did not
+# finish in time. A collapsed mine reopens its safer upper workings while the
+# deep sections stay sealed; the damage and any severe collapse remain until a
+# later restoration completes. A damaged open mine keeps its damage.
+riches_found_partially_restore_shaft = {
+	clr_state_flag = riches_found_repair_started
+	add_to_variable = { riches_found_mine_development = constant:riches_found_closure.partial_restoration_development }
+	if = {
+		limit = { has_state_flag = riches_found_mine_collapsed }
+		riches_found_clear_collapse_state = yes
+		set_state_flag = riches_found_mine_damaged
+		set_state_flag = riches_found_mine_partial_seal
+		set_state_flag = riches_found_partial_restoration_history
+		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.partially_sealed }
+		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
+	}
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	riches_found_refresh_evolution_gates = yes
+}
+
+# STATE scope. Starts a controlled reopening after a temporary closure. The
+# decision that pays for it calls this immediately and calls
+# riches_found_finish_reopening when its inspection period ends.
+riches_found_begin_reopening = {
+	if = {
+		limit = { riches_found_mine_closure_can_reopen = yes }
+		riches_found_begin_recovery = yes
+		set_state_flag = riches_found_reopening_in_progress
+	}
+}
+
+# STATE scope. Finishes a controlled reopening. The mine returns to regulated
+# operation, a suspended contract is reviewed with its partner, and a
+# cooldown prevents an immediate second closure.
+riches_found_finish_reopening = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_reopening_in_progress
+			has_state_flag = riches_found_recovery_active
+			has_state_flag = riches_found_mine_temporary_closure
+		}
+		clr_state_flag = riches_found_reopening_in_progress
+		riches_found_complete_recovery = yes
+		set_state_flag = riches_found_reopened_after_closure
+		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_closure.reopen_legitimacy_add }
+		set_temp_variable = { riches_found_reopen_cooldown_days = constant:riches_found_closure.reopen_cooldown_days }
+		set_state_flag = { flag = riches_found_reopen_cooldown days = riches_found_reopen_cooldown_days }
+		if = {
+			limit = { has_state_flag = riches_found_contract_pending_review }
+			riches_found_review_contract = yes
+		}
+		riches_found_clamp_mine_values = yes
+		riches_found_refresh_mine_presentation = yes
+		riches_found_refresh_mine_contribution = yes
+		riches_found_refresh_state_achievement_timers = yes
+	}
+}
+
+# STATE scope. Cancels a reopening whose inspection failed or whose payer lost
+# the mine. The closure and its review stay in place.
+riches_found_cancel_reopening = {
+	if = {
+		limit = { has_state_flag = riches_found_reopening_in_progress }
+		clr_state_flag = riches_found_reopening_in_progress
+		riches_found_clear_recovery_state = yes
+		if = {
+			limit = { has_state_flag = riches_found_mine_temporary_closure }
+			set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
+		}
 	}
 }
 
@@ -2294,7 +2402,10 @@ riches_found_handle_state_control_change = {
 			set_variable = { riches_found_contract_stage = constant:riches_found_contract_stage.suspended }
 		}
 		riches_found_clear_mission_state = yes
-		if = { limit = { CONTROLLER = { exists = yes } } set_variable = { riches_found_recorded_controller = CONTROLLER } else = { clear_variable = riches_found_recorded_controller } }
+		riches_found_cancel_reopening = yes
+		clr_state_flag = riches_found_repair_started
+		if = { limit = { CONTROLLER = { exists = yes } } set_variable = { riches_found_recorded_controller = CONTROLLER } }
+		else = { clear_variable = riches_found_recorded_controller }
 		riches_found_handle_occupation_change = yes
 		riches_found_review_contract = yes
 		riches_found_refresh_mine_presentation = yes

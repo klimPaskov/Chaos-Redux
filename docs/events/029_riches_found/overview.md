@@ -64,6 +64,21 @@ Renewal, expiry, publication, audit, nationalization, buyout, and payment integr
 
 The security and crisis layer includes mine police, private guards, army cordons, pay-route protection, raid responses, occupation administration, transfer settlements, temporary closure, repair, collapse response, restoration, permanent sealing, and cleanup. Mission sequence and cooldown proofs prevent repeated completions from farming counters, benefits, or achievement progress. Permanent historical disqualifiers are not cleared by ordinary mission cleanup.
 
+### Closure, collapse, and recovery
+
+Every closing action (Temporary Closure, the Gold Disease closure, and an occupier's Deny the Mine) runs `riches_found_begin_temporary_closure`, so the closure state, operating state, phase, review date, and suspended contract persist across presentation refreshes.
+While a mine is temporarily closed, `riches_found_service_closed_mine` in the maintenance pulse lowers Extraction Pressure each pulse interval by `riches_found_closure.pressure_decay_per_pulse`, lowers collapse pressure until the closure review date, and lowers Revenue Legitimacy unless the workers are paid or share in the revenue (dividend, local revenue settlement, worker cooperatives, or a public revenue share).
+At the review date the mine gains `riches_found_closure_review_complete`; a closure kept in place after that slowly raises collapse pressure unless the shafts were reinforced.
+Reopen the Mine is a state-targeted action in the ordinary category, visible only while `riches_found_mine_closure_can_reopen` holds.
+It requires the safety and order check `riches_found_mine_reopening_is_safe` (pressure below the reopening ceiling, a rail or port route, and adequate Local Order or a security force), costs light political power, standard manpower and standard support equipment, and runs a recovery inspection for `riches_found_duration.recovery_review_days`.
+At the end of the inspection `riches_found_finish_reopening` returns the mine to regulated operation (sealed deep sections stay sealed), reviews any suspended contract with its partner, and sets a reopening cooldown that blocks an immediate second closure; if the payer lost the mine or the check failed, the reopening is cancelled and the payment refunded.
+
+Damage is a persistent physical fact that only a completed restoration clears.
+A collapse always implies damage; major-failure and catastrophic collapse incidents close the workings through `riches_found_collapse_mine`, which records harm once per collapse.
+Repair is visible on any damaged mine and starts Restore the Shaft; its crews deliver after the decision's removal period only if the payer still holds the mine with the mission running, otherwise the payment is refunded.
+The mission completes when `riches_found_restore_shaft_works_ready` holds, and its completion runs `riches_found_complete_shaft_restoration`, which clears damage, route damage and any severe collapse and returns a collapsed mine to regulated operation through the shared recovery helpers.
+A partial result reopens a collapsed mine's upper workings as a partial seal while its damage and any severe collapse remain for a later restoration, and a collapsed mine left without repairs after its recovery date loses development each pulse interval.
+
 ## Evolutions and late outcomes
 
 Event 029 registers exactly three evolution rows:

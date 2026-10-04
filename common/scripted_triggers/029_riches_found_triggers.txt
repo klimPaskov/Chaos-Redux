@@ -571,6 +571,50 @@ riches_found_mine_can_recover = {
 	NOT = { has_state_flag = riches_found_mine_exhausted }
 }
 
+# STATE scope. The deciding country (ROOT) still controls this registered,
+# nonterminal mine. Delayed decision results check this before they apply and
+# refund the payer when it fails.
+riches_found_mine_still_valid_for_payer = {
+	is_controlled_by = ROOT
+	riches_found_mine_is_registered = yes
+	NOT = { riches_found_mine_is_terminal = yes }
+}
+
+# STATE scope. A temporarily closed mine can reopen once its closure review
+# has passed and no damage remains. Account containment keeps its own closure,
+# and a reopening already under way is not started twice.
+riches_found_mine_closure_can_reopen = {
+	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_mine_temporary_closure
+	has_state_flag = riches_found_closure_review_complete
+	NOT = { has_state_flag = riches_found_mine_damaged }
+	NOT = { has_state_flag = riches_found_recovery_active }
+	NOT = { has_state_flag = riches_found_account_containment_pending }
+}
+
+# STATE scope. The safety and order check for a controlled reopening: pressure
+# has cooled below the reopening ceiling, a rail or port route still serves the
+# mine, and the site is orderly or guarded.
+riches_found_mine_reopening_is_safe = {
+	check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_closure.reopen_pressure_maximum compare = less_than }
+	riches_found_state_has_transport_route = yes
+	OR = {
+		check_variable = { var = riches_found_local_order value = constant:riches_found_closure.reopen_order_minimum compare = greater_than_or_equals }
+		riches_found_state_has_security_presence = yes
+	}
+}
+
+# STATE scope. The Restore the Shaft works are finished: the repair crews have
+# delivered, the mine keeps a working rail or port route, and the mission has
+# reached its progress date. Mission availability reads this directly so a
+# completed repair cannot be lost between controller pulses.
+riches_found_restore_shaft_works_ready = {
+	has_state_flag = riches_found_repair_started
+	riches_found_state_has_route_capacity = yes
+	has_variable = riches_found_mission_progress_date
+	check_variable = { var = global.date value = riches_found_mission_progress_date compare = greater_than_or_equals }
+}
+
 # STATE scope. Reads one cached offer prepared on discovery or a deliberate
 # action. Land, allied, invited, and maritime access remain eligible without
 # a world-country scan in a decision's recurring visibility or availability.

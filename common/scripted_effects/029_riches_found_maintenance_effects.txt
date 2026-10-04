@@ -33,6 +33,7 @@ riches_found_run_maintenance_pulse = {
 				riches_found_refresh_contract_lifecycle = yes
 				riches_found_service_account_obligation = yes
 				riches_found_review_preentry_exposure = yes
+				riches_found_service_closed_mine = yes
 				if = {
 					limit = { riches_found_mine_is_active = yes }
 					riches_found_run_due_incident_review = yes
@@ -147,4 +148,80 @@ riches_found_run_maintenance_pulse = {
 	}
 	riches_found_rebuild_controller_aggregate = yes
 	if = { limit = { has_country_flag = riches_found_controller_maintenance_active } riches_found_schedule_controller_pulse = yes }
+}
+
+# STATE scope, called once per mine by the controller pulse above. A temporary
+# closure cools extraction and collapse pressure each pulse interval, while
+# workers left without pay or a share of revenue lose faith in the mine. When
+# the closure review date passes the mine may be reopened through the paid
+# reopening action; a closure left in place after that review stops relieving
+# collapse pressure and slowly raises it unless the shafts were reinforced.
+# A collapsed mine left without repair works after its recovery date loses
+# development each interval until a Restore the Shaft mission is running.
+riches_found_service_closed_mine = {
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_mine_temporary_closure
+				has_state_flag = riches_found_mine_collapsed
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = riches_found_last_closure_service_date } }
+			set_variable = { riches_found_last_closure_service_date = global.date }
+		}
+		set_temp_variable = { riches_found_next_closure_service_date = riches_found_last_closure_service_date }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.controller_pulse_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_temp_variable = { riches_found_next_closure_service_date = chaosx_date_offset }
+		if = {
+			limit = { check_variable = { var = global.date value = riches_found_next_closure_service_date compare = greater_than_or_equals } }
+			set_variable = { riches_found_last_closure_service_date = global.date }
+			if = {
+				limit = {
+					has_state_flag = riches_found_mine_temporary_closure
+					NOT = { has_state_flag = riches_found_mine_collapsed }
+				}
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_closure.pressure_decay_per_pulse }
+				if = {
+					limit = {
+						NOT = {
+							OR = {
+								has_state_flag = riches_found_dividend_paid
+								has_state_flag = riches_found_local_revenue_settled
+								has_state_flag = riches_found_worker_cooperatives
+								has_state_flag = riches_found_public_revenue_share_paid
+							}
+						}
+					}
+					add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_closure.unsupported_legitimacy_per_pulse }
+				}
+				if = {
+					limit = {
+						has_variable = riches_found_closure_review_date
+						check_variable = { var = global.date value = riches_found_closure_review_date compare = greater_than_or_equals }
+					}
+					set_state_flag = riches_found_closure_review_complete
+					if = {
+						limit = { NOT = { has_state_flag = riches_found_shafts_reinforced } }
+						add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.unmaintained_collapse_per_pulse }
+					}
+				}
+				else = {
+					add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.collapse_decay_per_pulse }
+				}
+			}
+			if = {
+				limit = {
+					has_state_flag = riches_found_mine_collapsed
+					has_variable = riches_found_collapse_recovery_date
+					check_variable = { var = global.date value = riches_found_collapse_recovery_date compare = greater_than_or_equals }
+					NOT = { has_state_flag = riches_found_mission_restore_shaft_subject }
+				}
+				add_to_variable = { riches_found_mine_development = constant:riches_found_closure.collapse_neglect_development_per_pulse }
+			}
+			riches_found_clamp_mine_values = yes
+		}
+	}
 }
