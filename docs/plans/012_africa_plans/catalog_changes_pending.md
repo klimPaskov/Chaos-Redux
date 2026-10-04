@@ -25,6 +25,6 @@ Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item
 
 | Item | Catalog surface | Status |
 | --- | --- | --- |
-| Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Achievement rows or notes for Event 012 | `accepted and queued` (agent decision L5); not implemented this round. |
+| Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Achievement rows or notes for Event 012, using the names and descriptions in `localisation/english/012_africa_achievements_l_english.yml` (`africa_gods_*_NAME`, `_DESC`) | `implemented`; add the rows. |
 | Gods activation news event | Event 012 notes | `accepted and queued`; not implemented this round. |
 | Gods global-credibility super-event | Super-event slot for Event 012 | `accepted and queued`; audio `blocked` unless a unique licensed track already archived in the repository is found (agent decision L6). |

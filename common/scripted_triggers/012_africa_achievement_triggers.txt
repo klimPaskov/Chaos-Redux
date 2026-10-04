@@ -749,3 +749,32 @@ africa_achievement_live_network_actor_is_valid = {
 		}
 	}
 }
+
+# Gods of Africa achievements. Participant receipts are set only by the Gods
+# settlement, defiance, unifier-loss and capitulation owners; the host receipt
+# only by fulfilled contract closures.
+gods_of_africa_achievement_campaign_is_eligible = {
+	has_global_flag = africa_achievement_normal_launch
+	NOT = { has_global_flag = africa_triggerable_scenario_launched }
+}
+
+africa_gods_long_obedience_is_complete = {
+	gods_of_africa_achievement_campaign_is_eligible = yes
+	has_country_flag = gods_of_africa_achievement_long_obedience
+}
+
+africa_gods_survive_defiance_is_complete = {
+	gods_of_africa_achievement_campaign_is_eligible = yes
+	has_country_flag = gods_of_africa_achievement_survived_defiance
+	NOT = { has_country_flag = gods_of_africa_achievement_capitulated_to_africa }
+}
+
+africa_gods_continental_provision_is_complete = {
+	africa_achievement_normal_host_is_eligible = yes
+	has_country_flag = gods_of_africa_achievement_continental_provision
+}
+
+africa_gods_careful_gambler_is_complete = {
+	gods_of_africa_achievement_campaign_is_eligible = yes
+	has_country_flag = gods_of_africa_achievement_careful_gambler
+}

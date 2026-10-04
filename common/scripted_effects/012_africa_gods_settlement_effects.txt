@@ -49,6 +49,7 @@ gods_of_africa_settlement_classify_participant = {
 			gods_of_africa_capture_settlement_cause = yes
 			set_country_flag = gods_of_africa_final_outcome_committed
 			set_country_flag = gods_of_africa_settlement_pass_pending
+			gods_of_africa_achievement_record_settlement = yes
 		}
 		else = {
 			# A broken accounting record keeps its evidence and stays unresolved;
@@ -535,5 +536,49 @@ gods_of_africa_initialize_settlement_delivery = {
 		}
 		set_country_flag = gods_of_africa_settlement_delivery_initialized
 		gods_of_africa_refresh_settlement_owed_totals = yes
+	}
+}
+
+# PARTICIPANT right after its standing is frozen. Achievement receipts read only
+# the frozen grade snapshot and durable conduct records.
+gods_of_africa_achievement_record_settlement = {
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+			NOT = { has_country_flag = gods_of_africa_grade_prior_war }
+			NOT = { has_country_flag = gods_of_africa_grade_prior_occupation }
+			NOT = { has_country_flag = gods_of_africa_grade_prior_defiance }
+			NOT = { has_country_flag = gods_of_africa_grade_prior_treaty_break }
+			check_variable = { gods_of_africa_grade_war_count = constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_grade_treaty_break_count = constant:gods_of_africa_value.zero }
+		}
+		set_country_flag = gods_of_africa_achievement_long_obedience
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.favored }
+				check_variable = { gods_of_africa_final_settlement = constant:gods_of_africa_settlement.respected }
+			}
+			check_variable = { var = gods_of_africa_grade_demands_refused value = constant:gods_of_africa_achievement.careful_gambler_refusals compare = greater_than_or_equals }
+			NOT = { has_country_flag = gods_of_africa_grade_prior_defiance }
+			NOT = { has_country_flag = gods_of_africa_reached_extreme_wrath }
+		}
+		set_country_flag = gods_of_africa_achievement_careful_gambler
+	}
+	gods_of_africa_achievement_complete_survive_defiance = yes
+}
+
+# PARTICIPANT at the settlement or at Africa's defeat. A strong-Africa defiance
+# counts only when the country never capitulated in a war against Africa.
+gods_of_africa_achievement_complete_survive_defiance = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_achievement_defied_at_strength
+			NOT = { has_country_flag = gods_of_africa_achievement_capitulated_to_africa }
+			exists = yes
+			has_capitulated = no
+		}
+		set_country_flag = gods_of_africa_achievement_survived_defiance
 	}
 }

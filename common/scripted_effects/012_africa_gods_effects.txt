@@ -743,7 +743,11 @@ gods_of_africa_apply_wrath = {
 		else_if = { limit = { check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.angered } } set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.continental } }
 		else_if = { limit = { check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.hostile } } set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.global } }
 		else_if = { limit = { check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.vengeful } } set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.global } }
-		else = { set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.extreme } }
+		else = {
+			set_variable = { gods_of_africa_wrath_band = constant:gods_of_africa_band.extreme }
+			# Durable: the highest band was reached at least once.
+			set_country_flag = gods_of_africa_reached_extreme_wrath
+		}
 		clear_variable = gods_of_africa_wrath_request
 		clear_variable = gods_of_africa_wrath_direction
 	}
@@ -3264,6 +3268,15 @@ gods_of_africa_declare_defiance = {
 		clr_country_flag = gods_of_africa_reconciliation_agreement_live
 		set_country_flag = gods_of_africa_defiant
 		set_country_flag = gods_of_africa_permanent_opt_out
+		# Survive Defiance counts only defiance of a strong Africa.
+		if = {
+			limit = {
+				event_target:africa_host = {
+					check_variable = { var = gods_of_africa_strength value = constant:gods_of_africa_achievement.survive_defiance_strength compare = greater_than_or_equals }
+				}
+			}
+			set_country_flag = gods_of_africa_achievement_defied_at_strength
+		}
 		gods_of_africa_withdraw_protection_package = yes
 		clr_country_flag = gods_of_africa_punishment_applied
 		set_variable = { gods_of_africa_defiance_day = global.num_days }

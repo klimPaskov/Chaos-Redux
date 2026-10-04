@@ -42,6 +42,17 @@ on_actions = {
 			# A participant's capitulation removes only that participant's active
 			# contract and registry identity; hidden history is not rewritten.
 			if = {
+				limit = {
+					ROOT = { has_country_flag = gods_of_africa_achievement_defied_at_strength }
+					has_event_target = africa_host
+					OR = {
+						ROOT = { has_war_with = event_target:africa_host }
+						FROM = { tag = event_target:africa_host }
+					}
+				}
+				ROOT = { set_country_flag = gods_of_africa_achievement_capitulated_to_africa }
+			}
+			if = {
 				limit = { ROOT = { has_country_flag = gods_of_africa_participant } }
 				ROOT = { gods_of_africa_clean_participant = yes }
 			}

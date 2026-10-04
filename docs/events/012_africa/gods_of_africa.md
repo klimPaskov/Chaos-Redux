@@ -138,6 +138,17 @@ The obligation is frozen at the settlement and paid from Africa's real stocks: a
 
 Standing diplomacy is applied once: Favored governments gain a strong positive memory and Africa's guarantee, Respected governments a positive memory and a non-aggression pact, Distrusted governments Africa's suspicion, and Enemies a hostile memory in both directions.
 
+### Achievements
+
+| Achievement | Who | Receipt set by | Requirement |
+| --- | --- | --- | --- |
+| Long Obedience (`africa_gods_long_obedience`) | Participant | Settlement classification | Favored, with no war against Africa, no occupation of its host-core territory, no permanent defiance, and no broken agreement in the frozen record. |
+| Survive Defiance (`africa_gods_survive_defiance`) | Participant | Defiance (Strength at least 60), then the settlement or Africa's defeat | Defied a strong Africa and never capitulated in a war against it (`on_capitulation` disqualifies). |
+| Continental Provision (`africa_gods_continental_provision`) | African host | Every fulfilled contract closure | Fulfilled tribute in at least 4 demand families from at least 4 major powers. |
+| The Careful Gambler (`africa_gods_careful_gambler`) | Participant | Settlement classification | At least 2 refusals, never permanently defiant, never in the highest Wrath band, finished Respected or Favored. |
+
+Thresholds live in `gods_of_africa_achievement` constants. All four need a normal campaign (`africa_achievement_normal_launch`, not the SCN-011 scenario); Continental Provision also needs the normally selected host. Icons and their sources are listed in `docs/plans/012_africa_plans/012_africa_gods_achievement_icons_manifest.md`.
+
 ### World Is One
 
 When the world order opens, `gods_of_africa_initialize_world_order_history` seeds each Scramble participant's World record and then lets every country with real Gods history override it through `gods_of_africa_sync_world_history`; a settlement made while the world order is open updates the record at once.

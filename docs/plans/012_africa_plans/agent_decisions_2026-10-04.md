@@ -182,3 +182,17 @@ Narrow `hoi4_focus_inspect` of `africa_continental_focus_tree` (one call before,
 - The line from `gods_of_africa_focus_continental_arsenals` to `gods_of_africa_focus_continental_reserve` ran through `gods_of_africa_focus_rails_ports_fuel`; the two children now sit side by side at (61, 24) and (63, 24).
 
 No non-Gods node moved. Before: revision `1f577e13`, 320 diagnostics, 70 connector crossings, 59 node intersections. After: revision `efaa6f4c`, 297 diagnostics, 62 crossings, 53 node intersections, no blocking diagnostics. The remaining diagnostics belong to the shared continental tree outside the overlay. No raster was rendered (`focus_raster` timed out in earlier runs), so the visual appearance remains a live check.
+
+## L16. Gods of Africa achievements
+
+Disposition: `implemented` (in-game unlocking is `needs_live_game`).
+
+Basis: full spec "Achievement directions" and agent decision L5.
+
+Decisions:
+
+- Ids follow the established Event 012 prefix: `africa_gods_long_obedience`, `africa_gods_survive_defiance`, `africa_gods_continental_provision`, `africa_gods_careful_gambler`.
+- "High Strength" for Survive Defiance is the continental band (Strength 60 or more) at the moment of defiance; capitulating while at war with Africa, or to Africa, disqualifies.
+- "Several refusals" for The Careful Gambler is 2: under the grader, three refusals make a country Enemy and Respected allows fewer than two refusals (three under Strategic Ambiguity), so 2 refusals is reachable with Favored standing, or Respected under Strategic Ambiguity.
+- Continental Provision counts only fulfilled contracts from countries that were major powers when they paid, by original demand family.
+- Icons use native-transparency ImageGen subjects processed by the achievement workflow; no background removal was needed.

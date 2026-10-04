@@ -102,6 +102,7 @@ gods_of_africa_close_contract_ledger = {
 				}
 			}
 			add_to_variable = { gods_of_africa_demands_fulfilled = constant:gods_of_africa_value.one }
+			gods_of_africa_achievement_record_provision = yes
 			if = {
 				limit = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original } }
 				add_to_variable = { gods_of_africa_demands_full_original = constant:gods_of_africa_value.one }
@@ -348,5 +349,36 @@ gods_of_africa_observe_agreement_war = {
 		gods_of_africa_record_treaty_breach = yes
 		set_country_flag = gods_of_africa_agreement_breach_report_pending
 		country_event = { id = chaosx.nr12.616 }
+	}
+}
+
+# Participant COUNTRY inside a fulfilled contract closure. Africa's host keeps
+# the distinct demand families it was paid in and the major powers that paid.
+gods_of_africa_achievement_record_provision = {
+	if = {
+		limit = {
+			has_event_target = africa_host
+			has_variable = gods_of_africa_contract_original_family
+			is_major = yes
+		}
+		set_temp_variable = { gods_of_africa_provision_family = gods_of_africa_contract_original_family }
+		set_temp_variable = { gods_of_africa_provision_payer_id = THIS.id }
+		event_target:africa_host = {
+			if = {
+				limit = { NOT = { is_in_array = { array = gods_of_africa_achievement_provision_families value = gods_of_africa_provision_family } } }
+				add_to_array = { array = gods_of_africa_achievement_provision_families value = gods_of_africa_provision_family }
+			}
+			if = {
+				limit = { NOT = { is_in_array = { array = gods_of_africa_achievement_provision_majors value = gods_of_africa_provision_payer_id } } }
+				add_to_array = { array = gods_of_africa_achievement_provision_majors value = gods_of_africa_provision_payer_id }
+			}
+			if = {
+				limit = {
+					check_variable = { var = gods_of_africa_achievement_provision_families^num value = constant:gods_of_africa_achievement.provision_families compare = greater_than_or_equals }
+					check_variable = { var = gods_of_africa_achievement_provision_majors^num value = constant:gods_of_africa_achievement.provision_majors compare = greater_than_or_equals }
+				}
+				set_country_flag = gods_of_africa_achievement_continental_provision
+			}
+		}
 	}
 }
