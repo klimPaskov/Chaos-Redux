@@ -115,3 +115,18 @@ Per-subunit selection audio is recorded as an engine limitation rather than impl
 Basis: the engine's selection cues are the global `select_army`, `select_vehicle` and `select_tank` groups in the installed `sound/soundeffects.asset` at lines 1001, 1014 and 1024; no file under the installed `common/` references any of them, and entity audio attaches only to animation-state events, so the only route would replace every country's infantry selection voice.
 
 The package manifest carries the same reconciliation under a new `audio_reconciliation` section and its status now describes the runtime that `802006bf5` produced. `docs/assets/` is listed in `.gitignore`, so that file is updated on disk and cannot be committed.
+## 12. The broken cumulative gas-mask production read is removed rather than rewritten
+
+Disposition: `implemented`.
+`cbrn_chaos_warfare_adopt` stored `cbrn_doctrine_mask_production_baseline` from `total_equipment_produced_gas_mask_equipment`, and `cbrn_chaos_warfare_has_post_adoption_mask_production` compared the same read against that baseline.
+The installed dynamic-variable documentation defines `total_equipment_produced_<equipment type>` across the equipment type enum only, and `gas_mask_equipment` is an archetype whose `type` is `support`, so the read resolved to zero and the predicate compared zero against zero and was always false. The archetype is also `is_buildable = no`, so no cumulative figure for it could exist.
+Basis for removal rather than repair: the predicate has no caller in any script file, no accepted requirement asks for a cumulative-production proof, and it is a leftover of the retired reserve-and-formation establishment package whose neighbouring compatibility name is the only part Event 027 still reads.
+The engine exposes no per-archetype cumulative production figure, and substituting a stockpile read would make the predicate's name untrue, because masks leave the stockpile when they are issued. The existing `cbrn_chaos_warfare_has_protective_foundation_reserve` already measures live masks for the cases that need a reserve test.
+Removed: the baseline assignment in `common/scripted_effects/cbrn_doctrine_effects.txt`, the predicate in `common/scripted_triggers/cbrn_doctrine_triggers.txt`, and its entry in `common/scripted_triggers/cbrn_scripted_triggers.md`. No other behaviour changes.
+
+## 13. The Event 020 GUI evidence route is recorded as unusable from this client, not retried further
+
+Disposition: `blocked`.
+Four `hoi4.gui_inspect` and `hoi4.gui_render` calls on `black_plague_response_category_window` were rejected with `Invalid tool arguments`, including the minimal inspect carrying only `windowName`, and including object, named-scenario and string forms of `scenario`.
+Basis for stopping: `hoi4.source_lookup` answered normally in the same session at revision `fc979ea536b5` and resolved the window to `interface/020_black_plague_response.gui` lines 25 to 190, so the service is healthy and the rejection belongs to those two routes' argument contract as this client sees it.
+The source change and its spacing fix stay accepted on source review; visual acceptance of the five scenarios remains a live-game item and no substitute evidence is manufactured.

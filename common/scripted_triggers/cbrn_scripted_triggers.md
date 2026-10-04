@@ -542,7 +542,6 @@ Scope is country; outputs are boolean only; no trigger starts a mission, removes
 
 ### Institutional proof and state cleanup
 
-- `cbrn_chaos_warfare_has_post_adoption_mask_production`: cumulative gas-mask production is strictly above the persistent adoption baseline. Missing baseline fails.
 - `cbrn_chaos_warfare_has_protective_foundation_reserve`: at least 500 live masks.
 - `cbrn_chaos_warfare_has_operational_payload_reserve`: at least 100 units of one supported chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral strategic-agent lot; legacy cylinders remain accepted until migration.
 - `cbrn_chaos_warfare_has_strategic_payload_reserve`: at least 250 of one supported payload.
