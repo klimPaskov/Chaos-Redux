@@ -1,8 +1,8 @@
 # Event 023 — Soviet Nuclear Bombs
 
-Status: source implementation tranche retained; Event 23 remains disabled by default and catalogued as `To Be Reworked` until current runtime, MCP, and user-owned consumer evidence support an explicit playable approval.
+Status: reworked and enabled by default in new games through `event_log_event_is_reworked_default_enabled`; live-game verification is pending, and the catalog promotion to `Needs Testing` is queued in `docs/plans/023_sov_nuclear_bombs_plans/catalog_changes_pending.md`.
 
-Last reconciled: 2026-09-25, against the current source, asset, MCP, and audit pass.
+Last reconciled: 2026-10-04, against the current source and the Round 1 agent decisions in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
 
 This document records the current Event 23 source, accepted implementation boundary, and evidence limits. The design package is `docs/specs/023_sov_nuclear_bombs_specs/`, including the coding, decision, asset, super-event, and achievement prompts. The explicit user-defined +100-bomb premise is recorded in that package's source-and-audit report; the near-completion addendum and closure handoff record the accepted implementation tranche. Historical audit snapshots remain evidence records, not current absence lists.
 
@@ -37,9 +37,43 @@ The ordinary category is `sov_nuclear_bombs_command_category` in `common/decisio
 
 The implemented decision families cover the four opening custody doctrines; accounting, hardening, dispersal, centralization, delegation, reactor construction, device assembly, delivery preparation, command exercise, authentication, test-site selection, concealed and public testing, evacuation, counterintelligence, target selection, private signaling, public ultimatum, wartime demonstration, limited strike, settlement and demand handling, certification, overrule, final authorization, hold, redirect, remote demonstration, abort, hotline and stand-down, retaliation, reserve preservation, collapse custody, depot recall, rail security, joint custody, recovery, device disablement, dismantlement, observers, restraint, reactivation, and breakaway secure custody, technical access, command formation, delivery integration, and return.
 
-The timed doctrine-reform decision leads to `chaosx.nr23.103`, where a different doctrine is selected once after a qualifying incident, capital threat, or Evolution I while at war. The source applies readiness and integrity disruption and does not replay the opening grant. The `chaosx.nr23.100` command-board event exposes eligible custody, production, test, coercion, and retaliation phase choices; its AI chance remains on the acknowledgment option, so AI-equivalent navigation and phase-density acceptance remain open. Initial doctrine choice no longer forces a demonstrated posture, and the current public-demonstration, use, ultimatum, response, and private-signal writes only raise public knowledge when below the corresponding rank. These are source observations, not a completed scenario proof of the accepted reform or monotonic-knowledge contract.
+The timed doctrine-reform decision leads to `chaosx.nr23.103`, where a different doctrine is selected once after a qualifying incident, capital threat, or Evolution I while at war. The source applies readiness and integrity disruption and does not replay the opening grant. The human command board, `sov_nuclear_bombs_operational_command` followed by `chaosx.nr23.100`, exposes eligible custody, production, test, coercion, and retaliation phase choices; it is hidden from the AI, which navigates through the router described below. Initial doctrine choice no longer forces a demonstrated posture, and the current public-demonstration, use, ultimatum, response, and private-signal writes only raise public knowledge when below the corresponding rank. These are source observations, not a completed scenario proof of the accepted reform or monotonic-knowledge contract.
 
 Each action uses no more than four spendable cost types. Costs are centralized in `023_sov_nuclear_bombs_cost_triggers.txt` and `023_sov_nuclear_bombs_cost_effects.txt`; affordability is inclusive at the displayed amount. Selected targets and sites are stored as event targets and revalidated before any action commits.
+
+All fifteen state-targeted orders use `on_map_mode = map_only`, so each eligible state is chosen on the map while the category is open and state clones never multiply the decision list; the category description says so, and target pools, costs and AI evaluation are unchanged.
+
+### AI phase navigation
+
+The Soviet AI moves between task families through `sov_nuclear_bombs_ai_route_existing_phase`, run only by the hidden coalesced receiver `chaosx.nr23.182` with SOV as ROOT.
+`sov_nuclear_bombs_ai_request_phase_review` schedules that receiver once for an AI Soviet actor; completion and cancel helpers, the `.160`, `.161` and `.162` verification events, evolution and incoming-attack phase requests, and the existing 30-day `on_daily_SOV` maintenance interval request reviews.
+The router is one deterministic first-match table and writes at most one phase:
+
+| Order | Condition | Board |
+| --- | --- | --- |
+| 1 | Human, invalid or non-Soviet actor | No change; navigation fields cleared |
+| 2 | Opening doctrine, locked command, or live work (`sov_nuclear_bombs_event_navigation_is_protected`) | Held; a displaced staged test, strike or dossier board is restored |
+| 3 | Atomic Moratorium | Moratorium 8 |
+| 4 | Custody collapse | Collapse 7 |
+| 5 | Retaliation duty or an Evolution IV first-use candidate | Retaliation 6 |
+| 6 | Uninvestigated test failure | Test 3 |
+| 7 | Custody duty: first audit, a dispute after a full audit interval, one hardened depot holding devices, release authority from Evolution II | Custody 1 |
+| 8 | Production duty: reactor entitlement, crews, exercise, authentication, or a replacement deficit | Production 2 |
+| 9 | Test purpose: one test per attained stage with a ready, reachable test site | Test 3 |
+| 10 | Coercion purpose: Evolution II, device backing and a current independent enemy minor not yet coerced this stage | Coercion 4 |
+| 11 | Otherwise | Custody 1 |
+
+Rows 3 to 5 apply at once; rows 6 to 11 respect the existing 14-day `phase_action_cooldown` as a navigation dwell with one coalesced retry on the due day.
+The router never pays, grants, reserves, launches, settles or applies consequences, and it never iterates over every country or state.
+Evolution and incoming-attack phase writes go through `sov_nuclear_bombs_apply_event_phase_request`, so they never replace live work, a moratorium, a custody collapse or the opening doctrine for any actor.
+AI eligibility follows the same purposes: assembly needs a replacement deficit below the attained stage's grant reference, the survey ignores sites that cannot host a test, hardening ignores empty depots, and coercion selection skips the counterpart already coerced at the current stage.
+
+### Evolution II and Evolution IV use
+
+An Evolution II limited strike against a nonnuclear minor or breakaway goes through the coercion dossier, strike preparation, technical certification and a separate final authorization.
+The AI final-authorization weight is zero only when the staged state belongs to a nuclear major and the staged first-use gate does not hold.
+Outside a confirmed exchange, the retaliation selector offers lower-consequence states of an enemy nuclear major only under `sov_nuclear_bombs_event_prospective_first_use_gate`: the full Evolution IV emergency, one line of release authority, unsuspended orders, no verified stand-down and an unreserved device.
+Strike preparation then stages that marked state once and enters authorization; certification, final authorization and the runtime first-use guard still decide release, and no exchange receipt is created.
 
 Reserve dispersal is a two-endpoint action: the player selects the destination state, and the runtime locks one valid assigned source depot from the bounded Soviet custody pool when the mission starts.
 Departure moves one site's assigned device into an explicit transit subset while global and actor assigned totals continue to include it.
@@ -81,7 +115,7 @@ Rail security, depot recall, and joint custody require a selected breakaway site
 
 ## Native action boundary and delivery status
 
-The installed atomic capability is the vanilla `atomic_research` plus `nukes` route. The current Event 23 preflight accepts the installed strategic-bomber capability (`strategic_bomber1` or the BBA `iw_large_airframe` route), a positive deployed-bomber count, fuel, a controlled airbase, crew certification, and a fixed state-distance ceiling before it calls the native `launch_nuke` effect with the selected state. This is an Event 23 eligibility approximation followed by a native detonation effect. It does not establish that the engine's native strategic-bomber raid or player delivery action is launchable. No missile, thermonuclear, free-aircraft, unrelated technology, or substitute equipment is granted.
+The installed atomic capability is the vanilla `atomic_research` plus `nukes` route. Event 23's authorization chain releases through the native `launch_nuke` effect, the same effect the vanilla nuclear raid outcomes call, behind a preflight that mirrors the installed `nuclear_strike` raid: the strategic-bomber capability (`strategic_bomber1` or the BBA `iw_large_airframe` route), at least ten deployed strategic bombers (`constant:sov_nuclear_bombs_delivery.deployed_bomber_floor`, where the `strategic_bomber` sub-unit type also covers intercontinental bombers), fuel, a controlled air base, crew certification, the exact-endpoint distance ceiling, and war with the target for combat use. No missile, thermonuclear, free-aircraft, unrelated technology, or substitute equipment is granted.
 
 The action adapter validates the Event 23 actor, authorization, action type, target or site context, terminal-state exclusion, native technology, operational device stock, and selected-state preflight before reservation and execution. Its shared context gate permits a human Evolution III exchange action only after the explicit multi-major world gate or confirmed reciprocal exchange receipt, while Soviet AI first use against a nuclear major remains impossible before Evolution IV and still requires the complete severe strategic-loss gate. Limited non-major combat use remains a distinct Evolution II route and records generic Soviet combat use without creating a pre-Evolution-IV major first-use route.
 
@@ -90,9 +124,12 @@ Exactly one detonating or non-detonating flag supplies the physical-yield profil
 Pending delivery retains those flags until its receipt is resolved, and context cleanup clears them together.
 The shared non-yield accident endpoint checks the same flag profile and committed nonce without applying a second device debit or nuclear detonation.
 
-The installed vanilla `nuclear_strike` raid requires a bomber unit, nuclear device, and airbase, and includes air superiority in its success calculation. Installed effect documentation describes `launch_nuke` as a detonation effect and does not document a script-safe effect that starts the raid or assigns aircraft. The current Event 23 gate does not check mission assignment, actual wing range, or air-superiority eligibility. See `docs/plans/023_sov_nuclear_bombs_plans/subagent_handoffs/023_vanilla_delivery_route_audit_2026-09-26.md`.
-A real current-vanilla delivery route remains required, with native preparation/cancellation custody receipts and exact outcome integration unresolved.
-The detonation-only adapter is not an accepted fallback, and its private AI gates do not prove that the separate vanilla nuclear-strike AI path is constrained.
+Installed effect documentation describes `launch_nuke` as a detonation effect and documents no script effect that starts a raid or assigns aircraft, so the launch_nuke release behind this preflight is the accepted Event 23 delivery (decision D2; see `docs/plans/023_sov_nuclear_bombs_plans/subagent_handoffs/023_vanilla_delivery_route_audit_2026-09-26.md`).
+The preflight does not model mission assignment, actual wing range or air superiority.
+Vanilla nuclear raids stay available as the parallel native route.
+A vanilla raid draws its device when the raid is created; while no Event 23 delivery is pending, the daily ledger refresh books that shortfall as expended devices (operational first, then assigned depot mirrors), tolerates a later surplus such as a refund, and leaves a shortfall that would reach reserved devices as a genuine dispute that a completed stockpile audit can clear once the books balance.
+A Soviet `on_nuke_drop` that is not the pending Event 23 request counts as combat use, sets public knowledge to used, breaches an active moratorium or a pending or verified stand-down or settlement, records the major receipt when the struck state's controller is a nuclear major, and refreshes achievement receipts without a second consequence call.
+`common/raids/nuclear_raids.txt` copies the installed raids with one added `factor = 0` AI modifier per raid type under `sov_nuclear_bombs_native_raid_ai_restrained`, so the Soviet AI uses nuclear weapons only through the Event 23 authorization chain while human players and other countries keep vanilla raids.
 
 ## World threat, exchange, and terminal behavior
 
@@ -254,7 +291,7 @@ The country-package audit identified an opening-path risk, and the current sourc
 
 ## Documentation and spreadsheet alignment
 
-The Event 5 custody bridge is documented in `docs/events/005_soviet_collapse/overview.md`. World-threat ownership is documented in `docs/systems/world_threat_mechanic.md`. Audio rights and hashes are recorded in `docs/super_events/023_sov_nuclear_bombs_super_event_research.md`; the Event 23 visual manifest is current. The authoritative workbook labels Event 23 `To Be Reworked`, with blank cluster and World-End Scenario fields, and the required CSV exports were regenerated from that workbook.
+The Event 5 custody bridge is documented in `docs/events/005_soviet_collapse/overview.md`. World-threat ownership is documented in `docs/systems/world_threat_mechanic.md`. Audio rights and hashes are recorded in `docs/super_events/023_sov_nuclear_bombs_super_event_research.md`; the Event 23 visual manifest is current. The authoritative workbook still labels Event 23 `To Be Reworked`, with blank cluster and World-End Scenario fields; the promotion to `Needs Testing` is queued for the workbook owner in `docs/plans/023_sov_nuclear_bombs_plans/catalog_changes_pending.md`.
 
 Remaining evidence questions are exact native callback timing, mixed-stockpile attribution, ordinary control-change reconciliation outside the Event 5 bridge, reactor queue identity, complete probability binding, Event graph comparison caching, and production text or asset consumer rendering. A bounded 14-day SOV-only no-callback recovery now closes an unresolved native reservation as disputed or missing without refunding the device or replaying shared consequences. The source contract fails closed where those engine semantics are unavailable. No undocumented fallback or live-game acceptance is inferred from the current source.
 

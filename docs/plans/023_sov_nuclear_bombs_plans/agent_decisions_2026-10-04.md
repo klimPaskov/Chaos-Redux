@@ -119,3 +119,10 @@ The shared working tree carried another workstream's uncommitted hunk in `common
 The catalog promotion (Status `To Be Reworked` to `Needs Testing`, Cluster ID and World-End Scenario blank) is queued in [catalog_changes_pending.md](catalog_changes_pending.md); the workbook and its CSV exports are untouched.
 Basis: the lead's D9, applied after the priority 1 and 2 gameplay commits of this round.
 Disposition: enablement `implemented` in `HEAD`; catalog row `accepted and queued` for the workbook owner.
+
+## D13. Accepted design folded into the specs and event doc
+
+Decision: the accepted closure addendum and decisions D2 to D9 are promoted into Part 4 (accepted delivery route and AI use guards), Part 5 (Evolution IV first-use connection), Part 9 (AI phase navigation and restraint), and the decision map (map-only presentation and navigation), each with its acceptance basis.
+`docs/events/023_sov_nuclear_bombs.md` describes the current router, Evolution II and IV use, map-only presentation, delivery route, raid accounting and AI gate, default enablement and the queued catalog row; `023_sov_nuclear_bombs_runtime_effects.md` records the event-owned navigation helpers and the delivery preflight.
+The closure addendum is marked `promoted into an accepted spec`.
+Disposition: `implemented`.

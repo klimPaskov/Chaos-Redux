@@ -2,7 +2,8 @@
 
 Date: 2026-10-03.
 Author: `chaosx_improvement_loop_planner`, plan-only.
-Disposition: `accepted and queued` for the bounded implementation mechanism below.
+Disposition: `promoted into an accepted spec` on 2026-10-04 (Part 9 AI navigation and restraint, Part 5 Evolution IV first-use connection, Part 4 delivery route and AI use guards, and the decision map's presentation section), with implementation evidence in commits `7bbd68da1`, `e7afe3f4f`, `29d7fef8c`, `d47e5ab5d` and `daaa5d402` and the dispositions in `agent_decisions_2026-10-04.md`.
+Earlier disposition: `accepted and queued` for the bounded implementation mechanism below.
 Parent acceptance, 2026-10-03: within the user's full Event 23 implementation scope and the orchestrator's direction to take recommended options, accept the deterministic protected-context router, coalesced SOV receiver, existing 14-day dwell, event-driven completion seams with the existing 30-day SOV maintenance recovery, finite test-purpose receipts, AI inventory ceiling, map-only state selectors with context replacements, and prospective Evolution-IV target/preparation connection.
 Implementation is queued behind completion of the currently audited reservation safety tranche and the four-cost repair, with matching probability, native route and native presentation evidence still required.
 No additional system, loop, grant, timing change or delivery fallback is accepted.

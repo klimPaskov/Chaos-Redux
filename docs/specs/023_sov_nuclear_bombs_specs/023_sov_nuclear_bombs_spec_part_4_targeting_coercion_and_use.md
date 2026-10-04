@@ -310,6 +310,15 @@ Event 23 may improve delivery preparation, reserve a suitable force, and validat
 
 Event 32 may later add missile capability. Event 23 can detect and use that capability through a neutral hook, but it must remain fully playable with a verified base delivery route when Event 32 is absent.
 
+### Accepted delivery route (2026-10-04)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover, the lead's Round 1 decisions, and the parent acceptance recorded in `docs/plans/023_sov_nuclear_bombs_plans/023_ai_phase_navigation_closure_addendum_2026-10-03.md`; agent decisions and dispositions are in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Decision D2, `implemented`.
+Event 23's authorization chain releases through vanilla `launch_nuke`, the effect the installed nuclear raid outcomes call, because no documented script effect starts a raid.
+The preflight mirrors the installed `nuclear_strike` raid: atomic weapons, at least ten deployed strategic bombers (the `strategic_bomber` sub-unit type also covers intercontinental bombers), a controlled air base, fuel, certified crews, the exact-endpoint distance ceiling, and war with the target for combat use.
+Vanilla nuclear raids remain the parallel native route: a Soviet raid's device draw is booked as expended devices while no Event 23 delivery is pending, a Soviet detonation outside an Event 23 request counts as Soviet combat use and breaches an active restraint agreement, and the Soviet AI's raid weight is zero while Event 23 is active (decisions D3 and D4).
+The preflight does not model mission assignment, wing range or air superiority; those remain native raid properties.
+
 ## Authorization chain
 
 A strike follows a staged authorization process.
@@ -403,6 +412,13 @@ AI can retaliate against a nuclear major after confirmed enemy nuclear use. It d
 ### Evolution IV, 1000 or more Chaos
 
 AI first use against a nuclear major becomes possible, but only under the strict conditions in Part 5. High Chaos alone cannot authorize it.
+
+### Accepted AI use guards (2026-10-04)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover, the lead's Round 1 decisions, and the parent acceptance recorded in `docs/plans/023_sov_nuclear_bombs_plans/023_ai_phase_navigation_closure_addendum_2026-10-03.md`; agent decisions and dispositions are in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Decision D6, `implemented`.
+The AI final-authorization weight is zero only when the staged state belongs to a nuclear major and the staged Evolution IV first-use gate does not hold, so a prepared Evolution II strike on a nonnuclear minor or breakaway keeps its existing weight.
+Below Evolution IV, or at Evolution IV with any severe condition missing, no nuclear-major state can be selected or prepared outside a confirmed exchange, including at 1100 Chaos.
 
 ## Target AI response
 

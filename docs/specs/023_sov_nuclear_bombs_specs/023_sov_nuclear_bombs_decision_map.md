@@ -13,6 +13,16 @@
 - Every reserved bomb, reactor entitlement, transferred device, and dismantled device needs one reconciled ledger transaction.
 - Working decision names in this file are structural labels, not final localisation.
 
+## Accepted presentation and AI navigation (2026-10-04)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover, the lead's Round 1 decisions, and the parent acceptance recorded in `docs/plans/023_sov_nuclear_bombs_plans/023_ai_phase_navigation_closure_addendum_2026-10-03.md`; agent decisions and dispositions are in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Decisions D5 and D7, `implemented`.
+Every state-targeted order uses `on_map_mode = map_only`, so each eligible state is chosen on the map and the list keeps the primary-row budget; target pools, costs and AI evaluation are unchanged and the category description tells the player to choose states on the map.
+The fifteen map-only orders are the command board, collapse board, hardening, dispersal, reactor construction, assembly, test-site survey, coercion target, strike redirect, reserve preservation, retaliation target, disputed depot, dismantlement site, breakaway secure custody and breakaway return request.
+The command board is human-only; the Soviet AI changes phase through the router recorded in Part 9.
+Strike preparation also serves the Evolution IV first-use route for a marked nuclear-major state, with its emergency, authority and target requirements shown as three lines (Part 5).
+Delivery crews and the command exercise stay visible in the production phase and show the ten-bomber delivery requirement; the test preparations show the surveyed-endpoint requirement.
+
 ## Category header
 
 | Display | Source | Purpose |

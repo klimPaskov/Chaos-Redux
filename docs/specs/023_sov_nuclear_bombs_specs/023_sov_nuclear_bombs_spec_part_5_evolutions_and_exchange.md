@@ -422,6 +422,16 @@ Each evolution can be disabled through the shared evolution controls.
 
 Disabled stages must not set recorded flags, grant bombs or reactors, unlock posture, or block clean baseline progression.
 
+## Accepted Evolution IV first-use connection (2026-10-04)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover, the lead's Round 1 decisions, and the parent acceptance recorded in `docs/plans/023_sov_nuclear_bombs_plans/023_ai_phase_navigation_closure_addendum_2026-10-03.md`; agent decisions and dispositions are in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Decision D6, `implemented`.
+`sov_nuclear_bombs_event_first_use_emergency` holds the shared Evolution IV emergency: Evolution IV, the first-use Chaos threshold, war, the minimum strategic loss, a threatened capital, a collapsed front, an exhausted reserve, verified enemy nuclear use or launch preparation, no moratorium or earlier Soviet first use, a ready delivery route with certified crews, and the first-use readiness and release integrity floors.
+The staged gate adds the exact staged state, which must be a nuclear major's lower-consequence endpoint unless the enemy has struck a populated Soviet state.
+The prospective gate adds one line of release authority, unsuspended orders, no verified stand-down and an unreserved device.
+Outside a confirmed exchange the existing retaliation selector offers only lower-consequence states of an enemy nuclear major not under Soviet control under the prospective gate, and the existing strike preparation stages that marked state once before authorization.
+Certification, a separate final authorization and the runtime first-use guard decide release, and no exchange receipt is created by preparation.
+
 ## Writing direction
 
 Evolution text should describe changes in actual behavior: reactor compounds expanding, foreign bomber patrols, dispersed command, armed delivery crews, breakaway depots, shortened response time, and the first confirmed exchange.

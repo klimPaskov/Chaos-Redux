@@ -241,6 +241,19 @@ Callers initialize that output before invoking the helper; the helper returns tr
 For example, the production effect initializes the quote, calls the trigger in its validated limit, then stores the result in the pending production amount; localisation initializes and calls the same helper before displaying it.
 The mission displays the already-fixed pending amount, and cancellation retains the upfront resource expenditure.
 
+## Event-owned navigation and delivery helpers
+
+These helpers live in `023_sov_nuclear_bombs_event_effects.txt` and never call this file's ledger transactions directly.
+
+| Identifier | Scope | Inputs | Outputs and side effects |
+| --- | --- | --- | --- |
+| `sov_nuclear_bombs_ai_request_phase_review` | Any scope; acts on `SOV` | None | For a valid AI Soviet actor, sets `sov_nuclear_bombs_ai_navigation_pending` and schedules the hidden receiver `chaosx.nr23.182` once behind `sov_nuclear_bombs_ai_navigation_scheduled`. Human and invalid actors are untouched. |
+| `sov_nuclear_bombs_apply_event_phase_request` | Soviet country scope | Temporary `sov_nuclear_bombs_requested_phase` | Writes the requested phase for a human board only when no live work, moratorium, custody collapse or opening doctrine owns it, then requests an AI review. Used by evolution and incoming-attack phase writes. |
+| `sov_nuclear_bombs_ai_route_existing_phase` | Soviet country scope with SOV as ROOT (receiver only) | Actor flags, Event 23 ledger values, own states, current enemies, selected targets | Writes at most one phase from the deterministic first-match table, sets `sov_nuclear_bombs_ai_navigation_due_day` after a discretionary move, and schedules one dwell retry. It never pays, grants, reserves, launches or applies consequences. |
+
+Example: a completion helper ends with `sov_nuclear_bombs_ai_request_phase_review = yes`; an evolution sets `set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.production }` and calls `sov_nuclear_bombs_apply_event_phase_request = yes`.
+The delivery preflight that guards `launch_nuke` is `sov_nuclear_bombs_event_has_delivery_route`: atomic weapons, at least ten deployed strategic bombers through `constant:sov_nuclear_bombs_delivery.deployed_bomber_floor`, a controlled air base and fuel, with the exact-endpoint range in `sov_nuclear_bombs_event_state_has_delivery_access`.
+
 ## Constants
 
 ### Device-bearing resource profile
