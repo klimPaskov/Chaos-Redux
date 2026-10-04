@@ -1614,7 +1614,10 @@ resources_found_grant_selected_field_resource_rights = {
 			set_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
 			set_variable = { resources_found_contract_started_date = global.date }
 			set_variable = { resources_found_contract_review_date = global.date }
-			add_to_variable = { resources_found_contract_review_date = constant:resources_found_decision_duration.contract_term }
+			set_temp_variable = { chaosx_date_days = constant:resources_found_decision_duration.contract_term }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { resources_found_contract_review_date = chaosx_date_offset }
 			set_variable = { resources_found_field_posture = constant:resources_found_posture.foreign_concession }
 			set_state_flag = resources_found_contracts_settled_for_closure
 			add_to_variable = { resources_found_foreign_pressure = constant:resources_found_decision_change.foreign_pressure_growth }
@@ -3069,7 +3072,10 @@ resources_found_decision_accelerate_anchor_activation = {
 			is_controlled_by = DHO
 			has_variable = resources_found_cave_anchor_activation_date
 		}
-		subtract_from_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_decision_duration.anchor_acceleration }
+		set_temp_variable = { chaosx_date_days = constant:resources_found_decision_duration.anchor_acceleration }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		subtract_from_variable = { resources_found_cave_anchor_activation_date = chaosx_date_offset }
 		set_state_flag = resources_found_cave_anchor_accelerated
 		DHO = {
 			set_temp_variable = { resources_found_anchor_acceleration_cooldown = constant:resources_found_decision_duration.cave_short }

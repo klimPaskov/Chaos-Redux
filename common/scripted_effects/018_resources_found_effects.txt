@@ -679,8 +679,10 @@ resources_found_apply_prefire_opening_package = {
 		set_state_flag = resources_found_compressed_opening
 		set_state_flag = resources_found_breach_prone_opening
 		set_variable = { resources_found_compressed_incident_minimum_date = global.date }
-		set_temp_variable = { resources_found_compressed_incident_delay = constant:resources_found_project_duration.compressed_incident_minimum_days }
-		add_to_variable = { resources_found_compressed_incident_minimum_date = resources_found_compressed_incident_delay }
+		set_temp_variable = { chaosx_date_days = constant:resources_found_project_duration.compressed_incident_minimum_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { resources_found_compressed_incident_minimum_date = chaosx_date_offset }
 	}
 	else_if = {
 		limit = { resources_found_is_evolution_iii_enabled = yes }
@@ -720,8 +722,10 @@ resources_found_suspend_field = {
 		set_state_flag = resources_found_field_suspended
 		set_variable = { resources_found_suspension_start_date = global.date }
 		set_variable = { resources_found_suspension_release_date = global.date }
-		set_temp_variable = { resources_found_suspension_delay = constant:resources_found_project_duration.suspension_minimum_days }
-		add_to_variable = { resources_found_suspension_release_date = resources_found_suspension_delay }
+		set_temp_variable = { chaosx_date_days = constant:resources_found_project_duration.suspension_minimum_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { resources_found_suspension_release_date = chaosx_date_offset }
 		resources_found_refresh_field_record = yes
 	}
 }
@@ -732,9 +736,11 @@ resources_found_resume_field = {
 		limit = { resources_found_can_resume_field = yes }
 		if = {
 			limit = { has_variable = resources_found_suspension_start_date }
-			set_temp_variable = { resources_found_completed_suspension_days = global.date }
-			subtract_from_temp_variable = { resources_found_completed_suspension_days = resources_found_suspension_start_date }
-			add_to_variable = { resources_found_total_suspension_days = resources_found_completed_suspension_days }
+			set_temp_variable = { chaosx_date_offset = global.date }
+			subtract_from_temp_variable = { chaosx_date_offset = resources_found_suspension_start_date }
+			set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+			chaosx_convert_date_offset_to_days = yes
+			add_to_variable = { resources_found_total_suspension_days = chaosx_date_days }
 		}
 		add_to_variable = { resources_found_suspension_count = constant:resources_found_value.one }
 		clr_state_flag = resources_found_field_suspended
@@ -1208,10 +1214,11 @@ resources_found_start_maximum_extraction_tracking = {
 resources_found_stop_maximum_extraction_tracking = {
 	if = {
 		limit = { has_variable = resources_found_maximum_extraction_start_date }
-		set_temp_variable = { resources_found_completed_maximum_extraction_days = global.date }
-		subtract_from_temp_variable = { resources_found_completed_maximum_extraction_days = resources_found_maximum_extraction_start_date }
-		clamp_temp_variable = { var = resources_found_completed_maximum_extraction_days min = constant:resources_found_value.zero }
-		add_to_variable = { resources_found_maximum_extraction_days = resources_found_completed_maximum_extraction_days }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = resources_found_maximum_extraction_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		add_to_variable = { resources_found_maximum_extraction_days = chaosx_date_days }
 		clear_variable = resources_found_maximum_extraction_start_date
 	}
 	resources_found_finalize_maximum_extraction_duration = yes
@@ -1227,10 +1234,11 @@ resources_found_finalize_maximum_extraction_duration = {
 	}
 	if = {
 		limit = { has_variable = resources_found_maximum_extraction_start_date }
-		set_temp_variable = { resources_found_live_maximum_extraction_days = global.date }
-		subtract_from_temp_variable = { resources_found_live_maximum_extraction_days = resources_found_maximum_extraction_start_date }
-		clamp_temp_variable = { var = resources_found_live_maximum_extraction_days min = constant:resources_found_value.zero }
-		add_to_temp_variable = { resources_found_scored_maximum_extraction_days = resources_found_live_maximum_extraction_days }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = resources_found_maximum_extraction_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		add_to_temp_variable = { resources_found_scored_maximum_extraction_days = chaosx_date_days }
 	}
 	divide_temp_variable = { resources_found_scored_maximum_extraction_days = constant:resources_found_strength.maximum_extraction_month_days }
 	clamp_temp_variable = {
@@ -1297,10 +1305,11 @@ resources_found_calculate_cave_starting_strength = {
 	}
 	if = {
 		limit = { has_variable = resources_found_suspension_start_date }
-		set_temp_variable = { resources_found_live_suspension_days = global.date }
-		subtract_from_temp_variable = { resources_found_live_suspension_days = resources_found_suspension_start_date }
-		clamp_temp_variable = { var = resources_found_live_suspension_days min = constant:resources_found_value.zero }
-		add_to_temp_variable = { resources_found_strength_component = resources_found_live_suspension_days }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = resources_found_suspension_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		add_to_temp_variable = { resources_found_strength_component = chaosx_date_days }
 	}
 	divide_temp_variable = { resources_found_strength_component = constant:resources_found_strength.suspension_score_divisor_days }
 	clamp_temp_variable = { var = resources_found_strength_component min = constant:resources_found_value.zero max = constant:resources_found_strength.maximum_suspension_score_periods }
@@ -1361,8 +1370,10 @@ resources_found_start_world_end_verification = {
 		set_country_flag = resources_found_world_end_verification_active
 		clr_country_flag = resources_found_world_end_verification_complete
 		set_variable = { resources_found_world_end_verification_date = global.date }
-		set_temp_variable = { resources_found_world_end_verification_delay = constant:resources_found_world_end.verification_days }
-		add_to_variable = { resources_found_world_end_verification_date = resources_found_world_end_verification_delay }
+		set_temp_variable = { chaosx_date_days = constant:resources_found_world_end.verification_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { resources_found_world_end_verification_date = chaosx_date_offset }
 	}
 }
 

@@ -267,8 +267,10 @@ country_event = {
 					set_state_flag = resources_found_compressed_opening
 					set_state_flag = resources_found_breach_prone_opening
 					set_variable = { resources_found_compressed_incident_minimum_date = global.date }
-					set_temp_variable = { resources_found_compressed_incident_delay = constant:resources_found_project_duration.compressed_incident_minimum_days }
-					add_to_variable = { resources_found_compressed_incident_minimum_date = resources_found_compressed_incident_delay }
+					set_temp_variable = { chaosx_date_days = constant:resources_found_project_duration.compressed_incident_minimum_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					add_to_variable = { resources_found_compressed_incident_minimum_date = chaosx_date_offset }
 				}
 				else_if = {
 					limit = { resources_found_is_evolution_iii_enabled = yes }
@@ -2245,8 +2247,10 @@ country_event = {
 			if = {
 				limit = { NOT = { has_variable = resources_found_public_crisis_minimum_date } }
 				set_variable = { resources_found_public_crisis_minimum_date = global.date }
-				set_temp_variable = { resources_found_public_crisis_delay = constant:resources_found_project_duration.public_crisis_minimum_days }
-				add_to_variable = { resources_found_public_crisis_minimum_date = resources_found_public_crisis_delay }
+				set_temp_variable = { chaosx_date_days = constant:resources_found_project_duration.public_crisis_minimum_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { resources_found_public_crisis_minimum_date = chaosx_date_offset }
 			}
 			if = {
 				limit = { NOT = { has_dynamic_modifier = { modifier = resources_found_public_breach } } }
@@ -2687,8 +2691,10 @@ country_event = {
 			set_state_flag = resources_found_evolution_iii_incident_sequence_complete
 			set_state_flag = resources_found_final_closure_window
 			set_variable = { resources_found_final_breach_release_date = global.date }
-			set_temp_variable = { resources_found_final_window_delay = constant:resources_found_project_duration.emergency_seal_days }
-			add_to_variable = { resources_found_final_breach_release_date = resources_found_final_window_delay }
+			set_temp_variable = { chaosx_date_days = constant:resources_found_project_duration.emergency_seal_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { resources_found_final_breach_release_date = chaosx_date_offset }
 		}
 	}
 

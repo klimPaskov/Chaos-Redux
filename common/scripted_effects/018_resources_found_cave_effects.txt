@@ -527,15 +527,13 @@ resources_found_cave_begin_anchor_activation = {
 		}
 		set_state_flag = resources_found_cave_anchor_activating
 		set_state_flag = resources_found_cave_cleanup_required
-		set_variable = { resources_found_cave_anchor_activation_date = global.date }
 		set_temp_variable = { resources_found_anchor_activation_delay = constant:resources_found_capacity.activation_days }
-		add_to_variable = { resources_found_cave_anchor_activation_date = resources_found_anchor_activation_delay }
 		if = {
 			limit = {
 				NOT = { resources_found_is_cave_origin_state = yes }
 				DHO = { has_country_flag = cave_chamber_autonomy }
 			}
-			subtract_from_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_cave_runtime.chamber_autonomy_activation_reduction_days }
+			subtract_from_temp_variable = { resources_found_anchor_activation_delay = constant:resources_found_cave_runtime.chamber_autonomy_activation_reduction_days }
 		}
 		if = {
 			limit = {
@@ -544,8 +542,14 @@ resources_found_cave_begin_anchor_activation = {
 			}
 			# Demolition delays every interrupted connection attempt. Both the delay
 			# and capacity penalty remain prepared until an activation succeeds.
-			add_to_variable = { resources_found_cave_anchor_activation_date = constant:resources_found_decision_duration.anchor_recapture }
+			add_to_temp_variable = { resources_found_anchor_activation_delay = constant:resources_found_decision_duration.anchor_recapture }
 		}
+		# The delay is tuned in days; the stored activation date uses date units.
+		set_temp_variable = { chaosx_date_days = resources_found_anchor_activation_delay }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { resources_found_cave_anchor_activation_date = global.date }
+		add_to_variable = { resources_found_cave_anchor_activation_date = chaosx_date_offset }
 		add_dynamic_modifier = { modifier = resources_found_cave_anchor_activating }
 		force_update_dynamic_modifier = yes
 		save_event_target_as = resources_found_anchor_registration_state
@@ -656,8 +660,10 @@ resources_found_cave_disrupt_anchor = {
 		}
 		set_state_flag = resources_found_cave_anchor_disrupted
 		set_variable = { resources_found_cave_anchor_grace_date = global.date }
-		set_temp_variable = { resources_found_anchor_grace_delay = DHO.resources_found_anchor_grace_days }
-		add_to_variable = { resources_found_cave_anchor_grace_date = resources_found_anchor_grace_delay }
+		set_temp_variable = { chaosx_date_days = DHO.resources_found_anchor_grace_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { resources_found_cave_anchor_grace_date = chaosx_date_offset }
 		if = {
 			limit = { has_dynamic_modifier = { modifier = resources_found_cave_anchor_active } }
 			remove_dynamic_modifier = { modifier = resources_found_cave_anchor_active }
@@ -2308,12 +2314,11 @@ resources_found_classify_defeat_scale = {
 	set_variable = { resources_found_cave_campaign_duration_days = constant:resources_found_value.zero }
 	if = {
 		limit = { has_variable = resources_found_cave_emergence_date }
-		set_variable = { resources_found_cave_campaign_duration_days = global.date }
-		subtract_from_variable = { resources_found_cave_campaign_duration_days = resources_found_cave_emergence_date }
-		if = {
-			limit = { check_variable = { resources_found_cave_campaign_duration_days < constant:resources_found_value.zero } }
-			set_variable = { resources_found_cave_campaign_duration_days = constant:resources_found_value.zero }
-		}
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = resources_found_cave_emergence_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_variable = { resources_found_cave_campaign_duration_days = chaosx_date_days }
 	}
 	if = {
 		limit = {
