@@ -142,8 +142,11 @@ black_plague_achievement_process_state_pulse = {
 					set_country_flag = black_plague_achievement_corridor_started
 					set_variable = { black_plague_achievement_corridor_start_day = global.date }
 					set_variable = { black_plague_achievement_corridor_state_id = PREV.id }
+					set_temp_variable = { chaosx_date_days = constant:black_plague_achievement_threshold.forty_days_cordon_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
 					set_variable = { black_plague_achievement_corridor_hold_deadline = global.date }
-					add_to_variable = { black_plague_achievement_corridor_hold_deadline = constant:black_plague_achievement_threshold.forty_days_cordon_days }
+					add_to_variable = { black_plague_achievement_corridor_hold_deadline = chaosx_date_offset }
 				}
 				if = { limit = { has_war = yes } set_country_flag = black_plague_achievement_corridor_wartime_seen }
 				if = { limit = { PREV = { has_state_flag = black_plague_achievement_corridor_supply_state_seen } } set_country_flag = black_plague_achievement_corridor_supply_seen }
@@ -241,8 +244,11 @@ black_plague_achievement_process_country_pulse = {
 		if = {
 			limit = { NOT = { has_variable = black_plague_achievement_stockpile_start_day } }
 			set_variable = { black_plague_achievement_stockpile_start_day = global.date }
+			set_temp_variable = { chaosx_date_days = constant:black_plague_achievement_threshold.black_glass_stockpile_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { black_plague_achievement_stockpile_hold_deadline = global.date }
-			add_to_variable = { black_plague_achievement_stockpile_hold_deadline = constant:black_plague_achievement_threshold.black_glass_stockpile_days }
+			add_to_variable = { black_plague_achievement_stockpile_hold_deadline = chaosx_date_offset }
 		}
 		if = {
 			limit = {

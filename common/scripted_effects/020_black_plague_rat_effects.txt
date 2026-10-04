@@ -113,13 +113,19 @@ black_plague_rat_schedule_next_evolution_check = {
 		min = constant:black_plague_rat_evolution.minimum_interval_days
 		max = constant:black_plague_rat_evolution.maximum_interval_days
 	}
+	set_temp_variable = { chaosx_date_days = black_plague_rat_evolution_delay_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { global.black_plague_rat_next_evolution_check_date = global.date }
-	add_to_variable = { global.black_plague_rat_next_evolution_check_date = black_plague_rat_evolution_delay_days }
+	add_to_variable = { global.black_plague_rat_next_evolution_check_date = chaosx_date_offset }
 }
 
 black_plague_rat_schedule_next_growth_pulse = {
+	set_temp_variable = { chaosx_date_days = constant:black_plague_rat_pool.rat_pulse_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { global.black_plague_rat_next_growth_date = global.date }
-	add_to_variable = { global.black_plague_rat_next_growth_date = constant:black_plague_rat_pool.rat_pulse_days }
+	add_to_variable = { global.black_plague_rat_next_growth_date = chaosx_date_offset }
 }
 
 # COUNTRY scope with FROM = selected enemy STATE. The royal operation spends
@@ -1353,8 +1359,11 @@ black_plague_rat_initialize_country = {
 	set_variable = { black_plague_rat_hierarchy = constant:black_plague_rat_hierarchy.undecided }
 	set_variable = { black_plague_rat_sentience = constant:black_plague_value.zero }
 	set_variable = { black_plague_rat_last_pulse_date = global.date }
+	set_temp_variable = { chaosx_date_days = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { black_plague_rat_merger_ready_date = global.date }
-	add_to_variable = { black_plague_rat_merger_ready_date = constant:black_plague_rat_pool.rat_merger_cooldown_days }
+	add_to_variable = { black_plague_rat_merger_ready_date = chaosx_date_offset }
 	set_stability = constant:black_plague_rat_pool.starting_stability
 	set_war_support = constant:black_plague_rat_pool.starting_war_support
 	set_research_slots = constant:black_plague_rat_pool.starting_research_slots
@@ -1738,8 +1747,11 @@ black_plague_rat_concentrate_brood = {
 		subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.concentrate_brood_mass_cost }
 		add_to_variable = { black_plague_rat_coherence = constant:black_plague_rat_decision.concentrate_brood_coherence_gain }
 		add_to_variable = { black_plague_rat_division_cap_bonus = constant:black_plague_rat_decision.concentrate_brood_division_cap_gain }
+		set_temp_variable = { chaosx_date_days = constant:black_plague_rat_decision.concentrate_brood_pulse_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { global.black_plague_rat_next_growth_date = global.date }
-		add_to_variable = { global.black_plague_rat_next_growth_date = constant:black_plague_rat_decision.concentrate_brood_pulse_delay_days }
+		add_to_variable = { global.black_plague_rat_next_growth_date = chaosx_date_offset }
 		set_temp_variable = { black_plague_rat_concentrate_cooldown_days = constant:black_plague_rat_decision.concentrate_brood_pulse_delay_days }
 		set_country_flag = { flag = black_plague_rat_concentrate_brood_cooldown days = black_plague_rat_concentrate_cooldown_days }
 		clamp_variable = { var = black_plague_rat_coherence min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
@@ -2186,9 +2198,8 @@ black_plague_rat_try_absorb_adjacent_brood = {
 			ROOT = {
 				black_plague_rat_refresh_division_cap = yes
 				subtract_from_variable = { black_plague_rat_brood_mass = constant:black_plague_rat_decision.merger_mass_cost }
-				set_temp_variable = { black_plague_rat_inherited_brood_units = PREV.black_plague_rat_inherited_brood_units }
 				black_plague_rat_create_inherited_divisions = yes
-				add_to_variable = { black_plague_rat_division_count = PREV.black_plague_rat_inherited_brood_units }
+				add_to_variable = { black_plague_rat_division_count = black_plague_rat_inherited_brood_units }
 				clamp_variable = {
 					var = black_plague_rat_division_count
 					min = constant:black_plague_value.zero
@@ -2211,8 +2222,11 @@ black_plague_rat_try_absorb_adjacent_brood = {
 			limit = { black_plague_rat_hierarchy_is_dominant = yes }
 			set_temp_variable = { black_plague_rat_merger_cooldown_days = constant:black_plague_rat_hierarchy_route.dominant_merger_cooldown_days }
 		}
+		set_temp_variable = { chaosx_date_days = black_plague_rat_merger_cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { black_plague_rat_merger_ready_date = global.date }
-		add_to_variable = { black_plague_rat_merger_ready_date = black_plague_rat_merger_cooldown_days }
+		add_to_variable = { black_plague_rat_merger_ready_date = chaosx_date_offset }
 	}
 	if = {
 		limit = {
@@ -2320,8 +2334,11 @@ black_plague_rat_cleanup_retired_country = {
 		set_variable = { global.black_plague_rat_controlled_states_count = constant:black_plague_value.zero }
 		if = { limit = { is_in_array = { array = global.black_plague_rat_countries value = THIS } } remove_from_array = { array = global.black_plague_rat_countries value = THIS } }
 		if = { limit = { check_variable = { var = global.black_plague_rat_countries_count value = constant:black_plague_value.zero compare = greater_than } } subtract_from_variable = { global.black_plague_rat_countries_count = constant:black_plague_value.one } }
+		set_temp_variable = { chaosx_date_days = constant:black_plague_rat_pool.retirement_quarantine_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { black_plague_rat_retirement_date = global.date }
-		add_to_variable = { black_plague_rat_retirement_date = constant:black_plague_rat_pool.retirement_quarantine_days }
+		add_to_variable = { black_plague_rat_retirement_date = chaosx_date_offset }
 		set_country_flag = black_plague_rat_slot_release_pending
 	}
 }
@@ -2626,8 +2643,11 @@ black_plague_rat_transfer_to_king = {
 				set_capital = { state = event_target:black_plague_rat_royal_basin_state remember_old_capital = no }
 				black_plague_rat_initialize_king_country = yes
 			}
+			set_temp_variable = { chaosx_date_days = constant:black_plague_evolution_runtime.royal_grace_period_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { global.black_plague_rat_king_grace_end_date = global.date }
-			add_to_variable = { global.black_plague_rat_king_grace_end_date = constant:black_plague_evolution_runtime.royal_grace_period_days }
+			add_to_variable = { global.black_plague_rat_king_grace_end_date = chaosx_date_offset }
 			set_global_flag = black_plague_rat_king_grace_period
 			set_global_flag = black_plague_rat_king_active
 			set_global_flag = black_plague_mapmode_dirty

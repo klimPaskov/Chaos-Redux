@@ -99,7 +99,6 @@ black_plague_apply_weaponized_exposure_runtime = {
 black_plague_weaponized_runtime_bridge_ensure_scheduler = {
 	if = {
 		limit = {
-			exists = yes
 			has_global_flag = black_plague_system_active
 			NOT = { has_global_flag = black_plague_pulses_suppressed }
 			NOT = { has_global_flag = world_end }
@@ -119,10 +118,7 @@ black_plague_weaponized_runtime_bridge_ensure_scheduler = {
 			# Only the reachable old target is cancelled. If the global pointer is
 			# absent, an unreachable stale state flag is deliberately not scanned.
 			if = {
-				limit = {
-					has_event_target = black_plague_scheduler_anchor_state
-					event_target:black_plague_scheduler_anchor_state = { exists = yes }
-				}
+				limit = { has_event_target = black_plague_scheduler_anchor_state }
 				event_target:black_plague_scheduler_anchor_state = {
 					clr_state_flag = black_plague_scheduler_anchor
 					clear_variable = black_plague_scheduler_generation

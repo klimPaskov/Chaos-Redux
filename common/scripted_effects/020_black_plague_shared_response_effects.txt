@@ -392,8 +392,11 @@ black_plague_finish_shared_state_action = {
 				CONTROLLER = {
 					subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_shared_result.royal_node_damage }
 					clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }
+					set_temp_variable = { chaosx_date_days = constant:black_plague_shared_result.royal_node_pulse_block_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
 					set_variable = { black_plague_rat_king_pulse_block_until = global.date }
-					add_to_variable = { black_plague_rat_king_pulse_block_until = constant:black_plague_shared_result.royal_node_pulse_block_days }
+					add_to_variable = { black_plague_rat_king_pulse_block_until = chaosx_date_offset }
 				}
 				ROOT = {
 					set_country_flag = black_plague_royal_node_strike_contributor
@@ -421,8 +424,11 @@ black_plague_finish_shared_state_action = {
 				RTX = {
 					subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_shared_result.crown_strike_dominion_loss }
 					subtract_from_variable = { black_plague_rat_king_cohesion = constant:black_plague_shared_result.crown_strike_cohesion_loss }
+					set_temp_variable = { chaosx_date_days = constant:black_plague_shared_result.crown_strike_pulse_block_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
 					set_variable = { black_plague_rat_king_pulse_block_until = global.date }
-					add_to_variable = { black_plague_rat_king_pulse_block_until = constant:black_plague_shared_result.crown_strike_pulse_block_days }
+					add_to_variable = { black_plague_rat_king_pulse_block_until = chaosx_date_offset }
 					if = {
 						limit = { check_variable = { var = black_plague_rat_king_route value = constant:black_plague_rat_king_route.absolute_crown compare = equals } }
 						subtract_from_variable = { black_plague_rat_king_dominion = constant:black_plague_rat_policy.crown_strike_extra_dominion_loss }
@@ -433,8 +439,11 @@ black_plague_finish_shared_state_action = {
 					}
 					if = {
 						limit = { check_variable = { var = black_plague_rat_king_route value = constant:black_plague_rat_king_route.black_breath_hierophancy compare = equals } }
+						set_temp_variable = { chaosx_date_days = constant:black_plague_rat_policy.hierophancy_route_suspend_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
 						set_variable = { global.black_plague_rat_king_route_exposure_suspended_until = global.date }
-						add_to_variable = { global.black_plague_rat_king_route_exposure_suspended_until = constant:black_plague_rat_policy.hierophancy_route_suspend_days }
+						add_to_variable = { global.black_plague_rat_king_route_exposure_suspended_until = chaosx_date_offset }
 						subtract_from_variable = { global.black_plague_rat_king_terminal_preparation = constant:black_plague_rat_policy.hierophancy_strike_terminal_loss }
 					}
 					clamp_variable = { var = black_plague_rat_king_dominion min = constant:black_plague_value.minimum max = constant:black_plague_value.maximum }

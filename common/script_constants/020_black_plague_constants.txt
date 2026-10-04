@@ -299,7 +299,11 @@ black_plague_mortality = {
 	recovery_weekly_rate = 0.0002
 	rat_controlled_weekly_rate = 0.0023
 	nonlinear_curve_scale = 0.0132
-	elapsed_rate_per_day = 0.000019
+	# The elapsed rate is 0.000019 per untreated day. Variables keep only five
+	# decimals, so it is stored per elapsed_rate_day_scale days and divided
+	# after the multiplication instead of being truncated to 0.00001.
+	elapsed_rate_per_scaled_days = 0.019
+	elapsed_rate_day_scale = 1000
 	elapsed_rate_cap = 0.0052
 	maximum_weekly_rate = 0.080
 	response_divisor = 406
