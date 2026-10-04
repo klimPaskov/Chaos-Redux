@@ -1,0 +1,156 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 FIELD HAZARDS AND RARE INCIDENTS
+# ============================================================================
+# Overview:
+# - Tuning for the baseline field hazards rolled by an expedition's own pulse
+#   once it has a camp on the ice, the rare once-per-expedition incidents, and
+#   the stricter pace of a solo expedition.
+# - Chances are percentages per pulse. Consequences are positive amounts; the
+#   field effects subtract or add them.
+# - Nothing here depends on an evolution, so the baseline race keeps its
+#   hazards with every evolution disabled.
+# ============================================================================
+
+# Hazard kinds, in the order of the draw.
+chaosx_nr25_hazard_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pack_ice = 1
+	whiteout = 2
+	crevasse = 3
+	radio_loss = 4
+	engines = 5
+	sledges = 6
+	medical = 7
+}
+
+# Hazard chance and consequences.
+chaosx_nr25_hazard = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Chance per pulse, in percent, before preparation.
+	base_chance = 12
+	# Exposure Risk raises the chance.
+	exposure_moderate = 50
+	exposure_moderate_add = 6
+	exposure_severe = 80
+	exposure_severe_add = 8
+	# Each general preparation (forward depot, radio net, polar crew) lowers
+	# the chance.
+	prepared_factor = 0.85
+	# A well-supplied expedition (Logistics Readiness at the final-recovery
+	# safety level) meets fewer hazards; a strained one meets more.
+	ready_factor = 0.75
+	strained_factor = 1.3
+	# A logistics depot or fortified camp emphasis lowers the chance.
+	emphasis_factor = 0.8
+	# A solo expedition races the weather alone.
+	solo_factor = 1.25
+	max_chance = 40
+	# Draw weights: a hazard whose own preparation was made is rarer.
+	weight = 10
+	prepared_weight = 4
+	# A hazard whose own preparation was made does half the damage and kills
+	# no one.
+	mitigated_factor = 0.5
+	# Consequences.
+	pack_ice_progress = 6
+	pack_ice_readiness = 4
+	whiteout_exposure = 8
+	whiteout_readiness = 3
+	crevasse_crew = 1
+	crevasse_readiness = 5
+	radio_loss_intelligence = 6
+	radio_loss_exposure = 4
+	engines_fuel = 100
+	engines_readiness = 6
+	sledges_progress = 5
+	sledges_readiness = 4
+	medical_crew = 1
+	medical_readiness = 4
+	# Solo expedition pace.
+	solo_exposure_pulse = 1
+	solo_progress_drain = 1
+}
+
+# Rare incidents: chance per pulse without a hazard, and their outcomes.
+chaosx_nr25_incident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	chance = 5
+	# An abandoned camp from an earlier expedition.
+	camp_salvage_readiness = 8
+	camp_salvage_exposure = 3
+	camp_logs_intelligence = 8
+	camp_logs_progress = 3
+	# A rival expedition asks for help.
+	rescue_support = 50
+	rescue_fuel = 50
+	rescue_readiness_cost = 4
+	rescue_rival_readiness = 10
+	relay_pp = 5
+	relay_rival_readiness = 4
+	rescue_focus_progress = 2
+	# A meteorite mistaken for wreckage.
+	meteorite_study_progress = 4
+	meteorite_study_capacity = 1
+	meteorite_study_intelligence = 4
+	meteorite_press_pp = 15
+	meteorite_press_exposure = 6
+	# A clear weather corridor.
+	corridor_push_progress = 8
+	corridor_push_readiness = 4
+	corridor_supply_readiness = 10
+	corridor_supply_fuel = 75
+	corridor_rest_crew = 1
+	corridor_rest_exposure = 4
+	# A neutral ship offers transport.
+	ship_hire_pp = 15
+	ship_hire_readiness = 8
+	ship_stores_pp = 5
+	ship_stores_readiness = 4
+	# A damaged aircraft carrying photographs.
+	aircraft_film_intelligence = 10
+	aircraft_film_fuel = 50
+	aircraft_film_exposure = 2
+	aircraft_salvage_fuel = 100
+	aircraft_salvage_readiness = 3
+	# Scientists dispute the search model.
+	dispute_field_progress = 6
+	dispute_field_intelligence = 4
+	dispute_signal_intelligence = 6
+	dispute_signal_capacity = 1
+	dispute_signal_progress = 4
+	dispute_replace_pp = 10
+	dispute_replace_readiness = 4
+	# A recovered fragment reacts to ordinary current.
+	current_test_intelligence = 10
+	current_test_exposure = 6
+	current_shield_support = 25
+	current_shield_exposure = 3
+	current_report_capacity = 1
+	current_report_exposure = 4
+	# Signed amounts paid by the choices above.
+	rescue_support_delta = -50
+	rescue_fuel_delta = -50
+	relay_pp_delta = -5
+	corridor_supply_fuel_delta = -75
+	ship_hire_pp_delta = -15
+	ship_stores_pp_delta = -5
+	aircraft_film_fuel_delta = -50
+	dispute_replace_pp_delta = -10
+	current_shield_support_delta = -25
+	# AI leanings.
+	ai_low_readiness = 40
+	ai_high_exposure = 60
+}

@@ -450,3 +450,18 @@ Decision:
 - The AI adds 30 to a direct-band gateway and 15 to an allied one, enough to outweigh the earlier mobilisation preferences (+10), so it takes the best open band.
 
 Validation limits: the band rating, the `var:` state scope from a stored state id and the trigger-side temporary band variable follow the wiki's Data structures rules and vanilla trigger precedents but are `needs_live_game`; no map render was made because the change reads existing states without editing the map.
+
+## D27. Baseline field hazards, rare incidents and the solo pace
+
+Disposition: `implemented`; frequencies are `needs_live_game` for tuning.
+
+Basis: spec 003 (Phase 2 Hazards, Baseline rare incidents, One-participant behavior), the chain map's weather route setbacks, and the lead's finding that the pulse had no random roll, so the preparation actions had nothing to mitigate.
+
+Decision:
+
+- The hazard roll lives in a new owned file pair (`025_alien_technology_in_antarctica_field_effects.txt` and `_field_triggers.txt`) called once from each expedition's own pulse. At most one hazard per pulse, only on the ice (outpost phase or later), only for the expedition itself; no world scan and no evolution dependency.
+- The chance is an MTTH entry (`chaosx_nr25_hazard_chance`, chaos-redux-mtth) on constants in `025_alien_technology_in_antarctica_field_constants.txt`: Exposure Risk raises it; the forward depot, radio net, polar crew, a supplied camp and a protective outpost emphasis lower it; a strained camp and a solo expedition raise it; it is capped.
+- Each of the seven spec hazards is paired with the preparation that softens it, so every mobilisation and outpost choice now has a field payoff: pack ice with escorted convoys or a direct route, whiteout with the polar crew, crevasse fields with the aerial route survey, radio loss with the radio net, engine failure with the forward depot, lost sledges and vehicles with a logistics depot or traverse camp emphasis, sickness with a crew rotation. A prepared hazard is drawn less often (weight 4 against 10), does half the damage and kills no one; an unprepared crevasse or sickness costs a crew and records four deaths in the Antarctic expedition deaths ledger.
+- Each hazard has its own report with the applied losses and the preparation line. The draw uses a cumulative weight roll rather than `random_list` with variable weights, so the selection does not depend on an unverified weight form.
+- The eight spec rare incidents are choice events reached at most once each, on a 5% roll in a pulse without a hazard, from the crossing phase on: abandoned camp, rival call for help, misidentified meteorite, clear weather window, neutral ship, wrecked survey aircraft, scientists' dispute, fragment reacting to current. Each has two or three options with a real trade-off and AI chances keyed to readiness, exposure, phase, faction and war. The rescue incident picks a random rival on the ice from the stored registry, may raise its readiness and gives it the existing rescue opinion; the neutral ship can turn a cut or improvised route into a chartered one (D26). Pictures reuse report cards that carry no evolution imagery.
+- A solo expedition gains 1 Exposure Risk per pulse on the ice and loses 1 Expedition Progress per pulse in the survey and final phases, on top of the higher hazard chance; a prepared solo expedition still completes the baseline.

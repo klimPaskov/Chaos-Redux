@@ -1,0 +1,151 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 FIELD HAZARD AND RARE INCIDENT TRIGGERS
+# ============================================================================
+# Overview:
+# - Read-only gates for the baseline field hazards, the preparation that
+#   softens each hazard, the eligibility of each once-per-expedition rare
+#   incident, and the solo-expedition pace.
+# - Every trigger reads only the expedition's own country, the global race
+#   counters and the stored participant registry; none scans the world.
+# ============================================================================
+
+# Any scope. Only one expedition is still in the race.
+chaosx_nr25_solo_expedition = {
+	check_variable = { var = global.chaosx_nr25_active_participant_count value = constant:chaosx_nr25_value.one compare = less_than_or_equals }
+}
+
+# Country scope. The expedition is in the unresolved race.
+chaosx_nr25_field_race_live = {
+	has_country_flag = chaosx_nr25_participant
+	has_global_flag = chaosx_nr25_active
+	NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+	NOT = { has_country_flag = chaosx_nr25_terminal }
+	NOT = { has_country_flag = chaosx_nr25_evacuation_requested }
+}
+
+# Country scope. Field hazards strike an expedition with a camp on the ice.
+chaosx_nr25_field_hazards_possible = {
+	chaosx_nr25_field_race_live = yes
+	chaosx_nr25_sustain_phase_active = yes
+}
+
+# Country scope. Rare incidents can reach an expedition once it sails.
+chaosx_nr25_incidents_possible = {
+	chaosx_nr25_field_race_live = yes
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+		chaosx_nr25_sustain_phase_active = yes
+	}
+}
+
+# Country scope. The preparation that softens each hazard: escorted convoys
+# or a direct route against pack ice, a recruited polar crew against
+# whiteout, an aerial route survey against crevasse fields, a radio net
+# against radio loss, a forward depot's spares against engine damage, a
+# logistics depot or traverse camp against lost sledges and vehicles, and a
+# rotated crew against sickness.
+chaosx_nr25_hazard_pack_ice_prepared = {
+	OR = {
+		has_country_flag = chaosx_nr25_action_escort_convoys_used
+		check_variable = { var = chaosx_nr25_route_band value = constant:chaosx_nr25_gateway_band.direct compare = equals }
+	}
+}
+
+chaosx_nr25_hazard_whiteout_prepared = {
+	has_country_flag = chaosx_nr25_action_crew_used
+}
+
+chaosx_nr25_hazard_crevasse_prepared = {
+	has_country_flag = chaosx_nr25_action_aerial_used
+}
+
+chaosx_nr25_hazard_radio_loss_prepared = {
+	has_country_flag = chaosx_nr25_action_radio_used
+}
+
+chaosx_nr25_hazard_engines_prepared = {
+	has_country_flag = chaosx_nr25_action_depot_used
+}
+
+chaosx_nr25_hazard_sledges_prepared = {
+	OR = {
+		check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals }
+		check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.mobile_traverse compare = equals }
+	}
+}
+
+chaosx_nr25_hazard_medical_prepared = {
+	has_country_flag = chaosx_nr25_action_rotate_crew_used
+}
+
+# Country scope. The hazard in the temporary chaosx_nr25_hazard_kind met the
+# preparation that softens it.
+chaosx_nr25_drawn_hazard_prepared = {
+	OR = {
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.pack_ice compare = equals } chaosx_nr25_hazard_pack_ice_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.whiteout compare = equals } chaosx_nr25_hazard_whiteout_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.crevasse compare = equals } chaosx_nr25_hazard_crevasse_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.radio_loss compare = equals } chaosx_nr25_hazard_radio_loss_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.engines compare = equals } chaosx_nr25_hazard_engines_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.sledges compare = equals } chaosx_nr25_hazard_sledges_prepared = yes }
+		AND = { check_variable = { var = chaosx_nr25_hazard_kind value = constant:chaosx_nr25_hazard_kind.medical compare = equals } chaosx_nr25_hazard_medical_prepared = yes }
+	}
+}
+
+# Country scope. Rare incident eligibility; each incident reaches an
+# expedition at most once.
+chaosx_nr25_incident_camp_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_camp_seen }
+	chaosx_nr25_sustain_phase_active = yes
+}
+
+chaosx_nr25_incident_rescue_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_rescue_seen }
+	chaosx_nr25_sustain_phase_active = yes
+	any_of_scopes = {
+		array = global.chaosx_nr25_participants
+		chaosx_nr25_rival_card_candidate_valid = yes
+		chaosx_nr25_sustain_phase_active = yes
+	}
+}
+
+chaosx_nr25_incident_meteorite_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_meteorite_seen }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+}
+
+chaosx_nr25_incident_corridor_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_corridor_seen }
+	chaosx_nr25_sustain_phase_active = yes
+}
+
+chaosx_nr25_incident_ship_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_ship_seen }
+}
+
+chaosx_nr25_incident_aircraft_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_aircraft_seen }
+	chaosx_nr25_sustain_phase_active = yes
+}
+
+chaosx_nr25_incident_dispute_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_dispute_seen }
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+	}
+}
+
+chaosx_nr25_incident_current_eligible = {
+	NOT = { has_country_flag = chaosx_nr25_incident_current_seen }
+	check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than }
+}
+
+# Country scope. The neutral ship can carry the expedition onto a chartered
+# route when its own route is cut or improvised.
+chaosx_nr25_incident_ship_can_reroute = {
+	OR = {
+		has_country_flag = chaosx_nr25_route_interrupted
+		check_variable = { var = chaosx_nr25_route_band value = constant:chaosx_nr25_gateway_band.improvised compare = equals }
+	}
+}

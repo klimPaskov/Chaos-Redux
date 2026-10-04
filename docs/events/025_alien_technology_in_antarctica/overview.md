@@ -43,6 +43,15 @@ If every port of the chosen group falls to countries at war with the expedition,
 A failed reach-the-gateway objective also leaves an improvised route that the emergency charter can replace.
 The AI adds 30 to a gateway with a direct band and 15 to an allied one, so it takes the best open route.
 
+## Field hazards, rare incidents and the solo pace
+
+Each expedition's own pulse calls `chaosx_nr25_run_field_events` (`common/scripted_effects/025_alien_technology_in_antarctica_field_effects.txt`); nothing scans the world and nothing depends on an evolution.
+Once the expedition has a camp on the ice, the pulse rolls at most one field hazard. The chance is the MTTH entry `chaosx_nr25_hazard_chance`: 12% a pulse, +6 at Exposure Risk 50 and +8 more at 80, times 0.85 for each of the forward depot, radio net and polar crew, 0.75 at Logistics Readiness 60 or more, 1.3 below 20, 0.8 with a logistics depot or fortified camp emphasis, 1.25 for a solo expedition, capped at 40%.
+The draw picks one of seven hazards, each weighted 10, or 4 when its own preparation was made: pack ice (escorted convoys or a direct route), whiteout (polar crew), crevasse field (aerial route survey), radio loss (radio net), engine failure (forward depot), lost sledges and vehicles (logistics depot or traverse camp emphasis) and sickness (crew rotation).
+Consequences are bounded constants in `chaosx_nr25_hazard`: progress, readiness, exposure, intelligence, national fuel, and for crevasses and sickness one crew and four recorded deaths. A prepared hazard does half the damage and kills no one. Each hazard has its own report (`chaosx.nr25.301` to `.307`) with the losses and the preparation that softens it.
+When no hazard struck, a 5% roll offers one of eight rare incidents the expedition has not met, each at most once (`chaosx.nr25.311` to `.318`): an abandoned camp, a rival's call for help (a random rival on the ice, which can gain readiness and a rescue opinion), a meteorite mistaken for wreckage, a clear weather window, a neutral ship (which can turn a cut or improvised route into a chartered one), a wrecked survey aircraft, a scientists' dispute and a recovered fragment reacting to current. Each offers two or three options with real trade-offs and AI chances; none hints at an evolution.
+A solo expedition (one active participant) gains 1 Exposure Risk each pulse on the ice and loses 1 Expedition Progress each pulse in the survey and final phases, and meets hazards 25% more often.
+
 ## Reports and news
 
 Every state change reaches only the affected country, once per change: the departure (`chaosx.nr25.10`), a failed gateway (`.12`), the first camp (`.20`), a lost or restored camp (`.21`, `.22`), a probable or confirmed site (`.30`, `.31`), a discovered false lead (`.32`), a recovered or lost fragment (`.40`, `.41`), a rescue for both countries (`.50`, `.51`), sabotage (`.60` unidentified, `.61` identified), an armed clash for its target (`.165`), and the end of an evacuation, with its dead when it collapses (`.14`).

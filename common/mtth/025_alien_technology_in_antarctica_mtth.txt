@@ -66,3 +66,49 @@ chaosx_nr25_evolution_v_interval = {
 		check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals }
 	}
 }
+
+# Chance, in percent, that an expedition on the ice meets a field hazard this
+# pulse. Exposure Risk raises it; preparation, a supplied camp and a
+# protective outpost emphasis lower it; a solo expedition meets more.
+chaosx_nr25_hazard_chance = {
+	base = constant:chaosx_nr25_hazard.base_chance
+	modifier = {
+		add = constant:chaosx_nr25_hazard.exposure_moderate_add
+		check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_hazard.exposure_moderate compare = greater_than_or_equals }
+	}
+	modifier = {
+		add = constant:chaosx_nr25_hazard.exposure_severe_add
+		check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_hazard.exposure_severe compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.prepared_factor
+		has_country_flag = chaosx_nr25_action_depot_used
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.prepared_factor
+		has_country_flag = chaosx_nr25_action_radio_used
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.prepared_factor
+		has_country_flag = chaosx_nr25_action_crew_used
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.ready_factor
+		check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.strained_factor
+		check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = less_than }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.emphasis_factor
+		OR = {
+			check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals }
+			check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.fortified_camp compare = equals }
+		}
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_hazard.solo_factor
+		chaosx_nr25_solo_expedition = yes
+	}
+}
