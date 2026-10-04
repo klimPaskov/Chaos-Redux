@@ -88,6 +88,14 @@ With no active crisis left, a recovering state it controls (`random_terror_state
 Decisions with a generic crisis target (response cell, transport, victim support, intelligence sweep, security surge, raid, allied intelligence, movement restrictions, reinforcement and the territorial actions) accept only that state, the government's hostage or uprising subject, or the subject of the containment, corridor or civil-authority mission they advance (`random_terror_state_is_response_target`), so each shows one row in normal play.
 Decisions keyed to a recorded marker (corridor, sponsor evidence, defection, community rejection, recovery or capital infiltration) keep that marker as their target.
 
+Event 31 repeats, so no response or actor decision uses `fire_only_once`; each carries the guard its matrix cleanup asks for.
+Establish a Response Cell runs once per crisis through `random_terror_response_cell_active`, which the crisis closure resets.
+Expose the Sponsor and Pressure the Sponsor in Private are alternatives on one evidence package: either consumes the state's `random_terror_sponsor_evidence_recorded` marker, and the public case condemns each sponsoring country only once.
+Negotiate an Enclave Surrender is one settlement per armed command (`random_terror_negotiated_surrender` on the command).
+Absorb a Rival Actor allows one pending offer per target and never asks again a command that refused (`random_terror_absorption_refused_by_<tag>`), Contest the Network Leader challenges each leader once (`random_terror_leader_contested_<tag>`), and Join the Jihadist International allows one petition at a time, none while a member and none to a leader that rejected the command (`random_terror_jihad_refused_by_<tag>`).
+Actor retirement clears these per-target records in both directions, so a reused carrier starts clean.
+Recruit Foreign Fighters closes for `foreign_fighters_cooldown_days` after each intake through its timed flag.
+
 Every costed decision has one inclusive affordability trigger, `random_terror_can_afford_<decision>` in `031_random_terror_triggers.txt`, used by its `custom_cost_trigger` and mirrored in `available` through `hidden_trigger`, so an exact balance pays and each line matches one debit in the decision's `complete_effect`.
 Every `custom_cost_text` key has `_blocked` (red values) and `_tooltip` companions, and cost rows put each texticon before its value.
 Temporary Movement Restrictions is the one escalating price: each use adds to `random_terror_movement_restrictions_uses`, and `random_terror_update_movement_restrictions_cost` raises the Stability and support equipment price by one repeat step per earlier use, up to `movement_repeat_max_steps`; its only state flag is the timed `random_terror_movement_restrictions_active`, and every use after the first draws public condemnation.

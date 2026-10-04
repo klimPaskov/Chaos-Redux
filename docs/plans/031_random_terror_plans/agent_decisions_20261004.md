@@ -332,7 +332,7 @@ Vanilla `common/scripted_effects/SOV_scripted_effects.txt:28` keeps the variable
 A dropped duration would have made the action locks and the pulse guard permanent, so every site now builds the flag through `meta_effect` with `[?temp|.0]`, the pattern already used for the target reservation flag, and every duration is unchanged.
 `add_dynamic_modifier` keeps its variable `days`, which `documentation/effects_documentation.md:1166` allows.
 
-### R30 A contained crisis recovers and closes
+### R30 A contained crisis recovers and closes (`786237392`)
 
 Basis: Part 1 baseline lifecycle (opening shock to containment and aftermath), Part 3 phase 4 and clutter control, the matrix cleanup column for Public Accounting ("one per incident package") and Security Reform ("longer cooldown"), and validation case V01.
 Before this change no state was ever marked recovering unless relief or a retake reached it, closure needed four flags of which two came from once-per-game decisions, and nothing ever lowered pressure in peace, so the response category stayed open forever.
@@ -348,3 +348,16 @@ Before this change no state was ever marked recovering unless relief or a retake
 - Closure sends one short recovery report (`chaosx.nr31.9`, existing reconstruction art), finalizes the player's achievement checks (so The Long Watch can count contained crises), sets a timed `random_terror_recovery_cooldown` that ordinary waves respect but a deliberate Global Jihad scenario may override (Part 1: "unless a connected transnational network deliberately re-enters it"), and resets every per-crisis marker, including the six named in the assessment and all mission outcome flags.
 - Defects fixed on the way: Support Victims also set a permanent copy of its 60-day commitment flag, and Public Accounting and the response-cell AI read a failed-raid country flag that is only ever set on states; they now read `random_terror_failed_raid_memory`.
 - Restore Services keeps the one-row rule on the priority recovering state.
+
+### R31 Per-crisis and per-target guards replace once-per-game locks
+
+Basis: the matrix cleanup column (Establish Response Cell "remove after final recovery", Negotiate Surrender "one settlement per actor", Expose and Quiet Leverage "evidence consumed or archived" and "closes on exposure or sponsor change", Absorb "transactional", Contest "clear contest state after result", Foreign Fighters "bounded intake, cooldown, no free loop", Join "leave or split only through valid route"), and the wiki rule that `fire_only_once` on a targeted decision locks each target for the rest of the game, which reused carrier tags and repeated crises turn into permanent locks.
+
+- Establish a Response Cell is once per crisis through `random_terror_response_cell_active`, reset at closure (R30).
+- Expose the Sponsor and Pressure the Sponsor in Private are alternatives on one evidence package.
+  Either consumes the state's evidence marker, and the public case condemns each sponsoring country once through its own `random_terror_sponsorship_condemnation_recorded`.
+  Expose was hidden whenever private leverage was available, which every evidence incident made true, so the public option was almost never offered; both now show on the same evidence.
+- Negotiate an Enclave Surrender is one settlement per armed command, read from `random_terror_negotiated_surrender`, which actor runtime cleanup now clears with its disarmament terms.
+- Absorb, Contest and Join keep one transaction in flight per target and remember a refusal or challenge per target with `<flag>_@<tag>` records, cleared in both directions when either command retires.
+- Recruit Foreign Fighters sets its flag for `foreign_fighters_cooldown_days` (180) through a `meta_effect` literal instead of permanently.
+- Terminal Counteroffensive and Accelerate the Revelation keep `fire_only_once`, because the terminal stage happens once per world.

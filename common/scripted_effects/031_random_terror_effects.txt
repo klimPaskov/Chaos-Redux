@@ -3903,7 +3903,11 @@ random_terror_actor_recruit_foreign_fighters = {
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_tuning.foreign_fighter_equipment }
 	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.actor_action_network_gain }
 	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
-	set_country_flag = random_terror_foreign_fighters_recruited
+	set_temp_variable = { random_terror_foreign_fighters_cooldown = constant:random_terror_tuning.foreign_fighters_cooldown_days }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_foreign_fighters_recruited days = [COOLDOWN_DAYS] } }
+		COOLDOWN_DAYS = "[?random_terror_foreign_fighters_cooldown|.0]"
+	}
 	set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.foreign_experience }
 	set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.foreign_equipment }
 	set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.foreign_manpower }
@@ -5257,9 +5261,11 @@ random_terror_accept_actor_absorption = {
 	random_terror_check_for_defeat = yes
 }
 
+# Absorbing actor scope, ROOT = the refusing command (chaosx.nr31.43).
 random_terror_refuse_actor_absorption = {
 	set_country_flag = random_terror_actor_absorption_refused
 	clr_country_flag = random_terror_actor_absorption_accepted
+	set_country_flag = random_terror_absorption_refused_by_@ROOT
 }
 
 random_terror_resolve_network_leadership_contest = {
@@ -5409,7 +5415,9 @@ random_terror_accept_jihad_membership = {
 	random_terror_achievement_record_jihad_membership = yes
 }
 
+# Applicant scope, ROOT = the rejecting leader (chaosx.nr31.44).
 random_terror_refuse_jihad_membership = {
+	set_country_flag = random_terror_jihad_refused_by_@ROOT
 	set_country_flag = random_terror_jihad_transaction_failed
 	clr_country_flag = random_terror_jihad_membership_request_pending
 	clr_country_flag = random_terror_jihad_transaction_committed
@@ -7037,6 +7045,21 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_foreign_fighters_recruited
 	clr_country_flag = random_terror_ideological_mobilization_active
 	clr_country_flag = random_terror_ideological_mobilization_recorded
+	clr_country_flag = random_terror_negotiated_surrender
+	clr_country_flag = random_terror_disarmament_terms_active
+	# Per-target transaction records between this command and every other
+	# live command, in both directions, so a reused carrier starts clean.
+	every_country = {
+		limit = { has_country_flag = random_terror_actor }
+		clr_country_flag = random_terror_absorption_refused_by_@PREV
+		clr_country_flag = random_terror_jihad_refused_by_@PREV
+		clr_country_flag = random_terror_leader_contested_@PREV
+		PREV = {
+			clr_country_flag = random_terror_absorption_refused_by_@PREV
+			clr_country_flag = random_terror_jihad_refused_by_@PREV
+			clr_country_flag = random_terror_leader_contested_@PREV
+		}
+	}
 	remove_dynamic_modifier = { modifier = random_terror_mobilized_cadres }
 	remove_dynamic_modifier = { modifier = random_terror_synchronized_offensive }
 	every_country = {

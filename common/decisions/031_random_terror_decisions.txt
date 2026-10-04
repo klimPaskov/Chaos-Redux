@@ -74,7 +74,8 @@ random_terror_government_response_category = {
 			random_terror_can_afford_establish_response_cell = yes
 		}
 		custom_cost_text = random_terror_establish_response_cell_cost
-		fire_only_once = yes
+		# Once per crisis: random_terror_response_cell_active resets when the
+		# crisis closes (random_terror_reset_crisis_cycle).
 		complete_effect = {
 			if = {
 				limit = { NOT = { has_country_flag = random_terror_mission_slot_1 } }
@@ -976,8 +977,6 @@ random_terror_government_response_category = {
 			random_terror_government_phase_network = yes
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_response_cell_active
-			NOT = { has_country_flag = random_terror_sponsor_exposed }
-			NOT = { has_country_flag = random_terror_quiet_leverage_available }
 			FROM = {
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_sponsor_evidence_recorded
@@ -989,8 +988,6 @@ random_terror_government_response_category = {
 				tooltip = random_terror_expose_sponsor_requirements_tt
 				random_terror_can_government_response = yes
 				has_country_flag = random_terror_response_cell_active
-				NOT = { has_country_flag = random_terror_sponsor_exposed }
-				NOT = { has_country_flag = random_terror_quiet_leverage_available }
 				FROM = {
 					is_controlled_by = ROOT
 					has_state_flag = random_terror_sponsor_evidence_recorded
@@ -1013,7 +1010,8 @@ random_terror_government_response_category = {
 			random_terror_can_afford_expose_sponsor = yes
 		}
 		custom_cost_text = random_terror_expose_sponsor_cost
-		fire_only_once = yes
+		# Once per evidence package: exposure consumes the state's evidence
+		# marker, and each sponsoring country is condemned only once.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_expose_sponsor_effect_tt
 			add_command_power = constant:random_terror_cost.sponsor_exposure_command_power_spend
@@ -1038,8 +1036,6 @@ random_terror_government_response_category = {
 			random_terror_government_phase_network = yes
 			random_terror_can_government_response = yes
 			has_country_flag = random_terror_response_cell_active
-			has_country_flag = random_terror_quiet_leverage_available
-			NOT = { has_country_flag = random_terror_sponsor_exposed }
 			FROM = {
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_sponsor_evidence_recorded
@@ -1051,8 +1047,6 @@ random_terror_government_response_category = {
 				tooltip = random_terror_quiet_sponsor_leverage_requirements_tt
 				random_terror_can_government_response = yes
 				has_country_flag = random_terror_response_cell_active
-				has_country_flag = random_terror_quiet_leverage_available
-				NOT = { has_country_flag = random_terror_sponsor_exposed }
 				FROM = {
 					is_controlled_by = ROOT
 					has_state_flag = random_terror_sponsor_evidence_recorded
@@ -1075,7 +1069,8 @@ random_terror_government_response_category = {
 			random_terror_can_afford_quiet_sponsor_leverage = yes
 		}
 		custom_cost_text = random_terror_quiet_sponsor_leverage_cost
-		fire_only_once = yes
+		# Once per evidence package: leverage consumes the state's evidence
+		# marker, so it closes once that evidence is published or used.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_quiet_sponsor_leverage_effect_tt
 			add_command_power = constant:random_terror_cost.sponsor_exposure_command_power_spend
@@ -1532,6 +1527,7 @@ random_terror_government_response_category = {
 				owner = {
 					random_terror_is_actor = yes
 					NOT = { has_country_flag = random_terror_final_actor }
+					NOT = { has_country_flag = random_terror_negotiated_surrender }
 				}
 			}
 		}
@@ -1549,6 +1545,7 @@ random_terror_government_response_category = {
 					owner = {
 						random_terror_is_actor = yes
 						NOT = { has_country_flag = random_terror_final_actor }
+						NOT = { has_country_flag = random_terror_negotiated_surrender }
 					}
 				}
 			}
@@ -1559,7 +1556,7 @@ random_terror_government_response_category = {
 				has_state_flag = random_terror_state_lost_local_control
 				OR = { is_claimed_by = ROOT is_core_of = ROOT }
 				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
-				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } }
+				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } NOT = { has_country_flag = random_terror_negotiated_surrender } }
 			}
 		}
 		target_trigger = {
@@ -1569,14 +1566,15 @@ random_terror_government_response_category = {
 				has_state_flag = random_terror_state_lost_local_control
 				OR = { is_claimed_by = ROOT is_core_of = ROOT }
 				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
-				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } }
+				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } NOT = { has_country_flag = random_terror_negotiated_surrender } }
 			}
 		}
 		custom_cost_trigger = {
 			random_terror_can_afford_negotiate_surrender = yes
 		}
 		custom_cost_text = random_terror_negotiate_surrender_cost
-		fire_only_once = yes
+		# One settlement per armed command: random_terror_negotiated_surrender
+		# stays on the command until its runtime is cleared.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_negotiate_surrender_effect_tt
 			add_command_power = constant:random_terror_cost.surrender_command_power_spend
@@ -2621,7 +2619,9 @@ random_terror_actor_command_category = {
 				random_terror_is_actor = yes
 				NOT = { random_terror_is_final_actor = yes }
 				NOT = { has_capitulated = yes }
+				NOT = { has_country_flag = random_terror_absorption_offer_pending }
 			}
+			NOT = { has_country_flag = random_terror_absorption_refused_by_@FROM }
 		}
 		available = {
 			hidden_trigger = { random_terror_can_afford_absorb_actor = yes }
@@ -2642,7 +2642,9 @@ random_terror_actor_command_category = {
 					random_terror_is_actor = yes
 					NOT = { random_terror_is_final_actor = yes }
 					NOT = { has_capitulated = yes }
+					NOT = { has_country_flag = random_terror_absorption_offer_pending }
 				}
+				NOT = { has_country_flag = random_terror_absorption_refused_by_@FROM }
 			}
 		}
 		target_root_trigger = {
@@ -2657,12 +2659,14 @@ random_terror_actor_command_category = {
 			}
 		}
 		target_trigger = {
+			NOT = { has_country_flag = random_terror_absorption_refused_by_@FROM }
 			FROM = {
 				exists = yes
 				NOT = { tag = ROOT }
 				random_terror_is_actor = yes
 				NOT = { random_terror_is_final_actor = yes }
 				NOT = { has_capitulated = yes }
+				NOT = { has_country_flag = random_terror_absorption_offer_pending }
 				OR = {
 					has_country_flag = random_terror_route_war_directorate
 					has_country_flag = random_terror_route_ideological_secretariat
@@ -2675,7 +2679,8 @@ random_terror_actor_command_category = {
 		}
 		custom_cost_text = random_terror_absorb_actor_cost
 		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
-		fire_only_once = yes
+		# Once per target: one offer at a time, and a command that refused this
+		# one is not asked again (random_terror_absorption_refused_by_<tag>).
 		complete_effect = {
 			custom_effect_tooltip = random_terror_absorb_actor_effect_tt
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment_spend }
@@ -2713,6 +2718,7 @@ random_terror_actor_command_category = {
 				has_country_flag = random_terror_network_leader
 				NOT = { has_capitulated = yes }
 			}
+			NOT = { has_country_flag = random_terror_leader_contested_@FROM }
 		}
 		available = {
 			hidden_trigger = { random_terror_can_afford_contest_network_leader = yes }
@@ -2729,6 +2735,7 @@ random_terror_actor_command_category = {
 					has_country_flag = random_terror_network_leader
 					NOT = { has_capitulated = yes }
 				}
+				NOT = { has_country_flag = random_terror_leader_contested_@FROM }
 			}
 		}
 		target_root_trigger = {
@@ -2738,6 +2745,7 @@ random_terror_actor_command_category = {
 			has_country_flag = random_terror_route_jihadist_international
 		}
 		target_trigger = {
+			NOT = { has_country_flag = random_terror_leader_contested_@FROM }
 			FROM = {
 				exists = yes
 				NOT = { tag = ROOT }
@@ -2751,12 +2759,14 @@ random_terror_actor_command_category = {
 		}
 		custom_cost_text = random_terror_contest_network_leader_cost
 		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
-		fire_only_once = yes
+		# Once per leader: random_terror_leader_contested_<tag> records the
+		# challenge whatever its result.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_contest_network_leader_effect_tt
 			add_command_power = constant:random_terror_cost.allied_command_power_spend
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment_spend }
 			FROM = { save_event_target_as = random_terror_network_leader_target }
+			set_country_flag = random_terror_leader_contested_@FROM
 			random_terror_actor_contest_network_leader = yes
 			random_terror_resolve_network_leadership_contest = yes
 			random_terror_clamp_actor_values = yes
@@ -3057,7 +3067,8 @@ random_terror_actor_command_category = {
 		}
 		custom_cost_text = random_terror_recruit_foreign_fighters_cost
 		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
-		fire_only_once = yes
+		# Bounded intake: the timed random_terror_foreign_fighters_recruited flag
+		# closes the decision for foreign_fighters_cooldown_days after each intake.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_recruit_foreign_fighters_effect_tt
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:random_terror_cost.actor_corridor_convoys_spend }
@@ -3092,7 +3103,11 @@ random_terror_actor_command_category = {
 				random_terror_is_jihadist_actor = yes
 				has_country_flag = random_terror_network_leader
 				NOT = { has_capitulated = yes }
+				NOT = { has_country_flag = random_terror_jihad_membership_offer_pending }
 			}
+			NOT = { has_country_flag = random_terror_jihadist_international_member }
+			NOT = { has_country_flag = random_terror_jihad_membership_request_pending }
+			NOT = { has_country_flag = random_terror_jihad_refused_by_@FROM }
 		}
 		available = {
 			hidden_trigger = { random_terror_can_afford_join_jihadist_international = yes }
@@ -3111,7 +3126,11 @@ random_terror_actor_command_category = {
 					random_terror_is_jihadist_actor = yes
 					has_country_flag = random_terror_network_leader
 					NOT = { has_capitulated = yes }
+					NOT = { has_country_flag = random_terror_jihad_membership_offer_pending }
 				}
+				NOT = { has_country_flag = random_terror_jihadist_international_member }
+				NOT = { has_country_flag = random_terror_jihad_membership_request_pending }
+				NOT = { has_country_flag = random_terror_jihad_refused_by_@FROM }
 			}
 		}
 		target_root_trigger = {
@@ -3124,12 +3143,14 @@ random_terror_actor_command_category = {
 			}
 		}
 		target_trigger = {
+			NOT = { has_country_flag = random_terror_jihad_refused_by_@FROM }
 			FROM = {
 				exists = yes
 				NOT = { tag = ROOT }
 				random_terror_is_jihadist_actor = yes
 				has_country_flag = random_terror_network_leader
 				NOT = { has_capitulated = yes }
+				NOT = { has_country_flag = random_terror_jihad_membership_offer_pending }
 			}
 		}
 		custom_cost_trigger = {
@@ -3137,7 +3158,8 @@ random_terror_actor_command_category = {
 		}
 		custom_cost_text = random_terror_join_jihadist_international_cost
 		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
-		fire_only_once = yes
+		# Once per transaction: one petition at a time, none while a member, and a
+		# leader that rejected this command is not petitioned again.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_join_jihadist_international_effect_tt
 			add_command_power = constant:random_terror_cost.allied_command_power_spend
