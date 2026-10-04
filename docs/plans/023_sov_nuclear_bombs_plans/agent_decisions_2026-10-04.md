@@ -220,3 +220,12 @@ The smallest qualifying case is three losses (enemy next to the capital, front b
 Probability surfaces whose inputs change: the custody doctrine AI factor 1.20 and the delegation AI factor 1.60 on `sov_nuclear_bombs_capital_threat_active`, the doctrine-reform availability, the router's first-use candidate and every AI weight behind the severe and prospective gates; numeric weights are unchanged and the before sources are frozen as above.
 Basis: Part 5 (severe strategic loss: high capitulation progress, imminent capital loss, a broken front), Part 10 scenario G case 2, README non-negotiable 6, CLAUDE.md 1.8 (no new world iteration) and 1.15 (`manpower_k`), and the lead's round 2 decision 2.
 Disposition: `implemented`; weekly cadence and live thresholds `needs_live_game`; MCP compare see R2-10.
+
+### R2-2. Timed flags take literal days and value
+
+Finding: the assembly cooldown passed a bare temporary variable as `days`, and the exchange super-event flag passed a bare temporary variable as `days` and `value = constant:sov_nuclear_bombs_event.super_event_id`; installed `common/scripted_effects/SOV_scripted_effects.txt` line 28 notes that a timed flag's days does not work with variables, the only working vanilla forms are a literal and `days = var:<normal variable>` (`SIA_scripted_effects.txt` line 780), and `value = constant:` on a flag is undocumented.
+A failed parse could leave the cooldown permanent, locking device assembly and the AI production duty after one batch, or show the 108 super-event with the wrong picture.
+Decision: both flags are built inside a `meta_effect` whose text receives integer literals from `[?temp|.0]`: the cooldown from `constant:sov_nuclear_bombs_duration.production_mission` (120, inside `hidden_effect` because it runs in a mission completion), and the super-event flag from `constant:sov_nuclear_bombs_tuning.super_event_visible_days` (30) and `constant:sov_nuclear_bombs_event.super_event_id` (108), matching Event 5's `soviet_collapse_emit_super_event` and the shared super-event selectors' `value = 108`.
+No timed flag in the Event 23 files keeps a variable or `constant:` token; event delays keep `days = constant:`, which vanilla supports for events.
+Basis: the lead's round 2 decision 1 and CLAUDE.md 1.9.
+Disposition: `implemented`; flag expiry and the super-event picture `needs_live_game`.

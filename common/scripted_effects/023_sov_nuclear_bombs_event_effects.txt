@@ -1998,11 +1998,20 @@ sov_nuclear_bombs_open_major_exchange = {
 		set_variable = { global.sov_nuclear_bombs_exchange_major_count = global.sov_nuclear_bombs_major_receipt_count }
 		country_event = { id = chaosx.nr23.150 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
 		set_variable = { global.current_super_event_audio_id = constant:sov_nuclear_bombs_event.super_event_audio_id }
+		# A timed flag's days and value take literals only, so both are injected
+		# as integers from the constants (the Event 5 super-event pattern).
 		set_temp_variable = { sov_nuclear_bombs_super_event_visible_days = constant:sov_nuclear_bombs_tuning.super_event_visible_days }
-		set_global_flag = {
-			flag = super_event_visible
-			days = sov_nuclear_bombs_super_event_visible_days
-			value = constant:sov_nuclear_bombs_event.super_event_id
+		set_temp_variable = { sov_nuclear_bombs_super_event_id = constant:sov_nuclear_bombs_event.super_event_id }
+		meta_effect = {
+			text = {
+				set_global_flag = {
+					flag = super_event_visible
+					days = [VISIBLE_DAYS]
+					value = [SUPER_EVENT_ID]
+				}
+			}
+			VISIBLE_DAYS = "[?sov_nuclear_bombs_super_event_visible_days|.0]"
+			SUPER_EVENT_ID = "[?sov_nuclear_bombs_super_event_id|.0]"
 		}
 		every_country = {
 			limit = { is_ai = no }
@@ -2100,7 +2109,15 @@ sov_nuclear_bombs_complete_production_mission = {
 			sov_nuclear_bombs_register_production_devices = yes
 			set_country_flag = sov_nuclear_bombs_fissile_production_completed
 			set_temp_variable = { sov_nuclear_bombs_assembly_flag_days = constant:sov_nuclear_bombs_duration.production_mission }
-			set_country_flag = { flag = sov_nuclear_bombs_assembly_cooldown days = sov_nuclear_bombs_assembly_flag_days }
+			# A timed flag's days take a literal only, so it is injected as an integer.
+			hidden_effect = {
+				meta_effect = {
+					text = {
+						set_country_flag = { flag = sov_nuclear_bombs_assembly_cooldown days = [COOLDOWN_DAYS] }
+					}
+					COOLDOWN_DAYS = "[?sov_nuclear_bombs_assembly_flag_days|.0]"
+				}
+			}
 			add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.production_complete_readiness }
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.production_complete_integrity }
 			set_country_flag = sov_nuclear_bombs_batch_assembled
