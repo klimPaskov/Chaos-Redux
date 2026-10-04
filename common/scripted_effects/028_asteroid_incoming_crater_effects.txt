@@ -1,0 +1,263 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 CRATER ACTION EFFECTS
+# ============================================================================
+# State-scoped outcomes for the six crater decisions. Each helper expects the
+# crater state as THIS and the acting country as ROOT. The recovery wrappers in
+# 028_asteroid_incoming_recovery_effects.txt call these helpers and record
+# counters and flags only when a helper reports success through the
+# temporary asteroid_incoming_crater_action_applied value, which the caller
+# initializes to zero. Tuning lives in the asteroid_incoming_crater script
+# constants. These helpers never alter the crater or fragment armour bonuses.
+# ============================================================================
+
+# STATE SCOPE. Clear only a receipt paid by the current ROOT country for the
+# named action. The per-action lock is released with that same paid receipt.
+asteroid_incoming_clear_crater_security_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_security_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_security_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_security_action_in_progress
+		clear_variable = asteroid_incoming_crater_security_controller_id_@ROOT
+	}
+}
+
+asteroid_incoming_clear_crater_survey_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_survey_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_survey_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_survey_action_in_progress
+		clear_variable = asteroid_incoming_crater_survey_controller_id_@ROOT
+	}
+}
+
+asteroid_incoming_clear_crater_fortification_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_fortification_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_fortification_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_fortification_action_in_progress
+		clear_variable = asteroid_incoming_crater_fortification_controller_id_@ROOT
+	}
+}
+
+asteroid_incoming_clear_rival_crater_recon_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_recon_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_recon_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_recon_action_in_progress
+		clear_variable = asteroid_incoming_crater_recon_controller_id_@ROOT
+	}
+}
+
+asteroid_incoming_clear_rival_crater_disruption_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_disruption_action_in_progress
+		clear_variable = asteroid_incoming_crater_disruption_controller_id_@ROOT
+	}
+}
+
+asteroid_incoming_clear_rival_crater_offensive_receipt = {
+	if = {
+		limit = { has_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT }
+		clr_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		clr_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT
+		clr_state_flag = asteroid_incoming_crater_offensive_action_in_progress
+		clear_variable = asteroid_incoming_crater_offensive_controller_id_@ROOT
+	}
+}
+
+# STATE SCOPE. A secured perimeter adds a local defence and attrition posture
+# for the country that paid to hold this site. This does not change armour.
+# The perimeter lapses when another country takes control of the crater.
+asteroid_incoming_apply_crater_perimeter_security = {
+	if = {
+		limit = { asteroid_incoming_crater_security_requirements = yes }
+		set_state_flag = asteroid_incoming_crater_perimeter_secured
+		set_variable = { asteroid_incoming_crater_perimeter_controller_id = ROOT.id }
+		add_dynamic_modifier = {
+			modifier = asteroid_incoming_crater_perimeter_security
+			scope = ROOT
+		}
+		set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+	}
+}
+
+# STATE SCOPE. The survey record is permanent and site-specific. Each site
+# grants one limited industry research bonus and cannot grant it again after a
+# controller transfer because the survey flag stays on the crater state.
+asteroid_incoming_apply_crater_material_survey = {
+	if = {
+		limit = { asteroid_incoming_crater_survey_requirements = yes }
+		set_state_flag = asteroid_incoming_material_surveyed
+		add_dynamic_modifier = { modifier = asteroid_incoming_crater_surveyed_material }
+		set_temp_variable = { asteroid_incoming_crater_survey_bonus = constant:asteroid_incoming_crater.survey_research_bonus }
+		set_temp_variable = { asteroid_incoming_crater_survey_uses = constant:asteroid_incoming_crater.survey_research_uses }
+		ROOT = {
+			# The tech-bonus fields take literal values, so the constants are
+			# injected through meta text.
+			meta_effect = {
+				text = {
+					add_tech_bonus = {
+						name = asteroid_incoming_crater_survey_bonus
+						bonus = [SURVEY_BONUS]
+						uses = [SURVEY_USES]
+						category = industry
+					}
+				}
+				SURVEY_BONUS = "[?asteroid_incoming_crater_survey_bonus|.2]"
+				SURVEY_USES = "[?asteroid_incoming_crater_survey_uses|.0]"
+			}
+		}
+		set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+	}
+}
+
+# STATE SCOPE, run on one access state with the crater in PREV. Builds one
+# infrastructure level when below the cap and one fort level in every province
+# whose fort is below the cap. The province selector takes a literal level, so
+# the cap constant is injected through meta text.
+asteroid_incoming_fortify_one_crater_access_state = {
+	set_state_flag = asteroid_incoming_crater_access_fortified
+	set_temp_variable = { asteroid_incoming_crater_access_levels = constant:asteroid_incoming_crater.access_building_levels }
+	set_temp_variable = { asteroid_incoming_crater_bunker_cap = constant:asteroid_incoming_crater.bunker_level_cap }
+	if = {
+		limit = { infrastructure < constant:asteroid_incoming_crater.infrastructure_level_cap }
+		add_building_construction = {
+			type = infrastructure
+			level = asteroid_incoming_crater_access_levels
+			instant_build = yes
+		}
+	}
+	meta_effect = {
+		text = {
+			add_building_construction = {
+				type = bunker
+				level = [ACCESS_LEVELS]
+				instant_build = yes
+				province = {
+					all_provinces = yes
+					level < [BUNKER_CAP]
+				}
+			}
+		}
+		ACCESS_LEVELS = "[?asteroid_incoming_crater_access_levels|.0]"
+		BUNKER_CAP = "[?asteroid_incoming_crater_bunker_cap|.0]"
+	}
+	add_to_temp_variable = { asteroid_incoming_crater_access_count = constant:asteroid_incoming_runtime.one }
+}
+
+# STATE SCOPE. Up to the access-state limit of distinct eligible controlled
+# access states are fortified. The crater and fragment sites are never
+# construction sites. The access flag prevents another crater from adding more
+# work to the same approach.
+asteroid_incoming_apply_crater_access_fortification = {
+	if = {
+		limit = { asteroid_incoming_crater_fortification_requirements = yes }
+		set_temp_variable = { asteroid_incoming_crater_access_count = constant:asteroid_incoming_runtime.zero }
+		set_temp_variable = { asteroid_incoming_crater_access_limit = constant:asteroid_incoming_crater.access_state_limit }
+		for_loop_effect = {
+			start = constant:asteroid_incoming_runtime.zero
+			end = asteroid_incoming_crater_access_limit
+			value = asteroid_incoming_crater_access_loop_index
+			random_neighbor_state = {
+				limit = { asteroid_incoming_state_is_fortifiable_crater_access = yes }
+				asteroid_incoming_fortify_one_crater_access_state = yes
+			}
+		}
+		if = {
+			limit = { check_variable = { asteroid_incoming_crater_access_count > constant:asteroid_incoming_runtime.zero } }
+			set_state_flag = asteroid_incoming_crater_access_fortified
+			set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+		}
+	}
+}
+
+# STATE SCOPE. Meta expansion supplies the live controller tag to the
+# literal-only add_intel target field. The regular target is cleared when this
+# effect chain ends.
+asteroid_incoming_apply_rival_crater_reconnaissance = {
+	if = {
+		limit = { asteroid_incoming_rival_crater_recon_requirements = yes }
+		set_temp_variable = { asteroid_incoming_crater_recon_intel_amount = constant:asteroid_incoming_crater.recon_army_intel }
+		CONTROLLER = { save_event_target_as = asteroid_incoming_crater_recon_controller }
+		ROOT = {
+			meta_effect = {
+				text = {
+					add_intel = {
+						target = [CRATER_CONTROLLER_TAG]
+						army_intel = [CRATER_INTEL_AMOUNT]
+					}
+				}
+				CRATER_CONTROLLER_TAG = "[asteroid_incoming_crater_recon_controller.GetTag]"
+				CRATER_INTEL_AMOUNT = "[?asteroid_incoming_crater_recon_intel_amount|.0]"
+			}
+		}
+		set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+	}
+}
+
+# STATE SCOPE, run on one hostile access state. The scope-bound modifier
+# affects only the controller recorded when the disruption starts.
+asteroid_incoming_disrupt_one_crater_access_state = {
+	set_state_flag = asteroid_incoming_crater_disruption_access_selected
+	CONTROLLER = { save_event_target_as = asteroid_incoming_crater_disruption_controller }
+	add_dynamic_modifier = {
+		modifier = asteroid_incoming_crater_access_supply_disruption
+		days = asteroid_incoming_crater_operation_days
+		scope = event_target:asteroid_incoming_crater_disruption_controller
+	}
+	add_to_temp_variable = { asteroid_incoming_crater_access_count = constant:asteroid_incoming_runtime.one }
+}
+
+# STATE SCOPE. Disrupt up to the access-state limit of ordinary access states
+# held by countries at war with ROOT. The temporary selection flag is cleared
+# before this effect ends.
+asteroid_incoming_apply_rival_crater_route_disruption = {
+	if = {
+		limit = { asteroid_incoming_rival_crater_disruption_requirements = yes }
+		set_temp_variable = { asteroid_incoming_crater_access_count = constant:asteroid_incoming_runtime.zero }
+		set_temp_variable = { asteroid_incoming_crater_access_limit = constant:asteroid_incoming_crater.access_state_limit }
+		set_temp_variable = { asteroid_incoming_crater_operation_days = constant:asteroid_incoming_crater.operation_days }
+		for_loop_effect = {
+			start = constant:asteroid_incoming_runtime.zero
+			end = asteroid_incoming_crater_access_limit
+			value = asteroid_incoming_crater_access_loop_index
+			random_neighbor_state = {
+				limit = {
+					asteroid_incoming_state_is_hostile_crater_access = yes
+					NOT = { has_state_flag = asteroid_incoming_crater_disruption_access_selected }
+				}
+				asteroid_incoming_disrupt_one_crater_access_state = yes
+			}
+		}
+		every_neighbor_state = {
+			limit = { has_state_flag = asteroid_incoming_crater_disruption_access_selected }
+			clr_state_flag = asteroid_incoming_crater_disruption_access_selected
+		}
+		if = {
+			limit = { check_variable = { asteroid_incoming_crater_access_count > constant:asteroid_incoming_runtime.zero } }
+			set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+		}
+	}
+}
+
+# STATE SCOPE. A short, actor-scoped attacker modifier applies only to battles
+# at this exact crater. It grants neither a war goal nor state ownership.
+asteroid_incoming_apply_rival_crater_offensive_plan = {
+	if = {
+		limit = { asteroid_incoming_rival_crater_offensive_requirements = yes }
+		set_temp_variable = { asteroid_incoming_crater_operation_days = constant:asteroid_incoming_crater.operation_days }
+		add_dynamic_modifier = {
+			modifier = asteroid_incoming_crater_offensive_plan
+			days = asteroid_incoming_crater_operation_days
+			scope = ROOT
+		}
+		set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }
+	}
+}

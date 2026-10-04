@@ -539,93 +539,62 @@ asteroid_incoming_join_observation_network = {
 	}
 }
 
+# STATE SCOPE, crater in THIS and actor in ROOT. Each crater wrapper resolves
+# one paid action through its outcome helper in
+# 028_asteroid_incoming_crater_effects.txt. The decision initializes
+# asteroid_incoming_crater_action_applied to zero; completion counters and
+# record flags are written only when the helper reports success.
 asteroid_incoming_secure_crater_perimeter = {
+	asteroid_incoming_apply_crater_perimeter_security = yes
 	if = {
-		limit = {
-			asteroid_incoming_crater_action_state_is_valid = yes
-			NOT = { has_state_flag = asteroid_incoming_crater_perimeter_secured }
-		}
-		set_state_flag = asteroid_incoming_crater_perimeter_secured
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_crater_secured }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
+		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
 asteroid_incoming_survey_extraordinary_material = {
+	asteroid_incoming_apply_crater_material_survey = yes
 	if = {
-		limit = {
-			asteroid_incoming_crater_action_state_is_valid = yes
-			has_state_flag = asteroid_incoming_crater_perimeter_secured
-			NOT = { has_state_flag = asteroid_incoming_material_surveyed }
-		}
-		set_state_flag = asteroid_incoming_material_surveyed
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_material_survey_complete }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
+		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
 asteroid_incoming_fortify_crater_access = {
+	asteroid_incoming_apply_crater_access_fortification = yes
 	if = {
-		limit = {
-			asteroid_incoming_crater_action_state_is_valid = yes
-			NOT = { has_state_flag = asteroid_incoming_crater_access_fortified }
-		}
-		every_neighbor_state = {
-			limit = {
-				impassable = no
-				is_controlled_by = ROOT
-				NOT = { has_state_category = wasteland }
-			}
-			set_state_flag = asteroid_incoming_crater_access_fortified
-			add_building_construction = {
-				type = infrastructure
-				level = 1
-				instant_build = yes
-			}
-		}
-		set_state_flag = asteroid_incoming_crater_access_fortified
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		ROOT = { set_country_flag = asteroid_incoming_crater_access_ready }
-		add_to_variable = { asteroid_incoming_recovery_actions_completed = 1 }
+		add_to_variable = { asteroid_incoming_recovery_actions_completed = constant:asteroid_incoming_runtime.one }
 	}
 }
 
 asteroid_incoming_reconnoiter_crater_site = {
+	asteroid_incoming_apply_rival_crater_reconnaissance = yes
 	if = {
-		limit = {
-			AND = {
-				OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site }
-				CONTROLLER = { exists = yes has_war_with = ROOT }
-			}
-		}
-		ROOT = { set_country_flag = asteroid_incoming_rival_site_reconnoitered }
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		set_state_flag = asteroid_incoming_rival_reconnaissance_recorded
+		ROOT = { set_country_flag = asteroid_incoming_rival_site_reconnoitered }
 	}
 }
 
 asteroid_incoming_disrupt_extraction_routes = {
+	asteroid_incoming_apply_rival_crater_route_disruption = yes
 	if = {
-		limit = {
-			AND = {
-				OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site }
-				CONTROLLER = { exists = yes has_war_with = ROOT }
-			}
-		}
-		ROOT = { set_country_flag = asteroid_incoming_extraction_routes_disrupted }
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		set_state_flag = asteroid_incoming_rival_route_disruption_recorded
-		CONTROLLER = { set_country_flag = asteroid_incoming_extraction_pressure_active }
+		ROOT = { set_country_flag = asteroid_incoming_extraction_routes_disrupted }
 	}
 }
 
 asteroid_incoming_prepare_crater_offensive = {
+	asteroid_incoming_apply_rival_crater_offensive_plan = yes
 	if = {
-		limit = {
-			AND = {
-				OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site }
-				CONTROLLER = { exists = yes has_war_with = ROOT }
-			}
-		}
-		ROOT = { set_country_flag = asteroid_incoming_crater_offensive_prepared }
+		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
 		set_state_flag = asteroid_incoming_rival_offensive_recorded
+		ROOT = { set_country_flag = asteroid_incoming_crater_offensive_prepared }
 	}
 }
 

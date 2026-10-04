@@ -1,0 +1,320 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 CRATER ACTION AND LIFECYCLE TRIGGERS
+# ============================================================================
+# State-scoped crater action gates and the read-only local-emergency burden
+# predicate. The crater or fragment state is THIS and the acting country is
+# ROOT unless a comment says otherwise. These helpers never write state.
+# ============================================================================
+
+# STATE SCOPE. The site identity remains after the timed damage modifiers end.
+asteroid_incoming_crater_site_is_live = {
+	hidden_trigger = {
+		has_global_flag = asteroid_incoming_minerals_active
+		OR = {
+			has_state_flag = asteroid_incoming_main_crater
+			has_state_flag = asteroid_incoming_fragment_site
+		}
+	}
+}
+
+# STATE SCOPE. A perimeter belongs to the country that secured it. It lapses
+# when another country takes control, so a new controller must secure the site
+# again before it can survey it.
+asteroid_incoming_crater_perimeter_is_held = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_perimeter_secured
+		has_variable = asteroid_incoming_crater_perimeter_controller_id
+		CONTROLLER = { exists = yes }
+		check_variable = { asteroid_incoming_crater_perimeter_controller_id = CONTROLLER.id }
+	}
+}
+
+# STATE SCOPE. Each paid receipt binds state, action, and invoking country.
+# The targeted paid flag and controller id are both keyed by ROOT's country
+# tag, while the action lock prevents another actor starting the same outcome.
+asteroid_incoming_crater_security_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_security_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_security_action_in_progress
+		has_variable = asteroid_incoming_crater_security_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_security_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+asteroid_incoming_crater_survey_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_survey_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_survey_action_in_progress
+		has_variable = asteroid_incoming_crater_survey_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_survey_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+asteroid_incoming_crater_fortification_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_fortification_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_fortification_action_in_progress
+		has_variable = asteroid_incoming_crater_fortification_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_fortification_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+asteroid_incoming_rival_crater_recon_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_recon_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_recon_action_in_progress
+		has_variable = asteroid_incoming_crater_recon_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_recon_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+asteroid_incoming_rival_crater_disruption_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_disruption_action_in_progress
+		has_variable = asteroid_incoming_crater_disruption_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_disruption_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+asteroid_incoming_rival_crater_offensive_paid_receipt_is_current = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_crater_action_pending_@ROOT
+		has_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT
+		has_state_flag = asteroid_incoming_crater_offensive_action_in_progress
+		has_variable = asteroid_incoming_crater_offensive_controller_id_@ROOT
+		CONTROLLER = { exists = yes }
+		check_variable = {
+			var = asteroid_incoming_crater_offensive_controller_id_@ROOT
+			value = CONTROLLER.id
+			compare = equals
+		}
+	}
+}
+
+# STATE SCOPE, evaluated on a neighbor of the crater. An ordinary passable
+# state that is not itself a crater site can serve as an access state.
+asteroid_incoming_state_is_ordinary_crater_access = {
+	hidden_trigger = {
+		impassable = no
+		NOT = { has_state_category = wasteland }
+		NOT = { has_state_flag = asteroid_incoming_main_crater }
+		NOT = { has_state_flag = asteroid_incoming_fragment_site }
+	}
+}
+
+# STATE SCOPE. Ordinary, controlled neighboring states provide the physical
+# approaches to a crater. Permanent crater states are never treated as access.
+asteroid_incoming_crater_has_controlled_access = {
+	hidden_trigger = {
+		any_neighbor_state = {
+			asteroid_incoming_state_is_ordinary_crater_access = yes
+			is_controlled_by = ROOT
+		}
+	}
+}
+
+# STATE SCOPE, evaluated on a neighbor of the crater. One access state is
+# improved at most once across all crater actions, so a second crater cannot
+# farm another fortification round in the same approach.
+asteroid_incoming_state_is_fortifiable_crater_access = {
+	hidden_trigger = {
+		asteroid_incoming_state_is_ordinary_crater_access = yes
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = asteroid_incoming_crater_access_fortified }
+	}
+}
+
+asteroid_incoming_crater_has_fortifiable_access = {
+	hidden_trigger = {
+		any_neighbor_state = { asteroid_incoming_state_is_fortifiable_crater_access = yes }
+	}
+}
+
+# STATE SCOPE, evaluated on a neighbor of the crater. Rival logistics actions
+# only target access states held by a country currently at war with ROOT.
+asteroid_incoming_state_is_hostile_crater_access = {
+	hidden_trigger = {
+		asteroid_incoming_state_is_ordinary_crater_access = yes
+		CONTROLLER = { exists = yes has_war_with = ROOT }
+	}
+}
+
+asteroid_incoming_crater_has_hostile_access = {
+	hidden_trigger = {
+		any_neighbor_state = { asteroid_incoming_state_is_hostile_crater_access = yes }
+	}
+}
+
+# STATE SCOPE. A supplied garrison is at least one ROOT division in the crater
+# state, or in an ordinary access state ROOT controls that has a rail
+# connection from ROOT's current capital. No installed trigger reads a
+# division's supply status, so the capital rail link stands in for supply,
+# following asteroid_incoming_state_has_capital_rail_route.
+asteroid_incoming_crater_has_supplied_garrison = {
+	hidden_trigger = {
+		OR = {
+			ROOT = { divisions_in_state = { state = PREV size > 0 } }
+			any_neighbor_state = {
+				asteroid_incoming_state_is_ordinary_crater_access = yes
+				is_controlled_by = ROOT
+				ROOT = { divisions_in_state = { state = PREV size > 0 } }
+				asteroid_incoming_state_has_capital_rail_route = yes
+			}
+		}
+	}
+}
+
+# STATE SCOPE. Requirements used before an action is paid for and again when
+# the delayed action resolves. They intentionally do not inspect the action
+# receipt, which is created after the first check.
+asteroid_incoming_crater_security_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_crater_action_state_is_valid = yes
+		is_controlled_by = ROOT
+		NOT = { asteroid_incoming_crater_perimeter_is_held = yes }
+		asteroid_incoming_crater_has_controlled_access = yes
+		asteroid_incoming_crater_has_supplied_garrison = yes
+	}
+}
+
+asteroid_incoming_crater_survey_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_crater_action_state_is_valid = yes
+		is_controlled_by = ROOT
+		asteroid_incoming_crater_perimeter_is_held = yes
+		NOT = { has_state_flag = asteroid_incoming_material_surveyed }
+	}
+}
+
+asteroid_incoming_crater_fortification_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_crater_action_state_is_valid = yes
+		is_controlled_by = ROOT
+		NOT = { has_state_flag = asteroid_incoming_crater_access_fortified }
+		asteroid_incoming_crater_has_fortifiable_access = yes
+	}
+}
+
+asteroid_incoming_rival_crater_target_is_hostile = {
+	hidden_trigger = {
+		asteroid_incoming_crater_site_is_live = yes
+		CONTROLLER = { exists = yes has_war_with = ROOT }
+	}
+}
+
+asteroid_incoming_rival_crater_recon_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_target_is_hostile = yes
+		NOT = { has_state_flag = asteroid_incoming_rival_reconnaissance_recorded }
+	}
+}
+
+asteroid_incoming_rival_crater_disruption_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_target_is_hostile = yes
+		NOT = { has_state_flag = asteroid_incoming_rival_route_disruption_recorded }
+		asteroid_incoming_crater_has_hostile_access = yes
+	}
+}
+
+asteroid_incoming_rival_crater_offensive_requirements = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_target_is_hostile = yes
+		NOT = { has_state_flag = asteroid_incoming_rival_offensive_recorded }
+		asteroid_incoming_crater_has_controlled_access = yes
+		asteroid_incoming_crater_has_supplied_garrison = yes
+	}
+}
+
+# STATE SCOPE. A delayed action is live only while its target, original
+# controller, and action-specific field conditions still match the paid row.
+asteroid_incoming_crater_security_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_crater_security_paid_receipt_is_current = yes
+		asteroid_incoming_crater_site_is_live = yes
+		asteroid_incoming_crater_security_requirements = yes
+	}
+}
+
+asteroid_incoming_crater_survey_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_crater_survey_paid_receipt_is_current = yes
+		asteroid_incoming_crater_site_is_live = yes
+		asteroid_incoming_crater_survey_requirements = yes
+	}
+}
+
+asteroid_incoming_crater_fortification_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_crater_fortification_paid_receipt_is_current = yes
+		asteroid_incoming_crater_site_is_live = yes
+		asteroid_incoming_crater_fortification_requirements = yes
+	}
+}
+
+asteroid_incoming_rival_crater_recon_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_recon_paid_receipt_is_current = yes
+		asteroid_incoming_rival_crater_recon_requirements = yes
+	}
+}
+
+asteroid_incoming_rival_crater_disruption_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_disruption_paid_receipt_is_current = yes
+		asteroid_incoming_rival_crater_disruption_requirements = yes
+	}
+}
+
+asteroid_incoming_rival_crater_offensive_action_can_resolve = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_offensive_paid_receipt_is_current = yes
+		asteroid_incoming_rival_crater_offensive_requirements = yes
+	}
+}
+
+# STATE SCOPE. Read-only closure for Event 028 emergency actions. A live rescue
+# burden or an active impact-damage modifier keeps the local emergency open;
+# historical affected/resolved flags alone do not.
+asteroid_incoming_state_has_active_local_emergency_burden = {
+	hidden_trigger = {
+		OR = {
+			has_state_flag = asteroid_incoming_rescue_burden_active
+			has_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone }
+			has_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone }
+			has_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery }
+			has_dynamic_modifier = { modifier = asteroid_incoming_heavy_fragment_damage }
+		}
+	}
+}

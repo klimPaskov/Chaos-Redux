@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 CRATER ACTION MODIFIERS
+# ============================================================================
+# Local, state-scoped outcomes for crater security, survey records, hostile
+# access disruption, and a prepared attack. These modifiers do not alter
+# Event 028's permanent controller-based armour benefits. Magnitudes come
+# from the asteroid_incoming_crater script constants.
+# ============================================================================
+
+# The perimeter belongs to the country that secured it and lapses as soon as
+# another country controls the crater.
+asteroid_incoming_crater_perimeter_security = {
+	icon = GFX_idea_asteroid_incoming_fragment_crater
+	enable = { asteroid_incoming_crater_perimeter_is_held = yes }
+	remove_trigger = { NOT = { asteroid_incoming_crater_perimeter_is_held = yes } }
+	army_defence_factor = constant:asteroid_incoming_crater.security_defence
+	attrition_for_controller = constant:asteroid_incoming_crater.security_attrition
+}
+
+# The state flag and this visible modifier preserve the surveyed material
+# profile after its one-use research bonus has been granted.
+asteroid_incoming_crater_surveyed_material = {
+	icon = GFX_idea_asteroid_incoming_fragment_crater
+	enable = { has_state_flag = asteroid_incoming_material_surveyed }
+	remove_trigger = { NOT = { has_state_flag = asteroid_incoming_material_surveyed } }
+}
+
+asteroid_incoming_crater_access_supply_disruption = {
+	icon = GFX_idea_asteroid_incoming_fragment_crater
+	local_supply_impact_factor = constant:asteroid_incoming_crater.access_supply_disruption
+}
+
+asteroid_incoming_crater_offensive_plan = {
+	icon = GFX_idea_asteroid_incoming_fragment_crater
+	attacker_modifier = yes
+	army_attack_factor = constant:asteroid_incoming_crater.offensive_attack
+}
