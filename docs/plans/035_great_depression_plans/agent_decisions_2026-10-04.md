@@ -184,6 +184,20 @@ The pre-fix trigger had no before run, because a compare needs the whole 95 KB t
 
 Artifacts (workspace `mod_chaos_redux_ea3b2d67c2c0`): `decision-6148bb24c870ec1a7a58906a.json` (End Rescue Dependence), `decision-4a2def22c09ceceff5ab5739.json` (arsenal), `decision-0af142fc1b38432cd46b634c.json` (finance restoration), `decision-8bff4d692d2dd3640dd90f2f.json` (Exploit Supply Gap).
 
+## D11. Round 1 review fixes
+
+Disposition: implemented.
+
+- Ending the rescue closes Guarantee Essential Orders for the episode.
+  End Rescue Dependence clears `great_depression_essential_orders_guaranteed`, which was the only thing hiding Guarantee Essential Orders, so the country could buy the essential orders back while keeping the closer's fiscal relief and its Prevent a Relapse credit.
+  `great_depression_should_show_guarantee_essential_orders` now also requires `NOT = { has_country_flag = great_depression_rescue_dependence_ended }`, and its requirement text says so.
+  Basis: D6 makes the two closers the end of the Rescue Strategic Industry route, and the decision text says the guarantee is withdrawn.
+  The episode reset already clears the flag, so the next episode offers the decision again.
+  Evidence: `hoi4.decision_inspect` in `inspect` mode (`decision-77075c3cb630f84ba2728b3f.json`) resolves the decision as not visible with the flag set; without it, visibility stays unresolved only on the undeclared `exists` check. No AI weight changed.
+- A random or cluster firing no longer writes the last fired event from Event 35.
+  `great_depression_record_history` set `global.last_fired_event_id` to Event 35 on every call, including the deferred random and cluster path where the dispatcher already owns that value.
+  It now sets it only in the direct-start branch that writes its own row through `record_events_log_history_entry`, which reads it; this matches D9.
+
 ## Commit index
 
 | Decision | Commit |
@@ -196,7 +210,8 @@ Artifacts (workspace `mod_chaos_redux_ea3b2d67c2c0`): `decision-6148bb24c870ec1a
 | D6 doctrine projects and producers | `97d28a7a4` |
 | D7 and the D5 amendment, Negative Economy cluster and deferred history completion | `0c0d4f8d7` |
 | D8 opening news picture | `7704873f7` |
-| D9 deferred history writer and D10 decision AI evidence | the commit "Write the late Event 35 history row without moving the last fired event" |
+| D9 deferred history writer and D10 decision AI evidence | `f6849915e` |
+| D11 round 1 review fixes | the commit "Close Guarantee Essential Orders after the rescue ends in Event 35" |
 
 ## Remaining limits
 

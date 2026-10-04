@@ -2642,7 +2642,6 @@ great_depression_record_source_receipt = {
 }
 
 great_depression_record_history = {
-	set_variable = { global.last_fired_event_id = constant:great_depression_api.event_35_id }
 	set_temp_variable = { events_log_history_payload_override_active = constant:great_depression_api.one }
 	set_temp_variable = { events_log_history_payload_override = great_depression_depression_severity }
 	set_temp_variable = { events_log_history_actor_override_active = constant:great_depression_api.one }
@@ -2667,6 +2666,9 @@ great_depression_record_history = {
 			set_temp_variable = { events_log_history_actor_override_active = constant:great_depression_api.zero }
 		}
 		else = {
+			# The dispatcher owns the last fired event for a random or cluster
+			# firing; a direct start borrows it only for its own row.
+			set_variable = { global.last_fired_event_id = constant:great_depression_api.event_35_id }
 			record_events_log_history_entry = yes
 		}
 		set_variable = { great_depression_call_history_recorded = constant:great_depression_api.one }
