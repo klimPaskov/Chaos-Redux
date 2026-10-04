@@ -7786,12 +7786,12 @@ country_event = {
 }
 
 # ---------------------------------------------------------------------------
-# Dormant Fallout Ash-week orientation pilot
+# Fallout Ash-week orientation
 # ---------------------------------------------------------------------------
 
-# The future successor/player-continuation caller owns transaction setup. These
-# blocks only consume current, already-issued orientation transactions. They
-# never activate the ordinary Fallout scheduler.
+# fallout_orientation_advance_country (hidden step event 85) owns transaction
+# setup. These blocks only consume current, already-issued orientation
+# transactions. They never change the living-world scheduler flags.
 country_event = {
 	id = chaosx.fallout.62
 	title = chaosx.fallout.62.t
@@ -8470,6 +8470,29 @@ country_event = {
 		set_temp_variable = { fallout_orientation_requested_event_token = fallout_orientation_issued_event_token }
 		fallout_orientation_cleanup_event84 = yes
 	}
+}
+
+# Hidden orientation step. The coordinator pass sends it to one registry country
+# so ROOT is that country while the next component begins or is recorded.
+country_event = {
+	id = chaosx.fallout.85
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		fallout_event_registry_country_row_is_current = yes
+		NOT = { fallout_orientation_closure_is_current = yes }
+	}
+	immediate = { fallout_orientation_advance_country = yes }
+}
+
+# Hidden candidate review. The coordinator pass sends it to one registry country
+# so ROOT is that country while its living-world candidate rows are rebuilt.
+country_event = {
+	id = chaosx.fallout.86
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_event_registry_country_row_is_current = yes }
+	immediate = { fallout_event_build_country_candidate_registry = yes }
 }
 
 # ---------------------------------------------------------------------------

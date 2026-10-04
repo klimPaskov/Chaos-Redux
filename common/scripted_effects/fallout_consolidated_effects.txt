@@ -48504,6 +48504,27 @@ fallout_event_796_cleanup = {
 # has_resources_amount takes a file-scoped integer for its amount operand.
 @FALLOUT_MINE_RESOURCE_PRESENCE_AMOUNT = 0
 
+# Supported scope: COUNTRY. Chain ledgers that the candidate review seeds once
+# per transition generation. A periodic refresh in the same generation keeps
+# them so earlier chain outcomes still shape later candidates.
+fallout_event_clear_candidate_generation_ledgers = {
+	clear_variable = fallout_ash_wolves_pack_pressure_current
+	clear_variable = fallout_ash_wolves_safety_current
+	clear_variable = fallout_ash_wolves_research_current
+	clear_variable = fallout_ash_wolves_corridor_memory_current
+	clear_variable = fallout_ash_wolves_altered_pressure_current
+	clear_variable = fallout_bridge_that_moved_crossing_damage_current
+	clear_variable = fallout_bridge_that_moved_route_reliability_current
+	clear_variable = fallout_bridge_that_moved_engineer_capacity_current
+	clear_variable = fallout_bridge_that_moved_local_consent_current
+	clear_variable = fallout_bridge_that_moved_trade_memory_current
+	clear_variable = fallout_first_unmasked_day_public_exposure_current
+	clear_variable = fallout_first_unmasked_day_mask_stock_current
+	clear_variable = fallout_first_unmasked_day_clinic_confidence_current
+	clear_variable = fallout_first_unmasked_day_shelter_memory_current
+	clear_variable = fallout_first_unmasked_day_child_memory_current
+}
+
 # Supported scope: COUNTRY. Candidate completion history is deliberately kept
 # while the reviewed row arrays are rebuilt for a new transition generation.
 fallout_event_clear_candidate_rows_for_rebuild = {
@@ -48563,23 +48584,8 @@ fallout_event_clear_candidate_rows_for_rebuild = {
 	clear_variable = fallout_event_401_candidate_state_id
 	clear_variable = fallout_event_401_calendar_pressure
 	clear_variable = fallout_event_450_candidate_state_id
-	clear_variable = fallout_ash_wolves_pack_pressure_current
-	clear_variable = fallout_ash_wolves_safety_current
-	clear_variable = fallout_ash_wolves_research_current
-	clear_variable = fallout_ash_wolves_corridor_memory_current
-	clear_variable = fallout_ash_wolves_altered_pressure_current
 	clear_variable = fallout_event_464_candidate_state_id
-	clear_variable = fallout_bridge_that_moved_crossing_damage_current
-	clear_variable = fallout_bridge_that_moved_route_reliability_current
-	clear_variable = fallout_bridge_that_moved_engineer_capacity_current
-	clear_variable = fallout_bridge_that_moved_local_consent_current
-	clear_variable = fallout_bridge_that_moved_trade_memory_current
 	clear_variable = fallout_event_471_candidate_state_id
-	clear_variable = fallout_first_unmasked_day_public_exposure_current
-	clear_variable = fallout_first_unmasked_day_mask_stock_current
-	clear_variable = fallout_first_unmasked_day_clinic_confidence_current
-	clear_variable = fallout_first_unmasked_day_shelter_memory_current
-	clear_variable = fallout_first_unmasked_day_child_memory_current
 	clear_variable = fallout_event_478_candidate_state_id
 	clear_variable = fallout_event_478_false_spring_pressure
 	clear_variable = fallout_event_485_candidate_state_id
@@ -48787,21 +48793,42 @@ fallout_event_append_pilot_candidate_row = {
 	add_to_array = { array = fallout_event_candidate_required_route_entries value = fallout_event_pilot_required_route }
 }
 
-# Supported scope: COUNTRY coordinator. Builds one generation-bound candidate
-# registry row set per Fallout country. State targets are selected by the
-# lowest valid native state id, and a missing native source omits that row.
+# Supported scope: COUNTRY coordinator. Requests one candidate review for each
+# registry country whose candidate rows are missing, stale, or due for their
+# periodic refresh. The review runs in hidden event chaosx.fallout.86 so ROOT
+# is the reviewed country, as every candidate trigger and state search expects.
 fallout_event_build_pilot_candidate_registries = {
 	for_each_scope_loop = {
 		array = global.fallout_event_registry_countries
 		if = {
 			limit = {
 				has_country_flag = fallout_event_registry_member
+				fallout_event_country_candidate_registry_needs_review = yes
+			}
+			set_variable = { fallout_event_candidate_review_requested_day = global.num_days }
+			country_event = { id = chaosx.fallout.86 }
+		}
+	}
+}
+
+# Supported scope: COUNTRY, run only from hidden event chaosx.fallout.86 so ROOT
+# is this registry country. Builds one generation-bound candidate registry row
+# set. State targets are selected by the lowest valid native state id, and a
+# missing native source omits that row.
+fallout_event_build_country_candidate_registry = {
+		if = {
+			limit = {
+				has_country_flag = fallout_event_registry_member
 				fallout_event_registry_country_row_is_current = yes
-				OR = {
-					NOT = { has_country_flag = fallout_event_candidate_registry_reviewed }
-					NOT = { has_variable = fallout_event_candidate_registry_generation }
-					NOT = { check_variable = { var = fallout_event_candidate_registry_generation value = fallout_event_runtime_generation compare = equals } }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = fallout_event_candidate_registry_generation }
+						NOT = { check_variable = { var = fallout_event_candidate_registry_generation value = fallout_event_runtime_generation compare = equals } }
+					}
 				}
+				fallout_event_clear_candidate_generation_ledgers = yes
 			}
 			fallout_event_clear_candidate_rows_for_rebuild = yes
 
@@ -49740,13 +49767,13 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 			set_temp_variable = { fallout_event_pilot_state_candidate_id = 0 }
-			clear_variable = fallout_event_401_candidate_state_id
-			clear_variable = fallout_event_401_calendar_pressure
+			# Major-arc rows keep their state target and pressure: the arc opening
+			# dispatch and the opening event read them after this review.
 
 			# Orchard Flowers row. The target is the lowest owned native rural state
 			# with a produced recovery snapshot. It is separate from the seed vault
 			# and bad-batch candidates because the orchard is already bearing fruit.
-			set_temp_variable = { fallout_event_408_candidate_state_id = constant:fallout_event_runtime.zero }
+			set_variable = { fallout_event_408_candidate_state_id = constant:fallout_event_runtime.zero }
 			every_owned_state = {
 				set_temp_variable = { fallout_event_pilot_state_candidate_id = THIS.id }
 				if = {
@@ -49790,8 +49817,8 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 			set_temp_variable = { fallout_event_pilot_state_candidate_id = 0 }
-			clear_variable = fallout_event_408_candidate_state_id
-			clear_variable = fallout_event_408_orchard_pressure
+			# Major-arc rows keep their state target and pressure: the arc opening
+			# dispatch and the opening event read them after this review.
 
 			# The Refugee Train selects the lowest-scoring owned rail state with a
 			# current Air Winter record. Rail capacity and surviving population make
@@ -49958,8 +49985,8 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 			set_temp_variable = { fallout_event_pilot_state_candidate_id = 0 }
-			clear_variable = fallout_event_429_candidate_state_id
-			clear_variable = fallout_event_429_specialist_pressure
+			# Major-arc rows keep their state target and pressure: the arc opening
+			# dispatch and the opening event read them after this review.
 
 			# The Children From Elsewhere opens only after the specialist memory
 			# closes. It selects one deterministic native shelter state for the
@@ -50346,8 +50373,8 @@ fallout_event_build_pilot_candidate_registries = {
 				fallout_event_append_pilot_candidate_row = yes
 			}
 			set_temp_variable = { fallout_event_pilot_state_candidate_id = 0 }
-			clear_variable = fallout_event_478_candidate_state_id
-			clear_variable = fallout_event_478_false_spring_pressure
+			# Major-arc rows keep their state target and pressure: the arc opening
+			# dispatch and the opening event read them after this review.
 
 			# Desalination Night Shift selects the lowest native Middle Eastern
 			# coastal state with a port-side plant proxy, current Air Winter water
@@ -55041,16 +55068,22 @@ fallout_event_build_pilot_candidate_registries = {
 			set_variable = { fallout_event_candidate_registry_day = global.num_days }
 			set_country_flag = fallout_event_candidate_registry_reviewed
 			if = {
+				limit = { fallout_event_country_can_receive_ordinary_event = yes }
+				set_country_flag = fallout_event_candidate_registry_after_orientation
+			}
+			else = {
+				clr_country_flag = fallout_event_candidate_registry_after_orientation
+			}
+			if = {
 				limit = { NOT = { fallout_event_candidate_registry_is_reviewed = yes } }
 				clr_country_flag = fallout_event_candidate_registry_reviewed
 				clear_variable = fallout_event_candidate_registry_generation
 				clear_variable = fallout_event_candidate_registry_day
 			}
 		}
-	}
 }
 
-# Supported scope: COUNTRY coordinator. This dormant pass pairs the two lowest
+# Supported scope: COUNTRY coordinator. This pass pairs the two lowest
 # current Refugee Train rows through the existing registry index ledger. It
 # writes no tags, no diplomacy relation, and no scheduler activation flag.
 # Every side must already have a reviewed candidate row before either partner
@@ -55735,20 +55768,35 @@ fallout_event_select_reviewed_candidate = {
 	}
 }
 
+# Supported scope: COUNTRY. A delayed result, callback, or bilateral reply that
+# became ready during this review is issued the same day instead of waiting
+# for the one-country registry cursor.
+fallout_event_issue_ready_dispatch = {
+	if = {
+		limit = {
+			has_country_flag = fallout_event_dispatch_ready
+			NOT = { has_country_flag = fallout_event_dispatch_issued }
+		}
+		set_temp_variable = { fallout_event_dispatch_issue_accepted = constant:fallout_event_runtime.zero }
+		fallout_event_issue_dispatch_envelope = yes
+	}
+}
+
 # Supported scope: COUNTRY coordinator. The human lane is sourced only from
 # the frozen continuation commit target array and receipt flag.
 fallout_event_review_human_successors = {
 	if = {
 		limit = { fallout_event_human_review_lane_is_approved = yes }
 		set_temp_variable = { fallout_event_review_control_mode = constant:fallout_event_dispatch_mode.human_visible }
-			for_each_scope_loop = {
-				array = global.fallout_player_committed_targets
-				if = {
-					limit = {
-						is_ai = no
-						fallout_event_registry_country_row_is_current = yes
-					}
+		for_each_scope_loop = {
+			array = global.fallout_player_committed_targets
+			if = {
+				limit = {
+					is_ai = no
+					fallout_event_registry_country_row_is_current = yes
+				}
 				fallout_event_reconcile_country_transactions = yes
+				fallout_event_issue_ready_dispatch = yes
 				if = {
 					limit = { fallout_event_candidate_registry_is_reviewed = yes }
 					fallout_event_select_reviewed_candidate = yes
@@ -55800,6 +55848,7 @@ fallout_event_review_ai_registry_batch = {
 						fallout_event_registry_country_row_is_current = yes
 					}
 					fallout_event_reconcile_country_transactions = yes
+					fallout_event_issue_ready_dispatch = yes
 					if = {
 						limit = { fallout_event_candidate_registry_is_reviewed = yes }
 						set_temp_variable = { fallout_event_review_control_mode = constant:fallout_event_dispatch_mode.hidden_ai }
@@ -57938,6 +57987,8 @@ fallout_event_scheduler_reconcile = {
 			fallout_event_reconcile_next_registry_country = yes
 			if = {
 				limit = { fallout_event_numerical_registry_header_is_current = yes }
+				fallout_event_activate_living_world = yes
+				fallout_orientation_reconcile_registry = yes
 				fallout_event_build_pilot_candidate_registries = yes
 				fallout_event_pair_refugee_train_candidate_rows = yes
 				fallout_event_review_human_successors = yes
@@ -58335,8 +58386,8 @@ fallout_event_schedule_selected_relationship_candidate = {
 		}
 		set_temp_variable = { fallout_event_partner_index_to_check = fallout_event_requested_partner_registry_index }
 		var:global.fallout_event_registry_countries^fallout_event_partner_index_to_check = {
+			save_event_target_as = fallout_event_requested_bilateral_partner
 			ROOT = {
-				save_event_target_as = fallout_event_requested_bilateral_partner
 				set_temp_variable = { fallout_event_requested_initiator_response_token = fallout_event_requested_human_event_token }
 				set_temp_variable = { fallout_event_requested_initiator_ai_response_token = fallout_event_requested_ai_event_token }
 				set_temp_variable = { fallout_event_requested_initiator_visible_budget_cost = fallout_event_requested_visible_budget_cost }
@@ -61551,6 +61602,14 @@ fallout_orientation_apply_capital_result = {
 			multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
 			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_seal_success_shelter }
 			set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.capital_seal_success_recovery }
+			set_temp_variable = { fallout_orientation_repair_days = constant:fallout_orientation_result.capital_seal_success_repair_days }
+			var:fallout_orientation_state_target = {
+				if = {
+					limit = { has_dynamic_modifier = { modifier = fallout_capital_civic_repair_partial } }
+					remove_dynamic_modifier = { modifier = fallout_capital_civic_repair_partial }
+				}
+				add_dynamic_modifier = { modifier = fallout_capital_civic_repair_success days = fallout_orientation_repair_days }
+			}
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.partial } }
@@ -61558,6 +61617,13 @@ fallout_orientation_apply_capital_result = {
 			multiply_temp_variable = { fallout_orientation_state_exposure_delta = constant:fallout_runtime.negative_one }
 			set_temp_variable = { fallout_orientation_state_shelter_delta = constant:fallout_orientation_result.capital_seal_partial_shelter }
 			set_temp_variable = { fallout_orientation_state_recovery_delta = constant:fallout_orientation_result.capital_seal_partial_recovery }
+			set_temp_variable = { fallout_orientation_repair_days = constant:fallout_orientation_result.capital_seal_partial_repair_days }
+			var:fallout_orientation_state_target = {
+				if = {
+					limit = { NOT = { has_dynamic_modifier = { modifier = fallout_capital_civic_repair_success } } }
+					add_dynamic_modifier = { modifier = fallout_capital_civic_repair_partial days = fallout_orientation_repair_days }
+				}
+			}
 		}
 		else_if = {
 			limit = { check_variable = { fallout_orientation_frozen_outcome = constant:fallout_event_outcome_type.failure } }
@@ -62075,6 +62141,503 @@ fallout_orientation_choose_ai_branch_and_schedule_result = {
 		limit = { check_variable = { fallout_orientation_ai_best_found = constant:fallout_orientation_runtime.one } }
 		set_temp_variable = { fallout_orientation_requested_branch = fallout_orientation_ai_best_branch }
 		fallout_orientation_choose_branch = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Ash-week orientation driver
+# ---------------------------------------------------------------------------
+# Overview:
+# - fallout_orientation_reconcile_registry runs in the coordinator pass once
+#   the numerical registry is current. Human successors begin at once. AI
+#   successors begin at most daily_ai_starts per day. Every country that needs
+#   a step receives hidden event chaosx.fallout.85, so ROOT is that country in
+#   every orientation effect and trigger.
+# - fallout_orientation_advance_country cancels a stalled transaction, loads
+#   the request payload, and begins the next component. National orientation
+#   and capital condition run for every registry country. Resource crisis and
+#   government archetype run where a reviewed row exists for the country's
+#   memory. Character or institution waits for a curated registry. A component
+#   with no reviewed row, or no branch the country can pay for, is recorded
+#   complete without a popup. After all five, the closure report runs.
+# - The driver never sets scheduler flags. Ordinary living-world events wait
+#   for fallout_event_orientation_is_complete on each country.
+
+# Supported scope: COUNTRY coordinator.
+fallout_orientation_reconcile_registry = {
+	set_temp_variable = { fallout_orientation_new_ai_starts = constant:fallout_orientation_runtime.zero }
+	for_each_scope_loop = {
+		array = global.fallout_event_registry_countries
+		if = {
+			limit = {
+				has_country_flag = fallout_event_registry_member
+				fallout_orientation_country_needs_step = yes
+			}
+			if = {
+				limit = { fallout_orientation_country_has_started = yes }
+				fallout_orientation_request_step = yes
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_ai = no
+						check_variable = { fallout_orientation_new_ai_starts < constant:fallout_orientation_runtime.daily_ai_starts }
+					}
+				}
+				if = {
+					limit = { is_ai = yes }
+					add_to_temp_variable = { fallout_orientation_new_ai_starts = constant:fallout_orientation_runtime.one }
+				}
+				set_variable = { fallout_orientation_started_generation = global.fallout_transition_generation }
+				set_variable = { fallout_orientation_started_day = global.num_days }
+				fallout_orientation_request_step = yes
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. At most one step event per country and day.
+fallout_orientation_request_step = {
+	set_variable = { fallout_orientation_step_requested_day = global.num_days }
+	country_event = { id = chaosx.fallout.85 }
+}
+
+# Supported scope: COUNTRY. Opens the reviewed orientation surfaces for this
+# registry country. National, capital, and state results are universal rows.
+# Government rows exist only for the twelve reviewed pilot memories. Character
+# and institution installation stays closed until a curated registry exists.
+fallout_orientation_approve_country_surfaces = {
+	set_variable = { fallout_orientation_regional_row_surface_status = constant:fallout_orientation_surface_status.approved }
+	set_variable = { fallout_orientation_archetype_row_surface_status = constant:fallout_orientation_surface_status.approved }
+	set_variable = { fallout_orientation_memory_row_surface_status = constant:fallout_orientation_surface_status.approved }
+	set_variable = { fallout_orientation_state_result_surface_status = constant:fallout_orientation_surface_status.approved }
+	set_variable = { fallout_orientation_capital_repair_surface_status = constant:fallout_orientation_surface_status.approved }
+	if = {
+		limit = { fallout_orientation_country_memory_has_pilot_government_mapping = yes }
+		set_variable = { fallout_orientation_government_row_surface_status = constant:fallout_orientation_surface_status.approved }
+	}
+	else = {
+		set_variable = { fallout_orientation_government_row_surface_status = constant:fallout_orientation_surface_status.blocked }
+	}
+	set_variable = { fallout_orientation_character_install_surface_status = constant:fallout_orientation_surface_status.blocked }
+}
+
+# Supported scope: COUNTRY. Installs the resource-crisis package for one of the
+# twelve reviewed memories. The package targets the assigned capital, where the
+# reviewed supporting asset (fuel stores or the power plant) is drawn on.
+fallout_orientation_install_resource_package = {
+	if = {
+		limit = {
+			fallout_orientation_country_memory_has_pilot_resource_mapping = yes
+			NOT = { fallout_orientation_resource_package_receipt_is_current = yes }
+			has_variable = fallout_successor_assignment_capital_state
+		}
+		fallout_orientation_prepare_resource_mapping = yes
+		if = {
+			limit = {
+				fallout_orientation_resource_mapping_is_current = yes
+				var:fallout_successor_assignment_capital_state = {
+					is_owned_and_controlled_by = ROOT
+					fallout_successor_assignment_capital_row_is_current = yes
+				}
+			}
+			set_variable = { fallout_orientation_resource_package_schema_version = constant:fallout_orientation_resource_registry_schema.version }
+			set_variable = { fallout_orientation_resource_package_generation = global.fallout_transition_generation }
+			set_variable = { fallout_orientation_resource_package_country_memory = fallout_country_memory_id }
+			set_variable = { fallout_orientation_resource_package_support_resource = fallout_orientation_resource_registry_support_resource }
+			set_variable = { fallout_orientation_resource_package_state_target = fallout_successor_assignment_capital_state }
+			set_country_flag = fallout_orientation_resource_package_installed
+		}
+	}
+}
+
+# Supported scope: COUNTRY, inside the step event (ROOT is this country). The
+# caller has already created every fallout_orientation_requested_* temporary
+# variable written here.
+fallout_orientation_load_country_request = {
+	if = {
+		limit = { has_variable = fallout_successor_assignment_capital_state }
+		var:fallout_successor_assignment_capital_state = {
+			set_temp_variable = { fallout_orientation_requested_state_grade = fallout_state_grade }
+			set_temp_variable = { fallout_orientation_requested_state_phase = air_winter_phase }
+			set_temp_variable = { fallout_orientation_requested_state_exposure = air_winter_exposure }
+			set_temp_variable = { fallout_orientation_requested_state_shelter = air_winter_shelter_capacity }
+			set_temp_variable = { fallout_orientation_requested_state_recovery = air_winter_recovery }
+			set_temp_variable = { fallout_orientation_requested_state_adaptation = air_winter_adaptation }
+			set_temp_variable = { fallout_orientation_requested_state_reclamation = air_winter_reclamation }
+			set_temp_variable = { fallout_orientation_requested_state_population = state_population_k }
+			multiply_temp_variable = { fallout_orientation_requested_state_population = constant:fallout_runtime.population_scale }
+			round_temp_variable = fallout_orientation_requested_state_population
+		}
+	}
+	clamp_temp_variable = { var = fallout_orientation_requested_state_exposure min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	clamp_temp_variable = { var = fallout_orientation_requested_state_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	clamp_temp_variable = { var = fallout_orientation_requested_state_recovery min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	clamp_temp_variable = { var = fallout_orientation_requested_state_adaptation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	clamp_temp_variable = { var = fallout_orientation_requested_state_reclamation min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+	set_temp_variable = { fallout_orientation_requested_source_population = fallout_orientation_requested_state_population }
+
+	set_temp_variable = { fallout_orientation_requested_country_population = constant:fallout_orientation_runtime.zero }
+	set_temp_variable = { fallout_orientation_step_state_population = constant:fallout_orientation_runtime.zero }
+	every_owned_state = {
+		set_temp_variable = { fallout_orientation_step_state_population = state_population_k }
+		multiply_temp_variable = { fallout_orientation_step_state_population = constant:fallout_runtime.population_scale }
+		round_temp_variable = fallout_orientation_step_state_population
+		add_to_temp_variable = { fallout_orientation_requested_country_population = fallout_orientation_step_state_population }
+	}
+
+	# The prepared receiving state is the owned non-capital state with the most
+	# shelter capacity. Ties keep the first state found.
+	set_temp_variable = { fallout_orientation_step_best_shelter = -1 }
+	every_owned_state = {
+		limit = { fallout_orientation_state_can_receive_evacuees = yes }
+		if = {
+			limit = { check_variable = { var = air_winter_shelter_capacity value = fallout_orientation_step_best_shelter compare = greater_than } }
+			set_temp_variable = { fallout_orientation_step_best_shelter = air_winter_shelter_capacity }
+			save_event_target_as = fallout_orientation_requested_receiving_state
+			set_temp_variable = { fallout_orientation_requested_receiving_capacity = state_population_k }
+			multiply_temp_variable = { fallout_orientation_requested_receiving_capacity = constant:fallout_runtime.population_scale }
+			multiply_temp_variable = { fallout_orientation_requested_receiving_capacity = constant:fallout_orientation_request.receiving_capacity_share }
+			round_temp_variable = fallout_orientation_requested_receiving_capacity
+			set_temp_variable = { fallout_orientation_requested_receiving_shelter = air_winter_shelter_capacity }
+		}
+	}
+	clamp_temp_variable = { var = fallout_orientation_requested_receiving_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
+
+	# Declared matches exist only where a reviewed memory row fits the
+	# country's region and archetype.
+	if = {
+		limit = { fallout_orientation_resource_mapping_is_current = yes }
+		set_temp_variable = { fallout_orientation_requested_archetype_match = constant:fallout_orientation_score.match_flag }
+		set_temp_variable = { fallout_orientation_requested_regional_match = constant:fallout_orientation_score.match_flag }
+		set_temp_variable = { fallout_orientation_requested_tailored_resource = fallout_orientation_resource_registry_support_resource }
+	}
+
+	set_temp_variable = { fallout_orientation_requested_primary_resource = constant:fallout_survival_resource.food }
+	set_temp_variable = { fallout_orientation_requested_primary_value = fallout_survival_current_entries^1 }
+	set_temp_variable = { fallout_orientation_requested_weakest_resource = constant:fallout_survival_resource.food }
+	set_temp_variable = { fallout_orientation_requested_weakest_value = fallout_survival_current_entries^1 }
+	for_loop_effect = {
+		start = constant:fallout_survival_resource.clean_water
+		end = constant:fallout_survival_resource.upper_bound
+		value = fallout_orientation_step_resource_index
+		if = {
+			limit = { check_variable = { fallout_survival_current_entries^fallout_orientation_step_resource_index > fallout_orientation_requested_primary_value } }
+			set_temp_variable = { fallout_orientation_requested_primary_resource = fallout_orientation_step_resource_index }
+			set_temp_variable = { fallout_orientation_requested_primary_value = fallout_survival_current_entries^fallout_orientation_step_resource_index }
+		}
+		if = {
+			limit = { check_variable = { fallout_survival_current_entries^fallout_orientation_step_resource_index < fallout_orientation_requested_weakest_value } }
+			set_temp_variable = { fallout_orientation_requested_weakest_resource = fallout_orientation_step_resource_index }
+			set_temp_variable = { fallout_orientation_requested_weakest_value = fallout_survival_current_entries^fallout_orientation_step_resource_index }
+		}
+	}
+	set_temp_variable = { fallout_orientation_requested_crisis_resource = constant:fallout_survival_resource.food }
+	set_temp_variable = { fallout_orientation_requested_crisis_value = fallout_survival_current_entries^1 }
+	if = {
+		limit = { check_variable = { fallout_survival_current_entries^2 < fallout_orientation_requested_crisis_value } }
+		set_temp_variable = { fallout_orientation_requested_crisis_resource = constant:fallout_survival_resource.clean_water }
+		set_temp_variable = { fallout_orientation_requested_crisis_value = fallout_survival_current_entries^2 }
+	}
+	if = {
+		limit = { check_variable = { fallout_survival_current_entries^3 < fallout_orientation_requested_crisis_value } }
+		set_temp_variable = { fallout_orientation_requested_crisis_resource = constant:fallout_survival_resource.medicine }
+		set_temp_variable = { fallout_orientation_requested_crisis_value = fallout_survival_current_entries^3 }
+	}
+	if = {
+		limit = { check_variable = { fallout_survival_current_entries^7 < fallout_orientation_requested_crisis_value } }
+		set_temp_variable = { fallout_orientation_requested_crisis_resource = constant:fallout_survival_resource.filters }
+		set_temp_variable = { fallout_orientation_requested_crisis_value = fallout_survival_current_entries^7 }
+	}
+	if = {
+		limit = { check_variable = { fallout_orientation_requested_crisis_value < constant:fallout_orientation_score.resource_low } }
+		set_temp_variable = { fallout_orientation_requested_unresolved_crisis = constant:fallout_orientation_request.unresolved_crisis_flag }
+	}
+}
+
+# Supported scope: COUNTRY. Copies the current identity when no resolved
+# component has written it yet, so the closure report can authenticate.
+fallout_orientation_prepare_closure_identity = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = fallout_orientation_identity_generation }
+				NOT = { check_variable = { var = fallout_orientation_identity_generation value = global.fallout_transition_generation compare = equals } }
+			}
+		}
+		set_variable = { fallout_orientation_identity_generation = global.fallout_transition_generation }
+		set_variable = { fallout_orientation_identity_region = fallout_region_id }
+		set_variable = { fallout_orientation_identity_archetype = fallout_government_archetype }
+		set_variable = { fallout_orientation_identity_country_memory = fallout_country_memory_id }
+		set_variable = { fallout_orientation_identity_cause_memory = global.fallout_cause_memory_source }
+	}
+}
+
+# Supported scope: COUNTRY. Records the closure as finished without a report.
+fallout_orientation_record_closure_without_report = {
+	set_country_flag = fallout_orientation_closure_complete
+	set_variable = { fallout_orientation_closure_generation = global.fallout_transition_generation }
+	set_variable = { fallout_orientation_closure_day = global.num_days }
+}
+
+# Supported scope: COUNTRY. A stalled transaction is cancelled. A component
+# stage is recorded complete so the country can continue. A closure or cleanup
+# stage is recorded finished.
+fallout_orientation_cancel_stalled_transaction = {
+	if = {
+		limit = {
+			has_variable = fallout_orientation_transaction_stage
+			OR = {
+				check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.closure }
+				check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.cleanup }
+			}
+		}
+		fallout_orientation_clear_transient_payload = yes
+		fallout_orientation_record_closure_without_report = yes
+	}
+	else = {
+		if = {
+			limit = {
+				has_variable = fallout_orientation_transaction_component
+				check_variable = { fallout_orientation_transaction_component > constant:fallout_event_orientation_component.none }
+				check_variable = { fallout_orientation_transaction_component < constant:fallout_event_orientation_component.upper_bound }
+			}
+			set_temp_variable = { fallout_event_orientation_component_to_record = fallout_orientation_transaction_component }
+			fallout_event_record_orientation_component = yes
+		}
+		fallout_orientation_clear_transient_payload = yes
+	}
+	set_variable = { fallout_orientation_last_status = constant:fallout_orientation_status.cancelled }
+	set_variable = { fallout_orientation_diagnostic = constant:fallout_orientation_diagnostic.transaction_stalled }
+	set_variable = { fallout_orientation_diagnostic_generation = global.fallout_transition_generation }
+	set_variable = { fallout_orientation_diagnostic_day = global.num_days }
+}
+
+# Supported scope: COUNTRY, inside fallout_orientation_advance_country. Issues
+# the root event of an accepted component. Otherwise records the component
+# complete without a popup, except while a missing capital may still return
+# within the retry window.
+fallout_orientation_issue_or_skip_component = {
+	if = {
+		limit = {
+			check_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.one }
+			has_country_flag = fallout_orientation_transaction_pending
+		}
+		fallout_orientation_issue_next = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.state_target_missing }
+			has_variable = fallout_orientation_started_day
+			set_temp_variable = { fallout_orientation_step_retry_day = fallout_orientation_started_day }
+			add_to_temp_variable = { fallout_orientation_step_retry_day = constant:fallout_orientation_runtime.retry_days }
+			check_variable = { var = global.num_days value = fallout_orientation_step_retry_day compare = less_than }
+		}
+		set_variable = { fallout_orientation_diagnostic = constant:fallout_orientation_diagnostic.state_target_missing }
+	}
+	else = {
+		set_temp_variable = { fallout_event_orientation_component_to_record = fallout_orientation_requested_component }
+		fallout_event_record_orientation_component = yes
+		set_variable = { fallout_orientation_last_skipped_component = fallout_orientation_requested_component }
+		set_variable = { fallout_orientation_last_skipped_reason = fallout_orientation_requested_diagnostic }
+		set_variable = { fallout_orientation_last_skipped_day = global.num_days }
+	}
+}
+
+# Supported scope: COUNTRY. Run only from hidden event chaosx.fallout.85 so
+# ROOT is this registry country.
+fallout_orientation_advance_country = {
+	if = {
+		limit = { fallout_orientation_transaction_is_stalled = yes }
+		fallout_orientation_cancel_stalled_transaction = yes
+	}
+	fallout_orientation_reconcile_stale_generation = yes
+	if = {
+		limit = {
+			NOT = { has_country_flag = fallout_orientation_transaction_pending }
+			fallout_event_registry_country_row_is_current = yes
+			NOT = { fallout_orientation_closure_is_current = yes }
+		}
+		fallout_orientation_approve_country_surfaces = yes
+		fallout_orientation_install_resource_package = yes
+
+		# Every request input exists before any helper writes it, so the
+		# helper writes survive their scripted-effect boundaries.
+		set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_generation = global.fallout_transition_generation }
+		set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.none }
+		set_temp_variable = { fallout_orientation_requested_mode = constant:fallout_event_dispatch_mode.hidden_ai }
+		if = {
+			limit = { is_ai = no }
+			set_temp_variable = { fallout_orientation_requested_mode = constant:fallout_event_dispatch_mode.human_visible }
+		}
+		set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.none }
+		set_temp_variable = { fallout_orientation_requested_resource_registry_diagnostic = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_government_registry_diagnostic = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_grade = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_phase = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_exposure = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_shelter = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_recovery = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_adaptation = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_reclamation = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_state_population = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_country_population = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_source_population = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_receiving_capacity = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_receiving_shelter = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_archetype_match = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_regional_match = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_unresolved_crisis = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_primary_resource = constant:fallout_survival_resource.none }
+		set_temp_variable = { fallout_orientation_requested_primary_value = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_weakest_resource = constant:fallout_survival_resource.none }
+		set_temp_variable = { fallout_orientation_requested_weakest_value = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_crisis_resource = constant:fallout_survival_resource.none }
+		set_temp_variable = { fallout_orientation_requested_crisis_value = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_tailored_resource = constant:fallout_survival_resource.power }
+		set_temp_variable = { fallout_orientation_requested_archetype_effect_kind = constant:fallout_orientation_archetype_effect_kind.none }
+		set_temp_variable = { fallout_orientation_requested_archetype_effect_value = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_archetype_effect_days = constant:fallout_orientation_runtime.zero }
+		set_temp_variable = { fallout_orientation_requested_archetype_effect_token = constant:fallout_orientation_government_row_id.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_id = constant:fallout_orientation_candidate_id.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_id = constant:fallout_orientation_candidate_id.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_3_id = constant:fallout_orientation_candidate_id.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_type = constant:fallout_orientation_candidate_type.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_type = constant:fallout_orientation_candidate_type.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_3_type = constant:fallout_orientation_candidate_type.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_region = constant:fallout_region.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_region = constant:fallout_region.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_3_region = constant:fallout_region.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_1_archetype = constant:fallout_government_archetype.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_2_archetype = constant:fallout_government_archetype.none }
+		set_temp_variable = { fallout_orientation_requested_candidate_slot_3_archetype = constant:fallout_government_archetype.none }
+		fallout_orientation_load_country_request = yes
+
+		# 1. National orientation, universal.
+		if = {
+			limit = { NOT = { fallout_event_orientation_national_receipt_is_current = yes } }
+			set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.national_orientation }
+			fallout_orientation_begin_national_orientation = yes
+			fallout_orientation_issue_or_skip_component = yes
+		}
+		# 2. Capital condition, universal.
+		if = {
+			limit = {
+				NOT = { has_country_flag = fallout_orientation_transaction_pending }
+				fallout_event_orientation_national_receipt_is_current = yes
+				NOT = { fallout_event_orientation_capital_receipt_is_current = yes }
+			}
+			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+			set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.none }
+			set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.capital_condition }
+			if = {
+				limit = { fallout_orientation_capital_has_affordable_branch = yes }
+				fallout_orientation_begin_capital_condition = yes
+			}
+			else = {
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.branch_unaffordable }
+			}
+			fallout_orientation_issue_or_skip_component = yes
+		}
+		# 3. Immediate resource crisis, reviewed memory rows only.
+		if = {
+			limit = {
+				NOT = { has_country_flag = fallout_orientation_transaction_pending }
+				fallout_event_orientation_capital_receipt_is_current = yes
+				NOT = { fallout_event_orientation_resource_receipt_is_current = yes }
+			}
+			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+			set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.none }
+			set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.immediate_resource_crisis }
+			if = {
+				limit = { fallout_orientation_resource_package_receipt_is_current = yes }
+				fallout_orientation_begin_immediate_resource_crisis = yes
+			}
+			else = {
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.memory_row_missing }
+			}
+			fallout_orientation_issue_or_skip_component = yes
+		}
+		# 4. Government archetype, reviewed memory rows only.
+		if = {
+			limit = {
+				NOT = { has_country_flag = fallout_orientation_transaction_pending }
+				fallout_event_orientation_resource_receipt_is_current = yes
+				NOT = { fallout_event_orientation_archetype_receipt_is_current = yes }
+			}
+			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+			set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.none }
+			set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.government_archetype }
+			if = {
+				limit = { fallout_orientation_government_row_surface_is_approved = yes }
+				fallout_orientation_begin_government_archetype = yes
+			}
+			else = {
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.archetype_row_missing }
+			}
+			fallout_orientation_issue_or_skip_component = yes
+		}
+		# 5. Character or institution waits for a curated registry.
+		if = {
+			limit = {
+				NOT = { has_country_flag = fallout_orientation_transaction_pending }
+				fallout_event_orientation_archetype_receipt_is_current = yes
+				NOT = { fallout_event_orientation_character_receipt_is_current = yes }
+			}
+			set_temp_variable = { fallout_orientation_transaction_accepted = constant:fallout_orientation_runtime.zero }
+			set_temp_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution }
+			set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.candidate_registry_insufficient }
+			if = {
+				limit = { fallout_orientation_character_install_surface_is_approved = yes }
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.none }
+				fallout_orientation_begin_character_or_institution = yes
+			}
+			fallout_orientation_issue_or_skip_component = yes
+		}
+		# Closure report after all five components.
+		if = {
+			limit = {
+				NOT = { has_country_flag = fallout_orientation_transaction_pending }
+				fallout_event_orientation_is_complete = yes
+				NOT = { fallout_orientation_closure_is_current = yes }
+			}
+			fallout_orientation_prepare_closure_identity = yes
+			fallout_orientation_begin_closure = yes
+			if = {
+				limit = { NOT = { has_country_flag = fallout_orientation_event_issued } }
+				fallout_orientation_clear_transient_payload = yes
+				fallout_orientation_record_closure_without_report = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Living-world scheduler activation
+# ---------------------------------------------------------------------------
+# Agent decision 2026-10-04 (plans folder, agent_decisions_2026-10-04.md): the
+# scheduler activates once the current map return, registry header, numerical
+# registry and player continuation are in place and no scheduler error exists.
+# The registry headers already bind the survival ledger they were built from.
+# The per-chain reviews recorded in the plans folder replace the separate
+# release receipt from spec 12.
+
+# Supported scope: COUNTRY coordinator.
+fallout_event_activate_living_world = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_event_scheduler_active }
+			NOT = { has_global_flag = fallout_event_scheduler_error }
+			has_global_flag = fallout_player_continuation_commit_complete
+			fallout_event_map_return_receipts_are_current = yes
+			fallout_event_registry_header_is_current = yes
+			fallout_event_numerical_registry_header_is_current = yes
+		}
+		set_global_flag = fallout_event_scheduler_activation_approved
+		set_variable = { global.fallout_event_scheduler_activation_generation = global.fallout_transition_generation }
+		set_variable = { global.fallout_event_scheduler_activation_day = global.num_days }
+		set_global_flag = fallout_event_scheduler_active
 	}
 }
 

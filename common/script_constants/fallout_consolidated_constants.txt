@@ -12329,6 +12329,7 @@ fallout_event_runtime = {
 	repeatable_penalty_days = 365
 	broadcast_cooldown_days = 30
 	quiet_period_days = 7
+	candidate_refresh_days = 30
 	player_relevance_none = 0
 	player_relevance_human_recipient = 100
 	player_relevance_human_bilateral_partner = 50
@@ -13837,7 +13838,8 @@ fallout_orientation_diagnostic = {
 	cause_memory_missing = 17
 	input_invalid = 18
 	state_ledger_not_current = 19
-	upper_bound = 20
+	transaction_stalled = 20
+	upper_bound = 21
 }
 
 fallout_orientation_national_branch = {
@@ -14152,6 +14154,30 @@ fallout_orientation_delay = {
 	upper_bound = 5
 }
 
+# Ash-week capital repair crews. The sealed civic core cannot restore an exact
+# damaged level, so a successful seal speeds the engine's own repair of roads,
+# rail sidings and supply hubs in the assigned capital for a fixed period.
+fallout_orientation_repair_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	success_repair_speed = 0.50
+	partial_repair_speed = 0.25
+}
+
+# Ash-week request payload tuning for the orientation driver.
+fallout_orientation_request = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	receiving_capacity_share = 0.50
+	unresolved_crisis_flag = 1
+}
+
 fallout_orientation_runtime = {
 	schema = {
 		any_key = yes
@@ -14171,6 +14197,9 @@ fallout_orientation_runtime = {
 	branch_minimum = 1
 	branch_maximum = 3
 	upper_bound = 4
+	daily_ai_starts = 2
+	stall_days = 30
+	retry_days = 10
 }
 
 fallout_orientation_deaths = {
@@ -14271,6 +14300,8 @@ fallout_orientation_result = {
 	capital_seal_partial_recovery = 2
 	capital_seal_failure_exposure = 7
 	capital_seal_failure_shelter = 5
+	capital_seal_success_repair_days = 180
+	capital_seal_partial_repair_days = 90
 	capital_disperse_success_shelter = 10
 	capital_disperse_success_adaptation = 7
 	capital_disperse_success_supply = 6

@@ -12791,9 +12791,10 @@ fallout_orientation_candidate_registry_is_usable = {
 	fallout_orientation_memory_row_surface_is_approved = yes
 }
 
-fallout_orientation_activation_is_dormant = {
-	NOT = { has_global_flag = fallout_event_scheduler_activation_approved }
-	NOT = { has_global_flag = fallout_event_scheduler_active }
+# Orientation runs beside the living-world scheduler. Ordinary events still wait
+# for each country's completed orientation, so activation no longer closes it.
+fallout_orientation_runtime_is_open = {
+	NOT = { has_global_flag = fallout_event_scheduler_error }
 }
 
 fallout_orientation_generation_is_current = {
@@ -13026,7 +13027,7 @@ fallout_orientation_requested_government_has_affordable_branch = {
 }
 
 fallout_orientation_begin_request_is_valid = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	has_variable = global.fallout_transition_generation
 	has_variable = global.fallout_cause_memory_source
 	check_variable = { global.fallout_cause_memory_source > constant:fallout_request_source.none }
@@ -13152,7 +13153,7 @@ fallout_orientation_begin_request_is_valid = {
 }
 
 fallout_orientation_component_can_choose = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	fallout_orientation_transaction_is_current = yes
 	fallout_orientation_state_target_is_current = yes
 	check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.root }
@@ -13166,7 +13167,7 @@ fallout_orientation_component_can_choose = {
 }
 
 fallout_orientation_component_can_resolve = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	fallout_orientation_transaction_is_current = yes
 	fallout_orientation_state_target_is_current = yes
 	check_variable = { fallout_orientation_transaction_branch > constant:fallout_orientation_runtime.zero }
@@ -13313,7 +13314,7 @@ fallout_orientation_score_is_failure = {
 }
 
 fallout_orientation_closure_is_eligible = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	fallout_event_registry_country_row_is_current = yes
 	has_variable = fallout_orientation_identity_generation
 	has_variable = fallout_orientation_identity_region
@@ -13336,7 +13337,7 @@ fallout_orientation_closure_is_eligible = {
 }
 
 fallout_orientation_closure_event_can_enter = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	fallout_orientation_transaction_is_current = yes
 	check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.closure }
 	check_variable = { fallout_orientation_transaction_status = constant:fallout_orientation_status.result_scheduled }
@@ -13351,7 +13352,7 @@ fallout_orientation_closure_event_can_enter = {
 }
 
 fallout_orientation_cleanup_event_can_enter = {
-	fallout_orientation_activation_is_dormant = yes
+	fallout_orientation_runtime_is_open = yes
 	has_country_flag = fallout_orientation_transaction_pending
 	fallout_orientation_transaction_is_current = yes
 	check_variable = { fallout_orientation_transaction_stage = constant:fallout_orientation_stage.cleanup }
@@ -13439,6 +13440,141 @@ fallout_orientation_stale_generation_is_detected = {
 	has_variable = fallout_orientation_transaction_generation
 	has_variable = global.fallout_transition_generation
 	NOT = { check_variable = { var = fallout_orientation_transaction_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+# ---------------------------------------------------------------------------
+# Ash-week orientation driver
+# ---------------------------------------------------------------------------
+
+# Supported scope: COUNTRY. This country began its Ash-week orientation in the
+# current transition generation.
+fallout_orientation_country_has_started = {
+	has_variable = fallout_orientation_started_generation
+	has_variable = global.fallout_transition_generation
+	check_variable = { var = fallout_orientation_started_generation value = global.fallout_transition_generation compare = equals }
+}
+
+# Supported scope: COUNTRY. The closure cleanup event finished in the current
+# transition generation.
+fallout_orientation_closure_is_current = {
+	has_country_flag = fallout_orientation_closure_complete
+	has_variable = fallout_orientation_closure_generation
+	has_variable = global.fallout_transition_generation
+	check_variable = { var = fallout_orientation_closure_generation value = global.fallout_transition_generation compare = equals }
+}
+
+# Supported scope: COUNTRY. A pending orientation transaction whose event was
+# never issued, or whose issued event is far past its due day, cannot finish by
+# itself. The driver cancels it and records the component without a popup.
+fallout_orientation_transaction_is_stalled = {
+	has_country_flag = fallout_orientation_transaction_pending
+	OR = {
+		NOT = { has_country_flag = fallout_orientation_event_issued }
+		NOT = { has_variable = fallout_orientation_issued_due_day }
+		AND = {
+			has_variable = fallout_orientation_issued_due_day
+			set_temp_variable = { fallout_orientation_stall_day = fallout_orientation_issued_due_day }
+			add_to_temp_variable = { fallout_orientation_stall_day = constant:fallout_orientation_runtime.stall_days }
+			check_variable = { var = global.num_days value = fallout_orientation_stall_day compare = greater_than }
+		}
+	}
+}
+
+# Supported scope: COUNTRY. Registry member whose orientation still needs a
+# driver step today. Pending transactions are left to their issued events unless
+# they have stalled.
+fallout_orientation_country_needs_step = {
+	NOT = { fallout_orientation_closure_is_current = yes }
+	OR = {
+		NOT = { has_variable = fallout_orientation_step_requested_day }
+		NOT = { check_variable = { var = fallout_orientation_step_requested_day value = global.num_days compare = equals } }
+	}
+	OR = {
+		NOT = { has_country_flag = fallout_orientation_transaction_pending }
+		fallout_orientation_transaction_is_stalled = yes
+	}
+	exists = yes
+	fallout_event_registry_country_row_is_current = yes
+}
+
+# Supported scope: COUNTRY. No opening, delayed result, major arc, or
+# bilateral row is in flight, so the candidate rows and their per-chain state
+# targets can be rebuilt without touching a running chain.
+fallout_event_country_candidate_registry_can_refresh = {
+	NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
+	NOT = { has_country_flag = fallout_event_dispatch_ready }
+	NOT = { has_country_flag = fallout_event_dispatch_issued }
+	NOT = { has_country_flag = fallout_event_arc_cleanup_pending }
+	NOT = { has_country_flag = fallout_event_delayed_cleanup_pending }
+	NOT = { has_country_flag = fallout_event_bilateral_cleanup_pending }
+	NOT = { check_variable = { fallout_event_arc_ticket_entries^num > constant:fallout_event_runtime.zero } }
+	NOT = { check_variable = { fallout_event_delayed_ticket_entries^num > constant:fallout_event_runtime.zero } }
+	NOT = { check_variable = { fallout_event_bilateral_ticket_entries^num > constant:fallout_event_runtime.zero } }
+}
+
+# Supported scope: COUNTRY. The candidate rows are missing or stale for this
+# generation, were built before the country could receive ordinary events, or
+# are older than the refresh interval while the country is idle. A request
+# already sent today is not repeated.
+fallout_event_country_candidate_registry_needs_review = {
+	OR = {
+		NOT = { has_variable = fallout_event_candidate_review_requested_day }
+		NOT = { check_variable = { var = fallout_event_candidate_review_requested_day value = global.num_days compare = equals } }
+	}
+	exists = yes
+	OR = {
+		NOT = { has_country_flag = fallout_event_candidate_registry_reviewed }
+		NOT = { has_variable = fallout_event_candidate_registry_generation }
+		NOT = { check_variable = { var = fallout_event_candidate_registry_generation value = fallout_event_runtime_generation compare = equals } }
+		AND = {
+			NOT = { has_country_flag = fallout_event_candidate_registry_after_orientation }
+			fallout_event_country_can_receive_ordinary_event = yes
+			fallout_event_country_candidate_registry_can_refresh = yes
+		}
+		AND = {
+			has_variable = fallout_event_candidate_registry_day
+			set_temp_variable = { fallout_event_candidate_refresh_day = fallout_event_candidate_registry_day }
+			add_to_temp_variable = { fallout_event_candidate_refresh_day = constant:fallout_event_runtime.candidate_refresh_days }
+			check_variable = { var = global.num_days value = fallout_event_candidate_refresh_day compare = greater_than_or_equals }
+			fallout_event_country_candidate_registry_can_refresh = yes
+		}
+	}
+	fallout_event_registry_country_row_is_current = yes
+}
+
+# Supported scope: COUNTRY. Called inside the driver chain after the request
+# payload is loaded. At least one capital branch can be paid for now.
+fallout_orientation_capital_has_affordable_branch = {
+	OR = {
+		AND = {
+			fallout_orientation_capital_repair_surface_is_approved = yes
+			check_variable = { var = fallout_survival_current_entries^7 value = constant:fallout_orientation_cost.capital_seal_filters compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.capital_seal_fuel compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.capital_seal_scrap compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.capital_disperse_food compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.capital_disperse_scrap compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_orientation_cost.capital_disperse_power compare = greater_than_or_equals }
+		}
+		AND = {
+			has_event_target = fallout_orientation_requested_receiving_state
+			check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.capital_evacuation_fuel compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.capital_evacuation_food compare = greater_than_or_equals }
+			check_variable = { var = fallout_survival_current_entries^8 value = constant:fallout_orientation_cost.capital_evacuation_shelter compare = greater_than_or_equals }
+		}
+	}
+}
+
+# Supported scope: STATE inside the orientation step event, where ROOT is the
+# registry country. The state can receive people evacuated from ROOT's assigned
+# capital.
+fallout_orientation_state_can_receive_evacuees = {
+	is_owned_by = ROOT
+	NOT = { state = var:ROOT.fallout_successor_assignment_capital_state }
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_successor_state_inventory_row_is_current = yes
+	state_population_k > 0
 }
 
 # Supported scope: COUNTRY. New visible and AI work requires the full production
@@ -14163,6 +14299,10 @@ fallout_event_candidate_player_relevance_is_current = {
 
 # Supported scope: COUNTRY. This gate is deliberately dormant. No gameplay
 # file sets the activation flag before a reviewed pilot passes its audit.
+# The ordinary cooldown is a selection rule. Candidate eligibility enforces it,
+# with its crisis-break exception, before a row is committed. An issued opening
+# or a due result must still fire after the commit has pushed the cooldown
+# forward, so this shared gate does not repeat the cooldown check.
 fallout_event_country_can_receive_ordinary_event = {
 	has_global_flag = fallout_event_scheduler_activation_approved
 	has_global_flag = fallout_event_scheduler_active
@@ -14174,11 +14314,6 @@ fallout_event_country_can_receive_ordinary_event = {
 		var = global.num_days
 		value = fallout_event_quiet_period_due_day
 		compare = greater_than
-	}
-	check_variable = {
-		var = global.num_days
-		value = fallout_event_ordinary_cooldown_due_day
-		compare = greater_than_or_equals
 	}
 	any_owned_state = { always = yes }
 	NOT = { has_global_flag = fallout_event_scheduler_error }
@@ -15034,10 +15169,14 @@ fallout_event_candidate_has_recent_completion = {
 
 # Supported scope: COUNTRY. A country can have at most one new opening commit
 # on a day. Cancellation leaves the selection receipt as the durable guard.
+# Selection waits for the country's completed orientation and quiet period,
+# and for candidate rows reviewed after that point.
 fallout_event_numerical_selection_slot_is_open = {
+	fallout_event_country_can_receive_ordinary_event = yes
 	fallout_event_country_runtime_row_is_current = yes
 	fallout_event_numerical_registry_header_is_current = yes
 	fallout_event_candidate_registry_is_reviewed = yes
+	has_country_flag = fallout_event_candidate_registry_after_orientation
 	NOT = { has_country_flag = fallout_event_ordinary_receipt_pending }
 	NOT = { has_country_flag = fallout_event_dispatch_ready }
 	NOT = { check_variable = { var = fallout_event_last_selection_day value = global.num_days compare = equals } }
@@ -15657,7 +15796,7 @@ fallout_event_691_requested_branch_is_affordable = {
 
 fallout_event_478_false_spring_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	air_winter_visual_thaw_is_eligible = yes
@@ -15706,7 +15845,7 @@ fallout_event_478_country_is_current = {
 	NOT = { has_country_flag = fallout_event_478_chain_committed }
 	NOT = { has_country_flag = fallout_event_478_memory_closed }
 	any_owned_state = {
-		check_variable = { var = THIS.id value = ROOT.fallout_event_478_candidate_state_id compare = equals }
+		check_variable = { var = THIS.id value = PREV.fallout_event_478_candidate_state_id compare = equals }
 		fallout_event_478_false_spring_state_is_current = yes
 	}
 }
@@ -23391,7 +23530,7 @@ fallout_event_740_cleanup_can_enter = {
 
 fallout_event_408_orchard_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	has_variable = fallout_pretransition_air_winter_adaptation
@@ -23438,7 +23577,7 @@ fallout_event_408_country_is_current = {
 	NOT = { has_country_flag = fallout_event_408_chain_committed }
 	NOT = { has_country_flag = fallout_event_408_memory_closed }
 	any_owned_state = {
-		check_variable = { var = THIS.id value = ROOT.fallout_event_408_candidate_state_id compare = equals }
+		check_variable = { var = THIS.id value = PREV.fallout_event_408_candidate_state_id compare = equals }
 		fallout_event_408_orchard_state_is_current = yes
 	}
 }
@@ -28023,7 +28162,7 @@ fallout_event_422_cleanup_can_enter = {
 
 fallout_event_429_skilled_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	has_variable = fallout_pretransition_air_winter_exposure
@@ -28066,7 +28205,7 @@ fallout_event_429_country_is_current = {
 	NOT = { has_country_flag = fallout_event_429_chain_committed }
 	NOT = { has_country_flag = fallout_event_429_memory_closed }
 	any_owned_state = {
-		check_variable = { var = THIS.id value = ROOT.fallout_event_429_candidate_state_id compare = equals }
+		check_variable = { var = THIS.id value = PREV.fallout_event_429_candidate_state_id compare = equals }
 		fallout_event_429_skilled_state_is_current = yes
 	}
 }
@@ -33580,7 +33719,7 @@ fallout_event_352_cleanup_can_enter = {
 
 fallout_event_401_calendar_state_is_current = {
 	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
-	is_controlled_by = ROOT
+	is_controlled_by = OWNER
 	fallout_survival_state_identity_row_is_current = yes
 	fallout_survival_state_resource_row_is_durable = yes
 	has_variable = fallout_pretransition_air_winter_exposure
@@ -33618,7 +33757,7 @@ fallout_event_401_country_is_current = {
 	NOT = { has_country_flag = fallout_event_401_chain_committed }
 	NOT = { has_country_flag = fallout_event_401_memory_closed }
 	any_owned_state = {
-		check_variable = { var = THIS.id value = ROOT.fallout_event_401_candidate_state_id compare = equals }
+		check_variable = { var = THIS.id value = PREV.fallout_event_401_candidate_state_id compare = equals }
 		fallout_event_401_calendar_state_is_current = yes
 	}
 }

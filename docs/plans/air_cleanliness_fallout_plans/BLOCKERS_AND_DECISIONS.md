@@ -164,7 +164,9 @@ Official trigger and effect documentation exposes no `is_host`, `is_multiplayer`
 
 ## B9: living-world scheduler activation
 
-Status: dormant numerical and transaction-integrity substrate implemented, ordinary post-Fallout 660-event activation deliberately blocked
+Status: implemented by agent decision A1 (2026-10-04). The scheduler activates after map return, registry, numerical registry and player continuation are current. See `agent_decisions_2026-10-04.md` decisions A1 and A4 to A7 for the activation setter and the dispatch fixes found while tracing it. The history below records the dormant period.
+
+Previous status: dormant numerical and transaction-integrity substrate implemented, ordinary post-Fallout 660-event activation deliberately blocked
 
 Implemented structural proof:
 
@@ -252,7 +254,9 @@ Runtime acceptance remains required for railway topology, supply-node removal, i
 
 ## B12: Ash-week orientation implementation
 
-Status: accepted design with a partial dormant pilot, caller and release remain blocked
+Status: implemented by agent decision A2 (2026-10-04). `fallout_orientation_reconcile_registry` and hidden step event `chaosx.fallout.85` start and advance orientation for every registry country. Components without a reviewed row are recorded complete without a popup, and capital repair uses decision A3. The history below records the dormant period.
+
+Previous status: accepted design with a partial dormant pilot, caller and release remain blocked
 
 The user approved `FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` on 2026-07-18. Suffixes `62` through `84` are reserved with the accepted visible, hidden AI, result, closure, and cleanup roles. The accepted contract fixes the five-component sequence, 2, 3, 4, 3, and 2 day result delays, deterministic success bands, human and hidden-AI parity, save-recovery identity, missing-registry refusal, six dedicated assets, and non-activation rules.
 

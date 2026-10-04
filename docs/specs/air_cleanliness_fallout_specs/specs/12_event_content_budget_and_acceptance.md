@@ -410,3 +410,11 @@ The receipt is evidence, not content credit for reservations or generated drafts
 The audit receipt must remain generation-bound and fail closed when any receipt is missing.
 
 The accepted scheduler numerical contract does not authorize an activation setter.
+
+## Agent decision addendum, 2026-10-04
+
+Acceptance basis: user grant of full design authority to the implementing agents, recorded as decision A1 in `docs/plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md`.
+
+The release audit receipt above is superseded as an activation gate. `fallout_event_activate_living_world` sets both activation flags once the map-return receipts, registry header, numerical registry header and player continuation commit are current and no scheduler error exists. The static per-chain reviews in the plans folder replace the receipt. Live host, save and multiplayer observation stays user-owned and is not a source gate. Fatigue, cooldown, the three-arc cap and the other selection rules are unchanged.
+
+Ash-week orientation runs beside the active scheduler under decision A2. Ordinary events still require each country's completed orientation.

@@ -80,6 +80,8 @@ Work for Rations now writes a durable policy-memory generation and owner receipt
 
 The Battalion's Bread List reserves candidate `677`, transaction `710068`, route `7168`, event blocks `677` through `683`, and survivor Event Log history `9174`. The candidate producer selects the lowest current-generation native Food Compact granary state with a Work for Rations policy receipt, a produced Air Winter snapshot, surviving population, supply access, minimum Cohesion, a meaningful fielded army, and at least one complete affordable branch. Its protected issue, equal measure, field requisition, and rear-echelon stand-down branches resolve after `28` days and receive a ration review after `210` days. Results alter Food Compact resources, military readiness, Air Winter, Supply Access, civil-military ledgers, buildings, and Deaths-backed bounded losses. Stand-down cannot delete a division or refund equipment, and its personnel release has a durable one-use receipt. The chain writes only post-consequence survivor memory history and does not register Fallout itself as an Event Log event or evolution. It remains dormant and contributes zero release-floor blocks. The dedicated proof is `FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md`.
 
+
+Suffix `85` is the hidden Ash-week orientation step event and suffix `86` is the hidden candidate review event. Both are driver events without localisation or art and carry no release-floor credit (agent decisions A2 and A5, `agent_decisions_2026-10-04.md`).
 ## Purpose
 
 This ledger owns suffix allocation inside `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
