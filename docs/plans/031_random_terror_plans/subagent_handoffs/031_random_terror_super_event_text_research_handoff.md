@@ -4,7 +4,7 @@
 
 Text research is complete for the reveal and defeat aftermath packages as of 2026-08-29.
 
-The permanent detailed record is [031_random_terror_super_event_research.md](../../../../super_events/031_random_terror_super_event_research.md).
+The permanent detailed record is [031_random_terror_super_event_research.md](../../../super_events/031_random_terror_super_event_research.md).
 
 No localisation, event, super-event wiring, asset, audio, or gameplay file was edited.
 
@@ -64,5 +64,5 @@ No localisation, event, super-event wiring, asset, audio, or gameplay file was e
 
 ## Changed paths
 
-- [docs/super_events/031_random_terror_super_event_research.md](../../../../super_events/031_random_terror_super_event_research.md)
+- [docs/super_events/031_random_terror_super_event_research.md](../../../super_events/031_random_terror_super_event_research.md)
 - [docs/plans/031_random_terror_plans/subagent_handoffs/031_random_terror_super_event_text_research_handoff.md](031_random_terror_super_event_text_research_handoff.md)

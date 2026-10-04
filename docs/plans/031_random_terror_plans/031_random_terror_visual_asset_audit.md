@@ -2,6 +2,15 @@
 
 ## Scope and method
 
+Current audit status on 2026-10-03: incomplete.
+
+The row-level current inventory is `031_random_terror_visual_asset_inventory.md`, which records 444 runtime files.
+Nine portrait identities have reachable history/role consumers and 36 additional roleless definitions still need active recruitment and selection.
+Update 2026-10-04: commit `cfe741c34` recruits the 36 pool definitions through the carrier histories and promotes one at actor setup and on carrier reuse, so all 45 portraits now have a recruitment and selection consumer; displayed portraits remain live-game validation for the user.
+Commit `26ef0bb94` adds two runtime files outside the 444-file inventory: the Terror Activity map mode buttons `gfx/interface/mapmode/custom/random_terror_state_map_mode_selected.dds` and `_deselected.dds` (20x18, native-alpha source and family contact sheet under `evidence/map_mode_buttons_20261004/`).
+
+The family table below is reconciled with that inventory, while older route evidence retains its original validation limits.
+
 This audit traces every Event 31 visual from gameplay or interface consumer to registered sprite and runtime file, then reverses the inventory from each runtime file back to an intended consumer, source record, processed output, and DDS or TGA round trip.
 
 The comparison baseline is the installed Hearts of Iron IV 1.19.2 asset family and the canonical Chaos Redux reference library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references`.
@@ -14,21 +23,24 @@ Event 31 has no dedicated scripted GUI, 3D model, custom unit, bespoke counter, 
 
 | Family | Runtime files before repair | Accepted runtime files | Consumer | Audit state | Disposition |
 | --- | ---: | ---: | --- | --- | --- |
-| Focus icons | 114 | 114 | `random_terror_actor_focus_tree` | Focus MCP raster and individual visual audit in progress | All 114 base sprites retained; 114 missing `_shine` consumers added in `interface/031_random_terror_shine.gfx`. |
-| Idea icons | 29 | 29 | Event 31 national-spirit lifecycles | Individual specialist audit in progress | Pending specialist handoff. |
-| Decision and mission icons | 48 | 48 | Event 31 decisions and missions | Repair in progress | The inherited detailed scene family failed at 32x32; all 48 are being regenerated as simple high-contrast native-scale icons. |
+| Focus icons | 114 | 114 | `random_terror_actor_focus_tree` | Parent family visual review complete, current route audit open | All 114 base sprites retained with `_shine` consumers in `interface/031_random_terror_shine.gfx`. |
+| Idea icons | 29 | 29 | Event 31 national-spirit lifecycles | Parent family visual review complete | Exact lifecycle audit remains part of focus and completion review. |
+| Decision and mission icons | 48 | 48 | Event 31 decisions and missions | Processing and runtime repair complete | The original 48-output comparison is retained as historical evidence. Capital defense subsequently received a reviewed native-alpha edit and exact current DDS comparison, resolving its RGB-removal procedure gap. The other 47 runtime files are unchanged. |
 | Decision-category pictures | 3 | 3 | Government, actor, and scenario categories | Individual specialist audit complete | All three source, processed, DDS, and decoded-roundtrip views pass; their three live category sprites are consumed by `common/decisions/categories/031_random_terror_categories.txt`. |
 | News pictures | 6 | 6 | `chaosx.news.310` through `chaosx.news.315` | Consumer and native visual audit complete | Retained. |
 | Report pictures | 18 | 16 | `chaosx.nr31.2` through `chaosx.nr31.91` visible report callbacks | Wiring and visual repair complete | Report 04 was regenerated from an original fictional ImageGen source and passes exact DDS roundtrip validation. The two surplus runtime scenes were removed after preserving their documentation evidence and disposition. |
 | Super-event pictures | 2 | 2 | Event 31 reveal and defeat super events | Native visual audit complete; specialist rights/wiring evidence retained | Retained. |
-| Country-leader portraits | 45 | 45 | Eight carrier packages and entity/static consumers | Individual specialist audit in progress | Pending portrait handoff. |
-| Entity animation | 2 | 2 | Shared Event Details evolution portrait with static fallback | Consumer verified; frame audit in progress | Ten real generated frames retained unless the frame audit identifies a concrete defect. |
-| Faction emblems | 8 | 8 | Four large two-frame faction logos and four miniature logos | Wiring repaired; individual specialist audit in progress | Regional coordination, network confederation, Jihadist International, and Final Jihad command consumers registered. |
+| Country-leader portraits | 45 | 45 | Nine reachable identities and 36 roleless pool definitions | Producer audit/archive delivered, complete consumer and independent review open | Current 45-source archive and hashes exist. History/selection for 36, original prompts and two source-to-DDS equality records remain open. |
+| Entity animation | 1 | 1 | Shared Event Details evolution portrait | Sheet and static consumer verified, frame visual review complete | The ten-frame sheet is one runtime file. The static fallback is counted once in the portrait family. |
+| Faction emblems | 8 | 8 | Four large two-frame faction logos and four miniature logos | Parent visual review complete | Regional coordination, network confederation, Jihadist International, and Final Jihad command consumers registered. |
 | Achievement states | 36 | 36 | Twelve achievements with colored, grey, and not-eligible states | Individual audit complete | All 36 retained; no crop, overlay, or readability repair required. |
 | Cosmetic flags | 111 | 111 | Thirty-seven cosmetic identities at normal, medium, and small sizes | Consumer rotation and individual specialist audit complete | All 111 files pass native/enlarged inspection and exact processed-to-TGA roundtrip checks. All 37 identities now have deterministic active or dormant consumers; no weighted selection was introduced. |
-| Text icon | 1 | 1 | Network Authority text-icon consumer | Individual specialist audit in progress | Pending specialist handoff. |
+| Base carrier flags | 24 | 24 | JHX, JIX, JKX, JLX, JMX, JNX, JOX, and JPX engine tag lookup | Current flag ladder reviewed | Three sizes per carrier, matching the dormant cosmetic designs. These were absent from the older inventory total. |
+| Text icon | 1 | 1 | Network Authority text-icon consumer | Parent visual review complete | Exact sprite and texticon consumer retained. |
 
-The accepted post-repair inventory is 421 runtime visual files.
+The current runtime inventory is 444 visual files.
+
+The older 421 total double-counted the static entity fallback and omitted 24 base carrier flag files.
 
 ## Report-art consumer matrix
 
@@ -71,15 +83,18 @@ The accepted post-repair inventory is 421 runtime visual files.
 | Focus inspect, render, and raster | The parent repaired the isolated `random_terror_mass_defection` node by restoring its intended prerequisite on `random_terror_foreign_fighters`. Post-change inspect and structural render cover all 114 focuses at 8,752x3,136 with 104 connectors, zero crossings, zero node intersections, and zero same-row spacing violations. The post-change high-fidelity raster retry failed with the exact MCP blocker `timed out awaiting tools/call after 180s`; the earlier pre-fix raster remains visual evidence for the icon set, but it is not treated as post-fix topology proof. The six `add_army_experience` “missing helper” diagnostics are a tool classification defect because `add_army_experience` is a documented vanilla country effect. |
 | Event inspect and render | Event inspect is available and ran against `chaosx.nr31.1`, returning no Event 31-specific blocker but only a partial full-workspace lint artifact. Event render accepted the exact Event 31 namespace selector but did not complete after more than six minutes and was terminated; the exact blocker is that the installed route still expanded into an unbounded full-workspace render instead of returning namespace-scoped evidence. A final retry remains pending after the two active asset repairs land. |
 | GUI inspect/render/rewrite | Event 31 introduces no dedicated scripted GUI and the event UI worker remains explicitly excluded. Because Global Jihad is selected through the shared `chaosx_scenarios_window`, the parent ran the mandatory shared-window inspector and renderer with Event 31 selected, Random Pattern, and Maximum intensity. Both routes completed at 1920x1080 and UI scale 1; the inspector reported no missing fields. The render artifact is `chaosx_scenarios_window-full.svg`. No GUI rewrite was required because the shared layout did not change; inherited overlap/alignment diagnostics remain shared-window findings. |
-| Technology inspect/render/compare | Inapplicable: Event 31 adds no technology or doctrine tree and uses compatible existing technologies. |
-| Map inspect/rewrite | No declarative Event 31 map file or dedicated map GUI exists. Exact state presentation is provided through ordinary state-targeted decisions and missions, so there is no supported Event 31 map rewrite target. |
+| Technology inspect/render/compare | Carrier technology compatibility is in scope even though Event 31 adds no technology tree. The required `hoi4.tech_inspect` attempt for `infantry_weapons` failed with `tool call failed for hoi4_agent_tools/hoi4.tech_inspect: timed out awaiting tools/call after 180s`. No source-only check is treated as equivalent engine evidence. |
+| Map inspect/rewrite | Carrier fallback capitals and exact state transfers are in scope. The required state-104 map inspection failed with `tool call failed for hoi4_agent_tools/hoi4.map_inspect: timed out awaiting tools/call after 180s`. Event 31 changes no declarative map geometry, so no map rewrite is required. |
 
 ## Pending specialist evidence
 
 - `subagent_handoffs/031_report_04_visual_repair_handoff.md` — reviewed, accepted, registered, and wired.
-- `subagent_handoffs/031_decision_mission_icon_visual_repair_handoff.md`
+- `subagent_handoffs/031_decision_mission_icon_visual_repair_handoff.md` records installed outputs and current parent verification.
 - `subagent_handoffs/031_focus_idea_system_visual_audit_handoff.md`
 - `subagent_handoffs/031_portrait_visual_audit_handoff.md`
 - `subagent_handoffs/031_flags_categories_visual_audit_handoff.md` — reviewed and integrated; its parent wiring notes are resolved by the live category consumers and deterministic cosmetic-tag cycles.
 
-The audit remains open until every pending handoff is reviewed, the two surplus report files are removed from runtime, all final files pass reverse-consumer reconciliation, and the post-change MCP and source audits are complete.
+The audit remains open until the source-provenance/equality gaps, independent reviews and current MCP/source audits are complete; the 36 portrait recruit/selection consumers are implemented in `cfe741c34` and await live-game validation.
+The capital-defense transparency procedure gap is resolved by its actual native ImageGen repair, documented in `subagent_handoffs/031_prevent_capital_icon_native_alpha_repair_20261003.md`.
+
+The complete temporary asset workspace remains available during this incomplete state.
