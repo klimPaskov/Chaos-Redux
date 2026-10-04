@@ -128,7 +128,7 @@ chaosx_nr25_prepare_rival_cards = {
 				set_variable = { ROOT.chaosx_nr25_rival_slot_1_id = THIS.id }
 				ROOT = { set_country_flag = chaosx_nr25_rival_slot_1_visible }
 				if = {
-					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					limit = { check_variable = { var = chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
 					ROOT = { set_country_flag = chaosx_nr25_rival_slot_1_selected set_country_flag = chaosx_nr25_rival_target_selected }
 				}
 			}
@@ -137,7 +137,7 @@ chaosx_nr25_prepare_rival_cards = {
 				set_variable = { ROOT.chaosx_nr25_rival_slot_2_id = THIS.id }
 				ROOT = { set_country_flag = chaosx_nr25_rival_slot_2_visible }
 				if = {
-					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					limit = { check_variable = { var = chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
 					ROOT = { set_country_flag = chaosx_nr25_rival_slot_2_selected set_country_flag = chaosx_nr25_rival_target_selected }
 				}
 			}
@@ -146,7 +146,7 @@ chaosx_nr25_prepare_rival_cards = {
 				set_variable = { ROOT.chaosx_nr25_rival_slot_3_id = THIS.id }
 				ROOT = { set_country_flag = chaosx_nr25_rival_slot_3_visible }
 				if = {
-					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					limit = { check_variable = { var = chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
 					ROOT = { set_country_flag = chaosx_nr25_rival_slot_3_selected set_country_flag = chaosx_nr25_rival_target_selected }
 				}
 			}
@@ -2205,7 +2205,7 @@ chaosx_nr25_apply_militarisation_target = {
 		}
 		event_target:chaosx_nr25_rival_target_scope = {
 			if = {
-				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
+				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
 				if = {
 					limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
 					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss }
@@ -2216,7 +2216,7 @@ chaosx_nr25_apply_militarisation_target = {
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
 			}
 			if = {
-				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
+				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
 				if = {
 					limit = { has_country_flag = chaosx_nr25_outpost_established }
 					set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
@@ -2232,7 +2232,7 @@ chaosx_nr25_apply_militarisation_target = {
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
 			}
 			if = {
-				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } }
+				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } }
 				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss }
 				add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_readiness_loss }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rival }
@@ -2240,7 +2240,7 @@ chaosx_nr25_apply_militarisation_target = {
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
 			}
 			if = {
-				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } }
+				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } }
 				set_country_flag = chaosx_nr25_rescue_received
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_rescue_debt }
 				ROOT = { set_country_flag = chaosx_nr25_rescue_target_was_valid }
