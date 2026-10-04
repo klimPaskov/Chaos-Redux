@@ -275,6 +275,9 @@ initialize_event_cluster_definitions = {
 		array = global.event_cluster_unlock_tier_entries
 		value = constant:event_cluster_diseases.unlock_tier
 	}
+	add_to_array = { global.event_clusters = constant:event_cluster_id.national_breakthroughs }
+	add_to_array = { array = global.event_cluster_type_entries value = constant:event_cluster_type.repeatable }
+	add_to_array = { array = global.event_cluster_unlock_tier_entries value = constant:event_cluster_national_breakthroughs.unlock_tier }
 	add_to_array = { global.event_clusters = constant:event_cluster_id.random_stuff }
 	add_to_array = {
 		array = global.event_cluster_type_entries
@@ -726,6 +729,16 @@ event_cluster_get_member_effective_min_tier = {
 			}
 		}
 		set_temp_variable = { event_cluster_member_effective_min_tier = event_cluster_member_severity_floor }
+	}
+	# Event 027's accepted Medium classification describes its global scope.
+	# Its National Breakthroughs row retains the accepted Calm World gate.
+	if = {
+		limit = {
+			check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs }
+			check_variable = { event_cluster_member_event_id = constant:doctrine_research_event.id }
+			check_variable = { event_cluster_member_row_id = constant:doctrine_research_event.cluster_member_row_id }
+		}
+		set_temp_variable = { event_cluster_member_effective_min_tier = constant:chaos_meter_tier_id.tier_0 }
 	}
 }
 
@@ -1368,6 +1381,18 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
 		}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } }
+		# Only implemented members enter runtime. The other accepted concept
+		# rows remain catalogued until their own event reworks are complete.
+		set_temp_variable = { event_cluster_member_event_id = constant:doctrine_research_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:doctrine_research_event.cluster_member_row_id }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
+	}
 }
 
 event_cluster_resolve_trigger_member_row = {
@@ -1781,6 +1806,12 @@ event_cluster_check_cluster_gates = {
 						has_global_flag = event_cluster_diseases_cooldown
 					}
 				}
+				NOT = {
+					AND = {
+						check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs }
+						has_global_flag = event_cluster_national_breakthroughs_cooldown
+					}
+				}
 				NOT = { is_in_array = { global.disabled_event_clusters = event_cluster_id } }
 			}
 			set_temp_variable = { event_cluster_cluster_gates_passed = 1 }
@@ -2056,6 +2087,7 @@ evaluate_event_cluster_unavailability_reason = {
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.formables } has_global_flag = event_cluster_formables_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.economy_positive } has_global_flag = event_cluster_economy_positive_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.diseases } has_global_flag = event_cluster_diseases_cooldown }
+						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } has_global_flag = event_cluster_national_breakthroughs_cooldown }
 						AND = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } has_global_flag = event_cluster_random_stuff_cooldown }
 					}
 				}
@@ -3305,6 +3337,11 @@ mark_event_cluster_fired_state = {
 		}
 		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.diseases }
 		set_global_flag = { flag = event_cluster_diseases_cooldown days = event_cluster_cooldown_days }
+	}
+	else_if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.national_breakthroughs } }
+		set_temp_variable = { event_cluster_cooldown_days = constant:event_cluster_cooldown_days.national_breakthroughs }
+		set_global_flag = { flag = event_cluster_national_breakthroughs_cooldown days = event_cluster_cooldown_days }
 	}
 	else_if = {
 		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } }

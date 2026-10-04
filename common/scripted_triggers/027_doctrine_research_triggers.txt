@@ -185,6 +185,16 @@ doctrine_research_country_is_live = {
 	}
 }
 
+doctrine_research_achievement_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	NOT = { has_global_flag = doctrine_research_achievement_forced_setup_used }
+	NOT = { has_country_flag = doctrine_research_achievement_debug_setup_used }
+	NOT = { has_country_flag = chaosx_test_country_initialized }
+	NOT = { has_country_flag = doctrine_research_state_corrupt }
+	doctrine_research_country_state_is_aligned = yes
+}
+
 doctrine_research_army_adoption_available = {
 	NOT = { has_any_grand_doctrine = land }
 	always = yes
@@ -202,6 +212,9 @@ doctrine_research_special_forces_adoption_available = {
 		has_dlc = "No Compromise, No Surrender"
 		has_dlc = "Arms Against Tyranny"
 	}
+	# An unregistered custom Grand Doctrine still owns this native folder.
+	# Recognized-token checks alone must never authorize its replacement.
+	NOT = { has_any_grand_doctrine = special_forces }
 	NOT = {
 		OR = {
 			has_doctrine = special_forces_quantity
@@ -1427,6 +1440,7 @@ doctrine_research_selected_domain_adoption_available = {
 
 doctrine_research_country_state_is_aligned = {
 	AND = {
+		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_firing_ids^num compare = equals }
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_stages^num compare = equals }
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_sizes^num compare = equals }
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_remaining_choices^num compare = equals }
@@ -1438,6 +1452,7 @@ doctrine_research_country_state_is_aligned = {
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_start_empty_air^num compare = equals }
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_start_empty_special_forces^num compare = equals }
 		check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_batch_start_empty_chaos_warfare^num compare = equals }
+		check_variable = { var = doctrine_research_receipt_ids^num value = doctrine_research_receipt_batch_ids^num compare = equals }
 		check_variable = { var = doctrine_research_receipt_ids^num value = doctrine_research_receipt_choice_numbers^num compare = equals }
 		check_variable = { var = doctrine_research_receipt_ids^num value = doctrine_research_receipt_states^num compare = equals }
 		check_variable = { var = doctrine_research_receipt_ids^num value = doctrine_research_receipt_actions^num compare = equals }
@@ -4190,6 +4205,9 @@ doctrine_research_native_mastery_adapter_is_verified = {
 	}
 }
 
+# Empty-track assignment uses native set_sub_doctrine with the folder and the
+# documented numeric track index, re-reads the banked level, then runs the
+# same exact one-step mastery transaction as an occupied track.
 doctrine_research_empty_track_is_verified = {
 	doctrine_research_native_mastery_adapter_is_verified = yes
 }

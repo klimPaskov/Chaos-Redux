@@ -1,7 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 027 ACHIEVEMENT TRACKING
 # ============================================================================
-# Durable achievement evidence is derived only from choice_consumed receipts.
+# Durable achievement evidence is derived only from choice_consumed receipts
+# of the active or closing batch.
 # Native doctrine state, queued batches, adoption, and AI transactions cannot
 # satisfy an Event 027 achievement unless the receipt ledger proves the event
 # choice itself performed the required work.
@@ -11,19 +12,24 @@ doctrine_research_achievement_first_lesson_check = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = doctrine_research_achievement_first_lesson }
-			has_variable = doctrine_research_batch_ids
+			doctrine_research_achievement_campaign_is_valid = yes
+			check_variable = { doctrine_research_active_batch_index > constant:doctrine_research_event.invalid_index }
+			check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_active_batch_index compare = greater_than }
 		}
 		set_temp_variable = { doctrine_research_first_lesson_found = 0 }
+		# Only the active or closing batch is examined; older rows are compacted.
+		set_temp_variable = { doctrine_research_achievement_batch_end = doctrine_research_active_batch_index }
+		add_to_temp_variable = { doctrine_research_achievement_batch_end = 1 }
 		for_loop_effect = {
-			start = constant:doctrine_research_event.first_index
-			end = doctrine_research_batch_ids^num
+			start = doctrine_research_active_batch_index
+			end = doctrine_research_achievement_batch_end
 			value = doctrine_research_achievement_batch_index
 			if = {
 				limit = {
 					check_variable = { doctrine_research_first_lesson_found < 1 }
 					check_variable = { var = doctrine_research_batch_human_started^doctrine_research_achievement_batch_index value = 0 compare = greater_than }
 					check_variable = { var = doctrine_research_batch_sizes^doctrine_research_achievement_batch_index value = 1 compare = greater_than }
-					has_variable = doctrine_research_receipt_ids
+					check_variable = { doctrine_research_receipt_ids^num > 0 }
 				}
 				set_temp_variable = { doctrine_research_first_lesson_batch_id = doctrine_research_batch_ids^doctrine_research_achievement_batch_index }
 				for_loop_effect = {
@@ -80,13 +86,18 @@ doctrine_research_achievement_single_school_check = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = doctrine_research_achievement_single_school }
-			has_variable = doctrine_research_batch_ids
-			has_variable = doctrine_research_receipt_ids
+			doctrine_research_achievement_campaign_is_valid = yes
+			check_variable = { doctrine_research_active_batch_index > constant:doctrine_research_event.invalid_index }
+			check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_active_batch_index compare = greater_than }
+			check_variable = { doctrine_research_receipt_ids^num > 0 }
 		}
 		set_temp_variable = { doctrine_research_single_school_found = 0 }
+		# Only the active or closing batch is examined; older rows are compacted.
+		set_temp_variable = { doctrine_research_achievement_batch_end = doctrine_research_active_batch_index }
+		add_to_temp_variable = { doctrine_research_achievement_batch_end = 1 }
 		for_loop_effect = {
-			start = constant:doctrine_research_event.first_index
-			end = doctrine_research_batch_ids^num
+			start = doctrine_research_active_batch_index
+			end = doctrine_research_achievement_batch_end
 			value = doctrine_research_achievement_batch_index
 			if = {
 				limit = {
@@ -168,13 +179,18 @@ doctrine_research_achievement_joint_curriculum_check = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = doctrine_research_achievement_joint_curriculum }
-			has_variable = doctrine_research_batch_ids
-			has_variable = doctrine_research_receipt_ids
+			doctrine_research_achievement_campaign_is_valid = yes
+			check_variable = { doctrine_research_active_batch_index > constant:doctrine_research_event.invalid_index }
+			check_variable = { var = doctrine_research_batch_ids^num value = doctrine_research_active_batch_index compare = greater_than }
+			check_variable = { doctrine_research_receipt_ids^num > 0 }
 		}
 		set_temp_variable = { doctrine_research_joint_curriculum_found = 0 }
+		# Only the active or closing batch is examined; older rows are compacted.
+		set_temp_variable = { doctrine_research_achievement_batch_end = doctrine_research_active_batch_index }
+		add_to_temp_variable = { doctrine_research_achievement_batch_end = 1 }
 		for_loop_effect = {
-			start = constant:doctrine_research_event.first_index
-			end = doctrine_research_batch_ids^num
+			start = doctrine_research_active_batch_index
+			end = doctrine_research_achievement_batch_end
 			value = doctrine_research_achievement_batch_index
 			if = {
 				limit = {
