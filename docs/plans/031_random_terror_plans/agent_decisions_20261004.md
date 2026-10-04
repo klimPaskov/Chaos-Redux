@@ -319,3 +319,15 @@ The reward said the parent "loses" a negative stability and war support value, w
 - `hoi4.decision_inspect` in inventory mode returns the whole-repository inventory (8,120 decisions, `DECISION_ANALYZED_PARTIAL`) and gives no per-decision evidence for this review.
 - `hoi4.probability_inspect` with the `decision_ai_will_do` adapter and a one-decision candidate pool still fails with "Invalid tool arguments"; no AI weight changed in this pass.
 - `needs_live_game`: the recovery priority state row, the map mode delayed tooltip and the `[?var.GetName]` mission names in the government category header.
+
+## Round 2 decisions
+
+The round 2 assessment of 2026-10-05 listed new source findings and took the decisions below under the same delegated authority.
+Each is `implemented` in the commit named beside it; live-game behaviour remains with the user.
+
+### R29 Timed flags take literal durations
+
+Eight timed flags passed a bare temporary variable as `days`: recent incident, pulse pending, response action lock, actor action lock, ideological mobilization, state reinforcement, coup active and government paralysis.
+Vanilla `common/scripted_effects/SOV_scripted_effects.txt:28` keeps the variable form commented out with the note that it does not work with variables, vanilla `SIA_scripted_effects.txt:780` only passes `days = var:<normal variable>`, and the wiki Effects table lists `days` as `<int>` for `set_country_flag`.
+A dropped duration would have made the action locks and the pulse guard permanent, so every site now builds the flag through `meta_effect` with `[?temp|.0]`, the pattern already used for the target reservation flag, and every duration is unchanged.
+`add_dynamic_modifier` keeps its variable `days`, which `documentation/effects_documentation.md:1166` allows.

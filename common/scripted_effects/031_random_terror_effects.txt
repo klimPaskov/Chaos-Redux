@@ -871,7 +871,10 @@ random_terror_apply_incident = {
 		add_to_variable = { random_terror_incident_count = 1 }
 		random_terror_achievement_record_incident = yes
 		set_temp_variable = { random_terror_incident_memory_duration = constant:random_terror_tuning.incident_memory_days }
-		set_country_flag = { flag = random_terror_recent_incident days = random_terror_incident_memory_duration }
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_recent_incident days = [MEMORY_DAYS] } }
+			MEMORY_DAYS = "[?random_terror_incident_memory_duration|.0]"
+		}
 		country_event = { id = chaosx.nr31.2 days = 1 }
 	}
 	# Re-read the stage before the controller refreshes its priority crisis
@@ -942,7 +945,10 @@ random_terror_schedule_country_pulse = {
 		round_temp_variable = random_terror_pulse_delay_days
 		set_temp_variable = { random_terror_pulse_guard_days = random_terror_pulse_delay_days }
 		add_to_temp_variable = { random_terror_pulse_guard_days = constant:random_terror_tuning.pulse_flag_buffer_days }
-		set_country_flag = { flag = random_terror_pulse_pending days = random_terror_pulse_guard_days }
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_pulse_pending days = [GUARD_DAYS] } }
+			GUARD_DAYS = "[?random_terror_pulse_guard_days|.0]"
+		}
 		country_event = { id = chaosx.nr31.96 days = random_terror_pulse_delay_days }
 	}
 }
@@ -3274,7 +3280,10 @@ random_terror_response_raise_legitimacy = {
 
 random_terror_response_action_lock = {
 	set_temp_variable = { random_terror_response_action_lock_duration = constant:random_terror_tuning.decision_action_cooldown_days }
-	set_country_flag = { flag = random_terror_action_recent days = random_terror_response_action_lock_duration }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_action_recent days = [LOCK_DAYS] } }
+		LOCK_DAYS = "[?random_terror_response_action_lock_duration|.0]"
+	}
 	set_country_flag = random_terror_response_action_recorded
 }
 
@@ -3598,7 +3607,10 @@ random_terror_actor_action_common = {
 	if = {
 		limit = { NOT = { check_variable = { random_terror_focus_context = constant:random_terror_value.one } } }
 		set_temp_variable = { random_terror_actor_action_lock_duration = constant:random_terror_tuning.actor_action_cooldown_days }
-		set_country_flag = { flag = random_terror_actor_action_lock days = random_terror_actor_action_lock_duration }
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_actor_action_lock days = [LOCK_DAYS] } }
+			LOCK_DAYS = "[?random_terror_actor_action_lock_duration|.0]"
+		}
 	}
 	add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
 	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -3768,7 +3780,10 @@ random_terror_actor_ideological_mobilization = {
 	}
 	set_temp_variable = { random_terror_mobilization_days = constant:random_terror_mobilization.mobilization_days }
 	add_dynamic_modifier = { modifier = random_terror_mobilized_cadres days = random_terror_mobilization_days }
-	set_country_flag = { flag = random_terror_ideological_mobilization_active days = random_terror_mobilization_days }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_ideological_mobilization_active days = [MOBILIZATION_DAYS] } }
+		MOBILIZATION_DAYS = "[?random_terror_mobilization_days|.0]"
+	}
 	set_country_flag = random_terror_ideological_mobilization_recorded
 	random_terror_actor_action_common = yes
 }
@@ -4938,7 +4953,10 @@ random_terror_commit_reinforcement = {
 		limit = { has_event_target = random_terror_action_state }
 		set_temp_variable = { random_terror_reinforcement_duration = constant:random_terror_tuning.reinforcement_days }
 		event_target:random_terror_action_state = {
-			set_state_flag = { flag = random_terror_state_reinforced days = random_terror_reinforcement_duration }
+			meta_effect = {
+				text = { set_state_flag = { flag = random_terror_state_reinforced days = [REINFORCEMENT_DAYS] } }
+				REINFORCEMENT_DAYS = "[?random_terror_reinforcement_duration|.0]"
+			}
 		}
 	}
 }
@@ -5894,8 +5912,13 @@ random_terror_trigger_coup_attempt = {
 		}
 		set_country_flag = random_terror_coup_attempted
 		set_temp_variable = { random_terror_coup_duration = constant:random_terror_tuning.coup_crisis_days }
-		set_country_flag = { flag = random_terror_coup_active days = random_terror_coup_duration }
-		set_country_flag = { flag = random_terror_government_paralysis days = random_terror_coup_duration }
+		meta_effect = {
+			text = {
+				set_country_flag = { flag = random_terror_coup_active days = [COUP_DAYS] }
+				set_country_flag = { flag = random_terror_government_paralysis days = [COUP_DAYS] }
+			}
+			COUP_DAYS = "[?random_terror_coup_duration|.0]"
+		}
 		set_temp_variable = { random_terror_coup_stability_delta = constant:random_terror_tuning.actor_stability_restriction_delta }
 		multiply_temp_variable = { random_terror_coup_stability_delta = -1 }
 		add_stability = random_terror_coup_stability_delta
