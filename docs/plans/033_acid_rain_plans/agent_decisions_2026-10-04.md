@@ -239,3 +239,12 @@ The dissipation report (109) lists duration, worldwide deaths, states reached ou
 Preparedness reads as a whole percentage in the arrival and casualty reports as well, matching the decision category and world map, and the two legacy migration modifiers have names and descriptions.
 MCP route evidence: `hoi4.event_inspect` (`mode = lint`, selector `{kind = event, eventId = chaosx.nr33.107}`, helpers off) returned `EVENT_INSPECTED_PARTIAL` with 0 blocking diagnostics at revision `5719043420248110bbe4bc663b73ccd1d5b12e6ef7b4d318b2389c6c870dc467`.
 How the engine lays out the longer report text in the event window is a live-game check.
+
+### D28. World map at formation and live national strip
+
+Disposition: implemented (commit "Open the Acid Rain world map at formation and keep each open map current").
+Part 6 opens the map automatically at formation only for players whose selected country has an active or warned state; the mod has no settings option for opening major-event windows for all players, so that branch does not exist.
+After the formation stage commits, `acid_rain_gui_open_at_formation` runs the normal read-only open for every human country carrying the warning or exposure flag, once per generation behind `acid_rain_formation_map_opened` (cleared with the other generation flags), so a duplicate formation opens nothing; the super-event and its audio are unchanged and closing either window has no gameplay effect.
+The national strip copy moved out of `acid_rain_gui_refresh_read_only` into `acid_rain_gui_refresh_national_strip`, which the full refresh still calls.
+Inside the host worker's existing participant loop, every human country with an open map of the current generation runs that strip refresh, and the host refresh that follows projects the shared world view, so Preparedness, warned, exposed, severe and aftermath counts, deaths and deaths prevented change on the next worker tick without a click.
+Only the strip, not the whole projection, runs per viewer, because the world view is shared and the host already projects it every tick; no world iterator was added and the refresh still writes only presentation variables.

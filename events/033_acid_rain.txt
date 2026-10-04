@@ -45,6 +45,16 @@ country_event = {
 			news_event = { id = chaosx.nr33.201 days = 2 }
 		}
 		acid_rain_apply_formation_stage = yes
+		# Players whose territory is already warned or exposed see the world map
+		# once, when the formation commits; a duplicate formation opens nothing.
+		if = {
+			limit = {
+				has_global_flag = acid_rain_runtime_active
+				NOT = { has_global_flag = acid_rain_formation_map_opened }
+			}
+			set_global_flag = acid_rain_formation_map_opened
+			acid_rain_gui_open_at_formation = yes
+		}
 	}
 }
 

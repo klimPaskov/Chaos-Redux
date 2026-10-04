@@ -1203,6 +1203,7 @@ acid_rain_reset_generation_flags = {
 	clr_global_flag = acid_rain_third_front_stable_receipt
 	clr_global_flag = acid_rain_warning_registry_overflow
 	clr_global_flag = acid_rain_super_event_sent
+	clr_global_flag = acid_rain_formation_map_opened
 	clr_global_flag = acid_rain
 }
 
@@ -5315,6 +5316,17 @@ acid_rain_host_worker = {
 		array = global.acid_rain_participant_countries
 		acid_rain_project_country_obligations = yes
 		acid_rain_033_achievement_check_runtime_country = yes
+		# A player's open world map shows that player's own national strip, so
+		# refresh it here; the host refresh below projects the shared world view.
+		if = {
+			limit = {
+				is_ai = no
+				has_country_flag = acid_rain_gui_window_open
+				has_variable = acid_rain_gui_view_generation
+				check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
+			}
+			acid_rain_gui_refresh_national_strip = yes
+		}
 	}
 	acid_rain_refresh_world_coverage = yes
 	acid_rain_gui_refresh_read_only = yes

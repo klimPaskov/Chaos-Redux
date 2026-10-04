@@ -68,9 +68,20 @@ Every registry array is created at its bound before indexed writes.
 The frozen registry carries a region index (`global.acid_rain_region_ordered_states` with per-region bounds), so front warnings, arrivals, departures, footprint growth and retirement, and severe-cell pools read only their region in registry order; the index rebuilds itself for a new generation or an older save.
 Cleanup is safe to call repeatedly after dissipation, interruption, host transfer, migration, or reload.
 
+## Reports
+
+Each report reads facts stored on the recipient country, or globally for the final summary, just before it is sent.
+An advance warning arrives once per front visit that reaches the country's controlled states, including a return to the same region; it names the destination region, the days until arrival, the controlled states there, National Preparedness and the weakest protection.
+A forecast arrives once per severe cell or superstorm episode and names the most populous of the country's forecast states and their count.
+An impact report follows the first positive pulse of each episode in the country's territory, with the named state's evacuation status and the days left in the episode.
+The departure report gives the length of the exposure that ended, the states still carrying aftermath and their highest tier, and becomes a temporary respite while a warning still covers the country.
+The dissipation report lists duration, worldwide deaths, states reached, Air Contamination added, severe cells, superstorms and unresolved aftermath.
+
 ## Dashboard
 
 The Acid Rain world map opens from the decision category inlay and from the Event 33 page in Event Details.
+When Acid Rain forms, it also opens once for every player whose territory is already warned or exposed.
+While a map is open, the host's three-day worker refreshes the shared world view and each viewer's own national strip.
 It shows the base map with seven region overlays, visited, ordinary and warning veils, three front markers with warning and severe variants, one severe-storm marker per listed superstorm at the region of its seed state, and the global rain layer.
 Every animated marker and the global layer have a still partner that the motion toggle selects.
 The footer holds Refresh, Back (returning to the decision category or Event Details, whichever opened the map), Details (opening the Event 33 page in Event Details), and the motion toggle.
