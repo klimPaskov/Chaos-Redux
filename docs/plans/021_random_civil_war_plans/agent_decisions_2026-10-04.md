@@ -120,3 +120,18 @@ Decision: the tag guard skips same-tag plans as well as Event 006 plans, and the
 No gate, cost, weight, or plan outcome changes; only the skip reason and skip count become accurate.
 Basis: decision D8 and the acceptance that same-tag rows never use dynamic-tag capacity.
 Contract: `common/scripted_effects/021_random_civil_war_dynamic_tag_effects.md` (Callers).
+
+## R1. Round 1 review: each side keeps its own priority front
+
+Finding from the round 1 skeptical review: `event021_set_priority_front` wrote `random_civil_war_priority_front_state` and its id to the chain ROOT instead of the country being set up.
+Every opening chain initializes the government and each claimant under one ROOT, so the government's receipt ended as the last claimant's anchor and no claimant ever received its own.
+The Evolution I review (D5) runs under the reviewed government as ROOT, so each side it opened overwrote that government's priority front with a state the new side now holds.
+Because Seize an Opposition Depot requires the taker's own priority-front state, the opposition could never take it during the opening phase.
+Decision: the setter writes the receipt to the calling country (`PREV` inside the anchor scope); the decision path is unchanged because its taker is both ROOT and the caller.
+No cost, gate, AI weight, or global target changes; the Seize an Opposition Depot decision becomes reachable for opposition sides as its existing AI weights already intend, which remains `needs_live_game`.
+Contract: `common/scripted_effects/021_random_civil_war_effects.md` (priority front paragraph).
+
+## R2. Round 1 review: successor review carry-over comment
+
+`event021_prepare_successor_roster_adoption` said the review retry date carries over to the successor, but the code copies only the queue receipt, crisis ID, epoch, reviewed front IDs, and management access.
+The comment now matches the code; the successor's grace already defers the review, so no behavior changes.

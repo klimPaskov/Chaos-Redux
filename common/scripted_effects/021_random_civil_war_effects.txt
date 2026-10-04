@@ -1049,6 +1049,9 @@ event021_reject_pending_front_plan_row = {
 # chain. Full cleanup must call `event021_clear_priority_front`. Opening
 # chains pass their chain-local anchor target; a later decision has no such
 # target, so the setter resolves the taker's own front state first.
+# The state receipt is written to the calling country (PREV inside the anchor
+# scope), never to ROOT: an opening or Evolution I review chain initializes
+# several sides under one ROOT, and each side keeps its own priority front.
 event021_set_priority_front = {
 	if = {
 		limit = {
@@ -1063,8 +1066,8 @@ event021_set_priority_front = {
 			# The decision, trigger, localisation, and log surfaces consume normal
 			# state variables. Keep the global target as the persistence carrier,
 			# but publish the same state and id into that single public contract.
-			set_variable = { ROOT.random_civil_war_priority_front_state = THIS }
-			set_variable = { ROOT.random_civil_war_priority_front_state_id = id }
+			set_variable = { PREV.random_civil_war_priority_front_state = THIS }
+			set_variable = { PREV.random_civil_war_priority_front_state_id = id }
 			save_global_event_target_as = random_civil_war_priority_front_state
 		}
 		set_global_flag = random_civil_war_priority_front_active
