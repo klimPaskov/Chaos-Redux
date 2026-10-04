@@ -2137,11 +2137,11 @@ has_manpower > constant:riches_found_decision_cost.manpower_light
 	remove_effect = {
 		FROM = {
 			set_state_flag = riches_found_patronage_tolerated
-			add_political_power = constant:riches_found_action_delta.positive_10
 			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_15 }
 			add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_20 }
 			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_8 }
 		}
+		add_political_power = constant:riches_found_action_delta.positive_10
 		riches_found_reconcile_controller = yes
 		riches_found_refresh_mine_state = yes
 	}
@@ -5054,11 +5054,11 @@ has_manpower > constant:riches_found_decision_cost.manpower_light
 	remove_effect = {
 		FROM = {
 			set_state_flag = riches_found_curse_corruption_tolerated
-			add_political_power = constant:riches_found_action_delta.positive_12
 			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_15 }
 			add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_20 }
 			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 		}
+		add_political_power = constant:riches_found_action_delta.positive_12
 		riches_found_reconcile_controller = yes
 		riches_found_refresh_mine_state = yes
 	}
@@ -5956,7 +5956,10 @@ has_equipment = { convoy_1 > constant:riches_found_decision_cost.convoy_heavy }
 			set_state_flag = riches_found_demons_evacuation_authorized
 			set_state_flag = riches_found_demons_evacuation_preparation_pending
 			set_variable = { riches_found_demons_evacuation_preparation_date = global.date }
-			add_to_variable = { riches_found_demons_evacuation_preparation_date = constant:riches_found_duration.evacuation_preparation_days }
+			set_temp_variable = { chaosx_date_days = constant:riches_found_duration.evacuation_preparation_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { riches_found_demons_evacuation_preparation_date = chaosx_date_offset }
 			state_event = { id = chaosx.nr29.906 days = constant:riches_found_duration.evacuation_preparation_days trigger_for = controller }
 		}
 	}
@@ -7338,7 +7341,8 @@ mission_riches_found_secure_rush = {
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_5 }
 			set_state_flag = riches_found_mission_secure_rush_success
-			set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_secure_rush_subject
 			clr_state_flag = riches_found_mission_secure_rush_progress
 			clr_state_flag = riches_found_claims_court_open
@@ -7361,7 +7365,8 @@ mission_riches_found_secure_rush = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
 					set_state_flag = riches_found_mission_secure_rush_partial
-					set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_secure_rush_subject
 				clr_state_flag = riches_found_mission_secure_rush_progress
 				clr_state_flag = riches_found_claims_court_open
@@ -7374,7 +7379,8 @@ mission_riches_found_secure_rush = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_12 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_12 }
 			set_state_flag = riches_found_mission_secure_rush_failure
-			set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_secure_rush_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_secure_rush_subject
 			clr_state_flag = riches_found_mission_secure_rush_progress
 			clr_state_flag = riches_found_claims_court_open
@@ -7441,7 +7447,8 @@ mission_riches_found_open_railhead = {
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_4 }
 			set_state_flag = riches_found_mission_open_railhead_success
-			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_open_railhead_subject
 			clr_state_flag = riches_found_mission_open_railhead_progress
 		}
@@ -7463,7 +7470,8 @@ mission_riches_found_open_railhead = {
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_6 }
 					set_state_flag = riches_found_mission_open_railhead_partial
-					set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_open_railhead_subject
 				clr_state_flag = riches_found_mission_open_railhead_progress
 				}
@@ -7475,7 +7483,8 @@ mission_riches_found_open_railhead = {
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_8 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 			set_state_flag = riches_found_mission_open_railhead_failure
-			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_open_railhead_subject
 			clr_state_flag = riches_found_mission_open_railhead_progress
 			}
@@ -7554,7 +7563,8 @@ mission_riches_found_protect_pay_train = {
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_4 }
 			set_state_flag = riches_found_mission_protect_pay_train_success
-			set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_protect_pay_train_subject
 			clr_state_flag = riches_found_mission_protect_pay_train_progress
 			clr_state_flag = riches_found_pay_train_route_active
@@ -7580,7 +7590,8 @@ mission_riches_found_protect_pay_train = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
 					set_state_flag = riches_found_mission_protect_pay_train_partial
-					set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_protect_pay_train_subject
 				clr_state_flag = riches_found_mission_protect_pay_train_progress
 				clr_state_flag = riches_found_pay_train_route_active
@@ -7593,7 +7604,8 @@ mission_riches_found_protect_pay_train = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_10 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 			set_state_flag = riches_found_mission_protect_pay_train_failure
-			set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_protect_pay_train_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_protect_pay_train_subject
 			clr_state_flag = riches_found_mission_protect_pay_train_progress
 			clr_state_flag = riches_found_pay_train_route_active
@@ -7664,7 +7676,8 @@ mission_riches_found_break_claim_war = {
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_6 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
 			set_state_flag = riches_found_mission_break_claim_war_success
-			set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_break_claim_war_subject
 			clr_state_flag = riches_found_mission_break_claim_war_progress
 		}
@@ -7686,7 +7699,8 @@ mission_riches_found_break_claim_war = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_4 }
 					set_state_flag = riches_found_mission_break_claim_war_partial
-					set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_break_claim_war_subject
 				clr_state_flag = riches_found_mission_break_claim_war_progress
 				}
@@ -7698,7 +7712,8 @@ mission_riches_found_break_claim_war = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_15 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_15 }
 			set_state_flag = riches_found_mission_break_claim_war_failure
-			set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_break_claim_war_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_break_claim_war_subject
 			clr_state_flag = riches_found_mission_break_claim_war_progress
 			}
@@ -7767,7 +7782,8 @@ mission_riches_found_restore_shaft = {
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_10 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
 			set_state_flag = riches_found_mission_restore_shaft_success
-			set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_restore_shaft_subject
 			clr_state_flag = riches_found_mission_restore_shaft_progress
 			clr_state_flag = riches_found_repair_started
@@ -7790,7 +7806,8 @@ mission_riches_found_restore_shaft = {
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_8 }
 					set_state_flag = riches_found_mission_restore_shaft_partial
-					set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_restore_shaft_subject
 				clr_state_flag = riches_found_mission_restore_shaft_progress
 				clr_state_flag = riches_found_repair_started
@@ -7803,7 +7820,8 @@ mission_riches_found_restore_shaft = {
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_12 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_15 }
 			set_state_flag = riches_found_mission_restore_shaft_failure
-			set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_restore_shaft_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_restore_shaft_subject
 			clr_state_flag = riches_found_mission_restore_shaft_progress
 			clr_state_flag = riches_found_repair_started
@@ -7870,7 +7888,8 @@ mission_riches_found_hold_mine = {
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_4 }
 			set_state_flag = riches_found_mission_hold_mine_success
-			set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_hold_mine_subject
 			clr_state_flag = riches_found_mission_hold_mine_progress
 		}
@@ -7892,7 +7911,8 @@ mission_riches_found_hold_mine = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_2 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 					set_state_flag = riches_found_mission_hold_mine_partial
-					set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_hold_mine_subject
 				clr_state_flag = riches_found_mission_hold_mine_progress
 				}
@@ -7904,7 +7924,8 @@ mission_riches_found_hold_mine = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_15 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_20 }
 			set_state_flag = riches_found_mission_hold_mine_failure
-			set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_hold_mine_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_hold_mine_subject
 			clr_state_flag = riches_found_mission_hold_mine_progress
 			}
@@ -7973,7 +7994,8 @@ mission_riches_found_public_settlement = {
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
 			set_state_flag = riches_found_mission_public_settlement_success
-			set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_public_settlement_subject
 			clr_state_flag = riches_found_mission_public_settlement_progress
 		}
@@ -7995,7 +8017,8 @@ mission_riches_found_public_settlement = {
 					add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
 					set_state_flag = riches_found_mission_public_settlement_partial
-					set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_public_settlement_subject
 				clr_state_flag = riches_found_mission_public_settlement_progress
 				}
@@ -8008,7 +8031,8 @@ mission_riches_found_public_settlement = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.negative_10 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_12 }
 			set_state_flag = riches_found_mission_public_settlement_failure
-			set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_public_settlement_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_public_settlement_subject
 			clr_state_flag = riches_found_mission_public_settlement_progress
 			}
@@ -8077,7 +8101,8 @@ mission_riches_found_audit_concession = {
 				add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.negative_15 }
 				add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.negative_6 }
 			set_state_flag = riches_found_mission_audit_concession_success
-			set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = riches_found_mission_cooldown_days }
 		clr_state_flag = riches_found_mission_audit_concession_subject
 			clr_state_flag = riches_found_mission_audit_concession_progress
 		}
@@ -8099,7 +8124,8 @@ mission_riches_found_audit_concession = {
 					add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_2 }
 					add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_6 }
 					set_state_flag = riches_found_mission_audit_concession_partial
-					set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+					set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_audit_concession_subject
 				clr_state_flag = riches_found_mission_audit_concession_progress
 				}
@@ -8112,7 +8138,8 @@ mission_riches_found_audit_concession = {
 					add_to_variable = { riches_found_illicit_capture = constant:riches_found_action_delta.positive_15 }
 					add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_10 }
 			set_state_flag = riches_found_mission_audit_concession_failure
-			set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = constant:riches_found_duration.mission_cooldown_days }
+			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
+			set_state_flag = { flag = riches_found_mission_audit_concession_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_audit_concession_subject
 			clr_state_flag = riches_found_mission_audit_concession_progress
 			}

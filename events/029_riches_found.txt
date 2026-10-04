@@ -382,7 +382,10 @@ state_event = {
 			set_state_flag = riches_found_demons_evacuation_ready
 			set_state_flag = riches_found_demons_evacuation_route_active
 			set_variable = { riches_found_demons_evacuation_completion_date = global.date }
-			add_to_variable = { riches_found_demons_evacuation_completion_date = constant:riches_found_duration.evacuation_mission_hold_days }
+			set_temp_variable = { chaosx_date_days = constant:riches_found_duration.evacuation_mission_hold_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { riches_found_demons_evacuation_completion_date = chaosx_date_offset }
 			set_temp_variable = { riches_found_input_mission_kind = constant:riches_found_mission_kind.evacuate_workforce }
 			set_temp_variable = { riches_found_input_mission_duration_days = constant:riches_found_duration.evacuation_mission_days }
 			riches_found_start_requested_mission = yes

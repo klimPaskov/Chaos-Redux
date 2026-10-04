@@ -73,8 +73,8 @@ riches_found_state_is_valid_target = {
 	NOT = { riches_found_state_is_excluded_target = yes }
 	OR = {
 		check_variable = { state_population_k > constant:riches_found_threshold.minimum_state_population_thousands }
-		check_variable = { infrastructure > constant:riches_found_threshold.minimum_infrastructure }
-		check_variable = { rail_way > constant:riches_found_threshold.minimum_railway }
+		check_variable = { infrastructure_level > constant:riches_found_threshold.minimum_infrastructure }
+		check_variable = { building_level@rail_way > constant:riches_found_threshold.minimum_railway }
 		supply_node > constant:riches_found_value.zero
 		is_coastal = yes
 	}
@@ -94,8 +94,8 @@ riches_found_state_is_preferred_target = {
 	riches_found_state_is_valid_target = yes
 	OR = {
 		check_variable = { state_population_k > constant:riches_found_threshold.preferred_state_population_thousands }
-		check_variable = { infrastructure > constant:riches_found_threshold.preferred_infrastructure }
-		check_variable = { rail_way > constant:riches_found_threshold.preferred_railway }
+		check_variable = { infrastructure_level > constant:riches_found_threshold.preferred_infrastructure }
+		check_variable = { building_level@rail_way > constant:riches_found_threshold.preferred_railway }
 		supply_node > constant:riches_found_value.zero
 	}
 }
@@ -310,8 +310,8 @@ riches_found_state_has_route_capacity = {
 	riches_found_state_has_transport_route = yes
 	OR = {
 		supply_node > constant:riches_found_value.zero
-		check_variable = { rail_way > constant:riches_found_value.zero }
-		check_variable = { infrastructure > constant:riches_found_threshold.minimum_infrastructure }
+		check_variable = { building_level@rail_way > constant:riches_found_value.zero }
+		check_variable = { infrastructure_level > constant:riches_found_threshold.minimum_infrastructure }
 		naval_base > constant:riches_found_value.zero
 	}
 }

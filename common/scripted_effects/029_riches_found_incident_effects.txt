@@ -67,7 +67,10 @@ riches_found_finish_incident = {
 		}
 		set_temp_variable = { riches_found_incident_interval = constant:riches_found_duration.incident_interval_crisis_days }
 	}
-	add_to_variable = { riches_found_next_incident_date = riches_found_incident_interval }
+	set_temp_variable = { chaosx_date_days = riches_found_incident_interval }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { riches_found_next_incident_date = chaosx_date_offset }
 	riches_found_clamp_mine_values = yes
 	riches_found_queue_report = yes
 }
@@ -78,7 +81,10 @@ riches_found_initialize_incident_clock = {
 	if = {
 		limit = { NOT = { has_variable = riches_found_next_incident_date } }
 		set_variable = { riches_found_next_incident_date = global.date }
-		add_to_variable = { riches_found_next_incident_date = constant:riches_found_duration.incident_interval_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.incident_interval_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_next_incident_date = chaosx_date_offset }
 	}
 }
 
@@ -692,7 +698,10 @@ riches_found_run_contract_outcome_pool = {
 
 riches_found_defer_incident = {
 	set_variable = { riches_found_next_incident_date = global.date }
-	add_to_variable = { riches_found_next_incident_date = constant:riches_found_duration.incident_interval_days }
+	set_temp_variable = { chaosx_date_days = constant:riches_found_duration.incident_interval_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { riches_found_next_incident_date = chaosx_date_offset }
 }
 
 # STATE scope. Called from the controller's registered-mine pulse. The outer

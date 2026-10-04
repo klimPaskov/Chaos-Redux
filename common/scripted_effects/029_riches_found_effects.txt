@@ -365,8 +365,8 @@ riches_found_refresh_mine_capabilities = {
 		limit = {
 			NOT = { is_island_state = yes }
 			OR = {
-				check_variable = { infrastructure > constant:riches_found_value.zero }
-				check_variable = { rail_way > constant:riches_found_value.zero }
+				check_variable = { infrastructure_level > constant:riches_found_value.zero }
+				check_variable = { building_level@rail_way > constant:riches_found_value.zero }
 				supply_node > constant:riches_found_value.zero
 			}
 		}
@@ -1353,7 +1353,10 @@ riches_found_begin_contract = {
 		set_variable = { riches_found_contract_stage = constant:riches_found_contract_stage.active }
 		set_variable = { riches_found_contract_started_date = global.date }
 		set_variable = { riches_found_contract_review_date = global.date }
-		add_to_variable = { riches_found_contract_review_date = constant:riches_found_duration.contract_review_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.contract_review_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_contract_review_date = chaosx_date_offset }
 		set_state_flag = riches_found_contract_active
 		set_state_flag = riches_found_concession_active
 		clr_state_flag = riches_found_contract_expired
@@ -1437,7 +1440,10 @@ riches_found_mark_contract_renewal_due = {
 		set_state_flag = riches_found_contract_renewal_due
 		set_variable = { riches_found_contract_renewal_due_date = global.date }
 		set_variable = { riches_found_contract_expiry_date = global.date }
-		add_to_variable = { riches_found_contract_expiry_date = constant:riches_found_duration.contract_renewal_grace_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.contract_renewal_grace_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_contract_expiry_date = chaosx_date_offset }
 	}
 }
 
@@ -1455,7 +1461,10 @@ riches_found_renew_contract = {
 		clear_variable = riches_found_contract_renewal_due_date
 		clear_variable = riches_found_contract_expiry_date
 		set_variable = { riches_found_contract_review_date = global.date }
-		add_to_variable = { riches_found_contract_review_date = constant:riches_found_duration.contract_review_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.contract_review_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_contract_review_date = chaosx_date_offset }
 		set_variable = { riches_found_contract_last_renewal_date = global.date }
 		add_to_variable = { riches_found_contract_renewal_count = constant:riches_found_value.one }
 		set_state_flag = riches_found_contract_renewed
@@ -1556,7 +1565,10 @@ riches_found_begin_mission = {
 		set_variable = { riches_found_mission_kind = riches_found_input_mission_kind }
 		set_variable = { riches_found_mission_start_date = global.date }
 		set_variable = { riches_found_mission_deadline = global.date }
-		add_to_variable = { riches_found_mission_deadline = riches_found_input_mission_duration_days }
+		set_temp_variable = { chaosx_date_days = riches_found_input_mission_duration_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_mission_deadline = chaosx_date_offset }
 		set_variable = { riches_found_mission_stage = constant:riches_found_mission_stage.active }
 		set_state_flag = riches_found_mission_active
 		set_state_flag = riches_found_mission_cleanup_pending
@@ -1718,8 +1730,11 @@ riches_found_start_requested_mission = {
 		limit = { check_variable = { var = riches_found_requested_mission_allowed value = constant:riches_found_value.one compare = equals } }
 		riches_found_calculate_mission_duration = yes
 		set_variable = { riches_found_mission_progress_date = global.date }
-		add_to_variable = { riches_found_mission_progress_date = riches_found_mission_duration_days }
-		add_to_variable = { riches_found_mission_progress_date = constant:riches_found_duration.mission_progress_margin_days }
+		set_temp_variable = { chaosx_date_days = riches_found_mission_duration_days }
+		add_to_temp_variable = { chaosx_date_days = constant:riches_found_duration.mission_progress_margin_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_mission_progress_date = chaosx_date_offset }
 		set_temp_variable = { riches_found_input_mission_duration_days = riches_found_mission_duration_days }
 		if = {
 			limit = { check_variable = { var = riches_found_input_mission_kind value = constant:riches_found_mission_kind.secure_rush compare = equals } }
@@ -2051,7 +2066,10 @@ riches_found_begin_temporary_closure = {
 		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_closure_start_date = global.date }
 		set_variable = { riches_found_closure_review_date = global.date }
-		add_to_variable = { riches_found_closure_review_date = constant:riches_found_duration.temporary_closure_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.temporary_closure_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_closure_review_date = chaosx_date_offset }
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.temporary_closure_pressure_add }
 		if = { limit = { has_state_flag = riches_found_contract_active } set_state_flag = riches_found_contract_pending_review set_variable = { riches_found_contract_stage = constant:riches_found_contract_stage.suspended } }
 		riches_found_clear_mission_state = yes
@@ -2152,7 +2170,10 @@ riches_found_collapse_mine = {
 		set_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis }
 		set_variable = { riches_found_collapse_date = global.date }
 		set_variable = { riches_found_collapse_recovery_date = global.date }
-		add_to_variable = { riches_found_collapse_recovery_date = constant:riches_found_duration.collapse_recovery_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.collapse_recovery_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_collapse_recovery_date = chaosx_date_offset }
 		add_to_variable = { riches_found_sealed_depth_integrity = constant:riches_found_scaling.collapse_integrity_loss }
 		add_to_variable = { riches_found_extraction_pressure = constant:riches_found_scaling.collapse_pressure_add }
 		riches_found_clamp_mine_values = yes
@@ -2173,7 +2194,10 @@ riches_found_begin_recovery = {
 		set_state_flag = riches_found_recovery_active
 		set_variable = { riches_found_recovery_start_date = global.date }
 		set_variable = { riches_found_recovery_review_date = global.date }
-		add_to_variable = { riches_found_recovery_review_date = constant:riches_found_duration.recovery_review_days }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.recovery_review_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { riches_found_recovery_review_date = chaosx_date_offset }
 		set_variable = { riches_found_phase = constant:riches_found_phase.physical_development }
 	}
 }
