@@ -50,6 +50,7 @@ Missing historical state masters were not recovered; the replacements have indep
 The [achievement artwork record](assets/achievements.md) documents five accepted subjects and fifteen installed deterministic variants, including the narrowly disclosed piercing alpha-edge repair and remaining native/gameplay gates.
 The [category/news scene record](assets/scenes.md) documents two installed original replacements, including the independent impact-news lineage and unrecovered historical-source distinction.
 The [idea artwork record](assets/ideas.md) documents eight installed independent subjects, including the winter alpha-footprint reconciliation and canonical BGRA format correction.
+The [decision artwork record](assets/decisions.md) documents fourteen installed decision-specific subjects, exact existing aliases, retained worker/candidate recovery and unselected format/background-removal trials.
 
 ## Dust helper contracts
 
