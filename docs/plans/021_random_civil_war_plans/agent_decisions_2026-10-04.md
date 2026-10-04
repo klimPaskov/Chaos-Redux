@@ -82,3 +82,12 @@ The decision's `available` and the setter share `event021_priority_front_target_
 `event021_bind_front_plan_row` now replaces the bound receipt only when a plan is published.
 Opening chains keep their exact behavior because they always pass the anchor target.
 Basis: the lead's round-1 assignment and the 2026-09-26 decision audit finding.
+
+## D8. Dynamic civil-war tag capacity is guarded, not extended
+
+Decision: Event 021 counts the declared dynamic pool (D01 to D75 in vanilla `common/country_tags/zz_dynamic_countries.txt`) with a bounded `meta_trigger` loop over `country_exists`, keeps a centralized reserve free for other events, and plans no more new ordinary claimants than remain.
+It does not rely on `is_dynamic_country`, whose installed documentation says D01 to D50, and it does not extend the shared vanilla pool, which every event uses.
+A shortfall rejects an opening, trims optional rows, skips a frozen Fracture Cascade plan, or defers an Evolution I review source, always with the existing `cap_reached` reason; no plan is converted into a same-tag contest, which the user ruled out.
+Fracture Cascade holds tags per frozen country so a Maximum batch cannot overcommit, and releases each hold right after that country's commit.
+Basis: the lead's round-1 assignment, the offline Country creation warning about running out of dynamic countries, and the 2026-10-03 tag-capacity audit that left this blocked.
+Contract: `common/scripted_effects/021_random_civil_war_dynamic_tag_effects.md`.

@@ -65,6 +65,7 @@ Routes come from the source's own route evidence flags.
 The detachable state budget is `maximum_detach_share` of that pool, never cutting the source below `minimum_remnant_states`.
 The source keeps `remnant_division_share` of its live divisions, at least `minimum_remnant_divisions`, and the rest is the child budget.
 The ordinary row capacity is the smallest of spare global fronts, the territory rows the budget allows at `minimum_region_states` each, and the force rows the child budget allows at `minimum_child_divisions` each.
+It is further limited to the free dynamic civil-war tags; when the pool is exhausted and no other side opens, the source is deferred rather than closed.
 `event021_parent_grow_dynamic_ordinary_front_regions` then grows connected regions from the best-scoring anchors, spending the state budget across the ordinary slots still open.
 When the source is the government itself and the crisis is neither an Event 006 nor a same-tag crisis, `event021_parent_collect_dynamic_event6_front_candidates` adds complete Event 006 packages through the existing finder with ROOT as the government.
 

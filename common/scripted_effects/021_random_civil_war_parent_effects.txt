@@ -3000,15 +3000,38 @@ event021_parent_validate_opening_plan = {
 	else = {
 		event021_parent_prepare_dynamic_force_package = yes
 		event021_prepare_parent_remnant = yes
+		# An ordinary claimant needs a free dynamic civil-war tag; a full pool
+		# rejects the opening with the capacity reason instead of changing route.
+		set_temp_variable = { event021_dynamic_tag_short = constant:random_civil_war_value.zero }
+		if = {
+			limit = { NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.event006 compare = equals } } }
+			event021_count_free_dynamic_tags = yes
+			if = {
+				limit = { check_variable = { var = event021_dynamic_tag_free value = constant:random_civil_war_value.one compare = less_than } }
+				set_temp_variable = { event021_dynamic_tag_short = constant:random_civil_war_value.one }
+			}
+		}
 		if = {
 			limit = {
 				random_civil_war_opening_plan_valid = yes
 				event021_parent_opening_force_valid = yes
 				has_country_flag = random_civil_war_dynamic_force_ready
+				check_variable = { var = event021_dynamic_tag_short value = constant:random_civil_war_value.zero compare = equals }
 			}
 			set_country_flag = random_civil_war_parent_plan_valid
 		}
-		else = { clr_country_flag = random_civil_war_parent_plan_valid }
+		else = {
+			clr_country_flag = random_civil_war_parent_plan_valid
+			if = {
+				limit = { check_variable = { var = event021_dynamic_tag_short value = constant:random_civil_war_value.one compare = equals } }
+				set_temp_variable = { event021_cluster_skip_reason = constant:random_civil_war_cluster_skip_reason.cap_reached }
+				event021_parent_record_cluster_skip = yes
+				if = {
+					limit = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+					set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.cap_reached }
+				}
+			}
+		}
 	}
 }
 
@@ -7431,6 +7454,17 @@ event021_parent_freeze_scenario_plan = {
 			}
 			else = { set_temp_variable = { event021_parent_scenario_plan_candidate = constant:random_civil_war_value.zero } }
 		}
+		# Hold one dynamic tag for every new ordinary claimant in this frozen
+		# plan, so later countries in the batch cannot plan past the free pool.
+		if = {
+			limit = { check_variable = { var = event021_parent_scenario_plan_candidate value = constant:random_civil_war_value.one compare = equals } }
+			event021_reserve_scenario_dynamic_tags = yes
+			if = {
+				limit = { check_variable = { var = event021_scenario_dynamic_tags_ready value = constant:random_civil_war_value.zero compare = equals } }
+				set_temp_variable = { event021_parent_scenario_plan_candidate = constant:random_civil_war_value.zero }
+				set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.cap_reached }
+			}
+		}
 		if = {
 			limit = { check_variable = { var = event021_parent_scenario_plan_candidate value = constant:random_civil_war_value.one compare = equals } }
 			set_country_flag = random_civil_war_scenario_plan_frozen
@@ -7491,6 +7525,7 @@ event021_parent_apply_frozen_scenario_plan = {
 # reservations. Durable crisis identity and Event 006 content remain untouched.
 event021_parent_clear_scenario_plan_receipt = {
 	event021_parent_clear_scenario_optional_front_receipt = yes
+	event021_release_scenario_dynamic_tags = yes
 	if = {
 		limit = {
 			NOT = { has_country_flag = random_civil_war_scenario_plan_refreezing }
@@ -7761,6 +7796,7 @@ random_civil_war_trigger_manual_scenario = {
 		clear_array = global.random_civil_war_scenario_reserved_states
 		clear_array = global.random_civil_war_scenario_reserved_event6_packages
 		set_variable = { global.random_civil_war_scenario_reserved_front_count = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_scenario_reserved_dynamic_tags = constant:random_civil_war_value.zero }
 		clear_temp_array = event021_parent_scenario_selected_targets
 		clear_temp_array = event021_parent_scenario_commit_targets
 		clear_temp_array = event021_parent_scenario_unavailable_targets
@@ -7961,6 +7997,7 @@ random_civil_war_trigger_manual_scenario = {
 			set_country_flag = random_civil_war_scenario_target_confirmed
 			country_event = { id = chaosx.nr21.15 }
 			event021_parent_record_scenario_result = yes
+			event021_release_scenario_dynamic_tags = yes
 			clr_country_flag = random_civil_war_scenario_target_confirmed
 		}
 		clear_temp_array = event021_parent_scenario_selected_targets
@@ -7981,6 +8018,7 @@ random_civil_war_trigger_manual_scenario = {
 		clear_array = global.random_civil_war_scenario_reserved_states
 		clear_array = global.random_civil_war_scenario_reserved_event6_packages
 		clear_variable = global.random_civil_war_scenario_reserved_front_count
+		clear_variable = global.random_civil_war_scenario_reserved_dynamic_tags
 		clear_variable = global.random_civil_war_scenario_available_front_count
 		clear_variable = global.random_civil_war_scenario_front_cap
 		clear_variable = global.random_civil_war_scenario_mandatory_front_count

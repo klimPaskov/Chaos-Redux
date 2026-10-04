@@ -911,6 +911,18 @@ event021_parent_collect_dynamic_optional_front_candidates = {
 			limit = { check_variable = { var = event021_parent_dynamic_ordinary_front_capacity value = event021_parent_dynamic_force_division_capacity compare = greater_than } }
 			set_temp_variable = { event021_parent_dynamic_ordinary_front_capacity = event021_parent_dynamic_force_division_capacity }
 		}
+		# Each optional ordinary claimant needs its own dynamic tag, after the
+		# primary claimant's tag is set aside.
+		event021_count_free_dynamic_tags = yes
+		subtract_from_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.one }
+		if = {
+			limit = { check_variable = { var = event021_dynamic_tag_free value = constant:random_civil_war_value.zero compare = less_than } }
+			set_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.zero }
+		}
+		if = {
+			limit = { check_variable = { var = event021_parent_dynamic_ordinary_front_capacity value = event021_dynamic_tag_free compare = greater_than } }
+			set_temp_variable = { event021_parent_dynamic_ordinary_front_capacity = event021_dynamic_tag_free }
+		}
 		if = {
 			limit = {
 				has_global_flag = random_civil_war_manual_scenario_launch_in_progress

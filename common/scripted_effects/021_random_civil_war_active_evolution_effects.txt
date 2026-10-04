@@ -417,6 +417,13 @@ event021_parent_review_active_evolution_i_source = {
 					set_temp_variable = { event021_active_source_result = constant:event021_active_review_result.opened }
 				}
 			}
+			if = {
+				limit = {
+					check_variable = { var = event021_active_source_result value = constant:event021_active_review_result.no_side compare = equals }
+					check_variable = { var = event021_active_tag_limited value = constant:random_civil_war_value.one compare = equals }
+				}
+				set_temp_variable = { event021_active_source_result = constant:event021_active_review_result.deferred }
+			}
 			event021_parent_clear_active_front_rows = yes
 		}
 	}
@@ -522,6 +529,18 @@ event021_parent_collect_active_front_candidates = {
 	if = {
 		limit = { check_variable = { var = event021_parent_dynamic_ordinary_front_capacity value = event021_active_force_rows compare = greater_than } }
 		set_temp_variable = { event021_parent_dynamic_ordinary_front_capacity = event021_active_force_rows }
+	}
+	# Each new ordinary side needs its own dynamic civil-war tag. A full pool
+	# limits the rows now and defers the source instead of closing it.
+	set_temp_variable = { event021_active_tag_limited = constant:random_civil_war_value.zero }
+	event021_count_free_dynamic_tags = yes
+	if = {
+		limit = { check_variable = { var = event021_parent_dynamic_ordinary_front_capacity value = event021_dynamic_tag_free compare = greater_than } }
+		if = {
+			limit = { check_variable = { var = event021_dynamic_tag_free value = constant:random_civil_war_value.zero compare = equals } }
+			set_temp_variable = { event021_active_tag_limited = constant:random_civil_war_value.one }
+		}
+		set_temp_variable = { event021_parent_dynamic_ordinary_front_capacity = event021_dynamic_tag_free }
 	}
 	for_each_scope_loop = {
 		array = event021_parent_dynamic_optional_source_states
