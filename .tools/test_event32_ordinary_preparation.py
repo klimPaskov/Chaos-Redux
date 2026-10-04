@@ -183,7 +183,7 @@ class OrdinaryPreparationContract(unittest.TestCase):
         self.assertIn(('missiles_operation_command_is_operational', 'yes'), conditions)
         for threshold in ('operation_saturation_min_sites', 'operation_saturation_min_capacity'):
             self.assertTrue(any(k == 'check_variable' and dict(v).get('value') == f'constant:missiles_tuning.{threshold}' for k, v in conditions))
-        self.assertIn(('any_of_scopes', [('array', 'missiles_operation_sites'), ('exists', 'yes')]), TRIGGERS['missiles_operation_sites_remain_valid'])
+        self.assertIn(('any_of_scopes', [('array', 'missiles_operation_sites'), ('is_controlled_by', 'ROOT')]), TRIGGERS['missiles_operation_sites_remain_valid'])
 
     def test_state_selector_owns_from_scope_not_preparation_buttons(self):
         selector = dict(DECISIONS['missiles_select_target_state'])

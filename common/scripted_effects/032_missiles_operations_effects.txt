@@ -639,20 +639,41 @@ missiles_initialize_scenario_package = {
 	}
 	else_if = { limit = { NOT = { has_variable = missiles_program_stage } } set_variable = { missiles_program_stage = constant:missiles_stage.guided } }
 	if = {
-		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.experimental compare = greater_than_or_equals } }
-		set_technology = { experimental_rockets = 1 }
+		limit = {
+			check_variable = { var = missiles_program_stage value = constant:missiles_stage.experimental compare = greater_than_or_equals }
+			NOT = { has_tech = experimental_rockets }
+		}
+		# Temporary live-QA allocator markers; remove after native ID attribution.
+		log = "MISSILES_SCN015_NATIVE tech_begin experimental_rockets country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
+		set_technology = { experimental_rockets = 1 popup = no }
+		log = "MISSILES_SCN015_NATIVE tech_end experimental_rockets country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
 	}
 	if = {
-		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals } }
-		set_technology = { rocket_engines = 1 }
+		limit = {
+			check_variable = { var = missiles_program_stage value = constant:missiles_stage.guided compare = greater_than_or_equals }
+			NOT = { has_tech = rocket_engines }
+		}
+		log = "MISSILES_SCN015_NATIVE tech_begin rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
+		set_technology = { rocket_engines = 1 popup = no }
+		log = "MISSILES_SCN015_NATIVE tech_end rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
 	}
 	if = {
-		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.advanced compare = greater_than_or_equals } }
-		set_technology = { improved_rocket_engines = 1 }
+		limit = {
+			check_variable = { var = missiles_program_stage value = constant:missiles_stage.advanced compare = greater_than_or_equals }
+			NOT = { has_tech = improved_rocket_engines }
+		}
+		log = "MISSILES_SCN015_NATIVE tech_begin improved_rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
+		set_technology = { improved_rocket_engines = 1 popup = no }
+		log = "MISSILES_SCN015_NATIVE tech_end improved_rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
 	}
 	if = {
-		limit = { check_variable = { var = missiles_program_stage value = constant:missiles_stage.strategic compare = greater_than_or_equals } }
-		set_technology = { advanced_rocket_engines = 1 }
+		limit = {
+			check_variable = { var = missiles_program_stage value = constant:missiles_stage.strategic compare = greater_than_or_equals }
+			NOT = { has_tech = advanced_rocket_engines }
+		}
+		log = "MISSILES_SCN015_NATIVE tech_begin advanced_rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
+		set_technology = { advanced_rocket_engines = 1 popup = no }
+		log = "MISSILES_SCN015_NATIVE tech_end advanced_rocket_engines country=[ROOT.GetName] country_id=[?id|.0] receipt=[?missiles_scenario_setup_receipt|.0]"
 	}
 	if = {
 		limit = { check_variable = { var = missiles_scenario_package_reserve value = constant:missiles_program_value.zero compare = greater_than } }
@@ -690,7 +711,7 @@ missiles_initialize_scenario_package = {
 		for_each_scope_loop = {
 			array = missiles_launch_site_states
 			if = {
-				limit = { exists = yes is_controlled_by = PREV }
+				limit = { is_controlled_by = PREV }
 				if = { limit = { NOT = { has_variable = missiles_site_level } } set_variable = { missiles_site_level = constant:missiles_site_level.initial } }
 				if = {
 					limit = { check_variable = { var = missiles_site_level value = PREV.missiles_scenario_package_site_capacity compare = less_than } }
@@ -739,7 +760,7 @@ missiles_apply_mature_program_package = {
 		for_each_scope_loop = {
 			array = missiles_launch_site_states
 			if = {
-				limit = { exists = yes is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
+				limit = { is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
 				if = { limit = { has_variable = missiles_site_capacity } add_to_variable = { missiles_site_capacity = constant:missiles_tuning.program_mature_capacity_gain } }
 				if = { limit = { has_variable = missiles_site_hardening } add_to_variable = { missiles_site_hardening = constant:missiles_tuning.program_mature_hardening_gain } }
 				if = { limit = { has_variable = missiles_site_security } add_to_variable = { missiles_site_security = constant:missiles_tuning.program_mature_security_gain } }
@@ -764,7 +785,7 @@ missiles_rebalance_site_custody = {
 	for_each_scope_loop = {
 		array = missiles_launch_site_states
 		if = {
-			limit = { exists = yes }
+			limit = { has_variable = missiles_site_capacity }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			if = {
 				limit = {
@@ -899,7 +920,7 @@ missiles_begin_survey = {
 	add_to_variable = { missiles_survey_due_date = constant:missiles_evolution_timing.secondary_site_mission_days }
 	set_country_flag = missiles_survey_in_progress
 	clr_country_flag = missiles_survey_complete
-	if = { limit = { FROM = { exists = yes } } set_variable = { missiles_pending_site_state = FROM } }
+	if = { limit = { FROM = { missiles_state_is_valid_site_target = yes } } set_variable = { missiles_pending_site_state = FROM } }
 }
 
 missiles_complete_survey = {
@@ -916,7 +937,7 @@ missiles_begin_secondary_site = {
 	add_to_variable = { missiles_secondary_site_due_date = constant:missiles_evolution_timing.secondary_site_mission_days }
 	set_country_flag = missiles_secondary_site_in_progress
 	clr_country_flag = missiles_secondary_site_complete
-	if = { limit = { FROM = { exists = yes } } set_variable = { missiles_pending_site_state = FROM } }
+	if = { limit = { FROM = { missiles_state_is_valid_secondary_site = yes } } set_variable = { missiles_pending_site_state = FROM } }
 }
 
 missiles_harden_site = {
@@ -1071,7 +1092,7 @@ missiles_send_loyal_forces = {
 missiles_recover_rogue_site = {
 	# STATE scope.
 	if = {
-		limit = { exists = yes is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
+		limit = { is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } }
 		clr_state_flag = missiles_site_rogue
 		clr_state_flag = missiles_site_compromised
 		clr_state_flag = missiles_site_captured
@@ -2235,7 +2256,6 @@ missiles_select_operation_site = {
 			check_variable = { var = missiles_operation_site_selection_result value = constant:missiles_program_value.zero compare = equals }
 			has_variable = missiles_requested_launch_site
 			var:missiles_requested_launch_site = {
-				exists = yes
 				is_controlled_by = ROOT
 				missiles_site_can_launch = yes
 				OR = {
@@ -2278,7 +2298,7 @@ missiles_select_operation_site = {
 		for_each_scope_loop = {
 			array = missiles_launch_site_states
 			if = {
-				limit = { exists = yes is_controlled_by = ROOT missiles_site_can_launch = yes }
+				limit = { is_controlled_by = ROOT missiles_site_can_launch = yes }
 				ROOT = {
 					if = {
 						limit = {
@@ -2303,7 +2323,7 @@ missiles_calculate_operation_site_capacity = {
 	for_each_scope_loop = {
 		array = missiles_operation_sites
 		if = {
-			limit = { exists = yes has_variable = missiles_site_capacity }
+			limit = { is_controlled_by = ROOT has_variable = missiles_site_capacity }
 			ROOT = { add_to_variable = { missiles_operation_site_capacity = PREV.missiles_site_capacity } }
 		}
 	}
@@ -2438,7 +2458,7 @@ missiles_mark_operation_sites_reserved = {
 	for_each_scope_loop = {
 		array = missiles_operation_sites
 		if = {
-			limit = { exists = yes is_controlled_by = ROOT missiles_site_can_launch = yes }
+			limit = { is_controlled_by = ROOT missiles_site_can_launch = yes }
 			set_variable = { missiles_site_operation_id = ROOT.missiles_active_operation_id }
 			set_variable = { missiles_site_operation_allocation = ROOT.missiles_operation_site_allocation }
 		}
@@ -5652,7 +5672,6 @@ missiles_cleanup_removed_country = {
 			array = missiles_launch_site_states
 			if = {
 				limit = {
-					exists = yes
 					missiles_state_has_registered_site = yes
 					NOT = { has_state_flag = missiles_site_scuttled }
 					controller = { exists = yes NOT = { tag = ROOT } }

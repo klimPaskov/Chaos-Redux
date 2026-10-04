@@ -168,13 +168,12 @@ missiles_operation_reserve_receipt_is_sufficient = {
 
 missiles_operation_sites_remain_valid = {
 	missiles_operation_has_valid_site = yes
-	any_of_scopes = { array = missiles_operation_sites exists = yes }
+	any_of_scopes = { array = missiles_operation_sites is_controlled_by = ROOT }
 	NOT = {
 		any_of_scopes = {
 			array = missiles_operation_sites
 			NOT = {
 				AND = {
-					exists = yes
 					is_controlled_by = ROOT
 					missiles_site_can_launch = yes
 					check_variable = { var = missiles_site_operation_id value = ROOT.missiles_active_operation_id compare = equals }
@@ -192,13 +191,12 @@ missiles_operation_sites_remain_valid = {
 # site cannot physically hold. The root quote is computed once by the owner.
 missiles_operation_projected_site_allocations_fit = {
 	check_variable = { var = missiles_operation_site_allocation value = constant:missiles_program_value.zero compare = greater_than }
-	any_of_scopes = { array = missiles_operation_sites exists = yes }
+	any_of_scopes = { array = missiles_operation_sites is_controlled_by = ROOT }
 	NOT = {
 		any_of_scopes = {
 			array = missiles_operation_sites
 			NOT = {
 				AND = {
-					exists = yes
 					is_controlled_by = ROOT
 					missiles_site_can_launch = yes
 					has_variable = missiles_site_capacity
@@ -474,7 +472,6 @@ missiles_operation_has_reach = {
 }
 
 missiles_site_can_receive_project = {
-	exists = yes
 	is_controlled_by = ROOT
 	NOT = { has_state_flag = missiles_site_scuttled }
 	NOT = { has_state_flag = missiles_site_captured }
@@ -486,7 +483,6 @@ missiles_site_can_receive_project = {
 }
 
 missiles_site_can_receive_firing_recovery = {
-	exists = yes
 	is_controlled_by = ROOT
 	NOT = { has_state_flag = missiles_site_scuttled }
 	NOT = { has_state_flag = missiles_site_captured }
@@ -527,7 +523,6 @@ missiles_natural_disaster_reserve_settlement_is_valid = {
 }
 
 missiles_site_is_secure = {
-	exists = yes
 	missiles_site_can_launch = yes
 	OR = {
 		has_state_flag = missiles_site_hardened

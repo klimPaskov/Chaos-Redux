@@ -774,7 +774,16 @@ missiles_register_site = {
 			}
 		}
 		else = {
+			# Temporary live-QA markers are limited to the scenario transaction.
+			if = {
+				limit = { ROOT = { has_country_flag = missiles_scenario_country_bypass_active } }
+				log = "MISSILES_SCN015_NATIVE site_begin country=[ROOT.GetName] country_id=[?ROOT.id|.0] state_id=[?id|.0] receipt=[?ROOT.missiles_scenario_setup_receipt|.0]"
+			}
 			add_building_construction = { type = rocket_site level = 1 instant_build = yes }
+			if = {
+				limit = { ROOT = { has_country_flag = missiles_scenario_country_bypass_active } }
+				log = "MISSILES_SCN015_NATIVE site_end country=[ROOT.GetName] country_id=[?ROOT.id|.0] state_id=[?id|.0] receipt=[?ROOT.missiles_scenario_setup_receipt|.0]"
+			}
 		}
 		add_to_array = { array = ROOT.missiles_launch_site_states value = THIS }
 		ROOT = {
@@ -990,9 +999,8 @@ missiles_reinforce_network_from_firing = {
 		array = missiles_launch_site_states
 		if = {
 			limit = {
-				exists = yes
 				is_controlled_by = ROOT
-				NOT = { has_country_flag = missiles_current_package_upgrade_done }
+				ROOT = { NOT = { has_country_flag = missiles_current_package_upgrade_done } }
 				missiles_site_can_receive_firing_recovery = yes
 			}
 			missiles_reinforce_one_site = yes

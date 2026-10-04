@@ -20,6 +20,10 @@ Low, Medium, High, and Maximum select the normalized stage, reserve, site capaci
 
 The frozen country loop sends immediate hidden event `chaosx.nr32.6` to each recipient. The receiver checks frozen membership and the setup receipt, then applies the package with recipient `ROOT` before the scenario clears global inputs. Site-plan preflight checks the recipient through `PREV` inside its owned-state iterator and shares the same geographical constraints as ordinary site selection.
 
+State-array guards use state control, site capacity, and the site's own flags; `exists` is reserved for country scopes such as `CONTROLLER` and recipient arrays. The operation roster requires a controlled-state witness and revalidates every selected site's allocation and controller before commitment. Survey and secondary-site APIs validate their `FROM` state through their respective site predicates. The firing recovery loop reads its one-upgrade receipt in country `ROOT`, not in the iterated state.
+
+The war-anchor pointer is cleared at transaction entry and exit only when `has_event_target` confirms it is saved. Global Proliferation does not create that pointer. Each stage-gated native technology grant also requires that the recipient does not already own the technology, and suppresses individual research popups without removing any required unlock.
+
 The adapter passes these temporary country inputs to the Event 032 core program and technology APIs: `missiles_scenario_package_profile`, `missiles_scenario_package_intensity`, `missiles_scenario_package_share`, `missiles_scenario_package_stage`, `missiles_scenario_package_reserve`, `missiles_scenario_package_site_capacity`, `missiles_scenario_package_readiness`, `missiles_scenario_package_control`, and `missiles_scenario_package_incident_cap`. The core must keep its country mutation atomic and publish `missiles_scenario_package_failed` before the adapter can commit that country.
 
 ## Collision and validation boundary
@@ -27,3 +31,9 @@ The adapter passes these temporary country inputs to the Event 032 core program 
 The collision audit found shared raw IDs `1` through `14`, Missile Age at `15`, and the existing worktree-owned Global Jihad row at `16`. Event 031's current triggerable selector is `16`, while its separate world-end registry ID remains `15`; Fallout is unchanged at `14`. The adapter has no world-end branch, no recurring on-action, and no dedicated UI.
 
 The static test surface is `docs/specs/032_missiles_specs/032_missiles_test_matrix.md` under `SCN-015 tests`, including registry collision, profile preflight, intensity scaling, atomic failure, idempotence, save/reload, and terminal-conflict cases. The Event 032 core effects and triggers are present in `common/scripted_effects/032_missiles_effects.txt`, `common/scripted_effects/032_missiles_operations_effects.txt`, `common/scripted_triggers/032_missiles_triggers.txt`, and `common/scripted_triggers/032_missiles_operations_triggers.txt`; engine confirmation remains subject to the mandatory HOI4 MCP pass and the user-owned live-game boundary.
+
+## Open native-ID investigation
+
+The supplied live Medium/Global Proliferation run reports a duplicate native ID `1028 4713`. The exact object class and allocating call remain unresolved; source inspection finds no fixed-ID object constructor in the scenario closure. Missing-tech guards avoid redundant activation but do not prove a fix for a first grant. Native rocket-site construction and every required technology remain present.
+
+Temporary `MISSILES_SCN015_NATIVE` log markers bracket each actual technology grant and new rocket-site construction with country, state where applicable, and setup receipt. The building markers run only while the scenario country bypass is active, and no recurring diagnostic hook is installed. These markers must be removed after the allocation failure is attributed and resolved. See `docs/plans/032_missiles_plans/032_scn015_live_qa_repair_2026-10-04.md` and its forensic handoff for the source and MCP evidence boundaries.
