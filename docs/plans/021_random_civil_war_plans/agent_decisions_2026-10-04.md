@@ -201,3 +201,12 @@ The unused `event021_settlement_deadline` and `event021_settlement_obligation_ac
 No cost, AI weight, or MTTH value changed, so no probability compare is required; AI governments that take the offer now leave the war with a partition or coalition instead of stalling. Event 021 status stays Needs Testing, and the runtime outcome of each branch is `needs_live_game`.
 Basis: the option already calls `event021_parent_apply_settlement`, which accepts the pending marker as a reason to settle now (the same-tag path uses it that way); the event text "A settlement can stop the guns" and "Sign the terms"; the decision text "Offer a ceasefire ... before the remaining fronts become permanent"; the crosswalk row for settlement talks; and the probability matrix intents SET-01, SET-03, and SET-05.
 Accepted design merged into `021_random_civil_war_spec_part_3_decisions_missions_and_outcomes.md` ("Accepted signed-terms settlement") with its manifest hash refreshed. Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md`. Crosswalk and `catalog_changes_pending.md` updated; no catalog field changes.
+
+## D16. The crisis record shows only its own opening status
+
+Finding: `event021_parent_record_system_log` read the country variable `random_civil_war_cluster_skip_reason`, which nothing writes, and fell back to the persistent `global.random_civil_war_cluster_skip_reason`, so after any skip anywhere every later record, including successful openings and settlements, showed that stale reason under Opening status.
+Decision: a record carries a skip reason only when its payload is `failed_opening` and the global skip receipt was written in the same transaction (its date equals `global.date`); every other record shows None. The dead country-variable branch is removed.
+The package-incomplete failed opening still shows its reason because it records the skip immediately before its log entry, and a validator tag shortfall still shows `cap_reached` on its failed opening.
+The optional narrowing of the validator's tag-shortfall receipt to cluster and scenario launches is not taken: the global receipt is read only by this log snapshot, so recording the shortfall for ordinary openings keeps their failed-opening record explained.
+No gate, weight, or launch behavior changes, and the shared Events Log files are untouched.
+Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (`event021_parent_record_system_log` paragraph).

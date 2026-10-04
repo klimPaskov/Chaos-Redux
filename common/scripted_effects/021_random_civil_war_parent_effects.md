@@ -157,6 +157,8 @@ Example: a failed generation-two attempt from generation one restores generation
 
 `event021_parent_rollback_transaction` clears all provisional target, state, front, force, and reservation state when validation fails. It preserves a still-valid pre-adoption external-war snapshot or post-adoption successor queue, clears invalid continuity receipts, and refreshes target-pool membership only after provisional eligibility receipts are cleared.
 
+`event021_parent_record_system_log` writes one Events Log crisis record. Its opening-status field carries a skip reason only for a `failed_opening` payload whose skip receipt (`global.random_civil_war_cluster_skip_reason`) was written in the same transaction, which `event021_parent_record_cluster_skip` stamps with today's date. Opening, multi-front, exposure, settlement, reconstruction, and Evolution III records show none, so an older skip elsewhere never appears as a later crisis's opening status.
+
 ## Active fronts and extensions
 
 `event021_parent_reserve_current_archetype`, `event021_parent_prepare_secondary_route`, and `event021_parent_reserve_pending_secondary_route` give each ordinary belligerent one distinct live route receipt and reserve it only after actor initialization succeeds.

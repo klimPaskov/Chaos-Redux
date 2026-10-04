@@ -3483,8 +3483,18 @@ event021_parent_record_system_log = {
 	if = { limit = { has_variable = random_civil_war_settlement_obligation } set_temp_variable = { event021_log_obligation = random_civil_war_settlement_obligation } }
 	if = { limit = { has_variable = random_civil_war_settlement_obligation_front_id } set_temp_variable = { event021_log_obligation_front_id = random_civil_war_settlement_obligation_front_id } }
 	if = { limit = { has_variable = random_civil_war_generation } set_temp_variable = { event021_log_generation = random_civil_war_generation } }
-	if = { limit = { has_variable = random_civil_war_cluster_skip_reason } set_temp_variable = { event021_log_cluster_skip_reason = random_civil_war_cluster_skip_reason } }
-	else_if = { limit = { has_variable = global.random_civil_war_cluster_skip_reason } set_temp_variable = { event021_log_cluster_skip_reason = global.random_civil_war_cluster_skip_reason } }
+	# Only a failed opening carries a skip reason, and only the one recorded in
+	# the same transaction (today's receipt). Every other record shows none, so
+	# an older skip elsewhere never appears as this crisis's opening status.
+	if = {
+		limit = {
+			check_variable = { var = event021_log_payload value = constant:random_civil_war_log.failed_opening compare = equals }
+			has_variable = global.random_civil_war_cluster_skip_reason
+			has_variable = global.random_civil_war_cluster_skip_date
+			check_variable = { var = global.date value = global.random_civil_war_cluster_skip_date compare = equals }
+		}
+		set_temp_variable = { event021_log_cluster_skip_reason = global.random_civil_war_cluster_skip_reason }
+	}
 	if = { limit = { has_variable = global.random_civil_war_scenario_last_type } set_temp_variable = { event021_log_scenario_type = global.random_civil_war_scenario_last_type } }
 	if = { limit = { has_variable = global.random_civil_war_scenario_last_intensity } set_temp_variable = { event021_log_scenario_intensity = global.random_civil_war_scenario_last_intensity } }
 	if = { limit = { has_variable = global.random_civil_war_scenario_requested_count } set_temp_variable = { event021_log_scenario_requested = global.random_civil_war_scenario_requested_count } }
