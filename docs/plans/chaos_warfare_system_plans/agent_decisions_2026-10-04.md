@@ -79,3 +79,12 @@ Both limits are recorded rather than waved away, and category-level visibility s
 
 The round's evidence is appended to the existing recovery README instead of a new report folder, and the stale 144 KB schema dump in that folder was dropped.
 Basis: the task brief forbids new verification machinery, and the dump has no value now that the shared route returns results.
+
+## 8. The eighteen legacy chemical-tank companies are kept as a recorded exception
+
+Disposition: `implemented`.
+The accepted amendment removes them, but they stay in source with a recorded accepted compatibility exception rather than being deleted.
+Basis: their identifiers are entries in the ordered `common/synchronized_dynamic_tokens/chaosx_tokens.txt` list, whose own header states that keeping the identifiers synchronized prevents multiplayer out-of-sync token allocation; removing eighteen entries from an order-sensitive shared list would shift every later identifier for every package that reads it, in a working tree other engineers are using right now.
+Unreachability is proven rather than assumed: each definition carries `active = no`, which the offline unit-modding reference defines as usable only through an explicit technology unlock; no technology anywhere declares `enable_subunits` for any of the eighteen; they appear in no AI template, no history order of battle and no CXT unlock; and the only script naming them, `common/scripted_triggers/chemical_tank_shell_triggers.txt`, is itself called from nowhere.
+The three armored chassis roles stay intact and keep their technology unlock.
+The basis and the exact condition for a later removal are written into the unit file header and the requirement ledger so the deviation cannot be mistaken for an oversight.
