@@ -28,6 +28,44 @@ riches_found_build_rail_spur = {
 	}
 }
 
+# Open the Railhead success on a rail route: one railway level from the mine
+# state to the controller's capital over allied ground, following the vanilla
+# build_railway start_state/target_state form (common/national_focus/
+# soviet.txt) and guarded by can_build_railway with the same arguments. The
+# mine that is the capital, or one with no land path, keeps its spur alone.
+riches_found_lay_mine_railway = {
+	if = {
+		limit = {
+			has_state_flag = riches_found_rail_route
+			NOT = { has_state_flag = riches_found_railway_laid }
+			CONTROLLER = {
+				exists = yes
+				NOT = { check_variable = { var = capital value = PREV compare = equals } }
+			}
+		}
+		CONTROLLER = {
+			if = {
+				limit = {
+					can_build_railway = {
+						start_state = PREV
+						target_state = THIS.capital
+						build_only_on_allied = yes
+						fallback = yes
+					}
+				}
+				build_railway = {
+					level = @riches_found_route_building_level
+					start_state = PREV
+					target_state = THIS.capital
+					build_only_on_allied = yes
+					fallback = yes
+				}
+				PREV = { set_state_flag = riches_found_railway_laid }
+			}
+		}
+	}
+}
+
 # Port Route completion: one naval base level where the state already has a
 # port, otherwise a new naval base on its coast.
 riches_found_build_port_route = {

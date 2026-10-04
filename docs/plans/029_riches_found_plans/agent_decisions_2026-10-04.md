@@ -112,7 +112,7 @@ The development fund and the curse diversification program stay political-power 
 
 Rail Spur completion adds one level of state infrastructure below the vanilla cap of five, and Port Route completion adds one naval base level to an existing port or a new naval base on the state's coast, following the vanilla `add_building_construction` precedents (including the all-coastal-provinces form used by the Afghanistan focus tree).
 Destructive and lethal raids damage the naval base when they struck the sea route and the infrastructure otherwise; a collapse that closes the workings damages the infrastructure, with slower repair; the game repairs these buildings through ordinary construction while Restore the Shaft repairs the mine itself.
-Railway lines are not built because the railway effects need explicit province pairs that a generic mine state cannot supply; this is recorded as a limitation.
+Railway lines are not built because the railway effects need explicit province pairs that a generic mine state cannot supply; this is recorded as a limitation. Disposition: superseded by D29.
 
 ## D12. Event Log actor, evolution previews and the global N/A lock
 
@@ -320,3 +320,9 @@ D28. Opening values follow the state and occupied output follows resistance.
 Spec part 1 asks the starting values to vary with the state; `riches_found_apply_starting_conditions` adds constant deltas (`riches_found_starting_value`) at discovery for the owner's stability bands, core or non-core status, infrastructure level, war or local resistance, a high Chaos Meter, democratic government and the deposit profile, and the values are clamped afterwards.
 Spec part 3 asks occupied output to fall with resistance, low compliance, damaged transport and non-core status; the occupied control factor is multiplied by one minus resistance times `resistance_slope`, plus compliance times `compliance_slope`, then by `damaged_route_factor` for a damaged route and `non_core_factor` when the state is not the occupier's core, clamped between `floor` and `cap` (`riches_found_occupied_output`).
 Resistance, compliance, infrastructure and stability are the engine's state and country dynamic variables (`dynamic_variables_documentation.md`); they are read only at discovery and at the contribution refresh, with no new scan.
+
+D29. Rail Spur lays a real railway (lead decision 4; supersedes the D11 railway limitation).
+`effects_documentation.md` (`build_railway`, option 3) takes a start and target state, and vanilla `common/national_focus/soviet.txt` lays railways with `start_state = ROOT.capital` and `target_state = THIS.capital` behind `can_build_railway`, so the D11 reading was wrong.
+When Open the Railhead succeeds on a rail route, `riches_found_lay_mine_railway` runs in the controller's scope with `start_state = PREV` (the mine), `target_state = THIS.capital`, level 1, `build_only_on_allied = yes` and `fallback = yes`, guarded by `can_build_railway` with the same arguments, and skipped when the mine is the capital; `riches_found_railway_laid` marks it once.
+The Rail Spur's infrastructure level is still added when the decision completes.
+Whether the railway appears on the map needs the live game.

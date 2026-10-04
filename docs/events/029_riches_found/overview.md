@@ -134,6 +134,7 @@ The security and crisis layer includes mine police, private guards, army cordons
 
 Rail Spur, Port Route, Processing Works, Housing, Shaft Reinforcement, Sanitation and Repair commit two civilian factories (three for Processing Works) while they run, in place of political power.
 `common/scripted_effects/029_riches_found_works_effects.txt` adds one infrastructure level when the Rail Spur completes and one naval base level on the coast when the Port Route completes, and damages the naval base or infrastructure on destructive raids and the infrastructure on a closing collapse.
+When Open the Railhead succeeds on a rail route, `riches_found_lay_mine_railway` lays one railway level from the mine state to the controller's capital through `build_railway` (start and target state, allied ground only, with fallback), guarded by `can_build_railway` with the same arguments; a capital mine or one without a land path keeps its spur alone, and `riches_found_railway_laid` keeps it from being laid twice.
 
 ### Occupation and recapture
 
