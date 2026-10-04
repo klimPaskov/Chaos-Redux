@@ -3923,6 +3923,13 @@ africa_gods_of_africa_commit_activation = {
 				set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_activation }
 				gods_of_africa_record_milestone = yes
 				country_event = { id = chaosx.nr12.601 }
+				# The proclamation is world news once per campaign.
+				if = {
+					limit = { NOT = { has_global_flag = gods_of_africa_proclamation_news_sent } }
+					set_global_flag = gods_of_africa_proclamation_news_sent
+					# A major news event is shown to every country.
+					news_event = { id = chaosx.nr12.617 }
+				}
 			}
 			set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.owner }
 			set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_next_owner_tick_day }

@@ -138,6 +138,11 @@ The obligation is frozen at the settlement and paid from Africa's real stocks: a
 
 Standing diplomacy is applied once: Favored governments gain a strong positive memory and Africa's guarantee, Respected governments a positive memory and a non-aggression pact, Distrusted governments Africa's suspicion, and Enemies a hostile memory in both directions.
 
+### Proclamation news
+
+When the Gods of Africa activate, the activation owner sends the major news event `chaosx.nr12.617` ("Africa Proclaims the Gods of Africa") once per campaign (`gods_of_africa_proclamation_news_sent`), with the generated black-and-white press image `GFX_news_event_012_africa_gods_proclaimed`.
+The global-credibility super-event is not shipped: its audio is blocked (see agent decision L17 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`).
+
 ### Achievements
 
 | Achievement | Who | Receipt set by | Requirement |

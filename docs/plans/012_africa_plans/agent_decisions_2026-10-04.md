@@ -196,3 +196,15 @@ Decisions:
 - "Several refusals" for The Careful Gambler is 2: under the grader, three refusals make a country Enemy and Respected allows fewer than two refusals (three under Strategic Ambiguity), so 2 refusals is reachable with Favored standing, or Respected under Strategic Ambiguity.
 - Continental Provision counts only fulfilled contracts from countries that were major powers when they paid, by original demand family.
 - Icons use native-transparency ImageGen subjects processed by the achievement workflow; no background removal was needed.
+
+## L17. Proclamation news ships; the global-credibility super-event is blocked on audio
+
+Disposition: news event `implemented`; super-event `blocked`.
+
+- The activation owner fires the major news event `chaosx.nr12.617` once per campaign, guarded by `gods_of_africa_proclamation_news_sent`; `major = yes` shows it to every country, matching vanilla `news.1`.
+  Its picture `GFX_news_event_012_africa_gods_proclaimed` is a native ImageGen documentary scene converted to a 397x153 black-and-white DDS (source and processed copies under the local `docs/assets/012_africa/news/`).
+- The super-event needs a unique, licensed track already archived in the repository (decision L6).
+  The only archived Event 012 sources are the Beethoven Eroica II and Brahms Symphony 4 IV recordings already used by roles 2 and 3, and the shared `docs/super_events/source_audio` archive holds no other track; a second excerpt of a used recording is a duplicate cue, not a unique track.
+  Downloading a new track needs the user's explicit permission, which no agent message can give.
+  Exact missing input: one licensed, archived, unused track (about 110-120 seconds) for the Gods global-credibility role.
+  Until it exists, no silent or duplicate super-event is shipped; the trigger contract stays as in the full spec (fires once while the Gods are active and the host is valid, when Strength first enters the global band, or at activation if it already qualifies).
