@@ -117,3 +117,12 @@ Projects two tiers above the weakest component score x0.40; Medical Surge scores
 Urgent actions that cannot affect any remaining pulse are kept out by visibility: they vanish when no warning, exposure or forecast remains and when dissipation is pending, which is when no further pulse can come; a finer arrival-window test needs per-country departure forecasts that the runtime does not keep.
 The evacuation shelter-tier modifier now reads the country tier; it previously read a state variable that never exists.
 Probability evidence: `hoi4.probability_inspect` (`decision_ai_will_do`, Event 033 decisions file) returned `INTERNAL_ERROR` on 2026-10-04, so no baseline or `probability_compare` pass exists; the exact blocker is this route error.
+
+### D16. Superstorm map markers
+
+Disposition: implemented (commit "Mark Acid Rain superstorms on the world map").
+Each superstorm slot records the region of its seed state (`global.acid_rain_superstorm_region_entries`) when the forecast is created and clears it when the storm retires.
+The world map shows one severe-storm marker per listed superstorm (the same three the Active Weather card lists) at that region's anchor, from forecast until retirement, with the still marker in its place when motion is turned off.
+Anchors are the alpha-weighted centres of the seven region overlays under the map's 0.3188 fit, minus half of the 46-pixel marker; a storm whose region already holds an earlier listed marker moves 48 pixels right so the two never overlap.
+Ordinary front markers and superstorm markers never share the map, because fronts are projected only up to the global warning and superstorms exist only in the global phase.
+Render evidence: `hoi4.gui_render` at 1920x1080 UI scale 1 was refused by the route's fixed aggregate pixel budget (`RENDER_AGGREGATE_BLOCKED`, 65.6 million reserved pixels before the frame); the same scenario rendered at 1366x768 UI scale 1 (scenario `event033_superstorm_markers_offset48_1366`, source revision `e9ae501790b53115`) and showed two Europe markers side by side without overlap and a third at the Australia and Pacific anchor, all inside the map panel; a first render with a 30-pixel shift showed the shared-region pair overlapping, which set the 48-pixel shift.

@@ -324,6 +324,11 @@ acid_rain_gui_refresh_read_only = {
 	set_variable = { global.acid_rain_gui_superstorm_1_status = constant:acid_rain_runtime.two }
 	set_variable = { global.acid_rain_gui_superstorm_2_status = constant:acid_rain_runtime.two }
 	set_variable = { global.acid_rain_gui_superstorm_3_status = constant:acid_rain_runtime.two }
+	set_variable = { global.acid_rain_gui_superstorm_1_marker = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_2_marker = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_3_marker = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_1_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_2_region = constant:acid_rain_runtime.zero }
 	if = {
 		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.zero compare = greater_than } }
 		set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.one }
@@ -332,6 +337,14 @@ acid_rain_gui_refresh_read_only = {
 		# The legacy _band display field carries the stored target-state count.
 		set_variable = { global.acid_rain_gui_superstorm_1_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
 		set_variable = { global.acid_rain_gui_superstorm_1_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
+		acid_rain_gui_project_superstorm_marker = yes
+		set_variable = { global.acid_rain_gui_superstorm_1_marker = acid_rain_gui_marker_shown }
+		set_variable = { global.acid_rain_gui_superstorm_1_marker_x = acid_rain_gui_anchor_x }
+		set_variable = { global.acid_rain_gui_superstorm_1_marker_y = acid_rain_gui_anchor_y }
+		if = {
+			limit = { check_variable = { var = acid_rain_gui_marker_shown value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_variable = { global.acid_rain_gui_superstorm_1_region = acid_rain_gui_anchor_region }
+		}
 	}
 	if = {
 		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.one compare = greater_than } }
@@ -341,6 +354,14 @@ acid_rain_gui_refresh_read_only = {
 		# The legacy _band display field carries the stored target-state count.
 		set_variable = { global.acid_rain_gui_superstorm_2_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
 		set_variable = { global.acid_rain_gui_superstorm_2_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
+		acid_rain_gui_project_superstorm_marker = yes
+		set_variable = { global.acid_rain_gui_superstorm_2_marker = acid_rain_gui_marker_shown }
+		set_variable = { global.acid_rain_gui_superstorm_2_marker_x = acid_rain_gui_anchor_x }
+		set_variable = { global.acid_rain_gui_superstorm_2_marker_y = acid_rain_gui_anchor_y }
+		if = {
+			limit = { check_variable = { var = acid_rain_gui_marker_shown value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_variable = { global.acid_rain_gui_superstorm_2_region = acid_rain_gui_anchor_region }
+		}
 	}
 	if = {
 		limit = { check_variable = { var = global.acid_rain_gui_superstorm_list_count value = constant:acid_rain_runtime.two compare = greater_than } }
@@ -350,6 +371,10 @@ acid_rain_gui_refresh_read_only = {
 		# The legacy _band display field carries the stored target-state count.
 		set_variable = { global.acid_rain_gui_superstorm_3_band = global.acid_rain_superstorm_target_count_entries^acid_rain_gui_superstorm_slot }
 		set_variable = { global.acid_rain_gui_superstorm_3_status = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot }
+		acid_rain_gui_project_superstorm_marker = yes
+		set_variable = { global.acid_rain_gui_superstorm_3_marker = acid_rain_gui_marker_shown }
+		set_variable = { global.acid_rain_gui_superstorm_3_marker_x = acid_rain_gui_anchor_x }
+		set_variable = { global.acid_rain_gui_superstorm_3_marker_y = acid_rain_gui_anchor_y }
 	}
 
 	# Managed tiers are 0-4. Native strip frames are 1-5. Clamp UI copies only.
@@ -443,4 +468,72 @@ acid_rain_gui_project_front_3 = {
 
 acid_rain_refresh_gui_projection = {
 	acid_rain_gui_refresh_read_only = yes
+}
+
+# ANY SCOPE. Input: temporary acid_rain_gui_superstorm_slot (registry slot).
+# Output: temporary acid_rain_gui_marker_shown (0 or 1), acid_rain_gui_anchor_region,
+# acid_rain_gui_anchor_x and acid_rain_gui_anchor_y. Forecast and active storms
+# show a marker at their seed region; a marker that shares its region with an
+# earlier listed marker shifts right so each storm stays readable.
+acid_rain_gui_project_superstorm_marker = {
+	set_temp_variable = { acid_rain_gui_marker_shown = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_gui_anchor_region = global.acid_rain_superstorm_region_entries^acid_rain_gui_superstorm_slot }
+	acid_rain_gui_set_region_anchor = yes
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_runtime.zero compare = greater_than }
+			check_variable = { var = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot value = constant:acid_rain_runtime.two compare = less_than }
+		}
+		set_temp_variable = { acid_rain_gui_marker_shown = constant:acid_rain_runtime.one }
+		if = {
+			limit = { check_variable = { var = acid_rain_gui_anchor_region value = global.acid_rain_gui_superstorm_1_region compare = equals } }
+			add_to_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.shared_region_offset_x }
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_gui_anchor_region value = global.acid_rain_gui_superstorm_2_region compare = equals } }
+			add_to_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.shared_region_offset_x }
+		}
+	}
+}
+
+# ANY SCOPE. Input: temporary acid_rain_gui_anchor_region. Output: temporary
+# acid_rain_gui_anchor_x and acid_rain_gui_anchor_y on the world map.
+acid_rain_gui_set_region_anchor = {
+	set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.europe compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_1_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_1_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.middle_east compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_2_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_2_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.asia compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_3_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_3_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.africa compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_4_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_4_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.australia_pacific compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_5_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_5_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.north_america compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_6_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_6_y }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_region.south_america compare = equals } }
+		set_temp_variable = { acid_rain_gui_anchor_x = constant:acid_rain_gui_anchor.region_7_x }
+		set_temp_variable = { acid_rain_gui_anchor_y = constant:acid_rain_gui_anchor.region_7_y }
+	}
 }

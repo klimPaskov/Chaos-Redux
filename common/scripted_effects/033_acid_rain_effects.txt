@@ -402,6 +402,7 @@ acid_rain_initialize_runtime_scalars = {
 	clear_array = global.acid_rain_superstorm_active_entries
 	clear_array = global.acid_rain_superstorm_episode_entries
 	clear_array = global.acid_rain_superstorm_region_active_entries
+	clear_array = global.acid_rain_superstorm_region_entries
 	clear_array = global.acid_rain_severe_planner_targets
 	clear_array = global.acid_rain_severe_planner_frontier
 	clear_array = global.acid_rain_severe_planner_next_frontier
@@ -431,6 +432,7 @@ acid_rain_initialize_runtime_scalars = {
 	resize_array = { array = global.acid_rain_superstorm_end_entries size = acid_rain_array_size }
 	resize_array = { array = global.acid_rain_superstorm_target_count_entries size = acid_rain_array_size }
 	resize_array = { array = global.acid_rain_superstorm_episode_entries size = acid_rain_array_size }
+	resize_array = { array = global.acid_rain_superstorm_region_entries size = acid_rain_array_size }
 	resize_array = { array = global.acid_rain_superstorm_active_entries size = acid_rain_array_size value = acid_rain_array_retired }
 	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.region_loop_end }
 	resize_array = { array = global.acid_rain_superstorm_region_active_entries size = acid_rain_array_size }
@@ -4305,9 +4307,18 @@ acid_rain_create_superstorm_forecast = {
 				add_to_variable = { global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id = chaosx_date_offset }
 				set_variable = { global.acid_rain_superstorm_target_count_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_planner_targets^num }
 				set_variable = { global.acid_rain_superstorm_active_entries^acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
+				set_variable = { global.acid_rain_superstorm_region_entries^acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
 					array = global.acid_rain_superstorm_planner_targets
 					set_state_flag = acid_rain_superstorm_target
+					# The seed state, listed first, names the region the map marker uses.
+					if = {
+						limit = {
+							check_variable = { var = global.acid_rain_superstorm_region_entries^acid_rain_new_superstorm_id value = constant:acid_rain_runtime.zero compare = equals }
+							has_variable = acid_rain_region_id
+						}
+						set_variable = { global.acid_rain_superstorm_region_entries^acid_rain_new_superstorm_id = acid_rain_region_id }
+					}
 					set_state_flag = acid_rain_superstorm_forecast_pending
 					set_state_flag = acid_rain_severe_forecast_reported
 					set_variable = { acid_rain_superstorm_id = acid_rain_new_superstorm_id }
@@ -4356,7 +4367,7 @@ acid_rain_create_superstorm_forecast = {
 
 # ANY SCOPE. Global capacity expands after a sustained global layer, but it is
 # still bounded by the absolute five-forecast registry and never bypasses the
-# three-day forecast notice.
+# nine-day forecast notice.
 acid_rain_try_extra_superstorm = {
 	if = {
 		limit = {
@@ -4493,6 +4504,7 @@ acid_rain_process_superstorms = {
 					}
 				}
 				set_variable = { global.acid_rain_superstorm_active_entries^acid_rain_superstorm_index = constant:acid_rain_runtime.two }
+				set_variable = { global.acid_rain_superstorm_region_entries^acid_rain_superstorm_index = constant:acid_rain_runtime.zero }
 				if = {
 					limit = { check_variable = { var = global.acid_rain_superstorm_forecast_count value = constant:acid_rain_runtime.zero compare = greater_than } }
 					subtract_from_variable = { global.acid_rain_superstorm_forecast_count = constant:acid_rain_runtime.loop_increment }
