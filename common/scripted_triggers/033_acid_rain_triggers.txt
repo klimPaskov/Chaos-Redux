@@ -48,6 +48,23 @@ acid_rain_state_is_valid_target = {
 	}
 }
 
+# STATE SCOPE. True while this state's controller runs an evacuation here
+# that started in the current generation and has run at least one full day.
+acid_rain_state_has_partial_evacuation = {
+	has_state_flag = acid_rain_action_lock
+	has_variable = acid_rain_action_type
+	OR = {
+		check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+		check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+	}
+	has_variable = acid_rain_action_owner_generation
+	check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+	has_variable = acid_rain_action_owner_country_id
+	check_variable = { var = acid_rain_action_owner_country_id value = CONTROLLER.id compare = equals }
+	has_variable = acid_rain_evacuation_partial_day
+	check_variable = { var = global.date value = acid_rain_evacuation_partial_day compare = greater_than_or_equals }
+}
+
 acid_rain_state_is_frozen_valid = {
 	scope_exists = yes
 	has_state_flag = acid_rain_frozen_valid

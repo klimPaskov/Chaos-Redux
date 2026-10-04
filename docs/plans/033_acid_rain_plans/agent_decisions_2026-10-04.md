@@ -42,3 +42,24 @@ The adapter addition is coordinated with the famine and migration owner as a min
 Each national urgent family keeps its own receipt, so different families can run at the same time while each family runs at most once.
 Evacuations and state recovery operations keep per-state receipts, and the country counters count in-progress operations against the 2/4/8 evacuation caps and the 1/1/2/3 recovery-operation caps.
 Payment, reservation and one-time return stay per operation.
+
+## Implementing-engineer decisions, round 1
+
+These decisions were taken by the Event 033 implementing engineer under the same full design authority, choosing the spec-consistent option in each case.
+
+### D7. Decision cost text reads published display rows
+
+Disposition: implemented (commit "Show real costs on every Acid Rain decision").
+The quote refresh effects publish one persistent row per decision for player countries (`acid_rain_cost_<row>_<family>`), passed through the same final quote step (`acid_rain_finalize_loaded_quote`) that the affordability trigger and the debit use, so the shown numbers are the paid ones.
+AI countries skip the display rows because they never read them.
+The host worker refreshes player rows every worker tick along with AI rows, so discounts and band changes reach the text within three days.
+Evacuation and decontamination show "trains or convoys" because the chosen state, not the country, decides the route, and localisation cannot rely on the targeted state scope.
+The `_blocked` variant is selected by the engine from `custom_cost_trigger`, which is the same trigger the start transaction rechecks.
+
+### D8. Evacuation effect values
+
+Disposition: implemented (commit "Give severe evacuations time to work").
+The partial share is 50 percent of the full evacuation reduction (`acid_rain_mortality.evacuation_partial_share`), granted from one full day after the start (`acid_rain_preparedness.evacuation_partial_delay_days`) to severe and superstorm pulses only.
+The finished-evacuation damage-pressure reduction is limited to severe and superstorm pulses for the same reason.
+The disruption modifier `acid_rain_evacuation_disruption` costs 15 percent local factory output, 25 percent local construction speed and 15 percent local supply; it is added at the start, removed at once if the evacuation fails, and removed when the severe episode closes after a finished evacuation, with a 40-day safety duration.
+The evacuation decision requires a free national action slot, because the start transaction already required one and a decision that could be taken without effect is a defect; concurrency (D6) replaces this gate with per-state receipts.

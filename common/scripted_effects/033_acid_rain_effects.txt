@@ -123,6 +123,8 @@ acid_rain_clear_state_runtime_receipts = {
 	clear_variable = acid_rain_evacuation_country_id
 	clear_variable = acid_rain_evacuation_completion_day
 	clear_variable = acid_rain_evacuation_end_day
+	clear_variable = acid_rain_evacuation_partial_day
+	remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
 	clear_variable = acid_rain_aftercare_deadline
 	clear_variable = acid_rain_recovery_action_count
 	clear_variable = acid_rain_last_population_before_people
@@ -740,6 +742,7 @@ acid_rain_close_state_evacuation = {
 			}
 		}
 		clr_state_flag = acid_rain_evacuated
+		remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
 		set_variable = { acid_rain_evacuation_end_day = global.date }
 		clear_variable = acid_rain_evacuation_country_id
 	}
@@ -2481,11 +2484,28 @@ acid_rain_calculate_mortality_profile = {
 		multiply_temp_variable = { acid_rain_component_reduction = constant:acid_rain_mortality.transport_response_tier_reduction }
 		subtract_from_temp_variable = { acid_rain_protection = acid_rain_component_reduction }
 	}
+	# Evacuation protects only against severe and superstorm pulses. A finished
+	# evacuation gives the full reduction; one that has run a full day gives
+	# the partial share while civilians are still moving.
 	if = {
-		limit = { has_state_flag = acid_rain_evacuated }
-		subtract_from_temp_variable = { acid_rain_protection = constant:acid_rain_mortality.evacuation_protection }
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.severe compare = equals }
+				check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals }
 			}
-			CONTROLLER = {
+		}
+		if = {
+			limit = { has_state_flag = acid_rain_evacuated }
+			subtract_from_temp_variable = { acid_rain_protection = constant:acid_rain_mortality.evacuation_protection }
+		}
+		else_if = {
+			limit = { acid_rain_state_has_partial_evacuation = yes }
+			set_temp_variable = { acid_rain_evacuation_partial_reduction = constant:acid_rain_mortality.evacuation_protection }
+			multiply_temp_variable = { acid_rain_evacuation_partial_reduction = constant:acid_rain_mortality.evacuation_partial_share }
+			subtract_from_temp_variable = { acid_rain_protection = acid_rain_evacuation_partial_reduction }
+		}
+	}
+	CONTROLLER = {
 		if = { limit = { has_country_flag = acid_rain_action_shelter_active } subtract_from_temp_variable = { acid_rain_protection = constant:acid_rain_response.shelter_protection } }
 		if = { limit = { has_country_flag = acid_rain_action_water_active } subtract_from_temp_variable = { acid_rain_protection = constant:acid_rain_response.water_protection } }
 		if = { limit = { has_country_flag = acid_rain_action_medical_active } subtract_from_temp_variable = { acid_rain_protection = constant:acid_rain_response.medical_protection } }
@@ -2845,7 +2865,7 @@ acid_rain_apply_state_damage = {
 			}
 		}
 		if = {
-			limit = { has_state_flag = acid_rain_evacuated }
+			limit = { has_state_flag = acid_rain_evacuated OR = { check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.severe compare = equals } check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals } } }
 			add_to_temp_variable = { acid_rain_pressure_reduction = constant:acid_rain_air_damage.pressure_evacuation_reduction }
 		}
 		if = {

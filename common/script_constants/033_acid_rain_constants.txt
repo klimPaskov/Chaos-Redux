@@ -386,6 +386,9 @@ acid_rain_mortality = {
 	water_sustained_tier_reduction = 0.010
 	transport_response_tier_reduction = 0.010
 	evacuation_protection = 0.20
+	# Share of the full evacuation reduction granted while an evacuation that
+	# has already run one full day is still under way.
+	evacuation_partial_share = 0.50
 	protected_floor = 0.00
 	# Shared civilian-population transaction floor used by every positive pulse.
 	# The exact helper receives this value; Event 33 never substitutes a
@@ -504,6 +507,11 @@ acid_rain_preparedness = {
 	urgent_water_effect_days = 30
 	urgent_medical_effect_days = 21
 	urgent_transport_effect_days = 21
+	# An evacuation protects severe pulses partially after this many days.
+	evacuation_partial_delay_days = 1
+	# Safety bound for the evacuation disruption modifier; the runtime removes
+	# it earlier when the evacuation fails or its severe episode closes.
+	evacuation_disruption_max_days = 40
 }
 
 acid_rain_response = {
@@ -611,6 +619,9 @@ acid_rain_modifier = {
 	commitment_one_factory = 1.00
 	commitment_two_factories = 2.00
 	commitment_three_factories = 3.00
+	evacuation_factories = -0.15
+	evacuation_construction = -0.25
+	evacuation_supplies = -0.15
 }
 
 acid_rain_project_cost = {
@@ -1029,7 +1040,7 @@ acid_rain_evolution = {
 	severe_minimum_age_days = 12
 	severe_evaluation_cadence_days = 6
 	severe_first_cell_formation_delay_days = 6
-	severe_forecast_lead_days = 3
+	severe_forecast_lead_days = 9
 	severe_duration_min_days = 10
 	severe_duration_max_days = 21
 	severe_duration_max_days_exclusive = 22
@@ -1068,7 +1079,7 @@ acid_rain_evolution = {
 	world_collapse_superstorm_chaos = 1000.00
 	global_superstorm_third_capacity = 3
 	global_superstorm_fourth_capacity = 4
-	superstorm_lead_days = 3
+	superstorm_lead_days = 9
 	superstorm_duration_min_days = 10
 	superstorm_duration_max_days = 21
 	superstorm_duration_max_days_exclusive = 22

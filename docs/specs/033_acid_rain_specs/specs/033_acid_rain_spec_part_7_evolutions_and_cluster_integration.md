@@ -66,7 +66,7 @@ National preparation does not change atmospheric formation chance. It changes se
 
 ### Forecast and duration
 
-- forecast lead: 3 days
+- forecast lead: 9 days, so a seven-day evacuation started on the forecast day or the day after finishes before impact (agent decision D2, 2026-10-04, accepted under the user's full design authority)
 - active duration: 10 to 21 days
 - front cooldown after cell ends: 18 to 45 days
 - ordinary maximum: one active cell per front
@@ -167,7 +167,7 @@ Every valid state takes the global acute modifier and an immediate global-transi
 - capacity 3 after 60 global days or Chaos 900
 - capacity 4 at World Collapse if the event is still active
 - absolute cap 5
-- forecast lead 3 days
+- forecast lead 9 days, matching severe cells (agent decision D2)
 - duration 10 to 21 days
 - region or bounded state-group target
 

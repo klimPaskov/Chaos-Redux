@@ -1083,6 +1083,14 @@ acid_rain_start_action = {
 					set_variable = { acid_rain_action_due_day = ROOT.acid_rain_action_end_day }
 					if = {
 						limit = { OR = { check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals } check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals } } }
+						# Partial severe protection begins after one full day of movement.
+						set_variable = { acid_rain_evacuation_partial_day = global.date }
+						set_temp_variable = { chaosx_date_days = constant:acid_rain_preparedness.evacuation_partial_delay_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
+						add_to_variable = { acid_rain_evacuation_partial_day = chaosx_date_offset }
+						set_temp_variable = { acid_rain_evacuation_disruption_days = constant:acid_rain_preparedness.evacuation_disruption_max_days }
+						add_dynamic_modifier = { modifier = acid_rain_evacuation_disruption days = acid_rain_evacuation_disruption_days }
 						acid_rain_033_achievement_record_runtime_evacuation_start = yes
 					}
 				}
@@ -1174,6 +1182,13 @@ acid_rain_release_current_action_commitments = {
 				check_variable = { var = acid_rain_action_owner_country_id value = ROOT.id compare = equals }
 				check_variable = { var = acid_rain_action_owner_generation value = ROOT.acid_rain_action_generation compare = equals }
 			}
+			# A failed evacuation ends its disruption now; a finished one keeps
+			# it until the severe episode closes.
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
+			}
+			clear_variable = acid_rain_evacuation_partial_day
 			clr_state_flag = acid_rain_action_lock
 			clear_variable = acid_rain_action_owner_generation
 			clear_variable = acid_rain_action_owner_country_id
