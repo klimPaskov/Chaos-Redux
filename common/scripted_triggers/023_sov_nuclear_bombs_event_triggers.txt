@@ -1547,6 +1547,46 @@ sov_nuclear_bombs_event_ai_has_test_purpose = {
 	any_owned_state = { sov_nuclear_bombs_event_state_is_ready_test_site = yes }
 }
 
+# Country scope, ROOT is the Soviet AI actor. An independent minor still
+# fighting the Union that has no AI dossier at the attained stage. The stage
+# list sov_nuclear_bombs_ai_coerced_target_ids holds every government already
+# coerced at that stage, and a verified settlement keeps its last counterpart
+# covered into later stages.
+sov_nuclear_bombs_event_country_is_ai_coercion_candidate = {
+	NOT = { tag = ROOT }
+	is_major = no
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	has_war_with = ROOT
+	OR = {
+		NOT = { ROOT = { has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage } }
+		check_variable = { var = ROOT.sov_nuclear_bombs_ai_coercion_attempt_stage value = ROOT.sov_nuclear_bombs_evolution_stage compare = less_than }
+		NOT = { is_in_array = { array = ROOT.sov_nuclear_bombs_ai_coerced_target_ids value = THIS.id } }
+	}
+	NOT = {
+		AND = {
+			ROOT = { has_country_flag = sov_nuclear_bombs_settlement_verified }
+			check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_ai_coercion_attempt_target_id compare = equals }
+		}
+	}
+}
+
+# State scope, ROOT is the Soviet AI actor. The government a coercion dossier
+# on this state would name (its non-Soviet controller, otherwise its owner)
+# is an AI coercion candidate.
+sov_nuclear_bombs_event_state_is_ai_coercion_candidate = {
+	OR = {
+		AND = {
+			NOT = { is_controlled_by = ROOT }
+			controller = { sov_nuclear_bombs_event_country_is_ai_coercion_candidate = yes }
+		}
+		AND = {
+			is_controlled_by = ROOT
+			owner = { sov_nuclear_bombs_event_country_is_ai_coercion_candidate = yes }
+		}
+	}
+}
+
 # Evolution II and a real enforceable dispute: a current enemy minor that is
 # independent and still fighting. One dossier per target and attained stage; a
 # verified settlement keeps its counterpart covered.
@@ -1554,20 +1594,5 @@ sov_nuclear_bombs_event_ai_has_coercion_purpose = {
 	sov_nuclear_bombs_event_has_evolution_ii = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
 	sov_nuclear_bombs_event_has_ultimatum_device_backing = yes
-	any_enemy_country = {
-		is_major = no
-		is_subject = no
-		NOT = { has_capitulated = yes }
-		OR = {
-			NOT = { PREV = { has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage } }
-			check_variable = { var = PREV.sov_nuclear_bombs_ai_coercion_attempt_stage value = PREV.sov_nuclear_bombs_evolution_stage compare = less_than }
-			check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_ai_coercion_attempt_target_id compare = not_equals }
-		}
-		NOT = {
-			AND = {
-				PREV = { has_country_flag = sov_nuclear_bombs_settlement_verified }
-				check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_ai_coercion_attempt_target_id compare = equals }
-			}
-		}
-	}
+	any_enemy_country = { sov_nuclear_bombs_event_country_is_ai_coercion_candidate = yes }
 }

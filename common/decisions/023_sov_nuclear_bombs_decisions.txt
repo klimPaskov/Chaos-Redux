@@ -501,7 +501,8 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } sov_nuclear_bombs_prepare_coercion = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 0 has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage check_variable = { var = sov_nuclear_bombs_ai_coercion_attempt_stage value = sov_nuclear_bombs_evolution_stage compare = greater_than_or_equals } FROM = { controller = { check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_ai_coercion_attempt_target_id compare = equals } } } } modifier = { factor = 1.30 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		# The AI opens one dossier per enemy minor and attained stage.
+		ai_will_do = { base = 1.00 modifier = { factor = 0 FROM = { NOT = { sov_nuclear_bombs_event_state_is_ai_coercion_candidate = yes } } } modifier = { factor = 1.30 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_close_coercion_target = {

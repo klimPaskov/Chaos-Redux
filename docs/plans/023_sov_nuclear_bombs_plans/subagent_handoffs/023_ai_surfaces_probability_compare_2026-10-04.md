@@ -75,3 +75,19 @@ The before source for these surfaces is the same frozen `before_decisions.txt`; 
 | `P23_NAV_BASELINE_ALL_DOCTRINES_VALID` | Moratorium weight 0 at the opening unless the opening already made the arsenal public or a crisis is recorded |
 | `P23_NAV_IDLE_NO_PURPOSE` | Idle custody: one dispersal per stage, no moratorium without a restraint reason |
 | `P23_NAV_IV_MAJOR_PROSPECTIVE_VALID` | Selector weight only on reachable lower-consequence states |
+
+## Review additions, second pass (decision R6)
+
+One narrow `hoi4_probability_inspect` call (`adapter = decision_ai_will_do`, `source = { path = common/decisions/023_sov_nuclear_bombs_decisions.txt }`, `candidatePool = ["sov_nuclear_bombs_select_coercion_target"]`) again returned `INTERNAL_ERROR` with `artifactCount = 0`; it was not retried and the compare stays `blocked`.
+The before source for this surface is `HEAD` `ab3470be58d3231e495e305dbe5f308a66f88005` (`common/decisions/023_sov_nuclear_bombs_decisions.txt`, `common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt`, `common/scripted_effects/023_sov_nuclear_bombs_event_effects.txt`), readable with `git show`.
+
+| Surface | Before | After |
+| --- | --- | --- |
+| `sov_nuclear_bombs_select_coercion_target` | `factor = 0` only for the state whose controller is the last coerced government at the current stage | `factor = 0` unless the dossier's government (non-Soviet controller, otherwise owner) is an independent minor at war with the Union, absent from the stage list `sov_nuclear_bombs_ai_coerced_target_ids`, and not the counterpart of a verified settlement |
+| Router coercion purpose | An enemy minor other than the last coerced government | An enemy minor absent from the stage list, through the same country predicate |
+
+| Scenario | Expected after-source result |
+| --- | --- |
+| `P23_NAV_COERCION_TWO_MINORS_ONE_STAGE` | One dossier against each enemy minor, then no coercion purpose and zero selection weight until the next attained stage |
+| `P23_NAV_COERCION_NEW_STAGE` | The stage list empties on the first dossier of the new stage; every enemy minor except a verified settlement counterpart is eligible again |
+| `P23_NAV_COERCION_NONWAR_COUNTERPART` | Zero selection weight for a state whose dossier would name a government not at war with the Union |

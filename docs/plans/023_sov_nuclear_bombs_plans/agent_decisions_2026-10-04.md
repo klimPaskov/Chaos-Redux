@@ -163,3 +163,38 @@ Decision: the selector's AI weight is zero for a state outside `sov_nuclear_bomb
 No numeric weight changed; these are factor-zero eligibility gates like D5's.
 Basis: Part 9 moratorium and stand-down guidance, the closure addendum row 17 ("a justified restraint purpose"), and the user's full design authority.
 Disposition: `implemented`; MCP compare `blocked` (see D11 and the compare handoff); AI campaign behaviour `needs_live_game`.
+
+## Round 1 review, second pass (skeptical reviewer, 2026-10-04)
+
+Scope: every Round 1 commit from `aa1435e5c` to `444500295`, plus the Event 028 edit `d4ef004ca` to the Event 23 `on_nuke_drop` branch, read with `git show` against the installed raid, effect and trigger documentation and the offline wiki.
+Helper calls with `= yes`, `constant:` references and the localisation keys named by decisions, triggers and events resolve in `HEAD`; the touched script files balance their braces; the localisation file keeps its BOM.
+The raid override still differs from the installed vanilla file only by the header and six modifiers, and no other file defines those six raid types.
+The adopted Event 5 bridge lines reference only helpers present in `HEAD`, and the Chaos Meter condemnation pointer `chaos_meter_nuclear_target_state` is set by both of its callers before use.
+
+### R5. A raid on the ultimatum target counts as striking it
+
+Finding: `sov_nuclear_bombs_record_native_raid_use` (from `9aac54b6b`) recorded combat use and breached pending agreements but never set `sov_nuclear_bombs_ultimatum_target_struck`, which the authorized strike path sets when the struck government received the ultimatum.
+A player could therefore settle an ultimatum, wait for verification, nuke the same government through a vanilla raid and still earn "Ultimatum Without Ash", the same kind of gap D3 closed for "The Bomb Never Fell".
+Decision: the helper sets `sov_nuclear_bombs_ultimatum_target_struck` when the struck state's controller or owner is `sov_nuclear_bombs_ultimatum_target_country_id`.
+Disposition: `implemented`; raid confirmation `needs_live_game`.
+
+### R6. One AI coercion dossier per enemy minor and stage
+
+Finding: D5 and Part 9 promise one dossier per independent enemy minor and attained stage, but `7bbd68da1` stored only the last target id, so the AI could alternate between two minors (A, B, A, B) at the same stage, paying command power and raising tension on every round.
+The selection weight also compared only the state's controller, so a Soviet-held state of an already coerced owner could reopen the same government, and it weighed counterparts that were not at war with the Union although the router enters coercion only for an enemy minor.
+Decision: `sov_nuclear_bombs_prepare_coercion` keeps the stage list `sov_nuclear_bombs_ai_coerced_target_ids` for an AI actor, emptied when the attained stage rises; `sov_nuclear_bombs_event_country_is_ai_coercion_candidate` (an independent minor at war with the Union, absent from the list at the current stage, and not the counterpart of a verified settlement) backs both the router's coercion purpose and the selection weight through `sov_nuclear_bombs_event_state_is_ai_coercion_candidate`, which reads the government the dossier would name (the non-Soviet controller, otherwise the owner).
+The selection weight's factor-0 eligibility gate is the only weight change; base and multipliers are unchanged.
+Basis: D5, Part 9 ("one dossier per independent enemy minor and stage"; "avoid repeated threats against protected targets"), and the user's full design authority.
+Disposition: `implemented`; MCP compare `blocked` (see D11 and the compare handoff); AI campaign behaviour `needs_live_game`.
+
+### R7. Survey readiness uses its tuning constant
+
+Finding: the R3 survey fix kept the literal `4` although `sov_nuclear_bombs_tuning.survey_readiness` holds that value.
+Decision: the survey reads `constant:sov_nuclear_bombs_tuning.survey_readiness`; the value is unchanged.
+Disposition: `implemented`.
+
+### Remaining risks recorded, not changed
+
+- The router's Evolution IV first-use candidate (`sov_nuclear_bombs_event_ai_has_first_use_candidate`) does not test bomber reach, while the selector gives unreachable states zero AI weight. If every candidate state lies outside the delivery ceiling, the AI holds the retaliation board without marking a target until the emergency ends. Disposition: `unresolved`; it needs a launcher-from-ROOT variant of `sov_nuclear_bombs_event_state_has_delivery_access`, and live evidence of how often it occurs (`needs_live_game`).
+- The AI reaches certified delivery crews only with ten deployed strategic bombers (D2). No Event 23 AI strategy raises Soviet strategic bomber production; the vanilla default ratio applies. Part 5 allows ("may") such a production shift. Disposition: `unresolved`; a bounded `ai_strategy` would need its own probability baseline once the MCP route works.
+- A refunded vanilla raid leaves its booked device in the expended bucket while the native stockpile holds a surplus (D3 tolerance); it does not count as combat use or affect the achievements. Disposition: `accepted` under D3.

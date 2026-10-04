@@ -1019,8 +1019,9 @@ sov_nuclear_bombs_record_action_receipt = {
 # a nuclear weapon outside an Event 23 request, normally through a vanilla
 # nuclear raid. The callback's shared hook has already applied the detonation
 # consequences, so this helper records only Event 23 state: the combat use,
-# public knowledge, breached restraint agreements, the major-power receipt and
-# achievement receipts. The caller saves the struck state as the event target
+# public knowledge, breached restraint agreements, a strike on the ultimatum
+# target, the major-power receipt and achievement receipts. ROOT is the
+# launcher, and the caller saves the struck state as the event target
 # sov_nuclear_bombs_native_use_state.
 sov_nuclear_bombs_record_native_raid_use = {
 	if = {
@@ -1065,6 +1066,21 @@ sov_nuclear_bombs_record_native_raid_use = {
 		if = {
 			limit = { has_country_flag = sov_nuclear_bombs_settlement_verification_pending }
 			set_country_flag = sov_nuclear_bombs_settlement_violated
+		}
+		# A raid on the government that received the ultimatum strikes the
+		# ultimatum target, as an authorized strike on it would.
+		if = {
+			limit = {
+				has_variable = sov_nuclear_bombs_ultimatum_target_country_id
+				has_event_target = sov_nuclear_bombs_native_use_state
+				event_target:sov_nuclear_bombs_native_use_state = {
+					OR = {
+						controller = { check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_ultimatum_target_country_id compare = equals } }
+						owner = { check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_ultimatum_target_country_id compare = equals } }
+					}
+				}
+			}
+			set_country_flag = sov_nuclear_bombs_ultimatum_target_struck
 		}
 		if = {
 			limit = {
@@ -1269,11 +1285,25 @@ sov_nuclear_bombs_prepare_coercion = {
 			}
 		}
 		SOV = { save_global_event_target_as = sov_nuclear_bombs_coercion_actor }
-		# One AI dossier per target and attained stage.
+		# One AI dossier per target and attained stage: a new stage starts an
+		# empty list of coerced governments, and each dossier adds its target.
 		if = {
 			limit = { is_ai = yes }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage }
+						check_variable = { var = sov_nuclear_bombs_ai_coercion_attempt_stage value = sov_nuclear_bombs_evolution_stage compare = less_than }
+					}
+				}
+				clear_array = sov_nuclear_bombs_ai_coerced_target_ids
+			}
 			set_variable = { sov_nuclear_bombs_ai_coercion_attempt_stage = sov_nuclear_bombs_evolution_stage }
-			if = { limit = { has_event_target = sov_nuclear_bombs_coercion_target } set_variable = { sov_nuclear_bombs_ai_coercion_attempt_target_id = event_target:sov_nuclear_bombs_coercion_target.id } }
+			if = {
+				limit = { has_event_target = sov_nuclear_bombs_coercion_target }
+				set_variable = { sov_nuclear_bombs_ai_coercion_attempt_target_id = event_target:sov_nuclear_bombs_coercion_target.id }
+				add_to_array = { array = sov_nuclear_bombs_ai_coerced_target_ids value = sov_nuclear_bombs_ai_coercion_attempt_target_id }
+			}
 		}
 		if = {
 			limit = {
@@ -2433,7 +2463,7 @@ sov_nuclear_bombs_strengthen_authentication = {
 sov_nuclear_bombs_survey_remote_test_state = {
 	if = {
 		limit = { NOT = { has_country_flag = sov_nuclear_bombs_test_site_surveyed } }
-		add_to_variable = { sov_nuclear_bombs_readiness = 4 }
+		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.survey_readiness }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 	}
 	if = { limit = { has_event_target = sov_nuclear_bombs_selected_test_state } set_country_flag = sov_nuclear_bombs_test_site_surveyed }
