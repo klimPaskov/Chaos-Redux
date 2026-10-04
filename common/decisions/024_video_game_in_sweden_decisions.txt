@@ -76,15 +76,22 @@ video_game_in_sweden_program_category = {
 	video_game_expand_access = {
 		icon = GFX_decision_024_video_game_in_sweden_expand_access
 		visible = {
-			video_game_in_sweden_is_baseline = yes
 			NOT = { has_country_flag = video_game_in_sweden_broad_public_reach }
 			OR = {
-				has_country_flag = video_game_in_sweden_officer_route
-				check_variable = {
-					var = video_game_in_sweden_access_tier
-					value = constant:video_game_in_sweden_value.three
-					compare = less_than
+				AND = {
+					video_game_in_sweden_is_baseline = yes
+					OR = {
+						has_country_flag = video_game_in_sweden_officer_route
+						check_variable = {
+							var = video_game_in_sweden_access_tier
+							value = constant:video_game_in_sweden_value.three
+							compare = less_than
+						}
+					}
 				}
+				# A formal officer league can still publish its tables during the
+				# staff-culture stage, which is the officer route's only public reach.
+				video_game_in_sweden_can_publish_officer_tables = yes
 			}
 		}
 		available = {
@@ -95,7 +102,8 @@ video_game_in_sweden_program_category = {
 		ai_hint_pp_cost = 35
 		custom_cost_trigger = { video_game_in_sweden_can_pay_expand_access = yes }
 		days_remove = constant:video_game_in_sweden_timing.opening_review_days
-		# The officer route may widen twice: the league first, then the press.
+		# The officer route may widen twice: the league first, then the press,
+		# which may come after the staff-culture stage has begun.
 		fire_only_once = no
 		cancel_if_not_visible = no
 		cancel_trigger = { NOT = { video_game_in_sweden_is_current_host = yes } }

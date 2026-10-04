@@ -90,7 +90,7 @@ The baseline category presents four primary actions.
 | --- | --- | --- | --- |
 | Conduct a controlled exercise | `video_game_controlled_exercise` | Run a small staff exercise and build measured confidence. | Army experience, support equipment, fuel. |
 | Add a logistics module | `video_game_logistics_module` | Test trains, trucks, support equipment, and factory time against the cabinet. | Trains, trucks, support equipment, civilian factory. |
-| Widen the cabinet's circle | `video_game_expand_access` | Route-sensitive: the controlled and commercial routes go to public circulation and broad reach, while the officer route first formalises its league inside the army (league package and commander roll, no reach) and may later publish the tables to the press. | Political power and army experience. |
+| Widen the cabinet's circle | `video_game_expand_access` | Route-sensitive: the controlled and commercial routes go to public circulation and broad reach, while the officer route first formalises its league inside the army (league package and commander roll, no reach) and may later publish the tables to the press, which stays available during Evolution I once the league is formal. | Political power and army experience. |
 | Conclude the trial | `video_game_conclude_trial` | Close the baseline program after review and record an ordinary conclusion. | No spendable cost. |
 
 The baseline has a finite review window, a repeat cooldown, and an automatic close after the configured baseline lifetime.
@@ -279,7 +279,7 @@ Full validation grants the validated-methods idea for a finite period and begins
 ### Closing every Evolution III path
 
 An Evolution III programme cannot stay unresolved.
-Once a route has been used and nothing is running (no mission, no Trust the Model surge or reassessment, no recovery or restriction), maintenance counts idle time, and after 150 days report `chaosx.nr24.36` makes the Ministry close the file.
+Whenever nothing is running in Evolution III (no mission, no Trust the Model surge or reassessment, no recovery or restriction), whether no route has been chosen yet or a used route left the programme unsettled, maintenance counts idle time, and after 150 days report `chaosx.nr24.36` makes the Ministry close the file.
 It either keeps the cabinet as a supervised instrument (Reliance capped at Doctrine, the programme closes and Independent Staff Comparison continues for 120 days) or restricts it by order through the ordinary restriction mission.
 The AI keeps the supervised instrument at peace and restricts by order in a wartime crisis.
 A failed field validation, Reality Audit or dual-track verification halves every restriction charge through the stored fee factor.
@@ -383,6 +383,7 @@ Incidents from before the surge never shorten it.
 ### National Final
 
 The second national league season schedules `chaosx.nr24.35`, a national final 30 days later, once per programme.
+The final is still played if Evolution III has begun in the meantime, but not during restriction, recovery or closure.
 The official favourite (weight 60, raised by half under state exhibitions) raises Reliance by 6 and adds 2% war support.
 An outsider's upset (weight 40, raised by half with a red team and by a quarter with civic clubs or a preparedness charter) lowers Reliance by 8 and grants 15 political power.
 
@@ -390,6 +391,7 @@ An outsider's upset (weight 40, raised by half with a red team and by a quarter 
 
 Every path into Evolution II requires broad public reach, including the step from Evolution I.
 An officer or controlled programme that never widened civilian access stays in Evolution I and can conclude there.
+The officer route gains its reach by publishing its formal league tables through `video_game_expand_access`, which remains available during Evolution I after the league is formalised, so a high-Chaos officer opening that enters Evolution I at once can still reach the national craze.
 
 ## Commander lifecycle
 

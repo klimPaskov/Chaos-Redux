@@ -315,12 +315,13 @@ video_game_in_sweden_has_validation_evidence = {
 	}
 }
 
-# Evolution III has used its route and nothing is running: no mission, no
-# Trust the Model surge or reassessment. The final review counts this time.
+# Evolution III with nothing running: no mission, no Trust the Model surge or
+# reassessment, no recovery or restriction. This covers a programme that never
+# chose a route as well as one left unsettled after a route, so Simulation
+# Orthodoxy cannot last indefinitely. The final review counts this time.
 video_game_in_sweden_evolution_iii_is_idle = {
 	has_country_flag = video_game_in_sweden_evolution_iii_active
 	video_game_in_sweden_no_active_mission = yes
-	NOT = { video_game_in_sweden_evolution_iii_initial_choices_open = yes }
 	NOT = { has_country_flag = video_game_in_sweden_trust_model_active }
 	NOT = { has_country_flag = video_game_in_sweden_mandatory_reassessment_pending }
 	NOT = { has_country_flag = video_game_in_sweden_recovery_active }
@@ -693,6 +694,18 @@ video_game_in_sweden_is_baseline = {
 		value = constant:video_game_in_sweden_value.phase_baseline
 		compare = equals
 	}
+}
+
+# The officer route publishes its formal league tables to the press during the
+# staff-culture stage. This second widening is the officer programme's only
+# source of the public reach that Evolution II requires.
+video_game_in_sweden_can_publish_officer_tables = {
+	video_game_in_sweden_is_current_host = yes
+	NOT = { has_country_flag = video_game_in_sweden_program_closing }
+	has_country_flag = video_game_in_sweden_evolution_i_active
+	has_country_flag = video_game_in_sweden_officer_route
+	has_country_flag = video_game_in_sweden_officer_league_complete
+	NOT = { has_country_flag = video_game_in_sweden_broad_public_reach }
 }
 
 video_game_in_sweden_is_baseline_or_evolution_i = {
