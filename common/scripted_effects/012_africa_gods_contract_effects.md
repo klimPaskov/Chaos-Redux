@@ -69,3 +69,28 @@ The contract closure enum has one owner, `012_africa_gods_contract_constants.txt
 The native participant capitulation/annexation cleanup owner also performs interrupted retirement and frozen slot release before clearing its contract.
 Interrupted war classification proves the stored host object's ID, origin, and generation before using war against that object as adverse evidence.
 Ordinary reconciliation completion requires a present positive offer sequence at least as recent as its consumed acceptance; this permits the genuine recorder-first/completion-second case and rejects missing, zero, or older envelopes before pardon.
+
+## Owned agreements and treaty breaches
+
+A treaty breach is recorded only when an owned agreement is broken.
+The agreement kinds are `gods_of_africa_agreement` in `012_africa_gods_contract_constants.txt`: `tribute_terms = 1`, `protection_compact = 2`, `reconciliation = 3`, and `victor_renewal = 4`.
+
+| Helper | Scope and inputs | Behaviour |
+| --- | --- | --- |
+| `gods_of_africa_mark_contract_agreed` | Participant with an open contract ledger | Sets `gods_of_africa_contract_agreed` and binds `gods_of_africa_contract_agreed_id` to the ledger ID. Called when a partial payment succeeds, when an extension is granted, and when Africa accepts a substitute. |
+| `gods_of_africa_clear_contract_agreement` | Participant | Clears the agreed-terms receipt; called when a contract ledger opens and in `gods_of_africa_clear_demand`. |
+| `gods_of_africa_record_treaty_breach` | Participant; temporary `gods_of_africa_treaty_breach_kind` (agreement kind) and `gods_of_africa_treaty_breach_war` (one when war broke it) | Increments `gods_of_africa_treaty_break_count` once, sets `gods_of_africa_unresolved_treaty_break`, `gods_of_africa_prior_treaty_break`, and the `gods_of_africa_broken_treaty` floor cause, stores `gods_of_africa_last_treaty_breach_kind` and `_day`, ends the broken agreement (a war ends all of them), writes one `treaty_break` history row, and applies `gods_of_africa_wrath.treaty_breach_magnitude`. Both temporary inputs are reset to zero. |
+| `gods_of_africa_observe_agreement_war` | Participant, from `gods_of_africa_refresh_participant_floors` | Clears the per-war dedupe flag at peace; at war with Africa with a live compact, reconciliation, or renewal and no breach yet recorded for this war, records one war breach and fires `chaosx.nr12.616`. |
+
+Triggers in `012_africa_gods_contract_triggers.txt`: `gods_of_africa_contract_is_agreed`, `gods_of_africa_victor_renewal_agreement_is_live`, `gods_of_africa_participant_has_live_agreement`, and `gods_of_africa_participant_needs_reconciliation` (defiance or an unresolved breach).
+
+The refusal, failure, wartime-cancellation, and defiance owners read `gods_of_africa_contract_is_agreed` before closing the ledger, then call the breach recorder instead of applying their ordinary Wrath gain.
+`gods_of_africa_mark_offender` keeps its offense and punishment-priority behaviour and never sets `gods_of_africa_broken_treaty`.
+`gods_of_africa_complete_reconciliation` clears only `gods_of_africa_unresolved_treaty_break` and `gods_of_africa_broken_treaty`, keeps the count and the prior-breach flag, and sets `gods_of_africa_reconciliation_agreement_live`.
+Example:
+
+```
+set_temp_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_agreement.tribute_terms }
+set_temp_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.zero }
+gods_of_africa_record_treaty_breach = yes
+```

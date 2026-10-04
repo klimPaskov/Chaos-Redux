@@ -17,7 +17,15 @@ gods_of_africa_capture_response_report = {
 		}
 		set_variable = { gods_of_africa_last_response_amount = gods_of_africa_report_amount }
 		set_variable = { gods_of_africa_last_response_balance = gods_of_africa_report_balance }
+		# Owners that can break agreed terms set this temporary kind explicitly
+		# before every capture; zero means the answer broke no agreement.
+		clear_variable = gods_of_africa_last_response_breach_kind
+		if = {
+			limit = { check_variable = { gods_of_africa_report_breach_kind > constant:gods_of_africa_value.zero } }
+			set_variable = { gods_of_africa_last_response_breach_kind = gods_of_africa_report_breach_kind }
+		}
 	}
+	set_temp_variable = { gods_of_africa_report_breach_kind = constant:gods_of_africa_value.zero }
 }
 
 gods_of_africa_clear_report_receipts = {
@@ -26,6 +34,7 @@ gods_of_africa_clear_report_receipts = {
 	clear_variable = gods_of_africa_last_response_mobile_type
 	clear_variable = gods_of_africa_last_response_amount
 	clear_variable = gods_of_africa_last_response_balance
+	clear_variable = gods_of_africa_last_response_breach_kind
 	clear_variable = gods_of_africa_last_punishment_pp_change
 	clear_variable = gods_of_africa_last_punishment_stability_change
 	clear_variable = gods_of_africa_last_punishment_war_support_change

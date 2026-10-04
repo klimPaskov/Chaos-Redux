@@ -50,13 +50,24 @@ Decision:
 
 ## L4. A treaty breach is the breach of an owned agreement
 
-Disposition: `accepted and queued` until implemented.
+Disposition: `implemented`.
 
 Basis: WRA-04 ("commit then invalidate promised payment") and the grading design's "Agreements and reconciliation" section.
 
 Decision: an agreement exists when the host accepted a substitute or an extension, a partial payment began on the current contract, the participant holds a live protection compact, or the participant has an accepted reconciliation or victor renewal.
 A breach is failure, refusal, or war on an agreed contract, or war against the host while a compact, reconciliation, or renewal is live.
 Generic offender marking stops creating treaty breaches.
+
+Implementation choices taken under this decision:
+
+- The agreement kinds are the schema-bearing `gods_of_africa_agreement` group (`tribute_terms`, `protection_compact`, `reconciliation`, `victor_renewal`); the agreed-terms receipt is bound to the open contract ledger ID, so it can never leak into the next contract.
+- `gods_of_africa_record_treaty_breach` is the only writer of `gods_of_africa_treaty_break_count`, `gods_of_africa_unresolved_treaty_break`, `gods_of_africa_prior_treaty_break`, and the `gods_of_africa_broken_treaty` floor cause.
+  Its Wrath gain is `gods_of_africa_wrath.treaty_breach_magnitude` (20), which replaces the ordinary refusal (8), failure (12), or war (10) gain.
+- Defiance of agreed terms records the breach and keeps the separate defiance gain, because the participant both broke an agreement and left the system.
+- One war breaks every live agreement at once and counts as one breach; the per-war dedupe flag clears at peace.
+- An unresolved breach opens the same paid reconciliation window as permanent defiance, and the window only opens while the participant is at peace; a window cancelled by war is closed as missed once its due day passes, so a fresh window can open later.
+- A war with Africa that cancels a contract without agreed terms records a separate `war_cancellation` history kind and the ordinary war Wrath gain, not a treaty break.
+- Player-facing reports `.604` and `.613` name agreed terms, the new `.616` names the agreement a war broke, and the refusal and defiance rows warn when the open contract carries agreed terms.
 
 ## L5. Achievements and super-event are required
 

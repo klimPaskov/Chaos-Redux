@@ -51,7 +51,7 @@ gods_of_africa_participant_category = {
 		ai_will_do = { base = 1 }
 	}
 
-	# A defiant participant receives a bounded reconciliation window. The
+	# A defiant or treaty-breaking participant receives a bounded reconciliation window. The
 	# participant can submit reparations during the window; the host's target
 	# decision remains the acceptance gate, while timeout records failure.
 	gods_of_africa_reconciliation_mission = {
@@ -67,7 +67,7 @@ gods_of_africa_participant_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { gods_of_africa_participant_generation_is_current = yes }
-				NOT = { has_country_flag = gods_of_africa_defiant }
+				NOT = { gods_of_africa_participant_needs_reconciliation = yes }
 				NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
 				has_war = yes
 				has_country_flag = gods_of_africa_final_settlement_committed
@@ -379,6 +379,10 @@ gods_of_africa_participant_category = {
 		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = gods_of_africa_refuse_demand_effect_tt
+			if = {
+				limit = { gods_of_africa_contract_is_agreed = yes }
+				custom_effect_tooltip = gods_of_africa_refuse_agreed_terms_tt
+			}
 			hidden_effect = { gods_of_africa_refuse_demand = yes }
 		}
 		ai_will_do = {
@@ -410,6 +414,10 @@ gods_of_africa_participant_category = {
 		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = gods_of_africa_permanent_defiance_effect_tt
+			if = {
+				limit = { gods_of_africa_contract_is_agreed = yes }
+				custom_effect_tooltip = gods_of_africa_refuse_agreed_terms_tt
+			}
 			hidden_effect = { gods_of_africa_permanent_defiance = yes }
 		}
 		ai_will_do = {
@@ -530,7 +538,7 @@ gods_of_africa_participant_category = {
 				AND = {
 					gods_of_africa_participant_host_is_active = yes
 					gods_of_africa_participant_generation_is_current = yes
-					has_country_flag = gods_of_africa_defiant
+					gods_of_africa_participant_needs_reconciliation = yes
 					has_country_flag = gods_of_africa_reconciliation_pending
 				}
 			}

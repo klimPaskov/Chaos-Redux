@@ -65,3 +65,45 @@ gods_of_africa_demand_owner_object_is_proven = {
 		check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_demand_origin_host_id compare = equals }
 	}
 }
+
+# Participant COUNTRY. The open contract carries agreed terms: Africa granted an
+# extension or accepted a substitute, or a partial payment already began.
+gods_of_africa_contract_is_agreed = {
+	has_country_flag = gods_of_africa_contract_agreed
+	has_country_flag = gods_of_africa_contract_ledger_open
+	has_variable = gods_of_africa_contract_agreed_id
+	has_variable = gods_of_africa_contract_ledger_id
+	check_variable = { gods_of_africa_contract_agreed_id = gods_of_africa_contract_ledger_id }
+}
+
+# Participant COUNTRY. A renewed recognition after a capitulation victory stays
+# binding until this victor breaks it or wins another war against Africa.
+gods_of_africa_victor_renewal_agreement_is_live = {
+	has_country_flag = gods_of_africa_victor_relegitimation_committed
+	NOT = { has_country_flag = gods_of_africa_victor_exempt }
+	has_variable = gods_of_africa_victor_relegitimated_sequence
+	NOT = {
+		AND = {
+			has_variable = gods_of_africa_victor_renewal_breached_sequence
+			check_variable = { gods_of_africa_victor_renewal_breached_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+	}
+}
+
+# Participant COUNTRY. Live relationship agreements that war with Africa breaks.
+gods_of_africa_participant_has_live_agreement = {
+	OR = {
+		has_country_flag = gods_of_africa_protected
+		has_country_flag = gods_of_africa_reconciliation_agreement_live
+		gods_of_africa_victor_renewal_agreement_is_live = yes
+	}
+}
+
+# Participant COUNTRY. Permanent defiance and an unresolved broken agreement are
+# both settled through the same paid reconciliation that Africa must accept.
+gods_of_africa_participant_needs_reconciliation = {
+	OR = {
+		has_country_flag = gods_of_africa_defiant
+		has_country_flag = gods_of_africa_unresolved_treaty_break
+	}
+}
