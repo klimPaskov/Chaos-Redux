@@ -78,7 +78,7 @@ Evidence: `common/scripted_effects/016_brilliant_scientist_containment_effects.t
 
 ## D5. Multi-site network from real facility state
 
-Decision: `brilliant_scientist_multi_site_network_verified` is derived by `brilliant_scientist_reconcile_multi_site_network`, set while the current host owns and controls a valid primary and a valid secondary laboratory in two distinct core states, and cleared otherwise.
+Decision: `brilliant_scientist_multi_site_network_verified` is derived by `brilliant_scientist_reconcile_multi_site_network`, set while the current host owns and controls a valid primary laboratory in a core state and a valid secondary laboratory in a distinct state, and cleared otherwise.
 The two distinct facility states are the network minimum. `brilliant_scientist_formation.multi_site_minimum_states` (4) stays the multi-site formation band's territory minimum, checked by `brilliant_scientist_can_form_multi_site`; reusing it as a facility-count minimum would demand four laboratory states that no host can build, and the band would stay dead.
 The helper runs after primary campus and secondary laboratory establishment, after a successful relocation, in the existing `on_state_control_changed` handler for the gaining and losing host, and at the start of territory planning and containment scoring. No world iteration is added.
 
@@ -140,7 +140,7 @@ Decision: both Singularity alternatives from the accepted 100-focus architecture
 - Event Log: superseded by D18, which writes one Events Log history row for each alternative through the existing shared system-row API.
 
 Evidence: `common/decisions/016_brilliant_scientist_kruger_state_terminal_decisions.txt`, `common/decisions/016_brilliant_scientist_aftermath_decisions.txt`, `common/decisions/categories/016_brilliant_scientist_aftermath_categories.txt`, `common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt`, `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt`, `common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt`, `events/016_brilliant_scientist_kruger_state_events.txt`, `events/016_brilliant_scientist_news_events.txt`, the three localisation files, the Directorate scripted localisation and GUI localisation, and `docs/events/016_brilliant_scientist/systems/super_events_and_aftermath.md`.
-Needs live game: the offer decision's target list, the KRG answer flow, and the escape's leaderless-state handling after Kruger is retired.
+Needs live game: the offer decision's target list, the KRG answer flow, and the caretaker succession after Kruger is retired (D20).
 
 ## D12. Project modifier remove triggers are exact negations
 
@@ -210,7 +210,25 @@ Needs live game: the two rows' titles and details in the Events Log history tab.
 The AI continuation check for the programme review counted a suspended programme as replicable and compared the replicated-family count with the published count, so a suspended and damaged programme, or one replicated only at an earlier stage, could keep the free review control cycling indefinitely.
 `brilliant_scientist_refresh_directorate_project_selection` now also derives two board-wide flags with the reviewed-programme rules, `brilliant_scientist_directorate_replication_candidate_exists` and `brilliant_scientist_directorate_publication_candidate_exists`, and `brilliant_scientist_ai_any_project_has_board_work` reads them together with the live payment and permission checks.
 No order weight changes: the review control keeps its base and its two zero factors, and only the condition of the continuation zero factor is corrected.
-Known limit: while the only candidate programme's own stage order is running, the review can still cycle until that order completes, because stage starts do not refresh the board flags; this is a short, cost-free loop and does not block any order.
+The running-stage limit and the suspended-without-capacity loop recorded here are closed by D20.
 Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, candidate `brilliant_scientist_review_next_directorate_project`, source the project board file) returned `INTERNAL_ERROR` and was not retried; the change is a source-reviewed correction of a zero-factor condition only.
 
 Evidence: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_project_triggers.txt`, `docs/events/016_brilliant_scientist/systems/directorate.md`.
+
+## D20. Round 1 review corrections
+
+Disposition: implemented by the round 1 reviewer under the same full-authority mandate; each item corrects a defect found while reviewing the round 1 commits.
+
+- AI programme review: D19 still let the free review control cycle while a suspended, undamaged programme lacked the Project Capacity to resume, and while the lone replication candidate's own stage order was running. `brilliant_scientist_refresh_directorate_project_selection` now also derives `brilliant_scientist_directorate_resume_candidate_exists`, the smallest resume need `brilliant_scientist_directorate_resume_capacity_needed`, the replication candidate count, and the last replication candidate family. `brilliant_scientist_ai_any_project_has_board_work` reads them with the live capacity check and skips a lone candidate whose stage is running, using the same rule as `brilliant_scientist_selected_project_stage_is_idle`. Stage, suspension, and damage changes already refresh these values; capacity is read live. No order weight changes.
+- Sensor Saturation: the region took every neighbouring state the actor controlled, including occupied foreign states. The state-scope `enemy_*` and `local_intel_to_enemies` modifiers act against enemies of the state's owner (offline wiki Modifiers page, `enemy_army_speed_factor` and `enemy_attrition` rows), so in an occupied state they slowed, starved, and blinded the actor's own divisions. Neighbours must now be owned and controlled by the actor, and the modifier's enable and remove triggers require the recorded actor to own and control the state. Values and costs are unchanged.
+- Temporal escape succession: when Kruger ruled in person, retiring him left the party leader to the engine, which could install the machine continuity network or another route office. The escape now promotes `KRG_project_command_council` as the despotism leader after the retirement when the state holds it, mirroring the machine-continuity `promote_character` precedent; the machine route keeps its network leader, and a transformed host without the council keeps the engine's succession. The effect tooltip says a caretaker government takes over.
+- Temporal escape requirements: the `available` block printed eight raw flag identifiers. They are now one plain tooltip, `brilliant_scientist_krg_temporal_escape_device_tt`, beside the existing anchor tooltip.
+- Institutional capture tooltip: the gate requires a control score of 29 or less, which is the lost band (compromised is 30 to 49); the text now says the government has lost control of the Directorate.
+- Programme review description: before the first review it read "No programme, Unstarted." A summary text shows "No programme is under review yet." until a programme is selected.
+- Programme category descriptions use the programme names shown in the review (for example High-Energy Physics, Temporal Mechanics).
+- D5 wording: the primary laboratory is a core state; the secondary laboratory may be any distinct valid state.
+
+Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, candidate `brilliant_scientist_review_next_directorate_project`) again returned `INTERNAL_ERROR`; the AI correction is a source-reviewed zero-factor condition only.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_project_triggers.txt`, `common/scripted_effects/016_brilliant_scientist_technology_action_effects.txt`, `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`, `common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt`, `common/scripted_localisation/016_brilliant_scientist_directorate_scripted_localisation.txt`, the containment, directorate, technology-action, and Kruger State decision localisation files, and `docs/events/016_brilliant_scientist/systems/directorate.md`, `projects.md`, and `super_events_and_aftermath.md`.
+Needs live game: the caretaker council promotion, the regional modifier on owned neighbours only, and the review summary text.

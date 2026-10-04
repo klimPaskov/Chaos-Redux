@@ -186,6 +186,8 @@ The AI offers whenever the gate is open and prefers it twice as much when the fa
 
 A Kruger State with an armed device, Temporal Deployment, and an authenticated anchor in a state it owns and controls can take `brilliant_scientist_krg_escape_through_temporal_anchor` (100 Political Power, heavy material cost, 14 days).
 Completion calls `brilliant_scientist_krg_complete_temporal_escape`: it disarms the device through controlled disarmament without Fallout, verifies the nonterminal state, spends the anchor, keeps temporal debt and history, retires Kruger with a temporal-escape character flag, and fires news event `chaosx.nr16.320`.
+When Kruger ruled in person and the state holds `KRG_project_command_council`, the council is promoted as the despotism leader after his retirement, so a caretaker council governs instead of an arbitrary party leader; the machine-continuity route keeps its network leader, and a transformed host without the council keeps the engine's succession.
+The decision's state requirements show one plain tooltip, `brilliant_scientist_krg_temporal_escape_device_tt`, beside the anchor tooltip.
 The state is then judged through `brilliant_scientist_evaluate_defeat_after_global_threat` as an ambiguous defeat (`brilliant_scientist_temporal_escape_ambiguous_defeat`), with the surviving former host, then a major enemy, then any enemy as the custodian input.
 `brilliant_scientist_kruger_temporal_escape_completed` is the global future-return record.
 The AI considers the escape only past the surrender threshold, when the failsafe would otherwise be the next step, and never takes it on the deliberate-use route.

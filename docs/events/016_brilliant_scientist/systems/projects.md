@@ -257,9 +257,10 @@ The rows reuse registered `command_power`, `support_equipment_text_icon`, `fuel_
 Their numerical source is `common/script_constants/016_brilliant_scientist_technology_action_constants.txt`; native static `civilian_factory_use` fields retain matching file-local constants in the decision file.
 
 Sensor Saturation is a regional directive.
-`brilliant_scientist_activate_sensor_saturation` applies the state modifier `brilliant_scientist_sensor_saturation_region` for the ninety-day action duration to the selected anchor state and to every neighbouring state the actor controls.
+`brilliant_scientist_activate_sensor_saturation` applies the state modifier `brilliant_scientist_sensor_saturation_region` for the ninety-day action duration to the selected anchor state and to every neighbouring state the actor owns and controls.
+Occupied foreign states are excluded because state-scope enemy modifiers act against enemies of the state's owner, so in an occupied state they would hinder the actor's own divisions.
 The region gives enemy forces -30% movement speed, +20% attrition, -25% local supplies, and -50% local intelligence, from the `sensor_region_*` constants.
-Each regional state records its actor in `brilliant_scientist_sensor_saturation_actor`, and the modifier lapses if another country takes control of that state.
+Each regional state records its actor in `brilliant_scientist_sensor_saturation_actor`, and the modifier lapses if the actor stops owning or controlling that state.
 The national `brilliant_scientist_sensor_saturation_active` modifier is reduced to a minor coordination bonus: +20% air detection, +10% air mission efficiency, and +15% interception detection and static anti-air targeting.
 Costs, cooldown, targeting, and AI are unchanged.
 

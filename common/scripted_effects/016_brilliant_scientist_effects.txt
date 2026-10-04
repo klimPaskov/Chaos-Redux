@@ -994,8 +994,8 @@ brilliant_scientist_clean_invalid_facility_targets = {
 }
 
 # COUNTRY scope. The multi-site network exists while this current host owns and
-# controls a valid primary laboratory and a valid secondary laboratory in two
-# distinct core states; the facility validity triggers already exclude a shared
+# controls a valid primary laboratory (a core state) and a valid secondary
+# laboratory in a distinct state; the facility validity triggers exclude a shared
 # state and destroyed sites. Otherwise the flag is cleared. Runs after facility
 # establishment, relocation, and control changes, and before territory planning
 # and containment scoring, so formation and containment read the current value.
@@ -1279,10 +1279,17 @@ brilliant_scientist_refresh_directorate_project_selection = {
 		}
 	}
 	# Board-wide candidates for the AI review: some unsuspended programme can
-	# still be replicated at its current stage, or some replicated programme
-	# is still unpublished. The review stops cycling when neither exists.
+	# still be replicated at its current stage, some replicated programme is
+	# still unpublished, or some undamaged suspended programme can resume. The
+	# review stops cycling when none exists. The replication count and last
+	# candidate let the AI skip a lone candidate whose own stage is running;
+	# the resume need is the smallest capacity any resumable programme needs.
 	clr_country_flag = brilliant_scientist_directorate_replication_candidate_exists
 	clr_country_flag = brilliant_scientist_directorate_publication_candidate_exists
+	clr_country_flag = brilliant_scientist_directorate_resume_candidate_exists
+	set_variable = { brilliant_scientist_directorate_replication_candidate_count = constant:brilliant_scientist_value.zero }
+	clear_variable = brilliant_scientist_directorate_replication_candidate_family
+	clear_variable = brilliant_scientist_directorate_resume_capacity_needed
 	for_each_loop = {
 		array = brilliant_scientist_project_stage_entries
 		value = brilliant_scientist_directorate_candidate_stage
@@ -1305,6 +1312,42 @@ brilliant_scientist_refresh_directorate_project_selection = {
 				NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_directorate_candidate_family } }
 			}
 			set_country_flag = brilliant_scientist_directorate_replication_candidate_exists
+			add_to_variable = { brilliant_scientist_directorate_replication_candidate_count = constant:brilliant_scientist_value.one }
+			set_variable = { brilliant_scientist_directorate_replication_candidate_family = brilliant_scientist_directorate_candidate_family }
+		}
+		if = {
+			limit = {
+				check_variable = { brilliant_scientist_directorate_candidate_stage > constant:brilliant_scientist_project_stage.none }
+				is_in_array = { array = brilliant_scientist_project_suspended_families value = brilliant_scientist_directorate_candidate_family }
+				NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = brilliant_scientist_directorate_candidate_family } }
+			}
+			set_temp_variable = { brilliant_scientist_directorate_candidate_resume_need = constant:brilliant_scientist_project_resume_capacity.weaponization }
+			if = {
+				limit = { check_variable = { brilliant_scientist_directorate_candidate_stage = constant:brilliant_scientist_project_stage.theory } }
+				set_temp_variable = { brilliant_scientist_directorate_candidate_resume_need = constant:brilliant_scientist_project_resume_capacity.theory }
+			}
+			else_if = {
+				limit = { check_variable = { brilliant_scientist_directorate_candidate_stage = constant:brilliant_scientist_project_stage.prototype } }
+				set_temp_variable = { brilliant_scientist_directorate_candidate_resume_need = constant:brilliant_scientist_project_resume_capacity.prototype }
+			}
+			else_if = {
+				limit = { check_variable = { brilliant_scientist_directorate_candidate_stage = constant:brilliant_scientist_project_stage.deployment } }
+				set_temp_variable = { brilliant_scientist_directorate_candidate_resume_need = constant:brilliant_scientist_project_resume_capacity.deployment }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = brilliant_scientist_directorate_resume_capacity_needed }
+						check_variable = {
+							var = brilliant_scientist_directorate_candidate_resume_need
+							value = brilliant_scientist_directorate_resume_capacity_needed
+							compare = less_than
+						}
+					}
+				}
+				set_variable = { brilliant_scientist_directorate_resume_capacity_needed = brilliant_scientist_directorate_candidate_resume_need }
+			}
+			set_country_flag = brilliant_scientist_directorate_resume_candidate_exists
 		}
 		if = {
 			limit = {

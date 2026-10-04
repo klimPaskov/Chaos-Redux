@@ -611,7 +611,28 @@ brilliant_scientist_krg_complete_temporal_escape = {
 			clr_character_flag = brilliant_scientist_personal_active
 			clr_character_flag = brilliant_scientist_personal_sovereign
 		}
+		# When Kruger ruled in person, the Project Command Council governs as
+		# the caretaker leadership instead of an arbitrary party leader.
+		if = {
+			limit = {
+				has_country_leader = { character = KRG_warren_kruger ruling_only = yes }
+				has_character = KRG_project_command_council
+			}
+			set_country_flag = brilliant_scientist_krg_caretaker_council_pending
+		}
 		retire_character = KRG_warren_kruger
+		if = {
+			limit = { has_country_flag = brilliant_scientist_krg_caretaker_council_pending }
+			clr_country_flag = brilliant_scientist_krg_caretaker_council_pending
+			if = {
+				limit = { KRG_project_command_council = { is_hired_as_advisor = yes } }
+				deactivate_advisor = KRG_project_command_council
+			}
+			promote_character = {
+				character = KRG_project_command_council
+				ideology = despotism
+			}
+		}
 	}
 	set_country_flag = brilliant_scientist_kruger_departed
 	if = {

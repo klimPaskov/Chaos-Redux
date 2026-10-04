@@ -1255,17 +1255,20 @@ brilliant_scientist_sensor_saturation_active = {
 }
 
 # STATE scope. The saturated region slows, starves, and blinds enemy forces in
-# the target state and in neighbouring states the actor controls. It applies
-# only while the state's recorded actor still controls it.
+# the target state and in neighbouring states the actor owns and controls. The
+# enemy modifiers act against enemies of the state's owner, so the region
+# applies only while the recorded actor still owns and controls the state.
 brilliant_scientist_sensor_saturation_region = {
 	icon = GFX_idea_generic_research_bonus
 	enable = {
 		has_variable = brilliant_scientist_sensor_saturation_actor
+		is_owned_by = var:brilliant_scientist_sensor_saturation_actor
 		is_controlled_by = var:brilliant_scientist_sensor_saturation_actor
 	}
 	remove_trigger = {
 		OR = {
 			NOT = { has_variable = brilliant_scientist_sensor_saturation_actor }
+			NOT = { is_owned_by = var:brilliant_scientist_sensor_saturation_actor }
 			NOT = { is_controlled_by = var:brilliant_scientist_sensor_saturation_actor }
 		}
 	}

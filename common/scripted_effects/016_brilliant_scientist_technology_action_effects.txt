@@ -54,8 +54,10 @@ brilliant_scientist_activate_predictive_campaign = {
 }
 
 # COUNTRY scope with FROM as the selected anchor state. The anchor and every
-# neighbouring state the actor controls become the saturated region for the
-# action duration; the national modifier is a minor coordination component.
+# neighbouring state the actor owns and controls become the saturated region
+# for the action duration; the national modifier is a minor coordination
+# component. Occupied foreign states are excluded: the state-scope enemy
+# modifiers act against enemies of the state's owner and would hinder the actor.
 brilliant_scientist_activate_sensor_saturation = {
 	brilliant_scientist_prepare_technology_action_duration = yes
 	add_dynamic_modifier = { modifier = brilliant_scientist_sensor_saturation_active days = brilliant_scientist_technology_action_duration }
@@ -64,15 +66,15 @@ brilliant_scientist_activate_sensor_saturation = {
 		set_state_flag = brilliant_scientist_sensor_saturation_history
 		brilliant_scientist_apply_sensor_saturation_region_state = yes
 		every_neighbor_state = {
-			limit = { is_controlled_by = ROOT }
+			limit = { is_owned_and_controlled_by = ROOT }
 			brilliant_scientist_apply_sensor_saturation_region_state = yes
 		}
 	}
 }
 
 # STATE scope with ROOT as the acting country. Records the actor so the regional
-# modifier lapses if the state changes hands, then applies it for the action
-# duration prepared by the caller.
+# modifier lapses if the state changes owner or controller, then applies it for
+# the action duration prepared by the caller.
 brilliant_scientist_apply_sensor_saturation_region_state = {
 	set_variable = { brilliant_scientist_sensor_saturation_actor = ROOT }
 	add_dynamic_modifier = { modifier = brilliant_scientist_sensor_saturation_region days = brilliant_scientist_technology_action_duration }
