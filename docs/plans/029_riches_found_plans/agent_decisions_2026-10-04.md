@@ -151,3 +151,8 @@ Platinum adds `riches_found_foreign_interest.platinum_profile` and gemstones `ge
 A deep vein without reinforced shafts adds `pulse_deep_vein_collapse_add` collapse pressure each pulse interval.
 AI development priorities follow the profile: shaft reinforcement and sealing for deep veins, camp administration and sanitation for alluvial fields, mine police for gemstone beds, and processing works and the port route for platinum.
 Profile-specific report imagery is not added because no profile art exists; the existing report pictures stay, and this is recorded as an asset limitation.
+
+## D16. In-game Event Details text follows the catalog
+
+The in-game Event Details description and the three evolution bodies use the catalog's player-facing wording verbatim, except the catalog's interface sentence about N/A, which is requested for removal in `catalog_changes_pending.md`.
+The workbook and exported CSV files are not edited.
