@@ -100,3 +100,17 @@ Accepted limits: a law, slot, or resource change made by a focus or event on the
 
 Disposition: implemented (source).
 Live confirmation that a law change, an advisor hire, and an experience spend during a natural sale are credited is `needs_live_game`.
+
+## D7. Base-game decision files are a visible compatibility exclusion
+
+Decision: native `cost =` decisions in base-game decision files that Chaos Redux does not override keep their normal price during Black Friday.
+Registry row BF-NAT-001 records them as `compatibility_exclusion_visible_note` with strategy D, and Chaos Redux-owned native costs, including the overridden `formable_nation_decisions.txt`, are BF-NAT-017 price-table rows.
+The report event `chaosx.nr26.2.d` and the Event Details premise `black_friday.event_detail.premise` both end with the line "Base-game national decisions keep their normal price."
+
+Basis: installed `documentation/modifiers_documentation.md` has no decision-cost modifier, so a base-game decision price can change only by overriding its whole file.
+The native inventory counts about 2,150 numeric nonzero base-game native costs across 86 owner files.
+Chaos Redux overrides only `formable_nation_decisions.txt` among base-game decision files; full overrides of the rest would freeze their content against base-game patches and DLC updates.
+Spec Part 4 requires a visible compatibility note for any limitation that remains, so the note is shown in the two places a player reads about the sale.
+The matching Event Details wording for the catalog is recorded in `catalog_changes_pending.md`; the workbook and CSV exports are not edited.
+
+Disposition: implemented.

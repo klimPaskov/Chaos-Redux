@@ -45,4 +45,4 @@ cost = global.black_friday_price_holy_realm_decision_chinese_core_cost
 
 Zero costs stay `cost = 0`.
 Custom costs (`custom_cost_trigger`) use the custom-cost sale API instead.
-Base-game decision files are not registered; they keep their normal price (agent decision D5 in `docs/plans/026_black_friday_plans/agent_decisions_2026-10-04.md`).
+Base-game decision files are not registered; they keep their normal price (agent decision D7 in `docs/plans/026_black_friday_plans/agent_decisions_2026-10-04.md`).
