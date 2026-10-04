@@ -114,9 +114,11 @@ def run_cases():
     cases = []
     result = reproduce()
     assert result["warning_before"] == result["warning_after"] == 1
-    assert not result["reform_ready_before"] and not result["reform_ready_after"]
+    # Agent decision 2026-10-04: sticky uncertainty closes with incomplete
+    # records under reform instead of stranding it before or after removal.
+    assert result["reform_ready_before"] and result["reform_ready_after"]
     assert result["physical_debits"] == result["death_receipts"] == 0
-    cases.append("actual terminal unregister preserves custody-only uncertainty warning and blocks reform after active registry removal")
+    cases.append("actual terminal unregister preserves custody-only uncertainty warning, frozen rows and no receipts; sticky uncertainty does not strand reform before or after active registry removal")
 
     r, c, a = fixture()
     c["camp_selected_state_id"] = 88
@@ -127,6 +129,24 @@ def run_cases():
     assert not r.cond(r.triggers["camp_admin_can_toggle_selected_work"], "GER")
     assert not r.cond(r.triggers["camp_admin_can_release_selected_site"], "GER")
     cases.append("current open mixed uncertainty also fails selected operational work/release proof before terminal teardown")
+
+    r, c, a = fixture()
+    rows = copy.deepcopy(a["arrays"])
+    population = a["state_population_k"]
+    assert r.cond(r.triggers["camp_origin_host_records_incomplete"], 88)
+    assert r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
+    r.run("camp_admin_begin_reform", "GER")
+    assert "camp_admin_reforming" in c["flags"]
+    assert {"camp_admin_closed", "camp_origin_ambiguity_terminal", "camp_admin_closed_records_incomplete"} <= a["flags"]
+    assert a["arrays"] == rows and a["camp_admin_detainees_k"] == 20 and a.get("camp_admin_total_released_k", 0) == 0
+    assert a["state_population_k"] == population and r.debits == r.logged == 0
+    assert a.get("camp_admin_civilian_target_k", 0) == 0 and "camp_admin_civilian_conversion_pending" not in a["flags"]
+    kinds = c["arrays"].get("camp_admin_history_kinds", [])
+    assert kinds.count(r.constants["camp_admin_history_kind.records_incomplete_closure"]) == 1
+    r.run("camp_admin_reform_site", 88)
+    assert c["arrays"].get("camp_admin_history_kinds", []) == kinds and a["arrays"] == rows
+    assert not r.cond(r.triggers["camp_origin_host_provenance_ready"], 88)
+    cases.append("national reform closes an open sticky-ambiguous host once with a records-incomplete entry: no survivor release, civilian target, population change, debit or death, rows frozen and origin orders still unproven")
 
     for route in ("capture", "evidence", "annexation"):
         r, c, a = fixture()
@@ -149,9 +169,9 @@ def run_cases():
         assert "camp_admin_closed" in a["flags"] and not c["arrays"]["camp_active_site_states"]
         r.run("camp_admin_project_origin_uncertainty", "GER")
         assert c["camp_admin_gui_uncertain_locations"] == 1
-        assert not r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
+        assert r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
         assert r.debits == r.logged == 0
-        cases.append(f"actual {route} callback retains original-country metadata, frozen rows and reform pause without a death/release receipt")
+        cases.append(f"actual {route} callback retains original-country metadata and frozen rows without a death/release receipt; the closed records-incomplete host does not strand reform")
 
     r, c, a = fixture()
     c["arrays"]["camp_admin_known_site_states"] = [88]
@@ -280,8 +300,12 @@ def run_cases():
     assert len(c["arrays"]["camp_admin_known_site_states"]) == 1001
     assert len(c["arrays"]["camp_admin_gui_states"]) == 1001
     assert c["camp_admin_gui_uncertain_locations"] == 1
+    assert r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
+    r.scopes[11000]["flags"].discard("camp_origin_ambiguous")
+    r.scopes[11000]["arrays"]["camp_admin_row_amounts_k"] = [5]
+    r.scopes[11000]["camp_admin_row_count"] = 1
     assert not r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
-    cases.append("native array iterators retain all 1001 declared archive entries and inspect final uncertain host without source row caps")
+    cases.append("native array iterators retain all 1001 declared archive entries and inspect the final host without source row caps: sticky uncertainty there is reformable, a malformed unflagged ledger is not")
     return cases
 
 

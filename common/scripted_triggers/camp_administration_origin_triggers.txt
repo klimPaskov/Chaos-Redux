@@ -337,3 +337,15 @@ camp_origin_host_provenance_ready = {
 	check_variable = { chaos_state_civilian_deaths_total = camp_origin_observed_state_deaths_people }
 	check_variable = { camp_origin_inspect_shortfall_k = constant:camp_admin_value.zero }
 }
+
+# STATE. Sticky provenance reasons that no current provider can clear. Origin
+# orders stay paused while the host operates; reform closes it with incomplete
+# records instead (no survivor claim, population change or death attribution).
+camp_origin_host_records_incomplete = {
+	OR = {
+		has_state_flag = camp_origin_ambiguous
+		has_state_flag = camp_origin_baseline_unverified
+		has_state_flag = camp_origin_transaction_unresolved
+		has_state_flag = camp_origin_counter_regressed
+	}
+}

@@ -953,7 +953,7 @@ camp_admin_close_site = {
 		}
 		else_if = {
 			limit = {
-				OR = { has_state_flag = camp_origin_ambiguous has_state_flag = camp_origin_single_origin_reconciliation_pending has_state_flag = camp_origin_records_unresolved }
+				OR = { has_state_flag = camp_origin_ambiguous has_state_flag = camp_origin_single_origin_reconciliation_pending has_state_flag = camp_origin_records_unresolved camp_origin_host_records_incomplete = yes }
 				OR = {
 					check_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
 					NOT = { camp_admin_site_authority_is_valid = yes }
@@ -1031,6 +1031,19 @@ camp_admin_reform_site = {
 				var:camp_admin_responsible_country = {
 					if = { limit = { NOT = { is_in_array = { array = camp_admin_civilian_states value = PREV } } } add_to_array = { array = camp_admin_civilian_states value = PREV } }
 				}
+			}
+		}
+		else_if = {
+			limit = { camp_origin_host_records_incomplete = yes }
+			# Records-incomplete closure: survivors leave without a per-origin
+			# survivor claim. No population, death or civilian target is created.
+			set_temp_variable = { camp_origin_terminal_close_contract = constant:camp_admin_value.one }
+			camp_admin_close_site = yes
+			if = {
+				limit = { has_state_flag = camp_admin_closed NOT = { has_state_flag = camp_admin_closed_records_incomplete } }
+				set_state_flag = camp_admin_closed_records_incomplete
+				set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.records_incomplete_closure }
+				camp_admin_integration_record_site_history = yes
 			}
 		}
 	}

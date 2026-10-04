@@ -807,12 +807,18 @@ def tests():
     gate.country('SLO'); gate.scopes['SLO']['overlord']='HUN'; two['controller']='SLO'
     assert not gate.cond(available,'HUN')
     two['flags'].add('camp_admin_subject_authority'); assert gate.cond(available,'HUN')
+    # Agent decision 2026-10-04: a sticky provenance host closes with incomplete
+    # records, so its ledger no longer gates the national order.
+    two['arrays']['camp_admin_row_amounts_k'][0]=3; assert not gate.cond(available,'HUN')
+    two['flags'].add('camp_origin_ambiguous'); assert gate.cond(available,'HUN')
+    two['flags'].discard('camp_origin_ambiguous'); two['arrays']['camp_admin_row_amounts_k'][0]=4
     def generic_fixture(corrupt=None):
         g=Runtime(); country=g.country('HUN'); first=g.state('H1','HUN'); prime_existing_custody(g,'H1',10)
         if corrupt=='first': first['arrays']['camp_admin_row_amounts_k'][0]=9
-        if corrupt=='second':
+        if corrupt in ('second','sticky'):
             second=g.state('H2','HUN'); prime_existing_custody(g,'H2',4)
             second['arrays']['camp_admin_row_amounts_k'][0]=3
+            if corrupt=='sticky': second['flags'].add('camp_origin_counter_regressed')
         g.effects['camp_admin_generic_reform']=generic_order
         g.triggers['camp_admin_generic_reform_available']=[]
         for consumer in ('camp_admin_integration_record_site_history','camp_occ_close_country','camp_admin_begin_reform','camp_rework_unregister_inactive_site','camp_admin_integration_cancel_routine_projects','camp_rework_refresh_country_specific_ideas','camp_rework_rebuild_display_values'):
@@ -823,7 +829,9 @@ def tests():
     good,gc=generic_fixture(); assert abs(gc['political_power']-84.25)<1e-8 and good.temp['camp_admin_generic_release_rows_ready']==1
     bad,bc=generic_fixture('first'); assert bc['political_power']==100 and bad.temp['camp_admin_generic_release_rows_ready']==0
     mixed,mc=generic_fixture('second'); assert mc['political_power']==100 and mixed.temp['camp_admin_generic_release_rows_ready']==0
+    sticky,sc=generic_fixture('sticky'); assert abs(sc['political_power']-84.25)<1e-8 and sticky.temp['camp_admin_generic_release_rows_ready']==1
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
+    results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
     return results
 
 if __name__=='__main__':

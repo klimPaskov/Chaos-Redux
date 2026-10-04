@@ -72,7 +72,11 @@ camp_admin_generic_reform_available = {
 		has_state_flag = camp_admin_initialized
 		NOT = { has_state_flag = camp_admin_closed }
 		camp_admin_site_authority_is_valid = yes
-		camp_admin_site_rows_reconciled = yes
+		OR = {
+			camp_admin_site_rows_reconciled = yes
+			# Closes with incomplete records and no survivor claim.
+			camp_origin_host_records_incomplete = yes
+		}
 		is_valid_camp_dismantlement_state = yes
 		var:camp_admin_responsible_country = { tag = PREV.PREV }
 	}

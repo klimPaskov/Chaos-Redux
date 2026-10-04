@@ -252,6 +252,8 @@ camp_admin_generic_reform = {
 		camp_admin_count_live_rows = yes
 		if = {
 			limit = {
+				# A records-incomplete host closes without a survivor release claim.
+				NOT = { camp_origin_host_records_incomplete = yes }
 				OR = {
 					NOT = { check_variable = { camp_admin_rows_valid = constant:camp_admin_value.one } }
 					NOT = { check_variable = { camp_admin_rows_live_k = camp_admin_detainees_k } }
@@ -267,7 +269,11 @@ camp_admin_generic_reform = {
 		clear_array = camp_admin_generic_reform_states
 		for_each_scope_loop = {
 			array = camp_active_site_states
-			set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure } camp_admin_integration_record_site_history = yes
+			# camp_admin_reform_site records its own records-incomplete closure.
+			if = {
+				limit = { NOT = { camp_origin_host_records_incomplete = yes } }
+				set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.closure } camp_admin_integration_record_site_history = yes
+			}
 			PREV = { add_to_array = { camp_admin_generic_reform_states = PREV } }
 		}
 		camp_occ_close_country = yes

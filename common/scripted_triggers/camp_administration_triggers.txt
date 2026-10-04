@@ -126,14 +126,28 @@ camp_admin_known_site_ready_for_reform = {
 		camp_origin_host_provenance_ready = yes
 	}
 }
+# STATE, PREV is the reforming country. A host with sticky provenance reasons
+# is reformable: reform closes it with incomplete records and no survivor claim.
+camp_admin_known_site_reformable = {
+	OR = {
+		camp_admin_known_site_ready_for_reform = yes
+		AND = {
+			camp_admin_site_is_original_record = yes
+			camp_origin_host_records_incomplete = yes
+		}
+	}
+}
 camp_admin_country_sites_ready_for_reform = {
 	all_of_scopes = {
 		array = camp_admin_known_site_states
-		camp_admin_known_site_ready_for_reform = yes
+		camp_admin_known_site_reformable = yes
 	}
 	all_of_scopes = {
 		array = camp_occ_states
-		camp_origin_occupation_host_ready_for_reform = yes
+		OR = {
+			camp_origin_occupation_host_ready_for_reform = yes
+			camp_origin_host_records_incomplete = yes
+		}
 	}
 	all_of_scopes = {
 		array = camp_active_site_states
@@ -143,7 +157,10 @@ camp_admin_country_sites_ready_for_reform = {
 				NOT = { has_state_flag = camp_admin_closed }
 				camp_admin_site_authority_is_valid = yes
 			}
-			camp_admin_site_rows_reconciled = yes
+			OR = {
+				camp_admin_site_rows_reconciled = yes
+				camp_origin_host_records_incomplete = yes
+			}
 		}
 	}
 }

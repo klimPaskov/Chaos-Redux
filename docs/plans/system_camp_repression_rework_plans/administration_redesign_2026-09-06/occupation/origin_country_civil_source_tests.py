@@ -269,12 +269,19 @@ def tests():
         c.update(camp_admin_budget_support_remaining=100, camp_admin_budget_pp_remaining=20)
         r.run("camp_admin_country_tick_institution", "GER")
     assert len(r.awards) == 1 and c["support"] == 10000 - 72 and c["political_power"] == 70
-    assert not r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
-    before = (c["support"], c["political_power"], a["camp_admin_detainees_k"])
+    # Agent decision 2026-10-04: a sticky-ambiguous occupation host no longer
+    # strands reform. It closes with incomplete records and no release claim.
+    held = r.scopes["O"]
+    assert r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
+    occ_rows = copy.deepcopy(c["arrays"]["camp_occ_row_amounts_k"])
+    held_before = (held["state_population_k"], held["camp_occ_remaining_k"], held.get("camp_occ_total_released_k", 0))
     r.run("camp_admin_country_reform", "GER")
-    assert "camp_admin_country_reformed" not in c["flags"]
-    assert before == (c["support"], c["political_power"], a["camp_admin_detainees_k"])
-    cases.append("unrelated occupation-only ambiguity blocks national reform while a proven selected-site programme continues for six exact funded months")
+    assert "camp_admin_country_reformed" in c["flags"] and "camp_admin_reforming" in c["flags"]
+    assert "camp_admin_closed" in a["flags"] and a["camp_admin_detainees_k"] == 0
+    assert {"camp_occ_closed", "camp_origin_ambiguity_terminal"} <= held["flags"]
+    assert held_before == (held["state_population_k"], held["camp_occ_remaining_k"], held.get("camp_occ_total_released_k", 0))
+    assert c["arrays"]["camp_occ_row_amounts_k"] == occ_rows
+    cases.append("a proven selected-site programme runs six exact funded months beside unrelated occupation-only ambiguity; national reform then releases the proven site and closes the ambiguous host with incomplete records, no release and unchanged rows")
 
     r, c, a = setup()
     complete(r, c, "ger_inspectorate")
@@ -294,21 +301,23 @@ def tests():
     prime_existing_custody(r, "A", 20)
     r.run("camp_administration_civil_initialize", "ENG")
     c["flags"].add("camp_admin_civil_policy_authorized")
-    unrelated_occupation_uncertainty(r, c)
-    before = (c["support"], c["political_power"], a["camp_admin_detainees_k"])
+    held = unrelated_occupation_uncertainty(r, c)
+    occ_rows = copy.deepcopy(c["arrays"]["camp_occ_row_amounts_k"])
+    held_before = (held["state_population_k"], held["camp_occ_remaining_k"], held.get("camp_occ_total_released_k", 0))
     r.run("camp_administration_civil_action_two", "ENG")
-    assert "camp_admin_civil_review_active" not in c["flags"] and "camp_admin_reforming" not in c["flags"]
-    assert before == (c["support"], c["political_power"], a["camp_admin_detainees_k"])
-    # A previously started production review also carries its reform/frozen
-    # policy state, preventing an unrelated custody-intake policy installment.
-    c["flags"].update({"camp_admin_civil_review_active", "camp_admin_reforming", "camp_rework_expansion_frozen"})
-    c["camp_admin_civil_review_progress"] = 0
-    r.run("camp_administration_civil_monthly", "ENG")
-    assert c["camp_admin_civil_review_progress"] == 0 and before == (c["support"], c["political_power"], a["camp_admin_detainees_k"])
-    c["camp_admin_civil_review_progress"] = r.constants["camp_admin_civil.review_months"]
-    r.run("camp_administration_civil_finish_review", "ENG")
-    assert "camp_admin_civil_review_complete" not in c["flags"] and "camp_rework_reformed_legacy" not in c["flags"]
-    cases.append("civil reform/paid review/final settlement reject an unrelated occupation-only uncertain host before payment or flags")
+    # Agent decision 2026-10-04: the review starts; the proven site releases once
+    # and the sticky-ambiguous host closes with incomplete records only.
+    assert "camp_admin_civil_review_active" in c["flags"] and "camp_admin_reforming" in c["flags"]
+    assert a["camp_admin_total_released_k"] == 20
+    assert {"camp_occ_closed", "camp_origin_ambiguity_terminal"} <= held["flags"]
+    assert held_before == (held["state_population_k"], held["camp_occ_remaining_k"], held.get("camp_occ_total_released_k", 0))
+    assert c["arrays"]["camp_occ_row_amounts_k"] == occ_rows
+    for month in range(1, 4):
+        r.date = datetime.date(1943, month, 1)
+        c.update(camp_admin_budget_support_remaining=100, camp_admin_budget_pp_remaining=20)
+        r.run("camp_administration_civil_monthly", "ENG")
+    assert "camp_admin_civil_review_complete" in c["flags"] and a["camp_admin_total_released_k"] == 20
+    cases.append("civil review starts beside an unrelated occupation-only uncertain host, releases the proven site once, closes the uncertain host without a survivor claim and completes its funded months")
 
     r = CallerRuntime()
     r.root_country = "ENG"

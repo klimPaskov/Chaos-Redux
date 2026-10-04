@@ -272,8 +272,17 @@ def tests():
     assert not r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
     r.run("camp_occ_reconcile_external_population", 87)
     assert "camp_origin_ambiguous" in source["flags"]
-    assert not r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
-    results.append("national reform union includes an occupation-only mixed host and permits valid empty terminal history despite later unrelated territorial loss")
+    # Agent decision 2026-10-04: sticky provenance no longer strands reform.
+    # Origin orders stay paused, and reform closes the host with incomplete records.
+    assert not r.cond(r.triggers["camp_origin_host_provenance_ready"], 87)
+    assert r.cond(r.triggers["camp_admin_country_sites_ready_for_reform"], "GER")
+    occ_rows = copy.deepcopy(country["arrays"])
+    before = (source["state_population_k"], source["camp_occ_remaining_k"], source.get("camp_occ_total_released_k", 0), r.debits, r.credits, r.logged)
+    r.run("camp_occ_close_state", 87)
+    assert {"camp_occ_closed", "camp_origin_ambiguity_terminal"} <= source["flags"]
+    assert before == (source["state_population_k"], source["camp_occ_remaining_k"], source.get("camp_occ_total_released_k", 0), r.debits, r.credits, r.logged)
+    assert country["arrays"] == occ_rows
+    results.append("national reform union includes an occupation-only mixed host, permits valid empty terminal history despite later unrelated territorial loss, and closes a sticky-ambiguous host with incomplete records and no release, debit or death")
 
     r, country, source, destination = routed_fixture()
     country["arrays"]["camp_active_site_states"] = [88]
