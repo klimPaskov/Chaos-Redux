@@ -163,3 +163,27 @@ The mine-list selection flag reads "The mine list is open" (committed with D5), 
 The 28 scripted triggers that appear in availability blocks have localisation keys with their own names, which is the vanilla convention for scripted-trigger tooltips (for example `is_controlled_by_ROOT_or_ally`).
 The 93 affordability triggers in availability blocks are wrapped in `hidden_trigger`, as the decisions skill allows when the cost row already shows each resource in its ready or blocked colour, so the requirement list no longer repeats raw resource comparisons.
 A source audit of every `available` block found no remaining flag or scripted trigger without a label; tooltip fit remains a live-game check.
+
+## Commit index
+
+Each decision landed in the commit named here; source review is the evidence, and items marked as live-game checks above remain with the orchestrator.
+
+| Decision | Commit |
+| --- | --- |
+| Routed date-unit, cooldown, political power scope and building-read fixes (before adoption) | `6ee17482a` |
+| D1, including routed inbox defects 3 and 5 | `75490fe32` |
+| D5 | `3abc6b387` |
+| D6 | `e4bff3c6f` |
+| D7 | `706829b7e` |
+| D8 | `fc520044f` |
+| D9 | `0b89f720c` |
+| D10 | `e4bca26e1` |
+| D11 | `026d7a519` |
+| D12 | `5777c32b1` |
+| D13 | `705f58424` |
+| D14 | `0738ea7f7` |
+| D15 | `81ff45863` |
+| D16 | `0a72eefa1` |
+| D17 | `3327378de` |
+
+D2, D3 and D4 record accepted behaviour and need no source change.
