@@ -171,7 +171,7 @@ Every spendable action uses no more than four cost types, and each cost is expos
 
 Routine maintenance advances the mission timer without cancelling a live mission.
 
-Mission cancellation is reserved for explicit closure, recovery, or disabled-evolution cleanup.
+Mission cancellation is reserved for explicit closure, recovery, disabled-evolution cleanup, and a field mission that loses Stockholm or several Swedish cores.
 
 ## Evolution pacing
 
@@ -372,11 +372,12 @@ Daily observation rebuilds them from Stockholm ownership and control, any owned 
 Once the territory is back and the memory has passed, severe-crisis checks, the incident pause and the Trust the Model gate return to normal.
 Each field validation, Reality Audit, narrow audit and Dual-Track verification keeps its own interruption record, reset when the mission starts.
 One Swedish core lost during the mission limits the report to a partial result, while Stockholm or two lost cores cancel the mission into its failure result.
+That cancellation files the mission's ordinary failure report (`chaosx.nr24.31`, `.32` or `.33`) through `video_game_in_sweden_cancel_field_validation_mission`, `video_game_in_sweden_cancel_reality_audit_mission` and `video_game_in_sweden_cancel_dual_track_mission`, while a lost host, a disabled stage or the end of the world closes the mission without a report.
 Stockholm loss still permanently disqualifies the two achievements.
 
 ### Trust the Model mismatches
 
-A wartime terrain, supply or enemy incident resolved during the surge is a battlefield mismatch.
+A wartime terrain, supply, enemy or perfect-offensive incident resolved during the surge is a battlefield mismatch.
 Admitting it ends the surge at the next daily review, and three dismissed battlefield mismatches in the same surge do the same.
 Incidents from before the surge never shorten it.
 

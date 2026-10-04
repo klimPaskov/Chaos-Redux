@@ -4328,3 +4328,49 @@ video_game_in_sweden_failed_dual_track = {
 		video_game_in_sweden_failed_dual_track_apply_current = yes
 	}
 }
+
+# Native mission cancel callbacks. A field mission cancelled because Stockholm
+# or several core states were lost files its failure report, as a timed-out
+# mission does. A lost host, a disabled stage or the end of the world closes
+# the mission without a report.
+video_game_in_sweden_cancel_field_validation_mission = {
+	video_game_in_sweden_failed_field_validation = yes
+	if = {
+		limit = {
+			video_game_in_sweden_reports_lost_ground_failure = yes
+			NOT = { has_global_flag = events_log_disabled_evolution_24_24_1 }
+			has_country_flag = video_game_in_sweden_field_validation_failed
+			NOT = { has_country_flag = video_game_in_sweden_field_validation_report_pending }
+		}
+		set_country_flag = video_game_in_sweden_field_validation_report_pending
+		country_event = { id = chaosx.nr24.31 days = 1 }
+	}
+}
+
+video_game_in_sweden_cancel_reality_audit_mission = {
+	video_game_in_sweden_failed_reality_audit = yes
+	if = {
+		limit = {
+			video_game_in_sweden_reports_lost_ground_failure = yes
+			NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
+			check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_failed compare = equals }
+			NOT = { has_country_flag = video_game_in_sweden_reality_audit_report_pending }
+		}
+		set_country_flag = video_game_in_sweden_reality_audit_report_pending
+		country_event = { id = chaosx.nr24.32 days = 1 }
+	}
+}
+
+video_game_in_sweden_cancel_dual_track_mission = {
+	video_game_in_sweden_failed_dual_track = yes
+	if = {
+		limit = {
+			video_game_in_sweden_reports_lost_ground_failure = yes
+			NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
+			has_country_flag = video_game_in_sweden_dual_track_failed
+			NOT = { has_country_flag = video_game_in_sweden_dual_track_report_pending }
+		}
+		set_country_flag = video_game_in_sweden_dual_track_report_pending
+		country_event = { id = chaosx.nr24.33 days = 1 }
+	}
+}
