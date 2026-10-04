@@ -214,6 +214,23 @@ country_event = {
 	}
 }
 
+# Recovery report: a contained crisis has closed (Part 1 escalation or
+# containment).  Fires once per closure for the closing government.
+country_event = {
+	id = chaosx.nr31.9
+	title = chaosx.nr31.9.t
+	desc = chaosx.nr31.9.d
+	picture = GFX_report_event_031_random_terror_liberation_reconstruction
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_terror_recovery_report_pending }
+
+	option = {
+		name = chaosx.nr31.9.a
+		ai_chance = { base = 100 }
+		hidden_effect = { clr_country_flag = random_terror_recovery_report_pending }
+	}
+}
+
 country_event = {
 	id = chaosx.nr31.40
 	title = chaosx.nr31.40.t
@@ -473,6 +490,20 @@ country_event = {
 
 	immediate = {
 		random_terror_run_country_pulse = yes
+	}
+}
+
+# Recovery check for one affected government.  Event-owned pacing: it lowers
+# pressure and residual activity in the recovery phase, closes the crisis
+# when its obligations end, and reschedules itself while the crisis is open.
+country_event = {
+	id = chaosx.nr31.97
+	title = chaosx.nr31.97.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_terror_run_recovery_check = yes
 	}
 }
 

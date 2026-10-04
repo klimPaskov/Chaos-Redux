@@ -58,6 +58,8 @@ random_terror_country_is_normal_target = {
 	NOT = { has_country_flag = random_terror_actor }
 	NOT = { has_country_flag = random_terror_cleanup_complete }
 	NOT = { has_country_flag = random_terror_target_reserved }
+	# A recently cleared country rests before ordinary waves select it again.
+	NOT = { has_country_flag = random_terror_recovery_cooldown }
 	NOT = { has_country_flag = random_terror_incompatible_route }
 	NOT = { has_global_flag = world_end }
 	num_of_controlled_states > constant:random_terror_value.zero
@@ -355,25 +357,59 @@ random_terror_government_phase_terminal = {
 	has_global_flag = random_terror_terminal_active
 }
 
+# Phase 4 (Part 3): no state of the government is Active or worse, no core
+# is held by an armed command and no Event 31 command is at war with it, but
+# the crisis has not closed yet.
 random_terror_government_phase_recovery = {
 	NOT = { random_terror_government_phase_terminal = yes }
+	NOT = { random_terror_government_phase_territorial = yes }
 	NOT = { random_terror_country_has_active_state = yes }
+	NOT = { any_enemy_country = { random_terror_is_actor = yes } }
 	OR = {
+		has_country_flag = random_terror_affected_country
 		has_country_flag = random_terror_reconstruction_available
-		has_country_flag = random_terror_public_accounting_complete
-		has_country_flag = random_terror_services_restored
 		any_owned_state = { has_state_flag = random_terror_state_recovery }
 	}
 }
 
+# An armed insurgency or lost state among the government's own states, or
+# among its cores that an armed command has taken.
 random_terror_government_phase_territorial = {
 	NOT = { random_terror_government_phase_terminal = yes }
-	any_owned_state = {
-		OR = {
-			has_state_flag = random_terror_state_armed_insurgency
-			has_state_flag = random_terror_state_lost_local_control
+	OR = {
+		any_owned_state = {
+			OR = {
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+			}
+		}
+		any_core_state = {
+			OR = {
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+			}
 		}
 	}
+}
+
+# COUNTRY scope: an affected government in the recovery phase.  Its recurring
+# recovery check lowers pressure and residual activity only while this holds.
+random_terror_country_in_recovery = {
+	has_country_flag = random_terror_affected_country
+	NOT = { has_country_flag = random_terror_actor }
+	random_terror_government_phase_recovery = yes
+}
+
+# COUNTRY scope: the recovery obligations have ended, so the crisis closes.
+# Every recovering state is Clear again, no mission runs and Terror Pressure
+# is zero.
+random_terror_country_recovery_complete = {
+	random_terror_country_in_recovery = yes
+	NOT = { any_owned_state = { has_state_flag = random_terror_state_recovery } }
+	NOT = { has_country_flag = random_terror_mission_slot_1 }
+	NOT = { has_country_flag = random_terror_mission_slot_2 }
+	NOT = { has_country_flag = random_terror_mission_slot_3 }
+	NOT = { check_variable = { random_terror_pressure > constant:random_terror_value.zero } }
 }
 
 random_terror_government_phase_crisis = {
@@ -537,6 +573,8 @@ random_terror_scenario_candidate_country = {
 		random_terror_country_is_normal_target = yes
 		has_country_flag = random_terror_scenario_target
 		has_country_flag = random_terror_affected_country
+		# A deliberate scenario can re-enter a recently cleared country.
+		has_country_flag = random_terror_recovery_cooldown
 	}
 	OR = {
 		random_terror_country_has_active_package = yes
@@ -556,6 +594,8 @@ random_terror_scenario_actor_parent = {
 		random_terror_country_is_normal_target = yes
 		has_country_flag = random_terror_scenario_target
 		has_country_flag = random_terror_affected_country
+		# A deliberate scenario can re-enter a recently cleared country.
+		has_country_flag = random_terror_recovery_cooldown
 	}
 }
 

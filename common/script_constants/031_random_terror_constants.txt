@@ -870,6 +870,26 @@ random_terror_focus_reward = {
 	revelation_denial_stability = 0.10
 }
 
+# Contained crisis recovery (Part 1 baseline lifecycle, Part 3 phase 4).
+# Every affected government keeps one hidden recovery check every check_days.
+# While no state is Active or worse, each check lowers Terror Pressure and the
+# activity of every recovering state, then closes the crisis once no state is
+# recovering, no mission runs and Terror Pressure is zero.  A closed country
+# sits out new attack waves for cooldown_days, or reformed_cooldown_days after
+# Reform the Security Services.
+random_terror_recovery = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	check_days = 30
+	pressure_decay = 10
+	activity_decay = 5
+	accounting_pressure_reduction = 10
+	cooldown_days = 180
+	reformed_cooldown_days = 365
+}
+
 # Terror Pressure bands (Part 1): Traces 1-20, Local Cells 21-40, Sustained
 # Campaign 41-60, State Challenge 61-80, Takeover Risk 81-100.  Each value is
 # the upper edge of the band below it.

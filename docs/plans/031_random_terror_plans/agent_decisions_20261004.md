@@ -325,9 +325,26 @@ The reward said the parent "loses" a negative stability and war support value, w
 The round 2 assessment of 2026-10-05 listed new source findings and took the decisions below under the same delegated authority.
 Each is `implemented` in the commit named beside it; live-game behaviour remains with the user.
 
-### R29 Timed flags take literal durations
+### R29 Timed flags take literal durations (`05bca0b24`)
 
 Eight timed flags passed a bare temporary variable as `days`: recent incident, pulse pending, response action lock, actor action lock, ideological mobilization, state reinforcement, coup active and government paralysis.
 Vanilla `common/scripted_effects/SOV_scripted_effects.txt:28` keeps the variable form commented out with the note that it does not work with variables, vanilla `SIA_scripted_effects.txt:780` only passes `days = var:<normal variable>`, and the wiki Effects table lists `days` as `<int>` for `set_country_flag`.
 A dropped duration would have made the action locks and the pulse guard permanent, so every site now builds the flag through `meta_effect` with `[?temp|.0]`, the pattern already used for the target reservation flag, and every duration is unchanged.
 `add_dynamic_modifier` keeps its variable `days`, which `documentation/effects_documentation.md:1166` allows.
+
+### R30 A contained crisis recovers and closes
+
+Basis: Part 1 baseline lifecycle (opening shock to containment and aftermath), Part 3 phase 4 and clutter control, the matrix cleanup column for Public Accounting ("one per incident package") and Security Reform ("longer cooldown"), and validation case V01.
+Before this change no state was ever marked recovering unless relief or a retake reached it, closure needed four flags of which two came from once-per-game decisions, and nothing ever lowered pressure in peace, so the response category stayed open forever.
+
+- A state that falls from Active or worse to Dormant or Clear becomes recovering, and the marker clears at Clear, so residual cells stay targetable until they are gone.
+- The recovery phase begins when no state is Active or worse, no core is held at Armed Insurgency or Lost Local Control and no Event 31 command is at war with the government; no actor defeat is required.
+  The territorial phase now also counts the government's cores that an armed command has taken, so a parent whose state passed to an actor keeps its territorial actions instead of entering recovery.
+- Each affected government keeps one hidden, event-owned recovery check every 30 days; in recovery it lowers Terror Pressure by 10 and recovering activity by 5, and it tries to close the crisis.
+  This adds no world iteration and touches neither repeatable weight nor minor-event pacing.
+- The obligations are: no recovering state, no running mission and zero Terror Pressure.
+  Public Accounting and Security Reform are optional institutional choices, once per crisis instead of once per game.
+  Public Accounting lowers pressure by 10, and Security Reform lengthens the post-crisis rest from 180 to 365 days.
+- Closure sends one short recovery report (`chaosx.nr31.9`, existing reconstruction art), finalizes the player's achievement checks (so The Long Watch can count contained crises), sets a timed `random_terror_recovery_cooldown` that ordinary waves respect but a deliberate Global Jihad scenario may override (Part 1: "unless a connected transnational network deliberately re-enters it"), and resets every per-crisis marker, including the six named in the assessment and all mission outcome flags.
+- Defects fixed on the way: Support Victims also set a permanent copy of its 60-day commitment flag, and Public Accounting and the response-cell AI read a failed-raid country flag that is only ever set on states; they now read `random_terror_failed_raid_memory`.
+- Restore Services keeps the one-row rule on the priority recovering state.

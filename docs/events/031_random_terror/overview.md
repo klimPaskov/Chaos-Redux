@@ -53,6 +53,19 @@ The current source contains those outcome families, with the unresolved unit, mi
 
 Disabled evolutions leave the ordinary incident, containment, state-response, surrender, and defeat paths available.
 
+### Recovery and closure
+
+A state that falls from Active or worse back to Dormant or Clear becomes recovering (`random_terror_state_recovery`, set in `random_terror_update_state_stage`), and the marker clears when the state reaches Clear or when Restore Civil Authority succeeds there.
+A government enters the recovery phase (`random_terror_government_phase_recovery`) once none of its states is Active or worse, no core is held at Armed Insurgency or Lost Local Control, and no Event 31 command is at war with it; no actor defeat is needed.
+The recovery phase shows Support Victims and Restore Services on the priority recovering state, Publish a Public Accounting after recent attacks, civilian losses, an exposed sponsor or a failed raid, and Reform the Security Services after any response action, accounting or defeated command.
+Public Accounting and Security Reform are once per crisis: Public Accounting raises Response Legitimacy and lowers Terror Pressure by `random_terror_recovery.accounting_pressure_reduction`, and Security Reform raises legitimacy and lengthens the post-crisis rest.
+
+Every affected government keeps one hidden recovery check (`chaosx.nr31.97`, guarded by the timed `random_terror_recovery_check_pending` flag) every `random_terror_recovery.check_days` while its crisis is open.
+In the recovery phase each check lowers Terror Pressure by `pressure_decay` and the activity of every recovering state by `activity_decay`, then calls `random_terror_close_country_recovery`, which the recovery decisions and every mission end also call.
+The crisis closes when `random_terror_country_recovery_complete` holds: no recovering state, no running mission and zero Terror Pressure.
+Closure finalizes the player's achievement checks, sends the short recovery report `chaosx.nr31.9` once, gives the country a `random_terror_recovery_cooldown` rest from ordinary waves (`cooldown_days`, or `reformed_cooldown_days` after Security Reform), and runs `random_terror_reset_crisis_cycle`, which clears the affected marker, Terror Pressure, Response Legitimacy, response capacity, the per-crisis decision markers, the coup and civil-war gates, the failed-raid and sponsor-exposure records and every mission outcome flag.
+A later crisis in the same country can therefore run every response decision again, while a deliberate Global Jihad scenario may still re-enter a resting country.
+
 The terminal transaction requires the normal Chaos and territorial-readiness gates even when Maximum Global Jihad activates The Final Jihad.
 
 The actual terminal role requires the final profile, a country final-actor receipt and the active terminal transaction.

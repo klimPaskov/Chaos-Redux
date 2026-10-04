@@ -92,7 +92,7 @@ random_terror_government_response_category = {
 		ai_will_do = {
 			base = @rt_ai_medium
 			modifier = { factor = @rt_ai_high_factor random_terror_country_has_active_state = yes }
-			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_recorded }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_memory }
 			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_pressure > constant:random_terror_value.high } }
 			modifier = { factor = @rt_ai_low_factor has_war = yes }
 		}
@@ -1713,6 +1713,7 @@ random_terror_government_response_category = {
 		}
 		target_trigger = {
 			FROM = {
+				random_terror_state_is_response_target = yes
 				is_controlled_by = ROOT
 				has_state_flag = random_terror_state_recovery
 				NOT = { has_state_flag = random_terror_restore_civil_authority_subject_@ROOT }
@@ -1746,6 +1747,7 @@ random_terror_government_response_category = {
 		}
 	}
 
+	# Once per crisis: the completion marker resets when the crisis closes.
 	random_terror_public_accounting = {
 		icon = GFX_decision_random_terror_government_public_accounting
 		visible = {
@@ -1753,8 +1755,9 @@ random_terror_government_response_category = {
 			random_terror_can_government_response = yes
 			OR = {
 				has_country_flag = random_terror_recent_incident
+				has_country_flag = random_terror_cycle_civilian_loss
 				has_country_flag = random_terror_sponsor_exposed
-				has_country_flag = random_terror_failed_raid_recorded
+				has_country_flag = random_terror_failed_raid_memory
 			}
 			NOT = { has_country_flag = random_terror_public_accounting_complete }
 		}
@@ -1766,8 +1769,9 @@ random_terror_government_response_category = {
 				NOT = { has_country_flag = random_terror_public_accounting_complete }
 				OR = {
 					has_country_flag = random_terror_recent_incident
+					has_country_flag = random_terror_cycle_civilian_loss
 					has_country_flag = random_terror_sponsor_exposed
-					has_country_flag = random_terror_failed_raid_recorded
+					has_country_flag = random_terror_failed_raid_memory
 				}
 			}
 		}
@@ -1775,7 +1779,6 @@ random_terror_government_response_category = {
 			random_terror_can_afford_public_accounting = yes
 		}
 		custom_cost_text = random_terror_public_accounting_cost
-		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = random_terror_public_accounting_effect_tt
 			add_command_power = constant:random_terror_cost.accounting_command_power_spend
@@ -1786,12 +1789,13 @@ random_terror_government_response_category = {
 		ai_will_do = {
 			base = @rt_ai_medium
 			modifier = { factor = @rt_ai_high_factor has_government = democratic }
-			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_recorded }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_memory }
 			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_sponsor_exposed }
 			modifier = { factor = @rt_ai_low_factor has_war = yes }
 		}
 	}
 
+	# Once per crisis: the completion marker resets when the crisis closes.
 	random_terror_security_reform = {
 		icon = GFX_decision_random_terror_government_security_reform
 		visible = {
@@ -1800,6 +1804,7 @@ random_terror_government_response_category = {
 			OR = {
 				has_country_flag = random_terror_reconstruction_available
 				has_country_flag = random_terror_public_accounting_complete
+				has_country_flag = random_terror_response_action_recorded
 			}
 			NOT = { has_country_flag = random_terror_security_reform_complete }
 			NOT = { random_terror_country_has_active_state = yes }
@@ -1814,6 +1819,7 @@ random_terror_government_response_category = {
 				OR = {
 					has_country_flag = random_terror_reconstruction_available
 					has_country_flag = random_terror_public_accounting_complete
+					has_country_flag = random_terror_response_action_recorded
 				}
 			}
 		}
@@ -1821,7 +1827,6 @@ random_terror_government_response_category = {
 			random_terror_can_afford_security_reform = yes
 		}
 		custom_cost_text = random_terror_security_reform_cost
-		fire_only_once = yes
 		complete_effect = {
 			custom_effect_tooltip = random_terror_security_reform_effect_tt
 			set_temp_variable = { random_terror_army_experience_payment = constant:random_terror_cost.reform_army_experience }

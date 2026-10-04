@@ -352,6 +352,23 @@ random_terror_update_state_stage = {
 		}
 		OWNER = { add_to_variable = { random_terror_hotspot_count = constant:random_terror_value.one } }
 	}
+	# Recovery (Part 1): a state that falls back below Active keeps its
+	# recovery marker until it is Clear, so the government can still reach
+	# its residual cells and the crisis cannot close around them.
+	if = {
+		limit = {
+			check_variable = { var = random_terror_previous_state_stage value = constant:random_terror_state_stage.active compare = greater_than_or_equals }
+			check_variable = { random_terror_state_stage < constant:random_terror_state_stage.active }
+		}
+		set_state_flag = random_terror_state_recovery
+	}
+	if = {
+		limit = {
+			has_state_flag = random_terror_state_recovery
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.clear }
+		}
+		clr_state_flag = random_terror_state_recovery
+	}
 	random_terror_refresh_state_modifier = yes
 	# A stage change can move the most severe crisis of the owner or controller.
 	if = {
@@ -553,6 +570,10 @@ random_terror_apply_exact_state_loss = {
 	set_temp_variable = { state_civilian_population_loss_applied = constant:random_terror_value.zero }
 	set_temp_variable = { state_civilian_population_loss_result = constant:random_terror_value.zero }
 	apply_exact_state_civilian_population_loss = yes
+	if = {
+		limit = { check_variable = { state_civilian_population_loss_applied > constant:random_terror_value.zero } }
+		OWNER = { set_country_flag = random_terror_cycle_civilian_loss }
+	}
 	if = {
 		limit = { check_variable = { state_civilian_population_loss_applied > constant:random_terror_tuning.achievement_major_loss_deaths } }
 		set_state_flag = random_terror_major_civilian_loss_recorded
@@ -850,6 +871,8 @@ random_terror_apply_incident = {
 	CONTROLLER = {
 		random_terror_initialize_country_state = yes
 		set_country_flag = random_terror_affected_country
+		random_terror_schedule_recovery_check = yes
+		add_to_variable = { random_terror_cycle_incident_count = constant:random_terror_value.one }
 		set_variable = { random_terror_last_report_incident_type = random_terror_incident_type }
 		set_temp_variable = { random_terror_pending_pressure_delta = random_terror_incident_pressure_delta }
 		random_terror_apply_pressure = yes
@@ -972,6 +995,51 @@ random_terror_run_country_pulse = {
 		# A pulse with no eligible site is postponed rather than redirected.
 		random_terror_schedule_country_pulse = yes
 	}
+}
+
+# COUNTRY scope: an affected government.  Keeps exactly one pending hidden
+# recovery check (chaosx.nr31.97) for as long as the crisis stays open, so
+# the recovery phase and the closure never depend on a stage change being
+# observed.  A timed guard flag outlives the event slightly.
+random_terror_schedule_recovery_check = {
+	if = {
+		limit = {
+			has_country_flag = random_terror_affected_country
+			NOT = { has_country_flag = random_terror_actor }
+			NOT = { has_country_flag = random_terror_recovery_check_pending }
+		}
+		set_temp_variable = { random_terror_recovery_check_days = constant:random_terror_recovery.check_days }
+		set_temp_variable = { random_terror_recovery_guard_days = random_terror_recovery_check_days }
+		add_to_temp_variable = { random_terror_recovery_guard_days = constant:random_terror_tuning.pulse_flag_buffer_days }
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_recovery_check_pending days = [GUARD_DAYS] } }
+			GUARD_DAYS = "[?random_terror_recovery_guard_days|.0]"
+		}
+		country_event = { id = chaosx.nr31.97 days = random_terror_recovery_check_days }
+	}
+}
+
+# COUNTRY scope: the hidden recovery check.  In the recovery phase fear fades
+# and residual cells lose local support while no attack lands: Terror
+# Pressure and the activity of every recovering state fall, and the crisis
+# closes once its recovery obligations end.  The check reschedules itself
+# while the crisis stays open, in any phase.
+random_terror_run_recovery_check = {
+	clr_country_flag = random_terror_recovery_check_pending
+	if = {
+		limit = { random_terror_country_in_recovery = yes }
+		set_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_recovery.pressure_decay }
+		multiply_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_value.negative_one }
+		random_terror_apply_pressure = yes
+		every_owned_state = {
+			limit = { has_state_flag = random_terror_state_recovery }
+			set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_recovery.activity_decay }
+			multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.negative_one }
+			random_terror_add_state_activity = yes
+		}
+		random_terror_close_country_recovery = yes
+	}
+	random_terror_schedule_recovery_check = yes
 }
 
 random_terror_identify_highest_enabled_evolution = {
@@ -1836,6 +1904,7 @@ random_terror_scenario_seed_country = {
 	set_country_flag = random_terror_scenario_target
 	set_country_flag = random_terror_target_reserved
 	set_country_flag = random_terror_affected_country
+	random_terror_schedule_recovery_check = yes
 	set_country_flag = random_terror_response_cell_active
 	set_country_flag = random_terror_government_opposition_recorded
 	set_country_flag = random_terror_clerical_opposition_recorded
@@ -3306,7 +3375,6 @@ random_terror_decision_protect_transport = {
 random_terror_decision_support_victims = {
 	random_terror_response_raise_legitimacy = yes
 	add_stability = constant:random_terror_tuning.government_stability_support
-	set_country_flag = random_terror_victim_support_active
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
@@ -3516,16 +3584,19 @@ random_terror_decision_restore_services = {
 	add_stability = constant:random_terror_tuning.actor_stability_relief_delta
 	set_country_flag = random_terror_services_restored
 	random_terror_response_action_lock = yes
-	random_terror_close_country_recovery = yes
+	hidden_effect = { random_terror_close_country_recovery = yes }
 }
 
 random_terror_decision_public_accounting = {
 	random_terror_response_raise_legitimacy = yes
+	set_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_recovery.accounting_pressure_reduction }
+	multiply_temp_variable = { random_terror_pending_pressure_delta = constant:random_terror_value.negative_one }
+	random_terror_apply_pressure = yes
 	set_country_flag = random_terror_public_accounting_complete
 	set_country_flag = random_terror_community_rejection_recorded
 	random_terror_expose_event31_coverup_condemnation = yes
 	random_terror_response_action_lock = yes
-	random_terror_close_country_recovery = yes
+	hidden_effect = { random_terror_close_country_recovery = yes }
 }
 
 random_terror_decision_security_reform = {
@@ -3533,7 +3604,7 @@ random_terror_decision_security_reform = {
 	add_to_variable = { random_terror_response_capacity = constant:random_terror_tuning.response_reform_capacity_gain }
 	set_country_flag = random_terror_security_reform_complete
 	random_terror_response_action_lock = yes
-	random_terror_close_country_recovery = yes
+	hidden_effect = { random_terror_close_country_recovery = yes }
 }
 
 # Actor decisions.  Every route spends authority or supply only after the
@@ -6580,35 +6651,97 @@ random_terror_clear_country_commitments = {
 	clr_country_flag = random_terror_action_recent
 }
 
+# COUNTRY scope: an affected government.  Closes its crisis once the
+# recovery obligations end (random_terror_country_recovery_complete): the
+# country receives one short recovery report, sits out new attack waves for
+# a while, and every per-crisis value, marker and response guard resets so a
+# later crisis can run every response again.
 random_terror_close_country_recovery = {
 	if = {
-		limit = {
-			has_country_flag = random_terror_reconstruction_available
-			has_country_flag = random_terror_services_restored
-			has_country_flag = random_terror_public_accounting_complete
-			has_country_flag = random_terror_security_reform_complete
-			NOT = {
-				OR = {
-					has_country_flag = random_terror_mission_slot_1
-					has_country_flag = random_terror_mission_slot_2
-					has_country_flag = random_terror_mission_slot_3
-				}
-			}
-			NOT = { random_terror_country_has_active_state = yes }
+		limit = { random_terror_country_recovery_complete = yes }
+		if = {
+			limit = { is_ai = no }
+			random_terror_achievement_finalize_country = yes
 		}
 		random_terror_clear_country_commitments = yes
 		set_country_flag = random_terror_cycle_recovery_complete
-		clr_country_flag = random_terror_reconstruction_available
-		clr_country_flag = random_terror_affected_country
-		clr_country_flag = random_terror_response_cell_active
-		clr_country_flag = random_terror_services_restored
-		clr_country_flag = random_terror_public_accounting_complete
-		clr_country_flag = random_terror_security_reform_complete
-		clear_variable = random_terror_pressure
-		clear_variable = random_terror_response_legitimacy
-		clear_variable = random_terror_response_capacity
+		set_temp_variable = { random_terror_recovery_cooldown_days = constant:random_terror_recovery.cooldown_days }
+		clr_country_flag = random_terror_last_cycle_reformed
+		if = {
+			limit = { has_country_flag = random_terror_security_reform_complete }
+			set_temp_variable = { random_terror_recovery_cooldown_days = constant:random_terror_recovery.reformed_cooldown_days }
+			set_country_flag = random_terror_last_cycle_reformed
+		}
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_recovery_cooldown days = [COOLDOWN_DAYS] } }
+			COOLDOWN_DAYS = "[?random_terror_recovery_cooldown_days|.0]"
+		}
+		set_variable = { random_terror_last_cycle_incidents = random_terror_cycle_incident_count }
+		set_variable = { random_terror_last_cycle_legitimacy = random_terror_response_legitimacy }
+		set_country_flag = random_terror_recovery_report_pending
+		country_event = { id = chaosx.nr31.9 }
+		random_terror_reset_crisis_cycle = yes
+		random_terror_refresh_priority_state = yes
 	}
 	random_terror_reset_repeatable_cycle = yes
+}
+
+# COUNTRY scope: clears what one crisis cycle recorded for a government, so a
+# later crisis in the same country starts fresh.  Lifetime achievement
+# records are kept.
+random_terror_reset_crisis_cycle = {
+	clr_country_flag = random_terror_reconstruction_available
+	clr_country_flag = random_terror_affected_country
+	clr_country_flag = random_terror_response_cell_active
+	clr_country_flag = random_terror_response_action_recorded
+	clr_country_flag = random_terror_services_restored
+	clr_country_flag = random_terror_public_accounting_complete
+	clr_country_flag = random_terror_security_reform_complete
+	clr_country_flag = random_terror_intelligence_breakthrough
+	clr_country_flag = random_terror_defection_channel_open
+	clr_country_flag = random_terror_quiet_leverage_available
+	clr_country_flag = random_terror_cycle_civilian_loss
+	clr_country_flag = random_terror_civil_war_started
+	clr_country_flag = random_terror_coup_attempted
+	clr_country_flag = random_terror_coup_successful
+	clr_country_flag = random_terror_failed_raid_memory
+	clr_country_flag = random_terror_sponsor_exposed
+	# The pending recovery check is kept: a check already scheduled either
+	# finds the country at rest and stops, or carries on a crisis that
+	# reopened before it fired, so two chains never run at once.
+	clr_country_flag = random_terror_containment_mission_success
+	clr_country_flag = random_terror_containment_mission_partial
+	clr_country_flag = random_terror_containment_mission_failure
+	clr_country_flag = random_terror_containment_mission_cancelled
+	clr_country_flag = random_terror_transport_mission_success
+	clr_country_flag = random_terror_transport_mission_partial
+	clr_country_flag = random_terror_transport_mission_failure
+	clr_country_flag = random_terror_transport_mission_cancelled
+	clr_country_flag = random_terror_corridor_mission_success
+	clr_country_flag = random_terror_corridor_mission_partial
+	clr_country_flag = random_terror_corridor_mission_failure
+	clr_country_flag = random_terror_corridor_mission_cancelled
+	clr_country_flag = random_terror_capital_mission_success
+	clr_country_flag = random_terror_capital_mission_partial
+	clr_country_flag = random_terror_capital_mission_failure
+	clr_country_flag = random_terror_capital_mission_cancelled
+	clr_country_flag = random_terror_retake_mission_success
+	clr_country_flag = random_terror_retake_mission_partial
+	clr_country_flag = random_terror_retake_mission_failure
+	clr_country_flag = random_terror_retake_mission_cancelled
+	clr_country_flag = random_terror_restore_mission_success
+	clr_country_flag = random_terror_restore_mission_partial
+	clr_country_flag = random_terror_restore_mission_failure
+	clr_country_flag = random_terror_restore_mission_cancelled
+	clr_country_flag = random_terror_hostage_mission_cancelled
+	clr_country_flag = random_terror_uprising_mission_success
+	clr_country_flag = random_terror_uprising_mission_partial
+	clr_country_flag = random_terror_uprising_mission_failure
+	clr_country_flag = random_terror_uprising_mission_cancelled
+	clear_variable = random_terror_pressure
+	clear_variable = random_terror_response_legitimacy
+	clear_variable = random_terror_response_capacity
+	clear_variable = random_terror_cycle_incident_count
 }
 
 random_terror_reset_repeatable_cycle = {
@@ -6675,6 +6808,7 @@ random_terror_resolve_defeat = {
 			if = {
 				limit = { has_country_flag = random_terror_affected_country }
 				set_country_flag = random_terror_reconstruction_available
+				random_terror_schedule_recovery_check = yes
 			}
 		}
 		every_state = {
