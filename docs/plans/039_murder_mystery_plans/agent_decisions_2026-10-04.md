@@ -182,3 +182,12 @@ Both members fire through `fire_event_by_temp_id_no_cluster`, so Event 39 still 
 Existing saves receive the cluster through an append-only migration beside the Random Stuff one; new games receive it from the definitions list.
 The Events Log and settings name rows and the cluster description were added beside Negative Economy as minimal insertions in the shared files; the two localisation keys live in the Event 039 localisation file because the shared GUI localisation file has mixed line endings.
 Another engineer's uncommitted Various Anomalies hunks in the same shared files were left uncommitted and untouched; this commit contains only the Intelligence lines.
+
+## D19. Localisation polish
+
+Disposition: implemented.
+The opening report (`chaosx.nr39.2`) now speaks in the same neutral voice as the later reports and names whoever took charge through `[ROOT.GetLeader]` in the host's own scope, which shows the curated successor or the institutional council.
+The legacy news event `chaosx.news.44` and its three keys are removed: nothing fires the alias, and its text described the pre-rework murder with an invented leader biography; the opening news is `chaosx.news.4401`.
+Player text no longer uses ledger, transaction, callback, runtime or validation wording; the requirement texts that flag checks show in tooltips now describe the situation (for example "The Murder Mystery crisis is under way" instead of "The murder mystery runtime is active").
+The shared decision tooltips are neutral, so movement decisions no longer mention the government's case team.
+The inheritance reports (`chaosx.nr39.24` and `.25`) already describe the territorial heir and underground continuation from D7 and needed no change.
