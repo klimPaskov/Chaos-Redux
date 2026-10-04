@@ -10,11 +10,15 @@
 # ============================================================================
 
 random_terror_government_response_category = {
+	# The category stays open through the short lock between response
+	# decisions, so running missions never vanish from view.
 	visible = {
 		NOT = { has_country_flag = random_terror_actor }
 		NOT = { has_global_flag = world_end }
+		NOT = { is_actual_nonhuman_country = yes }
 		OR = {
-			random_terror_can_government_response = yes
+			has_country_flag = random_terror_affected_country
+			random_terror_country_has_active_state = yes
 			has_country_flag = random_terror_reconstruction_available
 		}
 	}

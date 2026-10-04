@@ -2,6 +2,9 @@
 # Selects the exact incident report art preserved by the global wave before
 # the one-day visible report callback. Every accepted baseline report family
 # has a live, deterministic incident consumer and an armed-enclave fallback.
+# The category headers read the Terror Pressure band and its next threshold,
+# the government's most urgent mission, and the actor's control band and
+# route.
 
 defined_text = {
 	name = GetRandomTerrorIncidentReportPicture
@@ -83,4 +86,145 @@ defined_text = {
 		localization_key = GFX_report_event_031_random_terror_public_building_emergency
 	}
 	text = { localization_key = GFX_report_event_031_random_terror_armed_enclave_captured_town }
+}
+
+# COUNTRY scope: Terror Pressure band (Part 1 ranges).
+defined_text = {
+	name = GetRandomTerrorPressureBand
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.challenge } }
+		localization_key = random_terror_pressure_band_takeover
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.sustained } }
+		localization_key = random_terror_pressure_band_challenge
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.local } }
+		localization_key = random_terror_pressure_band_sustained
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.traces } }
+		localization_key = random_terror_pressure_band_local
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_value.zero } }
+		localization_key = random_terror_pressure_band_traces
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = random_terror_pressure_band_cleared
+	}
+}
+
+# COUNTRY scope: the next Terror Pressure band above the current value.
+defined_text = {
+	name = GetRandomTerrorPressureNextThreshold
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.challenge } }
+		localization_key = random_terror_pressure_next_none
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.sustained } }
+		localization_key = random_terror_pressure_next_takeover
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.local } }
+		localization_key = random_terror_pressure_next_challenge
+	}
+	text = {
+		trigger = { check_variable = { random_terror_pressure > constant:random_terror_pressure_band.traces } }
+		localization_key = random_terror_pressure_next_sustained
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = random_terror_pressure_next_local
+	}
+}
+
+# COUNTRY scope: the most urgent running mission.
+defined_text = {
+	name = GetRandomTerrorCurrentMission
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_hostage }
+		localization_key = random_terror_current_mission_hostage
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_uprising }
+		localization_key = random_terror_current_mission_uprising
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_capital }
+		localization_key = random_terror_current_mission_capital
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_retake }
+		localization_key = random_terror_current_mission_retake
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_containment }
+		localization_key = random_terror_current_mission_containment
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_corridor }
+		localization_key = random_terror_current_mission_corridor
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_transport }
+		localization_key = random_terror_current_mission_transport
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_mission_active_restore }
+		localization_key = random_terror_current_mission_restore
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = random_terror_current_mission_none
+	}
+}
+
+# COUNTRY scope: an actor's Territorial Control band.
+defined_text = {
+	name = GetRandomTerrorControlBand
+	text = {
+		trigger = { check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate } }
+		localization_key = random_terror_control_band_firm
+	}
+	text = {
+		trigger = { check_variable = { random_terror_territorial_control > constant:random_terror_value.low } }
+		localization_key = random_terror_control_band_contested
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = random_terror_control_band_failing
+	}
+}
+
+# COUNTRY scope: an actor's current route.
+defined_text = {
+	name = GetRandomTerrorActorRoute
+	text = {
+		trigger = { has_country_flag = random_terror_route_false_revelation }
+		localization_key = random_terror_focus_navigation_false_revelation
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_route_jihadist_international }
+		localization_key = random_terror_focus_navigation_jihadist_international
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_route_ideological_secretariat }
+		localization_key = random_terror_route_name_ideological_secretariat
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_route_war_directorate }
+		localization_key = random_terror_route_name_war_directorate
+	}
+	text = {
+		trigger = { has_country_flag = random_terror_route_shadow_council }
+		localization_key = random_terror_route_name_shadow_council
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = random_terror_route_name_none
+	}
 }

@@ -374,8 +374,11 @@ random_terror_refresh_priority_state = {
 	}
 	set_temp_variable = { random_terror_priority_best_stage = constant:random_terror_value.zero }
 	set_temp_variable = { random_terror_priority_best_activity = constant:random_terror_value.zero }
+	# The response category header shows how many crisis states it holds.
+	set_variable = { random_terror_active_state_count = constant:random_terror_value.zero }
 	every_controlled_state = {
 		limit = { random_terror_state_is_active_crisis = yes }
+		PREV = { add_to_variable = { random_terror_active_state_count = constant:random_terror_value.one } }
 		random_terror_consider_priority_state = yes
 	}
 	every_core_state = {
