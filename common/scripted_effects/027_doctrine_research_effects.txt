@@ -144,6 +144,17 @@ doctrine_research_get_next_enabled_stage = {
 	}
 }
 
+# Global scope. Stores the next evolution date one pacing interval after today.
+# The pacing interval is tuned in days and converted to date units, where one
+# game hour is 0.00001, before it is added to the stored copy of global.date.
+doctrine_research_schedule_next_evolution = {
+	set_temp_variable = { chaosx_date_days = constant:doctrine_research_event.base_pacing_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { global.doctrine_research_next_evolution_date = global.date }
+	add_to_variable = { global.doctrine_research_next_evolution_date = chaosx_date_offset }
+}
+
 doctrine_research_process_evolution = {
 	if = { limit = { NOT = { has_variable = global.doctrine_research_current_stage } } set_variable = { global.doctrine_research_current_stage = constant:doctrine_research_stage.baseline_calm_world } }
 	set_global_flag = doctrine_research_evolution_clock_started
@@ -160,8 +171,7 @@ doctrine_research_process_evolution = {
 	}
 	else_if = {
 		limit = { NOT = { has_variable = global.doctrine_research_next_evolution_date } }
-		set_variable = { global.doctrine_research_next_evolution_date = global.date }
-		add_to_variable = { global.doctrine_research_next_evolution_date = constant:doctrine_research_event.base_pacing_days }
+		doctrine_research_schedule_next_evolution = yes
 	}
 	else_if = {
 		limit = {
@@ -191,8 +201,7 @@ doctrine_research_process_evolution = {
 						compare = greater_than
 					}
 				}
-				set_variable = { global.doctrine_research_next_evolution_date = global.date }
-				add_to_variable = { global.doctrine_research_next_evolution_date = constant:doctrine_research_event.base_pacing_days }
+				doctrine_research_schedule_next_evolution = yes
 			}
 		}
 		else = { clear_variable = global.doctrine_research_next_evolution_date }
