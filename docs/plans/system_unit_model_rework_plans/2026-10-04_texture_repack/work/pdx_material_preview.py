@@ -97,9 +97,15 @@ def setup_world():
 
 
 def shoot(cam, objs, direction, path, margin=1.10):
+    """direction is a view vector, or {"dir": [...], "center": [x, y, z], "extent": e} for a close-up."""
     lo, hi = bounds(objs)
     c = (lo + hi) / 2
     ext = max((hi - lo).length, 1e-3)
+    if isinstance(direction, dict):
+        if "center" in direction:
+            c = mathutils.Vector(direction["center"])
+            ext = float(direction["extent"])
+        direction = direction["dir"]
     d = mathutils.Vector(direction).normalized()
     cam.location = c + d * ext * 4
     cam.rotation_euler = (-d).to_track_quat("-Z", "Y").to_euler()

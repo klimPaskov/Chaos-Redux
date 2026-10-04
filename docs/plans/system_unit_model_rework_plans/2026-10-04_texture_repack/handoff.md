@@ -151,7 +151,7 @@ The before renders reproduce the filmed chrome, which supports the approximation
 
 1. **Inverted Y in three working normal maps:** `cannibal_bone_guard_normal.dds`, `cannibal_scavenger_warband_normal.dds` and `alien_infantry_body_normal.dds` are strongly Y-down (DirectX), with curl correlations of +0.42 to +0.98. They look derived from diffuse luminance, which makes their Y inverted relative to vanilla. Their relief is shallow (std 3 to 8), so the effect is subtle: vertical bumps are lit from the wrong side. A one-line fix would flip A (`A = 255 - A`), but this pass did not change them.
 2. **No mip chains, family-wide:** the repository converter writes single-level DDS by design, while vanilla ships full DXT5 mip chains. If the in-game footage still shows shimmer or speckle at map zoom, add mip generation to the converter and pipeline (texconv is not installed), then regenerate the family maps.
-3. **feast_cohort needs a new diffuse:** rebuild it from a retexture or a Blender re-projection. Optionally also soften its normal map and bring gloss toward the vanilla band. This needs a decision, because a retexture is paid provider work.
+3. **feast_cohort needs a new diffuse:** rebuild it from a retexture or a Blender re-projection. Optionally also soften its normal map and bring gloss toward the vanilla band. This needs a decision, because a retexture is paid provider work. Superseded: the follow-up section below found the root cause. All three cohort maps belong to a superseded UV layout.
 4. **Stale package docs:** `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/manifest.md` and the reavers and alien package manifests and handoffs still list the old normal and specular hashes. The new hashes are in the table above and in `work/repack_record.json`. Updating those parent-owned documents was outside this pass's write scope.
 5. **Stale texture names inside the reavers mesh:** `cannibal_island_reavers.mesh` internally names `cannibal_island_reavers_diff.dds` and `cannibal_island_reavers_spec.dds`, which do not exist. The `.gfx` meshsettings (`output_unwrapped.002`, index 0) override them, so the runtime is unaffected. This only matters if those meshsettings are ever removed.
 
@@ -164,3 +164,56 @@ The before renders reproduce the filmed chrome, which supports the approximation
 - `work/pdx_material_preview.py`, `work/render_previews.py`, `work/preview_request.json`, `work/diagnostic_request.json` and `work/render_report.json`: the preview worker, driver and requests.
 - `work/analysis/`: the DDS statistics and normal Y-convention probes.
 - Regenerable intermediates (staging PNG and DDS, decoded PNGs, individual renders, UV dumps) were removed after verification. Rerunning `work/repack_textures.py` (without `--install`) and `work/render_previews.py` recreates them.
+
+## Follow-up 2026-10-04: feast cohort diffuse speckle
+
+Status: **blocked for a real fix; the requested inpaint is built and staged, not installed**. The runtime `cannibal_feast_cohort_diffuse.dds` is unchanged (SHA-256 `4324CFC698CC617BC4348459DD1759490168A718C73304DEC24E0AF10DAD66DE`). A byte-exact backup was added to `originals/` and `originals/SHA256SUMS.txt`, and it matches the hash in the cohort package manifest. This pass made no Meshy calls, spent no credits, and changed no geometry, rig, animation or `.gfx` file.
+
+### Root cause: the cohort's maps belong to a different UV layout
+
+The cohort's diffuse, normal and specular maps were all baked for the superseded recovery model's UV layout, not for the shipped mesh.
+
+- **Lineage:** `docs/assets/014_cannibalism/models_3d/cannibal_feast_cohort/blender/reports/textures_dds.json` shows that all three DDS maps were extracted from `blender/checkpoints/05_pre_export.blend` with adapter 1.8.1. The job history logs that as the only `pdx_textures_processed` event, at 2026-08-22T16:48, for the earlier recovery model (rig task `01a02a43-8497-7eb4-96da-e40495030a69`).
+- **The shipped mesh is the later v6 model:** `export_mesh.json` shows it was exported from `recovery_v6_11_runtime_sanitized_11014.blend`. That is the 2026-08-24 recovery_v6 model: generation `01a033c5-1c4c-7dd8-8c0c-ad365327dc1d`, remesh `01a033d0-7114-7171-9b10-4236e971a992`, rig `01a033ee-4dfe-7e18-8137-1293d3106cb8`, then Blender decimation. Its `textures.json` and every v6 prepare report list no texture bindings, and no texture-processing event follows the v6 generation. The existing cohort manifest had already flagged the texture-to-runtime relationship as unresolved.
+- **Atlas evidence:** with the mesh's own UV islands overlaid, the texture's patch shapes, flat padding fills and radial smear streaks fall inside the mesh's islands, and the island borders cut through texture patches. The reavers and feast_guard atlases, by contrast, line up with their islands.
+  - A padding-agreement test (`work/analysis/uv_layout_agreement.py`) scores the identity orientation best for all four control models: reavers 0.236, feast_guard 0.481, siege_eaters 0.211, march 0.368.
+  - The cohort is the only atlas where identity is not best: 0.196, against 0.204 for a vertical flip and similar values for every other flip and rotation.
+  - So no orientation fix exists: the cohort atlas does not belong to this layout at all.
+- **What it looks like on the model:** skin-like and hide-like patches land on the spear and hook, cream patches cover the face, and the "flecks" are the old atlas's own padding and patches. The normal and specular maps are scrambled the same way, which adds per-patch lighting noise.
+
+### The requested inpaint (staged candidate)
+
+`work/cohort_fleck_inpaint.py` always starts from the backup. The script header documents the method; in summary:
+
+- Islands come from the shipped mesh's UV islands, built in `work/uv_islands.py` (607 islands, gutter excluded).
+- A fleck is a warm cream or gold texel at least 1.45 times brighter than its island's local background (and at least 0.10 brighter in absolute terms), with a 1-texel dilation kept inside the same island.
+- Each island is inpainted separately with OpenCV Telea. Every texel outside the island is marked unknown, so nothing is drawn across a seam.
+- Gutter texels within 2 texels of an island are re-padded from their nearest island texel.
+- Size, header and alpha are unchanged, and the DDS round trip is texel-exact.
+
+The result is recorded in `work/cohort_fleck_record.json`:
+
+- **Not a scattering of flecks:** it touches 205,668 texels, which is 27% of all island texels, in 581 of 607 islands. The "flecks" are a quarter of the content.
+- **Partial mitigation only:** the candidate is calmer (fewer bright cream flecks), but the camouflage patchwork remains, including cream islands on the head, chest and shoulders where the surrounding material is itself cream. It does not restore skin, hide or spear materials, because none exist under this mesh's UVs.
+- **No ornaments could be protected:** in a mismatched atlas no texel corresponds to the bone and teeth gear, beads or metal fittings, so no texel qualified for the brief's "intentional detail on real geometry" protection.
+
+It is staged at `work/staged/cannibal_feast_cohort_diffuse.dds` (SHA-256 `06640B159F0AE788ADE4A31C51DEC3B399B49A7F197F9F6BF3D9DFA4F87E3885`, 4,194,432 bytes), with its mask at `work/staged/cannibal_feast_cohort_fleck_mask.png`. It is not installed: shipping it would present a mismatched atlas as repaired, and it leaves the scrambled normal and specular maps in place. To accept it as an interim anyway, run `python docs/plans/system_unit_model_rework_plans/2026-10-04_texture_repack/work/cohort_fleck_inpaint.py --install`. That rebuilds the file from the backup, installs it, and records the installed hash.
+
+### Previews
+
+- `previews/cannibal_feast_cohort_fleck_inpaint_before_candidate.png`: five rows over the same four diagnosis views. Before and candidate are shown with the full PDX material, then as diffuse only, and the last row overlays the inpainted texels in magenta on the shipped diffuse.
+- `previews/cannibal_feast_cohort_fleck_inpaint_closeups.png`: torso, waist, head and spear close-ups, before, candidate and mask. The spear-point camera framed the shaft rather than the point.
+
+### Real fix options (parent decision)
+
+1. **Free recovery of the matching v6 textures (recommended):** download the existing v6 rig task `01a033ee-4dfe-7e18-8137-1293d3106cb8` again, using the same rigged GLB the shipped mesh was decimated from, if Meshy still serves it. Then process its maps with `.tools/3d_pipeline/review/pdx_textures.py` and confirm the fit with `work/analysis/uv_layout_agreement.py` (identity must score clearly best). Downloading an existing task is not a new paid attempt, but it is a Meshy call, which this brief excluded, and it needs the `MESHY_API_KEY` gate and locked-route verification first. This replaces all three cohort maps correctly.
+2. **Paid retexture:** if the v6 assets have expired, run a Meshy retexture on the shipped mesh. This needs explicit authorization.
+3. **Interim only:** install the staged candidate, and optionally flatten the scrambled normal map. This is a symptom mitigation that leaves the wrong atlas in place.
+
+### Validation
+
+- The runtime file is unchanged (hash re-checked).
+- The candidate's DDS round trip is texel-exact, its header is identical to the shipped file's, and its alpha is unchanged.
+- Islands were derived from the shipped `.mesh` through the locked Blender and `io_pdx_mesh` route.
+- The renders were reviewed at full resolution.
+- In game: nothing has changed in game, so there is nothing new to film for the cohort.
