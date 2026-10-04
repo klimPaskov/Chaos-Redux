@@ -243,3 +243,20 @@ Decision:
 
 - The controller body is one effect, `chaosx_nr25_close_entry_window`, that runs once. The delayed controller event goes to the opening country and to every human, and any expedition pulse closes the window once the stored close date has passed. None of these scans the world.
 - An expedition that stays in one phase for 720 days with no objective, final mission or evacuation running is recalled: it withdraws with its verified evidence through the normal withdrawal path and receives a report. When no expedition remains, the race closes through the existing closure path.
+
+## D17. Expedition Board layout, sector art and card text
+
+Disposition: `implemented`.
+
+Basis: spec 008 (six selectable sectors, three main values, rival cards with public identity, five action cards) and the lead's GUI item; the stopped thread's uncommitted geometry patch was reviewed against MCP inspect and render passes before adoption.
+
+Decision:
+
+- The stopped thread's geometry patch is adopted with corrections: the board root sits at a fixed offset from the screen centre instead of `origo = center` with clipping, so it fits whole at 1920x1080, 1600x900 and 1366x768, and the undefined `hoi_12mbs` and `hoi_14mbs` fonts are replaced by vanilla fonts.
+- The status column draws the one status-panel texture as two compact cornered tiles and one tall tile, so the three value cards no longer overlap; the tall card also carries the route, outpost and target rows, and the separate support heading and race-state line are dropped because the header already shows the race state.
+- The single fixed selection wedge is replaced by six per-sector highlights derived from the sector map itself, so the highlight always matches the selected sector's outline.
+- Sector emblems read a per-sector frame variable mapped from the private survey state, and a sector whose fragment the viewer holds shows as recovered. The eight standalone sector-state DDS copies had no consumer and were removed; the eight-frame strip is the only state art.
+- Rival cards show the rival's flag and name, both read from the stored rival tag, beside the public card text.
+- Each action card shows a short board label and either the cost (whole icon-and-number groups per line) or the blocking status; the tooltip repeats the full name, effect, cost and status, and the confirmation window keeps the full name and one-line cost.
+- Dead visibility triggers for elements that no longer exist were removed, and the confirmation window and empty-rivals note now use triggers whose names match their elements, so neither is drawn when it should be hidden.
+- Hover, pressed and disabled card states were not rendered; the disabled action-card frame was re-fitted so all four frames share one footprint.

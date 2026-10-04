@@ -84,30 +84,6 @@ scripted_gui = {
 		}
 
 		triggers = {
-			nr25_board_live_visible = {
-				has_global_flag = chaosx_nr25_active
-				NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
-			}
-			nr25_board_resolved_visible = {
-				OR = {
-					has_global_flag = chaosx_nr25_final_recovery_resolved
-					has_country_flag = chaosx_nr25_terminal
-				}
-			}
-			nr25_board_winner_visible = {
-				OR = {
-					has_global_flag = chaosx_nr25_final_recovery_resolved
-					has_country_flag = chaosx_nr25_terminal
-				}
-				has_country_flag = chaosx_nr25_recovery_winner
-			}
-			nr25_board_loser_visible = {
-				OR = {
-					has_global_flag = chaosx_nr25_final_recovery_resolved
-					has_country_flag = chaosx_nr25_terminal
-				}
-				NOT = { has_country_flag = chaosx_nr25_recovery_winner }
-			}
 				nr25_action_tray_visible = {
 					has_global_flag = chaosx_nr25_active
 					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
@@ -172,8 +148,11 @@ scripted_gui = {
 			nr25_rival_2_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
 			nr25_rival_3_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
 			nr25_rival_1_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
+			nr25_rival_1_name_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
 			nr25_rival_2_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
+			nr25_rival_2_name_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
 			nr25_rival_3_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
+			nr25_rival_3_name_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
 			nr25_rival_1_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
 			nr25_rival_2_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
 			nr25_rival_3_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
@@ -204,7 +183,7 @@ scripted_gui = {
 			nr25_rival_1_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_1_incident }
 			nr25_rival_2_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_2_incident }
 			nr25_rival_3_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_3_incident }
-			nr25_rival_empty_visible = {
+			nr25_rivals_empty_visible = {
 				has_global_flag = chaosx_nr25_active
 				NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
 				NOT = { has_country_flag = chaosx_nr25_terminal }
@@ -255,16 +234,6 @@ scripted_gui = {
 			nr25_action_3_name_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
 			nr25_action_4_name_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
 			nr25_action_5_name_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
-			nr25_action_1_cost_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
-			nr25_action_2_cost_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
-			nr25_action_3_cost_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
-			nr25_action_4_cost_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
-			nr25_action_5_cost_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
-			nr25_action_1_status_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
-			nr25_action_2_status_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
-			nr25_action_3_status_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
-			nr25_action_4_status_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
-			nr25_action_5_status_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
 				nr25_action_1_click_enabled = {
 					has_global_flag = chaosx_nr25_active
 					has_country_flag = chaosx_nr25_action_slot_1_visible
@@ -296,7 +265,7 @@ scripted_gui = {
 					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
 				}
 
-				nr25_board_confirmation_visible = {
+				nr25_board_confirmation_window_visible = {
 					has_country_flag = chaosx_nr25_board_confirmation_open
 					has_variable = chaosx_nr25_pending_action_slot
 					has_global_flag = chaosx_nr25_active
@@ -361,16 +330,16 @@ scripted_gui = {
 			nr25_board_logistics_meter = { image = "[GetChaosxNr25BoardLogisticsMeter]" }
 			nr25_board_exposure_meter = { image = "[GetChaosxNr25BoardThirdValueMeter]" }
 			nr25_board_exposure_icon = { image = "[GetChaosxNr25BoardThirdValueIcon]" }
-			nr25_sector_1_state_icon = { frame = ROOT.chaosx_nr25_sector_ice_shelf_state }
-			nr25_sector_2_state_icon = { frame = ROOT.chaosx_nr25_sector_mountain_shadow_state }
-			nr25_sector_3_state_icon = { frame = ROOT.chaosx_nr25_sector_signal_basin_state }
-			nr25_sector_4_state_icon = { frame = ROOT.chaosx_nr25_sector_coastal_fracture_state }
-			nr25_sector_5_state_icon = { frame = ROOT.chaosx_nr25_sector_magnetic_silence_state }
-			nr25_sector_6_state_icon = { frame = ROOT.chaosx_nr25_sector_false_map_state }
+			nr25_sector_1_state_icon = { frame = ROOT.chaosx_nr25_sector_1_frame }
+			nr25_sector_2_state_icon = { frame = ROOT.chaosx_nr25_sector_2_frame }
+			nr25_sector_3_state_icon = { frame = ROOT.chaosx_nr25_sector_3_frame }
+			nr25_sector_4_state_icon = { frame = ROOT.chaosx_nr25_sector_4_frame }
+			nr25_sector_5_state_icon = { frame = ROOT.chaosx_nr25_sector_5_frame }
+			nr25_sector_6_state_icon = { frame = ROOT.chaosx_nr25_sector_6_frame }
 
-			nr25_rival_1_flag = { image = "[GetChaosxNr25Rival1FlagSprite]" }
-			nr25_rival_2_flag = { image = "[GetChaosxNr25Rival2FlagSprite]" }
-			nr25_rival_3_flag = { image = "[GetChaosxNr25Rival3FlagSprite]" }
+			nr25_rival_1_flag = { image = "[?chaosx_nr25_rival_slot_1_id.GetFlag]" }
+			nr25_rival_2_flag = { image = "[?chaosx_nr25_rival_slot_2_id.GetFlag]" }
+			nr25_rival_3_flag = { image = "[?chaosx_nr25_rival_slot_3_id.GetFlag]" }
 			nr25_rival_1_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_1_state }
 			nr25_rival_2_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_2_state }
 			nr25_rival_3_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_3_state }

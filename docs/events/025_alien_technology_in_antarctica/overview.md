@@ -50,7 +50,12 @@ Route, outpost security, survey evidence, crew, intelligence, wreck condition, f
 The board contains a phase header, deadline control, history and details controls, six Antarctic sector click regions, state emblems, rival cards, and a phase action tray capped at five primary action slots.
 
 The source layout uses a 1024x640 board canvas and a four-frame 384x58 sector-hitbox atlas.
-The GUI worker's layout handoff and all state, resolution, click-region, and comparison evidence require parent review.
+The board root sits at a fixed offset from the screen centre, so it fits whole at 1920x1080, 1600x900 and 1366x768.
+The status column stacks two compact cards and one tall card, drawn as cornered tiles of one panel texture; the tall card also carries the route, outpost and target rows.
+Each sector state emblem reads its frame from the viewer's `chaosx_nr25_sector_N_frame` variable, which `chaosx_nr25_refresh_sector_frames` maps from the survey state (`chaosx_nr25_sector_frame` constants), and each sector has its own selection highlight.
+Rival cards show the rival's flag and name with the public card text.
+Each action card shows a short board label and, below it, the cost while the action can be taken or the blocking status otherwise; the tooltip repeats the full name, effect, cost and status, and the confirmation window keeps the full name and one-line cost.
+MCP inspect and render evidence for the board, including the before and after scenarios, is recorded in `docs/assets/025_alien_technology_in_antarctica/visual_asset_audit.md`; hover, pressed and disabled states were not rendered.
 
 The board uses participant-country scope and opt-in rival visibility flags so multiplayer players do not see another country’s hidden exact resources or hidden action state.
 

@@ -2,7 +2,7 @@
 
 Audit date: 2026-10-03.
 
-Status: individual pixel review and several source binding repairs are recorded; complete reverse-consumer coverage and mandatory MCP visual evidence remain unresolved.
+Status: individual pixel review and several source binding repairs are recorded; Expedition Board MCP inspect and render evidence is recorded below; complete reverse-consumer coverage remains unresolved.
 
 ## Scope and evidence roots
 
@@ -58,11 +58,11 @@ Source binding proof does not establish in-game appearance or mandatory MCP rend
 | Event reports in events/025_alien_technology_in_antarctica.txt | GFX_report_event_025_antarctic_* | source_png/report_event_025_*_source.png | processed_png/report_event_025_*.png | gfx/event_pictures/025_alien_technology_in_antarctica/report_event_025_*.dds | Fourteen 210x176 report consumers are present and individually inspected. |
 | Board root nr25_expedition_board_window in interface/025_alien_technology_in_antarctica.gui | GFX_025_expedition_board_background | source_png/board_background_025_source.png | processed_png/board_background_025.png | gfx/interface/025_alien_technology_in_antarctica/board_background_025.dds | 1024x640 opaque canvas, full-canvas consumer. |
 | Board central operations and Antarctic map | GFX_025_expedition_operations_panel, GFX_025_expedition_sector_map | source_png/expedition_board/operations_panel_source.png and board_sector_map_025_source.png | processed_png/expedition_board/expedition_operations_panel.png and board_sector_map_025.png | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Source art remains 700x430 and is displayed at scale 0.63 inside the 441x271 central display region. |
-| Board status column | GFX_025_expedition_status_panel | source_png/expedition_board/status_panel_source.png | processed_png/expedition_board/expedition_status_panel.png | gfx/interface/025_alien_technology_in_antarctica/expedition_status_panel.dds | Three natural 272x180 cards provide only Progress, Logistics Readiness, and Exposure Risk as main values. |
+| Board status column | GFX_025_expedition_status_panel_compact, GFX_025_expedition_status_panel_tall | source_png/expedition_board/status_panel_source.png | processed_png/expedition_board/expedition_status_panel.png | gfx/interface/025_alien_technology_in_antarctica/expedition_status_panel.dds | The 272x180 texture is drawn as two 272x104 cornered tiles and one 272x196 tile at y 92, 196 and 300, so the cards no longer overlap; the tall card also holds the route, outpost and target rows. Only Progress, Logistics Readiness, and Exposure Risk (or Dependence) are main values. |
 | Rival rail and cards | GFX_025_expedition_rivals_panel, GFX_025_expedition_rival_card, GFX_025_expedition_rival_selected | source_png/expedition_board/rivals_panel_source.png, rival_card_source.png, and rival_selected_source.png | Matching processed files under processed_png/expedition_board/ | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Rival rail is displayed at scale 0.92; cards use public or intelligence-derived text only. |
 | Phase action tray and five primary action cards | GFX_025_expedition_action_tray, GFX_025_expedition_action_card, GFX_025_expedition_action_state | source_png/expedition_board/action_tray_source.png, action_card_source.png, and action_state_source.png | Matching processed files under processed_png/expedition_board/ | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Tray is displayed at scale 1.394; five cards are displayed at scale 0.78 and retain separate click regions. |
 | Sector click regions | GFX_025_expedition_sector_hitbox | source_png/expedition_board/sector_hitbox_source.png and four state source variants | processed_png/expedition_board/sector_hitbox.png at 384x58 | gfx/interface/025_alien_technology_in_antarctica/sector_hitbox.dds at 384x58, four 96x58 frames | Repaired from the erroneous 2800x430 full-panel atlas; package and runtime SHA-256 are both 2252a63e5ee95a48a8582e046bcdf5f8982c7174b9e04130f71e61c8b1bda616. |
-| Sector state and selection | GFX_025_expedition_sector_state, GFX_025_expedition_sector_selected | source_png/expedition_board/sector_state_source.png and sector_selected_source.png | processed_png/expedition_board/sector_state_strip.png and sector_selected.png | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Eight state frames are scaled to 0.5 over the six nodes; the full-map selected overlay is drawn once at map level. |
+| Sector state and selection | GFX_025_expedition_sector_state, GFX_025_expedition_sector_selected_1 to _6 | source_png/expedition_board/sector_state_source.png; the highlights derive from board_sector_map_025.dds by the recipe in manifest_expedition_board.md | processed_png/expedition_board/sector_state_strip.png and sector_selected_1.png to sector_selected_6.png | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Eight state frames are scaled to 0.5 over the six nodes and selected per sector from ROOT.chaosx_nr25_sector_N_frame; each sector's own highlight is drawn only while that sector is selected. |
 | Phase banner | GFX_025_expedition_phase_banner_animated, GFX_025_expedition_phase_banner_static | source_png/phase_banner/phase_000_source.png through phase_007_source.png | processed_png/phase_banner/expedition_phase_banner.png and expedition_phase_banner_static.png | expedition_phase_banner.dds and expedition_phase_banner_static.dds | Real eight-frame frameAnimatedSpriteType sheet is accepted; static frame-000 fallback is wired for disabled animation. |
 | Evolution overlays | GFX_025_expedition_signal_static, GFX_025_expedition_survivor_static, GFX_025_expedition_fragment_static, GFX_025_expedition_dependence_static | Matching source_png/expedition_board/*_source.png files | Matching processed_png/expedition_board/overlay_*_static.png files | Matching final DDS under gfx/interface/025_alien_technology_in_antarctica/ | Native-alpha static overlays are wired; no transform-only animation is claimed. |
 | Decision category and picture | GFX_decision_category_025_antarctic_expedition, GFX_decision_cat_picture_025_antarctic_expedition | source_png/decision_category_expedition_source.png and decision_cat_picture_expedition_source.png | Matching processed decision files | gfx/interface/decisions/025_alien_technology_in_antarctica/decision_category_expedition.dds and decision_cat_picture_expedition.dds | 52x40 and 114x101 consumers are present and individually opened. |
@@ -91,7 +91,7 @@ The central 700x430 operations/map family is displayed at scale = 0.63 and begin
 
 The 280x430 rival rail is displayed at scale = 0.92, and the 700x96 action tray is displayed at scale = 1.394 with five 0.78-scaled action card click regions.
 
-The former six repeated sector_selected full-map overlays were removed from the sector nodes and replaced by one map-level overlay controlled by nr25_sector_selected_overlay_visible.
+The single map-level selection overlay showed one fixed wedge for any selection; it was replaced by six per-sector highlights controlled by nr25_sector_1_selected_visible to nr25_sector_6_selected_visible.
 
 The former sector_hitbox.dds was a 2800x430 atlas of four full-panel images and could not be a 96x58 click region; it was regenerated from the correct processed four-state atlas and mirrored into the package evidence tree.
 
@@ -143,8 +143,24 @@ The first round of required custom workers returned not_found, and a fresh isola
 
 No live HOI4 process was launched by this audit.
 
+## Expedition Board MCP evidence (2026-10-04)
+
+`hoi4.gui_inspect` of `nr25_expedition_board_window` (scenario `nr25_board_final_inspect_20261004`) returned `GUI_INSPECTED`, complete, 131 inspected elements, no skipped sources, shared revision `4e60a60d31be5f7c`.
+
+`hoi4.gui_render` ran with named scenarios and explicit localisation fixtures, because live scripted localisation and country flags cannot resolve offline. Fixture text matches the in-game strings and the card cost structure.
+
+| Pass | Scenario | Resolutions | Finding |
+| --- | --- | --- | --- |
+| Before (stopped-thread geometry) | `nr25_board_survey_pass2_20261004` | 1920x1080 | Root used `origo = center` with clipping and showed one quadrant; fonts `hoi_12mbs` and `hoi_14mbs` are undefined in vanilla. Fixed earlier in this pass. |
+| Before (this tranche) | `nr25_board_survey_pass3_20261004` | 1920x1080 | Status cards overlapped by 80 px, value text sat on its meter, route and outpost text truncated, action text overlapped the emblem and its own cost line. |
+| After | `nr25_board_final_20261004` and `nr25_board_final_confirm_20261004` | 1920x1080, 1600x900, 1366x768 at UI scale 1 | Full board inside every viewport; three stacked status cards with separate value, meter and threshold rows; route, outpost and target rows readable; per-sector highlight aligned with its wedge; rival names and flags visible; action cards show a label plus cost or status within the card; confirmation window clean. |
+
+The after-render cropped image SHA-256 is `3a9e8720d58326cd2fa54cffe54f8c784edbe094fd8d9104486b60df7678df4b`, the resolution matrix is `70101cbae675e89c8aa609a8903cc5f4ca7b67222c5f3770a849010edd908fc9`, and the confirmation render is `52467ef8d010224d9eb9cea7b2f320b6a855a1e55fe3c91e27920991fd9d02a8`; all are under the hoi4-agent-tools workspace artifacts.
+
+Remaining renderer notes: `GUI_SPRITE_DECLARED_SIZE_MISMATCH` on the two status-panel cornered tiles is expected, because a cornered tile declares its drawn size; `GUI_ANIMATION_STATIC_FALLBACK_MISSING` on the phase banner is a naming check, since the static banner is a separate element toggled by the scripted GUI; `GUI_RESOLUTION_DRIFT` reflects the centred board at smaller viewports. Hover, pressed and disabled card states were not rendered. The disabled action-card frame had been fitted with its icicles and sat 25 px narrower than the other states; it was re-fitted by its card body so all four frames share one footprint (see `manifest_expedition_board.md`).
+
 ## Remaining limits
 
 Neither complete asset wiring nor overall Event 025 acceptance is established.
-Missing consumers, provisional paths, accepted animation requirements, GUI inspect/render/compare, baseline/post-patch probability evidence, independent audits, catalog updates, and live runtime evidence remain open.
+Missing consumers, provisional paths, accepted animation requirements, hover and disabled GUI states, baseline/post-patch probability evidence, independent audits, catalog updates, and live runtime evidence remain open.
 Recording a blocker documents a failed gate; it does not turn that gate into a pass.

@@ -829,11 +829,59 @@ chaosx_nr25_enter_phase = {
 	}
 }
 
+# COUNTRY scope. Maps each private sector state to its Expedition Board strip
+# frame. A sector whose fragment this country holds shows as recovered.
+chaosx_nr25_refresh_sector_frames = {
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_1_owner } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_1_frame = constant:chaosx_nr25_sector_frame.unknown } }
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_2_owner } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_2_frame = constant:chaosx_nr25_sector_frame.unknown } }
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_3_owner } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_3_frame = constant:chaosx_nr25_sector_frame.unknown } }
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_4_owner } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_4_frame = constant:chaosx_nr25_sector_frame.unknown } }
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_5_owner } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_5_frame = constant:chaosx_nr25_sector_frame.unknown } }
+	if = { limit = { has_country_flag = chaosx_alien_recovery_fragment_6_owner } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.recovered } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.confirmed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.probable compare = equals } } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.probable } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.surveyed } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.compromised compare = equals } } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.blocked } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.lost compare = equals } } set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.buried } }
+	else = { set_variable = { chaosx_nr25_sector_6_frame = constant:chaosx_nr25_sector_frame.unknown } }
+}
+
 # COUNTRY scope. Rebuilds the five presentation slots used by the Expedition
 # Board. The slots mirror the same primary actions exposed in the decision
 # category; they carry no extra state and never reveal another participant's
 # private variables.
 chaosx_nr25_prepare_board_slots = {
+	chaosx_nr25_refresh_sector_frames = yes
 	clr_country_flag = chaosx_nr25_action_slot_1_visible
 	clr_country_flag = chaosx_nr25_action_slot_2_visible
 	clr_country_flag = chaosx_nr25_action_slot_3_visible
