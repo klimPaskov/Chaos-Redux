@@ -428,12 +428,66 @@ chaosx_nr25_base_action_available = {
 	has_global_flag = chaosx_nr25_active
 	NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
 	NOT = { has_country_flag = chaosx_nr25_terminal }
-	NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+	NOT = { has_country_flag = chaosx_nr25_evacuation_requested }
 	check_variable = {
 		var = chaosx_nr25_action_cooldown
 		value = constant:chaosx_nr25_value.zero
 		compare = less_than_or_equals
 	}
+}
+
+# Any country scope inside a loop over the stored participant registry. PREV is
+# the participant whose own board or target list is being prepared, so the
+# check never depends on ROOT when AI entrants register from another event.
+chaosx_nr25_rival_card_candidate_valid = {
+	exists = yes
+	has_country_flag = chaosx_nr25_participant
+	NOT = { has_country_flag = chaosx_nr25_terminal }
+	NOT = { is_subject = yes }
+	NOT = { has_capitulated = yes }
+	NOT = { tag = PREV }
+}
+
+# Country scope. Outpost upkeep continues after landing: reinforcing,
+# rotating crews, and sheltering stay available in the outpost, survey, and
+# final recovery phases of this expedition.
+chaosx_nr25_sustain_phase_active = {
+	OR = {
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+	}
+}
+
+# Country scope. A baseline phase objective can finish on its due date only
+# when the expedition is not caught in emergency weather, its crew is not
+# exhausted, and its Logistics Readiness is at or above the failure floor.
+chaosx_nr25_phase_mission_can_complete = {
+	NOT = { has_country_flag = chaosx_nr25_emergency_weather }
+	NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
+	check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_mission_timing.failure_readiness_floor compare = greater_than_or_equals }
+}
+
+# Country scope. The recovery receipt requirements, excluding the mission-state
+# flags owned by the final-mission transaction. The completion window opens
+# only while these hold, so an unprepared expedition times out as a visible
+# partial failure instead of completing with no result.
+chaosx_nr25_final_candidate_requirements_met = {
+	has_global_flag = chaosx_nr25_active
+	has_country_flag = chaosx_nr25_participant
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_subject = yes }
+	NOT = { has_country_flag = chaosx_nr25_terminal }
+	has_country_flag = chaosx_nr25_primary_site_confirmed
+	has_country_flag = chaosx_nr25_outpost_established
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+	check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_cost.progress_min compare = greater_than_or_equals }
+	check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
+	check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_cost.outpost_min compare = greater_than_or_equals }
+	check_variable = { var = chaosx_nr25_access value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+	NOT = { has_country_flag = chaosx_nr25_emergency_weather }
+	NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
 }
 
 # Any country scope. This is the single target contract used by targeted
@@ -476,7 +530,7 @@ chaosx_nr25_entry_authorize_available = {
 # event-owned board both call these contracts through the dispatcher below.
 chaosx_nr25_action_authorize_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_authorize_used }
 	chaosx_nr25_authorize_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
@@ -484,21 +538,21 @@ chaosx_nr25_action_authorize_available = {
 
 chaosx_nr25_action_charter_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_charter_used }
 	chaosx_nr25_charter_cost_available = yes
 }
 
 chaosx_nr25_action_science_exchange_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_science_exchange_used }
 	chaosx_nr25_science_exchange_cost_available = yes
 }
 
 chaosx_nr25_action_conceal_departure_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_conceal_departure_used }
 	chaosx_nr25_conceal_departure_cost_available = yes
 	num_of_civilian_factories > constant:chaosx_nr25_cost.civilian_factory_floor
@@ -506,70 +560,75 @@ chaosx_nr25_action_conceal_departure_available = {
 
 chaosx_nr25_action_depot_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_depot_used }
 	chaosx_nr25_depot_cost_available = yes
 }
 
 chaosx_nr25_action_aerial_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_aerial_used }
 	chaosx_nr25_aerial_cost_available = yes
 }
 
 chaosx_nr25_action_radio_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_radio_used }
 	chaosx_nr25_radio_cost_available = yes
 }
 
 chaosx_nr25_action_crew_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_crew_used }
 	chaosx_nr25_crew_cost_available = yes
 }
 
 chaosx_nr25_action_gateway_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_gateway_used }
 	chaosx_nr25_gateway_cost_available = yes
 }
 
 chaosx_nr25_action_establish_outpost_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_outpost_established }
 	chaosx_nr25_outpost_cost_available = yes
 }
 
 chaosx_nr25_action_reinforce_outpost_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-	has_country_flag = chaosx_nr25_outpost_established
+	chaosx_nr25_sustain_phase_active = yes
+	OR = {
+		has_country_flag = chaosx_nr25_outpost_established
+		has_country_flag = chaosx_nr25_outpost_lost
+	}
 	chaosx_nr25_outpost_cost_available = yes
 }
 
+# Crew rotation and emergency shelter are the recovery actions for an
+# exhausted crew, so they use the base gate rather than the primary gate.
 chaosx_nr25_action_rotate_crew_available = {
-	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+	chaosx_nr25_base_action_available = yes
+	chaosx_nr25_sustain_phase_active = yes
 	has_country_flag = chaosx_nr25_outpost_established
 	chaosx_nr25_rotate_cost_available = yes
 }
 
 chaosx_nr25_action_shelter_available = {
-	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+	chaosx_nr25_base_action_available = yes
+	chaosx_nr25_sustain_phase_active = yes
 	OR = { has_country_flag = chaosx_nr25_emergency_weather has_country_flag = chaosx_nr25_crew_exhausted }
 	chaosx_nr25_shelter_cost_available = yes
 }
 
 chaosx_nr25_action_alternate_landing_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_alternate_landing_used }
 	OR = {
 		has_country_flag = chaosx_nr25_route_improvised
@@ -582,7 +641,7 @@ chaosx_nr25_action_alternate_landing_available = {
 
 chaosx_nr25_action_escort_convoys_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
 	NOT = { has_country_flag = chaosx_nr25_action_escort_convoys_used }
 	OR = {
 		has_country_flag = chaosx_nr25_convoy_incident
@@ -594,7 +653,7 @@ chaosx_nr25_action_escort_convoys_available = {
 
 chaosx_nr25_action_survey_available = {
 	chaosx_nr25_primary_action_available = yes
-	check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+	check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
 	chaosx_nr25_survey_cost_available = yes
 }
 
@@ -621,8 +680,8 @@ chaosx_nr25_outpost_emphasis_change_available = {
 	has_country_flag = chaosx_nr25_outpost_emphasis_selected
 	NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
 	OR = {
-		check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-		check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
 	}
 	chaosx_nr25_outpost_emphasis_change_cost_available = yes
 }
@@ -883,7 +942,7 @@ chaosx_nr25_armed_final_cost_available = {
 chaosx_nr25_final_action_available = {
 	chaosx_nr25_primary_action_available = yes
 	check_variable = {
-		var = global.chaosx_nr25_phase
+		var = chaosx_nr25_phase
 		value = constant:chaosx_nr25_phase.final_recovery
 		compare = equals
 	}
@@ -961,9 +1020,9 @@ chaosx_nr25_pre_winner_exchange_cost_available = {
 chaosx_nr25_pre_winner_exchange_available = {
 	chaosx_nr25_base_action_available = yes
 	OR = {
-		check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
-		check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
-		check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
 	}
 	chaosx_nr25_pre_winner_exchange_cost_available = yes
 	has_variable = chaosx_nr25_rival_target

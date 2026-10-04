@@ -92,12 +92,12 @@ chaosx_nr25_close_country_analysis = {
 		}
 		clr_global_flag = chaosx_nr25_aftermath_active
 		set_global_flag = chaosx_nr25_closed
-		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.closed }
 	}
 }
 
-# COUNTRY scope. Every expedition records its first eligible recovery day,
-# including those that become ready after another country advances the race.
+# COUNTRY scope. Every expedition records its first eligible recovery day once
+# its own phase reaches final recovery, independent of any rival's progress.
 # This date survives later deterioration and remains a deterministic tie key.
 chaosx_nr25_track_final_readiness = {
 	if = {
@@ -112,7 +112,7 @@ chaosx_nr25_track_final_readiness = {
 			has_country_flag = chaosx_nr25_outpost_established
 			NOT = { has_country_flag = chaosx_nr25_emergency_weather }
 			NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
-			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+			check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
 			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_cost.progress_min compare = greater_than_or_equals }
 			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
 			check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_cost.outpost_min compare = greater_than_or_equals }

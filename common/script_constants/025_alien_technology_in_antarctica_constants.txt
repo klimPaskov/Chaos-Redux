@@ -43,6 +43,37 @@ chaosx_nr25_phase = {
 	closed = 7
 }
 
+# Race-level state stored in global.chaosx_nr25_phase. Each expedition keeps
+# its own current phase in the country variable chaosx_nr25_phase, so a
+# leading rival never moves another expedition's phase. The analysis and
+# closed values match the participant phase values above.
+chaosx_nr25_race_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	entry = 0
+	active = 1
+	analysis = 6
+	closed = 7
+}
+
+# Phase and final missions become completable on the day before their
+# timeout. A baseline phase mission times out as a failure when the
+# expedition reaches its due date in emergency weather, with an exhausted
+# crew, or below the readiness floor.
+chaosx_nr25_mission_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ready_lead_days = 1
+	ready_guard_days = 2
+	failure_readiness_floor = 10
+}
+
 chaosx_nr25_evolution = {
 	schema = {
 		any_key = yes
@@ -231,6 +262,8 @@ chaosx_nr25_sector = {
 	confirmed = 2
 	compromised = 3
 	lost = 4
+	# A survey of the true core sector, made without false coordinates.
+	probable = 5
 }
 
 chaosx_nr25_route = {
@@ -437,6 +470,11 @@ chaosx_nr25_cost = {
 
 	# Exposure pressure and action outcome deltas.
 	exposure_pulse = 1
+	# Ambient Antarctic exposure stops rising at this level; emergencies above
+	# it come from actions and evolutions. Emergency weather lifts once
+	# Exposure Risk falls below the clear threshold.
+	exposure_passive_ceiling = 75
+	emergency_weather_clear = 90
 	exposure_action = 2
 	exposure_rival = 5
 	exposure_entry = 2
@@ -626,7 +664,7 @@ chaosx_nr25_cost = {
 	mission_organize_days = 120
 	mission_gateway_days = 120
 	mission_outpost_days = 150
-	mission_triangulate_days = 180
+	mission_triangulate_days = 120
 	mission_protect_route_days = 120
 	mission_confirm_site_days = 120
 	mission_secure_core_days = 120

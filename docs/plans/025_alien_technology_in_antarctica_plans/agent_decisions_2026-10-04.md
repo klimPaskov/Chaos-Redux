@@ -1,0 +1,99 @@
+# Event 025 agent decisions, 2026-10-04
+
+The user granted the implementing agent full design authority for the Event 025 takeover.
+Each entry below is an agent decision taken under that authority, with its basis and the implementation that carries it.
+Disposition labels follow `CLAUDE.md` Specs and Plans.
+
+## D1. Adopting the stopped thread's localisation, and deferring its board overlay hunk
+
+Disposition: `implemented`.
+
+Basis: HEAD referenced the five event ideas, the five opinion modifiers, six board header keys and two requirement flags without localisation, and the stopped thread's uncommitted localisation hunks supplied them in coherent player-facing text.
+
+Decision:
+
+- The localisation hunks and the two requirement-flag keys were reviewed and committed as they were.
+- The scripted GUI hunk that replaces six per-sector selection triggers with one `nr25_sector_selected_overlay_visible` trigger was not committed with them.
+  HEAD's `.gui` still draws six per-sector `nr25_sector_N_selected` icons, and the single overlay element exists only in the uncommitted `.gui` geometry patch.
+  Committing the trigger change alone would leave the six committed icons without visibility triggers, so it travels with the GUI geometry review.
+
+## D2. Per-participant expedition phase
+
+Disposition: `implemented`.
+
+Basis: specs 002 and 013 list a current phase in every participant row, spec 003 gives per-expedition phase durations, and the lead classified global phase gating as a defect because a leading expedition moved every rival and could strand laggards.
+
+Decision:
+
+- The country variable `chaosx_nr25_phase` is the only phase read by action gates, decisions, board slots, the board phase header, final readiness and final submission.
+- `global.chaosx_nr25_phase` records race state only, through the new `chaosx_nr25_race_state` constants: entry, active, analysis and closed.
+  The analysis and closed values equal the participant phase values, so the shared numbering stays readable.
+- `global.chaosx_nr25_leading_phase` records the furthest phase any expedition has reached, for reports; nothing gates on it.
+- Entry becomes mobilisation for every registered expedition when the entry window closes, through a loop over the stored participant registry instead of a world scan.
+- Each later phase advances only the acting expedition, once that phase's objective has resolved:
+  - mobilisation to crossing after the Organize the Southern Expedition mission resolves;
+  - crossing to outpost after the Reach the Gateway mission resolves;
+  - outpost to survey after the Establish the Antarctic Outpost mission resolves and the outpost stands;
+  - survey to final recovery after the primary site is confirmed with at least the survey-evidence gate.
+- Numeric progress and readiness gates were removed from the early phase advances because the crossing phase has no repeatable action to raise them, so a laggard could be stranded forever.
+  Progress and readiness still gate final-recovery launch and final submission.
+- A failed objective still resolves its phase with a penalty, so failure delays and weakens an expedition but never strands it.
+
+## D3. Phase missions run in the background with real durations
+
+Disposition: `implemented`.
+
+Basis: every phase mission had `available` true at activation and therefore completed the day after it started.
+
+Decision:
+
+- Starting an objective stores its duration, schedules the hidden event `chaosx.nr25.87` for the day before timeout, and stores a guard date converted with `chaosx_convert_days_to_date_offset`.
+  The guard keeps a callback from an older, cancelled objective from completing a newer one early.
+- On its due date a baseline objective becomes completable only through `chaosx_nr25_phase_mission_can_complete`: no emergency weather, no exhausted crew, and Logistics Readiness at or above 10.
+  Otherwise it times out as its failure result.
+  Wreck and containment objectives always settle through their own success, partial and failure branches; an evacuation fails only in emergency weather.
+- The participant pulse re-runs the same completion check if the due-date callback is missed.
+- Objectives no longer block the expedition's other actions.
+  The one-objective-at-a-time rule lives in the starter, so the player keeps acting while an objective runs and those actions decide its result.
+- The protect-supply-route objective opens only in the outpost phase, so later upkeep actions never block the site confirmation.
+- Triangulation was shortened from 180 to 120 days so a triangulation followed by a site confirmation stays inside spec 003's 120-240 day survey band.
+- Final missions use the same rule: the completion window opens only while the receipt requirements hold, and a completed mission whose requirements lapsed settles as the existing partial failure instead of silently submitting nothing.
+- AI and humans use the same missions and the same completion path.
+
+## D4. Survey targeting and the primary-site soft-lock
+
+Disposition: `implemented`.
+
+Basis: spec 008 says clicking a sector selects it for survey or recovery, and the old rotating cursor plus a one-time confirmation could leave every expedition in final recovery without a confirmed site.
+
+Decision:
+
+- Survey actions and the Evolution IV cutting action target the board-selected sector, or the first unresolved or compromised sector when none is selected, and cycle through all six once every sector has a result.
+  AI expeditions never select a sector, so they always take the next unresolved sector.
+- Surveying the hidden core sector without false coordinates records it as a probable site for that expedition only; other surveys record surveyed.
+  A probable or confirmed sector is never downgraded by a later survey.
+- The site-confirmation objective can be reopened by every survey action until the expedition's own site is confirmed, and a successful confirmation marks the core sector confirmed on that expedition's board.
+- Survey actions remain available to an expedition until it confirms its site, because the survey phase now ends only with that confirmation.
+
+## D5. Recoverable hazards and sustained outposts
+
+Disposition: `implemented`.
+
+Basis: per-participant phases exposed three existing permanent locks: `chaosx_nr25_crew_exhausted` was never cleared, emergency weather returned at every pulse once the ambient +1 exposure reached the cap, and a lost outpost could not be restored because reinforcement required an established outpost.
+
+Decision:
+
+- The pulse clears crew exhaustion once the crew is above zero, and clears emergency weather once Exposure Risk falls below 90.
+- Ambient exposure stops rising at 75; emergencies above that come from actions and evolutions.
+- Reinforcing, rotating crews and emergency shelter stay available in the outpost, survey and final-recovery phases.
+  Crew rotation and shelter use the base gate so an exhausted crew can recover.
+- Reinforcing a lost outpost re-establishes and restores it, which also makes the Reclaim the Station route reachable.
+- An evacuation cancels any running phase or final objective and blocks further actions until it resolves.
+
+## D6. Rival cards and targets relative to the prepared participant
+
+Disposition: `implemented`.
+
+Basis: the rival-card and rival-target loops wrote through ROOT and compared against ROOT, so AI entrants registered from the controller event wrote the controller's cards and could list themselves.
+
+Decision: inside the registry loops, the new trigger `chaosx_nr25_rival_card_candidate_valid` excludes `PREV`, and card counts, slot IDs and flags are written through `PREV`, the participant being prepared.

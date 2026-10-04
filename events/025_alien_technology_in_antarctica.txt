@@ -29,7 +29,8 @@ country_event = {
 			set_global_flag = chaosx_nr25_started
 			set_global_flag = chaosx_nr25_active
 			set_global_flag = chaosx_nr25_entry_open
-			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.entry }
+			set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.entry }
+			set_variable = { global.chaosx_nr25_leading_phase = constant:chaosx_nr25_phase.entry }
 			set_variable = { global.chaosx_nr25_next_entry_order = constant:chaosx_nr25_value.zero }
 			set_variable = { global.chaosx_nr25_human_count = constant:chaosx_nr25_value.zero }
 			set_variable = { global.chaosx_nr25_participant_count = constant:chaosx_nr25_value.zero }
@@ -165,7 +166,9 @@ country_event = {
 }
 
 # The one entry-window controller runs once after human responses. Humans have
-# already registered, so AI allocation cannot displace a human entrant.
+# already registered, so AI allocation cannot displace a human entrant. Every
+# registered expedition then moves from entry to its own mobilisation phase;
+# the loop reads only the stored participant registry.
 country_event = {
 	id = chaosx.nr25.4
 	title = chaosx.nr25.4.t
@@ -179,12 +182,22 @@ country_event = {
 			chaosx_nr25_select_bounded_ai_roster = yes
 			if = {
 				limit = {
-				check_variable = { var = global.chaosx_nr25_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than }
+					check_variable = { var = global.chaosx_nr25_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than }
 				}
-				set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.mobilization }
-				every_country = {
-					limit = { has_country_flag = chaosx_nr25_participant }
-					country_event = { id = chaosx.nr25.5 days = 1 }
+				set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.active }
+				for_each_scope_loop = {
+					array = global.chaosx_nr25_participants
+					if = {
+						limit = {
+							has_country_flag = chaosx_nr25_participant
+							check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals }
+						}
+						set_temp_variable = { chaosx_nr25_new_phase = constant:chaosx_nr25_phase.mobilization }
+						chaosx_nr25_enter_phase = yes
+						chaosx_nr25_advance_phase_if_ready = yes
+						chaosx_nr25_prepare_board_slots = yes
+						country_event = { id = chaosx.nr25.5 days = 1 }
+					}
 				}
 			}
 			else = {
@@ -309,6 +322,26 @@ country_event = {
 				has_country_flag = chaosx_nr25_final_mission_active
 			}
 			chaosx_nr25_prepare_final_mission_completion = yes
+		}
+	}
+}
+
+# Opens the completion window for the running phase objective on the day
+# before its timeout. Objectives the expedition cannot finish time out as the
+# mission's failure result.
+country_event = {
+	id = chaosx.nr25.87
+	title = chaosx.nr25.87.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_participant
+				has_country_flag = chaosx_nr25_phase_mission_active
+			}
+			chaosx_nr25_prepare_phase_mission_completion = yes
 		}
 	}
 }
@@ -554,7 +587,7 @@ country_event = {
 		clear_global_event_target = chaosx_nr25_history_actor
 		clr_global_flag = chaosx_nr25_active
 		set_global_flag = chaosx_nr25_closed_without_participant
-		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_race_state.closed }
 		set_country_flag = chaosx_nr25_terminal
 	}
 }

@@ -3,7 +3,7 @@ from pathlib import Path
 import re
 import unittest
 
-from test_event025_final_recovery import ROOT, Country, Runtime, block
+from test_event025_final_recovery import ROOT, SOURCE as RUNTIME_SOURCE, Country, Runtime, block
 
 LIFECYCLE = ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_lifecycle_effects.txt"
 SOURCE = re.sub(r"#[^\n]*", "", LIFECYCLE.read_text(encoding="utf-8-sig"))
@@ -17,6 +17,9 @@ class LifecycleRuntime(Runtime):
             "update_dependence_streaks",
             "track_final_readiness",
         )},
+        **{name: block("chaosx_nr25_" + name, RUNTIME_SOURCE) for name in (
+            "advance_phase_if_ready", "enter_phase",
+        )},
     }
 
 
@@ -27,8 +30,8 @@ class LifecycleTests(unittest.TestCase):
         actor.values.update({"chaosx_nr25_progress": 100, "chaosx_nr25_logistics_readiness": 60,
                              "chaosx_nr25_outpost_security": 40, "chaosx_nr25_access": 1,
                              "chaosx_nr25_final_ready_date": 0})
+        actor.values["chaosx_nr25_phase"] = 5
         rt = LifecycleRuntime([actor])
-        rt.global_values["chaosx_nr25_phase"] = 5
         return actor, rt
 
     def test_later_expedition_gets_its_own_first_readiness_date(self):
@@ -48,6 +51,42 @@ class LifecycleTests(unittest.TestCase):
         actor.values["chaosx_nr25_logistics_readiness"] = 60
         rt.run("track_final_readiness", actor)
         self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 110)
+
+    def test_rival_phase_does_not_make_a_laggard_ready(self):
+        actor, rt = self.prepared_expedition()
+        actor.values["chaosx_nr25_phase"] = 4
+        rt.global_values["chaosx_nr25_leading_phase"] = 5
+        rt.run("track_final_readiness", actor)
+        self.assertEqual(actor.values["chaosx_nr25_final_ready_date"], 0)
+
+    def test_phase_advance_moves_only_the_acting_expedition(self):
+        leader, laggard = Country(1), Country(2)
+        leader.values.update({"chaosx_nr25_phase": 5, "chaosx_nr25_access": 1})
+        laggard.values.update({"chaosx_nr25_phase": 1, "chaosx_nr25_access": 1})
+        rt = LifecycleRuntime([leader, laggard])
+        rt.global_values["chaosx_nr25_leading_phase"] = 5
+        rt.run("advance_phase_if_ready", laggard)
+        self.assertEqual(laggard.values["chaosx_nr25_phase"], 1)
+        laggard.flags.add("chaosx_nr25_organize_mission_resolved")
+        rt.run("advance_phase_if_ready", laggard)
+        self.assertEqual(laggard.values["chaosx_nr25_phase"], 2)
+        self.assertEqual(leader.values["chaosx_nr25_phase"], 5)
+        self.assertEqual(rt.global_values["chaosx_nr25_leading_phase"], 5)
+
+    def test_each_phase_needs_its_own_objective(self):
+        actor = Country(1)
+        actor.values.update({"chaosx_nr25_phase": 2, "chaosx_nr25_access": 1,
+                             "chaosx_nr25_outpost_security": 20, "chaosx_nr25_survey_evidence": 5})
+        rt = LifecycleRuntime([actor])
+        steps = (("chaosx_nr25_gateway_mission_resolved", 3),
+                 ("chaosx_nr25_outpost_mission_resolved", 3),
+                 ("chaosx_nr25_outpost_established", 4),
+                 ("chaosx_nr25_primary_site_confirmed", 5))
+        for flag, expected in steps:
+            actor.flags.add(flag)
+            rt.run("advance_phase_if_ready", actor)
+            self.assertEqual(actor.values["chaosx_nr25_phase"], expected, flag)
+        self.assertEqual(rt.global_values["chaosx_nr25_leading_phase"], 5)
 
     def test_containment_interval_resets_when_dependence_leaves_safe_band(self):
         actor = Country(1)
