@@ -20,6 +20,7 @@ Both temporary names expire naturally with the enclosing evaluation.
 `missiles_scenario_warning_recipient` remains a regular event target.
 Warning seeding overwrites it for each recipient before adding that recipient to the root participant array.
 That array and the warning's country/id variables hold the durable receipt; no subsequent continuation reads the regular recipient target without first assigning it again.
+Each seeded recipient takes its warning expiry and posture-dependent response dates from `missiles_set_warning_deadlines` in `032_missiles_operations_effects.txt`, which stores them as converted dates rather than raw day counts.
 The regular target expires naturally with the chain, including any engine-carried event context.
 The separate global warning root intentionally persists until incident closure; it is not converted to a regular target or unconditionally cleared at successful setup.
 

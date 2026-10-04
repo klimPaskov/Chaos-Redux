@@ -274,8 +274,11 @@ chaosx_032_achievement_record_site_damage = {
 	# a date by this effect.
 	set_country_flag = chaosx_032_still_on_the_line_damage_received
 	set_variable = { chaosx_032_still_on_the_line_damage_date = global.date }
+	set_temp_variable = { chaosx_date_days = @missiles_achievement_repair_window_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { chaosx_032_still_on_the_line_repair_deadline = global.date }
-	add_to_variable = { chaosx_032_still_on_the_line_repair_deadline = @missiles_achievement_repair_window_days }
+	add_to_variable = { chaosx_032_still_on_the_line_repair_deadline = chaosx_date_offset }
 	set_variable = { chaosx_032_still_on_the_line_damaged_site_id = chaosx_032_input_damaged_site_id }
 	if = {
 		limit = { check_variable = { var = chaosx_032_input_scuttled value = constant:missiles_program_value.one compare = equals } }
@@ -348,8 +351,11 @@ chaosx_032_achievement_record_retaliation_closure = {
 		}
 		set_country_flag = chaosx_032_break_the_chain_warning_resolved
 		set_country_flag = chaosx_032_break_the_chain_incident_closed
+		set_temp_variable = { chaosx_date_days = @missiles_achievement_survival_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { chaosx_032_break_the_chain_survival_deadline = global.date }
-		add_to_variable = { chaosx_032_break_the_chain_survival_deadline = @missiles_achievement_survival_days }
+		add_to_variable = { chaosx_032_break_the_chain_survival_deadline = chaosx_date_offset }
 		if = {
 			limit = { NOT = { has_country_flag = chaosx_032_break_the_chain_survival_timer_queued } }
 			set_country_flag = chaosx_032_break_the_chain_survival_timer_queued
@@ -556,8 +562,11 @@ chaosx_032_achievement_record_saturation_operation = {
 		limit = { NOT = { has_variable = chaosx_032_sky_full_of_steel_war_id } }
 		set_variable = { chaosx_032_sky_full_of_steel_war_id = chaosx_032_input_war_id }
 		set_variable = { chaosx_032_sky_full_of_steel_first_operation_date = global.date }
+		set_temp_variable = { chaosx_date_days = @missiles_achievement_saturation_window_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { chaosx_032_sky_full_of_steel_deadline = global.date }
-		add_to_variable = { chaosx_032_sky_full_of_steel_deadline = @missiles_achievement_saturation_window_days }
+		add_to_variable = { chaosx_032_sky_full_of_steel_deadline = chaosx_date_offset }
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_032_input_conventional value = constant:missiles_program_value.one compare = equals } }
@@ -666,10 +675,20 @@ chaosx_032_achievement_record_long_reach_snapshot = {
 				has_variable = chaosx_032_long_reach_clock_start
 				check_variable = { var = global.date value = chaosx_032_long_reach_clock_start compare = greater_than_or_equals }
 			}
-			set_variable = { chaosx_032_long_reach_clock_days = global.date }
-			subtract_from_variable = { chaosx_032_long_reach_clock_days = chaosx_032_long_reach_clock_start }
+			# The clock start is a stored date, so the hold is measured in date
+			# units and also recorded as whole elapsed days.
+			set_temp_variable = { chaosx_date_days = @missiles_achievement_long_reach_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_temp_variable = { missiles_long_reach_required_offset = chaosx_date_offset }
+			set_temp_variable = { missiles_long_reach_elapsed_offset = global.date }
+			subtract_from_temp_variable = { missiles_long_reach_elapsed_offset = chaosx_032_long_reach_clock_start }
+			set_temp_variable = { chaosx_date_offset = missiles_long_reach_elapsed_offset }
+			set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+			chaosx_convert_date_offset_to_days = yes
+			set_variable = { chaosx_032_long_reach_clock_days = chaosx_date_days }
 			if = {
-				limit = { check_variable = { var = chaosx_032_long_reach_clock_days value = @missiles_achievement_long_reach_days compare = greater_than_or_equals } }
+				limit = { check_variable = { var = missiles_long_reach_elapsed_offset value = missiles_long_reach_required_offset compare = greater_than_or_equals } }
 				set_country_flag = chaosx_032_long_reach_readiness_control_held_180_days
 				clr_country_flag = chaosx_032_long_reach_timer_queued
 			}

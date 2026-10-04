@@ -277,8 +277,11 @@ missiles_open_rogue_incident = {
 	set_variable = { missiles_last_incident_date = global.date }
 	set_variable = { missiles_last_incident_actor_id = ROOT.id }
 	set_variable = { missiles_last_incident_closed = constant:missiles_program_value.zero }
+	set_temp_variable = { chaosx_date_days = constant:missiles_rogue_tuning.crisis_window_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { missiles_rogue_crisis_deadline = global.date }
-	add_to_variable = { missiles_rogue_crisis_deadline = constant:missiles_rogue_tuning.crisis_window_days }
+	add_to_variable = { missiles_rogue_crisis_deadline = chaosx_date_offset }
 	if = {
 		limit = { has_variable = missiles_incident_site }
 		var:missiles_incident_site = {
@@ -454,6 +457,12 @@ missiles_record_evolution_unlock = {
 }
 
 missiles_schedule_evolution_track = {
+	# missiles_evolution_delay_days is a day count, while every due date below
+	# is a stored date, so the delay is converted once before it is added.
+	set_temp_variable = { chaosx_date_days = missiles_evolution_delay_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_temp_variable = { missiles_evolution_delay_offset = chaosx_date_offset }
 	if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.saturation compare = equals }
@@ -466,7 +475,7 @@ missiles_schedule_evolution_track = {
 			limit = { NOT = { has_global_flag = missiles_evolution_saturation_unlocked } NOT = { has_global_flag = missiles_evolution_saturation_pending } }
 			set_global_flag = missiles_evolution_saturation_pending
 			set_variable = { global.missiles_evolution_saturation_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_saturation_due_date = missiles_evolution_delay_days }
+			add_to_variable = { global.missiles_evolution_saturation_due_date = missiles_evolution_delay_offset }
 		}
 		else_if = {
 			limit = { has_global_flag = missiles_evolution_saturation_pending check_variable = { var = global.date value = global.missiles_evolution_saturation_due_date compare = greater_than_or_equals } }
@@ -484,7 +493,7 @@ missiles_schedule_evolution_track = {
 			limit = { NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked } NOT = { has_global_flag = missiles_evolution_unreliable_guidance_pending } }
 			set_global_flag = missiles_evolution_unreliable_guidance_pending
 			set_variable = { global.missiles_evolution_unreliable_guidance_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_unreliable_guidance_due_date = missiles_evolution_delay_days }
+			add_to_variable = { global.missiles_evolution_unreliable_guidance_due_date = missiles_evolution_delay_offset }
 		}
 		else_if = {
 			limit = { has_global_flag = missiles_evolution_unreliable_guidance_pending check_variable = { var = global.date value = global.missiles_evolution_unreliable_guidance_due_date compare = greater_than_or_equals } }
@@ -502,7 +511,7 @@ missiles_schedule_evolution_track = {
 			limit = { NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked } NOT = { has_global_flag = missiles_evolution_special_warheads_pending } }
 			set_global_flag = missiles_evolution_special_warheads_pending
 			set_variable = { global.missiles_evolution_special_warheads_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_special_warheads_due_date = missiles_evolution_delay_days }
+			add_to_variable = { global.missiles_evolution_special_warheads_due_date = missiles_evolution_delay_offset }
 		}
 		else_if = {
 			limit = { has_global_flag = missiles_evolution_special_warheads_pending check_variable = { var = global.date value = global.missiles_evolution_special_warheads_due_date compare = greater_than_or_equals } }
@@ -520,7 +529,7 @@ missiles_schedule_evolution_track = {
 			limit = { NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked } NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_pending } }
 			set_global_flag = missiles_evolution_rogue_launch_commands_pending
 			set_variable = { global.missiles_evolution_rogue_launch_commands_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_rogue_launch_commands_due_date = missiles_evolution_delay_days }
+			add_to_variable = { global.missiles_evolution_rogue_launch_commands_due_date = missiles_evolution_delay_offset }
 		}
 		else_if = {
 			limit = { has_global_flag = missiles_evolution_rogue_launch_commands_pending check_variable = { var = global.date value = global.missiles_evolution_rogue_launch_commands_due_date compare = greater_than_or_equals } }
@@ -538,7 +547,7 @@ missiles_schedule_evolution_track = {
 			limit = { NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked } NOT = { has_global_flag = missiles_evolution_automatic_retaliation_pending } }
 			set_global_flag = missiles_evolution_automatic_retaliation_pending
 			set_variable = { global.missiles_evolution_automatic_retaliation_due_date = global.date }
-			add_to_variable = { global.missiles_evolution_automatic_retaliation_due_date = missiles_evolution_delay_days }
+			add_to_variable = { global.missiles_evolution_automatic_retaliation_due_date = missiles_evolution_delay_offset }
 		}
 		else_if = {
 			limit = { has_global_flag = missiles_evolution_automatic_retaliation_pending check_variable = { var = global.date value = global.missiles_evolution_automatic_retaliation_due_date compare = greater_than_or_equals } }
@@ -916,8 +925,11 @@ missiles_secure_launch_codes = {
 }
 
 missiles_begin_survey = {
+	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.secondary_site_mission_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { missiles_survey_due_date = global.date }
-	add_to_variable = { missiles_survey_due_date = constant:missiles_evolution_timing.secondary_site_mission_days }
+	add_to_variable = { missiles_survey_due_date = chaosx_date_offset }
 	set_country_flag = missiles_survey_in_progress
 	clr_country_flag = missiles_survey_complete
 	if = { limit = { FROM = { missiles_state_is_valid_site_target = yes } } set_variable = { missiles_pending_site_state = FROM } }
@@ -933,8 +945,11 @@ missiles_complete_survey = {
 }
 
 missiles_begin_secondary_site = {
+	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.secondary_site_mission_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { missiles_secondary_site_due_date = global.date }
-	add_to_variable = { missiles_secondary_site_due_date = constant:missiles_evolution_timing.secondary_site_mission_days }
+	add_to_variable = { missiles_secondary_site_due_date = chaosx_date_offset }
 	set_country_flag = missiles_secondary_site_in_progress
 	clr_country_flag = missiles_secondary_site_complete
 	if = { limit = { FROM = { missiles_state_is_valid_secondary_site = yes } } set_variable = { missiles_pending_site_state = FROM } }
@@ -970,15 +985,13 @@ missiles_expand_capacity = {
 }
 
 missiles_establish_secondary_site = {
+	# COUNTRY scope (mission completion). The only site candidate is the
+	# stored pending state; the country itself is never tested as a state.
 	if = {
 		limit = { has_variable = missiles_pending_site_state }
 		var:missiles_pending_site_state = {
 			if = { limit = { missiles_state_is_valid_secondary_site = yes } missiles_register_site = yes }
 		}
-	}
-	else_if = {
-		limit = { missiles_state_is_valid_secondary_site = yes }
-		missiles_register_site = yes
 	}
 	set_country_flag = missiles_secondary_site_complete
 	clr_country_flag = missiles_secondary_site_in_progress
@@ -993,11 +1006,16 @@ missiles_suspend_damaged_site = {
 	# STATE scope.
 	if = {
 		limit = { missiles_site_can_repair = yes }
-		ROOT = { set_variable = { missiles_incident_site = PREV } }
-		set_country_flag = missiles_site_repair_active
-		set_country_flag = missiles_site_repair_started
-		set_variable = { ROOT.missiles_site_repair_due_date = global.date }
-		add_to_variable = { ROOT.missiles_site_repair_due_date = constant:missiles_evolution_timing.repair_mission_days }
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.repair_mission_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		ROOT = {
+			set_variable = { missiles_incident_site = PREV }
+			set_country_flag = missiles_site_repair_active
+			set_country_flag = missiles_site_repair_started
+			set_variable = { missiles_site_repair_due_date = global.date }
+			add_to_variable = { missiles_site_repair_due_date = chaosx_date_offset }
+		}
 		clr_state_flag = missiles_site_active
 	}
 }
@@ -1114,8 +1132,11 @@ missiles_close_rogue_incident = {
 		clr_country_flag = missiles_rogue_active_counted
 		set_variable = { missiles_last_incident_closed = constant:missiles_program_value.one }
 		set_variable = { missiles_last_incident_closed_date = global.date }
+		set_temp_variable = { chaosx_date_days = constant:missiles_rogue_tuning.incident_cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { missiles_rogue_incident_cooldown_date = global.date }
-		add_to_variable = { missiles_rogue_incident_cooldown_date = constant:missiles_rogue_tuning.incident_cooldown_days }
+		add_to_variable = { missiles_rogue_incident_cooldown_date = chaosx_date_offset }
 		if = {
 			limit = { has_variable = missiles_incident_site }
 			var:missiles_incident_site = {
@@ -2536,8 +2557,11 @@ missiles_preflight_operation = {
 		missiles_reserve_operation_resources = yes
 		if = {
 			limit = { check_variable = { var = missiles_operation_resource_result value = constant:missiles_result.accepted compare = equals } }
+			set_temp_variable = { chaosx_date_days = missiles_operation_preparation_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { missiles_operation_ready_date = global.date }
-			add_to_variable = { missiles_operation_ready_date = missiles_operation_preparation_days }
+			add_to_variable = { missiles_operation_ready_date = chaosx_date_offset }
 			set_variable = { missiles_operation_preflight_result = constant:missiles_result.accepted }
 			set_variable = { missiles_operation_state = constant:missiles_operation_state.preparing }
 			clr_country_flag = missiles_preparation_failure_unread
@@ -3597,8 +3621,11 @@ missiles_record_incoming_operation_site_damage = {
 			set_country_flag = missiles_site_repair_requested
 			set_country_flag = missiles_site_repair_active
 			set_country_flag = missiles_site_repair_started
+			set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.repair_mission_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { missiles_site_repair_due_date = global.date }
-			add_to_variable = { missiles_site_repair_due_date = constant:missiles_evolution_timing.repair_mission_days }
+			add_to_variable = { missiles_site_repair_due_date = chaosx_date_offset }
 			set_variable = { missiles_incident_site = event_target:missiles_incoming_damage_state }
 			set_variable = { chaosx_032_input_retained_operational_site_count = missiles_active_site_count }
 			set_variable = { chaosx_032_input_damaged_site_id = event_target:missiles_incoming_damage_state.id }
@@ -3911,12 +3938,12 @@ missiles_natural_disaster_damage_site = {
 			event_target:missiles_disaster_controller = {
 			if = {
 				limit = { has_country_flag = missiles_program_initialized }
-				if = { limit = { has_variable = missiles_launch_readiness } subtract_from_variable = { missiles_launch_readiness = PREV.missiles_disaster_readiness_loss } }
-				if = { limit = { has_variable = missiles_command_control } subtract_from_variable = { missiles_command_control = PREV.missiles_disaster_control_loss } }
+				if = { limit = { has_variable = missiles_launch_readiness } subtract_from_variable = { missiles_launch_readiness = missiles_disaster_readiness_loss } }
+				if = { limit = { has_variable = missiles_command_control } subtract_from_variable = { missiles_command_control = missiles_disaster_control_loss } }
 				if = { limit = { NOT = { has_variable = missiles_guidance_backlog } } set_variable = { missiles_guidance_backlog = constant:missiles_program_value.zero } }
-				add_to_variable = { missiles_guidance_backlog = PREV.missiles_disaster_guidance_backlog }
+				add_to_variable = { missiles_guidance_backlog = missiles_disaster_guidance_backlog }
 				if = { limit = { NOT = { has_variable = missiles_false_warning_pressure } } set_variable = { missiles_false_warning_pressure = constant:missiles_program_value.zero } }
-				add_to_variable = { missiles_false_warning_pressure = PREV.missiles_disaster_warning_pressure }
+				add_to_variable = { missiles_false_warning_pressure = missiles_disaster_warning_pressure }
 				clamp_variable = { var = missiles_guidance_backlog min = constant:missiles_program_value.zero max = constant:missiles_program_value.maximum }
 				clamp_variable = { var = missiles_false_warning_pressure min = constant:missiles_program_value.zero max = constant:missiles_program_value.maximum }
 				set_country_flag = missiles_natural_disaster_damage_history
@@ -4051,8 +4078,11 @@ missiles_apply_operation_command_costs = {
 	subtract_from_variable = { missiles_launch_readiness = missiles_operation_readiness_loss }
 	subtract_from_variable = { missiles_command_control = missiles_operation_control_loss }
 	missiles_clamp_program_values = yes
+	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.launch_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
 	set_variable = { missiles_next_launch_date = global.date }
-	add_to_variable = { missiles_next_launch_date = constant:missiles_evolution_timing.launch_cooldown_days }
+	add_to_variable = { missiles_next_launch_date = chaosx_date_offset }
 }
 
 missiles_record_operation_achievement_receipts = {
@@ -4533,15 +4563,42 @@ missiles_set_retaliation_posture_automatic = {
 	}
 }
 
+# COUNTRY scope (warning recipient). Stamps the expiry and posture-dependent
+# response dates as stored dates; the day counts come from script constants.
+missiles_set_warning_deadlines = {
+	set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.warning_expiry_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { missiles_warning_expiry_date = global.date }
+	add_to_variable = { missiles_warning_expiry_date = chaosx_date_offset }
+	set_temp_variable = { chaosx_date_days = constant:missiles_resolution.warning_supervised_days }
+	if = {
+		limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.delegated compare = equals } }
+		set_temp_variable = { chaosx_date_days = constant:missiles_resolution.warning_delegated_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.automatic compare = equals } }
+		set_temp_variable = { chaosx_date_days = constant:missiles_resolution.warning_automatic_days }
+	}
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { missiles_warning_response_date = global.date }
+	add_to_variable = { missiles_warning_response_date = chaosx_date_offset }
+}
+
 missiles_schedule_warning_response = {
 	if = {
 		limit = { missiles_warning_is_actionable = yes NOT = { has_country_flag = missiles_warning_response_scheduled } }
-		set_temp_variable = { missiles_warning_schedule_days = missiles_warning_response_date }
+		# The stored dates are converted back to whole days for the delayed event.
+		set_temp_variable = { chaosx_date_offset = missiles_warning_response_date }
 		if = {
 			limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.supervised compare = equals } }
-			set_temp_variable = { missiles_warning_schedule_days = missiles_warning_expiry_date }
+			set_temp_variable = { chaosx_date_offset = missiles_warning_expiry_date }
 		}
-		subtract_from_temp_variable = { var = missiles_warning_schedule_days value = global.date }
+		subtract_from_temp_variable = { var = chaosx_date_offset value = global.date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { missiles_warning_schedule_days = chaosx_date_days }
 		if = {
 			limit = { check_variable = { var = missiles_warning_schedule_days value = constant:missiles_program_value.one compare = less_than } }
 			set_temp_variable = { missiles_warning_schedule_days = constant:missiles_program_value.one }
@@ -4643,12 +4700,7 @@ missiles_queue_warning_for_impact_country = {
 			set_variable = { missiles_warning_payload = ROOT.missiles_operation_payload }
 			set_variable = { missiles_warning_attribution = ROOT.missiles_current_attribution }
 			set_variable = { missiles_warning_detected_missiles = ROOT.missiles_operation_missile_cost }
-			set_variable = { missiles_warning_expiry_date = global.date }
-			add_to_variable = { missiles_warning_expiry_date = constant:missiles_evolution_timing.warning_expiry_days }
-			set_variable = { missiles_warning_response_date = global.date }
-			add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_supervised_days }
-			if = { limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.delegated compare = equals } } set_variable = { missiles_warning_response_date = global.date } add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_delegated_days } }
-			else_if = { limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.automatic compare = equals } } set_variable = { missiles_warning_response_date = global.date } add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_automatic_days } }
+			missiles_set_warning_deadlines = yes
 			if = {
 				limit = {
 					check_variable = { var = missiles_warning_payload value = constant:missiles_payload.conventional compare = greater_than }
@@ -4707,8 +4759,11 @@ missiles_verify_warning = {
 	if = {
 		limit = { missiles_warning_is_actionable = yes NOT = { has_country_flag = missiles_warning_verification_active } }
 		set_country_flag = missiles_warning_verification_active
+		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.warning_response_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_variable = { missiles_warning_verification_due_date = global.date }
-		add_to_variable = { missiles_warning_verification_due_date = constant:missiles_evolution_timing.warning_response_days }
+		add_to_variable = { missiles_warning_verification_due_date = chaosx_date_offset }
 	}
 }
 
@@ -4736,8 +4791,11 @@ missiles_complete_warning_verification = {
 missiles_delay_retaliation = {
 	if = {
 		limit = { missiles_warning_is_actionable = yes NOT = { has_country_flag = missiles_warning_delayed } }
-		add_to_variable = { missiles_warning_response_date = constant:missiles_tuning.retaliation_delay_days }
-		add_to_variable = { missiles_warning_expiry_date = constant:missiles_tuning.retaliation_delay_days }
+		set_temp_variable = { chaosx_date_days = constant:missiles_tuning.retaliation_delay_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { missiles_warning_response_date = chaosx_date_offset }
+		add_to_variable = { missiles_warning_expiry_date = chaosx_date_offset }
 		subtract_from_variable = { missiles_launch_readiness = constant:missiles_program_value.five }
 		set_country_flag = missiles_warning_delayed
 		missiles_clamp_program_values = yes

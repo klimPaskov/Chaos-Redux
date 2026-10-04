@@ -571,20 +571,7 @@ missiles_scenario_seed_retaliation_warning = {
 						set_variable = { missiles_warning_attribution = constant:missiles_attribution.false_warning }
 						set_country_flag = missiles_warning_false_or_conflicting
 					}
-					set_variable = { missiles_warning_expiry_date = global.date }
-					add_to_variable = { missiles_warning_expiry_date = constant:missiles_evolution_timing.warning_expiry_days }
-					set_variable = { missiles_warning_response_date = global.date }
-					add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_supervised_days }
-					if = {
-						limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.delegated compare = equals } }
-						set_variable = { missiles_warning_response_date = global.date }
-						add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_delegated_days }
-					}
-					else_if = {
-						limit = { check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.automatic compare = equals } }
-						set_variable = { missiles_warning_response_date = global.date }
-						add_to_variable = { missiles_warning_response_date = constant:missiles_resolution.warning_automatic_days }
-					}
+					missiles_set_warning_deadlines = yes
 					set_variable = { missiles_warning_queue_result = constant:missiles_result.accepted }
 					country_event = { id = chaosx.nr32.80 days = constant:missiles_program_value.one }
 				}
