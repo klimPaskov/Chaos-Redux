@@ -77,11 +77,145 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.resources } } localization_key = gods_of_africa_family_resources }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory } has_variable = gods_of_africa_demand_state_count } localization_key = gods_of_africa_family_territory_named }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
-	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.end_enemy_support } has_variable = gods_of_africa_support_enemy } localization_key = gods_of_africa_family_end_enemy_support_named }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.end_enemy_support } } localization_key = gods_of_africa_family_end_enemy_support }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.military_access } } localization_key = gods_of_africa_family_military_access }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.non_aggression } } localization_key = gods_of_africa_family_non_aggression }
+	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.guarantee_africa } } localization_key = gods_of_africa_family_guarantee_africa }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }
+}
+
+# Diplomatic demand presentation (decision L25). Participant scope; the
+# demand_* variables describe the open contract and the last_* variables the
+# answer the latest report describes.
+defined_text = {
+	name = GetGodsOfAfricaDemandStateList
+	text = { trigger = { check_variable = { gods_of_africa_demand_state_count = constant:gods_of_africa_named_slot.third } } localization_key = gods_of_africa_state_list_three }
+	text = { trigger = { check_variable = { gods_of_africa_demand_state_count = constant:gods_of_africa_named_slot.second } } localization_key = gods_of_africa_state_list_two }
+	text = { localization_key = gods_of_africa_state_list_one }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaLastStateList
+	text = { trigger = { check_variable = { gods_of_africa_last_state_count = constant:gods_of_africa_named_slot.third } } localization_key = gods_of_africa_last_state_list_three }
+	text = { trigger = { check_variable = { gods_of_africa_last_state_count = constant:gods_of_africa_named_slot.second } } localization_key = gods_of_africa_last_state_list_two }
+	text = { localization_key = gods_of_africa_last_state_list_one }
+}
+
+# A diplomatic concession costs a fixed amount of political power and is made
+# in full; a material demand shows its remaining balance.
+defined_text = {
+	name = GetGodsOfAfricaDemandBalanceLine
+	text = { trigger = { gods_of_africa_demand_is_diplomatic = yes } localization_key = gods_of_africa_demand_balance_diplomatic }
+	text = { localization_key = gods_of_africa_demand_balance_material }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaResponseOutcomeLine
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.recognition }
+		}
+		localization_key = gods_of_africa_outcome_recognition
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.territory }
+			has_variable = gods_of_africa_last_state_count
+		}
+		localization_key = gods_of_africa_outcome_territory
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.end_enemy_support }
+			has_variable = gods_of_africa_last_support_enemy
+		}
+		localization_key = gods_of_africa_outcome_end_support
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.military_access }
+		}
+		localization_key = gods_of_africa_outcome_military_access
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.non_aggression }
+		}
+		localization_key = gods_of_africa_outcome_non_aggression
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+			check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.guarantee_africa }
+		}
+		localization_key = gods_of_africa_outcome_guarantee_africa
+	}
+	text = { localization_key = gods_of_africa_outcome_none }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaEndedGuaranteeLine
+	text = { trigger = { has_country_flag = gods_of_africa_last_support_kind_guarantee } localization_key = gods_of_africa_outcome_ended_guarantee }
+	text = { localization_key = gods_of_africa_outcome_none }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaEndedAccessLine
+	text = { trigger = { has_country_flag = gods_of_africa_last_support_kind_access } localization_key = gods_of_africa_outcome_ended_access }
+	text = { localization_key = gods_of_africa_outcome_none }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaEndedVolunteersLine
+	text = { trigger = { has_country_flag = gods_of_africa_last_support_kind_volunteers } localization_key = gods_of_africa_outcome_ended_volunteers }
+	text = { localization_key = gods_of_africa_outcome_none }
+}
+
+# The support an open end-of-support demand names, for the demand text.
+defined_text = {
+	name = GetGodsOfAfricaDemandSupportKinds
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_support_kind_guarantee
+			has_country_flag = gods_of_africa_support_kind_access
+			has_country_flag = gods_of_africa_support_kind_volunteers
+		}
+		localization_key = gods_of_africa_support_kinds_all
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_support_kind_guarantee
+			has_country_flag = gods_of_africa_support_kind_access
+		}
+		localization_key = gods_of_africa_support_kinds_guarantee_access
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_support_kind_guarantee
+			has_country_flag = gods_of_africa_support_kind_volunteers
+		}
+		localization_key = gods_of_africa_support_kinds_guarantee_volunteers
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_support_kind_access
+			has_country_flag = gods_of_africa_support_kind_volunteers
+		}
+		localization_key = gods_of_africa_support_kinds_access_volunteers
+	}
+	text = { trigger = { has_country_flag = gods_of_africa_support_kind_guarantee } localization_key = gods_of_africa_support_kinds_guarantee }
+	text = { trigger = { has_country_flag = gods_of_africa_support_kind_access } localization_key = gods_of_africa_support_kinds_access }
+	text = { localization_key = gods_of_africa_support_kinds_volunteers }
 }
 
 # Participant scope. The wartime easing frozen with the open demand.
@@ -129,8 +263,13 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.resources } } localization_key = gods_of_africa_family_resources }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.territory } has_variable = gods_of_africa_last_state_count } localization_key = gods_of_africa_response_family_territory_named }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
-	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.end_enemy_support } has_variable = gods_of_africa_last_support_enemy } localization_key = gods_of_africa_response_family_end_enemy_support_named }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.end_enemy_support } } localization_key = gods_of_africa_family_end_enemy_support }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.military_access } } localization_key = gods_of_africa_family_military_access }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.non_aggression } } localization_key = gods_of_africa_family_non_aggression }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.guarantee_africa } } localization_key = gods_of_africa_family_guarantee_africa }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }
@@ -145,6 +284,7 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.failure } } localization_key = gods_of_africa_response_expired_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.undelivered } } localization_key = gods_of_africa_response_undelivered_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.lapsed } } localization_key = gods_of_africa_response_lapsed_report }
+	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.territory_lapsed } } localization_key = gods_of_africa_response_territory_lapsed_report }
 	text = { localization_key = gods_of_africa_response_unknown_report }
 }
 
@@ -447,7 +587,7 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
-	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.end_enemy_support } } localization_key = gods_of_africa_family_end_enemy_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_1_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }
@@ -468,7 +608,7 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
-	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.end_enemy_support } } localization_key = gods_of_africa_family_end_enemy_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_2_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }
@@ -489,7 +629,7 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.manpower } } localization_key = gods_of_africa_family_manpower }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.recognition } } localization_key = gods_of_africa_family_recognition }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.territory } } localization_key = gods_of_africa_family_territory }
-	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.alliance_access } } localization_key = gods_of_africa_family_alliance_access }
+	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.end_enemy_support } } localization_key = gods_of_africa_family_end_enemy_support }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.emergency_relief } } localization_key = gods_of_africa_family_emergency_relief }
 	text = { trigger = { check_variable = { gods_of_africa_substitute_slot_3_family = constant:gods_of_africa_demand_family.support_equipment } } localization_key = gods_of_africa_family_support_equipment }
 	text = { localization_key = gods_of_africa_family_unknown }

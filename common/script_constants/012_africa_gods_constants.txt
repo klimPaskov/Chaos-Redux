@@ -168,9 +168,27 @@ gods_of_africa_demand_family = {
 	manpower = 9
 	recognition = 10
 	territory = 11
-	alliance_access = 12
+	# The participant withdraws the guarantee, military access or volunteers it
+	# gives one named enemy of Africa.
+	end_enemy_support = 12
 	emergency_relief = 13
 	support_equipment = 14
+	# Security Oaths concessions (Evolution III, Continental Strength or more).
+	military_access = 15
+	non_aggression = 16
+	guarantee_africa = 17
+}
+
+# The three named state slots of a territory demand (decision L25).
+gods_of_africa_named_slot = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first = 1
+	second = 2
+	third = 3
 }
 
 gods_of_africa_demand_status = {
@@ -310,6 +328,10 @@ gods_of_africa_strength = {
 	technology_synthetic = 10
 	evolution_ii_amplifier = 15
 	evolution_iii_amplifier = 25
+	# Each major power that formally recognises Africa adds to the continent
+	# component, up to the cap.
+	recognition_per_major = 5
+	recognition_cap = 20
 	component_min = 0
 	component_max = 100
 	weighted_divisor = 100
@@ -347,6 +369,11 @@ gods_of_africa_transaction = {
 	resources_amount = 1
 	recognition_pp_amount = 10
 	territory_pp_amount = 25
+	end_support_pp_amount = 10
+	concession_pp_amount = 10
+	# A territory demand names at most this many African core states, one per
+	# named slot in the demand text.
+	territory_state_limit = 3
 	reconciliation_pp_amount = 10
 	# Emergency relief is paid in political power, so it sits on the same
 	# scale as the other political families.
@@ -542,6 +569,9 @@ gods_of_africa_history_kind = {
 	lapsed = 18
 	# Africa went to war against the participant and ended its agreements.
 	agreement_ended_by_host = 19
+	# Report-only: the named states left the participant's hands, so the
+	# territory demand lapsed without a failure.
+	territory_lapsed = 20
 }
 
 # One immutable equipment archetype within the existing mobile/artillery family.
@@ -612,6 +642,14 @@ gods_of_africa_ai_response = {
 	comply_fear = 1.5
 	comply_losing_war = 0.6
 	comply_high_chaos = 1.2
+	# What the demand asks for: a gesture is easy, land and abandoning an ally
+	# at war are not.
+	comply_family_recognition = 1.5
+	comply_family_non_aggression = 1.5
+	comply_family_military_access = 0.8
+	comply_family_guarantee = 0.6
+	comply_family_end_support = 0.5
+	comply_family_territory = 0.5
 	# Partial payment.
 	partial_base = 15
 	partial_full_payable = 0.25

@@ -28,3 +28,13 @@ Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item
 | Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Achievement rows or notes for Event 012, using the names and descriptions in `localisation/english/012_africa_achievements_l_english.yml` (`africa_gods_*_NAME`, `_DESC`) | `implemented`; add the rows. |
 | Gods activation news event | Event 012 notes: "Africa Proclaims the Gods of Africa" (`chaosx.nr12.617.t`) | `implemented`; add the note. |
 | Gods global-credibility super-event | Super-event slot for Event 012 | `blocked` on audio (agent decision L17): no unique licensed track is archived in the repository. Add nothing until it ships. |
+
+## Gods of Africa diplomatic demands (agent decision L25)
+
+If the workbook keeps per-event notes for Event 012, add these facts in the in-game wording:
+
+- Recognition: "Recognition improves relations both ways, each recognising major power adds to Africa's Strength, and the world order remembers who recognised Africa." (`gods_of_africa_focus_recognize_voice_tt`)
+- Territory: "Africa can demand that a foreign government hand back, by name, up to 3 African core states it controls. This demand comes before any request for material." (`gods_of_africa_focus_return_soil_tt`)
+- End support: "Africa can demand that a foreign government withdraw the guarantee, military access or volunteers it gives a country Africa is fighting." (`gods_of_africa_focus_end_sponsorship_tt`)
+- Security Oaths: "With Evolution III and Continental Strength or more, Africa can also demand military access, a non-aggression pact, or a guarantee of its independence from a free government outside its faction that does not already give it." (`gods_of_africa_focus_security_oaths_tt`)
+- The family once shown as "security access" no longer exists under that name; it is "an end to our support for Africa's enemies".

@@ -17,7 +17,7 @@ These helpers contain no contract closure, clocks, events, country scans, GUI, a
 | `gods_of_africa_offer_voluntary_aid` | Infantry aid uses native `send_equipment` (500 shipment, 1000 capacity gate, unchanged cooldown); infantry and fuel both go through `gods_of_africa_begin_voluntary_receipt` and `gods_of_africa_complete_payment_receipt`, and the aid record uses the measured amount. |
 | `gods_of_africa_create_demand_contract` | `gods_of_africa_freeze_contract_emergency_proof` right after the contract ledger opens; `gods_of_africa_clear_demand` and every participant cleanup clear it. |
 | `africa_activate_evolution_iii` | Sets the bare temp `gods_of_africa_campaign_activation_owned` and calls `gods_of_africa_bind_contribution_campaign` inside the real activation. |
-| `gods_of_africa_return_host_core_state` (territory payment) | Stores the selected state in the normal participant variable `gods_of_africa_return_state`, calls `gods_of_africa_begin_core_return` before `transfer_state_to` and `gods_of_africa_complete_core_return` after it. |
+| `gods_of_africa_return_frozen_core_states` (territory payment) | For each state the contract named (`gods_of_africa_demand_states`, frozen at creation by `gods_of_africa_freeze_diplomatic_terms`) and still controlled by the participant, stores it in the normal participant variable `gods_of_africa_return_state`, calls `gods_of_africa_begin_core_return` before `transfer_state_to` and `gods_of_africa_complete_core_return` after it. |
 
 Takeover decisions on the adopted package:
 

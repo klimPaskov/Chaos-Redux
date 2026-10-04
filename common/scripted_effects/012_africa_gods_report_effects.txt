@@ -17,6 +17,7 @@ gods_of_africa_capture_response_report = {
 		}
 		set_variable = { gods_of_africa_last_response_amount = gods_of_africa_report_amount }
 		set_variable = { gods_of_africa_last_response_balance = gods_of_africa_report_balance }
+		gods_of_africa_capture_response_subject = yes
 		# Owners that can break agreed terms set this temporary kind explicitly
 		# before every capture; zero means the answer broke no agreement.
 		clear_variable = gods_of_africa_last_response_breach_kind
@@ -50,6 +51,28 @@ gods_of_africa_record_undelivered_payment = {
 	add_to_variable = { gods_of_africa_payment_retry_day = constant:gods_of_africa_timing.undelivered_retry_days }
 	set_country_flag = gods_of_africa_outcome_report_pending
 	country_event = { id = chaosx.nr12.604 }
+}
+
+# COUNTRY scope on a participant during gods_of_africa_capture_response_report.
+# The states or enemy a diplomatic demand named survive demand cleanup so the
+# report can name them (decision L25).
+gods_of_africa_capture_response_subject = {
+	clear_variable = gods_of_africa_last_state_count
+	clear_variable = gods_of_africa_last_state_1
+	clear_variable = gods_of_africa_last_state_2
+	clear_variable = gods_of_africa_last_state_3
+	clear_variable = gods_of_africa_last_support_enemy
+	clr_country_flag = gods_of_africa_last_support_kind_guarantee
+	clr_country_flag = gods_of_africa_last_support_kind_access
+	clr_country_flag = gods_of_africa_last_support_kind_volunteers
+	if = { limit = { has_variable = gods_of_africa_demand_state_count } set_variable = { gods_of_africa_last_state_count = gods_of_africa_demand_state_count } }
+	if = { limit = { has_variable = gods_of_africa_demand_state_1 } set_variable = { gods_of_africa_last_state_1 = gods_of_africa_demand_state_1 } }
+	if = { limit = { has_variable = gods_of_africa_demand_state_2 } set_variable = { gods_of_africa_last_state_2 = gods_of_africa_demand_state_2 } }
+	if = { limit = { has_variable = gods_of_africa_demand_state_3 } set_variable = { gods_of_africa_last_state_3 = gods_of_africa_demand_state_3 } }
+	if = { limit = { has_variable = gods_of_africa_support_enemy } set_variable = { gods_of_africa_last_support_enemy = gods_of_africa_support_enemy } }
+	if = { limit = { has_country_flag = gods_of_africa_support_kind_guarantee } set_country_flag = gods_of_africa_last_support_kind_guarantee }
+	if = { limit = { has_country_flag = gods_of_africa_support_kind_access } set_country_flag = gods_of_africa_last_support_kind_access }
+	if = { limit = { has_country_flag = gods_of_africa_support_kind_volunteers } set_country_flag = gods_of_africa_last_support_kind_volunteers }
 }
 
 gods_of_africa_clear_report_receipts = {

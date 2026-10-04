@@ -147,6 +147,10 @@ gods_of_africa_participant_category = {
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_frozen_territory_tt
+				gods_of_africa_frozen_territory_payment_is_possible = yes
+			}
 			gods_of_africa_current_demand_can_be_paid = yes
 			custom_trigger_tooltip = {
 				tooltip = gods_of_africa_host_fuel_room_tt
@@ -160,7 +164,13 @@ gods_of_africa_participant_category = {
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
-			custom_effect_tooltip = gods_of_africa_comply_demand_effect_tt
+			if = {
+				limit = { gods_of_africa_demand_is_diplomatic = yes }
+				custom_effect_tooltip = gods_of_africa_comply_diplomatic_effect_tt
+			}
+			else = {
+				custom_effect_tooltip = gods_of_africa_comply_demand_effect_tt
+			}
 			hidden_effect = { gods_of_africa_comply_demand = yes }
 		}
 		ai_will_do = {
@@ -189,6 +199,31 @@ gods_of_africa_participant_category = {
 				factor = constant:gods_of_africa_ai_response.comply_high_chaos
 				check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
 			}
+			# What the demand asks for (decision L25).
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_recognition
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.recognition }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_non_aggression
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.non_aggression }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_military_access
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.military_access }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_guarantee
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.guarantee_africa }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_end_support
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.end_enemy_support }
+			}
+			modifier = {
+				factor = constant:gods_of_africa_ai_response.comply_family_territory
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory }
+			}
 		}
 	}
 
@@ -202,6 +237,8 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
 			NOT = { has_country_flag = gods_of_africa_defiant }
+			# A diplomatic concession is made in full or not at all.
+			NOT = { gods_of_africa_demand_is_diplomatic = yes }
 		}
 		available = {
 			gods_of_africa_partial_payment_is_affordable = yes

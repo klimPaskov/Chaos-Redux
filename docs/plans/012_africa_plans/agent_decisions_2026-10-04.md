@@ -321,3 +321,20 @@ Decisions:
 - The generic "Offer a Substitute" shortcut scores 0 for the AI, which names its offer through the three slot decisions that weigh Africa's needs.
 
 MCP route evidence: none was run this round. The round-2 lead recorded `hoi4_probability_inspect` (adapter `decision_ai_will_do`) returning "Invalid tool arguments"; the `chaosx_ai_probability_auditor` baseline and the `hoi4_probability_compare` pass stay `blocked` on that route and were not retried.
+
+## L25. Diplomatic demand families carry out real diplomacy
+
+Disposition: `implemented` (the native results of `diplomatic_relation`, `give_guarantee`, `give_military_access`, `recall_volunteers_from` and `transfer_state_to` on live countries are `needs_live_game`).
+
+Basis: the full spec's demand-family sections ("Diplomatic recognition" must not be "an empty popup choice"; "Military access and basing"; "Withdrawal from African territory" must "name the exact states"; "End support for an enemy of Africa" may list only support "that can be detected and ended"; "Alliance and faction concessions" need "high Strength, a relevant diplomatic situation, and route support"), scenario DEMAND-TERRITORIAL-OCCUPIER (territory dominates material families) and RESP-OCCUPIER (no trivial material substitute for land), acceptance row DEM-13, and the round 2 remaining-work list (priority 2).
+The vanilla diplomacy syntax follows `effects_documentation.md` (`diplomatic_relation`, `give_guarantee`, `give_military_access`, `recall_volunteers_from`), `triggers_documentation.md` (`has_guaranteed`, `gives_military_access_to`, `has_volunteers_amount_from`, `has_non_aggression_pact_with`, `is_in_faction_with`, `is_subject`), and the vanilla precedents in `common/decisions/FIN.txt` (ending access, pact and guarantee) and `common/decisions/BUL.txt` (`has_volunteers_amount_from = { tag = PREV count > 0 }` then `recall_volunteers_from`).
+
+Decisions:
+
+- Family 12 is renamed `end_enemy_support` (the saved id is unchanged) and the text "security access" is gone. Families 15, 16 and 17 are military access, a non-aggression pact and a guarantee of Africa.
+- Every diplomatic family is paid in full with a constant-backed amount of political power and carries out its act in the same payment (`gods_of_africa_carry_out_diplomatic_concession`). None takes a partial payment; the partial decision is hidden for them.
+- Recognition adds `gods_of_africa_recognition` opinion both ways; each recognising major adds 5 to the Strength continent component, capped at 20; World Is One reads `gods_of_africa_world_history_recognised` in a constituent's acceptance chance and the invitation weight (both 1.5).
+- Territory moves ahead of material needs. The contract freezes up to three named African core states (the three name slots are `gods_of_africa_named_slot`), payment returns exactly those through the core-return path, a lost named state blocks payment with a visible reason, and the demand then lapses at its deadline as the report-only kind `territory_lapsed` (20), mirroring L19.
+- End support is offered only while the participant demonstrably gives a non-capitulated enemy of Africa a guarantee, military access or volunteers; the contract names the enemy and the support kinds, and compliance ends exactly those. Lend-lease is excluded because no effect can end it. Territory and end-support demands take no material substitute.
+- Military access, the pact and the guarantee need Security Oaths, Evolution III and Continental Strength or more, and are offered only to a participant that is not a subject, outside Africa's faction, at peace with Africa, and not already giving the concession; access comes first while Africa is at war.
+- The participant AI weighs the family (constants `comply_family_*`).
