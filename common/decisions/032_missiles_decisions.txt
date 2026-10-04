@@ -865,6 +865,10 @@ missiles_program_management_category = {
 			base = @m32_ai_low
 			modifier = { factor = 4 has_war = yes NOT = { has_country_flag = missiles_special_payload_selected } }
 			modifier = { factor = 0 NOT = { has_war = yes } NOT = { has_country_flag = missiles_special_payload_selected } }
+			# A special selection under a policy that bars ordinary strikes would
+			# refuse every preparation: never make one, and swap one back quickly.
+			modifier = { factor = 0 NOT = { has_country_flag = missiles_special_payload_selected } NOT = { missiles_special_payload_policy_permits_ordinary_use = yes } }
+			modifier = { factor = 4 has_country_flag = missiles_special_payload_selected NOT = { missiles_special_payload_policy_permits_ordinary_use = yes } }
 		}
 	}
 
@@ -1163,6 +1167,8 @@ missiles_program_management_category = {
 			base = @m32_ai_urgent
 			modifier = { factor = 3 has_war = yes }
 			modifier = { factor = 0 has_country_flag = missiles_operation_active }
+			# A wartime programme keeps a lightly damaged site that can still fire.
+			modifier = { factor = 0 has_war = yes FROM = { missiles_site_can_launch = yes } }
 		}
 	}
 

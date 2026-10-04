@@ -119,3 +119,15 @@ Disposition: `implemented` for source; catalog `accepted and queued`.
 - Event 32 (`constant:missiles_event.id`) is added to `event_log_event_is_reworked_default_enabled` in the shared `chaosx_settings_triggers.txt` with a single-line edit; another owner's uncommitted line in the same list is left unstaged and untouched.
 - `catalog_changes_pending.md` stages `Events!M33` to `Needs Testing` and the Evo I and Evo V wording, which now matches the updated `missiles.evolution.saturation.body` and `missiles.evolution.automatic_retaliation.body` localisation (Saturation is a chosen doctrine; posture is a chosen delegation).
 - The test matrix gains live cases for this round; the test-results record lists the passing source modules and the MCP limits.
+
+## Round 1 review (skeptical reviewer)
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`). Basis: the user's grant of full implementation authority; each change repairs a defect in this round's own work and keeps its accepted design.
+
+- A suspended site carried none of the flags `missiles_state_has_registered_site` accepts, so capture, strike damage, natural disasters, inheritance, civil-war splits, and annexation skipped it and a suspended site lost in war stayed dead in its owner's registry. `missiles_site_suspended` now counts as a registered site; the capture handler already clears it.
+- `missiles_record_incoming_operation_site_damage` rewrote `missiles_site_repair_due_date` and the repair flags for a newly damaged site, which postponed a running repair programme at another site, and a scuttled second site cleared `missiles_site_repair_active` and cancelled that programme. Both writes now run only when no repair mission is active.
+- A programme whose only site was suspended entered the establishment phase and could survey a second state for the survey fee, bypassing the secondary-site limit and justification. `missiles_country_can_start_survey` now waits for the repair mission.
+- AI: a special warhead selected under a policy other than Military Targets Only or Unrestricted War (at war) makes every ordinary preparation fail. The `.31` special options now carry a reject factor through the new `missiles_special_payload_policy_permits_ordinary_use` trigger, and `missiles_select_special_payload` never makes such a selection and swaps an existing one back. At war, the AI no longer suspends a damaged site that can still launch.
+- Player text: "program" in four new tooltips reads "programme" like the rest of the Event 032 text, and the survey and secondary-site requirement tooltips state the owned-and-controlled rule.
+- HOI4 MCP: one more `hoi4.probability_inspect` call (`decision_ai_will_do`, candidate `missiles_set_retaliation_posture`, source path) returned `INTERNAL_ERROR`; the AI changes above are source-reviewed only.
+- Left as recorded limits: two evolution jobs due on the same day can each commit one track (each job commits at most one); special-payload selection and posture changes can repeat at war on their cooldowns; a suspended site transferred by planned inheritance or a civil-war split is released inactive.

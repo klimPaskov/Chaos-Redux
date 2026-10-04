@@ -179,6 +179,22 @@ class ProjectMissionContract(unittest.TestCase):
             self.assertTrue(any(pointer in write for write in writes), effect)
         self.assertNotIn('missiles_pending_site_state', str(EFFECTS))
 
+    def test_a_suspended_site_stays_registered_and_keeps_its_repair_project(self):
+        site_triggers = source('common/scripted_triggers/032_missiles_triggers.txt')
+        registered = list(descendants(site_triggers['missiles_state_has_registered_site']))
+        self.assertIn(('has_state_flag', 'missiles_site_suspended'), registered)
+        # Damage to another site never rewrites or clears a running repair project.
+        incoming = EFFECTS['missiles_record_incoming_operation_site_damage']
+        guarded = [body for key, body in descendants(incoming)
+                   if key == 'if' and ('limit', [('NOT', [('has_active_mission', 'missiles_site_repair_mission')])]) in body]
+        self.assertEqual(len(guarded), 2)
+        guarded_writes = [entry for body in guarded for entry in body]
+        self.assertIn(('clr_country_flag', 'missiles_site_repair_active'), guarded_writes)
+        self.assertIn(('set_country_flag', 'missiles_site_repair_active'), guarded_writes)
+        self.assertIn(('set_variable', [('missiles_site_repair_due_date', 'global.date')]), guarded_writes)
+        survey_gate = list(descendants(TRIGGERS['missiles_country_can_start_survey']))
+        self.assertIn(('has_active_mission', 'missiles_site_repair_mission'), survey_gate)
+
 
 if __name__ == '__main__':
     unittest.main()

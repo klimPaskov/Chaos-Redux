@@ -13,8 +13,9 @@
 # - States own physical launch-site custody. Every site transition revalidates
 #   controller, damage, capture, hardening, security, capacity, and stale
 #   operation references before it can be used again.
-# - Evolution unlocks are evaluated only from an Event 032 firing transaction or
-#   an exact scenario setup. No recurring all-country scan is introduced here.
+# - Evolution unlocks are evaluated from an Event 032 firing transaction, the
+#   bounded delayed evolution job (chaosx.nr32.190) over the programme registry,
+#   or an exact scenario setup. No recurring all-country scan is introduced here.
 # - Payload consequences are submitted to the existing owning systems. The
 #   conventional adapter below owns only conventional damage, shared Deaths,
 #   evidence, attribution, and the Event 032 incident record.
@@ -4436,20 +4437,28 @@ missiles_record_incoming_operation_site_damage = {
 			clear_variable = missiles_incident_site
 			clear_variable = missiles_incident_victim
 			clr_country_flag = missiles_site_repair_requested
-			clr_country_flag = missiles_site_repair_active
-			clr_country_flag = missiles_site_repair_started
+			# A repair programme already under way at another site keeps its own
+			# flags and due date; its mission settles them.
+			if = {
+				limit = { NOT = { has_active_mission = missiles_site_repair_mission } }
+				clr_country_flag = missiles_site_repair_active
+				clr_country_flag = missiles_site_repair_started
+			}
 			missiles_set_program_phases = yes
 		}
 		else = {
 			missiles_recalculate_network = yes
 			set_country_flag = missiles_site_repair_requested
-			set_country_flag = missiles_site_repair_active
-			set_country_flag = missiles_site_repair_started
-			set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.repair_mission_days }
-			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-			chaosx_convert_days_to_date_offset = yes
-			set_variable = { missiles_site_repair_due_date = global.date }
-			add_to_variable = { missiles_site_repair_due_date = chaosx_date_offset }
+			if = {
+				limit = { NOT = { has_active_mission = missiles_site_repair_mission } }
+				set_country_flag = missiles_site_repair_active
+				set_country_flag = missiles_site_repair_started
+				set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.repair_mission_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				set_variable = { missiles_site_repair_due_date = global.date }
+				add_to_variable = { missiles_site_repair_due_date = chaosx_date_offset }
+			}
 			set_variable = { missiles_incident_site = event_target:missiles_incoming_damage_state }
 			set_variable = { chaosx_032_input_retained_operational_site_count = missiles_active_site_count }
 			set_variable = { chaosx_032_input_damaged_site_id = event_target:missiles_incoming_damage_state.id }

@@ -186,9 +186,15 @@ class RecipientRootRegression(unittest.TestCase):
             self.assertFalse(keys & {'record_events_log_history_entry', 'handle_fired_event', 'news_event'})
 
     def test_event_option_weights_unchanged(self):
+        # The only accepted later change is the AI guard on the special-payload
+        # selection options (chaosx.nr32.31), which rejects a special warhead
+        # whose standing policy would refuse every ordinary preparation.
+        policy_guard = ('modifier', [('factor', 'constant:missiles_ai_factor.reject'),
+                                     ('NOT', [('missiles_special_payload_policy_permits_ordinary_use', 'yes')])])
         before_events = load_sources(True)[0]
         before = [(name, body) for name, body in descendants(before_events) if name == 'ai_chance']
-        after = [(name, body) for name, body in descendants(EVENTS) if name == 'ai_chance']
+        after = [(name, [entry for entry in body if entry != policy_guard])
+                 for name, body in descendants(EVENTS) if name == 'ai_chance']
         self.assertEqual(after, before)
 
     def test_event16_host_receipt_is_not_consumed_by_first_nonhost(self):

@@ -111,3 +111,8 @@ Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolutio
 `missiles_reserve_operation_resources` calls `missiles_project_operation_site_allocations`, a bounded water-fill over `missiles_operation_sites` that writes whole `missiles_site_planned_allocation` values summing to `missiles_operation_missile_cost`; `missiles_operation_projected_site_allocations_fit` requires the projection and the summed launchable capacity to cover the cost.
 `missiles_mark_operation_sites_reserved` copies each planned allocation to `missiles_site_operation_allocation` and removes a site that received none; `missiles_operation_sites_remain_valid` checks each site's operation id, a positive allocation, and capacity.
 `missiles_settle_lost_site_allocation` (COUNTRY scope, regular target `missiles_lost_allocation_site`, temp `missiles_allocation_loss_mode`) ends a prepared operation tied to a lost site and, in loss mode, debits that site's exact allocation once after the abort refund; capture, scuttling, destruction by strike, and a wrecking natural disaster call it.
+
+## Repair-programme isolation
+
+`missiles_state_has_registered_site` includes `missiles_site_suspended`, so a site under its repair programme is still struck, captured, inherited, split, and cleaned up like any registered site.
+`missiles_record_incoming_operation_site_damage` writes the repair flags and `missiles_site_repair_due_date` only when no `missiles_site_repair_mission` is active, and `missiles_country_can_start_survey` waits for that mission, so damage elsewhere never postpones or cancels a running repair.

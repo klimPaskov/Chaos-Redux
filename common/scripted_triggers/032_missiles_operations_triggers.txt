@@ -636,6 +636,9 @@ missiles_country_can_start_survey = {
 	NOT = { has_country_flag = missiles_program_capture_shell }
 	NOT = { has_country_flag = missiles_survey_in_progress }
 	NOT = { missiles_country_has_active_site = yes }
+	# A site under its repair programme returns to service; a survey is for a
+	# program with no launch site to restore.
+	NOT = { has_active_mission = missiles_site_repair_mission }
 }
 
 missiles_survey_target_is_valid = {
@@ -883,6 +886,20 @@ missiles_country_has_unintegrated_payload_candidate = {
 		AND = { missiles_country_has_biological_payload_candidate = yes NOT = { has_country_flag = missiles_biological_integration_operational } }
 		AND = { missiles_country_has_nuclear_payload_candidate = yes NOT = { has_country_flag = missiles_nuclear_integration_operational } }
 		AND = { missiles_country_has_thermonuclear_payload_candidate = yes NOT = { has_country_flag = missiles_thermonuclear_integration_operational } }
+	}
+}
+
+# AI guidance only. The standing policy lets a selected special warhead fly on
+# ordinary strikes; under any other policy a special selection would refuse
+# every ordinary preparation, so the AI keeps a conventional warhead instead.
+missiles_special_payload_policy_permits_ordinary_use = {
+	has_variable = missiles_special_payload_policy
+	OR = {
+		check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.military_targets_only compare = equals }
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.unrestricted_war compare = equals }
+			has_war = yes
+		}
 	}
 }
 
