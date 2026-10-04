@@ -556,7 +556,9 @@ country_event = {
 
 # Survivable surrender offer. ROOT is the armed Kruger State and FROM is the
 # offering enemy. Acceptance blocks the capitulation failsafe and starts
-# supervised disarmament; refusal keeps the device armed.
+# supervised disarmament; refusal keeps the device armed. The pending offer flag
+# stays set until an option is chosen, so no second offer can arrive while this
+# one is open and the state can never accept two surrenders.
 country_event = {
 	id = chaosx.brilliant_scientist_krg.100
 	title = chaosx.brilliant_scientist_krg.100.t
@@ -564,14 +566,12 @@ country_event = {
 	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
 	is_triggered_only = yes
 
-	immediate = {
-		hidden_effect = { clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending }
-	}
-
 	option = {
 		name = chaosx.brilliant_scientist_krg.100.a
 		trigger = {
 			has_country_flag = brilliant_scientist_singularity_armed
+			NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+			NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
 			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
 			NOT = { has_global_flag = world_end }
@@ -597,6 +597,7 @@ country_event = {
 		}
 		custom_effect_tooltip = brilliant_scientist_survivable_surrender_refuse_tt
 		hidden_effect = {
+			clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
 			FROM = { country_event = { id = chaosx.brilliant_scientist_krg.102 } }
 		}
 	}

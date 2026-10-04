@@ -223,6 +223,7 @@ brilliant_scientist_directorate_category = {
 		ai_will_do = {
 			base = constant:brilliant_scientist_directorate_ai.high
 			modifier = { factor = constant:brilliant_scientist_directorate_ai.cautious_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.blocked NOT = { brilliant_scientist_ai_may_resume_project = yes } }
 		}
 	}
 
@@ -254,15 +255,12 @@ brilliant_scientist_directorate_category = {
 			brilliant_scientist_refresh_directorate_project_selection = yes
 			custom_effect_tooltip = brilliant_scientist_project_cancellation_effect_tt
 		}
+		# The AI dismantles programmes only to keep them from Kruger once control
+		# is lost; a damaged programme is repaired through its incident response.
 		ai_will_do = {
 			base = constant:brilliant_scientist_directorate_ai.low
 			modifier = { factor = constant:brilliant_scientist_directorate_ai.strong_factor brilliant_scientist_control_is_lost = yes }
-			modifier = { factor = constant:brilliant_scientist_directorate_ai.preferred_factor has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
-			modifier = {
-				factor = constant:brilliant_scientist_directorate_ai.blocked
-				NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
-				NOT = { brilliant_scientist_control_is_lost = yes }
-			}
+			modifier = { factor = constant:brilliant_scientist_directorate_ai.blocked NOT = { brilliant_scientist_control_is_lost = yes } }
 		}
 	}
 

@@ -200,7 +200,9 @@ It is blocked when no recorded programme needs board work, so the AI does not cy
 `brilliant_scientist_refresh_directorate_project_selection` also derives three board-wide candidate flags with the same rules as the reviewed-programme flags: `brilliant_scientist_directorate_replication_candidate_exists` (an unsuspended programme at Prototype or later whose independent stage is behind its current stage), `brilliant_scientist_directorate_publication_candidate_exists` (a programme replicated at its current stage and not yet published), and `brilliant_scientist_directorate_resume_candidate_exists` (an undamaged suspended programme).
 It also records the replication candidate count, the last replication candidate family, and `brilliant_scientist_directorate_resume_capacity_needed`, the smallest Project Capacity any resumable programme needs.
 The continuation check reads these with the live payment, publication-permission, running-stage, and capacity checks, so a suspended programme, one replicated only at an earlier stage, a lone replication candidate whose own stage order is running, or a suspended programme that cannot yet be resumed never keeps the review cycling.
-The order weights are unchanged, except that the AI suspends or cancels only a damaged programme or under compromised or lost control.
+The AI suspends only a damaged programme or while government control is compromised or lost, and it resumes a suspended programme only once control is neither compromised nor lost (`brilliant_scientist_ai_may_resume_project`), so suspension and resumption never alternate while control stays weak; the resume branches of both review checks use the same rule.
+The AI cancels a programme only after government control is lost, to keep it from Kruger; a damaged programme is repaired through its incident response instead of being dismantled.
+The other order weights are unchanged.
 
 ## AI and balance
 

@@ -177,6 +177,7 @@ Arming records the Kruger State in the bounded registry `global.brilliant_scient
 A country at war with an armed Kruger State sees the Singularity Counterplay category and the targeted decision `brilliant_scientist_offer_survivable_surrender` while the Kruger State's surrender progress is above `brilliant_scientist_singularity.surrender_progress_threshold` (the same threshold as the failsafe).
 The offer costs 50 Political Power and 25 Command Power and can be repeated every 60 days.
 The Kruger State answers through `chaosx.brilliant_scientist_krg.100`.
+The offer sets `brilliant_scientist_survivable_surrender_offer_pending` on the Kruger State, and only the chosen option clears it, so no second offer can be sent while one is open; acceptance is also unavailable once a surrender or temporal escape is underway, so the state can never accept two surrenders.
 Acceptance calls `brilliant_scientist_krg_accept_survivable_surrender`: it sets the surrender flag, which blocks the failsafe at once, cancels any detonation protocol, starts controlled disarmament, and activates the 60-day `brilliant_scientist_krg_surrender_disarmament_mission`, whose timeout completes controlled disarmament and verifies the nonterminal state.
 The offering country receives `chaosx.brilliant_scientist_krg.101` or `.102`, and the first acceptance fires news event `chaosx.nr16.319`.
 The AI accepts by default because the offer already requires a front near collapse; it always refuses while on the deliberate-use route (the world-conquest decision or an authorized detonation protocol).

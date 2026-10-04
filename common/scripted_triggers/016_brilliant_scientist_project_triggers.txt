@@ -254,6 +254,15 @@ brilliant_scientist_directorate_publication_is_permitted = {
 	}
 }
 
+# COUNTRY scope. AI only: the AI suspends programmes while government control
+# is compromised or lost, so it resumes them only once control has recovered.
+# Without this, suspension and resumption would alternate and drain Political
+# Power while control stays weak.
+brilliant_scientist_ai_may_resume_project = {
+	NOT = { brilliant_scientist_control_is_compromised = yes }
+	NOT = { brilliant_scientist_control_is_lost = yes }
+}
+
 # COUNTRY scope. AI review stop: the reviewed programme has an order the AI can
 # afford and weighs. The review control then yields to that order.
 brilliant_scientist_ai_selected_project_has_board_work = {
@@ -272,6 +281,7 @@ brilliant_scientist_ai_selected_project_has_board_work = {
 			has_country_flag = brilliant_scientist_directorate_selected_project_suspended
 			NOT = { has_country_flag = brilliant_scientist_directorate_selected_project_damaged }
 			brilliant_scientist_has_capacity_to_resume_selected_project = yes
+			brilliant_scientist_ai_may_resume_project = yes
 		}
 		AND = {
 			has_country_flag = brilliant_scientist_directorate_selected_project_active
@@ -284,8 +294,9 @@ brilliant_scientist_ai_selected_project_has_board_work = {
 # board order the AI can act on, so cycling the review can reach it. The
 # candidates are derived with the reviewed-programme rules, so a suspended
 # programme, one replicated only at an earlier stage, a lone replication
-# candidate whose own stage is running, or a resumable programme without the
-# capacity to resume never keeps the review cycling.
+# candidate whose own stage is running, or a suspended programme the AI cannot
+# resume for lack of capacity or under weak control never keeps the review
+# cycling.
 brilliant_scientist_ai_any_project_has_board_work = {
 	OR = {
 		AND = {
@@ -308,6 +319,7 @@ brilliant_scientist_ai_any_project_has_board_work = {
 		}
 		AND = {
 			has_country_flag = brilliant_scientist_directorate_resume_candidate_exists
+			brilliant_scientist_ai_may_resume_project = yes
 			has_variable = brilliant_scientist_directorate_resume_capacity_needed
 			check_variable = {
 				var = brilliant_scientist_project_capacity
