@@ -67,9 +67,11 @@ brilliant_scientist_portal_raid_target_is_valid = {
 	}
 }
 
-# COUNTRY/raid target context. The building-target raid supplies the exact
-# facility province through var:target_province. Destination checks happen by
-# facility family so the source is never removed unless it can be rebuilt.
+# COUNTRY/raid target context. The native building target (tags = facility)
+# already guarantees a special-project facility in the selected province, so
+# only the state, war, and destination checks are needed here. Destination
+# checks happen by facility family so the source is never removed unless it
+# can be rebuilt; the extraction effect verifies the exact province building.
 brilliant_scientist_portal_facility_raid_target_is_valid = {
 	FROM = {
 		exists = yes
@@ -98,20 +100,13 @@ brilliant_scientist_portal_facility_raid_target_is_valid = {
 			}
 		}
 	}
-	var:target_province = {
-		OR = {
-			land_facility > 0
-			air_facility > 0
-			naval_facility > 0
-			nuclear_facility > 0
-		}
-	}
 }
 
 # STATE scope. A breach remains operational while both recorded participants
-# exist, the exact province still belongs to this state, and their war remains
-# active. Control of the breach province is deliberately not required: a
-# defender must be able to recapture it and then run the sealing decision.
+# exist and their war remains active. The breach is registered on its own
+# state, which therefore always contains the recorded province. Control of the
+# breach province is deliberately not required: a defender must be able to
+# recapture it and then run the sealing decision.
 brilliant_scientist_portal_beachhead_runtime_is_valid = {
 	has_state_flag = brilliant_scientist_portal_beachhead_active
 	has_variable = brilliant_scientist_portal_breach_attacker
@@ -122,7 +117,18 @@ brilliant_scientist_portal_beachhead_runtime_is_valid = {
 		has_war_with = var:PREV.brilliant_scientist_portal_breach_original_defender
 	}
 	var:brilliant_scientist_portal_breach_original_defender = { exists = yes }
-	var:brilliant_scientist_portal_breach_province = { state = PREV }
+}
+
+# STATE scope with ROOT = a country. HOI4 has no province scope, so the stored
+# province ID is pasted into a COUNTRY-scope controls_province check.
+brilliant_scientist_portal_breach_province_is_controlled_by_root = {
+	has_variable = brilliant_scientist_portal_breach_province
+	meta_trigger = {
+		text = {
+			ROOT = { controls_province = [PORTAL_PROVINCE] }
+		}
+		PORTAL_PROVINCE = "[?brilliant_scientist_portal_breach_province|.0]"
+	}
 }
 
 # STATE scope with ROOT = the country evaluating the state-targeted decision.
@@ -130,5 +136,5 @@ brilliant_scientist_portal_beachhead_can_be_sealed_by_root = {
 	brilliant_scientist_portal_beachhead_runtime_is_valid = yes
 	NOT = { has_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress }
 	var:brilliant_scientist_portal_breach_original_defender = { tag = ROOT }
-	var:brilliant_scientist_portal_breach_province = { CONTROLLER = { tag = ROOT } }
+	brilliant_scientist_portal_breach_province_is_controlled_by_root = yes
 }

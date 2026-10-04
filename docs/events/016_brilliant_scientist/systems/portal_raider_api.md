@@ -25,6 +25,12 @@ Every successful breach persists the exact province, attacking country, and orig
 
 After the original defender recaptures the exact saved province, `brilliant_scientist_seal_recaptured_portal_breach` becomes available on that state. Sealing takes 21 days and spends 25 Command Power. Losing the province cancels only the sealing attempt, leaving the breach active. Successful sealing, invalid participant state, the end of the war, Event 016 containment, and either terminal route use `brilliant_scientist_portal_cleanup_beachhead`, the single idempotent transient cleanup owner. Cleanup does not refund raid equipment, reverse transferred installations, recreate units, or erase permanent raid history.
 
+HOI4 has no province scope: `var:target_province` and `brilliant_scientist_portal_breach_province` are integer province IDs, never scopes.
+The facility raid's native `building = { tags = facility }` target already guarantees a facility in the selected province, so `brilliant_scientist_portal_facility_raid_target_is_valid` checks only the state, the war, and a compatible destination.
+`brilliant_scientist_portal_raid_extract_installation_internal` copies the raid province into a temporary and pastes it into `any_province_building_level = { province = { id = ... } building = <facility> level > 0 }` through `meta_trigger`, so only a facility that exists in that exact province is removed and rebuilt, and no facility can be duplicated.
+The breach is registered on its own state, so the runtime check needs no province-to-state test.
+`brilliant_scientist_portal_breach_province_is_controlled_by_root` pastes the stored breach province into a country-scope `controls_province` check; the sealing decision's target trigger, its cancel trigger, and the sealing settlement all use it, so sealing can start and stay active only while the original defender controls the exact breach province.
+
 The raid does not require Warren Kruger. His active authority raises AI interest through the existing raid weighting surface, while launch, equipment, target, template, and preparation requirements remain the same for every consumer.
 
 ## Runtime identifiers

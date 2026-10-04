@@ -142,7 +142,7 @@ brilliant_scientist_portal_seal_beachhead = {
 		limit = {
 			brilliant_scientist_portal_beachhead_runtime_is_valid = yes
 			var:brilliant_scientist_portal_breach_original_defender = { tag = ROOT }
-			var:brilliant_scientist_portal_breach_province = { CONTROLLER = { tag = ROOT } }
+			brilliant_scientist_portal_breach_province_is_controlled_by_root = yes
 		}
 		set_state_flag = brilliant_scientist_portal_beachhead_sealed_ever
 		if = {
@@ -337,15 +337,28 @@ brilliant_scientist_portal_raid_extract_state_installation = {
 # STATE scope. Transfers one exact installation per call. Eligible facilities
 # are rebuilt instantly in one valid owned state; factories are moved into
 # off-map industry so a full destination state cannot erase the reward. The
-# target is removed only when an eligible destination exists.
+# target is removed only when an eligible destination exists. HOI4 has no
+# province scope, so a facility candidate is verified by pasting the copied
+# raid province ID into any_province_building_level; only a building that
+# exists in that exact province is removed and rebuilt.
 brilliant_scientist_portal_raid_extract_installation_internal = {
+	set_temp_variable = { brilliant_scientist_portal_target_province = var:ROOT.target_province }
 	if = {
 		limit = { var:ROOT.actor_country = { exists = yes } }
 		if = {
 			limit = {
 				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
 				nuclear_facility > 0
-				var:ROOT.target_province = { nuclear_facility > 0 }
+				meta_trigger = {
+					text = {
+						any_province_building_level = {
+							province = { id = [PORTAL_PROVINCE] }
+							building = nuclear_facility
+							level > 0
+						}
+					}
+					PORTAL_PROVINCE = "[?brilliant_scientist_portal_target_province|.0]"
+				}
 				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
 			}
 			remove_building = { type = nuclear_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
@@ -363,7 +376,16 @@ brilliant_scientist_portal_raid_extract_installation_internal = {
 			limit = {
 				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
 				land_facility > 0
-				var:ROOT.target_province = { land_facility > 0 }
+				meta_trigger = {
+					text = {
+						any_province_building_level = {
+							province = { id = [PORTAL_PROVINCE] }
+							building = land_facility
+							level > 0
+						}
+					}
+					PORTAL_PROVINCE = "[?brilliant_scientist_portal_target_province|.0]"
+				}
 				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
 			}
 			remove_building = { type = land_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
@@ -381,7 +403,16 @@ brilliant_scientist_portal_raid_extract_installation_internal = {
 			limit = {
 				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
 				air_facility > 0
-				var:ROOT.target_province = { air_facility > 0 }
+				meta_trigger = {
+					text = {
+						any_province_building_level = {
+							province = { id = [PORTAL_PROVINCE] }
+							building = air_facility
+							level > 0
+						}
+					}
+					PORTAL_PROVINCE = "[?brilliant_scientist_portal_target_province|.0]"
+				}
 				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
 			}
 			remove_building = { type = air_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }
@@ -399,7 +430,16 @@ brilliant_scientist_portal_raid_extract_installation_internal = {
 			limit = {
 				check_variable = { brilliant_scientist_portal_raid_allow_facility_transfer > constant:brilliant_scientist_value.zero }
 				naval_facility > 0
-				var:ROOT.target_province = { naval_facility > 0 }
+				meta_trigger = {
+					text = {
+						any_province_building_level = {
+							province = { id = [PORTAL_PROVINCE] }
+							building = naval_facility
+							level > 0
+						}
+					}
+					PORTAL_PROVINCE = "[?brilliant_scientist_portal_target_province|.0]"
+				}
 				var:ROOT.actor_country = { any_owned_state = { is_controlled_by = var:ROOT.actor_country is_coastal = yes land_facility < 1 air_facility < 1 naval_facility < 1 nuclear_facility < 1 } }
 			}
 			remove_building = { type = naval_facility level = @CR_SC_PORTAL_RAID_TRANSFER_LEVEL province = var:ROOT.target_province }

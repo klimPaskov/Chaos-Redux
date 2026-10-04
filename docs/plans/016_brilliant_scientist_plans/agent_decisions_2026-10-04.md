@@ -36,3 +36,18 @@ Publication sets `brilliant_scientist_directorate_publication_completed`.
 Both are the remaining inputs of `brilliant_scientist_achievement_public_method_is_complete` and `brilliant_scientist_achievement_clean_break_is_complete`, and `brilliant_scientist_reconcile_old_host_after_transfer` copies the independent stages into the former host's ledger.
 
 Needs live game: decision-list presentation of the scripted programme names, and AI cycling cadence.
+
+## D2. Portal raid province checks without a province scope
+
+Decision: every `var:<province> = { ... }` scope in the Portal raid and beachhead code is replaced, because HOI4 has no province scope and the raid framework exposes `var:target_province` as an integer.
+
+- The facility raid's native `building = { tags = facility }` target guarantees a facility in the selected province, so the target-validity trigger drops its province block and keeps the state, war, and destination checks.
+- Extraction copies the raid province once and pastes it through `meta_trigger` into `any_province_building_level` for each facility family; `remove_building` keeps its documented `province = var:ROOT.target_province` argument.
+- The breach state is registered on itself, so the runtime trigger drops the province-to-state test.
+- Breach control uses a new STATE-scope trigger, `brilliant_scientist_portal_breach_province_is_controlled_by_root`, which pastes the stored province into a country-scope `controls_province`; the sealing decision's target and cancel triggers and the sealing settlement share it.
+
+Evidence: `common/scripted_triggers/016_brilliant_scientist_raid_triggers.txt`, `common/scripted_effects/016_brilliant_scientist_raid_effects.txt`, `common/decisions/016_brilliant_scientist_portal_containment_decisions.txt`, `docs/events/016_brilliant_scientist/systems/portal_raider_api.md`.
+References: installed `common/raids/_documentation.md` (raid instance variables and building target types), `documentation/triggers_documentation.md` (`any_province_building_level`, `controls_province`, `meta_trigger`), `documentation/effects_documentation.md` (`remove_building` province argument), and the offline wiki Triggers page (`controls_province = <id>`).
+
+Needs live game: the native building raid supplying `var:target_province` for a facility target, and the meta-trigger province paste resolving in state scope.
+Not changed: the state-target Portal raid still lands in `var:ROOT.target_province`; whether the engine fills that variable for a state target remains a live-game question recorded for the raid owner.
