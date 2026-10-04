@@ -374,6 +374,31 @@ sov_nuclear_bombs_native_stockpile_delta_is_valid = {
 	}
 }
 
+# SOV country scope, after a reconciliation refresh. A national custody dispute
+# may close only when no Event 23 launch or reservation is unresolved, every
+# ledger bucket is non-negative, the aggregate books balance, and the native
+# stockpile again covers the intact Soviet custody. Depot-level dispute markers
+# remain with their own recovery flows.
+sov_nuclear_bombs_native_custody_reconciles = {
+	tag = SOV
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_action_reservation_disputed }
+	NOT = { has_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_accounted_total value = global.sov_nuclear_bombs_ledger_total_registered compare = equals }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_assigned value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_reserved value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_dismantled value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_missing value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	NOT = { check_variable = { var = global.sov_nuclear_bombs_ledger_expended value = constant:sov_nuclear_bombs_ledger.zero compare = less_than } }
+	has_variable = sov_nuclear_bombs_native_stockpile_snapshot
+	set_temp_variable = { sov_nuclear_bombs_native_custody_required = sov_nuclear_bombs_actor_operational }
+	add_to_temp_variable = { sov_nuclear_bombs_native_custody_required = sov_nuclear_bombs_actor_assigned }
+	add_to_temp_variable = { sov_nuclear_bombs_native_custody_required = sov_nuclear_bombs_actor_reserved }
+	check_variable = { var = sov_nuclear_bombs_native_stockpile_snapshot value = sov_nuclear_bombs_native_custody_required compare = greater_than_or_equals }
+}
+
 # Country scope. Demolition and accepted non-yield tests commit synchronously;
 # detonations use sov_nuclear_bombs_native_delivery_country_is_valid plus the
 # exact FROM-state checks in on_nuke_drop.

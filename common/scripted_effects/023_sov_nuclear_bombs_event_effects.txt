@@ -1010,6 +1010,99 @@ sov_nuclear_bombs_record_action_receipt = {
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
 }
 
+# SOV country scope, called from on_nuke_drop when the Soviet Union detonates
+# a nuclear weapon outside an Event 23 request, normally through a vanilla
+# nuclear raid. The callback's shared hook has already applied the detonation
+# consequences, so this helper records only Event 23 state: the combat use,
+# public knowledge, breached restraint agreements, the major-power receipt and
+# achievement receipts. The caller saves the struck state as the event target
+# sov_nuclear_bombs_native_use_state.
+sov_nuclear_bombs_record_native_raid_use = {
+	if = {
+		limit = { sov_nuclear_bombs_event_actor_is_valid = yes }
+		# The raid drew its device when it was created; book it before recording.
+		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		add_to_variable = { sov_nuclear_bombs_combat_uses = constant:sov_nuclear_bombs_ledger.one }
+		add_to_variable = { sov_nuclear_bombs_native_raid_uses = constant:sov_nuclear_bombs_ledger.one }
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.used compare = less_than } }
+			set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
+		}
+		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
+		set_country_flag = sov_nuclear_bombs_confirmed_use_recorded
+		set_country_flag = sov_nuclear_bombs_native_raid_use_recorded
+		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
+		sov_nuclear_bombs_refresh_world_threat_source = yes
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_combat_uses value = constant:sov_nuclear_bombs_achievement.exactly_one_combat_use compare = greater_than } }
+			set_country_flag = sov_nuclear_bombs_second_combat_use_recorded
+		}
+		# A launch outside the authorization chain breaks every restraint pledge.
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = sov_nuclear_bombs_atomic_moratorium
+					has_country_flag = sov_nuclear_bombs_moratorium_verification_pending
+					has_country_flag = sov_nuclear_bombs_moratorium_verified
+				}
+			}
+			set_country_flag = sov_nuclear_bombs_moratorium_violation
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = sov_nuclear_bombs_standdown_verification_pending
+					has_country_flag = sov_nuclear_bombs_hotline_standdown_verified
+				}
+			}
+			set_country_flag = sov_nuclear_bombs_standdown_violated
+		}
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_settlement_verification_pending }
+			set_country_flag = sov_nuclear_bombs_settlement_violated
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+				NOT = { has_country_flag = sov_nuclear_bombs_soviet_first_use_recorded }
+			}
+			set_country_flag = sov_nuclear_bombs_soviet_first_use_recorded
+			news_event = { id = chaosx.news.232 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		}
+		if = {
+			limit = {
+				has_event_target = sov_nuclear_bombs_native_use_state
+				event_target:sov_nuclear_bombs_native_use_state = {
+					controller = {
+						NOT = { tag = SOV }
+						is_major = yes
+						has_tech = atomic_research
+						has_tech = nukes
+					}
+				}
+			}
+			set_global_flag = sov_nuclear_bombs_major_detonation_confirmed
+			if = {
+				limit = { NOT = { has_global_flag = sov_nuclear_bombs_major_first_use_recorded } }
+				set_global_flag = sov_nuclear_bombs_major_first_use_recorded
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+					NOT = { has_country_flag = sov_nuclear_bombs_soviet_major_first_use_recorded }
+				}
+				set_country_flag = sov_nuclear_bombs_soviet_major_first_use_recorded
+			}
+			set_global_flag = sov_nuclear_bombs_evolution_iii_world_gate_opened
+			event_target:sov_nuclear_bombs_native_use_state = { controller = { set_temp_variable = { sov_nuclear_bombs_native_use_target_id = THIS.id } } }
+			set_variable = { sov_nuclear_bombs_major_receipt_candidate_actor_id = THIS.id }
+			set_variable = { sov_nuclear_bombs_major_receipt_candidate_target_id = sov_nuclear_bombs_native_use_target_id }
+			sov_nuclear_bombs_record_major_exchange_receipt = yes
+		}
+		sov_nuclear_bombs_achievement_refresh_receipts = yes
+	}
+}
+
 # Event 023 owns the post-confirmation state machine. The shared runtime has
 # already moved the reserved device into its terminal ledger bucket; this
 # helper records the action and closes whichever bounded test, demonstration,
@@ -2055,7 +2148,18 @@ sov_nuclear_bombs_apply_routine_maintenance = {
 }
 
 sov_nuclear_bombs_audit_stockpile = {
+	# The refresh books any vanilla raid draw first. A completed audit then
+	# closes a national custody dispute once the books balance again.
 	sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+	if = {
+		limit = {
+			has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
+			sov_nuclear_bombs_native_custody_reconciles = yes
+		}
+		clr_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
+		set_country_flag = sov_nuclear_bombs_native_custody_dispute_resolved
+		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+	}
 	set_country_flag = sov_nuclear_bombs_stockpile_audited
 	add_to_variable = { sov_nuclear_bombs_integrity = 2 }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }

@@ -13,7 +13,8 @@ on_actions = {
 					if = {
 						limit = { has_country_flag = sov_nuclear_bombs_event_active }
 						sov_nuclear_bombs_reconcile_unreturned_native_delivery = yes
-						sov_nuclear_bombs_refresh_native_stockpile_snapshot = yes
+						# Also books any vanilla raid draw and refreshes the native snapshot.
+						sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 						sov_nuclear_bombs_achievement_refresh_receipts = yes
 						if = {
 							limit = { NOT = { has_variable = sov_nuclear_bombs_maintenance_day_counter } }
@@ -109,6 +110,22 @@ on_actions = {
 						sov_nuclear_bombs_confirm_native_delivery = yes
 						sov_nuclear_bombs_finalize_confirmed_native_delivery = yes
 					}
+				}
+				# A Soviet detonation that is not the pending Event 23 request, such
+				# as a vanilla nuclear raid, still counts as Soviet nuclear use. An
+				# unconfirmed strike on the pending state stays with its own owner.
+				else_if = {
+					limit = {
+						ROOT = { sov_nuclear_bombs_event_actor_is_valid = yes }
+						NOT = {
+							AND = {
+								ROOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending has_variable = sov_nuclear_bombs_action_state_id }
+								FROM = { check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_action_state_id compare = equals } }
+							}
+						}
+					}
+					FROM = { save_event_target_as = sov_nuclear_bombs_native_use_state }
+					ROOT = { sov_nuclear_bombs_record_native_raid_use = yes }
 				}
 				FROM = {
 					if = {

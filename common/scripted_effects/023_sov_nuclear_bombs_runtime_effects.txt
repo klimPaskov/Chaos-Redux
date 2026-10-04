@@ -79,8 +79,92 @@ sov_nuclear_bombs_initialize_actor_ledger = {
 	if = { limit = { NOT = { has_variable = sov_nuclear_bombs_action_transaction_sequence } } set_variable = { sov_nuclear_bombs_action_transaction_sequence = constant:sov_nuclear_bombs_ledger.zero } }
 }
 
+# SOV country scope. A vanilla nuclear raid collects its device from the
+# national stockpile when the raid is created, outside the Event 23 request
+# chain. With no Event 23 delivery pending, a native stockpile below the
+# event's operational, assigned and reserved custody is booked once as
+# expended: operational custody first, then assigned depot custody in owned
+# state order. Reserved devices stay bound to their own action, so a shortfall
+# that would reach them is left for the reconciliation check to dispute. A
+# surplus, such as a cancelled raid's refund or vanilla production, needs no
+# booking. This helper never calls the reconciliation refresh.
+sov_nuclear_bombs_book_native_stockpile_use = {
+	if = {
+		limit = {
+			tag = SOV
+			exists = yes
+			has_global_flag = sov_nuclear_bombs_ledger_active
+			has_country_flag = sov_nuclear_bombs_actor_registered
+			NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+		}
+		sov_nuclear_bombs_initialize_actor_ledger = yes
+		set_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_actor_operational }
+		add_to_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_actor_assigned }
+		add_to_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_actor_reserved }
+		set_temp_variable = { sov_nuclear_bombs_native_stockpile_now = num_of_nukes }
+		subtract_from_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_native_stockpile_now }
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_native_shortfall value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
+			set_temp_variable = { sov_nuclear_bombs_native_booked = constant:sov_nuclear_bombs_ledger.zero }
+			# Operational custody is held nationally and has no depot mirror.
+			if = {
+				limit = {
+					check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+					check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+				}
+				set_temp_variable = { sov_nuclear_bombs_native_take = sov_nuclear_bombs_native_shortfall }
+				set_temp_variable = { sov_nuclear_bombs_native_cap = global.sov_nuclear_bombs_ledger_operational }
+				clamp_temp_variable = { var = sov_nuclear_bombs_native_take min = constant:sov_nuclear_bombs_ledger.zero max = sov_nuclear_bombs_actor_operational }
+				clamp_temp_variable = { var = sov_nuclear_bombs_native_take min = constant:sov_nuclear_bombs_ledger.zero max = sov_nuclear_bombs_native_cap }
+				subtract_from_variable = { sov_nuclear_bombs_actor_operational = sov_nuclear_bombs_native_take }
+				subtract_from_variable = { global.sov_nuclear_bombs_ledger_operational = sov_nuclear_bombs_native_take }
+				add_to_temp_variable = { sov_nuclear_bombs_native_booked = sov_nuclear_bombs_native_take }
+				subtract_from_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_native_take }
+			}
+			# Assigned custody debits exact depot mirrors, never a transit subset.
+			if = {
+				limit = {
+					check_variable = { var = sov_nuclear_bombs_native_shortfall value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+					check_variable = { var = sov_nuclear_bombs_actor_assigned value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+				}
+				set_temp_variable = { sov_nuclear_bombs_native_assigned_booked = constant:sov_nuclear_bombs_ledger.zero }
+				every_owned_state = {
+					limit = {
+						sov_nuclear_bombs_state_is_registered = yes
+						check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+					}
+					if = {
+						limit = { check_variable = { var = sov_nuclear_bombs_native_shortfall value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
+						set_temp_variable = { sov_nuclear_bombs_native_take = sov_nuclear_bombs_site_assigned }
+						clamp_temp_variable = { var = sov_nuclear_bombs_native_take min = constant:sov_nuclear_bombs_ledger.zero max = sov_nuclear_bombs_native_shortfall }
+						subtract_from_variable = { sov_nuclear_bombs_site_assigned = sov_nuclear_bombs_native_take }
+						if = { limit = { NOT = { has_variable = sov_nuclear_bombs_site_expended } } set_variable = { sov_nuclear_bombs_site_expended = constant:sov_nuclear_bombs_ledger.zero } }
+						add_to_variable = { sov_nuclear_bombs_site_expended = sov_nuclear_bombs_native_take }
+						add_to_temp_variable = { sov_nuclear_bombs_native_assigned_booked = sov_nuclear_bombs_native_take }
+						subtract_from_temp_variable = { sov_nuclear_bombs_native_shortfall = sov_nuclear_bombs_native_take }
+					}
+				}
+				subtract_from_variable = { sov_nuclear_bombs_actor_assigned = sov_nuclear_bombs_native_assigned_booked }
+				subtract_from_variable = { global.sov_nuclear_bombs_ledger_assigned = sov_nuclear_bombs_native_assigned_booked }
+				add_to_temp_variable = { sov_nuclear_bombs_native_booked = sov_nuclear_bombs_native_assigned_booked }
+			}
+			if = {
+				limit = { check_variable = { var = sov_nuclear_bombs_native_booked value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
+				add_to_variable = { sov_nuclear_bombs_actor_expended = sov_nuclear_bombs_native_booked }
+				add_to_variable = { global.sov_nuclear_bombs_ledger_expended = sov_nuclear_bombs_native_booked }
+				if = { limit = { NOT = { has_variable = sov_nuclear_bombs_native_raid_expended } } set_variable = { sov_nuclear_bombs_native_raid_expended = constant:sov_nuclear_bombs_ledger.zero } }
+				add_to_variable = { sov_nuclear_bombs_native_raid_expended = sov_nuclear_bombs_native_booked }
+				add_to_variable = { global.sov_nuclear_bombs_ledger_transaction_sequence = constant:sov_nuclear_bombs_ledger.one }
+				set_country_flag = sov_nuclear_bombs_native_stockpile_use_booked
+			}
+		}
+	}
+}
+
 sov_nuclear_bombs_refresh_ledger_reconciliation = {
 	sov_nuclear_bombs_initialize_ledger = yes
+	# Book any vanilla raid draw before the aggregate equations are summed.
+	if = { limit = { SOV = { exists = yes } } SOV = { sov_nuclear_bombs_book_native_stockpile_use = yes } }
 	set_temp_variable = { sov_nuclear_bombs_physical_custody_total = global.sov_nuclear_bombs_ledger_operational }
 	add_to_temp_variable = { sov_nuclear_bombs_physical_custody_total = global.sov_nuclear_bombs_ledger_assigned }
 	add_to_temp_variable = { sov_nuclear_bombs_physical_custody_total = global.sov_nuclear_bombs_ledger_reserved }
@@ -114,6 +198,7 @@ sov_nuclear_bombs_refresh_ledger_reconciliation = {
 			OR = {
 				has_global_flag = sov_nuclear_bombs_event5_snapshot_bucket_mismatch
 				has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
+				SOV = { has_country_flag = sov_nuclear_bombs_action_reservation_disputed }
 				check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.zero compare = less_than }
 				check_variable = { var = global.sov_nuclear_bombs_ledger_assigned value = constant:sov_nuclear_bombs_ledger.zero compare = less_than }
 				check_variable = { var = global.sov_nuclear_bombs_ledger_reserved value = constant:sov_nuclear_bombs_ledger.zero compare = less_than }
@@ -136,8 +221,10 @@ sov_nuclear_bombs_refresh_ledger_reconciliation = {
 			subtract_from_temp_variable = { sov_nuclear_bombs_soviet_usable_devices = sov_nuclear_bombs_actor_in_transit }
 			clamp_temp_variable = { var = sov_nuclear_bombs_soviet_usable_devices min = constant:sov_nuclear_bombs_ledger.zero }
 			set_variable = { global.sov_nuclear_bombs_soviet_usable_devices = sov_nuclear_bombs_soviet_usable_devices }
-			# Native production and pre-event bombs may exceed this allocation.
-			# A pending native launch has its own exact callback/delta contract.
+			# Native production, pre-event bombs and refunded raids may exceed this
+			# allocation. Vanilla raid draws were booked above, so a remaining
+			# shortfall means a reserved device left the stockpile. A pending
+			# native launch has its own exact callback/delta contract.
 			if = {
 				limit = { NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending } }
 				set_temp_variable = { sov_nuclear_bombs_native_required = sov_nuclear_bombs_actor_operational }
