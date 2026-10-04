@@ -480,6 +480,47 @@ cbrn_civil_defence_category = {
 		}
 	}
 
+	cbrn_reconcile_occupied_mask_records = {
+		icon = GFX_decision_cbrn_supply_occupied_population
+		days_re_enable = constant:cbrn_protection_decision_timing.records_reconciliation_reenable_days
+		visible = { cbrn_occupied_country_can_reconcile = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_reconcile_occupied_mask_records_available_tt
+				hidden_trigger = { cbrn_occupied_country_can_reconcile = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_reconcile_occupied_mask_records_tt
+			hidden_effect = { cbrn_occupied_reconcile_held_records = yes }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_reconciliation
+		}
+	}
+
+	cbrn_reconcile_export_shipment_records = {
+		icon = GFX_decision_cbrn_export_protective_equipment
+		target_array = global.enabled_countries_list
+		days_re_enable = constant:cbrn_protection_decision_timing.records_reconciliation_reenable_days
+		visible = { cbrn_export_transaction_has_recovery_work = yes }
+		target_root_trigger = { cbrn_export_transaction_has_any_owned_receipt = yes }
+		target_trigger = { cbrn_export_transaction_has_recovery_work = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cbrn_reconcile_export_shipment_records_available_tt
+				hidden_trigger = { cbrn_export_transaction_has_recovery_work = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = cbrn_reconcile_export_shipment_records_tt
+			hidden_effect = { cbrn_export_transaction_reconcile = yes }
+		}
+		ai_will_do = {
+			base = constant:cbrn_protection_ai.base_reconciliation
+		}
+	}
+
 	cbrn_protect_hospitals_and_utilities = {
 		icon = GFX_decision_cbrn_protect_hospitals_and_utilities
 		state_target = yes

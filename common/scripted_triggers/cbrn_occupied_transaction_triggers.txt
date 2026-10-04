@@ -168,3 +168,24 @@ cbrn_occupied_country_holds_sale_program = {
 cbrn_occupied_should_cancel = {
 	NOT = { cbrn_occupied_country_can_continue = yes }
 }
+
+# STATE. A reservation receipt owned by ROOT that could not be closed cleanly.
+# A healthy active reservation carries neither recovery flag and is never
+# reviewed by the reconciliation route.
+cbrn_occupied_state_has_recovery_receipt = {
+	has_state_flag = cbrn_occupied_mask_escrow_active
+	has_variable = cbrn_occupied_mask_escrow_donor
+	var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+	OR = {
+		has_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+		has_state_flag = cbrn_occupied_mask_escrow_recovery
+	}
+}
+
+# COUNTRY donor. The reconciliation route is open only while no programme is
+# running, so a live reservation can never be returned by mistake.
+cbrn_occupied_country_can_reconcile = {
+	exists = yes
+	has_country_flag = cbrn_occupied_transaction_recovery_pending
+	NOT = { cbrn_occupied_country_has_active_program = yes }
+}

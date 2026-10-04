@@ -49,6 +49,7 @@ cbrn_occupied_pay_and_record_fee = {
 					set_variable = { cbrn_occupied_unrecorded_paid_fee_@var:cbrn_occupied_transaction = cbrn_occupied_fee }
 					set_variable = { cbrn_occupied_unrecorded_paid_source_@var:cbrn_occupied_transaction = cbrn_occupied_fee_source }
 					set_variable = { cbrn_occupied_unrecorded_credit_status_@var:cbrn_occupied_transaction = universal_cost_credit_result }
+					cbrn_occupied_register_recovery_transaction = yes
 					set_country_flag = cbrn_occupied_transaction_recovery_pending
 				}
 			}
@@ -209,6 +210,7 @@ cbrn_occupied_settle_committed_fee = {
 		set_variable = { cbrn_occupied_unsettled_sale_sequence_@var:cbrn_occupied_transaction = cbrn_occupied_committed_sale_sequence }
 		set_variable = { cbrn_occupied_unsettled_usable_@var:cbrn_occupied_transaction = cbrn_occupied_program_usable }
 		set_variable = { cbrn_occupied_unsettled_consumed_@var:cbrn_occupied_transaction = cbrn_occupied_program_consumed }
+		cbrn_occupied_register_recovery_transaction = yes
 		set_country_flag = cbrn_occupied_transaction_recovery_pending
 	}
 }
@@ -278,4 +280,124 @@ cbrn_occupied_cancel_selected_program = {
 		cbrn_occupied_settle_committed_fee = yes
 		cbrn_occupied_clear_committed_program = yes
 	}
+}
+
+# Records the exact transaction whose fee evidence still needs review, so the
+# player review finds it without guessing keyed names.
+cbrn_occupied_register_recovery_transaction = {
+	if = {
+		limit = {
+			check_variable = { cbrn_occupied_transaction > constant:universal_cost_framework.zero }
+			NOT = {
+				is_in_array = {
+					array = cbrn_occupied_recovery_transactions
+					value = cbrn_occupied_transaction
+				}
+			}
+		}
+		add_to_array = { array = cbrn_occupied_recovery_transactions value = cbrn_occupied_transaction }
+	}
+}
+
+# STATE. Closes one receipt the engine refused to return after a retry. Nothing
+# is credited to the stockpile, so an unverified delta never becomes a success;
+# the exact written-off count is reported to the country caller.
+cbrn_occupied_write_off_state_escrow = {
+	set_temp_variable = { cbrn_occupied_write_off_models = cbrn_occupied_mask_escrow_reconditioned }
+	add_to_temp_variable = { cbrn_occupied_write_off_models = cbrn_occupied_mask_escrow_basic }
+	add_to_temp_variable = { cbrn_occupied_write_off_models = cbrn_occupied_mask_escrow_improved }
+	add_to_temp_variable = { cbrn_occupied_write_off_models = cbrn_occupied_mask_escrow_advanced }
+	add_to_temp_variable = { cbrn_occupied_write_off_models = cbrn_occupied_mask_escrow_sealed }
+	clamp_temp_variable = { var = cbrn_occupied_write_off_models min = constant:cbrn_math.zero }
+	clear_variable = cbrn_occupied_mask_escrow_reconditioned
+	clear_variable = cbrn_occupied_mask_escrow_basic
+	clear_variable = cbrn_occupied_mask_escrow_improved
+	clear_variable = cbrn_occupied_mask_escrow_advanced
+	clear_variable = cbrn_occupied_mask_escrow_sealed
+	clear_variable = cbrn_occupied_mask_escrow_donor
+	clear_variable = cbrn_occupied_mask_escrow_native_before
+	clear_variable = cbrn_occupied_mask_escrow_native_after
+	clear_variable = cbrn_occupied_mask_escrow_native_requested
+	clear_variable = cbrn_occupied_mask_escrow_native_observed
+	clear_variable = cbrn_occupied_mask_escrow_native_model
+	clr_state_flag = cbrn_occupied_mask_escrow_active
+	clr_state_flag = cbrn_occupied_mask_escrow_recovery
+	clr_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+	clr_state_flag = cbrn_occupied_distribution_program_target
+}
+
+# COUNTRY donor. Settles every recorded fee row once more and writes off what
+# still cannot be closed. No credit is retried for a delta the engine never
+# acknowledged, so the same fee can never be returned twice.
+cbrn_occupied_reconcile_recorded_fees = {
+	for_each_loop = {
+		array = cbrn_occupied_recovery_transactions
+		value = cbrn_occupied_transaction
+		if = {
+			limit = { has_variable = cbrn_occupied_unsettled_status_@var:cbrn_occupied_transaction }
+			set_temp_variable = { universal_cost_transaction_id = cbrn_occupied_transaction }
+			set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+			universal_cost_settle_transaction = yes
+			if = {
+				limit = { check_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_success } }
+				add_to_temp_variable = { cbrn_occupied_reconcile_settled = constant:cbrn_math.one }
+			}
+			else = {
+				add_to_temp_variable = { cbrn_occupied_reconcile_written_off_fee = cbrn_occupied_unsettled_fee_@var:cbrn_occupied_transaction }
+			}
+			clear_variable = cbrn_occupied_unsettled_status_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unsettled_fee_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unsettled_source_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unsettled_sale_sequence_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unsettled_usable_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unsettled_consumed_@var:cbrn_occupied_transaction
+		}
+		if = {
+			limit = { has_variable = cbrn_occupied_unrecorded_paid_fee_@var:cbrn_occupied_transaction }
+			add_to_temp_variable = { cbrn_occupied_reconcile_written_off_fee = cbrn_occupied_unrecorded_paid_fee_@var:cbrn_occupied_transaction }
+			clear_variable = cbrn_occupied_unrecorded_paid_fee_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unrecorded_paid_source_@var:cbrn_occupied_transaction
+			clear_variable = cbrn_occupied_unrecorded_credit_status_@var:cbrn_occupied_transaction
+			clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_occupied_transaction
+		}
+	}
+	clear_array = cbrn_occupied_recovery_transactions
+}
+
+# COUNTRY donor. The player review behind the occupied reconciliation decision.
+# Every receipt this donor still holds is returned once more through the
+# measured native route; only what the engine refuses again is written off.
+# Delivered coverage, the shared receipt arrays, the selection cooldown and
+# every other donor's receipt are untouched.
+cbrn_occupied_reconcile_held_records = {
+	set_temp_variable = { cbrn_occupied_reconcile_returned = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_reconcile_written_off_models = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_reconcile_written_off_fee = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_reconcile_settled = constant:cbrn_math.zero }
+	clr_country_flag = cbrn_occupied_transaction_recovery_pending
+	every_state = {
+		limit = { cbrn_occupied_state_has_recovery_receipt = yes }
+		clr_state_flag = cbrn_occupied_mask_escrow_native_mismatch
+		clr_state_flag = cbrn_occupied_mask_escrow_recovery
+		set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+		cbrn_refund_occupied_state_mask_reservation = yes
+		add_to_temp_variable = { cbrn_occupied_reconcile_returned = cbrn_mask_escrow_refunded }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_blocked > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_occupied_write_off_models = constant:cbrn_math.zero }
+			cbrn_occupied_write_off_state_escrow = yes
+			add_to_temp_variable = { cbrn_occupied_reconcile_written_off_models = cbrn_occupied_write_off_models }
+		}
+		else = { clr_state_flag = cbrn_occupied_distribution_program_target }
+	}
+	cbrn_occupied_reconcile_recorded_fees = yes
+	# Every receipt is now returned or written off, so the block is released.
+	clr_country_flag = cbrn_occupied_transaction_recovery_pending
+	set_variable = { cbrn_occupied_reconciled_returned = cbrn_occupied_reconcile_returned }
+	set_variable = { cbrn_occupied_reconciled_written_off_models = cbrn_occupied_reconcile_written_off_models }
+	set_variable = { cbrn_occupied_reconciled_written_off_fee = cbrn_occupied_reconcile_written_off_fee }
+	add_to_variable = { cbrn_occupied_written_off_model_total = cbrn_occupied_reconcile_written_off_models }
+	add_to_variable = { cbrn_occupied_written_off_fee_total = cbrn_occupied_reconcile_written_off_fee }
+	cbrn_refresh_country_mask_snapshot = yes
 }

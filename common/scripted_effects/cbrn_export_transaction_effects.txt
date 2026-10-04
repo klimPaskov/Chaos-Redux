@@ -437,3 +437,76 @@ cbrn_export_transaction_finish = {
 		}
 	}
 }
+
+# COUNTRY donor, FROM recipient. Zeroes the rows the engine refused to return
+# and records their exact count. Nothing is credited to the stockpile and the
+# delivered total is never altered, so a loss can never read as a delivery.
+cbrn_export_write_off_held_models = {
+	set_temp_variable = { cbrn_export_reconcile_written_off = cbrn_export_held_gas_mask_equipment_reconditioned_@FROM }
+	add_to_temp_variable = { cbrn_export_reconcile_written_off = cbrn_export_held_gas_mask_equipment_1_@FROM }
+	add_to_temp_variable = { cbrn_export_reconcile_written_off = cbrn_export_held_gas_mask_equipment_2_@FROM }
+	add_to_temp_variable = { cbrn_export_reconcile_written_off = cbrn_export_held_gas_mask_equipment_3_@FROM }
+	add_to_temp_variable = { cbrn_export_reconcile_written_off = cbrn_export_held_gas_mask_equipment_4_@FROM }
+	clamp_temp_variable = { var = cbrn_export_reconcile_written_off min = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_held_gas_mask_equipment_reconditioned_@FROM = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_held_gas_mask_equipment_1_@FROM = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_held_gas_mask_equipment_2_@FROM = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_held_gas_mask_equipment_3_@FROM = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_held_gas_mask_equipment_4_@FROM = constant:cbrn_math.zero }
+	set_variable = { cbrn_export_written_off_models_@FROM = cbrn_export_reconcile_written_off }
+	add_to_variable = { cbrn_export_written_off_model_total = cbrn_export_reconcile_written_off }
+}
+
+# COUNTRY donor, FROM recipient. The player review behind the export
+# reconciliation decision. The shipment record is returned once more through
+# the measured native route, whatever the engine refuses again is written off,
+# the fee is closed or written off, and ownership is then released so this
+# recipient can be supplied again. Delivered totals, aid statistics and
+# Condemnation outcomes are untouched.
+cbrn_export_transaction_reconcile = {
+	set_temp_variable = { cbrn_export_reconcile_returned = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_export_reconcile_written_off = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_export_reconcile_fee_written_off = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_export_transaction_has_recovery_work = yes }
+		clr_country_flag = cbrn_export_native_mismatch_@FROM
+		clr_country_flag = cbrn_export_transfer_failed_@FROM
+		set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+		if = { limit = { cbrn_export_transaction_quote_held = yes } }
+		set_temp_variable = { cbrn_export_reconcile_before_held = cbrn_export_held_total }
+		cbrn_export_transaction_refund_held = yes
+		set_temp_variable = { cbrn_export_held_total = constant:cbrn_math.zero }
+		if = { limit = { cbrn_export_transaction_quote_held = yes } }
+		set_temp_variable = { cbrn_export_reconcile_returned = cbrn_export_reconcile_before_held }
+		subtract_from_temp_variable = { cbrn_export_reconcile_returned = cbrn_export_held_total }
+		clamp_temp_variable = { var = cbrn_export_reconcile_returned min = constant:cbrn_math.zero }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_export_held_total = constant:cbrn_math.zero } } }
+			cbrn_export_write_off_held_models = yes
+		}
+		# The retry has finished, so a repeated native refusal no longer blocks
+		# the record; its measured evidence stays in the keyed delta rows.
+		clr_country_flag = cbrn_export_native_mismatch_@FROM
+		cbrn_export_transaction_close_fee = yes
+		if = {
+			limit = { NOT = { has_country_flag = cbrn_export_fee_closed_@FROM } }
+			set_temp_variable = { cbrn_export_reconcile_receipt = cbrn_export_receipt_@FROM }
+			# A shipment that failed before its fee was charged owes nothing, so
+			# only a fee that was actually taken is reported as written off.
+			if = {
+				limit = { check_variable = { cbrn_export_reconcile_receipt > constant:universal_cost_framework.zero } }
+				set_temp_variable = { cbrn_export_reconcile_fee_written_off = cbrn_export_fee_@FROM }
+				clamp_temp_variable = { var = cbrn_export_reconcile_fee_written_off min = constant:cbrn_math.zero }
+				clear_variable = universal_cost_allocated_transaction_id_@var:cbrn_export_reconcile_receipt
+				set_variable = { cbrn_export_written_off_fee_@FROM = cbrn_export_reconcile_fee_written_off }
+				add_to_variable = { cbrn_export_written_off_fee_total = cbrn_export_reconcile_fee_written_off }
+			}
+			set_country_flag = cbrn_export_fee_closed_@FROM
+		}
+		cbrn_export_transaction_release_ownership = yes
+		set_variable = { cbrn_export_reconciled_returned = cbrn_export_reconcile_returned }
+		set_variable = { cbrn_export_reconciled_written_off_models = cbrn_export_reconcile_written_off }
+		set_variable = { cbrn_export_reconciled_written_off_fee = cbrn_export_reconcile_fee_written_off }
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}

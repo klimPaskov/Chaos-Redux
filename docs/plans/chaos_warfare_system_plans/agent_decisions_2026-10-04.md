@@ -19,3 +19,24 @@ Disposition: `implemented`.
 `common/scripted_effects/chaosx_test_country_facility_diagnostics.txt` is published so that `HEAD` holds both the helper and the caller another owner already committed in `eb08e1dde`.
 Basis: deleting the helper alone would leave every checkout of `HEAD` calling an unknown effect, and CLAUDE.md requires temporary debug code to be removed only once the issue it exposes is resolved.
 The helper stays read-only, runs only under `has_country_flag = chaosx_test_country_setup_trace_active`, and its file header states the removal condition.
+
+## 3. Quarantine reconciliation is two bounded player actions, with write-off as the terminator
+
+Disposition: `implemented`.
+`cbrn_occupied_transaction_recovery_pending` and `cbrn_export_native_mismatch_@FROM` now have a player-triggered route that closes them.
+Three choices inside that route were mine.
+
+The route is two decisions rather than one, because the occupied block is country-scoped while the export block is per recipient.
+A single non-targeted decision cannot reach a recipient as `FROM`, and a single targeted decision would make the occupied audit depend on an unrelated export partner existing.
+Both are player-triggered, both are bounded, and neither adds a periodic or world-wide hook, which is what the accepted contract actually requires.
+
+The audit retries the measured native return once and writes off only what the engine refuses a second time.
+Basis: the accepted contract forbids blindly clearing quarantine, refunding an unknown delta and reversing retained positive coverage, but a route that can only retry would leave the decision family dead whenever the native delta is permanently unaccountable.
+A write-off credits nothing to the stockpile and never touches a delivered total, so an unverified movement cannot read as a delivery, and the counts are stored and shown to the player.
+
+The unrecorded fee is written off instead of credited a second time.
+Basis: its first credit attempt already reported failure, so a retry cannot be proven not to double-credit, and the accepted contract requires that no duplicate refund is possible.
+The amount is recorded in `cbrn_occupied_written_off_fee_total` and reported in the decision description rather than silently discarded.
+
+The occupied state pass uses `every_state` limited to receipts this donor owns and marked for recovery, so a receipt in a state the donor no longer controls is also closed.
+Basis: one player click is neither periodic nor a hook, and the alternative would strand any receipt whose state changed hands while blocked.

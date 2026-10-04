@@ -98,3 +98,14 @@ cbrn_export_transaction_can_continue = {
 	has_variable = cbrn_export_receipt_@FROM
 	check_variable = { cbrn_export_receipt_@FROM > constant:universal_cost_framework.zero }
 }
+
+# COUNTRY donor, FROM recipient. One blocked shipment record the player can
+# review. A running shipment is never reviewed, so live reservations are safe.
+cbrn_export_transaction_has_recovery_work = {
+	cbrn_export_transaction_has_owned_receipt = yes
+	NOT = { has_country_flag = cbrn_export_active_@FROM }
+	OR = {
+		has_country_flag = cbrn_export_native_mismatch_@FROM
+		has_country_flag = cbrn_export_recovery_@FROM
+	}
+}
