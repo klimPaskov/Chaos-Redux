@@ -204,3 +204,15 @@ The three ordinary front markers sat at fixed per-front spots on the world map, 
 The GUI projection now places every front's ordinary, warning and severe markers, animated and still, at the D16 anchor of the region the front covers or is about to reach, through scripted GUI `x`/`y` properties; fronts never share a region, so no shift is needed, and a front without a region is not projected.
 The fixed GUI positions remain only as the pre-projection defaults.
 The offline GUI scenario route cannot set the global marker variables, so the placement itself is a live-game check.
+
+## Implementing-engineer decisions, round 2
+
+These decisions were taken by the Event 033 implementing engineer under the same full design authority, from the round-2 work list.
+
+### D25. Advance warnings are keyed by front visit
+
+Disposition: implemented (commit "Send one Acid Rain warning per front visit").
+Part 9 asks for one warning per front and destination country and a warning cooldown keyed by front visit ID, but the warning report was deduplicated by front id, so a country received one warning per front for the whole event and nothing when the same front returned.
+The controller now stores `acid_rain_last_warning_visit_id` and receives chaosx.nr33.102 whenever the publication's key differs from it.
+The key is the warning visit id that both publication paths already allocate per visit and generation; when the 24-entry visit registry is full and the id is 0, `acid_rain_compute_warning_report_key` builds a negative key from the front id times `acid_rain_reporting.warning_fallback_front_stride` plus the publication date, which can never equal a visit id.
+Several warned states of one visit still produce one report, a return to the same region and a visit by another front each produce a new one, and the country initializer clears the new key and the retired `acid_rain_last_warning_front_id`.

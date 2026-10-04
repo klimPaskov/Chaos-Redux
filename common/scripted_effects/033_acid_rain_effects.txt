@@ -756,7 +756,9 @@ acid_rain_initialize_country_record = {
 	set_variable = { acid_rain_aftercare_completed_states = constant:acid_rain_runtime.zero }
 	set_variable = { acid_rain_start_civilian_factories = num_of_civilian_factories }
 	set_variable = { acid_rain_preparedness_peak = constant:acid_rain_preparedness.minimum }
-	set_variable = { acid_rain_last_warning_front_id = constant:acid_rain_runtime.zero }
+	# The per-front warning key of older saves is retired; warnings are keyed by visit.
+	clear_variable = acid_rain_last_warning_front_id
+	clear_variable = acid_rain_last_warning_visit_id
 	set_variable = { acid_rain_last_arrival_report_day = constant:acid_rain_runtime.zero }
 	set_variable = { acid_rain_last_departure_report_day = constant:acid_rain_runtime.zero }
 	set_variable = { acid_rain_last_casualty_report_day = constant:acid_rain_runtime.zero }
@@ -1630,6 +1632,40 @@ acid_rain_select_weighted_region = {
 	}
 }
 
+# ANY SCOPE. Output temporary acid_rain_warning_report_key names one front
+# visit for the advance warning report. It is the allocated warning visit id,
+# or, when the visit registry is full and that id is 0, a negative key built
+# from the front id and the publication date so it never equals a visit id.
+# Inputs: acid_rain_current_warning_visit_id and acid_rain_front_id.
+acid_rain_compute_warning_report_key = {
+	set_temp_variable = { acid_rain_warning_report_key = acid_rain_current_warning_visit_id }
+	if = {
+		limit = { check_variable = { var = acid_rain_current_warning_visit_id value = constant:acid_rain_runtime.zero compare = equals } }
+		set_temp_variable = { acid_rain_warning_report_key = acid_rain_front_id }
+		multiply_temp_variable = { acid_rain_warning_report_key = constant:acid_rain_reporting.warning_fallback_front_stride }
+		add_to_temp_variable = { acid_rain_warning_report_key = global.date }
+		multiply_temp_variable = { acid_rain_warning_report_key = constant:acid_rain_runtime.negative_one }
+	}
+}
+
+# COUNTRY SCOPE. Runs for every warned state the country controls during one
+# front warning publication. The first state of a front visit sends the
+# advance warning; later states of the same visit send nothing, while a new
+# visit by any front, including a return to the same region, warns again.
+# Input: temporary acid_rain_warning_report_key.
+acid_rain_send_front_warning_report = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = acid_rain_last_warning_visit_id }
+				check_variable = { var = acid_rain_last_warning_visit_id value = acid_rain_warning_report_key compare = not_equals }
+			}
+		}
+		set_variable = { acid_rain_last_warning_visit_id = acid_rain_warning_report_key }
+		country_event = { id = chaosx.nr33.102 }
+	}
+}
+
 # ANY SCOPE. Commits an immediately reserved region for a new front slot.
 acid_rain_commit_front_region = {
 	set_temp_variable = { acid_rain_previous_region_id = global.acid_rain_front_region_entries^acid_rain_front_id }
@@ -1704,6 +1740,7 @@ acid_rain_commit_front_region = {
 		set_global_flag = acid_rain_warning_registry_overflow
 		set_temp_variable = { acid_rain_current_warning_visit_id = constant:acid_rain_runtime.zero }
 	}
+	acid_rain_compute_warning_report_key = yes
 	if = {
 		limit = {
 			check_variable = { var = acid_rain_previous_region_id value = constant:acid_rain_runtime.zero compare = greater_than }
@@ -1739,11 +1776,7 @@ acid_rain_commit_front_region = {
 					set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
 					set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
 					set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
-					if = {
-						limit = { NOT = { check_variable = { var = acid_rain_last_warning_front_id value = acid_rain_front_id compare = equals } } }
-						set_variable = { acid_rain_last_warning_front_id = acid_rain_front_id }
-						country_event = { id = chaosx.nr33.102 }
-					}
+					acid_rain_send_front_warning_report = yes
 				}
 			}
 		}
@@ -1947,6 +1980,7 @@ acid_rain_prepare_front_warning = {
 			set_global_flag = acid_rain_warning_registry_overflow
 			set_temp_variable = { acid_rain_current_warning_visit_id = constant:acid_rain_runtime.zero }
 		}
+		acid_rain_compute_warning_report_key = yes
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_warning_cursor_end = acid_rain_cursor_end }
@@ -1971,11 +2005,7 @@ acid_rain_prepare_front_warning = {
 						set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
 						set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
 						set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
-						if = {
-							limit = { NOT = { check_variable = { var = acid_rain_last_warning_front_id value = acid_rain_front_id compare = equals } } }
-							set_variable = { acid_rain_last_warning_front_id = acid_rain_front_id }
-							country_event = { id = chaosx.nr33.102 }
-						}
+						acid_rain_send_front_warning_report = yes
 					}
 				}
 			}
