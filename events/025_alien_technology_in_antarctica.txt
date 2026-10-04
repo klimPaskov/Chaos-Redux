@@ -1057,3 +1057,312 @@ country_event = {
 		chaosx_nr25_run_holder_pulse = yes
 	}
 }
+
+# ============================================================================
+# PARTICIPANT REPORTS
+# ============================================================================
+# Each report reaches only the affected country, once per state change. The
+# dispatch helpers live in 025_alien_technology_in_antarctica_report_effects.
+
+# The route is locked and the crossing begins.
+country_event = {
+	id = chaosx.nr25.10
+	title = chaosx.nr25.10.t
+	desc = chaosx.nr25.10.d
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.10.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The gateway objective failed and the expedition improvised a route.
+country_event = {
+	id = chaosx.nr25.12
+	title = chaosx.nr25.12.t
+	desc = chaosx.nr25.12.d
+	picture = GFX_report_event_025_antarctic_crossing
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.12.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The first camp stands on the ice.
+country_event = {
+	id = chaosx.nr25.20
+	title = chaosx.nr25.20.t
+	desc = chaosx.nr25.20.d
+	picture = GFX_report_event_025_antarctic_outpost
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.20.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The camp was lost to weather, patrols or a rival landing.
+country_event = {
+	id = chaosx.nr25.21
+	title = chaosx.nr25.21.t
+	desc = chaosx.nr25.21.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.21.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_outpost_lost_tt
+	}
+}
+
+# A lost camp was restored.
+country_event = {
+	id = chaosx.nr25.22
+	title = chaosx.nr25.22.t
+	desc = chaosx.nr25.22.d
+	picture = GFX_report_event_025_antarctic_outpost
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.22.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The expedition's own surveys point to a probable core site.
+country_event = {
+	id = chaosx.nr25.30
+	title = chaosx.nr25.30.t
+	desc = chaosx.nr25.30.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.30.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_probable_site_tt
+	}
+}
+
+# The primary site is confirmed.
+country_event = {
+	id = chaosx.nr25.31
+	title = chaosx.nr25.31.t
+	desc = chaosx.nr25.31.d
+	picture = GFX_report_event_025_antarctic_signal
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.31.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_site_confirmed_tt
+	}
+}
+
+# A false lead is discovered.
+country_event = {
+	id = chaosx.nr25.32
+	title = chaosx.nr25.32.t
+	desc = chaosx.nr25.32.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.32.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# A fragment of the wreck is recovered.
+country_event = {
+	id = chaosx.nr25.40
+	title = chaosx.nr25.40.t
+	desc = chaosx.nr25.40.d
+	picture = GFX_report_event_025_antarctic_wreck
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.40.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# A fragment returned to the unclaimed pool when our government lost its
+# independence.
+country_event = {
+	id = chaosx.nr25.41
+	title = chaosx.nr25.41.t
+	desc = chaosx.nr25.41.d
+	picture = GFX_report_event_025_antarctic_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.41.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Rescued expedition. FROM is the rescuer; the rescuer gets its own report.
+country_event = {
+	id = chaosx.nr25.50
+	title = chaosx.nr25.50.t
+	desc = chaosx.nr25.50.d
+	picture = GFX_report_event_025_antarctic_rescue
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = { FROM = { country_event = { id = chaosx.nr25.51 days = 1 } } }
+	}
+
+	option = {
+		name = chaosx.nr25.50.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_rescue_received_tt
+	}
+}
+
+# Rescuer's report. FROM is the rescued country.
+country_event = {
+	id = chaosx.nr25.51
+	title = chaosx.nr25.51.t
+	desc = chaosx.nr25.51.d
+	picture = GFX_report_event_025_antarctic_rescue
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.51.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# Damage the victim noticed without identifying the acting country.
+country_event = {
+	id = chaosx.nr25.60
+	title = chaosx.nr25.60.t
+	desc = chaosx.nr25.60.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.60.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_sabotage_countermeasure_tt
+	}
+}
+
+# Sabotage identified. FROM is the acting country.
+country_event = {
+	id = chaosx.nr25.61
+	title = chaosx.nr25.61.t
+	desc = chaosx.nr25.61.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.61.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_sabotage_attributed_tt
+	}
+}
+
+# Armed clash reported to the targeted expedition. FROM is the acting country;
+# armed actions are public.
+country_event = {
+	id = chaosx.nr25.165
+	title = chaosx.nr25.165.t
+	desc = chaosx.nr25.165.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.165.a
+		ai_chance = { base = 100 }
+		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+	}
+}
+
+# ============================================================================
+# GLOBAL NEWS
+# ============================================================================
+# Each item fires once per public milestone; the guard flags live in the
+# report effects. The named country is saved as a global event target.
+
+news_event = {
+	id = chaosx.nr25.90
+	title = chaosx.nr25.90.t
+	desc = chaosx.nr25.90.d
+	picture = GFX_news_event_025_discovery
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.90.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.91
+	title = chaosx.nr25.91.t
+	desc = chaosx.nr25.91.d
+	picture = GFX_news_event_025_discovery
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.91.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.92
+	title = chaosx.nr25.92.t
+	desc = chaosx.nr25.92.d
+	picture = GFX_news_event_025_winner
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.92.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr25.93
+	title = chaosx.nr25.93.t
+	desc = chaosx.nr25.93.d
+	picture = GFX_news_event_025_winner
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr25.93.a
+	}
+}

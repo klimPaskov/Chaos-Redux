@@ -632,6 +632,11 @@ chaosx_alien_recovery_ledger_cleanup_invalid_targets = {
 						has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
 						NOT = { event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { chaosx_alien_recovery_ledger_custody_country_is_valid = yes } }
 					}
+					# A surviving government that lost independence is told
+					# that its fragment returned to the unclaimed pool.
+					event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = {
+						if = { limit = { exists = yes } country_event = { id = chaosx.nr25.41 days = 1 } }
+					}
 					set_temp_variable = { chaosx_alien_recovery_release_slot = [SLOT] }
 					chaosx_alien_recovery_ledger_release_fragment_slot = yes
 				}

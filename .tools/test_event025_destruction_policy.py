@@ -45,6 +45,7 @@ class PolicyRuntime(CustodyRuntime):
         self.effects["chaosx_nr25_trigger_dependence_accident"] = [
             (key, data) for key, data in block("chaosx_nr25_trigger_dependence_accident", HOLDER_EFFECTS)
             if key != "country_event"]
+        self.effects["chaosx_nr25_publish_dependence_crisis"] = []
         self.temporary["casualty_calls"] = 0
         for name in ("chaosx_nr25_evolution_technology_changes_users_action_available",
                      "chaosx_nr25_base_action_available", "chaosx_nr25_aftermath_action_available",

@@ -38,6 +38,9 @@ class HazardRuntime(CustodyRuntime):
         self.effects["chaosx_nr25_trigger_dependence_accident"] = [
             (key, data) for key, data in block("chaosx_nr25_trigger_dependence_accident", HOLDER)
             if key != "country_event"]
+        # Report and news dispatch are scheduling, outside this hazard test.
+        self.effects["chaosx_nr25_publish_dependence_crisis"] = []
+        self.effects["chaosx_nr25_report_outpost_lost"] = []
         self.temporary["casualty_calls"] = 0
         policy = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_custody_policy_triggers.txt").read_text(encoding="utf-8-sig")
         self.triggers["chaosx_nr25_active_material_incidents_allowed"] = block("chaosx_nr25_active_material_incidents_allowed", policy)

@@ -172,6 +172,8 @@ class CustodyRuntime(Runtime):
                 actor.values.pop(data, None)
             elif key == "clear_array":
                 self.global_values[data.removeprefix("global.")] = []
+            elif key == "country_event":
+                self.reports.append((actor.id, dict(data)["id"]))
             elif key == "add_to_array":
                 args = dict(data)
                 value = self.scope(args["value"], actor) if args["value"].startswith("event_target:") else self.value(args["value"], actor)

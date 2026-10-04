@@ -31,6 +31,13 @@ Every result is mapped to one broad public field (flight control, propulsion and
 
 Losing countries receive only verified survey notes and exclusive fragment records. The loser path has no technology grant, and the loser report names the recovering country and the expedition's fragment or survey tier.
 
+## Reports and news
+
+Every state change reaches only the affected country, once per change: the departure (`chaosx.nr25.10`), a failed gateway (`.12`), the first camp (`.20`), a lost or restored camp (`.21`, `.22`), a probable or confirmed site (`.30`, `.31`), a discovered false lead (`.32`), a recovered or lost fragment (`.40`, `.41`), a rescue for both countries (`.50`, `.51`), sabotage (`.60` unidentified, `.61` identified), and an armed clash for its target (`.165`).
+A sabotage victim learns the acting country only when a prepared countermeasure catches the operation or its intelligence reaches 20; only then does it gain the suspicion opinion, and undetected false coordinates stay silent until the expedition discovers them.
+Public news fires once per milestone: the first camp or verified fragment (`.90`), the first armed clash (`.91`), the first accident of an open alien programme (`.92`), and each exposed concealed programme (`.93`).
+The dispatch helpers live in `common/scripted_effects/025_alien_technology_in_antarctica_report_effects.txt`.
+
 ## Expedition Board
 
 The event-owned scripted GUI is nr25_expedition_board_window and is attached through chaosx_nr25_expedition_board_scripted_gui.

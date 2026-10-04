@@ -1,0 +1,130 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 PARTICIPANT REPORTS AND GLOBAL NEWS
+# ============================================================================
+# Overview:
+# - Small dispatch helpers called at the state changes of an expedition. Each
+#   report reaches only the affected country, once per state change, and the
+#   one-shot reports keep their own guard flags.
+# - Global news fires once per public milestone through global guard flags:
+#   the first outpost or verified fragment, the first armed clash, the first
+#   public alien-programme accident, and each exposed concealment.
+# - Reports never name a hidden saboteur unless the victim has identified it,
+#   and never reveal another expedition's coordinates.
+# ============================================================================
+
+# COUNTRY scope. The expedition's route is locked and the crossing begins.
+chaosx_nr25_report_departure = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_departure_reported } }
+		set_country_flag = chaosx_nr25_departure_reported
+		country_event = { id = chaosx.nr25.10 days = 1 }
+	}
+}
+
+# COUNTRY scope. The gateway objective failed and the expedition improvised.
+chaosx_nr25_report_route_setback = {
+	country_event = { id = chaosx.nr25.12 days = 1 }
+}
+
+# COUNTRY scope. The expedition's first camp stands on the ice.
+chaosx_nr25_report_outpost_established = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_outpost_reported } }
+		set_country_flag = chaosx_nr25_outpost_reported
+		country_event = { id = chaosx.nr25.20 days = 1 }
+		if = {
+			limit = { NOT = { has_global_flag = chaosx_nr25_first_milestone_news } }
+			set_variable = { global.chaosx_nr25_first_milestone_kind = constant:chaosx_nr25_report.milestone_outpost }
+		}
+		chaosx_nr25_publish_first_milestone = yes
+	}
+}
+
+# COUNTRY scope. The camp was lost; reported at every loss.
+chaosx_nr25_report_outpost_lost = {
+	country_event = { id = chaosx.nr25.21 days = 1 }
+}
+
+# COUNTRY scope. A lost camp was restored; reported at every restoration.
+chaosx_nr25_report_outpost_restored = {
+	country_event = { id = chaosx.nr25.22 days = 1 }
+}
+
+# COUNTRY scope. The expedition's own surveys point to a probable core site.
+chaosx_nr25_report_probable_site = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_probable_site_reported } }
+		set_country_flag = chaosx_nr25_probable_site_reported
+		country_event = { id = chaosx.nr25.30 days = 1 }
+	}
+}
+
+# COUNTRY scope. The primary site is confirmed for this expedition.
+chaosx_nr25_report_site_confirmed = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_site_confirmed_reported } }
+		set_country_flag = chaosx_nr25_site_confirmed_reported
+		country_event = { id = chaosx.nr25.31 days = 1 }
+	}
+}
+
+# COUNTRY scope. The expedition discovered that its coordinates were false.
+chaosx_nr25_report_false_lead = {
+	country_event = { id = chaosx.nr25.32 days = 1 }
+}
+
+# COUNTRY scope. A fragment slot was assigned to this country.
+chaosx_nr25_report_fragment_recovered = {
+	country_event = { id = chaosx.nr25.40 days = 1 }
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_first_milestone_news } }
+		set_variable = { global.chaosx_nr25_first_milestone_kind = constant:chaosx_nr25_report.milestone_fragment }
+	}
+	chaosx_nr25_publish_first_milestone = yes
+}
+
+# COUNTRY scope. One public milestone: the first camp or the first fragment.
+# Each news item names its country through its own global event target.
+chaosx_nr25_publish_first_milestone = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_first_milestone_news } }
+		set_global_flag = chaosx_nr25_first_milestone_news
+		save_global_event_target_as = chaosx_nr25_milestone_actor
+		news_event = { id = chaosx.nr25.90 days = 1 }
+	}
+}
+
+# COUNTRY scope (the acting country). The first armed clash between
+# expeditions becomes public once.
+chaosx_nr25_publish_first_clash = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_first_clash_news } }
+		set_global_flag = chaosx_nr25_first_clash_news
+		save_global_event_target_as = chaosx_nr25_clash_actor
+		news_event = { id = chaosx.nr25.91 days = 1 }
+	}
+}
+
+# COUNTRY scope. The first accident of an open alien programme becomes public
+# once. A concealed programme keeps its accidents out of the news.
+chaosx_nr25_publish_dependence_crisis = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = chaosx_nr25_dependence_crisis_news }
+			NOT = { has_country_flag = chaosx_nr25_dependence_conceal_route }
+		}
+		set_global_flag = chaosx_nr25_dependence_crisis_news
+		save_global_event_target_as = chaosx_nr25_crisis_actor
+		news_event = { id = chaosx.nr25.92 days = 1 }
+	}
+}
+
+# COUNTRY scope. An exposed concealment is public once per country.
+chaosx_nr25_publish_concealment_exposed = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_concealment_news } }
+		set_country_flag = chaosx_nr25_concealment_news
+		save_global_event_target_as = chaosx_nr25_exposed_actor
+		news_event = { id = chaosx.nr25.93 days = 1 }
+	}
+}

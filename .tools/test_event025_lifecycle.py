@@ -23,6 +23,8 @@ class LifecycleRuntime(Runtime):
             "advance_phase_if_ready", "enter_phase",
         )},
         "schedule_holder_pulse": block("chaosx_nr25_schedule_holder_pulse", HOLDER_SOURCE),
+        # The departure report is scheduling, outside these lifecycle checks.
+        "report_departure": [],
     }
 
 

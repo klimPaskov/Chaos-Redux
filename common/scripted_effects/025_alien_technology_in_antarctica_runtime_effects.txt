@@ -730,6 +730,7 @@ chaosx_nr25_mark_survey_sector = {
 		}
 		set_temp_variable = { chaosx_nr25_sector_result = constant:chaosx_nr25_sector.probable }
 		set_country_flag = chaosx_nr25_primary_site_candidate_found
+		chaosx_nr25_report_probable_site = yes
 	}
 	if = {
 		limit = {
@@ -800,6 +801,7 @@ chaosx_nr25_confirm_current_sector = {
 			}
 		}
 		set_country_flag = chaosx_nr25_primary_site_confirmed
+		chaosx_nr25_report_site_confirmed = yes
 	}
 }
 
@@ -815,6 +817,10 @@ chaosx_nr25_confirm_primary_sector = {
 # reports. It never changes another participant's phase.
 chaosx_nr25_enter_phase = {
 	set_variable = { chaosx_nr25_phase = chaosx_nr25_new_phase }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } }
+		chaosx_nr25_report_departure = yes
+	}
 	if = {
 		limit = { check_variable = { var = global.chaosx_nr25_leading_phase value = chaosx_nr25_phase compare = less_than } }
 		set_variable = { global.chaosx_nr25_leading_phase = chaosx_nr25_phase }
@@ -1171,6 +1177,7 @@ chaosx_nr25_run_bounded_pulse = {
 				set_country_flag = chaosx_nr25_outpost_compromised
 				set_country_flag = chaosx_nr25_outpost_lost
 				subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+				chaosx_nr25_report_outpost_lost = yes
 			}
 		}
 		if = {
@@ -1783,7 +1790,7 @@ chaosx_nr25_fail_phase_mission = {
 			set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.one }
 		}
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.organize compare = equals } } set_country_flag = chaosx_nr25_organize_mission_resolved set_country_flag = chaosx_nr25_organize_mission_failed set_country_flag = chaosx_nr25_emergency_resupply add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_failure_readiness } }
-		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } } set_country_flag = chaosx_nr25_gateway_mission_resolved set_country_flag = chaosx_nr25_gateway_mission_failed set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one } set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland } set_country_flag = chaosx_nr25_route_improvised }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } } set_country_flag = chaosx_nr25_gateway_mission_resolved set_country_flag = chaosx_nr25_gateway_mission_failed set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one } set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland } set_country_flag = chaosx_nr25_route_improvised chaosx_nr25_report_route_setback = yes }
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.establish_outpost compare = equals } } set_country_flag = chaosx_nr25_outpost_mission_resolved set_country_flag = chaosx_nr25_outpost_mission_failed set_country_flag = chaosx_nr25_outpost_compromised subtract_from_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.four } }
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.triangulate_crash_zone compare = equals } } set_country_flag = chaosx_nr25_triangulate_mission_failed set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.compromised } }
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals } } set_country_flag = chaosx_nr25_supply_route_mission_failed add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_failure_readiness } set_country_flag = chaosx_nr25_convoy_incident }
@@ -2048,6 +2055,7 @@ chaosx_nr25_execute_action = {
 			set_country_flag = chaosx_nr25_outpost_counted
 			add_to_variable = { global.chaosx_nr25_outpost_participant_count = constant:chaosx_nr25_value.one }
 		}
+		chaosx_nr25_report_outpost_established = yes
 		set_country_flag = chaosx_nr25_action_establish_outpost_used
 	}
 	if = {
@@ -2064,6 +2072,7 @@ chaosx_nr25_execute_action = {
 			set_country_flag = chaosx_nr25_outpost_established
 			clr_country_flag = chaosx_nr25_outpost_lost
 			clr_country_flag = chaosx_nr25_outpost_compromised
+			chaosx_nr25_report_outpost_restored = yes
 		}
 		set_country_flag = chaosx_nr25_action_reinforce_outpost_used
 	}
@@ -2146,7 +2155,7 @@ chaosx_nr25_execute_action = {
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.signal_triangulation compare = equals } }
 			add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.ten }
-			if = { limit = { has_country_flag = chaosx_nr25_false_map_active } clr_country_flag = chaosx_nr25_false_map_active set_country_flag = chaosx_nr25_false_map_exposed }
+			if = { limit = { has_country_flag = chaosx_nr25_false_map_active } clr_country_flag = chaosx_nr25_false_map_active set_country_flag = chaosx_nr25_false_map_exposed chaosx_nr25_report_false_lead = yes }
 		}
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals } }
@@ -2158,6 +2167,7 @@ chaosx_nr25_execute_action = {
 				limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
 				set_country_flag = chaosx_nr25_fragment_recovered
 				chaosx_nr25_record_fragment_role = yes
+				chaosx_nr25_report_fragment_recovered = yes
 				chaosx_nr25_confirm_current_sector = yes
 			}
 		}
@@ -2544,6 +2554,8 @@ chaosx_nr25_apply_militarisation_target = {
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_blockade }
 				set_country_flag = chaosx_nr25_militarisation_blockaded
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+				set_variable = { chaosx_nr25_last_clash_kind = constant:chaosx_nr25_evolution_action.blockade }
+				country_event = { id = chaosx.nr25.165 days = 1 }
 			}
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
@@ -2554,12 +2566,15 @@ chaosx_nr25_apply_militarisation_target = {
 					set_country_flag = chaosx_nr25_outpost_compromised
 					set_country_flag = chaosx_nr25_outpost_lost
 					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_progress_loss }
+					chaosx_nr25_report_outpost_lost = yes
 				}
 				else = { add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss } }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_seize }
 				chaosx_nr25_record_casualties = yes
 				set_country_flag = chaosx_nr25_militarisation_seized
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+				set_variable = { chaosx_nr25_last_clash_kind = constant:chaosx_nr25_evolution_action.seize }
+				country_event = { id = chaosx.nr25.165 days = 1 }
 			}
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } }
@@ -2568,13 +2583,27 @@ chaosx_nr25_apply_militarisation_target = {
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rival }
 				set_country_flag = chaosx_nr25_militarisation_intercepted
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+				set_variable = { chaosx_nr25_last_clash_kind = constant:chaosx_nr25_evolution_action.intercept }
+				country_event = { id = chaosx.nr25.165 days = 1 }
 			}
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } }
 				set_country_flag = chaosx_nr25_rescue_received
 				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_rescue_debt }
 				ROOT = { set_country_flag = chaosx_nr25_rescue_target_was_valid }
+				# The rescued expedition reports first and answers the rescuer.
+				country_event = { id = chaosx.nr25.50 days = 1 }
 			}
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals }
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals }
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals }
+				}
+			}
+			chaosx_nr25_publish_first_clash = yes
 		}
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
@@ -2788,6 +2817,7 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 			limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
 			set_country_flag = chaosx_nr25_fragment_recovered
 			chaosx_nr25_record_fragment_role = yes
+			chaosx_nr25_report_fragment_recovered = yes
 			chaosx_nr25_confirm_current_sector = yes
 		}
 		set_country_flag = chaosx_nr25_wreck_cut_route
@@ -2915,6 +2945,7 @@ chaosx_nr25_execute_rival_sabotage = {
 		set_variable = { chaosx_nr25_rival_operation = constant:chaosx_nr25_rival_operation.sabotage }
 	}
 	chaosx_nr25_resolve_rival_target_id = yes
+	set_temp_variable = { chaosx_nr25_sabotage_caught = constant:chaosx_nr25_value.zero }
 	if = {
 		limit = { has_variable = chaosx_nr25_rival_target }
 		if = {
@@ -2964,6 +2995,7 @@ chaosx_nr25_execute_rival_sabotage = {
 					clr_country_flag = chaosx_nr25_countermeasure_ready
 					if = { limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } } clr_country_flag = chaosx_nr25_false_map_active set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.confirmed } }
 					set_country_flag = chaosx_nr25_sabotage_intercepted
+					set_temp_variable = { chaosx_nr25_sabotage_caught = constant:chaosx_nr25_value.one }
 					add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.two }
 				}
 				else_if = {
@@ -3030,8 +3062,30 @@ chaosx_nr25_execute_rival_sabotage = {
 					set_country_flag = chaosx_nr25_sabotage_landed
 				}
 				set_variable = { chaosx_nr25_rival_received_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
-				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
 				set_country_flag = chaosx_nr25_sabotaged
+				set_variable = { chaosx_nr25_last_sabotage_kind = ROOT.chaosx_nr25_rival_operation }
+				# The victim identifies the acting country only through a caught
+				# operation or its own intelligence. Undetected false coordinates
+				# stay unknown until the expedition discovers them.
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = chaosx_nr25_sabotage_caught value = constant:chaosx_nr25_value.one compare = equals }
+							check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_report.sabotage_attribution_intelligence compare = greater_than_or_equals }
+						}
+					}
+					add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
+					# Identified false coordinates no longer mislead the surveys.
+					if = {
+						limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }
+						clr_country_flag = chaosx_nr25_false_map_active
+					}
+					country_event = { id = chaosx.nr25.61 days = 1 }
+				}
+				else_if = {
+					limit = { NOT = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } } }
+					country_event = { id = chaosx.nr25.60 days = 1 }
+				}
 			}
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }

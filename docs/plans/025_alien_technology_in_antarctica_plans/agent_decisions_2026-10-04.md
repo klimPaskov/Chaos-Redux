@@ -177,3 +177,18 @@ Decision:
 - The recipient starts with at least 10 Dependence, gains intelligence, joins the holder watch, gains the artifact decisions, trusts the giver, and is distrusted by the other expeditions and holders.
 - Offers lapse after 30 days. A refused, lapsed or invalid handover changes nothing, charges nothing, clears the stale consent, and reports the failure.
 - AI offers custody only to AI countries, mostly when its Dependence is high, the recipient shares a faction, or the recipient is industrially stronger, and never while it pursues integration. AI recipients accept more readily inside the same faction or with good relations and refuse when hostile.
+
+## D12. Participant reports, sabotage attribution and global news
+
+Disposition: `implemented`.
+
+Basis: the chain map's participant-report and global-report tables, and the multiplayer privacy rule that hidden coordinates and the author of hidden sabotage are never revealed.
+
+Decision:
+
+- One-shot reports (departure, first camp, probable site, confirmed site) keep their own guard flags; repeatable state changes (camp lost or restored, false lead, fragment recovered or lost, rescue, sabotage, armed clash) report at each change, which the action cooldowns already bound.
+- A sabotage victim identifies the acting country only through a caught operation or intelligence of at least 20. The suspicion opinion is applied only then, so the diplomacy screen no longer reveals an unidentified saboteur. An identified false-coordinate operation stops misleading the victim's surveys; an undetected one stays silent until the expedition discovers it.
+- Armed clashes are public by nature: the target is told who acted, and the first clash makes the news.
+- The public Evolution V crisis is the first accident of a programme that is not concealed, plus each concealed programme exposed by a custody handover.
+- The four news items reuse the delivered Event 025 news image (`news_event_025_winner.dds`, also aliased as the discovery picture); no separate news art exists for the milestone, clash, accident and exposure items.
+- The crossing report card now illustrates the departure and route-setback reports, and the rescue card both rescue reports.
