@@ -104,13 +104,13 @@ utopia_manifesto_prepare_dynamic_decision_duration = {
 		}
 	}
 	if = {
-		limit = { check_variable = { var = num_of_owned_states value = constant:utopia_manifesto_decision_threshold.large_country_states compare = greater_than } }
+		limit = { check_variable = { var = num_owned_states value = constant:utopia_manifesto_decision_threshold.large_country_states compare = greater_than } }
 		add_to_temp_variable = {
 			utopia_manifesto_duration_result = constant:utopia_manifesto_decision_duration.large_country_addition
 		}
 	}
 	if = {
-		limit = { check_variable = { var = num_of_owned_states value = constant:utopia_manifesto_decision_threshold.very_large_country_states compare = greater_than } }
+		limit = { check_variable = { var = num_owned_states value = constant:utopia_manifesto_decision_threshold.very_large_country_states compare = greater_than } }
 		add_to_temp_variable = {
 			utopia_manifesto_duration_result = constant:utopia_manifesto_decision_duration.very_large_country_addition
 		}
@@ -813,7 +813,6 @@ utopia_manifesto_record_district_role_suitability = {
 utopia_manifesto_register_district_state = {
 	if = {
 		limit = {
-			FROM = { exists = yes }
 			NOT = { is_in_array = { array = utopia_manifesto_district_states value = FROM } }
 		}
 		add_to_array = { array = utopia_manifesto_district_states value = FROM }
@@ -898,7 +897,6 @@ utopia_manifesto_apply_penal_works_loss_to_active_district = {
 		limit = {
 			has_variable = utopia_manifesto_penal_works_project_state
 			var:utopia_manifesto_penal_works_project_state = {
-				exists = yes
 				has_state_flag = utopia_manifesto_penal_works_method_active
 			}
 		}
@@ -1842,7 +1840,6 @@ utopia_manifesto_complete_district_charter = {
 utopia_manifesto_register_from_as_island_project_state = {
 	if = {
 		limit = {
-			FROM = { exists = yes }
 			NOT = { is_in_array = { array = utopia_manifesto_island_project_states value = FROM } }
 		}
 		add_to_array = { array = utopia_manifesto_island_project_states value = FROM }
@@ -1850,13 +1847,7 @@ utopia_manifesto_register_from_as_island_project_state = {
 	}
 	if = {
 		limit = {
-			FROM = { exists = yes }
-			NOT = {
-				any_of_scopes = {
-					array = utopia_manifesto_island_project_primary_states
-					exists = yes
-				}
-			}
+			check_variable = { utopia_manifesto_island_project_primary_states^num < constant:utopia_manifesto_island_project_limits.single_site_required_states }
 		}
 		add_to_array = { array = utopia_manifesto_island_project_primary_states value = FROM }
 		set_variable = { utopia_manifesto_island_project_primary_state_id = FROM.id }
