@@ -56,6 +56,7 @@ event021_count_live_dynamic_tags = {
 # with its own frozen plan counts its own reservation as available. Output:
 # `event021_dynamic_tag_free`, never below zero.
 event021_count_free_dynamic_tags = {
+	set_temp_variable = { event021_dynamic_tag_live_count = constant:random_civil_war_value.zero }
 	event021_count_live_dynamic_tags = yes
 	set_temp_variable = { event021_dynamic_tag_free = constant:event021_dynamic_tags.pool_size }
 	subtract_from_temp_variable = { event021_dynamic_tag_free = event021_dynamic_tag_live_count }
@@ -97,6 +98,8 @@ event021_reserve_scenario_dynamic_tags = {
 		}
 	}
 	event021_release_scenario_dynamic_tags = yes
+	set_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_dynamic_tag_live_count = constant:random_civil_war_value.zero }
 	if = {
 		limit = { check_variable = { var = event021_scenario_dynamic_tag_need value = constant:random_civil_war_value.zero compare = greater_than } }
 		event021_count_free_dynamic_tags = yes

@@ -373,6 +373,19 @@ event021_parent_resolve_active_review_source = {
 # except deferral marks that source reviewed for this epoch.
 event021_parent_review_active_evolution_i_source = {
 	set_temp_variable = { event021_active_source_result = constant:event021_active_review_result.ineligible }
+	# Helper outputs are created here, before each call, so they survive the
+	# helper's return.
+	set_temp_variable = { event021_active_review_source_found = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_review_row_generation = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_review_source_break = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_review_generation_rounded = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_parent_dynamic_optional_front_valid = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_parent_dynamic_optional_front_count = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_child_division_budget = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_source_divisions = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_tag_limited = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_commit_opened = constant:random_civil_war_value.zero }
 	event021_parent_resolve_active_review_source = yes
 	if = {
 		limit = { check_variable = { var = event021_active_review_source_found value = constant:random_civil_war_value.one compare = equals } }
@@ -454,6 +467,10 @@ event021_parent_collect_active_front_candidates = {
 	set_temp_variable = { event021_parent_dynamic_optional_front_valid = constant:random_civil_war_value.one }
 	set_temp_variable = { event021_parent_dynamic_optional_front_count = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_parent_dynamic_ordinary_front_count = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_floor_value = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_floor_rounded = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_dynamic_tag_free = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_dynamic_tag_live_count = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_parent_dynamic_optional_front_capacity = global.random_civil_war_max_active_fronts }
 	if = {
 		limit = { has_variable = global.random_civil_war_active_front_count }
@@ -660,6 +677,8 @@ event021_parent_build_active_front_rows = {
 		}
 		clear_temp_array = event021_active_excluded_states
 		clear_temp_array = event021_active_accepted_rows
+		set_temp_variable = { event021_active_remnant_reached = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_active_remnant_growth = constant:random_civil_war_value.zero }
 		event021_parent_measure_active_source_remnant = yes
 		set_temp_variable = { event021_active_remnant_baseline = event021_active_remnant_reached }
 		clear_temp_array = event021_active_remnant_baseline_states
@@ -1038,6 +1057,9 @@ event021_parent_commit_active_front_row = {
 	set_temp_variable = { event021_active_review_source_id = random_civil_war_active_front_source_ids^event021_active_commit_row }
 	set_temp_variable = { event021_active_commit_actor_type = random_civil_war_active_front_actor_types^event021_active_commit_row }
 	set_temp_variable = { event021_active_commit_generation = random_civil_war_active_front_generations^event021_active_commit_row }
+	set_temp_variable = { event021_active_review_source_found = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_review_row_generation = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_active_review_source_break = constant:random_civil_war_value.zero }
 	event021_parent_resolve_active_review_source = yes
 	if = {
 		limit = {
