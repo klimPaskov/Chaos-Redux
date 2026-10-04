@@ -112,3 +112,4 @@ Ruritania's own review finds no route, so its result is no side, and the review 
 The review, candidate, remnant, and commit paths are source-reviewed only.
 Native civil-war rounding, stockpile and manpower transfer on rollback, and live campaign behavior remain `needs_live_game` evidence for the user.
 No MCP lifecycle or probability certificate is claimed.
+A narrow `hoi4.event_inspect` lint of `chaosx.nr21.20` (depth 2, helpers not expanded) returned `EVENT_INSPECTED_PARTIAL` with zero lint issues and zero blocking diagnostics at source revision `862e183c2c76633803bdee1163396a2ff44a2ede00700dcbe238e41fa3e090ab`; the server deferred helper projection, so the scripted helpers behind the callback are not covered by that result.
