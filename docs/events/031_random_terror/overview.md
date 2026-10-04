@@ -83,6 +83,12 @@ A protected transport state turns half of the route attacks against it into atta
 
 Global Jihad is registered in the shared `chaosx_scenarios_window` list with all five deployment types, all four intensities, dynamic descriptions and impact warnings, fail-closed launch status, and the Event 31 preflight transaction. Maximum enables The Final Jihad but only schedules The False Revelation through the ordinary `1000+` Chaos, readiness, unity, territorial-control, crisis-state, strategic-victory, and viable-actor gates.
 
+`random_terror_resolve_scenario_profile` writes only the scenario targets and the evolution stage the launch will open (`global.random_terror_scenario_target_stage`).
+The preflight counts only free carriers whose spawner gate that stage unlocks, so JMX counts only at Maximum, and Maximum clamps its actor target to the free carriers and valid states with at least one actor in all.
+Evolution flags and the stage are applied by `random_terror_apply_scenario_evolutions` only after the preflight passes, and a blocked launch clears the profile it wrote, so it leaves no evolution, flag or actor behind.
+From Medium upward, when at least two actors exist, `random_terror_scenario_form_coordination` lets the strongest actor found the Jihadist International and brings the others in, while High and Maximum keep one rival command independent (`random_terror_independent_command`).
+Setup records its evolutions in the Event Logs but holds back their report popups; seeded governments receive the launch report `chaosx.nr31.90`, every other player receives `chaosx.nr31.6`, and the world receives `chaosx.news.310`.
+
 ## Territorial actors
 
 Eight predeclared carrier tags provide bounded territorial-country capacity without dynamic tags, custom units, Event 19 providers, 3D models, custom unit sounds, or bespoke counters.

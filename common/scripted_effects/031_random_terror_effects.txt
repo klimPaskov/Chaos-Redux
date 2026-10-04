@@ -1056,6 +1056,8 @@ random_terror_record_evolution = {
 	random_terror_emit_evolution_report = yes
 }
 
+# One report per evolution.  Global Jihad setup records its evolutions in the
+# Event Logs but holds these popups back in favour of its own launch reports.
 random_terror_emit_evolution_report = {
 	if = {
 		limit = {
@@ -1063,7 +1065,10 @@ random_terror_emit_evolution_report = {
 			NOT = { has_global_flag = random_terror_evolution_2_report_sent }
 		}
 		set_global_flag = random_terror_evolution_2_report_sent
-		every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.3 } }
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.3 } }
+		}
 	}
 	if = {
 		limit = {
@@ -1071,7 +1076,10 @@ random_terror_emit_evolution_report = {
 			NOT = { has_global_flag = random_terror_evolution_3_report_sent }
 		}
 		set_global_flag = random_terror_evolution_3_report_sent
-		every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.4 } }
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.4 } }
+		}
 	}
 	if = {
 		limit = {
@@ -1079,7 +1087,10 @@ random_terror_emit_evolution_report = {
 			NOT = { has_global_flag = random_terror_evolution_4_report_sent }
 		}
 		set_global_flag = random_terror_evolution_4_report_sent
-		every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.6 } }
+		if = {
+			limit = { NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress } }
+			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.6 } }
+		}
 	}
 }
 
@@ -1175,6 +1186,9 @@ random_terror_run_global_wave = {
 # Global Jihad triggerable scenario
 # -----------------------------------------------------------------------------
 
+# Reads the requested pattern and intensity and writes the scenario targets.
+# It sets no evolution flag or stage: those follow only a passed preflight, so
+# a blocked launch leaves the world unchanged (Part 7 acceptance case 11).
 random_terror_resolve_scenario_profile = {
 	random_terror_initialize_global_state = yes
 	if = {
@@ -1263,18 +1277,58 @@ random_terror_resolve_scenario_profile = {
 		set_variable = { global.random_terror_scenario_response_capacity = constant:random_terror_tuning.scenario_medium_response_capacity }
 		set_variable = { global.random_terror_scenario_civil_war_target = constant:random_terror_tuning.scenario_medium_civil_war_target }
 	}
+	# The evolution stage this launch will open.  The preflight counts only the
+	# carriers whose evolution gate this stage unlocks.
+	set_variable = { global.random_terror_scenario_target_stage = constant:random_terror_evolution.jihadist_international }
+	if = {
+		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.maximum } }
+		set_variable = { global.random_terror_scenario_target_stage = constant:random_terror_evolution.final_jihad }
+	}
+	if = {
+		limit = { check_variable = { global.random_terror_evolution_stage > global.random_terror_scenario_target_stage } }
+		set_variable = { global.random_terror_scenario_target_stage = global.random_terror_evolution_stage }
+	}
+}
+
+# Runs only after a passed preflight.  Opens the scenario's evolutions without
+# ever lowering a stage the ordinary progression already reached.
+random_terror_apply_scenario_evolutions = {
 	set_global_flag = random_terror_evolution_1_unlocked
 	set_global_flag = random_terror_evolution_2_unlocked
 	set_global_flag = random_terror_evolution_3_unlocked
 	set_global_flag = random_terror_evolution_4_unlocked
-	set_variable = { global.random_terror_evolution_stage = constant:random_terror_evolution.jihadist_international }
 	if = {
-		limit = { check_variable = { random_terror_scenario_input_intensity = constant:random_terror_intensity.maximum } }
+		limit = { check_variable = { global.random_terror_evolution_stage < constant:random_terror_evolution.jihadist_international } }
+		set_variable = { global.random_terror_evolution_stage = constant:random_terror_evolution.jihadist_international }
+	}
+	if = {
+		limit = { check_variable = { global.random_terror_scenario_target_stage = constant:random_terror_evolution.final_jihad } }
 		set_global_flag = random_terror_evolution_5_unlocked
 		set_global_flag = random_terror_final_jihad_active
 		set_global_flag = random_terror_false_revelation_enabled
 		set_variable = { global.random_terror_evolution_stage = constant:random_terror_evolution.final_jihad }
 	}
+}
+
+# A blocked launch removes the profile it wrote, leaving no scenario state.
+random_terror_clear_scenario_profile = {
+	clear_variable = global.random_terror_global_jihad_type
+	clear_variable = global.random_terror_global_jihad_scenario_intensity
+	clear_variable = global.random_terror_scenario_effective_type
+	clear_variable = global.random_terror_scenario_target_stage
+	clear_variable = global.random_terror_scenario_country_target
+	clear_variable = global.random_terror_scenario_state_target
+	clear_variable = global.random_terror_scenario_actor_target
+	clear_variable = global.random_terror_scenario_pressure
+	clear_variable = global.random_terror_scenario_activity
+	clear_variable = global.random_terror_scenario_network_reach
+	clear_variable = global.random_terror_scenario_unity
+	clear_variable = global.random_terror_scenario_readiness
+	clear_variable = global.random_terror_scenario_legitimacy
+	clear_variable = global.random_terror_scenario_response_capacity
+	clear_variable = global.random_terror_scenario_civil_war_target
+	clear_variable = global.random_terror_scenario_new_actor_target
+	clear_variable = global.random_terror_scenario_existing_actor_count
 }
 
 random_terror_record_scenario_evolutions = {
@@ -1333,20 +1387,69 @@ random_terror_scenario_preflight = {
 		limit = { random_terror_scenario_actor_state = yes }
 		add_to_temp_variable = { random_terror_scenario_valid_state_count = constant:random_terror_value.one }
 	}
+	# Count only the carriers whose evolution gate this launch opens (the same
+	# gates random_terror_try_spawn_actor applies).
 	if = { limit = { JHX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
 	if = { limit = { JIX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
 	if = { limit = { JKX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
-	if = { limit = { JLX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
-	if = { limit = { JMX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
-	if = { limit = { JNX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
-	if = { limit = { JOX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
-	if = { limit = { JPX = { random_terror_carrier_is_free = yes } } add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one } }
+	if = {
+		limit = {
+			check_variable = { var = global.random_terror_scenario_target_stage value = constant:random_terror_evolution.organized_cells compare = greater_than_or_equals }
+			JNX = { random_terror_carrier_is_free = yes }
+		}
+		add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.random_terror_scenario_target_stage value = constant:random_terror_evolution.transnational_network compare = greater_than_or_equals }
+			JOX = { random_terror_carrier_is_free = yes }
+		}
+		add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.random_terror_scenario_target_stage value = constant:random_terror_evolution.territorial_insurgency compare = greater_than_or_equals }
+			JPX = { random_terror_carrier_is_free = yes }
+		}
+		add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.random_terror_scenario_target_stage value = constant:random_terror_evolution.jihadist_international compare = greater_than_or_equals }
+			JLX = { random_terror_carrier_is_free = yes }
+		}
+		add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { global.random_terror_scenario_target_stage = constant:random_terror_evolution.final_jihad }
+			JMX = { random_terror_carrier_is_free = yes }
+		}
+		add_to_temp_variable = { random_terror_scenario_free_carrier_count = constant:random_terror_value.one }
+	}
 	set_variable = { global.random_terror_scenario_new_actor_target = global.random_terror_scenario_actor_target }
 	subtract_from_variable = { global.random_terror_scenario_new_actor_target = global.random_terror_scenario_existing_actor_count }
 	if = {
 		limit = { check_variable = { global.random_terror_scenario_new_actor_target < constant:random_terror_value.zero } }
 		set_variable = { global.random_terror_scenario_new_actor_target = constant:random_terror_value.zero }
 	}
+	# Maximum creates the largest valid actor count the free carriers and valid
+	# states support, and needs at least one actor in all.
+	set_temp_variable = { random_terror_scenario_actor_floor = constant:random_terror_value.zero }
+	if = {
+		limit = { check_variable = { global.random_terror_global_jihad_scenario_intensity = constant:random_terror_intensity.maximum } }
+		if = {
+			limit = { check_variable = { var = global.random_terror_scenario_new_actor_target value = random_terror_scenario_free_carrier_count compare = greater_than } }
+			set_variable = { global.random_terror_scenario_new_actor_target = random_terror_scenario_free_carrier_count }
+		}
+		if = {
+			limit = { check_variable = { var = global.random_terror_scenario_new_actor_target value = random_terror_scenario_valid_state_count compare = greater_than } }
+			set_variable = { global.random_terror_scenario_new_actor_target = random_terror_scenario_valid_state_count }
+		}
+		set_temp_variable = { random_terror_scenario_actor_floor = constant:random_terror_value.one }
+	}
+	set_temp_variable = { random_terror_scenario_actor_total = global.random_terror_scenario_existing_actor_count }
+	add_to_temp_variable = { random_terror_scenario_actor_total = global.random_terror_scenario_new_actor_target }
 	if = {
 		limit = {
 			NOT = { has_global_flag = world_end }
@@ -1355,6 +1458,7 @@ random_terror_scenario_preflight = {
 			check_variable = { var = random_terror_scenario_valid_country_count value = global.random_terror_scenario_country_target compare = greater_than_or_equals }
 			check_variable = { var = random_terror_scenario_valid_state_count value = global.random_terror_scenario_new_actor_target compare = greater_than_or_equals }
 			check_variable = { var = random_terror_scenario_free_carrier_count value = global.random_terror_scenario_new_actor_target compare = greater_than_or_equals }
+			check_variable = { var = random_terror_scenario_actor_total value = random_terror_scenario_actor_floor compare = greater_than_or_equals }
 		}
 		set_variable = { global.random_terror_scenario_preflight_ready = constant:random_terror_value.one }
 	}
@@ -1367,11 +1471,95 @@ random_terror_scenario_preflight = {
 		set_variable = { global.random_terror_scenario_preflight_reason = constant:random_terror_scenario_reject_reason.countries }
 	}
 	else_if = {
-		limit = { check_variable = { random_terror_scenario_valid_state_count < global.random_terror_scenario_new_actor_target } }
+		limit = {
+			OR = {
+				check_variable = { random_terror_scenario_valid_state_count < global.random_terror_scenario_new_actor_target }
+				check_variable = { random_terror_scenario_valid_state_count < random_terror_scenario_actor_floor }
+			}
+		}
 		set_variable = { global.random_terror_scenario_preflight_reason = constant:random_terror_scenario_reject_reason.states }
 	}
 	else = {
 		set_variable = { global.random_terror_scenario_preflight_reason = constant:random_terror_scenario_reject_reason.carriers }
+	}
+}
+
+# Global selection of the strongest live actor for the scenario coordination
+# structure.  Score: Network Authority + Territorial Control + External Supply
+# plus a fixed weight for each controlled state.
+random_terror_select_strongest_actor = {
+	clear_global_event_target = random_terror_scenario_leader
+	set_temp_variable = { random_terror_strongest_score = constant:random_terror_value.zero }
+	every_country = {
+		limit = { random_terror_is_actor = yes }
+		set_temp_variable = { random_terror_candidate_score = num_of_controlled_states }
+		multiply_temp_variable = { random_terror_candidate_score = constant:random_terror_tuning.scenario_leader_state_weight }
+		add_to_temp_variable = { random_terror_candidate_score = random_terror_network_authority }
+		add_to_temp_variable = { random_terror_candidate_score = random_terror_territorial_control }
+		add_to_temp_variable = { random_terror_candidate_score = random_terror_external_supply }
+		if = {
+			limit = { check_variable = { random_terror_candidate_score > random_terror_strongest_score } }
+			set_temp_variable = { random_terror_strongest_score = random_terror_candidate_score }
+			save_global_event_target_as = random_terror_scenario_leader
+		}
+	}
+}
+
+# Setup Step 5 (Part 7).  From Medium upward, when at least two actors exist,
+# the strongest founds the Jihadist International and the others join it.
+# High and Maximum keep one rival command independent.
+random_terror_scenario_form_coordination = {
+	set_temp_variable = { random_terror_scenario_actor_total = constant:random_terror_value.zero }
+	every_country = {
+		limit = { random_terror_is_actor = yes }
+		add_to_temp_variable = { random_terror_scenario_actor_total = constant:random_terror_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = { global.random_terror_global_jihad_scenario_intensity > constant:random_terror_intensity.low }
+			check_variable = { random_terror_scenario_actor_total > constant:random_terror_value.one }
+		}
+		random_terror_select_strongest_actor = yes
+		if = {
+			limit = { has_event_target = random_terror_scenario_leader }
+			event_target:random_terror_scenario_leader = {
+				random_terror_create_jihadist_international_faction = yes
+				set_country_flag = random_terror_network_leader
+				set_country_flag = random_terror_jihadist_international_member
+				set_country_flag = random_terror_later_religious_opposition_registry
+			}
+			if = {
+				limit = { check_variable = { global.random_terror_global_jihad_scenario_intensity > constant:random_terror_intensity.medium } }
+				random_country = {
+					limit = {
+						random_terror_is_actor = yes
+						NOT = { has_country_flag = random_terror_network_leader }
+					}
+					set_country_flag = random_terror_independent_command
+				}
+			}
+			every_country = {
+				limit = {
+					random_terror_is_actor = yes
+					NOT = { has_country_flag = random_terror_network_leader }
+					NOT = { has_country_flag = random_terror_independent_command }
+					NOT = { is_in_faction_with = event_target:random_terror_scenario_leader }
+				}
+				if = {
+					limit = { is_in_faction = yes }
+					leave_faction = yes
+				}
+				event_target:random_terror_scenario_leader = {
+					if = {
+						limit = { is_faction_leader = yes }
+						add_to_faction = PREV
+					}
+				}
+				set_country_flag = random_terror_jihadist_international_member
+				set_country_flag = random_terror_later_religious_opposition_registry
+			}
+		}
+		clear_global_event_target = random_terror_scenario_leader
 	}
 }
 
@@ -1568,6 +1756,7 @@ random_terror_launch_global_jihad = {
 			set_global_flag = random_terror_global_jihad_setup_in_progress
 			set_global_flag = random_terror_global_jihad_active
 			set_global_flag = random_terror_scenario_setup_bypass
+			random_terror_apply_scenario_evolutions = yes
 			set_variable = { global.random_terror_scenario_civil_wars_started = constant:random_terror_value.zero }
 			set_variable = { global.random_terror_scenario_actors_created = global.random_terror_scenario_existing_actor_count }
 			set_variable = { global.random_terror_scenario_states_seeded = constant:random_terror_value.zero }
@@ -1578,6 +1767,7 @@ random_terror_launch_global_jihad = {
 			# Each created actor opens its own war with its parent during seeding.
 			# Maximum enables Final Jihad, not the entity or its terminal package.
 			random_terror_scenario_seed_actors = yes
+			random_terror_scenario_form_coordination = yes
 			random_terror_refresh_global_values = yes
 			set_variable = { global.random_terror_network_reach = global.random_terror_scenario_network_reach }
 			set_variable = { global.random_terror_international_unity = global.random_terror_scenario_unity }
@@ -1587,12 +1777,24 @@ random_terror_launch_global_jihad = {
 			clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 			set_global_flag = random_terror_global_jihad_scenario_launched
 			set_global_flag = random_terror_scenario_launch_recorded
+			# Event Logs rows for the opened evolutions; their report popups are
+			# held back while setup is in progress.
 			random_terror_record_scenario_evolutions = yes
 			random_terror_scenario_record_history = yes
 			random_terror_achievement_record_scenario_launch = yes
 			clr_global_flag = random_terror_scenario_setup_bypass
 			clr_global_flag = random_terror_global_jihad_setup_in_progress
 			clr_global_flag = random_terror_global_jihad_manual_request
+			# The scenario's own reports: seeded governments receive the launch
+			# report, every other player the rejection report.
+			every_country = {
+				limit = {
+					is_ai = no
+					exists = yes
+					NOT = { has_country_flag = random_terror_scenario_report_sent }
+				}
+				country_event = { id = chaosx.nr31.6 days = 1 }
+			}
 			if = {
 				limit = { NOT = { has_global_flag = random_terror_scenario_news_sent } }
 				news_event = { id = chaosx.news.310 }
@@ -1600,6 +1802,7 @@ random_terror_launch_global_jihad = {
 			}
 		}
 		else = {
+			random_terror_clear_scenario_profile = yes
 			set_country_flag = random_terror_scenario_launch_blocked
 			country_event = { id = chaosx.nr31.91 days = 1 }
 		}
@@ -5147,6 +5350,7 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_jihad_membership_request_pending
 	clr_country_flag = random_terror_jihad_transaction_valid
 	clr_country_flag = random_terror_network_leader
+	clr_country_flag = random_terror_independent_command
 	clr_country_flag = random_terror_network_leadership_contested
 	clr_country_flag = random_terror_final_jihad_active
 	clr_country_flag = random_terror_terminal_command
