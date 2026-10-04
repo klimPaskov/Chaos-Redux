@@ -226,3 +226,17 @@ AI weights are unchanged; AI affordability reads the same quotes and triggers.
 Disposition: implemented (source) for the response, shared, last-response, and weaponization surfaces.
 The Rat Nation and Rat King meter decisions are the remaining Event 020 tranche 1 surface.
 Live display and payment of a response project, a shared band action, and a last-response mission during a sale are `needs_live_game`.
+
+## D14. Rat Nation and Rat King meters stay outside the sale
+
+Decision: the 36 custom-cost decisions in `common/decisions/020_black_plague_rat_decisions.txt` keep their ordinary amounts; registry disposition `not_a_purchase_cost`.
+They spend the event actors' own pacing meters (Brood Mass, Dominion, Sentience, Cohesion, Hunger, and the division-cap reserve), not a stockpile or national resource.
+
+Basis:
+- Both actors are special chaos countries (`is_special_chaos_country` lists `black_plague_rat_country` and `black_plague_rat_king_country`) and are never human-played or eligible for the Black Friday achievement.
+- The rat meters pace a deliberately bounded escalation: the owner's decision file states that rat armies grow only through scripted capped pulses, and the Dominion, Sentience, Cohesion, and division-cap spends gate the Crown-the-Continent and terminal takeover route. Spec Part 4's qualifying test excludes a reduction that bypasses a non-cost requirement, and Part 5 forbids the sale from making otherwise invalid escalation affordable.
+- Several actions are one-for-one meter conversions (Hold a Hunger Court turns Hunger into Cohesion, Convene the Council turns Cohesion into Sentience); discounting the paid side would mint meter value and change the action's identity, which Part 4's qualifying test also excludes.
+
+The human counter-actions against the rats (Royal Node strike, Crown Strike, Royal Burrow sealing, armored clearance, the last-response missions) are purchases and read the sale price (D13).
+
+Disposition: `not_a_purchase_cost`, recorded in the registry. This closes the Event 020 tranche 1 surface.

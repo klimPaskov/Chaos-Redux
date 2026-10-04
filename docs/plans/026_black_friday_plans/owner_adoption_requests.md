@@ -235,7 +235,7 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 108
 
 #### Event 020 Black Plague
 
-Converted (agent decision D13): response, shared, national programme, last-response, and weaponization costs. Remaining in tranche 1: the Rat Nation and Rat King meter decisions in `020_black_plague_rat_decisions.txt`. The line list below predates the conversion.
+Converted (agent decision D13): response, shared, national programme, last-response, and weaponization costs. The Rat Nation and Rat King meter decisions in `020_black_plague_rat_decisions.txt` are `not_a_purchase_cost` (D14). No Event 020 cost remains queued. The line list below predates the conversion.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 98.
 
