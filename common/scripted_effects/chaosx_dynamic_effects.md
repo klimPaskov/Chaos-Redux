@@ -270,15 +270,21 @@ Inputs: `state_civilian_population_loss_requested`, `state_civilian_population_l
 
 Outputs: `state_civilian_population_loss_applied` and `state_civilian_population_loss_result`.
 
-`state_civilian_population_loss_result` is `0` when no population was removed and `1` when a positive amount was applied, whichever branch below handled the removal.
-`state_civilian_population_loss_applied` is the requested amount clamped between zero and the state population above the protected floor, rounded.
+`state_civilian_population_loss_result` is `0` when no population was removed and `1` when an observed positive amount was removed.
+`state_civilian_population_loss_applied` is the measured pre-transaction state population minus the measured post-transaction state population, expressed in people and never below zero.
+The protected floor is rounded upward to a whole person and the requested transaction is rounded and clamped to whole civilians available above it.
+Fractional availability is floored so rounding cannot cross the caller's protected minimum.
+Callers must initialize both output temporary variables before invoking the helper so their returned values survive the scripted-effect boundary.
 
 Defaults: missing contract inputs produce a zero-value request with the unknown Deaths reason, no valid target, and a zero population floor.
 
-Side effects: applies the loss once, optionally registers the exact amount through `chaos_meter_register_deaths`, reconciles observed recruitable-manpower credit, and clears all public inputs before return.
+Side effects: applies one state-scope population transaction, reconciles observed recruitable-manpower credit, reads back the state population, optionally registers only the observed positive loss through `chaos_meter_register_deaths`, and clears all public inputs before return.
+Deaths registration uses `chaos_deaths_apply_state_pop = 0` and `chaos_deaths_record_state_ledger = 1`, so the state ledger, global ledger, cause history, and normal shared Chaos progression use the measured amount without another population mutation.
+An engine transaction that removes zero population returns zero and creates no death record.
 
 The applied amount is registered through `chaos_meter_register_deaths` only when `state_civilian_population_loss_log_deaths` is above zero and either the Deaths ledger is enabled (`settings_chaos_deaths_disabled` is not set) or one of the fallout states `fallout_air_cleanliness_disabled`, `fallout_transition_active`, `fallout_active`, `fallout_manual_scenario_active`, `fallout_manual_sweep_active`, or `fallout_manual_countdown_active` is set.
-In the deaths-disabled branch, which also handles any request with the log flag at zero, the loss is applied through `apply_state_population_loss_without_recruitable_manpower_gain` and nothing is written to the Deaths ledger, while the result value stays `1`.
+When Deaths logging is disabled or the log flag is zero, the same population-first transaction still runs, but nothing is written to the Deaths ledger.
+The result is still determined by the observed population decrease, not by the logging policy.
 
 Example:
 
@@ -290,6 +296,8 @@ set_temp_variable = { state_civilian_population_loss_log_deaths = 1 }
 set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
 set_temp_variable = { state_civilian_population_loss_contract_supplied = 1 }
+set_temp_variable = { state_civilian_population_loss_applied = 0 }
+set_temp_variable = { state_civilian_population_loss_result = 0 }
 apply_exact_state_civilian_population_loss = yes
 ```
 

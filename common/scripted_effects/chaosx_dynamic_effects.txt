@@ -654,10 +654,16 @@ apply_exact_state_civilian_population_loss = {
 		var = state_civilian_population_loss_minimum_remaining
 		min = constant:chaos_meter_deaths.zero
 	}
+	set_temp_variable = { state_civilian_population_loss_minimum_unrounded = state_civilian_population_loss_minimum_remaining }
 	round_temp_variable = state_civilian_population_loss_minimum_remaining
+	if = {
+		limit = { check_variable = { var = state_civilian_population_loss_minimum_remaining value = state_civilian_population_loss_minimum_unrounded compare = less_than } }
+		add_to_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.one }
+	}
 
-	set_temp_variable = { state_civilian_population_loss_available = state_population_k }
-	multiply_temp_variable = { state_civilian_population_loss_available = constant:chaos_meter_deaths.people_per_k }
+	set_temp_variable = { state_civilian_population_loss_before_people = state_population_k }
+	multiply_temp_variable = { state_civilian_population_loss_before_people = constant:chaos_meter_deaths.people_per_k }
+	set_temp_variable = { state_civilian_population_loss_available = state_civilian_population_loss_before_people }
 	subtract_from_temp_variable = {
 		state_civilian_population_loss_available = state_civilian_population_loss_minimum_remaining
 	}
@@ -665,14 +671,35 @@ apply_exact_state_civilian_population_loss = {
 		var = state_civilian_population_loss_available
 		min = constant:chaos_meter_deaths.zero
 	}
+	# Only whole civilians above the protected floor may be requested.
+	set_temp_variable = { state_civilian_population_loss_available_unrounded = state_civilian_population_loss_available }
+	round_temp_variable = state_civilian_population_loss_available
+	if = {
+		limit = { check_variable = { var = state_civilian_population_loss_available value = state_civilian_population_loss_available_unrounded compare = greater_than } }
+		subtract_from_temp_variable = { state_civilian_population_loss_available = constant:chaos_meter_deaths.one }
+	}
 
 	set_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_requested }
+	round_temp_variable = state_civilian_population_loss_applied
 	clamp_temp_variable = {
 		var = state_civilian_population_loss_applied
 		min = constant:chaos_meter_deaths.zero
 		max = state_civilian_population_loss_available
 	}
-	round_temp_variable = state_civilian_population_loss_applied
+	if = {
+		limit = { check_variable = { state_civilian_population_loss_applied > constant:chaos_meter_deaths.zero } }
+		# Mutate population once, then derive the public result from the state.
+		# The Deaths call below records this observed loss without removing it again.
+		set_temp_variable = { state_population_transaction_loss = state_civilian_population_loss_applied }
+		set_temp_variable = { state_population_transaction_reconciled_gain = constant:chaos_meter_deaths.zero }
+		set_temp_variable = { state_population_transaction_contract_supplied = constant:chaos_meter_deaths.one }
+		apply_state_population_loss_without_recruitable_manpower_gain = yes
+		set_temp_variable = { state_civilian_population_loss_after_people = state_population_k }
+		multiply_temp_variable = { state_civilian_population_loss_after_people = constant:chaos_meter_deaths.people_per_k }
+		set_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_before_people }
+		subtract_from_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_after_people }
+		clamp_temp_variable = { var = state_civilian_population_loss_applied min = constant:chaos_meter_deaths.zero }
+	}
 
 	if = {
 		limit = { check_variable = { state_civilian_population_loss_applied > constant:chaos_meter_deaths.zero } }
@@ -693,15 +720,11 @@ apply_exact_state_civilian_population_loss = {
 			set_temp_variable = { chaos_deaths_change = state_civilian_population_loss_applied }
 			set_temp_variable = { chaos_deaths_reason = state_civilian_population_loss_reason }
 			set_temp_variable = { chaos_deaths_is_civilian = constant:chaos_meter_deaths.one }
-			set_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.one }
+			set_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.zero }
+			set_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.one }
 			set_temp_variable = { chaos_deaths_target_country = state_civilian_population_loss_target_country }
 			set_temp_variable = { chaos_deaths_has_target_country = state_civilian_population_loss_has_target_country }
 			chaos_meter_register_deaths = yes
-		}
-		else = {
-			set_temp_variable = { state_population_transaction_loss = state_civilian_population_loss_applied }
-			set_temp_variable = { state_population_transaction_contract_supplied = constant:chaos_meter_deaths.one }
-			apply_state_population_loss_without_recruitable_manpower_gain = yes
 		}
 	}
 
