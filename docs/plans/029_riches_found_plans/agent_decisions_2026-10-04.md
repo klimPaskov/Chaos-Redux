@@ -64,7 +64,7 @@ Evacuate the Workforce can start and finish from collapsed workings, because the
 ## D7. Evolution containment, aftermath and reusable responses
 
 Containment follows the lead's decision: one per-mine progress value per active track, fed by the specification's listed steps and sustained conditions on each controller pulse and decayed when they break.
-The thresholds are tuned so a mine meeting every condition contains its crisis in five pulse intervals and a mine meeting only the minimum needs about seven; falling below the minimum loses ten points an interval and a breaking condition twenty.
+The thresholds are tuned so a Resource Curse mine meeting all seven conditions is contained in five pulse intervals and one meeting the minimum five needs seven, while Gold Disease and Demons Beneath the Mine (six conditions each, minimum four) need six and nine intervals; falling below the minimum loses ten points an interval and a breaking condition twenty.
 Reaching the threshold clears only the active flag, so history, log rows and achievement predicates keep working, while presentation, contribution, incident pools, aggregate stages and response visibility follow the active flag.
 Reformed Resource Settlement now requires a contained curse instead of any single reform flag.
 
@@ -187,3 +187,25 @@ Each decision landed in the commit named here; source review is the evidence, an
 | D17 | `3327378de` |
 
 D2, D3 and D4 record accepted behaviour and need no source change.
+
+## Round 1 review corrections
+
+Disposition: implemented by the round 1 reviewer under the same full-authority grant; source review only, live-game behaviour remains with the orchestrator.
+
+R1. A closure's Revenue Legitimacy slip (D5) read the one-time dividend and local revenue flags, so a single payment made years earlier shielded every later closure.
+The slip now reads a standing share (worker cooperatives or a public revenue share) or a revenue settlement paid within `riches_found_containment.revenue_cycle_days`, the same cycle the containment tracks use, and both closure tooltips say so.
+
+R2. A Demons Beneath the Mine closure end state (D7) blocks reopening, yet the closure service kept straining its unreinforced shafts and docking legitimacy for unpaid crews each pulse, which eventually collapsed a guarded or monitored district and let restoration reopen it.
+A contained closure is now kept under watch: it keeps relieving collapse pressure after its review and does not lose legitimacy for unpaid crews.
+A reopening inspection still running when the depths are contained as a closure is cancelled and refunded instead of reopening the contained mine.
+
+R3. A partial Restore the Shaft result (D5) partially sealed a collapsed mine, and no later completed restoration lifted that seal, so the mine stayed at the partial-seal output factor and in the closure phase for good.
+The partial result now marks a seal it imposes with `riches_found_restoration_partial_seal`; a later completed restoration lifts that seal and returns the mine to regulated operation unless a Gold Disease sealing, bound account terms or a Demons containment now holds the deep sections shut.
+A seal that existed before the repair is never marked, and the closure cleanup clears the marker.
+
+R4. Containment reports (D7) and Gold Disease route reports (D8) overwrote the single report slot even while another report waited for delivery, so the waiting report showed the wrong title or incident text.
+They now queue only when no report is waiting; the containment and route effects still apply, and the category header shows the new state.
+
+R5. The D7 timing sentence above was corrected: only the Resource Curse has seven conditions, so Gold Disease and Demons Beneath the Mine take six to nine pulse intervals rather than five to seven.
+
+Not changed after review: Port Route builds a naval base level in every coastal province of a state without a port, which follows the vanilla Afghanistan focus precedent the decision cites; the receiving neighbour and sponsor of a Gold Disease spread still get no report event of their own; and the probability comparison remains blocked (a narrow `hoi4_probability_inspect` over two decisions returned `INTERNAL_ERROR` again on 2026-10-04).

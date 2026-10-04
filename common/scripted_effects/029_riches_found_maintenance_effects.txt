@@ -154,10 +154,12 @@ riches_found_run_maintenance_pulse = {
 
 # STATE scope, called once per mine by the controller pulse above. A temporary
 # closure cools extraction and collapse pressure each pulse interval, while
-# workers left without pay or a share of revenue lose faith in the mine. When
-# the closure review date passes the mine may be reopened through the paid
-# reopening action; a closure left in place after that review stops relieving
-# collapse pressure and slowly raises it unless the shafts were reinforced.
+# workers left without a standing revenue share or a payment in the current
+# revenue cycle lose faith in the mine. When the closure review date passes
+# the mine may be reopened through the paid reopening action; a closure left
+# in place after that review stops relieving collapse pressure and slowly
+# raises it unless the shafts were reinforced. A Demons closure end state is
+# kept under watch: it neither strains the shafts nor waits on unpaid crews.
 # A collapsed mine left without repair works after its recovery date loses
 # development each interval until a Restore the Shaft mission is running.
 riches_found_service_closed_mine = {
@@ -186,14 +188,21 @@ riches_found_service_closed_mine = {
 					NOT = { has_state_flag = riches_found_mine_collapsed }
 				}
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_closure.pressure_decay_per_pulse }
+				# Workers keep faith only through a standing revenue share or a
+				# payment made within the current revenue cycle; a one-time
+				# dividend paid years earlier does not carry a closure. A district
+				# contained as a guarded or monitored closure has no waiting crews.
 				if = {
 					limit = {
+						NOT = { has_state_flag = riches_found_demons_contained_closure }
 						NOT = {
 							OR = {
-								has_state_flag = riches_found_dividend_paid
-								has_state_flag = riches_found_local_revenue_settled
 								has_state_flag = riches_found_worker_cooperatives
 								has_state_flag = riches_found_public_revenue_share_paid
+								AND = {
+									has_variable = riches_found_revenue_settlement_expiry_date
+									check_variable = { var = riches_found_revenue_settlement_expiry_date value = global.date compare = greater_than }
+								}
 							}
 						}
 					}
@@ -205,13 +214,22 @@ riches_found_service_closed_mine = {
 						check_variable = { var = global.date value = riches_found_closure_review_date compare = greater_than_or_equals }
 					}
 					set_state_flag = riches_found_closure_review_complete
-					if = {
-						limit = { NOT = { has_state_flag = riches_found_shafts_reinforced } }
-						add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.unmaintained_collapse_per_pulse }
-					}
 				}
-				else = {
+				# Before the review the closure relieves the shafts. A contained
+				# closure stays under watch and keeps relieving them; any other
+				# closure left past its review strains unreinforced shafts.
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_state_flag = riches_found_closure_review_complete }
+							has_state_flag = riches_found_demons_contained_closure
+						}
+					}
 					add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.collapse_decay_per_pulse }
+				}
+				else_if = {
+					limit = { NOT = { has_state_flag = riches_found_shafts_reinforced } }
+					add_to_variable = { riches_found_collapse_pressure = constant:riches_found_closure.unmaintained_collapse_per_pulse }
 				}
 			}
 			if = {

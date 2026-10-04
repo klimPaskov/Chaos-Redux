@@ -37,12 +37,16 @@ riches_found_roll_gold_route = {
 }
 
 # STATE scope. Records the route on the source mine and queues its report.
-# Input: temporary riches_found_gold_route_kind.
+# Input: temporary riches_found_gold_route_kind. A report already waiting for
+# delivery keeps its own kind and incident text.
 riches_found_report_gold_route = {
-	set_variable = { riches_found_incident_kind = riches_found_gold_route_kind }
 	set_variable = { riches_found_last_gold_route_date = global.date }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.gold_incident }
-	riches_found_queue_report = yes
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_report_pending } }
+		set_variable = { riches_found_incident_kind = riches_found_gold_route_kind }
+		set_variable = { riches_found_report_kind = constant:riches_found_report.gold_incident }
+		riches_found_queue_report = yes
+	}
 }
 
 # COUNTRY scope. A receiving country carries the fever for a while.

@@ -2082,6 +2082,7 @@ riches_found_clear_closure_state = {
 	clr_state_flag = riches_found_mine_temporary_closure
 	clr_state_flag = riches_found_mine_quarantined
 	clr_state_flag = riches_found_mine_partial_seal
+	clr_state_flag = riches_found_restoration_partial_seal
 	clr_state_flag = riches_found_mine_closed
 	clr_state_flag = riches_found_crisis_active
 	clr_state_flag = riches_found_collapse_warning
@@ -2343,16 +2344,47 @@ riches_found_complete_recovery = {
 # STATE scope. Called once by the Restore the Shaft mission when its repair
 # works are ready. Damage, route damage and the collapse warning are cleared,
 # a severe collapse ends, and a collapsed mine returns to regulated operation
-# through the shared recovery helpers. A temporary closure is not lifted here;
-# reopening keeps its own safety and order check.
+# through the shared recovery helpers. Upper workings left shut by an earlier
+# partial repair reopen. A temporary closure on a mine that had not collapsed
+# is not lifted here; reopening keeps its own safety and order check.
 riches_found_complete_shaft_restoration = {
 	clr_state_flag = riches_found_repair_started
 	set_state_flag = riches_found_shaft_restored
 	set_variable = { riches_found_last_restoration_date = global.date }
+	# Read before recovery, whose closure cleanup clears the marker.
+	set_temp_variable = { riches_found_restoration_lifts_seal = constant:riches_found_value.zero }
+	if = {
+		limit = { has_state_flag = riches_found_restoration_partial_seal }
+		set_temp_variable = { riches_found_restoration_lifts_seal = constant:riches_found_value.one }
+	}
 	if = {
 		limit = { has_state_flag = riches_found_mine_collapsed }
 		riches_found_begin_recovery = yes
 		riches_found_complete_recovery = yes
+	}
+	# The deep workings that an earlier partial repair left shut reopen with
+	# the finished shaft. A seal chosen as a Gold Disease measure, bound
+	# account terms or a Demons containment stays in place.
+	if = {
+		limit = { check_variable = { riches_found_restoration_lifts_seal = constant:riches_found_value.one } }
+		clr_state_flag = riches_found_restoration_partial_seal
+		if = {
+			limit = {
+				has_state_flag = riches_found_mine_partial_seal
+				NOT = { has_state_flag = riches_found_gold_depths_sealed }
+				NOT = { has_state_flag = riches_found_account_terms_bound }
+				NOT = { has_state_flag = riches_found_demons_contained }
+			}
+			clr_state_flag = riches_found_mine_partial_seal
+			if = {
+				limit = {
+					NOT = { has_state_flag = riches_found_mine_temporary_closure }
+					NOT = { has_state_flag = riches_found_mine_quarantined }
+				}
+				set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated }
+				set_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement }
+			}
+		}
 	}
 	clr_state_flag = riches_found_mine_damaged
 	clr_state_flag = riches_found_route_damaged
@@ -2374,6 +2406,11 @@ riches_found_partially_restore_shaft = {
 	add_to_variable = { riches_found_mine_development = constant:riches_found_closure.partial_restoration_development }
 	if = {
 		limit = { has_state_flag = riches_found_mine_collapsed }
+		# Only a seal this repair imposes is lifted by a later full restoration.
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_mine_partial_seal } }
+			set_state_flag = riches_found_restoration_partial_seal
+		}
 		riches_found_clear_collapse_state = yes
 		set_state_flag = riches_found_mine_damaged
 		set_state_flag = riches_found_mine_partial_seal
