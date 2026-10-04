@@ -77,6 +77,11 @@ Evolved first openings, full policy/GUI disabled behavior, timed-achievement gua
 
 Militarised Antarctica changes the expedition threat and diplomacy state without forcing a global war.
 
+An evolution whose own setting is enabled and whose Chaos gate is already met when Event 25 fires shapes the opening, and the entry and mobilisation reports describe it.
+Active Signal starts with the signal already answering, Something Survived with tracks and a missing survey party, Militarised Antarctica with escorted AI expeditions that fortify their first camp as a security zone, and The Wreck Is Breaking Apart with an unstable hull and open fragment fields.
+These four begin at once and log once; The Technology Changes Its Users stays latent, raising every crew's starting Exposure Risk and starting their Dependence as soon as it activates during the race.
+Every baseline phase remains.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

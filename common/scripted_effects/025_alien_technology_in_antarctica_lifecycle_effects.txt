@@ -118,3 +118,91 @@ chaosx_nr25_track_final_readiness = {
 		set_variable = { chaosx_nr25_final_ready_date = global.date }
 	}
 }
+
+# COUNTRY scope (the country that opened the race). Every evolution whose own
+# setting is enabled and whose Chaos gate is already met when the race opens
+# changes the opening. Evolutions I to IV begin at once and log once through
+# their normal activation; Evolution V stays a latent property that makes its
+# later activation reach expeditions during the race. Disabled evolutions and
+# unmet gates change nothing, and every baseline phase remains.
+chaosx_nr25_apply_evolved_openings = {
+	if = {
+		limit = { chaosx_nr25_active_signal_evolution_enabled = yes }
+		set_global_flag = chaosx_nr25_opening_active_signal
+		chaosx_nr25_activate_evolution_active_signal = yes
+	}
+	if = {
+		limit = { chaosx_nr25_something_survived_evolution_enabled = yes }
+		set_global_flag = chaosx_nr25_opening_something_survived
+		chaosx_nr25_activate_evolution_something_survived = yes
+	}
+	if = {
+		limit = { chaosx_nr25_militarised_antarctica_evolution_enabled = yes }
+		set_global_flag = chaosx_nr25_opening_militarised_antarctica
+		chaosx_nr25_activate_evolution_militarised_antarctica = yes
+	}
+	if = {
+		limit = { chaosx_nr25_wreck_breaking_apart_evolution_enabled = yes }
+		set_global_flag = chaosx_nr25_opening_wreck_breaking_apart
+		chaosx_nr25_activate_evolution_wreck_breaking_apart = yes
+	}
+	if = {
+		limit = { chaosx_nr25_technology_changes_users_evolution_enabled = yes }
+		set_global_flag = chaosx_nr25_opening_technology_changes_users
+	}
+}
+
+# COUNTRY scope. Applies the evolved opening to one expedition at
+# registration, after its baseline values are set.
+chaosx_nr25_apply_opening_state = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_active_signal }
+		# The transmitter is already answering when the expedition arrives.
+		set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
+		set_country_flag = chaosx_nr25_signal_profile_initialized
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_something_survived }
+		# Tracks around the wreck are already in the first survey reports.
+		set_country_flag = chaosx_nr25_survivor_tracks_reported
+	}
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_opening_militarised_antarctica
+			is_ai = yes
+		}
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_opening.escort_readiness }
+		set_country_flag = chaosx_nr25_security_zone
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_wreck_breaking_apart }
+		set_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_opening.wreck_start_integrity }
+		set_country_flag = chaosx_nr25_fragment_field_active
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_technology_changes_users }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_opening.latent_exposure }
+		set_country_flag = chaosx_nr25_latent_dependence
+	}
+}
+
+# COUNTRY scope (any). When Evolution V activates during a race that opened
+# with latent exposure, the exposed expeditions start their Dependence at once
+# instead of waiting for settlement.
+chaosx_nr25_start_latent_dependence = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_active }
+		for_each_scope_loop = {
+			array = global.chaosx_nr25_participants
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = chaosx_nr25_latent_dependence
+					NOT = { has_country_flag = chaosx_nr25_dependence_started }
+				}
+				set_country_flag = chaosx_nr25_dependence_started
+				set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_opening }
+			}
+		}
+	}
+}

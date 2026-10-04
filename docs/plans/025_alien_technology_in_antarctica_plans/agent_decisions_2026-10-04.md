@@ -218,3 +218,17 @@ Decision:
 - Event 016's alien-artifact contact, its alien-arms theory prerequisite and the `chaosx.nr16.17` description read the evidence trigger; the Dhrondan craft bypass reads the core trigger, because it studies the craft itself.
 - Event 025 calls Event 016's existing contact helper when material reaches a country: at winner settlement, at a loser settlement with fragments, and for a custody recipient. The helper's own host check keeps it a no-op without an active Kruger host, and no Event 016 history is created.
 - The legacy Antarctica Race decisions, category, `antarctica_success` idea and their localisation are removed. Their legacy art registrations stay unused in the shared picture files; `GFX_report_event_antarctica_secured` is still Event 016's report picture.
+
+## D15. Evolved openings
+
+Disposition: `implemented`.
+
+Basis: spec 004's evolved-opening section for each evolution and the chain map, which says Evolution V can alter the first opening only as a latent property.
+
+Decision:
+
+- An evolution shapes the opening when its own setting is enabled and its Chaos gate is already met as Event 25 fires. Evolutions I to IV then begin at once through their normal activation, so each still logs once and the race-time gate never re-arms it.
+- Each registered expedition receives the opening state: the signal answers from the first day (Evolution I), tracks and a missing party are already reported (II), AI expeditions sail escorted with more Logistics Readiness and fortify their first camp as a security zone (III), and the hull starts at 60 integrity with fragment fields open (IV).
+- Evolution V stays latent: every crew starts with 10 more Exposure Risk, and when Evolution V later activates during the race those crews start their Dependence at once instead of at settlement.
+- The entry and mobilisation reports append one sentence per evolved opening; disabled evolutions add nothing.
+- The entry option key collision (`chaosx.nr25.2.d` named both the entry description and the chartered option) is fixed by renaming the option to `chaosx.nr25.2.e`.

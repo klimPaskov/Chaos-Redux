@@ -90,6 +90,7 @@ chaosx_nr25_register_participant = {
 			add_to_variable = { global.chaosx_nr25_human_count = constant:chaosx_nr25_value.one }
 		}
 		set_country_flag = chaosx_nr25_entry_accepted
+		chaosx_nr25_apply_opening_state = yes
 		chaosx_nr25_check_achievement_disqualifiers = yes
 		chaosx_nr25_prepare_board_slots = yes
 		chaosx_nr25_schedule_participant_pulse = yes
@@ -2056,6 +2057,13 @@ chaosx_nr25_execute_action = {
 		set_country_flag = chaosx_nr25_outpost_established
 		clr_country_flag = chaosx_nr25_outpost_compromised
 		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_security_zone
+				NOT = { has_country_flag = chaosx_nr25_outpost_counted }
+			}
+			add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_opening.security_zone_bonus }
+		}
+		if = {
 			limit = { NOT = { has_country_flag = chaosx_nr25_outpost_counted } }
 			set_country_flag = chaosx_nr25_outpost_counted
 			add_to_variable = { global.chaosx_nr25_outpost_participant_count = constant:chaosx_nr25_value.one }
@@ -3220,6 +3228,7 @@ chaosx_nr25_activate_evolution_technology_changes_users = {
 		# Holders outside a live race open their aftermath first, so the log
 		# entry names the holder that delivered the opening.
 		chaosx_nr25_open_aftermath_for_holders = yes
+		chaosx_nr25_start_latent_dependence = yes
 		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.technology_changes_users }
 		chaosx_nr25_record_evolution_milestone = yes
 		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.technology_changes_users compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.technology_changes_users } }
