@@ -850,3 +850,39 @@ missiles_retaliation_posture_can_change = {
 		}
 	}
 }
+
+# -----------------------------------------------------------------------------
+# Special-payload orders
+# -----------------------------------------------------------------------------
+# COUNTRY scope. Humans issue payload orders while choosing an objective for a
+# selected enemy, so the step shows at most two objective families, the
+# clear-target action, and three payload orders. The AI uses them in any
+# working phase. No order changes an operation that is already prepared.
+missiles_special_payload_orders_are_visible = {
+	missiles_special_warheads_active = yes
+	NOT = { has_country_flag = missiles_operation_active }
+	OR = {
+		AND = {
+			is_ai = yes
+			OR = {
+				has_country_flag = missiles_program_phase_operations
+				has_country_flag = missiles_program_phase_maintenance
+			}
+		}
+		AND = {
+			missiles_target_profile_menu_is_open = yes
+			NOT = { has_country_flag = missiles_target_profile_tactical_menu }
+			NOT = { has_country_flag = missiles_target_profile_strategic_menu }
+		}
+	}
+}
+
+# A real warhead family the country owns but has not yet fitted to missiles.
+missiles_country_has_unintegrated_payload_candidate = {
+	OR = {
+		AND = { missiles_country_has_chemical_payload_candidate = yes NOT = { has_country_flag = missiles_chemical_integration_operational } }
+		AND = { missiles_country_has_biological_payload_candidate = yes NOT = { has_country_flag = missiles_biological_integration_operational } }
+		AND = { missiles_country_has_nuclear_payload_candidate = yes NOT = { has_country_flag = missiles_nuclear_integration_operational } }
+		AND = { missiles_country_has_thermonuclear_payload_candidate = yes NOT = { has_country_flag = missiles_thermonuclear_integration_operational } }
+	}
+}

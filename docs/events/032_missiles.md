@@ -70,7 +70,11 @@ Guidance is derived from normalized technology, training, readiness, maintenance
 
 Special Warheads never grants technology, policy, stockpile, or payload inventory. Chemical delivery requires the existing chemical air-interdiction technology, an eligible existing agent, real stockpile, approved policy, missile reserve, and site custody. Biological delivery requires an existing supported biological technology and real equipment. Nuclear and thermonuclear delivery require their existing technologies and a positive real nuclear stockpile.
 
-After confirmed release, `missiles_consume_special_payload` debits the actual payload and the missile allocation once, then submits the delivery context to the shared CBRN, Deaths, Air Cleanliness, evidence, Condemnation, and Fallout consequence owners. No shared consequence is called for a blocked preparation, interception, breakup, or pre-release accident, and Event 032 never sets `world_end`.
+Special-payload orders are three costed decisions available while Special Warheads is enabled and adopted: Integrate Special Payload (opens the family choice, stores the fitted warhead at a secure site, and then asks for standing orders), Select Special Payload (conventional is always available), and Set Special-Payload Policy (prohibited, retaliation only, military targets only, wartime, or emergency delegation). Humans issue them while choosing an objective for a selected enemy; the AI uses them in any working phase. No order changes an operation that is already prepared.
+
+A prepared special operation holds its warhead from the moment preparation is accepted. A nuclear, thermonuclear, or biological warhead leaves the national stockpile into one held receipt; aborting or cancelling the operation returns it once, and a confirmed release consumes it once without a second debit. Chemical agent stays in the CBRN ledgers, which expose no route back into storage, so its sufficiency is proven against the frozen target at preparation and the agent is debited at release. If the warhead cannot be reserved, the missile reservation is returned and the order is refused.
+
+After confirmed release, `missiles_consume_special_payload` consumes the held warhead (or debits chemical agent) and the missile allocation once, then submits the delivery context to the shared CBRN, Deaths, Air Cleanliness, evidence, Condemnation, and Fallout consequence owners. No shared consequence is called for a blocked preparation, interception, breakup, or pre-release accident, and Event 032 never sets `world_end`.
 
 ## Evolution tracks
 

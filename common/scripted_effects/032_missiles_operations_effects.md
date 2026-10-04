@@ -90,3 +90,11 @@ Every route ends in `missiles_finish_captured_site_resolution`, which refocuses 
 Lifecycle code that runs under another country's ROOT (the former controller in the capture handler, and the controller in `missiles_scuttle_site_from_current_controller`) fires the immediate hidden receiver `chaosx.nr32.7`, whose `missiles_refresh_program_from_receiver` recalculates that country's network, custody, captured-site marker, and requested rogue closure with ROOT bound correctly.
 `missiles_cleanup_operation` matches site allocations against `PREV.missiles_active_operation_id`, so it clears the right markers when another country's ROOT calls it.
 `.tools/test_event32_captured_sites.py` pins the decision, resolution, reserve, budget, and receiver contract.
+
+## Special-payload reservation
+
+`missiles_reserve_operation_resources` calls `missiles_reserve_operation_payload` once the missile escrow is accepted; a refused warhead returns the missile escrow through `missiles_refund_operation_reserve` and rejects the order.
+Nuclear and thermonuclear warheads are held with `add_nuclear_bombs`, biological warheads through `missiles_debit_biological_payload`; both record `missiles_operation_payload_escrow`, its type, the biological agent, and `missiles_operation_payload_escrow_active`.
+Chemical agent is only proven sufficient by `missiles_check_chemical_payload_stock`, which builds the same CBRN action context as the release-time debit without debiting.
+`missiles_consume_special_payload` consumes a held warhead first and clears the escrow before any direct debit path; `missiles_release_operation_payload`, called once from `missiles_cleanup_operation`, returns any warhead still held after an abort, cancellation, invalidation, capture, or removed-country cleanup.
+`.tools/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.

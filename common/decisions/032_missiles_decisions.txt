@@ -798,16 +798,26 @@ missiles_program_management_category = {
 		}
 	}
 
+	# Special-payload orders. Humans see them while choosing an objective for a
+	# selected enemy (beside the two objective families and the clear-target
+	# action); the AI sees them whenever its program is in a working phase.
 	missiles_integrate_special_payload = {
 		icon = GFX_decision_032_missiles_integrate_special_payload
 		visible = {
-			has_country_flag = missiles_program_phase_operations
-			OR = { is_ai = yes missiles_human_target_is_complete = yes }
-			missiles_special_warheads_active = yes
-			missiles_country_can_prepare_operation = yes
-			NOT = { has_country_flag = missiles_special_payload_selected }
+			missiles_special_payload_orders_are_visible = yes
+			missiles_country_has_unintegrated_payload_candidate = yes
 		}
-		available = { missiles_country_can_prepare_operation = yes missiles_special_warheads_active = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_integrate_payload_requirements_tt
+				missiles_special_warheads_active = yes
+				missiles_country_has_unintegrated_payload_candidate = yes
+				check_variable = { var = missiles_program_stage value = constant:missiles_evolution_pressure.minimum_guidance_stage compare = greater_than_or_equals }
+				check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.precision_readiness_gate compare = greater_than_or_equals }
+				check_variable = { var = missiles_command_control value = constant:missiles_program_value.secure_command_gate compare = greater_than_or_equals }
+				any_owned_state = { is_controlled_by = ROOT missiles_site_can_launch = yes missiles_site_is_secure = yes }
+			}
+		}
 		custom_cost_trigger = {
 			command_power > @m32_command_standard
 			has_fuel > @m32_fuel_low
@@ -821,13 +831,66 @@ missiles_program_management_category = {
 				add_command_power = @m32_command_standard_negative
 				add_fuel = @m32_fuel_low_negative
 				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
-				missiles_integrate_special_payload = yes
+				country_event = { id = chaosx.nr32.30 }
 			}
 		}
 		ai_will_do = {
 			base = @m32_ai_low
 			modifier = { factor = 4 has_war = yes }
-			modifier = { factor = 0 NOT = { missiles_special_warheads_active = yes } }
+			modifier = { factor = 3 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.special_warhead_escalator compare = equals } }
+			modifier = { factor = 0.25 check_variable = { var = missiles_ai_profile value = constant:missiles_ai_profile.restrained_deterrent compare = equals } }
+		}
+	}
+
+	missiles_select_special_payload = {
+		icon = GFX_decision_032_missiles_integrate_special_payload
+		visible = {
+			missiles_special_payload_orders_are_visible = yes
+			missiles_special_payload_available = yes
+		}
+		available = { missiles_special_payload_available = yes }
+		custom_cost_trigger = {
+			command_power > @m32_command_low
+		}
+		custom_cost_text = missiles_cost_select_payload
+		days_re_enable = @m32_reenable_short
+		complete_effect = {
+			custom_effect_tooltip = missiles_select_payload_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				country_event = { id = chaosx.nr32.31 }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 4 has_war = yes NOT = { has_country_flag = missiles_special_payload_selected } }
+			modifier = { factor = 0 NOT = { has_war = yes } NOT = { has_country_flag = missiles_special_payload_selected } }
+		}
+	}
+
+	missiles_set_special_payload_policy = {
+		icon = GFX_decision_032_missiles_integrate_special_payload
+		visible = {
+			missiles_special_payload_orders_are_visible = yes
+			missiles_special_payload_available = yes
+		}
+		available = { missiles_special_payload_available = yes }
+		custom_cost_trigger = {
+			command_power > @m32_command_standard
+		}
+		custom_cost_text = missiles_cost_payload_policy
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_set_payload_policy_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				country_event = { id = chaosx.nr32.32 }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 4 has_war = yes check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.prohibited compare = equals } }
+			modifier = { factor = 0 NOT = { has_war = yes } }
 		}
 	}
 

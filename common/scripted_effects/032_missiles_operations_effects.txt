@@ -2634,6 +2634,17 @@ missiles_reserve_operation_resources = {
 		}
 		missiles_reserve_for_operation = yes
 	}
+	# A special warhead is reserved with the missiles; without it the missile
+	# escrow is returned and the order is refused.
+	if = {
+		limit = { check_variable = { var = missiles_operation_resource_result value = constant:missiles_result.accepted compare = equals } }
+		missiles_reserve_operation_payload = yes
+		if = {
+			limit = { NOT = { check_variable = { var = missiles_operation_payload_reservation_result value = constant:missiles_result.accepted compare = equals } } }
+			missiles_refund_operation_reserve = yes
+			set_variable = { missiles_operation_resource_result = constant:missiles_result.rejected }
+		}
+	}
 	if = {
 		limit = { check_variable = { var = missiles_operation_resource_result value = constant:missiles_result.accepted compare = equals } }
 		missiles_mark_operation_sites_reserved = yes
@@ -3418,6 +3429,123 @@ missiles_resolve_operation_interception = {
 	}
 }
 
+# -----------------------------------------------------------------------------
+# Special-payload reservation
+# -----------------------------------------------------------------------------
+# COUNTRY scope. A prepared special operation holds its warhead from the moment
+# preparation is accepted. Nuclear, thermonuclear, and biological warheads
+# leave the national stockpile into one held receipt: an abort or cancellation
+# returns it once, and a confirmed release consumes it once. Chemical agent
+# stays in the CBRN ledgers, which expose no route back into storage, so its
+# sufficiency is proven at preparation and the agent is debited at release.
+
+missiles_reserve_operation_payload = {
+	set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.rejected }
+	if = {
+		limit = {
+			OR = {
+				NOT = { missiles_operation_has_special_payload = yes }
+				has_country_flag = missiles_operation_payload_escrow_active
+			}
+		}
+		set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = missiles_operation_payload value = constant:missiles_payload.nuclear compare = equals }
+				check_variable = { var = missiles_operation_payload value = constant:missiles_payload.thermonuclear compare = equals }
+			}
+			check_variable = { var = num_of_nukes value = constant:missiles_resolution.nuclear_payload_units compare = greater_than_or_equals }
+		}
+		add_nuclear_bombs = constant:missiles_resolution.nuclear_payload_units_negative
+		set_variable = { missiles_operation_payload_escrow = constant:missiles_resolution.nuclear_payload_units }
+		set_variable = { missiles_operation_payload_escrow_type = missiles_operation_payload }
+		set_country_flag = missiles_operation_payload_escrow_active
+		set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals } }
+		missiles_debit_biological_payload = yes
+		if = {
+			limit = { check_variable = { var = missiles_biological_payload_debit_proof value = constant:bio_lifecycle_proof.supplied compare = equals } }
+			set_variable = { missiles_operation_payload_escrow = constant:missiles_resolution.biological_payload_units }
+			set_variable = { missiles_operation_payload_escrow_type = missiles_operation_payload }
+			set_variable = { missiles_operation_payload_escrow_agent = missiles_selected_biological_agent }
+			set_country_flag = missiles_operation_payload_escrow_active
+			set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals } }
+		missiles_check_chemical_payload_stock = yes
+		if = {
+			limit = { check_variable = { var = missiles_chemical_stock_result value = constant:missiles_result.accepted compare = equals } }
+			set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
+		}
+	}
+}
+
+# COUNTRY scope. Returns an unconsumed held warhead exactly once.
+missiles_release_operation_payload = {
+	if = {
+		limit = { has_country_flag = missiles_operation_payload_escrow_active }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = missiles_operation_payload_escrow_type value = constant:missiles_payload.nuclear compare = equals }
+					check_variable = { var = missiles_operation_payload_escrow_type value = constant:missiles_payload.thermonuclear compare = equals }
+				}
+			}
+			add_nuclear_bombs = constant:missiles_resolution.nuclear_payload_units
+		}
+		else_if = {
+			limit = { check_variable = { var = missiles_operation_payload_escrow_type value = constant:missiles_payload.biological compare = equals } }
+			if = { limit = { check_variable = { var = missiles_operation_payload_escrow_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } } add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = constant:missiles_resolution.biological_payload_units } }
+			else_if = { limit = { check_variable = { var = missiles_operation_payload_escrow_agent value = constant:bio_lifecycle_agent.plague compare = equals } } add_equipment_to_stockpile = { type = plague_bomb_1 amount = constant:missiles_resolution.biological_payload_units } }
+			else_if = { limit = { check_variable = { var = missiles_operation_payload_escrow_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } } add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = constant:missiles_resolution.biological_payload_units } }
+			else_if = { limit = { check_variable = { var = missiles_operation_payload_escrow_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } } add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = constant:missiles_resolution.biological_payload_units } }
+		}
+		set_variable = { missiles_last_payload_release_date = global.date }
+	}
+	clr_country_flag = missiles_operation_payload_escrow_active
+	clear_variable = missiles_operation_payload_escrow
+	clear_variable = missiles_operation_payload_escrow_type
+	clear_variable = missiles_operation_payload_escrow_agent
+}
+
+# COUNTRY scope. Read-only CBRN proof for the frozen target: the same context
+# the release-time debit uses, without debiting agent.
+missiles_check_chemical_payload_stock = {
+	set_variable = { missiles_chemical_stock_result = constant:missiles_result.rejected }
+	if = {
+		limit = { has_variable = missiles_operation_target_state }
+		cbrn_reset_action_context = yes
+		save_event_target_as = cbrn_action_actor
+		var:missiles_operation_target_state = {
+			save_event_target_as = cbrn_action_target_state
+			CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
+		}
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		set_temp_variable = { cbrn_action_agent = missiles_selected_chemical_agent }
+		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.strategic_chemical_raid }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
+		set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+		cbrn_chemical_air_raid_set_agent_class_internal = yes
+		cbrn_set_default_payload_requirement_for_action = yes
+		if = {
+			limit = {
+				cbrn_chemical_action_policy_allows_exact_target = yes
+				cbrn_action_agent_is_unlocked = yes
+				cbrn_action_payload_profile_is_ready = yes
+				cbrn_action_payload_stock_is_sufficient = yes
+			}
+			set_variable = { missiles_chemical_stock_result = constant:missiles_result.accepted }
+		}
+	}
+}
+
 missiles_debit_biological_payload = {
 	set_temp_variable = { missiles_biological_payload_debit_proof = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { missiles_biological_payload_debit = constant:missiles_resolution.biological_payload_units_negative }
@@ -3499,6 +3627,19 @@ missiles_consume_special_payload = {
 	set_variable = { missiles_operation_payload_consumed = constant:missiles_program_value.zero }
 	clr_country_flag = missiles_operation_payload_debit_verified
 	if = {
+		limit = {
+			has_country_flag = missiles_operation_payload_escrow_active
+			check_variable = { var = missiles_operation_payload_escrow_type value = missiles_operation_payload compare = equals }
+		}
+		# The warhead held since preparation is the one released.
+		set_variable = { missiles_operation_payload_consumed = missiles_operation_payload_escrow }
+		set_country_flag = missiles_operation_payload_debit_verified
+		clr_country_flag = missiles_operation_payload_escrow_active
+		clear_variable = missiles_operation_payload_escrow
+		clear_variable = missiles_operation_payload_escrow_type
+		clear_variable = missiles_operation_payload_escrow_agent
+	}
+	else_if = {
 		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals } }
 		missiles_consume_chemical_payload = yes
 	}
@@ -5138,6 +5279,8 @@ missiles_cleanup_operation = {
 	if = {
 		limit = { NOT = { has_country_flag = missiles_operation_cleanup_complete } }
 		set_country_flag = missiles_operation_cleanup_complete
+		# An unreleased special warhead returns to storage once.
+		missiles_release_operation_payload = yes
 		# Removing a mission runs no cancellation/timeout effect. An aborted receipt
 		# cannot leave a stale native timer able to cancel its successor.
 		remove_mission = missiles_precision_strike_preparation_mission

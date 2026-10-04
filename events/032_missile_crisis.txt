@@ -125,6 +125,11 @@ country_event = {
 		hidden_effect = {
 			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.chemical }
 			missiles_integrate_special_payload = yes
+			# A newly fitted warhead receives standing orders at once.
+			if = {
+				limit = { check_variable = { var = missiles_payload_integration_result value = constant:missiles_result.accepted compare = equals } }
+				country_event = { id = chaosx.nr32.32 days = 1 }
+			}
 		}
 	}
 	option = {
@@ -134,6 +139,11 @@ country_event = {
 		hidden_effect = {
 			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.biological }
 			missiles_integrate_special_payload = yes
+			# A newly fitted warhead receives standing orders at once.
+			if = {
+				limit = { check_variable = { var = missiles_payload_integration_result value = constant:missiles_result.accepted compare = equals } }
+				country_event = { id = chaosx.nr32.32 days = 1 }
+			}
 		}
 	}
 	option = {
@@ -146,6 +156,11 @@ country_event = {
 		hidden_effect = {
 			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.nuclear }
 			missiles_integrate_special_payload = yes
+			# A newly fitted warhead receives standing orders at once.
+			if = {
+				limit = { check_variable = { var = missiles_payload_integration_result value = constant:missiles_result.accepted compare = equals } }
+				country_event = { id = chaosx.nr32.32 days = 1 }
+			}
 		}
 	}
 	option = {
@@ -158,10 +173,16 @@ country_event = {
 		hidden_effect = {
 			set_variable = { missiles_requested_payload_integration = constant:missiles_payload.thermonuclear }
 			missiles_integrate_special_payload = yes
+			# A newly fitted warhead receives standing orders at once.
+			if = {
+				limit = { check_variable = { var = missiles_payload_integration_result value = constant:missiles_result.accepted compare = equals } }
+				country_event = { id = chaosx.nr32.32 days = 1 }
+			}
 		}
 	}
 	option = {
 		name = chaosx.nr32.30.e
+		trigger = { NOT = { missiles_country_has_unintegrated_payload_candidate = yes } }
 		ai_chance = { base = constant:missiles_ai_weight.minimal }
 	}
 }
@@ -217,28 +238,33 @@ country_event = {
 	option = {
 		name = chaosx.nr32.32.a
 		ai_chance = { base = constant:missiles_ai_weight.medium }
+		custom_effect_tooltip = missiles_payload_policy_prohibited_tt
 		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.prohibited } }
 	}
 	option = {
 		name = chaosx.nr32.32.b
 		ai_chance = { base = constant:missiles_ai_weight.high }
+		custom_effect_tooltip = missiles_payload_policy_retaliatory_only_tt
 		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.retaliatory_only } }
 	}
 	option = {
 		name = chaosx.nr32.32.c
 		ai_chance = { base = constant:missiles_ai_weight.high }
+		custom_effect_tooltip = missiles_payload_policy_military_targets_only_tt
 		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.military_targets_only } }
 	}
 	option = {
 		name = chaosx.nr32.32.d
 		trigger = { has_war = yes }
 		ai_chance = { base = constant:missiles_ai_weight.low }
+		custom_effect_tooltip = missiles_payload_policy_unrestricted_war_tt
 		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.unrestricted_war } }
 	}
 	option = {
 		name = chaosx.nr32.32.e
 		trigger = { missiles_automatic_retaliation_active = yes }
 		ai_chance = { base = constant:missiles_ai_weight.minimal }
+		custom_effect_tooltip = missiles_payload_policy_emergency_delegation_tt
 		hidden_effect = { set_variable = { missiles_special_payload_policy = constant:missiles_special_payload_policy.emergency_delegation } }
 	}
 }
