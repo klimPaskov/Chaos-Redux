@@ -1,5 +1,8 @@
 # Event 016 exact native Prototype source selection.
-# Instant commitments and withdrawals carry no provider payment or timer.
+# Instant commitments and withdrawals carry no payment or timer. The AI picks
+# a Rocketry source only for the project it is actually researching or has
+# completed, and releases a stale Rocketry selection once the other source is
+# the one in progress or complete.
 # Existing native project definitions retain research costs and progress.
 
 mengele_biological_programs_category = {
@@ -62,7 +65,7 @@ mengele_conventional_programs_category = {
 			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.flying_bomb }
 			brilliant_scientist_mengele_native_selection_decision_complete = yes
 		}
-		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_rocketry_prototype_low_factory_margin = yes } }
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_rocketry_prototype_low_factory_margin = yes } modifier = { factor = constant:brilliant_scientist_project_board.ai_never NOT = { brilliant_scientist_mengele_ai_wants_flying_bomb_source = yes } } }
 	}
 
 	mengele_event016_native_select_jet_engine = {
@@ -74,7 +77,7 @@ mengele_conventional_programs_category = {
 			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.jet_engine }
 			brilliant_scientist_mengele_native_selection_decision_complete = yes
 		}
-		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_rocketry_prototype_low_factory_margin = yes } }
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_rocketry_prototype_low_factory_margin = yes } modifier = { factor = constant:brilliant_scientist_project_board.ai_never NOT = { brilliant_scientist_mengele_ai_wants_jet_engine_source = yes } } }
 	}
 
 	mengele_event016_native_release_flying_bomb = {
@@ -86,7 +89,7 @@ mengele_conventional_programs_category = {
 			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.flying_bomb }
 			brilliant_scientist_mengele_native_release_decision_complete = yes
 		}
-		ai_will_do = { base = constant:brilliant_scientist_value.zero }
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_board.ai_never NOT = { brilliant_scientist_mengele_ai_should_release_flying_bomb = yes } } }
 	}
 
 	mengele_event016_native_release_jet_engine = {
@@ -98,6 +101,6 @@ mengele_conventional_programs_category = {
 			set_temp_variable = { mengele_event016_native_prototype_source = constant:mengele_event016_native_prototype_source.jet_engine }
 			brilliant_scientist_mengele_native_release_decision_complete = yes
 		}
-		ai_will_do = { base = constant:brilliant_scientist_value.zero }
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_board.ai_never NOT = { brilliant_scientist_mengele_ai_should_release_jet_engine = yes } } }
 	}
 }

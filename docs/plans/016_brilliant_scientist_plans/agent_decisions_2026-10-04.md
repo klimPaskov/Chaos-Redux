@@ -338,3 +338,16 @@ Disposition: implemented under the full-authority mandate as the round 2 lead's 
 Player-visible strings no longer use receipt, provider, DLC, board-chain, registry-repair, cleanup, world-transition, or "exact ... ledger" wording. The no-special-project Prototype rows are titled "Build the ... Prototype" and the six Singularity component rows "Build the Singularity ...", their descriptions and requirements describe what the order does, the component completion tooltips say the component is complete and cannot arm or fire the device on its own, the native integration descriptions say the special project is complete and Prototype capacity is committed, and the Mengele Singularity requirement and stage tooltips describe component special projects instead of naming the DLC. Narrative uses of "ledger" (personnel ledgers, the Restoration Ledger focus, the identity ledger) and "registry" as an in-world institution stay. Keys are unchanged and every edited file keeps its UTF-8 BOM.
 
 Evidence: `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `016_brilliant_scientist_focus_l_english.yml`, `016_brilliant_scientist_requirement_flags_l_english.yml`, `016_mengele_singularity_stage_l_english.yml`, `016_mengele_teleportation_stage_l_english.yml`, `016_mengele_native_prototype_selection_l_english.yml`, `016_mengele_singularity_construction_l_english.yml`, and `016_mengele_singularity_terminal_l_english.yml`.
+
+## D27. Mengele Rocketry AI source selection follows the researched project
+
+Disposition: implemented under the full-authority mandate as the round 2 lead's sixth item.
+
+Defect: the AI weighted both mutually exclusive Rocketry source selections (flying bomb and jet engine) at the high base with no link to the project it was researching, and both release decisions had weight 0. If the AI selected one source and natively completed the other, the completion could not settle Rocketry, the other selection stayed hidden, and the AI never released, so its Mengele Rocketry chain could stall short of Prototype.
+
+Decision: the AI selects a Rocketry source only while that exact project is being researched or is complete, or when the other source cannot be researched at all; otherwise a zero factor applies. The AI releases a held selection when its project is neither being researched nor complete while the other source is, after which the other source's selection adopts the completed project. Base weights and the existing war and factory-margin factors are unchanged; the release decisions use the board's high base behind the stale-selection gate. Player controls, costs, and payload ownership are unchanged.
+
+Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, the four Rocketry selection and release decisions, source the selection decision file) returned `INTERNAL_ERROR` and was not retried; the change is source-reviewed.
+
+Evidence: `common/decisions/016_mengele_native_prototype_selection_decisions.txt`, `common/scripted_triggers/016_mengele_native_selection_decision_triggers.txt`, `docs/events/016_brilliant_scientist/systems/native_prototype_ownership.md`.
+Needs live game: AI selection timing against its native research choice.

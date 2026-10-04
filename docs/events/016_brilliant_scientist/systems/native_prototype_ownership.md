@@ -24,6 +24,11 @@ The no-DLC paid Prototype decisions retain their existing path.
 The Electronics selection control also permits an already-completed exact Radar project to be adopted without the DLC, while it exposes fresh native commitments only with the DLC.
 An existing Electronics commitment can be withdrawn in either DLC state when its research is inactive and the paid family receipt is empty.
 
+Rocketry AI: the AI selects a Rocketry source only while that exact project is being researched or is complete, or when the other source cannot be researched at all (`brilliant_scientist_mengele_ai_wants_flying_bomb_source`, `brilliant_scientist_mengele_ai_wants_jet_engine_source`); otherwise a zero factor applies.
+It releases a held Rocketry selection when that project is neither being researched nor complete while the other source is (`brilliant_scientist_mengele_ai_should_release_flying_bomb`, `brilliant_scientist_mengele_ai_should_release_jet_engine`), so completing the other project can then be adopted through its own selection.
+Base weights and the war and factory-margin factors are unchanged; the player's controls, costs, and payload ownership are unchanged.
+A narrow `hoi4.probability_inspect` call on these four decisions returned `INTERNAL_ERROR` on 2026-10-05, so the change is source-reviewed only.
+
 ## Completion and history
 
 Each of the four existing project country outputs calls its literal source wrapper.

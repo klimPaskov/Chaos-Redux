@@ -81,3 +81,55 @@ brilliant_scientist_mengele_native_jet_engine_release_is_visible = {
 	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
 	has_country_flag = mengele_event016_native_selected_jet_engine
 }
+
+# COUNTRY scope, AI only. The AI commits to a Rocketry source only while that
+# exact project is being researched or is complete, or when the other source
+# cannot be researched at all, so its selection matches the project it finishes.
+brilliant_scientist_mengele_ai_wants_flying_bomb_source = {
+	OR = {
+		is_special_project_being_researched = sp:sp_rockets_flying_bomb
+		is_special_project_completed = sp:sp_rockets_flying_bomb
+		NOT = {
+			OR = {
+				is_special_project_being_researched = sp:sp_air_jet_engine
+				is_special_project_completed = sp:sp_air_jet_engine
+				brilliant_scientist_mengele_native_jet_engine_technology_gate = yes
+			}
+		}
+	}
+}
+
+brilliant_scientist_mengele_ai_wants_jet_engine_source = {
+	OR = {
+		is_special_project_being_researched = sp:sp_air_jet_engine
+		is_special_project_completed = sp:sp_air_jet_engine
+		NOT = {
+			OR = {
+				is_special_project_being_researched = sp:sp_rockets_flying_bomb
+				is_special_project_completed = sp:sp_rockets_flying_bomb
+				has_tech = experimental_rockets
+			}
+		}
+	}
+}
+
+# COUNTRY scope, AI only. A held Rocketry selection is stale when its project is
+# neither in progress nor complete while the other source is; releasing it lets
+# the other source settle the family.
+brilliant_scientist_mengele_ai_should_release_flying_bomb = {
+	NOT = { is_special_project_being_researched = sp:sp_rockets_flying_bomb }
+	NOT = { is_special_project_completed = sp:sp_rockets_flying_bomb }
+	OR = {
+		is_special_project_being_researched = sp:sp_air_jet_engine
+		is_special_project_completed = sp:sp_air_jet_engine
+	}
+}
+
+brilliant_scientist_mengele_ai_should_release_jet_engine = {
+	NOT = { is_special_project_being_researched = sp:sp_air_jet_engine }
+	NOT = { is_special_project_completed = sp:sp_air_jet_engine }
+	OR = {
+		is_special_project_being_researched = sp:sp_rockets_flying_bomb
+		is_special_project_completed = sp:sp_rockets_flying_bomb
+	}
+}
