@@ -297,3 +297,16 @@ Disposition: implemented.
 - The modifiers `great_depression_state_recovered_district` and `great_depression_state_scarred_district` reuse `GFX_modifier_035_great_depression_center_reopened` and `_hollowed`; no new art.
 - The recovery report names the districts, so the outcome is visible at the moment it is granted.
 - needs_live_game: the state modifier display on the map and state view.
+
+## D18. Emergency Government spirit and Social Collapse political aftermath (round 2, item 6)
+
+Disposition: implemented.
+
+- Basis: spec part 6 "Coup design" (an emergency national spirit with a lifecycle) and "Resolution and aftermath" (one coherent aftermath that persists and affects future episodes).
+- `great_depression_emergency_government` is added by a successful coup, an emergency dictatorship and Form an Emergency Government, and removed by mandate success, failure or cancellation, Remove Emergency Controls, recovery, and a rolled-back opening.
+- Agent decision: Remove Emergency Controls now also clears `great_depression_social_emergency_mandate_active`. It already cleared `great_depression_emergency_government_formed`, which the mandate objective requires, so the mandate could no longer succeed; ending it at the same time keeps the spirit and the flag consistent and does not change any outcome the player could reach.
+- Agent decision on aftermath priority: Emergency Rule, Planning Settlement, Corporate Rescue Order, Regional Autonomy, Labor Scar, Social Compact. The outcome that reshaped the state comes first, and repression outranks a negotiated compact, because a compact signed after troops broke the strikes does not erase that memory. Only an episode with Social Collapse active at recovery chooses one; a new aftermath replaces the old, and an episode that earned none keeps it.
+- Later-episode effect: the `aftermath_*` keys of `great_depression_hidden_component` shift hidden social stress (Corporate Rescue Order and Labor Scar +1, the others -1).
+- Agent decision on art: the seven spirits use Event 35 sprite names that alias installed vanilla national-spirit textures (`idea_ARG_military_government`, `idea_SWE_saltsjobaden_agreement`, `idea_HUN_state_protection_authority_idea`, `idea_generic_nationalization`, `idea_CZE_industrialists_veto`, `idea_AFG_economic_regionalism`, `FRA_factory_strikes`). Each texture was confirmed present in the base game install. Bespoke Event 35 art remains an asset follow-up and only needs the texture paths changed.
+- AI: no event option, decision or random-list weight changed.
+- needs_live_game: spirit icons and tooltips in the national-spirit panel.

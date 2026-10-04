@@ -200,6 +200,16 @@ When Social Collapse activates on a crisis already under way, `great_depression_
 The report names the movement family (trade-union coalition, communist councils, syndicalist occupation, nationalist mass movement, military emergency faction, traditional authority, regional autonomy, business and creditor coalition, or rural protest) through `GetGreatDepressionMovementFamily`, and the incident ladder later uses the same movement.
 A disabled evolution never activates, so it queues no report.
 
+An emergency mandate carries the Emergency Government spirit (`great_depression_emergency_government`) for exactly as long as it runs.
+A successful coup, an emergency dictatorship, or Form an Emergency Government adds it, and the mandate's success, failure or cancellation, Remove Emergency Controls, recovery, or a rolled-back opening removes it.
+Remove Emergency Controls also ends the mandate itself, since it already dissolves the emergency government the mandate needs.
+
+When an episode that went through Social Collapse closes, `great_depression_apply_political_aftermath` chooses one political aftermath from how the movement was answered, in this order: Emergency Rule for an emergency government that settled, Planning Settlement for socialized occupied industry, Corporate Rescue Order for guaranteed property and credit, Regional Autonomy for recognized councils or autonomy, Labor Scar for security forces, broken occupations or rejected autonomy, and Social Compact for a negotiated strike settlement or employment compact.
+A new aftermath replaces the previous one, and an episode that earned none keeps the old one.
+In later episodes `great_depression_apply_political_aftermath_pressure` shifts hidden social stress by the `aftermath_*` keys of `great_depression_hidden_component`: Corporate Rescue Order and Labor Scar raise it, and the other four lower it.
+The recovery report's option shows the aftermath the episode left.
+The seven spirits alias installed vanilla national-spirit art through Event 35 sprite names in `interface/035_great_depression.gfx`, so bespoke art can replace the texture paths without renaming anything.
+
 ## Bounded incident pools
 
 `common/scripted_effects/035_great_depression_incident_effects.txt` owns the ordinary incident clocks, state and partner selectors, complete candidate pools, receipt history, and qualitative application adapters.

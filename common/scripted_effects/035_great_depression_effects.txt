@@ -3053,6 +3053,7 @@ great_depression_abort_new_crisis = {
 	clr_country_flag = great_depression_social_force_package_proof
 	clr_country_flag = great_depression_social_emergency_mandate_active
 	clr_country_flag = great_depression_social_emergency_mandate_failed
+	great_depression_remove_emergency_government_rule = yes
 	clr_country_flag = great_depression_evolution_financial_contagion
 	clr_country_flag = great_depression_evolution_social_collapse
 	clr_country_flag = great_depression_evolution_second_great_depression
@@ -4690,6 +4691,7 @@ great_depression_rebuild_hidden_components = {
 	}
 
 	great_depression_apply_recovery_legacy_pressure = yes
+	great_depression_apply_political_aftermath_pressure = yes
 
 	# Inherited regional liabilities. The boom's credit hangover above is a
 	# national fact, so regional credit facts only add to it. The flat inherited
@@ -5390,7 +5392,8 @@ great_depression_queue_recovery_report = {
 }
 
 # COUNTRY scope. Option tooltip for the recovery report: the doctrine legacy,
-# the hollow-recovery scar, and the post-recovery safeguard the episode left.
+# the hollow-recovery scar, the post-recovery safeguard, and the political
+# aftermath this episode left.
 great_depression_show_recovery_report_ideas = {
 	if = {
 		limit = { has_idea = great_depression_legacy_public_works }
@@ -5423,6 +5426,33 @@ great_depression_show_recovery_report_ideas = {
 	if = {
 		limit = { has_idea = great_depression_post_recovery }
 		show_ideas_tooltip = great_depression_post_recovery
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.none compare = greater_than } }
+		if = {
+			limit = { has_idea = great_depression_aftermath_social_compact }
+			show_ideas_tooltip = great_depression_aftermath_social_compact
+		}
+		if = {
+			limit = { has_idea = great_depression_aftermath_emergency_rule }
+			show_ideas_tooltip = great_depression_aftermath_emergency_rule
+		}
+		if = {
+			limit = { has_idea = great_depression_aftermath_planning_settlement }
+			show_ideas_tooltip = great_depression_aftermath_planning_settlement
+		}
+		if = {
+			limit = { has_idea = great_depression_aftermath_corporate_rescue_order }
+			show_ideas_tooltip = great_depression_aftermath_corporate_rescue_order
+		}
+		if = {
+			limit = { has_idea = great_depression_aftermath_regional_autonomy }
+			show_ideas_tooltip = great_depression_aftermath_regional_autonomy
+		}
+		if = {
+			limit = { has_idea = great_depression_aftermath_labor_scar }
+			show_ideas_tooltip = great_depression_aftermath_labor_scar
+		}
 	}
 }
 
@@ -5804,6 +5834,8 @@ great_depression_try_complete_recovery = {
 			add_ideas = great_depression_post_recovery
 		}
 		great_depression_apply_durable_state_outcomes = yes
+		great_depression_apply_political_aftermath = yes
+		great_depression_remove_emergency_government_rule = yes
 		great_depression_clear_registered_center_runtime = yes
 		great_depression_clear_center_resolution_receipts = yes
 		clear_variable = great_depression_selected_center_state
@@ -7537,6 +7569,7 @@ great_depression_queue_social_extreme_outcome = {
 			set_country_flag = great_depression_social_nonwar_breakdown
 			set_country_flag = great_depression_emergency_government_formed
 			set_country_flag = great_depression_social_emergency_mandate_active
+			great_depression_add_emergency_government_rule = yes
 			set_country_flag = great_depression_social_emergency_dictatorship_observed
 			set_variable = { great_depression_social_stage = constant:great_depression_social_stage.emergency_government }
 			set_variable = { great_depression_social_emergency_mandate_start_day = global.num_days }
@@ -7582,6 +7615,7 @@ great_depression_execute_social_coup = {
 		set_country_flag = great_depression_social_coup_successful
 		set_country_flag = great_depression_emergency_government_formed
 		set_country_flag = great_depression_social_emergency_mandate_active
+		great_depression_add_emergency_government_rule = yes
 		set_variable = { great_depression_social_stage = constant:great_depression_social_stage.emergency_government }
 		set_variable = { great_depression_social_emergency_mandate_start_day = global.num_days }
 		set_variable = { great_depression_social_emergency_mandate_due_day = global.num_days }
@@ -7622,6 +7656,139 @@ great_depression_integrate_regional_autonomy = {
 		great_depression_apply_social_outcome_consequence = yes
 		great_depression_resolve_social_collapse = yes
 		set_country_flag = great_depression_social_collapse_resolved
+	}
+}
+
+# COUNTRY scope. The emergency government spirit lasts exactly as long as an
+# emergency mandate: a coup, an emergency dictatorship, or Form an Emergency
+# Government adds it, and mandate success, failure, cancellation, standing
+# down, recovery, or a rolled-back opening removes it.
+great_depression_add_emergency_government_rule = {
+	if = {
+		limit = { NOT = { has_idea = great_depression_emergency_government } }
+		add_ideas = great_depression_emergency_government
+	}
+}
+
+great_depression_remove_emergency_government_rule = {
+	if = {
+		limit = { has_idea = great_depression_emergency_government }
+		remove_ideas = great_depression_emergency_government
+	}
+}
+
+# COUNTRY scope, in the recovery transaction before the social flags are
+# cleared. An episode that went through Social Collapse leaves one political
+# aftermath chosen from how the movement was answered. The order puts the
+# outcome that reshaped the state first: an emergency government that settled,
+# then socialized industry, guaranteed property and credit, recognized councils
+# or autonomy, repression, and last a negotiated compact, because a compact
+# signed after troops broke the strikes does not erase that memory. A new
+# aftermath replaces the previous one, and an episode that earned none keeps it.
+great_depression_apply_political_aftermath = {
+	set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.none }
+	if = {
+		limit = { has_country_flag = great_depression_evolution_social_collapse }
+		if = {
+			limit = { has_country_flag = great_depression_social_emergency_government_settled }
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.emergency_rule }
+		}
+		else_if = {
+			limit = { has_country_flag = great_depression_occupied_industry_socialized }
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.planning_settlement }
+		}
+		else_if = {
+			limit = { has_country_flag = great_depression_property_and_credit_guaranteed }
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.corporate_rescue_order }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = great_depression_councils_recognized
+					has_country_flag = great_depression_social_regional_autonomy_recognized
+				}
+			}
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.regional_autonomy }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = great_depression_security_forces_deployed
+					has_country_flag = great_depression_occupations_broken
+					has_country_flag = great_depression_social_regional_autonomy_rejected
+				}
+			}
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.labor_scar }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_country_flag = great_depression_strike_negotiated
+					has_country_flag = great_depression_social_employment_compact
+				}
+			}
+			set_variable = { great_depression_last_completed_aftermath = constant:great_depression_aftermath.social_compact }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.none compare = greater_than } }
+		remove_ideas = great_depression_aftermath_social_compact
+		remove_ideas = great_depression_aftermath_emergency_rule
+		remove_ideas = great_depression_aftermath_planning_settlement
+		remove_ideas = great_depression_aftermath_corporate_rescue_order
+		remove_ideas = great_depression_aftermath_regional_autonomy
+		remove_ideas = great_depression_aftermath_labor_scar
+		if = {
+			limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.emergency_rule compare = equals } }
+			add_ideas = great_depression_aftermath_emergency_rule
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.planning_settlement compare = equals } }
+			add_ideas = great_depression_aftermath_planning_settlement
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.corporate_rescue_order compare = equals } }
+			add_ideas = great_depression_aftermath_corporate_rescue_order
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.regional_autonomy compare = equals } }
+			add_ideas = great_depression_aftermath_regional_autonomy
+		}
+		else_if = {
+			limit = { check_variable = { var = great_depression_last_completed_aftermath value = constant:great_depression_aftermath.labor_scar compare = equals } }
+			add_ideas = great_depression_aftermath_labor_scar
+		}
+		else = { add_ideas = great_depression_aftermath_social_compact }
+	}
+}
+
+# COUNTRY scope, called by great_depression_rebuild_hidden_components. The
+# political aftermath of an earlier Social Collapse shifts hidden social
+# stress in every later episode.
+great_depression_apply_political_aftermath_pressure = {
+	if = {
+		limit = { has_idea = great_depression_aftermath_social_compact }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_social_compact }
+	}
+	else_if = {
+		limit = { has_idea = great_depression_aftermath_emergency_rule }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_emergency_rule }
+	}
+	else_if = {
+		limit = { has_idea = great_depression_aftermath_planning_settlement }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_planning_settlement }
+	}
+	else_if = {
+		limit = { has_idea = great_depression_aftermath_corporate_rescue_order }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_corporate_rescue_order }
+	}
+	else_if = {
+		limit = { has_idea = great_depression_aftermath_regional_autonomy }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_regional_autonomy }
+	}
+	else_if = {
+		limit = { has_idea = great_depression_aftermath_labor_scar }
+		add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.aftermath_labor_scar }
 	}
 }
 
