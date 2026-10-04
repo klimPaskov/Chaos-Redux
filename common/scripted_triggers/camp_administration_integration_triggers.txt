@@ -37,6 +37,15 @@ camp_admin_legacy_generic_action_is_retired = {
 	}
 }
 
+# COUNTRY. True for the current chain's dispatch event. A save without the
+# stored earliest date treats its outstanding timer as current.
+camp_admin_dispatch_timer_is_due = {
+	OR = {
+		NOT = { has_variable = camp_admin_dispatch_timer_earliest }
+		check_variable = { var = camp_admin_dispatch_timer_earliest value = global.date compare = less_than_or_equals }
+	}
+}
+
 # Country quote mirrors the bounded mandate price from the shared command constants.
 # Replacement equipment is funded over time and never prevents immediate release.
 camp_admin_generic_reform_quote = {

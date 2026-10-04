@@ -238,10 +238,24 @@ camp_rework_ensure_country_timer = {
 	if = {
 		limit = { NOT = { has_country_flag = camp_admin_dispatch_timer_active } }
 		set_country_flag = camp_admin_dispatch_timer_active
-		country_event = {
-			id = camp_administration_country.2
-			days = constant:camp_admin_dispatch.period_days
-		}
+		camp_rework_schedule_country_timer = yes
+	}
+}
+
+# Country scope. Schedules the chain's next dispatch event and records the
+# earliest date it may run. An event left over from an earlier chain (before
+# annexation and re-release) arrives before that date and stops without
+# rescheduling, so only one chain stays outstanding.
+camp_rework_schedule_country_timer = {
+	set_temp_variable = { chaosx_date_days = constant:camp_admin_dispatch.period_days }
+	subtract_from_temp_variable = { chaosx_date_days = constant:camp_admin_dispatch.due_tolerance_days }
+	set_temp_variable = { chaosx_date_offset = constant:camp_admin_value.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { camp_admin_dispatch_timer_earliest = global.date }
+	add_to_variable = { camp_admin_dispatch_timer_earliest = chaosx_date_offset }
+	country_event = {
+		id = camp_administration_country.2
+		days = constant:camp_admin_dispatch.period_days
 	}
 }
 

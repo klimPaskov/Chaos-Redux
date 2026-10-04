@@ -12,6 +12,11 @@ At each call, the event verifies eligibility and registry membership, runs `camp
 If eligibility or membership has ended, it clears the timer flag and stops; a country that became a special Chaos actor also runs the package's existing exclusion cleanup.
 After an eligible month's processing, the timer uses the same package-owned registry-work trigger as the existing global cleanup; if no active network, reform, open ledger, focus watch or continuing administration work remains, it removes that country from the registry and stops.
 The timer flag stays set during registry removal until that outstanding delayed event arrives, so a rapid return cannot start a second chain.
+Each scheduled call goes through `camp_rework_schedule_country_timer`, which also stores `camp_admin_dispatch_timer_earliest`: the current date plus `camp_admin_dispatch.period_days` minus `camp_admin_dispatch.due_tolerance_days` (1), converted with `chaosx_convert_days_to_date_offset`.
+Annexation and special-country exclusion both run `camp_admin_integration_close_country`, which clears the timer flag and that date, because the pending event may never arrive for a country that no longer exists.
+A re-released country therefore starts a fresh chain on registration.
+If the old event is still delivered later, `camp_admin_dispatch_timer_is_due` finds it earlier than the stored date, and it stops without running the month or rescheduling, so only one timer stays outstanding; the calendar month guard still blocks any double monthly run.
+A save whose timer predates the stored date treats that timer as current.
 
 The recipient calculates a calendar month key and records it before maintenance, economy, institution, territorial and country processing.
 The existing Chaos Meter dispatcher and this timer may both reach the recipient in an enabled month; the key allows only the first to pay or apply losses.
@@ -27,7 +32,7 @@ The timer is triggered-only and hidden, so it creates no notification or choice.
 Its registration flag is an internal true/false state, while the period is a shared script constant.
 The package UI uses existing `gfx/interface/camp_repression/` sprites and `interface/camp_repression_rework.gfx`; this dispatch feature needs no new icon or sprite name.
 
-The parsed-source and calendar model in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/dispatch_source_tests.py` covers both registry entry paths, a full normal year, leap year, both Chaos Meter settings, exclusion and ordinary inactivity.
+The parsed-source and calendar model in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/dispatch_source_tests.py` covers both registry entry paths, a full normal year, leap year, both Chaos Meter settings, exclusion, ordinary inactivity, and annexation followed by re-release before and after the stale event would arrive.
 That model cannot verify Clausewitz event scheduling or month-key persistence in a running game; the scoped HOI4 MCP result and any unresolved engine evidence belong in the package completion report.
 The [current resume packet](../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/resume_packet.md) indexes dispositions and remaining acceptance work.
 The event inspector's partial result and the installed vanilla delay precedent do not establish that this timer fires in game.

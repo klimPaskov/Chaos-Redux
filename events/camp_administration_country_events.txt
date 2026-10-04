@@ -18,6 +18,13 @@ country_event = {
 		if = {
 			limit = {
 				has_country_flag = camp_admin_dispatch_timer_active
+				NOT = { camp_admin_dispatch_timer_is_due = yes }
+			}
+			# Left over from an earlier chain; the current chain's event is still outstanding.
+		}
+		else_if = {
+			limit = {
+				has_country_flag = camp_admin_dispatch_timer_active
 				camp_rework_country_is_eligible = yes
 				is_in_array = {
 					array = global.camp_repression_active_countries
@@ -34,10 +41,7 @@ country_event = {
 					}
 					camp_rework_country_has_registry_work = yes
 				}
-				country_event = {
-					id = camp_administration_country.2
-					days = constant:camp_admin_dispatch.period_days
-				}
+				camp_rework_schedule_country_timer = yes
 			}
 			else = {
 				if = { limit = { is_special_chaos_country = yes } camp_rework_exclude_special_country = yes }
@@ -46,11 +50,13 @@ country_event = {
 					value = THIS
 				}
 				clr_country_flag = camp_admin_dispatch_timer_active
+				clear_variable = camp_admin_dispatch_timer_earliest
 			}
 		}
 		else = {
 			if = { limit = { is_special_chaos_country = yes } camp_rework_exclude_special_country = yes }
 			clr_country_flag = camp_admin_dispatch_timer_active
+			clear_variable = camp_admin_dispatch_timer_earliest
 		}
 	}
 }
