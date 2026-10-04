@@ -207,7 +207,7 @@ Multi-front countries can rotate the registered priority-front state, while reco
 
 The three mission families are Hold the Capital, Secure the Rail Spine, and Hold the Settlement Terms.
 
-Selecting a mission commits the country to the hold: the selectable card closes and a separate non-selectable mission (Holding the Capital, Securing the Rail Spine, or Upholding the Settlement) shows the countdown and cannot finish early. Selecting a capital or rail mission binds its target state. Event-driven state-control changes fail the objective if control is lost, and the deadline resolver checks the same target plus its supply, infrastructure, defense, or settlement requirements. A failed rail mission cannot restart during that crisis, while the separate reconstruction action remains available.
+Selecting a mission commits the country to the hold: the selectable card closes and a separate non-selectable mission (Holding the Capital, Securing the Rail Spine, or Upholding the Settlement) shows the countdown and cannot finish early. Selecting a capital or rail mission binds its target state. Event-driven state-control changes fail the objective if control is lost, and the deadline resolver checks the same target plus its supply, infrastructure, defense, or settlement requirements. A failed rail mission cannot restart during that crisis, while the separate reconstruction action remains available. A card left unselected until its timer ends lapses without penalty and is offered again once the action cooldown has passed.
 
 Relief and armed support are separate decisions and separate scripted effects.
 

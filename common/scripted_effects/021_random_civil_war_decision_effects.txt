@@ -634,8 +634,19 @@ event021_mission_hold_settlement_terms_resolve = {
 	else = { event021_mission_hold_settlement_terms_timeout = yes }
 }
 
+# COUNTRY scope. Clears the lapsed-offer cooldowns of Hold the Capital, Secure
+# the Rail Spine, and Hold the Settlement Terms. Crisis cleanup and every new
+# crisis role call it, so a fresh crisis offers its cards as soon as their own
+# conditions hold.
+event021_clear_mission_offer_lapses = {
+	clr_country_flag = event021_hold_capital_offer_lapsed
+	clr_country_flag = event021_secure_rail_offer_lapsed
+	clr_country_flag = event021_settlement_terms_offer_lapsed
+}
+
 event021_cleanup_decision_state = {
 	clr_country_flag = event021_hold_capital_mission_active
+	event021_clear_mission_offer_lapses = yes
 	clear_variable = event021_hold_capital_mission_target_state
 	clr_country_flag = event021_secure_rail_mission_active
 	clr_country_flag = event021_settlement_terms_mission_active

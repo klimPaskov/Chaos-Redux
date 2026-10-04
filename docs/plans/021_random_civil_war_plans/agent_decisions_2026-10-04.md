@@ -217,3 +217,11 @@ Finding: the available blocks of Secure the Rail Spine and Hold the Settlement T
 Decision: the rail card states its requirement through `event021_secure_rail_requirement_tt`, which names the bound state through `event021_GetRailMissionStateName` and now wraps `event021_secure_rail_mission_target_valid`; the lost and already-repaired checks, which activation and cancellation also enforce, sit in `hidden_trigger`.
 The settlement card states "The settlement's obligation, [obligation], is still in force and has not been broken" through `event021_settlement_terms_requirement_tt`, which wraps the active and not-failed obligation checks, and the hold-date variable check is hidden.
 Every gate is logically unchanged. A scripted pass over every available block in `common/decisions/021_random_civil_war_decisions.txt` finds no visible trigger at all outside `hidden_trigger` or `custom_trigger_tooltip` (the same pass on the previous file listed the seven raw checks above).
+
+## D18. Unselected mission cards lapse instead of re-offering at once
+
+Finding: Hold the Capital, Secure the Rail Spine, and Hold the Settlement Terms are selectable missions with `fire_only_once = no` and no `timeout_effect`, so a card whose selection timer ran out unselected did nothing and reactivated at once with a fresh full timer, indefinitely.
+Decision: each card gains a `timeout_effect` that shows `event021_mission_offer_lapsed_tt` ("The moment passes. The commitment can be offered again in N days.") and sets a timed lapse flag (`event021_hold_capital_offer_lapsed`, `event021_secure_rail_offer_lapsed`, `event021_settlement_terms_offer_lapsed`) that the card's activation excludes.
+The duration is `constant:event021_action_tuning.action_cooldown_days`, copied into the temporary `event021_decision_flag_days` first because timed flags cannot take `days = constant:`.
+There is no penalty and no change to costs, rewards, timers, or AI weights. `event021_clear_mission_offer_lapses` clears the three flags; `event021_cleanup_decision_state` and both new-role helpers (`event021_commit_opening_evolution_provenance` and `event021_inherit_crisis_opening_evolution_provenance`) call it.
+Basis: the lead's round 2 assignment and the D2 finding that `timeout_effect` runs only for an unselected selectable card.

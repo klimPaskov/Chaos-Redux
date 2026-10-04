@@ -784,6 +784,7 @@ event021_civil_war_crisis_category = {
 			NOT = { has_country_flag = event021_hold_capital_success }
 			NOT = { has_country_flag = event021_hold_capital_failed }
 			NOT = { has_country_flag = event021_hold_capital_mission_active }
+			NOT = { has_country_flag = event021_hold_capital_offer_lapsed }
 		}
 		available = {
 			custom_trigger_tooltip = {
@@ -816,6 +817,15 @@ event021_civil_war_crisis_category = {
 				set_country_flag = event021_hold_capital_mission_active
 				capital_scope = { set_variable = { ROOT.event021_hold_capital_mission_target_state = THIS } }
 				activate_mission = event021_holding_the_capital_mission
+			}
+		}
+		# An unselected card lapses without penalty and returns after the
+		# action cooldown instead of restarting its timer at once.
+		timeout_effect = {
+			custom_effect_tooltip = event021_mission_offer_lapsed_tt
+			hidden_effect = {
+				set_temp_variable = { event021_decision_flag_days = constant:event021_action_tuning.action_cooldown_days }
+				set_country_flag = { flag = event021_hold_capital_offer_lapsed days = event021_decision_flag_days }
 			}
 		}
 		ai_will_do = {
@@ -863,6 +873,7 @@ event021_civil_war_crisis_category = {
 			NOT = { has_country_flag = event021_rail_spine_secured }
 			NOT = { has_country_flag = event021_rail_spine_lost }
 			NOT = { has_country_flag = event021_secure_rail_mission_active }
+			NOT = { has_country_flag = event021_secure_rail_offer_lapsed }
 			NOT = {
 				AND = {
 					has_variable = random_civil_war_rail_mission_state
@@ -919,6 +930,15 @@ event021_civil_war_crisis_category = {
 				activate_mission = event021_securing_the_rail_spine_mission
 			}
 		}
+		# An unselected card lapses without penalty and returns after the
+		# action cooldown instead of restarting its timer at once.
+		timeout_effect = {
+			custom_effect_tooltip = event021_mission_offer_lapsed_tt
+			hidden_effect = {
+				set_temp_variable = { event021_decision_flag_days = constant:event021_action_tuning.action_cooldown_days }
+				set_country_flag = { flag = event021_secure_rail_offer_lapsed days = event021_decision_flag_days }
+			}
+		}
 		ai_will_do = {
 			base = constant:event021_ai.base_mission
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_reconstruction_phase }
@@ -961,6 +981,7 @@ event021_civil_war_crisis_category = {
 			has_country_flag = random_civil_war_settlement_obligation_active
 			NOT = { has_country_flag = random_civil_war_settlement_obligation_objective_met }
 			NOT = { has_country_flag = event021_settlement_terms_mission_active }
+			NOT = { has_country_flag = event021_settlement_terms_offer_lapsed }
 		}
 		available = {
 			hidden_trigger = { has_variable = random_civil_war_settlement_terms_hold_until }
@@ -981,6 +1002,15 @@ event021_civil_war_crisis_category = {
 			hidden_effect = {
 				set_country_flag = event021_settlement_terms_mission_active
 				activate_mission = event021_upholding_the_settlement_mission
+			}
+		}
+		# An unselected card lapses without penalty and returns after the
+		# action cooldown instead of restarting its timer at once.
+		timeout_effect = {
+			custom_effect_tooltip = event021_mission_offer_lapsed_tt
+			hidden_effect = {
+				set_temp_variable = { event021_decision_flag_days = constant:event021_action_tuning.action_cooldown_days }
+				set_country_flag = { flag = event021_settlement_terms_offer_lapsed days = event021_decision_flag_days }
 			}
 		}
 		ai_will_do = {
