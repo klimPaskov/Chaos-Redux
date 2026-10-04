@@ -94,7 +94,7 @@ gods_of_africa_participant_category = {
 			gods_of_africa_participant_can_offer_aid = yes
 		}
 		available = {
-			gods_of_africa_participant_can_offer_aid = yes
+			gods_of_africa_participant_aid_can_be_sent = yes
 		}
 		custom_cost_trigger = {
 			gods_of_africa_participant_can_offer_aid = yes
@@ -108,6 +108,10 @@ gods_of_africa_participant_category = {
 		}
 		ai_will_do = {
 			base = 10
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_participant_aid_can_be_sent = yes }
+			}
 			modifier = {
 				factor = 1.5
 				has_variable = gods_of_africa_wrath
@@ -186,6 +190,10 @@ gods_of_africa_participant_category = {
 		}
 		ai_will_do = {
 			base = 15
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_partial_payment_is_affordable = yes }
+			}
 			modifier = {
 				factor = 0.25
 				gods_of_africa_current_demand_can_be_paid = yes
@@ -275,7 +283,13 @@ gods_of_africa_participant_category = {
 			gods_of_africa_substitute_slot_1_is_valid = yes
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
-		available = { gods_of_africa_substitute_slot_1_is_valid = yes }
+		available = {
+			gods_of_africa_substitute_slot_1_is_valid = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_transfer_accounted_tt
+				gods_of_africa_substitute_slot_1_transfer_is_clear = yes
+			}
+		}
 		custom_cost_trigger = { gods_of_africa_substitute_slot_1_is_valid = yes }
 		custom_cost_text = gods_of_africa_substitute_slot_1_cost
 		cost = 0
@@ -286,6 +300,10 @@ gods_of_africa_participant_category = {
 		}
 		ai_will_do = {
 			base = 10
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_substitute_slot_1_transfer_is_clear = yes }
+			}
 			modifier = {
 				factor = 2
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
@@ -301,7 +319,13 @@ gods_of_africa_participant_category = {
 			gods_of_africa_substitute_slot_2_is_valid = yes
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
-		available = { gods_of_africa_substitute_slot_2_is_valid = yes }
+		available = {
+			gods_of_africa_substitute_slot_2_is_valid = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_transfer_accounted_tt
+				gods_of_africa_substitute_slot_2_transfer_is_clear = yes
+			}
+		}
 		custom_cost_trigger = { gods_of_africa_substitute_slot_2_is_valid = yes }
 		custom_cost_text = gods_of_africa_substitute_slot_2_cost
 		cost = 0
@@ -312,6 +336,10 @@ gods_of_africa_participant_category = {
 		}
 		ai_will_do = {
 			base = 9
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_substitute_slot_2_transfer_is_clear = yes }
+			}
 			modifier = {
 				factor = 2
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
@@ -327,7 +355,13 @@ gods_of_africa_participant_category = {
 			gods_of_africa_substitute_slot_3_is_valid = yes
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
-		available = { gods_of_africa_substitute_slot_3_is_valid = yes }
+		available = {
+			gods_of_africa_substitute_slot_3_is_valid = yes
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_transfer_accounted_tt
+				gods_of_africa_substitute_slot_3_transfer_is_clear = yes
+			}
+		}
 		custom_cost_trigger = { gods_of_africa_substitute_slot_3_is_valid = yes }
 		custom_cost_text = gods_of_africa_substitute_slot_3_cost
 		cost = 0
@@ -338,6 +372,10 @@ gods_of_africa_participant_category = {
 		}
 		ai_will_do = {
 			base = 8
+			modifier = {
+				factor = 0
+				NOT = { gods_of_africa_substitute_slot_3_transfer_is_clear = yes }
+			}
 			modifier = {
 				factor = 2
 				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
@@ -1010,6 +1048,18 @@ gods_of_africa_host_category = {
 				exists = yes
 				has_country_flag = gods_of_africa_participant
 				gods_of_africa_substitute_offer_is_pending = yes
+				custom_trigger_tooltip = {
+					tooltip = gods_of_africa_offer_stock_tt
+					gods_of_africa_substitute_offer_is_affordable = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = gods_of_africa_offer_transfer_accounted_tt
+					gods_of_africa_substitute_transfer_is_clear = yes
+				}
+				custom_trigger_tooltip = {
+					tooltip = gods_of_africa_offer_retry_tt
+					gods_of_africa_payment_retry_is_open = yes
+				}
 			}
 		}
 		cost = 0
@@ -1018,7 +1068,19 @@ gods_of_africa_host_category = {
 			custom_effect_tooltip = gods_of_africa_accept_substitute_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_accept_substitute = yes } }
 		}
-		ai_will_do = { base = 2 }
+		ai_will_do = {
+			base = 2
+			modifier = {
+				factor = 0
+				FROM = {
+					OR = {
+						NOT = { gods_of_africa_substitute_offer_is_affordable = yes }
+						NOT = { gods_of_africa_substitute_transfer_is_clear = yes }
+						NOT = { gods_of_africa_payment_retry_is_open = yes }
+					}
+				}
+			}
+		}
 	}
 
 	gods_of_africa_reject_substitute = {

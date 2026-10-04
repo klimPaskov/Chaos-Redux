@@ -757,9 +757,11 @@ gods_of_africa_complete_material_transfer = {
 				clr_country_flag = gods_of_africa_material_transfer_emission_permitted
 			}
 			else = {
+				# The participant is credited with what it actually gave up, up to the
+				# amount asked. Africa's own stock accounting reads the separate
+				# receiver gain, and a lower gain keeps the mismatch flag as evidence.
 				set_variable = { gods_of_africa_material_transfer_receipt_amount = gods_of_africa_material_transfer_receipt_requested_native }
 				clamp_variable = { var = gods_of_africa_material_transfer_receipt_amount min = constant:gods_of_africa_value.zero max = gods_of_africa_material_transfer_source_debit }
-				clamp_variable = { var = gods_of_africa_material_transfer_receipt_amount max = gods_of_africa_material_transfer_receiver_credit }
 				if = {
 					limit = {
 						has_country_flag = gods_of_africa_material_receipt_emergency
@@ -792,11 +794,15 @@ gods_of_africa_complete_material_transfer = {
 					multiply_variable = { gods_of_africa_material_transfer_source_debit = constant:gods_of_africa_contribution_measure.native_per_k }
 					multiply_variable = { gods_of_africa_material_transfer_receiver_credit = constant:gods_of_africa_contribution_measure.native_per_k }
 				}
+				else = {
+					clamp_variable = { var = gods_of_africa_material_transfer_source_debit max = gods_of_africa_material_transfer_receipt_requested_native }
+					clamp_variable = { var = gods_of_africa_material_transfer_receiver_credit max = gods_of_africa_material_transfer_receipt_requested_native }
+				}
 				set_variable = { gods_of_africa_material_transfer_actual_amount = gods_of_africa_material_transfer_receipt_amount }
 				set_country_flag = gods_of_africa_material_transfer_measured
 				set_country_flag = gods_of_africa_material_transfer_receipt_pending
 				# A short or unequal delivery is still measured: the recorder credits the
-				# common delivered amount once and keeps the mismatch flag as evidence.
+				# participant's measured loss once and keeps the mismatch flag as evidence.
 				# The contract owner keeps the undelivered remainder owed, so a short
 				# transfer never locks the participant out of later payments.
 				gods_of_africa_record_paid_contribution = yes
@@ -1204,14 +1210,19 @@ gods_of_africa_begin_voluntary_receipt = {
 }
 
 # PARTICIPANT immediately after the native send, inside the same effect.
-# Publishes the measured delivery in the normal gods_of_africa_payment_delivered
-# field. It stays zero when nothing was measured, so no contract or aid record
-# is ever credited from a requested amount.
+# Publishes the participant's measured loss in gods_of_africa_payment_delivered
+# (the contract and contribution credit) and Africa's measured gain, never more
+# than that loss, in gods_of_africa_payment_received (Africa's stock accounts).
+# Both stay zero when nothing was measured, so no record is ever credited from
+# a requested amount.
 gods_of_africa_complete_payment_receipt = {
 	gods_of_africa_complete_material_transfer = yes
 	set_variable = { gods_of_africa_payment_delivered = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_payment_received = constant:gods_of_africa_value.zero }
 	if = {
 		limit = { has_country_flag = gods_of_africa_material_transfer_completion_consumed }
 		set_variable = { gods_of_africa_payment_delivered = gods_of_africa_material_transfer_actual_amount }
+		set_variable = { gods_of_africa_payment_received = gods_of_africa_material_transfer_receiver_credit }
+		clamp_variable = { var = gods_of_africa_payment_received min = constant:gods_of_africa_value.zero max = gods_of_africa_payment_delivered }
 	}
 }

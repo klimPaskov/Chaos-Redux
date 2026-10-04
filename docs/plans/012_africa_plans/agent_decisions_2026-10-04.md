@@ -224,3 +224,22 @@ Basis: the skeptical round 1 review of the takeover commits, under the same full
 - The archive cleanup no longer clears the emergency proof and substitute terms twice.
 
 MCP route evidence (review, 2026-10-04): one narrow `hoi4_probability_inspect` call (`decision_ai_will_do` with the three doctrine decisions as the candidate pool) and one `hoi4_decision_inspect` call (`mode = inspect`, `id = gods_of_africa_deliver_settlement_support`) both returned "Invalid tool arguments". The probability audit stays `blocked`; neither route was retried.
+
+## L19. Tribute credit follows the participant's loss; empty payments lock briefly
+
+Disposition: `implemented` (the native delivery timing of `send_equipment`, fuel and political-power transfers is `needs_live_game`).
+
+Basis: the round 2 remaining-work list (priority 1) and the offline wiki's description of `send_equipment` as removing equipment from the sender; a participant that gave goods up must not lose them uncredited when Africa's same-tick gain reads lower.
+
+Decisions:
+
+- `gods_of_africa_complete_material_transfer` credits min(request, the participant's measured loss).
+  Africa's measured gain is no longer a cap on the participant's credit; it is published separately as `gods_of_africa_payment_received` (never more than the credited loss), and Africa's own stock accounts (`africa_common_defence_stockpile` for demanded and voluntary rifles) read only that gain.
+  `gods_of_africa_material_transfer_mismatch` and the native delta outputs keep the evidence when the two sides differ.
+- A payment, accepted substitute or voluntary shipment that moves nothing (`gods_of_africa_payment_delivered` zero) calls `gods_of_africa_record_undelivered_payment`: a `.604` row (`gods_of_africa_response_undelivered_report`) says the shipment arrived empty, nothing is credited, and `gods_of_africa_payment_retry_day` closes the same answer for `gods_of_africa_timing.undelivered_retry_days` (7) days.
+  The lockout is read by `gods_of_africa_payment_retry_is_open` in Fulfil, partial payment, voluntary aid and Africa's substitute acceptance.
+- Every payment gate shows a localised reason instead of a hidden trigger: the demand is still on record, earlier shipments are confirmed (`gods_of_africa_material_transaction_unresolved` blocks only measured families, never political ones), and the retry delay has passed.
+  Africa's substitute acceptance also requires that the offering country still holds what it offered, because a failed affordability check used to leave the button live with no effect.
+- Every one of these decisions has an explicit `factor = 0` AI modifier while its gate is closed.
+- A material demand that an unaccounted earlier shipment made unpayable lapses at its deadline as a neutral retirement (`.604` row `gods_of_africa_response_lapsed_report`) instead of a failure with Wrath and punishment, because the participant had no way to pay it.
+  The report-only kinds `undelivered` (17) and `lapsed` (18) extend `gods_of_africa_history_kind` and are never written to the history arrays.

@@ -28,6 +28,30 @@ gods_of_africa_capture_response_report = {
 	set_temp_variable = { gods_of_africa_report_breach_kind = constant:gods_of_africa_value.zero }
 }
 
+# COUNTRY scope on a participant. A payment or voluntary shipment that moved
+# nothing is credited nothing. The participant sees the result, and the same
+# answer stays closed for a short time so neither a player nor the AI resends
+# it every day. Caller sets temporary gods_of_africa_report_family.
+gods_of_africa_record_undelivered_payment = {
+	set_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.undelivered }
+	set_variable = { gods_of_africa_last_response_family = gods_of_africa_report_family }
+	clear_variable = gods_of_africa_last_response_mobile_type
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_report_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			has_variable = gods_of_africa_demand_mobile_type
+		}
+		set_variable = { gods_of_africa_last_response_mobile_type = gods_of_africa_demand_mobile_type }
+	}
+	set_variable = { gods_of_africa_last_response_amount = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_last_response_balance = constant:gods_of_africa_value.zero }
+	clear_variable = gods_of_africa_last_response_breach_kind
+	set_variable = { gods_of_africa_payment_retry_day = global.num_days }
+	add_to_variable = { gods_of_africa_payment_retry_day = constant:gods_of_africa_timing.undelivered_retry_days }
+	set_country_flag = gods_of_africa_outcome_report_pending
+	country_event = { id = chaosx.nr12.604 }
+}
+
 gods_of_africa_clear_report_receipts = {
 	clear_variable = gods_of_africa_last_response_kind
 	clear_variable = gods_of_africa_last_response_family

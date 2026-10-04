@@ -770,6 +770,21 @@ gods_of_africa_participant_can_offer_aid = {
 	}
 }
 
+# COUNTRY scope on a participant. The offer itself plus the visible reasons
+# that stop a shipment from leaving: an earlier shipment Africa could not
+# account for, or a shipment that moved nothing a few days ago.
+gods_of_africa_participant_aid_can_be_sent = {
+	gods_of_africa_participant_can_offer_aid = yes
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_transfer_accounted_tt
+		NOT = { has_country_flag = gods_of_africa_material_transaction_unresolved }
+	}
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_payment_retry_tt
+		gods_of_africa_payment_retry_is_open = yes
+	}
+}
+
 # COUNTRY scope on the host. Priority-offender marks are intentionally capped
 # so the manual target action cannot become unlimited harassment.
 gods_of_africa_proven_offender = {
@@ -852,8 +867,79 @@ africa_gods_of_africa_participant_is_current = {
 	gods_of_africa_participant_generation_is_current = yes
 }
 
+# Caller sets temporary gods_of_africa_family_to_check. These families move
+# stock that both sides measure; political families and resource rights do not.
+gods_of_africa_family_needs_measured_transfer = {
+	OR = {
+		gods_of_africa_family_is_equipment = yes
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.fuel }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.manpower }
+	}
+}
+
+# COUNTRY scope on a participant; caller sets temporary
+# gods_of_africa_family_to_check. An earlier shipment that could not be
+# accounted for blocks every further measured shipment, never a political one.
+gods_of_africa_family_transfer_is_clear = {
+	OR = {
+		NOT = { has_country_flag = gods_of_africa_material_transaction_unresolved }
+		NOT = { gods_of_africa_family_needs_measured_transfer = yes }
+	}
+}
+
+gods_of_africa_demand_transfer_is_clear = {
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family }
+	gods_of_africa_family_transfer_is_clear = yes
+}
+
+gods_of_africa_substitute_transfer_is_clear = {
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_substitute_family }
+	gods_of_africa_family_transfer_is_clear = yes
+}
+
+gods_of_africa_substitute_slot_1_transfer_is_clear = {
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_substitute_slot_1_family }
+	gods_of_africa_family_transfer_is_clear = yes
+}
+
+gods_of_africa_substitute_slot_2_transfer_is_clear = {
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_substitute_slot_2_family }
+	gods_of_africa_family_transfer_is_clear = yes
+}
+
+gods_of_africa_substitute_slot_3_transfer_is_clear = {
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_substitute_slot_3_family }
+	gods_of_africa_family_transfer_is_clear = yes
+}
+
+# COUNTRY scope on a participant. A payment or shipment that moved nothing
+# closes the same answer for a short time (decision L19).
+gods_of_africa_payment_retry_is_open = {
+	OR = {
+		NOT = { has_variable = gods_of_africa_payment_retry_day }
+		check_variable = { var = global.num_days value = gods_of_africa_payment_retry_day compare = greater_than_or_equals }
+	}
+}
+
+# COUNTRY scope on a participant. The visible reasons shared by every payment
+# answer to the open demand.
+gods_of_africa_demand_payment_is_open = {
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_demand_on_record_tt
+		gods_of_africa_contract_ledger_can_close = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_transfer_accounted_tt
+		gods_of_africa_demand_transfer_is_clear = yes
+	}
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_payment_retry_tt
+		gods_of_africa_payment_retry_is_open = yes
+	}
+}
+
 gods_of_africa_current_demand_can_be_paid = {
-	hidden_trigger = { gods_of_africa_contract_ledger_can_close = yes }
+	gods_of_africa_demand_payment_is_open = yes
 	gods_of_africa_demand_contract_is_current = yes
 	gods_of_africa_participant_has_capacity_for_family = yes
 }
@@ -863,7 +949,7 @@ gods_of_africa_current_demand_can_be_paid = {
 # The amount is precomputed when the contract is created, so the decision
 # surface never mutates state merely to evaluate affordability.
 gods_of_africa_partial_payment_is_affordable = {
-	hidden_trigger = { gods_of_africa_contract_ledger_can_close = yes }
+	gods_of_africa_demand_payment_is_open = yes
 	gods_of_africa_demand_contract_is_current = yes
 	has_variable = gods_of_africa_partial_payment_amount
 	has_variable = gods_of_africa_partial_capacity_requirement

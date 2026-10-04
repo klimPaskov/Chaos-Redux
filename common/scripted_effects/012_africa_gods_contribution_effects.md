@@ -21,7 +21,9 @@ These helpers contain no contract closure, clocks, events, country scans, GUI, a
 
 Takeover decisions on the adopted package:
 
-- A measured short or unequal delivery is an accounted outcome: the recorder credits the common delivered amount once and keeps `gods_of_africa_material_transfer_mismatch` as evidence, and it no longer sets `gods_of_africa_material_transaction_unresolved`, which would have blocked every later payment.
+- A measured short or unequal delivery is an accounted outcome: the recorder credits the participant's measured loss (bounded by the request) once and keeps `gods_of_africa_material_transfer_mismatch` as evidence, and it no longer sets `gods_of_africa_material_transaction_unresolved`, which would have blocked every later payment.
+  Africa's measured gain is published separately as `gods_of_africa_payment_received` (never more than the credited loss) and is the only value Africa's own stock accounts (`africa_common_defence_stockpile`) read.
+  A payment that moves nothing records a `.604` row and a short retry lockout (`gods_of_africa_payment_retry_day`, decision L19).
   `gods_of_africa_material_transaction_unresolved` remains reserved for unreadable native values and identity drift.
 - Temporary inputs are read by value (`check_variable`), not with `has_variable`, because an unset temporary input reads zero and fails the kind and amount checks anyway.
   The same applies to the grading helpers' temporary inputs.
@@ -139,7 +141,7 @@ No lifetime total is clamped, reset or waived, and no deferred recovery writer i
 Zero delivery consumes its reservation too.
 Sequence reservations are not demands, fulfillments, deliveries or penalties.
 
-The actual result within supported helper arithmetic is min(request, positive source debit, positive receiver credit).
+The actual result within supported helper arithmetic is min(request, positive source debit); the receiver credit is bounded by the request and kept as Africa's own measured gain.
 For fuel/manpower, compute both differences in k, bound common actual to request_k, then convert only that bounded actual and bounded raw output fields.
 Fuel room stays in k and is compared with request_k.
 Native directed delta outputs retain the original k differences, including excess, so full_match is evaluated before raw output bounds.
