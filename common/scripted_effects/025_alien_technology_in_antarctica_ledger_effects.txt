@@ -29,10 +29,15 @@
 # Parent Event 016 API contract:
 # - The parent integration must define
 #   chaosx_grant_external_alien_recovery_reward = yes.
-# - This bridge supplies temporary chaosx_external_alien_recovery_result,
-#   overlap, source_event, field, tier, allow_base, duplicate_guard, and the
-#   exclude-overlap country flag. The API returns temporary result, overlap,
-#   field, tier, upgraded, and reward_applied values.
+# - Result, source_event, field, tier, and policy request values are normal
+#   country variables. Overlap, upgraded, and reward_applied are temporary.
+#   Public temporary copies use an _output suffix to avoid country shadowing.
+# - An exact overlap asks the API to exclude only the overlapping family while
+#   another base family remains. Event 025 still allows a base reward; an
+#   Event 036 conversion allows only an upgrade or the Integration capstone.
+# - The API maps each granted family or upgrade into one broad public field.
+#   Only the flight, propulsion and weapons group (aircraft or propulsion
+#   codes) can overlap between Event 025 and Event 036.
 # - The bridge records those outputs in country variables and flags. It never
 #   substitutes another Event 016 API when the named API is absent.
 #
@@ -45,17 +50,25 @@
 # record_api_result, and the six explicit assign_fragment_slot effects.
 # ============================================================================
 
-# COUNTRY scope. Initializes the temporary outputs exposed by each public
-# effect. Persistent result values are written only by the matching resolver.
+# COUNTRY scope. Defaults shared country outputs and distinct temporary copies.
+# Per-event historical receipts are written only by the matching resolver.
 chaosx_alien_recovery_ledger_initialize_public_outputs = {
-	set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_reward_applied_output = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.none }
-	set_temp_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_output = constant:chaosx_nr25_result.none }
+	set_temp_variable = { chaosx_alien_recovery_result_field_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_tier_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event_output = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.zero }
+	clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+	clr_country_flag = chaosx_alien_recovery_reward_pending
 }
 
 # COUNTRY scope. Sets the external API request defaults. The API may refine the
@@ -71,6 +84,10 @@ chaosx_alien_recovery_ledger_prepare_api_request = {
 	# overlap cannot inherit Event 025's previous field or tier.
 	set_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
+	# Clear a stale random-helper success receipt before any owner branch.
+	set_temp_variable = { chaosx_custom_technology_random_grant_applied = constant:chaosx_nr25_value.zero }
+	# Always bind provenance to this transaction rather than a preceding grant.
+	set_temp_variable = { chaosx_custom_technology_source = chaosx_external_alien_recovery_requested_source_event }
 	if = {
 		limit = {
 			check_variable = {
@@ -84,7 +101,6 @@ chaosx_alien_recovery_ledger_prepare_api_request = {
 	set_temp_variable = { chaosx_external_alien_recovery_upgraded = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_external_alien_recovery_upgrade_applied = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_external_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_external_alien_recovery_duplicate_guard = constant:chaosx_nr25_value.one }
 	set_variable = { chaosx_external_alien_recovery_allow_base = chaosx_external_alien_recovery_requested_allow_base }
 	set_variable = { chaosx_external_alien_recovery_duplicate_guard = constant:chaosx_nr25_value.one }
 
@@ -137,30 +153,20 @@ chaosx_alien_recovery_ledger_record_api_result = {
 		set_temp_variable = { chaosx_external_alien_recovery_overlap = constant:chaosx_nr25_value.zero }
 	}
 
-	set_variable = { chaosx_alien_recovery_result = chaosx_external_alien_recovery_result }
-	set_variable = { chaosx_alien_recovery_result_field = chaosx_external_alien_recovery_field }
-	set_variable = { chaosx_alien_recovery_result_tier = chaosx_external_alien_recovery_tier }
+	set_variable = { chaosx_alien_recovery_result = THIS.chaosx_external_alien_recovery_result }
+	set_variable = { chaosx_alien_recovery_result_field = THIS.chaosx_external_alien_recovery_field }
+	set_variable = { chaosx_alien_recovery_result_tier = THIS.chaosx_external_alien_recovery_tier }
 	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_external_alien_recovery_overlap }
-	set_variable = { chaosx_alien_recovery_result_source_event = chaosx_external_alien_recovery_source_event }
+	set_variable = { chaosx_alien_recovery_result_source_event = THIS.chaosx_external_alien_recovery_source_event }
 	set_variable = { chaosx_alien_recovery_reward_applied = chaosx_external_alien_recovery_reward_applied }
 
-	set_temp_variable = { chaosx_alien_recovery_reward_applied = chaosx_external_alien_recovery_reward_applied }
-	set_temp_variable = { chaosx_alien_recovery_result = chaosx_external_alien_recovery_result }
-	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_external_alien_recovery_field }
-	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_external_alien_recovery_tier }
-	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_external_alien_recovery_overlap }
-	set_temp_variable = { chaosx_alien_recovery_result_source_event = chaosx_external_alien_recovery_source_event }
+	set_temp_variable = { chaosx_alien_recovery_reward_applied_output = chaosx_external_alien_recovery_reward_applied }
+	set_temp_variable = { chaosx_alien_recovery_result_output = THIS.chaosx_external_alien_recovery_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field_output = THIS.chaosx_external_alien_recovery_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier_output = THIS.chaosx_external_alien_recovery_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap_output = chaosx_external_alien_recovery_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event_output = THIS.chaosx_external_alien_recovery_source_event }
 
-	if = {
-		limit = {
-			check_variable = {
-				var = chaosx_external_alien_recovery_upgrade_applied
-				value = constant:chaosx_nr25_value.one
-				compare = greater_than_or_equals
-			}
-		}
-		set_temp_variable = { chaosx_external_alien_recovery_upgraded = constant:chaosx_nr25_value.one }
-	}
 	if = {
 		limit = {
 			check_variable = {
@@ -181,6 +187,8 @@ chaosx_alien_recovery_ledger_record_api_result = {
 
 	if = {
 		limit = {
+			has_country_flag = chaosx_alien_recovery_reward_applied_flag
+			check_variable = { var = chaosx_external_alien_recovery_overlap value = constant:chaosx_nr25_value.zero compare = greater_than }
 			check_variable = {
 				var = chaosx_external_alien_recovery_upgraded
 				value = constant:chaosx_nr25_value.one
@@ -202,16 +210,12 @@ chaosx_alien_recovery_ledger_expose_event025_result = {
 	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event025_overlap }
 	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_identity.event_id }
 	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event025_result }
-	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event025_field }
-	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event025_tier }
-	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event025_overlap }
-	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_identity.event_id }
-	if = {
-		limit = { has_country_flag = chaosx_alien_recovery_event025_reward_applied }
-		set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
-		set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
-	}
+	set_temp_variable = { chaosx_alien_recovery_result_output = chaosx_alien_recovery_event025_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field_output = chaosx_alien_recovery_event025_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier_output = chaosx_alien_recovery_event025_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap_output = chaosx_alien_recovery_event025_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event_output = constant:chaosx_nr25_identity.event_id }
+	# The per-event applied flag is historical. This callback applies nothing.
 	if = {
 		limit = { has_country_flag = chaosx_alien_recovery_event025_reward_pending }
 		set_country_flag = chaosx_alien_recovery_reward_pending
@@ -230,24 +234,16 @@ chaosx_alien_recovery_ledger_expose_event036_result = {
 	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event036_overlap }
 	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
 	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event036_result }
-	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event036_field }
-	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event036_tier }
-	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event036_overlap }
-	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
-	if = {
-		limit = { has_country_flag = chaosx_alien_recovery_event036_reward_applied }
-		set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
-		set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
-	}
+	set_temp_variable = { chaosx_alien_recovery_result_output = chaosx_alien_recovery_event036_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field_output = chaosx_alien_recovery_event036_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier_output = chaosx_alien_recovery_event036_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap_output = chaosx_alien_recovery_event036_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event_output = constant:chaosx_nr25_value.thirty_six }
+	# The per-event applied flag is historical. This callback applies nothing.
 	if = {
 		limit = { has_country_flag = chaosx_alien_recovery_event036_reward_pending }
 		set_country_flag = chaosx_alien_recovery_reward_pending
 		set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.one }
-	}
-	if = {
-		limit = { has_country_flag = chaosx_alien_recovery_event036_legacy_reward_allowed }
-		set_country_flag = chaosx_alien_recovery_legacy_reward_allowed
 	}
 }
 
@@ -256,11 +252,10 @@ chaosx_alien_recovery_ledger_expose_event036_result = {
 # aircraft effects; it only exposes the allowed path and its result metadata.
 chaosx_alien_recovery_ledger_record_event036_legacy_result = {
 	set_variable = { chaosx_alien_recovery_event036_result = constant:chaosx_nr25_result.base_operational }
-	set_variable = { chaosx_alien_recovery_event036_field = constant:chaosx_nr25_alien_field.aircraft }
 	set_variable = { chaosx_alien_recovery_event036_tier = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_alien_recovery_event036_overlap = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.base_operational }
-	set_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_alien_field.aircraft }
+	set_variable = { chaosx_alien_recovery_result_field = THIS.chaosx_alien_recovery_event036_field }
 	set_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
@@ -271,12 +266,12 @@ chaosx_alien_recovery_ledger_record_event036_legacy_result = {
 	set_country_flag = chaosx_alien_recovery_legacy_reward_allowed
 	clr_country_flag = chaosx_alien_recovery_reward_applied_flag
 	clr_country_flag = chaosx_alien_recovery_reward_pending
-	set_temp_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.base_operational }
-	set_temp_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_alien_field.aircraft }
-	set_temp_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
-	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
-	set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_output = constant:chaosx_nr25_result.base_operational }
+	set_temp_variable = { chaosx_alien_recovery_result_field_output = THIS.chaosx_alien_recovery_event036_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event_output = constant:chaosx_nr25_value.thirty_six }
+	set_temp_variable = { chaosx_alien_recovery_reward_applied_output = constant:chaosx_nr25_value.zero }
 }
 
 # COUNTRY scope. Public Event 025 owner resolver. The current country becomes
@@ -330,32 +325,12 @@ chaosx_alien_recovery_ledger_resolve_event025 = {
 
 		set_temp_variable = { chaosx_external_alien_recovery_requested_overlap = chaosx_alien_recovery_ledger_overlap }
 		set_temp_variable = { chaosx_external_alien_recovery_requested_source_event = constant:chaosx_nr25_identity.event_id }
+		# A prior Event 036 recovery still allows a base reward: the API excludes
+		# only the overlapping family, then falls back to an upgrade and finally
+		# the Integration capstone. The API chooses the public field.
 		set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.one }
 		set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.none }
-		set_temp_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_value.zero }
-		set_temp_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
-		if = {
-			limit = {
-				check_variable = {
-					var = chaosx_alien_recovery_ledger_overlap
-					value = constant:chaosx_nr25_value.zero
-					compare = greater_than
-				}
-			}
-			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.compatible_upgrade }
-			set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.zero }
-			if = {
-				limit = { check_variable = { var = chaosx_alien_recovery_ledger_overlap value = constant:chaosx_nr25_value.one compare = equals } }
-				set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.aircraft }
-			}
-			else_if = {
-				limit = { check_variable = { var = chaosx_alien_recovery_ledger_overlap value = constant:chaosx_nr25_value.two compare = equals } }
-				set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.propulsion }
-			}
-		}
-		else = {
-			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.base_operational }
-		}
+		set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.base_operational }
 		chaosx_alien_recovery_ledger_prepare_api_request = yes
 		chaosx_grant_external_alien_recovery_reward = yes
 		chaosx_alien_recovery_ledger_record_api_result = yes
@@ -421,8 +396,8 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 		set_country_flag = chaosx_alien_recovery_event036_recorded
 		# Event 036's current legacy result is an aircraft-family recovery, but
 		# the bridge accepts an explicit field for future propulsion-family
-		# callers. Exact overlap is resolved only when both sides name the same
-		# broad field.
+		# callers. Exact overlap is resolved only when both sides fall in the
+		# flight, propulsion and weapons field.
 		set_variable = { chaosx_alien_recovery_event036_field = constant:chaosx_nr25_alien_field.aircraft }
 		if = {
 			limit = {
@@ -451,33 +426,13 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 
 		set_temp_variable = { chaosx_alien_recovery_ledger_overlap = constant:chaosx_nr25_value.zero }
 		if = {
-			limit = {
-				has_variable = chaosx_alien_recovery_overlap
-				check_variable = {
-					var = chaosx_alien_recovery_overlap
-					value = constant:chaosx_nr25_value.one
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = chaosx_alien_recovery_overlap
-					value = constant:chaosx_nr25_value.two
-					compare = less_than_or_equals
-				}
-			}
-			set_temp_variable = { chaosx_alien_recovery_ledger_overlap = chaosx_alien_recovery_overlap }
-		}
-		else_if = {
+			# Aircraft and propulsion form one public field: flight control,
+			# propulsion and weapons. Either code on both sides is an overlap.
 			limit = {
 				chaosx_alien_recovery_ledger_event025_has_exact_field_overlap = yes
 				OR = {
-					AND = {
-						check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
-						check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
-					}
-					AND = {
-						check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
-						check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
-					}
+					check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
+					check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
 				}
 			}
 			if = {
@@ -515,15 +470,9 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.overlap_conversion }
 			set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.zero }
 			set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.none }
-			set_temp_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_alien_field.none }
-			set_temp_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
 			if = {
 				limit = { has_variable = chaosx_alien_recovery_event025_field }
 				set_temp_variable = { chaosx_external_alien_recovery_requested_field = chaosx_alien_recovery_event025_field }
-			}
-			if = {
-				limit = { has_variable = chaosx_alien_recovery_event025_tier }
-				set_temp_variable = { chaosx_external_alien_recovery_tier = chaosx_alien_recovery_event025_tier }
 			}
 			chaosx_alien_recovery_ledger_prepare_api_request = yes
 			chaosx_grant_external_alien_recovery_reward = yes
@@ -566,6 +515,11 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 			}
 		}
 	}
+	# A later Event 036 conversion can complete an Event 025 winner's route.
+	if = {
+		limit = { has_country_flag = chaosx_nr25_recovery_winner }
+		chaosx_nr25_update_achievement_tracking = yes
+	}
 }
 
 # COUNTRY scope. Public loser result resolver. Only verified survey evidence or
@@ -574,12 +528,14 @@ chaosx_alien_recovery_ledger_resolve_event036 = {
 chaosx_alien_recovery_ledger_grant_loser_result = {
 	chaosx_alien_recovery_ledger_initialize_public_outputs = yes
 	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+	chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 	if = {
 		limit = { has_country_flag = chaosx_alien_recovery_loser_result_recorded }
 		set_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
-		set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
+		set_temp_variable = { chaosx_alien_recovery_result_output = chaosx_alien_recovery_loser_result }
 	}
-	else = {
+	else_if = {
+		limit = { has_country_flag = chaosx_nr25_participant }
 		set_country_flag = chaosx_alien_recovery_loser_result_recorded
 		set_variable = { chaosx_alien_recovery_loser_result = constant:chaosx_nr25_result.none }
 		set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.none }
@@ -636,7 +592,7 @@ chaosx_alien_recovery_ledger_grant_loser_result = {
 			set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.verified_survey }
 			set_country_flag = chaosx_alien_recovery_loser_verified_survey
 		}
-		set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
+		set_temp_variable = { chaosx_alien_recovery_result_output = chaosx_alien_recovery_loser_result }
 	}
 }
 

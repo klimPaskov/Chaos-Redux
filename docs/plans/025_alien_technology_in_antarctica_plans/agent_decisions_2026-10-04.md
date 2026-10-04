@@ -114,3 +114,19 @@ Decision:
 - The optional entry-phase "Charter Neutral Shipping" action stays an owned-shipping supplement and is hidden from chartered expeditions.
 - The hostile convoy interception still needs the attacker's own convoys, because it is optional and never gates progression.
 - AI entry, AI reserve floors and AI weights are unchanged; the chartered options carry zero AI chance because AI entrants are chosen by the bounded roster.
+
+## D8. Reward bridge, overlap exclusion and public field mapping
+
+Disposition: `implemented`.
+
+Basis: the reward arbitration matrix requires that an exact overlap excludes only the overlapping family while another base exists, and its broad field table names the public fields; the Event 016 API skipped the whole base pool on overlap and labelled Portal as aircraft and Temporal as propulsion.
+
+Decision:
+
+- The stopped thread's ledger rework is adopted: country variables keep the latest call's result, temporary copies carry an `_output` suffix so they never shadow those variables, the historical owner stays valid regardless of sovereignty, the loser resolver refreshes fragments and requires a participant, and Event 036 overlaps only with an applied Event 025 reward.
+- Correction: the shared Event 036 legacy-reward flag is no longer cleared at the start of every ledger call, because Event 036's own option reads it after its resolver runs and a same-day Event 025 call would otherwise hide the jet reward.
+- The alien arms family (`alien_infantry`) and its predictive-warfare upgrade belong to the flight, propulsion and weapons field and use the propulsion code; Event 036's jet reward keeps the aircraft code. Aircraft and propulsion are one overlap group, so either code on both sides is an exact overlap.
+- Portal technology maps to spatial manipulation, robotics to computation and autonomous machinery, temporal technology to temporal instrumentation, clone, paleogenetic and xenobiological technology plus the four xenobiological controls to biological synthesis, and the capstone to integrated alien systems. No Event 016 family is exotic structural materials, so that field is not used.
+- With an overlap, Event 025 still requests a base reward and the API excludes only the alien arms family; an empty remaining pool falls through to an upgrade and then the capstone. A later Event 036 conversion requests no base reward, so it receives an upgrade or the capstone.
+- Achievement routes read the durable `chaosx_alien_recovery_event025_reward_applied` flag instead of the latest-call flag, and a later Event 036 resolution re-runs the Event 025 winner's achievement tracking, so Two Crashes, One Answer is set only after a real conversion.
+- The architect's proposed new aviation family stays a proposal.

@@ -16,13 +16,11 @@
 # ============================================================================
 
 # Any scope. True only when the persistent Event 025 owner target is present and
-# still points to an independent, existing country.
+# still points to the historical country's identity, regardless of sovereignty.
 chaosx_alien_recovery_ledger_event025_owner_target_is_valid = {
 	has_event_target = chaosx_alien_recovery_event025_owner
 	event_target:chaosx_alien_recovery_event025_owner = {
 		exists = yes
-		NOT = { has_capitulated = yes }
-		NOT = { is_subject = yes }
 	}
 }
 
@@ -77,6 +75,7 @@ chaosx_alien_recovery_ledger_event025_has_exact_overlap = {
 # classified as aircraft or propulsion by the neutral recovery ledger.
 chaosx_alien_recovery_ledger_event025_has_exact_field_overlap = {
 	has_country_flag = chaosx_alien_recovery_event025_recorded
+	has_country_flag = chaosx_alien_recovery_event025_reward_applied
 	has_variable = chaosx_alien_recovery_event025_field
 	OR = {
 		check_variable = {
@@ -120,7 +119,13 @@ chaosx_alien_recovery_ledger_event025_can_resolve = {
 
 # Country scope. Event 036 is independently idempotent from Event 025.
 chaosx_alien_recovery_ledger_event036_can_resolve = {
+	exists = yes
 	NOT = { has_country_flag = chaosx_alien_recovery_event036_recorded }
+	OR = {
+		NOT = { has_variable = chaosx_alien_recovery_event036_requested_field }
+		check_variable = { var = chaosx_alien_recovery_event036_requested_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
+		check_variable = { var = chaosx_alien_recovery_event036_requested_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
+	}
 }
 
 # Country scope. Public fragment assignment requires a positive bounded slot ID
@@ -154,6 +159,7 @@ chaosx_alien_recovery_ledger_fragment_input_is_valid = {
 # Country scope. This is the bounded loser-result evidence gate. The effects
 # still choose fragment over survey when both are present.
 chaosx_alien_recovery_ledger_has_loser_evidence = {
+	has_country_flag = chaosx_nr25_participant
 	OR = {
 		AND = {
 			has_variable = chaosx_nr25_fragment_count
@@ -179,14 +185,14 @@ chaosx_alien_recovery_ledger_has_loser_evidence = {
 # legacy reward caller when Event 025 has no exact overlap record.
 chaosx_alien_recovery_ledger_event036_standalone_legacy_path = {
 	NOT = { has_country_flag = chaosx_alien_recovery_event036_recorded }
-	NOT = { has_country_flag = chaosx_alien_recovery_event025_recorded }
+	NOT = { chaosx_alien_recovery_ledger_event025_has_exact_field_overlap = yes }
 }
 
 # Country scope. This names the later exact-overlap conversion path.
 chaosx_alien_recovery_ledger_event036_overlap_path = {
 	NOT = { has_country_flag = chaosx_alien_recovery_event036_recorded }
 	has_country_flag = chaosx_alien_recovery_event025_recorded
-	chaosx_alien_recovery_ledger_event025_has_exact_overlap = yes
+	chaosx_alien_recovery_ledger_event025_has_exact_field_overlap = yes
 }
 
 

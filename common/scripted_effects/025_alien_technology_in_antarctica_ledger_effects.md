@@ -4,6 +4,25 @@ Event 025 and Event 036 share reward provenance through the Event 016 external o
 Physical material is a separate ledger from researched technology and historical recovery receipts.
 No custody transaction grants technology, changes the winner, or creates Event 016 history.
 
+## Reward bridge contract
+
+`chaosx_alien_recovery_ledger_resolve_event025` claims the single Event 025 owner, then calls `chaosx_grant_external_alien_recovery_reward` with a base reward allowed.
+When the country already holds an Event 036 recovery in the flight, propulsion and weapons field, the request carries that overlap and the API excludes only the overlapping alien arms family; another missing base family, then an upgrade, then the Integration capstone follow.
+`chaosx_alien_recovery_ledger_resolve_event036` keeps Event 036's own jet reward when there is no overlap.
+When the same country's applied Event 025 reward is in the flight, propulsion and weapons field, it records an overlap and asks the API for an upgrade or the capstone only.
+
+| Output | Kind | Meaning |
+| --- | --- | --- |
+| `chaosx_alien_recovery_event025_result`, `_field`, `_tier`, `_overlap` | Country variables | Historical Event 025 receipt, written once |
+| `chaosx_alien_recovery_event025_reward_applied` / `_reward_pending` | Country flags | Whether the Event 025 reward was really granted; achievements and reports read these |
+| `chaosx_alien_recovery_event036_*` | Country variables and flags | The matching Event 036 receipt |
+| `chaosx_alien_recovery_result`, `_result_field`, `_result_tier`, `_result_overlap`, `_result_source_event`, `_reward_applied` | Country variables | Latest ledger call only; reset at the start of every call |
+| `chaosx_alien_recovery_reward_applied_flag`, `chaosx_alien_recovery_reward_pending` | Country flags | Latest ledger call only; never use them as history |
+| `chaosx_alien_recovery_*_output` | Temporary variables | Same-chain copies of the latest call, named apart from the country variables so they never shadow them |
+| `chaosx_alien_recovery_overlap_conversion_used` | Country flag | Set only when an applied reward was converted because of an overlap |
+
+Field codes come from `chaosx_nr25_alien_field` and match `chaosx_custom_technology_recovery`: aircraft 1 and propulsion 2 (both shown as flight control, propulsion and weapons), computation 3, spatial 4, temporal 5, biological 6, integrated 7.
+
 ## Physical custody contract
 
 `chaosx_alien_recovery_event025_owner` is the historical winner pointer.
@@ -64,7 +83,7 @@ Do not expose exact foreign fragment holdings without the Board's intelligence/p
 It is a limited source interpreter, not engine scheduling, rendering, multiplayer, or save/reload evidence.
 Destruction dispatch uses the physical ledger with support-equipment and stability costs, receipt-gated consequences, and a retired-material incident guard.
 Transfer still needs recipient permission UI, actual dispatch, validated route commitments, Dependence consequences, and independent decision/probability review.
-The reward bridge and owner API pool/filter contract are separately pending review; physical-custody tests do not validate them.
+The reward bridge is covered by source review only; physical-custody tests do not validate it.
 
 ## Future work
 
