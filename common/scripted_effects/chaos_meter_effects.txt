@@ -211,6 +211,7 @@ initialize_chaos_meter_system = {
 		set_variable = { chaos_meter_deaths_country_cause_fallout_aftermath = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_infantry_spawn_ghost_decline = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_strategic_singularity = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_asteroid_incoming = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
 		set_variable = { chaos_meter_deaths_country_last_date = 0 }
@@ -710,6 +711,7 @@ initialize_chaos_meter_country_deaths_totals_rebuild = {
 		set_variable = { chaos_meter_deaths_country_cause_fallout_aftermath = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_infantry_spawn_ghost_decline = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_strategic_singularity = 0 }
+		set_variable = { chaos_meter_deaths_country_cause_asteroid_incoming = 0 }
 		set_variable = { chaos_meter_deaths_country_cause_unknown = 0 }
 		set_variable = { chaos_meter_deaths_country_last_sequence = 0 }
 		set_variable = { chaos_meter_deaths_country_last_date = 0 }
@@ -1014,6 +1016,21 @@ chaos_meter_add_country_deaths_cause_total = {
 				}
 			}
 			add_to_variable = { chaos_meter_deaths_country_cause_strategic_singularity = chaos_deaths_country_cause_value }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_main_impact compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_main_ring_one compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_main_ring_two compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_main_ring_three compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_fragment_impact compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_fragment_ring_one compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_fragment_ring_two compare = equals }
+					check_variable = { var = chaos_deaths_country_cause_reason value = constant:chaos_meter_deaths_reason.asteroid_rescue_failure compare = equals }
+				}
+			}
+			add_to_variable = { chaos_meter_deaths_country_cause_asteroid_incoming = chaos_deaths_country_cause_value }
 		}
 		else = {
 			add_to_variable = { chaos_meter_deaths_country_cause_unknown = chaos_deaths_country_cause_value }
@@ -1600,6 +1617,7 @@ rebuild_chaos_meter_deaths_view = {
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_fallout_aftermath_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_infantry_spawn_ghost_decline_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_strategic_singularity_entries
+	clear_array = temp_chaos_meter_deaths_unsorted_cause_asteroid_incoming_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_cause_unknown_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_country_entries
 	clear_array = temp_chaos_meter_deaths_unsorted_country_sort_entries
@@ -1747,6 +1765,10 @@ rebuild_chaos_meter_deaths_view = {
 					value = PREV.chaos_meter_deaths_country_cause_strategic_singularity
 				}
 				add_to_array = {
+					array = temp_chaos_meter_deaths_unsorted_cause_asteroid_incoming_entries
+					value = PREV.chaos_meter_deaths_country_cause_asteroid_incoming
+				}
+				add_to_array = {
 					array = temp_chaos_meter_deaths_unsorted_cause_unknown_entries
 					value = PREV.chaos_meter_deaths_country_cause_unknown
 				}
@@ -1807,6 +1829,7 @@ rebuild_chaos_meter_deaths_view = {
 	resize_array = { array = global.chaos_meter_deaths_view_cause_fallout_aftermath_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_strategic_singularity_entries size = chaos_deaths_view_sorted_count value = 0 }
+	resize_array = { array = global.chaos_meter_deaths_view_cause_asteroid_incoming_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_sorted_count value = 0 }
 	resize_array = { array = global.chaos_meter_deaths_view_has_country_entries size = chaos_deaths_view_sorted_count value = 0 }
@@ -1951,6 +1974,7 @@ rebuild_chaos_meter_deaths_view = {
 		set_variable = { global.chaos_meter_deaths_view_cause_fallout_aftermath_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_fallout_aftermath_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_infantry_spawn_ghost_decline_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_strategic_singularity_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_strategic_singularity_entries^chaos_deaths_best_source_index }
+		set_variable = { global.chaos_meter_deaths_view_cause_asteroid_incoming_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_asteroid_incoming_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_cause_unknown_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = temp_chaos_meter_deaths_unsorted_country_entries^chaos_deaths_best_source_index }
 		set_variable = { global.chaos_meter_deaths_view_has_country_entries^chaos_deaths_view_write_index = 1 }
@@ -2439,6 +2463,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 				resize_array = { array = global.chaos_meter_deaths_view_cause_fallout_aftermath_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_strategic_singularity_entries size = chaos_deaths_view_new_size value = 0 }
+				resize_array = { array = global.chaos_meter_deaths_view_cause_asteroid_incoming_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_cause_unknown_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_country_entries size = chaos_deaths_view_new_size value = 0 }
 				resize_array = { array = global.chaos_meter_deaths_view_has_country_entries size = chaos_deaths_view_new_size value = 0 }
@@ -2472,6 +2497,7 @@ chaos_meter_sync_open_deaths_view_country_entry = {
 					set_variable = { global.chaos_meter_deaths_view_cause_fallout_aftermath_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_fallout_aftermath }
 					set_variable = { global.chaos_meter_deaths_view_cause_infantry_spawn_ghost_decline_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_infantry_spawn_ghost_decline }
 					set_variable = { global.chaos_meter_deaths_view_cause_strategic_singularity_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_strategic_singularity }
+					set_variable = { global.chaos_meter_deaths_view_cause_asteroid_incoming_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_asteroid_incoming }
 					set_variable = { global.chaos_meter_deaths_view_cause_unknown_entries^chaos_deaths_view_write_index = PREV.chaos_meter_deaths_country_cause_unknown }
 					set_variable = { global.chaos_meter_deaths_view_country_entries^chaos_deaths_view_write_index = chaos_deaths_log_country }
 					set_variable = { global.chaos_meter_deaths_view_has_country_entries^chaos_deaths_view_write_index = 1 }
@@ -3586,6 +3612,17 @@ chaos_meter_register_state_civilian_deaths_percent = {
 		set_temp_variable = { chaos_deaths_change = state_population_k }
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_percent }
 		multiply_temp_variable = { chaos_deaths_change = constant:chaos_meter_deaths.people_per_k }
+		# Optional input chaos_state_deaths_percent_divisor: a caller whose death
+		# fractions are stored scaled up passes that scale, so the division happens
+		# after the population is counted in people and no digit below the 0.00001
+		# variable precision is lost.
+		if = {
+			limit = {
+				has_variable = chaos_state_deaths_percent_divisor
+				check_variable = { chaos_state_deaths_percent_divisor > 0 }
+			}
+			divide_temp_variable = { chaos_deaths_change = chaos_state_deaths_percent_divisor }
+		}
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_mult_local }
 		multiply_temp_variable = { chaos_deaths_change = chaos_state_deaths_random_mult }
 		round_temp_variable = chaos_deaths_change
@@ -3629,6 +3666,9 @@ chaos_meter_register_state_civilian_deaths_percent = {
 		set_temp_variable = { chaos_state_deaths_cap_hard_max = 0 }
 		set_temp_variable = { chaos_state_deaths_exact_percent = 0 }
 	}
+	# Consumed even when no deaths apply, so a later caller in the same pass
+	# never inherits a divisor.
+	set_temp_variable = { chaos_state_deaths_percent_divisor = 0 }
 }
 
 chaos_meter_history_row_matches_active_filter = {
@@ -5457,6 +5497,7 @@ air_contamination_monthly_update = {
 				set_temp_variable = { chaos_state_deaths_mult = 1 }
 				chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
 				set_temp_variable = { chaos_state_deaths_cap_factor = constant:chaos_meter_state_death_dynamic.occupation_cap_factor }
+				set_temp_variable = { chaos_state_deaths_percent_divisor = constant:chaos_meter_occupation_deaths_percent.scale }
 				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.occupation_policy }
 				chaos_meter_register_state_civilian_deaths_percent = yes
 			}

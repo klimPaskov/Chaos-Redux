@@ -9,6 +9,27 @@
 # remain explicit inputs.
 # ============================================================================
 
+# COUNTRY scope. Schedule this country's next sparse corridor pulse
+# pulse_cooldown_days after today. Date variables count one game hour as
+# 0.00001, so every corridor day count passes through the shared
+# chaosx_convert_days_to_date_offset helper before it is added to a date.
+humanitarian_corridor_schedule_country_pulse = {
+	set_temp_variable = { chaosx_date_days = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { humanitarian_corridor_country_pulse_due = global.date }
+	add_to_variable = { humanitarian_corridor_country_pulse_due = chaosx_date_offset }
+}
+
+# STATE scope. Set the corridor mission deadline mission_hold_days after today.
+humanitarian_corridor_set_mission_deadline = {
+	set_temp_variable = { chaosx_date_days = constant:humanitarian_corridor_timing.mission_hold_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { humanitarian_corridor_mission_deadline = global.date }
+	add_to_variable = { humanitarian_corridor_mission_deadline = chaosx_date_offset }
+}
+
 # STATE scope. Copy caller-owned route evidence into durable contract fields.
 # A missing request is represented as zero and is intentionally rejected by
 # humanitarian_corridor_route_geometry_is_valid.
@@ -321,8 +342,11 @@ humanitarian_corridor_submit_offer = {
 		}
 		else = {
 			save_event_target_as = humanitarian_corridor_origin
+			set_temp_variable = { chaosx_date_days = constant:humanitarian_corridor_timing.offer_response_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
 			set_variable = { humanitarian_corridor_offer_deadline = global.date }
-			add_to_variable = { humanitarian_corridor_offer_deadline = constant:humanitarian_corridor_timing.offer_response_days }
+			add_to_variable = { humanitarian_corridor_offer_deadline = chaosx_date_offset }
 			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.offer_pending }
 			set_state_flag = humanitarian_corridor_offer_pending
 			var:humanitarian_corridor_counterpart_country_id = {
@@ -335,8 +359,7 @@ humanitarian_corridor_submit_offer = {
 				set_variable = { humanitarian_corridor_offer_cohort_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_cohort_id }
 				set_variable = { humanitarian_corridor_offer_route_generation = event_target:humanitarian_corridor_origin.humanitarian_corridor_route_generation }
 				set_country_flag = humanitarian_corridor_country_pulse_pending
-				set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-				add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+				humanitarian_corridor_schedule_country_pulse = yes
 				if = {
 					limit = {
 						check_variable = { humanitarian_corridor_offer_operation = constant:humanitarian_corridor_operation.evacuation }
@@ -355,9 +378,12 @@ humanitarian_corridor_submit_offer = {
 					}
 					add_to_variable = { migration_incident_count = constant:humanitarian_runtime.one }
 					set_variable = { migration_last_incoming_offer_generation = humanitarian_corridor_offer_route_generation }
+					set_temp_variable = { chaosx_date_days = constant:migration_spontaneous_movement.cooldown_days }
+					add_to_temp_variable = { chaosx_date_days = constant:humanitarian_corridor_timing.offer_response_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
 					set_variable = { migration_last_incoming_offer_fresh_until_date = global.date }
-					add_to_variable = { migration_last_incoming_offer_fresh_until_date = constant:migration_spontaneous_movement.cooldown_days }
-					add_to_variable = { migration_last_incoming_offer_fresh_until_date = constant:humanitarian_corridor_timing.offer_response_days }
+					add_to_variable = { migration_last_incoming_offer_fresh_until_date = chaosx_date_offset }
 				}
 				migration_register_active_country = yes
 				migration_refresh_decision_phase_from_country = yes
@@ -368,8 +394,7 @@ humanitarian_corridor_submit_offer = {
 				set_variable = { humanitarian_corridor_origin_state_id = event_target:humanitarian_corridor_origin.id }
 				set_variable = { humanitarian_corridor_counterpart_country_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_counterpart_country_id }
 				set_variable = { humanitarian_corridor_front_state_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_front_state_id }
-				set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-				add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+				humanitarian_corridor_schedule_country_pulse = yes
 				set_country_flag = humanitarian_corridor_country_pulse_pending
 				migration_register_active_country = yes
 			}
@@ -416,8 +441,11 @@ humanitarian_corridor_accept_offer = {
 				set_state_flag = humanitarian_corridor_response_accepted
 				set_state_flag = humanitarian_corridor_accepted
 				set_state_flag = humanitarian_corridor_operation_pending
+				set_temp_variable = { chaosx_date_days = constant:humanitarian_corridor_timing.mission_hold_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
 				set_variable = { humanitarian_corridor_operation_deadline = global.date }
-				add_to_variable = { humanitarian_corridor_operation_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+				add_to_variable = { humanitarian_corridor_operation_deadline = chaosx_date_offset }
 				clear_variable = humanitarian_corridor_offer_deadline
 				# Bind the receiving country's achievement ledger to this exact
 				# accepted origin/front/counterpart/cohort contract. The old aggregate
@@ -443,8 +471,7 @@ humanitarian_corridor_accept_offer = {
 						famine_achievement_start_corridor_attempt = yes
 					}
 					add_stability = constant:migration_decision_outcome.decision_standard_stability
-					set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-					add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+					humanitarian_corridor_schedule_country_pulse = yes
 					set_country_flag = humanitarian_corridor_country_pulse_pending
 				}
 				event_target:humanitarian_corridor_response_country = { set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.valid } }
@@ -553,8 +580,7 @@ humanitarian_corridor_arm_mission = {
 		set_variable = { humanitarian_corridor_mission_cohort_id = humanitarian_corridor_cohort_id }
 		if = {
 			limit = { NOT = { has_variable = humanitarian_corridor_mission_deadline } }
-			set_variable = { humanitarian_corridor_mission_deadline = global.date }
-			add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+			humanitarian_corridor_set_mission_deadline = yes
 		}
 		set_state_flag = humanitarian_corridor_mission_success_proven
 		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.mission_active }
@@ -599,8 +625,7 @@ humanitarian_corridor_record_evacuation = {
 		set_variable = { humanitarian_corridor_evacuation_survivor_credit = civilian_transfer_survivor_credit }
 		set_variable = { humanitarian_corridor_evacuation_transfer_generation = global.civilian_transfer_generation }
 		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.operation_pending }
-		set_variable = { humanitarian_corridor_mission_deadline = global.date }
-		add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+		humanitarian_corridor_set_mission_deadline = yes
 		if = {
 			limit = { NOT = { check_variable = { migration_spontaneous_reception_cohort_id = humanitarian_corridor_cohort_id } } }
 			humanitarian_corridor_arm_mission = yes
@@ -630,8 +655,7 @@ humanitarian_corridor_record_relief = {
 		set_variable = { humanitarian_corridor_relief_source_debit = famine_relief_last_delivery_debit }
 		set_variable = { humanitarian_corridor_relief_destination_credit = famine_relief_last_delivery_credit }
 		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.operation_pending }
-		set_variable = { humanitarian_corridor_mission_deadline = global.date }
-		add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+		humanitarian_corridor_set_mission_deadline = yes
 		humanitarian_corridor_arm_mission = yes
 		set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.valid }
 	}
@@ -1059,8 +1083,7 @@ humanitarian_corridor_rearm_surviving_country_identity = {
 				}
 			}
 			set_country_flag = humanitarian_corridor_country_pulse_pending
-			set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-			add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+			humanitarian_corridor_schedule_country_pulse = yes
 		}
 		else = {
 			clr_country_flag = humanitarian_corridor_country_pulse_pending
@@ -1268,8 +1291,7 @@ humanitarian_corridor_sparse_country_pulse = {
 				else = {
 					event_target:humanitarian_corridor_pulse_country = {
 						set_temp_variable = { humanitarian_corridor_pulse_result = constant:humanitarian_corridor_result.valid }
-						set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-						add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+						humanitarian_corridor_schedule_country_pulse = yes
 						set_country_flag = humanitarian_corridor_country_pulse_pending
 					}
 				}
@@ -1303,8 +1325,7 @@ humanitarian_corridor_sparse_country_pulse = {
 				else = {
 					event_target:humanitarian_corridor_pulse_country = {
 						set_temp_variable = { humanitarian_corridor_pulse_result = constant:humanitarian_corridor_result.valid }
-						set_variable = { humanitarian_corridor_country_pulse_due = global.date }
-						add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+						humanitarian_corridor_schedule_country_pulse = yes
 						set_country_flag = humanitarian_corridor_country_pulse_pending
 					}
 				}

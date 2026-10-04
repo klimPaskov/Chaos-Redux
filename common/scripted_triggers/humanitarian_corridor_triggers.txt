@@ -44,7 +44,7 @@ humanitarian_corridor_front_candidate_is_valid = {
 		OWNER = { NOT = { has_country_flag = humanitarian_corridor_offer_pending } }
 		humanitarian_corridor_front_is_preparable = yes
 		NOT = { state = event_target:humanitarian_corridor_origin }
-		is_neighbor_of = event_target:humanitarian_corridor_origin
+		any_neighbor_state = { state = event_target:humanitarian_corridor_origin }
 		CONTROLLER = { humanitarian_country_is_valid = yes }
 		NOT = { CONTROLLER = { tag = event_target:humanitarian_corridor_requester } }
 		event_target:humanitarian_corridor_origin = { has_variable = humanitarian_corridor_relation }
@@ -181,7 +181,7 @@ humanitarian_corridor_front_state_is_valid = {
 		}
 		var:humanitarian_corridor_front_state_id = {
 			humanitarian_state_is_valid = yes
-			is_neighbor_of = PREV
+			any_neighbor_state = { state = PREV.PREV }
 			is_controlled_by = var:PREV.humanitarian_corridor_counterpart_country_id
 			is_owned_by = var:PREV.humanitarian_corridor_counterpart_country_id
 			humanitarian_corridor_front_is_preparable = yes

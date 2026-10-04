@@ -51,6 +51,17 @@
 @COND_AI_CONCERN_VOLUNTEERS_RESTORE = 50
 @COND_AI_CONCERN_MILITARY_ACCESS_RESTORE = 40
 
+# ANY scope. Add temp condemnation_status_days to temp
+# condemnation_status_expires, which the caller sets to global.date first.
+# Date variables count one game hour as 0.00001, so the day count passes
+# through the shared chaosx_convert_days_to_date_offset helper.
+condemnation_add_status_expiry_days = {
+	set_temp_variable = { chaosx_date_days = condemnation_status_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_temp_variable = { condemnation_status_expires = chaosx_date_offset }
+}
+
 condemnation_initialize_country = {
 	if = {
 		limit = { NOT = { has_variable = condemnation_total } }
@@ -975,8 +986,11 @@ condemnation_write_pair_record = {
 			set_temp_variable = { condemnation_pair_target_id = id }
 		}
 		set_temp_variable = { condemnation_pair_started_date = global.date }
+		set_temp_variable = { chaosx_date_days = condemnation_pair_review_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
 		set_temp_variable = { condemnation_pair_expires_date = global.date }
-		add_to_temp_variable = { condemnation_pair_expires_date = condemnation_pair_review_days }
+		add_to_temp_variable = { condemnation_pair_expires_date = chaosx_date_offset }
 		if = {
 			limit = {
 				meta_trigger = {
@@ -1554,7 +1568,8 @@ condemnation_record_abstention = {
 			save_event_target_as = condemnation_abstaining_country
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
-			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.arms_embargo_review }
+			set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.arms_embargo_review }
+			condemnation_add_status_expiry_days = yes
 			meta_effect = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_abstention_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
@@ -1590,7 +1605,8 @@ condemnation_record_faction_shield = {
 			var:condemnation_pair_participant = {
 				var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 				set_temp_variable = { condemnation_status_expires = global.date }
-				add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.faction_shield }
+				set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.faction_shield }
+				condemnation_add_status_expiry_days = yes
 				meta_effect = {
 					text = { set_variable = { condemnation_pair_[TARGET_ID]_shield_expires = condemnation_status_expires } }
 					TARGET_ID = "[?condemnation_pair_target_id|.0]"
@@ -1621,7 +1637,8 @@ condemnation_apply_humanitarian_carveout = {
 		var:condemnation_pair_participant = {
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
-			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.humanitarian_carveout }
+			set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.humanitarian_carveout }
+			condemnation_add_status_expiry_days = yes
 			meta_effect = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_carveout_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
@@ -1650,7 +1667,8 @@ condemnation_apply_quiet_breach = {
 		var:condemnation_pair_participant = {
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
-			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.quiet_breach }
+			set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.quiet_breach }
+			condemnation_add_status_expiry_days = yes
 			meta_effect = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
@@ -1690,7 +1708,8 @@ condemnation_apply_tight_enforcement = {
 		var:condemnation_pair_participant = {
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
-			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.tight_enforcement }
+			set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.tight_enforcement }
+			condemnation_add_status_expiry_days = yes
 			meta_effect = {
 				text = {
 					set_variable = { condemnation_pair_[TARGET_ID]_tight_enforcement_expires = condemnation_status_expires }
@@ -2234,7 +2253,8 @@ condemnation_register_observed_breach = {
 		var:condemnation_pair_participant = {
 			var:condemnation_pair_target = { set_temp_variable = { condemnation_pair_target_id = id } }
 			set_temp_variable = { condemnation_status_expires = global.date }
-			add_to_temp_variable = { condemnation_status_expires = constant:condemnation_duration_days.quiet_breach }
+			set_temp_variable = { condemnation_status_days = constant:condemnation_duration_days.quiet_breach }
+			condemnation_add_status_expiry_days = yes
 			meta_effect = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
