@@ -34,3 +34,10 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 New decision for remnant former hosts: "Petition [recipient] for a Guarantee" in the category "A Foreign Guarantee".
 
 New Event 6 history entry: remnant guarantee (`independence_wave.history.foreign.remnant_guarantee`).
+
+## 2026-10-04: Iberian packages and FORM-07 (D7)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- IW-013 Basque Country (NAV) and IW-015 Galicia (GLC) can now appear in Independence Waves.
+- FORM-07 "Iberian Federation" can now be formed by CAT, NAV and GLC; the federation takes the name "Iberian Federation" and a new flag.

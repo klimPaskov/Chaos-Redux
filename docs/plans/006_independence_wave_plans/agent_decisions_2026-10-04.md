@@ -129,3 +129,32 @@ Basis: the lead's round-1 item 22.
 Decision: the uncommitted 192-line hunk in `common/scripted_triggers/006_independence_wave_transcaucasus_package_triggers.txt` defined `has_prepared_independence_wave_iw_070/071/072_package_setup`. Nothing referenced them, and each required `independence_wave_iw07x_setup_complete` and `independence_wave_package_setup_complete`, the very flags it would have to gate, so it could not be wired as written. The admitted ARM, GEO and AZR setups already gate `setup_complete` on their force and focus contracts, and final validation uses the committed `is_independence_wave_exact_package_iw_07x_runtime_ready` triggers. Reworking them to the IW-027 pattern would change the setup flow of three admitted packages without new gameplay value, so the hunk was discarded.
 
 The committed file still had four unreferenced triggers. The three `is_independence_wave_exact_package_iw_07x_runtime_ready` triggers now back `independence_wave_validate_transcaucasus_package`, so final validation also proves anchor ownership and control, the anchor capital, the current-generation force receipt and a live origin, matching the other admitted packages. `has_independence_wave_form16_commit_proof` duplicated checks that `independence_wave_form16_register_readiness` and the shared formable commit already perform and had no consumer, so it was removed. The file now has no unreferenced trigger.
+
+## D7. Admit IW-013 NAV and IW-015 GLC and make FORM-07 Iberian Federation operational
+
+Disposition: `implemented`.
+
+Basis: the lead's round-1 item 6 and decisions 3 and 4.
+
+Rights and identity decisions:
+
+- The archived José Antonio Aguirre source (1933 Pascual Marín photograph, GureGipuzkoa 1112433, CC BY-SA 3.0, attribution and ShareAlike recorded in `docs/assets/006_independence_wave/iberian_portrait_source_research_2026_08_03/manifest.md`) and the Alfonso Daniel Castelao source (Vida Gallega no. 442, 10 March 1930, public-domain claim) are accepted by the parent as rights reviewer. The runtime portraits are the user-supplied HOI4-style outputs already installed, so no generated face of a real person is introduced.
+- NAV keeps the vanilla Navarre base outside Event 006 and uses its Basque route cosmetic flags (`NAV_INDEPENDENCE_WAVE_*X`, provenance in `docs/assets/006_independence_wave/iw013_nav_flags_2026_08_13/`) inside it. GLC keeps its vanilla roster and base flag.
+
+Defects fixed during the source review (each made the setup fail every time):
+
+- `can_initialize_independence_wave_iw_013/015_package` and `has_prepared_independence_wave_iw_013/015_package_setup` compared the anchor owner and the former host with `ROOT`; during wave execution ROOT is the country that fired the wave, not NAV or GLC. They now use `PREV`, as every admitted package does.
+- NAV required `has_country_leader = { name = "Ramón Ormazábal Tife" }` with the default `ruling_only = yes`, but Ormazábal is NAV's non-ruling Marxist leader; both checks now pass `ruling_only = no`.
+- Both prepared checks read `independence_wave_force_military_tradition`, which nothing writes; the force system writes `independence_wave_military_tradition`.
+
+Admission: IW-013 and IW-015 join the content attestation and the Join probe order (around IW-014). They were already in the adapter, runtime and scenario preflights, and the SCN-008 ranked registry. The allocator audit passes with 35 attested packages and 31 compatible reservation groups.
+
+FORM-07 Iberian Federation:
+
+- Identity: X-ending cosmetic tag `IFX` ("Iberian Federation"; ideology names in `006_independence_wave_formable_registry_l_english.yml`), flat flag triplet generated with ChatGPT Images and processed to 82x52, 41x26 and 10x7 TGA (`docs/assets/006_independence_wave/form07_iberian_federation_flag_2026_10_04/manifest.md`). It is an explicitly labelled alternate-history synthesis of the three member flags.
+- `can_independence_wave_form07_register_readiness` now needs only the identity clearance (no other carrier holds IFX); readiness sets the identity, X-tag and flag-package receipts that the runtime contract and the shared identity check already require. The identity adapter sets `IFX`, the global identity lock and the carrier flags once the FORM-07 commit proof holds; rollback and cleanup drop `IFX`.
+- The pre-existing cleanup released the global IFX lock for every Event 006 country that ran formable cleanup; the lock is now released only by the country that holds IFX or the carrier flag.
+- NAV government routes no longer replace IFX with a NAV route flag on the federal carrier.
+- The FORM-07 member ledger, consent, corridor proof, integration adapter and state-puzzle overlay already existed; no GUI file changed, so no before/after GUI evidence applies. A narrow `hoi4.gui_inspect` call on `chaosx_independence_wave_formable_state_puzzle_window` was rejected as invalid arguments by the tool schema.
+
+Needs live game: NAV and GLC releases (setup now passes), FORM-07 congress with CAT, NAV and GLC, the IFX flag and names, and the NAV route change after federation.

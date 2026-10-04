@@ -825,12 +825,11 @@ independence_wave_formable_close_founding_proposal = {
 # CHAOS REDUX - EVENT 006 FORM-07 IBERIAN FEDERATION EFFECTS
 # ============================================================================
 # Overview:
-# - Registers FORM-07 readiness only when a future source-approved X identity,
-#   flag triplet, and package adapter contract are explicitly present.
-# - Keeps identity dispatch fail-closed today: no cosmetic tag is reserved or
-#   committed by this file, and CAT remains outside content attestation.
+# - Registers FORM-07 readiness with the attested X-ending IFX identity and its
+#   flat flag triplet (gfx/flags, medium, small).
+# - Commits IFX on the founding carrier and holds one global identity lock.
 # - Provides bounded CAT/NAV/GLC autonomous-member relations, exact anchor
-#   staging, rollback, and generation-safe cleanup for a later reviewed adapter.
+#   staging, rollback, and generation-safe cleanup.
 
 # FORM07 merged-source continuation:
 # ============================================================================
@@ -843,8 +842,7 @@ independence_wave_formable_close_founding_proposal = {
 
 # FORM07 merged-source continuation: 1
 # Country scope. The generic family-registration effect calls this immediately
-# after loading FORM-07. The identity contract is deliberately absent in the
-# current source tree, so the generic readiness flags remain cleared.
+# after loading FORM-07. Readiness requires that no other carrier holds IFX.
 independence_wave_form07_register_readiness = {
 	independence_wave_formable_clear_selected_family_readiness = yes
 	if = {
@@ -857,20 +855,27 @@ independence_wave_form07_register_readiness = {
 		set_country_flag = independence_wave_formable_identity_adapter_ready
 		set_country_flag = independence_wave_formable_integration_adapter_ready
 		set_country_flag = independence_wave_formable_member_policy_audited
+		set_country_flag = independence_wave_form07_identity_attested
+		set_country_flag = independence_wave_form07_x_tag_reserved
+		set_country_flag = independence_wave_form07_flag_package_ready
 		set_country_flag = independence_wave_form07_readiness_attested
 	}
 # FORM07 merged-source continuation: 1 2 3
 }
 
-# Identity dispatch target. FORM-07 has no source-approved X-ending tag or
-# complete identity flag package, so this adapter never writes a cosmetic tag,
-# global identity lock, or generic identity-committed flag. The blocked marker
-# is transaction-local and is removed by rollback/cleanup.
+# Identity dispatch target. The founding carrier takes the IFX identity and
+# the single global identity lock once the full commit proof holds.
 independence_wave_formable_identity_adapter_7 = {
 	if = {
 # FORM07 merged-source continuation: 1 2 3 4
-		limit = { has_country_flag = independence_wave_formable_mutation_prevalidated }
-		set_country_flag = independence_wave_form07_identity_adapter_blocked
+		limit = {
+			has_country_flag = independence_wave_formable_mutation_prevalidated
+			has_independence_wave_form07_runtime_commit_proof = yes
+		}
+		set_cosmetic_tag = IFX
+		set_global_flag = independence_wave_form07_identity_in_use
+		set_country_flag = independence_wave_form07_federal_carrier
+		set_country_flag = independence_wave_formable_identity_committed
 	}
 }
 
@@ -966,13 +971,23 @@ independence_wave_formable_integration_adapter_7 = {
 	}
 }
 
-# Country scope. There is no cosmetic identity to drop yet; this rollback only
+# Country scope. A failed transaction drops the IFX identity and releases the
 # FORM07 merged-source continuation: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
-# clears the transaction-local blocker and any future global identity lock.
+# global identity lock.
 independence_wave_form07_rollback_identity = {
 	if = {
 		limit = { NOT = { has_country_flag = independence_wave_formable_integration_committed } }
-		clr_global_flag = independence_wave_form07_identity_in_use
+		# Only the carrier that took IFX releases the shared identity lock.
+		if = {
+			limit = {
+				OR = {
+					has_cosmetic_tag = IFX
+					has_country_flag = independence_wave_form07_federal_carrier
+				}
+			}
+			if = { limit = { has_cosmetic_tag = IFX } drop_cosmetic_tag = yes }
+			clr_global_flag = independence_wave_form07_identity_in_use
+		}
 		clr_country_flag = independence_wave_form07_identity_adapter_blocked
 		clr_country_flag = independence_wave_form07_federal_carrier
 	}
@@ -1067,13 +1082,25 @@ independence_wave_form07_cleanup_runtime = {
 	}
 	independence_wave_form07_cleanup_frozen_autonomous_members = yes
 # FORM07 merged-source continuation: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
+	if = {
+		limit = {
+			OR = {
+				has_cosmetic_tag = IFX
+				has_country_flag = independence_wave_form07_federal_carrier
+			}
+		}
+		if = { limit = { has_cosmetic_tag = IFX } drop_cosmetic_tag = yes }
+		clr_global_flag = independence_wave_form07_identity_in_use
+	}
 	independence_wave_form07_rollback_identity = yes
 	clr_country_flag = independence_wave_form07_has_autonomous_member
 	clr_country_flag = independence_wave_form07_identity_adapter_blocked
 	clr_country_flag = independence_wave_form07_federal_carrier
 	clr_country_flag = independence_wave_form07_integration_committed
 	clr_country_flag = independence_wave_form07_readiness_attested
-	clr_global_flag = independence_wave_form07_identity_in_use
+	clr_country_flag = independence_wave_form07_identity_attested
+	clr_country_flag = independence_wave_form07_x_tag_reserved
+	clr_country_flag = independence_wave_form07_flag_package_ready
 	clear_variable = independence_wave_form07_bound_member_count
 # FORM07 merged-source continuation: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 }

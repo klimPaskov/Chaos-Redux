@@ -227,11 +227,20 @@ has_independence_wave_form07_identity_runtime_contract = {
 	has_country_flag = independence_wave_form07_flag_package_ready
 }
 
+# Country scope. The X-ending IFX identity and its flag triplet are attested
+# in source; this carrier may claim it while no other carrier holds it.
+has_independence_wave_form07_identity_clearance = {
+	OR = {
+		has_cosmetic_tag = IFX
+		NOT = { has_global_flag = independence_wave_form07_identity_in_use }
+	}
+}
+
 can_independence_wave_form07_register_readiness = {
 	has_country_flag = independence_wave_formable_family_selected
 	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.iberian_federation }
 	has_country_flag = independence_wave_formable_profile_loaded
-	has_independence_wave_form07_identity_runtime_contract = yes
+	has_independence_wave_form07_identity_clearance = yes
 }
 
 # Country scope. This is intentionally stricter than the shared readiness
