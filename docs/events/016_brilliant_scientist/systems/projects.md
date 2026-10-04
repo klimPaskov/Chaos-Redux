@@ -25,7 +25,7 @@ The effect and query contract is documented in `common/scripted_effects/016_conv
 4. Advance Deployment only after the native prototype and the mapped technology, project, site, or stockpile prerequisites are present.
 5. Advance Weaponization only after the mapped late prerequisites. The stage adds a family-specific military or institutional output and a persistent history record.
 6. Every completed stage recalculates accident pressure from Exposure, stage burden, project condition, and suspension state. A failed pressure roll activates the exact family's incident mission and recovery action.
-7. Suspending a project releases half its occupied capacity. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
+7. Suspending a project through the Directorate review board releases half its occupied capacity, and a suspended project cannot begin its next stage until it is resumed. Resuming reoccupies that half. Dismantling releases the remaining burden while historical flags and Kruger's personal character history remain available to the wider Event 016 architecture.
 8. The first completed Prototype in each family reserves one ordinary `chaosx.nr16.6` report. Public publication and classified retention adjust the existing Directorate values, but the report never grants a second project-stage reward. If several families reach Prototype in one synchronization pass, later families enter `brilliant_scientist_breakthrough_pending_families` and are dispatched in order after the current report closes.
    The report picture is now scripted-localisation routed across eight reviewed breakthrough cards: computation or electronics, materials or rocketry, high energy, biomedical or biological weapons, teleportation, cloning or robotics, paleogenetics or xenobiological synthesis, and alien arms or temporal research or the Strategic Singularity. This visual branch reads the same `brilliant_scientist_last_breakthrough_project_family` value used by the description and never creates a second report path.
 9. An activated family-specific incident schedules ordinary report `chaosx.nr16.13` before the recovery mission deadline. The report names the active family, scales its language to pressure severity, adds a presentation-only clause for machine systems, physical plant, biological chains, living reserves, temporal boundaries, or alien and Singularity interfaces, and selects a reviewed evidence card for computation or electronics, materials or rocketry or high energy, robotics, cloning, biomedical or paleogenetic or xenobiological work, biological weapons, portal or temporal work, or alien or Singularity work. The defined dossier image remains the explicit unresolved-family default. The player chooses public notice, a state security cordon, or a Kruger-led cordon. Each posture changes existing Directorate values and the later containment score without duplicating the mission's concrete response costs.
@@ -52,6 +52,22 @@ Once Advanced Materials reaches Deployment, Rocketry reaches Prototype, the prim
 When `chaosx.nr16.195` opens, the host chooses between two ownership records. The national qualification board keeps the control tables with the institution, certifies the selected state, lowers Dependence by 15, raises Independent Capacity by 15, lowers Project Capacity by 5, reduces air accidents by 15 percent, and improves air mission efficiency by 5 percent while raising Mandate, Exposure, and Grievance by the documented amounts. The national receipt remains with the former host and is never reconstructed on an ordinary recipient or the Kruger State. Kruger's proprietary envelope raises air range by 10 percent and air mission efficiency by 5 percent, raises Rocketry accident pressure by 10, and follows his character history with the separate Dependence, Capacity, Exposure, and grievance vector. A recipient or fixed-tag Kruger State reconstructs only that proprietary receipt without replaying costs, ledger deltas, or the test-state selection. This is a project-ownership action, not a new stage, unit, CBRN reservation, 3D package, Event Log row, or catalog event.
 
 Prototype projects are not charged a second wrapper clock. With `Gotterdammerung`, native facility time, breakthrough points, resources, and prototype iterations are the prototype cost; without it, the family adapter's centralized support-equipment, fuel, Political Power, civilian-factory, and timed burden is the prototype cost.
+
+## Programme categories
+
+The host project rows live in three host-only decision categories that mirror the user-approved Mengele provider split and reuse existing category art.
+The Directorate category keeps the Directorate GUI, governance, security, facilities, foreign liaison, and the programme review board.
+
+| Category | Sprite | Families and extra rows |
+| --- | --- | --- |
+| `brilliant_scientist_conventional_programs_category` | `GFX_decision_category_brilliant_scientist_directorate` | Computation, Electronics, Materials, Rocketry, High Energy |
+| `brilliant_scientist_biological_programs_category` | `GFX_decision_category_brilliant_scientist_krg_exotic_biological` | Biomedical, Cloning, Paleogenetics, Xenobiological Synthesis, Biological Weapons, plus the four xenobiological control choices |
+| `brilliant_scientist_advanced_programs_category` | `GFX_decision_category_brilliant_scientist_krg_portal_temporal` | Teleportation, Robotics, Alien Arms, Temporal, Strategic Singularity, plus the Singularity facility audit, command node, power link, and six no-DLC component rows |
+
+Each family contributes its Theory, Deployment, and Weaponization rows, its native Prototype integration row, its no-DLC Prototype row, and its incident mission and recovery decision; the stage gates show only the next stage, and only one family incident can be active at a time.
+In a mature portfolio each category therefore shows at most five stage rows plus the active incident pair; the four xenobiological control choices appear only while that family sits at Theory without a chosen control.
+The categories are registered in `common/decisions/categories/016_brilliant_scientist_directorate_categories.txt` with priorities 95, 94, and 93, directly below the Directorate, and are visible to the current host, including a Kruger State that holds Kruger.
+Row bodies, costs, timers, cancellation, rewards, and AI weights are unchanged by the grouping.
 
 ## Stage and capacity contract
 
@@ -135,7 +151,7 @@ For example, the computation Deployment cancellation sets temporary family to `c
 All other wrappers use the same pattern with their own fixed pair.
 These helpers are not public technology-grant APIs and do not authorize callers to fabricate project completion.
 
-The no-DLC progression path is implemented in the existing Directorate category.
+The no-DLC progression path is implemented in the three host programme categories.
 Each of the fifteen families has a hidden-when-DLC-present, visible-when-DLC-absent Prototype adapter with a concrete four-burden payment, a timed factory interval, a custom requirement tooltip, and the canonical stage transition callbacks.
 The native integration decisions remain DLC-gated, so a present `Gotterdammerung` installation keeps native projects authoritative and never exposes a duplicate board adapter.
 The no-DLC Singularity chain has six distinct component decisions, keeps every component flag and array entry, requires all six before Prototype, and retains terminal and Laboratory World exclusions.

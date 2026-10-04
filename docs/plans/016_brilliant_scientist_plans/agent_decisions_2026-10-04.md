@@ -103,3 +103,15 @@ A capitulated caller can no longer request a landing, and a pending one is cance
 The Event 026 adapter file is untouched; it reads the shared request gate and therefore inherits the same capitulation rule.
 
 Evidence for D7 and D8: `localisation/english/016_mengele_computation_incident_l_english.yml`, `common/scripted_triggers/016_brilliant_scientist_focus_triggers.txt`, `events/016_brilliant_scientist_project_incident_events.txt`, `common/scripted_triggers/016_alien_infantry_api_triggers.txt`, `common/scripted_effects/016_alien_infantry_api_effects.md`, and the five consumer files listed in the commit.
+
+## D9. Host project rows in three programme categories
+
+Decision: the 118 host project rows move out of the Directorate category into Conventional, Biological, and Advanced programme categories with the same family grouping as the user-approved Mengele split of 2026-09-26.
+The four xenobiological control choices join the Biological category; the Singularity audit, command node, power link, and six no-DLC component rows join the Advanced category; every family's incident mission and recovery decision joins its family's category.
+The Directorate category keeps its GUI, governance, security, facilities, foreign liaison, and the six-row-maximum programme review board.
+The categories reuse `GFX_decision_category_brilliant_scientist_directorate`, `GFX_decision_category_brilliant_scientist_krg_exotic_biological`, and `GFX_decision_category_brilliant_scientist_krg_portal_temporal`, add no scripted GUI, and are visible to the current host.
+Decision bodies were moved verbatim: a per-decision hash comparison before and after the move matched for all 124 decisions in the file.
+Known limit: while Xenobiological Synthesis sits at Theory without a chosen control, the Biological category can show its five stage rows and the four control choices together.
+
+Evidence: `common/decisions/016_brilliant_scientist_directorate_project_board.txt`, `common/decisions/categories/016_brilliant_scientist_directorate_categories.txt`, `localisation/english/016_brilliant_scientist_directorate_l_english.yml`, `docs/events/016_brilliant_scientist/systems/projects.md`.
+Needs live game: category ordering and density in the decision list.
