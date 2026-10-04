@@ -47,7 +47,7 @@ The following COUNTRY-scope hidden Boolean helpers are decision-owner preflights
 | `migration_voluntary_return_can_start` | `migration_voluntary_return` |
 | `migration_forced_repatriation_can_start` | `migration_forced_repatriation` |
 
-The four decisions whose full gameplay remains in `complete_effect`—open departure routes, restrict departure, controlled medical reception, and local integration—use the start preflight and one complete fee debit but do not create a delayed paid-action receipt.
+The four decisions whose full gameplay remains in `complete_effect`—open departure routes, restrict departure, controlled medical reception, and local integration—use the start preflight and one complete fee debit but do not create a delayed paid-action receipt. Local integration then runs the whole-cohort settlement documented in `common/scripted_effects/migration_integration_effects.md`.
 
 The other ten upfront paid continuations use `<decision>_cost_paid` as a state flag and `<decision>_cost_payer` as a state-scoped country pointer. Their receipt guards are `migration_<decision>_cost_receipt_is_valid`, except corridor negotiation, which uses `migration_negotiate_corridor_cost_pending_is_valid` for its unpaid deferred request boundary. A valid receipt requires the exact selected state, the recorded payer to exist and equal callback ROOT, and that payer to remain the current controller. Each `remove_effect` consumes its matching flag before the entire existing continuation; it never rechecks already-spent stock.
 

@@ -1,0 +1,104 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION LOCAL INTEGRATION SETTLEMENT
+# ============================================================================
+# Settles one whole hosted cohort into the country that shelters it.
+# Integration changes the cohort's legal status only: native state population
+# is unchanged, no transfer projection is recorded and nobody moves.
+# The settlement debits both reception ledgers once, writes the cohort row as
+# completed with zero people, and only then credits national integration.
+# A rejected settlement leaves the row, both ledgers and the national credit
+# exactly as they were.
+# ============================================================================
+
+# STATE scope: the host state that currently shelters the cohort.
+# Inputs, consumed and reset on exit:
+#   temporary migration_integration_settlement_proven = 1
+#   temporary migration_integration_settlement_cohort_id = exact cohort ID
+#   event target migration_integration_settlement_actor = integrating country
+# Outputs, declared by the caller before the call:
+#   temporary migration_integration_settlement_result (1 settled, 0 rejected)
+#   temporary migration_integration_settlement_amount (people settled)
+#   temporary migration_integration_result (the national credit result)
+migration_settle_integrated_cohort = {
+	set_temp_variable = { migration_integration_settlement_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_settlement_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_integration_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_settlement_index = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_settlement_matches = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_reception_delta_result = constant:civilian_transfer_route_result.invalid }
+	save_event_target_as = migration_integration_settlement_host
+	if = {
+		limit = {
+			check_variable = { var = migration_integration_settlement_proven value = constant:humanitarian_runtime.one compare = equals }
+			check_variable = { var = migration_integration_settlement_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+			has_event_target = migration_integration_settlement_actor
+			event_target:migration_integration_settlement_actor = { humanitarian_country_is_valid = yes }
+			humanitarian_state_is_valid = yes
+			is_owned_and_controlled_by = event_target:migration_integration_settlement_actor
+			migration_cohort_arrays_are_aligned = yes
+			NOT = { has_global_flag = migration_runtime_needs_repair }
+		}
+		# The cohort ID must name exactly one row.
+		set_temp_variable = { migration_integration_settlement_walk = global.migration_cohort_ids^num }
+		while_loop_effect = {
+			limit = { check_variable = { var = migration_integration_settlement_walk value = constant:humanitarian_runtime.zero compare = greater_than } }
+			subtract_from_temp_variable = { migration_integration_settlement_walk = constant:humanitarian_runtime.array_index_increment }
+			if = {
+				limit = { check_variable = { var = global.migration_cohort_ids^migration_integration_settlement_walk value = migration_integration_settlement_cohort_id compare = equals } }
+				add_to_temp_variable = { migration_integration_settlement_matches = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_integration_settlement_index = migration_integration_settlement_walk }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = migration_integration_settlement_matches value = constant:humanitarian_runtime.one compare = equals }
+				OR = {
+					check_variable = { var = global.migration_cohort_statuses^migration_integration_settlement_index value = constant:migration_cohort_status.active compare = equals }
+					check_variable = { var = global.migration_cohort_statuses^migration_integration_settlement_index value = constant:migration_cohort_status.destination_bound compare = equals }
+					check_variable = { var = global.migration_cohort_statuses^migration_integration_settlement_index value = constant:migration_cohort_status.destination_bound_unsafe compare = equals }
+				}
+				check_variable = { var = global.migration_cohort_amounts^migration_integration_settlement_index value = constant:humanitarian_population.zero compare = greater_than }
+				# The row's current host is this exact state.
+				var:global.migration_cohort_hosts^migration_integration_settlement_index = { state = event_target:migration_integration_settlement_host }
+				# Both reception ledgers already carry the whole cohort.
+				has_variable = migration_state_reception_load
+				check_variable = { var = migration_state_reception_load value = global.migration_cohort_amounts^migration_integration_settlement_index compare = greater_than_or_equals }
+				OWNER = {
+					has_variable = migration_reception_load
+					check_variable = { var = migration_reception_load value = global.migration_cohort_amounts^migration_integration_settlement_index compare = greater_than_or_equals }
+				}
+			}
+			set_temp_variable = { migration_integration_settlement_amount = global.migration_cohort_amounts^migration_integration_settlement_index }
+			set_temp_variable = { migration_reception_delta_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_reception_delta_amount = migration_integration_settlement_amount }
+			set_temp_variable = { migration_reception_delta_mode = constant:migration_reception_delta.debit }
+			set_temp_variable = { migration_reception_delta_defer_refresh = constant:humanitarian_runtime.one }
+			migration_apply_reception_delta = yes
+			if = {
+				limit = { check_variable = { var = migration_reception_delta_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+				# Terminal settled row: completed with zero people. The aligned row
+				# stays until the ordinary terminal cleanup can remove it.
+				remove_from_array = { array = global.migration_cohort_amounts index = migration_integration_settlement_index }
+				add_to_array = { array = global.migration_cohort_amounts value = constant:humanitarian_population.zero index = migration_integration_settlement_index }
+				remove_from_array = { array = global.migration_cohort_statuses index = migration_integration_settlement_index }
+				add_to_array = { array = global.migration_cohort_statuses value = constant:migration_cohort_status.completed index = migration_integration_settlement_index }
+				migration_reconcile_state_cohort_selection = yes
+				OWNER = { migration_reconcile_country_cohort_selection = yes }
+				# National credit comes last, after every owned change succeeded.
+				set_temp_variable = { migration_integration_people = migration_integration_settlement_amount }
+				set_temp_variable = { migration_integration_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_integration_capacity_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_integration_policy_proven = constant:humanitarian_runtime.one }
+				event_target:migration_integration_settlement_actor = { migration_integrate_displaced_cohort = yes }
+				set_temp_variable = { migration_integration_settlement_result = migration_integration_result }
+				migration_refresh_reception_context = yes
+				migration_refresh_decision_phase_from_state = yes
+			}
+			else = { set_temp_variable = { migration_integration_settlement_amount = constant:humanitarian_population.zero } }
+		}
+	}
+	set_temp_variable = { migration_integration_settlement_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_settlement_cohort_id = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_capacity_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_integration_policy_proven = constant:humanitarian_runtime.zero }
+}

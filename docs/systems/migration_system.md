@@ -52,6 +52,11 @@ Movement is never a death. Every physical route delegates to the neutral exact t
 
 Migration owns cohort identity, current host, historical origin, route role, generation, status, reception load, integration, resettlement, and return state. Exact aligned registries and generation checks prevent stale-host resolution, duplicated cohorts, and transfer cycling.
 
+Local integration settles one whole hosted cohort without moving anyone.
+`migration_settle_integrated_cohort` proves the cohort, its current host, the integrating owner-controller and both reception ledgers, debits the state and national reception load once, writes the row as completed with zero people, and only then credits national integration and the achievement history.
+A rejected settlement changes nothing, and a settled row can never be settled or credited again.
+See `common/scripted_effects/migration_integration_effects.md`.
+
 ## Prospective reception contract
 
 The accepted first-reception repair is defined in [Part 3](../specs/famine_and_migration_system_specs/famine_and_migration_system_spec_part_3_displacement_migration_return.md), [Part 6](../specs/famine_and_migration_system_specs/famine_and_migration_system_spec_part_6_decisions_ai_presentation.md), and the [bounded implementation plan](../plans/famine_and_migration_system_plans/prospective_reception_lifecycle_plan_20261003.md).

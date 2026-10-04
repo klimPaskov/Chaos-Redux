@@ -1198,6 +1198,9 @@ migration_evaluate_voluntary_return = {
 }
 
 
+# COUNTRY scope. National integration credit only. Called by
+# migration_settle_integrated_cohort after the reception debit and the
+# terminal cohort row have both succeeded.
 migration_integrate_displaced_cohort = {
 	set_temp_variable = { migration_integration_result = constant:humanitarian_runtime.zero }
 	if = {
@@ -1798,8 +1801,11 @@ migration_request_reception_capacity = {
 }
 
 
+# Integration always goes through the whole-cohort settlement in
+# migration_integration_effects.txt; the national credit helper below is
+# never a standalone integration path.
 migration_request_integration = {
-	migration_integrate_displaced_cohort = yes
+	migration_settle_integrated_cohort = yes
 }
 
 
