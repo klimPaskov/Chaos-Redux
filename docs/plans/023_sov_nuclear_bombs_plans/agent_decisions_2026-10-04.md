@@ -312,3 +312,15 @@ Source scenario walk: at Evolution III with 1000 Chaos, a hotline opened during 
 If instead four more detonations follow before verification, the sixth sets General Exchange and the flag, and the Firebreak criteria fail for the rest of the campaign; a British strike on a Soviet state after the American one makes the exchange Expanding at two detonations.
 Basis: Part 5 exchange crisis state and stages, Part 10 Firebreak disqualifiers and acceptance scenario H, and the lead's round 2 decision 3.
 Disposition: `implemented` (stage ladder, General flag, presentation); window shortening `unresolved` as above; live exchange pacing `needs_live_game`.
+
+### R2-7. The war assessment speeds Evolution III and IV
+
+Finding: Part 5 lists a capital threat as a faster factor for Evolution III and a threatened capital, capitulation progress above the severe-loss threshold and broken fronts for Evolution IV, and R2-1 writes `sov_nuclear_bombs_capital_threat_active`, `sov_nuclear_bombs_front_collapse_severe` and `sov_nuclear_bombs_strategic_losses`, but `common/mtth/023_sov_nuclear_bombs_mtth.txt` read none of them, and all four intervals used a literal `40` for the low-integrity delay.
+Decision: Evolution III gains `capital_threat_acceleration` (0.80) on the capital-threat flag; Evolution IV gains the same factor, `front_collapse_acceleration` (0.80) on the severe-collapse flag (surrender progress above `severe_collapse`, the severe-loss threshold) and `strategic_loss_acceleration` (0.85) when losses reach `strategic_loss_critical` (5).
+The values sit between the existing war (0.85) and collapse (0.70) factors so a war assessment cannot outrun a confirmed exchange (0.60) or enemy use (0.65); at the worst case all three stack to 0.544, bringing the 90-day Evolution IV centre to about 49 days before the other factors, and the stage still needs its full Chaos and world-state gate.
+The literal becomes `constant:sov_nuclear_bombs_mtth.low_integrity_threshold` (40) in all four intervals; it is a timing key separate from `sov_nuclear_bombs_tuning.low_integrity_threshold`, which drives test outcomes, so the two can be tuned apart.
+The 120/120/180/90 base centres and every existing factor are unchanged (lead decision D8).
+Probability: the before source is the round 2 snapshot `probability_source_snapshots/ai_surfaces_before_round2_2026-10-04/before_mtth.txt`, byte-identical to the file before this change.
+One narrow `hoi4_probability_inspect` call (`event_mean_time_to_happen`, `source.path = common/mtth/023_sov_nuclear_bombs_mtth.txt`, `candidatePool = ["sov_nuclear_bombs_evolution_iv_interval"]`, no refresh) returned `INTERNAL_ERROR` with `artifactCount = 0`; it was not retried, and no timing distribution is claimed.
+Basis: Part 5 Evolution III and IV active pacing, R2-1, and the lead's round 2 decision 4.
+Disposition: `implemented`; MCP compare `blocked` (R2-10); live pacing `needs_live_game`.
