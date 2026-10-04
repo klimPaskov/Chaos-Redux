@@ -407,3 +407,29 @@ Decision:
 - Every mission's `available` block is one line: "The objective is due and the expedition can complete it" or "The recovery is due and the expedition can complete it".
 - `chaosx_nr25_outpost_lost` gets a requirement-flag key.
 - A rerun of the requirement scan (available and custom_cost_trigger blocks expanded through scripted triggers, skipping hidden_trigger and custom_trigger_tooltip) finds no raw `chaosx_nr25_` variable or unlocalised flag.
+
+## D25. Decision list clutter: board tray, outpost upkeep, rival operations and evolution timing
+
+Disposition: `implemented`.
+
+Basis: the phase action matrix clutter rules (three to five actions per phase and six at most, one selected rival at a time for humans, hide invalid target actions, emergency actions only during the emergency, remove race actions after resolution), the decisions skill section 15.7 (a separate target-management category with a selected target, AI seeing every target) and the lead's round 2 count of about 14 survey-phase entries.
+
+Decision:
+
+- The Antarctic Expedition Board category mirrors the board's five-slot tray. The alternate landing and convoy escort are listed only while their situation holds, and fragment recovery gives way to fragment analysis once a fragment is held, as on the board.
+- Outpost upkeep (reinforce, rotate crews, emergency shelter) moves to the existing outpost category, renamed Antarctic Outpost, because the camp is a long-lived context of its own. Its priority options hide the current priority and are listed only in the outpost and survey phases, when a change is possible.
+- The five hostile operations join the countermeasure in the existing countermeasure category, renamed Rival Operations (`chaosx_nr25_rival_operations_category`, still on its dedicated icon). For a human, each hostile and armed Evolution III target_trigger accepts only the rival selected on the Expedition Board (`chaosx_nr25_rival_target_shown`); the AI keeps every valid target. The category is listed even when empty while rivals exist, and its description asks the player to select a rival card when none is selected. Executing an operation clears the selection, so a human chooses each target deliberately.
+- Evolution I, II and IV responses are listed once the expedition has a camp on the ice (outpost phase or later), Evolution III responses once it sails (crossing or later), and none after the race resolves or the expedition leaves it (`chaosx_nr25_race_action_visible`). Evolution V policies are unchanged. Withdrawal and the safety category also close at resolution.
+
+Source count of listed entries per phase (one rival selected, missions excluded, situational entries counted at their worst case):
+
+| Phase | Expedition Board | Rival Operations | Antarctic Outpost |
+| --- | --- | --- | --- |
+| Entry | 3 (charter, science exchange, conceal departure; authorisation is spent at entry) | 0 (not listed) | 0 |
+| Mobilisation | 4 (depot, aerial survey, radio net, polar crew) | 1 (compromise stores) | 0 |
+| Crossing | 3 (three gateways) | 1 (intercept convoy) | 0 |
+| Outpost | 3 (establish outpost, alternate landing, convoy escort) | 2 (+1 countermeasure after a sabotage) | 3 upkeep + 4 priorities |
+| Survey | 5 (three surveys, rival reconnaissance, fragment recovery or analysis) | 5 (+1 countermeasure) | 3 upkeep + 4 priorities |
+| Final recovery | 5 (five approaches) | 3 (+1 countermeasure) | 3 upkeep |
+
+The Expedition Board category never exceeds five entries and Rival Operations never exceeds six. Before the change the survey phase listed up to 14 entries in one category for a single rival and five more for every further rival.

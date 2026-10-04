@@ -71,7 +71,10 @@ A human country without owned convoys, including a landlocked one, can enter by 
 Every later shipping cost of a chartered expedition is paid in political power, and its organising and gateway objectives run longer.
 Either entry warns when the civilian base or fuel reserve is thin, and such an entry starts with lower Logistics Readiness.
 
-Entry, mobilisation, crossing, outpost, survey, and final-recovery trays normally expose three to five primary actions and never exceed six. Evolution responses and the countermeasure are secondary routes.
+The Antarctic Expedition Board category mirrors the board's action tray and never lists more than five orders at once: entry (up to four), mobilisation (four), crossing (the three gateways), outpost (the outpost plus the alternate landing and convoy escort only while their situation holds), survey (three surveys, rival reconnaissance, and fragment recovery giving way to fragment analysis once a fragment is held) and final recovery (five approaches).
+Outpost upkeep (reinforce, rotate crews, emergency shelter while the emergency lasts) sits in the Antarctic Outpost category with the outpost priorities, which hide the current priority and are listed only in the outpost and survey phases.
+The Rival Operations category holds the five hostile operations and the countermeasure; a human sees operations only against the rival selected on the Expedition Board, and the category description asks for a selection when none is made, while the AI weighs every valid rival.
+Evolution I, II and IV responses are listed once the expedition has a camp on the ice and Evolution III responses once it sails; every race-time response, the outpost, rival and safety categories disappear when the race resolves or the expedition leaves it.
 
 Rival actions require a selected valid participant target, one-use or cooldown cleanup, evidence state, counterplay, AI weights, and partial outcomes. Sabotage applies a partial result when the target has insufficient evidence or countermeasures, and the target can answer through the bounded countermeasure path.
 The hostile operations and the data exchange are targeted decisions: the actor's own cooldown gates the decision, and `target_trigger` checks the target through FROM (live participant, received-operation cooldown clear, one exchange per partner).
