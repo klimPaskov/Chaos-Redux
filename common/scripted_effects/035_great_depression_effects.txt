@@ -4885,6 +4885,103 @@ great_depression_add_recovery_legacy = {
 	}
 }
 
+# STATE scope. Classify one registered center by its final flags for the
+# frozen summary. The caller initializes great_depression_freeze_center_outcome
+# to the registered stage, which remains for a center with no terminal result.
+# Liquidation outranks abandonment, and a restructured center also carries the
+# reopened flag, so restructuring is tested before plain reopening.
+great_depression_classify_frozen_center_outcome = {
+	if = {
+		limit = { has_state_flag = great_depression_center_liquidated }
+		set_temp_variable = { great_depression_freeze_center_outcome = constant:great_depression_center_stage.liquidated }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_state_flag = great_depression_center_abandoned
+				has_state_flag = great_depression_center_hollowed
+				has_state_flag = great_depression_center_scarred
+			}
+		}
+		set_temp_variable = { great_depression_freeze_center_outcome = constant:great_depression_center_stage.abandoned }
+	}
+	else_if = {
+		limit = { has_state_flag = great_depression_center_restructured }
+		set_temp_variable = { great_depression_freeze_center_outcome = constant:great_depression_center_stage.restructured }
+	}
+	else_if = {
+		limit = { has_state_flag = great_depression_center_reopened }
+		set_temp_variable = { great_depression_freeze_center_outcome = constant:great_depression_center_stage.reopened }
+	}
+}
+
+# COUNTRY scope. Add one classified center to the frozen final-outcome counts.
+great_depression_count_frozen_center_outcome = {
+	if = {
+		limit = { check_variable = { var = great_depression_freeze_center_outcome value = constant:great_depression_center_stage.reopened compare = equals } }
+		add_to_variable = { great_depression_last_completed_final_reopened_count = constant:great_depression_api.one }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_freeze_center_outcome value = constant:great_depression_center_stage.restructured compare = equals } }
+		add_to_variable = { great_depression_last_completed_final_restructured_count = constant:great_depression_api.one }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_freeze_center_outcome value = constant:great_depression_center_stage.liquidated compare = equals } }
+		add_to_variable = { great_depression_last_completed_final_liquidated_count = constant:great_depression_api.one }
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_freeze_center_outcome value = constant:great_depression_center_stage.abandoned compare = equals } }
+		add_to_variable = { great_depression_last_completed_final_abandoned_count = constant:great_depression_api.one }
+	}
+}
+
+# COUNTRY scope. Queue the national recovery report after the completed
+# episode is frozen and its active state is cleared. The report reads only the
+# great_depression_last_completed_* summary, and the episode receipt keeps a
+# later firing from presenting a different episode.
+great_depression_queue_recovery_report = {
+	set_country_flag = great_depression_recovery_report_pending
+	set_variable = { great_depression_recovery_report_episode_id = great_depression_last_completed_episode_id }
+	country_event = { id = chaosx.nr35.11 days = 1 }
+}
+
+# COUNTRY scope. Option tooltip for the recovery report: the doctrine legacy,
+# the hollow-recovery scar, and the post-recovery safeguard the episode left.
+great_depression_show_recovery_report_ideas = {
+	if = {
+		limit = { has_idea = great_depression_legacy_public_works }
+		show_ideas_tooltip = great_depression_legacy_public_works
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_strategic_industry }
+		show_ideas_tooltip = great_depression_legacy_strategic_industry
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_finance_and_trade }
+		show_ideas_tooltip = great_depression_legacy_finance_and_trade
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_austerity }
+		show_ideas_tooltip = great_depression_legacy_austerity
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_direct_state_planning }
+		show_ideas_tooltip = great_depression_legacy_direct_state_planning
+	}
+	if = {
+		limit = { has_idea = great_depression_legacy_market_clear }
+		show_ideas_tooltip = great_depression_legacy_market_clear
+	}
+	if = {
+		limit = { has_idea = great_depression_scar_hollow_recovery }
+		show_ideas_tooltip = great_depression_scar_hollow_recovery
+	}
+	if = {
+		limit = { has_idea = great_depression_post_recovery }
+		show_ideas_tooltip = great_depression_post_recovery
+	}
+}
+
 great_depression_freeze_episode_summary = {
 	great_depression_freeze_inherited_liability_summary = yes
 	set_variable = { great_depression_last_completed_episode_id = great_depression_active_episode_id }
@@ -4895,6 +4992,8 @@ great_depression_freeze_episode_summary = {
 	set_variable = { great_depression_last_completed_episode_source_event = great_depression_active_source_event_id }
 	set_variable = { great_depression_last_completed_episode_source_caller = great_depression_active_source_caller }
 	set_variable = { great_depression_last_completed_episode_recovery_outcome = great_depression_recovery_outcome }
+	set_variable = { great_depression_last_completed_episode_doctrine = great_depression_doctrine }
+	set_variable = { great_depression_last_completed_doctrine_switch_count = great_depression_doctrine_switch_count }
 	set_variable = { great_depression_last_completed_center_restructured_count = great_depression_centers_restructured_count }
 	set_variable = { great_depression_last_completed_center_liquidated_count = great_depression_centers_liquidated_count }
 	set_variable = { great_depression_last_completed_civilian_factory_levels_lost = great_depression_event35_civilian_loss_total }
@@ -4914,6 +5013,11 @@ great_depression_freeze_episode_summary = {
 	clear_array = great_depression_last_completed_center_loss_receipt_entries
 	clear_array = great_depression_last_completed_center_civilian_loss_entries
 	clear_array = great_depression_last_completed_center_military_loss_entries
+	clear_array = great_depression_last_completed_center_outcome_entries
+	set_variable = { great_depression_last_completed_final_reopened_count = constant:great_depression_api.zero }
+	set_variable = { great_depression_last_completed_final_restructured_count = constant:great_depression_api.zero }
+	set_variable = { great_depression_last_completed_final_liquidated_count = constant:great_depression_api.zero }
+	set_variable = { great_depression_last_completed_final_abandoned_count = constant:great_depression_api.zero }
 	if = {
 		limit = {
 			has_variable = great_depression_center_state_ids^num
@@ -4925,6 +5029,18 @@ great_depression_freeze_episode_summary = {
 			value = great_depression_freeze_center_index
 			var:great_depression_center_state_ids^great_depression_freeze_center_index = {
 				save_event_target_as = great_depression_freeze_center_state
+				# The final outcome is read from this episode's own center flags.
+				# A state now recorded under another country's episode stays
+				# unclassified, so its flags never count toward this summary.
+				set_temp_variable = { great_depression_freeze_center_outcome = constant:great_depression_center_stage.registered }
+				if = {
+					limit = { check_variable = { var = great_depression_center_episode_id value = ROOT.great_depression_active_episode_id compare = equals } }
+					great_depression_classify_frozen_center_outcome = yes
+				}
+				ROOT = {
+					add_to_array = { array = great_depression_last_completed_center_outcome_entries value = great_depression_freeze_center_outcome }
+					great_depression_count_frozen_center_outcome = yes
+				}
 				ROOT = {
 					add_to_array = { array = great_depression_last_completed_center_state_ids value = event_target:great_depression_freeze_center_state }
 					add_to_array = { array = great_depression_last_completed_center_stage_entries value = great_depression_center_stage_entries^great_depression_freeze_center_index }
@@ -5369,6 +5485,7 @@ great_depression_try_complete_recovery = {
 			add_to_variable = { great_depression_completed_episode_count = constant:great_depression_api.one }
 		}
 		set_variable = { great_depression_call_result = constant:great_depression_result.closed }
+		great_depression_queue_recovery_report = yes
 	}
 }
 

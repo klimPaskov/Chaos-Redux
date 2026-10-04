@@ -238,3 +238,14 @@ Disposition: implemented.
 - `hoi4.probability_inspect` and `hoi4.probability_compare` still reject the decision adapter, so no numeric before/after comparison exists for D2, D3 or D6; D10 records the scenario baseline that `hoi4.decision_inspect` could produce.
 - needs_live_game: Event 35 shows as unavailable with the new reason in the Events and cluster tabs while every major and player country is in a depression, a boom or its aftermath (D12).
 - A settings force-fire of Event 35 with no valid target still selects nothing; the force path bypasses the pool by design (D12).
+
+## D13. National recovery report (round 2, item 1)
+
+Disposition: implemented.
+
+- Basis: the accepted recovery-depth addendum, row `events/035_great_depression.txt` of "Exact implementation surfaces" (freeze summary, receipts, legacy, cleanup, then report or news), and spec part 10 "Recovery text direction".
+- `chaosx.nr35.11` is queued by `great_depression_queue_recovery_report` as the last step of `great_depression_try_complete_recovery`, one day later, after cleanup. It reads only the frozen `great_depression_last_completed_*` summary.
+- The report counts come from each center's final flags at freeze time, not from the running `great_depression_centers_*_count` counters. Agent decision: the counters do not describe final status. The reopened counter counts every reopening, the restructured counter counts positive resolutions, and the liquidated counter only moves when a deep-severity liquidation removed a factory, while `great_depression_abandon_selected_center` sets the liquidated flag without writing the stage ledger. Flags are the one consistent final record, so the freeze classifies each matching-episode center as reopened, restructured, liquidated, or abandoned (abandoned, hollowed, or scarred) and stores the result in `great_depression_last_completed_center_outcome_entries`, which the durable state outcomes reuse.
+- The freeze also records `great_depression_last_completed_episode_doctrine` and `great_depression_last_completed_doctrine_switch_count`. The report names the institution the final doctrine leaves and its weakness from the frozen doctrine, because `great_depression_doctrine` stays live until the next episode resets it.
+- The report has no gameplay effect. The option shows the recovery ideas the country holds, and its AI weight is the new constant `great_depression_event_option_weight.recovery_report`.
+- The counts are shown without the number of centers struck, because transferred centers count as resolved but have no final outcome of their own, and a total would not add up.

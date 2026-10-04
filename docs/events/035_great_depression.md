@@ -141,6 +141,20 @@ A center recorded under another country's episode retains its own flags and proj
 
 Repeat episodes retain bounded doctrine legacies and recovery scars while applying diminishing returns to repeated relief.
 
+## Recovery and its aftermath
+
+`great_depression_try_complete_recovery` closes an episode in one transaction: it resolves the Strong, Uneven, or Hollow result, freezes the episode summary, evaluates achievements, records the refire memory, applies the recovery legacy, clears the active crisis state, and finally queues the national recovery report.
+
+The frozen summary (`great_depression_freeze_episode_summary`) keeps the final doctrine, the doctrine switch count, and one final outcome per registered center in `great_depression_last_completed_center_outcome_entries`, using the center-stage values for reopened, restructured, liquidated, and abandoned.
+The outcome is read from the center's own flags while its episode id still matches, so a state now recorded under another country's episode is left unclassified.
+The counts `great_depression_last_completed_final_reopened_count`, `_restructured_count`, `_liquidated_count`, and `_abandoned_count` feed the report.
+
+`chaosx.nr35.11` is the national recovery report.
+It fires one day after the episode closes, uses `GFX_report_event_great_depression_recovery`, and is guarded by `great_depression_recovery_report_pending` plus the frozen episode id, so it appears once per completed episode and never on relapse, conversion, or deepening.
+Its title, description, and option text follow the frozen Strong, Uneven, or Hollow result through `GetGreatDepressionRecoveryTitle`, `GetGreatDepressionRecoveryDescription`, and `GetGreatDepressionRecoveryOption`.
+The description states the reopened, restructured, liquidated, and, for a hollow recovery, abandoned center counts and the peak Severity, names the institution the final doctrine leaves behind and its lasting weakness (`GetGreatDepressionRecoveryInstitution`), and names the lasting cost (`GetGreatDepressionRecoveryLoss`: the Event 35 factory levels lost, idle abandoned works, or no loss).
+The single option shows the recovery ideas the country now holds through `great_depression_show_recovery_report_ideas`, and its AI weight is `great_depression_event_option_weight.recovery_report`.
+
 ## National Breakdown and Social Collapse
 
 Baseline National Breakdown opens only after sustained severe failure and runs through a warning, prevention mission, proof gate, and one recorded outcome in `chaosx.nr35.6`.

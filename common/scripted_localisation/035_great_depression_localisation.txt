@@ -482,3 +482,93 @@ defined_text = {
 	}
 	text = { localization_key = great_depression.exposure.stage.exposed }
 }
+
+# National recovery report. Every entry reads the frozen
+# great_depression_last_completed_* summary, because the active crisis state is
+# cleared in the same transaction that queues the report. The text is drawn on
+# report parchment and therefore stays plain.
+defined_text = {
+	name = GetGreatDepressionRecoveryTitle
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.strong compare = equals } }
+		localization_key = great_depression.recovery_report.title.strong
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.hollow compare = equals } }
+		localization_key = great_depression.recovery_report.title.hollow
+	}
+	text = { localization_key = great_depression.recovery_report.title.uneven }
+}
+
+defined_text = {
+	name = GetGreatDepressionRecoveryDescription
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.strong compare = equals } }
+		localization_key = chaosx.nr35.11.d.strong
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.hollow compare = equals } }
+		localization_key = chaosx.nr35.11.d.hollow
+	}
+	text = { localization_key = chaosx.nr35.11.d.uneven }
+}
+
+defined_text = {
+	name = GetGreatDepressionRecoveryOption
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.strong compare = equals } }
+		localization_key = chaosx.nr35.11.a.strong
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.hollow compare = equals } }
+		localization_key = chaosx.nr35.11.a.hollow
+	}
+	text = { localization_key = chaosx.nr35.11.a.uneven }
+}
+
+defined_text = {
+	name = GetGreatDepressionRecoveryInstitution
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.emergency_public_works compare = equals } }
+		localization_key = great_depression.recovery_report.institution.public_works
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.rescue_strategic_industry compare = equals } }
+		localization_key = great_depression.recovery_report.institution.strategic_industry
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals } }
+		localization_key = great_depression.recovery_report.institution.finance_and_trade
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.austerity_and_retrenchment compare = equals } }
+		localization_key = great_depression.recovery_report.institution.austerity
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.direct_state_planning compare = equals } }
+		localization_key = great_depression.recovery_report.institution.direct_state_planning
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_doctrine value = constant:great_depression_doctrine.let_the_market_clear compare = equals } }
+		localization_key = great_depression.recovery_report.institution.market_clear
+	}
+	text = { localization_key = great_depression.recovery_report.institution.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionRecoveryLoss
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { var = great_depression_last_completed_civilian_factory_levels_lost value = constant:great_depression_api.zero compare = greater_than }
+				check_variable = { var = great_depression_last_completed_military_factory_levels_lost value = constant:great_depression_api.zero compare = greater_than }
+			}
+		}
+		localization_key = great_depression.recovery_report.loss.factories
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_last_completed_episode_recovery_outcome value = constant:great_depression_recovery_outcome.hollow compare = equals } }
+		localization_key = great_depression.recovery_report.loss.idle_districts
+	}
+	text = { localization_key = great_depression.recovery_report.loss.none }
+}
