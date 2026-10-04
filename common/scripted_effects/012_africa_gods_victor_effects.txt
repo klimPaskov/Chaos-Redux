@@ -7,6 +7,7 @@ gods_of_africa_clear_victor_renewal_request = {
 	clear_variable = gods_of_africa_victor_request_host_id
 	clear_variable = gods_of_africa_victor_request_generation
 	clear_variable = gods_of_africa_victor_request_origin_host_id
+	clear_variable = gods_of_africa_victor_request_epoch
 	clear_variable = gods_of_africa_victor_request_sequence
 }
 
@@ -42,6 +43,7 @@ gods_of_africa_record_participant_victory = {
 		set_variable = { gods_of_africa_victor_defeated_host_id = event_target:gods_of_africa_victory_defeated_host.id }
 		set_variable = { gods_of_africa_victor_defeated_generation = event_target:gods_of_africa_victory_defeated_host.africa_host_generation }
 		set_variable = { gods_of_africa_victor_origin_host_id = event_target:gods_of_africa_victory_defeated_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_victor_defeated_epoch = event_target:gods_of_africa_victory_defeated_host.gods_of_africa_authority_epoch }
 		set_variable = { gods_of_africa_victor_day = global.num_days }
 		add_to_array = { array = gods_of_africa_victory_hosts value = gods_of_africa_victor_defeated_host_id }
 		add_to_array = { array = gods_of_africa_victory_generations value = gods_of_africa_victor_defeated_generation }
@@ -51,8 +53,11 @@ gods_of_africa_record_participant_victory = {
 		set_temp_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.war_breach }
 		gods_of_africa_close_contract_ledger = yes
 		# Append conduct while this actor still has proven live authority.
-		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.victory }
-		gods_of_africa_record_history = yes
+		# Native callback proof authorizes this historical write even though the
+		# host's capitulation has already closed ordinary live epoch permission.
+		add_to_array = { array = gods_of_africa_history_kinds value = constant:gods_of_africa_history_kind.victory }
+		add_to_array = { array = gods_of_africa_history_days value = global.num_days }
+		add_to_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.one }
 		gods_of_africa_clear_victor_renewal_request = yes
 		clr_country_flag = gods_of_africa_victor_renewal_rejected_report_pending
 		clear_variable = gods_of_africa_victor_renewal_rejected_sequence
@@ -84,6 +89,7 @@ gods_of_africa_request_victor_relegitimation = {
 		set_variable = { gods_of_africa_victor_request_host_id = event_target:africa_host.id }
 		set_variable = { gods_of_africa_victor_request_generation = event_target:africa_host.africa_host_generation }
 		set_variable = { gods_of_africa_victor_request_origin_host_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_victor_request_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
 		set_variable = { gods_of_africa_victor_request_sequence = gods_of_africa_victory_count }
 		set_country_flag = gods_of_africa_victor_renewal_requested
 	}
@@ -101,6 +107,7 @@ gods_of_africa_commit_victor_relegitimation = {
 		set_variable = { gods_of_africa_victor_relegitimated_sequence = gods_of_africa_victory_count }
 		set_variable = { gods_of_africa_victor_relegitimated_host_id = gods_of_africa_victor_request_host_id }
 		set_variable = { gods_of_africa_victor_relegitimated_generation = gods_of_africa_victor_request_generation }
+		set_variable = { gods_of_africa_victor_relegitimated_epoch = gods_of_africa_victor_request_epoch }
 		set_variable = { gods_of_africa_victor_relegitimated_day = global.num_days }
 		# This proof commits historical consent before normal enrollment can run.
 		# An eligible victor may have a former generation or lost major status.

@@ -6,6 +6,9 @@ gods_of_africa_contract_ledger_can_close = {
 	has_country_flag = gods_of_africa_contract_ledger_open
 	NOT = { has_country_flag = gods_of_africa_contract_ledger_closed }
 	has_country_flag = gods_of_africa_demand_active
+	has_variable = gods_of_africa_contract_ledger_epoch
+	has_variable = gods_of_africa_demand_authority_epoch
+	check_variable = { gods_of_africa_contract_ledger_epoch = gods_of_africa_demand_authority_epoch }
 	has_variable = gods_of_africa_contract_ledger_id
 	has_variable = gods_of_africa_contract_ledger_generation
 	has_variable = gods_of_africa_contract_ledger_origin_id
@@ -48,11 +51,14 @@ gods_of_africa_demand_owner_object_is_proven = {
 	has_variable = gods_of_africa_demand_host_id
 	has_variable = gods_of_africa_demand_origin_host_id
 	has_variable = gods_of_africa_demand_generation
+	has_variable = gods_of_africa_demand_authority_epoch
 	has_variable = gods_of_africa_demand_id
 	check_variable = { gods_of_africa_demand_id > constant:gods_of_africa_value.zero }
 	var:gods_of_africa_demand_host = {
 		exists = yes
 		has_variable = africa_host_generation
+		has_variable = gods_of_africa_authority_epoch
+		check_variable = { var = gods_of_africa_authority_epoch value = PREV.gods_of_africa_demand_authority_epoch compare = equals }
 		has_variable = africa_origin_host_id
 		check_variable = { var = THIS.id value = PREV.gods_of_africa_demand_host_id compare = equals }
 		check_variable = { var = africa_host_generation value = PREV.gods_of_africa_demand_generation compare = equals }

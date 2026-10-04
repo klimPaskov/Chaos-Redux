@@ -28,6 +28,7 @@ gods_of_africa_participant_host_is_active = {
 	has_global_flag = africa_is_one
 	has_global_flag = africa_evolution_i_logged
 	event_target:africa_host = {
+		gods_of_africa_epoch_permission_is_current = yes
 		has_country_flag = gods_of_africa_active
 		has_country_flag = gods_of_africa_activation_committed
 		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
@@ -38,6 +39,7 @@ gods_of_africa_participant_host_is_active = {
 # COUNTRY scope on the committed Event 012 host.
 gods_of_africa_active_host_is_valid = {
 	africa_is_current_host = yes
+	gods_of_africa_epoch_permission_is_current = yes
 	NOT = { has_capitulated = yes }
 	has_global_flag = africa_event_active
 	has_global_flag = africa_is_one
@@ -57,6 +59,9 @@ gods_of_africa_active_host_is_valid = {
 # by the Event 012 evolution-I owner path; no generic world tick owns it.
 gods_of_africa_system_can_activate = {
 	africa_is_current_host = yes
+	gods_of_africa_epoch_permission_is_current = yes
+	NOT = { gods_of_africa_continent_is_secured = yes }
+	OR = { NOT = { has_country_flag = gods_of_africa_recovery_epoch } gods_of_africa_recovery_mandate_is_current = yes }
 	NOT = { has_capitulated = yes }
 	has_global_flag = africa_event_active
 	has_global_flag = africa_is_one
@@ -163,6 +168,7 @@ gods_of_africa_participant_is_live = {
 gods_of_africa_participant_generation_is_current = {
 	gods_of_africa_participant_is_live = yes
 	gods_of_africa_has_current_host = yes
+	gods_of_africa_participant_epoch_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_victor_exempt }
 	has_country_flag = gods_of_africa_participant
 	has_variable = gods_of_africa_participant_generation
@@ -198,6 +204,7 @@ gods_of_africa_participant_is_registered = {
 
 gods_of_africa_participant_has_active_demand = {
 	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_demand_epoch_is_current = yes
 	has_country_flag = gods_of_africa_demand_active
 	has_variable = gods_of_africa_demand_id
 	has_variable = gods_of_africa_demand_generation
@@ -551,9 +558,12 @@ gods_of_africa_can_prepare_countermeasures = {
 gods_of_africa_participant_can_reconcile = {
 	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_reconciliation_epoch_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	has_country_flag = gods_of_africa_reconciliation_pending
 	NOT = { has_war = yes }
+	NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+	NOT = { gods_of_africa_participant_owns_host_core_state = yes }
 	has_variable = gods_of_africa_reconciliation_due_day
 	check_variable = {
 		var = global.num_days

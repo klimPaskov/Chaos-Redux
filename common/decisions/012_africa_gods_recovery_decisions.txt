@@ -1,0 +1,159 @@
+# Event 012 original-host restoration congress, additive existing categories.
+# Parent extends category visibility/descriptions. Native host ROOT/member FROM
+# uses the existing bounded relationship pool; no world scan or new category.
+# AI scores are the assigned proposal, pending specialist baseline/comparison.
+
+gods_of_africa_host_category = {
+	gods_of_africa_restore_original_mandate = {
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = {
+			gods_of_africa_original_host_recovery_is_open = yes
+			NOT = { has_country_flag = gods_of_africa_recovery_open }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_start_requirement_tt
+				gods_of_africa_original_host_recovery_can_start = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_start_effect_tt
+			hidden_effect = { gods_of_africa_begin_original_host_recovery = yes }
+		}
+		ai_will_do = { base = constant:gods_of_africa_recovery_ai.start_finish }
+	}
+
+	gods_of_africa_invite_original_mandate_member = {
+		icon = GFX_decision_012_africa_gods_public_pardon
+		target_array = africa_relationship_countries
+		activation = { gods_of_africa_recovery_can_invite = yes }
+		target_root_trigger = { gods_of_africa_recovery_can_invite = yes }
+		target_trigger = {
+			FROM = {
+				gods_of_africa_recovery_member_is_eligible = yes
+				NOT = { gods_of_africa_recovery_member_receipt_is_current = yes }
+			}
+		}
+		visible = {
+			gods_of_africa_recovery_can_invite = yes
+			FROM = {
+				gods_of_africa_recovery_member_is_eligible = yes
+				NOT = { gods_of_africa_recovery_member_receipt_is_current = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_invite_requirement_tt
+				gods_of_africa_recovery_can_invite = yes
+				FROM = { gods_of_africa_recovery_member_is_eligible = yes }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_invite_effect_tt
+			hidden_effect = { gods_of_africa_invite_recovery_member = yes }
+		}
+		ai_will_do = { base = constant:gods_of_africa_recovery_ai.invite_resume }
+	}
+
+	gods_of_africa_finish_original_mandate = {
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = { gods_of_africa_recovery_congress_identity_is_current = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_finish_requirement_tt
+				gods_of_africa_recovery_can_finish = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_finish_effect_tt
+			hidden_effect = { gods_of_africa_commit_original_host_recovery = yes }
+		}
+		ai_will_do = { base = constant:gods_of_africa_recovery_ai.start_finish }
+	}
+
+	gods_of_africa_resume_original_mandate = {
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = { gods_of_africa_recovery_can_resume = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_resume_requirement_tt
+				gods_of_africa_recovery_can_resume = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_resume_effect_tt
+			hidden_effect = { gods_of_africa_resume_original_host_recovery = yes }
+		}
+		ai_will_do = { base = constant:gods_of_africa_recovery_ai.invite_resume }
+	}
+}
+
+gods_of_africa_participant_category = {
+	gods_of_africa_approve_original_mandate = {
+		icon = GFX_decision_012_africa_gods_public_pardon
+		visible = {
+			gods_of_africa_recovery_member_request_is_current = yes
+			NOT = { has_country_flag = gods_of_africa_recovery_approved }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_member_requirement_tt
+				gods_of_africa_recovery_member_request_is_current = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_approve_effect_tt
+			hidden_effect = {
+				set_temp_variable = { gods_of_africa_recovery_answer = constant:gods_of_africa_value.one }
+				gods_of_africa_record_recovery_member_answer = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_recovery_ai.approve
+			modifier = {
+				factor = constant:gods_of_africa_recovery_ai.unstable_accept_factor
+				has_stability < constant:gods_of_africa_recovery_ai.stability_threshold
+			}
+		}
+	}
+
+	gods_of_africa_decline_original_mandate = {
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		visible = {
+			gods_of_africa_recovery_member_request_is_current = yes
+			NOT = { has_country_flag = gods_of_africa_recovery_declined }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_recovery_member_requirement_tt
+				gods_of_africa_recovery_member_request_is_current = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_recovery_decline_effect_tt
+			hidden_effect = {
+				set_temp_variable = { gods_of_africa_recovery_answer = constant:gods_of_africa_value.zero }
+				gods_of_africa_record_recovery_member_answer = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:gods_of_africa_recovery_ai.decline
+			modifier = {
+				factor = constant:gods_of_africa_recovery_ai.unstable_decline_factor
+				has_stability < constant:gods_of_africa_recovery_ai.stability_threshold
+			}
+		}
+	}
+}

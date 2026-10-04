@@ -9,6 +9,8 @@ gods_of_africa_initialize_participant_history = {
 	}
 	if = {
 		limit = { NOT = { has_country_flag = gods_of_africa_history_initialized } }
+		set_temp_variable = { gods_of_africa_grading_first_genuine_history = constant:gods_of_africa_value.one }
+		gods_of_africa_initialize_grading_ledger = yes
 		gods_of_africa_initialize_contract_history = yes
 		set_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_refusal_count = constant:gods_of_africa_value.zero }
@@ -45,6 +47,7 @@ gods_of_africa_remember_permanent_opt_out = {
 # This clears permission from an interrupted review. It does not refund or
 # reverse reparations already transferred, erase paid-offer history, or pardon.
 gods_of_africa_clear_reconciliation_review = {
+	gods_of_africa_clear_reconciliation_epoch = yes
 	remove_mission = gods_of_africa_reconciliation_mission
 	clr_country_flag = gods_of_africa_reconciliation_pending
 	clr_country_flag = gods_of_africa_reparations_paid
@@ -53,4 +56,13 @@ gods_of_africa_clear_reconciliation_review = {
 	clear_variable = gods_of_africa_reconciliation_start_day
 	clear_variable = gods_of_africa_reconciliation_due_day
 	clear_variable = gods_of_africa_reconciliation_next_attempt_day
+}
+
+# Only transient review identity is withdrawn; accepted history is retained.
+gods_of_africa_clear_reconciliation_epoch = {
+	clear_variable = gods_of_africa_reconciliation_host
+	clear_variable = gods_of_africa_reconciliation_host_id
+	clear_variable = gods_of_africa_reconciliation_generation
+	clear_variable = gods_of_africa_reconciliation_origin_id
+	clear_variable = gods_of_africa_reconciliation_epoch
 }

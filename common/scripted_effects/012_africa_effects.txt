@@ -1126,9 +1126,10 @@ africa_reconcile_relationship_counts_and_caps = {
 # COUNTRY scope on a member. Only Event 12's two constitutional subject tiers
 # may be ended here; this protects unrelated subject arrangements.
 africa_release_member_from_continental_subject_status = {
+	save_event_target_as = africa_autonomy_member
 	if = {
 		limit = { africa_is_charter_subject_of_current_host = yes }
-		event_target:africa_host = { end_puppet = ROOT }
+		event_target:africa_host = { end_puppet = event_target:africa_autonomy_member }
 	}
 	clr_country_flag = africa_member_settlement_term_locked
 	clr_country_flag = africa_member_under_common_command
@@ -1137,6 +1138,7 @@ africa_release_member_from_continental_subject_status = {
 # COUNTRY scope on a member after its relationship variable has changed. The
 # negotiated label and the engine subject status are one atomic settlement.
 africa_apply_member_autonomy_for_current_relationship = {
+	save_event_target_as = africa_autonomy_member
 	if = {
 		limit = { africa_relationship_is_autonomous_federal = yes }
 		set_country_flag = africa_member_autonomy_statute_accepted
@@ -1147,7 +1149,7 @@ africa_apply_member_autonomy_for_current_relationship = {
 			limit = { NOT = { has_autonomy_state = autonomy_africa_federal_member } }
 			event_target:africa_host = {
 				set_autonomy = {
-					target = ROOT
+					target = event_target:africa_autonomy_member
 					autonomy_state = autonomy_africa_federal_member
 					end_wars = no
 					end_civil_wars = no
@@ -1165,7 +1167,7 @@ africa_apply_member_autonomy_for_current_relationship = {
 			limit = { NOT = { has_autonomy_state = autonomy_africa_integrated_region } }
 			event_target:africa_host = {
 				set_autonomy = {
-					target = ROOT
+					target = event_target:africa_autonomy_member
 					autonomy_state = autonomy_africa_integrated_region
 					end_wars = no
 					end_civil_wars = no

@@ -13,7 +13,27 @@ gods_of_africa_participant_victory_can_record = {
 		has_variable = africa_host_generation
 		has_variable = africa_origin_host_id
 	}
-	gods_of_africa_participant_is_registered = yes
+	gods_of_africa_participant_is_live = yes
+	has_country_flag = gods_of_africa_participant
+	NOT = { has_country_flag = gods_of_africa_victor_exempt }
+	has_variable = gods_of_africa_history_owner_id
+	has_variable = gods_of_africa_history_origin_host_id
+	has_variable = gods_of_africa_history_count
+	has_variable = gods_of_africa_participant_generation
+	has_variable = gods_of_africa_participant_authority_host
+	has_variable = gods_of_africa_participant_authority_host_id
+	has_variable = gods_of_africa_participant_authority_origin_id
+	has_variable = gods_of_africa_participant_authority_epoch
+	check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	check_variable = { gods_of_africa_history_origin_host_id = event_target:gods_of_africa_victory_defeated_host.africa_origin_host_id }
+	check_variable = { gods_of_africa_participant_authority_host_id = event_target:gods_of_africa_victory_defeated_host.id }
+	check_variable = { gods_of_africa_participant_authority_origin_id = event_target:gods_of_africa_victory_defeated_host.africa_origin_host_id }
+	check_variable = { gods_of_africa_participant_authority_epoch = event_target:gods_of_africa_victory_defeated_host.gods_of_africa_authority_epoch }
+	var:gods_of_africa_participant_authority_host = { exists = yes tag = event_target:gods_of_africa_victory_defeated_host }
+	event_target:gods_of_africa_victory_defeated_host = {
+		has_country_flag = gods_of_africa_epoch_authorized
+		is_in_array = { array = gods_of_africa_participants value = PREV }
+	}
 	check_variable = { gods_of_africa_participant_generation = event_target:gods_of_africa_victory_defeated_host.africa_host_generation }
 }
 
@@ -53,6 +73,7 @@ gods_of_africa_victor_renewal_is_current = {
 		tooltip = gods_of_africa_victor_accept_requirements_tt
 		gods_of_africa_victor_relationship_is_available = yes
 		has_country_flag = gods_of_africa_victor_renewal_requested
+		gods_of_africa_victor_request_epoch_is_current = yes
 		has_variable = gods_of_africa_victor_request_host_id
 		has_variable = gods_of_africa_victor_request_generation
 		has_variable = gods_of_africa_victor_request_origin_host_id
@@ -63,6 +84,7 @@ gods_of_africa_victor_renewal_is_current = {
 		check_variable = { gods_of_africa_victor_request_sequence = gods_of_africa_victory_count }
 		NOT = { has_war_with = event_target:africa_host }
 		NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+		NOT = { gods_of_africa_participant_owns_host_core_state = yes }
 	}
 }
 
@@ -73,6 +95,7 @@ gods_of_africa_victor_can_request_relegitimation = {
 		NOT = { gods_of_africa_victor_renewal_is_current = yes }
 		NOT = { has_war_with = event_target:africa_host }
 		NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+		NOT = { gods_of_africa_participant_owns_host_core_state = yes }
 	}
 }
 

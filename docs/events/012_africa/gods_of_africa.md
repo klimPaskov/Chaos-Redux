@@ -204,3 +204,26 @@ The [bounded contract audit](../../plans/012_africa_plans/subagent_handoffs/012_
 Current and longest compliance streaks persist across re-entry, while actual paid, host-accepted reconciliation starts a separate recovery streak and post-reconciliation record.
 The [contract helper contract](../../../common/scripted_effects/012_africa_gods_contract_effects.md) identifies the exact write owners and validation limits.
 The twelve-factor final grader and measured material settlement remain under implementation.
+
+## Original-owner recovery and live permission
+
+The surviving, still committed original host can convene a restoration congress after a loss.
+Current cooperative continental members give explicit, reversible consent: at least two approvals and a strict majority of the current eligible membership are required.
+Ratification advances only the Gods authority epoch, retains doctrine and lifetime history, and begins the existing consolidation interval.
+Activation rechecks current consent and physical return and immediately measures actual Strength.
+A defeated Scramble's settled enum does not prove that the continent is secured.
+If the continent is secured during consolidation, the owner settles retained enrolled history instead of opening ordinary tribute.
+
+Queued activation, monthly-owner, and quarterly-registry events are wake hints.
+They require current permission, a genuine schedule receipt, and a present elapsed date before mutating state or queuing another hint.
+The existing resume action can repair a current due obligation at most once in the current day without granting authority, changing a date, or adding a clock.
+Live participant, demand, reconciliation, and personal victor-renewal permissions bind the local epoch; historical settlement and victory receipts remain independent.
+
+Actual annexation cleanup runs on native FROM with its own bounded callback proof, and an annexed original country cannot be reselected by Gods after release.
+The shared departing-host bridge validates the FROM object through PREV while preserving ROOT as the annexer/resolver.
+Unifier loss revokes permission before cleanup, cancels open congress invitations, and preserves existing final/victory report receipts.
+Frozen demand-slot release compares both the shared generation and local epoch, so stale cleanup cannot debit a renewed owner budget.
+
+The [recovery helper API](../../../common/scripted_effects/012_africa_gods_recovery_effects.md), [epoch bindings](../../../common/scripted_effects/012_africa_gods_epoch_binding_effects.md), and [integrated source audit](../../plans/012_africa_plans/subagent_handoffs/012_africa_gods_recovery_integration_audit_2026-10-04.md) record exact owners and remaining acceptance limits.
+The native/probability/MCP evidence remains incomplete, and this documentation does not promote the overall Gods goal to complete.
+No new art, unit model, public currency, event clock, or global polling hook is introduced by recovery.

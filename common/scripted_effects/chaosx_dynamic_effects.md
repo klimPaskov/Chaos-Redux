@@ -384,3 +384,7 @@ The Event 012 [`Gods victor authority`](012_africa_gods_victor_effects.md) contr
 The Event 012 [`Gods demand repetition`](012_africa_gods_repetition_effects.md) contract documents caller-set type/family inputs, recent actual-contract receipts, identity replay protection, percentage scaling, cleanup, and boolean-helper usage.
 
 The private Event 012 [unique tribute contract ledger](012_africa_gods_contract_effects.md) documents caller-set closure input, immutable identity, replay consumption, issuance and outcome counts, neutral retirement, streaks, accepted reconciliation, lifecycle owners, and boolean-helper usage.
+
+The Event014 owner API [Larder logistics](../../docs/events/014_cannibalism/larder_logistics.md) documents country effective-capacity calculation, post-transaction clamp/publication, caller-owned exact distance quotes from frozen regular capital targets, one-shot dispatch/receipt commit, opening inheritance, generation guards, cleanup and the fifty-flag administrative development mapping.
+
+The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_effects.md) and [live epoch bindings](012_africa_gods_epoch_binding_effects.md) document exact host/consent proof, initial grant and revocation, current-due wake handling and bounded repair, native loss cleanup, historical report preservation, caller inputs, defaults, side effects, and boolean-helper usage.

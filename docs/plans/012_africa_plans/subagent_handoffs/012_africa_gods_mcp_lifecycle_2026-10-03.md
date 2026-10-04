@@ -94,3 +94,39 @@ Offline parallel reference: `paradox_wiki/Decision modding - Hearts of Iron 4 Wi
 The parse review of the Gods effect and trigger owners finds no remaining dollar-macro tokens in those files.
 The global prohibition still has five occurrences in another owner's untracked `common/scripted_effects/camp_administration_origin_effects.txt:70?74`.
 This tranche leaves that unfinished owner file out of its commit and retains the global no-parameter acceptance gap.
+
+The corrected parent compare request used `before = { revision = "828ca59a9a1fa1a44d0bf5a12bce75e5cb65e717d2d055388d5ac1994d71fe92" }`, `.603`, and one-node no-render limits.
+It returned `EVENT_REVISION_NOT_CACHED`; no before/after comparison is claimed.
+
+## Recovery integration continuation, 2026-10-04
+
+The parent invoked `.600` trace and scope render through the confirmed event routes with one-node/depth/edge limits and helper expansion disabled.
+They returned `EVENT_INSPECTED_PARTIAL` and `EVENT_RENDERED_PARTIAL`, revision `f04d3e8b171882e6063d871273ef0049f645e58d09abedf8b4933b34a4507c8a`, graph hash `f56e7d2312089432b1f2112becc7ae5855965223f878f725dd14b97d760946cf`.
+The render selected zero nodes and omitted 42,998 nodes; this is not `.600` layout or helper-closure acceptance.
+Both responses explicitly defer whole-workspace helper/lifecycle projections.
+Trace artifact SHA-256 is `e9f73810cb2463f233c8a9d4134291507b524aae7c1398e86ca956ef5435c7f3`, 1,064,158 bytes.
+Scope manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/98e73c6da2cae9e75b50951139626a5b47c52ddb421e898f57d355d8d1b05e37/d81c89933cce93fb7bc2b3f855278ac0bb285c20b6f14c61be08c5e3a24e6202/event-scope-f04d3e8b1718-manifest.json`.
+Scope PNG checksum is `13ece57bd7c33695cb890198722249e81330a3ad5fb41c9d7808ed4ed9357712`; no image review is claimed.
+
+Connected primary searches for fixed-point precision returned Math Expressions at installed `script_concept_documentation.md:184?215`, Script Constants at `216?222`, and constants schema at `common/script_constants/documentation.md:1?34`.
+Those citations establish the arithmetic family and schema, not every variable/getter's width or precision.
+The arithmetic audit uses a conservative three-decimal/range model; native type details remain a separate unresolved evidence limit rather than an invented universal maximum.
+
+The `.600` bounded source lookup independently returned exactly one unshadowed mod event definition at `events/012_africa_gods_of_africa.txt:13?20`, index revision `669a9ad00120f961896461aba9dcc8fff61f7ed2611a7d0578a3718284e7089d`.
+Its immediate body delegates only to the current activation wrapper and does not clear a receipt itself.
+The scope-render manifest's bounded resource read again failed with `-32603: Artifact provenance manifest is unavailable`; no complete artifact, selected-node render, or helper closure was reviewed.
+
+## Successor focus-continuation references and MCP
+
+The successor follow-up uses the existing country-owned loading/layout helpers; no focus-tree definition or focus weight changed.
+Installed `effects_documentation.md:4771?4789`, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, documents COUNTRY `load_focus_tree` and retention/copy options.
+Parallel offline reference: `Effects - Hearts of Iron 4 Wiki.md:1793?1817`, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`, documents current-scope loading and layout refresh.
+The existing native successor transaction supplies the `copy_completed_from`/completion transfer precedent; its `.232` continuation runs with the successor as ROOT instead of the annexer.
+
+The connected focus inspector returned `FOCUS_INSPECTED` for `africa_continental_focus_tree`, 300 focuses and 14 continuous focuses, revision `842e9803615145795ec747f1ba123b35f5894823445c4b5cfc2bb30643d9f4ca`.
+Layout hash `a6eac361886709d8b616eb52b616b81f404d9640784b91c74f956efd7b942e2d` includes 320 diagnostics, 70 connector crossings, 59 node intersections and 34 close row pairs.
+The no-completed-focus structural scenario reports one candidate, 299 blocked, and zero unresolved; it does not prove successor callback execution or full route balance.
+Cropped focus render returned `FOCUS_CROP_REQUIRES_RASTER`; the supported uncropped retry returned `FOCUS_RENDERED` at 9128 ? 2728 with the same layout hash.
+SVG checksum `9a2f25042410c84f2272d78229f6c4e1437d61eb0b8e8fe8dccd6f6a069a3df0`; HTML checksum `deed1b895ee749df29b4f8b46f83c1342b5287b45087ea66011c95debf5fb79d`.
+Source map: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/204225751d0fe223ae097cbaf17a6ec6b9127ab4e8e10cc15f7ad6fe994eb721/748a8f771996c0b5f4dc912b14b35911d0b2790153590ff409dc4da70eef8fb6/africa_continental_focus_tree.focus.source-map.json`.
+No complete artifact, raster review, successor execution, or focus-tree completion is claimed by this narrow continuation repair.

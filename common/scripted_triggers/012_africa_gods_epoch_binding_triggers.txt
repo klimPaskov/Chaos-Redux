@@ -1,0 +1,66 @@
+# Event 012 live epoch identity checks. Durable report and settlement receipts
+# use their own historical proof and must not require these live permissions.
+
+gods_of_africa_participant_epoch_is_current = {
+	has_variable = gods_of_africa_participant_authority_host
+	has_variable = gods_of_africa_participant_authority_host_id
+	has_variable = gods_of_africa_participant_authority_origin_id
+	has_variable = gods_of_africa_participant_authority_epoch
+	has_event_target = africa_host
+	var:gods_of_africa_participant_authority_host = {
+		exists = yes
+		tag = event_target:africa_host
+		gods_of_africa_epoch_permission_is_current = yes
+		check_variable = { var = THIS.id value = PREV.gods_of_africa_participant_authority_host_id compare = equals }
+		check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_participant_authority_origin_id compare = equals }
+		check_variable = { var = gods_of_africa_authority_epoch value = PREV.gods_of_africa_participant_authority_epoch compare = equals }
+	}
+}
+
+gods_of_africa_demand_epoch_is_current = {
+	gods_of_africa_participant_epoch_is_current = yes
+	has_variable = gods_of_africa_demand_authority_epoch
+	check_variable = { gods_of_africa_demand_authority_epoch = gods_of_africa_participant_authority_epoch }
+}
+
+gods_of_africa_reconciliation_epoch_is_current = {
+	gods_of_africa_participant_epoch_is_current = yes
+	has_variable = gods_of_africa_reconciliation_host
+	has_variable = gods_of_africa_reconciliation_host_id
+	has_variable = gods_of_africa_reconciliation_generation
+	has_variable = gods_of_africa_reconciliation_origin_id
+	has_variable = gods_of_africa_reconciliation_epoch
+	var:gods_of_africa_reconciliation_host = {
+		exists = yes
+		tag = event_target:africa_host
+		gods_of_africa_epoch_permission_is_current = yes
+	}
+	check_variable = { gods_of_africa_reconciliation_host_id = event_target:africa_host.id }
+	check_variable = { gods_of_africa_reconciliation_generation = event_target:africa_host.africa_host_generation }
+	check_variable = { gods_of_africa_reconciliation_origin_id = event_target:africa_host.africa_origin_host_id }
+	check_variable = { gods_of_africa_reconciliation_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+}
+
+gods_of_africa_victor_request_epoch_is_current = {
+	has_variable = gods_of_africa_victor_request_epoch
+	has_event_target = africa_host
+	event_target:africa_host = { gods_of_africa_epoch_permission_is_current = yes }
+	check_variable = { gods_of_africa_victor_request_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+}
+
+# A defeated Scramble also uses the settled enum; it is not continental victory.
+gods_of_africa_continent_is_secured = {
+	OR = {
+		has_country_flag = africa_continental_settlement_complete
+		AND = {
+			africa_scramble_phase_is_settled = yes
+			NOT = { has_global_flag = africa_scramble_response_defeat }
+		}
+	}
+}
+
+# Participant COUNTRY. Both ownership and occupation block ordinary pardon.
+gods_of_africa_participant_owns_host_core_state = {
+	has_event_target = africa_host
+	any_owned_state = { is_on_continent = africa is_core_of = event_target:africa_host }
+}

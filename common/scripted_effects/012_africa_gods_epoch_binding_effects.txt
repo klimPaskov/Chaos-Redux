@@ -1,0 +1,86 @@
+# Event 012 country-owned identity bindings for the current Gods authority epoch.
+# These callers do not create permission; only actual enrollment/contract/review
+# owners may bind identities after validating the already authorized host.
+
+gods_of_africa_bind_participant_epoch = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_participant
+			has_variable = gods_of_africa_participant_generation
+			gods_of_africa_has_current_host = yes
+			event_target:africa_host = {
+				gods_of_africa_epoch_permission_is_current = yes
+				is_in_array = { array = gods_of_africa_participants value = PREV }
+			}
+			check_variable = { gods_of_africa_participant_generation = event_target:africa_host.africa_host_generation }
+		}
+		set_variable = { gods_of_africa_participant_authority_host = event_target:africa_host }
+		set_variable = { gods_of_africa_participant_authority_host_id = event_target:africa_host.id }
+		set_variable = { gods_of_africa_participant_authority_origin_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_participant_authority_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+	}
+}
+
+gods_of_africa_bind_demand_epoch = {
+	if = {
+		limit = {
+			gods_of_africa_participant_epoch_is_current = yes
+			has_country_flag = gods_of_africa_demand_active
+			has_variable = gods_of_africa_demand_id
+			has_variable = gods_of_africa_demand_generation
+			check_variable = { gods_of_africa_demand_generation = event_target:africa_host.africa_host_generation }
+		}
+		set_variable = { gods_of_africa_demand_authority_epoch = gods_of_africa_participant_authority_epoch }
+	}
+}
+
+gods_of_africa_bind_reconciliation_epoch = {
+	if = {
+		limit = {
+			gods_of_africa_participant_epoch_is_current = yes
+			has_country_flag = gods_of_africa_reconciliation_pending
+			has_country_flag = gods_of_africa_defiant
+			has_variable = gods_of_africa_reconciliation_due_day
+		}
+		set_variable = { gods_of_africa_reconciliation_host = event_target:africa_host }
+		set_variable = { gods_of_africa_reconciliation_host_id = event_target:africa_host.id }
+		set_variable = { gods_of_africa_reconciliation_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_reconciliation_origin_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_reconciliation_epoch = gods_of_africa_participant_authority_epoch }
+	}
+}
+
+# Participant COUNTRY. Consume only this enrollment's actual offender slot,
+# including loss after the global target points at a replacement authority.
+gods_of_africa_release_owned_offender_mark = {
+	if = {
+		limit = { has_country_flag = gods_of_africa_enemy_marked }
+		clr_country_flag = gods_of_africa_enemy_marked
+		if = {
+			limit = {
+				has_variable = gods_of_africa_participant_authority_host
+				has_variable = gods_of_africa_participant_authority_host_id
+				has_variable = gods_of_africa_participant_authority_origin_id
+				has_variable = gods_of_africa_participant_authority_epoch
+				has_variable = gods_of_africa_participant_generation
+			}
+			var:gods_of_africa_participant_authority_host = {
+				if = {
+					limit = {
+						exists = yes
+						check_variable = { var = THIS.id value = PREV.gods_of_africa_participant_authority_host_id compare = equals }
+						has_variable = africa_origin_host_id
+						check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_participant_authority_origin_id compare = equals }
+						has_variable = africa_host_generation
+						check_variable = { var = africa_host_generation value = PREV.gods_of_africa_participant_generation compare = equals }
+						has_variable = gods_of_africa_authority_epoch
+						check_variable = { var = gods_of_africa_authority_epoch value = PREV.gods_of_africa_participant_authority_epoch compare = equals }
+						has_variable = gods_of_africa_priority_offender_count
+						check_variable = { gods_of_africa_priority_offender_count > constant:gods_of_africa_value.zero }
+					}
+					subtract_from_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.one }
+				}
+			}
+		}
+	}
+}
