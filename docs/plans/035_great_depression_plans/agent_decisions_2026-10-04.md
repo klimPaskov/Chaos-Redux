@@ -198,6 +198,24 @@ Disposition: implemented.
   `great_depression_record_history` set `global.last_fired_event_id` to Event 35 on every call, including the deferred random and cluster path where the dispatcher already owns that value.
   It now sets it only in the direct-start branch that writes its own row through `record_events_log_history_entry`, which reads it; this matches D9.
 
+## D12. Event-pool availability and second review fixes
+
+Disposition: implemented.
+
+- Event-pool availability hook.
+  The random pool and the Negative Economy cluster could draw Event 35 while no country was a valid independent target; the firing then started nothing and left a countryless history row that no callback could complete.
+  `great_depression_has_any_independent_target` (Event 35 triggers) is true while any major or player country passes `great_depression_is_valid_independent_target`.
+  The shared `evaluate_event_pool_candidate_unavailability` gained one `else_if` that sets the new reason `event_system_event_unavailability_reason.great_depression_target = 51` when it is false, following the Fury and Doctrine Research hooks.
+  The same evaluator feeds the random pool, cluster member availability and the Events tab, so the cluster skips the row and both tabs show `chaosx.events_log.events.na_reason.great_depression_target` (Event 35 localisation file); the two reason lists in `chaosx_scripted_localisation_events_log.txt` each gained one row.
+  Basis: spec part 1, "No valid target": with no valid country, Event 35 contributes no live candidate to automatic selection and the event list shows it as unavailable; full spec scenario `TGT-08` expects "Event is unavailable and no call is queued".
+  The settings force-fire path bypasses the pool by design and still reaches `chaosx.nr35.1`, which then selects nothing; that debug path is left unchanged.
+- Partner target order.
+  `great_depression_distressed_asset_target_is_valid` and `great_depression_supply_gap_target_is_valid` check `great_depression_active_crisis_is_coherent` first.
+  Every country is tested as a target and most are not in a depression, so they now fail on one flag before the relationship scan and the meta-trigger cooldown; the rule set is unchanged.
+- Player text.
+  The three partner target texts say "we must not have acted on them recently" instead of "outside the bilateral cooldown", matching the cooldown tooltip.
+  The freight and reconstruction center tooltips name the center stages the targets accept instead of calling the center "closed", which a Distressed center is not.
+
 ## Commit index
 
 | Decision | Commit |
@@ -212,9 +230,11 @@ Disposition: implemented.
 | D8 opening news picture | `7704873f7` |
 | D9 deferred history writer and D10 decision AI evidence | `f6849915e` |
 | D11 round 1 review fixes | the commit "Close Guarantee Essential Orders after the rescue ends in Event 35" |
+| D12 event-pool availability and second review fixes | the commit "Keep Event 35 out of the event pool while no country can fall into a depression" |
 
 ## Remaining limits
 
 - needs_live_game: super-event 105 display, the single history row on a random and on a cluster firing, the Event Details evolution toggles, the cluster appearing and firing, and the new decisions' tooltips and map targeting.
 - `hoi4.probability_inspect` and `hoi4.probability_compare` still reject the decision adapter, so no numeric before/after comparison exists for D2, D3 or D6; D10 records the scenario baseline that `hoi4.decision_inspect` could produce.
-- Event 35 has no event-pool availability hook, so the normal pool and the Negative Economy trigger row can still select it when no country is a valid independent target; the firing then does nothing. Adding that hook means editing the shared pool evaluator and is left for the event-system owner.
+- needs_live_game: Event 35 shows as unavailable with the new reason in the Events and cluster tabs while every major and player country is in a depression, a boom or its aftermath (D12).
+- A settings force-fire of Event 35 with no valid target still selects nothing; the force path bypasses the pool by design (D12).

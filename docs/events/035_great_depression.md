@@ -6,6 +6,7 @@ Event 35 is a Minor Repeatable, Chaos level 1, Low-severity member of the Negati
 
 Negative Economy (cluster ID 10) is a one-time cluster at Chaos level 1: Event 35 is its required Low trigger row and The Great Embargo (Event 50) its optional Medium row.
 Both a random firing and a cluster firing pick one weighted country that is not already in a depression; a cluster pick keeps the cluster's pacing lane.
+While no major power or player government could start a new depression (`great_depression_has_any_independent_target`), the shared event-pool evaluator marks Event 35 unavailable with reason `great_depression_target`, so neither the random pool nor the Negative Economy cluster draws it, and the Events and cluster tabs show why.
 Event 34 collapse, contagion conversion, the Evolution III spread, and relapse start depressions directly and never roll the cluster.
 
 The event targets one valid major or player country, including a non-major player, and rejects active depressions, special Chaos actors, nonhuman economies, incompatible crises, and countries without a usable civilian economy.

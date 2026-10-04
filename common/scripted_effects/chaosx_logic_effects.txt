@@ -854,6 +854,13 @@ evaluate_event_pool_candidate_unavailability = {
 		limit = { check_variable = { event_id = constant:murder_mystery_identity.event_id } }
 		murder_mystery_evaluate_event_pool_unavailability = yes
 	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:great_depression_event.id }
+			NOT = { great_depression_has_any_independent_target = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.great_depression_target }
+	}
 
 	if = {
 		limit = { check_variable = { event_pool_candidate_independence_capacity_registry_prepared > 0 } }

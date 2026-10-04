@@ -135,6 +135,20 @@ great_depression_is_valid_independent_target = {
 	NOT = { great_depression_has_stale_active_registry_entry = yes }
 }
 
+# Any scope. Event-pool availability: the random pool and the Negative Economy
+# cluster offer Event 35 only while one country could start an independent
+# depression, so a firing never ends without a target. The cheap major/player
+# test runs before the economy scan inside the independent-target trigger.
+great_depression_has_any_independent_target = {
+	any_country = {
+		OR = {
+			is_major = yes
+			is_ai = no
+		}
+		great_depression_is_valid_independent_target = yes
+	}
+}
+
 great_depression_is_valid_worldwide_target = {
 	great_depression_has_viable_economy = yes
 	NOT = { has_country_flag = great_depression_active }

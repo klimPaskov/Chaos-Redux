@@ -958,11 +958,13 @@ great_depression_distressed_asset_state_target_is_valid = {
 
 # Partner-country scope with ROOT as the buyer. The seller must be a linked
 # partner outside the bilateral cooldown, be in its own active Event 35 crisis,
-# and still hold a failed center from that crisis that can be bought.
+# and still hold a failed center from that crisis that can be bought. The crisis
+# flag is checked first because every country is tested as a target and most
+# are not in a depression; the meta-trigger cooldown is the costliest check.
 great_depression_distressed_asset_target_is_valid = {
+	great_depression_active_crisis_is_coherent = yes
 	great_depression_has_proved_partner_relationship = yes
 	great_depression_partner_pair_cooldown_is_open = yes
-	great_depression_active_crisis_is_coherent = yes
 	great_depression_partner_has_failed_center = yes
 }
 
@@ -1111,11 +1113,12 @@ great_depression_supervision_partner_target_is_valid = {
 
 # Partner-country scope with ROOT as the importer. The supplier at risk must be
 # a linked partner outside the bilateral cooldown and in its own active Event 35
-# crisis; a healthy economy has no supply gap to exploit.
+# crisis; a healthy economy has no supply gap to exploit. The crisis flag is
+# checked first so countries outside a depression fail before the cooldown.
 great_depression_supply_gap_target_is_valid = {
+	great_depression_active_crisis_is_coherent = yes
 	great_depression_has_proved_partner_relationship = yes
 	great_depression_partner_pair_cooldown_is_open = yes
-	great_depression_active_crisis_is_coherent = yes
 }
 
 great_depression_trusteeship_target_is_valid = {
