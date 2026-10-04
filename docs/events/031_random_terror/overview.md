@@ -71,6 +71,9 @@ An ordinary spawn (`random_terror_state_can_spawn_actor`) never takes the parent
 When a capital reaches Lost Local Control and cannot secede, its government faces a coup attempt, and the ordinary civil-war check carries any other blocked state.
 Every new actor, ordinary or created by Global Jihad, declares war on its parent through `random_terror_actor_declare_parent_war` when the game allows it, which opens the retake, isolation and offensive actions.
 
+The three starting spirits are replaced by the route focuses.
+Actor decisions run `random_terror_refresh_actor_lifecycles`, which owns only a failure overlay: when Territorial Control, Network Authority or External Supply falls below the low band it adds the matching failure spirits that are absent and marks them with `random_terror_lifecycle_owns_<idea>` flags, and recovery removes only those owned spirits, so focus rewards are never stripped.
+
 The actor focus tree is `random_terror_actor_focus_tree` in `common/national_focus/031_random_terror_focus.txt`.
 
 Its 114 focuses cover opening survival, Shadow Council, War Directorate, Ideological Secretariat, captured economy, armed movement, network and diplomacy, expansion, crisis, Jihadist International, Final Jihad, and False Revelation routes.
