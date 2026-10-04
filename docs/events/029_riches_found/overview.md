@@ -165,11 +165,14 @@ Full tracking and unlock acceptance remains unresolved.
 - Event definitions: `events/029_riches_found.txt`.
 - Constants and MTTH: `common/script_constants/029_riches_found_constants.txt` and `common/mtth/029_riches_found_mtth.txt`.
 - Core, incident, harm, history, achievement, and CXT effects: `common/scripted_effects/029_riches_found_effects.txt`, `common/scripted_effects/029_riches_found_incident_effects.txt`, `common/scripted_effects/029_riches_found_harm_effects.txt`, `common/scripted_effects/029_riches_found_log_effects.txt`, `common/scripted_effects/029_riches_found_achievement_effects.txt`, and `common/scripted_effects/029_riches_found_cxt_effects.txt`.
-- Gameplay and achievement triggers: `common/scripted_triggers/029_riches_found_triggers.txt` and `common/scripted_triggers/029_riches_found_achievement_triggers.txt`.
+- Lifecycle systems: `common/scripted_effects/029_riches_found_maintenance_effects.txt` (controller pulse, closure servicing), `029_riches_found_containment_effects.txt` (evolution containment), `029_riches_found_gold_route_effects.txt` (Gold Disease movement), `029_riches_found_works_effects.txt` (buildings and building damage), `029_riches_found_partner_effects.txt` (concession partners), `029_riches_found_account_effects.txt`, `029_riches_found_aggregate_stage_effects.txt`, `029_riches_found_exposure_effects.txt` and `029_riches_found_late_outcome_effects.txt`.
+- Gameplay, cost and achievement triggers: `common/scripted_triggers/029_riches_found_triggers.txt`, `common/scripted_triggers/029_riches_found_cost_triggers.txt` and `common/scripted_triggers/029_riches_found_achievement_triggers.txt`.
+- Opinion modifiers: `common/opinion_modifiers/029_riches_found_opinion_modifiers.txt`.
+- Terminal verification callback: `events/029_riches_found_verification.txt`.
 - Decisions, missions, and category: `common/decisions/029_riches_found_decisions.txt` and `common/decisions/categories/029_riches_found_categories.txt`.
 - State presentation and country ideas: `common/dynamic_modifiers/029_riches_found_state_modifiers.txt` and `common/ideas/029_riches_found_ideas.txt`.
 - Narrow lifecycle and CXT hooks: `common/on_actions/029_riches_found_on_actions.txt` and `common/on_actions/029_riches_found_cxt_on_actions.txt`.
-- Scripted localisation and English text: `common/scripted_localisation/029_riches_found_scripted_localisation.txt`, `localisation/english/029_riches_found_l_english.yml`, and `localisation/english/029_riches_found_decisions_l_english.yml`.
+- Scripted localisation and English text: `common/scripted_localisation/029_riches_found_scripted_localisation.txt`, `common/scripted_localisation/029_riches_found_account_localisation.txt`, `localisation/english/029_riches_found_l_english.yml`, `localisation/english/029_riches_found_decisions_l_english.yml` and `localisation/english/029_riches_found_requirement_flags_l_english.yml`.
 - Sprite registration: `interface/029_riches_found.gfx`.
 - Authoritative event catalog: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
