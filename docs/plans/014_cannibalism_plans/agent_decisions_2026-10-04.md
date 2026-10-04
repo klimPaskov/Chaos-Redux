@@ -165,3 +165,20 @@ Decision:
 - The receipt result is decided from tuning: put out of action when `march_raid_supply_node_damage` (0.50) is not below `march_raid_hub_level` (1), otherwise damaged. At current tuning every strike records a damaged hub, which is what the strike does.
 - The 0.50 damage, the per-state `days_re_enable`, the Host-wide cooldown and `ai_will_do` are unchanged. The target pool only loses states struck in the last 30 days, which the same Host could not strike again within its own 30-day cooldown anyway, so no probability comparison was run; a matching `hoi4.probability_compare` remains advisable if the target pool changes further.
 - The tooltip names the repair window instead of an undamaged hub, and the raid card text already reads "damaged" or "put out of action".
+
+## R2-2. Land forts and naval bases are placed through a province filter
+
+Disposition: `implemented`.
+
+Basis: lead round 2 decision R2-2, the wiki `Effects` entry for `add_building_construction` (province buildings are placed through `province`), every vanilla bunker and naval base construction (for example `common/national_focus/afghanistan.txt` 4666-4671 and 2175-2196), and the Event 31 precedent in d334dc062.
+Six Event 014 rewards called `add_building_construction` for a bunker or naval base with no `province` block and probably built nothing.
+
+Decision:
+
+- `cannibalism_add_state_fort_levels` (STATE scope, caller input `cannibalism_fort_levels`) fortifies every victory-point province with `province = { all_provinces = yes limit_to_victory_point = yes }`. A state without a victory point (a warlord capital or a Wendigo anchor can be one) fortifies its border provinces, and a state with neither fortifies every province, so the reward is never empty.
+- `cannibalism_add_state_port_levels` (STATE scope, caller input `cannibalism_port_levels`) builds at coastal victory points, else at the existing naval bases, else at every coastal province, and builds nothing in a landlocked state.
+- The Island Host port focus moves its whole port package (naval base, shared slot and dockyard, which vanilla also limits to coastal states) to a held coastal state when the capital is landlocked or lost, preferring a state that already has a naval base.
+- The resistance contract capital forts, the unified and warlord capital defenses and the Wendigo anchor defenses all call the fort helper; the levels and the callers are unchanged.
+- The province checks read `any_province_building_level` with the same meta-trigger pattern as the siege victory-point check, because a province filter has no state variable.
+- Tooltips say the forts go to the capital's or anchor's victory points and that the port work moves to a held coastal state when the capital has no coast.
+- Placement on the map is `needs_live_game`; the source now matches every vanilla provincial construction.

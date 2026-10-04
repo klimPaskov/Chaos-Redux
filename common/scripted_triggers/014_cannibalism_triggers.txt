@@ -4,6 +4,9 @@
 # Native province-filter thresholds used by cannibalism_state_has_siege_victory_point_city.
 @CANNIBALISM_SIEGE_VICTORY_POINTS = 2
 @CANNIBALISM_SIEGE_ANY_BUNKER_LEVEL = -1
+# Building bound for the province-placement triggers below: building levels
+# are never negative, so a province passes on its filters alone.
+@CANNIBALISM_PLACEMENT_ANY_BUILDING_LEVEL = -1
 
 # ============================================================================
 # Consolidated source section: 014_cannibalism_achievement_triggers.txt
@@ -1509,6 +1512,65 @@ cannibalism_state_has_siege_victory_point_city = {
 		}
 		SIEGE_VICTORY_POINTS = "[?cannibalism_siege_victory_points|.0]"
 		SIEGE_ANY_BUNKER_LEVEL = "[?cannibalism_siege_any_bunker_level|.0]"
+	}
+}
+
+# STATE scope. Province-placement checks for provincial building rewards.
+# A province building is placed through add_building_construction's province
+# filter, which builds nothing when no province of the state passes it, so
+# the reward helpers pick a filter that matches at least one province. The
+# building bound only makes the native trigger read the filter; meta_trigger
+# writes it in from a temporary variable, as in the siege check above.
+cannibalism_state_has_victory_point_province = {
+	set_temp_variable = { cannibalism_placement_any_building_level = @CANNIBALISM_PLACEMENT_ANY_BUILDING_LEVEL }
+	meta_trigger = {
+		text = {
+			any_province_building_level = {
+				province = {
+					all_provinces = yes
+					limit_to_victory_point = yes
+				}
+				building = bunker
+				level > [ANY_BUILDING_LEVEL]
+			}
+		}
+		ANY_BUILDING_LEVEL = "[?cannibalism_placement_any_building_level|.0]"
+	}
+}
+
+cannibalism_state_has_border_province = {
+	set_temp_variable = { cannibalism_placement_any_building_level = @CANNIBALISM_PLACEMENT_ANY_BUILDING_LEVEL }
+	meta_trigger = {
+		text = {
+			any_province_building_level = {
+				province = {
+					all_provinces = yes
+					limit_to_border = yes
+				}
+				building = bunker
+				level > [ANY_BUILDING_LEVEL]
+			}
+		}
+		ANY_BUILDING_LEVEL = "[?cannibalism_placement_any_building_level|.0]"
+	}
+}
+
+cannibalism_state_has_coastal_victory_point_province = {
+	is_coastal = yes
+	set_temp_variable = { cannibalism_placement_any_building_level = @CANNIBALISM_PLACEMENT_ANY_BUILDING_LEVEL }
+	meta_trigger = {
+		text = {
+			any_province_building_level = {
+				province = {
+					all_provinces = yes
+					limit_to_coastal = yes
+					limit_to_victory_point = yes
+				}
+				building = naval_base
+				level > [ANY_BUILDING_LEVEL]
+			}
+		}
+		ANY_BUILDING_LEVEL = "[?cannibalism_placement_any_building_level|.0]"
 	}
 }
 

@@ -13777,15 +13777,13 @@ cannibalism_resist_unified_host = {
 		add_dynamic_modifier = { modifier = cannibalism_warlord_resistance_to_unification days = @CANNIBALISM_WARLORD_RESISTANCE_DAYS }
 		if = {
 			limit = { has_country_flag = cannibalism_warlord_independent_fortification_open }
-			capital_scope = {
-				add_building_construction = { type = bunker level = constant:cannibalism_warlord_contract.independent_capital_fort_levels instant_build = yes }
-			}
+			set_temp_variable = { cannibalism_fort_levels = constant:cannibalism_warlord_contract.independent_capital_fort_levels }
+			capital_scope = { cannibalism_add_state_fort_levels = yes }
 		}
 		if = {
 			limit = { has_country_flag = cannibalism_warlord_defiance_endgame_open }
-			capital_scope = {
-				add_building_construction = { type = bunker level = constant:cannibalism_warlord_contract.defiance_resistance_fort_levels instant_build = yes }
-			}
+			set_temp_variable = { cannibalism_fort_levels = constant:cannibalism_warlord_contract.defiance_resistance_fort_levels }
+			capital_scope = { cannibalism_add_state_fort_levels = yes }
 		}
 		if = {
 			limit = { NOT = { has_war_with = event_target:cannibalism_unification_host } }
@@ -17007,9 +17005,8 @@ cannibalism_unified_focus_add_capital_infrastructure = {
 cannibalism_unified_focus_add_capital_defenses = {
 	if = {
 		limit = { capital_scope = { is_owned_and_controlled_by = ROOT } }
-		capital_scope = {
-			add_building_construction = { type = bunker level = @cannibalism_unified_map_level instant_build = yes }
-		}
+		set_temp_variable = { cannibalism_fort_levels = @cannibalism_unified_map_level }
+		capital_scope = { cannibalism_add_state_fort_levels = yes }
 	}
 }
 
@@ -19034,9 +19031,8 @@ cannibalism_warlord_focus_add_capital_infrastructure = {
 }
 
 cannibalism_warlord_focus_add_capital_defenses = {
-	capital_scope = {
-		add_building_construction = { type = bunker level = @cannibalism_warlord_focus_map_level instant_build = yes }
-	}
+	set_temp_variable = { cannibalism_fort_levels = @cannibalism_warlord_focus_map_level }
+	capital_scope = { cannibalism_add_state_fort_levels = yes }
 }
 
 cannibalism_warlord_focus_add_capital_workshop = {
@@ -19046,11 +19042,122 @@ cannibalism_warlord_focus_add_capital_workshop = {
 	}
 }
 
+# Naval bases and dockyards need a coast, so a landlocked or lost capital
+# hands the port work to a held coastal state, preferring one that already
+# has a naval base.
 cannibalism_warlord_focus_add_capital_port_capacity = {
-	capital_scope = {
-		add_building_construction = { type = naval_base level = @cannibalism_warlord_focus_map_level instant_build = yes }
-		add_extra_state_shared_building_slots = @cannibalism_warlord_focus_shared_slot
-		add_building_construction = { type = dockyard level = @cannibalism_warlord_focus_map_level instant_build = yes }
+	set_temp_variable = { cannibalism_port_levels = @cannibalism_warlord_focus_map_level }
+	if = {
+		limit = { capital_scope = { is_coastal = yes is_owned_and_controlled_by = ROOT } }
+		capital_scope = { cannibalism_warlord_focus_add_state_port_capacity = yes }
+	}
+	else_if = {
+		limit = {
+			any_owned_state = {
+				is_coastal = yes
+				is_controlled_by = ROOT
+				naval_base > 0
+			}
+		}
+		random_owned_controlled_state = {
+			limit = {
+				is_coastal = yes
+				naval_base > 0
+			}
+			cannibalism_warlord_focus_add_state_port_capacity = yes
+		}
+	}
+	else = {
+		random_owned_controlled_state = {
+			limit = { is_coastal = yes }
+			cannibalism_warlord_focus_add_state_port_capacity = yes
+		}
+	}
+}
+
+# STATE scope, a held coastal state. Input: temp cannibalism_port_levels.
+cannibalism_warlord_focus_add_state_port_capacity = {
+	cannibalism_add_state_port_levels = yes
+	add_extra_state_shared_building_slots = @cannibalism_warlord_focus_shared_slot
+	add_building_construction = { type = dockyard level = @cannibalism_warlord_focus_map_level instant_build = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Provincial building placement
+# ---------------------------------------------------------------------------
+# Land forts and naval bases are province buildings: add_building_construction
+# places them only through its province filter (vanilla afghanistan.txt and
+# Event 31 use all_provinces with limit_to_victory_point). A filter that no
+# province passes builds nothing, so each helper falls back to a filter that
+# matches the state.
+
+# STATE scope. Input: temp cannibalism_fort_levels (Land Fort levels, read
+# only, set by the caller). Fortifies every victory-point province of the
+# state; a state without one fortifies its border provinces, and a state with
+# neither fortifies every province.
+cannibalism_add_state_fort_levels = {
+	if = {
+		limit = { cannibalism_state_has_victory_point_province = yes }
+		add_building_construction = {
+			type = bunker
+			level = cannibalism_fort_levels
+			instant_build = yes
+			province = { all_provinces = yes limit_to_victory_point = yes }
+		}
+	}
+	else_if = {
+		limit = { cannibalism_state_has_border_province = yes }
+		add_building_construction = {
+			type = bunker
+			level = cannibalism_fort_levels
+			instant_build = yes
+			province = { all_provinces = yes limit_to_border = yes }
+		}
+	}
+	else = {
+		add_building_construction = {
+			type = bunker
+			level = cannibalism_fort_levels
+			instant_build = yes
+			province = { all_provinces = yes }
+		}
+	}
+}
+
+# STATE scope. Input: temp cannibalism_port_levels (naval base levels, read
+# only, set by the caller). Builds at the coastal victory points of the
+# state, else at its existing naval bases, else at every coastal province. A
+# landlocked state builds nothing.
+cannibalism_add_state_port_levels = {
+	if = {
+		limit = { cannibalism_state_has_coastal_victory_point_province = yes }
+		add_building_construction = {
+			type = naval_base
+			level = cannibalism_port_levels
+			instant_build = yes
+			province = { all_provinces = yes limit_to_coastal = yes limit_to_victory_point = yes }
+		}
+	}
+	else_if = {
+		limit = {
+			is_coastal = yes
+			naval_base > 0
+		}
+		add_building_construction = {
+			type = naval_base
+			level = cannibalism_port_levels
+			instant_build = yes
+			province = { all_provinces = yes limit_to_coastal = yes limit_to_naval_base = yes }
+		}
+	}
+	else_if = {
+		limit = { is_coastal = yes }
+		add_building_construction = {
+			type = naval_base
+			level = cannibalism_port_levels
+			instant_build = yes
+			province = { all_provinces = yes limit_to_coastal = yes }
+		}
 	}
 }
 
@@ -21079,15 +21186,12 @@ cannibalism_wendigo_focus_add_anchor_infrastructure = {
 }
 
 cannibalism_wendigo_focus_add_anchor_defenses = {
+	set_temp_variable = { cannibalism_fort_levels = constant:cannibalism_wendigo_focus.building_level }
 	for_each_scope_loop = {
 		array = global.cannibalism_transformation_anchor_states
 		if = {
 			limit = { is_owned_and_controlled_by = ROOT }
-			add_building_construction = {
-				type = bunker
-				level = constant:cannibalism_wendigo_focus.building_level
-				instant_build = yes
-			}
+			cannibalism_add_state_fort_levels = yes
 		}
 	}
 }
