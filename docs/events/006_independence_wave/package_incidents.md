@@ -1,0 +1,77 @@
+# Event 006 package incidents
+
+Each Level 2 package that had no story incidents of its own now has two. They give the package's own ledgers, its founding history and its former host a voice after release.
+
+## How it works
+
+1. When a released country settles its founding posture (`chaosx.nr6.41` for players, `chaosx.nr6.42` for the AI), `independence_wave_schedule_package_incident_a` stores the current Event 006 generation in `independence_wave_package_incident_generation` and schedules the package's first incident after `independence_wave_package_incident.first_delay_days`.
+2. Either answer to the first incident schedules the second after `independence_wave_package_incident.second_delay_days`.
+3. Every incident trigger checks the package identity and `can_fire_independence_wave_package_incident`, which requires an active Event 006 origin of the same generation. An event scheduled for an earlier release of the tag therefore never fires.
+4. Each option sets its receipt, zeroes the shared deltas, and applies its Statehood deltas through `independence_wave_decision_apply_country_deltas`, its package ledger deltas through the package's own clamped helper, and, where the text says so, a former-host hostility change through `independence_wave_decision_apply_host_deltas`. Costly options require and spend 35 political power or the light manpower cost.
+5. `independence_wave_clear_package_incident_runtime` runs in the generation reset and at origin end.
+
+No hook iterates countries or runs on a daily, weekly or monthly pulse.
+
+## Incidents
+
+| Package | Event | Title | Options |
+| --- | --- | --- | --- |
+| Scotland (IW-001) | `chaosx.nr6.101` | The Clyde Shipyard Ledgers | Honour the Admiralty contracts; Requisition the yards for Scotland |
+| Scotland (IW-001) | `chaosx.nr6.102` | Raids on the Highland Estates | Pass a Crofters' Charter; Restore order on the estates |
+| Wales (IW-002) | `chaosx.nr6.103` | Coal for Whom? | Keep the export contracts; Reserve coal for the Welsh railways |
+| Wales (IW-002) | `chaosx.nr6.104` | The Language of the Courts | Bilingual courts in every county; Let each county decide |
+| Brittany (IW-004) | `chaosx.nr6.105` | The Fleet at Brest | Hand the harbour to Breton crews; Share Brest with the French officers |
+| Brittany (IW-004) | `chaosx.nr6.106` | Breton in the Schools | Fund Breton teacher colleges; Teach both languages |
+| Catalonia (IW-014) | `chaosx.nr6.107` | The Barcelona Collectives | Recognize the workers' committees; Return the factories to their owners |
+| Catalonia (IW-014) | `chaosx.nr6.108` | The Ebro Water Board | Favour the irrigators; Favour the power stations |
+| Transylvania (IW-023) | `chaosx.nr6.109` | The University of Cluj | Divide it into two faculties; One university under the state |
+| Transylvania (IW-023) | `chaosx.nr6.110` | The Saxon Town Charters | Restore limited town charters; One law for every town |
+| Macedonia (IW-026) | `chaosx.nr6.111` | The Bands in the Hills | Enlist the bands; Disarm them |
+| Macedonia (IW-026) | `chaosx.nr6.112` | The Tobacco Harvest | Buy the harvest for the state; Sell it to foreign merchants |
+| Bosnia (IW-029) | `chaosx.nr6.113` | The Endowment Lands | Return the endowment lands; Keep them for the treasury |
+| Bosnia (IW-029) | `chaosx.nr6.114` | The Drina Ferries | Garrison the crossings; License the ferrymen |
+| Karelia (IW-033) | `chaosx.nr6.115` | Timber for Leningrad | Deliver the timber; Keep the timber in Karelia |
+| Karelia (IW-033) | `chaosx.nr6.116` | Volunteers from Finland | Accept the volunteers; Raise a Karelian militia instead |
+| Crimea (IW-041) | `chaosx.nr6.117` | Returning Families at Simferopol | Open the return registers; Settle the current tenants first |
+| Crimea (IW-041) | `chaosx.nr6.118` | The Sevastopol Dockyards | Pay the crews from the treasury; Lease the docks to merchants |
+| Ruthenia (IW-038) | `chaosx.nr6.119` | The Language of the State | Three official languages; Ukrainian as the state language |
+| Ruthenia (IW-038) | `chaosx.nr6.120` | The Carpathian Sich | Absorb the Sich into the army; Disband the Sich |
+| Kuban (IW-040) | `chaosx.nr6.121` | Stanitsa Allotments | Equal allotments for newcomers; Keep the Cossack land rights |
+| Kuban (IW-040) | `chaosx.nr6.122` | The Grain Arrears | Return the grain to the villages; Sell it through Novorossiysk |
+| Tatarstan (IW-044) | `chaosx.nr6.123` | The Kazan Madrasas | Reopen the madrasas; State schools only |
+| Tatarstan (IW-044) | `chaosx.nr6.124` | The Volga Barge Strike | Raise the bargemen's pay; Put the river under martial law |
+| Bashkiria (IW-045) | `chaosx.nr6.125` | The Ishimbay Oil Wells | Keep the engineers on contract; Nationalize the wells |
+| Bashkiria (IW-045) | `chaosx.nr6.126` | The Kurultai Elections | Call the elections; Taxes first, elections later |
+| Armenia (IW-070) | `chaosx.nr6.127` | The Refugee Quarters | Build permanent quarters; Settle them in the border villages |
+| Armenia (IW-070) | `chaosx.nr6.128` | The Party Committees | Give them commands; Keep parties out of the army |
+| Georgia (IW-071) | `chaosx.nr6.129` | The Batumi Port Dues | Lower the dues; Keep the dues for the treasury |
+| Georgia (IW-071) | `chaosx.nr6.130` | The Autonomy Statutes | Grant the autonomy statutes; One undivided republic |
+| Azerbaijan (IW-072) | `chaosx.nr6.131` | The Baku Oil Workers | Share the revenue; Break the strike |
+| Azerbaijan (IW-072) | `chaosx.nr6.132` | Foreign Oil Concessions | Grant the concessions; Keep the fields national |
+| Hawaii (IW-173) | `chaosx.nr6.133` | The Plantation Strike | Recognize the unions; Back the planters |
+| Hawaii (IW-173) | `chaosx.nr6.134` | The Pearl Harbor Yards | Lease the berths; Keep the yards for the island guard |
+| California (IW-184) | `chaosx.nr6.135` | The Central Valley Water | Water for the farms; Water for the cities and shipyards |
+| California (IW-184) | `chaosx.nr6.136` | The Studios Abroad | Court the studios; Tax the studios |
+| Basque Country (IW-013) | `chaosx.nr6.137` | The Bilbao Foundries | Accept Madrid's orders; Seek buyers abroad |
+| Basque Country (IW-013) | `chaosx.nr6.138` | The Provincial Treasuries | Restore the provincial treasuries; One Basque treasury |
+| Galicia (IW-015) | `chaosx.nr6.139` | The Vigo Canneries | Buy tinplate abroad; Ration the canneries |
+| Galicia (IW-015) | `chaosx.nr6.140` | The Foros Rents | Abolish the foros; Buy out the landlords |
+| Don Host (IW-039) | `chaosx.nr6.141` | The Novocherkassk Regalia | Restore the ataman's office; Keep the elected charter |
+| Don Host (IW-039) | `chaosx.nr6.142` | The Millerovo Railwaymen | Station guards at the yards; Negotiate safe passage |
+
+## Files
+
+- `events/006_independence_wave_package_incident_events.txt` (events `chaosx.nr6.101` to `.142`).
+- `common/scripted_effects/006_independence_wave_package_incident_effects.txt` and `common/scripted_triggers/006_independence_wave_package_incident_triggers.txt`.
+- `common/script_constants/006_independence_wave_package_incident_constants.txt` (`independence_wave_package_incident`).
+- `localisation/english/006_independence_wave_package_incidents_l_english.yml`.
+
+## Icons and pictures
+
+The incidents use existing report pictures only: vanilla `GFX_report_event_merchant_ship_01`, `generic_train`, `generic_parliament`, `generic_read_write`, `gathering_protest`, `worker_protests`, `election_vote`, `generic_sign_treaty1`, `soldiers_parade`, `finnish_soldiers_snow`, `tank_factory` and `journalists_speech`. No new sprite is registered.
+
+## Future plans
+
+- Let a recorded answer change a later decision or focus, for example a cheaper charter project after the Crofters' Charter.
+- Add a third incident tied to each package's route government once the route events of every package are reviewed.
+- Give RHI, BAY, AFX, COR, ARX and ASX the same generation receipt for their existing incidents.

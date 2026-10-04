@@ -66,3 +66,10 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - IW-043 Middle Volga (CHU) and IW-058 Assyria (ASY) can now appear in high-chaos Independence Waves and Every Banner Rises launches. Middle Volga never appears in the same wave as Tatarstan.
 - Their federations FORM-12 "Volga-Ural Federation", FORM-13 "Idel-Ural" and FORM-18 "Mesopotamian Federation" can now be formed.
 - Assyria's civic route is led by Mar Shimun XXI Eshai, its guardianship route by Mar Shimun with the Levies, and its popular route by Benjamin Arsanis.
+
+
+## 2026-10-05: Package incidents (D15)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+New country events `chaosx.nr6.101` to `.142`, two for each of Scotland, Wales, Brittany, Catalonia, Transylvania, Macedonia, Bosnia, Karelia, Crimea, Ruthenia, Kuban, Tatarstan, Bashkiria, Armenia, Georgia, Azerbaijan, Hawaii, California, the Basque Country, Galicia and the Don Host. The first arrives about 45 days after a released country chooses its founding posture, the second about 150 days after the first is answered. Titles are listed in `docs/events/006_independence_wave/package_incidents.md`.

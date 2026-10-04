@@ -371,3 +371,25 @@ Defect fixed in the existing groups: the DON, KAR, CRI, KUB and TAT group gates 
 MCP: `hoi4.focus_inspect` (national, `common/national_focus/006_independence_wave_focus.txt`, tree `independence_wave_focus_tree`) returned `FOCUS_INSPECTED` with no mod diagnostics at revision `7f79b2979891c18ac712f0eeefe3b614cf4134e0be0c154b21b254a3b59b8998`; it counts 184 direct focuses and omits the 103 imported `shared_focus` nodes, so layout and attachment of these groups remain a recorded MCP gap.
 
 Needs live game: each group visible and progressing for a released RUT, BSK, ARM, GEO or AZR; the DON, KAR, CRI, KUB and TAT groups visible after release.
+
+
+## D15. Round 2: two incidents for every Level 2 package that had none
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-4 item; Part 5 Level 2 requires several unique incidents per package. Before this change only RHI, BAY, AFX, COR, ARX and ASX had package incidents. A collision review of `events/` and `common/` on 2026-10-05 found no reference to `chaosx.nr6.73` to `.299`, so `.101` to `.142` are used.
+
+Decisions:
+
+- SCO, WLS, BRI, CAT, TRA, MAC, BOS, KAR, CRI, RUT, KUB, TAT, BSK, ARM, GEO, AZR, HAW, HBX, NAV, GLC and DON (21 packages) each get two incidents grounded in their own history: for example the Clyde Admiralty contracts and the Highland land raids for Scotland, the Cluj university and the Saxon town charters for Transylvania, the Ishimbay wells and the Kurultai elections for Bashkiria, the Batumi port dues and the autonomy statutes for Georgia. The full list is in `docs/events/006_independence_wave/package_incidents.md`.
+- Scheduling: the first incident is scheduled when the country resolves its founding posture (the existing `chaosx.nr6.41`/`.42` resolution effects, which every released country passes through), and either answer to it schedules the second. Delays are `independence_wave_package_incident.first_delay_days` (45) and `second_delay_days` (150). No world hook is used.
+- Generation safety: scheduling stores `independence_wave_package_incident_generation`; `can_fire_independence_wave_package_incident` requires an active origin of the same generation, and `independence_wave_clear_package_incident_runtime` runs in the generation reset and at origin end.
+- Options: two per incident, each trading Statehood values (through `independence_wave_decision_apply_country_deltas`) against the package's own ledgers (through its existing clamped helper) and, where stated, former-host hostility. Every incident offers one free answer; costly answers require and spend 35 political power (new `independence_wave_package_incident` constants) or the existing light manpower cost. DON has no package ledger, so its options trade Statehood values and the host relation only.
+- AI: `ai_chance` uses `independence_wave_decision_ai` bases, doubled for the answer that fits a civic route, an emergency route or a severe host threat.
+- Pictures reuse existing vanilla report pictures; no new art is needed.
+
+Validation: every effect, trigger and constant the events and localisation reference is defined; the 252 new localisation keys are unique.
+
+Not attempted: probability inspection of the new `ai_chance` weights (the lead folds the narrow probability attempt into the baseline-incident item).
+
+Needs live game: a released package receiving both incidents; a re-released tag not receiving an earlier generation's incident.
