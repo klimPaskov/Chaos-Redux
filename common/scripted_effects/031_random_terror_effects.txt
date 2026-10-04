@@ -398,6 +398,22 @@ random_terror_refresh_priority_state = {
 		set_variable = { random_terror_priority_state = random_terror_priority_candidate }
 		var:random_terror_priority_state = { set_state_flag = random_terror_priority_state_@PREV }
 	}
+	# With no active crisis left, a recovering state it controls becomes the
+	# priority state, the one with the most residual cells first, so Support
+	# Victims keeps one row through the recovery phase.
+	else_if = {
+		limit = { any_controlled_state = { has_state_flag = random_terror_state_recovery } }
+		random_controlled_state = {
+			limit = { has_state_flag = random_terror_state_recovery }
+			set_temp_variable = { random_terror_priority_candidate = THIS }
+		}
+		every_controlled_state = {
+			limit = { has_state_flag = random_terror_state_recovery }
+			random_terror_consider_priority_state = yes
+		}
+		set_variable = { random_terror_priority_state = random_terror_priority_candidate }
+		var:random_terror_priority_state = { set_state_flag = random_terror_priority_state_@PREV }
+	}
 }
 
 # STATE scope: one candidate for random_terror_refresh_priority_state.

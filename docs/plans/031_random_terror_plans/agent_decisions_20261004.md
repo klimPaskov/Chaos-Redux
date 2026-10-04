@@ -293,3 +293,29 @@ Salvage the Rail Spur passes `build_only_on_allied = yes`, so the shortest path 
 - `hoi4.focus_inspect` on `random_terror_actor_focus_tree` before (revision `a9aaf637fb9ea0884047255cf88985a1a832a216f6d98a590a3dbe1d532395e5`) and after (revision `081ddd6adefd652bbf16ba511e24d48335ea51c0001e9ddcc491cc1b134624b2`) the fixes: 114 focuses, zero tree diagnostics, zero connector crossings, layout hash `69ec88315409c5c578ffca2852052037f7ee6a48510a92189c11ac79a1a6d2a9` unchanged.
 - No AI weight, MTTH or random-selection value changed, so no probability comparison was required.
 - `needs_live_game`: the merged Failed Rule path, the slot tooltips shown through `if` blocks, and `build_only_on_allied` pathing on a concave command.
+
+## Round 1 review fixes, second pass
+
+The second review pass re-read the lead-item commits of the round (carriers, missions, pulse, reports, stage modifiers, actor actions, costs, one-row targets, headers, portraits, map mode, movement restrictions and Global Jihad setup).
+Each decision below was taken under the same delegated authority and is `implemented` in the second review commit; live-game behaviour remains with the user.
+
+### R26 Recovery keeps one Support Victims row
+
+Support Victims was opened to recovery states (missions commit `21f7cd1cc`), but the one-row rule (`9ea870a8c`) then required the priority crisis state, which only an active crisis can be, so in the recovery phase Support Victims had no target except a Restore Civil Authority subject.
+With no active crisis left, `random_terror_refresh_priority_state` now makes a recovering state the government controls the priority state, the one with the most residual activity first, so the action keeps exactly one row through recovery.
+Actions that require an active crisis stage still find no target on a recovering priority state.
+
+### R27 Terror Activity tooltip lines
+
+The five stage texts of the Terror Activity map mode tooltip were written over three physical lines each, which the localisation parser cannot read, so the tooltip lost its response and next-risk lines.
+Each text is one line with `\n` breaks.
+
+### R28 Break the Parent Government wording
+
+The reward said the parent "loses" a negative stability and war support value, which displayed as a double negative; it now reads "suffers stability" and "war support" followed by the signed value, as Fracture the Sky does.
+
+## Route evidence for the second pass
+
+- `hoi4.decision_inspect` in inventory mode returns the whole-repository inventory (8,120 decisions, `DECISION_ANALYZED_PARTIAL`) and gives no per-decision evidence for this review.
+- `hoi4.probability_inspect` with the `decision_ai_will_do` adapter and a one-decision candidate pool still fails with "Invalid tool arguments"; no AI weight changed in this pass.
+- `needs_live_game`: the recovery priority state row, the map mode delayed tooltip and the `[?var.GetName]` mission names in the government category header.

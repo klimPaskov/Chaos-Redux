@@ -71,6 +71,7 @@ Government and actor actions use standard state-targeted decision presentation, 
 No Event 31-specific scripted GUI exists.
 
 Each government keeps a priority crisis state, its most severe crisis among the states it controls and its own cores held by others (higher stage first, then higher activity), refreshed after each incident, on every stage change and when a state is lost (`random_terror_refresh_priority_state`, state flag `random_terror_priority_state_<tag>`).
+With no active crisis left, a recovering state it controls (`random_terror_state_recovery`, most residual activity first) becomes the priority state, so Support Victims keeps one row through the recovery phase.
 Decisions with a generic crisis target (response cell, transport, victim support, intelligence sweep, security surge, raid, allied intelligence, movement restrictions, reinforcement and the territorial actions) accept only that state, the government's hostage or uprising subject, or the subject of the containment, corridor or civil-authority mission they advance (`random_terror_state_is_response_target`), so each shows one row in normal play.
 Decisions keyed to a recorded marker (corridor, sponsor evidence, defection, community rejection, recovery or capital infiltration) keep that marker as their target.
 
