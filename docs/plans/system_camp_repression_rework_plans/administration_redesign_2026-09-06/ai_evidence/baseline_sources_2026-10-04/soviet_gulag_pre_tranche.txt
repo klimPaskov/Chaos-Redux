@@ -1,0 +1,155 @@
+# ============================================================================
+# CHAOS REDUX - SOVIET GULAG, PARANOIA, AND FAMINE EVENTS
+# ============================================================================
+# Overview:
+# - Provides threshold-only famine, administrative-breakdown, relief, and
+#   post-collapse evidence events for the Soviet repression network.
+# - Recurring population harm remains in the shared registered-state monthly
+#   processor, so these events do not add a second famine death tick.
+# - Choices use the vanilla-paranoia projection and existing Union Crisis bridge.
+# ============================================================================
+
+add_namespace = soviet_gulag
+
+country_event = {
+	id = soviet_gulag.1
+	title = soviet_gulag.1.t
+	desc = soviet_gulag.1.d
+	picture = GFX_report_event_soviet_famine_warning
+	is_triggered_only = yes
+
+	option = {
+		name = soviet_gulag.1.a
+		set_country_flag = sov_famine_warning_fired
+		camp_rework_soviet_emergency_famine_relief = yes
+		clear_variable = sov_famine_warning_state_id
+	}
+	option = {
+		name = soviet_gulag.1.b
+		trigger = {
+			has_variable = sov_famine_warning_state_id
+			var:sov_famine_warning_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		set_country_flag = sov_famine_warning_fired
+		set_variable = { sov_famine_event_state_id = sov_famine_warning_state_id }
+		camp_rework_soviet_conceal_famine_mortality = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_warning_state_id
+	}
+}
+
+country_event = {
+	id = soviet_gulag.2
+	title = soviet_gulag.2.t
+	desc = soviet_gulag.2.d
+	picture = GFX_report_event_soviet_famine_crisis
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = sov_famine_crisis_active
+		camp_rework_show_soviet_famine_super_event = yes
+		if = {
+			limit = { check_variable = { famine_pressure > constant:camp_rework_soviet.famine_pressure_critical } }
+			set_country_flag = sov_famine_critical_fired
+		}
+	}
+	option = {
+		name = soviet_gulag.2.a
+		camp_rework_soviet_emergency_famine_relief = yes
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.b
+		trigger = {
+			has_variable = sov_famine_crisis_state_id
+			var:sov_famine_crisis_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		set_variable = { sov_famine_event_state_id = sov_famine_crisis_state_id }
+		camp_rework_soviet_conceal_famine_mortality = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_crisis_state_id
+	}
+	option = {
+		name = soviet_gulag.2.c
+		trigger = {
+			has_variable = sov_famine_crisis_state_id
+			var:sov_famine_crisis_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		set_variable = { sov_famine_event_state_id = sov_famine_crisis_state_id }
+		camp_rework_soviet_admit_administrative_collapse = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_famine_crisis_state_id
+	}
+}
+
+country_event = {
+	id = soviet_gulag.3
+	title = soviet_gulag.3.t
+	desc = soviet_gulag.3.d
+	picture = GFX_report_event_soviet_administrative_breakdown
+	is_triggered_only = yes
+
+	option = {
+		name = soviet_gulag.3.a
+		camp_rework_soviet_reinforce_nkvd_authority = yes
+		clear_variable = sov_admin_breakdown_state_id
+	}
+	option = {
+		name = soviet_gulag.3.b
+		trigger = {
+			has_variable = sov_admin_breakdown_state_id
+			var:sov_admin_breakdown_state_id = {
+				camp_rework_state_is_actor_responsible_controlled = yes
+				has_state_flag = genocide_soviet_famine_pressure_site
+			}
+		}
+		set_variable = { sov_famine_event_state_id = sov_admin_breakdown_state_id }
+		camp_rework_soviet_admit_administrative_collapse = yes
+		clear_variable = sov_famine_event_state_id
+		clear_variable = sov_admin_breakdown_state_id
+	}
+}
+
+country_event = {
+	id = soviet_gulag.4
+	title = soviet_gulag.4.t
+	desc = soviet_gulag.4.d
+	picture = GFX_report_event_soviet_famine_relief
+	is_triggered_only = yes
+
+	option = {
+		name = soviet_gulag.4.a
+		clr_country_flag = sov_famine_crisis_active
+		set_country_flag = sov_famine_relief_active
+		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+		camp_rework_recalculate_country_values = yes
+	}
+}
+
+country_event = {
+	id = soviet_gulag.5
+	title = soviet_gulag.5.t
+	desc = soviet_gulag.5.d
+	picture = GFX_report_event_soviet_records_discovered
+	is_triggered_only = yes
+
+	option = {
+		name = soviet_gulag.5.a
+		set_country_flag = sov_post_collapse_records_exposed
+		set_country_flag = genocide_evidence_reached_foreign_observers
+		add_to_variable = { old_movement_grievance = constant:camp_rework_soviet.old_movement_grievance_major }
+		add_to_variable = { republic_fear = constant:camp_rework_soviet.republic_fear_major }
+		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
+		add_to_variable = { camp_policy_reform = constant:camp_rework_country_value.reform_major }
+		camp_rework_expose_network_crisis = yes
+	}
+}

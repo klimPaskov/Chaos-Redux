@@ -60,7 +60,7 @@ Basis: CLAUDE.md requires matched renders at 1280x720, 1920x1080 and 1920x1080 a
 Fixes: summary band value boxes fit four-digit custody inside the band (197 px, deaths column 181 px); long location names are cut on one line with `truncate = yes` (vanilla `countryoccupationview.gui` precedent) and the row tooltip names the place; the incomplete-records condition is one line; the records-incomplete history entry fits its 372 px row.
 Evidence: `administration_redesign_2026-09-06/mcp/current_render_2026-10-04/README.md` with before and after images, scenarios and the builder.
 Limits: per-row selection highlight, the engine ellipsis and every tooltip body are `needs_live_game`; the preview cannot draw them.
-Commits: `9d9b5116ee41893680b80415edb42b55bbf3839a` (text), layout commit below.
+Commits: `9d9b5116ee41893680b80415edb42b55bbf3839a` (text), `8b65ad97a04832d50d21534e0742d5fd23965882` (layout and evidence).
 
 ## 8. Plain tooltip wording
 
@@ -68,3 +68,11 @@ Decision: replace mechanism words in camp tooltips (rows, reconcile, cohort, the
 Basis: the task forbids implementation jargon in player text; in-world document names (desert camp ledgers, Congo concession and quota ledgers) stay because they name real records inside the fiction.
 Implementation: `camp_administration_ui_l_english.yml`, `camp_repression_rework_l_english.yml`, `camp_repression_country_kits_l_english.yml`, `camp_administration_integration_l_english.yml`; keys, conditions and BOM unchanged.
 Commit: `9d9b5116ee41893680b80415edb42b55bbf3839a`.
+
+## 9. Camp AI evidence after the tranche, and the UK security line
+
+Decision: keep every camp AI weight as it is, and remove the stray Libyan pool check from the UK security line mission's cancel trigger.
+Basis: same-scenario before/after compares (pre-tranche snapshots against current source) show the retired imports at zero eligibility, the USA release and Italian security weights unchanged with eligibility moved into readiness helpers, the Italian closure gaining only its reform-focus modifier, and the civil pair preferring review (10) over authorization (1); the Soviet famine `invalid-GER` contradiction is unreachable because both events and their only caller are Soviet-only. No result showed a broken weight, so no balance target was invented.
+Fix: `uk_hold_raj_security_line` cancelled itself on its first check because a Raj state is never a Libyan pool state; the cancel trigger now checks only the site, the responsible controller and the Raj pool, matching its success requirements.
+Evidence: `administration_redesign_2026-09-06/ai_evidence/camp_probability_2026-10-04.md`; `hoi4_probability_inspect` returned `INTERNAL_ERROR` on two pools and is recorded as a route failure.
+Limits: decision results are score-only; AI selection frequency and the UK mission's full duration are `needs_live_game`.
