@@ -91,7 +91,10 @@ on_actions = {
 	on_nuke_drop = {
 		effect = {
 			if = {
-				limit = { NOT = { has_global_flag = asteroid_incoming_visual_strike_active } }
+				limit = {
+					NOT = { has_global_flag = asteroid_incoming_visual_strike_active }
+					FROM = { NOT = { has_state_flag = asteroid_incoming_visual_strike_state } }
+				}
 				# Native launch_nuke exposes ROOT as the launcher and FROM as the
 				# struck state. Event 023 accepts only its one pending request, the
 				# exact state id, and the selected controller/owner. This callback is

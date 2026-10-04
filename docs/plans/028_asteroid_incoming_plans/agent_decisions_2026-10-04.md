@@ -145,3 +145,12 @@ No AI weight changed.
 Decision: "eligible" for the near-miss achievement means the Chaos threshold is met and both evolution toggles are enabled; there is no geographic check that two separated fragment centres would exist.
 The existing award logic stands, so no probability surface changes.
 Basis: Part 10 Achievement 1 lists only the threshold, the enabled and eligible evolutions, and the miss.
+
+## Nuclear separation (F18)
+
+Decision: `launch_nuke` stays the accepted impact map visual, and its native unit and building effects are part of the impact.
+Before each call the struck state receives the timed flag `asteroid_incoming_visual_strike_state` for `asteroid_incoming_runtime.visual_strike_marker_days` (seven days), and the global `asteroid_incoming_visual_strike_active` flag is kept around the call.
+Every mod `on_nuke_drop` consumer that reacts to a nuclear strike skips a state carrying the marker: the Chaos Meter nuclear-use entry, the humanitarian corridor, migration evacuation reports and famine and migration pressure, the Event 016 Kruger achievement, and Event 023's delivery confirmation.
+Basis: Part 3 makes the map visual the only nuclear-adjacent surface; a state-scoped marker still works when the callback does not fire synchronously inside `launch_nuke`.
+Native `on_nuke_drop` timing and the vanilla consequences of the visual remain a live-game check.
+The untracked Event 042 on_nuke_drop hook (`common/on_actions/042_equipment_from_heavens_on_actions.txt`) belongs to another in-progress package and needs the same one-line marker check from its owner.

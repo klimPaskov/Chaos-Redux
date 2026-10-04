@@ -59,6 +59,8 @@ It updates that row without scanning later entries or appending another row.
 
 The visual consumer trace, DDS dimensions, source/master provenance, repair record, aliases, rejected candidates, and limitations are maintained in `docs/assets/028_asteroid_incoming/asset_audit.md`, `manifest.md`, `coverage_crosswalk.md`, and `gfx_handoff.md`. The runtime sprite definitions are in `interface/028_asteroid_incoming.gfx`; achievement triplets remain in `interface/chaosx_achievements.gfx`.
 
+The impact map visual uses `launch_nuke`. The struck state carries the timed `asteroid_incoming_visual_strike_state` marker, and every mod `on_nuke_drop` consumer (Chaos Meter, humanitarian corridor and migration/famine pressure, Event 016, Event 023) skips a marked state, so the asteroid creates no nuclear-use history, evacuation reports or nuclear achievements.
+
 The shared Air Cleanliness source registry reserves source 4 for asteroid dust and source 5 for Acid Rain. Event 028 writes only the asteroid slot, preserving distinct chemical, biological, fallout, aerosol, and Acid Rain histories.
 
 ## Icon inventory
