@@ -205,8 +205,23 @@ def main():
                                                    ("compare", "=", "greater_than"))))
     preflight = dispatcher[preflight_position][2]
     assert "event_single_fire_allowed" in str(preflight) and "asteroid_incoming_prefire_ready" in str(preflight)
+    ready_call = next(i for i, (k, _, _) in enumerate(preflight) if k == "asteroid_incoming_prepare_random_event_fire")
+    ready_init = next(i for i, (k, _, b) in enumerate(preflight) if k == "set_temp_variable" and
+                      ("asteroid_incoming_prefire_ready", "=", "constant:asteroid_incoming_runtime.zero") in b)
+    assert ready_init < ready_call
+    for output in ("events_log_history_payload_override", "events_log_history_payload_override_active"):
+        output_init = next(i for i, (k, _, b) in enumerate(preflight) if k == "set_temp_variable" and
+                           (output, "=", "constant:asteroid_incoming_runtime.zero") in b)
+        assert output_init < ready_call
+    acceptance = next(b for k, _, b in runtime["asteroid_incoming_accept_selected_target"]
+                      if k == "if" and any(x == "asteroid_incoming_lock_candidate_pair" for x, _, _ in b))
+    lock_call = next(i for i, (k, _, _) in enumerate(acceptance) if k == "asteroid_incoming_lock_candidate_pair")
+    lock_init = next(i for i, (k, _, b) in enumerate(acceptance) if k == "set_temp_variable" and
+                     ("asteroid_incoming_lock_result", "=", "constant:asteroid_incoming_runtime.zero") in b)
+    assert lock_init < lock_call
     print("AST_RETURN_BOARD: five matching option bodies, unchanged weights, correct chooser/lock guards, no reroll or repeated opening effects.")
     print("AST_DISPATCH_ORDER: target readiness gate precedes event dispatch and Major fire accounting.")
+    print("AST_HELPER_OUTPUT_BOUNDARIES: readiness, history override/value-active, and lock outputs are initialized by their callers before helper invocation.")
     print(f'{len(suite["cases"])} source-model cases passed; native count and engine behavior remain unverified.')
 
 
