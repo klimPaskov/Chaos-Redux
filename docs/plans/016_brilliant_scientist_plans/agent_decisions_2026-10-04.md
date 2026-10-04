@@ -141,3 +141,11 @@ Decision: both Singularity alternatives from the accepted 100-focus architecture
 
 Evidence: `common/decisions/016_brilliant_scientist_kruger_state_terminal_decisions.txt`, `common/decisions/016_brilliant_scientist_aftermath_decisions.txt`, `common/decisions/categories/016_brilliant_scientist_aftermath_categories.txt`, `common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt`, `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt`, `common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt`, `events/016_brilliant_scientist_kruger_state_events.txt`, `events/016_brilliant_scientist_news_events.txt`, the three localisation files, the Directorate scripted localisation and GUI localisation, and `docs/events/016_brilliant_scientist/systems/super_events_and_aftermath.md`.
 Needs live game: the offer decision's target list, the KRG answer flow, and the escape's leaderless-state handling after Kruger is retired.
+
+## D12. Project modifier remove triggers are exact negations
+
+The third clause of 41 project modifier remove triggers was a two-condition `NOT`, which HOI4 evaluates as NOR, so a modifier whose Mengele provider became invalid while its completion flag remained was never removed.
+Each such clause is now `NOT = { AND = { provider valid, stage completed } }`.
+A scripted comparison confirmed that all 41 wrapped clauses match the `AND` branch of their enable blocks; enable blocks and modifier values are unchanged.
+
+Evidence: `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`.
