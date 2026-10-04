@@ -296,7 +296,7 @@ focus_tree = {
 		available = { random_terror_is_actor = yes }
 		completion_reward = {
 			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = bunker level = 1 province = { all_provinces = yes limit_to_victory_point = yes } instant_build = yes }
 			}
 			add_ideas = random_terror_security_state
 			set_country_flag = random_terror_focus_headquarters_fortified
@@ -373,6 +373,8 @@ focus_tree = {
 			has_country_flag = random_terror_focus_opening_complete
 		}
 		completion_reward = {
+			custom_effect_tooltip = random_terror_focus_opens_shadow_council_decisions_tt
+			set_country_flag = random_terror_route_shadow_council
 			set_country_flag = random_terror_focus_route_shadow_council
 			clr_country_flag = random_terror_focus_route_war_directorate
 			clr_country_flag = random_terror_focus_route_ideological_secretariat
@@ -591,10 +593,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_shadow_council
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
-			set_country_flag = random_terror_focus_continuity_protocol
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_continuity_protocol_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_continuity_protocol = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -664,6 +667,8 @@ focus_tree = {
 			has_country_flag = random_terror_focus_opening_complete
 		}
 		completion_reward = {
+			custom_effect_tooltip = random_terror_focus_opens_war_directorate_decisions_tt
+			set_country_flag = random_terror_route_war_directorate
 			set_country_flag = random_terror_focus_route_war_directorate
 			clr_country_flag = random_terror_focus_route_shadow_council
 			clr_country_flag = random_terror_focus_route_ideological_secretariat
@@ -878,7 +883,7 @@ focus_tree = {
 		}
 		completion_reward = {
 			random_owned_controlled_state = {
-				add_building_construction = { type = bunker level = 1 instant_build = yes }
+				add_building_construction = { type = bunker level = 1 province = { all_provinces = yes limit_to_border = yes } instant_build = yes }
 			}
 			add_ideas = random_terror_security_state
 			set_country_flag = random_terror_focus_defensive_line_hardened
@@ -1000,6 +1005,8 @@ focus_tree = {
 			has_country_flag = random_terror_focus_opening_complete
 		}
 		completion_reward = {
+			custom_effect_tooltip = random_terror_focus_opens_ideological_secretariat_decisions_tt
+			set_country_flag = random_terror_route_ideological_secretariat
 			set_country_flag = random_terror_focus_route_ideological_secretariat
 			clr_country_flag = random_terror_focus_route_shadow_council
 			clr_country_flag = random_terror_focus_route_war_directorate
@@ -1031,10 +1038,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_ideological_secretariat
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
-			set_country_flag = random_terror_focus_political_offices
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_establish_political_offices_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_political_offices = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -1986,10 +1994,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_border_corridor_open
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
-			add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_border_corridors_traced
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_trace_the_border_corridors_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_trace_corridors = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2028,9 +2037,11 @@ focus_tree = {
 			check_variable = { random_terror_territorial_control > constant:random_terror_value.low }
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
-			set_country_flag = random_terror_focus_next_front_open
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_open_the_next_front_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_open_next_front = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2138,10 +2149,11 @@ focus_tree = {
 			check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-			add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_last_corridor_broken
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_break_the_last_corridor_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_break_last_corridor = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}
@@ -2361,6 +2373,8 @@ focus_tree = {
 			}
 		}
 		completion_reward = {
+			custom_effect_tooltip = random_terror_focus_opens_jihadist_international_decisions_tt
+			set_country_flag = random_terror_route_jihadist_international
 			set_country_flag = random_terror_focus_route_jihadist_international
 			set_variable = { random_terror_focus_route = constant:random_terror_route.jihadist_international }
 			add_ideas = random_terror_international_mandate
@@ -2410,10 +2424,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_jihadist_international
 		}
 		completion_reward = {
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_fictional_seal
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_forge_the_fictional_seal_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_forge_seal = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2540,10 +2555,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_jihadist_international
 		}
 		completion_reward = {
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
-			set_country_flag = random_terror_focus_coordination_structure
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_lead_the_coordination_structure_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_lead_coordination = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2561,11 +2577,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_jihadist_international
 		}
 		completion_reward = {
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
-			set_country_flag = random_terror_focus_rival_governments_challenged
-			set_country_flag = random_terror_muslim_government_opposition_recorded
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_challenge_rival_governments_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_challenge_rivals = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}
@@ -2625,11 +2641,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_route_jihadist_international
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-			add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
-			add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
-			set_country_flag = random_terror_focus_columns_synchronized
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_synchronize_the_columns_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_synchronize_columns = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}
@@ -2726,10 +2742,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_final_command_sealed
 		}
 		completion_reward = {
-			add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
-			add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
-			set_country_flag = random_terror_focus_capital_approach_secured
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_secure_the_capital_approach_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_secure_capital_approach = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 2 }
 	}
@@ -2747,9 +2764,11 @@ focus_tree = {
 			has_country_flag = random_terror_focus_capital_approach_secured
 		}
 		completion_reward = {
-			add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
-			set_country_flag = random_terror_focus_sky_fractured
-			random_terror_clamp_actor_values = yes
+			custom_effect_tooltip = random_terror_fracture_the_sky_reward_tt
+			hidden_effect = {
+				random_terror_focus_reward_fracture_the_sky = yes
+				random_terror_clamp_actor_values = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}

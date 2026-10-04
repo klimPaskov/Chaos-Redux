@@ -3566,7 +3566,8 @@ random_terror_actor_support_foreign_cell = {
 
 # Moves one threatened cell out of a state the government has swept.  The
 # next government raid there finds empty safe houses and can at best be a
-# partial success.  The move costs the command some local hold.
+# partial success.  The move costs the command some local hold unless the
+# Continuity Protocol focus is complete.
 random_terror_actor_relocate_network = {
 	if = {
 		limit = { NOT = { has_event_target = random_terror_action_state } }
@@ -3584,7 +3585,11 @@ random_terror_actor_relocate_network = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = { set_state_flag = random_terror_cell_relocated }
 	}
-	subtract_from_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
+	# A command under the Continuity Protocol moves along prepared routes.
+	if = {
+		limit = { NOT = { has_country_flag = random_terror_focus_continuity_protocol } }
+		subtract_from_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_minor_gain }
+	}
 	random_terror_actor_action_common = yes
 }
 
@@ -3812,6 +3817,385 @@ random_terror_actor_accelerate_revelation = {
 	else = {
 		set_country_flag = random_terror_revelation_gate_failed
 	}
+}
+
+# ----------------------------------------------------------------------------
+# Focus rewards.  One effect per actor focus whose reward is a map, unit,
+# faction or decision change.  The focus shows a plain custom tooltip and runs
+# the effect hidden.  COUNTRY scope: the actor completing the focus (ROOT).
+# Amounts live in the random_terror_focus_reward and random_terror_unit
+# constants.
+# ----------------------------------------------------------------------------
+
+# STATE scope: an Event 31 crisis state an actor focus presses.  Input: temp
+# random_terror_focus_activity_push.  Activity and pressure rise and the stage,
+# state modifier and priority state follow.
+random_terror_focus_push_state_activity = {
+	random_terror_initialize_state_state = yes
+	add_to_variable = { random_terror_state_activity = random_terror_focus_activity_push }
+	add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.minor_pressure_gain }
+	clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	clamp_variable = { var = random_terror_state_pressure min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	random_terror_update_state_stage = yes
+}
+
+# Continuity Protocol: fallback headquarters in the key towns of the command's
+# seat.  While random_terror_focus_continuity_protocol is set, Relocate the
+# Network no longer costs Territorial Control.
+random_terror_focus_reward_continuity_protocol = {
+	capital_scope = {
+		add_building_construction = {
+			type = bunker
+			level = 1
+			province = { all_provinces = yes limit_to_victory_point = yes }
+			instant_build = yes
+		}
+	}
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_focus_continuity_protocol
+}
+
+# Establish Political Offices: the seat becomes a core state, and the
+# random_terror_focus_political_offices flag opens Build a Civil
+# Administration for the Ideological Secretariat.
+random_terror_focus_reward_political_offices = {
+	capital_scope = {
+		if = {
+			limit = { NOT = { is_core_of = ROOT } }
+			add_core_of = ROOT
+		}
+	}
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	set_country_flag = random_terror_focus_political_offices
+}
+
+# Trace the Border Corridors: claims on every crisis state that borders the
+# command's territory and that it does not own.
+random_terror_focus_reward_trace_corridors = {
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_claimed_by = ROOT }
+				random_terror_state_is_active_crisis = yes
+			}
+			add_claim_by = ROOT
+		}
+	}
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_border_corridors_traced
+}
+
+# Open the Next Front: one regular formation musters in an owned border state
+# facing a claimed state the command does not hold, and the cells in that
+# claimed state are pressed harder.  At the division limit the command takes
+# the formation's rifles into its stockpile instead.
+random_terror_focus_reward_open_next_front = {
+	if = {
+		limit = {
+			any_controlled_state = {
+				is_owned_by = ROOT
+				any_neighbor_state = {
+					is_claimed_by = ROOT
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_owned_by = ROOT
+				any_neighbor_state = {
+					is_claimed_by = ROOT
+					NOT = { is_controlled_by = ROOT }
+				}
+			}
+			save_event_target_as = random_terror_action_state
+			random_neighbor_state = {
+				limit = {
+					is_claimed_by = ROOT
+					NOT = { is_controlled_by = ROOT }
+					random_terror_state_is_active_crisis = yes
+				}
+				set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.next_front_activity }
+				random_terror_focus_push_state_activity = yes
+			}
+		}
+	}
+	if = {
+		limit = { num_divisions < constant:random_terror_tuning.actor_division_cap }
+		set_temp_variable = { random_terror_unit_experience = constant:random_terror_unit.front_experience }
+		set_temp_variable = { random_terror_unit_equipment = constant:random_terror_unit.front_equipment }
+		set_temp_variable = { random_terror_unit_manpower = constant:random_terror_unit.front_manpower }
+		set_temp_variable = { random_terror_unit_id = constant:random_terror_unit.front_id }
+		random_terror_actor_raise_formation = yes
+	}
+	else = {
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_cost.actor_defector_equipment }
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_militia_gain }
+	set_country_flag = random_terror_focus_next_front_open
+}
+
+# Break the Last Corridor: every claimed state the command holds, other than a
+# national capital, passes into its ownership.
+random_terror_focus_reward_break_last_corridor = {
+	every_controlled_state = {
+		limit = {
+			NOT = { is_owned_by = ROOT }
+			is_claimed_by = ROOT
+			NOT = { is_capital = yes }
+		}
+		transfer_state_to = ROOT
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_last_corridor_broken
+}
+
+# Forge the Seal: every state the command owns and holds becomes a core state.
+random_terror_focus_reward_forge_seal = {
+	every_owned_state = {
+		limit = {
+			is_controlled_by = ROOT
+			NOT = { is_core_of = ROOT }
+		}
+		add_core_of = ROOT
+	}
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.network_reach_gain }
+	set_country_flag = random_terror_focus_fictional_seal
+}
+
+# Lead the Coordination Structure: a command that is free or already leads a
+# faction founds or keeps the Jihadist International, takes the network
+# leadership when nobody holds it, and brings in every International actor
+# that is free, at peace with it and not an independent command.  A command
+# serving in another faction instead receives courier support.
+random_terror_focus_reward_lead_coordination = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { is_in_faction = yes }
+				is_faction_leader = yes
+			}
+		}
+		if = {
+			limit = { NOT = { is_in_faction = yes } }
+			random_terror_create_jihadist_international_faction = yes
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_country = {
+						NOT = { tag = ROOT }
+						random_terror_is_actor = yes
+						has_country_flag = random_terror_network_leader
+					}
+				}
+			}
+			set_country_flag = random_terror_network_leader
+		}
+		set_country_flag = random_terror_jihadist_international_member
+		every_country = {
+			limit = {
+				NOT = { tag = ROOT }
+				random_terror_is_actor = yes
+				OR = {
+					random_terror_is_jihadist_actor = yes
+					has_country_flag = random_terror_focus_route_jihadist_international
+				}
+				NOT = { is_in_faction = yes }
+				NOT = { has_country_flag = random_terror_independent_command }
+				NOT = { has_war_with = ROOT }
+				NOT = { has_capitulated = yes }
+			}
+			ROOT = {
+				if = {
+					limit = { is_faction_leader = yes }
+					add_to_faction = PREV
+				}
+			}
+			set_country_flag = random_terror_jihadist_international_member
+			set_country_flag = random_terror_later_religious_opposition_registry
+		}
+	}
+	else = {
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.actor_depot_support_equipment }
+		add_equipment_to_stockpile = { type = convoy_1 amount = constant:random_terror_cost.actor_corridor_convoys }
+	}
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
+	set_country_flag = random_terror_focus_coordination_structure
+}
+
+# Challenge Rival Governments: every crisis state of another government that
+# borders the command's territory is pressed harder, and the command gains a
+# war goal to topple one government it is not yet fighting, preferring the
+# owner of a state in Armed Insurgency or Lost Local Control.
+random_terror_focus_reward_challenge_rivals = {
+	set_temp_variable = { random_terror_focus_activity_push = constant:random_terror_focus_reward.rival_pressure_activity }
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = {
+				NOT = { is_owned_by = ROOT }
+				NOT = { is_controlled_by = ROOT }
+				random_terror_state_is_active_crisis = yes
+				OWNER = { NOT = { random_terror_is_actor = yes } }
+				NOT = { has_state_flag = random_terror_rival_pressure_applied }
+			}
+			set_state_flag = random_terror_rival_pressure_applied
+			random_terror_focus_push_state_activity = yes
+		}
+	}
+	if = {
+		limit = {
+			any_controlled_state = {
+				any_neighbor_state = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OR = {
+						has_state_flag = random_terror_state_armed_insurgency
+						has_state_flag = random_terror_state_lost_local_control
+					}
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				any_neighbor_state = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OR = {
+						has_state_flag = random_terror_state_armed_insurgency
+						has_state_flag = random_terror_state_lost_local_control
+					}
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+			}
+			random_neighbor_state = {
+				limit = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OR = {
+						has_state_flag = random_terror_state_armed_insurgency
+						has_state_flag = random_terror_state_lost_local_control
+					}
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+				OWNER = { save_event_target_as = random_terror_rival_government }
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			any_controlled_state = {
+				any_neighbor_state = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				any_neighbor_state = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+			}
+			random_neighbor_state = {
+				limit = {
+					has_state_flag = random_terror_rival_pressure_applied
+					OWNER = { NOT = { has_war_with = ROOT } }
+				}
+				OWNER = { save_event_target_as = random_terror_rival_government }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_terror_rival_government }
+		create_wargoal = {
+			type = topple_government
+			target = event_target:random_terror_rival_government
+		}
+	}
+	every_controlled_state = {
+		every_neighbor_state = {
+			limit = { has_state_flag = random_terror_rival_pressure_applied }
+			clr_state_flag = random_terror_rival_pressure_applied
+		}
+	}
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_rival_governments_challenged
+	set_country_flag = random_terror_muslim_government_opposition_recorded
+}
+
+# Synchronize the Columns: the command and every Event 31 actor fighting in
+# its faction open a timed Synchronized Offensive together.
+random_terror_focus_reward_synchronize_columns = {
+	set_temp_variable = { random_terror_focus_modifier_days = constant:random_terror_focus_reward.synchronized_offensive_days }
+	add_dynamic_modifier = { modifier = random_terror_synchronized_offensive days = random_terror_focus_modifier_days }
+	every_faction_member = {
+		limit = {
+			NOT = { tag = ROOT }
+			random_terror_is_actor = yes
+			has_war = yes
+		}
+		add_dynamic_modifier = { modifier = random_terror_synchronized_offensive days = random_terror_focus_modifier_days }
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
+	add_to_variable = { global.random_terror_international_unity = constant:random_terror_tuning.unity_gain }
+	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_columns_synchronized
+}
+
+# Secure the Capital Approach: claims on the capital state of every neighbour
+# at war with the command, and better roads in one owned border state facing
+# an enemy.
+random_terror_focus_reward_secure_capital_approach = {
+	every_enemy_country = {
+		limit = { is_neighbor_of = ROOT }
+		capital_scope = {
+			if = {
+				limit = {
+					NOT = { is_owned_by = ROOT }
+					NOT = { is_claimed_by = ROOT }
+				}
+				add_claim_by = ROOT
+			}
+		}
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } } }
+			add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+		}
+	}
+	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
+	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
+	set_country_flag = random_terror_focus_capital_approach_secured
+}
+
+# Fracture the Sky: every neighbour at war with the command is shaken by the
+# rupture for a time.
+random_terror_focus_reward_fracture_the_sky = {
+	set_temp_variable = { random_terror_focus_modifier_days = constant:random_terror_focus_reward.sky_fracture_days }
+	every_enemy_country = {
+		limit = { is_neighbor_of = ROOT }
+		add_dynamic_modifier = { modifier = random_terror_sky_fracture_shock days = random_terror_focus_modifier_days }
+	}
+	add_to_variable = { global.random_terror_apocalyptic_readiness = constant:random_terror_tuning.readiness_gain }
+	clamp_variable = { var = global.random_terror_apocalyptic_readiness min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	set_country_flag = random_terror_focus_sky_fractured
 }
 
 random_terror_clamp_actor_values = {

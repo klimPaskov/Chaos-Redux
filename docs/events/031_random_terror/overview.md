@@ -144,6 +144,27 @@ The actor focus tree is `random_terror_actor_focus_tree` in `common/national_foc
 
 Its 114 focuses cover opening survival, Shadow Council, War Directorate, Ideological Secretariat, captured economy, armed movement, network and diplomacy, expansion, crisis, Jihadist International, Final Jihad, and False Revelation routes.
 
+Actor decisions are gated by route flags (`random_terror_route_<route>`): the starting profile sets one, and the route-choice focuses (Shadow Network Directorate, Field Command Board, Convene the Cadre, Accept the International Claim) add their own, so choosing a route in the tree opens that route's decision family alongside the profile's.
+The header route line shows the route chosen in the tree before the starting profile.
+
+Focuses whose reward changes the map, units, factions or decisions run one `random_terror_focus_reward_<name>` effect hidden behind a plain custom tooltip, with amounts in the `random_terror_focus_reward` and `random_terror_unit` constants:
+
+| Focus | Route | Reward |
+| --- | --- | --- |
+| Continuity Protocol | Shadow Council | Bunkers on the victory-point provinces of the seat; Relocate the Network stops costing Territorial Control. |
+| Establish Political Offices | Ideological Secretariat | The seat becomes a core state; Build a Civil Administration opens to the command (`random_terror_focus_political_offices`). |
+| Trace the Border Corridors | Expansion | Claims on every bordering crisis state the command does not own. |
+| Open the Next Front | Expansion | One regular formation (`front_id`) in an owned state facing a claimed state, or its rifles at the division limit; the cells in that claimed state gain `next_front_activity`. |
+| Break the Last Corridor | Expansion capstone | Every claimed state the command holds, except a national capital, transfers to it. |
+| Forge the Seal | Jihadist International | Every state the command owns and holds becomes a core state. |
+| Lead the Coordination Structure | Jihadist International | A free or leading command founds or keeps the Jihadist International, takes the free network leadership and brings in every free International command at peace with it except an independent command; a command serving elsewhere gets courier support equipment and convoys. |
+| Challenge Rival Governments | Jihadist International | Every bordering crisis state of another government gains `rival_pressure_activity`, and the command gets one `topple_government` war goal against a neighbour it is not fighting, preferring one facing Armed Insurgency or Lost Local Control. |
+| Synchronize the Columns | Jihadist International | The command and every actor fighting in its faction gain `random_terror_synchronized_offensive` (division attack and speed) for `synchronized_offensive_days`. |
+| Secure the Capital Approach | Final Jihad | Claims on the capital state of every neighbouring enemy and one level of infrastructure in an owned state facing the enemy. |
+| Fracture the Sky | Final Jihad | Every neighbouring enemy suffers `random_terror_sky_fracture_shock` (war support and stability) for `sky_fracture_days`. |
+
+The two bunker focuses build on the victory-point provinces of their state (Fortify the Headquarters) or on its border provinces (Harden the Defensive Line), since bunkers are province buildings.
+
 ## Visual assets and wiring
 
 The authoritative visual audit is `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_audit.md`.

@@ -7,7 +7,8 @@
 # Clear state.  Impact grows with the stage: Dormant cells only slow local
 # construction, while the severe output, recruitment and movement penalties
 # arrive with Armed Insurgency and Lost Local Control.  Values live in the
-# random_terror_state_modifier script constants.
+# random_terror_state_modifier script constants.  Two timed country modifiers
+# granted by actor focuses follow at the end of the file.
 # ============================================================================
 
 random_terror_state_dormant = {
@@ -46,4 +47,19 @@ random_terror_state_lost_local_control = {
 	local_resources_factor = constant:random_terror_state_modifier.lost_resources
 	recruitable_population_factor = constant:random_terror_state_modifier.lost_recruitment
 	army_speed_factor_for_controller = constant:random_terror_state_modifier.lost_speed
+}
+
+# Timed country modifiers granted by actor focuses.  Synchronize the Columns
+# gives the command and its fighting faction partners a Synchronized
+# Offensive; Fracture the Sky shakes every neighbour at war with the command.
+random_terror_synchronized_offensive = {
+	icon = GFX_idea_random_terror_unified_field_command
+	army_attack_factor = constant:random_terror_focus_reward.synchronized_offensive_attack
+	army_speed_factor = constant:random_terror_focus_reward.synchronized_offensive_speed
+}
+
+random_terror_sky_fracture_shock = {
+	icon = GFX_idea_random_terror_world_in_revolt
+	war_support_factor = constant:random_terror_focus_reward.sky_fracture_war_support
+	stability_factor = constant:random_terror_focus_reward.sky_fracture_stability
 }
