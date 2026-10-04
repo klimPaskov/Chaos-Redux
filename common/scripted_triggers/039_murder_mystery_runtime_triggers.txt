@@ -90,7 +90,7 @@ murder_mystery_host_has_live_state = {
 	exists = yes
 	num_of_controlled_states > constant:murder_mystery_value.zero
 	any_owned_state = {
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 	}
 }
 
@@ -283,8 +283,22 @@ murder_mystery_action_cost_is_available = {
 				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_cell_raid compare = equals }
 			}
 		}
-		has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+		AND = {
+			murder_mystery_assassin_actor = yes
+			has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+		}
+		AND = {
+			NOT = { murder_mystery_assassin_actor = yes }
+			murder_mystery_can_pay_government_raid_cost = yes
+		}
 	}
+}
+
+# COUNTRY scope. Ordinary resources for a government cell raid.
+murder_mystery_can_pay_government_raid_cost = {
+	command_power > constant:murder_mystery_action_cost.government_raid_command_power_gate
+	has_equipment = { infantry_equipment > constant:murder_mystery_action_cost.government_raid_infantry_equipment_gate }
+	has_manpower > constant:murder_mystery_action_cost.government_raid_manpower_gate
 }
 
 murder_mystery_action_result_is_valid = {
@@ -599,19 +613,8 @@ murder_mystery_evolution_ii_is_ready = {
 }
 
 murder_mystery_evolution_iii_is_ready = {
-	murder_mystery_runtime_is_active = yes
-	NOT = { has_global_flag = events_log_disabled_evolution_39_39_3 }
-	has_variable = global.chaos_meter_value
-	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iii compare = greater_than_or_equals }
-	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_ii compare = equals }
-	event_target:murder_mystery_original_host = {
-		OR = {
-			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_iii compare = greater_than_or_equals }
-			has_country_flag = murder_mystery_evolution_iii_incident_sequence_validated
-		}
-	}
+	murder_mystery_evolution_iii_preconditions_are_met = yes
 	has_global_flag = murder_mystery_split_preflight_passed
-	NOT = { has_global_flag = murder_mystery_evolution_iii_committed }
 }
 
 murder_mystery_evolution_iv_is_ready = {
@@ -624,7 +627,7 @@ murder_mystery_evolution_iv_is_ready = {
 	event_target:murder_mystery_assassin_state = {
 		OR = {
 			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_iv compare = greater_than_or_equals }
-			has_country_flag = murder_mystery_foreign_network_milestone_validated
+			has_global_flag = murder_mystery_foreign_network_milestone_validated
 		}
 	}
 	NOT = { has_global_flag = murder_mystery_evolution_iv_committed }
@@ -638,7 +641,7 @@ murder_mystery_evolution_v_is_ready = {
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iv compare = equals }
 	has_global_flag = murder_mystery_assassin_state_exists
 	has_global_flag = murder_mystery_central_or_heir_validated
-	has_global_flag = murder_mystery_world_branch_enabled
+	murder_mystery_world_branch_is_enabled = yes
 	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = murder_mystery_evolution_v_committed }
 }
@@ -741,7 +744,7 @@ murder_mystery_world_end_activation_is_valid = {
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_v compare = equals }
 	has_global_flag = murder_mystery_assassin_state_exists
 	has_global_flag = murder_mystery_central_or_heir_validated
-	has_global_flag = murder_mystery_world_branch_enabled
+	murder_mystery_world_branch_is_enabled = yes
 	has_global_flag = murder_mystery_terminal_settlement_validated
 	has_global_flag = murder_mystery_terminal_capital_validated
 	event_target:murder_mystery_assassin_state = {
@@ -752,22 +755,6 @@ murder_mystery_world_end_activation_is_valid = {
 	}
 }
 
-murder_mystery_limited_inheritance_is_valid = {
-	murder_mystery_runtime_is_active = yes
-	has_global_flag = murder_mystery_evolution_ii_committed
-	has_global_flag = murder_mystery_assassin_state_exists
-	NOT = { has_global_flag = murder_mystery_inheritance_transaction_active }
-	NOT = { has_global_flag = murder_mystery_inherited_central_movement }
-	has_event_target = murder_mystery_assassin_state
-	NOT = { is_in_array = { array = global.murder_mystery_target_id_entries value = constant:murder_mystery_value.inherited_leader_target_id } }
-	event_target:murder_mystery_assassin_state = {
-		exists = yes
-		uses_normal_civilian_systems = yes
-		has_country_flag = murder_mystery_assassin_state_active
-		has_country_leader = { name = MURDER_MYSTERY_FIRST_KNIFE_NAME }
-	}
-}
-
 murder_mystery_world_end_preparation_is_valid = {
 	murder_mystery_runtime_is_active = yes
 	NOT = { has_global_flag = world_end }
@@ -775,7 +762,7 @@ murder_mystery_world_end_preparation_is_valid = {
 	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_v compare = equals }
 	has_global_flag = murder_mystery_assassin_state_exists
 	has_global_flag = murder_mystery_central_or_heir_validated
-	has_global_flag = murder_mystery_world_branch_enabled
+	murder_mystery_world_branch_is_enabled = yes
 	event_target:murder_mystery_assassin_state = {
 		murder_mystery_country_runtime_is_initialized = yes
 		check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_world_end.minimum_case_progress compare = greater_than_or_equals }

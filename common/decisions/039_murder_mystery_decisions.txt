@@ -578,7 +578,6 @@ murder_mystery_investigation_category = {
 			murder_mystery_investigation_category_visible = yes
 			check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.break_cell compare = equals }
 			murder_mystery_action_is_available = yes
-			murder_mystery_selected_cell_is_valid = yes
 			NOT = { has_country_flag = murder_mystery_phase_mission_active }
 			NOT = { has_active_mission = murder_mystery_secure_government_quarter }
 			NOT = { has_active_mission = murder_mystery_preserve_first_evidence }
@@ -590,10 +589,11 @@ murder_mystery_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			murder_mystery_selected_cell_is_valid = yes
 			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+			hidden_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
+		custom_cost_text = murder_mystery_government_raid_cost
 		days_mission_timeout = constant:murder_mystery_action_tuning.investigation_mission_days
 		days_remove = constant:murder_mystery_action_tuning.investigation_mission_days
 		is_good = yes
@@ -624,7 +624,6 @@ murder_mystery_investigation_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { murder_mystery_investigation_category_visible = yes }
-				NOT = { murder_mystery_selected_cell_is_valid = yes }
 				NOT = { check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.break_cell compare = equals } }
 				has_country_flag = murder_mystery_cleanup_in_progress
 			}
@@ -645,10 +644,7 @@ murder_mystery_investigation_category = {
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				OR = {
-					NOT = { murder_mystery_selected_cell_is_valid = yes }
-					NOT = { has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate } }
-				}
+				NOT = { murder_mystery_can_pay_government_raid_cost = yes }
 			}
 		}
 	}
@@ -911,105 +907,6 @@ murder_mystery_investigation_category = {
 	}
 
 	# -----------------------------------------------------------------------
-	# Evolution and validated Assassin State handoff
-	# -----------------------------------------------------------------------
-
-	murder_mystery_commit_next_evolution = {
-		name = murder_mystery_commit_next_evolution
-		desc = murder_mystery_commit_next_evolution_desc
-		icon = GFX_decision_039_murder_mystery_commit_next_evolution
-		visible = {
-			murder_mystery_investigation_category_visible = yes
-			murder_mystery_any_evolution_is_ready = yes
-			NOT = { has_country_flag = murder_mystery_phase_mission_active }
-		}
-		available = { murder_mystery_action_is_available = yes }
-		days_re_enable = constant:murder_mystery_cooldown.evolution_retry_days
-		complete_effect = {
-			custom_effect_tooltip = murder_mystery_evolution_commitment_tt
-			hidden_effect = { murder_mystery_decision_commit_evolution = yes }
-		}
-		ai_will_do = {
-			base = constant:murder_mystery_ai.urgent
-			modifier = {
-				factor = constant:murder_mystery_ai.high
-				check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_value.seventy compare = greater_than }
-			}
-			modifier = {
-				factor = constant:murder_mystery_ai.blocked
-				NOT = { murder_mystery_any_evolution_is_ready = yes }
-			}
-		}
-	}
-
-	murder_mystery_prepare_assassin_state = {
-		name = murder_mystery_prepare_assassin_state
-		desc = murder_mystery_prepare_assassin_state_desc
-		icon = GFX_decision_039_murder_mystery_prepare_assassin_state
-		visible = {
-			murder_mystery_investigation_category_visible = yes
-			check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.final_operation compare = equals }
-			has_global_flag = murder_mystery_evolution_iii_committed
-			NOT = { has_global_flag = murder_mystery_assassin_state_exists }
-			NOT = { has_event_target = murder_mystery_assassin_state_candidate }
-			NOT = { has_country_flag = murder_mystery_phase_mission_active }
-		}
-		available = {
-			murder_mystery_action_is_available = yes
-			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			murder_mystery_host_is_registered = yes
-			num_of_controlled_states > constant:murder_mystery_split.minimum_remnant_states
-		}
-		days_re_enable = constant:murder_mystery_cooldown.action_days
-		complete_effect = {
-			custom_effect_tooltip = murder_mystery_assassin_state_prepare_tt
-			hidden_effect = { murder_mystery_decision_prepare_assassin_state = yes }
-		}
-		ai_will_do = {
-			base = constant:murder_mystery_ai.high
-			modifier = {
-				factor = constant:murder_mystery_ai.urgent
-				check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_value.seventy compare = greater_than }
-			}
-			modifier = {
-				factor = constant:murder_mystery_ai.low
-				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
-			}
-			modifier = {
-				factor = constant:murder_mystery_ai.blocked
-				OR = {
-					NOT = { murder_mystery_action_is_available = yes }
-					NOT = { num_of_controlled_states > constant:murder_mystery_split.minimum_remnant_states }
-				}
-			}
-		}
-	}
-
-	murder_mystery_commit_assassin_state = {
-		name = murder_mystery_commit_assassin_state
-		desc = murder_mystery_commit_assassin_state_desc
-		icon = GFX_decision_039_murder_mystery_commit_assassin_state
-		visible = {
-			murder_mystery_investigation_category_visible = yes
-			has_global_flag = murder_mystery_split_preflight_passed
-			has_event_target = murder_mystery_assassin_state_candidate
-		}
-		available = { murder_mystery_assassin_state_preflight_is_valid = yes }
-		days_re_enable = constant:murder_mystery_cooldown.role_group_days
-		complete_effect = {
-			custom_effect_tooltip = murder_mystery_assassin_state_commit_tt
-			hidden_effect = { murder_mystery_decision_commit_assassin_state = yes }
-		}
-		ai_will_do = {
-			base = constant:murder_mystery_ai.urgent
-			modifier = {
-				factor = constant:murder_mystery_ai.blocked
-				NOT = { murder_mystery_assassin_state_preflight_is_valid = yes }
-			}
-		}
-	}
-
-	# -----------------------------------------------------------------------
 	# Real investigation objectives. These are activated by the phase actions
 	# above and resolve from map, force, supply, evidence, and protection state.
 	# -----------------------------------------------------------------------
@@ -1242,7 +1139,7 @@ murder_mystery_foreign_cell_investigation_category = {
 				if = {
 					limit = {
 						OR = { has_country_flag = murder_mystery_action_succeeded has_country_flag = murder_mystery_action_partial }
-						murder_mystery_selected_cell_is_valid = yes
+						murder_mystery_country_has_registered_cell = yes
 					}
 					set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.protect_local_government }
 					murder_mystery_decision_start_bound_objective = yes
@@ -1401,11 +1298,11 @@ murder_mystery_foreign_cell_investigation_category = {
 				if = {
 					limit = { OR = { has_country_flag = murder_mystery_action_succeeded has_country_flag = murder_mystery_action_partial } }
 					if = {
-						limit = { murder_mystery_selected_cell_is_mature = yes }
+						limit = { has_country_flag = murder_mystery_cell_mature }
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.prevent_revolt_preparation }
 					}
 					else_if = {
-						limit = { murder_mystery_selected_cell_is_valid = yes }
+						limit = { murder_mystery_country_has_registered_cell = yes }
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.intercept_support_shipment }
 					}
 					else = { set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.secure_depots_rail_hubs } }
@@ -1458,7 +1355,7 @@ murder_mystery_foreign_cell_investigation_category = {
 			murder_mystery_foreign_category_visible = yes
 			check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.break_cell compare = equals }
 			murder_mystery_action_is_available = yes
-			murder_mystery_selected_cell_is_valid = yes
+			murder_mystery_country_has_registered_cell = yes
 			NOT = { has_country_flag = murder_mystery_phase_mission_active }
 			NOT = { has_active_mission = murder_mystery_join_evidence_exchange }
 			NOT = { has_active_mission = murder_mystery_interdict_known_route }
@@ -1467,10 +1364,12 @@ murder_mystery_foreign_cell_investigation_category = {
 		selectable_mission = yes
 		available = {
 			murder_mystery_action_is_available = yes
-			murder_mystery_selected_cell_is_valid = yes
+			murder_mystery_country_has_registered_cell = yes
 			has_political_power > constant:murder_mystery_action_cost.political_power_gate
-			has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+			hidden_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
 		}
+		custom_cost_trigger = { murder_mystery_can_pay_government_raid_cost = yes }
+		custom_cost_text = murder_mystery_government_raid_cost
 		days_mission_timeout = constant:murder_mystery_action_tuning.foreign_mission_days
 		days_remove = constant:murder_mystery_action_tuning.foreign_mission_days
 		is_good = yes
@@ -1489,12 +1388,13 @@ murder_mystery_foreign_cell_investigation_category = {
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.hold_parent_capital_revolt_border }
 					}
 					else_if = {
-						limit = { murder_mystery_selected_cell_is_mature = yes }
+						limit = { has_country_flag = murder_mystery_cell_mature }
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.dismantle_local_recruitment }
 					}
 					else = { set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.secure_depots_rail_hubs } }
 					murder_mystery_decision_start_bound_objective = yes
 				}
+				murder_mystery_decision_resolve_local_cell_raid = yes
 			}
 		}
 		timeout_effect = {
@@ -1509,7 +1409,7 @@ murder_mystery_foreign_cell_investigation_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { murder_mystery_foreign_category_visible = yes }
-				NOT = { murder_mystery_selected_cell_is_valid = yes }
+				NOT = { murder_mystery_country_has_registered_cell = yes }
 				NOT = { check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.break_cell compare = equals } }
 				has_country_flag = murder_mystery_cleanup_in_progress
 			}
@@ -1527,8 +1427,8 @@ murder_mystery_foreign_cell_investigation_category = {
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
 				OR = {
-					NOT = { murder_mystery_selected_cell_is_valid = yes }
-					NOT = { has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate } }
+					NOT = { murder_mystery_country_has_registered_cell = yes }
+					NOT = { murder_mystery_can_pay_government_raid_cost = yes }
 				}
 			}
 		}

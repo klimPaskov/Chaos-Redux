@@ -1,0 +1,165 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MOVEMENT LIFECYCLE CONSTANTS
+# ============================================================================
+# Overview:
+# - Tuning for the self-scheduling movement pulse, scheduled incidents, cell
+#   maturation, foreign seeding, defeat outcomes, inheritance ranking and
+#   remnant cleanup used by 039_murder_mystery_lifecycle_effects.txt.
+# - The pulse runs only on one Event 039 anchor country. Every value here is
+#   read by bounded loops over Event 039 registries; nothing scans the world.
+# ============================================================================
+
+murder_mystery_pulse = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Days between two movement pulses. Countdowns below are decremented by
+	# this amount on every pulse.
+	interval_days = 10
+	# A pulse is accepted from this many days before its due date, so the
+	# engine's daily event timing never drops the chain.
+	due_tolerance_days = 1
+	# Countdown that marks a missing or expired timer.
+	expired = 0
+}
+
+murder_mystery_incident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Scheduled incident interval: base days minus Network Reach and cell
+	# maturity pressure, minus a step for every committed evolution.
+	base_days = 150
+	minimum_days = 30
+	maximum_days = 240
+	reach_weight = 0.6
+	maturity_weight = 0.4
+	evolution_step_days = 10
+	# Initial delay before the first scheduled incident.
+	first_incident_days = 60
+	# Pressure gained by the movement after a successful incident.
+	reach_gain = 3
+	adaptation_gain = 2
+	host_cell_maturity_gain = 4
+	cell_row_maturity_gain = 6
+	stability_loss = -0.01
+	# Days a role group stays off the incident list after it was hit.
+	role_cooldown_days = 60
+	# Host incidents after which a compromised investigation counts as the
+	# murder sequence that can open Evolution III.
+	evolution_iii_incident_count = 4
+	# Protection can stop a scheduled incident. Chance in percent:
+	# witness safety times the weight plus a step per protected target.
+	foil_witness_weight = 0.4
+	foil_protection_step = 5
+	foil_maximum = 60
+	foil_roll_maximum = 100
+	foil_case_progress = 3
+}
+
+murder_mystery_cell_growth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Maturity gained by every active cell and by the host's national cell on
+	# each pulse: base plus Network Reach divided by the reach divisor.
+	base_gain = 1
+	reach_divisor = 25
+	# Investigation pressure: a local case at or above this value stops growth.
+	suppressed_case_progress = 70
+	# Maturity needed to reach each stage.
+	active_maturity = 25
+	entrenched_maturity = 50
+	insurrection_maturity = 75
+	# Revolt readiness gained by insurrection cells after Evolution IV.
+	revolt_readiness_gain = 4
+	# Passive Network Reach gain on the host while the case is weak.
+	host_reach_gain = 1
+	host_reach_case_ceiling = 60
+}
+
+murder_mystery_seeding = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Days between automatic foreign cell seeding attempts after Evolution II.
+	base_days = 90
+	minimum_days = 30
+	reach_step_days = 6
+	reach_step = 10
+	first_seed_days = 30
+	# Bounded attempts for one seeding action.
+	maximum_attempts = 3
+}
+
+murder_mystery_defeat = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Days before the winner absorbs a capitulated Event 039 country.
+	dismantle_delay_days = 1
+	# Movement gains when the host government falls.
+	host_fall_cohesion_gain = 15
+	host_fall_reach_gain = 10
+	# Reasons accepted by murder_mystery_retire_cell_row.
+	retire_reason_dismantled = 1
+	retire_reason_country_lost = 2
+	retire_reason_remnant = 3
+	retire_reason_derivative = 4
+	# Cell dismantling Chaos is applied to at most this many cells.
+	maximum_cell_chaos_rows = 5
+	# A partial raid on a local cell costs it this much maturity and one stage.
+	partial_raid_maturity_loss = 20
+}
+
+murder_mystery_defeat_chaos = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cell_dismantled = -1
+	derivative_lost = -2
+	host_fallen = 2
+	movement_ended = -4
+}
+
+murder_mystery_inheritance = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Heir ranking: owned states first, then industry, then Cohesion.
+	# Industry is capped below the state weight so the order is strict.
+	rank_state_weight = 10000
+	rank_industry_weight = 100
+	rank_industry_cap = 99
+	rank_cohesion_weight = 1
+	# Minimum viability of a territorial heir.
+	minimum_heir_states = 1
+	minimum_heir_cohesion = 20
+	# Derivatives at or above this Cohesion rebind to the heir; the rest
+	# become autonomous.
+	rebind_cohesion = 40
+	# Leadership crisis applied to the heir.
+	heir_cohesion_loss = 15
+	heir_reach_loss = 10
+	# Underground continuation requires a cell at or above this stage.
+	underground_minimum_stage = 3
+	# Delay between the inheritance announcement and its outcome.
+	announcement_delay_days = 7
+	# The pulse classifies the outcome itself once the announcement is this
+	# many days overdue.
+	overdue_countdown = -20
+}

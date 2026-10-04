@@ -1,0 +1,118 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MOVEMENT LIFECYCLE TRIGGERS
+# ============================================================================
+# Overview:
+# - Country classifiers for the movement pulse, scheduled incidents, cell
+#   seeding, inheritance and global resolution.
+# - Registry checks read the bounded Event 039 cell and derivative arrays.
+# ============================================================================
+
+# COUNTRY scope. Fires for any country that carries an Event 039 role, so the
+# capitulation and annexation hooks stay cheap for every other country.
+murder_mystery_country_is_event_actor = {
+	OR = {
+		has_country_flag = murder_mystery_original_host
+		has_country_flag = murder_mystery_assassin_state
+		has_country_flag = murder_mystery_derivative_country
+		has_country_flag = murder_mystery_cell_active
+	}
+}
+
+# COUNTRY scope. An ordinary government that can receive a new foreign cell.
+murder_mystery_country_can_host_new_cell = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = murder_mystery_original_host }
+	NOT = { has_country_flag = murder_mystery_assassin_state }
+	NOT = { has_country_flag = murder_mystery_derivative_country }
+	NOT = { has_country_flag = murder_mystery_derivative_source_consumed }
+	NOT = { has_country_flag = murder_mystery_cell_immunity_active }
+	NOT = { has_country_flag = murder_mystery_cell_active }
+	num_of_controlled_states > constant:murder_mystery_value.zero
+	NOT = { is_in_array = { array = global.murder_mystery_cell_country_entries value = THIS } }
+}
+
+# COUNTRY scope. A government the movement can strike with a scheduled incident.
+murder_mystery_country_can_suffer_incident = {
+	exists = yes
+	murder_mystery_country_runtime_is_initialized = yes
+	NOT = { has_country_flag = murder_mystery_country_incident_cooldown }
+	NOT = { has_country_flag = murder_mystery_country_loss_recorded }
+	NOT = { has_country_flag = murder_mystery_assassin_state }
+	NOT = { has_country_flag = murder_mystery_derivative_country }
+	num_of_controlled_states > constant:murder_mystery_value.zero
+}
+
+# COUNTRY scope. The country holds a live row in the cell registry.
+murder_mystery_country_has_registered_cell = {
+	has_country_flag = murder_mystery_cell_active
+	is_in_array = { array = global.murder_mystery_cell_country_entries value = THIS }
+}
+
+# COUNTRY scope. A derivative that can inherit the movement's center.
+murder_mystery_country_is_valid_heir = {
+	exists = yes
+	has_country_flag = murder_mystery_derivative_country
+	NOT = { has_country_flag = murder_mystery_derivative_loss_recorded }
+	NOT = { has_country_flag = murder_mystery_country_loss_recorded }
+	NOT = { has_country_flag = murder_mystery_derivative_detached }
+	has_capitulated = no
+	check_variable = { var = num_owned_states value = constant:murder_mystery_inheritance.minimum_heir_states compare = greater_than_or_equals }
+	has_variable = murder_mystery_brotherhood_cohesion
+	check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_inheritance.minimum_heir_cohesion compare = greater_than_or_equals }
+}
+
+# Any scope. A registered cell at the underground stage or higher survives.
+murder_mystery_has_underground_cell = {
+	any_of = {
+		array = global.murder_mystery_cell_stage_entries
+		value = murder_mystery_cell_stage_value
+		check_variable = { var = murder_mystery_cell_stage_value value = constant:murder_mystery_inheritance.underground_minimum_stage compare = greater_than_or_equals }
+	}
+}
+
+# Any scope. A derivative still fights for the movement.
+murder_mystery_has_active_derivative = {
+	any_of = {
+		array = global.murder_mystery_derivative_status_entries
+		value = murder_mystery_derivative_status_value
+		check_variable = { var = murder_mystery_derivative_status_value value = constant:murder_mystery_derivative.status_active compare = equals }
+	}
+}
+
+# COUNTRY scope: the original host. True when the active center or one of its
+# derivatives defeated it.
+murder_mystery_host_lost_to_movement = {
+	has_global_flag = murder_mystery_assassin_state_exists
+	has_event_target = murder_mystery_assassin_state
+	OR = {
+		AND = {
+			has_event_target = murder_mystery_loss_winner
+			event_target:murder_mystery_loss_winner = { murder_mystery_assassin_actor = yes }
+		}
+		event_target:murder_mystery_assassin_state = { has_war_with = PREV }
+	}
+}
+
+# Any scope. Every Evolution III condition except the split preflight, which
+# the pulse computes only when this holds.
+murder_mystery_evolution_iii_preconditions_are_met = {
+	murder_mystery_runtime_is_active = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_39_39_3 }
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iii compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_ii compare = equals }
+	has_event_target = murder_mystery_original_host
+	event_target:murder_mystery_original_host = {
+		exists = yes
+		NOT = { has_country_flag = murder_mystery_country_loss_recorded }
+		murder_mystery_host_has_live_state = yes
+		OR = {
+			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_iii compare = greater_than_or_equals }
+			has_country_flag = murder_mystery_evolution_iii_incident_sequence_validated
+		}
+	}
+	NOT = { has_global_flag = murder_mystery_evolution_iii_committed }
+}

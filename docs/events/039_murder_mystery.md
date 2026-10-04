@@ -52,6 +52,77 @@ Assassin partial results expand Reach at a Cohesion cost.
 Assassin failures reduce Reach and Cohesion, rather than increasing the movement's strength.
 These objective outcomes do not add Chaos.
 
+## Movement pulse
+
+The movement acts on its own through one hidden, self-rescheduling event, `chaosx.nr39.90`, that runs every `murder_mystery_pulse.interval_days` days on a single anchor country.
+The anchor is the original host while it survives, then the central Assassin State, then the underground center, then the government that owns the case.
+Every schedule records a due date; a pulse that fires before it was queued earlier and is ignored, so rescheduling on a new anchor after a country is lost never runs two pulse chains.
+The pulse starts when the opening murder commits and stops when the runtime resolves or cleans up.
+
+Every pulse, in order:
+
+1. Reconciles the cell and derivative registries.
+2. Classifies an overdue inheritance announcement.
+3. Grows the host's national cell and Network Reach while the host's Case Progress is below the suppression thresholds, and matures every registered foreign cell by a base amount plus Network Reach divided by `murder_mystery_cell_growth.reach_divisor`.
+   A cell's stage rises with its maturity up to a cap set by the current evolution: active before Evolution II, entrenched after it, insurrection after Evolution III.
+   Insurrection cells build revolt readiness after Evolution IV.
+4. After Evolution II, seeds one foreign cell when the seeding countdown expires, through one bounded route: a land border with the host, a land border with an existing cell, or an ally of the host.
+5. Runs a scheduled incident when the incident countdown expires.
+6. Commits a ready evolution once its pacing delay has run out.
+7. Checks whether the movement has been defeated everywhere.
+
+### Scheduled incidents
+
+The incident interval is `murder_mystery_incident.base_days` minus Network Reach and the highest cell maturity times their weights, minus a step per committed evolution, clamped between the minimum and maximum days.
+The target is drawn from the surviving host and every registered cell country at stage active or higher that is not on its incident cooldown.
+A role group (investigators, magistrates, cabinet officials, intelligence officers) that was struck stays off the list for `role_cooldown_days`.
+Witness Safety and protected targets give a chance to stop the attack, which raises Case Progress and reports `chaosx.nr39.11`.
+A successful attack records a generic office casualty (no named character is killed), costs stability, raises the movement's Reach and the cell's maturity, and reports `chaosx.nr39.9`.
+Four host incidents while the investigation is compromised count as the murder sequence that can open Evolution III.
+
+### Evolution pacing
+
+When an evolution becomes ready, its countdown starts at the host's computed pacing days (base 90, shortened or lengthened by the existing pacing factors) and falls by the pulse interval on every pulse.
+Losing readiness clears the countdown.
+Evolution III is the territorial split: the pulse selects the split cluster only when every other Evolution III condition holds, and records the stage only after the Assassin State transfer and war commit; a failed split retries after `murder_mystery_cooldown.evolution_retry_days`.
+No government decision escalates the movement against its own country.
+
+## Country outcomes
+
+`common/on_actions/039_murder_mystery_on_actions.txt` handles `on_capitulation` and `on_annex` only for countries with an Event 039 actor flag while the runtime is active.
+
+| Outcome | Result |
+| --- | --- |
+| Assassin State capitulates or is annexed | Defeat receipt, Chaos decrease, objective cleanup; the winner absorbs the capitulated state the next day (`chaosx.nr39.64`); during World of Anarchy the terminal defeat resolves the campaign, otherwise the inheritance test begins |
+| Derivative capitulates or is annexed | Its row leaves the registry, Chaos decreases, the winner absorbs it, and global resolution is checked |
+| Host capitulates to or is annexed by the movement | The Assassin State gains Cohesion and Reach, its opening-war objective succeeds, Chaos increases, and both sides receive `chaosx.nr39.63` |
+| Host annexed by anyone | Its runtime is cleaned up and the pulse moves to the next anchor |
+| A cell country is annexed | Its cell row is retired |
+
+## Inheritance and resolution
+
+The inheritance test is announced to the government that owns the case with `chaosx.nr39.23` after `murder_mystery_inheritance.announcement_delay_days`; the pulse classifies it itself if the announcement is overdue.
+The classification runs once:
+
+1. If a territorial state ever existed and the territorial inheritance has not been used, the best active derivative becomes the new center.
+   Ranking is owned states, then industry (capped), then Cohesion, over the bounded derivative registry.
+   The heir takes the central flags and pointer, suffers a Cohesion and Reach loss, and the other derivatives rebind to it when its Cohesion reaches `rebind_cohesion`; otherwise they detach as autonomous countries.
+   Report: `chaosx.nr39.24`.
+2. Otherwise, if a cell at stage 3 or higher survives, the network continues underground with no leader change, centered on its most mature cell.
+   Report: `chaosx.nr39.25`.
+3. Otherwise the movement ends.
+
+The movement ends when its center (or heir) is gone, no derivative still fights for it, and no cell at stage 3 or higher survives; before any territorial state, the captured core plus the same cell rule ends it.
+Ending retires the lower-stage remnant cells, applies the movement-ended Chaos reversal once, finalizes the runtime, and reports `chaosx.nr39.61` and `chaosx.nr39.62` (or `chaosx.nr39.20` when no territorial state ever existed).
+No inheritance step retires or creates a character.
+
+## Government cell raids
+
+Raid an Identified Cell (host) and Dismantle the Local Cell (foreign government) cost command power, infantry equipment and manpower from `murder_mystery_action_cost.government_raid_*`, shown as the decision cost.
+Operations kits remain an Assassin-only cost.
+A foreign government's case opens when a cell is registered in its country; after mapping the network it moves straight to breaking the cell.
+A successful local raid dismantles the cell (immunity, Chaos decrease for the first few cells, report `chaosx.nr39.10`); a partial raid costs the cell maturity and one stage.
+
 ## Runtime ownership and presentation
 
 | Surface | Source |
@@ -61,6 +132,11 @@ These objective outcomes do not add Chaos.
 | Objective receipt, full control, rail and sector predicates | `common/scripted_triggers/039_murder_mystery_objective_triggers.txt` |
 | Country loss and split integration | `common/scripted_effects/039_murder_mystery_integration_effects.txt` |
 | Shared Event 039 cleanup | `common/scripted_effects/039_murder_mystery_runtime_effects.txt` |
+| Movement pulse, incidents, country outcomes, inheritance | `common/scripted_effects/039_murder_mystery_lifecycle_effects.txt` |
+| Lifecycle classifiers | `common/scripted_triggers/039_murder_mystery_lifecycle_triggers.txt` |
+| Pulse, incident, growth, seeding, defeat and inheritance tuning | `common/script_constants/039_murder_mystery_lifecycle_constants.txt` |
+| Capitulation and annexation hooks | `common/on_actions/039_murder_mystery_on_actions.txt` |
+| Incident office names | `common/scripted_localisation/039_murder_mystery_scripted_localisation.txt` |
 | Objective types, durations and tuning | `common/script_constants/039_murder_mystery_constants.txt` |
 | Mission titles, named states and requirements | `localisation/english/039_murder_mystery_l_english.yml` |
 | Mission sprites | `interface/039_murder_mystery_icons.gfx` |

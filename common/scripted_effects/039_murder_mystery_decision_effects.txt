@@ -190,6 +190,18 @@ murder_mystery_decision_bind_objective_context = {
 			event_target:murder_mystery_objective_actor = { set_variable = { murder_mystery_objective_country = PREV } }
 		}
 	}
+	else_if = {
+		limit = {
+			murder_mystery_country_has_registered_cell = yes
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.prevent_revolt_preparation compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.dismantle_local_recruitment compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_local_government compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.intercept_support_shipment compare = equals }
+			}
+		}
+		set_variable = { murder_mystery_objective_country = THIS }
+	}
 	if = {
 		limit = {
 			OR = {
@@ -247,6 +259,30 @@ murder_mystery_decision_cancel_bound_objectives = {
 	if = { limit = { has_active_mission = murder_mystery_hold_parent_capital_revolt_border } remove_mission = murder_mystery_hold_parent_capital_revolt_border }
 	if = { limit = { has_active_mission = murder_mystery_survive_opening_war } remove_mission = murder_mystery_survive_opening_war }
 	if = { limit = { has_active_mission = murder_mystery_complete_terminal_sector } remove_mission = murder_mystery_complete_terminal_sector }
+}
+
+# COUNTRY scope: a foreign government after its Dismantle the Local Cell
+# mission. Success dismantles the registered cell; a partial result costs the
+# cell maturity and one stage.
+murder_mystery_decision_resolve_local_cell_raid = {
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_action_succeeded
+			murder_mystery_country_has_registered_cell = yes
+		}
+		murder_mystery_record_captured_cell = yes
+		set_temp_variable = { murder_mystery_cell_retire_reason = constant:murder_mystery_defeat.retire_reason_dismantled }
+		murder_mystery_retire_cell_row = yes
+		country_event = { id = chaosx.nr39.10 days = constant:murder_mystery_identity.presentation_delay_days }
+		murder_mystery_evaluate_global_resolution = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = murder_mystery_action_partial
+			murder_mystery_country_has_registered_cell = yes
+		}
+		murder_mystery_damage_cell_row = yes
+	}
 }
 
 murder_mystery_decision_record_objective_history = {
@@ -820,25 +856,6 @@ murder_mystery_decision_negotiate_local_settlement = {
 # Evolution and country-creation adapters
 # ---------------------------------------------------------------------------
 
-murder_mystery_decision_commit_evolution = {
-	clr_country_flag = murder_mystery_action_completed
-	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.assassin_state_preparation }
-	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-	murder_mystery_prepare_evolution_commit = yes
-	if = {
-		limit = { has_global_flag = murder_mystery_evolution_commit_succeeded }
-		set_variable = { murder_mystery_decision_cooldown_days = constant:murder_mystery_cooldown.evolution_retry_days }
-		set_country_flag = {
-			flag = murder_mystery_action_cooldown_active
-			days = murder_mystery_decision_cooldown_days
-		}
-		clear_variable = murder_mystery_decision_cooldown_days
-	}
-	murder_mystery_decision_clear_uncommitted_action = yes
-	clear_variable = murder_mystery_pending_action
-	clear_variable = murder_mystery_pending_phase
-}
-
 murder_mystery_decision_complete_terminal_settlement = {
 	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.world_sector_preparation }
 	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
@@ -847,40 +864,6 @@ murder_mystery_decision_complete_terminal_settlement = {
 		limit = { has_country_flag = murder_mystery_action_failed }
 		clr_country_flag = murder_mystery_terminal_settlement_validated
 	}
-}
-
-murder_mystery_decision_prepare_assassin_state = {
-	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.assassin_state_preparation }
-	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-	murder_mystery_decision_run_investigation_action = yes
-	if = {
-		limit = {
-			has_country_flag = murder_mystery_action_completed
-			OR = {
-				has_country_flag = murder_mystery_action_succeeded
-				has_country_flag = murder_mystery_action_partial
-			}
-		}
-		set_variable = { murder_mystery_requested_split_share = constant:murder_mystery_split.minimum_share }
-		murder_mystery_select_assassin_state_cluster = yes
-		murder_mystery_create_assassin_state_candidate = yes
-	}
-	murder_mystery_decision_clear_uncommitted_action = yes
-	clear_variable = murder_mystery_pending_action
-	clear_variable = murder_mystery_pending_phase
-}
-
-murder_mystery_decision_commit_assassin_state = {
-	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.assassin_state_commit }
-	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-	murder_mystery_commit_assassin_state_creation = yes
-	if = {
-		limit = { NOT = { has_global_flag = murder_mystery_assassin_state_commit_succeeded } }
-		murder_mystery_clear_assassin_state_context = yes
-	}
-	clear_variable = murder_mystery_requested_split_share
-	clear_variable = murder_mystery_pending_action
-	clear_variable = murder_mystery_pending_phase
 }
 
 murder_mystery_decision_create_derivative = {

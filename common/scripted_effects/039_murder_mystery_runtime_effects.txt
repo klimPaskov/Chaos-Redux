@@ -204,6 +204,7 @@ murder_mystery_initialize_country_runtime = {
 	}
 
 	murder_mystery_clamp_country_values = yes
+	murder_mystery_refresh_action_cost_display = yes
 	set_country_flag = murder_mystery_country_runtime_initialized
 }
 
@@ -827,6 +828,7 @@ murder_mystery_begin_action_transaction = {
 	clr_country_flag = murder_mystery_action_political_power_paid
 	clr_country_flag = murder_mystery_action_command_power_paid
 	clr_country_flag = murder_mystery_action_operations_kit_paid
+	clr_country_flag = murder_mystery_action_raid_resources_paid
 	if = {
 		limit = { murder_mystery_action_can_begin = yes }
 		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
@@ -945,6 +947,7 @@ murder_mystery_resolve_action_transaction = {
 		clr_country_flag = murder_mystery_action_political_power_paid
 		clr_country_flag = murder_mystery_action_command_power_paid
 		clr_country_flag = murder_mystery_action_operations_kit_paid
+		clr_country_flag = murder_mystery_action_raid_resources_paid
 		clear_variable = murder_mystery_action_political_power_spent
 		clr_country_flag = murder_mystery_action_transaction_active
 		clr_country_flag = murder_mystery_action_transaction_prepared
@@ -980,6 +983,15 @@ murder_mystery_rollback_action_transaction = {
 				amount = constant:murder_mystery_action_cost.operations_kit_spend
 			}
 		}
+		if = {
+			limit = { has_country_flag = murder_mystery_action_raid_resources_paid }
+			add_command_power = constant:murder_mystery_action_cost.government_raid_command_power_spend
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = constant:murder_mystery_action_cost.government_raid_infantry_equipment_spend
+			}
+			add_manpower = constant:murder_mystery_action_cost.government_raid_manpower_spend
+		}
 		if = { limit = { has_variable = murder_mystery_action_case_before } set_variable = { murder_mystery_case_progress = murder_mystery_action_case_before } }
 		if = { limit = { has_variable = murder_mystery_action_reach_before } set_variable = { murder_mystery_network_reach = murder_mystery_action_reach_before } }
 		if = { limit = { has_variable = murder_mystery_action_cohesion_before } set_variable = { murder_mystery_brotherhood_cohesion = murder_mystery_action_cohesion_before } }
@@ -1000,6 +1012,7 @@ murder_mystery_rollback_action_transaction = {
 		clr_country_flag = murder_mystery_action_political_power_paid
 		clr_country_flag = murder_mystery_action_command_power_paid
 		clr_country_flag = murder_mystery_action_operations_kit_paid
+		clr_country_flag = murder_mystery_action_raid_resources_paid
 		clr_country_flag = murder_mystery_action_transaction_active
 		clr_country_flag = murder_mystery_action_transaction_prepared
 		clr_country_flag = murder_mystery_action_completed
@@ -1098,6 +1111,7 @@ murder_mystery_register_cell = {
 		}
 		event_target:murder_mystery_selected_cell = {
 			set_country_flag = murder_mystery_cell_active
+			murder_mystery_open_foreign_case = yes
 			if = {
 				limit = {
 					check_variable = { var = ROOT.murder_mystery_cell_registration_stage value = constant:murder_mystery_cell_stage.entrenched compare = greater_than_or_equals }
@@ -1145,9 +1159,8 @@ murder_mystery_reconcile_cell_registry = {
 						ROOT = { set_temp_variable = { murder_mystery_cell_registry_row_invalid = constant:murder_mystery_value.one } }
 					}
 				}
-				var:global.murder_mystery_cell_parent_entries^murder_mystery_cell_registry_index = {
-					if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_cell_registry_row_invalid = constant:murder_mystery_value.one } } }
-				}
+				# A lost parent does not end the cell; the movement can outlive
+				# its original host.
 			if = {
 				limit = { check_variable = { var = murder_mystery_cell_registry_row_invalid value = constant:murder_mystery_value.one compare = equals } }
 				remove_from_array = { array = global.murder_mystery_cell_country_entries index = murder_mystery_cell_registry_index }
@@ -1382,7 +1395,7 @@ murder_mystery_commit_evolution_stage = {
 	if = {
 		limit = {
 			has_global_flag = murder_mystery_evolution_ready
-			has_global_flag = murder_mystery_evolution_owner_enabled
+			murder_mystery_runtime_is_active = yes
 			has_variable = murder_mystery_requested_evolution_stage
 			check_variable = { var = murder_mystery_requested_evolution_stage value = constant:murder_mystery_evolution.stage_i compare = greater_than_or_equals }
 			check_variable = { var = murder_mystery_requested_evolution_stage value = constant:murder_mystery_evolution.stage_v compare = less_than_or_equals }
@@ -1706,9 +1719,7 @@ murder_mystery_reconcile_derivative_registry = {
 			var:global.murder_mystery_derivative_country_entries^murder_mystery_derivative_registry_index = {
 				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_derivative_registry_row_invalid = constant:murder_mystery_value.one } } }
 			}
-			var:global.murder_mystery_derivative_parent_entries^murder_mystery_derivative_registry_index = {
-				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_derivative_registry_row_invalid = constant:murder_mystery_value.one } } }
-			}
+			# A defeated parent does not remove the row: inheritance reads it.
 			if = {
 				limit = { check_variable = { var = murder_mystery_derivative_registry_row_invalid value = constant:murder_mystery_value.one compare = equals } }
 				remove_from_array = { array = global.murder_mystery_derivative_country_entries index = murder_mystery_derivative_registry_index }

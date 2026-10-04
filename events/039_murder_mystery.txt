@@ -9,8 +9,11 @@ add_namespace = chaosx.nr39
 # - The opening leader removal and successor installation are performed only by
 #   the validated integration transaction; no event option deletes a character.
 # - Visible reports describe the six investigation phases, evolution reveals,
-#   country split, terminal branch, and permanent outcomes. Decisions and
-#   missions own repeatable actions and costs.
+#   scheduled incidents, the country split, inheritance, defeat outcomes, the
+#   terminal branch, and permanent outcomes. Decisions and missions own
+#   repeatable actions and costs.
+# - chaosx.nr39.90 is the hidden movement pulse and chaosx.nr39.64 absorbs a
+#   capitulated movement country into its winner.
 # ============================================================================
 
 country_event = {
@@ -184,6 +187,48 @@ country_event = {
 }
 
 country_event = {
+	id = chaosx.nr39.9
+	title = chaosx.nr39.9.t
+	desc = chaosx.nr39.9.d
+	picture = GFX_report_event_039_murder_mystery_witness_lost
+	is_triggered_only = yes
+	trigger = {
+		murder_mystery_runtime_is_active = yes
+		has_country_flag = murder_mystery_generic_office_casualty_recorded
+	}
+	option = {
+		name = chaosx.nr39.9.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.10
+	title = chaosx.nr39.10.t
+	desc = chaosx.nr39.10.d
+	picture = GFX_report_event_039_murder_mystery_cell_exposed
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_cell_dismantled }
+	option = {
+		name = chaosx.nr39.10.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.11
+	title = chaosx.nr39.11.t
+	desc = chaosx.nr39.11.d
+	picture = GFX_report_event_039_murder_mystery_evidence_preserved
+	is_triggered_only = yes
+	trigger = { murder_mystery_runtime_is_active = yes }
+	option = {
+		name = chaosx.nr39.11.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
 	id = chaosx.nr39.20
 	title = chaosx.nr39.20.t
 	desc = chaosx.nr39.20.d
@@ -230,22 +275,12 @@ country_event = {
 	picture = GFX_report_event_039_murder_mystery_movement_inheritance
 	is_triggered_only = yes
 	trigger = { has_global_flag = murder_mystery_inheritance_test_pending }
+	immediate = {
+		hidden_effect = { murder_mystery_classify_movement_inheritance = yes }
+	}
 	option = {
 		name = chaosx.nr39.23.a
 		ai_chance = { base = 100 }
-		murder_mystery_apply_limited_inheritance = yes
-		clr_global_flag = murder_mystery_inheritance_test_pending
-		clr_global_flag = murder_mystery_inheritance_test_resolved
-		clr_global_flag = murder_mystery_inheritance_test_failed
-		if = {
-			limit = { has_global_flag = murder_mystery_inheritance_transaction_committed }
-			set_global_flag = murder_mystery_inheritance_test_resolved
-			country_event = { id = chaosx.nr39.24 days = 1 }
-		}
-		else = {
-			set_global_flag = murder_mystery_inheritance_test_failed
-			country_event = { id = chaosx.nr39.25 days = 1 }
-		}
 	}
 }
 
@@ -255,11 +290,10 @@ country_event = {
 	desc = chaosx.nr39.24.d
 	picture = GFX_report_event_039_murder_mystery_movement_inheritance
 	is_triggered_only = yes
-	trigger = { has_global_flag = murder_mystery_inheritance_test_resolved }
+	trigger = { has_global_flag = murder_mystery_inheritance_outcome_heir }
 	option = {
 		name = chaosx.nr39.24.a
 		ai_chance = { base = 100 }
-		clr_global_flag = murder_mystery_inheritance_test_resolved
 	}
 }
 
@@ -269,11 +303,10 @@ country_event = {
 	desc = chaosx.nr39.25.d
 	picture = GFX_report_event_039_murder_mystery_movement_inheritance
 	is_triggered_only = yes
-	trigger = { has_global_flag = murder_mystery_inheritance_test_failed }
+	trigger = { has_global_flag = murder_mystery_inheritance_outcome_underground }
 	option = {
 		name = chaosx.nr39.25.a
 		ai_chance = { base = 100 }
-		clr_global_flag = murder_mystery_inheritance_test_failed
 	}
 }
 
@@ -332,9 +365,7 @@ country_event = {
 	option = {
 		name = chaosx.nr39.31.a
 		ai_chance = { base = 100 }
-		murder_mystery_select_foreign_cell_candidate = yes
-		murder_mystery_seed_bounded_cell = yes
-		murder_mystery_clear_selected_cell_context = yes
+		hidden_effect = { murder_mystery_seed_cell_from_routes = yes }
 	}
 }
 
@@ -348,9 +379,6 @@ country_event = {
 	option = {
 		name = chaosx.nr39.32.a
 		ai_chance = { base = 100 }
-		murder_mystery_select_assassin_state_cluster = yes
-		murder_mystery_create_assassin_state_candidate = yes
-		murder_mystery_commit_assassin_state_creation = yes
 	}
 }
 
@@ -480,7 +508,12 @@ country_event = {
 	desc = chaosx.nr39.61.d
 	picture = GFX_report_event_039_murder_mystery_assassin_state_defeat
 	is_triggered_only = yes
-	trigger = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+	trigger = {
+		OR = {
+			has_global_flag = murder_mystery_terminal_defeat_recorded
+			has_global_flag = murder_mystery_movement_end_recorded
+		}
+	}
 	immediate = {
 		set_temp_variable = { murder_mystery_super_event_visible_days = constant:murder_mystery_super_event.visible_days }
 		set_global_flag = {
@@ -508,9 +541,68 @@ country_event = {
 	desc = chaosx.nr39.62.d
 	picture = GFX_report_event_039_murder_mystery_remnant_cleanup
 	is_triggered_only = yes
-	trigger = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+	trigger = {
+		OR = {
+			has_global_flag = murder_mystery_terminal_defeat_recorded
+			has_global_flag = murder_mystery_movement_end_recorded
+		}
+	}
 	option = {
 		name = chaosx.nr39.62.a
 		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.63
+	title = chaosx.nr39.63.t
+	desc = chaosx.nr39.63.d
+	picture = GFX_news_event_039_murder_mystery_assassin_state_split
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_host_defeated }
+	option = {
+		name = chaosx.nr39.63.a
+		trigger = { NOT = { has_country_flag = murder_mystery_assassin_state } }
+		ai_chance = { base = 100 }
+	}
+	option = {
+		name = chaosx.nr39.63.b
+		trigger = { has_country_flag = murder_mystery_assassin_state }
+		ai_chance = { base = 100 }
+	}
+}
+
+# Hidden. The winner absorbs Event 039 countries that capitulated to it.
+country_event = {
+	id = chaosx.nr39.64
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		murder_mystery_dismantle_defeated_movement_countries = yes
+	}
+}
+
+# Hidden movement pulse. A pulse that fires before the recorded due date was
+# queued before the pulse was rescheduled and is ignored.
+country_event = {
+	id = chaosx.nr39.90
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = {
+				has_variable = global.murder_mystery_pulse_due_date
+				check_variable = { var = global.date value = global.murder_mystery_pulse_due_date compare = greater_than_or_equals }
+			}
+			clr_global_flag = murder_mystery_pulse_scheduled
+			if = {
+				limit = {
+					murder_mystery_runtime_is_active = yes
+					NOT = { has_global_flag = murder_mystery_cleanup_in_progress }
+				}
+				murder_mystery_run_pulse = yes
+			}
+			murder_mystery_schedule_pulse = yes
+		}
 	}
 }
