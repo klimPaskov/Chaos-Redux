@@ -34,9 +34,9 @@ Durable sovereignty and the network corridor remain unavailable until the foundi
 
 Ruthenia uses the shared full Independence Wave focus tree and does not define a bespoke or additive focus tree.
 
-Five idempotent package hooks connect the shared administration, community, military, former-host, and network lanes to the Ruthenian compact.
+Ruthenia's own five-focus group sits inside that tree: Convene the Carpathian Assembly opens it, Guarantee the Mountain Communities and Unify the Carpathian Guards are its two branches, Reconcile the Former-Host Ledgers follows both branches and the founding settlement, and Open the Carpathian Corridor is the capstone.
 
-The same helpers are used by the matching decisions, so completing a focus and a project cannot duplicate their rewards.
+Each focus and its matching paid project call the same helper, so completing one bypasses or hides the other and the reward is never paid twice. A focus cannot start while its project runs, and a project cannot start once its focus has progress.
 
 The p38 force package uses the mountain-frontier profile with tradition 60 and pathway mask 647.
 

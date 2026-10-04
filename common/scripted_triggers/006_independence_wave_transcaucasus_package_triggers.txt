@@ -431,3 +431,33 @@ has_independence_wave_form16_anchor_control = {
 has_independence_wave_form16_arbitration_receipt = {
 	OR = { has_country_flag = iw070_arbitration_receipt has_country_flag = iw071_arbitration_receipt has_country_flag = iw072_arbitration_receipt }
 }
+
+# Exact focus-group gate. The package setup receipt persists after the origin
+# commit; the setup proof used inside the release transaction does not, so it
+# must never gate content a released country uses afterwards.
+can_use_independence_wave_arm_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_iw070_country = yes
+	has_country_flag = independence_wave_iw070_setup_complete
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	230 = { is_owned_and_controlled_by = PREV is_capital = yes }
+}
+
+can_use_independence_wave_geo_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_iw071_country = yes
+	has_country_flag = independence_wave_iw071_setup_complete
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	231 = { is_owned_and_controlled_by = PREV is_capital = yes }
+}
+
+can_use_independence_wave_azr_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_iw072_country = yes
+	has_country_flag = independence_wave_iw072_setup_complete
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	229 = { is_owned_and_controlled_by = PREV is_capital = yes }
+}

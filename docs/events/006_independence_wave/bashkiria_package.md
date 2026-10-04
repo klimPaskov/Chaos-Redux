@@ -6,7 +6,7 @@ IW-045 uses the dormant vanilla BSK carrier, compact anchor state 651 (Ufa), and
 
 The package-local gate is `is_independence_wave_bashkiria_package`. Setup initializes the visible ledgers `independence_wave_bsk_congress_cohesion` and `independence_wave_bsk_frontier_readiness`, clamps them to 0-100, and exposes the category `independence_wave_bashkiria_frontier_compact_category` only after setup. The founding mission requires a route government, both ledgers at the stable threshold, and continued ownership and control of state 651. Ten paid projects serialize through the active-project trigger and cancel on compact-crisis failure.
 
-Five shared focus hooks cover the frontier congress, oilfield communities, mounted guards, former-host ledgers, and the Volga-Ural network corridor. The package preserves vanilla `BSK_yakov_bykin`. Its grounded source-placeholder portrait uses a dedicated package sprite during the roster checkpoint and restores the original vanilla token during cleanup, so the global vanilla sprite is never overridden.
+Bashkiria's five-focus group (Convene the Frontier Congress; Guarantee the Oilfield Communities and Unify the Frontier Guards; Reconcile the Former-Host Ledgers; Connect the Volga-Ural Network) covers the frontier congress, oilfield communities, mounted guards, former-host ledgers, and the Volga-Ural network corridor. Each focus and its matching paid project share one helper and exclude each other. The package preserves vanilla `BSK_yakov_bykin`. Its grounded source-placeholder portrait uses a dedicated package sprite during the roster checkpoint and restores the original vanilla token during cleanup, so the global vanilla sprite is never overridden.
 
 ## Routes and presentation
 

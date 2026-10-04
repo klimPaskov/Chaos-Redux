@@ -328,6 +328,33 @@ independence_wave_iw072_complete_export = {
 	set_country_flag = independence_wave_iw072_export_recognition_negotiated
 }
 
+# COUNTRY scope: an IW-070, IW-071 or IW-072 carrier completing its
+# former-host settlement focus. Both local measures improve; a living former
+# host at peace also enters the shared host-negotiation settlement.
+independence_wave_transcaucasus_focus_settle_former_host = {
+	if = {
+		limit = {
+			OR = {
+				is_independence_wave_iw070_country = yes
+				is_independence_wave_iw071_country = yes
+				is_independence_wave_iw072_country = yes
+			}
+			NOT = { has_country_flag = independence_wave_transcaucasus_host_settlement_focus_complete }
+		}
+		set_temp_variable = { independence_wave_transcaucasus_primary_delta = constant:independence_wave_transcaucasus_value.action_minor_gain }
+		set_temp_variable = { independence_wave_transcaucasus_secondary_delta = constant:independence_wave_transcaucasus_value.action_standard_gain }
+		independence_wave_transcaucasus_change_values = yes
+		if = {
+			limit = {
+				has_independence_wave_living_former_host = yes
+				var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
+			}
+			independence_wave_focus_progress_host_negotiations = yes
+		}
+		set_country_flag = independence_wave_transcaucasus_host_settlement_focus_complete
+	}
+}
+
 independence_wave_transcaucasus_prepare_full_focus = {
 	set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
 	independence_wave_focus_allow_constitutional_route = yes
@@ -506,6 +533,7 @@ independence_wave_cleanup_iw070_iw071_iw072_transcaucasus = {
 		remove_decision = independence_wave_arm_assemble_civic_mandate
 		remove_decision = independence_wave_arm_arbitrate_transcaucasian_frontier
 		clr_country_flag = independence_wave_package_iw070_armenia
+		clr_country_flag = independence_wave_transcaucasus_host_settlement_focus_complete
 		clr_country_flag = independence_wave_iw070_setup_complete
 		clr_country_flag = independence_wave_iw070_force_receipts_recorded
 		clr_country_flag = independence_wave_iw070_route_set_complete
@@ -530,6 +558,7 @@ independence_wave_cleanup_iw070_iw071_iw072_transcaucasus = {
 		remove_decision = independence_wave_geo_balance_port_customs
 		remove_decision = independence_wave_geo_host_border_conference
 		clr_country_flag = independence_wave_package_iw071_georgia
+		clr_country_flag = independence_wave_transcaucasus_host_settlement_focus_complete
 		clr_country_flag = independence_wave_iw071_setup_complete
 		clr_country_flag = independence_wave_iw071_force_receipts_recorded
 		clr_country_flag = independence_wave_iw071_route_set_complete
@@ -554,6 +583,7 @@ independence_wave_cleanup_iw070_iw071_iw072_transcaucasus = {
 		remove_decision = independence_wave_azr_negotiate_export_recognition
 		remove_decision = independence_wave_azr_submit_corridor_guarantees
 		clr_country_flag = independence_wave_package_iw072_azerbaijan
+		clr_country_flag = independence_wave_transcaucasus_host_settlement_focus_complete
 		clr_country_flag = independence_wave_iw072_setup_complete
 		clr_country_flag = independence_wave_iw072_force_receipts_recorded
 		clr_country_flag = independence_wave_iw072_route_set_complete

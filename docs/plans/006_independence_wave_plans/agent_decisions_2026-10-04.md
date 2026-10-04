@@ -348,3 +348,26 @@ Walk-through: region, depth and archetype match the planner loaders; every requi
 Validation: the allocator audit passes with 37 attested packages and 32 reservation groups (updated to allow only the CHU/TAT shared anchor); the country API, flag, FORM-16 and SCN-008 matrix audits pass.
 
 Needs live game: a high-chaos wave or SCN-008 launch that releases CHU or ASY; the leader shown on each route; a FORM-12, FORM-13 or FORM-18 congress.
+
+
+## D14. Round 2: focus groups for the Level 2 packages RUT, BSK, ARM, GEO and AZR
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-3 item; Part 5 requires one country-specific focus group per Level 2 package, and Part 4 records the accepted TAT pattern (adopted in this commit together with the stopped thread's TAT paragraph, corrected to the implemented names and the 720-day mission).
+
+Decisions:
+
+- Each package gets five `shared_focus` nodes in `common/national_focus/006_independence_wave_focus.txt`, imported into `independence_wave_focus_tree` and gated by a new `can_use_independence_wave_<tag>_focus_group`: an opening node, two complementary branches, a former-host settlement node that needs both branches and the generic founding settlement, and a capstone that also needs Recognize Fellow New States. The full map is in Part 4.
+- Rewards reuse each package's existing clamped helpers, so a focus and its paid project reach the same milestone: RUT and BSK reuse their `_focus_` helpers; ARM, GEO and AZR reuse the project completion helpers and `independence_wave_transcaucasus_complete_arbitration`. The Transcaucasus settlement node uses the new `independence_wave_transcaucasus_focus_settle_former_host` (both local measures, plus the shared host-negotiation settlement when the former host lives and is at peace), whose flag is cleared by package cleanup.
+- Exclusivity: a focus is unavailable while its paid project runs and is bypassed once the project's result exists; the project is unavailable once the focus has progress (`focus_progress`, with file-scoped minimums beside each decision file's other `@` values) and hidden once the focus result exists.
+- The RUT and BSK reward hooks on the generic opening focuses (Prepare the Capital Administration, Inventory the State, Bind the First Oath) were removed, so each reward has one focus owner.
+- AI follows D1 with `independence_wave_focus_ai` only: the opening node is `urgent` with strong preference during the founding mission or severe instability; branches are `high`, strongly preferred during the mission, with the civic branch preferred on civic routes and the security branch preferred under a severe host threat or the emergency route; the settlement node is preferred while a living former host is not a severe threat; the capstone is preferred once the route government or the stable settlement exists.
+- Timing: the opening and both branches take 105 days after the generic opening focus, inside every founding window (RUT 600, BSK 420, Transcaucasus 210 days).
+- Icons reuse registered Event 006 goal sprites; all 130 referenced localisation keys exist once, in `006_independence_wave_focus_l_english.yml`.
+
+Defect fixed in the existing groups: the DON, KAR, CRI, KUB and TAT group gates required `has_complete_independence_wave_iw_0XX_package_setup`, whose `independence_wave_origin_prepared` and `independence_wave_origin_activation_ready` flags are cleared by the origin commit. Every one of those groups was therefore unavailable to the released country. Gates now read the package setup receipt (`independence_wave_iw_0XX_setup_complete`), which persists until package cleanup. The same transaction-only proof is still read after commit by the FORM-09 member readiness checks in `006_independence_wave_formable_registry_triggers.txt`; that belongs to the formable item and is recorded there.
+
+MCP: `hoi4.focus_inspect` (national, `common/national_focus/006_independence_wave_focus.txt`, tree `independence_wave_focus_tree`) returned `FOCUS_INSPECTED` with no mod diagnostics at revision `7f79b2979891c18ac712f0eeefe3b614cf4134e0be0c154b21b254a3b59b8998`; it counts 184 direct focuses and omits the 103 imported `shared_focus` nodes, so layout and attachment of these groups remain a recorded MCP gap.
+
+Needs live game: each group visible and progressing for a released RUT, BSK, ARM, GEO or AZR; the DON, KAR, CRI, KUB and TAT groups visible after release.

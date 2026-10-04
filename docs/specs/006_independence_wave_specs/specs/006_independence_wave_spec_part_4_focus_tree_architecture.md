@@ -740,6 +740,40 @@ The parent-selected 420-day charter mission and most-expensive emergency-review 
 
 **Implementation evidence (2026-09-26):** the root-level definitions are in `common/national_focus/006_independence_wave_iw039_don_focus.txt` and their full-tree imports are in `common/national_focus/006_independence_wave_focus.txt`. Current MCP focus inspect/render does not include imported shared nodes, so it cannot prove Don attachment, layout, overlap, or icon visibility. Package runtime, decision/focus, localization, AI, and scenario audits remain in progress; Event 006 remains **HOLD / PARTIAL**.
 
+### Parent-accepted IW-044/TAT focus group map (2026-09-27)
+
+Acceptance basis: the user authorized implementation of the accepted Event 006 specification, and Part 4 requires country-specific groups for highlighted packages while Part 5 requires a focus group for each Level 2 country. The parent accepts a bounded TAT module inside `independence_wave_focus_tree`, preserving the shared-tree contract and the accepted imported-focus MCP layout limitation.
+
+The five-focus module rehomes IW-044's existing one-shot package focus hooks from generic shared focuses into a TAT-gated support path: Convene the Provisional Assembly opens the module, Guarantee River Communities and Integrate Border Guards are complementary branch focuses, Reconcile the Former-Host Ledgers follows both branches, and Connect the Volga Network is the capstone. It reuses the current Rada Cohesion and River Readiness effects, existing route and project flags, existing paid decisions, and currently registered focus icons.
+
+Each matching paid project is an alternate route to the same package milestone; a completed project receipt bypasses its focus reward, and a focus-completed milestone hides the matching paid action through existing one-shot flags. The group adds no government route, country tag, leader, force, formable, decision family, or asset family.
+
+The founding compact mission requires a government route before its deadline, but the four existing TAT government decisions are currently gated on the mission's success flag. The parent accepts exposing those four paid choices while the founding mission is active, then keeping ordinary TAT projects gated until the compact resolves. The existing route outcomes, prices, and AI weights remain authoritative.
+
+The full module path uses the current short/standard focus-cost anchors and must fit the 720-day founding mission alongside the chosen government decision. The TAT AI strategy and existing government-decision weights remain the route AI surface; any new focus-weight tuning requires the complete scenario fixtures and same-scenario probability comparison recorded in Part 7.
+
+The focus MCP inspector counts only direct focuses and omits these imported `shared_focus` definitions. Attachment, icon layout, and route geometry therefore remain blocked as MCP layout evidence under the user's shared-design choice; direct source review is not a visual acceptance substitute.
+
+### Agent-accepted Level 2 groups for IW-038 RUT, IW-045 BSK and IW-070/071/072 ARM, GEO and AZR (2026-10-05)
+
+Acceptance basis: agent decision D14 in `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md`, taken under the user's grant of full design authority, applying Part 5's one-group-per-Level-2-package rule and the accepted TAT pattern above.
+
+Each package gets one five-focus module inside `independence_wave_focus_tree`, imported through `shared_focus` and gated by its own `can_use_independence_wave_<tag>_focus_group`: an opening focus, two complementary branches, a former-host settlement focus that needs both branches and the generic founding settlement, and a capstone.
+
+- RUT: Convene the Carpathian Assembly; Guarantee the Mountain Communities and Unify the Carpathian Guards; Reconcile the Former-Host Ledgers; Open the Carpathian Corridor. Rewards move Civic Concord and Mountain Security.
+- BSK: Convene the Frontier Congress; Guarantee the Oilfield Communities and Unify the Frontier Guards; Reconcile the Former-Host Ledgers; Connect the Volga-Ural Network. Rewards move Congress Cohesion and Frontier Readiness.
+- ARM: Restore the Yerevan Depots; Assemble the Civic Mandate and Integrate the Mountain Garrisons; Settle with the Former Host; Arbitrate the Transcaucasian Frontier. Rewards move Mountain Supply and Civic Legitimacy.
+- GEO: Reopen the Tbilisi Railway; Reconcile the Port Customs and Raise the Mountain Command; Settle with the Former Host; Convene the Border Conference. Rewards move Corridor Access and Federal Mediation.
+- AZR: Guard the Oil Belt; Reconnect the Caspian Railway and Win Export Recognition; Settle with the Former Host; Guarantee the Caspian Corridors. Rewards move Oil Security and Export Legitimacy.
+
+Every reward calls the package's existing clamped helper, so the paid project and its focus share one milestone. A focus cannot start while its paid project runs, a running focus blocks the project (`focus_progress`), and a finished project bypasses the focus. The Transcaucasus settlement focus has no paid alternative; it adds the shared host-negotiation settlement when the former host lives and is at peace. The RUT and BSK hooks that the generic opening focuses used to carry now belong to these groups.
+
+The opening and both branches cost 105 days after the generic opening focus, inside every founding window (RUT 600 days, BSK 420, Transcaucasus 210); the settlement and the capstone follow the founding settlement by design.
+
+Group gates read the package setup receipt that persists after the origin commit. The transaction-only `has_complete_*` setup proof is cleared at commit, so the DON, KAR, CRI, KUB and TAT gates that used it were moved to the same receipt.
+
+AI weights follow the D1 pattern from `independence_wave_focus_ai`. The focus inspector again counts only direct focuses (184) and omits the imported groups, so layout evidence for these modules stays a recorded MCP gap.
+
 ## Country ambition modules
 
 Selected candidates receive one gated ambition module inside the shared generic tree. Other candidates use a regional ambition family with package-specific states and names inside that same tree. This is module-level variation, not a separate bespoke country focus tree.

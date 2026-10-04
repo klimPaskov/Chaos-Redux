@@ -204,3 +204,16 @@ has_complete_independence_wave_iw_038_package_setup = {
 	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
 	has_country_flag = independence_wave_network_member
 }
+
+# Exact focus-group gate. The package setup receipt persists after the origin
+# commit; the setup proof used inside the release transaction does not, so it
+# must never gate content a released country uses afterwards.
+can_use_independence_wave_rut_focus_group = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_rut_package = yes
+	has_country_flag = independence_wave_iw_038_setup_complete
+	can_use_independence_wave_full_focus_framework = yes
+	has_independence_wave_generic_focus_contract = yes
+	NOT = { has_country_flag = independence_wave_rut_compact_crisis_failed }
+	73 = { is_owned_and_controlled_by = PREV is_capital = yes }
+}
