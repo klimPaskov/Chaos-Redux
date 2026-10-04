@@ -401,3 +401,18 @@ Decisions:
 - Surrender progress costs 5, 12 or 20 points above 0.1, 0.25 and 0.4, and above 0.25 forces an immediate recalculation each refresh.
 - Ordinary changes stay smoothed by the existing eight-point step (STR-08).
 - The existing internal-condition penalty near capitulation now reads `surrender_progress` through `check_variable`, because the plain trigger form does not take a script constant.
+
+## L30. Gods focus durations and filters follow the focus spec
+
+Disposition: `implemented`.
+
+Basis: `012_gods_of_africa_focus_integration.md` "Focus duration direction" (35 days for doctrine choices and focused diplomatic shifts, 70 days for institutions, logistics, protection and punishment, longer only for continental commitments), the 2026-09-25 focus audit's pacing gap, and the round 2 remaining-work list (priority 4).
+
+Decisions:
+
+- New file macro `@africa_focus_gods_policy = 5` (weeks) for Reciprocal Covenant, Sovereign Exaction, Recognize the Continental Voice, End Foreign Sponsorship and Let the World Answer.
+- Every other non-capstone Gods node uses `@africa_focus_standard` (10 weeks), including the Office of the Voices, Raise the Continental Arsenals, Rails, Ports and Fuel, the Continental Reserve, Demand the Return of African Soil, Relief Beyond the Continent, the African Expedition and Sanctuary for Reliable Partners, which were at 14 or 18 weeks.
+- The capstone cost (18 weeks) stays only on the Continental Proclamation, Security Oaths, the Hand of Judgment, the Last Sentence, Africa Speaks for Itself and A Place at the Final Council.
+- Filters use vanilla ids: industry on provision and logistics (Continental Reserve, Final Council added), army on protection (Shelter, Relief, Sanctuary, Security Oaths added), war support on judgment (Reach Beyond the Coast added), annexation on Return of African Soil and No Sanctuary for Occupiers.
+
+MCP route evidence (2026-10-05): a narrow `hoi4_focus_inspect` of `africa_continental_focus_tree` after the change, revision `270767ed`, reports 301 focuses, 297 diagnostics, 62 crossings and 53 node intersections, unchanged, and no blocking diagnostic in this mod.
