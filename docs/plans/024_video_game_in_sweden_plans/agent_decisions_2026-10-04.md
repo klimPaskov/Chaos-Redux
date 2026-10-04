@@ -208,3 +208,12 @@ Source-reasoning orderings (raw scores, not normalized probabilities):
 MCP blocker: `hoi4.probability_inspect` (adapter `event_option_ai_chance`, source `{path: events/024_hearts_of_iron.txt}`, pool `chaosx.nr24.2.a/.b/.c`) returned `INTERNAL_ERROR` with no artifact; other source shapes and a `hoi4.probability_compare` attempt for P24-O1 and P24-O3 (before snapshot hash `27098a747576f3498063148c73caf755a1b0537fae0c0726d2852afaa89cac41`) were rejected as invalid arguments because the scenario schema is not published in the tool description.
 No numeric probability acceptance is claimed; the scenario ids above remain for the auditor pass.
 Basis: spec part 3 AI route matrix and principles 1, 2, 8 and 10, foreign response table, probability scenario file.
+
+## D24. Post-implementation review corrections
+
+Decision: a source review of the finished round found three defects and one stale regression fixture, and each was corrected rather than queued.
+The field-validation decision listed its whole start package as raw trigger lines beside the custom requirement tooltip, which exposed the supplied-region proxy internals and the unlocalised `video_game_in_sweden_core_loss_recent` flag; the raw line was removed, so the custom tooltip (which already holds the same check hidden) is the only visible requirement.
+Report `.36` weighted the provisional settlement down at peace and the forced restriction up only in a crisis, so a peaceful AI chose restriction; the peace factor now lowers the restriction and the dual-track crisis factor lowers the settlement, so peace settles and a wartime crisis restricts.
+The rail-table description read "supply consumption falls by -5%", and the Reality Audit description named only the three regions although the active-front alternative is accepted; both texts now state the signed modifier and the front alternative.
+The bounded runtime-observation fixture in `tests/test_runtime_observation.py` now bridges `clear_array`, `force_update_dynamic_modifier`, one-sided `clamp_variable` and untimed `add_dynamic_modifier`, and its restriction case ignores the untimed programme package that the closure detaches again; all 14 cases pass.
+Basis: CLAUDE.md player-visible requirement rule for flags, spec part 3 recovery AI (restriction is the crisis route), repository player-text rules.

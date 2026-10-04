@@ -56,7 +56,8 @@ class ObserverModel(life.FrameModel):
                 continue
             if n.key in ("clr_country_flag", "country_event", "FROM.FROM", "state", "is_core_of",
                          "clear_global_event_target", "remove_mission", "remove_decision", "remove_ideas",
-                         "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier"):
+                         "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier",
+                         "clear_array", "force_update_dynamic_modifier"):
                 name = f"__native_{n.path}_{n.start}_{n.key}"
                 self.native_nodes[name] = n
                 life.APIS[name] = n
@@ -104,11 +105,19 @@ class ObserverModel(life.FrameModel):
             if n.key == "clamp_variable":
                 variable = life.field(n.body, "var")
                 key = (self.actor, variable)
-                self.saved[key] = min(self.number(life.field(n.body, "max")),
-                                      max(self.number(life.field(n.body, "min")), self.saved[key]))
+                value = self.saved[key]
+                if life.field(n.body, "min") is not None:
+                    value = max(self.number(life.field(n.body, "min")), value)
+                if life.field(n.body, "max") is not None:
+                    value = min(self.number(life.field(n.body, "max")), value)
+                self.saved[key] = value
                 return True
             if n.key == "add_dynamic_modifier":
-                self.modifier_grants.append((life.field(n.body, "modifier"), self.number(life.field(n.body, "days"))))
+                days = life.field(n.body, "days")
+                # A package without days lasts until the programme removes it.
+                self.modifier_grants.append((life.field(n.body, "modifier"), None if days is None else self.number(days)))
+                return True
+            if n.key in ("clear_array", "force_update_dynamic_modifier"):
                 return True
         if name in self.native_predicates:
             return self.native_predicates[name]
@@ -230,10 +239,13 @@ class ObservationSourceTests(unittest.TestCase):
         self.assertIn("video_game_in_sweden_program_closed", model.flags["SWE"])
         self.assertNotIn("video_game_in_sweden_program_active", model.flags["SWE"])
         self.assertNotIn("video_game_in_sweden_recovery_active", model.flags["SWE"])
-        self.assertEqual(model.modifier_grants, [("video_game_in_sweden_restriction_backlash", Decimal(90))])
+        # The untimed programme package is detached again by the closure; the
+        # absent-modifier fixture cannot observe that removal, so it is excluded.
+        timed = lambda: [g for g in model.modifier_grants if g[0] != "video_game_in_sweden_program_package"]
+        self.assertEqual(timed(), [("video_game_in_sweden_restriction_backlash", Decimal(90))])
         model.call("video_game_in_sweden_complete_restriction_mission")
         model.call("video_game_in_sweden_timeout_restriction_mission")
-        self.assertEqual(model.modifier_grants, [("video_game_in_sweden_restriction_backlash", Decimal(90))])
+        self.assertEqual(timed(), [("video_game_in_sweden_restriction_backlash", Decimal(90))])
         self.assertEqual(model.scheduled, [("chaosx.nr24.34", Decimal(1))])
 
     def test_native_factory_reservations_match_their_terms(self):
