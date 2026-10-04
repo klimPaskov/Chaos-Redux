@@ -312,6 +312,7 @@ brilliant_scientist_krg_complete_singularity_arming = {
 	clr_country_flag = brilliant_scientist_krg_singularity_arming_active
 	set_country_flag = brilliant_scientist_singularity_armed
 	set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.armed }
+	brilliant_scientist_krg_register_armed_singularity_holder = yes
 	brilliant_scientist_refresh_world_threat_source = yes
 }
 
@@ -349,6 +350,7 @@ brilliant_scientist_krg_complete_controlled_singularity_disarmament = {
 	clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
 	set_country_flag = brilliant_scientist_singularity_disarmament_hold_complete
 	set_country_flag = brilliant_scientist_krg_controlled_singularity_disarmament_complete
+	brilliant_scientist_krg_unregister_armed_singularity_holder = yes
 	brilliant_scientist_refresh_world_threat_source = yes
 }
 
@@ -498,4 +500,105 @@ brilliant_scientist_krg_complete_durable_settlement = {
 		brilliant_scientist_verify_singularity_nonterminal = yes
 		brilliant_scientist_refresh_world_threat_source = yes
 	}
+}
+
+# ---------------------------------------------------------------------------
+# Survivable surrender and temporal escape
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the Kruger State. Records an armed device in the bounded
+# global registry that the enemy surrender-offer decision targets. Stale
+# entries are harmless because the offer target trigger rechecks the device.
+brilliant_scientist_krg_register_armed_singularity_holder = {
+	if = {
+		limit = { NOT = { is_in_array = { array = global.brilliant_scientist_armed_singularity_holders value = THIS } } }
+		add_to_array = { array = global.brilliant_scientist_armed_singularity_holders value = THIS }
+	}
+}
+
+# COUNTRY scope on the Kruger State.
+brilliant_scientist_krg_unregister_armed_singularity_holder = {
+	if = {
+		limit = { is_in_array = { array = global.brilliant_scientist_armed_singularity_holders value = THIS } }
+		remove_from_array = { array = global.brilliant_scientist_armed_singularity_holders value = THIS }
+	}
+}
+
+# COUNTRY scope on the Kruger State, FROM = the country whose surrender offer
+# was accepted. The surrender blocks the capitulation failsafe at once and
+# starts the controlled disarmament under inspection; the supervision mission
+# completes it and verifies the nonterminal state. No Fallout is requested.
+brilliant_scientist_krg_accept_survivable_surrender = {
+	clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+	set_country_flag = brilliant_scientist_survivable_surrender_active
+	set_country_flag = brilliant_scientist_survivable_surrender_ever_accepted
+	clr_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	brilliant_scientist_krg_begin_controlled_singularity_disarmament = yes
+	activate_mission = brilliant_scientist_krg_surrender_disarmament_mission
+	FROM = { set_country_flag = brilliant_scientist_survivable_surrender_guarantor }
+	if = {
+		limit = { NOT = { has_global_flag = brilliant_scientist_news_survivable_surrender_fired } }
+		set_global_flag = brilliant_scientist_news_survivable_surrender_fired
+		news_event = { id = chaosx.nr16.319 days = constant:brilliant_scientist_news_runtime.delay_days }
+	}
+	brilliant_scientist_refresh_world_threat_source = yes
+}
+
+# COUNTRY scope on the Kruger State. The supervision window ends with the
+# existing controlled-disarmament settlement and nonterminal verification.
+brilliant_scientist_krg_complete_surrender_disarmament = {
+	brilliant_scientist_krg_complete_controlled_singularity_disarmament = yes
+	brilliant_scientist_verify_singularity_nonterminal = yes
+}
+
+# COUNTRY scope on the Kruger State. Kruger leaves the present through the
+# authenticated anchor. The device is disarmed without Fallout, the anchor is
+# spent, temporal debt and history are kept, and the state is settled through
+# the existing defeat classification as an ambiguous defeat. The global flag
+# is the future-return record.
+brilliant_scientist_krg_complete_temporal_escape = {
+	set_country_flag = brilliant_scientist_temporal_escape_active
+	set_country_flag = brilliant_scientist_temporal_escape_ambiguous_defeat
+	set_global_flag = brilliant_scientist_kruger_temporal_escape_completed
+	clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+	brilliant_scientist_krg_complete_controlled_singularity_disarmament = yes
+	brilliant_scientist_verify_singularity_nonterminal = yes
+	brilliant_scientist_lose_temporal_anchor = yes
+	if = {
+		limit = { has_character = KRG_warren_kruger }
+		KRG_warren_kruger = {
+			set_character_flag = brilliant_scientist_personal_temporal_escape
+			set_character_flag = brilliant_scientist_personal_removed_from_rule
+			clr_character_flag = brilliant_scientist_personal_active
+			clr_character_flag = brilliant_scientist_personal_sovereign
+		}
+		retire_character = KRG_warren_kruger
+	}
+	set_country_flag = brilliant_scientist_kruger_departed
+	if = {
+		limit = { NOT = { has_global_flag = brilliant_scientist_news_temporal_escape_fired } }
+		set_global_flag = brilliant_scientist_news_temporal_escape_fired
+		news_event = { id = chaosx.nr16.320 days = constant:brilliant_scientist_news_runtime.delay_days }
+	}
+	# The custodian is the surviving former host, otherwise a major enemy, then
+	# any enemy; the shared defeat evaluation classifies the aftermath.
+	if = {
+		limit = {
+			has_event_target = brilliant_scientist_kruger_state_former_host_persistent
+			event_target:brilliant_scientist_kruger_state_former_host_persistent = { exists = yes }
+		}
+		event_target:brilliant_scientist_kruger_state_former_host_persistent = { save_event_target_as = brilliant_scientist_defeat_victor_input }
+	}
+	else_if = {
+		limit = { any_enemy_country = { is_major = yes } }
+		random_enemy_country = {
+			limit = { is_major = yes }
+			save_event_target_as = brilliant_scientist_defeat_victor_input
+		}
+	}
+	else_if = {
+		limit = { any_enemy_country = { exists = yes } }
+		random_enemy_country = { save_event_target_as = brilliant_scientist_defeat_victor_input }
+	}
+	brilliant_scientist_evaluate_defeat_after_global_threat = yes
 }

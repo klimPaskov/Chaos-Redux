@@ -553,3 +553,77 @@ country_event = {
 		}
 	}
 }
+
+# Survivable surrender offer. ROOT is the armed Kruger State and FROM is the
+# offering enemy. Acceptance blocks the capitulation failsafe and starts
+# supervised disarmament; refusal keeps the device armed.
+country_event = {
+	id = chaosx.brilliant_scientist_krg.100
+	title = chaosx.brilliant_scientist_krg.100.t
+	desc = chaosx.brilliant_scientist_krg.100.d
+	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = { clr_country_flag = brilliant_scientist_survivable_surrender_offer_pending }
+	}
+
+	option = {
+		name = chaosx.brilliant_scientist_krg.100.a
+		trigger = {
+			has_country_flag = brilliant_scientist_singularity_armed
+			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+			NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+			NOT = { has_global_flag = world_end }
+		}
+		ai_chance = {
+			base = constant:brilliant_scientist_singularity_alternative.ai_accept_base
+			modifier = {
+				factor = constant:brilliant_scientist_singularity_alternative.ai_deliberate_route_factor
+				brilliant_scientist_krg_is_on_deliberate_singularity_route = yes
+			}
+		}
+		custom_effect_tooltip = brilliant_scientist_survivable_surrender_accept_tt
+		hidden_effect = {
+			brilliant_scientist_krg_accept_survivable_surrender = yes
+			FROM = { country_event = { id = chaosx.brilliant_scientist_krg.101 } }
+		}
+	}
+
+	option = {
+		name = chaosx.brilliant_scientist_krg.100.b
+		ai_chance = {
+			base = constant:brilliant_scientist_singularity_alternative.ai_refuse_base
+		}
+		custom_effect_tooltip = brilliant_scientist_survivable_surrender_refuse_tt
+		hidden_effect = {
+			FROM = { country_event = { id = chaosx.brilliant_scientist_krg.102 } }
+		}
+	}
+}
+
+# The offering country learns that Kruger accepted supervised disarmament.
+country_event = {
+	id = chaosx.brilliant_scientist_krg.101
+	title = chaosx.brilliant_scientist_krg.101.t
+	desc = chaosx.brilliant_scientist_krg.101.d
+	picture = GFX_report_event_016_brilliant_scientist_aftermath_alien_singularity
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.brilliant_scientist_krg.101.a
+	}
+}
+
+# The offering country learns that Kruger refused; the device stays armed.
+country_event = {
+	id = chaosx.brilliant_scientist_krg.102
+	title = chaosx.brilliant_scientist_krg.102.t
+	desc = chaosx.brilliant_scientist_krg.102.d
+	picture = GFX_report_event_016_brilliant_scientist_sovereignty_confrontation
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.brilliant_scientist_krg.102.a
+	}
+}

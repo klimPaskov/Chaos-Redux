@@ -365,3 +365,50 @@ brilliant_scientist_aftermath_remnants_category = {
 		ai_will_do = { base = constant:brilliant_scientist_aftermath_ai.very_high }
 	}
 }
+
+# ============================================================================
+# SINGULARITY COUNTERPLAY
+# ============================================================================
+# A country at war with an armed Kruger State that is near capitulation may
+# offer a survivable surrender. The Kruger State answers through
+# chaosx.brilliant_scientist_krg.100; acceptance blocks the capitulation
+# failsafe and starts supervised disarmament.
+# ============================================================================
+
+brilliant_scientist_singularity_counterplay_category = {
+	brilliant_scientist_offer_survivable_surrender = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		target_array = global.brilliant_scientist_armed_singularity_holders
+		target_root_trigger = {
+			brilliant_scientist_singularity_counterplay_is_visible = yes
+		}
+		target_trigger = {
+			FROM = { brilliant_scientist_singularity_surrender_offer_target_is_valid = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_offer_survivable_surrender_requirements_tt
+				command_power > constant:brilliant_scientist_singularity_alternative.surrender_offer_command_power_floor
+			}
+		}
+		cost = constant:brilliant_scientist_singularity_alternative.surrender_offer_political_power
+		days_re_enable = constant:brilliant_scientist_singularity_alternative.surrender_offer_reenable_days
+		complete_effect = {
+			add_command_power = constant:brilliant_scientist_singularity_alternative.surrender_offer_command_power_spend
+			custom_effect_tooltip = brilliant_scientist_offer_survivable_surrender_effect_tt
+			hidden_effect = {
+				FROM = {
+					set_country_flag = brilliant_scientist_survivable_surrender_offer_pending
+					country_event = { id = chaosx.brilliant_scientist_krg.100 }
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_singularity_alternative.ai_offer_base
+			modifier = {
+				factor = constant:brilliant_scientist_singularity_alternative.ai_offer_fail_deadly_factor
+				FROM = { has_country_flag = brilliant_scientist_singularity_fail_deadly_active }
+			}
+		}
+	}
+}

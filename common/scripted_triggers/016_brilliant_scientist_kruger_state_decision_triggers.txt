@@ -539,3 +539,69 @@ brilliant_scientist_krg_terminal_map_control_is_sufficient = {
 		compare = less_than_or_equals
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Survivable surrender and temporal escape
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope on the Kruger State. The deliberate-use route is the extreme
+# conquest route or an authorized detonation protocol; it refuses surrender
+# and does not escape.
+brilliant_scientist_krg_is_on_deliberate_singularity_route = {
+	OR = {
+		has_country_flag = brilliant_scientist_world_conquest_decision_active
+		has_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active
+	}
+}
+
+# COUNTRY scope on an armed Kruger State, ROOT = the offering country. The
+# offer is possible only past the capitulation-failsafe surrender threshold.
+brilliant_scientist_singularity_surrender_offer_target_is_valid = {
+	brilliant_scientist_is_kruger_sovereign_country = yes
+	has_country_flag = brilliant_scientist_singularity_armed
+	has_war_with = ROOT
+	surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_offer_pending }
+	NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = world_end }
+}
+
+# COUNTRY scope. Category visibility: this country is at war with an armed
+# Kruger State recorded in the bounded armed-holder registry.
+brilliant_scientist_singularity_counterplay_is_visible = {
+	has_war = yes
+	NOT = { brilliant_scientist_is_kruger_sovereign_country = yes }
+	NOT = { has_global_flag = world_end }
+	any_of_scopes = {
+		array = global.brilliant_scientist_armed_singularity_holders
+		has_country_flag = brilliant_scientist_singularity_armed
+		has_war_with = ROOT
+	}
+}
+
+# COUNTRY scope on the Kruger State. The authenticated anchor must still be
+# held, the armed device must not be firing, and no surrender may be underway.
+brilliant_scientist_krg_temporal_escape_can_continue = {
+	brilliant_scientist_krg_terminal_decisions_are_active = yes
+	has_country_flag = brilliant_scientist_terminal_commitment_singularity
+	has_country_flag = brilliant_scientist_singularity_armed
+	has_country_flag = brilliant_scientist_temporal_deployment_completed
+	NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
+	NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+	NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
+	NOT = { has_country_flag = brilliant_scientist_krg_singularity_detonation_protocol_active }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	custom_trigger_tooltip = {
+		tooltip = brilliant_scientist_krg_temporal_escape_anchor_tt
+		has_country_flag = brilliant_scientist_temporal_anchor_authenticated
+		NOT = { has_country_flag = brilliant_scientist_temporal_anchor_lost }
+		has_event_target = brilliant_scientist_temporal_anchor
+		event_target:brilliant_scientist_temporal_anchor = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
+	}
+}

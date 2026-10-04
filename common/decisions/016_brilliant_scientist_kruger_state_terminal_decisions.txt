@@ -489,4 +489,82 @@ brilliant_scientist_krg_terminal_program_category = {
 		remove_effect = { brilliant_scientist_krg_complete_durable_settlement = yes }
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.preferred }
 	}
+
+	# Temporal escape: Kruger leaves the present through the authenticated
+	# anchor instead of firing the armed device. It disarms without Fallout and
+	# settles the state through the shared defeat classification.
+	brilliant_scientist_krg_escape_through_temporal_anchor = {
+		icon = GFX_decision_brilliant_scientist_krg_temporal_anchor
+		visible = {
+			brilliant_scientist_krg_terminal_decisions_are_active = yes
+			has_country_flag = brilliant_scientist_terminal_commitment_singularity
+			has_country_flag = brilliant_scientist_singularity_armed
+			has_country_flag = brilliant_scientist_temporal_deployment_completed
+			NOT = { has_country_flag = brilliant_scientist_temporal_escape_active }
+			NOT = { has_country_flag = brilliant_scientist_survivable_surrender_active }
+		}
+		available = {
+			brilliant_scientist_krg_temporal_escape_can_continue = yes
+			brilliant_scientist_krg_can_pay_heavy_material_cost = yes
+		}
+		cost = constant:brilliant_scientist_krg_cost.pp_strategic
+		days_remove = constant:brilliant_scientist_singularity_alternative.escape_days
+		complete_effect = {
+			brilliant_scientist_krg_pay_heavy_material_cost = yes
+			set_country_flag = brilliant_scientist_krg_temporal_escape_preparing
+		}
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_krg_temporal_escape_cancel_tt
+				NOT = { brilliant_scientist_krg_temporal_escape_can_continue = yes }
+			}
+		}
+		cancel_effect = { clr_country_flag = brilliant_scientist_krg_temporal_escape_preparing }
+		remove_effect = {
+			clr_country_flag = brilliant_scientist_krg_temporal_escape_preparing
+			custom_effect_tooltip = brilliant_scientist_krg_temporal_escape_effect_tt
+			if = {
+				limit = { brilliant_scientist_krg_temporal_escape_can_continue = yes }
+				hidden_effect = { brilliant_scientist_krg_complete_temporal_escape = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_singularity_alternative.ai_escape_base
+			modifier = {
+				factor = constant:brilliant_scientist_singularity_alternative.ai_escape_near_capitulation_factor
+				surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_singularity_alternative.ai_escape_deliberate_route_factor
+				brilliant_scientist_krg_is_on_deliberate_singularity_route = yes
+			}
+			modifier = {
+				factor = constant:brilliant_scientist_krg_ai.never
+				NOT = { surrender_progress > constant:brilliant_scientist_singularity.surrender_progress_threshold }
+			}
+		}
+	}
+
+	# Survivable surrender supervision. The accepted offer starts controlled
+	# disarmament under inspection; the mission completes it and verifies the
+	# nonterminal state. The capitulation failsafe is already blocked.
+	brilliant_scientist_krg_surrender_disarmament_mission = {
+		icon = GFX_decision_brilliant_scientist_krg_controlled_disarmament
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		is_good = yes
+		days_mission_timeout = constant:brilliant_scientist_singularity_alternative.surrender_disarmament_days
+		cancel_trigger = {
+			OR = {
+				has_country_flag = brilliant_scientist_singularity_fallout_request_submitted
+				has_global_flag = brilliant_scientist_singularity_terminal_fired
+				has_global_flag = world_end
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = brilliant_scientist_krg_surrender_disarmament_complete_tt
+			hidden_effect = { brilliant_scientist_krg_complete_surrender_disarmament = yes }
+		}
+	}
 }

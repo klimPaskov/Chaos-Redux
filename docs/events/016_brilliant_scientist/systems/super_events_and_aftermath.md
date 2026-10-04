@@ -166,6 +166,33 @@ The shared Fallout request lock validates and owns the world-end transition, the
 
 This sequence allows the device to fire from any starting chaos tier while still respecting the shared world-end threshold and Fallout pipeline.
 
+## Survivable surrender and temporal escape
+
+The capitulation failsafe fires only when `brilliant_scientist_singularity_capitulation_failsafe_is_ready` holds, and that gate refuses while `brilliant_scientist_survivable_surrender_active` or `brilliant_scientist_temporal_escape_active` is set.
+Both alternatives settle through the existing controlled disarmament and `brilliant_scientist_verify_singularity_nonterminal`; neither requests Fallout or adds a super-event, achievement, focus, or country.
+
+### Survivable surrender
+
+Arming records the Kruger State in the bounded registry `global.brilliant_scientist_armed_singularity_holders`; controlled disarmament and the terminal exit remove it, and stale entries are filtered by the target trigger.
+A country at war with an armed Kruger State sees the Singularity Counterplay category and the targeted decision `brilliant_scientist_offer_survivable_surrender` while the Kruger State's surrender progress is above `brilliant_scientist_singularity.surrender_progress_threshold` (the same threshold as the failsafe).
+The offer costs 50 Political Power and 25 Command Power and can be repeated every 60 days.
+The Kruger State answers through `chaosx.brilliant_scientist_krg.100`.
+Acceptance calls `brilliant_scientist_krg_accept_survivable_surrender`: it sets the surrender flag, which blocks the failsafe at once, cancels any detonation protocol, starts controlled disarmament, and activates the 60-day `brilliant_scientist_krg_surrender_disarmament_mission`, whose timeout completes controlled disarmament and verifies the nonterminal state.
+The offering country receives `chaosx.brilliant_scientist_krg.101` or `.102`, and the first acceptance fires news event `chaosx.nr16.319`.
+The AI accepts by default because the offer already requires a front near collapse; it always refuses while on the deliberate-use route (the world-conquest decision or an authorized detonation protocol).
+The AI offers whenever the gate is open and prefers it twice as much when the fail-deadly command is live.
+
+### Temporal escape
+
+A Kruger State with an armed device, Temporal Deployment, and an authenticated anchor in a state it owns and controls can take `brilliant_scientist_krg_escape_through_temporal_anchor` (100 Political Power, heavy material cost, 14 days).
+Completion calls `brilliant_scientist_krg_complete_temporal_escape`: it disarms the device through controlled disarmament without Fallout, verifies the nonterminal state, spends the anchor, keeps temporal debt and history, retires Kruger with a temporal-escape character flag, and fires news event `chaosx.nr16.320`.
+The state is then judged through `brilliant_scientist_evaluate_defeat_after_global_threat` as an ambiguous defeat (`brilliant_scientist_temporal_escape_ambiguous_defeat`), with the surviving former host, then a major enemy, then any enemy as the custodian input.
+`brilliant_scientist_kruger_temporal_escape_completed` is the global future-return record.
+The AI considers the escape only past the surrender threshold, when the failsafe would otherwise be the next step, and never takes it on the deliberate-use route.
+
+The Directorate GUI's Singularity line reports supervised disarmament after a surrender and the escape after it happens.
+Neither alternative writes a separate Events Log row: Event 016 records its firing and evolutions in the shared log, and these terminal outcomes surface through the KRG report events, the world news events, and the Directorate status line, like the other Kruger State terminal outcomes.
+
 ## Main implementation files
 
 - `common/script_constants/016_brilliant_scientist_super_event_constants.txt`
