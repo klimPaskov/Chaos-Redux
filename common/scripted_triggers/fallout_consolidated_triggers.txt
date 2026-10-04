@@ -34370,6 +34370,34 @@ fallout_generic_capital_is_in_latin_america = {
 	}
 }
 
+# Supported scope: COUNTRY. A survivor whose own package loaded a dedicated
+# focus tree this generation: the NZL Lifeboat State or the USA Federal
+# Continuity package. Map return gives every other survivor the universal tree.
+fallout_country_has_bespoke_survivor_package = {
+	OR = {
+		AND = {
+			has_country_flag = fallout_nzl_lifeboat_package_active
+			has_country_flag = fallout_nzl_focus_tree_loaded
+			has_variable = fallout_nzl_package_generation
+			check_variable = {
+				var = fallout_nzl_package_generation
+				value = global.fallout_transition_generation
+				compare = equals
+			}
+		}
+		AND = {
+			has_country_flag = fallout_b7_usa_package_current
+			has_country_flag = fallout_b7_usa_focus_tree_loaded
+			has_variable = fallout_country_package_generation
+			check_variable = {
+				var = fallout_country_package_generation
+				value = global.fallout_transition_generation
+				compare = equals
+			}
+		}
+	}
+}
+
 fallout_generic_focus_runtime_is_current = {
 	has_global_flag = fallout_active
 	NOT = { has_global_flag = fallout_transition_active }

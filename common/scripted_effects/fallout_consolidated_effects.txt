@@ -17747,7 +17747,7 @@ fallout_manual_reconcile = {
 # CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT EVENT LOG EFFECTS
 # ============================================================================
 # Country-scoped payload binding, idempotent commits, stored-detail loading,
-# and package-card preparation for the dormant NZL Lifeboat State. Delayed
+# and package-card preparation for the NZL Lifeboat State. Delayed
 # resolvers commit the four authored chains. The completed rescue-passage
 # mission commits its separate external partner result before cleanup.
 # ============================================================================
@@ -18434,9 +18434,9 @@ fallout_nzl_load_open_history_payload = {
 # CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT STATE EFFECTS
 # ============================================================================
 # Idempotent value, identity, force, bilateral, and event-chain helpers for the
-# dormant NZL successor pilot. The activation entry point has only a B7-only
-# caller after the existing-tag path proves every required current-generation
-# receipt. The active Fallout allocator remains unconnected.
+# NZL successor package. The activation entry point is called only by the B7
+# pass of survivor allocation after the existing-tag or dynamic path proves
+# every required current-generation receipt.
 # Conflict-disposition helpers below remain allocator-owned.
 # ============================================================================
 
@@ -19029,7 +19029,7 @@ fallout_nzl_retire_fragmented_transfer_source = {
 }
 
 # Supported scope: NZL. Transfers one exact reviewed five-state footprint from
-# five distinct one-state AI sources. This is a dormant B7 pilot. It writes a
+# five distinct one-state AI sources during the B7 allocation pass. It writes a
 # generation-bound source array, retires each emptied source, and then leaves
 # the existing-tag package commit to the established NZL path.
 fallout_nzl_commit_fragmented_exact_footprint = {
@@ -19204,8 +19204,8 @@ fallout_nzl_commit_existing_tag_assignment = {
 	}
 }
 
-# Dormant entry point. Only the B7 existing-tag producer calls it. No on action,
-# event, decision, startup effect, scheduler, or public scenario calls it.
+# Called only by the B7 allocation pass (existing-tag conversion or dynamic
+# materialization). It loads the Lifeboat tree in place of the universal tree.
 fallout_nzl_activate_lifeboat_package = {
 	if = {
 		limit = { fallout_nzl_lifeboat_package_can_activate = yes }
@@ -19251,7 +19251,11 @@ fallout_nzl_activate_lifeboat_package = {
 			limit = { check_variable = { fallout_successor_assignment_capital_state = constant:fallout_nzl_state.auckland } }
 			set_capital = { state = 1079 remember_old_capital = no }
 		}
-		# The universal tree is loaded for every surviving tag during map return.
+		# The Lifeboat tree replaces the universal tree; map return skips this
+		# country when it loads the universal tree for other survivors.
+		load_focus_tree = { tree = fallout_nzl_lifeboat_focus_tree keep_completed = no }
+		mark_focus_tree_layout_dirty = yes
+		set_country_flag = fallout_nzl_focus_tree_loaded
 		set_country_flag = fallout_nzl_ai_override
 		fallout_nzl_create_starting_force_family = yes
 		set_country_flag = fallout_nzl_lifeboat_package_active
@@ -20061,7 +20065,7 @@ fallout_nzl_clear_chain_runtime = {
 # ============================================================================
 # CHAOS REDUX - FALLOUT SUCCESSOR B7 VERTICAL SLICE EFFECTS
 # ============================================================================
-# B7 is a dormant, idempotent allocator pilot. It preserves one USA human
+# B7 is an idempotent allocation pass. It preserves one USA human
 # continuation in place, applies a country-specific package receipt, records
 # one exact capital, names one deterministic fragmentation candidate, and can
 # run the reviewed five-state NZL transfer or one conflict-ledger-gated dynamic
@@ -20108,7 +20112,11 @@ fallout_successor_b7_apply_usa_continuity_package = {
 		set_country_flag = fallout_regional_package_applied
 		set_country_flag = fallout_country_memory_package_applied
 		add_ideas = fallout_usa_federal_continuity_ledger_idea
-		# The universal tree is loaded for every surviving tag during map return.
+		# The continuity tree replaces the universal tree; map return skips this
+		# country when it loads the universal tree for other survivors.
+		load_focus_tree = { tree = fallout_usa_federal_continuity_focus_tree keep_completed = no }
+		mark_focus_tree_layout_dirty = yes
+		set_country_flag = fallout_b7_usa_focus_tree_loaded
 		set_country_flag = fallout_b7_usa_package_current
 	}
 }
@@ -20126,6 +20134,10 @@ fallout_successor_b7_assign_usa_continuity_row = {
 		}
 		var:fallout_player_primary_capital_state = {
 			save_event_target_as = fallout_b7_usa_capital
+		}
+		set_capital = {
+			state = event_target:fallout_b7_usa_capital
+			remember_old_capital = no
 		}
 		set_country_flag = fallout_live_tag_conflict_resolved
 		clr_country_flag = fallout_live_tag_conflict_allocation_pending
@@ -20425,8 +20437,8 @@ fallout_successor_b7_cleanup_usa_project_memory = {
 # package when no live NZL tag is available. The caller must already own a
 # current non-player conflict row. The dynamic output is created only after
 # the exact five-state package footprint and every source retirement gate pass.
-# This remains a dormant B7 vertical slice and never marks global allocation
-# complete.
+# The B7 pass never marks global allocation complete; the in-place allocator
+# finalizes the transaction afterward.
 fallout_successor_b7_materialize_dynamic_nzl = {
 	if = {
 		limit = { fallout_successor_b7_nzl_dynamic_materialization_can_commit = yes }
@@ -45753,6 +45765,22 @@ fallout_apply_transition_phase_survivor_allocation = {
 		}
 		fallout_begin_successor_allocation_transaction = yes
 	}
+	# Country packages with their own trees commit their rows first: the USA
+	# Federal Continuity package for a continuing human USA, and the New Zealand
+	# Lifeboat State for an AI NZL that keeps its island footprint or is rebuilt
+	# from its five island states. The in-place allocator then skips their
+	# resolved rows and gives every other survivor the universal package.
+	if = {
+		limit = {
+			NOT = { has_global_flag = fallout_transition_error }
+			has_global_flag = fallout_successor_allocation_initialized
+			fallout_player_planning_ledger_is_current = yes
+			NOT = { fallout_successor_allocation_is_current = yes }
+			NOT = { fallout_successor_b7_vertical_slice_is_current = yes }
+			fallout_successor_b7_transaction_is_current = yes
+		}
+		fallout_successor_b7_run_vertical_slice = yes
+	}
 	if = {
 		limit = {
 			NOT = { has_global_flag = fallout_transition_error }
@@ -45889,6 +45917,8 @@ fallout_apply_transition_phase_map_return = {
 			limit = {
 				exists = yes
 				has_country_flag = fallout_country_survives
+				# The NZL and USA packages keep their own memory and tree.
+				NOT = { fallout_country_has_bespoke_survivor_package = yes }
 			}
 			fallout_generic_assign_country_memory = yes
 			fallout_generic_focus_activate = yes
