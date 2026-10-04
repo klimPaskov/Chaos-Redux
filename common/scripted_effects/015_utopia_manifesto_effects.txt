@@ -7127,6 +7127,19 @@ utopia_manifesto_refresh_military_growth_capacity = {
 	}
 }
 
+# COUNTRY scope. Black Friday calls this when its sale starts and ends, so
+# the cached growth costs shown on decisions and focuses follow the sale at
+# once. It keeps the stored growth tier, so only the price changes.
+utopia_manifesto_refresh_dynamic_costs_for_sale = {
+	set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_limits.minimum_tier }
+	if = {
+		limit = { has_variable = utopia_manifesto_growth_tier }
+		set_temp_variable = { utopia_manifesto_growth_tier_input = utopia_manifesto_growth_tier }
+	}
+	utopia_manifesto_refresh_dynamic_costs = yes
+	set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_growth_limits.minimum_tier }
+}
+
 utopia_manifesto_refresh_dynamic_costs = {
 	utopia_manifesto_refresh_military_growth_capacity = yes
 	if = {
@@ -7170,6 +7183,37 @@ utopia_manifesto_refresh_dynamic_costs = {
 	set_temp_variable = { utopia_manifesto_scaled_cost = constant:utopia_manifesto_dynamic_cost_per_state.institutional_political_power }
 	multiply_temp_variable = { utopia_manifesto_scaled_cost = utopia_manifesto_growth_state_scale }
 	add_to_variable = { utopia_manifesto_institutional_political_power_cost = utopia_manifesto_scaled_cost }
+
+	# Black Friday: every growth cost is charged at the ratio the sale price
+	# table currently holds (ordinary outside a sale), rounded up and never
+	# above the ordinary amount. The tier copies below inherit the sale price.
+	set_temp_variable = { black_friday_price_ratio = constant:black_friday_event.ratio_basis }
+	if = {
+		limit = { has_variable = global.black_friday_price_table_ratio }
+		set_temp_variable = { black_friday_price_ratio = global.black_friday_price_table_ratio }
+	}
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_military_manpower_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_military_manpower_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_military_infantry_equipment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_military_infantry_equipment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_military_support_equipment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_military_support_equipment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_military_army_experience_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_military_army_experience_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_institutional_manpower_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_institutional_manpower_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_institutional_support_equipment_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_institutional_support_equipment_cost = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = utopia_manifesto_institutional_political_power_cost }
+	black_friday_price_table_quote = yes
+	set_variable = { utopia_manifesto_institutional_political_power_cost = black_friday_price_payable }
 
 	set_variable = { utopia_manifesto_military_manpower_cost_foundation = utopia_manifesto_military_manpower_cost }
 	set_variable = { utopia_manifesto_military_infantry_equipment_cost_foundation = utopia_manifesto_military_infantry_equipment_cost }
@@ -7527,6 +7571,9 @@ utopia_manifesto_execute_paid_military_growth = {
 	army_experience = utopia_manifesto_negative_military_army_xp_cost
 	add_equipment_to_stockpile = { type = infantry_equipment amount = utopia_manifesto_negative_military_infantry_cost }
 	add_equipment_to_stockpile = { type = support_equipment amount = utopia_manifesto_negative_military_support_cost }
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	black_friday_credit_sale_purchase = yes
 	utopia_manifesto_create_paid_formation_template = yes
 	utopia_manifesto_deploy_paid_formation = yes
 	if = { limit = { NOT = { has_variable = utopia_manifesto_military_growth_batches } } set_variable = { utopia_manifesto_military_growth_batches = constant:utopia_manifesto_math.zero } }
@@ -7581,6 +7628,9 @@ utopia_manifesto_apply_paid_institutional_growth = {
 		add_manpower = utopia_manifesto_negative_institutional_manpower_cost
 		add_political_power = utopia_manifesto_negative_institutional_political_power_cost
 		add_equipment_to_stockpile = { type = support_equipment amount = utopia_manifesto_negative_institutional_support_cost }
+		set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+		black_friday_credit_sale_purchase = yes
 		set_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_growth_limits.institutional_need_reduction_per_tier }
 		multiply_temp_variable = { utopia_manifesto_need_delta = utopia_manifesto_growth_tier_input }
 		multiply_temp_variable = { utopia_manifesto_need_delta = constant:utopia_manifesto_math.negative_one }

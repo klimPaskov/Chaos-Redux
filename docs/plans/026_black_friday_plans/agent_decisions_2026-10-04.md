@@ -240,3 +240,17 @@ Basis:
 The human counter-actions against the rats (Royal Node strike, Crown Strike, Royal Burrow sealing, armored clearance, the last-response missions) are purchases and read the sale price (D13).
 
 Disposition: `not_a_purchase_cost`, recorded in the registry. This closes the Event 020 tranche 1 surface.
+
+## D15. Event 015 growth costs and the Auxiliary Contract follow the sale
+
+Decision: the two Event 015 surfaces that D11 queued now charge the Black Friday price.
+
+- State-scaled military and institutional growth: `utopia_manifesto_refresh_dynamic_costs` applies the ratio the Black Friday price table holds (`global.black_friday_price_table_ratio`) to its seven base costs through `black_friday_price_table_quote` before the foundation, network, capstone, and current-tier copies are made, so every tier, the affordability triggers, the payment, and the focus and decision cost rows read one sale-priced cache. Payment already refreshes the cache at click or completion time; `black_friday_price_table_refresh_owner_quotes` also refreshes every accepted country through `utopia_manifesto_refresh_dynamic_costs_for_sale`, which keeps the stored growth tier, when the sale starts and ends.
+- Auxiliary Contract: the consumed convoys read `global.black_friday_price_utopia_manifesto_decision_cost_convoys_medium` in the trigger, the payment, and both cost texts. The support equipment and trucks delivered to the contracting neighbour keep their ordinary amounts under D11's transfer rule. The combined Support Equipment requirement is now consistent during a sale, because it is computed from the sale-priced foundation formation plus the ordinary delivery, which removes the reason D11 held the contract back.
+- Each paid formation or institutional batch credits the equipment family (`black_friday_credit_sale_purchase`); the Auxiliary Contract's package payment already credits through `utopia_manifesto_pay_prepared_decision_cost`, in the same family.
+
+Basis: the lead's tranche 1 acceptance (one quote for display, affordability, and payment) and the cached-quote pattern accepted for Event 020 in D13. The one `every_country` pass runs only at sale start and end and is limited to countries that accepted the manifesto.
+No AI weight changes.
+
+Disposition: implemented (source). Tranche 1 is complete with D12 to D15.
+Live checks that a focus-completion formation and an institutional batch charge the sale price, and that the Auxiliary Contract shows and charges the sale convoy price, are `needs_live_game`.

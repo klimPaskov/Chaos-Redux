@@ -248,7 +248,7 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 98.
 
 #### Event 015 Utopia Manifesto (custom costs; native costs converted)
 
-Converted (agent decision D11): every constant-amount custom cost reads the sale price table in its trigger, payment, and text. Remaining in tranche 1: the Auxiliary Contract custom costs and the state-scaled military and institutional growth costs. The line list below predates the conversion.
+Converted (agent decisions D11 and D15): every constant-amount custom cost reads the sale price table in its trigger, payment, and text, and the state-scaled military and institutional growth costs and the Auxiliary Contract's consumed convoys follow the sale. No Event 015 cost remains queued. The line list below predates the conversion.
 
 Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 101.
 
