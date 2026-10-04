@@ -85,13 +85,13 @@ chaosx_super_event.12.d: "The Auschwitz laboratory command has broken with Berli
 
 ```yaml
 chaosx_super_event.75.t: "The Empty Granaries"
-chaosx_super_event.75.q: "\"Every Kolchosi [Kolkhoz or collective farm] is starving, it has not got a morsel of bread!\"\n§Y—Jerry Berman, letter of 3 February 1933§!"
+chaosx_super_event.75.q: "\"Every Kolchosi (Kolkhoz or collective farm) is starving, it has not got a morsel of bread!\"\n§Y—Jerry Berman, letter of 3 February 1933§!"
 chaosx_super_event.75.a: "Give us this day our daily bread."
 chaosx_super_event.75.d: "Across the Soviet countryside, grain extraction, forced-labor quotas, political instability, and orders issued under fear have converged into a famine the ministries can no longer classify as a local shortage. Villages are losing people faster than reports can be rewritten, and hunger feeds every grievance already pulling at the Union.\n\nRelief, concealment, or an admission of collapse are the remaining choices. None can restore the bread already taken."
 ```
 
 - Quote source: the National Museum of the Holodomor-Genocide's transcription of Jerry Berman's 3 February 1933 letter: <https://holodomormuseum.org.ua/letters/03-02-1933/>. The Museum identifies Berman and the provenance of the donated letters here: <https://holodomormuseum.org.ua/en/jerry-berman-s-letters/>.
-- Confidence: **high**. The bracketed explanation of `Kolchosi` is retained from the Museum's transcription rather than silently modernized.
+- Confidence: **high**. The Museum transcription's explanation of `Kolchosi` is retained rather than silently modernized; it appears in parentheses because the game evaluates square brackets in localisation as text commands.
 - Remark source: Matthew 6:11 in the public-domain King James Version: <https://www.biblegateway.com/passage/?search=Matthew+6%3A11&version=KJV>.
 - Fit: the description names the four live pressure families—grain extraction, forced-labor quotas, low stability, and high paranoia—without claiming the unimplemented war/Union-Crisis gate. The prayer fragment is culturally legible, restrained, and bitterly opposed to the state's extraction logic.
 
