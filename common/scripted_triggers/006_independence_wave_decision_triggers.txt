@@ -484,7 +484,7 @@ can_pay_independence_wave_provisional_capital_cost = {
 	NOT = { has_country_flag = independence_wave_dm01_capital_failed }
 	NOT = { has_country_flag = independence_wave_dm01_costs_reserved }
 	NOT = { has_active_mission = independence_wave_secure_provisional_capital }
-	capital_scope = { is_controlled_by = ROOT }
+	capital_scope = { is_controlled_by = PREV }
 	independence_wave_secure_provisional_capital_garrison_satisfied = yes
 	independence_wave_secure_provisional_capital_equipment_cost_satisfied = yes
 	independence_wave_secure_provisional_capital_transport_cost_satisfied = yes
@@ -765,13 +765,16 @@ has_independence_wave_reclamation_front_preflight = {
 # DM-01's capital garrison is force-tier aware. Fragile releases can satisfy
 # the objective with two divisions; stronger releases retain the established
 # four-division requirement. The helper is evaluated only after package setup,
-# when `independence_wave_force_level` has been published.
+# when `independence_wave_force_level` has been published. Country scope: inside
+# capital_scope, PREV is the checked country, and inside that PREV block PREV is
+# the capital state again, so the garrison is counted for the refreshed country
+# even when another country's effect triggered the refresh.
 independence_wave_secure_provisional_capital_garrison_satisfied = {
 	OR = {
 		AND = {
 			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
 			capital_scope = {
-				ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS } }
+				PREV = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS } }
 			}
 		}
 		AND = {
@@ -780,7 +783,7 @@ independence_wave_secure_provisional_capital_garrison_satisfied = {
 				NOT = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
 			}
 			capital_scope = {
-				ROOT = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS } }
+				PREV = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS } }
 			}
 		}
 	}

@@ -210,3 +210,24 @@ MCP route evidence: `hoi4.event_inspect` (`mode = trace`, selector `{kind = even
 Allocator audit: passes with 35 attested packages and 31 compatible reservation groups, and the new identity-trigger guard scans 52 exact identity triggers.
 
 Needs live game: a fresh 1936 SCN-008 launch at Low that releases its countries. If a later stage fails, the next QA save names it through the detail and package-id globals. The finalizer is all-or-nothing, so one package with a broken setup still stops the whole wave after the state transfer; detail codes 43-46 and the package id now expose that case.
+
+## D10. Round 2: the shared state refresh reads the refreshed country, not ROOT
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 item 2 and decision 2. `independence_wave_refresh_country_state` is Event 006 core code owned by this workstream, so the D8 note that left it to a core-framework owner is withdrawn.
+
+Defect: the refresh runs whenever one of the five values changes, including from a foreign-reaction stance, a League decision, the host response or the executor, where ROOT is another country. Four reachable definitions read ROOT as the refreshed country:
+
+- `has_independence_wave_current_capital_controlled_by_root` (`is_controlled_by = ROOT`), reached through `can_independence_wave_enter_provisional_phase`, so the provisional phase was delayed or wrongly blocked.
+- `can_pay_independence_wave_provisional_capital_cost` (`capital_scope = { is_controlled_by = ROOT }`) and `independence_wave_secure_provisional_capital_garrison_satisfied` (`ROOT = { divisions_in_state = ... }`), reached through `independence_wave_start_provisional_capital_mission`, so DM-01 could start late, or never, when the refresh came from another country.
+- `independence_wave_achievement_refresh_country_state` (`var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }`), so the peaceful host settlement proof read the wrong country.
+
+Decisions:
+
+- The capital trigger is renamed `has_independence_wave_current_capital_control` and uses `is_controlled_by = PREV` inside `any_owned_state`, so it always tests the checked country. All 69 callers (the AXX, BAX and BBX decisions and missions in `006_independence_wave_balkan_decisions.txt`) evaluate it in the country's own decision scope, where THIS and ROOT are the same country, so their meaning is unchanged. Two quality documents that narrate an earlier commit keep the old name as history.
+- The DM-01 cost gate uses `capital_scope = { is_controlled_by = PREV }`. The garrison gate uses `capital_scope = { PREV = { divisions_in_state = { state = PREV ... } } }`: entering PREV pushes the country, and PREV inside it is the capital again (the wiki's `start_civil_war` and `PREV.PREV` examples show the same push). DM-01's own decision and mission scopes are the country, so they are unchanged.
+- The achievement settlement proof uses `has_war_with = PREV` inside the former-host scope.
+- `has_independence_wave_safe_reserve_surplus` also reads ROOT but is reached only from decisions of the country itself, so it stays as it is.
+
+Validation: a call-graph walk from `independence_wave_refresh_country_state` and the five `independence_wave_change_*` entry points (58 or 59 reachable scripted effects and triggers) finds no remaining ROOT reference.

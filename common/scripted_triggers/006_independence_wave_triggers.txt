@@ -277,20 +277,23 @@ has_independence_wave_severe_instability = {
 	check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.severe compare = greater_than_or_equals }
 }
 
-# Empty fixed-tag shells do not have a capital until their package states are
-# transferred. Use an owned-state query for current-capital control checks so
-# dormant shells fail closed without evaluating an invalid capital_scope target.
-has_independence_wave_current_capital_controlled_by_root = {
+# Country scope. Empty fixed-tag shells do not have a capital until their
+# package states are transferred. Use an owned-state query for current-capital
+# control checks so dormant shells fail closed without evaluating an invalid
+# capital_scope target. PREV is the checked country, so the proof stays correct
+# when a foreign stance, League decision, host response or the executor
+# refreshes this country from another country's effect.
+has_independence_wave_current_capital_control = {
 	any_owned_state = {
 		is_capital = yes
-		is_controlled_by = ROOT
+		is_controlled_by = PREV
 	}
 }
 
 can_independence_wave_enter_provisional_phase = {
 	is_independence_wave_package_content_active = yes
 	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.emergency_founding }
-	has_independence_wave_current_capital_controlled_by_root = yes
+	has_independence_wave_current_capital_control = yes
 	check_variable = { var = independence_wave_capacity value = constant:independence_wave_phase_gate.provisional_capacity compare = greater_than_or_equals }
 }
 
