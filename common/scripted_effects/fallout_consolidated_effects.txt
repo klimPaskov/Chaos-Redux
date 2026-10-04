@@ -2309,6 +2309,475 @@ air_cleanliness_treaty_handle_annexed_country = {
 	air_cleanliness_treaty_reconcile_founder = yes
 }
 
+# ---------------------------------------------------------------------------
+# Treaty operations
+# ---------------------------------------------------------------------------
+# Each operation is a timed treaty decision. The start effect pays every cost
+# once and records the sponsor's receipt. The decision's cancel trigger
+# re-validates the receipt every day, so membership loss, war between the
+# pair, dissolution, and the Fallout pause cancel the operation through the
+# cancel effect. Shared locks on the world, a state, or a target country are
+# timed flags that outlive the operation by a short slack, so an annexed
+# sponsor can never leave a permanent lock behind.
+
+# Supported scope: COUNTRY, the sponsor. Input: temporary
+# air_cleanliness_treaty_withdrawn_operation_request (an operation id).
+air_cleanliness_treaty_report_withdrawn_operation = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { has_global_flag = fallout_transition_active }
+			NOT = { has_global_flag = fallout_active }
+		}
+		set_variable = { air_cleanliness_treaty_withdrawn_operation = air_cleanliness_treaty_withdrawn_operation_request }
+		country_event = { id = chaosx_air_treaty.14 }
+	}
+}
+
+# Supported scope: COUNTRY, the decision actor.
+air_cleanliness_treaty_start_sampling_grid = {
+	if = {
+		limit = { air_cleanliness_treaty_can_start_sampling_grid = yes }
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_operation.sampling_grid_support_cost }
+		air_winter_response_pay_support_equipment = yes
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_duration_days }
+		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
+		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_in_progress days = var:air_cleanliness_treaty_operation_lock_days }
+		set_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
+		set_variable = { air_cleanliness_treaty_sampling_grid_generation = global.air_cleanliness_treaty_generation }
+	}
+}
+
+# Supported scope: COUNTRY, the sponsor.
+air_cleanliness_treaty_release_sampling_grid_project = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_sampling_grid_sponsor }
+		clr_global_flag = air_cleanliness_treaty_sampling_grid_in_progress
+	}
+	clr_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
+	clear_variable = air_cleanliness_treaty_sampling_grid_generation
+}
+
+# Supported scope: COUNTRY, the sponsor whose grid failed validation.
+air_cleanliness_treaty_cancel_sampling_grid_project = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_sampling_grid_sponsor }
+		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.sampling_grid }
+		air_cleanliness_treaty_report_withdrawn_operation = yes
+	}
+	air_cleanliness_treaty_release_sampling_grid_project = yes
+}
+
+# Supported scope: COUNTRY, the timed decision sponsor. Every live member
+# receives the forecasting report.
+air_cleanliness_treaty_complete_sampling_grid = {
+	if = {
+		limit = { air_cleanliness_treaty_sampling_grid_project_is_valid = yes }
+		save_event_target_as = air_cleanliness_treaty_sampling_grid_sponsor
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_active_days }
+		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_active days = var:air_cleanliness_treaty_operation_lock_days }
+		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_cooldown_days }
+		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		set_variable = { global.air_cleanliness_treaty_sampling_grid_generation = global.air_cleanliness_treaty_generation }
+		set_variable = { global.air_cleanliness_treaty_sampling_grid_built_date = global.date }
+		set_country_flag = air_cleanliness_treaty_sampling_grid_founder_memory
+		air_cleanliness_treaty_release_sampling_grid_project = yes
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			if = {
+				limit = { air_cleanliness_treaty_country_is_live_member = yes }
+				country_event = { id = chaosx_air_treaty.10 }
+			}
+		}
+	}
+	else = { air_cleanliness_treaty_cancel_sampling_grid_project = yes }
+}
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the recipient.
+air_cleanliness_treaty_start_seed_archive = {
+	if = {
+		limit = { air_cleanliness_treaty_can_send_seed_archive = yes }
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_operation.seed_archive_support_cost }
+		air_winter_response_pay_support_equipment = yes
+		set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_operation.seed_archive_convoy_cost }
+		air_winter_response_pay_convoys = yes
+		set_country_flag = air_cleanliness_treaty_seed_archive_active
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.seed_archive_cooldown_days }
+		set_country_flag = { flag = air_cleanliness_treaty_seed_archive_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		set_variable = { air_cleanliness_treaty_seed_archive_recipient = FROM }
+		set_variable = { air_cleanliness_treaty_seed_archive_generation = global.air_cleanliness_treaty_generation }
+	}
+}
+
+# Supported scope: COUNTRY, the donor.
+air_cleanliness_treaty_clear_seed_archive_project = {
+	clr_country_flag = air_cleanliness_treaty_seed_archive_active
+	clear_variable = air_cleanliness_treaty_seed_archive_recipient
+	clear_variable = air_cleanliness_treaty_seed_archive_generation
+}
+
+# Supported scope: COUNTRY, the donor whose shipment failed validation.
+air_cleanliness_treaty_cancel_seed_archive = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_seed_archive_active }
+		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.seed_archive }
+		air_cleanliness_treaty_report_withdrawn_operation = yes
+	}
+	air_cleanliness_treaty_clear_seed_archive_project = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the decision target.
+# Seed stock reaches every Air Winter state the recipient owns and controls.
+# Both governments keep the archive memory, which later improves the food
+# position of a Fallout survivor.
+air_cleanliness_treaty_complete_seed_archive = {
+	if = {
+		limit = { air_cleanliness_treaty_seed_archive_project_is_valid = yes }
+		save_event_target_as = air_cleanliness_treaty_seed_archive_donor
+		set_country_flag = air_cleanliness_treaty_seed_archive_memory
+		FROM = {
+			save_event_target_as = air_cleanliness_treaty_seed_archive_recipient
+			set_temp_variable = { air_cleanliness_treaty_seed_archive_state_count = constant:air_cleanliness_treaty_operation.zero }
+			every_owned_state = {
+				limit = {
+					is_controlled_by = PREV
+					air_winter_state_is_valid = yes
+				}
+				air_winter_normalize_state_ledger = yes
+				add_to_variable = { air_winter_food_reserve = constant:air_cleanliness_treaty_operation.seed_archive_food_reserve_gain }
+				air_winter_normalize_state_ledger = yes
+				air_winter_calculate_survival_value = yes
+				add_to_temp_variable = { air_cleanliness_treaty_seed_archive_state_count = constant:air_cleanliness_treaty_operation.one }
+			}
+			set_variable = { air_cleanliness_treaty_seed_archive_last_state_count = air_cleanliness_treaty_seed_archive_state_count }
+			set_country_flag = air_cleanliness_treaty_seed_archive_memory
+			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.seed_archive_cooldown_days }
+			set_country_flag = { flag = air_cleanliness_treaty_seed_archive_recently_received days = var:air_cleanliness_treaty_operation_lock_days }
+			country_event = { id = chaosx_air_treaty.11 }
+		}
+		air_cleanliness_treaty_clear_seed_archive_project = yes
+	}
+	else = { air_cleanliness_treaty_cancel_seed_archive = yes }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the recipient. The
+# receiving state is the sponsor's designated reception state when it borders
+# the source, otherwise the bordering sponsor state with the most shelter.
+air_cleanliness_treaty_start_evacuation_corridor = {
+	if = {
+		limit = { air_cleanliness_treaty_can_open_evacuation_corridor = yes }
+		FROM = {
+			save_event_target_as = air_cleanliness_treaty_evacuation_recipient
+			var:air_winter_response_priority_state = { save_event_target_as = air_cleanliness_treaty_evacuation_source }
+		}
+		set_temp_variable = { air_cleanliness_treaty_evacuation_best_score = constant:air_cleanliness_treaty_operation.negative_one }
+		set_temp_variable = { air_cleanliness_treaty_evacuation_receiver_found = constant:air_cleanliness_treaty_operation.zero }
+		event_target:air_cleanliness_treaty_evacuation_source = {
+			every_neighbor_state = {
+				limit = { air_cleanliness_treaty_state_can_receive_evacuees = yes }
+				set_temp_variable = { air_cleanliness_treaty_evacuation_score = air_winter_shelter_capacity }
+				if = {
+					limit = { air_winter_response_is_designated_reception_state = yes }
+					add_to_temp_variable = { air_cleanliness_treaty_evacuation_score = constant:air_cleanliness_treaty_operation.evacuation_reception_state_priority }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = air_cleanliness_treaty_evacuation_score
+							value = air_cleanliness_treaty_evacuation_best_score
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { air_cleanliness_treaty_evacuation_best_score = air_cleanliness_treaty_evacuation_score }
+					set_temp_variable = { air_cleanliness_treaty_evacuation_receiver_found = constant:air_cleanliness_treaty_operation.one }
+					save_event_target_as = air_cleanliness_treaty_evacuation_receiver
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = air_cleanliness_treaty_evacuation_receiver_found value = constant:air_cleanliness_treaty_operation.one compare = equals } }
+			set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_operation.evacuation_support_cost }
+			air_winter_response_pay_support_equipment = yes
+			set_temp_variable = { air_winter_response_payment = constant:air_cleanliness_treaty_operation.evacuation_convoy_cost }
+			air_winter_response_pay_convoys = yes
+			set_country_flag = air_cleanliness_treaty_evacuation_active
+			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.evacuation_cooldown_days }
+			set_country_flag = { flag = air_cleanliness_treaty_evacuation_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+			set_variable = { air_cleanliness_treaty_evacuation_recipient = FROM }
+			set_variable = { air_cleanliness_treaty_evacuation_source_state = event_target:air_cleanliness_treaty_evacuation_source.id }
+			set_variable = { air_cleanliness_treaty_evacuation_receiver_state = event_target:air_cleanliness_treaty_evacuation_receiver.id }
+			set_variable = { air_cleanliness_treaty_evacuation_generation = global.air_cleanliness_treaty_generation }
+			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.evacuation_duration_days }
+			add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
+			event_target:air_cleanliness_treaty_evacuation_source = {
+				set_state_flag = { flag = air_cleanliness_treaty_evacuation_reserved days = var:air_cleanliness_treaty_operation_lock_days }
+				set_variable = { air_cleanliness_treaty_evacuation_sponsor = ROOT }
+			}
+			event_target:air_cleanliness_treaty_evacuation_receiver = {
+				set_state_flag = { flag = air_cleanliness_treaty_evacuation_receiving days = var:air_cleanliness_treaty_operation_lock_days }
+				set_variable = { air_cleanliness_treaty_evacuation_sponsor = ROOT }
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY, the sponsor. Releases only reservations that still
+# name this sponsor.
+air_cleanliness_treaty_clear_evacuation_project = {
+	save_event_target_as = air_cleanliness_treaty_evacuation_cleanup_sponsor
+	if = {
+		limit = { has_variable = air_cleanliness_treaty_evacuation_source_state }
+		var:air_cleanliness_treaty_evacuation_source_state = {
+			if = {
+				limit = {
+					has_variable = air_cleanliness_treaty_evacuation_sponsor
+					check_variable = {
+						var = air_cleanliness_treaty_evacuation_sponsor
+						value = event_target:air_cleanliness_treaty_evacuation_cleanup_sponsor
+						compare = equals
+					}
+				}
+				clr_state_flag = air_cleanliness_treaty_evacuation_reserved
+				clear_variable = air_cleanliness_treaty_evacuation_sponsor
+			}
+		}
+	}
+	if = {
+		limit = { has_variable = air_cleanliness_treaty_evacuation_receiver_state }
+		var:air_cleanliness_treaty_evacuation_receiver_state = {
+			if = {
+				limit = {
+					has_variable = air_cleanliness_treaty_evacuation_sponsor
+					check_variable = {
+						var = air_cleanliness_treaty_evacuation_sponsor
+						value = event_target:air_cleanliness_treaty_evacuation_cleanup_sponsor
+						compare = equals
+					}
+				}
+				clr_state_flag = air_cleanliness_treaty_evacuation_receiving
+				clear_variable = air_cleanliness_treaty_evacuation_sponsor
+			}
+		}
+	}
+	clr_country_flag = air_cleanliness_treaty_evacuation_active
+	clear_variable = air_cleanliness_treaty_evacuation_recipient
+	clear_variable = air_cleanliness_treaty_evacuation_source_state
+	clear_variable = air_cleanliness_treaty_evacuation_receiver_state
+	clear_variable = air_cleanliness_treaty_evacuation_generation
+}
+
+# Supported scope: COUNTRY, the sponsor whose corridor failed validation.
+air_cleanliness_treaty_cancel_evacuation_corridor = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_evacuation_active }
+		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.evacuation }
+		air_cleanliness_treaty_report_withdrawn_operation = yes
+	}
+	air_cleanliness_treaty_clear_evacuation_project = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the decision target.
+# One exact debit leaves the source through the shared exact state loss helper
+# with no Deaths record, because nobody dies on the corridor. The measured debit
+# is credited to the receiving state and the credit is read back from the
+# state population.
+air_cleanliness_treaty_complete_evacuation_corridor = {
+	if = {
+		limit = { air_cleanliness_treaty_evacuation_project_is_valid = yes }
+		save_event_target_as = air_cleanliness_treaty_evacuation_sponsor
+		FROM = { save_event_target_as = air_cleanliness_treaty_evacuation_recipient }
+		var:air_cleanliness_treaty_evacuation_source_state = { save_event_target_as = air_cleanliness_treaty_evacuation_source }
+		var:air_cleanliness_treaty_evacuation_receiver_state = { save_event_target_as = air_cleanliness_treaty_evacuation_receiver }
+
+		set_temp_variable = { air_cleanliness_treaty_evacuation_request = constant:air_cleanliness_treaty_operation.zero }
+		set_temp_variable = { air_cleanliness_treaty_evacuation_capacity = constant:air_cleanliness_treaty_operation.zero }
+		set_temp_variable = { air_cleanliness_treaty_evacuation_protected = constant:air_cleanliness_treaty_operation.evacuation_protected_source_k }
+		multiply_temp_variable = { air_cleanliness_treaty_evacuation_protected = constant:chaos_meter_deaths.people_per_k }
+		event_target:air_cleanliness_treaty_evacuation_source = {
+			set_temp_variable = { air_cleanliness_treaty_evacuation_request = state_population_k }
+			multiply_temp_variable = { air_cleanliness_treaty_evacuation_request = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { air_cleanliness_treaty_evacuation_request = constant:air_cleanliness_treaty_operation.evacuation_population_share }
+			round_temp_variable = air_cleanliness_treaty_evacuation_request
+		}
+		event_target:air_cleanliness_treaty_evacuation_receiver = {
+			set_temp_variable = { air_cleanliness_treaty_evacuation_capacity = state_population_k }
+			multiply_temp_variable = { air_cleanliness_treaty_evacuation_capacity = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { air_cleanliness_treaty_evacuation_capacity = constant:air_cleanliness_treaty_operation.evacuation_capacity_share }
+			round_temp_variable = air_cleanliness_treaty_evacuation_capacity
+		}
+		clamp_temp_variable = {
+			var = air_cleanliness_treaty_evacuation_request
+			min = constant:air_cleanliness_treaty_operation.zero
+			max = air_cleanliness_treaty_evacuation_capacity
+		}
+
+		set_temp_variable = { air_cleanliness_treaty_evacuation_applied = constant:air_cleanliness_treaty_operation.zero }
+		if = {
+			limit = { check_variable = { var = air_cleanliness_treaty_evacuation_request value = constant:air_cleanliness_treaty_operation.zero compare = greater_than } }
+			event_target:air_cleanliness_treaty_evacuation_source = {
+				set_temp_variable = { state_civilian_population_loss_requested = air_cleanliness_treaty_evacuation_request }
+				set_temp_variable = { state_civilian_population_loss_minimum_remaining = air_cleanliness_treaty_evacuation_protected }
+				set_temp_variable = { state_civilian_population_loss_log_deaths = constant:air_cleanliness_treaty_operation.zero }
+				set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.unknown }
+				set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+				set_temp_variable = { state_civilian_population_loss_has_target_country = constant:air_cleanliness_treaty_operation.one }
+				set_temp_variable = { state_civilian_population_loss_applied = constant:air_cleanliness_treaty_operation.zero }
+				set_temp_variable = { state_civilian_population_loss_result = constant:air_cleanliness_treaty_operation.zero }
+				set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:air_cleanliness_treaty_operation.one }
+				apply_exact_state_civilian_population_loss = yes
+				set_temp_variable = { air_cleanliness_treaty_evacuation_applied = state_civilian_population_loss_applied }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { var = air_cleanliness_treaty_evacuation_applied value = constant:air_cleanliness_treaty_operation.zero compare = greater_than } }
+			set_temp_variable = { air_cleanliness_treaty_evacuation_credited = constant:air_cleanliness_treaty_operation.zero }
+			event_target:air_cleanliness_treaty_evacuation_receiver = {
+				set_temp_variable = { air_cleanliness_treaty_evacuation_receiver_before_k = state_population_k }
+				add_manpower = var:air_cleanliness_treaty_evacuation_applied
+				set_temp_variable = { air_cleanliness_treaty_evacuation_credited = state_population_k }
+				subtract_from_temp_variable = { air_cleanliness_treaty_evacuation_credited = air_cleanliness_treaty_evacuation_receiver_before_k }
+				multiply_temp_variable = { air_cleanliness_treaty_evacuation_credited = constant:chaos_meter_deaths.people_per_k }
+				round_temp_variable = air_cleanliness_treaty_evacuation_credited
+				air_winter_normalize_state_ledger = yes
+				add_to_variable = { air_winter_refugee_pressure = constant:air_cleanliness_treaty_operation.evacuation_receiver_pressure_gain }
+				air_winter_normalize_state_ledger = yes
+				air_winter_calculate_survival_value = yes
+				set_variable = { air_cleanliness_treaty_evacuation_last_arrivals = air_cleanliness_treaty_evacuation_credited }
+			}
+			event_target:air_cleanliness_treaty_evacuation_source = {
+				air_winter_normalize_state_ledger = yes
+				subtract_from_variable = { air_winter_refugee_pressure = constant:air_cleanliness_treaty_operation.evacuation_source_pressure_relief }
+				air_winter_normalize_state_ledger = yes
+				air_winter_calculate_survival_value = yes
+				set_variable = { air_cleanliness_treaty_evacuation_last_departures = air_cleanliness_treaty_evacuation_applied }
+			}
+			set_variable = { air_cleanliness_treaty_evacuation_last_people = air_cleanliness_treaty_evacuation_credited }
+			set_country_flag = air_cleanliness_treaty_evacuation_memory
+			air_cleanliness_treaty_clear_evacuation_project = yes
+			country_event = { id = chaosx_air_treaty.12 }
+			event_target:air_cleanliness_treaty_evacuation_recipient = {
+				set_variable = { air_cleanliness_treaty_evacuation_last_people = air_cleanliness_treaty_evacuation_applied }
+				set_country_flag = air_cleanliness_treaty_evacuation_memory
+				country_event = { id = chaosx_air_treaty.13 }
+			}
+		}
+		else = { air_cleanliness_treaty_cancel_evacuation_corridor = yes }
+	}
+	else = { air_cleanliness_treaty_cancel_evacuation_corridor = yes }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the listed country.
+air_cleanliness_treaty_start_burner_sanction = {
+	if = {
+		limit = { air_cleanliness_treaty_can_sanction_burner = yes }
+		set_country_flag = air_cleanliness_treaty_sanction_active
+		set_variable = { air_cleanliness_treaty_sanction_target = FROM }
+		set_variable = { air_cleanliness_treaty_sanction_generation = global.air_cleanliness_treaty_generation }
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sanction_duration_days }
+		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
+		FROM = { set_country_flag = { flag = air_cleanliness_treaty_sanction_pending days = var:air_cleanliness_treaty_operation_lock_days } }
+	}
+}
+
+# Supported scope: COUNTRY, the sponsor.
+air_cleanliness_treaty_clear_burner_sanction = {
+	if = {
+		limit = { has_variable = air_cleanliness_treaty_sanction_target }
+		var:air_cleanliness_treaty_sanction_target = { clr_country_flag = air_cleanliness_treaty_sanction_pending }
+	}
+	clr_country_flag = air_cleanliness_treaty_sanction_active
+	clear_variable = air_cleanliness_treaty_sanction_target
+	clear_variable = air_cleanliness_treaty_sanction_generation
+}
+
+# Supported scope: COUNTRY, the sponsor whose case failed validation.
+air_cleanliness_treaty_cancel_burner_sanction = {
+	if = {
+		limit = { has_country_flag = air_cleanliness_treaty_sanction_active }
+		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.sanction }
+		air_cleanliness_treaty_report_withdrawn_operation = yes
+	}
+	air_cleanliness_treaty_clear_burner_sanction = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the decision target.
+# The listed country is banned from membership and enters the violator ledger,
+# which gives it the standing opinion penalty and a treaty-owned embargo from
+# every live member, including members who join later.
+air_cleanliness_treaty_complete_burner_sanction = {
+	if = {
+		limit = { air_cleanliness_treaty_sanction_project_is_valid = yes }
+		save_event_target_as = air_cleanliness_treaty_sanction_sponsor
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sanction_cooldown_days }
+		set_country_flag = { flag = air_cleanliness_treaty_sanction_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		air_cleanliness_treaty_clear_burner_sanction = yes
+		FROM = {
+			save_event_target_as = air_cleanliness_treaty_sanctioned_burner
+			set_country_flag = air_cleanliness_treaty_banned
+			set_country_flag = air_cleanliness_treaty_sanctioned_burner
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.mixed }
+			set_temp_variable = { condemnation_base_gain = constant:air_cleanliness_treaty_operation.sanction_condemnation_gain }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.observer_report }
+			set_temp_variable = { condemnation_civilian_deaths = constant:air_cleanliness_treaty_operation.zero }
+			set_temp_variable = { condemnation_contamination_value = constant:air_cleanliness_treaty_operation.zero }
+			condemnation_add_source = yes
+			air_cleanliness_treaty_register_observed_violator = yes
+			country_event = { id = chaosx_air_treaty.15 }
+		}
+	}
+	else = { air_cleanliness_treaty_cancel_burner_sanction = yes }
+}
+
+# Supported scope: COUNTRY, a Fallout registry country inside its orientation
+# step. Applies the survivor's Air Cleanliness Treaty memory once per Fallout
+# generation: members carry recognition and cohesion into the new world,
+# listed violators carry distrust, and seed archive partners start with
+# deeper food stores.
+fallout_treaty_apply_survivor_memory = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = fallout_treaty_memory_generation
+					value = global.fallout_transition_generation
+					compare = equals
+				}
+			}
+			check_variable = {
+				var = fallout_survival_current_entries^num
+				value = constant:fallout_survival_resource.upper_bound
+				compare = equals
+			}
+		}
+		set_variable = { fallout_treaty_memory_generation = global.fallout_transition_generation }
+		clr_country_flag = fallout_treaty_member_memory_applied
+		clr_country_flag = fallout_treaty_violator_memory_applied
+		clr_country_flag = fallout_treaty_seed_archive_memory_applied
+		if = {
+			limit = { has_country_flag = air_cleanliness_treaty_banned }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_treaty_memory.violator_recognition }
+			set_country_flag = fallout_treaty_violator_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_cleanliness_treaty_ever_member }
+			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_treaty_memory.member_recognition }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_treaty_memory.member_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:air_cleanliness_treaty_operation.zero }
+			set_country_flag = fallout_treaty_member_memory_applied
+		}
+		if = {
+			limit = { has_country_flag = air_cleanliness_treaty_seed_archive_memory }
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_treaty_memory.seed_archive_food }
+			set_country_flag = fallout_treaty_seed_archive_memory_applied
+		}
+		fallout_orientation_clamp_resources = yes
+	}
+}
+
 # ============================================================================
 # Consolidated source: common/scripted_effects/air_cleanliness_winter_effects.txt
 # ============================================================================
@@ -62460,6 +62929,7 @@ fallout_orientation_advance_country = {
 		}
 		fallout_orientation_approve_country_surfaces = yes
 		fallout_orientation_install_resource_package = yes
+		fallout_treaty_apply_survivor_memory = yes
 
 		# Every request input exists before any helper writes it, so the
 		# helper writes survive their scripted-effect boundaries.

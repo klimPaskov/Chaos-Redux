@@ -358,6 +358,131 @@ country_event = {
 	}
 }
 
+# ---------------------------------------------------------------------------
+# Treaty operation reports. The operation effects save the regular event
+# targets these reports name before each report is sent.
+# ---------------------------------------------------------------------------
+
+# Shared sampling grid online, sent to every live member.
+country_event = {
+	id = chaosx_air_treaty.10
+	title = chaosx_air_treaty.10.t
+	desc = chaosx_air_treaty.10.d
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.10.a
+		custom_effect_tooltip = chaosx_air_treaty.10.a.tt
+	}
+}
+
+# Seed archive delivered, sent to the recipient.
+country_event = {
+	id = chaosx_air_treaty.11
+	title = chaosx_air_treaty.11.t
+	desc = chaosx_air_treaty.11.d
+	picture = GFX_report_event_air_winter_phase_2
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.11.a
+		custom_effect_tooltip = chaosx_air_treaty.11.a.tt
+	}
+}
+
+# Evacuees arrive, sent to the sponsoring member.
+country_event = {
+	id = chaosx_air_treaty.12
+	title = chaosx_air_treaty.12.t
+	desc = chaosx_air_treaty.12.d
+	picture = GFX_report_event_fallout_refugee_train
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.12.a
+		custom_effect_tooltip = chaosx_air_treaty.12.a.tt
+	}
+}
+
+# Evacuation corridor completed, sent to the member whose state was emptied.
+country_event = {
+	id = chaosx_air_treaty.13
+	title = chaosx_air_treaty.13.t
+	desc = chaosx_air_treaty.13.d
+	picture = GFX_report_event_fallout_refugee_train
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.13.a
+		custom_effect_tooltip = chaosx_air_treaty.13.a.tt
+	}
+}
+
+# A treaty operation was withdrawn before completion.
+country_event = {
+	id = chaosx_air_treaty.14
+	title = chaosx_air_treaty.14.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.sampling_grid
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.sampling_grid.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.seed_archive
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.seed_archive.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.evacuation
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.evacuation.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.sanction
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.sanction.d
+	}
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = { name = chaosx_air_treaty.14.a }
+}
+
+# The treaty lists this country as a burner, sent to the listed country.
+country_event = {
+	id = chaosx_air_treaty.15
+	title = chaosx_air_treaty.15.t
+	desc = chaosx_air_treaty.15.d
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.15.a
+		custom_effect_tooltip = chaosx_air_treaty.15.a.tt
+	}
+}
+
 # ============================================================================
 # Consolidated source: events/fallout_world_end_events.txt
 # ============================================================================
@@ -8443,6 +8568,18 @@ country_event = {
 			fallout_orientation_schedule_cleanup = yes
 		}
 		custom_effect_tooltip = chaosx.fallout.82.a.tt
+		if = {
+			limit = { has_country_flag = fallout_treaty_member_memory_applied }
+			custom_effect_tooltip = fallout_treaty_member_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_treaty_violator_memory_applied }
+			custom_effect_tooltip = fallout_treaty_violator_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_treaty_seed_archive_memory_applied }
+			custom_effect_tooltip = fallout_treaty_seed_archive_memory_tt
+		}
 	}
 }
 

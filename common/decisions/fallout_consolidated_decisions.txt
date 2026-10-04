@@ -3,6 +3,9 @@
 @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_CLEANING_DAY_CIVILIAN_FACTORIES = 4
 @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_FILTER_CONVOY_CIVILIAN_FACTORIES = 2
 @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_VERIFICATION_CIVILIAN_FACTORIES = 1
+@CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_SAMPLING_GRID_CIVILIAN_FACTORIES = 2
+@CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_SEED_ARCHIVE_CIVILIAN_FACTORIES = 1
+@CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_EVACUATION_CIVILIAN_FACTORIES = 1
 @CR_SC_AIR_WINTER_RESPONSE_COST_CLINIC_CIVILIAN_FACTORIES = 2
 @CR_SC_AIR_WINTER_RESPONSE_COST_CROP_CIVILIAN_FACTORIES = 2
 @CR_SC_AIR_WINTER_RESPONSE_COST_GREENHOUSE_CIVILIAN_FACTORIES = 4
@@ -202,6 +205,375 @@ air_cleanliness_treaty_category = {
 			modifier = {
 				factor = constant:air_cleanliness_treaty_lifecycle_ai.verification_mission_fascist_subject_factor
 				FROM = { has_government = fascism }
+			}
+		}
+	}
+
+	# -----------------------------------------------------------------------
+	# Treaty operations. Each start effect pays once and records the sponsor's
+	# receipt; the cancel trigger re-validates it every day.
+	# -----------------------------------------------------------------------
+
+	air_cleanliness_treaty_shared_sampling_grid = {
+		icon = GFX_decision_air_winter_samplers
+
+		visible = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			OR = {
+				NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress }
+				has_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
+			}
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_open_tt
+				hidden_trigger = { air_cleanliness_treaty_operation_phase_is_open = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_sampling_grid_quorum_tt
+				hidden_trigger = { air_cleanliness_treaty_has_sampling_grid_quorum = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_sampling_grid_open_tt
+				hidden_trigger = { air_cleanliness_treaty_sampling_grid_is_open = yes }
+			}
+			hidden_trigger = { air_cleanliness_treaty_can_pay_sampling_grid = yes }
+		}
+		custom_cost_trigger = { air_cleanliness_treaty_can_pay_sampling_grid = yes }
+		custom_cost_text = air_cleanliness_treaty_shared_sampling_grid_cost
+		days_remove = constant:air_cleanliness_treaty_operation.sampling_grid_duration_days
+		modifier = {
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_SAMPLING_GRID_CIVILIAN_FACTORIES
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_sampling_grid = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_shared_sampling_grid_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_sampling_grid_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_sampling_grid_project = yes }
+		remove_effect = { air_cleanliness_treaty_complete_sampling_grid = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_operation_ai.sampling_grid_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sampling_grid_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sampling_grid_founder_factor
+				air_cleanliness_treaty_country_is_current_founder = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sampling_grid_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	air_cleanliness_treaty_seed_archive_exchange = {
+		icon = GFX_decision_air_winter_crop_trials
+		target_root_trigger = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			OR = {
+				has_country_flag = air_cleanliness_treaty_seed_archive_active
+				air_cleanliness_treaty_country_has_seed_source = yes
+			}
+		}
+		target_array = global.air_cleanliness_treaty_members
+		target_trigger = {
+			OR = {
+				AND = {
+					has_country_flag = air_cleanliness_treaty_seed_archive_active
+					check_variable = {
+						var = air_cleanliness_treaty_seed_archive_recipient
+						value = FROM
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_active }
+					FROM = { air_cleanliness_treaty_country_can_receive_seed_archive = yes }
+				}
+			}
+		}
+
+		visible = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+			}
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_open_tt
+				hidden_trigger = { air_cleanliness_treaty_operation_phase_is_open = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_seed_archive_source_tt
+				hidden_trigger = { air_cleanliness_treaty_country_has_seed_source = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_seed_archive_ready_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_active }
+					NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_cooldown }
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_peace_tt
+				hidden_trigger = { NOT = { has_war_with = FROM } }
+			}
+			hidden_trigger = { air_cleanliness_treaty_can_send_seed_archive = yes }
+		}
+		custom_cost_trigger = { air_cleanliness_treaty_can_pay_seed_archive = yes }
+		custom_cost_text = air_cleanliness_treaty_seed_archive_exchange_cost
+		days_remove = constant:air_cleanliness_treaty_operation.seed_archive_duration_days
+		modifier = {
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_SEED_ARCHIVE_CIVILIAN_FACTORIES
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_seed_archive = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_seed_archive_exchange_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_seed_archive_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_seed_archive = yes }
+		remove_effect = { air_cleanliness_treaty_complete_seed_archive = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_operation_ai.seed_archive_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.seed_archive_breadbasket_factor
+				any_owned_state = {
+					is_controlled_by = ROOT
+					has_state_flag = air_winter_greenhouse_refuge
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.seed_archive_food_reserve_low_factor
+				FROM = {
+					has_variable = air_winter_response_priority_state
+					var:air_winter_response_priority_state = {
+						check_variable = {
+							var = air_winter_food_reserve
+							value = constant:air_cleanliness_treaty_operation.seed_archive_breadbasket_food_reserve
+							compare = less_than
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.seed_archive_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	air_cleanliness_treaty_evacuation_corridor = {
+		icon = GFX_decision_air_winter_controlled_evacuation
+		target_root_trigger = { air_cleanliness_treaty_country_is_live_member = yes }
+		target_array = global.air_cleanliness_treaty_members
+		target_trigger = {
+			OR = {
+				AND = {
+					has_country_flag = air_cleanliness_treaty_evacuation_active
+					check_variable = {
+						var = air_cleanliness_treaty_evacuation_recipient
+						value = FROM
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = air_cleanliness_treaty_evacuation_active }
+					FROM = { air_cleanliness_treaty_recipient_has_evacuation_source = yes }
+				}
+			}
+		}
+
+		visible = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+			}
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_open_tt
+				hidden_trigger = { air_cleanliness_treaty_operation_phase_is_open = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_evacuation_ready_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = air_cleanliness_treaty_evacuation_active }
+					NOT = { has_country_flag = air_cleanliness_treaty_evacuation_cooldown }
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_evacuation_source_tt
+				hidden_trigger = { FROM = { air_cleanliness_treaty_recipient_has_evacuation_source = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_peace_tt
+				hidden_trigger = { NOT = { has_war_with = FROM } }
+			}
+			hidden_trigger = { air_cleanliness_treaty_can_open_evacuation_corridor = yes }
+		}
+		custom_cost_trigger = { air_cleanliness_treaty_can_pay_evacuation = yes }
+		custom_cost_text = air_cleanliness_treaty_evacuation_corridor_cost
+		days_remove = constant:air_cleanliness_treaty_operation.evacuation_duration_days
+		modifier = {
+			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_OPERATION_EVACUATION_CIVILIAN_FACTORIES
+		}
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_evacuation_corridor = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_evacuation_corridor_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_evacuation_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_evacuation_corridor = yes }
+		remove_effect = { air_cleanliness_treaty_complete_evacuation_corridor = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_operation_ai.evacuation_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.evacuation_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.evacuation_ash_winter_factor
+				FROM = {
+					has_variable = air_winter_response_priority_state
+					var:air_winter_response_priority_state = {
+						check_variable = {
+							var = air_winter_phase
+							value = constant:air_winter_phase.ash_winter
+							compare = greater_than_or_equals
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.evacuation_receiver_low_shelter_factor
+				FROM = {
+					has_variable = air_winter_response_priority_state
+					var:air_winter_response_priority_state = {
+						NOT = {
+							any_neighbor_state = {
+								is_owned_by = ROOT
+								is_controlled_by = ROOT
+								check_variable = {
+									var = air_winter_shelter_capacity
+									value = constant:air_cleanliness_treaty_operation_ai.evacuation_receiver_low_shelter_value
+									compare = greater_than_or_equals
+								}
+							}
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.evacuation_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	air_cleanliness_treaty_sanction_burners = {
+		icon = GFX_decision_generic_break_treaty
+		target_root_trigger = { air_cleanliness_treaty_country_is_live_member = yes }
+		target_array = global.condemnation_targets
+		target_trigger = {
+			FROM = { exists = yes }
+			OR = {
+				AND = {
+					has_country_flag = air_cleanliness_treaty_sanction_active
+					check_variable = {
+						var = air_cleanliness_treaty_sanction_target
+						value = FROM
+						compare = equals
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = air_cleanliness_treaty_sanction_active }
+					FROM = { air_cleanliness_treaty_burner_can_be_listed = yes }
+				}
+			}
+		}
+
+		visible = {
+			air_cleanliness_treaty_country_is_live_member = yes
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+			}
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_operation_open_tt
+				hidden_trigger = { air_cleanliness_treaty_operation_phase_is_open = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_sanction_ready_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = air_cleanliness_treaty_sanction_active }
+					NOT = { has_country_flag = air_cleanliness_treaty_sanction_cooldown }
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_sanction_target_tt
+				hidden_trigger = { FROM = { air_cleanliness_treaty_burner_can_be_listed = yes } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = air_cleanliness_treaty_sanction_independent_tt
+				hidden_trigger = {
+					NOT = { is_subject_of = FROM }
+					FROM = { NOT = { is_subject_of = ROOT } }
+				}
+			}
+		}
+		cost = constant:air_cleanliness_treaty_operation.sanction_political_power_cost
+		days_remove = constant:air_cleanliness_treaty_operation.sanction_duration_days
+		fire_only_once = no
+
+		complete_effect = {
+			hidden_effect = { air_cleanliness_treaty_start_burner_sanction = yes }
+			custom_effect_tooltip = air_cleanliness_treaty_sanction_burners_effect_tt
+		}
+		cancel_trigger = { NOT = { air_cleanliness_treaty_sanction_project_is_valid = yes } }
+		cancel_effect = { air_cleanliness_treaty_cancel_burner_sanction = yes }
+		remove_effect = { air_cleanliness_treaty_complete_burner_sanction = yes }
+
+		ai_will_do = {
+			base = constant:air_cleanliness_treaty_operation_ai.sanction_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sanction_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sanction_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation_ai.sanction_target_neighbor_factor
+				FROM = { is_neighbor_of = ROOT }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_operation.zero
+				OR = {
+					is_in_faction_with = FROM
+					is_subject_of = FROM
+					FROM = { is_subject_of = ROOT }
+				}
 			}
 		}
 	}

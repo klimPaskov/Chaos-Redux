@@ -295,16 +295,20 @@ Implemented first tranche:
 - refusal uses the accepted treaty expulsion, embargo, opinion, and relief-loss consequences
 - founder succession, annex cleanup, sanctions, inspection cancellation, route expiry, and the silent Fallout pause have explicit receipts
 
+Implemented second tranche (agent decision A10 in `agent_decisions_2026-10-04.md`):
+
+- Shared Sampling Grid: office-level and terminal-level forecast precision for members while the grid runs
+- Seed Archive Exchange with recipient-wide food reserve gains and a post-Fallout food memory
+- Evacuation Corridor with an exact debit, measured credit, and refugee pressure on both states
+- naming a recent severe burner, which bans it and enters it into the violator ledger
+- Fallout-era treaty memory: member recognition and cohesion, violator distrust, seed archive food, and a Warlord Command push for named burners
+
 Still required:
 
 - pooled treaty decontamination with approved sponsor, recipient, cancellation, and refund rules
-- seed archive exchange with an approved greenhouse and post-Fallout memory contract
-- evacuation corridors
-- Fallout-era treaty memory and successor legitimacy
 - broader manually reviewed treaty event families
-- relief votes and policy for major atmospheric burners
-- forecast precision beyond shared basic sampling
-- runtime observation of target scope, delayed results, sanctions, and route pressure
+- member relief votes
+- runtime observation of target scope, delayed results, sanctions, corridor population read-back, and route pressure
 
 ### D3: three-layer focus architecture
 
@@ -396,7 +400,9 @@ Possible uses:
 - former treaty members receive a reconstruction diplomacy route
 - violators receive distrust and isolation memory
 
-The implemented Joint Filter Convoy already changes live Air Winter exposure, adaptation, shelter, recovery, and survival values. The Fallout snapshot later freezes those ordinary Air Winter values, so a completed route can influence the frozen state indirectly. No treaty-specific Fallout coefficient, successor legitimacy value, or post-Fallout diplomacy rule has been approved or added. Those direct numerical and political effects remain pending.
+The implemented Joint Filter Convoy already changes live Air Winter exposure, adaptation, shelter, recovery, and survival values. The Fallout snapshot later freezes those ordinary Air Winter values, so a completed route can influence the frozen state indirectly.
+
+Disposition: implemented for the memory values (agent decision A10). `fallout_treaty_apply_survivor_memory` gives former members Recognition and Cohesion, banned countries a Recognition loss, and seed archive holders Food, once per generation at the first orientation step. A post-Fallout reconstruction diplomacy route for former members remains unresolved.
 
 ## P5: ordinary world-end documentation
 

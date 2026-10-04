@@ -467,6 +467,348 @@ air_cleanliness_treaty_relief_route_ledger_is_valid = {
 	var:air_cleanliness_treaty_relief_recipient = { air_cleanliness_treaty_country_is_live_member = yes }
 }
 
+# ---------------------------------------------------------------------------
+# Treaty operations: shared sampling grid, seed archive exchange, evacuation
+# corridor, and sanctions on recent severe polluters. Targeted operations use
+# ROOT = sponsoring member and FROM = target country.
+# ---------------------------------------------------------------------------
+
+# Supported scope: any. Operations run only while the treaty is active and
+# before the Fallout transition.
+air_cleanliness_treaty_operation_phase_is_open = {
+	has_global_flag = air_cleanliness_treaty_active
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+}
+
+# Supported scope: any. A completed grid serves only the treaty generation that
+# built it.
+air_cleanliness_treaty_sampling_grid_is_active = {
+	has_global_flag = air_cleanliness_treaty_active
+	has_global_flag = air_cleanliness_treaty_sampling_grid_active
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = fallout_active }
+	has_variable = global.air_cleanliness_treaty_sampling_grid_generation
+	check_variable = {
+		var = global.air_cleanliness_treaty_sampling_grid_generation
+		value = global.air_cleanliness_treaty_generation
+		compare = equals
+	}
+}
+
+# Supported scope: COUNTRY, the prospective sponsor.
+air_cleanliness_treaty_has_sampling_grid_quorum = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	check_variable = {
+		var = global.air_cleanliness_treaty_members^num
+		value = constant:air_cleanliness_treaty_operation.sampling_grid_minimum_members
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: any. No grid is being built, running, or cooling down.
+air_cleanliness_treaty_sampling_grid_is_open = {
+	NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress }
+	NOT = { air_cleanliness_treaty_sampling_grid_is_active = yes }
+	NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_cooldown }
+}
+
+# Supported scope: COUNTRY. Shared affordability gate for display and payment.
+air_cleanliness_treaty_can_pay_sampling_grid = {
+	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_operation.sampling_grid_support_cost } }
+	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_operation.sampling_grid_civilian_factories }
+}
+
+# Supported scope: COUNTRY
+air_cleanliness_treaty_can_start_sampling_grid = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_has_sampling_grid_quorum = yes
+	air_cleanliness_treaty_sampling_grid_is_open = yes
+	air_cleanliness_treaty_can_pay_sampling_grid = yes
+}
+
+# Supported scope: COUNTRY, the sponsor of the grid under construction.
+air_cleanliness_treaty_sampling_grid_project_is_valid = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_has_sampling_grid_quorum = yes
+	has_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
+	has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress
+	has_variable = air_cleanliness_treaty_sampling_grid_generation
+	check_variable = {
+		var = air_cleanliness_treaty_sampling_grid_generation
+		value = global.air_cleanliness_treaty_generation
+		compare = equals
+	}
+}
+
+# Supported scope: STATE. A breadbasket is a pastoral or rural state with a deep
+# winter food reserve. A seed vault is a completed greenhouse refuge.
+air_cleanliness_treaty_state_is_seed_source = {
+	air_winter_state_is_valid = yes
+	OR = {
+		has_state_flag = air_winter_greenhouse_refuge
+		AND = {
+			has_variable = air_winter_original_category
+			has_variable = air_winter_food_reserve
+			OR = {
+				check_variable = { var = air_winter_original_category value = constant:air_winter_state_category.pastoral compare = equals }
+				check_variable = { var = air_winter_original_category value = constant:air_winter_state_category.rural compare = equals }
+			}
+			check_variable = {
+				var = air_winter_food_reserve
+				value = constant:air_cleanliness_treaty_operation.seed_archive_breadbasket_food_reserve
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY
+air_cleanliness_treaty_country_has_seed_source = {
+	any_owned_state = {
+		is_controlled_by = PREV
+		air_cleanliness_treaty_state_is_seed_source = yes
+	}
+}
+
+# Supported scope: COUNTRY. Shared affordability gate for display and payment.
+air_cleanliness_treaty_can_pay_seed_archive = {
+	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_operation.seed_archive_support_cost } }
+	NOT = { has_equipment = { convoy_1 < constant:air_cleanliness_treaty_operation.seed_archive_convoy_cost } }
+	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_operation.seed_archive_civilian_factories }
+}
+
+# Supported scope: COUNTRY, the prospective recipient. ROOT is the donor.
+air_cleanliness_treaty_country_can_receive_seed_archive = {
+	exists = yes
+	NOT = { tag = ROOT }
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_recently_received }
+}
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the recipient.
+air_cleanliness_treaty_can_send_seed_archive = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_active }
+	NOT = { has_country_flag = air_cleanliness_treaty_seed_archive_cooldown }
+	air_cleanliness_treaty_country_has_seed_source = yes
+	FROM = { air_cleanliness_treaty_country_can_receive_seed_archive = yes }
+	NOT = { has_war_with = FROM }
+	air_cleanliness_treaty_can_pay_seed_archive = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the donor and FROM is the decision target.
+air_cleanliness_treaty_seed_archive_project_is_valid = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_country_flag = air_cleanliness_treaty_seed_archive_active
+	has_variable = air_cleanliness_treaty_seed_archive_recipient
+	has_variable = air_cleanliness_treaty_seed_archive_generation
+	check_variable = {
+		var = air_cleanliness_treaty_seed_archive_recipient
+		value = FROM
+		compare = equals
+	}
+	check_variable = {
+		var = air_cleanliness_treaty_seed_archive_generation
+		value = global.air_cleanliness_treaty_generation
+		compare = equals
+	}
+	FROM = { air_cleanliness_treaty_country_is_live_member = yes }
+	NOT = { has_war_with = FROM }
+}
+
+# Supported scope: STATE. A neighbouring state that can shelter evacuees for
+# ROOT, the sponsoring member. Receivers stay below Phase 4 and below the Air
+# Winter refugee pressure ceiling.
+air_cleanliness_treaty_state_can_receive_evacuees = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	air_winter_state_is_valid = yes
+	NOT = { air_winter_is_severe = yes }
+	NOT = { has_state_flag = air_cleanliness_treaty_evacuation_receiving }
+	NOT = { has_state_flag = air_winter_response_project_active }
+	check_variable = {
+		var = air_winter_refugee_pressure
+		value = constant:air_winter_response_evacuation.receiver_pressure_ceiling
+		compare = less_than
+	}
+}
+
+# Supported scope: STATE. The recipient member's own priority state at Phase 4
+# or worse with enough people left to move.
+air_cleanliness_treaty_state_is_evacuation_source = {
+	air_winter_state_is_valid = yes
+	air_winter_is_severe = yes
+	NOT = { has_state_flag = air_cleanliness_treaty_evacuation_reserved }
+	NOT = { has_state_flag = air_winter_response_project_active }
+	check_variable = {
+		var = state_population_k
+		value = constant:air_cleanliness_treaty_operation.evacuation_minimum_source_population_k
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: COUNTRY, the recipient member. ROOT is the sponsor whose
+# state must border the recipient's priority state.
+air_cleanliness_treaty_recipient_has_evacuation_source = {
+	exists = yes
+	NOT = { tag = ROOT }
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_variable = air_winter_response_priority_state
+	var:air_winter_response_priority_state = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+		has_state_flag = air_winter_response_priority_target
+		has_variable = air_winter_response_priority_owner
+		check_variable = {
+			var = air_winter_response_priority_owner
+			value = PREV
+			compare = equals
+		}
+		air_cleanliness_treaty_state_is_evacuation_source = yes
+		any_neighbor_state = { air_cleanliness_treaty_state_can_receive_evacuees = yes }
+	}
+}
+
+# Supported scope: COUNTRY. Shared affordability gate for display and payment.
+air_cleanliness_treaty_can_pay_evacuation = {
+	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_operation.evacuation_support_cost } }
+	NOT = { has_equipment = { convoy_1 < constant:air_cleanliness_treaty_operation.evacuation_convoy_cost } }
+	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_operation.evacuation_civilian_factories }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the recipient.
+air_cleanliness_treaty_can_open_evacuation_corridor = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_evacuation_active }
+	NOT = { has_country_flag = air_cleanliness_treaty_evacuation_cooldown }
+	FROM = { air_cleanliness_treaty_recipient_has_evacuation_source = yes }
+	NOT = { has_war_with = FROM }
+	air_cleanliness_treaty_can_pay_evacuation = yes
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the decision target.
+air_cleanliness_treaty_evacuation_project_is_valid = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_country_flag = air_cleanliness_treaty_evacuation_active
+	has_variable = air_cleanliness_treaty_evacuation_recipient
+	has_variable = air_cleanliness_treaty_evacuation_source_state
+	has_variable = air_cleanliness_treaty_evacuation_receiver_state
+	has_variable = air_cleanliness_treaty_evacuation_generation
+	check_variable = {
+		var = air_cleanliness_treaty_evacuation_recipient
+		value = FROM
+		compare = equals
+	}
+	check_variable = {
+		var = air_cleanliness_treaty_evacuation_generation
+		value = global.air_cleanliness_treaty_generation
+		compare = equals
+	}
+	FROM = { air_cleanliness_treaty_country_is_live_member = yes }
+	NOT = { has_war_with = FROM }
+	var:air_cleanliness_treaty_evacuation_source_state = {
+		is_owned_by = FROM
+		is_controlled_by = FROM
+		air_winter_state_is_valid = yes
+		has_state_flag = air_cleanliness_treaty_evacuation_reserved
+		has_variable = air_cleanliness_treaty_evacuation_sponsor
+		check_variable = {
+			var = air_cleanliness_treaty_evacuation_sponsor
+			value = ROOT
+			compare = equals
+		}
+	}
+	var:air_cleanliness_treaty_evacuation_receiver_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		air_winter_state_is_valid = yes
+		has_state_flag = air_cleanliness_treaty_evacuation_receiving
+		has_variable = air_cleanliness_treaty_evacuation_sponsor
+		check_variable = {
+			var = air_cleanliness_treaty_evacuation_sponsor
+			value = ROOT
+			compare = equals
+		}
+	}
+}
+
+# Supported scope: COUNTRY. A recent unconventional-weapon user whose chemical,
+# biological, and nuclear condemnation together reach the severe threshold.
+# Condemnation buckets decay, so the measure tracks recent burning.
+air_cleanliness_treaty_country_is_recent_severe_burner = {
+	exists = yes
+	has_country_flag = condemnation_recent_use
+	set_temp_variable = { air_cleanliness_treaty_burner_condemnation = condemnation_chemical }
+	add_to_temp_variable = { air_cleanliness_treaty_burner_condemnation = condemnation_biological }
+	add_to_temp_variable = { air_cleanliness_treaty_burner_condemnation = condemnation_nuclear }
+	check_variable = {
+		var = air_cleanliness_treaty_burner_condemnation
+		value = constant:air_cleanliness_treaty_operation.sanction_severe_condemnation
+		compare = greater_than_or_equals
+	}
+}
+
+# Supported scope: COUNTRY, the prospective listed country. ROOT is the sponsor.
+air_cleanliness_treaty_burner_can_be_listed = {
+	NOT = { tag = ROOT }
+	air_cleanliness_treaty_country_is_recent_severe_burner = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_member }
+	NOT = {
+		is_in_array = {
+			array = global.air_cleanliness_treaty_violators
+			value = THIS
+		}
+	}
+	NOT = { has_country_flag = air_cleanliness_treaty_sanction_pending }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the listed country.
+air_cleanliness_treaty_can_sanction_burner = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_sanction_active }
+	NOT = { has_country_flag = air_cleanliness_treaty_sanction_cooldown }
+	FROM = { air_cleanliness_treaty_burner_can_be_listed = yes }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = ROOT } }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM is the decision target.
+air_cleanliness_treaty_sanction_project_is_valid = {
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_country_flag = air_cleanliness_treaty_sanction_active
+	has_variable = air_cleanliness_treaty_sanction_target
+	has_variable = air_cleanliness_treaty_sanction_generation
+	check_variable = {
+		var = air_cleanliness_treaty_sanction_target
+		value = FROM
+		compare = equals
+	}
+	check_variable = {
+		var = air_cleanliness_treaty_sanction_generation
+		value = global.air_cleanliness_treaty_generation
+		compare = equals
+	}
+	FROM = {
+		exists = yes
+		has_country_flag = air_cleanliness_treaty_sanction_pending
+		NOT = { has_country_flag = air_cleanliness_treaty_member }
+		NOT = {
+			is_in_array = {
+				array = global.air_cleanliness_treaty_violators
+				value = THIS
+			}
+		}
+	}
+}
+
 # ============================================================================
 # Consolidated source: common/scripted_triggers/air_cleanliness_winter_triggers.txt
 # ============================================================================
@@ -517,17 +859,25 @@ air_winter_mapmode_player_has_basic_sampling = {
 
 # Supported scope: STATE. Completing one reviewed roof-sampler project creates
 # a national atmospheric office. The capability is country-wide and persists
-# across later state ownership changes until Air Winter is reset.
+# across later state ownership changes until Air Winter is reset. While a
+# treaty sampling grid runs, every treaty member reads at office level.
 air_winter_mapmode_player_has_atmospheric_office = {
 	ROOT = {
 		exists = yes
-		has_country_flag = air_winter_atmospheric_office
+		OR = {
+			has_country_flag = air_winter_atmospheric_office
+			AND = {
+				has_country_flag = air_cleanliness_treaty_member
+				air_cleanliness_treaty_sampling_grid_is_active = yes
+			}
+		}
 	}
 }
 
 # Supported scope: STATE. Terminal modelling becomes public after ninety
 # percent global contamination. Before then, a major power must have invested
-# in an atmospheric office.
+# in an atmospheric office, or a treaty member with its own office must be
+# reading the shared sampling grid.
 air_winter_mapmode_player_has_terminal_modelling = {
 	ROOT = { exists = yes }
 	OR = {
@@ -539,6 +889,11 @@ air_winter_mapmode_player_has_terminal_modelling = {
 		ROOT = {
 			is_major = yes
 			has_country_flag = air_winter_atmospheric_office
+		}
+		ROOT = {
+			has_country_flag = air_winter_atmospheric_office
+			has_country_flag = air_cleanliness_treaty_member
+			air_cleanliness_treaty_sampling_grid_is_active = yes
 		}
 	}
 }
@@ -32015,7 +32370,12 @@ fallout_country_is_bunker_authority_eligible = {
 
 # Supported scope: COUNTRY
 fallout_country_is_warlord_command_eligible = {
-	has_country_flag = fallout_pretransition_had_war
+	OR = {
+		has_country_flag = fallout_pretransition_had_war
+		# A country the Air Cleanliness Treaty listed as a burner enters the
+		# rewrite already isolated, which pushes it toward military rule.
+		has_country_flag = air_cleanliness_treaty_sanctioned_burner
+	}
 	check_variable = { fallout_archetype_military_state_count > @CR_SC_FALLOUT_RUNTIME_ZERO }
 }
 
