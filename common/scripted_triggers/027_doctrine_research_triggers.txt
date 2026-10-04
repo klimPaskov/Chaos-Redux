@@ -914,13 +914,10 @@ doctrine_research_air_track_heavy_aircraft_available = {
 }
 doctrine_research_special_forces_track_special_forces_first_available = {
 	# Vanilla exposes whether each shared Special Forces track is occupied, but
-	# not which one owns a reused subdoctrine token. Existing mastery therefore
-	# remains eligible only while the other track is empty. Empty-track adoption
-	# is still safe because set_sub_doctrine receives the exact folder index.
-	OR = {
-		NOT = { has_subdoctrine_in_track = special_forces_first }
-		NOT = { has_subdoctrine_in_track = special_forces_second }
-	}
+	# not which one holds a given token. A token can occupy only one track, so
+	# mastery is granted by token. While both tracks are occupied, this first
+	# entry offers mastery for the subdoctrines of both tracks and the second
+	# entry stays hidden. Empty-track adoption uses the exact folder index.
 	OR = {
 		AND = {
 			has_doctrine = mountaineers_1
@@ -963,6 +960,7 @@ doctrine_research_special_forces_track_special_forces_first_available = {
 }
 doctrine_research_special_forces_track_special_forces_second_available = {
 	can_unlock_second_track_of_sf_doctrine = yes
+	# The first entry covers both tracks while both are occupied.
 	OR = {
 		NOT = { has_subdoctrine_in_track = special_forces_second }
 		NOT = { has_subdoctrine_in_track = special_forces_first }
@@ -2409,7 +2407,6 @@ doctrine_research_selected_subdoctrine_is_active_incomplete = {
 				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
 				check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals }
 				has_subdoctrine_in_track = special_forces_first
-				NOT = { has_subdoctrine_in_track = special_forces_second }
 			}
 			AND = {
 				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
@@ -2812,41 +2809,57 @@ doctrine_research_empty_candidate_mountaineers_1_is_native_eligible = {
 	has_tech = tech_mountaineers
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = mountaineers_1 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = mountaineers_2 }
 }
 doctrine_research_empty_candidate_mountaineers_2_is_native_eligible = {
 	has_tech = tech_mountaineers
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = mountaineers_2 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = mountaineers_1 }
 }
 doctrine_research_empty_candidate_marines_1_is_native_eligible = {
 	has_tech = marines
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = marines_1 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = marines_2 }
 }
 doctrine_research_empty_candidate_marines_2_is_native_eligible = {
 	has_tech = marines
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = marines_2 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = marines_1 }
 }
 doctrine_research_empty_candidate_paratroopers_1_is_native_eligible = {
 	has_tech = paratroopers
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = paratroopers_1 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = paratroopers_2 }
 }
 doctrine_research_empty_candidate_paratroopers_2_is_native_eligible = {
 	has_tech = paratroopers
 	has_dlc = "Arms Against Tyranny"
 	NOT = { has_doctrine = paratroopers_2 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = paratroopers_1 }
 }
 doctrine_research_empty_candidate_rangers_1_is_native_eligible = {
 	has_tech = rangers_tech
 	has_dlc = "No Compromise, No Surrender"
 	NOT = { has_doctrine = rangers_1 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = rangers_2 }
 }
 doctrine_research_empty_candidate_rangers_2_is_native_eligible = {
 	has_tech = rangers_tech
 	has_dlc = "No Compromise, No Surrender"
 	NOT = { has_doctrine = rangers_2 }
+	# Native xor: a token cannot join while its sibling holds a track.
+	NOT = { has_doctrine = rangers_1 }
 }
 doctrine_research_empty_candidate_extermination_columns_is_native_eligible = {
 	has_doctrine = chaos_warfare
