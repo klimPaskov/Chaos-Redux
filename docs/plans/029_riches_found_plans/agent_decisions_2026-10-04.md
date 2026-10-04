@@ -326,3 +326,9 @@ D29. Rail Spur lays a real railway (lead decision 4; supersedes the D11 railway 
 When Open the Railhead succeeds on a rail route, `riches_found_lay_mine_railway` runs in the controller's scope with `start_state = PREV` (the mine), `target_state = THIS.capital`, level 1, `build_only_on_allied = yes` and `fallback = yes`, guarded by `can_build_railway` with the same arguments, and skipped when the mine is the capital; `riches_found_railway_laid` marks it once.
 The Rail Spur's infrastructure level is still added when the decision completes.
 Whether the railway appears on the map needs the live game.
+
+D30. The receiving country hears about Gold Fever.
+Round 1 left the neighbour, sponsor or capital country that receives a Gold Disease spread without an event.
+`riches_found_apply_country_gold_fever` now stores the source mine, route and duration on the receiver and fires `chaosx.nr29.140` once per spread; the report reuses `GFX_report_event_riches_found_gold_disease`, picks its text by route through `GetRichesFoundGoldArrivalText`, and shows the received modifier (the army variant for rotated soldiers) as the tooltip of its single option.
+Every route that gives the modifier saves its source mine first, and the rotation route now uses the same helper instead of adding the army modifier inline.
+No country-level crisis record or scan is added.

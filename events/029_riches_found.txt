@@ -718,3 +718,31 @@ state_event = {
 		riches_found_complete_report = yes
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Gold Fever arrival. One report per spread to the country that receives a
+# Gold Disease movement route's Gold Fever modifier, naming the source mine
+# and the route (riches_found_apply_country_gold_fever).
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr29.140
+	title = chaosx.nr29.140.t
+	desc = chaosx.nr29.140.d
+	picture = GFX_report_event_riches_found_gold_disease
+	is_triggered_only = yes
+	trigger = {
+		has_variable = riches_found_gold_arrival_mine
+		has_variable = riches_found_gold_arrival_route
+	}
+	option = {
+		name = chaosx.nr29.140.a
+		if = {
+			limit = { has_country_flag = riches_found_gold_arrival_in_army }
+			effect_tooltip = { add_dynamic_modifier = { modifier = riches_found_country_gold_fever_army days = riches_found_gold_arrival_days } }
+		}
+		else = {
+			effect_tooltip = { add_dynamic_modifier = { modifier = riches_found_country_gold_fever days = riches_found_gold_arrival_days } }
+		}
+	}
+}

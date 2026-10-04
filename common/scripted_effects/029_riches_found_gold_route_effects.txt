@@ -14,8 +14,9 @@
 # - concession staff: a contract that ends sends its staff home to the sponsor.
 # A route spreads only on a weighted roll that quarantine, rationed access or
 # closure makes much less likely. A spread raises gold pressure at a receiving
-# mine or gives the receiving country a temporary Gold Fever modifier, and the
-# source mine reports the route by name. This never creates a biological
+# mine or gives the receiving country a temporary Gold Fever modifier with a
+# short report naming the source mine and route, and the source mine reports
+# the route by name. This never creates a biological
 # outbreak, never scans the world and never runs on a periodic timer.
 # ============================================================================
 
@@ -46,10 +47,30 @@ riches_found_report_gold_route = {
 	riches_found_queue_report = yes
 }
 
-# COUNTRY scope. A receiving country carries the fever for a while.
+# COUNTRY scope. A receiving country carries the fever for a while and is
+# told where it came from with one report per spread (chaosx.nr29.140).
+# Inputs: regular event target riches_found_gold_route_source (the source
+# mine), temporary riches_found_gold_route_kind, and temporary
+# riches_found_gold_fever_army set to one for soldiers rotated into the army.
 riches_found_apply_country_gold_fever = {
 	set_temp_variable = { riches_found_gold_fever_days = constant:riches_found_gold_route.country_effect_days }
-	add_dynamic_modifier = { modifier = riches_found_country_gold_fever days = riches_found_gold_fever_days }
+	set_variable = { riches_found_gold_arrival_days = riches_found_gold_fever_days }
+	if = {
+		limit = { check_variable = { var = riches_found_gold_fever_army value = constant:riches_found_value.one compare = equals } }
+		add_dynamic_modifier = { modifier = riches_found_country_gold_fever_army days = riches_found_gold_fever_days }
+		set_country_flag = riches_found_gold_arrival_in_army
+	}
+	else = {
+		add_dynamic_modifier = { modifier = riches_found_country_gold_fever days = riches_found_gold_fever_days }
+		clr_country_flag = riches_found_gold_arrival_in_army
+	}
+	if = {
+		limit = { has_event_target = riches_found_gold_route_source }
+		set_variable = { riches_found_gold_arrival_mine = event_target:riches_found_gold_route_source }
+		set_variable = { riches_found_gold_arrival_route = riches_found_gold_route_kind }
+		country_event = { id = chaosx.nr29.140 }
+	}
+	set_temp_variable = { riches_found_gold_fever_army = constant:riches_found_value.zero }
 }
 
 # STATE scope. Worker transfer route, called by Replace the Workforce.
@@ -121,8 +142,9 @@ riches_found_move_gold_through_rotation = {
 		}
 		clear_variable = riches_found_gold_route_mine
 		set_variable = { riches_found_gold_route_target = CONTROLLER }
-		set_temp_variable = { riches_found_gold_fever_days = constant:riches_found_gold_route.country_effect_days }
-		CONTROLLER = { add_dynamic_modifier = { modifier = riches_found_country_gold_fever_army days = riches_found_gold_fever_days } }
+		save_event_target_as = riches_found_gold_route_source
+		set_temp_variable = { riches_found_gold_fever_army = constant:riches_found_value.one }
+		CONTROLLER = { riches_found_apply_country_gold_fever = yes }
 		riches_found_report_gold_route = yes
 	}
 }
@@ -181,6 +203,7 @@ riches_found_move_gold_through_sponsor = {
 			limit = { check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one } }
 			clear_variable = riches_found_gold_route_mine
 			set_variable = { riches_found_gold_route_target = riches_found_contract_partner }
+			save_event_target_as = riches_found_gold_route_source
 			var:riches_found_contract_partner = { riches_found_apply_country_gold_fever = yes }
 			riches_found_report_gold_route = yes
 		}
@@ -198,6 +221,7 @@ riches_found_spread_gold_to_controller = {
 		}
 		clear_variable = riches_found_gold_route_mine
 		set_variable = { riches_found_gold_route_target = CONTROLLER }
+		save_event_target_as = riches_found_gold_route_source
 		CONTROLLER = { riches_found_apply_country_gold_fever = yes }
 		riches_found_report_gold_route = yes
 	}
