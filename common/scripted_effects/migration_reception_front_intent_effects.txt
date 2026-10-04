@@ -1,0 +1,450 @@
+# Receiver STATE identity-only reception intent receipts. These helpers never
+# move people, bind a cohort/destination, grant route permission, change services
+# or capacity, reveal a category, register a job, or apply an outflow modifier.
+# Complete local scope iterators run only at real transaction/lifecycle seams.
+
+migration_reception_front_intent_clear_cache = {
+	clr_state_flag = migration_reception_front_intent_cache_active
+	clear_variable = migration_reception_front_intent_cache_origin_id
+	clear_variable = migration_reception_front_intent_cache_generation
+	clear_variable = migration_reception_front_intent_cache_requester
+	clear_variable = migration_reception_front_intent_cache_receiver
+	clear_variable = migration_reception_front_intent_cache_cohort
+	clear_variable = migration_reception_front_intent_cache_phase
+}
+
+# First valid publication only. Partial/malformed previous metadata is not
+# repaired or replaced with an empty registry.
+migration_reception_front_intent_initialize_records = {
+	if = {
+		limit = {
+			NOT = { has_variable = migration_reception_front_intent_schema_version }
+			NOT = { has_state_flag = migration_reception_front_intent_cache_active }
+			check_variable = { migration_reception_front_intent_origins^num = constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_generations^num = constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_requesters^num = constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_receivers^num = constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_cohorts^num = constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_phases^num = constant:migration_reception_front_intent.zero }
+		}
+		clear_array = migration_reception_front_intent_origins
+		clear_array = migration_reception_front_intent_generations
+		clear_array = migration_reception_front_intent_requesters
+		clear_array = migration_reception_front_intent_receivers
+		clear_array = migration_reception_front_intent_cohorts
+		clear_array = migration_reception_front_intent_phases
+		set_variable = { migration_reception_front_intent_schema_version = constant:migration_reception_front_intent.schema_version }
+	}
+}
+
+# Origin STATE inside the complete local origins iterator. Every output is
+# declared in the parent walker frame before this child is called.
+migration_reception_front_intent_load_walk_identity = {
+	set_temp_variable = { migration_reception_front_intent_identity_origin_id = id }
+	set_temp_variable = { migration_reception_front_intent_identity_generation = event_target:migration_reception_front_intent_front.migration_reception_front_intent_generations^migration_reception_front_intent_walk_index }
+	set_temp_variable = { migration_reception_front_intent_identity_requester = event_target:migration_reception_front_intent_front.migration_reception_front_intent_requesters^migration_reception_front_intent_walk_index }
+	set_temp_variable = { migration_reception_front_intent_identity_receiver = event_target:migration_reception_front_intent_front.migration_reception_front_intent_receivers^migration_reception_front_intent_walk_index }
+	set_temp_variable = { migration_reception_front_intent_identity_cohort = event_target:migration_reception_front_intent_front.migration_reception_front_intent_cohorts^migration_reception_front_intent_walk_index }
+	set_temp_variable = { migration_reception_front_intent_identity_phase = event_target:migration_reception_front_intent_front.migration_reception_front_intent_phases^migration_reception_front_intent_walk_index }
+}
+
+# FRONT STATE. Publish only after the whole iterator has visited every entry.
+# Stale identities are ignored; malformed tuples, duplicates or incomplete
+# traversal leave the cache neutral without changing any receipt/population.
+migration_refresh_reception_front_intent_projection = {
+	set_temp_variable = { migration_reception_front_intent_refresh_result = constant:migration_reception_front_intent.zero }
+	migration_reception_front_intent_clear_cache = yes
+	save_event_target_as = migration_reception_front_intent_front
+	set_temp_variable = { migration_reception_front_intent_walk_index = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_walk_visits = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_walk_valid = constant:migration_reception_front_intent.one }
+	set_temp_variable = { migration_reception_front_intent_walk_break = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_walk_expected = migration_reception_front_intent_origins^num }
+	set_temp_variable = { migration_reception_front_intent_identity_front_id = id }
+	set_temp_variable = { migration_reception_front_intent_identity_origin_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_identity_generation = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_identity_requester = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_identity_receiver = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_identity_cohort = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_origin_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_generation = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_requester = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_receiver = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_cohort = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_best_phase = constant:migration_reception_front_intent.zero }
+	clear_temp_array = migration_reception_front_intent_seen_origins
+	if = {
+		limit = { migration_reception_front_intent_arrays_are_aligned = yes }
+		for_each_scope_loop = {
+			array = migration_reception_front_intent_origins
+			break = migration_reception_front_intent_walk_break
+			migration_reception_front_intent_load_walk_identity = yes
+			if = {
+				limit = {
+					check_variable = { migration_reception_front_intent_identity_origin_id > constant:migration_reception_front_intent.zero }
+					check_variable = { migration_reception_front_intent_identity_generation > constant:migration_reception_front_intent.zero }
+					check_variable = { migration_reception_front_intent_identity_requester > constant:migration_reception_front_intent.zero }
+					check_variable = { migration_reception_front_intent_identity_receiver > constant:migration_reception_front_intent.zero }
+					check_variable = { migration_reception_front_intent_identity_cohort > constant:migration_reception_front_intent.zero }
+					OR = {
+						check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.requested }
+						check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.prepared }
+						check_variable = { migration_reception_front_intent_identity_phase = constant:migration_reception_front_intent.agreed }
+					}
+				}
+				if = {
+					limit = {
+						migration_reception_front_intent_identity_is_current = yes
+						event_target:migration_reception_front_intent_front = { migration_reception_front_intent_identity_front_is_current = yes }
+					}
+					if = {
+						limit = { is_in_array = { array = migration_reception_front_intent_seen_origins value = THIS } }
+						set_temp_variable = { migration_reception_front_intent_walk_valid = constant:migration_reception_front_intent.zero }
+					}
+					else = {
+						add_to_temp_array = { array = migration_reception_front_intent_seen_origins value = THIS }
+						if = {
+							limit = {
+								OR = {
+									check_variable = { migration_reception_front_intent_best_origin_id = constant:migration_reception_front_intent.zero }
+									check_variable = { migration_reception_front_intent_identity_phase < migration_reception_front_intent_best_phase }
+									AND = {
+										check_variable = { migration_reception_front_intent_identity_phase = migration_reception_front_intent_best_phase }
+										check_variable = { migration_reception_front_intent_identity_generation > migration_reception_front_intent_best_generation }
+									}
+									AND = {
+										check_variable = { migration_reception_front_intent_identity_phase = migration_reception_front_intent_best_phase }
+										check_variable = { migration_reception_front_intent_identity_generation = migration_reception_front_intent_best_generation }
+										check_variable = { migration_reception_front_intent_identity_origin_id < migration_reception_front_intent_best_origin_id }
+									}
+								}
+							}
+							set_temp_variable = { migration_reception_front_intent_best_origin_id = migration_reception_front_intent_identity_origin_id }
+							set_temp_variable = { migration_reception_front_intent_best_generation = migration_reception_front_intent_identity_generation }
+							set_temp_variable = { migration_reception_front_intent_best_requester = migration_reception_front_intent_identity_requester }
+							set_temp_variable = { migration_reception_front_intent_best_receiver = migration_reception_front_intent_identity_receiver }
+							set_temp_variable = { migration_reception_front_intent_best_cohort = migration_reception_front_intent_identity_cohort }
+							set_temp_variable = { migration_reception_front_intent_best_phase = migration_reception_front_intent_identity_phase }
+						}
+					}
+				}
+			}
+			else = { set_temp_variable = { migration_reception_front_intent_walk_valid = constant:migration_reception_front_intent.zero } }
+			add_to_temp_variable = { migration_reception_front_intent_walk_index = constant:humanitarian_runtime.array_index_increment }
+			add_to_temp_variable = { migration_reception_front_intent_walk_visits = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				check_variable = { migration_reception_front_intent_walk_valid = constant:migration_reception_front_intent.one }
+				check_variable = { migration_reception_front_intent_walk_visits = migration_reception_front_intent_walk_expected }
+			}
+			if = {
+				limit = { check_variable = { migration_reception_front_intent_best_origin_id > constant:migration_reception_front_intent.zero } }
+				set_variable = { migration_reception_front_intent_cache_origin_id = migration_reception_front_intent_best_origin_id }
+				set_variable = { migration_reception_front_intent_cache_generation = migration_reception_front_intent_best_generation }
+				set_variable = { migration_reception_front_intent_cache_requester = migration_reception_front_intent_best_requester }
+				set_variable = { migration_reception_front_intent_cache_receiver = migration_reception_front_intent_best_receiver }
+				set_variable = { migration_reception_front_intent_cache_cohort = migration_reception_front_intent_best_cohort }
+				set_variable = { migration_reception_front_intent_cache_phase = migration_reception_front_intent_best_phase }
+				set_state_flag = migration_reception_front_intent_cache_active
+			}
+			set_temp_variable = { migration_reception_front_intent_refresh_result = constant:migration_reception_front_intent.one }
+		}
+	}
+	clear_temp_array = migration_reception_front_intent_seen_origins
+}
+
+# FRONT STATE. Caller supplies explicit saved origin/requester/receiver targets
+# and one-shot proof, generation/cohort/phase/reveal/setup request values.
+# A rejected presentation never changes the successful mechanic's result.
+migration_record_reception_front_intent = {
+	set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_reception_front_intent_refresh_result = constant:migration_reception_front_intent.zero }
+	save_event_target_as = migration_reception_front_intent_front
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			humanitarian_corridor_front_is_preparable = yes
+			has_event_target = migration_reception_front_intent_origin
+			has_event_target = migration_reception_front_intent_requester
+			has_event_target = migration_reception_front_intent_receiver
+			check_variable = { migration_reception_front_intent_request_proven = constant:migration_reception_front_intent.one }
+			check_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one }
+			check_variable = { migration_reception_front_intent_generation_request > constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_cohort_request > constant:migration_reception_front_intent.zero }
+			event_target:migration_reception_front_intent_requester = { humanitarian_country_is_valid = yes }
+			event_target:migration_reception_front_intent_receiver = { humanitarian_country_is_valid = yes }
+			event_target:migration_reception_front_intent_receiver = { migration_reception_front_intent_problem_qualifies = yes }
+			is_owned_and_controlled_by = event_target:migration_reception_front_intent_receiver
+		}
+		set_temp_variable = { migration_reception_front_intent_identity_front_id = id }
+		set_temp_variable = { migration_reception_front_intent_identity_origin_id = event_target:migration_reception_front_intent_origin.id }
+		set_temp_variable = { migration_reception_front_intent_identity_generation = migration_reception_front_intent_generation_request }
+		set_temp_variable = { migration_reception_front_intent_identity_requester = event_target:migration_reception_front_intent_requester.id }
+		set_temp_variable = { migration_reception_front_intent_identity_receiver = event_target:migration_reception_front_intent_receiver.id }
+		set_temp_variable = { migration_reception_front_intent_identity_cohort = migration_reception_front_intent_cohort_request }
+		set_temp_variable = { migration_reception_front_intent_identity_phase = migration_reception_front_intent_phase_request }
+		if = {
+			limit = {
+				migration_reception_front_intent_identity_front_is_current = yes
+				event_target:migration_reception_front_intent_origin = { migration_reception_front_intent_identity_is_current = yes }
+				OR = {
+					NOT = { check_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.prepared } }
+					check_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.one }
+				}
+			}
+			event_target:migration_reception_front_intent_origin = { humanitarian_corridor_resolve_live_cohort = yes }
+			if = {
+				limit = {
+					check_variable = { humanitarian_corridor_live_cohort_result = constant:humanitarian_runtime.one }
+					OR = {
+						check_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.requested }
+						event_target:migration_reception_front_intent_origin = { humanitarian_corridor_full_request_headroom_is_valid = yes }
+					}
+				}
+				migration_reception_front_intent_initialize_records = yes
+				# Validate the complete existing metadata before append/update. A
+				# malformed unrelated row must not be silently bypassed.
+				migration_refresh_reception_front_intent_projection = yes
+				if = {
+					limit = {
+						migration_reception_front_intent_arrays_are_aligned = yes
+						check_variable = { migration_reception_front_intent_refresh_result = constant:migration_reception_front_intent.one }
+					}
+					set_temp_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_match_index = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_collision = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_walk_index = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_walk_visits = constant:migration_reception_front_intent.zero }
+					set_temp_variable = { migration_reception_front_intent_walk_break = constant:migration_reception_front_intent.zero }
+					for_each_scope_loop = {
+						array = migration_reception_front_intent_origins
+						break = migration_reception_front_intent_walk_break
+						if = {
+							limit = {
+								state = event_target:migration_reception_front_intent_origin
+								check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_generations^migration_reception_front_intent_walk_index = migration_reception_front_intent_generation_request }
+								OR = {
+									NOT = { check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_requesters^migration_reception_front_intent_walk_index = event_target:migration_reception_front_intent_requester.id } }
+									NOT = { check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_receivers^migration_reception_front_intent_walk_index = event_target:migration_reception_front_intent_receiver.id } }
+									NOT = { check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_cohorts^migration_reception_front_intent_walk_index = migration_reception_front_intent_cohort_request } }
+								}
+							}
+							set_temp_variable = { migration_reception_front_intent_collision = constant:migration_reception_front_intent.one }
+						}
+						if = {
+							limit = {
+								state = event_target:migration_reception_front_intent_origin
+								check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_generations^migration_reception_front_intent_walk_index = migration_reception_front_intent_generation_request }
+								check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_requesters^migration_reception_front_intent_walk_index = event_target:migration_reception_front_intent_requester.id }
+								check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_receivers^migration_reception_front_intent_walk_index = event_target:migration_reception_front_intent_receiver.id }
+								check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_cohorts^migration_reception_front_intent_walk_index = migration_reception_front_intent_cohort_request }
+							}
+							add_to_temp_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.one }
+							set_temp_variable = { migration_reception_front_intent_match_index = migration_reception_front_intent_walk_index }
+						}
+						add_to_temp_variable = { migration_reception_front_intent_walk_index = constant:humanitarian_runtime.array_index_increment }
+						add_to_temp_variable = { migration_reception_front_intent_walk_visits = constant:humanitarian_runtime.one }
+					}
+					if = {
+						limit = {
+							check_variable = { migration_reception_front_intent_walk_visits = migration_reception_front_intent_origins^num }
+							check_variable = { migration_reception_front_intent_collision = constant:migration_reception_front_intent.zero }
+							check_variable = { var = migration_reception_front_intent_match_count value = constant:migration_reception_front_intent.one compare = less_than_or_equals }
+						}
+						if = {
+							limit = { check_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.zero } }
+							add_to_array = { array = migration_reception_front_intent_origins value = event_target:migration_reception_front_intent_origin }
+							add_to_array = { array = migration_reception_front_intent_generations value = migration_reception_front_intent_generation_request }
+							add_to_array = { array = migration_reception_front_intent_requesters value = event_target:migration_reception_front_intent_requester.id }
+							add_to_array = { array = migration_reception_front_intent_receivers value = event_target:migration_reception_front_intent_receiver.id }
+							add_to_array = { array = migration_reception_front_intent_cohorts value = migration_reception_front_intent_cohort_request }
+							add_to_array = { array = migration_reception_front_intent_phases value = migration_reception_front_intent_phase_request }
+						}
+						else_if = {
+							limit = { check_variable = { migration_reception_front_intent_phase_request > migration_reception_front_intent_phases^migration_reception_front_intent_match_index } }
+							remove_from_array = { array = migration_reception_front_intent_phases index = migration_reception_front_intent_match_index }
+							add_to_array = { array = migration_reception_front_intent_phases value = migration_reception_front_intent_phase_request index = migration_reception_front_intent_match_index }
+						}
+						set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.one }
+					}
+					migration_refresh_reception_front_intent_projection = yes
+				}
+				else = { migration_reception_front_intent_clear_cache = yes }
+			}
+		}
+	}
+	set_temp_variable = { migration_reception_front_intent_request_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_generation_request = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_cohort_request = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.zero }
+}
+
+# FRONT STATE. The caller captured all five retiring identity values BEFORE
+# teardown. This API never substitutes current/new origin contract fields.
+# Actors may have ceased to exist; exact stale metadata can still be removed.
+migration_clear_reception_front_intent = {
+	set_temp_variable = { migration_reception_front_intent_clear_result = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_refresh_result = constant:migration_reception_front_intent.zero }
+	save_event_target_as = migration_reception_front_intent_front
+	if = {
+		limit = {
+			migration_reception_front_intent_arrays_are_aligned = yes
+			check_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.one }
+			check_variable = { migration_reception_front_intent_clear_front_id > constant:migration_reception_front_intent.zero }
+			check_variable = { id = migration_reception_front_intent_clear_front_id }
+			check_variable = { migration_reception_front_intent_clear_origin_id > constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_clear_generation > constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_clear_requester > constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_clear_receiver > constant:migration_reception_front_intent.zero }
+			check_variable = { migration_reception_front_intent_clear_cohort > constant:migration_reception_front_intent.zero }
+		}
+		set_temp_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.zero }
+		set_temp_variable = { migration_reception_front_intent_match_index = constant:migration_reception_front_intent.zero }
+		set_temp_variable = { migration_reception_front_intent_walk_index = constant:migration_reception_front_intent.zero }
+		set_temp_variable = { migration_reception_front_intent_walk_visits = constant:migration_reception_front_intent.zero }
+		set_temp_variable = { migration_reception_front_intent_walk_break = constant:migration_reception_front_intent.zero }
+		for_each_scope_loop = {
+			array = migration_reception_front_intent_origins
+			break = migration_reception_front_intent_walk_break
+			if = {
+				limit = {
+					check_variable = { id = migration_reception_front_intent_clear_origin_id }
+					check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_generations^migration_reception_front_intent_walk_index = migration_reception_front_intent_clear_generation }
+					check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_requesters^migration_reception_front_intent_walk_index = migration_reception_front_intent_clear_requester }
+					check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_receivers^migration_reception_front_intent_walk_index = migration_reception_front_intent_clear_receiver }
+					check_variable = { event_target:migration_reception_front_intent_front.migration_reception_front_intent_cohorts^migration_reception_front_intent_walk_index = migration_reception_front_intent_clear_cohort }
+				}
+				add_to_temp_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.one }
+				set_temp_variable = { migration_reception_front_intent_match_index = migration_reception_front_intent_walk_index }
+			}
+			add_to_temp_variable = { migration_reception_front_intent_walk_index = constant:humanitarian_runtime.array_index_increment }
+			add_to_temp_variable = { migration_reception_front_intent_walk_visits = constant:humanitarian_runtime.one }
+		}
+		if = {
+			limit = {
+				check_variable = { migration_reception_front_intent_walk_visits = migration_reception_front_intent_origins^num }
+				check_variable = { migration_reception_front_intent_match_count = constant:migration_reception_front_intent.one }
+			}
+			remove_from_array = { array = migration_reception_front_intent_origins index = migration_reception_front_intent_match_index }
+			remove_from_array = { array = migration_reception_front_intent_generations index = migration_reception_front_intent_match_index }
+			remove_from_array = { array = migration_reception_front_intent_requesters index = migration_reception_front_intent_match_index }
+			remove_from_array = { array = migration_reception_front_intent_receivers index = migration_reception_front_intent_match_index }
+			remove_from_array = { array = migration_reception_front_intent_cohorts index = migration_reception_front_intent_match_index }
+			remove_from_array = { array = migration_reception_front_intent_phases index = migration_reception_front_intent_match_index }
+			set_temp_variable = { migration_reception_front_intent_clear_result = constant:migration_reception_front_intent.one }
+		}
+		migration_refresh_reception_front_intent_projection = yes
+	}
+	else_if = { limit = { NOT = { migration_reception_front_intent_arrays_are_aligned = yes } } migration_reception_front_intent_clear_cache = yes }
+	set_temp_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_front_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_origin_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_generation = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_requester = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_receiver = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_cohort = constant:migration_reception_front_intent.zero }
+}
+
+# ORIGIN STATE bridge used only after actual submit/setup/inner acceptance.
+# Caller predeclares record_result and supplies phase/reveal/setup proof.
+migration_publish_reception_front_intent_from_contract = {
+	set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+	if = {
+		limit = {
+			check_variable = { humanitarian_corridor_front_state_id > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_corridor_route_generation > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_corridor_cohort_id > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_corridor_requester_country_id > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_corridor_counterpart_country_id > constant:humanitarian_runtime.zero }
+			check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+		}
+		save_event_target_as = migration_reception_front_intent_origin
+		var:humanitarian_corridor_requester_country_id = { save_event_target_as = migration_reception_front_intent_requester }
+		var:humanitarian_corridor_counterpart_country_id = { save_event_target_as = migration_reception_front_intent_receiver }
+		set_temp_variable = { migration_reception_front_intent_generation_request = humanitarian_corridor_route_generation }
+		set_temp_variable = { migration_reception_front_intent_cohort_request = humanitarian_corridor_cohort_id }
+		set_temp_variable = { migration_reception_front_intent_request_proven = constant:migration_reception_front_intent.one }
+		var:humanitarian_corridor_front_state_id = { migration_record_reception_front_intent = yes }
+	}
+	set_temp_variable = { migration_reception_front_intent_request_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_generation_request = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_cohort_request = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.zero }
+}
+
+# ORIGIN STATE bridge. A supplied old captured tuple is preserved rather than
+# overwritten from replacement origin fields; normal callers capture before
+# any contract teardown. The actual map clear never resolves a live cohort.
+migration_retire_reception_front_intent_from_contract = {
+	set_temp_variable = { migration_reception_front_intent_clear_result = constant:migration_reception_front_intent.zero }
+	if = {
+		limit = { NOT = { check_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.one } } }
+		set_temp_variable = { migration_reception_front_intent_clear_origin_id = id }
+		set_temp_variable = { migration_reception_front_intent_clear_front_id = humanitarian_corridor_front_state_id }
+		set_temp_variable = { migration_reception_front_intent_clear_generation = humanitarian_corridor_route_generation }
+		set_temp_variable = { migration_reception_front_intent_clear_requester = humanitarian_corridor_requester_country_id }
+		set_temp_variable = { migration_reception_front_intent_clear_receiver = humanitarian_corridor_counterpart_country_id }
+		set_temp_variable = { migration_reception_front_intent_clear_cohort = humanitarian_corridor_cohort_id }
+		set_temp_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.one }
+	}
+	if = {
+		limit = { check_variable = { migration_reception_front_intent_clear_front_id > constant:migration_reception_front_intent.zero } }
+		var:migration_reception_front_intent_clear_front_id = { migration_clear_reception_front_intent = yes }
+	}
+	set_temp_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_front_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_origin_id = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_generation = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_requester = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_receiver = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_clear_cohort = constant:migration_reception_front_intent.zero }
+}
+
+# FRONT STATE after its owner or controller changed. Retires only the rows
+# whose recorded receiver no longer owns and controls this state, walking from
+# the last row so earlier indices stay stable. Rows for a receiver that still
+# holds the state survive. Malformed metadata is left untouched and only the
+# cache is cleared, so map readers stay neutral.
+migration_reception_front_intent_handle_control_change = {
+	if = {
+		limit = { has_variable = migration_reception_front_intent_schema_version }
+		if = {
+			limit = { migration_reception_front_intent_arrays_are_aligned = yes }
+			set_temp_variable = { migration_reception_front_intent_prune_index = migration_reception_front_intent_origins^num }
+			while_loop_effect = {
+				limit = { check_variable = { migration_reception_front_intent_prune_index > constant:migration_reception_front_intent.zero } }
+				subtract_from_temp_variable = { migration_reception_front_intent_prune_index = constant:humanitarian_runtime.array_index_increment }
+				set_temp_variable = { migration_reception_front_intent_prune_receiver = migration_reception_front_intent_receivers^migration_reception_front_intent_prune_index }
+				set_temp_variable = { migration_reception_front_intent_prune_row = constant:migration_reception_front_intent.one }
+				if = {
+					limit = { check_variable = { migration_reception_front_intent_prune_receiver > constant:migration_reception_front_intent.zero } }
+					if = {
+						limit = {
+							var:migration_reception_front_intent_prune_receiver = { humanitarian_country_is_valid = yes }
+							is_owned_and_controlled_by = var:migration_reception_front_intent_prune_receiver
+						}
+						set_temp_variable = { migration_reception_front_intent_prune_row = constant:migration_reception_front_intent.zero }
+					}
+				}
+				if = {
+					limit = { check_variable = { migration_reception_front_intent_prune_row = constant:migration_reception_front_intent.one } }
+					remove_from_array = { array = migration_reception_front_intent_origins index = migration_reception_front_intent_prune_index }
+					remove_from_array = { array = migration_reception_front_intent_generations index = migration_reception_front_intent_prune_index }
+					remove_from_array = { array = migration_reception_front_intent_requesters index = migration_reception_front_intent_prune_index }
+					remove_from_array = { array = migration_reception_front_intent_receivers index = migration_reception_front_intent_prune_index }
+					remove_from_array = { array = migration_reception_front_intent_cohorts index = migration_reception_front_intent_prune_index }
+					remove_from_array = { array = migration_reception_front_intent_phases index = migration_reception_front_intent_prune_index }
+				}
+			}
+			migration_refresh_reception_front_intent_projection = yes
+		}
+		else = { migration_reception_front_intent_clear_cache = yes }
+	}
+}

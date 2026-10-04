@@ -84,6 +84,15 @@ The counterpart mirror persists `humanitarian_corridor_offer_cohort_id` and `hum
 
 `humanitarian_corridor_handle_state_control_change` is called in the documented `on_state_control_changed` state scope. It checks the exact changed state against the persisted origin ID, then checks only `global.migration_active_countries` for mirrored front-state IDs. Matching origins are invalidated with `control_change`; the callback never writes an attack receipt.
 
+The same callback first calls `migration_reception_front_intent_handle_control_change` on the changed state, so a front that changed hands drops the reception intent of any receiver that no longer owns and controls it.
+
+## Receiver-front reception intent hooks
+
+Evacuation corridors publish an identity-only intent row on their front state through [migration_reception_front_intent_effects.md](migration_reception_front_intent_effects.md).
+`humanitarian_corridor_submit_offer` publishes `requested` after a valid submission, and `humanitarian_corridor_accept_offer` publishes `agreed` inside its successful inner acceptance, using a reveal snapshot taken while the offer was still pending.
+`humanitarian_corridor_record_evacuation` retires the row after the measured, conserved passage, and `humanitarian_corridor_cleanup` retires it for every other terminal before the live contract fields are cleared.
+These calls are presentation only; a failed publication or retirement never changes the corridor result, moves people or grants capacity.
+
 `humanitarian_corridor_revalidate_sparse_country` is called only on countries named by war, peace, and peace-conference callbacks that carry the existing registered-country flag. It resolves one pending-offer or active-contract origin ID and validates the persisted relation, front controller, and adjacency. A route that no longer satisfies its stored relation is invalidated with `route_closed`; no country or state scan is performed.
 
 The offline on-actions reference defines `on_peace` with `THIS` as the country that is no longer at war, while `on_war_relation_added` and `on_peaceconference_ended` provide paired country scopes. The hook wiring follows those scopes exactly.

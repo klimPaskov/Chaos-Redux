@@ -909,6 +909,31 @@ scripted_map_modes = {
 						set_temp_variable = { blue = constant:state_map_modes_migration.reception_blue }
 						set_temp_variable = { alpha = constant:state_map_modes_migration.reception_alpha }
 					}
+					else_if = {
+						limit = {
+							migration_reception_front_intent_is_visible_to_player = yes
+							NOT = { migration_reception_front_intent_has_actual_map_context = yes }
+						}
+						# Private proposed reception, never an arrival or usable route.
+						set_temp_variable = { red = constant:state_map_modes_migration.corridor_offer_red }
+						set_temp_variable = { green = constant:state_map_modes_migration.corridor_offer_green }
+						set_temp_variable = { blue = constant:state_map_modes_migration.corridor_offer_blue }
+						set_temp_variable = { alpha = constant:state_map_modes_migration.corridor_offer_alpha }
+						if = {
+							limit = { check_variable = { migration_reception_front_intent_cache_phase = constant:migration_reception_front_intent.prepared } }
+							set_temp_variable = { red = constant:state_map_modes_migration.preparing_red }
+							set_temp_variable = { green = constant:state_map_modes_migration.preparing_green }
+							set_temp_variable = { blue = constant:state_map_modes_migration.preparing_blue }
+							set_temp_variable = { alpha = constant:state_map_modes_migration.preparing_alpha }
+						}
+						else_if = {
+							limit = { check_variable = { migration_reception_front_intent_cache_phase = constant:migration_reception_front_intent.agreed } }
+							set_temp_variable = { red = constant:state_map_modes_migration.corridor_red }
+							set_temp_variable = { green = constant:state_map_modes_migration.corridor_green }
+							set_temp_variable = { blue = constant:state_map_modes_migration.corridor_blue }
+							set_temp_variable = { alpha = constant:state_map_modes_migration.corridor_alpha }
+						}
+					}
 				}
 				always = yes
 			}

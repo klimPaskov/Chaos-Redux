@@ -172,6 +172,20 @@ migration_prepare_reception_services = {
 					}
 				}
 			}
+			# Qualitative intent advances only after genuine, fully revalidated
+			# paid success. Projection failure cannot charge/refund or reject setup.
+			if = {
+				limit = {
+					check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.one }
+					check_variable = { migration_reception_preparation_pending = constant:humanitarian_runtime.one }
+					migration_pending_reception_issue_is_valid = yes
+				}
+				set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+				set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one }
+				set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.one }
+				set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.prepared }
+				var:humanitarian_corridor_offer_origin_state_id = { migration_publish_reception_front_intent_from_contract = yes }
+			}
 			if = {
 				limit = { check_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero } }
 				event_target:migration_reception_preparation_state = {

@@ -744,6 +744,13 @@ defined_text = {
 		}
 		localization_key = migration_state_map_mode_role_reception
 	}
+	text = {
+		trigger = {
+			migration_reception_front_intent_is_visible_to_player = yes
+			NOT = { migration_reception_front_intent_has_actual_map_context = yes }
+		}
+		localization_key = migration_reception_front_intent_role
+	}
 	text = { localization_key = migration_state_map_mode_role_none }
 }
 
@@ -874,7 +881,7 @@ defined_text = {
 			has_variable = migration_projection_last_role
 			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_deportation compare = equals }
 		}
-		localization_key = migration_state_map_mode_identity_deportation
+		localization_key = migration_state_map_mode_identity_deportation_transfer
 	}
 	text = {
 		trigger = {
@@ -896,6 +903,13 @@ defined_text = {
 			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_local_integration compare = equals }
 		}
 		localization_key = migration_state_map_mode_identity_integration
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_spontaneous_exodus compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_spontaneous_transfer
 	}
 	text = {
 		trigger = {
@@ -923,7 +937,7 @@ defined_text = {
 	}
 	text = {
 		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.evacuation compare = equals } }
-		localization_key = migration_state_map_mode_identity_evacuation
+		localization_key = migration_state_map_mode_identity_evacuation_pressure
 	}
 	text = {
 		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.deportation compare = equals } }
@@ -931,11 +945,11 @@ defined_text = {
 	}
 	text = {
 		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.cross_border_flight compare = equals } }
-		localization_key = migration_state_map_mode_identity_cross_border
+		localization_key = migration_state_map_mode_identity_cross_border_pressure
 	}
 	text = {
 		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.internal_displacement compare = equals } }
-		localization_key = migration_state_map_mode_identity_internal
+		localization_key = migration_state_map_mode_identity_internal_pressure
 	}
 	text = {
 		trigger = {
@@ -1111,6 +1125,13 @@ defined_text = {
 	name = GetMigrationStateMapModeDetail
 	text = {
 		trigger = {
+			migration_reception_front_intent_is_visible_to_player = yes
+			NOT = { migration_reception_front_intent_has_actual_map_context = yes }
+		}
+		localization_key = migration_state_map_mode_detail_intent
+	}
+	text = {
+		trigger = {
 			OR = {
 				is_owned_by = ROOT
 				is_controlled_by = ROOT
@@ -1150,4 +1171,30 @@ defined_text = {
 		localization_key = migration_state_map_mode_detail_authorized
 	}
 	text = { localization_key = migration_state_map_mode_detail_public }
+}
+
+defined_text = {
+	name = GetMigrationReceptionFrontIntent
+	text = {
+		trigger = { migration_reception_front_intent_is_visible_to_player = yes check_variable = { migration_reception_front_intent_cache_phase = constant:migration_reception_front_intent.requested } }
+		localization_key = migration_reception_front_intent_requested
+	}
+	text = {
+		trigger = { migration_reception_front_intent_is_visible_to_player = yes check_variable = { migration_reception_front_intent_cache_phase = constant:migration_reception_front_intent.prepared } }
+		localization_key = migration_reception_front_intent_prepared
+	}
+	text = {
+		trigger = { migration_reception_front_intent_is_visible_to_player = yes check_variable = { migration_reception_front_intent_cache_phase = constant:migration_reception_front_intent.agreed } }
+		localization_key = migration_reception_front_intent_agreed
+	}
+	text = { localization_key = migration_reception_front_intent_none }
+}
+
+defined_text = {
+	name = GetMigrationReceptionFrontIntentLine
+	text = {
+		trigger = { migration_reception_front_intent_is_visible_to_player = yes }
+		localization_key = migration_reception_front_intent_line
+	}
+	text = { localization_key = migration_reception_front_intent_none }
 }

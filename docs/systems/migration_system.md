@@ -125,6 +125,13 @@ The migration mapmode colors lifecycle state and independently marks trapped pop
 Its authorized reception-capacity status uses the migration owner's complete read-only validity contract, including the current schema, clean revision, positive real capacity and candidates, and no invalid candidates.
 A cached positive capacity token alone cannot label a dirty or invalid reception ledger as valid; the tooltip never recalculates or grants capacity.
 
+Receiving fronts of evacuation corridors carry a private reception intent for their owner or controller: requested after a valid offer, prepared after paid reception preparation, and agreed after consent.
+The front keeps one identity-only row per live corridor, so an older agreed passage and a newer pending request at the same front survive each other.
+Measured passage and every corridor terminal retire exactly their own row, and a front that changes hands drops the rows of a receiver that lost it.
+Intent never carries people, reception load, capacity or route permission, and any real trapped, arrival, hosting or overcrowded role keeps display priority.
+Latest-movement labels separate actual transfers, including deportation and civilian flight transfers, from pressure-only causes, which read as pressure.
+The API is documented in `common/scripted_effects/migration_reception_front_intent_effects.md` and `common/scripted_triggers/migration_reception_front_intent_triggers.md`.
+
 The current documentation inventory contains 61 declared final DDS outputs across the package: 50 root-manifest assets, seven report images, and four mapmode buttons. Category-asset closure reconciles the famine and migration category consumers, and the parent contact-sheet review accepted every visual family. Live in-game consumer validation remains user-owned.
 
 ## CXT fixture

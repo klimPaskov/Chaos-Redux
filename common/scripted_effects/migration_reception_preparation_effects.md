@@ -21,6 +21,9 @@ Capacity is then recalculated from the restored current owner inputs; previously
 Existing active-country registration belongs to the real origin/pending-request lifecycle and is not removed by a failed paid preparation.
 Regular scope targets end with the effect chain, and all child temporary results consumed after return are declared before their calls.
 
+After a genuine paid success for a still-valid pending evacuation request, the helper publishes the `prepared` reception intent on the request's front through `migration_publish_reception_front_intent_from_contract` (see [migration_reception_front_intent_effects.md](migration_reception_front_intent_effects.md)).
+That publication is presentation only: it cannot charge, refund, reject the setup or change capacity, and a refunded or unchanged setup never advances the phase.
+
 ```text
 # COUNTRY scope, FROM is the exact selected owned/controlled STATE
 set_temp_variable = { migration_reception_preparation_result = constant:humanitarian_runtime.zero }

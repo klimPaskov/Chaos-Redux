@@ -399,6 +399,16 @@ humanitarian_corridor_submit_offer = {
 				migration_register_active_country = yes
 			}
 			set_temp_variable = { humanitarian_corridor_offer_result = constant:humanitarian_corridor_result.valid }
+			# Receiver-front intent is presentation only. A missing/malformed
+			# projection cannot reject this already valid mechanical offer.
+			set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+			set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.zero }
+			set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.zero }
+			var:humanitarian_corridor_counterpart_country_id = {
+				if = { limit = { migration_pending_reception_issue_is_valid = yes } set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one } }
+			}
+			set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.requested }
+			migration_publish_reception_front_intent_from_contract = yes
 		}
 	}
 }
@@ -407,11 +417,16 @@ humanitarian_corridor_submit_offer = {
 # population, reserve, and cohort transactions remain separate exact calls.
 humanitarian_corridor_accept_offer = {
 	set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.invalid }
+	set_temp_variable = { migration_reception_front_intent_record_result = constant:migration_reception_front_intent.zero }
+	set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.zero }
 	save_event_target_as = humanitarian_corridor_response_country
 	if = {
 		limit = { has_country_flag = humanitarian_corridor_offer_pending has_variable = humanitarian_corridor_offer_front_state_id }
 		var:humanitarian_corridor_offer_front_state_id = { migration_consume_famine_food_safety = yes OWNER = { if = { limit = { check_variable = { migration_reception_capacity_dirty = constant:migration_capacity.one } } migration_recalculate_reception_capacity = yes } } }
 	}
+	# Snapshot while the offer is still pending. After status changes, the
+	# pending-issue predicate intentionally ceases to be true.
+	if = { limit = { migration_pending_reception_issue_is_valid = yes } set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.one } }
 	if = {
 		limit = { humanitarian_corridor_offer_can_be_accepted = yes }
 		var:humanitarian_corridor_offer_origin_state_id = {
@@ -475,6 +490,9 @@ humanitarian_corridor_accept_offer = {
 					set_country_flag = humanitarian_corridor_country_pulse_pending
 				}
 				event_target:humanitarian_corridor_response_country = { set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.valid } }
+				set_temp_variable = { migration_reception_front_intent_setup_proven = constant:migration_reception_front_intent.zero }
+				set_temp_variable = { migration_reception_front_intent_phase_request = constant:migration_reception_front_intent.agreed }
+				migration_publish_reception_front_intent_from_contract = yes
 			}
 		}
 		if = {
@@ -496,6 +514,7 @@ humanitarian_corridor_accept_offer = {
 		}
 
 	}
+	set_temp_variable = { migration_reception_front_intent_reveal_proven = constant:migration_reception_front_intent.zero }
 }
 
 # COUNTRY scope. Rejection changes only the contract state and clears every
@@ -624,6 +643,10 @@ humanitarian_corridor_record_evacuation = {
 		set_variable = { humanitarian_corridor_evacuation_route_deaths = civilian_transfer_route_deaths }
 		set_variable = { humanitarian_corridor_evacuation_survivor_credit = civilian_transfer_survivor_credit }
 		set_variable = { humanitarian_corridor_evacuation_transfer_generation = global.civilian_transfer_generation }
+		# The measured full conserved pass, not consent or a later mission,
+		# retires only this exact receiver intent before origin teardown.
+		set_temp_variable = { migration_reception_front_intent_clear_result = constant:migration_reception_front_intent.zero }
+		migration_retire_reception_front_intent_from_contract = yes
 		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.operation_pending }
 		humanitarian_corridor_set_mission_deadline = yes
 		if = {
@@ -873,6 +896,9 @@ humanitarian_corridor_invalidate_for_control_change = {
 # pass so a persisted front-state identity can invalidate its origin as well.
 humanitarian_corridor_handle_state_control_change = {
 	save_event_target_as = humanitarian_corridor_changed_state
+	# A front that changed hands keeps only the reception intent of a receiver
+	# that still owns and controls it.
+	migration_reception_front_intent_handle_control_change = yes
 	if = {
 		limit = {
 			humanitarian_corridor_cleanup_needed = yes
@@ -1096,6 +1122,18 @@ humanitarian_corridor_rearm_surviving_country_identity = {
 # amounts, and attacker evidence remain for audits; active IDs, response
 # mirrors, mission slots, and generic route proof do not.
 humanitarian_corridor_cleanup = {
+	# Capture retirement identity before any active contract field is cleared.
+	# An explicitly supplied old tuple is preserved by the bridge.
+	set_temp_variable = { migration_reception_front_intent_clear_result = constant:migration_reception_front_intent.zero }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+				check_variable = { migration_reception_front_intent_clear_proven = constant:migration_reception_front_intent.one }
+			}
+		}
+		migration_retire_reception_front_intent_from_contract = yes
+	}
 	# Corridor cleanup is an exact terminal for its preparation/organized
 	# presentation receipts. Durable depopulation and resettlement/return
 	# history is intentionally untouched here.
