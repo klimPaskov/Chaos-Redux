@@ -211,6 +211,7 @@ video_game_in_sweden_initialize_program = {
 		video_game_in_sweden_refresh_review_dates = yes
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_active }
 		clr_country_flag = video_game_in_sweden_according_to_plan_disqualified
+		clr_country_flag = video_game_in_sweden_cabinet_found_wanting
 		clr_country_flag = video_game_in_sweden_trust_model_meaningful_war
 		clr_country_flag = video_game_in_sweden_trust_model_favorable_result
 		clr_country_flag = video_game_in_sweden_trust_model_opponent_snapshot
@@ -2146,7 +2147,7 @@ video_game_in_sweden_failed_field_validation_apply_current = {
 		}
 		video_game_in_sweden_clear_mission_state = yes
 		set_country_flag = video_game_in_sweden_field_validation_failed
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		set_country_flag = video_game_in_sweden_cabinet_found_wanting
 		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_restricted }
 		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.failed_field_validation_gain }
@@ -2192,6 +2193,7 @@ video_game_in_sweden_partial_reality_audit = {
 	set_country_flag = video_game_in_sweden_reality_audit_partial
 	set_variable = { video_game_in_sweden_audit_result = constant:video_game_in_sweden_value.result_partial }
 	set_country_flag = video_game_in_sweden_reality_check_disqualified
+	set_country_flag = video_game_in_sweden_cabinet_found_wanting
 	if = {
 		limit = { has_country_flag = video_game_in_sweden_logistics_review_complete }
 		set_country_flag = video_game_in_sweden_logistics_mismatch_reduced
@@ -2235,6 +2237,7 @@ video_game_in_sweden_failed_reality_audit_apply_current = {
 		set_variable = { video_game_in_sweden_audit_result = constant:video_game_in_sweden_value.result_failed }
 		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		set_country_flag = video_game_in_sweden_cabinet_found_wanting
 		clr_country_flag = video_game_in_sweden_provisional_dual_track
 		# Orthodoxy returns unresolved. The Reliance already shed at the audit
 		# start stays shed, and the exposed weaknesses carry a longer penalty.
@@ -2282,7 +2285,7 @@ video_game_in_sweden_failed_dual_track_apply_current = {
 		}
 		video_game_in_sweden_clear_mission_state = yes
 		set_country_flag = video_game_in_sweden_dual_track_failed
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		set_country_flag = video_game_in_sweden_cabinet_found_wanting
 		set_variable = { video_game_in_sweden_restriction_fee_factor = constant:video_game_in_sweden_effect.restriction_failure_fee_factor }
 		clr_country_flag = video_game_in_sweden_dual_track_package_active
 		if = {
@@ -3919,7 +3922,10 @@ video_game_in_sweden_maintenance = {
 	}
 	else_if = {
 		limit = { NOT = { video_game_in_sweden_is_current_host = yes } }
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		video_game_in_sweden_close_program = yes
 	}
@@ -4024,7 +4030,13 @@ video_game_in_sweden_maintenance = {
 					NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
 				}
 			}
-			set_country_flag = video_game_in_sweden_reality_check_disqualified
+			# Before the full report a lost capital is a finding against the
+			# cabinet; after it, the Reality Check proof year ends.
+			if = {
+				limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+				set_country_flag = video_game_in_sweden_reality_check_disqualified
+			}
+			set_country_flag = video_game_in_sweden_cabinet_found_wanting
 			set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 			clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
 			clr_country_flag = video_game_in_sweden_reality_check_stockholm_held

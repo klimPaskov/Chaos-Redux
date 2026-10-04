@@ -171,15 +171,21 @@ class ObservationSourceTests(unittest.TestCase):
         self.assertEqual(model.scheduled, [("chaosx.nr24.91", Decimal(1))])
 
     def test_stockholm_loss_is_a_permanent_disqualifier(self):
-        model = self.model()
-        model.flags["SWE"].update({"video_game_in_sweden_reality_check_stockholm_held",
-                                  "video_game_in_sweden_trust_model_stockholm_continuous",
-                                  "video_game_in_sweden_reality_check_reliance_timer"})
-        model.call("video_game_in_sweden_record_control_loss")
-        self.assertIn("video_game_in_sweden_reality_check_disqualified", model.flags["SWE"])
-        self.assertIn("video_game_in_sweden_according_to_plan_disqualified", model.flags["SWE"])
-        self.assertNotIn("video_game_in_sweden_reality_check_reliance_timer", model.flags["SWE"])
-        self.assertNotIn("video_game_in_sweden_trust_model_stockholm_continuous", model.flags["SWE"])
+        # Before the full report a lost capital is a finding against the
+        # cabinet; only after it does Reality Check end (R2-6).
+        for full_report in (False, True):
+            model = self.model()
+            model.flags["SWE"].update({"video_game_in_sweden_reality_check_stockholm_held",
+                                      "video_game_in_sweden_trust_model_stockholm_continuous",
+                                      "video_game_in_sweden_reality_check_reliance_timer"})
+            if full_report:
+                model.flags["SWE"].add("video_game_in_sweden_reality_audit_full_success")
+            model.call("video_game_in_sweden_record_control_loss")
+            self.assertEqual("video_game_in_sweden_reality_check_disqualified" in model.flags["SWE"], full_report)
+            self.assertIn("video_game_in_sweden_cabinet_found_wanting", model.flags["SWE"])
+            self.assertIn("video_game_in_sweden_according_to_plan_disqualified", model.flags["SWE"])
+            self.assertNotIn("video_game_in_sweden_reality_check_reliance_timer", model.flags["SWE"])
+            self.assertNotIn("video_game_in_sweden_trust_model_stockholm_continuous", model.flags["SWE"])
 
     def test_crisis_queues_reassessment_without_waiting_for_monthly_tick(self):
         model = self.model()

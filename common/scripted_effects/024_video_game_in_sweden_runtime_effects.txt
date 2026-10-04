@@ -24,7 +24,17 @@ video_game_in_sweden_observe_runtime = {
 				video_game_in_sweden_is_disabled = yes
 			}
 		}
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		# Switching the event off ends the qualification; a lost host ends it
+		# only after the full report.
+		if = {
+			limit = {
+				OR = {
+					video_game_in_sweden_is_disabled = yes
+					has_country_flag = video_game_in_sweden_reality_audit_full_success
+				}
+			}
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		video_game_in_sweden_close_program = yes
 	}
@@ -232,7 +242,13 @@ video_game_in_sweden_record_control_loss = {
 			has_country_flag = video_game_in_sweden_host_selected
 			FROM.FROM = { state = constant:video_game_in_sweden_event.stockholm_state }
 		}
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		# Before the full report a lost capital is a finding against the
+		# cabinet; after it, the Reality Check proof year ends.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
+		set_country_flag = video_game_in_sweden_cabinet_found_wanting
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
 		clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
@@ -282,7 +298,10 @@ video_game_in_sweden_record_actor_loss = {
 			has_event_target = video_game_in_sweden_host
 			event_target:video_game_in_sweden_host = { tag = PREV }
 		}
-		set_country_flag = video_game_in_sweden_reality_check_disqualified
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
 		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
 		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous

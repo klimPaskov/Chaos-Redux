@@ -387,7 +387,7 @@ Once the territory is back and the memory has passed, severe-crisis checks, the 
 Each field validation, Reality Audit, narrow audit and Dual-Track verification keeps its own interruption record, reset when the mission starts.
 One Swedish core lost during the mission limits the report to a partial result, while Stockholm or two lost cores cancel the mission into its failure result.
 That cancellation files the mission's ordinary failure report (`chaosx.nr24.31`, `.32` or `.33`) through `video_game_in_sweden_cancel_field_validation_mission`, `video_game_in_sweden_cancel_reality_audit_mission` and `video_game_in_sweden_cancel_dual_track_mission`, while a lost host, a disabled stage or the end of the world closes the mission without a report.
-Stockholm loss still permanently disqualifies the two achievements.
+Losing Stockholm always ends According to Plan and records `video_game_in_sweden_cabinet_found_wanting`; it ends Reality Check only after the full report.
 
 ### Trust the Model mismatches
 
@@ -474,7 +474,9 @@ A bounded sweep across Chaos, stability, surrender progress, and army experience
 
 `024_video_game_in_sweden_according_to_plan` requires Evolution III, Trust Model, a meaningful favorable war result, mandatory reassessment, the stored opponent and victory state, Stockholm held, valid host status, and no disqualifier.
 
-Loss of host validity, supply failure, failed war conditions, severe instability, or the relevant route failure sets the persistent disqualifier flags.
+According to Plan is disqualified by loss of host validity, supply failure, failed war conditions, severe instability or the relevant route failure.
+Reality Check (`video_game_in_sweden_reality_check_disqualified`) is disqualified only by switching the event or a stage off, restriction or a provisional or dual-track settlement instead of the audit, a partial or failed audit, a full result reached through a narrow reassessment, and, after the full report, Reliance at Doctrine or above, the loss of Stockholm or an invalid host; the debug and normal-campaign checks sit in the eligibility trigger.
+A failed field validation, a partial or failed audit, a failed dual-track verification or a lost Stockholm instead records `video_game_in_sweden_cabinet_found_wanting`, the gameplay finding that blocks Trust the Model and shapes the field-validation, Trust the Model and foreign-response AI; it is cleared when a programme starts.
 
 Achievement tracking is updated by bounded maintenance, daily observation, and outcome effects, with proof stored in country flags and variables.
 Native save-persistence acceptance remains outstanding.

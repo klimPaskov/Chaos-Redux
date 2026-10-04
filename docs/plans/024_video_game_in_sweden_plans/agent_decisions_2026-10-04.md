@@ -308,3 +308,20 @@ The dates are display variables (`video_game_in_sweden_trial_review_date`, `vide
 The deadline variable itself is not cleared, because the reassessment logic still reads it; the flag gate in the selector is enough.
 Basis: round 2 lead decision 4, spec part 4 accessibility ("the category should show the next review or active mission clearly").
 Disposition: `implemented`; the rendered dates are needs_live_game.
+
+### R2-6. Reality Check is disqualified only by the spec's conditions
+
+Finding: `video_game_in_sweden_reality_check_disqualified` was both the achievement disqualifier and the gameplay "found wanting" gate (Trust the Model availability and the field-validation, Trust the Model and foreign-response AI factors). As a result, a failed Evolution I field validation, a failed dual-track verification, or losing Stockholm at any time since the event fired permanently blocked Reality Check, although spec part 4 lists only debug paths, restriction instead of the audit, a partial or failed audit, Reliance returning to Doctrine during the proof year, and losing Stockholm during that year.
+Decision: the new flag `video_game_in_sweden_cabinet_found_wanting` carries the gameplay finding. It is set by a failed field validation, a partial or failed audit, a failed dual-track verification, and a lost Stockholm (control callback and maintenance check), and cleared when a programme starts.
+It replaces the old flag in the Trust the Model gate (`video_game_in_sweden_can_use_maximum_risk_route`), in the field-validation and Trust the Model `ai_will_do` factors, and in the three foreign-response `ai_chance` factors. The Trust gating accepted in D22 is therefore unchanged in behaviour, and the Trust the Model requirement text now also names the earlier loss of Stockholm.
+Reality Check is now disqualified only by:
+- switching the event or a stage off (the A9 settings path; debug and force-trigger paths stay in the eligibility trigger through `debug_invalid` and `normal_campaign`);
+- restriction, the provisional settlement or a dual-track settlement instead of the audit;
+- a partial or failed audit, or a full result reached only through a narrow reassessment;
+- after the full report: Reliance at Doctrine or above, the loss of Stockholm, or an invalid or lost host.
+Failed field validation and failed dual-track no longer disqualify, so the Reality Audit stays a real route to the achievement afterwards. A host loss or capital loss before the full report records the finding, but does not end the achievement.
+According to Plan disqualifiers are unchanged, and the D2 note that Stockholm loss disqualifies both achievements is superseded for Reality Check by this entry.
+The achievement tooltip lists the new disqualifiers, and the old flag's requirement text now names the achievement, since it no longer gates any visible requirement.
+The runtime fixture's Stockholm-loss case now checks both sides of the full report; all 14 cases pass.
+Basis: round 2 lead decision 3, spec part 4 Reality Check core route and disqualifiers, spec A9.
+Disposition: `implemented`; achievement unlock is needs_live_game.
