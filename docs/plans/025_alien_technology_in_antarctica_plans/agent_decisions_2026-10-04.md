@@ -465,3 +465,20 @@ Decision:
 - Each hazard has its own report with the applied losses and the preparation line. The draw uses a cumulative weight roll rather than `random_list` with variable weights, so the selection does not depend on an unverified weight form.
 - The eight spec rare incidents are choice events reached at most once each, on a 5% roll in a pulse without a hazard, from the crossing phase on: abandoned camp, rival call for help, misidentified meteorite, clear weather window, neutral ship, wrecked survey aircraft, scientists' dispute, fragment reacting to current. Each has two or three options with a real trade-off and AI chances keyed to readiness, exposure, phase, faction and war. The rescue incident picks a random rival on the ice from the stored registry, may raise its readiness and gives it the existing rescue opinion; the neutral ship can turn a cut or improvised route into a chartered one (D26). Pictures reuse report cards that carry no evolution imagery.
 - A solo expedition gains 1 Exposure Risk per pulse on the ice and loses 1 Expedition Progress per pulse in the survey and final phases, on top of the higher hazard chance; a prepared solo expedition still completes the baseline.
+
+## D28. Evolution I, II and IV response tendencies
+
+Disposition: `implemented` for the source patch; `blocked` for the MCP probability route.
+
+Basis: spec 009 Evolution behavior and the lead's finding that the signal, survivor and wreck responses carried flat weights.
+
+Decision:
+
+- Eight posture triggers read only the expedition's own state and the race's leading phase: leading (no expedition in a later phase), scientific (Scientific Capacity at least 3, which the science exchange reaches), aggressive (at war or a fascist government), risk-averse (Exposure Risk at least 60), weak (Logistics Readiness below 30), desperate (at war above the existing desperate surrender threshold), militarised (at war or Evolution III in force) and a failing wreck (integrity below 50). None reads player status. Thresholds and tendency weights (+25, +20, +15, +10; ×0.5 against, ×0.3 strongly against) are `chaosx_nr25_ai` constants.
+- Active Signal: remote listening +20 scientific, ×0.5 aggressive; following +20 aggressive, ×0.5 risk-averse; shielding +25 risk-averse, +10 weak; jamming +10 when trailing, ×0.5 risk-averse; a broadcast +10 scientific, ×0.3 risk-averse.
+- Something Survived: avoiding contact +25 weak, +10 risk-averse; guarding +20 militarised; capture +25 desperate, +15 militarised, ×0.3 weak; mapping its path +20 scientific; turning it away +10 scientific and +10 risk-averse.
+- The Wreck Is Breaking Apart: stabilising +20 when the wreck is failing and the expedition is scientific, +10 leading; cutting fragments +20 trailing, ×0.5 leading; mapping debris +15 trailing, +10 scientific; distributing custody +15 trailing; leaving the unstable core to press for it (the core rush) +25 leading, ×0.3 trailing. Fragment recovery in the survey tray gains +15 when trailing under Evolution IV. The free responses (mapping the debris, leaving the core) no longer carry a reserve check.
+
+Source reads: P11 (Evolution IV, trailing in the survey phase, integrity 60, Scientific Capacity 1): fragment recovery 37, cutting 26, mapping 21, distributing 19, against the core rush 1.2. A leading expedition in final recovery: the core rush 29, stabilising 16 (36 on a failing wreck with scientific capacity), cutting 3, mapping 6, distributing 4.
+
+MCP route record: `hoi4_probability_inspect` (`decision_ai_will_do`, the evolution decisions file, a three-decision pool) returned `INTERNAL_ERROR`; it was attempted once. The compare route was not reached because its scenario schema is not exposed (D23).

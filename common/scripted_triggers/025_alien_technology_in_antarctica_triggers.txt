@@ -1386,6 +1386,49 @@ chaosx_nr25_ai_target_leads = {
 	FROM = { check_variable = { var = chaosx_nr25_progress value = ROOT.chaosx_nr25_progress compare = greater_than } }
 }
 
+# Country scope. Expedition postures behind the AI's evolution responses
+# (spec 009, Evolution behavior). They read only the expedition's own state
+# and the race's leading phase; none reads player status.
+# Leading: no expedition has reached a later phase.
+chaosx_nr25_ai_leading = {
+	check_variable = { var = chaosx_nr25_phase value = global.chaosx_nr25_leading_phase compare = greater_than_or_equals }
+}
+
+chaosx_nr25_ai_scientific = {
+	check_variable = { var = chaosx_nr25_scientific_capacity value = constant:chaosx_nr25_ai.scientific_capacity compare = greater_than_or_equals }
+}
+
+chaosx_nr25_ai_aggressive = {
+	OR = {
+		has_war = yes
+		has_government = fascism
+	}
+}
+
+chaosx_nr25_ai_risk_averse = {
+	check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_ai.risk_exposure compare = greater_than_or_equals }
+}
+
+chaosx_nr25_ai_weak = {
+	check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_ai.weak_readiness compare = less_than }
+}
+
+chaosx_nr25_ai_desperate = {
+	has_war = yes
+	surrender_progress > constant:chaosx_nr25_ai.desperate_surrender
+}
+
+chaosx_nr25_ai_militarised = {
+	OR = {
+		has_war = yes
+		chaosx_nr25_militarised_antarctica_evolution_in_force = yes
+	}
+}
+
+chaosx_nr25_ai_wreck_failing = {
+	check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_ai.failing_wreck_integrity compare = less_than }
+}
+
 # Country scope (the acting country, FROM the candidate target). The target
 # was caught operating against the actor.
 chaosx_nr25_ai_target_is_known_attacker = {
