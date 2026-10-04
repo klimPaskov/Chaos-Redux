@@ -690,7 +690,10 @@ acid_rain_start_project = {
 			set_variable = { acid_rain_project_active_entries^acid_rain_selected_project = constant:acid_rain_runtime.one }
 			set_variable = { acid_rain_project_tier_entries^acid_rain_selected_project = acid_rain_selected_tier }
 			set_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = global.date }
-			add_to_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = acid_rain_quote_days }
+			set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = chaosx_date_offset }
 			set_variable = { acid_rain_project_civ_entries^acid_rain_selected_project = acid_rain_quote_civ }
 			set_variable = { acid_rain_project_manpower_entries^acid_rain_selected_project = acid_rain_quote_manpower }
 			set_variable = { acid_rain_project_generation_entries^acid_rain_selected_project = global.acid_rain_generation_id }
@@ -814,7 +817,7 @@ acid_rain_apply_action_effect = {
 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_country_flag = { flag = acid_rain_action_shelter_active days = acid_rain_quote_effect_days } }
 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_country_flag = { flag = acid_rain_action_medical_active days = acid_rain_quote_effect_days } set_country_flag = { flag = acid_rain_medical_fatigue days = constant:acid_rain_preparedness.urgent_medical_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_country_flag = { flag = acid_rain_action_medical_active days = acid_rain_quote_effect_days } set_temp_variable = { acid_rain_medical_fatigue_days = constant:acid_rain_preparedness.urgent_medical_effect_days } set_country_flag = { flag = acid_rain_medical_fatigue days = acid_rain_medical_fatigue_days } }
 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_country_flag = { flag = acid_rain_action_transport_active days = acid_rain_quote_effect_days } }
 	if = {
 		limit = {
@@ -924,7 +927,10 @@ acid_rain_start_action = {
 			set_country_flag = acid_rain_national_action_active
 			set_variable = { acid_rain_active_action = acid_rain_selected_action }
 			set_variable = { acid_rain_action_end_day = global.date }
-			add_to_variable = { acid_rain_action_end_day = acid_rain_quote_days }
+			set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { acid_rain_action_end_day = chaosx_date_offset }
 			set_variable = { acid_rain_action_generation = global.acid_rain_generation_id }
 			add_to_variable = { acid_rain_committed_manpower = acid_rain_quote_manpower }
 			set_temp_variable = { acid_rain_action_civ_reserve = acid_rain_quote_civ }

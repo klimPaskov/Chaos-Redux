@@ -549,7 +549,7 @@ acid_rain_033_achievement_register_state = {
 		# acid_rain_033_achievement_registration_state is chain-local and expires automatically.
 	}
 	else = {
-		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
 	}
 }
 
@@ -612,7 +612,7 @@ acid_rain_033_achievement_transfer_state_responsibility = {
 		# acid_rain_033_achievement_transfer_state is chain-local and expires automatically.
 	}
 	else = {
-		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
 		set_state_flag = acid_rain_033_achievement_state_transfer_fault
 	}
 }
@@ -801,7 +801,10 @@ acid_rain_033_achievement_record_dissipation_state_snapshot = {
 		}
 		set_state_flag = acid_rain_033_achievement_state_recovery_snapshot
 		set_variable = { acid_rain_033_achievement_state_recovery_deadline_day = acid_rain_033_input_snapshot_day }
-		add_to_variable = { acid_rain_033_achievement_state_recovery_deadline_day = constant:acid_rain_response.aftercare_recovery_window_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_response.aftercare_recovery_window_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { acid_rain_033_achievement_state_recovery_deadline_day = chaosx_date_offset }
 		set_variable = { acid_rain_033_achievement_state_recovery_owner_id = CONTROLLER.id }
 		set_variable = { acid_rain_033_achievement_state_recovery_owner = CONTROLLER }
 		set_variable = { acid_rain_033_achievement_state_current_aftermath_tier = acid_rain_033_input_snapshot_aftermath_tier }

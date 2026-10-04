@@ -115,18 +115,21 @@ acid_rain_gui_refresh_read_only = {
 		set_variable = { global.acid_rain_gui_global_layer_active = constant:acid_rain_runtime.one }
 	}
 
-	set_temp_variable = { acid_rain_gui_days = global.date }
-	subtract_from_temp_variable = { acid_rain_gui_days = global.acid_rain_global_transition_day }
-	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_global_days_since_transition = acid_rain_gui_days }
-	set_temp_variable = { acid_rain_gui_days = global.acid_rain_global_minimum_dissipation_day }
-	subtract_from_temp_variable = { acid_rain_gui_days = global.date }
-	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_global_minimum_remaining_days = acid_rain_gui_days }
-	set_temp_variable = { acid_rain_gui_days = global.acid_rain_next_dissipation_check_day }
-	subtract_from_temp_variable = { acid_rain_gui_days = global.date }
-	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_global_next_dissipation_days = acid_rain_gui_days }
+	set_temp_variable = { chaosx_date_offset = global.date }
+	subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_global_transition_day }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_global_days_since_transition = chaosx_date_days }
+	set_temp_variable = { chaosx_date_offset = global.acid_rain_global_minimum_dissipation_day }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_global_minimum_remaining_days = chaosx_date_days }
+	set_temp_variable = { chaosx_date_offset = global.acid_rain_next_dissipation_check_day }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_global_next_dissipation_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_global_superstorm_count = global.acid_rain_superstorm_count }
 	set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_runtime.zero }
 	if = {
@@ -264,10 +267,11 @@ acid_rain_gui_project_front_1 = {
 	set_variable = { global.acid_rain_gui_front_1_id = constant:acid_rain_runtime.one }
 	set_variable = { global.acid_rain_gui_front_1_region = global.acid_rain_front_region_entries^1 }
 	set_variable = { global.acid_rain_gui_front_1_intensity = global.acid_rain_front_intensity_entries^1 }
-	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^1 }
-	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
-	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_front_1_movement_days = acid_rain_gui_front_days }
+	set_temp_variable = { chaosx_date_offset = global.acid_rain_front_next_work_day_entries^1 }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_front_1_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_1_next_region = global.acid_rain_front_next_region_entries^1 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_1_warning = constant:acid_rain_runtime.one } }
 	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
@@ -287,10 +291,11 @@ acid_rain_gui_project_front_2 = {
 	set_variable = { global.acid_rain_gui_front_2_id = constant:acid_rain_runtime.two }
 	set_variable = { global.acid_rain_gui_front_2_region = global.acid_rain_front_region_entries^2 }
 	set_variable = { global.acid_rain_gui_front_2_intensity = global.acid_rain_front_intensity_entries^2 }
-	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^2 }
-	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
-	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_front_2_movement_days = acid_rain_gui_front_days }
+	set_temp_variable = { chaosx_date_offset = global.acid_rain_front_next_work_day_entries^2 }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_front_2_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_2_next_region = global.acid_rain_front_next_region_entries^2 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_2_warning = constant:acid_rain_runtime.one } }
 	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
@@ -310,10 +315,11 @@ acid_rain_gui_project_front_3 = {
 	set_variable = { global.acid_rain_gui_front_3_id = constant:acid_rain_runtime.three }
 	set_variable = { global.acid_rain_gui_front_3_region = global.acid_rain_front_region_entries^3 }
 	set_variable = { global.acid_rain_gui_front_3_intensity = global.acid_rain_front_intensity_entries^3 }
-	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^3 }
-	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
-	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
-	set_variable = { global.acid_rain_gui_front_3_movement_days = acid_rain_gui_front_days }
+	set_temp_variable = { chaosx_date_offset = global.acid_rain_front_next_work_day_entries^3 }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.acid_rain_gui_front_3_movement_days = chaosx_date_days }
 	set_variable = { global.acid_rain_gui_front_3_next_region = global.acid_rain_front_next_region_entries^3 }
 	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_3_warning = constant:acid_rain_runtime.one } }
 	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }

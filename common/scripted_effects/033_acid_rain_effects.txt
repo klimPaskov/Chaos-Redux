@@ -1135,7 +1135,10 @@ acid_rain_apply_formation_stage = {
 			set_global_flag = acid_rain_severe_unlocked
 			set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_event.evolution_i_stage }
 			set_variable = { global.acid_rain_severe_next_check_day = global.acid_rain_runtime_start_day }
-			add_to_variable = { global.acid_rain_severe_next_check_day = constant:acid_rain_evolution.severe_first_cell_formation_delay_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.severe_first_cell_formation_delay_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_severe_next_check_day = chaosx_date_offset }
 		}
 		if = {
 			limit = { check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.front_two_chaos compare = greater_than_or_equals } }
@@ -1148,7 +1151,10 @@ acid_rain_apply_formation_stage = {
 			else = {
 				set_global_flag = acid_rain_front_split_pending
 				set_variable = { global.acid_rain_front_split_day = global.date }
-				add_to_variable = { global.acid_rain_front_split_day = constant:acid_rain_evolution.front_split_notice_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_split_notice_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_front_split_day = chaosx_date_offset }
 			}
 		}
 		if = {
@@ -1157,7 +1163,10 @@ acid_rain_apply_formation_stage = {
 			set_global_flag = acid_rain_global_transition_active
 			set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global_warning }
 			set_variable = { global.acid_rain_global_warning_day = global.date }
-			add_to_variable = { global.acid_rain_global_warning_day = constant:acid_rain_evolution.global_notice_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.global_notice_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_global_warning_day = chaosx_date_offset }
 			country_event = { id = chaosx.nr33.111 }
 		}
 	}
@@ -1227,7 +1236,10 @@ acid_rain_record_country_active_exposure = {
 		acid_rain_register_country_on_control_transfer = yes
 		set_temp_variable = { acid_rain_arrival_report_ready_day = constant:acid_rain_runtime.zero }
 		if = { limit = { has_variable = acid_rain_last_arrival_report_day } set_temp_variable = { acid_rain_arrival_report_ready_day = acid_rain_last_arrival_report_day } }
-		add_to_temp_variable = { acid_rain_arrival_report_ready_day = constant:acid_rain_runtime.report_cooldown_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.report_cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_temp_variable = { acid_rain_arrival_report_ready_day = chaosx_date_offset }
 		if = {
 			limit = { check_variable = { var = acid_rain_active_exposed_states value = constant:acid_rain_runtime.zero compare = equals } }
 			set_country_flag = acid_rain_country_exposure_active
@@ -1258,7 +1270,10 @@ acid_rain_release_front_state = {
 			acid_rain_register_country_on_control_transfer = yes
 			set_temp_variable = { acid_rain_departure_report_ready_day = constant:acid_rain_runtime.zero }
 			if = { limit = { has_variable = acid_rain_last_departure_report_day } set_temp_variable = { acid_rain_departure_report_ready_day = acid_rain_last_departure_report_day } }
-			add_to_temp_variable = { acid_rain_departure_report_ready_day = constant:acid_rain_runtime.report_cooldown_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.report_cooldown_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_temp_variable = { acid_rain_departure_report_ready_day = chaosx_date_offset }
 			if = { limit = { check_variable = { var = acid_rain_active_exposed_states value = constant:acid_rain_runtime.zero compare = greater_than } } subtract_from_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.loop_increment } }
 			if = {
 				limit = {
@@ -1313,7 +1328,10 @@ acid_rain_update_casualty_report = {
 				check_variable = { var = acid_rain_event_deaths value = acid_rain_casualty_candidate compare = greater_than_or_equals }
 			}
 			set_temp_variable = { acid_rain_casualty_report_ready_day = acid_rain_last_casualty_report_day }
-			add_to_temp_variable = { acid_rain_casualty_report_ready_day = constant:acid_rain_runtime.report_cooldown_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.report_cooldown_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_temp_variable = { acid_rain_casualty_report_ready_day = chaosx_date_offset }
 			if = {
 				limit = { check_variable = { var = global.date value = acid_rain_casualty_report_ready_day compare = greater_than_or_equals } }
 				set_variable = { acid_rain_last_casualty_threshold = acid_rain_casualty_candidate }
@@ -1343,7 +1361,10 @@ acid_rain_try_preparation_report = {
 				check_variable = { var = acid_rain_preparedness value = constant:acid_rain_reporting.preparation_minimum compare = greater_than_or_equals }
 			}
 			set_temp_variable = { acid_rain_preparation_report_ready_day = acid_rain_last_preparation_report_day }
-			add_to_temp_variable = { acid_rain_preparation_report_ready_day = constant:acid_rain_reporting.preparation_cooldown_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_reporting.preparation_cooldown_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_temp_variable = { acid_rain_preparation_report_ready_day = chaosx_date_offset }
 			if = {
 				limit = { check_variable = { var = global.date value = acid_rain_preparation_report_ready_day compare = greater_than_or_equals } }
 				set_variable = { acid_rain_last_preparation_report_day = global.date }
@@ -1465,7 +1486,10 @@ acid_rain_commit_front_region = {
 	set_variable = { global.acid_rain_front_generation_entries^acid_rain_front_id = global.acid_rain_generation_id }
 	set_variable = { global.acid_rain_front_state_entries^acid_rain_front_id = constant:acid_rain_front_state.warning }
 	set_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = global.date }
-	add_to_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = constant:acid_rain_runtime.warning_days }
+	set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.warning_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = chaosx_date_offset }
 	set_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = global.acid_rain_front_next_warning_day_entries^acid_rain_front_id }
 	set_variable = { global.acid_rain_front_empty_move_entries^acid_rain_front_id = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_front_visited_entries^acid_rain_front_id = constant:acid_rain_runtime.zero }
@@ -1543,8 +1567,9 @@ acid_rain_commit_front_region = {
 			save_event_target_as = acid_rain_report_state
 			CONTROLLER = {
 				acid_rain_register_country_on_control_transfer = yes
-				set_country_flag = { flag = acid_rain_country_warning_active days = constant:acid_rain_runtime.warning_days }
-				set_country_flag = { flag = acid_rain_country_project_arrival_risk days = constant:acid_rain_runtime.warning_days }
+				set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
+				set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
+				set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
 				if = {
 					limit = { NOT = { check_variable = { var = acid_rain_last_warning_front_id value = acid_rain_front_id compare = equals } } }
 					set_variable = { acid_rain_last_warning_front_id = acid_rain_front_id }
@@ -1680,9 +1705,15 @@ acid_rain_initialize_front_visit_timing = {
 		add_to_temp_variable = { acid_rain_front_maximum_dwell_days = constant:acid_rain_runtime.movement_days }
 	}
 	set_variable = { global.acid_rain_front_min_departure_day_entries^acid_rain_front_id = global.date }
-	add_to_variable = { global.acid_rain_front_min_departure_day_entries^acid_rain_front_id = acid_rain_front_minimum_dwell_days }
+	set_temp_variable = { chaosx_date_days = acid_rain_front_minimum_dwell_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { global.acid_rain_front_min_departure_day_entries^acid_rain_front_id = chaosx_date_offset }
 	set_variable = { global.acid_rain_front_max_departure_day_entries^acid_rain_front_id = global.date }
-	add_to_variable = { global.acid_rain_front_max_departure_day_entries^acid_rain_front_id = acid_rain_front_maximum_dwell_days }
+	set_temp_variable = { chaosx_date_days = acid_rain_front_maximum_dwell_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { global.acid_rain_front_max_departure_day_entries^acid_rain_front_id = chaosx_date_offset }
 	set_variable = { global.acid_rain_front_coverage_at_entry_entries^acid_rain_front_id = global.acid_rain_total_touched_states }
 }
 
@@ -1719,7 +1750,10 @@ acid_rain_prepare_front_warning = {
 		set_temp_variable = { acid_rain_selected_region_id = acid_rain_region_candidate }
 		set_variable = { global.acid_rain_front_next_region_entries^acid_rain_front_id = acid_rain_region_candidate }
 		set_variable = { global.acid_rain_front_move_day_entries^acid_rain_front_id = global.date }
-		add_to_variable = { global.acid_rain_front_move_day_entries^acid_rain_front_id = constant:acid_rain_runtime.warning_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.warning_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_front_move_day_entries^acid_rain_front_id = chaosx_date_offset }
 		set_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = global.acid_rain_front_move_day_entries^acid_rain_front_id }
 		set_variable = { global.acid_rain_front_state_entries^acid_rain_front_id = constant:acid_rain_front_state.retiring }
 		set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.one }
@@ -1749,8 +1783,9 @@ acid_rain_prepare_front_warning = {
 				save_event_target_as = acid_rain_report_state
 				CONTROLLER = {
 					acid_rain_register_country_on_control_transfer = yes
-					set_country_flag = { flag = acid_rain_country_warning_active days = constant:acid_rain_runtime.warning_days }
-					set_country_flag = { flag = acid_rain_country_project_arrival_risk days = constant:acid_rain_runtime.warning_days }
+					set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
+					set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
+					set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
 					if = {
 						limit = { NOT = { check_variable = { var = acid_rain_last_warning_front_id value = acid_rain_front_id compare = equals } } }
 						set_variable = { acid_rain_last_warning_front_id = acid_rain_front_id }
@@ -1765,7 +1800,10 @@ acid_rain_prepare_front_warning = {
 	}
 	else = {
 		set_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = global.date }
-		add_to_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = constant:acid_rain_front_timing.movement_retry_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_front_timing.movement_retry_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = chaosx_date_offset }
 	}
 }
 
@@ -2043,7 +2081,10 @@ acid_rain_retire_front_footprint_states = {
 					NOT = { any_neighbor_state = { acid_rain_state_is_frozen_valid = yes check_variable = { var = acid_rain_region_id value = acid_rain_selected_region_id compare = equals } NOT = { has_state_flag = acid_rain_touched } } }
 				}
 				set_temp_variable = { acid_rain_front_state_retire_day = acid_rain_front_entry_day }
-				add_to_temp_variable = { acid_rain_front_state_retire_day = constant:acid_rain_coverage.retire_min_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_coverage.retire_min_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_temp_variable = { acid_rain_front_state_retire_day = chaosx_date_offset }
 				if = {
 					limit = { check_variable = { var = global.date value = acid_rain_front_state_retire_day compare = greater_than_or_equals } }
 					acid_rain_release_front_state = yes
@@ -2064,7 +2105,10 @@ acid_rain_retire_front_footprint_states = {
 						check_variable = { var = acid_rain_front_retired_state_count value = acid_rain_front_retire_goal compare = less_than }
 					}
 					set_temp_variable = { acid_rain_front_state_retire_day = acid_rain_front_entry_day }
-					add_to_temp_variable = { acid_rain_front_state_retire_day = constant:acid_rain_coverage.retire_min_days }
+					set_temp_variable = { chaosx_date_days = constant:acid_rain_coverage.retire_min_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					add_to_temp_variable = { acid_rain_front_state_retire_day = chaosx_date_offset }
 					if = {
 						limit = { check_variable = { var = global.date value = acid_rain_front_state_retire_day compare = greater_than_or_equals } }
 						acid_rain_release_front_state = yes
@@ -2167,7 +2211,10 @@ acid_rain_process_front = {
 			set_variable = { global.acid_rain_front_empty_move_entries^acid_rain_front_id = constant:acid_rain_runtime.zero }
 		}
 		set_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = global.date }
-		add_to_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = constant:acid_rain_runtime.movement_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.movement_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = chaosx_date_offset }
 		if = {
 			limit = {
 				check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = global.acid_rain_front_target_goal_entries^acid_rain_front_id compare = greater_than_or_equals }
@@ -3025,7 +3072,10 @@ acid_rain_pulse_global_states = {
 					check_variable = { var = global.date value = acid_rain_last_pulse_day compare = greater_than_or_equals }
 				}
 				set_temp_variable = { acid_rain_global_next_pulse_day = acid_rain_last_pulse_day }
-				add_to_temp_variable = { acid_rain_global_next_pulse_day = constant:acid_rain_runtime.exposure_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.exposure_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_temp_variable = { acid_rain_global_next_pulse_day = chaosx_date_offset }
 				if = {
 					limit = { check_variable = { var = global.date value = acid_rain_global_next_pulse_day compare = greater_than_or_equals } }
 					set_variable = { acid_rain_last_pulse_day = global.date }
@@ -3092,7 +3142,10 @@ acid_rain_pulse_front_states = {
 					}
 				}
 				set_temp_variable = { acid_rain_next_pulse_day = acid_rain_last_pulse_day }
-				add_to_temp_variable = { acid_rain_next_pulse_day = constant:acid_rain_runtime.exposure_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.exposure_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_temp_variable = { acid_rain_next_pulse_day = chaosx_date_offset }
 				if = {
 					limit = {
 						check_variable = { var = global.date value = acid_rain_next_pulse_day compare = greater_than_or_equals }
@@ -3278,9 +3331,15 @@ acid_rain_create_severe_cell = {
 			add_to_array = { array = global.acid_rain_severe_cell_ids value = acid_rain_new_severe_cell_id }
 			set_variable = { global.acid_rain_severe_cell_front_entries^acid_rain_new_severe_cell_id = acid_rain_front_id }
 			set_variable = { global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id = global.date }
-			add_to_variable = { global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id = constant:acid_rain_evolution.severe_forecast_lead_days }
-			set_variable_to_random = { var = global.acid_rain_severe_cell_end_entries^acid_rain_new_severe_cell_id min = constant:acid_rain_evolution.severe_duration_min_days max = constant:acid_rain_evolution.severe_duration_max_days_exclusive integer = yes }
-			add_to_variable = { global.acid_rain_severe_cell_end_entries^acid_rain_new_severe_cell_id = global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.severe_forecast_lead_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id = chaosx_date_offset }
+			set_temp_variable_to_random = { var = chaosx_date_days min = constant:acid_rain_evolution.severe_duration_min_days max = constant:acid_rain_evolution.severe_duration_max_days_exclusive integer = yes }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			set_variable = { global.acid_rain_severe_cell_end_entries^acid_rain_new_severe_cell_id = global.acid_rain_severe_cell_start_entries^acid_rain_new_severe_cell_id }
+			add_to_variable = { global.acid_rain_severe_cell_end_entries^acid_rain_new_severe_cell_id = chaosx_date_offset }
 			set_variable = { global.acid_rain_severe_cell_target_count_entries^acid_rain_new_severe_cell_id = global.acid_rain_severe_planner_targets^num }
 			set_variable = { global.acid_rain_severe_cell_active_entries^acid_rain_new_severe_cell_id = constant:acid_rain_runtime.zero }
 			set_variable = { global.acid_rain_severe_cell_cooldown_day_entries^acid_rain_new_severe_cell_id = constant:acid_rain_runtime.zero }
@@ -3347,7 +3406,10 @@ acid_rain_try_severe_evolution = {
 		}
 		set_global_flag = acid_rain_severe_transition_pending
 		set_variable = { global.acid_rain_severe_transition_day = global.date }
-		add_to_variable = { global.acid_rain_severe_transition_day = constant:acid_rain_evolution.severe_notice_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.severe_notice_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_severe_transition_day = chaosx_date_offset }
 		if = { limit = { has_event_target = acid_rain_runtime_host } event_target:acid_rain_runtime_host = { country_event = { id = chaosx.nr33.114 } } }
 	}
 	if = {
@@ -3359,8 +3421,11 @@ acid_rain_try_severe_evolution = {
 		set_global_flag = acid_rain_severe_unlocked
 		set_variable = { global.acid_rain_severe_next_check_day = global.date }
 	}
-	set_temp_variable = { acid_rain_severe_age_days = global.date }
-	subtract_from_temp_variable = { acid_rain_severe_age_days = global.acid_rain_runtime_start_day }
+	set_temp_variable = { chaosx_date_offset = global.date }
+	subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_runtime_start_day }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_temp_variable = { acid_rain_severe_age_days = chaosx_date_days }
 	set_temp_variable = { acid_rain_severe_minimum_start_age = constant:acid_rain_evolution.severe_minimum_age_days }
 	if = {
 		limit = {
@@ -3462,7 +3527,10 @@ acid_rain_try_severe_evolution = {
 			}
 		}
 		set_variable = { global.acid_rain_severe_next_check_day = global.date }
-		add_to_variable = { global.acid_rain_severe_next_check_day = constant:acid_rain_evolution.severe_evaluation_cadence_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.severe_evaluation_cadence_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_severe_next_check_day = chaosx_date_offset }
 	}
 }
 
@@ -3556,7 +3624,10 @@ acid_rain_process_severe_cells = {
 					}
 					else = {
 						set_temp_variable = { acid_rain_severe_next_pulse_day = acid_rain_last_severe_pulse_day }
-						add_to_temp_variable = { acid_rain_severe_next_pulse_day = constant:acid_rain_runtime.exposure_days }
+						set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.exposure_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
+						add_to_temp_variable = { acid_rain_severe_next_pulse_day = chaosx_date_offset }
 						if = {
 							limit = { check_variable = { var = global.date value = acid_rain_severe_next_pulse_day compare = greater_than_or_equals } }
 							set_variable = { acid_rain_last_severe_pulse_day = global.date }
@@ -3588,8 +3659,11 @@ acid_rain_process_severe_cells = {
 				set_variable = { global.acid_rain_severe_cell_active_entries^acid_rain_severe_cell_index = constant:acid_rain_runtime.two }
 				set_variable = { global.acid_rain_severe_cell_cooldown_day_entries^acid_rain_severe_cell_index = global.date }
 				set_temp_variable = { acid_rain_severe_front_id = global.acid_rain_severe_cell_front_entries^acid_rain_severe_cell_index }
-				set_variable_to_random = { var = global.acid_rain_front_severe_cooldown_day_entries^acid_rain_severe_front_id min = constant:acid_rain_evolution.severe_cooldown_min_days max = constant:acid_rain_evolution.severe_cooldown_max_days_exclusive integer = yes }
-				add_to_variable = { global.acid_rain_front_severe_cooldown_day_entries^acid_rain_severe_front_id = global.date }
+				set_temp_variable_to_random = { var = chaosx_date_days min = constant:acid_rain_evolution.severe_cooldown_min_days max = constant:acid_rain_evolution.severe_cooldown_max_days_exclusive integer = yes }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				set_variable = { global.acid_rain_front_severe_cooldown_day_entries^acid_rain_severe_front_id = global.date }
+				add_to_variable = { global.acid_rain_front_severe_cooldown_day_entries^acid_rain_severe_front_id = chaosx_date_offset }
 			}
 		}
 	}
@@ -3647,7 +3721,10 @@ acid_rain_try_multiple_fronts = {
 		}
 		set_global_flag = acid_rain_front_split_pending
 		set_variable = { global.acid_rain_front_split_day = global.date }
-		add_to_variable = { global.acid_rain_front_split_day = constant:acid_rain_evolution.front_split_notice_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_split_notice_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_front_split_day = chaosx_date_offset }
 		if = { limit = { has_event_target = acid_rain_runtime_host } event_target:acid_rain_runtime_host = { country_event = { id = chaosx.nr33.113 } } }
 	}
 	if = {
@@ -3665,7 +3742,10 @@ acid_rain_try_multiple_fronts = {
 		}
 		else = {
 			set_variable = { global.acid_rain_front_split_day = global.date }
-			add_to_variable = { global.acid_rain_front_split_day = constant:acid_rain_evolution.front_split_notice_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_split_notice_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_front_split_day = chaosx_date_offset }
 		}
 	}
 	if = {
@@ -3681,8 +3761,11 @@ acid_rain_try_multiple_fronts = {
 				check_variable = { var = global.date value = global.acid_rain_third_front_retry_day compare = greater_than_or_equals }
 			}
 		}
-		set_temp_variable = { acid_rain_third_front_age_days = global.date }
-		subtract_from_temp_variable = { acid_rain_third_front_age_days = global.acid_rain_runtime_start_day }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_runtime_start_day }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { acid_rain_third_front_age_days = chaosx_date_days }
 		set_temp_variable = { acid_rain_third_front_chance = constant:acid_rain_evolution.front_three_base_chance }
 		if = {
 			limit = { check_variable = { var = global.chaos_meter_value value = constant:acid_rain_evolution.front_three_chaos_700_threshold compare = greater_than_or_equals } }
@@ -3717,12 +3800,18 @@ acid_rain_try_multiple_fronts = {
 			}
 			else = {
 				set_variable = { global.acid_rain_third_front_retry_day = global.date }
-				add_to_variable = { global.acid_rain_third_front_retry_day = constant:acid_rain_evolution.front_three_retry_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_three_retry_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_third_front_retry_day = chaosx_date_offset }
 			}
 		}
 		else = {
 			set_variable = { global.acid_rain_third_front_retry_day = global.date }
-			add_to_variable = { global.acid_rain_third_front_retry_day = constant:acid_rain_evolution.front_three_retry_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_three_retry_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_third_front_retry_day = chaosx_date_offset }
 		}
 	}
 }
@@ -3740,7 +3829,10 @@ acid_rain_begin_global_transition = {
 		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global }
 		set_variable = { global.acid_rain_global_transition_day = global.date }
 		set_variable = { global.acid_rain_global_minimum_dissipation_day = global.date }
-		add_to_variable = { global.acid_rain_global_minimum_dissipation_day = constant:acid_rain_evolution.global_minimum_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.global_minimum_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_global_minimum_dissipation_day = chaosx_date_offset }
 		set_variable = { global.acid_rain_next_dissipation_check_day = global.acid_rain_global_minimum_dissipation_day }
 		set_variable = { global.acid_rain_dissipation_check_index = constant:acid_rain_runtime.zero }
 		set_global_flag = acid_rain_global_layer_receipt
@@ -3846,7 +3938,10 @@ acid_rain_try_global_evolution = {
 		set_global_flag = acid_rain_global_transition_active
 		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global_warning }
 		set_variable = { global.acid_rain_global_warning_day = global.date }
-		add_to_variable = { global.acid_rain_global_warning_day = constant:acid_rain_evolution.global_notice_days }
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.global_notice_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_global_warning_day = chaosx_date_offset }
 		if = { limit = { has_event_target = acid_rain_runtime_host } event_target:acid_rain_runtime_host = { country_event = { id = chaosx.nr33.111 } } }
 	}
 	if = {
@@ -4002,9 +4097,15 @@ acid_rain_create_superstorm_forecast = {
 				add_to_array = { array = global.acid_rain_superstorm_ids value = acid_rain_new_superstorm_id }
 				set_variable = { global.acid_rain_superstorm_episode_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_total_episodes }
 				set_variable = { global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id = global.date }
-				add_to_variable = { global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id = constant:acid_rain_evolution.superstorm_lead_days }
-				set_variable_to_random = { var = global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id min = constant:acid_rain_evolution.superstorm_duration_min_days max = constant:acid_rain_evolution.superstorm_duration_max_days_exclusive integer = yes }
-				add_to_variable = { global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.superstorm_lead_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id = chaosx_date_offset }
+				set_temp_variable_to_random = { var = chaosx_date_days min = constant:acid_rain_evolution.superstorm_duration_min_days max = constant:acid_rain_evolution.superstorm_duration_max_days_exclusive integer = yes }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				set_variable = { global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_start_entries^acid_rain_new_superstorm_id }
+				add_to_variable = { global.acid_rain_superstorm_end_entries^acid_rain_new_superstorm_id = chaosx_date_offset }
 				set_variable = { global.acid_rain_superstorm_target_count_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_planner_targets^num }
 				set_variable = { global.acid_rain_superstorm_active_entries^acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
@@ -4051,8 +4152,11 @@ acid_rain_try_extra_superstorm = {
 			has_global_flag = acid_rain_global_layer_active
 			check_variable = { var = global.acid_rain_superstorm_capacity value = constant:acid_rain_evolution.global_superstorm_third_capacity compare = less_than }
 		}
-		set_temp_variable = { acid_rain_global_age_days = global.date }
-		subtract_from_temp_variable = { acid_rain_global_age_days = global.acid_rain_global_transition_day }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_global_transition_day }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { acid_rain_global_age_days = chaosx_date_days }
 		if = {
 			limit = {
 				OR = {
@@ -4140,7 +4244,10 @@ acid_rain_process_superstorms = {
 					}
 					else = {
 						set_temp_variable = { acid_rain_superstorm_next_pulse_day = acid_rain_last_superstorm_pulse_day }
-						add_to_temp_variable = { acid_rain_superstorm_next_pulse_day = constant:acid_rain_runtime.exposure_days }
+						set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.exposure_days }
+						set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+						chaosx_convert_days_to_date_offset = yes
+						add_to_temp_variable = { acid_rain_superstorm_next_pulse_day = chaosx_date_offset }
 						if = {
 							limit = { check_variable = { var = global.date value = acid_rain_superstorm_next_pulse_day compare = greater_than_or_equals } }
 							add_dynamic_modifier = { modifier = acid_rain_state_superstorm days = global.acid_rain_modifier_refresh_days }
@@ -4260,11 +4367,17 @@ acid_rain_try_dissipation_check = {
 			set_variable = { global.acid_rain_next_dissipation_check_day = global.date }
 			if = {
 				limit = { has_global_flag = acid_rain_global_layer_active }
-				add_to_variable = { global.acid_rain_next_dissipation_check_day = constant:acid_rain_dissipation.check_interval_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_dissipation.check_interval_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_next_dissipation_check_day = chaosx_date_offset }
 			}
 			else = {
 				set_variable_to_random = { var = acid_rain_dissipation_retry_days min = constant:acid_rain_dissipation.failed_check_delay_min_days max = constant:acid_rain_dissipation.failed_check_delay_max_days_exclusive integer = yes }
-				add_to_variable = { global.acid_rain_next_dissipation_check_day = acid_rain_dissipation_retry_days }
+				set_temp_variable = { chaosx_date_days = acid_rain_dissipation_retry_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_next_dissipation_check_day = chaosx_date_offset }
 			}
 		}
 	}
@@ -4325,7 +4438,10 @@ acid_rain_finish_runtime = {
 					set_variable = { acid_rain_state_aftermath_tier = constant:acid_rain_runtime.two }
 				}
 				set_variable = { acid_rain_aftercare_deadline = global.date }
-				add_to_variable = { acid_rain_aftercare_deadline = constant:acid_rain_response.aftercare_recovery_window_days }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_response.aftercare_recovery_window_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { acid_rain_aftercare_deadline = chaosx_date_offset }
 				set_state_flag = acid_rain_aftercare_unresolved
 				if = {
 					limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.one compare = equals } }
@@ -4527,7 +4643,10 @@ acid_rain_host_worker = {
 			set_temp_variable = { acid_rain_air_request_is_formation = constant:acid_rain_runtime.zero }
 			acid_rain_apply_air_request = yes
 			set_variable = { global.acid_rain_air_week_start_day = global.date }
-			add_to_variable = { global.acid_rain_air_week_start_day = constant:acid_rain_runtime.contamination_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.contamination_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_air_week_start_day = chaosx_date_offset }
 		}
 		acid_rain_try_global_evolution = yes
 	}
@@ -4569,7 +4688,10 @@ acid_rain_host_worker = {
 			set_variable = { global.acid_rain_coverage_complete_day = global.date }
 			set_variable = { global.acid_rain_dissipation_check_index = constant:acid_rain_runtime.zero }
 			set_variable = { global.acid_rain_next_dissipation_check_day = global.date }
-			add_to_variable = { global.acid_rain_next_dissipation_check_day = constant:acid_rain_dissipation.ordinary_completion_wait_days }
+			set_temp_variable = { chaosx_date_days = constant:acid_rain_dissipation.ordinary_completion_wait_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { global.acid_rain_next_dissipation_check_day = chaosx_date_offset }
 		}
 		if = {
 			limit = { check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals } }
