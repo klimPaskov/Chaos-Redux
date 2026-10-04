@@ -274,7 +274,8 @@ The parent's individual source, processed-PNG, and decoded-DDS review of the nin
 That review reports ten current validator passes with exact processed-to-decoded pixels and evidence-to-runtime byte equality.
 It establishes standalone art and file-chain review rather than event-chain, category-action, icon-family, or package acceptance.
 
-- Report cards use `GFX_report_event_riches_found_*` and live in `gfx/event_pictures/029_riches_found/`.
+- Report cards use `GFX_report_event_riches_found_*` and live in `gfx/event_pictures/029_riches_found/`; the discovery report shows the found deposit through `GetRichesFoundDiscoveryPicture` (`_discovery_alluvial`, `_deep_vein`, `_gemstone`, `_platinum`, with the general discovery card as default).
+- Reopen the Mine has its own `GFX_decision_riches_found_reopen_mine` art.
 - The category picture and category icon are `GFX_decision_cat_picture_riches_found` and `GFX_decision_category_riches_found` in `gfx/interface/decisions/029_riches_found/`.
 - Decision icons use `GFX_decision_riches_found_*` in the same decision folder.
 - Mission icons use `GFX_mission_riches_found_*` in the same decision folder.

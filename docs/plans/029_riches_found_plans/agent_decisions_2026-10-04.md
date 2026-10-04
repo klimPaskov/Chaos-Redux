@@ -150,7 +150,7 @@ Incident weights follow the specification's profile lines through the existing `
 Platinum adds `riches_found_foreign_interest.platinum_profile` and gemstones `gemstone_profile` to the foreign partner score.
 A deep vein without reinforced shafts adds `pulse_deep_vein_collapse_add` collapse pressure each pulse interval.
 AI development priorities follow the profile: shaft reinforcement and sealing for deep veins, camp administration and sanitation for alluvial fields, mine police for gemstone beds, and processing works and the port route for platinum.
-Profile-specific report imagery is not added because no profile art exists; the existing report pictures stay, and this is recorded as an asset limitation.
+Profile-specific report imagery is not added because no profile art exists; the existing report pictures stay, and this is recorded as an asset limitation. Disposition: superseded by D31.
 
 ## D16. In-game Event Details text follows the catalog
 
@@ -333,3 +333,9 @@ Round 1 left the neighbour, sponsor or capital country that receives a Gold Dise
 `riches_found_apply_country_gold_fever` now stores the source mine, route and duration on the receiver and fires `chaosx.nr29.140` once per spread; the report reuses `GFX_report_event_riches_found_gold_disease`, picks its text by route through `GetRichesFoundGoldArrivalText`, and shows the received modifier (the army variant for rotated soldiers) as the tooltip of its single option.
 Every route that gives the modifier saves its source mine first, and the rotation route now uses the same helper instead of adding the army modifier inline.
 No country-level crisis record or scan is added.
+
+D31. Discovery reports show the deposit and Reopen the Mine has its own icon.
+Four period documentary report sources (alluvial field, deep vein, gemstone bed, platinum lode) and one native-alpha decision icon were generated through native ImageGen (`gptimage`), processed through the skill tools and installed under the existing report and decision folders; prompts, lineage, checksums and the round-trip sheet are in `docs/assets/029_riches_found/` (manifest "Round 2 additions").
+`chaosx.nr29.1` picks its picture through `GetRichesFoundDiscoveryPicture` from the profile of the mine just found (`riches_found_last_discovered_mine`, set when the discovery is committed), with the general discovery card as the default, following the wiki's scripted-localisation picture pattern and the Event 016 precedent.
+Agent decision: the skill routes generated report art and icons to asset subagents, which this workflow session cannot spawn, so the implementing agent produced and reviewed them under the same family contracts.
+How the pictures and icon read in game needs the live game.
