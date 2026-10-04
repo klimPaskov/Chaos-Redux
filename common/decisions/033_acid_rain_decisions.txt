@@ -50,6 +50,8 @@
 @acid_rain_ai_heavy_casualties = 1.75
 @acid_rain_ai_large_population = 1.40
 @acid_rain_ai_weak_infrastructure = 1.25
+@acid_rain_ai_weak_rail = 1.25
+@acid_rain_ai_wartime_transport = 1.25
 @acid_rain_ai_late_evacuation = 0.35
 @acid_rain_legacy_mission_retirement_days = 1
 
@@ -282,7 +284,7 @@ chaosx_acid_rain_decision_category = {
 			modifier = { factor = @acid_rain_ai_war_reserve_pressure has_country_flag = acid_rain_country_wartime_reserve_pressure }
 			modifier = { factor = @acid_rain_ai_global_layer check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
 			modifier = {
-				factor = 1.25
+				factor = @acid_rain_ai_weak_rail
 				any_controlled_state = { rail_way < constant:acid_rain_runtime.two }
 			}
 		}
@@ -462,8 +464,8 @@ chaosx_acid_rain_decision_category = {
 			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
 			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
 			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
-			modifier = { factor = 1.25 has_war = yes }
-			modifier = { factor = 1.25 any_controlled_state = { rail_way < constant:acid_rain_runtime.two } }
+			modifier = { factor = @acid_rain_ai_wartime_transport has_war = yes }
+			modifier = { factor = @acid_rain_ai_weak_rail any_controlled_state = { rail_way < constant:acid_rain_runtime.two } }
 		}
 	}
 

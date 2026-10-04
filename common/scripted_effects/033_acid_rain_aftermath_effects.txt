@@ -304,8 +304,8 @@ acid_rain_remove_published_consequence_band = {
 }
 
 # STATE SCOPE. Publishes the supply, movement and attrition values of the
-# acute band in temporary acid_rain_acute_band (1 ordinary, 2 strong,
-# 3 severe, 4 global, 5 superstorm), scaled down by the controller's
+# acute band in temporary acid_rain_acute_band (an acid_rain_aftermath.modifier_*
+# band), scaled down by the controller's
 # Transport tier and by Reroute Transport while its protection is in force.
 acid_rain_set_acute_mitigated_values = {
 	set_temp_variable = { acid_rain_acute_scale = constant:acid_rain_modifier.full_share }
@@ -324,35 +324,35 @@ acid_rain_set_acute_mitigated_values = {
 	}
 	clamp_temp_variable = { var = acid_rain_acute_scale min = constant:acid_rain_modifier.minimum_mitigated_share max = constant:acid_rain_modifier.full_share }
 	if = {
-		limit = { check_variable = { var = acid_rain_acute_band value = 1 compare = equals } }
+		limit = { check_variable = { var = acid_rain_acute_band value = constant:acid_rain_aftermath.modifier_ordinary compare = equals } }
 		set_variable = { acid_rain_acute_speed = constant:acid_rain_modifier.ordinary_speed }
 		set_variable = { acid_rain_acute_supplies = constant:acid_rain_modifier.ordinary_supplies }
 		set_variable = { acid_rain_acute_attrition = constant:acid_rain_modifier.ordinary_attrition }
 		set_variable = { acid_rain_acute_truck_attrition = constant:acid_rain_modifier.ordinary_truck_attrition }
 	}
 	else_if = {
-		limit = { check_variable = { var = acid_rain_acute_band value = 2 compare = equals } }
+		limit = { check_variable = { var = acid_rain_acute_band value = constant:acid_rain_aftermath.modifier_strong compare = equals } }
 		set_variable = { acid_rain_acute_speed = constant:acid_rain_modifier.strong_speed }
 		set_variable = { acid_rain_acute_supplies = constant:acid_rain_modifier.strong_supplies }
 		set_variable = { acid_rain_acute_attrition = constant:acid_rain_modifier.strong_attrition }
 		set_variable = { acid_rain_acute_truck_attrition = constant:acid_rain_modifier.strong_truck_attrition }
 	}
 	else_if = {
-		limit = { check_variable = { var = acid_rain_acute_band value = 3 compare = equals } }
+		limit = { check_variable = { var = acid_rain_acute_band value = constant:acid_rain_aftermath.modifier_severe compare = equals } }
 		set_variable = { acid_rain_acute_speed = constant:acid_rain_modifier.severe_speed }
 		set_variable = { acid_rain_acute_supplies = constant:acid_rain_modifier.severe_supplies }
 		set_variable = { acid_rain_acute_attrition = constant:acid_rain_modifier.severe_attrition }
 		set_variable = { acid_rain_acute_truck_attrition = constant:acid_rain_modifier.severe_truck_attrition }
 	}
 	else_if = {
-		limit = { check_variable = { var = acid_rain_acute_band value = 4 compare = equals } }
+		limit = { check_variable = { var = acid_rain_acute_band value = constant:acid_rain_aftermath.modifier_global compare = equals } }
 		set_variable = { acid_rain_acute_speed = constant:acid_rain_modifier.global_speed }
 		set_variable = { acid_rain_acute_supplies = constant:acid_rain_modifier.global_supplies }
 		set_variable = { acid_rain_acute_attrition = constant:acid_rain_modifier.global_attrition }
 		set_variable = { acid_rain_acute_truck_attrition = constant:acid_rain_modifier.global_truck_attrition }
 	}
 	else_if = {
-		limit = { check_variable = { var = acid_rain_acute_band value = 5 compare = equals } }
+		limit = { check_variable = { var = acid_rain_acute_band value = constant:acid_rain_aftermath.modifier_superstorm compare = equals } }
 		set_variable = { acid_rain_acute_speed = constant:acid_rain_modifier.superstorm_speed }
 		set_variable = { acid_rain_acute_supplies = constant:acid_rain_modifier.superstorm_supplies }
 		set_variable = { acid_rain_acute_attrition = constant:acid_rain_modifier.superstorm_attrition }
@@ -368,13 +368,13 @@ acid_rain_publish_consequence_band = {
 	if = {
 		limit = { NOT = { AND = { has_global_flag = acid_rain_global_transition_active NOT = { has_state_flag = acid_rain_global_pulse_receipt } } } }
 		acid_rain_remove_published_consequence_band = yes
-		if = { limit = { acid_rain_state_has_superstorm_layer = yes } set_temp_variable = { acid_rain_acute_band = 5 } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_superstorm days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_superstorm } }
-		else_if = { limit = { acid_rain_state_has_severe_layer = yes } set_temp_variable = { acid_rain_acute_band = 3 } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_severe days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_severe } }
-		else_if = { limit = { acid_rain_state_has_global_layer = yes } set_temp_variable = { acid_rain_acute_band = 4 } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_global days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_global } }
+		if = { limit = { acid_rain_state_has_superstorm_layer = yes } set_temp_variable = { acid_rain_acute_band = constant:acid_rain_aftermath.modifier_superstorm } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_superstorm days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_superstorm } }
+		else_if = { limit = { acid_rain_state_has_severe_layer = yes } set_temp_variable = { acid_rain_acute_band = constant:acid_rain_aftermath.modifier_severe } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_severe days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_severe } }
+		else_if = { limit = { acid_rain_state_has_global_layer = yes } set_temp_variable = { acid_rain_acute_band = constant:acid_rain_aftermath.modifier_global } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_global days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_global } }
 		else_if = {
 			limit = { acid_rain_state_has_ordinary_layer = yes }
-			if = { limit = { check_variable = { var = global.acid_rain_front_intensity_entries^acid_rain_target_front_id value = constant:acid_rain_intensity.strong compare = greater_than_or_equals } } set_temp_variable = { acid_rain_acute_band = 2 } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_strong days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_strong } }
-			else = { set_temp_variable = { acid_rain_acute_band = 1 } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_ordinary days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_ordinary } }
+			if = { limit = { check_variable = { var = global.acid_rain_front_intensity_entries^acid_rain_target_front_id value = constant:acid_rain_intensity.strong compare = greater_than_or_equals } } set_temp_variable = { acid_rain_acute_band = constant:acid_rain_aftermath.modifier_strong } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_strong days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_strong } }
+			else = { set_temp_variable = { acid_rain_acute_band = constant:acid_rain_aftermath.modifier_ordinary } acid_rain_set_acute_mitigated_values = yes add_dynamic_modifier = { modifier = acid_rain_state_ordinary days = global.acid_rain_modifier_refresh_days } set_variable = { acid_rain_applied_modifier_band = constant:acid_rain_aftermath.modifier_ordinary } }
 		}
 		else_if = {
 			limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_aftermath.zero compare = greater_than } }

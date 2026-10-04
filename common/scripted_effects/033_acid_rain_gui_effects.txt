@@ -494,14 +494,18 @@ acid_rain_refresh_gui_projection = {
 # ANY SCOPE. Input: temporary acid_rain_gui_superstorm_slot (registry slot).
 # Output: temporary acid_rain_gui_marker_shown (0 or 1), acid_rain_gui_anchor_region,
 # acid_rain_gui_anchor_x and acid_rain_gui_anchor_y. Forecast and active storms
-# show a marker at their seed region; a marker that shares its region with an
-# earlier listed marker shifts right so each storm stays readable.
+# show a marker at their seed region while the global layer is projected; a
+# marker that shares its region with an earlier listed marker shifts right so
+# each storm stays readable. Final dissipation clears the storm targets but
+# keeps the slot records, so the global-layer gate keeps aftercare and closed
+# maps free of storms that no longer exist.
 acid_rain_gui_project_superstorm_marker = {
 	set_temp_variable = { acid_rain_gui_marker_shown = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_gui_anchor_region = global.acid_rain_superstorm_region_entries^acid_rain_gui_superstorm_slot }
 	acid_rain_gui_set_region_anchor = yes
 	if = {
 		limit = {
+			check_variable = { global.acid_rain_gui_global_layer_active > constant:acid_rain_runtime.zero }
 			check_variable = { var = acid_rain_gui_anchor_region value = constant:acid_rain_runtime.zero compare = greater_than }
 			check_variable = { var = global.acid_rain_superstorm_active_entries^acid_rain_gui_superstorm_slot value = constant:acid_rain_runtime.two compare = less_than }
 		}

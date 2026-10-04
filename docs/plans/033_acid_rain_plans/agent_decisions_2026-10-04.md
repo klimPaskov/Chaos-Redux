@@ -1,6 +1,6 @@
 # Event 033 agent decisions, 2026-10-04
 
-Disposition: implemented; D1 to D20 are promoted into the accepted Event 033 specs (Parts 2, 4, 5, 6, 7, 8, 10 and 11, each in its "Accepted implementation decisions, 2026-10-04" section), and D21 is accepted and queued for the catalog owner.
+Disposition: implemented; D1 to D20 are promoted into the accepted Event 033 specs (Parts 2, 4, 5, 6, 7, 8, 10 and 11, each in its "Accepted implementation decisions, 2026-10-04" section), D21 is accepted and queued for the catalog owner, and D22 and D23 are implemented review fixes.
 Acceptance basis: the user granted the Event 033 lead full design authority on 2026-10-04 and directed it to take the recommended, spec-consistent option for every open choice and record it here.
 Each decision below resolves an item that earlier handoffs left unresolved; implementation evidence is recorded separately when the work lands.
 
@@ -179,3 +179,20 @@ Basis: Part 5 and the decision text promise that Transport tiers and Reroute Tra
 
 Disposition: accepted and queued for the catalog owner in [catalog_changes_pending.md](catalog_changes_pending.md).
 The Event 33 Details and Evo I to III cells take the in-game Event Details and evolution text, including the nine-day forecasts, and Status moves from To Be Reworked to Needs Testing because the rework is implemented in source and live-game verification is the remaining gate.
+
+## Review round 1 decisions
+
+These decisions were taken by the Event 033 round-1 reviewer under the same full design authority.
+
+### D22. Superstorm markers follow the global layer
+
+Disposition: implemented (commit "Keep Acid Rain storm markers to the global layer and name its constants").
+Final dissipation clears superstorm target states but keeps the superstorm slot records, so an aftercare or closed world map still listed forecast and active storms and showed their markers over a map with no storm.
+`acid_rain_gui_project_superstorm_marker` now projects a marker only while the global layer is projected (`global.acid_rain_gui_global_layer_active`), the same gate the superstorm list card already uses, so markers appear from forecast to retirement during Global Acid Rain and never after it.
+The acute-band selector reads the existing `acid_rain_aftermath.modifier_*` constants instead of literal band numbers, and the Transport and wartime AI factors on Reroute and Harden Transport read named file constants with unchanged values.
+
+### D23. Player text and achievement wording
+
+Disposition: implemented (commit "Plain wording for Acid Rain player text and achievements").
+The Acid Rain achievement texts and eligibility tooltip drop Event 33, valid campaign, eligible state, national responsibility, administrative early termination and scheduled route check wording and state the same conditions in player terms.
+The category, project, global-layer, world-map and Event Details texts drop "returns once", "safe cancellation", "dissipation check", "valid records", "registered at formation" and "valid inhabited state"; the queued catalog values in [catalog_changes_pending.md](catalog_changes_pending.md) match the new Event Details and Evo III text.
