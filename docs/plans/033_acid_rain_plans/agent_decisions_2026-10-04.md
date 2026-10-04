@@ -1,16 +1,20 @@
 # Event 033 agent decisions, 2026-10-04
 
-Disposition: accepted and queued.
+Disposition: implemented; D1 to D20 are promoted into the accepted Event 033 specs (Parts 2, 4, 5, 6, 7, 8, 10 and 11, each in its "Accepted implementation decisions, 2026-10-04" section), and D21 is accepted and queued for the catalog owner.
 Acceptance basis: the user granted the Event 033 lead full design authority on 2026-10-04 and directed it to take the recommended, spec-consistent option for every open choice and record it here.
 Each decision below resolves an item that earlier handoffs left unresolved; implementation evidence is recorded separately when the work lands.
 
 ## D1. Adopt the stopped thread's uncommitted Event 033 work
+
+Disposition: implemented (commits "Adopt the Event 033 Acid Rain consequence rework", "Record the Event 033 consequence repair specs, plans and evidence" and "Remove civilian population once and record the observed loss in Deaths").
 
 The uncommitted Event 033 rewrite (consequence transaction, episode caps, damage receipts, quote/target bridge repairs, GUI wiring, achievements, aftermath file, delivered animation and veil DDS files) is adopted after a load-safety review and committed with the shared-tree workflow.
 Basis: the accepted consequence repair spec is implemented in that work, `.tools/validation/validate_033_acid_rain.py` passes, the population-helper source replay passes all 40 cases, and the routed static-lint fixes 3, 4 and 13 plus the working-tree halves of 1 and 2 exist only there.
 The shared population-first helper in `common/scripted_effects/chaosx_dynamic_effects.txt` and its twelve caller output declarations are committed as their own hunk-only commit so other owners' uncommitted hunks in those files stay untouched.
 
 ## D2. Severe and superstorm forecast lead becomes nine days
+
+Disposition: implemented (commit "Give severe evacuations time to work"); promoted into Parts 5 and 7.
 
 `acid_rain_evolution.severe_forecast_lead_days` and `acid_rain_evolution.superstorm_lead_days` change from 3 to 9.
 The seven-day evacuation matrix, the 0.05 percent per-state ceiling, and the accepted Three Evacuations rule (completion strictly before the first severe pulse) stay unchanged.
@@ -21,11 +25,15 @@ Part 7, the evolution and Event Details text, and the catalog notes are updated 
 
 ## D3. Evacuation partial effect and local disruption
 
+Disposition: implemented (commit "Give severe evacuations time to work"); values in D8; promoted into Parts 4 and 5.
+
 A paid evacuation that has run one full day grants a reduced share of the evacuation mortality reduction to severe and superstorm pulses; completion grants the full reduction.
 Evacuation protection applies only to severe and superstorm pulses, as Part 5 states.
 A new state dynamic modifier applies the promised temporary production, construction and supply penalty for the evacuation's duration and is removed when the severe episode closes.
 
 ## D4. Two Regions Ready uses late warning binding
+
+Disposition: implemented (see D12); promoted into Part 10.
 
 A paid urgent national action that is still running when a new warning is published for a responsible state, and that has no warning association yet, binds to that warning visit.
 Completion strictly before that visit's arrival then counts; an action that starts after arrival still disqualifies, and one action still credits only one visit.
@@ -33,11 +41,15 @@ Basis: every urgent action lasts 14 to 21 days against a seven-day warning, so o
 
 ## D5. Humanitarian integration uses a source-specific famine adapter
 
+Disposition: implemented (see D14); promoted into Parts 4 and 11.
+
 Acid Rain registers its proven consequences through an Event 033 famine adapter that mirrors `famine_adapt_natural_disaster_state`: exact applied mortality pulses, tier-2 and tier-3 aftermath, and completed large evacuations, each with Acid Rain source identities distinct from Event 013 and Air Winter.
 Evacuation displacement is registered as humanitarian disaster pressure, not as a migration cohort, because Part 5 forbids permanent population transfer without a verified migration API and the migration adapter documents Event 33 as lacking cohort facts.
 The adapter addition is coordinated with the famine and migration owner as a minimal append.
 
 ## D6. Concurrency follows Parts 5 and 8
+
+Disposition: implemented (see D10); promoted into Parts 2 and 5.
 
 Each national urgent family keeps its own receipt, so different families can run at the same time while each family runs at most once.
 Evacuations and state recovery operations keep per-state receipts, and the country counters count in-progress operations against the 2/4/8 evacuation caps and the 1/1/2/3 recovery-operation caps.
@@ -155,3 +167,15 @@ Every state a front targets lies in its current region, because targets are only
 Superstorm region activity reads the live superstorm target array instead of the registry; superstorm candidate pools stay world-wide because a superstorm may start in any region.
 The registry clear also drops the index generation so a cleared registry is never read through a stale index.
 The world-wide passes that remain are once-per-transition work (runtime start, global transition, legacy adoption, superstorm forecast creation and cleanup).
+
+### D20. Transport readiness softens acute penalties
+
+Disposition: implemented (commit "Let Transport readiness soften acute Acid Rain supply losses"); promoted into Part 4.
+Acute rain bands read their supply, movement and attrition penalties from state variables written whenever the band is published.
+Each band value shrinks by 10 percent per controller Transport tier and by another 20 percent while Reroute Transport protection is in force, never below 40 percent of the band value, and a change of controller republishes the band with the new controller's readiness.
+Basis: Part 5 and the decision text promise that Transport tiers and Reroute Transport limit acute supply and movement disruption, and fixed modifier values could not deliver that.
+
+### D21. Catalog row
+
+Disposition: accepted and queued for the catalog owner in [catalog_changes_pending.md](catalog_changes_pending.md).
+The Event 33 Details and Evo I to III cells take the in-game Event Details and evolution text, including the nine-day forecasts, and Status moves from To Be Reworked to Needs Testing because the rework is implemented in source and live-game verification is the remaining gate.

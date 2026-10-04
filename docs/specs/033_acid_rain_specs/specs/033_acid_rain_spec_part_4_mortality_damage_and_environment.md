@@ -294,3 +294,12 @@ Using intensity `1.20`, local and wartime vulnerability combined at `1.15`, and 
 | 100 | 0.052 percent | 0.179 percent | 0.177 percent |
 
 A high-intensity, high-vulnerability 50-day ordinary visit remained near 0.37 percent at zero Preparedness in the abstract test. A 120-day global phase remained near 1.27 percent before cumulative safety caps. These results show material protection without removing danger. Real map tests must verify total deaths, small-state behavior, repeated visits, and the protected population floor.
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Evacuation protection (D3, D8): an evacuation that has run one full day gives 50 percent of the evacuation mortality reduction (`acid_rain_mortality.evacuation_partial_share`) to severe and superstorm pulses, and a finished evacuation gives the full reduction; ordinary pulses never receive evacuation protection, and the finished-evacuation damage-pressure reduction is limited to the same pulse classes.
+- Transport readiness (D20): acute supply, movement and attrition penalties are published per state when the band is published; each band value shrinks by 10 percent per controller Transport tier and by another 20 percent while Reroute Transport protection is in force, never below 40 percent of the band value, and a controller change republishes the band.
+- Humanitarian pressure (D5, D14): Acid Rain calls `famine_adapt_acid_rain_state` with source id 33, the Acid Rain death reason, the current generation and a per-transaction revision. It registers each exact positive pulse loss, 0.5 percent of the state population when aftermath first reaches tier 2 and 1 percent at tier 3, and 2 percent when an evacuation of a state with at least 500,000 people finishes. Evacuation is disaster pressure, never a migration cohort. This is the Humanitarian registration the section above requires.
+- Recovery effects (D13): Restore Transport needs rain-recorded infrastructure or railway damage points and clears them on completion, Repair Industry needs recorded factory damage points and clears them, so neither restores more than the rain damaged, and Decontaminate needs `acid_rain_environmental_burden`, which every recorded impact sets and which clears when the aftermath tier reaches zero.

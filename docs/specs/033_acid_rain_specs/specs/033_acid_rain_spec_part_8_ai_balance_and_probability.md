@@ -264,3 +264,11 @@ At minimum, prove:
 - country with no aftermath but unfinished preparation project at dissipation
 
 The full case matrix is in `matrices/033_acid_rain_ai_acceptance_matrix.md`.
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Decision AI (D15): a project two tiers above the country's weakest component scores x0.40; Medical Surge scores x1.75 once rain deaths pass 0.02 percent of the starting population; evacuation scores x1.40 for states of at least one million people, x1.25 for infrastructure below 3, and x0.35 when an evacuation started today would finish after impact (each forecast stores the latest useful start day); recovery follows the state's main burden (transport when transport points are the larger structural burden, industry when factory points are larger, decontamination when no structural damage remains); protections in force cannot be bought again; the AI does not demobilize mid-crisis while projects run.
+- Urgent actions that cannot affect any remaining pulse are kept out by visibility: they disappear when no warning, exposure or forecast remains and when dissipation is pending.
+- Probability evidence: `hoi4.probability_inspect` with adapter `decision_ai_will_do` on the Event 033 decision file returned `INTERNAL_ERROR` on 2026-10-04, so no probability-route baseline or comparison exists; this route error is the recorded blocker.

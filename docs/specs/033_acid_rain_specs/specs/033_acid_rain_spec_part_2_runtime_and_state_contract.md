@@ -297,3 +297,12 @@ At recovery-tail completion:
 - retain only event-history and achievement facts
 
 Every cleanup helper is idempotent. Calling cleanup twice must produce the same state as calling it once.
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Registry arrays (D9): every indexed registry is cleared and resized to its bound when it is initialised, because an indexed `set_variable` only changes an existing element; severe-cell and superstorm slots start retired so allocation treats them as free.
+- Region index (D19): formation builds `global.acid_rain_region_ordered_states`, the frozen states grouped by region in registry order, with half-open bounds per region; `acid_rain_prepare_region_cursor` rebuilds it for another generation or an older save. Front warnings, arrivals, departures, footprint growth and retirement, front completion and severe-cell pools read only the front's region slice, which meets the active-footprint budget above while visiting the same states in the same order as a full scan.
+- Superstorm map regions (D16): each superstorm slot records the region of its seed state in `global.acid_rain_superstorm_region_entries` at creation and clears it on retirement.
+- Concurrent operations (D6, D10): national families hold one row each in `acid_rain_op_*_entries` and complete through their own events (`chaosx.nr33.42` to `chaosx.nr33.46`); evacuations and recovery work are state operations completed by the state event `chaosx.nr33.47`.

@@ -7,90 +7,117 @@ Its delayed Acid Rain member uses the stored batch receipt to record its own fir
 
 ## Player loop
 
-The runtime freezes the valid state set at formation, divides it into seven geographic regions, creates bounded front records, and schedules all future work through the event host. A front announces its next region roughly one week ahead, visits 60 to 85 percent of the region's eligible states on its first pass, and clears the remainder on its second pass. Target selection favors states that no front has touched, with an explicit island path and a deterministic endpoint after full frozen-set coverage.
+The runtime freezes the valid state set at formation, divides it into seven geographic regions, creates bounded front records, and schedules all future work through the event host.
+A front announces its next region roughly one week ahead, visits 60 to 85 percent of the region's eligible states on its first pass, and clears the remainder on its second pass.
+Target selection favours states that no front has touched, with an explicit island path and a deterministic endpoint after full frozen-set coverage.
+The rain ordinarily disperses only after it has crossed every eligible state.
 
-Countries manage Preparedness from 0 to 100 through four permanent projects: shelter networks, protected water and food, medical and protective capacity, and transport and infrastructure resilience. Five urgent actions answer warnings or active exposure, while four recovery actions reduce the retained aftermath after the weather dissipates. Project commitments, cancellations, refunds, durations, valid-target proofs, and AI reserve checks use the decision matrix in the Event 033 specification package.
+Countries manage Preparedness from 0 to 100 through four permanent projects: Expand the Shelter Network, Protect Water and Food, Expand Medical and Protective Capacity, and Harden Transport and Infrastructure.
+Projects stay open and payable during warnings and exposure; a tier helps only after it completes.
+Five urgent actions answer warnings, exposure and storm forecasts: Activate Shelter Protocols, Secure Emergency Water and Food, Open an Emergency Medical Surge, Reroute Transport and Repair Crews, and a state-targeted evacuation.
+Four recovery decisions repair the aftermath once no warning, exposure or forecast covers the country: Restore Transport, Decontaminate, Repair Industry, and Demobilize the Emergency Apparatus.
+Every decision shows its real cost, duration and blocked state from the same quote that the start transaction charges.
 
-The dedicated Acid Rain Air source records actual lifetime contamination additions in basis points. Every request is clamped against the request itself, the unused share of the 1,500 bp event allowance, and the remaining distance below the 5,000 bp global contamination ceiling. Dissipation ends the weather runtime but does not erase contamination already added to the shared Air ledger.
+## Response operations
 
-## Mortality contract
+Each national urgent family runs at most once at a time, and different families run side by side.
+Shelter Protocols, Water Distribution and Reroute Transport cannot be bought again while their protection is in force, and Medical Surge waits for medical fatigue to end.
+Evacuations and state recovery work are per-state operations; the country may run 2, 2, 4 or 8 evacuations and 1, 1, 2 or 3 recovery operations at once by capacity band.
+Each operation keeps its paid reservation, debits once and returns its temporary commitments once, and its completion callback resolves only that operation.
+Running operations sum their civilian factory commitments into one `acid_rain_action_commitment` modifier.
 
-Every positive Event 033 mortality pulse enters `apply_exact_state_civilian_population_loss` through one gateway. The helper's `state_civilian_population_loss_applied` result is the only accepted death receipt: the affected state's population falls by that value, and that same value is recorded once in the shared Deaths ledger, Event 033 totals, reports, and achievement tracking. A zero result records no deaths, while generation-aware pulse keys make a duplicate call a no-op.
+Severe cells and superstorms name their target states nine days before impact, so an evacuation started on the forecast day or the day after finishes before the first severe pulse.
+An evacuation that has run one full day gives half of its mortality reduction to severe and superstorm pulses, and a finished evacuation gives the full reduction; ordinary pulses are unaffected.
+While it applies, `acid_rain_evacuation_disruption` lowers local factory output by 15 percent, construction speed by 25 percent and supply by 15 percent.
+
+Restore Transport needs rain-recorded infrastructure or railway damage and clears it on completion, Repair Industry needs recorded factory damage and never restores more than the rain destroyed, and Decontaminate needs the environmental burden every rain impact leaves.
+Demobilization opens when no warning, exposure or forecast covers the country, cancels unfinished projects without refunding consumed equipment, keeps paid recovery work running, and grants `acid_rain_demobilized_recovery` (10 percent repair speed, 5 percent construction speed) for 60 days.
+
+## Consequences
+
+Every positive Event 033 mortality pulse enters `apply_exact_state_civilian_population_loss` through one gateway.
+The helper removes population first, reads back the observed decrease, and records that value once in the shared Deaths ledger; the same value feeds Event 033 totals, reports and achievement tracking.
+A zero result records no deaths, while generation-aware pulse keys make a duplicate call a no-op.
+
+Acute rain bands publish their supply, movement and attrition penalties as state variables; each band value shrinks by 10 percent per controller Transport tier and by another 20 percent while Reroute Transport protection is in force, never below 40 percent of the band value, and a change of controller republishes the band.
+Aftermath records per-type damage points for infrastructure, railways and factories, and three aftermath tiers apply `acid_rain_aftermath_1` to `acid_rain_aftermath_3`.
+
+Acid Rain registers humanitarian pressure through `famine_adapt_acid_rain_state`: each exact positive pulse loss, 0.5 percent of a state's population when its aftermath first reaches tier 2 and 1 percent at tier 3, and 2 percent when an evacuation of a state with at least 500,000 people finishes.
+Evacuation counts as disaster pressure, not as a migration cohort.
+
+The dedicated Acid Rain Air source records actual lifetime contamination additions.
+Every request is clamped against the request itself, the unused share of the 1,500 bp event allowance, and the remaining distance below the 5,000 bp global contamination ceiling.
+Dissipation ends the weather runtime but does not erase contamination already added to the shared Air ledger.
 
 ## Evolution path
 
 The evolutions are cumulative and can activate while a generation is live.
 
-- Severe Storm Cells unlock at Rising Chaos and add bounded local severe episodes without replacing the parent front.
+- Severe Storm Cells unlock at Rising Chaos and add bounded local severe episodes with nine-day forecasts without replacing the parent front.
 - Multiple Weather Fronts unlock at Chaos Tier and add independent second and possible third front records.
-- Global Acid Rain unlocks at Totalen Chaos, exposes every frozen valid state through the same exact mortality gateway, retires regional fronts idempotently, allows bounded superstorms, and still reaches guaranteed dissipation.
+- Global Acid Rain unlocks at Totalen Chaos, exposes every frozen valid state through the same exact mortality gateway, retires regional fronts idempotently, allows bounded superstorms with nine-day forecasts, and still reaches guaranteed dissipation.
 
-Evolution unlocks add no Chaos by themselves. Direct Chaos is applied only at mapped gameplay impacts, and shared Chaos receipts are never counted a second time by Event 033.
+Evolution unlocks add no Chaos by themselves.
+Direct Chaos is applied only at mapped gameplay impacts, and shared Chaos receipts are never counted a second time by Event 033.
 
 ## Runtime and save safety
 
-`global.acid_rain_generation_id` separates consecutive generations. Fronts, warnings, severe cells, superstorms, project jobs, actions, mortality receipts, coverage rows, and cleanup records carry or validate the current generation before changing state. Registries are bounded by frozen-state, front, action, and storm limits, and cleanup is safe to call repeatedly after dissipation, interruption, host transfer, migration, or reload.
+`global.acid_rain_generation_id` separates consecutive generations.
+Fronts, warnings, severe cells, superstorms, project jobs, operations, mortality receipts, coverage rows, and cleanup records carry or validate the current generation before changing state.
+Every registry array is created at its bound before indexed writes.
+The frozen registry carries a region index (`global.acid_rain_region_ordered_states` with per-region bounds), so front warnings, arrivals, departures, footprint growth and retirement, and severe-cell pools read only their region in registry order; the index rebuilds itself for a new generation or an older save.
+Cleanup is safe to call repeatedly after dissipation, interruption, host transfer, migration, or reload.
 
-The scripted GUI reads projected values only. Opening the Acid Rain dashboard from its decision category or Event Details runs a read-only refresh that cannot advance fronts, add contamination, apply losses, spend resources, or complete work.
+## Dashboard
+
+The Acid Rain world map opens from the decision category inlay and from the Event 33 page in Event Details.
+It shows the base map with seven region overlays, visited, ordinary and warning veils, three front markers with warning and severe variants, one severe-storm marker per listed superstorm at the region of its seed state, and the global rain layer.
+Every animated marker and the global layer have a still partner that the motion toggle selects.
+The footer holds Refresh, Back (returning to the decision category or Event Details, whichever opened the map), Details (opening the Event 33 page in Event Details), and the motion toggle.
+Opening or refreshing the map runs a read-only projection that cannot advance fronts, add contamination, apply losses, spend resources, or complete work.
 
 ## Integration surfaces
 
 - Event chain: `events/033_acid_rain.txt`
 - Constants: `common/script_constants/033_acid_rain_constants.txt`
-- Runtime effects and triggers: `common/scripted_effects/033_acid_rain_*.txt` and `common/scripted_triggers/033_acid_rain_*.txt`
+- Runtime, aftermath, preparedness, achievement and GUI effects: `common/scripted_effects/033_acid_rain_*.txt`
+- Triggers: `common/scripted_triggers/033_acid_rain_*.txt`
+- State and country modifiers: `common/dynamic_modifiers/033_acid_rain_dynamic_modifiers.txt`
 - National response decisions: `common/decisions/033_acid_rain_decisions.txt`
 - Host scheduling and lifecycle hooks: Event 033 files under `common/on_actions/`
-- Dashboard: `interface/033_acid_rain.gui`, `interface/033_acid_rain.gfx`, and `common/scripted_guis/033_acid_rain_scripted_guis.txt`
+- Dashboard: `interface/033_acid_rain.gui`, `interface/033_acid_rain.gfx`, `common/scripted_guis/033_acid_rain_scripted_guis.txt`, and `common/scripted_localisation/033_acid_rain_scripted_localisation.txt`
 - Event Details entry: `interface/chaosx_events_log_popup.gui` and `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
-- Achievements: Event 033 entries in `common/achievements/chaos_redux_achievements.txt` with dedicated effects and triggers
+- Humanitarian pressure: `famine_adapt_acid_rain_state` in `common/scripted_effects/famine_adapter_effects.txt`
+- Achievements: the ten `acid_rain_033_*` entries in `common/achievements/chaos_redux_achievements.txt` with dedicated effects and triggers
 - Super-event audio: `sound/033_acid_rain/` with registration in `sound/chaosx_sound.asset`
-- Catalog source: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; the three catalog CSV files are generated exports
+- Catalog source: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; the three catalog CSV files are generated exports, and pending row changes are listed in `docs/plans/033_acid_rain_plans/catalog_changes_pending.md`
 
 ## Visual asset inventory
 
-Event, report, news, and super-event scenes live under `gfx/event_pictures/` and are registered by `interface/033_acid_rain.gfx`. Their stable consumers include `GFX_super_event_033_acid_rain`, the arrival, warning, severe, shelter, transport, dissipation, and global event sprites, and the regional and global news sprites.
+All Event 033 sprites are registered in `interface/033_acid_rain.gfx`.
 
-The Acid Rain dashboard uses `gfx/interface/033_acid_rain/gui/` for the base map, seven region overlays, coverage and phase veils, front and warning markers, card backgrounds, coverage meters, the Preparedness badge, and component pips.
-The animation registrations target `gfx/interface/033_acid_rain/animation/` for four frame sheets and four static accessibility representatives.
-All eight runtime files have been delivered at their registered paths.
-The front, warning, and severe packages have individual parent source/processed/decoded review; prompt recovery, timed playback, static selection, and consumer-render acceptance remain open.
-The global animation is not accepted because its continuous curtain differs from the separated-cloud frame plan and can obscure the map.
-The art owner is repairing that package and reviewing both static veils against the actual map.
+| Family | Files | Sprites and consumers |
+| --- | --- | --- |
+| Super-event, event, report and news pictures | `gfx/event_pictures/super_events/`, `gfx/event_pictures/033_acid_rain/`, `gfx/event_pictures/news/` | `GFX_super_event_033_acid_rain`; `GFX_event_033_acid_rain_{arrival,warning,severe,shelter,transport,dissipation,global}`; `GFX_report_event_033_acid_rain_{arrival,severe,shelter,transport,dissipation}`; `GFX_news_event_033_acid_rain` and `GFX_news_event_033_acid_rain_global` |
+| Decision category and decisions | `gfx/interface/033_acid_rain/decisions/` | `GFX_decision_category_acid_rain` and one `GFX_decision_acid_rain_<group>_<name>` icon per decision, named after the decision identifier |
+| Modifiers | `gfx/interface/033_acid_rain/modifiers/` | `GFX_modifier_acid_rain_{ordinary,strong,severe_cell,global_layer,global_superstorm}` and `GFX_modifier_acid_rain_aftermath_{1,2,3}` |
+| Dashboard art | `gfx/interface/033_acid_rain/gui/` | `GFX_acid_rain_map_base`, `GFX_acid_rain_region_overlay_1` to `_7`, `GFX_acid_rain_{visited,warning,ordinary,global}_veil`, marker, card, coverage, Preparedness badge and component pip sprites |
+| Animations | `gfx/interface/033_acid_rain/animation/` | `GFX_acid_rain_{front,warning,severe,global}_animated` frame sheets with `GFX_acid_rain_*_static` still partners |
+| Achievements | `gfx/achievements/` | one normal, one grey and one not-eligible DDS for each of the ten `acid_rain_033_*` achievements |
 
-National-response decision icons live with the Event 033 interface assets and use stable per-decision identifiers. Achievement art consists of one normal, one grey, and one not-eligible DDS for each of the ten `acid_rain_033_*` achievement identifiers under `gfx/achievements/`.
+The global rain layer is an eight-frame 4480x300 sheet at 4 FPS of three separated cloud banks that leaves the map readable, with frame 000 as its still partner.
+The warning veil keeps defringed art at a mean alpha of about 46 so continents stay readable beneath the warning bands.
+`GFX_acid_rain_global_veil` is registered but no window element displays it.
+Source, generation, processing, alpha and checksum evidence lives under `docs/assets/033_acid_rain/`, which is a local working area outside Git; the durable record of the global layer and veil is agent decision D17 in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`.
+The row-level record of retired prototype art is [prototype presentation retirement](../../plans/033_acid_rain_plans/validation/033_acid_rain_legacy_asset_retirement.md).
 
-Source, rights, generation, processing, alpha, checksum, uniqueness, and handoff evidence belongs under `docs/assets/033_acid_rain/`.
+## Verification scope
 
-The prototype decision icons, seven prototype region pictures, and three prototype report/news pictures have no current gameplay consumers.
-Their unused shared registrations and the unbound prototype map window are retired.
-The 35 retired DDS files are recoverable beneath `docs/assets/033_acid_rain/retired_runtime/` and are absent from their former shipped `gfx/` paths.
-They must not be represented as final art.
-The row-level record is [prototype presentation retirement](../../plans/033_acid_rain_plans/validation/033_acid_rain_legacy_asset_retirement.md).
-
-## Implementation evidence and validation limits
-
-The source implements the regional runtime, shared mortality gateway, Air request cap, national response decisions, and cumulative evolution paths described above.
-The description states the intended integrated behavior and does not establish that every acceptance gate has passed.
-The achievement integration handoff contains all ten authoritative bridge contracts and the accepted per-state evacuation threshold and durable forced-launch origin.
-Parent source review and runtime award evidence remain required.
-The dedicated GUI source repair and Event Details opener are present, while the mandatory matched render, resolution, scale, click-region, and static-accessibility gates remain open.
-Animation and veil acceptance has the limits listed in the visual inventory above.
-The shared population helper applies physical state loss first, reads back the observed decrease, and uses record-only Deaths registration; cross-system caller review and observed engine population proof remain required.
-Event Details and evolution text branches and conditional cost-family localisation exist, but displayed quotes still require comparison with the selected row's affordability and payment contract.
-Previous synthetic movement and cap results model the invariants and do not prove executed state-population removal, save migration, reload, multiplayer behavior, or engine performance.
-The final probability review and completion auditor evidence remain required.
-The improvement-loop handoff identifies departure aftermath, separate episode casualty caps, damage replay, paid-job continuity, response concurrency, and unreachable public quote/target paths.
-The accepted consequence repair is recorded in `docs/specs/033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md`; implementation and affected checks remain in progress.
-The exact three-day forecast versus seven-day evacuation timing conflict remains unresolved.
-Audio source rights, installed hashes, and uniqueness have been rechecked, but actual full-recording listening is not proven by the retained waveform/spectrogram evidence and remains an acceptance gate.
-The Event 033 goal is incomplete.
-
-Prototype migration retains only acute `acid_rain_state` exposure as coverage and removes cloud presentation separately.
-Legacy timer identifiers exist only for native save lookup, with activation blocked and all former weather callbacks absent.
-Native mission removal runs through the existing migration state pass and formation country census.
-The current synthetic suite and source-contract checks pass after the mixed-Major source repair.
-Its before/after probability comparison and executed acceptance remain open with the other listed gates.
+`.tools/validation/validate_033_acid_rain.py` checks the source contracts, coverage and movement model, Air caps and the exact-loss helper contract.
+Live-game confirmation covers executed population removal, save and reload, multiplayer presentation, decision AI behaviour, engine performance, the dashboard at 1920x1080 (the MCP render route accepts only smaller resolutions for this window), animation playback, and super-event audio listening.
+`hoi4.probability_inspect` returns `INTERNAL_ERROR` for the Event 033 decision file, so decision AI weights have no probability-route baseline or comparison.
 
 ## Future extensions
 
-Future work could add region-specific diplomatic relief requests, country-specific atmospheric research responses, and post-event reconstruction stories keyed to retained aftermath tiers. These are optional expansions and should preserve the frozen-state, exact-loss, Air-cap, generation, and host-authority contracts described above.
+Future work could add region-specific diplomatic relief requests, country-specific atmospheric research responses, and post-event reconstruction stories keyed to retained aftermath tiers.
+These are optional expansions and should preserve the frozen-state, exact-loss, Air-cap, generation, and host-authority contracts described above.

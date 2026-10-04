@@ -277,3 +277,12 @@ Implementation completion updates:
 - asset manifest
 - achievement registry documentation
 - generated API documentation if new public helpers are introduced
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Humanitarian adapter (D5, D14): `famine_adapt_acid_rain_state` is a minimal append to the famine-owned `common/scripted_effects/famine_adapter_effects.txt` and its documentation table, mirroring the Event 013 natural-disaster adapter with Acid Rain source identities; cleanup touches only Acid Rain sources.
+- Shared exact-loss helper (D1): `apply_exact_state_civilian_population_loss` removes population first, reads back the observed decrease and records it in Deaths once; the twelve shared callers declare their outputs before each call.
+- Save safety (D9, D19): registries are created at their bound before indexed writes, and the region index rebuilds itself when it is missing or belongs to another generation, so a save made before the index existed continues safely.
+- Event Details navigation (D18) uses only the shared Event Log entry points (`open_events_log_events_tab`, `get_event_type`, `events_log_add_event_details_entry`) and changes no shared file.

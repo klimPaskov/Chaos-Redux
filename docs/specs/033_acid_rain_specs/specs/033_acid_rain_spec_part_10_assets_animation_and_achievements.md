@@ -255,3 +255,13 @@ Event 33 requires difficult action-based achievements. The names below are ident
 ## Achievement interface
 
 Event Details should list all Event 33 achievements with locked, available, completed, and disqualified status. Hidden achievements remain hidden until their reveal condition. Tooltips explain measurable requirements without exposing hidden random seeds.
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Global weather animation (D17): `GFX_acid_rain_global_animated` is an eight-frame 4480x300 sheet at 4 FPS following the frame plan (000 sparse rest, 001 to 004 shifting banks and rain groups, 005 crest, 006 central dissipation, 007 near-rest bridge), each frame a separate native-alpha generated source normalized with one uniform scale at anchor 0,0; frame 000 is `GFX_acid_rain_global_static`. Per-frame mean alpha stays between 28 and 45, with 65 to 77 percent of each frame fully clear. Both DDS files are uncompressed BGRA with an exact RGBA round trip.
+- Warning veil opacity (D17): `GFX_acid_rain_warning_veil` keeps the defringed v6 art with its alpha scaled by 0.5376 to the original mean of 45.75, so continents stay readable beneath the warning bands. `GFX_acid_rain_global_veil` is registered but not displayed by any window element.
+- Superstorm markers (D16) reuse `GFX_acid_rain_severe_animated` and `GFX_acid_rain_severe_static`; no new art is required.
+- Two Regions Ready (D4, D12): when a warning visit is recorded for a state, its controller binds every running urgent operation and evacuation that has no visit yet to that visit; completion strictly before that visit's arrival credits one region, a start after arrival still disqualifies, and one operation credits at most one visit.
+- Three Evacuations is reachable through the nine-day forecast lead (D2).

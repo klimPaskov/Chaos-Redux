@@ -264,3 +264,12 @@ A debug-only overlay can show:
 - schema version
 
 It is hidden from normal players and reads existing state only.
+
+## Accepted implementation decisions, 2026-10-04
+
+Acceptance basis: agent decisions recorded in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md`, taken on 2026-10-04 under the full design authority the user granted for Event 033; each item is implemented in source and its live-game confirmation is a separate gate.
+
+- Superstorm markers (D16): the world map shows one severe-storm marker for each of the three listed superstorms at the alpha-weighted centre of its seed region's overlay, from forecast until retirement, with a still partner for reduced motion; a marker whose region already holds an earlier listed marker moves 48 pixels right. Front markers and superstorm markers never share the map because fronts are projected only up to the global warning.
+- Global layer and veil (D17): the global layer is an eight-frame sheet of three separated cloud banks that leaves the map readable; the warning veil uses defringed art at the original mean opacity of about 46.
+- Footer navigation (D18): HOI4 script cannot open the decisions panel, so category return is a Back button that closes the map and reveals the view that opened it, the decision category or Event Details, with a tooltip naming that view. Details closes the map and opens the Event 33 page in Event Details through the shared Event Log entry points, and is hidden when the map was opened from Event Details.
+- Render route limit: `hoi4.gui_render` refuses 1920x1080 for this window under its fixed aggregate pixel budget, so matched renders use 1366x768 at UI scale 1.
