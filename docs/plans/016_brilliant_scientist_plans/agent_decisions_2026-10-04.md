@@ -166,3 +166,12 @@ The pressure formula, weights, and incident outcomes are unchanged, and the two 
 This closes the follow-up in `016_funded_provider_cold_lifetime_2026-10-03.md`.
 
 Evidence: `common/scripted_effects/016_mengele_computation_incident_effects.txt` and `.md`, `common/scripted_effects/016_mengele_conventional_incident_effects.txt` and `.md`.
+
+## D15. D'Rhondan focus rewards name their real unlocks
+
+The four remaining D'Rhondan diplomacy focuses called `dhrondan_focus_add_diplomatic_credit`, which only set an unread flag and granted Political Power.
+Each completion reward keeps its receipt flag and now shows a `custom_effect_tooltip` naming what the receipt unlocks: Covenant ratification gates the Two-World Compact offer, the map exchange gates both the compact and the Terrestrial Partner Accord, partner selection gates the accord, and the enclave congress is the Covenant's integration contract.
+No extra Political Power is granted.
+The helper was removed after a repository scan found no other caller and no reader of `dhrondan_diplomatic_credit_established`; the 88-focus layout and AI weights are unchanged.
+
+Evidence: `common/national_focus/016_dhrondan_focus_tree.txt`, `common/scripted_effects/016_dhrondan_focus_effects.txt`, `localisation/english/016_dhrondan_focus_l_english.yml`, `docs/plans/016_brilliant_scientist_plans/016_final_dhr_diplomatic_rewards_plan_2026-09-02.md`.
