@@ -74,13 +74,13 @@ Every Special Forces token lists both Special Forces tracks, is xor-locked with 
 
 The AI picks a domain, then a Grand Doctrine or a track and subdoctrine, each through a weighted `random_list` over positive scores. The pool is recalculated after every successful choice. Domain scores read capability that belongs to each domain:
 
-- Army: divisions, land templates, military factories, war with divisions, a land front, alliance membership, and the industry focus term when dockyards are a small share of war industry.
+- Army: divisions, land templates, military factories, war with divisions, a land front, alliance membership, and the industry focus term when neither dockyards nor aircraft lead war industry.
 - Navy: scores zero without a coast, dockyards, ships, convoys, naval doctrine, or a maritime plan. A landlocked country has a maritime plan when it holds a core or claim on a coastal state it does not control, or has or is justifying a war goal against a country that owns a coastal state (`doctrine_research_ai_has_maritime_plan`, read only after every other naval check fails); the plan gives Navy the base and strategy weights. Otherwise warships, dockyards, the industry focus term when dockyards times 2 reach the military factory count, a war without a land front, a coastal capital, and alliance membership with warships add weight.
-- Air: deployed air wings, military factories, and war or alliance membership with air wings.
+- Air: deployed air wings, military factories, and war or alliance membership with air wings. Air industry leads when deployed planes reach 50 per division (`doctrine_research_ai_ratio.air_industry`) and dockyards do not lead; such a power gives Air the industry focus term instead of Army, and its Air also takes the land-front term, because it fights its land war largely from the air.
 - Special Forces: readiness, war, production, and alliance terms need templates that field Special Forces battalions. Coast or mountains add a geography term.
 - Chaos Warfare: CBRN programme readiness, divisions, plains or mountains, and a land front.
 
-Completion value and strategy signals add weight in every domain. If no domain scores at all, every valid domain falls back to the base weight, so a choice is never wasted. All weights live in `doctrine_research_ai_weight` and the dockyard ratio in `doctrine_research_ai_ratio`.
+Completion value and strategy signals add weight in every domain. If no domain scores at all, every valid domain falls back to the base weight, so a choice is never wasted. All weights live in `doctrine_research_ai_weight` and the dockyard and aircraft ratios in `doctrine_research_ai_ratio`.
 
 Grand Doctrine and subdoctrine scores also follow the native doctrine preferences of vanilla `ai_will_do`, mirrored in the `doctrine_research_ai_native_grand`, `_base`, `_country`, `_minor`, and `_major` constant categories:
 

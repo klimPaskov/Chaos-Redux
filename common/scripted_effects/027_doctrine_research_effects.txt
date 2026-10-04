@@ -3000,10 +3000,11 @@ doctrine_research_reconcile_country_lifecycle = {
 # alliance pressure separate Army, Navy, Air, Special Forces, and Chaos Warfare
 # instead of raising them all equally:
 # - the industry focus term goes to Navy when dockyards are a large share of
-#   war industry, and to Army otherwise;
+#   war industry, to Air when deployed planes are large for the army's size,
+#   and to Army otherwise;
 # - Army takes the war and geography terms for a land front, while Navy takes
 #   the war term only for a war without one and the geography term only for a
-#   coastal capital;
+#   coastal capital; an air-led power's Air also takes the land-front term;
 # - Special Forces readiness, war, production, and alliance terms require
 #   templates that field Special Forces battalions.
 # Navy without a coast, dockyards, ships, convoys, or naval doctrine scores
@@ -3031,6 +3032,20 @@ doctrine_research_ai_score_domains = {
 		}
 		set_temp_variable = { doctrine_research_ai_naval_industry_led = 1 }
 	}
+	# Air industry leads when deployed planes reach the division count times
+	# the air industry ratio. Naval industry keeps priority.
+	set_temp_variable = { doctrine_research_ai_deployed_planes = num_deployed_planes }
+	set_temp_variable = { doctrine_research_ai_air_industry_share = num_divisions }
+	multiply_temp_variable = { doctrine_research_ai_air_industry_share = constant:doctrine_research_ai_ratio.air_industry }
+	set_temp_variable = { doctrine_research_ai_air_industry_led = 0 }
+	if = {
+		limit = {
+			check_variable = { doctrine_research_ai_naval_industry_led < 1 }
+			check_variable = { doctrine_research_ai_deployed_planes > 0 }
+			check_variable = { var = doctrine_research_ai_deployed_planes value = doctrine_research_ai_air_industry_share compare = greater_than_or_equals }
+		}
+		set_temp_variable = { doctrine_research_ai_air_industry_led = 1 }
+	}
 	if = { limit = { doctrine_research_army_has_valid_action = yes }
 		set_variable = { doctrine_research_selected_domain = constant:doctrine_research_domain.army }
 		set_temp_variable = { doctrine_research_ai_domain_completion_found = 0 }
@@ -3039,7 +3054,7 @@ doctrine_research_ai_score_domains = {
 		if = { limit = { num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { OR = { has_template_containing_unit = infantry has_template_containing_unit = motorized has_template_containing_unit = light_armor has_template_containing_unit = medium_armor has_template_containing_unit = heavy_armor } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.production } }
-		if = { limit = { num_of_military_factories > 0 check_variable = { doctrine_research_ai_naval_industry_led < 1 } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.industry_focus } }
+		if = { limit = { num_of_military_factories > 0 check_variable = { doctrine_research_ai_naval_industry_led < 1 } check_variable = { doctrine_research_ai_air_industry_led < 1 } } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.industry_focus } }
 		if = { limit = { has_war = yes num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.war } }
 		if = { limit = { doctrine_research_ai_has_land_front = yes } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.geography } }
 		if = { limit = { is_in_faction = yes num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_score_army = constant:doctrine_research_ai_weight.theater } }
@@ -3072,7 +3087,11 @@ doctrine_research_ai_score_domains = {
 		add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.base }
 		if = { limit = { doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.forces } }
 		if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.production } }
+		if = { limit = { check_variable = { doctrine_research_ai_air_industry_led > 0 } num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.industry_focus } }
 		if = { limit = { has_war = yes doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.war } }
+		# An air-led power fights its land war largely from the air, so its air
+		# arm shares the land-front term with Army.
+		if = { limit = { check_variable = { doctrine_research_ai_air_industry_led > 0 } doctrine_research_ai_has_land_front = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.geography } }
 		if = { limit = { is_in_faction = yes doctrine_research_ai_has_air_wings = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.theater } }
 		if = { limit = { check_variable = { doctrine_research_ai_domain_completion_found > 0 } } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.completion } }
 		if = { limit = { doctrine_research_ai_has_air_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_score_air = constant:doctrine_research_ai_weight.strategy } }

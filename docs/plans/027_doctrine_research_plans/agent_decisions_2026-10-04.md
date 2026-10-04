@@ -125,3 +125,13 @@ Basis: spec part 3 ("A future naval plan can justify doctrine adoption before a 
 Evidence: `probability_domain_round2_2026-10-05.md` (analysis `probability-f52aea923ed27276b9b6a643`): DR-A05L Navy 12.0% (was 0%), DR-A04 Navy 0%.
 
 needs_live_game: the cost of the coastal-claim scan for landlocked AI countries on a firing day (expected small: it runs only for countries with no coast, ships, dockyards, convoys, or naval doctrine).
+
+## D18. Air-centred industry gives Air the industry focus
+
+Decision: `doctrine_research_ai_score_domains` sets `doctrine_research_ai_air_industry_led` when the country deploys planes and `num_deployed_planes` reaches `num_divisions` times `doctrine_research_ai_ratio.air_industry` (50, about twice the planes per division of a balanced power), unless dockyards already lead. An air-led power gives the industry focus term to Air instead of Army, and its Air also takes the land-front geography term that Army receives. The Air war term (at war with air wings) is unchanged, and dockyard-led industry still goes to Navy.
+
+Basis: DR-A03 ("Air should lead or remain within the top bounded pool"; failure signal "Air production and air war do not affect the score") and the round 1 gap in `probability_domain_compare_2026-10-04.md`, where Army led 42% to 28%. Moving only the industry focus term leaves the traced DR-A03 vector at Army 18, Air 17; the land-front term is added because an air-centred power fights its land war largely from the air, and it brings Air to 19. `num_deployed_planes` and `num_divisions` are documented dynamic variables (`dynamic_variables_documentation.md`), and vanilla reads `num_deployed_planes` the same way in `operation_strat_effects.txt`.
+
+Evidence: `probability_domain_round2_2026-10-05.md` (analyses `probability-2b89cc5681f283e5b17be463` and `probability-8a4d5d993389078782218933`): DR-A03 Air 36.5%, Army 34.6%; without a land front Air 34.0%, Army 32.0%; DR-A01, DR-A02, and DR-A04 unchanged.
+
+needs_live_game: the planes-per-division mix of real AI campaigns, to confirm that the ratio separates air-centred powers from balanced ones.
