@@ -392,7 +392,18 @@ country_event = {
 	option = {
 		name = chaosx.nr39.33.a
 		ai_chance = { base = 100 }
-		murder_mystery_start_derivative_creation = yes
+		hidden_effect = {
+			if = {
+				limit = { NOT = { murder_mystery_selected_cell_is_valid = yes } }
+				set_temp_variable = { murder_mystery_revolt_minimum_readiness = constant:murder_mystery_value.zero }
+				murder_mystery_select_revolt_cell = yes
+			}
+			if = {
+				limit = { has_event_target = murder_mystery_selected_cell }
+				murder_mystery_start_derivative_creation = yes
+				murder_mystery_clear_selected_cell_context = yes
+			}
+		}
 	}
 }
 

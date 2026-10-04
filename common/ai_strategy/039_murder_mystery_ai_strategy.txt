@@ -1,0 +1,36 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values are the movement army AI weights.
+@MURDER_MYSTERY_AI_BUILD_ARMY = 200
+@MURDER_MYSTERY_AI_INFANTRY_EQUIPMENT = 160
+@MURDER_MYSTERY_AI_SUPPORT_EQUIPMENT = 110
+@MURDER_MYSTERY_AI_CADRE_ROLE_RATIO = 35
+@MURDER_MYSTERY_AI_INFANTRY_ROLE_RATIO = 65
+@MURDER_MYSTERY_AI_CADRE_TEMPLATE_PRIO = 150
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MOVEMENT ARMY AI
+# ============================================================================
+# Overview:
+# - Applies while the Assassin State or a derivative is active. The movement
+#   keeps a mixed army of Assassin cadres and holding infantry and builds the
+#   equipment it consumes. Its war targets are added at country creation with
+#   add_ai_strategy against the government it split from.
+# - The profile follows live country flags and removes itself when the
+#   country leaves the movement.
+# ============================================================================
+
+murder_mystery_movement_army_profile = {
+	allowed = { always = yes }
+	enable = {
+		OR = {
+			has_country_flag = murder_mystery_assassin_state_active
+			has_country_flag = murder_mystery_derivative_active
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @MURDER_MYSTERY_AI_BUILD_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @MURDER_MYSTERY_AI_INFANTRY_EQUIPMENT }
+	ai_strategy = { type = equipment_production_factor id = support value = @MURDER_MYSTERY_AI_SUPPORT_EQUIPMENT }
+	ai_strategy = { type = role_ratio id = assassin_cadre value = @MURDER_MYSTERY_AI_CADRE_ROLE_RATIO }
+	ai_strategy = { type = role_ratio id = infantry value = @MURDER_MYSTERY_AI_INFANTRY_ROLE_RATIO }
+	ai_strategy = { type = template_prio id = assassin_cadre value = @MURDER_MYSTERY_AI_CADRE_TEMPLATE_PRIO }
+}

@@ -1,0 +1,43 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 ASSASSIN CADRE AI TEMPLATE
+# ============================================================================
+# Overview:
+# - Gives the Assassin State and its derivatives a target template for the
+#   assassin_cadre role, which the movement AI strategy profile asks for
+#   alongside ordinary infantry.
+# - The cadre sub-units are locked behind Assassin technologies that only
+#   movement countries can hold, and the upgrade priority is zero for every
+#   other country, so no ordinary country spends experience on this role.
+# ============================================================================
+
+murder_mystery_assassin_cadre_role = {
+	role = assassin_cadre
+
+	upgrade_prio = {
+		base = 2
+		modifier = {
+			factor = 0
+			NOT = {
+				OR = {
+					has_country_flag = murder_mystery_assassin_state
+					has_country_flag = murder_mystery_derivative_country
+				}
+			}
+		}
+	}
+
+	assassin_cadre_line = {
+		reinforce_prio = 2
+		upgrade_prio = {
+			base = 1
+		}
+		target_template = {
+			support = {
+				saboteur_cell = 1
+			}
+			regiments = {
+				assassin_cadre = 4
+			}
+		}
+	}
+}

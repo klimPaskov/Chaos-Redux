@@ -100,6 +100,28 @@ Losing readiness clears the countdown.
 Evolution III is the territorial split: the pulse selects the split cluster only when every other Evolution III condition holds, and records the stage only after the Assassin State transfer and war commit; a failed split retries after `murder_mystery_cooldown.evolution_retry_days`.
 No government decision escalates the movement against its own country.
 
+## Starting forces
+
+`common/scripted_effects/039_murder_mystery_forces_effects.txt` runs once per new movement country, before its war starts.
+
+| Country | Technology | Templates | Divisions (per owned state, clamped) | Stockpiles |
+| --- | --- | --- | --- | --- |
+| Assassin State | Clandestine Combat Training, Compartmented Logistics, Urban and Rough-Terrain Infiltration | Assassin Cadres (4 Assassin Cadres, Saboteur Cell support), Movement Militia (6 infantry) | 1 cadre and 1 militia per state, 2 to 8 cadre and 2 to 10 militia | 3000 infantry equipment, 300 support equipment, 200 trucks, 10 trains, 5000 fuel |
+| Derivative | Clandestine Combat Training, Infantry Weapons I | Assassin Cadres (3 Assassin Cadres), Movement Militia (4 infantry) | 1 cadre and 1 militia per state, 1 to 3 cadre and 1 to 4 militia | 1200 infantry equipment, 100 support equipment, 60 trucks, 3 trains, 1500 fuel |
+
+Derivatives also receive two research slots, neutrality politics without elections, stability and war support from `murder_mystery_starting_forces_float`, political power, and the Cells Under Arms idea.
+Shadow Companies, Silent Guards, Master Assassins and Mechanized Assassins stay locked until their technologies are researched or granted by focus.
+Each new country adds conquer and antagonize AI strategies against the government it split from.
+`common/ai_strategy/039_murder_mystery_ai_strategy.txt` keeps active movement countries building an army of roughly one third cadres and two thirds infantry, and `common/ai_templates/039_murder_mystery_ai_templates.txt` gives them an Assassin cadre target template; every other country has zero upgrade priority for that role.
+
+## Foreign revolts
+
+Derivatives come from registered cells at insurrection stage.
+The Evolution IV reveal (`chaosx.nr39.33`) raises a revolt in the most revolt-ready insurrection cell whose government can lose a cluster, unless the central state already holds a selected cell; after that the pulse raises one revolt whenever an insurrection cell reaches `murder_mystery_revolt.readiness_threshold`.
+A revolt takes a non-capital anchor state plus `cluster_extra_states` neighbouring states owned by the same government, and never leaves that government with fewer than `minimum_source_states` controlled states.
+The new country becomes a subject of the central state, follows its route, receives its starting forces, declares war on the government it rose against, and announces itself with news `chaosx.news.4404`; the source cell row leaves the cell registry because the derivative registry now owns it.
+If any postcondition fails, every moved state returns to its government and the empty carrier is retired.
+
 ## Country outcomes
 
 `common/on_actions/039_murder_mystery_on_actions.txt` handles `on_capitulation` and `on_annex` only for countries with an Event 039 actor flag while the runtime is active.

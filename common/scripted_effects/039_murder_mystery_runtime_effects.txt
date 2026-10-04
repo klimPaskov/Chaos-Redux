@@ -1629,7 +1629,7 @@ murder_mystery_begin_derivative_transaction = {
 			has_variable = murder_mystery_derivative_stage_input
 			check_variable = { var = murder_mystery_derivative_stage_input value = constant:murder_mystery_derivative.minimum_stage compare = greater_than_or_equals }
 			check_variable = { var = murder_mystery_derivative_stage_input value = constant:murder_mystery_derivative.maximum_stage compare = less_than_or_equals }
-			has_event_target = murder_mystery_assassin_state_candidate
+			has_event_target = murder_mystery_assassin_state
 		}
 		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
 		set_variable = { global.murder_mystery_derivative_transaction_sequence = global.murder_mystery_transaction_sequence }
@@ -1647,7 +1647,7 @@ murder_mystery_commit_derivative_transaction = {
 	if = {
 		limit = { murder_mystery_derivative_postconditions_are_valid = yes }
 		add_to_array = { array = global.murder_mystery_derivative_country_entries value = event_target:murder_mystery_derivative_country_candidate }
-		add_to_array = { array = global.murder_mystery_derivative_parent_entries value = event_target:murder_mystery_assassin_state_candidate }
+		add_to_array = { array = global.murder_mystery_derivative_parent_entries value = event_target:murder_mystery_assassin_state }
 		add_to_array = { array = global.murder_mystery_derivative_stage_entries value = murder_mystery_derivative_stage_input }
 		add_to_array = { array = global.murder_mystery_derivative_status_entries value = constant:murder_mystery_derivative.status_active }
 		add_to_array = { array = global.murder_mystery_derivative_generation_entries value = global.murder_mystery_derivative_transaction_sequence }
@@ -1674,17 +1674,7 @@ murder_mystery_commit_derivative_transaction = {
 murder_mystery_rollback_derivative_transaction = {
 	if = {
 		limit = { has_global_flag = murder_mystery_derivative_transaction_active }
-		if = {
-			limit = {
-				has_event_target = murder_mystery_derivative_country_candidate
-				has_event_target = murder_mystery_assassin_state
-				event_target:murder_mystery_derivative_country_candidate = { exists = yes }
-				event_target:murder_mystery_assassin_state = { exists = yes }
-			}
-			event_target:murder_mystery_derivative_country_candidate = {
-				every_owned_state = { transfer_state_to = event_target:murder_mystery_assassin_state }
-			}
-		}
+		murder_mystery_return_derivative_transfer_states = yes
 		if = { limit = { has_event_target = murder_mystery_derivative_country_candidate } event_target:murder_mystery_derivative_country_candidate = { set_country_flag = murder_mystery_derivative_requires_parent_retirement } }
 		set_variable = { global.murder_mystery_derivative_setup_status = constant:murder_mystery_assassin.setup_rolled_back }
 		set_global_flag = murder_mystery_derivative_transaction_rolled_back

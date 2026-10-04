@@ -1,0 +1,170 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 STARTING FORCES AND COUNTRY SETUP
+# ============================================================================
+# Overview:
+# - Gives the Assassin State and each foreign derivative a playable army:
+#   unlocked Assassin cadre technology, an Assassin Cadres template and a
+#   holding infantry template, divisions placed in their own states and scaled
+#   by the number of states they own, and reinforcement stockpiles.
+# - Derivatives also receive research slots, neutrality politics, stability,
+#   war support and the movement's recruitment idea.
+# - Master Assassins, Silent Guards and Mechanized Assassins stay locked until
+#   their own technologies are researched or granted by focus.
+# - Called once per country by the creation transactions; a setup flag makes
+#   repeated calls harmless.
+# ============================================================================
+
+# add_ai_strategy rejects script-constant tokens; these mirror the AI weights
+# documented in docs/events/039_murder_mystery.md.
+@MURDER_MYSTERY_AI_CONQUER_PARENT = 200
+@MURDER_MYSTERY_AI_ANTAGONIZE_PARENT = 150
+
+# COUNTRY scope: the new country. Input: temp murder_mystery_forces_cadre_count
+# and murder_mystery_forces_holding_count.
+murder_mystery_spawn_movement_divisions = {
+	if = {
+		limit = { has_template = "Assassin Cadres" }
+		for_loop_effect = {
+			end = murder_mystery_forces_cadre_count
+			value = murder_mystery_forces_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"Assassin Cadres\" division_template = \"Assassin Cadres\" start_experience_factor = 0.3 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+				}
+			}
+		}
+	}
+	if = {
+		limit = { has_template = "Movement Militia" }
+		for_loop_effect = {
+			end = murder_mystery_forces_holding_count
+			value = murder_mystery_forces_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"Movement Militia\" division_template = \"Movement Militia\" start_experience_factor = 0.1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope: the new Assassin State, after its territory has transferred.
+murder_mystery_setup_assassin_state_forces = {
+	if = {
+		limit = { NOT = { has_country_flag = murder_mystery_starting_forces_created } }
+		set_country_flag = murder_mystery_starting_forces_created
+		set_technology = {
+			murder_mystery_clandestine_combat_training = 1
+			murder_mystery_compartmented_logistics = 1
+			murder_mystery_urban_rough_terrain_infiltration = 1
+		}
+		division_template = {
+			name = "Assassin Cadres"
+			regiments = {
+				assassin_cadre = { x = 0 y = 0 }
+				assassin_cadre = { x = 0 y = 1 }
+				assassin_cadre = { x = 1 y = 0 }
+				assassin_cadre = { x = 1 y = 1 }
+			}
+			support = { saboteur_cell = { x = 0 y = 0 } }
+		}
+		division_template = {
+			name = "Movement Militia"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 0 y = 2 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+				infantry = { x = 1 y = 2 }
+			}
+		}
+		set_temp_variable = { murder_mystery_forces_cadre_count = num_owned_states }
+		multiply_temp_variable = { murder_mystery_forces_cadre_count = constant:murder_mystery_starting_forces.central_cadre_per_state }
+		clamp_temp_variable = { var = murder_mystery_forces_cadre_count min = constant:murder_mystery_starting_forces.central_cadre_minimum max = constant:murder_mystery_starting_forces.central_cadre_maximum }
+		set_temp_variable = { murder_mystery_forces_holding_count = num_owned_states }
+		multiply_temp_variable = { murder_mystery_forces_holding_count = constant:murder_mystery_starting_forces.central_holding_per_state }
+		clamp_temp_variable = { var = murder_mystery_forces_holding_count min = constant:murder_mystery_starting_forces.central_holding_minimum max = constant:murder_mystery_starting_forces.central_holding_maximum }
+		murder_mystery_spawn_movement_divisions = yes
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:murder_mystery_starting_forces.central_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:murder_mystery_starting_forces.central_support_equipment }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:murder_mystery_starting_forces.central_trucks }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:murder_mystery_starting_forces.central_trains }
+		add_fuel = constant:murder_mystery_starting_forces.central_fuel
+		if = {
+			limit = {
+				has_event_target = murder_mystery_original_host
+				event_target:murder_mystery_original_host = { exists = yes }
+			}
+			event_target:murder_mystery_original_host = {
+				PREV = {
+					add_ai_strategy = { type = conquer id = PREV value = @MURDER_MYSTERY_AI_CONQUER_PARENT }
+					add_ai_strategy = { type = antagonize id = PREV value = @MURDER_MYSTERY_AI_ANTAGONIZE_PARENT }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope: a new derivative after its revolt territory has transferred.
+# Input: event target murder_mystery_selected_cell, the government it rose
+# against.
+murder_mystery_setup_derivative_forces = {
+	if = {
+		limit = { NOT = { has_country_flag = murder_mystery_starting_forces_created } }
+		set_country_flag = murder_mystery_starting_forces_created
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_research_slots = constant:murder_mystery_starting_forces.derivative_research_slots
+		set_stability = constant:murder_mystery_starting_forces_float.derivative_stability
+		set_war_support = constant:murder_mystery_starting_forces_float.derivative_war_support
+		add_political_power = constant:murder_mystery_starting_forces.derivative_political_power
+		add_ideas = murder_mystery_cells_under_arms
+		set_technology = {
+			murder_mystery_clandestine_combat_training = 1
+			infantry_weapons = 1
+		}
+		division_template = {
+			name = "Assassin Cadres"
+			regiments = {
+				assassin_cadre = { x = 0 y = 0 }
+				assassin_cadre = { x = 0 y = 1 }
+				assassin_cadre = { x = 1 y = 0 }
+			}
+		}
+		division_template = {
+			name = "Movement Militia"
+			regiments = {
+				infantry = { x = 0 y = 0 }
+				infantry = { x = 0 y = 1 }
+				infantry = { x = 1 y = 0 }
+				infantry = { x = 1 y = 1 }
+			}
+		}
+		set_temp_variable = { murder_mystery_forces_cadre_count = num_owned_states }
+		multiply_temp_variable = { murder_mystery_forces_cadre_count = constant:murder_mystery_starting_forces.derivative_cadre_per_state }
+		clamp_temp_variable = { var = murder_mystery_forces_cadre_count min = constant:murder_mystery_starting_forces.derivative_cadre_minimum max = constant:murder_mystery_starting_forces.derivative_cadre_maximum }
+		set_temp_variable = { murder_mystery_forces_holding_count = num_owned_states }
+		multiply_temp_variable = { murder_mystery_forces_holding_count = constant:murder_mystery_starting_forces.derivative_holding_per_state }
+		clamp_temp_variable = { var = murder_mystery_forces_holding_count min = constant:murder_mystery_starting_forces.derivative_holding_minimum max = constant:murder_mystery_starting_forces.derivative_holding_maximum }
+		murder_mystery_spawn_movement_divisions = yes
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:murder_mystery_starting_forces.derivative_infantry_equipment }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:murder_mystery_starting_forces.derivative_support_equipment }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = constant:murder_mystery_starting_forces.derivative_trucks }
+		add_equipment_to_stockpile = { type = train_equipment amount = constant:murder_mystery_starting_forces.derivative_trains }
+		add_fuel = constant:murder_mystery_starting_forces.derivative_fuel
+		if = {
+			limit = {
+				has_event_target = murder_mystery_selected_cell
+				event_target:murder_mystery_selected_cell = { exists = yes }
+			}
+			event_target:murder_mystery_selected_cell = {
+				PREV = {
+					add_ai_strategy = { type = conquer id = PREV value = @MURDER_MYSTERY_AI_CONQUER_PARENT }
+					add_ai_strategy = { type = antagonize id = PREV value = @MURDER_MYSTERY_AI_ANTAGONIZE_PARENT }
+				}
+			}
+		}
+	}
+}

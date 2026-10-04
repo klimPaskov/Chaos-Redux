@@ -83,3 +83,22 @@ The curated native row is Britain only: `ENG_stanley_baldwin` to `ENG_neville_ch
 A general per-country focus-route dependency check is not available in script, so the host gate excludes civil wars and stale anchors; the institutional replacement keeps the ruling ideology, which keeps ideology-gated focus routes open.
 Asset blocker: Part 3 classifies an institution of a real polity as grounded, which requires sourced institutional material through `chaosx_portrait_creator`; this session cannot spawn that worker and needs the user's permission to download a source image.
 `GFX_portrait_039_emergency_council` is registered and wired to the vanilla unknown-leader texture (`gfx/leaders/leader_unknown.dds`) until a sourced, people-free institutional emblem replaces the texture at the same sprite name.
+
+## D10. Starting forces and AI for movement countries
+
+Disposition: implemented; AI template and strategy effects need live confirmation.
+The Assassin State receives its first three Assassin technologies (cadre, kits, Saboteur Cell support), an Assassin Cadres template and a Movement Militia template, divisions scaled one per owned state within constant bounds, and reinforcement stockpiles; derivatives receive a reduced package plus research slots, neutrality politics, stability, war support and the recruitment idea.
+Template names are literal strings because HOI4 template names are not localisation keys.
+`create_unit` division strings carry their start factors literally (the CXT precedent); everything else reads `039_murder_mystery_forces_constants.txt`.
+`add_ai_strategy` and AI strategy files reject script constants, so the AI weights are file-scoped `@` values, as in Event 014.
+The AI template avoids `available_for` because movement countries are dynamic tags; it relies on zero upgrade priority outside movement countries and on the cadre sub-units being locked behind movement-only technology.
+
+## D11. Derivatives come from mature registered cells
+
+Disposition: implemented.
+The derivative transaction read the cleared Assassin State candidate target, so every derivative creation was rejected; it now reads the committed Assassin State.
+Revolts select the most revolt-ready insurrection cell (Evolution IV reveal) or the first cell to reach full readiness (pulse), take a connected anchor-plus-neighbour cluster, and declare war on the government they rose against.
+A failed revolt returns every moved state to its government; the old rollback gave them to the Assassin State.
+The derivative follows the central state's route instead of the caller's, which had made every pulse- or event-driven revolt a Cells Without Masters revolt.
+Maximum-intensity scenarios prime their first seeded cells as ready insurrection cells before raising their revolts.
+Cell seeding uses a land border with the host, a land border with an existing cell, or an ally of the host, one route per attempt.

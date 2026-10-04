@@ -104,6 +104,7 @@ murder_mystery_run_pulse = {
 	murder_mystery_pulse_seed_cells = yes
 	murder_mystery_pulse_incidents = yes
 	murder_mystery_pulse_evolutions = yes
+	murder_mystery_pulse_revolts = yes
 	murder_mystery_evaluate_global_resolution = yes
 }
 
@@ -751,6 +752,124 @@ murder_mystery_commit_paced_evolution = {
 		}
 		event_target:murder_mystery_assassin_state = { murder_mystery_apply_ready_evolution = yes }
 	}
+}
+
+# ---------------------------------------------------------------------------
+# Foreign revolts after Evolution IV
+# ---------------------------------------------------------------------------
+
+# Any scope. Input: temp murder_mystery_revolt_minimum_readiness. Saves
+# murder_mystery_selected_cell: the registered insurrection cell with the
+# highest revolt readiness whose government can lose a revolt cluster.
+murder_mystery_select_revolt_cell = {
+	murder_mystery_clear_selected_cell_context = yes
+	if = {
+		limit = { murder_mystery_cell_registry_is_aligned = yes }
+		set_temp_variable = { murder_mystery_revolt_best = murder_mystery_revolt_minimum_readiness }
+		set_temp_variable = { murder_mystery_revolt_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_revolt_index value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+			set_temp_variable = { murder_mystery_revolt_row_readiness = global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_revolt_index }
+			if = {
+				limit = {
+					check_variable = { var = global.murder_mystery_cell_stage_entries^murder_mystery_revolt_index value = constant:murder_mystery_cell_stage.insurrection compare = greater_than_or_equals }
+					check_variable = { var = murder_mystery_revolt_row_readiness value = murder_mystery_revolt_best compare = greater_than_or_equals }
+				}
+				var:global.murder_mystery_cell_country_entries^murder_mystery_revolt_index = {
+					if = {
+						limit = { murder_mystery_country_can_lose_revolt_cluster = yes }
+						set_temp_variable = { murder_mystery_revolt_best = murder_mystery_revolt_row_readiness }
+						save_global_event_target_as = murder_mystery_selected_cell
+					}
+				}
+			}
+			add_to_temp_variable = { murder_mystery_revolt_index = constant:murder_mystery_identity.loop_increment }
+		}
+		if = {
+			limit = { has_event_target = murder_mystery_selected_cell }
+			event_target:murder_mystery_selected_cell = { murder_mystery_mark_seed_candidate = yes }
+		}
+	}
+}
+
+# Any scope. One revolt at a time once an insurrection cell is ready. The pulse
+# waits while the central state is working with a cell it selected itself.
+murder_mystery_pulse_revolts = {
+	if = {
+		limit = {
+			NOT = { has_event_target = murder_mystery_selected_cell }
+			has_global_flag = murder_mystery_evolution_iv_committed
+			has_global_flag = murder_mystery_assassin_state_exists
+			NOT = { has_global_flag = murder_mystery_movement_end_recorded }
+			NOT = { has_global_flag = murder_mystery_derivative_transaction_active }
+			murder_mystery_derivative_registry_has_capacity = yes
+		}
+		set_temp_variable = { murder_mystery_revolt_minimum_readiness = constant:murder_mystery_revolt.readiness_threshold }
+		murder_mystery_select_revolt_cell = yes
+		if = {
+			limit = { has_event_target = murder_mystery_selected_cell }
+			murder_mystery_start_derivative_creation = yes
+			murder_mystery_clear_selected_cell_context = yes
+		}
+	}
+}
+
+# Any scope. Gives the first registered cells insurrection maturity and full
+# readiness so a maximum-intensity scenario opens with ready revolts.
+# Input: temp murder_mystery_scenario_revolt_rows.
+murder_mystery_prime_scenario_revolt_cells = {
+	if = {
+		limit = { murder_mystery_cell_registry_is_aligned = yes }
+		set_temp_variable = { murder_mystery_prime_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = murder_mystery_prime_index value = global.murder_mystery_cell_country_entries^num compare = less_than }
+				check_variable = { var = murder_mystery_prime_index value = murder_mystery_scenario_revolt_rows compare = less_than }
+			}
+			set_variable = { global.murder_mystery_cell_stage_entries^murder_mystery_prime_index = constant:murder_mystery_cell_stage.insurrection }
+			set_variable = { global.murder_mystery_cell_maturity_entries^murder_mystery_prime_index = constant:murder_mystery_revolt.scenario_maturity }
+			set_variable = { global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_prime_index = constant:murder_mystery_revolt.scenario_readiness }
+			var:global.murder_mystery_cell_country_entries^murder_mystery_prime_index = { set_country_flag = murder_mystery_cell_mature }
+			add_to_temp_variable = { murder_mystery_prime_index = constant:murder_mystery_identity.loop_increment }
+		}
+	}
+}
+
+# Any scope. Returns every state recorded for the current derivative attempt
+# to the government it was taken from.
+murder_mystery_return_derivative_transfer_states = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_selected_cell
+			event_target:murder_mystery_selected_cell = { exists = yes }
+		}
+		for_each_scope_loop = {
+			array = global.murder_mystery_derivative_transfer_states
+			transfer_state_to = event_target:murder_mystery_selected_cell
+		}
+	}
+	clear_array = global.murder_mystery_derivative_transfer_states
+}
+
+# Any scope. A failed derivative attempt leaves the map as it was and retires
+# the empty carrier.
+murder_mystery_revert_derivative_creation = {
+	if = {
+		limit = { has_global_flag = murder_mystery_derivative_transaction_active }
+		murder_mystery_rollback_derivative_transaction = yes
+	}
+	murder_mystery_return_derivative_transfer_states = yes
+	if = {
+		limit = { has_event_target = murder_mystery_derivative_country_candidate }
+		event_target:murder_mystery_derivative_country_candidate = {
+			set_country_flag = murder_mystery_derivative_requires_parent_retirement
+			clr_country_flag = murder_mystery_derivative_country
+			clr_country_flag = murder_mystery_derivative_carrier_validated
+		}
+		clear_global_event_target = murder_mystery_derivative_country_candidate
+	}
+	clr_global_flag = murder_mystery_derivative_postcondition_passed
+	clr_global_flag = murder_mystery_derivative_subject_postcondition_passed
 }
 
 # ---------------------------------------------------------------------------
