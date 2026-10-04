@@ -258,6 +258,16 @@ asteroid_incoming_state_is_valid_ring_candidate = {
 	}
 }
 
+# COUNTRY scope. Fragment centers use human civilian systems and exclude the
+# dedicated system country; human-populated Special Chaos countries remain valid.
+asteroid_incoming_country_can_host_fragment_center = {
+	hidden_trigger = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { tag = CXT }
+	}
+}
+
 asteroid_incoming_state_is_valid_fragment_site = {
 	hidden_trigger = {
 		has_global_flag = asteroid_incoming_fragmentation_active
@@ -267,6 +277,8 @@ asteroid_incoming_state_is_valid_fragment_site = {
 			compare = less_than
 		}
 		asteroid_incoming_state_is_valid_target = yes
+		OWNER = { asteroid_incoming_country_can_host_fragment_center = yes }
+		CONTROLLER = { asteroid_incoming_country_can_host_fragment_center = yes }
 		NOT = {
 			is_in_array = {
 				array = global.asteroid_incoming_main_footprint_states

@@ -287,7 +287,14 @@ mineral_triggers = parse(mineral_trigger_path)
 triggers.update(mineral_triggers)
 PREDICATE = 'asteroid_incoming_is_processed_mineral_fragment'
 COUNT_HELPER = 'asteroid_incoming_count_controlled_mineral_fragments'
-assert hashlib.sha256(trigger_path.read_bytes()).hexdigest().upper() == 'D591180EDE589C319D6077028736EDAFC184DECB86F62E2D48BFEC3F8AF81A4B'
+# Preserve the exact AI predicate, not an unrelated whole-file hash: later
+# fragment-target eligibility fixes do not change this mineral idea read.
+assert triggers['asteroid_incoming_ai_chooser_holds_mineral_advantage'] == [
+    ('hidden_trigger', '=', [('OR', '=', [
+        ('has_idea', '=', 'asteroid_incoming_main_crater_material'),
+        *[('has_idea', '=', 'asteroid_incoming_fragment_material_' + str(i)) for i in range(1, 7)]
+    ])])
+]
 def fields(rows): return dict((k, v) for k, _, v in rows)
 assert fields(mineral_triggers[PREDICATE])['hidden_trigger'] == [
     ('is_in_array', '=', [('array', '=', 'global.asteroid_incoming_fragment_site_states'), ('value', '=', 'THIS')]),
