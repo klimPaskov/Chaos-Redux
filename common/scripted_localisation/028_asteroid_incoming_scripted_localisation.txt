@@ -165,16 +165,31 @@ defined_text = {
 	}
 }
 
+# COUNTRY SCOPE. Names the national recovery burden the country carries now:
+# the extended burden after a failed mission, the full burden, the lighter
+# legacy after a mission success, or the finished recovery.
 defined_text = {
 	name = GetAsteroidIncomingRecoveryPhase
 	text = {
+		trigger = { has_country_flag = asteroid_incoming_recovery_failure_pressure }
+		localization_key = asteroid_incoming.recovery_phase.failure_pressure
+	}
+	text = {
+		trigger = { has_country_flag = asteroid_incoming_recovery_closeout_sent }
+		localization_key = asteroid_incoming.recovery_phase.complete
+	}
+	text = {
+		trigger = { has_idea = asteroid_incoming_recovery_burden }
+		localization_key = asteroid_incoming.recovery_phase.burden
+	}
+	text = {
 		trigger = {
 			OR = {
-				has_country_flag = asteroid_incoming_recovery_closeout_sent
+				has_idea = asteroid_incoming_recovery_legacy
 				has_country_flag = asteroid_incoming_recovery_legacy_active
 			}
 		}
-		localization_key = asteroid_incoming.recovery_phase.complete
+		localization_key = asteroid_incoming.recovery_phase.legacy
 	}
 	text = {
 		trigger = { has_country_flag = asteroid_incoming_affected_country }
@@ -182,6 +197,53 @@ defined_text = {
 	}
 	text = {
 		localization_key = asteroid_incoming.recovery_phase.none
+	}
+}
+
+# COUNTRY SCOPE. Category-header clause for crater control. It is empty unless
+# Extraordinary Minerals is active.
+defined_text = {
+	name = GetAsteroidIncomingCraterControlClause
+	text = {
+		trigger = { has_global_flag = asteroid_incoming_minerals_active }
+		localization_key = asteroid_incoming.crater_clause.active
+	}
+	text = {
+		localization_key = asteroid_incoming.crater_clause.none
+	}
+}
+
+# COUNTRY SCOPE. Which crater sites the country controls directly.
+defined_text = {
+	name = GetAsteroidIncomingCraterHolding
+	text = {
+		trigger = {
+			any_controlled_state = { has_state_flag = asteroid_incoming_main_crater }
+			check_variable = { var = asteroid_incoming_country_controlled_fragment_count value = constant:asteroid_incoming_runtime.one compare = greater_than }
+		}
+		localization_key = asteroid_incoming.crater_holding.main_and_fragments
+	}
+	text = {
+		trigger = {
+			any_controlled_state = { has_state_flag = asteroid_incoming_main_crater }
+			check_variable = { var = asteroid_incoming_country_controlled_fragment_count value = constant:asteroid_incoming_runtime.one compare = equals }
+		}
+		localization_key = asteroid_incoming.crater_holding.main_and_fragment
+	}
+	text = {
+		trigger = { any_controlled_state = { has_state_flag = asteroid_incoming_main_crater } }
+		localization_key = asteroid_incoming.crater_holding.main
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_country_controlled_fragment_count value = constant:asteroid_incoming_runtime.one compare = greater_than } }
+		localization_key = asteroid_incoming.crater_holding.fragments
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_country_controlled_fragment_count value = constant:asteroid_incoming_runtime.one compare = equals } }
+		localization_key = asteroid_incoming.crater_holding.fragment
+	}
+	text = {
+		localization_key = asteroid_incoming.crater_holding.none
 	}
 }
 
