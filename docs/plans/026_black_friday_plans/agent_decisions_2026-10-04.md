@@ -114,3 +114,16 @@ Spec Part 4 requires a visible compatibility note for any limitation that remain
 The matching Event Details wording for the catalog is recorded in `catalog_changes_pending.md`; the workbook and CSV exports are not edited.
 
 Disposition: implemented.
+
+## D8. Black Friday joins the default-enabled event list
+
+Decision: `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt` lists `constant:black_friday_event.id`, so `initialize_default_disabled_events_for_rework_queue` no longer disables Event 26 in a new campaign.
+The catalog status stays `Needs Testing` until live verification, as queued in `catalog_changes_pending.md`.
+
+Basis: a permanently disabled event gives players nothing, and the items the lead named as the enabling gate have landed: the Friday anchor (D1), the country-level leader discounts (D2), the trade-upkeep exclusion (D3), the sale price table (D4), the inactive-owner native conversion (D5), engine-priced achievement credit (D6), and the base-game compatibility note (D7).
+Remaining owner custom costs no longer block enabling.
+Under the spec Part 4 Future coverage rule each owner registers its own voluntary costs, so every unconverted owner carries an explicit per-owner disposition in the registry (`owner adoption pending` for active workstreams, queued conversion tranches for inactive owners) instead of holding the whole event back.
+Until an owner adopts the sale, its custom costs charge their ordinary price, which is a missing discount rather than a wrong charge.
+
+Disposition: implemented.
+Live confirmation that a new campaign starts with Black Friday enabled is `needs_live_game`.

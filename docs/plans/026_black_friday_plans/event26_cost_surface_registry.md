@@ -295,7 +295,7 @@ The older CBRN rejection handoffs describe costs and decision families that chan
 | Vanilla precedents checked | `common/dynamic_modifiers/wuw_dynamic_modifiers.txt:462-492` carries MIO modifier keys in a country dynamic modifier, and `common/country_leader/00_traits.txt:13138-13140` supplies the cost fields in a Vanilla modifier block. |
 | Exact reason the real cost cannot change | The installed schema exposes these fields as flat absolute modifiers, not factors. A value such as `-0.5` would not multiply the ordinary current MIO price, and no native relative field or confirmation hook is available. |
 | Reason a replacement action would be inaccurate | A replacement would diverge from the native MIO UI and could bypass native eligibility, cooldown, AI, newly-created-MIO behavior, or policy-specific validation. |
-| Player-facing compatibility effect | MIO assignment, design-team, manufacturer, and policy prices remain outside the sale; Event 26 stays disabled until an exact native adapter or complete static variant set exists. |
+| Player-facing compatibility effect | MIO assignment, design-team, manufacturer, and policy prices remain outside the sale until an exact native adapter or complete static variant set exists; they no longer hold Event 26 out of the default event list (agent decision D8). |
 | Completion-report reference | `BF-ABS-002`, `BF-ABS-004`, and the current decision/completion audit handoffs. |
 
 ### BF-ADP-001
@@ -394,7 +394,7 @@ The lifecycle and presentation paths are source-implemented for `BF-T01` through
 
 The arithmetic helper has source-level coverage for the boundary cases in `BF-R01` through `BF-R13` and `BF-C01` through `BF-C06`, while owner payment/refund evidence remains blocked by BF-ADP-001 and the engine-owned rows.
 
-No live game launch was performed, and Event 26 remains disabled in the default event allowlist.
+No live game launch was performed. Event 26 is on the default-enabled event list under agent decision D8 (2026-10-04); live acceptance remains pending.
 
 ## Sign-off questions
 

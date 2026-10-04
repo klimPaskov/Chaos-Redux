@@ -42,7 +42,7 @@ Rows marked `Calendar-calibration-blocked` below now depend only on live date-pr
 
 This record is reconciled against the current implementation worktree on 2026-09-02 and is not a claim of completion. `Source` means the relevant script, localisation, registry, or asset path was inspected. `MCP-partial` means the installed HOI4 MCP returned a workspace-wide partial result without a selector-specific blocker. `Live-blocked` means the scenario requires the user-owned live game or multiplayer session. `Calendar-calibration-blocked` originally meant the absolute `global.num_days % 7 == 2` source anchor; that anchor was wrong and is superseded by the 2026-10-04 calendar correction above, so the remaining label only marks the live date-progression evidence that is still outstanding. `Adapter-blocked` means the final cost registry has no complete owner callsite or engine-accessible route for the scenario; the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, Germany Mengele, and D'Rhondan alien-reserve source tranches have separate bounded adapter status.
 
-Event 26 remains disabled in the default event allowlist until every completion blocker below is resolved.
+Event 26 is on the default-enabled event list under agent decision D8 (2026-10-04). The open items below remain live acceptance work or per-owner dispositions; they no longer keep the event disabled.
 
 ## Reservation and timing
 
