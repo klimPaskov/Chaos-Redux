@@ -4292,6 +4292,23 @@ cannibalism_hoard_target_owner_is_live_governor = {
 	}
 }
 
+# STATE scope, ROOT the host. True while the host or one of its subjects
+# controls the state, so a cache there is within the host bloc's reach.
+cannibalism_state_is_held_by_root_bloc = {
+	OR = {
+		is_controlled_by = ROOT
+		CONTROLLER = { is_subject_of = ROOT }
+	}
+}
+
+# Host COUNTRY scope, ROOT the host. True while the cache under review sits in
+# a state the host or one of its subjects controls. A cache anywhere else is
+# lost when the review is answered.
+cannibalism_hoard_review_state_is_in_reach = {
+	has_variable = cannibalism_hoard_review_state
+	var:cannibalism_hoard_review_state = { cannibalism_state_is_held_by_root_bloc = yes }
+}
+
 # Host COUNTRY scope. True while a cache of this host awaits review.
 cannibalism_current_host_has_unreviewed_hoard = {
 	any_of_scopes = {
@@ -4345,10 +4362,7 @@ cannibalism_state_is_seizable_root_hoard = {
 	has_state_flag = cannibalism_hoard_located
 	has_state_flag = cannibalism_hoard_reviewed
 	NOT = { has_state_flag = cannibalism_hoard_seizure_target }
-	OR = {
-		is_controlled_by = ROOT
-		CONTROLLER = { is_subject_of = ROOT }
-	}
+	cannibalism_state_is_held_by_root_bloc = yes
 }
 
 # Host COUNTRY scope. The full seizure force stands in the cache state.

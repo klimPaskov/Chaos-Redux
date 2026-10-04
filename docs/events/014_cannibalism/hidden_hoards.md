@@ -25,9 +25,11 @@ The CBL host can later investigate to locate the caches and, on the Break the Wa
    The timed flag `cannibalism_hoard_review_pending` (30 days) prevents a second queue and expires if an event never fires.
    The event's immediate block (`cannibalism_select_next_hoard_review`) picks the first cache awaiting review and quotes the options.
 4. Answer. The host chooses:
-   - Confront: recovers 50 percent of the cache now (75 percent once the cache is located) and destroys the rest. A live autonomous governor gains 10 percent autonomy; otherwise the cache state, if the host owns it, gets Hoard Guard Unrest for 120 days. Unified authority +5.
+   - Confront: recovers 50 percent of the cache now (75 percent once the cache is located) and destroys the rest. A live autonomous governor gains 10 percent autonomy; otherwise the cache state, if the host owns it, gets Hoard Guard Unrest for 120 days, and the option says so only in that case. Unified authority +5.
    - Tolerate: the cache stays and is marked tolerated. A live governor loses 10 percent autonomy. Unified authority -3.
    - Bargain: pays Command Power equal to a tenth of the cache (5 to 40) and recovers 80 percent with no resistance. Hidden when the host cannot pay.
+   - Write off: shown instead of the three answers when neither the host nor one of its subjects controls the cache state. The review says the stores are beyond reach, and the cache is closed with no recovery, no payment, no resistance and no authority change.
+   Every answer checks control again when it is chosen, so a cache lost while the event was open is closed the same way and a bargain is never charged for it.
    After the answer the cache is marked reviewed and the next waiting cache is queued.
 5. Investigation (CBL, after Audit the Submitted Hosts). `cannibalism_unified_investigate_hidden_hoards` costs 15 Command Power and 5 Army Experience (plus the hostility command surcharge) and needs an unlocated cache.
    It locates every unlocated cache and reopens its review, so each owner answers again with the higher located confront share.

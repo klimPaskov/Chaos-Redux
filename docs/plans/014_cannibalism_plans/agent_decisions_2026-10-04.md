@@ -207,3 +207,17 @@ The values are owned by the two scenario entries (`trigger_cannibalism_scenario`
 Also reviewed and left unchanged: the evolution scheduling calls in `cannibalism_try_schedule_evolutions` (exclusive branches; the third branch sets its own log inputs), and the `chaosx_convert_*` date helpers, whose callers already own `chaosx_date_days` and `chaosx_date_offset`.
 
 Runtime behaviour of temporary storage across scripted-effect returns remains `needs_live_game`; the change is correct under both the conservative frame model and an engine that keeps helper-created temporaries.
+
+## R2-4. A cache outside the host bloc's control is lost when the review is answered
+
+Disposition: `implemented`.
+
+Basis: lead round 2 decision R2-4 and D10, which requires the host bloc's control for a seizure; recovering stores from enemy territory contradicted it, and the review tooltips overstated the result.
+
+Decision:
+
+- `cannibalism_state_is_held_by_root_bloc` (the host or one of its subjects controls the state) is the single control rule for the review and the seizure target.
+- When the reviewed cache state is out of that reach, `chaosx.nr14.82` shows a lost-stores description and one option, Write off the stores, instead of confront, tolerate and bargain. The cache is closed with no recovery, payment, resistance or authority change, and the review queue advances.
+- Confront, tolerate and bargain check control again when chosen: a cache lost while the event was open is closed as lost by any of them, and a bargain is never charged for it. A bargain the host can no longer pay still leaves an in-reach cache on record, as before.
+- The confront tooltip shows the unrest line only when the host owns the cache state, which is when the unrest modifier lands; a subject-held state says the old guard cannot stir unrest there.
+- The new option is the only one shown when it appears, so its weight cannot change the AI's choice, and the weights of the three existing answers are unchanged; no probability comparison was needed.

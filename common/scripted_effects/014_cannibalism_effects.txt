@@ -14459,6 +14459,22 @@ cannibalism_close_target_hoard = {
 	}
 }
 
+# Host COUNTRY scope after cannibalism_load_hoard_review_target. Input:
+# cannibalism_hoard_target_valid. A recorded cache whose state neither the
+# host nor one of its subjects controls is closed with no recovery, no
+# resistance and no authority change. An answer that cannot be carried out
+# while the cache is in reach (a bargain the host can no longer pay) leaves the
+# cache on record.
+cannibalism_close_lost_target_hoard = {
+	if = {
+		limit = {
+			check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero }
+			event_target:cannibalism_hoard_target_state = { NOT = { cannibalism_state_is_held_by_root_bloc = yes } }
+		}
+		cannibalism_close_target_hoard = yes
+	}
+}
+
 # Host COUNTRY scope. Inputs: event_target:cannibalism_hoard_target_state and
 # cannibalism_hoard_recovery_share (0 to 1). Credits that share of the cache to
 # the host's Larder, then closes the record. Output: cannibalism_hoard_recovered.
@@ -14562,7 +14578,10 @@ cannibalism_confront_reviewed_hoard = {
 	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
 	if = {
-		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		limit = {
+			check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero }
+			event_target:cannibalism_hoard_target_state = { cannibalism_state_is_held_by_root_bloc = yes }
+		}
 		# Pay the share the event quoted, even when investigators located the
 		# cache while this review was open.
 		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.confront_recovery }
@@ -14576,6 +14595,7 @@ cannibalism_confront_reviewed_hoard = {
 		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.confront_authority }
 		cannibalism_apply_hoard_authority_change = yes
 	}
+	else = { cannibalism_close_lost_target_hoard = yes }
 	cannibalism_finish_hoard_review = yes
 }
 
@@ -14587,7 +14607,10 @@ cannibalism_tolerate_reviewed_hoard = {
 	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
 	if = {
-		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		limit = {
+			check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero }
+			event_target:cannibalism_hoard_target_state = { cannibalism_state_is_held_by_root_bloc = yes }
+		}
 		event_target:cannibalism_hoard_target_state = { set_state_flag = cannibalism_hoard_tolerated }
 		if = {
 			limit = { check_variable = { cannibalism_hoard_target_is_governor > constant:cannibalism_hoard.zero } }
@@ -14598,6 +14621,7 @@ cannibalism_tolerate_reviewed_hoard = {
 		set_temp_variable = { cannibalism_hoard_authority_change = constant:cannibalism_hoard.tolerate_authority }
 		cannibalism_apply_hoard_authority_change = yes
 	}
+	else = { cannibalism_close_lost_target_hoard = yes }
 	cannibalism_finish_hoard_review = yes
 }
 
@@ -14610,6 +14634,7 @@ cannibalism_bargain_reviewed_hoard = {
 	if = {
 		limit = {
 			check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero }
+			event_target:cannibalism_hoard_target_state = { cannibalism_state_is_held_by_root_bloc = yes }
 			command_power > cannibalism_hoard_bargain_command_gate
 		}
 		set_temp_variable = { cannibalism_current_cost = cannibalism_hoard_bargain_command_cost }
@@ -14617,6 +14642,18 @@ cannibalism_bargain_reviewed_hoard = {
 		set_temp_variable = { cannibalism_hoard_recovery_share = constant:cannibalism_hoard.bargain_recovery }
 		cannibalism_recover_target_hoard = yes
 	}
+	else = { cannibalism_close_lost_target_hoard = yes }
+	cannibalism_finish_hoard_review = yes
+}
+
+# chaosx.nr14.82 option shown when the cache state is out of the host bloc's
+# reach: the stores are written off and nothing is recovered or paid.
+cannibalism_write_off_reviewed_hoard = {
+	# Own the cannibalism_load_hoard_review_target outputs read after it returns.
+	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
+	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
+	cannibalism_load_hoard_review_target = yes
+	cannibalism_close_lost_target_hoard = yes
 	cannibalism_finish_hoard_review = yes
 }
 

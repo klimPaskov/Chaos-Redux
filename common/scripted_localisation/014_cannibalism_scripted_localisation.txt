@@ -1056,6 +1056,10 @@ defined_text = {
 defined_text = {
 	name = GetCannibalismHoardReviewDesc
 	text = {
+		trigger = { NOT = { cannibalism_hoard_review_state_is_in_reach = yes } }
+		localization_key = cannibalism_hoard_review_desc_lost
+	}
+	text = {
 		trigger = { has_country_flag = cannibalism_hoard_review_located }
 		localization_key = cannibalism_hoard_review_desc_located
 	}
@@ -1077,7 +1081,15 @@ defined_text = {
 		trigger = { has_country_flag = cannibalism_hoard_review_governor }
 		localization_key = cannibalism_hoard_review_confront_risk_governor
 	}
-	text = { localization_key = cannibalism_hoard_review_confront_risk_state }
+	# The unrest modifier only lands on a cache state the host owns.
+	text = {
+		trigger = {
+			has_variable = cannibalism_hoard_review_state
+			var:cannibalism_hoard_review_state = { is_owned_by = ROOT }
+		}
+		localization_key = cannibalism_hoard_review_confront_risk_state
+	}
+	text = { localization_key = cannibalism_hoard_review_confront_risk_none }
 }
 
 defined_text = {

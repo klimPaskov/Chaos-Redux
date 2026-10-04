@@ -935,6 +935,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr14.82.a
+		trigger = { cannibalism_hoard_review_state_is_in_reach = yes }
 		ai_chance = {
 			base = constant:cannibalism_unified_decision_ai.high
 			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_break }
@@ -951,6 +952,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr14.82.b
+		trigger = { cannibalism_hoard_review_state_is_in_reach = yes }
 		ai_chance = {
 			base = constant:cannibalism_unified_decision_ai.standard
 			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_keep }
@@ -966,7 +968,10 @@ country_event = {
 
 	option = {
 		name = chaosx.nr14.82.c
-		trigger = { command_power > cannibalism_hoard_bargain_command_gate }
+		trigger = {
+			cannibalism_hoard_review_state_is_in_reach = yes
+			command_power > cannibalism_hoard_bargain_command_gate
+		}
 		ai_chance = {
 			base = constant:cannibalism_unified_decision_ai.high
 			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_disposition_chain }
@@ -974,5 +979,14 @@ country_event = {
 		}
 		custom_effect_tooltip = cannibalism_hoard_review_bargain_tt
 		hidden_effect = { cannibalism_bargain_reviewed_hoard = yes }
+	}
+
+	# The cache state is no longer held by the host or its subjects.
+	option = {
+		name = chaosx.nr14.82.e
+		trigger = { NOT = { cannibalism_hoard_review_state_is_in_reach = yes } }
+		ai_chance = { base = constant:cannibalism_unified_decision_ai.standard }
+		custom_effect_tooltip = cannibalism_hoard_review_lost_tt
+		hidden_effect = { cannibalism_write_off_reviewed_hoard = yes }
 	}
 }
