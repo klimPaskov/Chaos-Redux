@@ -159,3 +159,17 @@ The repository's helper-output rule (`chaos-redux-events`, Helper output lifetim
 Decision: the saved copy lives in normal `random_civil_war_event6_saved_*` variables and flags on the host, the restore runs only when this country holds a saved copy, and it clears the copy afterwards.
 The shared candidate collector now creates `event021_parent_event6_package_found` before it calls the Event 006 package finder, and the secondary initializer creates `event021_planned_state_span_found` before the span copy, so both results the callers read survive the call.
 No gate, cost, weight, or plan outcome changes; a restore without a saved copy now leaves the host unchanged instead of clearing it.
+
+## D13. Settled crises keep ticking until the obligation and cleanup resolve
+
+Finding from the round 2 review: reconstruction ends after `reconstruction_days` (120) while the settlement terms hold for `settlement_terms_hold_days` (180), but the global review called `event021_parent_reconstruction_tick` only while `random_civil_war_reconstruction_active` was set.
+Once reconstruction completed, the obligation was never judged, `chaosx.nr21.10` never fired, and every settled crisis kept its theater registered and `random_civil_war_active` set, so the baseline cap of two active theaters stopped new civil wars after the first settlements.
+Decision: the global review calls the tick whenever `event021_parent_reconstruction_due` holds, and that trigger gains a third case: reconstruction complete, settlement recorded, obligation no longer open, and `random_civil_war_reconstruction_resolved` not yet set.
+The existing hold-date case now also reaches a crisis whose reconstruction already finished, because the caller no longer requires the active flag.
+The tick's final block (administration restored, recurrence prepared, reconstruction record, `chaosx.nr21.10`) requires `random_civil_war_reconstruction_resolved` to be absent, so it runs once per crisis generation and an Event 006 actor that host cleanup already finalized is only judged on its obligation.
+At the hold date, a terms mission that confirmed the objective (`random_civil_war_settlement_obligation_objective_met`) now counts as met in the missed-objective branch too, matching the fulfilled branch and the mission's "success confirms the settlement" text.
+Trace with the shipped constants: the first review at or after day 120 completes reconstruction while the obligation stays open, the first review at or after day 180 judges it held or breached, and the same tick records the reconstruction, prepares recurrence, and fires `chaosx.nr21.10`, whose cleanup unregisters the theater and clears `random_civil_war_active`.
+An obligation breached early, such as a failed terms mission, resolves inside that mission and the crisis closes on the first review after reconstruction completes.
+No periodic hook or world iteration is added, and all date offsets still pass through `event021_days_to_date_offset` and the shared converter.
+Basis: the lead's round 2 assignment and the spec's requirement that settlements create obligations that must resolve before the category closes.
+Contract: `common/scripted_effects/021_random_civil_war_parent_effects.md` (reconstruction tick paragraph).

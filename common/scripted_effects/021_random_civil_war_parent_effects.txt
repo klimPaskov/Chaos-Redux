@@ -932,11 +932,10 @@ event021_global_review_current_country = {
 		}
 		event021_parent_apply_settlement = yes
 	}
+	# A settled crisis keeps ticking after reconstruction completes, until its
+	# obligation is judged and its final record and cleanup have run.
 	if = {
-		limit = {
-			has_country_flag = random_civil_war_reconstruction_active
-			event021_parent_reconstruction_due = yes
-		}
+		limit = { event021_parent_reconstruction_due = yes }
 		event021_parent_reconstruction_tick = yes
 	}
 	if = {
@@ -6600,6 +6599,7 @@ event021_parent_review_settlement_obligation = {
 					value = random_civil_war_settlement_terms_hold_until
 					compare = greater_than_or_equals
 				}
+				NOT = { has_country_flag = random_civil_war_settlement_obligation_objective_met }
 				NOT = { event021_parent_settlement_obligation_objective_valid = yes }
 			}
 			set_country_flag = random_civil_war_settlement_obligation_objective_missed
@@ -8496,9 +8496,12 @@ event021_parent_apply_evolution_iii = {
 }
 
 # COUNTRY scope. Runs the finite postwar administration period and only calls
-# cleanup after the reconstruction deadline has actually completed. A manual
-# event click may invoke this once; the bounded scheduler invokes it again at
-# the due date.
+# cleanup after the reconstruction deadline has actually completed and the
+# settlement obligation has been judged. A manual event click may invoke this
+# once; the bounded global review invokes it again whenever
+# `event021_parent_reconstruction_due` holds: at the reconstruction deadline,
+# at the terms-hold date, and once more when both are finished but the final
+# record has not run. The final block runs once per crisis generation.
 event021_parent_reconstruction_tick = {
 	if = {
 		limit = { has_country_flag = random_civil_war_reconstruction_active }
@@ -8509,6 +8512,7 @@ event021_parent_reconstruction_tick = {
 		limit = {
 			event021_parent_reconstruction_complete = yes
 			NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+			NOT = { has_country_flag = random_civil_war_reconstruction_resolved }
 		}
 		set_country_flag = random_civil_war_admin_restored
 		set_country_flag = random_civil_war_reconstruction_resolved

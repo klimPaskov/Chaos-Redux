@@ -178,7 +178,13 @@ The review, its candidate collector, its government-owned receipt, and its commi
 While that commit holds `random_civil_war_active_front_commit_in_progress`, `event021_parent_load_planned_secondary_front`, `event021_parent_copy_planned_front_state_span`, and `event021_parent_copy_opening_state_receipts` read the reviewing government's own receipt instead of the global opening template; outside that lock they are unchanged.
 `event021_parent_apply_settlement` removes Evolution I management access from every side of the crisis, and `event021_parent_cleanup_crisis` clears the review and management receipts on the country it cleans.
 
-`event021_parent_reconstruction_tick` is a finite postwar tick that records settlement obligations and calls cleanup only after reconstruction is complete.
+`event021_parent_reconstruction_tick` is a finite postwar tick that records settlement obligations and calls cleanup only after reconstruction is complete and the obligation is no longer open.
+The global review calls it whenever `event021_parent_reconstruction_due` holds: at the reconstruction deadline, at the terms-hold date while the obligation is still open (whether or not reconstruction has finished), and once more when reconstruction is complete and the obligation is already fulfilled or breached but `random_civil_war_reconstruction_resolved` is not yet set.
+The final block (administration restored, recurrence prepared, reconstruction record, `chaosx.nr21.10` cleanup) runs once per crisis generation because it requires `random_civil_war_reconstruction_resolved` to be absent, so an Event 006 actor that host cleanup already finalized is only judged on its obligation.
+With `reconstruction_days = 120` and `settlement_terms_hold_days = 180`, reconstruction completes on the first review at or after day 120, the obligation is judged held or breached on the first review at or after day 180, and the same tick fires `chaosx.nr21.10`, which unregisters the theater and clears `random_civil_war_active`, releasing global capacity.
+An obligation breached early, for example by a failed terms mission, is resolved by that mission and reaches cleanup on the first review after reconstruction completes.
+`event021_parent_review_settlement_obligation` treats a terms mission that confirmed the objective (`random_civil_war_settlement_obligation_objective_met`) as sufficient at the hold date, matching the fulfilled branch.
+No periodic hook is added: the tick rides the existing global-host review pulse.
 
 `event021_parent_finalize_event6_actor` closes the primary Event 006 side state while preserving the durable Event 006 package and origin history.
 

@@ -841,6 +841,10 @@ event021_parent_scenario_type_route_valid = {
 	}
 }
 
+# COUNTRY scope. True when the settled-crisis tick has work to do: the
+# reconstruction deadline has passed, the settlement terms' hold date has
+# passed while the obligation is still open, or reconstruction and the
+# obligation are both finished but the final record and cleanup have not run.
 event021_parent_reconstruction_due = {
 	OR = {
 		AND = {
@@ -852,6 +856,12 @@ event021_parent_reconstruction_due = {
 			has_country_flag = random_civil_war_settlement_obligation_active
 			has_variable = random_civil_war_settlement_terms_hold_until
 			check_variable = { var = global.date value = random_civil_war_settlement_terms_hold_until compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = random_civil_war_settlement_recorded
+			event021_parent_reconstruction_complete = yes
+			NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+			NOT = { has_country_flag = random_civil_war_reconstruction_resolved }
 		}
 	}
 }
