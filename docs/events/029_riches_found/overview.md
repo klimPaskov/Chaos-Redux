@@ -26,6 +26,11 @@ Same-scenario MCP evidence for that transaction remains unresolved.
 
 The persistent state record contains the mine sequence, original discoverer, current recorded controller, four public values, hidden risk values, phase, operating state, contracts, missions, route history, controller-transfer history, evolution history, achievement state, and presentation state. A bounded global array contains at most 64 registered Event 029 mine states and is the only cross-mine registry.
 
+### Deposit profiles
+
+Each mine is an alluvial field, deep vein, gemstone bed or platinum lode (`riches_found_mine_profile`).
+The discovery report and category header name it; it sets the quality factor, shifts incident weights (claims and rush crime for alluvial, theft and smuggling for gemstones, foreign interference for platinum, collapse for deep veins), raises foreign interest for platinum and gemstones, adds collapse pressure to unreinforced deep veins, and steers AI development priorities.
+
 ## Controller transfer and aggregate benefit
 
 The narrow `on_state_control_changed` hook uses the documented scope contract in which `ROOT` is the new controller, `FROM` is the old controller, and `FROM.FROM` is the changed state. It reconciles only when that state is an Event 029 mine. Annexation, peace-conference completion, and capitulation traverse only the bounded mine registry to cover ownership and occupation transitions that do not necessarily emit the same control change.

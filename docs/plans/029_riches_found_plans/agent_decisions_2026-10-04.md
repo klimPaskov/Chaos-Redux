@@ -142,3 +142,12 @@ Probability evidence: a narrow `hoi4_probability_inspect` for three decisions re
 A narrow `hoi4_probability_compare` over six revenue-phase decisions, the frozen pre-change snapshot `evidence/2026_10_04_ai_policy_before/common__decisions__029_riches_found_decisions.txt` (SHA-256 `a65710567441b29eda4f07e01c7fd2ef536fda2644998517be8b8529dd245355`) and four profile scenarios from `evidence/2026_10_04_ai_policy_typed_scenarios.json` returned `PROBABILITY_ANALYZED_PARTIAL` (analysis `probability-9cf906c0e35787d336b8116a`) with zero eligible candidates, eighteen unresolved candidates, zero comparison changes and the adapter reported as `mission_ai_will_do`, so it is not usable numerical evidence.
 Its one actionable diagnostic, a duplicated legitimacy modifier on Local Revenue, was fixed.
 The final same-fixture comparison with resolved eligibility therefore remains blocked by the route, and the weighting is supported by source review only.
+
+## D15. Mine profiles are visible and change play
+
+The discovery report names the deposit (alluvial field, deep vein, gemstone bed or platinum lode) with one sentence on what to expect, and the category header shows it on the phase line.
+Incident weights follow the specification's profile lines through the existing `riches_found_incident_factor.high` weight: alluvial fields raise claim jumping and rush theft, gemstone beds raise rush theft, smuggling, guard theft and false permits, platinum lodes raise the foreign-interference pool, and deep veins raise the collapse pool.
+Platinum adds `riches_found_foreign_interest.platinum_profile` and gemstones `gemstone_profile` to the foreign partner score.
+A deep vein without reinforced shafts adds `pulse_deep_vein_collapse_add` collapse pressure each pulse interval.
+AI development priorities follow the profile: shaft reinforcement and sealing for deep veins, camp administration and sanitation for alluvial fields, mine police for gemstone beds, and processing works and the port route for platinum.
+Profile-specific report imagery is not added because no profile art exists; the existing report pictures stay, and this is recorded as an asset limitation.
