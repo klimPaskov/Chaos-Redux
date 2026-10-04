@@ -264,13 +264,7 @@ murder_mystery_mark_opening_shock_complete = {
 murder_mystery_show_investigation_aftermath = {
 	if = {
 		limit = { has_event_target = murder_mystery_original_host }
-		event_target:murder_mystery_original_host = {
-			set_temp_variable = { murder_mystery_aftermath_category_days = constant:murder_mystery_presentation.aftermath_category_days }
-			set_country_flag = {
-				flag = murder_mystery_investigation_aftermath_visible
-				days = murder_mystery_aftermath_category_days
-			}
-		}
+		event_target:murder_mystery_original_host = { murder_mystery_start_aftermath_visibility = yes }
 	}
 }
 
@@ -935,11 +929,7 @@ murder_mystery_resolve_action_transaction = {
 		murder_mystery_record_phase_action_result = yes
 		murder_mystery_record_incident = yes
 		set_variable = { murder_mystery_action_transaction_status = constant:murder_mystery_transaction.committed }
-		set_variable = { murder_mystery_action_cooldown_days = constant:murder_mystery_cooldown.action_days }
-		set_country_flag = {
-			flag = murder_mystery_action_cooldown_active
-			days = murder_mystery_action_cooldown_days
-		}
+		murder_mystery_start_action_cooldown = yes
 		set_country_flag = murder_mystery_action_completed
 		murder_mystery_clear_action_cost_receipt = yes
 		clr_country_flag = murder_mystery_action_transaction_active
@@ -949,6 +939,77 @@ murder_mystery_resolve_action_transaction = {
 	}
 	else = {
 		murder_mystery_rollback_action_transaction = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Timed flags
+# ---------------------------------------------------------------------------
+# A timed flag reads its duration (and a flag value) only as a literal, so
+# each helper injects its tuning constant as an integer through meta_effect.
+
+# COUNTRY scope. Starts the shared cooldown after an Event 039 action.
+murder_mystery_start_action_cooldown = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_cooldown.action_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = murder_mystery_action_cooldown_active days = [TIMED_FLAG_DAYS] }
+		}
+		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+	}
+}
+
+# COUNTRY scope. Keeps the country off the incident list for a while.
+murder_mystery_start_incident_cooldown = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_cooldown.country_incident_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = murder_mystery_country_incident_cooldown days = [TIMED_FLAG_DAYS] }
+		}
+		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+	}
+}
+
+# COUNTRY scope. A country whose cell was destroyed cannot receive a new cell
+# until the immunity lapses.
+murder_mystery_start_cell_immunity = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_cell.immunity_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = murder_mystery_cell_immunity_active days = [TIMED_FLAG_DAYS] }
+		}
+		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+	}
+}
+
+# COUNTRY scope: the original host. Keeps its investigation categories open
+# for a short aftermath once the case ends.
+murder_mystery_start_aftermath_visibility = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_presentation.aftermath_category_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = murder_mystery_investigation_aftermath_visible days = [TIMED_FLAG_DAYS] }
+		}
+		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+	}
+}
+
+# Any scope. Input: temps murder_mystery_super_event_slot and
+# murder_mystery_super_event_audio (murder_mystery_super_event constants).
+# Shows the super-event for its visible days and plays its audio to players.
+murder_mystery_show_super_event = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_super_event.visible_days }
+	meta_effect = {
+		text = {
+			set_global_flag = { flag = super_event_visible days = [VISIBLE_DAYS] value = [SUPER_EVENT_SLOT] }
+		}
+		VISIBLE_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+		SUPER_EVENT_SLOT = "[?murder_mystery_super_event_slot|.0]"
+	}
+	set_variable = { global.current_super_event_audio_id = murder_mystery_super_event_audio }
+	every_country = {
+		limit = { is_ai = no }
+		play_current_super_event_audio = yes
 	}
 }
 
@@ -1227,10 +1288,7 @@ murder_mystery_retire_selected_cell = {
 			add_to_array = { array = global.murder_mystery_immunity_until_entries value = constant:murder_mystery_cell.immunity_days }
 			add_to_array = { array = global.murder_mystery_immunity_generation_entries value = murder_mystery_cell_retirement_generation }
 			set_variable = { global.murder_mystery_immunity_count = global.murder_mystery_immunity_country_entries^num }
-			event_target:murder_mystery_selected_cell = {
-				set_temp_variable = { murder_mystery_cell_immunity_days = constant:murder_mystery_cell.immunity_days }
-				set_country_flag = { flag = murder_mystery_cell_immunity_active days = murder_mystery_cell_immunity_days }
-			}
+			event_target:murder_mystery_selected_cell = { murder_mystery_start_cell_immunity = yes }
 			remove_from_array = { array = global.murder_mystery_cell_country_entries index = murder_mystery_cell_registry_index }
 			remove_from_array = { array = global.murder_mystery_cell_stage_entries index = murder_mystery_cell_registry_index }
 			remove_from_array = { array = global.murder_mystery_cell_maturity_entries index = murder_mystery_cell_registry_index }

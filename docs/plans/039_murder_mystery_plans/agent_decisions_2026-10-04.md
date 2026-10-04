@@ -209,3 +209,20 @@ Disposition: implemented; each correction is source-reviewed and needs live conf
 - Dismantle the Local Cell states its cell requirement through `murder_mystery_local_cell_registered_tt` instead of exposing the cell flag and registry array check.
 - `murder_mystery_technology` holds only integers; its three fractional values moved to `murder_mystery_technology_float`, matching the category schemas.
 - The host-fall report (`chaosx.nr39.63`) says the government has fallen, which is true for both capitulation and annexation.
+
+## D21. The host can fall before the movement holds territory
+
+Disposition: implemented (second round-1 review); needs live confirmation with an annexed host.
+Basis: the full design authority for this workstream; Part 5 requires the network to revalidate or retire its rows when a country is annexed, and D6 cleaned up an annexed host without resolving the movement.
+Before this change an annexed host left the runtime active with no pulse anchor, so the movement froze, Event 39 stayed "under way" in the Events Log, and the case could never close.
+When the original host is annexed before any Assassin State or derivative has existed, the winner takes over the case (`murder_mystery_record_host_lost_before_center`).
+If a cell at stage 3 or higher survives, the network continues underground around its most mature cell, the pulse anchors there, and the winner receives the existing underground report `chaosx.nr39.25`.
+Otherwise the global resolution check ends the movement at once; the winner receives the existing epilogue `chaosx.nr39.62`, not the capture report `chaosx.nr39.20`, because nobody caught the murderer.
+
+## Round-1 second review corrections
+
+Disposition: implemented; each correction is source-reviewed and needs live confirmation with the rest of the round.
+
+- Timed flags take literal durations. The action cooldown, the country incident cooldown, the four role-group cooldowns, the cell immunity, the aftermath window and the three super-event flags passed a variable or a constant token as `days` (and the super-event slot as `value`), which a timed flag does not read (the Event 002, 005, 023 and 028 pattern). They now go through `meta_effect` helpers that inject the tuning constants as integers. Without this the action cooldown could block every Event 039 action after the first one, and the super-events could show the wrong slot.
+- A country whose cell was destroyed can receive a new cell again once its immunity lapses. The permanent `murder_mystery_cell_retired` flag made every later seeding attempt on that country fail silently, wasting the bounded seeding attempts; it is cleared when the country is chosen as a new candidate.
+- Three mission texts that open with a country name use `GetNameDefCap`.

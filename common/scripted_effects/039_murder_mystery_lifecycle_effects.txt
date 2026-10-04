@@ -392,8 +392,10 @@ murder_mystery_select_seed_candidate = {
 	}
 }
 
-# COUNTRY scope: the chosen candidate.
+# COUNTRY scope: the chosen candidate. A country whose earlier cell was
+# destroyed can host a new one once its immunity has lapsed.
 murder_mystery_mark_seed_candidate = {
+	clr_country_flag = murder_mystery_cell_retired
 	save_global_event_target_as = murder_mystery_selected_cell
 	set_country_flag = murder_mystery_cell_candidate_validated
 	set_country_flag = murder_mystery_cell_route_validated
@@ -574,8 +576,7 @@ murder_mystery_run_scheduled_incident = {
 			set_variable = { murder_mystery_case_progress_delta = constant:murder_mystery_incident.foil_case_progress }
 			murder_mystery_adjust_case_progress = yes
 			clear_variable = murder_mystery_case_progress_delta
-			set_temp_variable = { murder_mystery_incident_cooldown_days = constant:murder_mystery_cooldown.country_incident_days }
-			set_country_flag = { flag = murder_mystery_country_incident_cooldown days = murder_mystery_incident_cooldown_days }
+			murder_mystery_start_incident_cooldown = yes
 			country_event = { id = chaosx.nr39.11 }
 		}
 		else_if = {
@@ -585,15 +586,47 @@ murder_mystery_run_scheduled_incident = {
 			if = {
 				limit = { has_country_flag = murder_mystery_generic_office_casualty_recorded }
 				set_variable = { murder_mystery_last_incident_role = murder_mystery_incident_role_input }
-				set_temp_variable = { murder_mystery_role_cooldown_days = constant:murder_mystery_incident.role_cooldown_days }
-				if = { limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.investigator compare = equals } } set_country_flag = { flag = murder_mystery_role_cooldown_investigator days = murder_mystery_role_cooldown_days } }
-				if = { limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.judiciary_administration compare = equals } } set_country_flag = { flag = murder_mystery_role_cooldown_judiciary days = murder_mystery_role_cooldown_days } }
-				if = { limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.cabinet compare = equals } } set_country_flag = { flag = murder_mystery_role_cooldown_cabinet days = murder_mystery_role_cooldown_days } }
-				if = { limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.intelligence compare = equals } } set_country_flag = { flag = murder_mystery_role_cooldown_intelligence days = murder_mystery_role_cooldown_days } }
+				murder_mystery_start_incident_role_cooldown = yes
 				add_stability = constant:murder_mystery_incident.stability_loss
 				murder_mystery_apply_incident_pressure = yes
 				country_event = { id = chaosx.nr39.9 }
 			}
+		}
+	}
+}
+
+# COUNTRY scope: the incident target. Input: temp
+# murder_mystery_incident_role_input. Takes the struck role group off the
+# incident list for the role cooldown; a timed flag reads its duration only as
+# a literal, so the constant is injected as an integer.
+murder_mystery_start_incident_role_cooldown = {
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_incident.role_cooldown_days }
+	if = {
+		limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.investigator compare = equals } }
+		meta_effect = {
+			text = { set_country_flag = { flag = murder_mystery_role_cooldown_investigator days = [TIMED_FLAG_DAYS] } }
+			TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.judiciary_administration compare = equals } }
+		meta_effect = {
+			text = { set_country_flag = { flag = murder_mystery_role_cooldown_judiciary days = [TIMED_FLAG_DAYS] } }
+			TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.cabinet compare = equals } }
+		meta_effect = {
+			text = { set_country_flag = { flag = murder_mystery_role_cooldown_cabinet days = [TIMED_FLAG_DAYS] } }
+			TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_incident_role_input value = constant:murder_mystery_target_role.intelligence compare = equals } }
+		meta_effect = {
+			text = { set_country_flag = { flag = murder_mystery_role_cooldown_intelligence days = [TIMED_FLAG_DAYS] } }
+			TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
 		}
 	}
 }
@@ -965,6 +998,7 @@ murder_mystery_on_annexed = {
 			murder_mystery_resolve_host_defeat = yes
 		}
 		murder_mystery_cleanup_after_country_loss = yes
+		murder_mystery_record_host_lost_before_center = yes
 	}
 	if = {
 		limit = { has_country_flag = murder_mystery_cell_active }
@@ -973,6 +1007,37 @@ murder_mystery_on_annexed = {
 	}
 	murder_mystery_rearm_pulse = yes
 	murder_mystery_evaluate_global_resolution = yes
+}
+
+# COUNTRY scope: the annexed original host. When the host falls before the
+# movement has ever held territory, no country is left to carry the case, so
+# the winner takes it over: mature cells carry the network underground and the
+# global resolution check can end the movement once none survives.
+murder_mystery_record_host_lost_before_center = {
+	if = {
+		limit = {
+			murder_mystery_runtime_is_active = yes
+			NOT = { has_global_flag = murder_mystery_territorial_state_ever_created }
+			NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+			NOT = { has_global_flag = murder_mystery_movement_end_recorded }
+			NOT = { has_global_flag = murder_mystery_host_lost_before_center }
+		}
+		set_global_flag = murder_mystery_host_lost_before_center
+		murder_mystery_record_case_owner = yes
+		if = {
+			limit = { murder_mystery_has_underground_cell = yes }
+			set_global_flag = murder_mystery_underground_network_active
+			set_global_flag = murder_mystery_inheritance_outcome_underground
+			murder_mystery_select_underground_center = yes
+			if = {
+				limit = {
+					has_event_target = murder_mystery_case_owner
+					event_target:murder_mystery_case_owner = { exists = yes }
+				}
+				event_target:murder_mystery_case_owner = { country_event = { id = chaosx.nr39.25 days = constant:murder_mystery_identity.presentation_delay_days } }
+			}
+		}
+	}
 }
 
 # COUNTRY scope: the defeated central country.
@@ -1339,8 +1404,8 @@ murder_mystery_select_underground_center = {
 
 # Any scope. The movement is over when its center (or heir) is gone, no
 # derivative still fights for it, and no cell at stage 3 or higher survives.
-# Before any territorial state, the captured core plus the same cell rule
-# ends it.
+# Before any territorial state, the captured core or the fall of the host
+# government plus the same cell rule ends it.
 murder_mystery_evaluate_global_resolution = {
 	if = {
 		limit = {
@@ -1352,6 +1417,7 @@ murder_mystery_evaluate_global_resolution = {
 			NOT = { has_global_flag = murder_mystery_assassin_state_transaction_active }
 			OR = {
 				has_global_flag = murder_mystery_center_defeated_once
+				has_global_flag = murder_mystery_host_lost_before_center
 				AND = {
 					has_global_flag = murder_mystery_core_capture_committed
 					NOT = { has_global_flag = murder_mystery_territorial_state_ever_created }
@@ -1411,6 +1477,12 @@ murder_mystery_end_movement = {
 		if = {
 			limit = { has_global_flag = murder_mystery_territorial_state_ever_created }
 			country_event = { id = chaosx.nr39.61 days = constant:murder_mystery_identity.presentation_delay_days }
+		}
+		else_if = {
+			# The host fell before anyone caught the murderer: the remaining
+			# governments reopen their offices without a capture.
+			limit = { has_global_flag = murder_mystery_host_lost_before_center }
+			country_event = { id = chaosx.nr39.62 days = constant:murder_mystery_identity.presentation_delay_days }
 		}
 		else = {
 			set_country_flag = murder_mystery_permanent_resolution_recorded
@@ -1488,8 +1560,7 @@ murder_mystery_retire_cell_row = {
 		}
 		set_country_flag = murder_mystery_cell_dismantled
 		set_country_flag = murder_mystery_local_case_closed
-		set_temp_variable = { murder_mystery_cell_immunity_days = constant:murder_mystery_cell.immunity_days }
-		set_country_flag = { flag = murder_mystery_cell_immunity_active days = murder_mystery_cell_immunity_days }
+		murder_mystery_start_cell_immunity = yes
 		if = {
 			limit = { check_variable = { var = global.murder_mystery_cell_chaos_rows value = constant:murder_mystery_defeat.maximum_cell_chaos_rows compare = less_than } }
 			add_to_variable = { global.murder_mystery_cell_chaos_rows = constant:murder_mystery_value.one }

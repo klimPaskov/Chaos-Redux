@@ -109,6 +109,7 @@ Every pulse, in order:
    A cell's stage rises with its maturity up to a cap set by the current evolution: active before Evolution II, entrenched after it, insurrection after Evolution III.
    Insurrection cells build revolt readiness after Evolution IV.
 4. After Evolution II, seeds one foreign cell when the seeding countdown expires, through one bounded route: a land border with the host, a land border with an existing cell, or an ally of the host.
+   A country whose cell was destroyed can be chosen again once its `murder_mystery_cell.immunity_days` immunity has lapsed.
 5. Runs a scheduled incident when the incident countdown expires.
 6. Commits a ready evolution once its pacing delay has run out.
 7. Checks whether the movement has been defeated everywhere.
@@ -179,6 +180,7 @@ If any postcondition fails, every moved state returns to its government and the 
 | Derivative capitulates or is annexed | Its row leaves the registry, Chaos decreases, the winner absorbs it, and global resolution is checked |
 | Host capitulates to or is annexed by the movement | The Assassin State gains Cohesion and Reach, its opening-war objective succeeds, Chaos increases, and both sides receive `chaosx.nr39.63` |
 | Host annexed by anyone | Its runtime is cleaned up and the pulse moves to the next anchor |
+| Host annexed before the movement ever held territory | The winner takes over the case; if a cell at stage 3 or higher survives, the network goes underground around its most mature cell and the winner receives `chaosx.nr39.25`, otherwise the movement ends at once and the winner receives `chaosx.nr39.62` |
 | A cell country is annexed | Its cell row is retired |
 
 ## Inheritance and resolution
@@ -194,8 +196,8 @@ The classification runs once:
    Report: `chaosx.nr39.25`.
 3. Otherwise the movement ends.
 
-The movement ends when its center (or heir) is gone, no derivative still fights for it, and no cell at stage 3 or higher survives; before any territorial state, the captured core plus the same cell rule ends it.
-Ending retires the lower-stage remnant cells, applies the movement-ended Chaos reversal once, finalizes the runtime, and reports `chaosx.nr39.61` and `chaosx.nr39.62` (or `chaosx.nr39.20` when no territorial state ever existed).
+The movement ends when its center (or heir) is gone, no derivative still fights for it, and no cell at stage 3 or higher survives; before any territorial state, the captured core or the annexation of the host, plus the same cell rule, ends it.
+Ending retires the lower-stage remnant cells, applies the movement-ended Chaos reversal once, finalizes the runtime, and reports `chaosx.nr39.61` and `chaosx.nr39.62`; when no territorial state ever existed it reports `chaosx.nr39.20` after a capture, or only `chaosx.nr39.62` when the host fell first.
 No inheritance step retires or creates a character.
 
 ## Decision costs
@@ -282,6 +284,8 @@ Event 39 is a fire-once event in the automatic event pool and is listed in `even
 The Events Log toggle can still disable it for a campaign.
 
 ## Runtime ownership and presentation
+
+Timed flags (the action, incident, role and immunity cooldowns, the aftermath window and the three super-event flags) receive their durations and the super-event slot as integers through `meta_effect`, because a timed flag reads only literals; the helpers are `murder_mystery_start_action_cooldown`, `murder_mystery_start_incident_cooldown`, `murder_mystery_start_cell_immunity`, `murder_mystery_start_aftermath_visibility` and `murder_mystery_show_super_event` in the runtime effects, and `murder_mystery_start_incident_role_cooldown` in the lifecycle effects.
 
 | Surface | Source |
 | --- | --- |
