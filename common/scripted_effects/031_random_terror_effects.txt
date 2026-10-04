@@ -2309,6 +2309,11 @@ random_terror_setup_spawned_carrier = {
 	set_capital = { state = event_target:random_terror_spawn_state remember_old_capital = no }
 	random_terror_initialize_actor = yes
 	random_terror_assign_actor_cosmetic_tag = yes
+	# The parent is marked for this actor's AI front strategy.
+	if = {
+		limit = { has_event_target = random_terror_actor_parent }
+		event_target:random_terror_actor_parent = { set_country_flag = random_terror_parent_of_@PREV }
+	}
 	random_terror_actor_declare_parent_war = yes
 }
 
@@ -5689,6 +5694,10 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_civil_administration_active
 	clr_country_flag = random_terror_state_offensive_prepared
 	clr_country_flag = random_terror_foreign_fighters_recruited
+	every_country = {
+		limit = { has_country_flag = random_terror_parent_of_@PREV }
+		clr_country_flag = random_terror_parent_of_@PREV
+	}
 	clr_country_flag = random_terror_lifecycle_owns_compromised_network
 	clr_country_flag = random_terror_lifecycle_owns_rival_warlords
 	clr_country_flag = random_terror_lifecycle_owns_looting_spiral

@@ -1492,7 +1492,8 @@ random_terror_government_response_category = {
 			base = @rt_ai_high
 			modifier = { factor = @rt_ai_urgent_factor FROM = { check_variable = { random_terror_state_pressure > constant:random_terror_value.severe } } }
 			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_military_reinforcement_active }
-			modifier = { factor = @rt_ai_low_factor has_war = no }
+			# A government losing public trust should not open a costly offensive.
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
 		}
 	}
 
@@ -2839,7 +2840,8 @@ random_terror_actor_command_category = {
 		ai_will_do = {
 			base = @rt_ai_urgent
 			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_armed_insurgency } }
-			modifier = { factor = @rt_ai_low_factor has_war = no }
+			# A weak command should not overreach into a new offensive.
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_territorial_control < constant:random_terror_value.low } }
 		}
 	}
 
@@ -3038,9 +3040,10 @@ random_terror_actor_command_category = {
 		}
 		ai_will_do = {
 			base = @rt_ai_high
-			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
-			modifier = { factor = @rt_ai_high_factor has_global_flag = random_terror_evolution_4_unlocked }
-			modifier = { factor = @rt_ai_low_factor has_war = yes }
+			# Volunteers matter most while the command is fighting and its corridor
+			# is well supplied enough to move them.
+			modifier = { factor = @rt_ai_urgent_factor has_war = yes }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_external_supply > constant:random_terror_value.medium } }
 		}
 	}
 

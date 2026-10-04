@@ -128,6 +128,10 @@ When focuses reuse these helpers without a target state, the formation forms in 
 The three starting spirits are replaced by the route focuses.
 Actor decisions run `random_terror_refresh_actor_lifecycles`, which owns only a failure overlay: when Territorial Control, Network Authority or External Supply falls below the low band it adds the matching failure spirits that are absent and marks them with `random_terror_lifecycle_owns_<idea>` flags, and recovery removes only those owned spirits, so focus rewards are never stripped.
 
+`common/ai_strategy/031_random_terror_ai_strategy.txt` steers live actors only.
+At war, an actor weights units and force concentration toward its own parent, which carries `random_terror_parent_of_<actor tag>` from the moment the actor forms until its runtime is cleared, and pulls units away from fronts against non-neighbouring enemies.
+Each carrier befriends and supports the other carriers while it is a live actor, unless Global Jihad setup kept it independent or it is in a leadership contest.
+
 The actor focus tree is `random_terror_actor_focus_tree` in `common/national_focus/031_random_terror_focus.txt`.
 
 Its 114 focuses cover opening survival, Shadow Council, War Directorate, Ideological Secretariat, captured economy, armed movement, network and diplomacy, expansion, crisis, Jihadist International, Final Jihad, and False Revelation routes.
