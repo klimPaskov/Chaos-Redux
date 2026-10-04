@@ -214,9 +214,14 @@ doctrine_research_process_evolution = {
 # countries. Before the first firing the stage stays unset, so that firing can
 # still open at the highest enabled stage; afterwards each eligible stage is
 # promoted one pacing interval after it became eligible, one stage at a time.
+# While Event 027 is disabled in the event settings no stage is promoted or
+# recorded; the pulse resumes from the stored clock once it is enabled again.
 doctrine_research_evolution_pulse = {
 	if = {
-		limit = { has_global_flag = doctrine_research_fired_once }
+		limit = {
+			has_global_flag = doctrine_research_fired_once
+			NOT = { is_in_array = { global.disabled_events = constant:doctrine_research_event.id } }
+		}
 		doctrine_research_process_evolution = yes
 	}
 }

@@ -87,3 +87,11 @@ Basis: spec part 3, "Every stage's availability, record, and effect must check i
 Decision: the `.12` continue option starts the next curriculum when none is active, and otherwise opens `.2` only when no Event 027 page has been shown for the active curriculum (the prompted flag). A `.14` wake or a lifecycle callback that already opened the next curriculum while `.12` was waiting no longer produces a second `.2` page.
 
 Basis: D5 (exactly one open page per curriculum). Found in the round 1 review; implemented in the review commit.
+
+## D14. The daily evolution pulse respects the event's own enabled state
+
+Decision: `doctrine_research_evolution_pulse` runs `doctrine_research_process_evolution` only while Event 027 is absent from `global.disabled_events`, in addition to the existing `doctrine_research_fired_once` gate. While the event is disabled in the event settings no stage is promoted and no evolution row is recorded; the stored clock resumes when the event is enabled again, and the next firing still re-evaluates the stage through `doctrine_research_prepare_firing_profile`.
+
+Basis: acceptance criterion "Event enable and disable state controls automatic selection and evolution gates cleanly" and spec part 3 ("Every stage's availability, record, and effect must check its own enabled state"). Before the daily pulse existed, evolution processing only ran inside a firing, which a disabled event cannot reach; the D3 pulse removed that implicit gate, so a disabled Event 027 kept writing "Doctrine Research I to IV" rows into the Event Log. Event 026's daily pulse applies the same disabled-event check. Found in the second round 1 review; implemented in the review commit.
+
+Validation limit recorded with it: the one-point guard of D4 equals exactly one level's reward cost, so it also relies on `add_mastery` granting its literal amount when a country carries a negative `<doctrine>_mastery_gain_factor` (needs_live_game, listed in the overview's validation limits).

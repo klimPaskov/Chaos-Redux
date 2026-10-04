@@ -92,7 +92,7 @@ Completion value and strategy signals add weight in every domain. If no domain s
 | Evolution III | tier 3 | 4 |
 | Evolution IV | tier 4 | 5 |
 
-The first firing opens at the highest stage the Chaos Meter has already enabled. After that, `doctrine_research_evolution_pulse` runs once a day from each global-host branch of the Chaos Meter coordinator. It touches only global variables. A stage that becomes eligible is promoted 90 days later (converted through `chaosx_convert_days_to_date_offset`), one stage per interval, and disabled stages are skipped. Each promotion records one actorless evolution row.
+The first firing opens at the highest stage the Chaos Meter has already enabled. After that, `doctrine_research_evolution_pulse` runs once a day from each global-host branch of the Chaos Meter coordinator. It touches only global variables. A stage that becomes eligible is promoted 90 days later (converted through `chaosx_convert_days_to_date_offset`), one stage per interval, and disabled stages are skipped. Each promotion records one actorless evolution row. While Event 027 itself is disabled in the event settings the pulse does nothing, so no stage is promoted or recorded for an event that cannot fire; it resumes from the stored clock once the event is enabled again.
 
 Each firing then sizes its batches from the highest reached stage whose own Event Details setting is still enabled (`doctrine_research_prepare_firing_profile` with the `doctrine_research_evolution_*_setting_enabled` triggers). A stage switched off after it was reached stops enlarging new batches, while lower reached stages that stay enabled still apply; batches already created keep their stored stage and size.
 
@@ -138,6 +138,7 @@ A successful adoption calls Event 016's `brilliant_scientist_record_doctrine_res
 These behaviours depend on the live engine and are checked in a live session:
 
 - `has_mastery_level` updating in the same effect after `add_mastery`, which the one-step loop relies on;
+- `add_mastery` granting its literal amount for a country with a negative `<doctrine>_mastery_gain_factor`, because the one-point guard stops at exactly one level's reward cost;
 - `set_sub_doctrine` with a folder and numeric index on an empty track, and the banked-mastery level read after it;
 - two Special Forces tracks never holding the same token;
 - receipt recovery across save and reload, and lifecycle callbacks after tag switches;
