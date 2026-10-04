@@ -170,3 +170,15 @@ Decisions:
 MCP route evidence (2026-10-04): `hoi4_probability_inspect` rejected every adapter-bearing call (`decision_ai_will_do` with a candidate pool, with a relative-path source, and alone) with "Invalid tool arguments", and an argument-free call returned `INTERNAL_ERROR` with zero artifacts.
 No baseline or same-scenario compare could be produced; per the takeover instruction the route was not retried in a loop.
 The weights above therefore carry no probability evidence and are listed for the separately routed AI probability audit.
+
+## L15. Gods focus overlay layout
+
+Disposition: `implemented`.
+
+Narrow `hoi4_focus_inspect` of `africa_continental_focus_tree` (one call before, one verification call after; no raster) and a source position check of the 24 `gods_of_africa_focus_*` nodes found two overlay defects and no overlaps or same-row spacing faults:
+
+- The entry prerequisite from `africa_identify_host_problem` (34, 0) to `gods_of_africa_focus_prepare_proclamation` (70, 16) drew a line across eleven other connectors.
+  The overlay now starts its own column: the prerequisite became `has_completed_focus = africa_identify_host_problem` in `available`, which keeps the same requirement.
+- The line from `gods_of_africa_focus_continental_arsenals` to `gods_of_africa_focus_continental_reserve` ran through `gods_of_africa_focus_rails_ports_fuel`; the two children now sit side by side at (61, 24) and (63, 24).
+
+No non-Gods node moved. Before: revision `1f577e13`, 320 diagnostics, 70 connector crossings, 59 node intersections. After: revision `efaa6f4c`, 297 diagnostics, 62 crossings, 53 node intersections, no blocking diagnostics. The remaining diagnostics belong to the shared continental tree outside the overlay. No raster was rendered (`focus_raster` timed out in earlier runs), so the visual appearance remains a live check.
