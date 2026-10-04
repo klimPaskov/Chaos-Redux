@@ -157,6 +157,40 @@ random_terror_can_government_response = {
 	}
 }
 
+# COUNTRY scope: a government that can keep an Event 31 mission running.  The
+# short action lock between response decisions never cancels a mission.
+random_terror_can_hold_response_mission = {
+	exists = yes
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+}
+
+# STATE scope, ROOT = the responding government.  The state is the subject of
+# ROOT's running Hostage Deadline or Stop the Coordinated Uprising mission, so
+# the emergency response actions stay usable on it whatever the phase and
+# whichever mission slot that emergency holds.
+random_terror_state_is_emergency_subject = {
+	OR = {
+		AND = {
+			has_state_flag = random_terror_hostage_mission_subject_@ROOT
+			ROOT = { has_country_flag = random_terror_mission_active_hostage }
+		}
+		AND = {
+			has_state_flag = random_terror_uprising_subject_@ROOT
+			ROOT = { has_country_flag = random_terror_mission_active_uprising }
+		}
+	}
+}
+
+# STATE scope.  The state's controller is running Protect the Transport
+# Network on it.
+random_terror_state_transport_protected = {
+	CONTROLLER = {
+		has_country_flag = random_terror_mission_active_transport
+		PREV = { has_state_flag = random_terror_transport_mission_subject_@PREV }
+	}
+}
+
 # Any scope.  Event 31 remains enabled in the Event Logs settings.
 random_terror_event_is_enabled = {
 	NOT = {

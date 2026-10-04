@@ -61,6 +61,26 @@ Government and actor actions use standard state-targeted decision presentation, 
 
 No Event 31-specific scripted GUI exists.
 
+Every mission is started by a `random_terror_begin_<family>_mission` helper in the receiving country's scope and ended by the matching `random_terror_finish_<family>_mission`, which clears only that receiver's receipt.
+The begin helper keys the subject flag and the stored baseline to the receiver (`random_terror_<family>_goal_@<receiver>` and similar state variables), so each objective compares the state's live values with its own start.
+Country counters `random_terror_hotspot_count` (owned states that newly became an active crisis) and `random_terror_states_lost_count` (states lost to an actor), and state counters `random_terror_state_incident_count` and `random_terror_state_disruption_count`, measure spread, losses and attacks.
+
+| Mission | Type | Success | Partial | Failure |
+| --- | --- | --- | --- | --- |
+| Contain the Attack Wave | achieve | subject activity down by 15 or no longer an active crisis, with no new hotspot | deadline without spread or stage advance | deadline after a new hotspot or a stage advance |
+| Protect the Transport Network | hold (`is_good`) | deadline with no new transport attack | deadline after one attack | two attacks, loss of control or Lost Local Control ends it early |
+| Break the Cross-Border Corridor | achieve | corridor marker absent and activity a further 10 below the post-strike value | deadline with the route closed and no new hotspot | deadline with the route reopened or a new hotspot |
+| Prevent the Capital's Seizure | hold (`is_good`) | deadline with no new capital attack and no state lost | deadline after a capital attack or a lost state | loss of control or Lost Local Control ends it early and triggers the coup branch |
+| Retake the Lost State | achieve | military control of the subject | deadline with the subject held by a non-actor | deadline with the actor still holding it |
+| Restore Civil Authority | achieve | activity down by 10 and no higher than 20 under control | deadline with some activity reduction | deadline without progress |
+| The Hostage Deadline | achieve | captives freed by a surge or a clean or costly raid | deadline after a surge on an armed cell or a partial raid freed some captives | deadline with captives held, with mass casualties |
+| Stop the Coordinated Uprising | achieve | subject held and broken by a surge or raid, or activity down by 15 | deadline with the subject still held | deadline after control is lost |
+
+Resolved missions move national Terror Pressure (success lowers it by 12, partial by 6, failure raises it by 8), and every state-targeted response lowers it by 3, so a country can bring pressure back down.
+Security Surge and Targeted Raid stay usable on the receiver's hostage or uprising subject in any phase before the terminal war, even while that emergency holds its mission slot.
+Missions cancel only through `random_terror_can_hold_response_mission`, so the action lock applied by each response decision never cancels the mission it started.
+A protected transport state turns half of the route attacks against it into attacks on its guards.
+
 Global Jihad is registered in the shared `chaosx_scenarios_window` list with all five deployment types, all four intensities, dynamic descriptions and impact warnings, fail-closed launch status, and the Event 31 preflight transaction. Maximum enables The Final Jihad but only schedules The False Revelation through the ordinary `1000+` Chaos, readiness, unity, territorial-control, crisis-state, strategic-victory, and viable-actor gates.
 
 ## Territorial actors
