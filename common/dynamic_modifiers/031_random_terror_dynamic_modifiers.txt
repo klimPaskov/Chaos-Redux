@@ -1,0 +1,49 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR DYNAMIC MODIFIERS
+# ============================================================================
+# One staged state modifier per Event 31 activity stage (Part 2, State
+# modifier effects).  random_terror_refresh_state_modifier keeps exactly one of
+# them on a crisis state, matching random_terror_state_stage, and none on a
+# Clear state.  Impact grows with the stage: Dormant cells only slow local
+# construction, while the severe output, recruitment and movement penalties
+# arrive with Armed Insurgency and Lost Local Control.  Values live in the
+# random_terror_state_modifier script constants.
+# ============================================================================
+
+random_terror_state_dormant = {
+	icon = GFX_idea_random_terror_distributed_command
+	state_production_speed_buildings_factor = constant:random_terror_state_modifier.dormant_construction
+}
+
+random_terror_state_active = {
+	icon = GFX_idea_random_terror_contested_legitimacy
+	state_production_speed_buildings_factor = constant:random_terror_state_modifier.active_construction
+	local_factories = constant:random_terror_state_modifier.active_factories
+	local_resources_factor = constant:random_terror_state_modifier.active_resources
+}
+
+random_terror_state_entrenched = {
+	icon = GFX_idea_random_terror_network_directorate
+	state_production_speed_buildings_factor = constant:random_terror_state_modifier.entrenched_construction
+	local_factories = constant:random_terror_state_modifier.entrenched_factories
+	local_resources_factor = constant:random_terror_state_modifier.entrenched_resources
+	recruitable_population_factor = constant:random_terror_state_modifier.entrenched_recruitment
+}
+
+random_terror_state_armed_insurgency = {
+	icon = GFX_idea_random_terror_unified_field_command
+	state_production_speed_buildings_factor = constant:random_terror_state_modifier.armed_construction
+	local_factories = constant:random_terror_state_modifier.armed_factories
+	local_resources_factor = constant:random_terror_state_modifier.armed_resources
+	recruitable_population_factor = constant:random_terror_state_modifier.armed_recruitment
+	army_speed_factor_for_controller = constant:random_terror_state_modifier.armed_speed
+}
+
+random_terror_state_lost_local_control = {
+	icon = GFX_idea_random_terror_failed_rule
+	state_production_speed_buildings_factor = constant:random_terror_state_modifier.lost_construction
+	local_factories = constant:random_terror_state_modifier.lost_factories
+	local_resources_factor = constant:random_terror_state_modifier.lost_resources
+	recruitable_population_factor = constant:random_terror_state_modifier.lost_recruitment
+	army_speed_factor_for_controller = constant:random_terror_state_modifier.lost_speed
+}

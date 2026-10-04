@@ -27,6 +27,11 @@ Every affected state maintains activity, pressure, incident memory, exact civili
 State activity uses the 0-100 stage ladder with Active above 20, Entrenched above 40, Armed Insurgency above 60 and Lost Local Control above 78 activity and pressure.
 The first incident in a Clear or Dormant state opens it at Active (`state_activity_opening`), later incidents and setbacks add `state_activity_gain`, and routine response actions remove `state_activity_loss`, so a state normally advances one stage over a few incidents.
 
+Each stage from Dormant to Lost Local Control carries its own dynamic state modifier in `common/dynamic_modifiers/031_random_terror_dynamic_modifiers.txt` (`random_terror_state_dormant`, `_active`, `_entrenched`, `_armed_insurgency`, `_lost_local_control`).
+`random_terror_refresh_state_modifier` runs at the end of every stage update and in state cleanup, keeping exactly the modifier that matches `random_terror_state_stage` and none on a Clear state.
+Impact grows by stage from slower construction at Dormant through output and resource losses at Active and Entrenched to recruitment and movement penalties at Armed Insurgency and Lost Local Control, with every value in the `random_terror_state_modifier` script constants.
+The modifiers reuse the Event 31 idea sprites `GFX_idea_random_terror_distributed_command`, `_contested_legitimacy`, `_network_directorate`, `_unified_field_command` and `_failed_rule` from `interface/031_random_terror.gfx`, so no new art is required.
+
 Active crises recur through event-owned pacing rather than a world scan.
 Each affected government holds at most one pending hidden pulse (`chaosx.nr31.96`, guarded by the timed `random_terror_pulse_pending` flag).
 `random_terror_schedule_country_pulse` reads `random_terror_incident_pulse_days` in the country's scope, which follows the Part 2 bands of its most severe owned state (about 60-90 days Active, 30-60 Entrenched, 15-35 Armed Insurgency or worse), is delayed by successful protection missions and accelerated by failed operations, high Terror Pressure and high Network Reach, then receives a random 0.8-1.2 spread and the band clamp.

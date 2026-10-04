@@ -346,7 +346,83 @@ random_terror_update_state_stage = {
 		}
 		OWNER = { add_to_variable = { random_terror_hotspot_count = constant:random_terror_value.one } }
 	}
+	random_terror_refresh_state_modifier = yes
 	random_terror_achievement_record_state_stage = yes
+}
+
+# STATE scope.  Keeps exactly one staged Event 31 modifier on a crisis state,
+# the one matching random_terror_state_stage, and none on a Clear state.
+random_terror_refresh_state_modifier = {
+	if = {
+		limit = {
+			has_dynamic_modifier = { modifier = random_terror_state_dormant }
+			NOT = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.dormant } }
+		}
+		remove_dynamic_modifier = { modifier = random_terror_state_dormant }
+	}
+	if = {
+		limit = {
+			has_dynamic_modifier = { modifier = random_terror_state_active }
+			NOT = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.active } }
+		}
+		remove_dynamic_modifier = { modifier = random_terror_state_active }
+	}
+	if = {
+		limit = {
+			has_dynamic_modifier = { modifier = random_terror_state_entrenched }
+			NOT = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.entrenched } }
+		}
+		remove_dynamic_modifier = { modifier = random_terror_state_entrenched }
+	}
+	if = {
+		limit = {
+			has_dynamic_modifier = { modifier = random_terror_state_armed_insurgency }
+			NOT = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.armed_insurgency } }
+		}
+		remove_dynamic_modifier = { modifier = random_terror_state_armed_insurgency }
+	}
+	if = {
+		limit = {
+			has_dynamic_modifier = { modifier = random_terror_state_lost_local_control }
+			NOT = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.lost_local_control } }
+		}
+		remove_dynamic_modifier = { modifier = random_terror_state_lost_local_control }
+	}
+	if = {
+		limit = {
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.dormant }
+			NOT = { has_dynamic_modifier = { modifier = random_terror_state_dormant } }
+		}
+		add_dynamic_modifier = { modifier = random_terror_state_dormant }
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.active }
+			NOT = { has_dynamic_modifier = { modifier = random_terror_state_active } }
+		}
+		add_dynamic_modifier = { modifier = random_terror_state_active }
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.entrenched }
+			NOT = { has_dynamic_modifier = { modifier = random_terror_state_entrenched } }
+		}
+		add_dynamic_modifier = { modifier = random_terror_state_entrenched }
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.armed_insurgency }
+			NOT = { has_dynamic_modifier = { modifier = random_terror_state_armed_insurgency } }
+		}
+		add_dynamic_modifier = { modifier = random_terror_state_armed_insurgency }
+	}
+	else_if = {
+		limit = {
+			check_variable = { random_terror_state_stage = constant:random_terror_state_stage.lost_local_control }
+			NOT = { has_dynamic_modifier = { modifier = random_terror_state_lost_local_control } }
+		}
+		add_dynamic_modifier = { modifier = random_terror_state_lost_local_control }
+	}
 }
 
 # STATE scope.  Input: caller-owned temp random_terror_pending_activity_delta,
@@ -5046,6 +5122,8 @@ random_terror_emit_super_event = {
 }
 
 random_terror_clear_state_commitments = {
+	# Cleanup leaves the staged modifier matching the state's remaining stage.
+	random_terror_refresh_state_modifier = yes
 	clr_state_flag = random_terror_capital_mission_subject
 	clr_state_flag = random_terror_allied_intelligence_subject
 	clr_state_flag = random_terror_joint_intelligence_received
@@ -5566,6 +5644,10 @@ random_terror_cleanup_actor = {
 			clr_state_flag = random_terror_territorial_takeover_recorded
 			clr_state_flag = random_terror_territorial_partition_recorded
 			clr_state_flag = random_terror_scenario_actor_state_reserved
+			# A retired command's own states leave the crisis entirely.
+			set_variable = { random_terror_state_activity = constant:random_terror_value.zero }
+			set_variable = { random_terror_state_pressure = constant:random_terror_value.zero }
+			random_terror_update_state_stage = yes
 		}
 		clr_country_flag = random_terror_actor
 		clr_country_flag = random_terror_active_actor
