@@ -150,6 +150,39 @@ riches_found_country_has_multiple_mines = {
 # Mine identity and lifecycle predicates
 # ---------------------------------------------------------------------------
 
+# STATE scope. Reads the temporary report input. Collapses, evolution
+# entries and containment results are priority reports: they take the
+# place of an undelivered ordinary report or wait for the open one.
+riches_found_report_input_is_priority = {
+	OR = {
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.collapse }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.resource_curse }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.gold_disease }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.opened_depths }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.gilded_sovereignty }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.bottomless_account }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.curse_contained }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.gold_contained }
+		check_variable = { riches_found_report_input_kind = constant:riches_found_report.demons_contained }
+	}
+}
+
+# STATE scope. True when the mine's report slot holds a priority report.
+riches_found_report_slot_is_priority = {
+	has_variable = riches_found_report_kind
+	OR = {
+		check_variable = { riches_found_report_kind = constant:riches_found_report.collapse }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.resource_curse }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.gold_disease }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.opened_depths }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.gilded_sovereignty }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.bottomless_account }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.curse_contained }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.gold_contained }
+		check_variable = { riches_found_report_kind = constant:riches_found_report.demons_contained }
+	}
+}
+
 riches_found_mine_is_registered = {
 	has_state_flag = riches_found_mine_registered
 	has_variable = riches_found_mine_sequence

@@ -344,24 +344,72 @@ riches_found_clamp_mine_values = {
 	if = { limit = { check_variable = { riches_found_chaos_exposure > constant:riches_found_event.public_value_maximum } } set_variable = { riches_found_chaos_exposure = constant:riches_found_event.public_value_maximum } }
 }
 
-# STATE scope. Input: temporary `riches_found_report_kind` from the shared
-# report-id constants. One pending report is allowed per mine, and the hidden
-# state callback below delivers it to the current controller after one day.
-# Reports are state-bound, so a transfer cannot duplicate or redirect a report
-# through a stale country target.
+# STATE scope. The only writer of the mine's report slot. Inputs: temporary
+# `riches_found_report_input_kind` (a riches_found_report id) and optional
+# `riches_found_report_input_text` (an incident id or a riches_found_report_text
+# id). One report waits per mine, and the hidden state callback below delivers
+# it to the current controller after one day. A report of the same kind that
+# has not been delivered yet takes the newer text; a priority report replaces
+# an undelivered ordinary one or waits in one deferred slot until the open
+# report closes; any other report arriving while one waits is dropped, so a
+# waiting report never shows another report's text. Reports are state-bound,
+# so a transfer cannot duplicate or redirect a report through a stale target.
 riches_found_queue_report = {
 	if = {
 		limit = {
 			riches_found_mine_is_registered = yes
 			CONTROLLER = { exists = yes }
-			NOT = { has_state_flag = riches_found_report_pending }
-			has_variable = riches_found_report_kind
+			check_variable = { riches_found_report_input_kind > constant:riches_found_value.zero }
 		}
-		set_state_flag = riches_found_report_pending
-		set_state_flag = riches_found_report_scheduled
-		set_temp_variable = { riches_found_report_delay_days = constant:riches_found_value.one }
-		state_event = { id = chaosx.nr29.910 days = riches_found_report_delay_days trigger_for = controller }
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_report_pending } }
+			riches_found_write_report_slot = yes
+			set_state_flag = riches_found_report_pending
+			set_state_flag = riches_found_report_scheduled
+			set_temp_variable = { riches_found_report_delay_days = constant:riches_found_value.one }
+			state_event = { id = chaosx.nr29.910 days = riches_found_report_delay_days trigger_for = controller }
+		}
+		else_if = {
+			limit = {
+				has_state_flag = riches_found_report_scheduled
+				OR = {
+					check_variable = { var = riches_found_report_kind value = riches_found_report_input_kind compare = equals }
+					AND = {
+						riches_found_report_input_is_priority = yes
+						NOT = { riches_found_report_slot_is_priority = yes }
+					}
+				}
+			}
+			riches_found_write_report_slot = yes
+		}
+		else_if = {
+			limit = {
+				riches_found_report_input_is_priority = yes
+				NOT = { has_variable = riches_found_report_deferred_kind }
+				NOT = { check_variable = { var = riches_found_report_kind value = riches_found_report_input_kind compare = equals } }
+			}
+			set_variable = { riches_found_report_deferred_kind = riches_found_report_input_kind }
+			set_variable = { riches_found_report_deferred_text = riches_found_report_input_text }
+		}
 	}
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_report_input_text = constant:riches_found_value.zero }
+}
+
+# STATE scope. Writes the temporary report inputs into the report slot and
+# keeps the current contract partner for the report's wording.
+riches_found_write_report_slot = {
+	set_variable = { riches_found_report_kind = riches_found_report_input_kind }
+	if = {
+		limit = { check_variable = { riches_found_report_input_text > constant:riches_found_value.zero } }
+		set_variable = { riches_found_report_text = riches_found_report_input_text }
+	}
+	else = { clear_variable = riches_found_report_text }
+	if = {
+		limit = { has_variable = riches_found_contract_partner }
+		set_variable = { riches_found_report_partner = riches_found_contract_partner }
+	}
+	else = { clear_variable = riches_found_report_partner }
 }
 
 # STATE scope. Delivers the one queued report to the current controller. The
@@ -385,6 +433,8 @@ riches_found_run_queued_report = {
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_contained compare = equals } } state_event = { id = chaosx.nr29.122 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.demons_contained compare = equals } } state_event = { id = chaosx.nr29.123 trigger_for = controller } }
 		else_if = { limit = { check_variable = { var = riches_found_report_kind value = constant:riches_found_report.supernatural_incident compare = equals } } state_event = { id = chaosx.nr29.130 trigger_for = controller } }
+		# An unknown kind has no report event, so the slot is freed at once.
+		else = { riches_found_complete_report = yes }
 	}
 }
 
@@ -395,6 +445,18 @@ riches_found_complete_report = {
 	clr_state_flag = riches_found_report_pending
 	clr_state_flag = riches_found_report_scheduled
 	clear_variable = riches_found_report_kind
+	clear_variable = riches_found_report_text
+	clear_variable = riches_found_report_partner
+	if = {
+		limit = { has_variable = riches_found_report_deferred_kind }
+		hidden_effect = {
+			set_temp_variable = { riches_found_report_input_kind = riches_found_report_deferred_kind }
+			set_temp_variable = { riches_found_report_input_text = riches_found_report_deferred_text }
+			clear_variable = riches_found_report_deferred_kind
+			clear_variable = riches_found_report_deferred_text
+			riches_found_queue_report = yes
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -2283,8 +2345,11 @@ riches_found_collapse_mine = {
 		riches_found_clamp_mine_values = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.collapse }
+		# Input: temporary riches_found_collapse_report_text names the cause.
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.collapse }
+		set_temp_variable = { riches_found_report_input_text = riches_found_collapse_report_text }
 		riches_found_queue_report = yes
+		set_temp_variable = { riches_found_collapse_report_text = constant:riches_found_value.zero }
 		if = { limit = { has_event_target = riches_found_collapse_controller } event_target:riches_found_collapse_controller = { riches_found_refresh_controller_aggregate = yes } }
 	}
 }
@@ -2726,7 +2791,7 @@ riches_found_enter_evolution_i = {
 		riches_found_record_achievement_resource_curse = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.resource_curse }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.resource_curse }
 		riches_found_queue_report = yes
 		riches_found_refresh_evolution_gates = yes
 		set_temp_variable = { riches_found_evolution_event_stage = constant:riches_found_event.evolution_i_stage }
@@ -2754,7 +2819,7 @@ riches_found_enter_evolution_ii = {
 		riches_found_record_achievement_gold_disease = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.gold_disease }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.gold_disease }
 		riches_found_queue_report = yes
 		riches_found_refresh_evolution_gates = yes
 		set_temp_variable = { riches_found_evolution_event_stage = constant:riches_found_event.evolution_ii_stage }
@@ -2787,7 +2852,7 @@ riches_found_enter_evolution_iii = {
 		riches_found_record_achievement_demons = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.opened_depths }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.opened_depths }
 		riches_found_queue_report = yes
 		riches_found_refresh_evolution_gates = yes
 		set_temp_variable = { riches_found_evolution_event_stage = constant:riches_found_event.evolution_iii_stage }
@@ -2806,7 +2871,7 @@ riches_found_enter_gilded_sovereignty = {
 		set_state_flag = riches_found_achievement_gilded_history
 		set_variable = { riches_found_gilded_sovereignty_date = global.date }
 		riches_found_record_achievement_gilded_sovereignty = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.gilded_sovereignty }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.gilded_sovereignty }
 		riches_found_queue_report = yes
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
 	}
@@ -2823,7 +2888,7 @@ riches_found_enter_bottomless_account = {
 		set_state_flag = riches_found_account_active
 		riches_found_start_account_obligation = yes
 		riches_found_record_achievement_bottomless_account = yes
-		set_variable = { riches_found_report_kind = constant:riches_found_report.bottomless_account }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.bottomless_account }
 		riches_found_queue_report = yes
 		if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
 	}

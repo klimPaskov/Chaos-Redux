@@ -72,6 +72,7 @@ riches_found_finish_incident = {
 	chaosx_convert_days_to_date_offset = yes
 	add_to_variable = { riches_found_next_incident_date = chaosx_date_offset }
 	riches_found_clamp_mine_values = yes
+	set_temp_variable = { riches_found_report_input_text = riches_found_incident_kind }
 	riches_found_queue_report = yes
 }
 
@@ -94,7 +95,7 @@ riches_found_initialize_incident_clock = {
 
 riches_found_run_claims_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.claims }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.rush }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.common = {
@@ -197,7 +198,7 @@ riches_found_run_claims_incident_pool = {
 
 riches_found_run_rush_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.rush }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.rush }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_housing_inflation compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_housing_inflation } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_minor } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.minor } }
@@ -224,7 +225,7 @@ riches_found_run_rush_incident_pool = {
 
 riches_found_run_development_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.development }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.rush }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_route_washout compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_route_washout } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_route_damaged }
@@ -245,7 +246,7 @@ riches_found_run_development_incident_pool = {
 
 riches_found_run_corruption_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.corruption }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_missing_shipments compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_missing_shipments } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_audit_irregularities }
@@ -475,7 +476,7 @@ riches_found_run_foreign_interference_pool = {
 	if = {
 		limit = { has_variable = riches_found_interference_actor }
 		set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.foreign_interference }
-		set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+		set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 		riches_found_reset_incident_deltas = yes
 		random_list = {
 			constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_interference_actor_hostile } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_fund_claimant compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_fund_claimant } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_armed_claimants }
@@ -599,7 +600,7 @@ riches_found_apply_raid_consequence = {
 
 riches_found_run_raid_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.raid }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.raid }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.raid }
 	riches_found_reset_incident_deltas = yes
 	riches_found_prepare_narrow_interference_actor = yes
 	riches_found_select_raid_actor = yes
@@ -616,7 +617,7 @@ riches_found_run_raid_incident_pool = {
 
 riches_found_run_collapse_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.collapse }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.collapse }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.collapse }
 	riches_found_reset_incident_deltas = yes
 	set_temp_variable = { riches_found_incident_collapses_mine = constant:riches_found_value.zero }
 	random_list = {
@@ -654,6 +655,7 @@ riches_found_run_collapse_incident_pool = {
 	# suspends contracts and missions, and starts the recovery clock.
 	if = {
 		limit = { check_variable = { riches_found_incident_collapses_mine = constant:riches_found_value.one } }
+		set_temp_variable = { riches_found_collapse_report_text = riches_found_incident_kind }
 		riches_found_collapse_mine = yes
 		set_state_flag = riches_found_severe_collapse
 		set_state_flag = riches_found_mine_damaged
@@ -667,7 +669,7 @@ riches_found_run_collapse_incident_pool = {
 
 riches_found_run_gold_disease_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.gold_disease }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.gold_incident }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.gold_incident }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_hidden_samples compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_hidden_samples } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_confiscated_material }
@@ -701,7 +703,7 @@ riches_found_run_gold_disease_incident_pool = {
 
 riches_found_run_supernatural_incident_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.supernatural }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.supernatural_incident }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.supernatural_incident }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_answering_knocks compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_answering_knocks } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.standard } }
@@ -723,7 +725,7 @@ riches_found_run_supernatural_incident_pool = {
 
 riches_found_run_contract_outcome_pool = {
 	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.contract_outcome }
-	set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 	riches_found_reset_incident_deltas = yes
 	random_list = {
 		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_contract_published } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_clean_renewal compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_clean_renewal } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_contract_clean_review }

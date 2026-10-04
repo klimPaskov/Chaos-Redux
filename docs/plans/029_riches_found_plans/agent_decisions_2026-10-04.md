@@ -209,3 +209,19 @@ They now queue only when no report is waiting; the containment and route effects
 R5. The D7 timing sentence above was corrected: only the Resource Curse has seven conditions, so Gold Disease and Demons Beneath the Mine take six to nine pulse intervals rather than five to seven.
 
 Not changed after review: Port Route builds a naval base level in every coastal province of a state without a port, which follows the vanilla Afghanistan focus precedent the decision cites; the receiving neighbour and sponsor of a Gold Disease spread still get no report event of their own; and the probability comparison remains blocked (a narrow `hoi4_probability_inspect` over two decisions returned `INTERNAL_ERROR` again on 2026-10-04).
+
+## Round 2 decisions
+
+Disposition: accepted and recorded by the round 2 implementing agent under the same full-authority grant; source review only unless an entry says otherwise, and live-game behaviour remains with the orchestrator.
+
+D18. The partner validity trigger reads opinion through scope keywords.
+`has_opinion` accepts only scope keywords as its target (`triggers_documentation.md`, `has_opinion`), so `riches_found_foreign_target_is_valid` steps into `var:PREV.riches_found_recorded_controller` and back through `PREV`, following the vanilla `var:FROM.<variable> = { ... }` scope switch in `common/decisions/AST.txt:699`.
+The meaning is unchanged: the foreign target's opinion of the controller excludes hostile partners and admits friendly ones.
+
+D19. One writer owns the report slot.
+`riches_found_queue_report` is the only writer of `riches_found_report_kind`, and every producer passes the temporary inputs `riches_found_report_input_kind` and `riches_found_report_input_text`.
+The slot stores its own text id (`riches_found_report_text`) and the contract partner at queue time (`riches_found_report_partner`), so the incident id that drives repeat memory no longer leaks into unrelated reports; `riches_found_complete_report` clears all three.
+Concessions report their contract type (limited, exclusive, offtake, infrastructure access) and name the partner; a collapse reports its cause (the incident, neglected shafts, or the account default).
+Collapses, evolution entries and containment results are priority reports: they replace an undelivered ordinary report, or wait in one deferred slot that is queued when the open report closes, so a waiting evolution report is never replaced and is not lost.
+Any other report arriving while one waits is dropped, and a report of the same kind that has not been delivered takes the newer text (the collapse pool and its collapse helper share one report).
+New ids live in the `riches_found_report_text` constant category (2001 and up), outside the incident id range.
