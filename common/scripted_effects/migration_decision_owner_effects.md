@@ -1,5 +1,8 @@
 # Migration decision-owner effects
 
+The new-origin evacuation caller declares `migration_cohort_record_result` as invalid and `migration_cohort_id_result` as zero before recording the displaced group.
+Those caller-owned temporary outputs remain available for the subsequent presentation and destination setup.
+
 `migration_decision_prove_route_contract` is the positive route adapter for ordinary decision transfers. It requires the saved destination, source/destination state validity, adjacency, infrastructure and transport/border proofs, current control, war separation, safe destination hazards, valid reception capacity, and reception admission policy. It never treats the absent `civilian_transfer_route_unsafe` flag as proof.
 
 `migration_decision_prove_exact_return_route_contract` is the separate return adapter. It proves only exact historical-origin identity, adjacent physical route, control, infrastructure, current destination capacity, and a valid destination policy. It intentionally does not infer a safe origin for forced return; route-death predicates remain explicit inputs to the exact transfer.

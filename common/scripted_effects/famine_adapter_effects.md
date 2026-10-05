@@ -76,6 +76,11 @@ The observer creates no shelter/medical service, capacity, event target, cohort,
 
 ## Famine proof contract
 
+Each source adapter declares temporary `famine_adapter_contract_valid` and `famine_pressure_request_result` as zero before calling the validator and pressure helper.
+The related-death adapter also declares `famine_adapter_contract_valid` before validation.
+The caller of a public adapter must declare `famine_adapter_result = constant:humanitarian_runtime.zero` before invoking it if it consumes that result afterwards.
+Proof inputs remain caller-supplied, and every accepted or rejected attempt consumes the existing one-shot envelope.
+
 The owner must set the proof fields in the same state scope as the resolved food consequence or pass them into that state scope through explicit event targets and one-shot variables.
 
 `famine_adapter_amount` is a positive people-denominated food consequence or the owner-approved nuclear estimate, never a route amount and never an already-applied death request for a second Deaths debit.

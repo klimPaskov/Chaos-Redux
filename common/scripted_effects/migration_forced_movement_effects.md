@@ -2,6 +2,10 @@
 
 This file documents the bounded owner contract implemented in `migration_forced_movement_effects.txt`.
 
+The forced-transfer owner declares `migration_cohort_record_result` as invalid and `migration_cohort_id_result` as zero before recording a displaced group.
+The returned group identity remains available for origin resolution and exact transfer after the recording helper returns.
+The forced-transfer caller also declares the resolved group's results, count, amount, source, and status before resolving its origin and current host.
+
 ## Purpose and ownership
 
 `migration_execute_forced_transfer_exact` is the single forced-movement producer for the Germany camp-prison transfer currently owned by `camp_rework_germany_apply_prisoner_transfer`.

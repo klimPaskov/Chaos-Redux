@@ -796,6 +796,8 @@ civilian_transfer_commit_accounting = {
 # ledgers have not yet committed, so they require no inverse entry.
 civilian_transfer_rollback_transaction = {
 	set_temp_variable = { civilian_transfer_rollback_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_reception_delta_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_reception_delta_applied = constant:humanitarian_population.zero }
 	set_temp_variable = { civilian_transfer_rollback_destination_reception = constant:humanitarian_population.zero }
 	set_temp_variable = { civilian_transfer_rollback_source_reception = constant:humanitarian_population.zero }
 	set_temp_variable = { civilian_transfer_destination_rollback_actual = constant:humanitarian_population.zero }
@@ -1020,6 +1022,8 @@ civilian_transfer_finalize = {
 # source-reception mode, and obligation proofs once; this wrapper publishes the
 # single finalize receipt consumed by rewards and durable outcomes.
 civilian_transfer_execute_transaction = {
+	set_temp_variable = { migration_reception_delta_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_reception_delta_applied = constant:humanitarian_population.zero }
 	set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
 	set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
 	set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }

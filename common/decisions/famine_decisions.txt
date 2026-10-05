@@ -222,7 +222,18 @@ famine_decision_category = {
 					multiply_temp_variable = { famine_food_reserve_release_amount = constant:famine_mission_contract.reserve_release_days }
 					set_temp_variable = { famine_food_reserve_release_request_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { famine_food_reserve_release_actor_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { famine_food_reserve_consume_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { famine_food_reserve_consumed_output = constant:famine_food_reserve.zero }
+					set_temp_variable = { famine_food_reserve_relief_granted_output = constant:famine_food_reserve.zero }
 					famine_release_reserves = yes
+					if = {
+						limit = { check_variable = { var = famine_food_reserve_consumed_output value = constant:famine_food_reserve.zero compare = equals } }
+						ROOT = {
+							add_political_power = constant:humanitarian_legacy_cost.pp_standard
+							add_equipment_to_stockpile = { type = support_equipment amount = constant:humanitarian_legacy_cost.support_light }
+							add_fuel = constant:humanitarian_legacy_cost.fuel_light
+						}
+					}
 					if = {
 						limit = {
 							check_variable = { var = famine_food_reserve_consume_result value = constant:civilian_transfer_route_result.valid compare = equals }

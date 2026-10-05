@@ -27,12 +27,27 @@ Stage candidate and recovery timers compare the elapsed date difference with the
 Temporary return fields must be declared in the caller before invoking the shared helper so their lifetime spans the parent effect chain.
 The evaluator and observer declare `famine_food_reserve_score_relief_output`, `famine_food_score_raw` and `famine_requested_food_stage` before the relevant calls, and each helper that sums components declares `famine_food_pressure_sum` itself.
 
+`famine_select_historical_profile_id` and `famine_resolve_historical_profile_context` declare `famine_occupation_profile = constant:famine_occupation_profile.none` before resolving occupation conduct.
+The selector declares `famine_local_war_evidence = constant:humanitarian_runtime.zero` before resolving local war.
+Any surface collector that invokes the local-war resolver must do the same in its own call frame.
+`famine_apply_historical_profile_context` declares both `famine_historical_profile_state_proven` and `famine_historical_profile_context_proven` as zero before calling the profile resolver.
+These are temporary outputs, with no scope prefix, and cannot be replaced by declarations first made in the returning helper.
+
+Stage escalation and recovery require uninterrupted qualifying conditions.
+An upward candidate clears the recovery clock, and a downward candidate clears the escalation clock, so a change of direction cannot reuse elapsed time from an earlier attempt.
+Each accepted step consumes its qualifying clock, and state retirement clears both clocks so dormant time cannot count toward a later crisis.
+
 Reserve ledger rules used by the evaluator (`famine_refresh_reserve_capacity`, `famine_update_reserve`):
 
 - The first refresh of a state with no initialized reserve seeds `initial_target_share` of its target, unless an owner supplied a proven initial amount or the save already holds positive stock.
 - Each day the reserve is drawn by the stage share of the previous `famine_food_deficit_score` (25, 50, 75 or 100 percent of daily need from supply strain to catastrophic famine), and by at least `blockade_import_share` while `famine_blockade_isolation_proof` holds.
 - Only a stable state with no shortage replenishes toward target.
 - `famine_state_can_retire` keeps a state registered while its stored deficit is at supply strain or above.
+
+`famine_consume_reserve_for_relief` converts the remaining rationing-relief capacity into a stock amount before debiting.
+It floors the accepted amount to whole reserve units, preserves unused stores, and reports zero consumed stock when no rationing capacity remains.
+The release decision declares its consumed/result/relief outputs before the wrapper call and returns its paid political power, support equipment, and fuel only when the measured stock debit is zero.
+That refund sits inside the exact paid-work branch, after consuming its payment marker, so a repeated callback cannot refund again.
 
 Example, after initializing owner facts and collecting current context:
 

@@ -13,6 +13,8 @@ Scope: the STATE whose controller just changed (`FROM.FROM` of `on_state_control
 Input: event target `humanitarian_capture_new_controller`, saved from the callback's `ROOT` before the state scope is entered.
 Output: temporary `humanitarian_capture_result`, 1 when the capture was answered; callers that read it declare it first.
 
+The flight calculator declares `famine_occupation_profile` before resolving occupation conduct, so the returned conduct survives the helper call and can override ideology affinity.
+
 Steps:
 
 1. Save the state's owner as `humanitarian_capture_owner`.

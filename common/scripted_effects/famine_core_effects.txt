@@ -242,7 +242,9 @@ famine_resolve_local_war_evidence = {
 # policy, war, food, and Air proof must already be present on live surfaces.
 famine_select_historical_profile_id = {
 	clear_variable = famine_historical_profile_id
+	set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
 	famine_resolve_occupation_profile = yes
+	set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.zero }
 	famine_resolve_local_war_evidence = yes
 	if = {
 		limit = {
@@ -1335,6 +1337,7 @@ famine_collect_surface_context = {
 # are starting conditions; none is a fixed outcome, pulse, or death target.
 famine_resolve_historical_profile_context = {
 	famine_initialize_state = yes
+	set_temp_variable = { famine_occupation_profile = constant:famine_occupation_profile.none }
 	famine_resolve_occupation_profile = yes
 	set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.zero }
 	# Only a state with a selected profile needs the local war evidence.
@@ -1565,6 +1568,8 @@ famine_resolve_historical_profile_context = {
 
 famine_apply_historical_profile_context = {
 	set_temp_variable = { famine_profile_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_historical_profile_state_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_historical_profile_context_proven = constant:humanitarian_runtime.zero }
 	famine_resolve_historical_profile_context = yes
 	if = {
 		limit = {
@@ -2218,6 +2223,7 @@ famine_evaluate_food_security = {
 
 	if = {
 		limit = { check_variable = { var = famine_requested_food_stage value = famine_food_stage compare = greater_than } }
+		clear_variable = famine_food_recovery_since_date
 		if = {
 			limit = {
 				OR = {
@@ -2240,11 +2246,13 @@ famine_evaluate_food_security = {
 		chaosx_convert_days_to_date_offset = yes
 		if = {
 			limit = { check_variable = { var = famine_food_stage_candidate_elapsed value = chaosx_date_offset compare = greater_than_or_equals } }
+			clear_variable = famine_food_stage_candidate_since_date
 			famine_transition_food_stage = yes
 		}
 	}
 	else_if = {
 		limit = { check_variable = { var = famine_requested_food_stage value = famine_food_stage compare = less_than } }
+		clear_variable = famine_food_stage_candidate_since_date
 		set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.zero }
 		set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.stable_recovery_days }
 		if = { limit = { check_variable = { var = famine_food_stage value = constant:famine_food_stage.supply_strain   compare = equals } } set_temp_variable = { famine_food_recovery_threshold = constant:famine_food_score.supply_strain_recovery_threshold } set_temp_variable = { famine_food_recovery_days = constant:famine_food_timing.supply_strain_recovery_days } }
@@ -2259,7 +2267,11 @@ famine_evaluate_food_security = {
 			set_temp_variable = { chaosx_date_days = famine_food_recovery_days }
 			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 			chaosx_convert_days_to_date_offset = yes
-			if = { limit = { check_variable = { var = famine_food_recovery_elapsed value = chaosx_date_offset compare = greater_than_or_equals } } famine_transition_food_stage = yes }
+			if = {
+				limit = { check_variable = { var = famine_food_recovery_elapsed value = chaosx_date_offset compare = greater_than_or_equals } }
+				clear_variable = famine_food_recovery_since_date
+				famine_transition_food_stage = yes
+			}
 		}
 		else = { clear_variable = famine_food_recovery_since_date }
 	}
@@ -2528,15 +2540,25 @@ famine_consume_reserve_for_relief = {
 			min = constant:famine_food_reserve.zero
 			max = famine_food_reserve_amount
 		}
+		# Keep stock that cannot be used by the current rationing programme.
+		set_temp_variable = { famine_food_reserve_relief_available = constant:famine_food_reserve.relief_maximum }
+		subtract_from_temp_variable = { famine_food_reserve_relief_available = famine_food_reserve_relief }
+		clamp_temp_variable = { var = famine_food_reserve_relief_available min = constant:famine_food_reserve.zero }
+		set_temp_variable = { famine_food_reserve_release_headroom = famine_food_reserve_relief_available }
+		divide_temp_variable = { famine_food_reserve_release_headroom = constant:famine_food_reserve.relief_per_day_covered }
+		multiply_temp_variable = { famine_food_reserve_release_headroom = famine_food_reserve_daily_need }
+		clamp_temp_variable = { var = famine_food_reserve_consume_amount max = famine_food_reserve_release_headroom }
+		set_temp_variable = { famine_food_reserve_consume_unrounded = famine_food_reserve_consume_amount }
 		round_temp_variable = famine_food_reserve_consume_amount
+		if = {
+			limit = { check_variable = { var = famine_food_reserve_consume_amount value = famine_food_reserve_consume_unrounded compare = greater_than } }
+			subtract_from_temp_variable = { famine_food_reserve_consume_amount = constant:humanitarian_runtime.one }
+		}
 		if = {
 			limit = { check_variable = { var = famine_food_reserve_consume_amount value = constant:famine_food_reserve.zero compare = greater_than } }
 			subtract_from_variable = { famine_food_reserve_amount = famine_food_reserve_consume_amount }
 			add_to_variable = { famine_food_reserve_total_consumed = famine_food_reserve_consume_amount }
 			set_variable = { famine_food_reserve_last_consumed = famine_food_reserve_consume_amount }
-			set_temp_variable = { famine_food_reserve_relief_available = constant:famine_food_reserve.relief_maximum }
-			subtract_from_temp_variable = { famine_food_reserve_relief_available = famine_food_reserve_relief }
-			clamp_temp_variable = { var = famine_food_reserve_relief_available min = constant:famine_food_reserve.zero }
 			set_temp_variable = { famine_food_reserve_relief_granted = famine_food_reserve_consume_amount }
 			divide_temp_variable = { famine_food_reserve_relief_granted = famine_food_reserve_daily_need }
 			multiply_temp_variable = { famine_food_reserve_relief_granted = constant:famine_food_reserve.relief_per_day_covered }
@@ -3153,6 +3175,8 @@ famine_cleanup_state_registration = {
 	clear_variable = famine_component_relief
 	clear_variable = famine_food_deficit_score
 	clear_variable = famine_food_exhaustion_need
+	clear_variable = famine_food_stage_candidate_since_date
+	clear_variable = famine_food_recovery_since_date
 	clear_variable = famine_blockade_island_proven
 	clear_variable = famine_blockade_isolation_proven
 	clear_variable = famine_blockade_maritime_dependence_proven

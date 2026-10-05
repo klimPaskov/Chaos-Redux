@@ -1169,6 +1169,12 @@ migration_refresh_reception_capacity = {
 
 migration_evaluate_voluntary_return = {
 	set_temp_variable = { migration_return_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 	migration_resolve_cohort_origin = yes
 	if = {
 		limit = {
@@ -1226,6 +1232,12 @@ migration_integrate_displaced_cohort = {
 
 migration_resettle_displaced_cohort = {
 	set_temp_variable = { migration_resettlement_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 	migration_resolve_cohort_origin = yes
 	if = {
 		limit = {
@@ -1256,6 +1268,12 @@ migration_resettle_displaced_cohort = {
 # invoke civilian_transfer_civilians_exact from the origin state.
 migration_force_return_cohort = {
 	set_temp_variable = { migration_forced_return_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+	set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 	migration_resolve_cohort_origin = yes
 	if = {
 		limit = { has_event_target = migration_cohort_origin }
@@ -1906,6 +1924,8 @@ migration_request_organized_evacuation = {
 		set_temp_variable = { migration_cohort_record_amount = migration_displacement_request_amount }
 		set_temp_variable = { migration_cohort_record_owner_proven = migration_displacement_owner_proven }
 		set_temp_variable = { migration_cohort_record_source = constant:humanitarian_pressure_source.evacuation }
+		set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+		set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
 		migration_record_displaced_cohort = yes
 		if = {
 			limit = { check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals } }
@@ -1954,6 +1974,8 @@ migration_request_deportation_flow = {
 		set_temp_variable = { migration_cohort_record_amount = migration_displacement_request_amount }
 		set_temp_variable = { migration_cohort_record_owner_proven = migration_displacement_owner_proven }
 		set_temp_variable = { migration_cohort_record_source = constant:humanitarian_pressure_source.deportation }
+		set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+		set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
 		migration_record_displaced_cohort = yes
 		if = {
 			limit = { check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals } }
