@@ -82,12 +82,17 @@ The AI picks a domain, then a Grand Doctrine or a track and subdoctrine, each th
 
 Completion value and strategy signals add weight in every domain. If no domain scores at all, every valid domain falls back to the base weight, so a choice is never wasted. All weights live in `doctrine_research_ai_weight` and the dockyard and aircraft ratios in `doctrine_research_ai_ratio`.
 
+Grand Doctrine and track scores read only terms that differ between the candidates of one pool; country-wide terms such as divisions, factories, war, coast, and faction stay in domain scoring.
+
+- A Grand Doctrine adds the forces weight for the formations it serves: Mobile Warfare for motorised or mechanised forces and again for tanks, Superior Firepower for artillery, anti-tank, or anti-air companies, Grand Battleplan for a defensive war, forests, or mountains, Mass Assault for infantry without mobile templates, militia, or irregulars, and each naval, air, Special Forces, and Chaos Warfare Grand Doctrine for its own ships, planes, battalions, or CBRN programme.
+- A track scores the base weight, force fit (`doctrine_research_ai_selected_track_has_force_fit`: its own templates, ships, or planes, a current war for Army Operations, the battalion family of the held Special Forces subdoctrine, and each Chaos Warfare track's own fielded CBRN battalions read through `num_battalions_with_type@`), one investment point per level already earned, an empty-track bonus when an empty track fits, completion value when the branch is one step from completion and fits, and continuity with the previous choice of the batch. The sum is squared, so a clearly better branch wins most choices, close branches stay close, and every valid branch keeps a positive weight. A near-complete branch without matching formations keeps only its investment value.
+
 Grand Doctrine and subdoctrine scores also follow the native doctrine preferences of vanilla `ai_will_do`, mirrored in the `doctrine_research_ai_native_grand`, `_base`, `_country`, `_minor`, and `_major` constant categories:
 
-- Grand Battleplan starts from base 2, and Convoy Raiding and Battlefield Support score ten times higher for a country that is not a major. A minor skips Mobile Warfare and Superior Firepower unless it fields armour or motorised templates or they are its only valid Army Grand Doctrines. Mass Assault values infantry without mobile templates, militia, or irregulars.
+- Grand Battleplan starts from base 2, and Convoy Raiding and Battlefield Support score ten times higher for a country that is not a major. A minor skips Mobile Warfare and Superior Firepower unless it fields armour or motorised templates or they are its only valid Army Grand Doctrines.
 - `doctrine_research_ai_score_selected_subdoctrine_fit` gives each naval, air, and Special Forces subdoctrine the forces term only for its own ship, plane, or battalion type (Marines also read a coast and Mountaineers mountains), then applies the native base, original-tag, minor, and major factors. A candidate that vanilla would never pick keeps the base weight, so every valid choice stays possible.
 
-Evidence: `docs/plans/027_doctrine_research_plans/probability_native_preferences_2026-10-05.md`.
+Evidence: `docs/plans/027_doctrine_research_plans/probability_native_preferences_2026-10-05.md` and `probability_track_round2_2026-10-05.md`.
 
 ## Evolutions
 
@@ -149,7 +154,7 @@ These behaviours depend on the live engine and are checked in a live session:
 - `set_sub_doctrine` with a folder and numeric index on an empty track, and the banked-mastery level read after it;
 - two Special Forces tracks never holding the same token;
 - receipt recovery across save and reload, and lifecycle callbacks after tag switches;
-- the AI domain mix in real campaigns.
+- the AI domain mix, track mix, and branch completion rate in real campaigns.
 
 ## Future plans
 

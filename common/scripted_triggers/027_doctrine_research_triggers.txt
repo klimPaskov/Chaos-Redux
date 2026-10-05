@@ -212,6 +212,219 @@ doctrine_research_ai_fields_mobile_forces = {
 	}
 }
 
+# Tank templates. Mobile Warfare reads them as a second force term on top of
+# the motorised and mechanised forces, so a tank army prefers it over
+# Superior Firepower even when it also fields artillery.
+doctrine_research_ai_fields_armour = {
+	OR = {
+		has_template_containing_unit = light_armor
+		has_template_containing_unit = medium_armor
+		has_template_containing_unit = heavy_armor
+		has_template_containing_unit = super_heavy_armor
+		has_template_containing_unit = modern_armor
+		has_template_containing_unit = amphibious_armor
+	}
+}
+
+# Country scope, after doctrine_research_prepare_track_display. True when the
+# country fields the formations that the selected track's mastery and bonuses
+# serve, so only candidates that differ inside one track pool are compared.
+# - Army tracks read their own templates; Operations reads a current war.
+# - Naval and air tracks read their own ships and deployed planes.
+# - A Special Forces track reads the battalion family of the subdoctrine it
+#   holds; an empty Special Forces track reads any Special Forces battalion.
+# - Each Chaos Warfare track reads its own fielded CBRN battalions: Hazard
+#   Assault the protection and chemical reconnaissance detachments, Contaminant
+#   Fire Support the projector batteries, Toxic Armored Warfare the chemical
+#   tank detachments, and Integrated CBRN Command the HQ operations section.
+doctrine_research_ai_selected_track_has_force_fit = {
+	OR = {
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
+			OR = {
+				has_template_containing_unit = infantry
+				has_template_containing_unit = motorized
+				has_template_containing_unit = militia
+				has_template_containing_unit = irregular_infantry
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+			OR = {
+				has_template_containing_unit = artillery_brigade
+				has_template_containing_unit = mot_artillery_brigade
+				has_template_containing_unit = rocket_artillery_brigade
+				has_template_containing_unit = artillery
+				has_template_containing_unit = rocket_artillery
+				has_template_containing_unit = anti_tank
+				has_template_containing_unit = anti_tank_brigade
+				has_template_containing_unit = anti_air
+				has_template_containing_unit = anti_air_brigade
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+			OR = {
+				doctrine_research_ai_fields_armour = yes
+				has_template_containing_unit = mechanized
+				has_template_containing_unit = amphibious_mechanized
+				has_template_containing_unit = armored_car
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+			has_war = yes
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.submarines compare = equals }
+			has_navy_size = { unit = submarine size > 0 }
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.screens compare = equals }
+			OR = {
+				has_navy_size = { unit = destroyer size > 0 }
+				has_navy_size = { unit = light_cruiser size > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.carriers compare = equals }
+			has_navy_size = { unit = carrier size > 0 }
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.capital_ships compare = equals }
+			OR = {
+				has_navy_size = { unit = battleship size > 0 }
+				has_navy_size = { unit = battle_cruiser size > 0 }
+				has_navy_size = { unit = heavy_cruiser size > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.fighter_aircraft compare = equals }
+			has_deployed_air_force_size = { size > 0 type = fighter }
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.strike_aircraft compare = equals }
+			OR = {
+				has_deployed_air_force_size = { size > 0 type = cas }
+				has_deployed_air_force_size = { size > 0 type = naval_bomber }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.medium_aircraft compare = equals }
+			has_deployed_air_force_size = { size > 0 type = tactical_bomber }
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.heavy_aircraft compare = equals }
+			OR = {
+				has_deployed_air_force_size = { size > 0 type = strategic_bomber }
+				check_variable = { num_deployed_planes_with_type@large_plane_maritime_patrol_plane_airframe > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
+			OR = {
+				AND = {
+					check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.invalid compare = equals }
+					doctrine_research_ai_special_forces_ready = yes
+				}
+				AND = {
+					OR = {
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_1 compare = equals }
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.mountaineers_2 compare = equals }
+					}
+					has_template_containing_unit = mountaineers
+				}
+				AND = {
+					OR = {
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_1 compare = equals }
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.marines_2 compare = equals }
+					}
+					OR = {
+						has_template_containing_unit = marine
+						has_template_containing_unit = marine_commando
+					}
+				}
+				AND = {
+					OR = {
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_1 compare = equals }
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.paratroopers_2 compare = equals }
+					}
+					has_template_containing_unit = paratrooper
+				}
+				AND = {
+					OR = {
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_1 compare = equals }
+						check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.rangers_2 compare = equals }
+					}
+					has_template_containing_unit = ranger_battalion
+				}
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals }
+			OR = {
+				cbrn_chaos_warfare_has_fielded_protected_formation = yes
+				check_variable = { num_battalions_with_type@cbrn_chemical_recon_detachment > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
+			OR = {
+				check_variable = { num_battalions_with_type@livens_projector_support > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_chlorine > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_phosgene > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_mustard > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_lewisite > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_sarin > 0 }
+				check_variable = { num_battalions_with_type@livens_projector_support_soman > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
+			OR = {
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_chlorine > 0 }
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_phosgene > 0 }
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_mustard > 0 }
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_lewisite > 0 }
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_sarin > 0 }
+				check_variable = { num_battalions_with_type@light_chemical_tank_support_soman > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_chlorine > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_phosgene > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_mustard > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_lewisite > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_sarin > 0 }
+				check_variable = { num_battalions_with_type@medium_chemical_tank_support_soman > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_chlorine > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_phosgene > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_mustard > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_lewisite > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_sarin > 0 }
+				check_variable = { num_battalions_with_type@heavy_chemical_tank_support_soman > 0 }
+			}
+		}
+		AND = {
+			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
+			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
+			cbrn_chaos_warfare_has_fielded_operations_hq = yes
+		}
+	}
+}
+
 # A land front with an enemy neighbour makes Army doctrine immediately useful.
 doctrine_research_ai_has_land_front = {
 	any_neighbor_country = { has_war_with = PREV }
@@ -228,56 +441,6 @@ doctrine_research_ai_air_owner_system_ready = {
 		has_doctrine = new_strategic_destruction
 		has_doctrine = new_battlefield_support
 		has_doctrine = new_operational_integrity
-	}
-}
-
-doctrine_research_ai_selected_owner_system_ready = {
-	OR = {
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-			doctrine_research_army_has_valid_action = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-			doctrine_research_ai_navy_owner_system_ready = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-			doctrine_research_ai_air_owner_system_ready = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
-			doctrine_research_special_forces_adoption_available = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-			cbrn_chaos_warfare_ai_has_viable_program = yes
-		}
-	}
-}
-
-doctrine_research_ai_has_selected_domain_strategy_signal = {
-	OR = {
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
-			doctrine_research_ai_has_army_strategy_signal = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
-			doctrine_research_ai_has_navy_strategy_signal = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
-			doctrine_research_ai_has_air_strategy_signal = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
-			doctrine_research_ai_has_special_forces_strategy_signal = yes
-		}
-		AND = {
-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
-			doctrine_research_ai_has_chaos_warfare_strategy_signal = yes
-		}
 	}
 }
 

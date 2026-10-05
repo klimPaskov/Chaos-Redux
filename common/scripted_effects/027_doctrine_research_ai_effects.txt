@@ -4,7 +4,11 @@
 # Overview:
 # - Scores every valid domain, Grand Doctrine, track, and registered
 #   subdoctrine using live force, production, war, geography, theater,
-#   strategy, continuity, completion, and owner-system signals.
+#   strategy, continuity, completion, and owner-system signals. Domain scores
+#   read country-wide signals; Grand Doctrine and track scores read only the
+#   terms that differ between the candidates of one pool (force fit, war fit,
+#   existing investment, completion, and continuity), and track scores are
+#   squared so a clearly better branch wins most choices.
 # - Uses bounded random selection from positive scored candidates, while
 #   invalid or unsupported adapter rows remain at zero weight.
 # - The chooser is called again after every successful choice, so adoption
@@ -84,27 +88,29 @@ doctrine_research_ai_choose_scored_domain = {
 }
 
 # Country scope. Scores the selected Grand Doctrine from campaign evidence and
-# the native vanilla ai_will_do preferences: Grand Battleplan starts from its
-# native base, and Convoy Raiding and Battlefield Support take the native
-# factor for a country that is not a major. The native zero for Mobile Warfare
-# and Superior Firepower on a minor is applied by the chooser, because it
-# depends on whether another Army Grand Doctrine is valid. Mass Assault reads
-# an infantry force without armour or motorised templates, or militia and
-# irregulars, so a mobile army is not counted as an infantry-mass army.
+# the native vanilla ai_will_do preferences. Only terms that differ between the
+# Grand Doctrines of one domain are read; country-wide terms such as divisions,
+# factories, war, coast, faction, and domain readiness are equal for every
+# candidate in the pool and belong to domain scoring instead.
+# - Each Grand Doctrine adds the forces weight for the formations it serves.
+#   Mobile Warfare adds it once for motorised or mechanised forces and again for
+#   tanks, so a tank army prefers it over Superior Firepower.
+# - Grand Battleplan starts from its native base, and Convoy Raiding and
+#   Battlefield Support take the native factor for a country that is not a
+#   major. The native zero for Mobile Warfare and Superior Firepower on a minor
+#   is applied by the chooser, because it depends on whether another Army Grand
+#   Doctrine is valid.
+# - Mass Assault reads an infantry force without armour or motorised
+#   templates, or militia and irregulars, so a mobile army is not counted as an
+#   infantry-mass army.
 doctrine_research_ai_score_selected_grand = {
 	set_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.base }
 	if = {
 		limit = { check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.grand_battleplan compare = equals } }
 		set_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_native_grand.grand_battleplan_base }
 	}
-	if = { limit = { num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.production } }
-	if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.war } }
-	if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.geography } }
-	if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.theater } }
-	if = { limit = { doctrine_research_ai_has_selected_domain_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.strategy } }
-	if = { limit = { doctrine_research_ai_selected_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.owner_readiness } }
 	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.new_mobile_warfare compare = equals } doctrine_research_ai_fields_mobile_forces = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
+	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.new_mobile_warfare compare = equals } doctrine_research_ai_fields_armour = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
 	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.superior_firepower compare = equals } OR = { has_template_containing_unit = artillery has_template_containing_unit = anti_tank has_template_containing_unit = anti_air } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
 	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.grand_battleplan compare = equals } OR = { has_defensive_war = yes doctrine_research_controls_state_with_forest = yes doctrine_research_controls_state_with_mountain = yes } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
 	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_grand_doctrine value = constant:doctrine_research_grand_doctrine.mass_assault compare = equals } OR = { has_template_containing_unit = militia has_template_containing_unit = irregular_infantry AND = { has_template_containing_unit = infantry NOT = { doctrine_research_ai_fields_mobile_forces = yes } } } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
@@ -258,47 +264,55 @@ doctrine_research_ai_choose_scored_grand = {
 	}
 }
 
+# Country scope. Scores the selected track inside its domain's track pool.
+# Only terms that differ between the tracks of one pool are read; country-wide
+# terms such as divisions, factories, war, coast, faction, domain strategy, and
+# domain readiness are equal for every track and belong to domain scoring.
+# - Force fit (doctrine_research_ai_selected_track_has_force_fit): the country
+#   fields the formations the track serves, or is at war for Army Operations.
+# - Existing investment: the investment weight for every level the track's
+#   active subdoctrine has already earned, so a developed branch is finished
+#   before the AI drifts to an unrelated one.
+# - Empty-track value: an empty track whose formations the country fields
+#   would fill a missing capability.
+# - Completion value: the track is one step from completing its branch. It
+#   applies only together with force fit, so a near-complete branch the country
+#   has no use for keeps only its investment value.
+# - Continuity: the previous choice of this batch advanced the same track.
+# The sum is squared before it enters the random_list. Every valid track keeps
+# a positive weight, while a clearly better track wins most choices and close
+# tracks stay close, which gives the bounded randomness of spec part 3.
 doctrine_research_ai_score_selected_track = {
 	doctrine_research_prepare_track_display = yes
 	set_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.base }
-	if = { limit = { num_divisions > 0 } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { num_of_military_factories > 0 } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.production } }
-	if = { limit = { num_of_naval_factories > 0 } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.production } }
-	if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.war } }
-	if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.geography } }
-	if = { limit = { is_in_faction = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.theater } }
-	if = { limit = { doctrine_research_ai_has_selected_domain_strategy_signal = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.strategy } }
-	if = { limit = { check_variable = { var = doctrine_research_last_transaction_batch_id value = doctrine_research_active_batch_id compare = equals } check_variable = { var = doctrine_research_last_transaction_domain value = doctrine_research_selected_domain compare = equals } check_variable = { var = doctrine_research_last_transaction_track value = doctrine_research_selected_track compare = equals } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.continuity } }
+	set_temp_variable = { doctrine_research_ai_track_has_fit = 0 }
+	if = {
+		limit = { doctrine_research_ai_selected_track_has_force_fit = yes }
+		set_temp_variable = { doctrine_research_ai_track_has_fit = 1 }
+		add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.track_fit }
+	}
+	set_temp_variable = { doctrine_research_ai_track_investment = doctrine_research_display_current_level }
+	multiply_temp_variable = { doctrine_research_ai_track_investment = constant:doctrine_research_ai_weight.investment }
+	add_to_temp_variable = { doctrine_research_ai_candidate_score = doctrine_research_ai_track_investment }
 	if = {
 		limit = {
+			check_variable = { doctrine_research_ai_track_has_fit > 0 }
+			doctrine_research_selected_track_is_empty = yes
+		}
+		add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.empty_track_fit }
+	}
+	if = {
+		limit = {
+			check_variable = { doctrine_research_ai_track_has_fit > 0 }
 			check_variable = { doctrine_research_display_current_level > 0 }
 			check_variable = { doctrine_research_display_completion = 0 }
 			check_variable = { var = doctrine_research_display_next_level value = doctrine_research_display_maximum_level compare = greater_than_or_equals }
 		}
 		add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.completion }
 	}
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals } OR = { has_template_containing_unit = infantry has_template_containing_unit = motorized has_template_containing_unit = militia has_template_containing_unit = irregular_infantry } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals } OR = { has_template_containing_unit = artillery has_template_containing_unit = anti_tank has_template_containing_unit = anti_air } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals } OR = { has_template_containing_unit = light_armor has_template_containing_unit = medium_armor has_template_containing_unit = heavy_armor has_template_containing_unit = mechanized } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals } OR = { has_offensive_war = yes has_defensive_war = yes } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.submarines compare = equals } has_navy_size = { unit = submarine size > 0 } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.screens compare = equals } has_navy_size = { unit = destroyer size > 0 } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.carriers compare = equals } has_navy_size = { unit = carrier size > 0 } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.capital_ships compare = equals } has_navy_size = { unit = battleship size > 0 } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.fighter_aircraft compare = equals } has_deployed_air_force_size = { size > 0 type = fighter } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.strike_aircraft compare = equals } OR = { has_deployed_air_force_size = { size > 0 type = cas } has_deployed_air_force_size = { size > 0 type = naval_bomber } } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.medium_aircraft compare = equals } has_deployed_air_force_size = { size > 0 type = tactical_bomber } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.heavy_aircraft compare = equals } has_deployed_air_force_size = { size > 0 type = strategic_bomber } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_first compare = equals } doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.special_forces_second compare = equals } doctrine_research_ai_special_forces_ready = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals } cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals } cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals } cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals } cbrn_chaos_warfare_ai_has_viable_program = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.forces } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } doctrine_research_special_forces_track_special_forces_first_action_available = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.owner_readiness } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } cbrn_chaos_warfare_establishment_requirements_met = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.owner_readiness } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } doctrine_research_ai_navy_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.owner_readiness } }
-	if = { limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } doctrine_research_ai_air_owner_system_ready = yes } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.owner_readiness } }
+	if = { limit = { check_variable = { var = doctrine_research_last_transaction_batch_id value = doctrine_research_active_batch_id compare = equals } check_variable = { var = doctrine_research_last_transaction_domain value = doctrine_research_selected_domain compare = equals } check_variable = { var = doctrine_research_last_transaction_track value = doctrine_research_selected_track compare = equals } } add_to_temp_variable = { doctrine_research_ai_candidate_score = constant:doctrine_research_ai_weight.continuity } }
+	set_temp_variable = { doctrine_research_ai_track_linear_score = doctrine_research_ai_candidate_score }
+	multiply_temp_variable = { doctrine_research_ai_candidate_score = doctrine_research_ai_track_linear_score }
 }
 
 doctrine_research_ai_choose_scored_track = {
