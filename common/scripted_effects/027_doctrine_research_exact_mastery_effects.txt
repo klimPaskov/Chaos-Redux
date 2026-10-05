@@ -10240,7 +10240,9 @@ doctrine_research_capture_transaction_level = {
 # doctrine_research_selected_track, doctrine_research_selected_subdoctrine, and
 # doctrine_research_transaction_expected_level.
 # Sets doctrine_research_transaction_step_limit, the number of one-point
-# add_mastery calls the step may spend:
+# add_mastery calls the step may spend. The calling step owns that output and
+# sets it to 0 before the call, because a temporary variable first created
+# inside a scripted effect may not survive the return:
 # - the reward cost of the level being reached: 100 by default and for Chaos
 #   Warfare, 60 for Special Forces, 50 for People's War levels 1, 2 and 4;
 # - when the folder, active Grand Doctrine, track, and subdoctrine mastery gain
@@ -10385,6 +10387,7 @@ doctrine_research_prepare_transaction_step_limit = {
 
 doctrine_research_exact_step_mobile_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_infantry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10410,6 +10413,7 @@ doctrine_research_exact_step_mobile_infantry_track_infantry = {
 
 doctrine_research_exact_step_defensive_postures_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@defensive_postures_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10435,6 +10439,7 @@ doctrine_research_exact_step_defensive_postures_track_infantry = {
 
 doctrine_research_exact_step_large_unit_tactics_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@large_unit_tactics_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10460,6 +10465,7 @@ doctrine_research_exact_step_large_unit_tactics_track_infantry = {
 
 doctrine_research_exact_step_assault_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@assault_infantry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10485,6 +10491,7 @@ doctrine_research_exact_step_assault_infantry_track_infantry = {
 
 doctrine_research_exact_step_mounted_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mounted_infantry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10510,6 +10517,7 @@ doctrine_research_exact_step_mounted_infantry_track_infantry = {
 
 doctrine_research_exact_step_commandos_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@commandos_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10535,6 +10543,7 @@ doctrine_research_exact_step_commandos_track_infantry = {
 
 doctrine_research_exact_step_irregulars_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@irregulars_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10560,6 +10569,7 @@ doctrine_research_exact_step_irregulars_track_infantry = {
 
 doctrine_research_exact_step_peoples_war_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@peoples_war_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10585,6 +10595,7 @@ doctrine_research_exact_step_peoples_war_track_infantry = {
 
 doctrine_research_exact_step_great_war_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@great_war_infantry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10610,6 +10621,7 @@ doctrine_research_exact_step_great_war_infantry_track_infantry = {
 
 doctrine_research_exact_step_fire_concentration_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@fire_concentration_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10635,6 +10647,7 @@ doctrine_research_exact_step_fire_concentration_track_combat_support = {
 
 doctrine_research_exact_step_anti_tank_frontline_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@anti_tank_frontline_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10660,6 +10673,7 @@ doctrine_research_exact_step_anti_tank_frontline_track_combat_support = {
 
 doctrine_research_exact_step_flying_batteries_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@flying_batteries_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10685,6 +10699,7 @@ doctrine_research_exact_step_flying_batteries_track_combat_support = {
 
 doctrine_research_exact_step_air_cavalry_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_cavalry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10710,6 +10725,7 @@ doctrine_research_exact_step_air_cavalry_track_combat_support = {
 
 doctrine_research_exact_step_mobile_recon_and_assault_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_recon_and_assault_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10735,6 +10751,7 @@ doctrine_research_exact_step_mobile_recon_and_assault_track_combat_support = {
 
 doctrine_research_exact_step_mobile_recon_and_assault_no_lar_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_recon_and_assault_no_lar_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10760,6 +10777,7 @@ doctrine_research_exact_step_mobile_recon_and_assault_no_lar_track_combat_suppor
 
 doctrine_research_exact_step_self_propelled_support_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@self_propelled_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10785,6 +10803,7 @@ doctrine_research_exact_step_self_propelled_support_track_combat_support = {
 
 doctrine_research_exact_step_siege_artillery_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@siege_artillery_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10810,6 +10829,7 @@ doctrine_research_exact_step_siege_artillery_track_combat_support = {
 
 doctrine_research_exact_step_field_engineering_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@field_engineering_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10835,6 +10855,7 @@ doctrine_research_exact_step_field_engineering_track_combat_support = {
 
 doctrine_research_exact_step_armored_spearhead_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_spearhead_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10860,6 +10881,7 @@ doctrine_research_exact_step_armored_spearhead_track_armor = {
 
 doctrine_research_exact_step_armored_spearhead_no_lar_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_spearhead_no_lar_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10885,6 +10907,7 @@ doctrine_research_exact_step_armored_spearhead_no_lar_track_armor = {
 
 doctrine_research_exact_step_armored_infantry_support_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_infantry_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10910,6 +10933,7 @@ doctrine_research_exact_step_armored_infantry_support_track_armor = {
 
 doctrine_research_exact_step_streamlined_deployment_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@streamlined_deployment_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10935,6 +10959,7 @@ doctrine_research_exact_step_streamlined_deployment_track_armor = {
 
 doctrine_research_exact_step_mobile_defense_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_defense_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10960,6 +10985,7 @@ doctrine_research_exact_step_mobile_defense_track_armor = {
 
 doctrine_research_exact_step_armored_cavalry_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_cavalry_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -10985,6 +11011,7 @@ doctrine_research_exact_step_armored_cavalry_track_armor = {
 
 doctrine_research_exact_step_armored_cavalry_no_lar_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_cavalry_no_lar_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11010,6 +11037,7 @@ doctrine_research_exact_step_armored_cavalry_no_lar_track_armor = {
 
 doctrine_research_exact_step_tank_destroyer_force_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@tank_destroyer_force_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11035,6 +11063,7 @@ doctrine_research_exact_step_tank_destroyer_force_track_armor = {
 
 doctrine_research_exact_step_mission_type_tactics_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mission_type_tactics_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11060,6 +11089,7 @@ doctrine_research_exact_step_mission_type_tactics_track_operations = {
 
 doctrine_research_exact_step_last_stand_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@last_stand_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11085,6 +11115,7 @@ doctrine_research_exact_step_last_stand_track_operations = {
 
 doctrine_research_exact_step_infiltration_tactics_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@infiltration_tactics_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11110,6 +11141,7 @@ doctrine_research_exact_step_infiltration_tactics_track_operations = {
 
 doctrine_research_exact_step_grand_assault_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@grand_assault_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11135,6 +11167,7 @@ doctrine_research_exact_step_grand_assault_track_operations = {
 
 doctrine_research_exact_step_deep_battle_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@deep_battle_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11160,6 +11193,7 @@ doctrine_research_exact_step_deep_battle_track_operations = {
 
 doctrine_research_exact_step_deep_battle_no_lar_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@deep_battle_no_lar_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11185,6 +11219,7 @@ doctrine_research_exact_step_deep_battle_no_lar_track_operations = {
 
 doctrine_research_exact_step_guerilla_war_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@guerilla_war_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11210,6 +11245,7 @@ doctrine_research_exact_step_guerilla_war_track_operations = {
 
 doctrine_research_exact_step_rapid_domination_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rapid_domination_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11235,6 +11271,7 @@ doctrine_research_exact_step_rapid_domination_track_operations = {
 
 doctrine_research_exact_step_expeditionary_warfare_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@expeditionary_warfare_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11260,6 +11297,7 @@ doctrine_research_exact_step_expeditionary_warfare_track_operations = {
 
 doctrine_research_exact_step_dispersed_operations_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@dispersed_operations_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11285,6 +11323,7 @@ doctrine_research_exact_step_dispersed_operations_track_operations = {
 
 doctrine_research_exact_step_extermination_columns_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11310,6 +11349,7 @@ doctrine_research_exact_step_extermination_columns_track_infantry = {
 
 doctrine_research_exact_step_contaminant_firebases_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11335,6 +11375,7 @@ doctrine_research_exact_step_contaminant_firebases_track_combat_support = {
 
 doctrine_research_exact_step_chemical_suppression_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11360,6 +11401,7 @@ doctrine_research_exact_step_chemical_suppression_track_armor = {
 
 doctrine_research_exact_step_integrated_chemical_operations_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11385,6 +11427,7 @@ doctrine_research_exact_step_integrated_chemical_operations_track_operations = {
 
 doctrine_research_exact_step_wolfpacks_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@wolfpacks_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11410,6 +11453,7 @@ doctrine_research_exact_step_wolfpacks_track_submarines = {
 
 doctrine_research_exact_step_submarine_fleet_operations_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@submarine_fleet_operations_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11435,6 +11479,7 @@ doctrine_research_exact_step_submarine_fleet_operations_track_submarines = {
 
 doctrine_research_exact_step_capital_hunters_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@capital_hunters_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11460,6 +11505,7 @@ doctrine_research_exact_step_capital_hunters_track_submarines = {
 
 doctrine_research_exact_step_submarine_coastal_defense_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@submarine_coastal_defense_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11485,6 +11531,7 @@ doctrine_research_exact_step_submarine_coastal_defense_track_submarines = {
 
 doctrine_research_exact_step_coastal_minelaying_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@coastal_minelaying_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11510,6 +11557,7 @@ doctrine_research_exact_step_coastal_minelaying_track_submarines = {
 
 doctrine_research_exact_step_long_range_submarines_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@long_range_submarines_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11535,6 +11583,7 @@ doctrine_research_exact_step_long_range_submarines_track_submarines = {
 
 doctrine_research_exact_step_convoy_escort_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@convoy_escort_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11560,6 +11609,7 @@ doctrine_research_exact_step_convoy_escort_track_screens = {
 
 doctrine_research_exact_step_support_integrated_operations_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@support_integrated_operations_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11585,6 +11635,7 @@ doctrine_research_exact_step_support_integrated_operations_track_screens = {
 
 doctrine_research_exact_step_hunter_killers_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@hunter_killers_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11610,6 +11661,7 @@ doctrine_research_exact_step_hunter_killers_track_screens = {
 
 doctrine_research_exact_step_torpedo_primacy_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@torpedo_primacy_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11635,6 +11687,7 @@ doctrine_research_exact_step_torpedo_primacy_track_screens = {
 
 doctrine_research_exact_step_anti_aircraft_cruisers_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@anti_aircraft_cruisers_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11660,6 +11713,7 @@ doctrine_research_exact_step_anti_aircraft_cruisers_track_screens = {
 
 doctrine_research_exact_step_screen_support_focus_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@screen_support_focus_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11685,6 +11739,7 @@ doctrine_research_exact_step_screen_support_focus_track_screens = {
 
 doctrine_research_exact_step_jeune_ecole_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@jeune_ecole_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11710,6 +11765,7 @@ doctrine_research_exact_step_jeune_ecole_track_screens = {
 
 doctrine_research_exact_step_patrol_boats_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@patrol_boats_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11735,6 +11791,7 @@ doctrine_research_exact_step_patrol_boats_track_screens = {
 
 doctrine_research_exact_step_carrier_battlegroups_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@carrier_battlegroups_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11760,6 +11817,7 @@ doctrine_research_exact_step_carrier_battlegroups_track_carriers = {
 
 doctrine_research_exact_step_floating_airfields_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@floating_airfields_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11785,6 +11843,7 @@ doctrine_research_exact_step_floating_airfields_track_carriers = {
 
 doctrine_research_exact_step_escort_carrier_support_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@escort_carrier_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11810,6 +11869,7 @@ doctrine_research_exact_step_escort_carrier_support_track_carriers = {
 
 doctrine_research_exact_step_broad_naval_support_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@broad_naval_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11835,6 +11895,7 @@ doctrine_research_exact_step_broad_naval_support_track_carriers = {
 
 doctrine_research_exact_step_massed_carrier_fleet_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@massed_carrier_fleet_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11860,6 +11921,7 @@ doctrine_research_exact_step_massed_carrier_fleet_track_carriers = {
 
 doctrine_research_exact_step_light_task_forces_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@light_task_forces_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11885,6 +11947,7 @@ doctrine_research_exact_step_light_task_forces_track_carriers = {
 
 doctrine_research_exact_step_line_of_battle_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@line_of_battle_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11910,6 +11973,7 @@ doctrine_research_exact_step_line_of_battle_track_capital_ships = {
 
 doctrine_research_exact_step_battlecruiser_supremacy_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@battlecruiser_supremacy_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11935,6 +11999,7 @@ doctrine_research_exact_step_battlecruiser_supremacy_track_capital_ships = {
 
 doctrine_research_exact_step_armored_raiders_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_raiders_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11960,6 +12025,7 @@ doctrine_research_exact_step_armored_raiders_track_capital_ships = {
 
 doctrine_research_exact_step_coastal_defence_fleet_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@coastal_defence_fleet_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -11985,6 +12051,7 @@ doctrine_research_exact_step_coastal_defence_fleet_track_capital_ships = {
 
 doctrine_research_exact_step_naval_gunfire_support_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@naval_gunfire_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12010,6 +12077,7 @@ doctrine_research_exact_step_naval_gunfire_support_track_capital_ships = {
 
 doctrine_research_exact_step_battleship_antiair_screen_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@battleship_antiair_screen_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12035,6 +12103,7 @@ doctrine_research_exact_step_battleship_antiair_screen_track_capital_ships = {
 
 doctrine_research_exact_step_air_subdoctrine_fighter_homeland_defense_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_homeland_defense_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12060,6 +12129,7 @@ doctrine_research_exact_step_air_subdoctrine_fighter_homeland_defense_track_figh
 
 doctrine_research_exact_step_air_subdoctrine_escort_fighter_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_escort_fighter_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12085,6 +12155,7 @@ doctrine_research_exact_step_air_subdoctrine_escort_fighter_track_fighter_aircra
 
 doctrine_research_exact_step_air_subdoctrine_fighter_bombers_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_bombers_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12110,6 +12181,7 @@ doctrine_research_exact_step_air_subdoctrine_fighter_bombers_track_fighter_aircr
 
 doctrine_research_exact_step_air_subdoctrine_tactical_flexibility_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_tactical_flexibility_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12135,6 +12207,7 @@ doctrine_research_exact_step_air_subdoctrine_tactical_flexibility_track_fighter_
 
 doctrine_research_exact_step_air_subdoctrine_dogfighting_mastery_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_dogfighting_mastery_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12160,6 +12233,7 @@ doctrine_research_exact_step_air_subdoctrine_dogfighting_mastery_track_fighter_a
 
 doctrine_research_exact_step_air_subdoctrine_fighter_central_field_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_central_field_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12185,6 +12259,7 @@ doctrine_research_exact_step_air_subdoctrine_fighter_central_field_track_fighter
 
 doctrine_research_exact_step_air_subdoctrine_flying_artillery_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flying_artillery_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12210,6 +12285,7 @@ doctrine_research_exact_step_air_subdoctrine_flying_artillery_track_strike_aircr
 
 doctrine_research_exact_step_air_subdoctrine_dive_bombers_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_dive_bombers_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12235,6 +12311,7 @@ doctrine_research_exact_step_air_subdoctrine_dive_bombers_track_strike_aircraft 
 
 doctrine_research_exact_step_air_subdoctrine_flexible_fire_support_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flexible_fire_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12260,6 +12337,7 @@ doctrine_research_exact_step_air_subdoctrine_flexible_fire_support_track_strike_
 
 doctrine_research_exact_step_air_subdoctrine_carrier_strikes_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_carrier_strikes_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12285,6 +12363,7 @@ doctrine_research_exact_step_air_subdoctrine_carrier_strikes_track_strike_aircra
 
 doctrine_research_exact_step_air_subdoctrine_naval_strike_tactics_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_naval_strike_tactics_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12310,6 +12389,7 @@ doctrine_research_exact_step_air_subdoctrine_naval_strike_tactics_track_strike_a
 
 doctrine_research_exact_step_air_subdoctrine_naval_torpedo_tactics_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_naval_torpedo_tactics_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12335,6 +12415,7 @@ doctrine_research_exact_step_air_subdoctrine_naval_torpedo_tactics_track_strike_
 
 doctrine_research_exact_step_air_subdoctrine_bomber_interception_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_bomber_interception_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12360,6 +12441,7 @@ doctrine_research_exact_step_air_subdoctrine_bomber_interception_track_medium_ai
 
 doctrine_research_exact_step_air_subdoctrine_long_range_escort_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_long_range_escort_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12385,6 +12467,7 @@ doctrine_research_exact_step_air_subdoctrine_long_range_escort_track_medium_airc
 
 doctrine_research_exact_step_air_subdoctrine_operational_air_support_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_operational_air_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12410,6 +12493,7 @@ doctrine_research_exact_step_air_subdoctrine_operational_air_support_track_mediu
 
 doctrine_research_exact_step_air_subdoctrine_tactical_battlefield_support_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_tactical_battlefield_support_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12435,6 +12519,7 @@ doctrine_research_exact_step_air_subdoctrine_tactical_battlefield_support_track_
 
 doctrine_research_exact_step_air_subdoctrine_theater_interdiction_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_theater_interdiction_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12460,6 +12545,7 @@ doctrine_research_exact_step_air_subdoctrine_theater_interdiction_track_medium_a
 
 doctrine_research_exact_step_air_subdoctrine_aerial_reconnaissance_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_aerial_reconnaissance_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12485,6 +12571,7 @@ doctrine_research_exact_step_air_subdoctrine_aerial_reconnaissance_track_medium_
 
 doctrine_research_exact_step_air_subdoctrine_night_bombing_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_night_bombing_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12510,6 +12597,7 @@ doctrine_research_exact_step_air_subdoctrine_night_bombing_track_heavy_aircraft 
 
 doctrine_research_exact_step_air_subdoctrine_carpet_bombing_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_carpet_bombing_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12535,6 +12623,7 @@ doctrine_research_exact_step_air_subdoctrine_carpet_bombing_track_heavy_aircraft
 
 doctrine_research_exact_step_air_subdoctrine_deep_air_raids_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_deep_air_raids_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12560,6 +12649,7 @@ doctrine_research_exact_step_air_subdoctrine_deep_air_raids_track_heavy_aircraft
 
 doctrine_research_exact_step_air_subdoctrine_flying_fortresses_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flying_fortresses_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12585,6 +12675,7 @@ doctrine_research_exact_step_air_subdoctrine_flying_fortresses_track_heavy_aircr
 
 doctrine_research_exact_step_air_subdoctrine_coastal_air_patrol_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_coastal_air_patrol_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12610,6 +12701,7 @@ doctrine_research_exact_step_air_subdoctrine_coastal_air_patrol_track_heavy_airc
 
 doctrine_research_exact_step_air_subdoctrine_open_ocean_air_patrol_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_open_ocean_air_patrol_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12635,6 +12727,7 @@ doctrine_research_exact_step_air_subdoctrine_open_ocean_air_patrol_track_heavy_a
 
 doctrine_research_exact_step_air_subdoctrine_heavy_aircraft_focus_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_heavy_aircraft_focus_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12660,6 +12753,7 @@ doctrine_research_exact_step_air_subdoctrine_heavy_aircraft_focus_track_heavy_ai
 
 doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12684,6 +12778,7 @@ doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12708,6 +12803,7 @@ doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_marines_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12732,6 +12828,7 @@ doctrine_research_exact_step_marines_1_track_special_forces_first = {
 
 doctrine_research_exact_step_marines_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12756,6 +12853,7 @@ doctrine_research_exact_step_marines_2_track_special_forces_first = {
 
 doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12780,6 +12878,7 @@ doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12804,6 +12903,7 @@ doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_rangers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12828,6 +12928,7 @@ doctrine_research_exact_step_rangers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_rangers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12852,6 +12953,7 @@ doctrine_research_exact_step_rangers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_mountaineers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12876,6 +12978,7 @@ doctrine_research_exact_step_mountaineers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_mountaineers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12900,6 +13003,7 @@ doctrine_research_exact_step_mountaineers_2_track_special_forces_second = {
 
 doctrine_research_exact_step_marines_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12924,6 +13028,7 @@ doctrine_research_exact_step_marines_1_track_special_forces_second = {
 
 doctrine_research_exact_step_marines_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12948,6 +13053,7 @@ doctrine_research_exact_step_marines_2_track_special_forces_second = {
 
 doctrine_research_exact_step_paratroopers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12972,6 +13078,7 @@ doctrine_research_exact_step_paratroopers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_paratroopers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -12996,6 +13103,7 @@ doctrine_research_exact_step_paratroopers_2_track_special_forces_second = {
 
 doctrine_research_exact_step_rangers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
@@ -13020,6 +13128,7 @@ doctrine_research_exact_step_rangers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_rangers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_step_limit = 0 }
 	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
 	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {

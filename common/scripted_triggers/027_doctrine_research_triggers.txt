@@ -226,6 +226,28 @@ doctrine_research_ai_fields_armour = {
 	}
 }
 
+# Line and support artillery, rocket artillery, anti-tank, and anti-air
+# battalions or companies. Superior Firepower's bonuses serve the line and
+# support artillery categories, and the Army Combat Support track earns its
+# mastery from the same family, so both read this one list.
+doctrine_research_ai_fields_fire_support = {
+	OR = {
+		has_template_containing_unit = artillery_brigade
+		has_template_containing_unit = mot_artillery_brigade
+		has_template_containing_unit = rocket_artillery_brigade
+		has_template_containing_unit = mot_rocket_artillery_brigade
+		has_template_containing_unit = motorized_rocket_brigade
+		has_template_containing_unit = artillery
+		has_template_containing_unit = rocket_artillery
+		has_template_containing_unit = anti_tank_brigade
+		has_template_containing_unit = mot_anti_tank_brigade
+		has_template_containing_unit = anti_tank
+		has_template_containing_unit = anti_air_brigade
+		has_template_containing_unit = mot_anti_air_brigade
+		has_template_containing_unit = anti_air
+	}
+}
+
 # Country scope, after doctrine_research_prepare_track_display. True when the
 # country fields the formations that the selected track's mastery and bonuses
 # serve, so only candidates that differ inside one track pool are compared.
@@ -238,8 +260,8 @@ doctrine_research_ai_fields_armour = {
 #   serve: Hazard Assault the protection and chemical reconnaissance
 #   detachments and Chaos Battalions; Contaminant Fire Support the chemical
 #   projector batteries, chemical ammunition trains, and Livens projector
-#   companies; Toxic Armored Warfare the armoured delivery detachments and
-#   chemical tank companies; Integrated CBRN Command the HQ operations,
+#   companies; Toxic Armored Warfare the light, medium, and heavy armoured
+#   delivery detachments; Integrated CBRN Command the HQ operations,
 #   protective logistics, and medical countermeasure sections.
 doctrine_research_ai_selected_track_has_force_fit = {
 	OR = {
@@ -256,17 +278,7 @@ doctrine_research_ai_selected_track_has_force_fit = {
 		AND = {
 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
 			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
-			OR = {
-				has_template_containing_unit = artillery_brigade
-				has_template_containing_unit = mot_artillery_brigade
-				has_template_containing_unit = rocket_artillery_brigade
-				has_template_containing_unit = artillery
-				has_template_containing_unit = rocket_artillery
-				has_template_containing_unit = anti_tank
-				has_template_containing_unit = anti_tank_brigade
-				has_template_containing_unit = anti_air
-				has_template_containing_unit = anti_air_brigade
-			}
+			doctrine_research_ai_fields_fire_support = yes
 		}
 		AND = {
 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
