@@ -132,13 +132,16 @@ chaosx_nr25_take_seized_material = {
 	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_seized_evidence }
 	set_variable = { chaosx_nr25_last_seized_evidence = chaosx_nr25_seized_evidence }
 	set_temp_variable = { chaosx_alien_recovery_fragment_seized = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_seized_slot = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
 	chaosx_alien_recovery_ledger_seize_fragment = yes
 	clr_country_flag = chaosx_nr25_last_seizure_took_fragment
+	set_variable = { chaosx_nr25_last_seized_slot = constant:chaosx_nr25_value.zero }
 	if = {
 		limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.one compare = equals } }
 		set_country_flag = chaosx_nr25_last_seizure_took_fragment
 		set_country_flag = chaosx_nr25_fragment_recovered
+		set_variable = { chaosx_nr25_last_seized_slot = chaosx_alien_recovery_seized_slot }
 	}
 	set_variable = { chaosx_nr25_last_seizure_target = event_target:chaosx_nr25_rival_target_scope }
 	chaosx_nr25_clamp_values = yes

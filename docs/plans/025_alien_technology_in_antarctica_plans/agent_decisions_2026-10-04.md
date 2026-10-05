@@ -641,3 +641,15 @@ Decision:
 - The fragment-acquisition caller count spans the runtime effects and the wreck effects, where cutting fragments now lives; it still requires exactly two callers that set the receipt to zero first.
 - The active-hazard test follows D36 to D39: the four evolution pulse helpers are recorded calls, each must run exactly when its own evolution is in force, a disabled set leaves every country and global value untouched, the pulse has seven guarded hazard branches, and a new source test checks that each global helper keeps its own in-force gate. The retired per-country signal, survivor-profile and wreck assertions were replaced by these global equivalents.
 - `python -m unittest discover -s .tools -p "test_event025_*.py"` runs 62 tests, all passing.
+
+## D41. Diplomatic incident responses
+
+Disposition: `implemented`; AI answers are `needs_live_game`.
+
+Basis: spec 007's incident ladder (Level 1 public accusation, Level 2 detention or seizure) and the round 2 remaining-work list.
+
+Decision:
+
+- Level 1 uses three of spec 007's five answers, deny, compensate and admit a limited operation, as the round 2 acceptance requires; offering inspection and counter-accusing are not added. Compensation and admission remove the existing sabotage suspicion opinion and replace it with a goodwill or milder modifier, so the answer has a lasting effect.
+- Level 2 uses the seizure demand: returning people, records and the fragment together, so prisoner exchange and fragment return are one answer. Arbitration, reinforcement as a Level 2 answer and a bilateral response are not separate options; reinforcement already exists as a clash response.
+- Only public steps (an accusation, a refused demand) add world tension, each through a small named threat. The seized fragment returns through the new ledger API `chaosx_alien_recovery_ledger_return_fragment`, which moves only the recorded slot and only while the seizer still holds it.

@@ -1349,10 +1349,166 @@ country_event = {
 
 	trigger = { has_country_flag = chaosx_nr25_participant }
 
+	# Accuse them publicly: world tension, and they must answer.
 	option = {
 		name = chaosx.nr25.61.a
-		ai_chance = { base = 100 }
+		trigger = { FROM = { chaosx_nr25_target_participant_valid = yes } }
 		custom_effect_tooltip = chaosx_nr25_sabotage_attributed_tt
+		custom_effect_tooltip = chaosx_nr25_accuse_publicly_tt
+		hidden_effect = { chaosx_nr25_accuse_publicly = yes }
+		ai_chance = {
+			base = 40
+			modifier = { add = 25 chaosx_nr25_ai_aggressive = yes }
+			modifier = { add = 15 chaosx_nr25_ai_militarised = yes }
+			modifier = { factor = 0.5 chaosx_nr25_ai_risk_averse = yes }
+		}
+	}
+
+	# Keep it quiet: no public incident, and we keep what we learned.
+	option = {
+		name = chaosx.nr25.61.b
+		custom_effect_tooltip = chaosx_nr25_sabotage_attributed_tt
+		custom_effect_tooltip = chaosx_nr25_keep_quiet_tt
+		hidden_effect = { chaosx_nr25_keep_accusation_quiet = yes }
+		ai_chance = {
+			base = 35
+			modifier = { add = 25 chaosx_nr25_ai_risk_averse = yes }
+			modifier = { add = 15 chaosx_nr25_ai_scientific = yes }
+			modifier = { add = 10 chaosx_nr25_ai_leading = yes }
+		}
+	}
+}
+
+# The accused government answers a public accusation. FROM is the accuser.
+country_event = {
+	id = chaosx.nr25.171
+	title = chaosx.nr25.171.t
+	desc = chaosx.nr25.171.d
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.171.a
+		custom_effect_tooltip = chaosx_nr25_answer_deny_tt
+		hidden_effect = { chaosx_nr25_answer_accusation_deny = yes }
+		ai_chance = {
+			base = 40
+			modifier = { add = 25 chaosx_nr25_ai_aggressive = yes }
+			modifier = { add = 10 chaosx_nr25_ai_leading = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.171.b
+		trigger = { has_political_power > constant:chaosx_nr25_incident.compensation_pp }
+		custom_effect_tooltip = chaosx_nr25_answer_compensate_tt
+		hidden_effect = { chaosx_nr25_answer_accusation_compensate = yes }
+		ai_chance = {
+			base = 25
+			modifier = { add = 20 chaosx_nr25_ai_weak = yes }
+			modifier = { add = 15 chaosx_nr25_ai_risk_averse = yes }
+			modifier = { factor = 0.3 chaosx_nr25_ai_aggressive = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.171.c
+		trigger = { has_political_power > constant:chaosx_nr25_incident.admit_pp }
+		custom_effect_tooltip = chaosx_nr25_answer_admit_tt
+		hidden_effect = { chaosx_nr25_answer_accusation_admit = yes }
+		ai_chance = {
+			base = 20
+			modifier = { add = 10 chaosx_nr25_ai_scientific = yes }
+			modifier = { add = 10 chaosx_nr25_ai_risk_averse = yes }
+		}
+	}
+}
+
+# The accuser hears the answer. FROM is the accused.
+country_event = {
+	id = chaosx.nr25.172
+	title = chaosx.nr25.172.t
+	desc = {
+		text = chaosx.nr25.172.d_denied
+		trigger = { check_variable = { var = chaosx_nr25_accusation_answer value = constant:chaosx_nr25_incident.answer_denied compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr25.172.d_compensated
+		trigger = { check_variable = { var = chaosx_nr25_accusation_answer value = constant:chaosx_nr25_incident.answer_compensated compare = equals } }
+	}
+	desc = {
+		text = chaosx.nr25.172.d_admitted
+		trigger = { check_variable = { var = chaosx_nr25_accusation_answer value = constant:chaosx_nr25_incident.answer_admitted compare = equals } }
+	}
+	picture = GFX_report_event_025_antarctic_sabotage
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.172.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The seizer answers a demand to return people, records and the fragment.
+# FROM is the expedition whose camp was seized.
+country_event = {
+	id = chaosx.nr25.173
+	title = chaosx.nr25.173.t
+	desc = chaosx.nr25.173.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.173.a
+		custom_effect_tooltip = chaosx_nr25_seizure_accept_tt
+		hidden_effect = { chaosx_nr25_accept_seizure_return = yes }
+		ai_chance = {
+			base = 35
+			modifier = { add = 25 chaosx_nr25_ai_weak = yes }
+			modifier = { add = 20 chaosx_nr25_ai_risk_averse = yes }
+			modifier = { add = 10 chaosx_nr25_militarisation_contested = yes }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.173.b
+		custom_effect_tooltip = chaosx_nr25_seizure_refuse_tt
+		hidden_effect = { chaosx_nr25_refuse_seizure_return = yes }
+		ai_chance = {
+			base = 40
+			modifier = { add = 25 chaosx_nr25_ai_aggressive = yes }
+			modifier = { add = 15 chaosx_nr25_ai_leading = yes }
+		}
+	}
+}
+
+# The victim of a seizure hears the answer. FROM is the seizer.
+country_event = {
+	id = chaosx.nr25.174
+	title = chaosx.nr25.174.t
+	desc = {
+		text = chaosx.nr25.174.d_accepted
+		trigger = { has_country_flag = chaosx_nr25_seizure_demand_accepted }
+	}
+	desc = {
+		text = chaosx.nr25.174.d_refused
+		trigger = { NOT = { has_country_flag = chaosx_nr25_seizure_demand_accepted } }
+	}
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.174.a
+		custom_effect_tooltip = chaosx_nr25_seizure_answer_tt
+		ai_chance = { base = 100 }
 	}
 }
 
@@ -1391,6 +1547,24 @@ country_event = {
 			modifier = { add = 25 chaosx_nr25_ai_weak = yes }
 			modifier = { add = 15 chaosx_nr25_ai_leading = yes }
 			modifier = { factor = 0.3 chaosx_nr25_ai_aggressive = yes }
+		}
+	}
+
+	# Demand the return of our people, records and fragment (after a seizure).
+	option = {
+		name = chaosx.nr25.165.e
+		trigger = {
+			check_variable = { var = chaosx_nr25_last_clash_kind value = constant:chaosx_nr25_evolution_action.seize compare = equals }
+			FROM = { chaosx_nr25_target_participant_valid = yes }
+			NOT = { has_country_flag = chaosx_nr25_seizure_demand_pending }
+		}
+		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+		custom_effect_tooltip = chaosx_nr25_clash_demand_tt
+		hidden_effect = { chaosx_nr25_demand_seizure_return = yes }
+		ai_chance = {
+			base = 35
+			modifier = { add = 20 chaosx_nr25_ai_weak = yes }
+			modifier = { add = 15 chaosx_nr25_ai_risk_averse = yes }
 		}
 	}
 

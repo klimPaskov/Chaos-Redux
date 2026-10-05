@@ -188,6 +188,13 @@ Every expedition's charts mark the sector lost, so its board frame shows the bur
 Cutting below 30 integrity has a 50% chance to bring out a contaminated fragment: it still enters custody, but brings half the progress and extra exposure (`.346`).
 At zero the hull breaks (`chaosx_nr25_hull_broken`, report `.345` to every expedition still in the race); the command core remains the winning objective and nothing in the final recovery reads integrity.
 
+### Diplomatic incidents
+
+`025_alien_technology_in_antarctica_incident_effects.txt` carries spec 007's incident ladder, with tuning in `025_alien_technology_in_antarctica_incident_constants.txt`.
+A victim that identifies a rival operation (`chaosx.nr25.61`) accuses it publicly (world tension through a named threat) or keeps quiet (6 Intelligence); the accused answers in `.171` by denying (a denial grudge), compensating (30 political power; the accuser gains 8 readiness and 5 survey evidence and its suspicion turns into goodwill) or admitting a limited operation (10 political power and 6 exposure; a milder grudge replaces the suspicion), and the accuser hears the answer in `.172`.
+After an armed seizure the victim can demand its people and records back from the clash report (`.165`); the seizer accepts in `.173` (detained crews, the carried-off evidence and the seized fragment return through `chaosx_alien_recovery_ledger_return_fragment`, both governments gain the settlement opinion and militarisation falls by 8) or refuses publicly (world tension, the refusal grudge, militarisation +3), and the victim hears the answer in `.174`.
+Every step is bilateral, an unidentified operation never reaches the ladder, and nothing declares war.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

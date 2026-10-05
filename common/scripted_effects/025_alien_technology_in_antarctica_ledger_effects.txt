@@ -1042,9 +1042,10 @@ chaosx_alien_recovery_ledger_transfer_physical_custody = {
 # COUNTRY scope (the seizing country). Forcible single-slot transfer used by
 # an Evolution III outpost seizure: moves the lowest fragment slot held by the
 # event target chaosx_nr25_rival_target_scope to this country and keeps its
-# role. The recovered core never moves this way. Output: temporary
-# chaosx_alien_recovery_fragment_seized, one when a slot moved; the caller
-# sets it and chaosx_alien_recovery_fragment_assigned to zero first.
+# role. The recovered core never moves this way. Outputs: temporary
+# chaosx_alien_recovery_fragment_seized, one when a slot moved, and
+# chaosx_alien_recovery_seized_slot, the slot that moved; the caller sets
+# both and chaosx_alien_recovery_fragment_assigned to zero first.
 chaosx_alien_recovery_ledger_seize_fragment = {
 	if = {
 		limit = {
@@ -1074,6 +1075,7 @@ chaosx_alien_recovery_ledger_seize_fragment = {
 							set_temp_variable = { chaosx_alien_recovery_fragment_role = global.chaosx_alien_recovery_fragment_[SLOT]_role }
 							chaosx_alien_recovery_ledger_assign_fragment_slot_[SLOT] = yes
 							set_temp_variable = { chaosx_alien_recovery_fragment_seized = constant:chaosx_nr25_value.one }
+							set_temp_variable = { chaosx_alien_recovery_seized_slot = chaosx_alien_recovery_seize_slot }
 						}
 					}
 					SLOT = "[?chaosx_alien_recovery_seize_slot|.0]"
@@ -1084,6 +1086,51 @@ chaosx_alien_recovery_ledger_seize_fragment = {
 			limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.one compare = equals } }
 			chaosx_alien_recovery_ledger_refresh_country_fragments = yes
 			event_target:chaosx_nr25_rival_target_scope = { chaosx_alien_recovery_ledger_refresh_country_fragments = yes }
+			chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+		}
+	}
+}
+
+# COUNTRY scope (the current holder). Returns one specific fragment slot to
+# the chain-local event target chaosx_alien_recovery_return_recipient, used
+# when a seizure is settled. Input: temporary chaosx_alien_recovery_return_slot
+# (1 to 6). The slot moves, with its role, only while this country holds it.
+# Output: temporary chaosx_alien_recovery_fragment_returned, one when it moved;
+# the caller sets it and chaosx_alien_recovery_fragment_assigned to zero first.
+chaosx_alien_recovery_ledger_return_fragment = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_return_recipient
+			event_target:chaosx_alien_recovery_return_recipient = {
+				exists = yes
+				is_subject = no
+				has_capitulated = no
+				NOT = { tag = PREV }
+			}
+			check_variable = { var = chaosx_alien_recovery_return_slot value = constant:chaosx_nr25_value.zero compare = greater_than }
+			check_variable = { var = chaosx_alien_recovery_return_slot value = constant:chaosx_nr25_cost.fragments_total compare = less_than_or_equals }
+		}
+		chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+		set_temp_variable = { chaosx_alien_recovery_fragment_role = constant:chaosx_nr25_value.zero }
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+						has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned
+						event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { tag = PREV }
+					}
+					set_temp_variable = { chaosx_alien_recovery_fragment_role = global.chaosx_alien_recovery_fragment_[SLOT]_role }
+					event_target:chaosx_alien_recovery_return_recipient = { chaosx_alien_recovery_ledger_assign_fragment_slot_[SLOT] = yes }
+					set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.one }
+				}
+			}
+			SLOT = "[?chaosx_alien_recovery_return_slot|.0]"
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_fragment_returned value = constant:chaosx_nr25_value.one compare = equals } }
+			chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+			event_target:chaosx_alien_recovery_return_recipient = { chaosx_alien_recovery_ledger_refresh_country_fragments = yes }
 			chaosx_alien_recovery_ledger_project_fragment_arrays = yes
 		}
 	}

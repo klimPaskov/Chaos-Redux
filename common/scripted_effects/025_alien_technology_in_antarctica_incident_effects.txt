@@ -1,0 +1,135 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 DIPLOMATIC INCIDENTS
+# ============================================================================
+# Overview:
+# - Spec 007's incident ladder for the Antarctic race, bilateral between the
+#   two countries named in each step.
+# - Level 1: a victim that has identified a rival operation (chaosx.nr25.61)
+#   accuses the rival publicly or keeps quiet. A public accusation adds world
+#   tension and asks the accused (chaosx.nr25.171) to deny, compensate or
+#   admit a limited operation; the accuser hears the answer (.172).
+# - Level 2: a victim whose camp was seized (chaosx.nr25.165) demands its
+#   people, records and fragment back. The seizer accepts or refuses (.173);
+#   the victim hears the answer (.174). A refusal is public.
+# - An unidentified operation never reaches this ladder, and no step declares
+#   a war.
+# ============================================================================
+
+# COUNTRY scope (the victim; FROM is the identified attacker). A public
+# accusation: world tension, and the accused must answer.
+chaosx_nr25_accuse_publicly = {
+	add_named_threat = { threat = constant:chaosx_nr25_incident.public_threat name = chaosx_nr25_public_accusation }
+	set_country_flag = chaosx_nr25_accusation_made
+	FROM = { country_event = { id = chaosx.nr25.171 days = 1 } }
+}
+
+# COUNTRY scope (the victim). Keeping the identified operation quiet keeps
+# what our security officers learned for our own use.
+chaosx_nr25_keep_accusation_quiet = {
+	add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_incident.quiet_intelligence }
+	chaosx_nr25_clamp_values = yes
+}
+
+# COUNTRY scope (the accused; FROM is the accuser). Deny involvement.
+chaosx_nr25_answer_accusation_deny = {
+	FROM = {
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_accusation_denied }
+		set_variable = { chaosx_nr25_accusation_answer = constant:chaosx_nr25_incident.answer_denied }
+		country_event = { id = chaosx.nr25.172 days = 1 }
+	}
+}
+
+# COUNTRY scope (the accused; FROM is the accuser). Compensate the accuser:
+# political power from us, readiness and survey evidence for them.
+chaosx_nr25_answer_accusation_compensate = {
+	add_political_power = constant:chaosx_nr25_incident.compensation_pp_delta
+	FROM = {
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_incident.compensation_readiness }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_incident.compensation_evidence }
+		chaosx_nr25_clamp_values = yes
+		remove_opinion_modifier = { target = PREV modifier = chaosx_nr25_sabotage_suspicion }
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_incident_compensated }
+		set_variable = { chaosx_nr25_accusation_answer = constant:chaosx_nr25_incident.answer_compensated }
+		country_event = { id = chaosx.nr25.172 days = 1 }
+	}
+}
+
+# COUNTRY scope (the accused; FROM is the accuser). Admit a limited
+# operation: a smaller political price and more exposure for our expedition,
+# and a milder grudge than the original suspicion.
+chaosx_nr25_answer_accusation_admit = {
+	add_political_power = constant:chaosx_nr25_incident.admit_pp_delta
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_incident.admit_exposure }
+	chaosx_nr25_clamp_values = yes
+	FROM = {
+		remove_opinion_modifier = { target = PREV modifier = chaosx_nr25_sabotage_suspicion }
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_incident_admitted }
+		set_variable = { chaosx_nr25_accusation_answer = constant:chaosx_nr25_incident.answer_admitted }
+		country_event = { id = chaosx.nr25.172 days = 1 }
+	}
+}
+
+# COUNTRY scope (the victim of a seizure; FROM is the seizer). Demand the
+# return of people, records and the seized fragment.
+chaosx_nr25_demand_seizure_return = {
+	set_country_flag = chaosx_nr25_seizure_demand_pending
+	FROM = { country_event = { id = chaosx.nr25.173 days = 1 } }
+}
+
+# COUNTRY scope (the seizer; FROM is the victim). Accept: the detained crews,
+# the carried-off survey evidence and the seized fragment go back, and the
+# ice grows less militarised.
+chaosx_nr25_accept_seizure_return = {
+	set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_last_seized_evidence }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survey_evidence value = chaosx_nr25_returned_evidence compare = less_than } }
+		set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_survey_evidence }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_returned_evidence value = constant:chaosx_nr25_value.zero compare = less_than } }
+		set_temp_variable = { chaosx_nr25_returned_evidence = constant:chaosx_nr25_value.zero }
+	}
+	subtract_from_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_returned_evidence }
+	FROM = { add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_returned_evidence } }
+	FROM = { save_event_target_as = chaosx_alien_recovery_return_recipient }
+	set_temp_variable = { chaosx_alien_recovery_return_slot = chaosx_nr25_last_seized_slot }
+	set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+	chaosx_alien_recovery_ledger_return_fragment = yes
+	clr_country_flag = chaosx_nr25_last_seizure_took_fragment
+	set_variable = { chaosx_nr25_last_seized_slot = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_last_seized_evidence = constant:chaosx_nr25_value.zero }
+	add_opinion_modifier = { target = FROM modifier = chaosx_nr25_seizure_settled }
+	chaosx_nr25_clamp_values = yes
+	FROM = {
+		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_incident.exchange_crew }
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_seizure_settled }
+		clr_country_flag = chaosx_nr25_seizure_demand_pending
+		set_country_flag = chaosx_nr25_seizure_demand_accepted
+		set_variable = { chaosx_nr25_returned_evidence_record = chaosx_nr25_returned_evidence }
+		clr_country_flag = chaosx_nr25_seizure_fragment_returned
+		chaosx_nr25_clamp_values = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_alien_recovery_fragment_returned value = constant:chaosx_nr25_value.one compare = equals } }
+		FROM = { set_country_flag = chaosx_nr25_seizure_fragment_returned }
+	}
+	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_value.zero }
+	subtract_from_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_incident.exchange_militarisation_drop }
+	chaosx_nr25_change_militarisation = yes
+	FROM = { country_event = { id = chaosx.nr25.174 days = 1 } }
+}
+
+# COUNTRY scope (the seizer; FROM is the victim). Refuse: the refusal is
+# public, the victim's grudge deepens and the ice grows more militarised.
+chaosx_nr25_refuse_seizure_return = {
+	add_named_threat = { threat = constant:chaosx_nr25_incident.public_threat name = chaosx_nr25_public_seizure_refusal }
+	FROM = {
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_seizure_refused }
+		clr_country_flag = chaosx_nr25_seizure_demand_pending
+		clr_country_flag = chaosx_nr25_seizure_demand_accepted
+	}
+	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_incident.refused_militarisation_rise }
+	chaosx_nr25_change_militarisation = yes
+	FROM = { country_event = { id = chaosx.nr25.174 days = 1 } }
+}
