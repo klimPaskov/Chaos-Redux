@@ -103,3 +103,6 @@ Contamination map mode (B037, this workstream's part): implemented on the consum
 The Fallout marker removal turned out to be accepted Fallout design (spec 68 line 69), so the routing note above is superseded: the Fallout owner has nothing to change, and the nuclear branch now also reads the live intensity and expiry record that the sweep keeps.
 The colours remain a live-game check in a post-sweep save.
 Warfare help page figures (priority 3 item 9): implemented, see section 15. The blocking churn was line endings only, so the edit did not entangle another diff.
+Harness document placement rule (priority 3 item 11): implemented, see section 16. The Event 029 paragraph in the same file stays the other owner's uncommitted work.
+Assault-battalion audio (priority 3 item 10): decided, see section 17. The runtime set ships; a user listening preference can still reopen it.
+Legacy chemical-tank entries (priority 3 item 12): not started. `common/synchronized_dynamic_tokens/chaosx_tokens.txt` currently carries 136 lines of another owner's uncommitted additions, so a renumbering pass cannot be committed cleanly from this workstream now.

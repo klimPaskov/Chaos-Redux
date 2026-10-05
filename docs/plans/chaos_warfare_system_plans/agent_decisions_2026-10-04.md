@@ -151,3 +151,17 @@ The getter reads the scale from `condemnation_decay.minimum_total` and `condemna
 Basis for editing the shared key now: the 333 "changed" lines in `localisation/english/chaosx_gui_l_english.yml` are line endings only. The committed blob mixes CRLF and LF lines and the working copy is all CRLF, so `git diff --ignore-cr-at-eol` is empty; no thread has uncommitted content there. The commit carries a blob built from HEAD with only line 58 replaced and its CRLF kept, so the line-ending state of every other line is untouched in both the commit and the working tree.
 The paragraph body moved into a CBRN-owned key so later tuning text changes stay in this workstream's file; the shared key changed on one line.
 Whether nested scripted localisation renders three levels deep in this text box is not separately proven, but the Chaos Meter tab of the same page already renders getters such as `GetChaosMeterValueColored` through the same `GetChaosxHelpBody` chain, so the route is the established one.
+
+## 16. The facility placement rule is in the harness document as its own hunk
+
+Disposition: `implemented`.
+`docs/testing/chaosx_test_country.md` (Special facilities) now states that every special-project facility declares `need_supply`, that a borrowed foreign candidate must border territory CXT already controls, that owned, controlled, supply-connected states (capital, supply node or railway, through `chaosx_test_country_state_is_supply_connected`) are tried first, and that native `can_construct_building` still decides.
+Basis: the file's other uncommitted content is one Event 029 paragraph about forty lines further down plus line-ending differences; the commit carries a blob built from HEAD with only the two new lines inserted, so the Event 029 owner's paragraph and the line endings stay uncommitted and untouched in the working tree. This supersedes the "recorded in the CXT audit note instead" clause of section 6.
+Whether the supply rule makes construction succeed is still a live-game item: the October playtest never entered the harness.
+
+## 17. The runtime assault-battalion sounds ship; the archived set stays archived
+
+Disposition: `implemented`.
+The nine 32-bit float runtime WAVs referenced by `sound/chaos_assault_battalion_sound.asset` remain the shipped set, and the 2026-09-12 16-bit recovery derivatives stay in the archive.
+Basis: the runtime set is the one installed in `a48e000bf`, and `802006bf5` retimed the entity's sound events against the rebuilt animations with these files in place, so it is the set the current animations are timed to. The archived set's own `derived_manifest.json` says `needs_user_review` and `runtime_wiring: parent-owned; not copied`, and eight of its nine durations differ, so swapping it in would change cue lengths against animations it was never timed to. A listening preference cannot be formed by an agent, and replacing working runtime audio on a guess is the riskier option.
+If the user later prefers the archived set after listening, all nine runtime files must be replaced together and the event timings rechecked against the new durations; that is a user-initiated change, not open work for this workstream.

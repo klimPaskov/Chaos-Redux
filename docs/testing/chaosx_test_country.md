@@ -138,6 +138,8 @@ CXT receives one naval, nuclear, air, land, biowarfare, and chemical-warfare fac
 HOI4 limits special-project facilities in the shared `special_project_facility` group to one per state.
 Each type preserves an existing controlled campus or uses an owned, controlled, facility-empty state that passes the installed `can_construct_building` check for that exact building.
 When no owned candidate is legal, the bounded allocator considers non-capital foreign candidates, transfers ownership and control, and revalidates construction.
+Every special-project facility declares `need_supply`, so a borrowed foreign candidate must border territory CXT already controls, and the construction pass tries an owned, controlled state that is already supply-connected (the capital, a supply node or a railway, through `chaosx_test_country_state_is_supply_connected`) before any other owned state.
+Native `can_construct_building` still decides every placement; the supply rule only narrows and orders the candidates.
 Rejected candidates recover their original owner and controller and are excluded from further attempts for that type; the temporary rejection array is cleared after the search.
 Naval candidates require a coast.
 If the world has no legal candidate, the allocator terminates and records an explicit per-type missing-campus flag and aggregate provisioning-incomplete flag; it does not attempt illegal construction or substitute another facility.
