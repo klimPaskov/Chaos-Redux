@@ -146,3 +146,10 @@ Other caller-owned temporary amounts remain unscoped.
 No fee, duration, pressure, reward or AI constant changes.
 The conservative source executor verifies all 37 fields survive return, stay on the quoted country even under a foreign root, and resolve from a state tooltip through the acting root.
 Native tooltip evaluation and formatting remain live checks.
+
+## D44. Match the remaining country-wide contribution requirements
+
+Disposition: implemented after commit review.
+Coordinate Industrial Demand, Emergency Trade Clearing and International Debt Conference use the same readiness and open-commitments gates as country-wide coordinated reconstruction.
+Their requirement text no longer claims that a selected state target is mandatory.
+The source gates and gameplay outcomes are unchanged.

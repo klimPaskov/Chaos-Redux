@@ -1,0 +1,461 @@
+add_namespace = chaosx.nr35
+
+# Event 35 is a repeatable, low-severity Negative Economy member. The normal
+# pool and the Negative Economy cluster both fire it on the event-system host,
+# so both pick one weighted country that is not already in a depression. A
+# cluster pick keeps the cluster's pacing lane.
+
+country_event = {
+	id = chaosx.nr35.1
+	title = chaosx.nr35.1.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		great_depression_mark_history_dispatch = yes
+		great_depression_select_independent_target = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.2
+	title = chaosx.nr35.2.t
+	desc = chaosx.nr35.2.d
+	picture = [GetGreatDepressionEventPicture]
+
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = great_depression_report_pending }
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = great_depression_first_spread_news_pending NOT = { has_global_flag = great_depression_worldwide_episode_active } }
+				news_event = { id = chaosx.nr35.15 days = 2 }
+			}
+			else_if = {
+				limit = { has_country_flag = great_depression_news_pending NOT = { has_global_flag = great_depression_worldwide_episode_active } }
+				news_event = { id = chaosx.news.40 days = 2 }
+			}
+			clr_country_flag = great_depression_first_spread_news_pending
+			clr_country_flag = great_depression_news_pending
+			clr_country_flag = great_depression_report_pending
+		}
+	}
+
+	option = {
+		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
+		name = chaosx.nr35.2.a
+		show_ideas_tooltip = great_depression_active
+	}
+}
+
+# Baseline National Breakdown is opened only by the sustained-severe pulse
+# adapter. The hidden callback gives the mission surface a durable chain
+# receipt without introducing a second pacing route or a duplicate popup.
+
+country_event = {
+	id = chaosx.nr35.3
+	title = chaosx.nr35.3.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = great_depression_active
+				has_country_flag = great_depression_national_breakdown_warning
+				check_variable = { var = great_depression_evolution_floor value = constant:great_depression_evolution.baseline compare = equals }
+				check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.breakdown_threshold compare = greater_than_or_equals }
+				NOT = { has_country_flag = great_depression_social_incident_open }
+			}
+			set_country_flag = great_depression_national_breakdown_chain_open
+			set_variable = { great_depression_national_breakdown_chain_day = global.num_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.4
+	title = chaosx.nr35.4.t
+	desc = chaosx.nr35.4.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.4.a
+		ai_chance = { base = constant:great_depression_event_option_weight.coup_execute }
+		great_depression_execute_social_coup = yes
+	}
+	option = {
+		name = chaosx.nr35.4.b
+		ai_chance = { base = constant:great_depression_event_option_weight.coup_stand_down }
+		great_depression_stand_down_social_coup = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.5
+	title = chaosx.nr35.5.t
+	desc = chaosx.nr35.5.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.5.a
+		ai_chance = { base = constant:great_depression_event_option_weight.autonomy_recognize }
+		great_depression_recognize_regional_autonomy = yes
+	}
+	option = {
+		name = chaosx.nr35.5.b
+		ai_chance = { base = constant:great_depression_event_option_weight.autonomy_integrate }
+		great_depression_integrate_regional_autonomy = yes
+	}
+}
+
+# Baseline National Breakdown remains distinct from Social Collapse. The
+# ordinary non-war outcomes always remain available, while civil conflict is
+# a bounded AI outcome and a player choice only after the complete force,
+# territory, capacity, and recent-war gates succeed.
+country_event = {
+	id = chaosx.nr35.6
+	title = chaosx.nr35.6.t
+	desc = chaosx.nr35.6.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_national_breakdown_resolution_queued
+		NOT = { has_country_flag = great_depression_evolution_social_collapse }
+		NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+	}
+
+	option = {
+		name = chaosx.nr35.6.a
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_emergency_settlement }
+		great_depression_resolve_national_breakdown_emergency_settlement = yes
+	}
+	option = {
+		name = chaosx.nr35.6.b
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_cabinet_replacement }
+		great_depression_resolve_national_breakdown_cabinet_replacement = yes
+	}
+	option = {
+		name = chaosx.nr35.6.c
+		trigger = { great_depression_baseline_breakdown_civil_conflict_gate = yes }
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_civil_conflict }
+		great_depression_resolve_national_breakdown_civil_conflict = yes
+	}
+}
+
+# The callback owns only delayed external capacity cleanup and has no popup,
+# history record, Chaos transaction, or normal-event pacing.
+country_event = {
+	id = chaosx.nr35.7
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = great_depression_civilian_release_queued
+		if = {
+			limit = {
+				NOT = { has_country_flag = great_depression_active }
+				has_country_flag = great_depression_action_lock
+			}
+			great_depression_schedule_civilian_commitment_review = yes
+		}
+		else = { great_depression_release_idle_civilian_commitment = yes }
+	}
+}
+
+# Registered maintenance runs with the affected country as ROOT, rather than
+# the global-host country that walked the registry. Cadence remains in the
+# existing pulse effect, and this receiver owns no normal-event pacing.
+country_event = {
+	id = chaosx.nr35.8
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = great_depression_country_pulse_queued
+		if = {
+			limit = { great_depression_active_country_is_valid = yes }
+			great_depression_update_achievement_continuity = yes
+			great_depression_refresh_mission_capacity_ledger = yes
+			great_depression_weekly_pulse = yes
+		}
+	}
+}
+
+# Normal and cluster selection preserve their one chosen country and
+# revalidate it at delivery. This receiver never chooses a replacement target.
+country_event = {
+	id = chaosx.nr35.9
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { great_depression_is_valid_independent_target = yes }
+			great_depression_prepare_independent_call = yes
+			great_depression_start_or_deepen = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = great_depression_active }
+				FROM = { is_ai = no }
+			}
+			FROM = { country_event = { id = chaosx.nr35.22 } }
+		}
+		clr_country_flag = great_depression_cluster_target_pending
+	}
+}
+
+# An independent firing completes the dispatcher's history row once the
+# dispatcher has written it, then records its own row only if none arrived.
+country_event = {
+	id = chaosx.nr35.10
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		great_depression_complete_pending_history = yes
+	}
+}
+
+# National recovery report. great_depression_try_complete_recovery queues it
+# once after an episode closes, and it reads only the frozen
+# great_depression_last_completed_* summary because the active crisis state
+# is already cleared. Relapse, conversion, and deepening never queue it.
+country_event = {
+	id = chaosx.nr35.11
+	title = chaosx.nr35.11.t
+	desc = chaosx.nr35.11.d
+	picture = GFX_report_event_great_depression_recovery
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_recovery_report_pending
+		has_variable = great_depression_recovery_report_episode_id
+		check_variable = { var = great_depression_recovery_report_episode_id value = great_depression_last_completed_episode_id compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr35.11.a
+		ai_chance = { base = constant:great_depression_event_option_weight.recovery_report }
+		clr_country_flag = great_depression_recovery_report_pending
+		clear_variable = great_depression_recovery_report_episode_id
+		great_depression_show_recovery_report_ideas = yes
+	}
+}
+
+# Financial Contagion report for the origin. Queued once per episode by
+# great_depression_queue_contagion_activation_report when the evolution
+# activates on a crisis already under way. The most exposed partner and the
+# partner count were frozen when it was queued.
+country_event = {
+	id = chaosx.nr35.12
+	title = chaosx.nr35.12.t
+	desc = chaosx.nr35.12.d
+	picture = GFX_report_event_great_depression_contagion
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_active
+		has_country_flag = great_depression_evolution_financial_contagion
+		check_variable = { var = great_depression_contagion_report_episode_id value = great_depression_active_episode_id compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr35.12.a
+		ai_chance = { base = constant:great_depression_event_option_weight.contagion_report }
+		show_ideas_tooltip = great_depression_economic_contagion
+	}
+}
+
+# Social Collapse report. Queued once per episode by
+# great_depression_queue_social_collapse_activation_report when the evolution
+# activates on a crisis already under way, after the primary movement is chosen.
+country_event = {
+	id = chaosx.nr35.13
+	title = chaosx.nr35.13.t
+	desc = chaosx.nr35.13.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_active
+		has_country_flag = great_depression_evolution_social_collapse
+		check_variable = { var = great_depression_social_report_episode_id value = great_depression_active_episode_id compare = equals }
+	}
+
+	option = {
+		name = chaosx.nr35.13.a
+		ai_chance = { base = constant:great_depression_event_option_weight.social_collapse_report }
+	}
+}
+
+# Exposed-partner report. A source queues it once per source episode when this
+# country's exposure becomes material. It summarizes simultaneous origins and
+# never treats this country as being in a depression.
+country_event = {
+	id = chaosx.nr35.14
+	title = chaosx.nr35.14.t
+	desc = chaosx.nr35.14.d
+	picture = GFX_report_event_great_depression_contagion
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_exposure_report_queued
+		has_variable = great_depression_exposure_report_origins^num
+		check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_api.zero compare = greater_than }
+	}
+
+	immediate = {
+		hidden_effect = { great_depression_open_exposed_partner_report = yes }
+	}
+
+	option = {
+		name = chaosx.nr35.14.a
+		ai_chance = { base = constant:great_depression_event_option_weight.exposure_report }
+	}
+}
+
+# World news for the first full depression that one origin episode spreads to
+# another country. Descendants share the announcement guard. The converted
+# country's report sends it in place of ordinary news, so FROM is newly struck.
+news_event = {
+	id = chaosx.nr35.15
+	title = chaosx.nr35.15.t
+	desc = chaosx.nr35.15.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.15.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# World news for the global episode. great_depression_queue_global_news sends
+# each once per global episode id and nothing while The Second Great Depression
+# evolution is switched off. The origin is named only when the activation
+# source was known.
+news_event = {
+	id = chaosx.nr35.16
+	title = chaosx.nr35.16.t
+	desc = chaosx.nr35.16.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.16.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+news_event = {
+	id = chaosx.nr35.17
+	title = chaosx.nr35.17.t
+	desc = chaosx.nr35.17.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.17.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+news_event = {
+	id = chaosx.nr35.18
+	title = chaosx.nr35.18.t
+	desc = chaosx.nr35.18.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.18.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# Failure of the worldwide recovery conference. Sent once per global episode
+# by great_depression_queue_global_news, never while The Second Great
+# Depression evolution is switched off, and it names the convener.
+news_event = {
+	id = chaosx.nr35.19
+	title = chaosx.nr35.19.t
+	desc = chaosx.nr35.19.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.19.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# Formation of a clearing bloc: sent once per global episode by
+# great_depression_queue_global_news when the bloc reaches its formation size
+# with a major member, never while The Second Great Depression is switched off.
+news_event = {
+	id = chaosx.nr35.20
+	title = chaosx.nr35.20.t
+	desc = chaosx.nr35.20.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.20.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# Formation of a protectionist bloc, under the same once-per-global-episode
+# and switched-off evolution rules.
+news_event = {
+	id = chaosx.nr35.21
+	title = chaosx.nr35.21.t
+	desc = chaosx.nr35.21.d
+	picture = GFX_news_event_great_depression
+
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.21.a
+		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# The entry selector or rejected receiver sends this only to its human sender.
+# It creates no crisis, world news, history entry or economic payment.
+country_event = {
+	id = chaosx.nr35.22
+	title = chaosx.nr35.22.t
+	desc = chaosx.nr35.22.d
+	picture = GFX_report_event_great_depression
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr35.22.a
+		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
+	}
+}
