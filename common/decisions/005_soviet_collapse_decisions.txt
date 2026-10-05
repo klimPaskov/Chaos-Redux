@@ -393,6 +393,7 @@ soviet_collapse_soviet_category = {
 				has_global_flag = soviet_collapse_super_event_union_unmade_fired
 				has_war = yes
 				any_enemy_country = { is_soviet_collapse_breakaway_country = yes }
+				can_pay_soviet_collapse_emergency_mobilization_cost = yes
 				NOT = {
 					has_country_flag = soviet_collapse_emergency_mobilization_used
 				}
@@ -406,7 +407,9 @@ soviet_collapse_soviet_category = {
 				has_country_flag = soviet_collapse_emergency_mobilization_used
 			}
 		}
-		custom_cost_trigger = { always = yes }
+		custom_cost_trigger = {
+			hidden_trigger = { can_pay_soviet_collapse_emergency_mobilization_cost = yes }
+		}
 		custom_cost_text = soviet_collapse_emergency_mobilization_cost_text
 		fire_only_once = yes
 		complete_effect = {
@@ -8592,8 +8595,8 @@ soviet_collapse_ukrainian_league_category = {
 			ukr_soviet_collapse_apply_league_program_credit = yes
 			custom_effect_tooltip = ukr_soviet_collapse_assign_league_arms_quota_tt
 			hidden_effect = {
-				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
-				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+				set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
 				black_friday_credit_sale_purchase = yes
 			}
 		}
@@ -15003,7 +15006,6 @@ soviet_collapse_uwr_blacksite_category = {
 
 	uwr_authorize_field_release_raids = {
 		icon = GFX_decision_005_uwr_authorize_field_release_raids
-		cost = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_cost
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = uwr_authorize_field_release_raids_cost_text_tooltip
@@ -15050,7 +15052,6 @@ soviet_collapse_uwr_blacksite_category = {
 		icon = GFX_decision_005_uwr_intake_prisoner_transports
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		cost = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_cost
 		target_root_trigger = {
 			tag = UWR
 			NOT = { has_capitulated = yes }

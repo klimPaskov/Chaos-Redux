@@ -1,10 +1,12 @@
 # Event 005 Soviet Collapse Clean Overview
 
-This is the compact entry point for the Soviet Collapse implementation state. It summarizes the current accepted direction and points back to the source map for evidence. Older audits, package notes, asset sidecars, and subagent handoffs remain historical evidence unless `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` marks a specific finding as superseded.
+This is the compact entry point for the Soviet Collapse implementation state. It summarizes the current status and points to the source map for design acceptance bases and evidence. Older audits, package notes, asset sidecars, and subagent handoffs remain historical evidence unless `docs/plans/005_soviet_collapse_plans/source_of_truth_map.md` records a specific disposition.
 
 The detailed companion scopes are [Patron Rivalry and Reconsolidation](patron_rivalry_and_reconsolidation.md) and [Successor Relations](successor_relations.md). This overview owns their shared Event 005 routing and evidence context.
 
-The retained reconciliation snapshot reports that the active package contains 43 focus trees and 1,760 focuses, the semantic shallow-leaf risk is zero, UWR and KMB packages and their final assets are implemented, workbook and CSV parity is complete, Event 005 map positions are clean within the states it consumes, Patron Rivalry plus Reconsolidation and Aftermath are implemented, and every supported weighted surface has complete probability inputs with zero unresolved items. The snapshot reserved a compact MCP focus-layout rewrite as its final source mutation. These are retained package claims, not a fresh implementation or acceptance audit by the documentation cleanup.
+**Current status: incomplete.** The 2026-10-05 implementation audit records unresolved focus layout and fallback eligibility, probability and event/decision MCP evidence, portrait/audio provenance, country map/capital verification, flag provenance, the required asset manifest, and Event Details visual acceptance. Localization is complete for the audited scope: 159 report/news rewrites, 60 broad G3 rewrites, and 19 additional source-backed rewrites, with 100 unconsumed initial G3 candidates documented as dormant and 232 other matches reviewed and retained. The cost and hover patch is complete at source level, but decision scenario inspection returned no result. Read [the current implementation audit](../005_soviet_collapse_implementation_audit.md) and the [source-of-truth map](../../plans/005_soviet_collapse_plans/source_of_truth_map.md) before relying on earlier completion wording.
+
+The 2026-08-09 reconciliation snapshot reports that the active package contained 43 focus trees and 1,760 focuses, with zero semantic shallow-leaf risks; it also records completed UWR/KMB packages, workbook/CSV parity, scoped map positions, Patron Rivalry, Reconsolidation and Aftermath, and then-complete weighted-surface inputs. Those are dated implementation findings, not current validation or design acceptance. The newer focus audit leaves seven tree layouts incomplete, and the 2026-10-05 probability inspection timed out without a current artifact.
 
 ## Current Gameplay Surface
 
@@ -19,9 +21,9 @@ Event 005 is a major Soviet crisis started through `chaosx.nr5.1` and visible ev
 - focus trees: `common/national_focus/005_soviet_collapse_*.txt`
 - localisation: `localisation/english/005_soviet_collapse*.yml`
 - country setup: `history/countries/*`
-- assets: `gfx/`, `interface/`, `music/`, `sound/`, and the current audio evidence under `docs/assets/005_soviet_collapse/`
+- assets: runtime files under `gfx/`, `interface/`, `music/`, and `sound/`; the expected current source-evidence path is unresolved
 
-The historical asset archive `docs/assets/005_soviet_union_collapse/` was deleted by Git commit `79bb425aa6`. Retain that path for provenance only. The current `docs/assets/005_soviet_collapse/` folder contains the 2026-09-01 audio evidence package, while runtime assets remain under the `gfx/`, `interface/`, `music/`, and `sound/` paths above.
+Historical Event 005 documents claim that `docs/assets/005_soviet_union_collapse/` was deleted by Git commit `79bb425aa6`. The parent’s current-worktree check found `git cat-file -t 79bb425aa6` returns `fatal: Not a valid object name 79bb425aa6` and `git log --all --oneline -- docs/assets/005_soviet_union_collapse docs/assets/005_soviet_collapse` returns no path history, so the deletion and deleted contents cannot be independently verified. The required `docs/assets/005_soviet_union_collapse/manifest.md` is absent from the current working tree. Although this overview previously described a 2026-09-01 audio evidence package under `docs/assets/005_soviet_collapse/`, that directory contains only `source_audio/` in the current checkout. Runtime assets remain under the `gfx/`, `interface/`, `music/`, and `sound/` paths above, but the missing source-evidence path prevents a complete provenance claim.
 
 ## Black Friday sale prices
 
@@ -58,6 +60,7 @@ The main active systems are:
 - breakaway emergency decisions
 - foreign patron decisions and dependency pressure
 - local league and Free Republics' League logic
+- internal-republic release summary news `chaosx.nr5.95` once per crisis after the first eligible internal release, and regional-faction growth news `chaosx.nr5.48` once per crisis followed by local `chaosx.nr5.38` notices for later growth calls; crisis initialization resets both aggregate flags
 - three Successor Relations alignments: the Black International, Free Soviet Congress, and Iron Production Bloc
 - Union Unmade terminal collapse
 - triggerable scenario launch: the Scenarios window can force standalone Soviet Collapse starts without inheriting unrelated live-crisis settings, release ordinary republics or ordinary plus high-chaos splinters by type, form local factions, start the anti-Soviet wars, and grant extra opening forces scaled by intensity, controlled states, civilian factories, and military factories. Large and industrial republics receive stronger opening armies through state and factory multipliers. A neutral country that launches the scenario remains outside immediate external-corridor wars, while Moscow and republic launchers still follow the normal collapse actor logic
@@ -71,7 +74,7 @@ The repression network and Union Crisis share one bounded bridge. Soviet gulag a
 
 The Soviet camp package lives in `common/decisions/camp_repression_major_country_decisions.txt`, `common/scripted_effects/camp_repression_major_country_effects.txt`, `common/ideas/camp_repression_major_country_ideas.txt`, `common/dynamic_modifiers/camp_repression_major_country_dynamic_modifiers.txt`, and `events/soviet_gulag.txt`. Kolyma, Magadan, and Karagandy begin as operating gulag records, so recurring population loss enters the shared Deaths pipeline from the first monthly pulse. Karagandy carries moderate famine-aftermath pressure, grain and quota burdens preserve that pressure until relieved, and the resulting local manpower, production, supply, and resistance effects are present at scenario start. Vanilla paranoia is projected only while its own system is active, and no second Soviet paranoia loop is created. Famine warning, critical famine, administrative breakdown, relief, retreat records, reform, and dismantlement remain bounded threshold or decision outcomes. Splinter experiment sites created by Soviet Collapse register the same responsible-country and evidence fields as ordinary sites, while their population loss remains owned by the affected state through the Deaths adapter.
 
-The bounded Command and Corridors tranche, Patron Rivalry events `chaosx.nr5.50` through `chaosx.nr5.70`, Reconsolidation and Aftermath events `chaosx.nr5.96` and `chaosx.nr5.97`, the UWR and KMB package surfaces, final Event 005 assets, workbook/CSV parity, and probability completion are implemented. The current source map and probability handoff retain the exact MCP evidence.
+The 2026-08-09 reconciliation snapshot records the bounded Command and Corridors tranche, Patron Rivalry events `chaosx.nr5.50` through `chaosx.nr5.70`, Reconsolidation and Aftermath events `chaosx.nr5.96` and `chaosx.nr5.97`, UWR/KMB package surfaces, final Event 005 assets, workbook/CSV parity, and probability completion as implemented at that time. Those are dated historical implementation claims, not current audit results; current blockers are listed in the [implementation audit](../005_soviet_collapse_implementation_audit.md).
 
 The crisis board keeps all 118 numbered Soviet missions and its existing active and monthly refill caps. Each mission belongs to exactly one operational family: 37 Chain of Command, 21 Corridors and Depots, and 60 Republic Settlement. At refill, Moscow measures Authority and Obedience shortfalls, Republic Confidence and Depot Vulnerability excesses, and the influence of Foreign Appetite, League Cohesion, and Old Movement pressure. It attempts at most one live mission from each family in priority order, then fills remaining places through the original complete mission list. The opening posture shifts the safe bands before the first post-option fill, so the first board reflects the player's declared response. This is one mission board and one release scheduler, not a parallel objective system.
 
@@ -132,7 +135,7 @@ Event 005 registers two event-log evolution families:
 
 The event-details preview list for event ID `5` is registered in `events_log_rebuild_open_event_details_view`. The 2026-08-09 spreadsheet parity handoff confirms exact wording parity between the workbook row, event-detail text, evolution-detail text, and regenerated CSV exports.
 
-Soviet Collapse evolution detail popups use the portrait-style details layout for both registered evolution families. Their portrait slot returns `GFX_soviet_collapse_evolution_portraits_animated`, a 66-frame loop assembled from the existing `gfx/leaders/005_soviet_collapse/*_leader.dds` portrait set. The static fallback is `GFX_soviet_collapse_evolution_portraits`, and both sprite aliases are registered in `interface/005_soviet_collapse_custom_icons.gfx`. The animation package, contact sheet, preview GIF, source-frame PNGs, processed-frame PNGs, and handoff notes were part of the historical asset archive. The current `docs/assets/005_soviet_collapse/` folder contains the 2026-09-01 audio evidence package, while runtime portrait assets remain under `gfx/leaders/005_soviet_collapse/`. No current animation evidence archive was found in this pass.
+Soviet Collapse evolution detail popups use the portrait-style details layout for both registered evolution families. Their portrait slot returns `GFX_soviet_collapse_evolution_portraits_animated`, a 66-frame loop assembled from the existing `gfx/leaders/005_soviet_collapse/*_leader.dds` portrait set. The static fallback is `GFX_soviet_collapse_evolution_portraits`, and both sprite aliases are registered in `interface/005_soviet_collapse_custom_icons.gfx`. Older overview notes claim that the animation package, contact sheet, preview GIF, source-frame PNGs, processed-frame PNGs, and handoff notes existed in the historical asset archive; that archive's contents cannot be audited from this checkout. No current animation evidence archive was found in the 2026-10-05 checkout, while runtime portrait assets remain under `gfx/leaders/005_soviet_collapse/`.
 
 ## Legacy Doc Routing
 
@@ -142,9 +145,9 @@ The surviving historical surfaces are:
 
 - `docs/plans/005_soviet_collapse_plans/`
 - `docs/specs/005_soviet_collapse_specs/`
-- `docs/assets/005_soviet_union_collapse/` (historical archive deleted by Git commit `79bb425aa6`)
-- `docs/assets/005_soviet_collapse/` (current 2026-09-01 audio evidence package)
-- `docs/assets/005_soviet_collapse_generated_handoff/` (historical manifest path deleted by Git commit `79bb425aa6`)
+- `docs/assets/005_soviet_union_collapse/` (historical documents claim deletion by commit `79bb425aa6`; this checkout cannot verify the commit or deleted contents)
+- `docs/assets/005_soviet_collapse/` (the overview previously described this as the current 2026-09-01 audio evidence package; the directory contains only `source_audio/` in the 2026-10-05 checkout)
+- `docs/assets/005_soviet_collapse_generated_handoff/` (historical documents claim deletion by commit `79bb425aa6`; this checkout cannot verify the commit or deleted contents)
 
 Verified Event 005 super-event quote wording, editions, translations, attribution, source URLs, confidence, and rights notes are recorded in `docs/super_events/005_soviet_collapse/text_research.md`. Runtime presentation status remains governed by the current source map and live presentation records.
 
@@ -152,11 +155,11 @@ Current runtime assets remain under their registered `gfx/`, `interface/`, `musi
 
 ## Current Priority
 
-Completion evidence is preserved in this order:
+Current follow-up priorities are:
 
-1. Preserve the implemented Command and Corridors loop, release-cause inheritance, selected-target lifecycle, Patron Rivalry, Reconsolidation and Aftermath, UWR/KMB packages, Successor Relations, and final asset wiring.
+1. Preserve the 2026-08-09 handoffs for the Command and Corridors loop, release-cause inheritance, selected-target lifecycle, Patron Rivalry, Reconsolidation and Aftermath, UWR/KMB packages, Successor Relations, and bounded runtime assets as historical evidence.
 2. Keep release pacing gradual: calm worlds release the base Soviet republics, pressure and chaos unlock wider pools, and only terminal or maximum-intensity rupture paths run exhaustive passes.
-3. Treat the former 520 pathline heuristic and 1,127 shallow-reward count as historical audit evidence. The current focus package has 1,760 material reward checks and zero semantic shallow-leaf risks.
-4. Keep the completed workbook, generated CSV exports, Event 005 map consumers, final icons, and UWR flag family aligned with their current handoffs. Do not reopen those surfaces as unfinished implementation.
-5. Preserve the exact event-created gate around all generic runtime focus-tree loads so already-existing republic tags are not overwritten.
-6. The retained implementation snapshot proposed a compact `hoi4.focus_rewrite` batch across all 43 trees as its final source mutation, followed by read-only inspection, rendering, probability, and semantic-hash evidence. Current disposition is unresolved until the package owner checks whether that batch already ran and establishes its remaining scope. This documentation cleanup does not authorize the rewrite.
+3. Keep the 520 pathline and 1,127 shallow-reward findings historical. The 2026-08-09 semantic reward audit reported zero shallow-leaf risks across 1,760 focuses; the 2026-10-05 focus audit separately reports seven layout failures.
+4. Treat workbook/export parity, the inspected Event 005 map consumers, final icons, and the UWR flag family as dated handoff claims until their owning validation is refreshed.
+5. The named event-created focus gates remain in source evidence, while eligibility for tags that fall through to `soviet_collapse_breakaway_focus_tree` remains unresolved.
+6. The compact focus rewrite has no retained proof of completion. The 2026-10-05 audit still reports seven layout failures, so all-tree layout completion remains unresolved.

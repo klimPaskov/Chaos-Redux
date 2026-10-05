@@ -1,0 +1,49 @@
+# Event 005 Popup and News Matrix
+
+Date: 2026-10-05
+
+Disposition: implemented as a source-backed static inventory; runtime event rendering remains blocked.
+
+## Scope and limits
+
+This inventory covers every direct `news_event = { ... }` call in `events/005_soviet_collapse.txt`, `common/scripted_effects/005_soviet_collapse_effects.txt`, and `common/decisions/005_soviet_collapse_decisions.txt`. The event file also contains 15 `news_event` definitions; those blocks define destinations and are not additional call sites. The three listed files contain 21 direct call sites across 16 unique event IDs: two call sites in the event file, 19 in the scripted-effects file, and zero in the decisions file.
+
+The table describes source gates and global/country flags. Flags set as “once per route” are not assumed to reset each crisis unless the source does so. The event MCP inspect/render/compare routes stalled, so the 43 focus-tree routes do not have rendered popup counts here. The full event-chain total is route-dependent and this handoff makes no live gameplay claim.
+
+## Direct news call matrix
+
+| News event ID | Call sites | Source guard and lifecycle | Classification |
+| --- | --- | --- | --- |
+| `chaosx.news.5` | `events/005_soviet_collapse.txt:100,109` | Two mutually exclusive branches in `chaosx.nr5.2` immediate: the pending joint-presentation branch clears its pending flag and marks it delivered, while the normal branch requires inactive crisis state and available crisis load, initializes the crisis, and releases initial republics. Each branch delays the same news event by two days. | One opening news presentation for the selected opening path; the duplicated source lines do not both execute in one event immediate block. |
+| `chaosx.nr5.30` | `common/scripted_effects/005_soviet_collapse_effects.txt:13714,13815` | Normal Baltic Pact and terminal Baltic Pact formation both test and set `soviet_collapse_baltic_league_announced`; both use the same route flag. The initializer does not clear it. | Once per Baltic-faction announcement route while its global guard remains set; shared guard prevents normal/terminal duplicate news. |
+| `chaosx.nr5.31` | `common/scripted_effects/005_soviet_collapse_effects.txt:13729,13830` | Normal Caucasus Compact and terminal Compact formation test/set `soviet_collapse_caucasus_league_announced`. The initializer does not clear it. | Once per Caucasus-faction announcement route while its global guard remains set; shared guard prevents duplicate paths. |
+| `chaosx.nr5.32` | `common/scripted_effects/005_soviet_collapse_effects.txt:13749,13846` | Normal Central Asian League and terminal League formation test/set `soviet_collapse_central_asian_league_announced`. The initializer does not clear it. | Once per Central Asian faction announcement route while its global guard remains set; shared guard prevents duplicate paths. |
+| `chaosx.nr5.33` | `common/scripted_effects/005_soviet_collapse_effects.txt:13762,13805` | Standard Black International founding and the Black Banner found-or-join helper both use `soviet_collapse_black_international_announced` as the global guard. The flag is set before the news call. | Once per Black International announcement route while its global guard remains set; both paths share the flag. |
+| `chaosx.nr5.34` | `common/scripted_effects/005_soviet_collapse_effects.txt:13775` | Free Soviet Congress founding sets `soviet_collapse_free_soviet_congress_announced` before firing. | Once per Free Soviet Congress announcement route while its global guard remains set. |
+| `chaosx.nr5.36` | `common/scripted_effects/005_soviet_collapse_effects.txt:4969` | The Steppe Federation report helper checks and sets `soviet_collapse_steppe_federation_news_fired`. | Once per Steppe Federation report route while its global guard remains set. |
+| `chaosx.nr5.37` | `common/scripted_effects/005_soviet_collapse_effects.txt:13788` | Iron Production Bloc founding sets `soviet_collapse_iron_production_bloc_announced` before firing. | Once per Iron Production Bloc announcement route while its global guard remains set. |
+| `chaosx.nr5.48` | `common/scripted_effects/005_soviet_collapse_effects.txt:13941` | Regional-faction invite/growth checks and sets `soviet_collapse_regional_faction_growth_news_reported`. `soviet_collapse_initialize_crisis_values` clears this flag at line 2653. | Once per crisis. Later calls to the same helper take the `else` branch and fire local country event `chaosx.nr5.38`; `.38` is not a `news_event` call. |
+| `chaosx.nr5.49` | `common/scripted_effects/005_soviet_collapse_effects.txt:8608` | Recognition handling checks/sets `soviet_collapse_foreign_recognition_news_reported` as a country flag in the recipient's scope. | Once per recipient country while that country flag remains set. |
+| `chaosx.nr5.95` | `common/scripted_effects/005_soviet_collapse_effects.txt:6130` | Internal-republic setup calls it only for the listed internal tags `KAR, KOM, CRI, TAT, BSK, FER, YAK, BYA, TAN`; it checks/sets `soviet_collapse_internal_republic_news_aggregate_reported`. `soviet_collapse_initialize_crisis_values` clears this flag at line 2652. | One aggregate internal-release news item per crisis, on the first eligible listed release. |
+| `chaosx.nr5.140` | `common/scripted_effects/005_soviet_collapse_effects.txt:4937` | Map-Larger-than-Union reporting checks/sets `soviet_collapse_news_map_larger_than_union_fired`. | Once per named route while its global guard remains set. |
+| `chaosx.nr5.141` | `common/scripted_effects/005_soviet_collapse_effects.txt:4945` | Steppe-Beyond-History reporting checks/sets `soviet_collapse_news_steppe_beyond_history_fired`. | Once per named route while its global guard remains set. |
+| `chaosx.nr5.142` | `common/scripted_effects/005_soviet_collapse_effects.txt:4953` | Corridors-Decide reporting checks/sets `soviet_collapse_news_corridors_decide_fired`. | Once per named route while its global guard remains set. |
+| `chaosx.nr5.143` | `common/scripted_effects/005_soviet_collapse_effects.txt:4961` | Bread-State reporting checks/sets `soviet_collapse_news_bread_state_fired`. | Once per named route while its global guard remains set. |
+| `chaosx.news.5002` | `common/scripted_effects/005_soviet_collapse_effects.txt:14233` | Free Republics' League formation checks/sets `soviet_collapse_free_republics_league_announced` before firing, with a one-day delay. | Once per Free Republics' League announcement route while its global guard remains set. |
+
+The direct call count is 21: `.news.5` twice; `.30`, `.31`, `.32`, and `.33` twice each; the remaining 11 unique IDs once each. The news definitions for `.30–.37`, `.48–.49`, `.140–.143`, and `.95` are in `events/005_soviet_collapse.txt`; `.news.5` and `.news.5002` are defined in `events/_chaosx_news.txt`. Event `.35` has a `news_event` definition in the Event 005 file but no direct `news_event = { id = chaosx.nr5.35 }` call in the three audited files. No direct news-event call occurs in `common/decisions/005_soviet_collapse_decisions.txt`; decisions may call effects that contain the inventoried news calls.
+
+## Known human popup counts
+
+The following counts were supplied by the parent from the current opening-source review and screenshots, and are retained separately from the static call-site inventory:
+
+- Normal SOV human opening: three popups, `chaosx.nr5.2` + first `chaosx.nr5.47` report + `chaosx.news.5`.
+- Valid non-SOV opening: one popup, `chaosx.news.5`.
+- Invalid Settings-force no-op with USA as the saved human requester: source predicts exactly one reason report (`chaosx.nr5.138`, `.139`, `.144`, or `.145`), no Event 005 fire-history entry, and no `.1`, `.2`, or `.5` from the rejected attempt. `.138` explains that no usable Soviet government remains, `.139` reports an active Union crisis, `.144` reports that Soviet crisis capacity is full, and `.145` reports that a different Soviet scenario is underway. The preflight at `common/scripted_effects/005_soviet_collapse_effects.txt:soviet_collapse_prepare_event_fire` suppresses the Settings dispatch before history recording and sends the matching report once to the saved human requester. Direct root calls dispatch the same reason report to their current country scope. These four cases have no screenshot or live-state proof.
+- Parent-reported screenshots cover the normal valid-SOV USA opening only; no screenshot shows a rejection report. The montage was read by the parent from `C:/Users/klimp/Videos/chaos_redux_trailer/screenshots/evt005_pop00.png` through `evt005_pop05.png`; `evt005_pop00` and `evt005_pop04` show Event 005 world news, `evt005_pop01`–`evt005_pop03` show unrelated vanilla events, and `evt005_pop05` shows no popup. It records one `.5` news popup plus four unrelated vanilla popups, and displays earlier `.5` wording, so it does not validate the final localization. In the task's `evt005_popKK.png` notation, `KK` is a placeholder for the numbered captures, not a literal filename.
+
+Source context: the `.138/.139/.144/.145` root reports are defined in `events/005_soviet_collapse.txt` and selected by the root's current Soviet-government and new-crisis gates; the Settings preflight mirrors those gates and blocks history recording for a rejected request. The two `.news.5` calls are in the `.2` immediate; the first `.47` SOV report is gated by `soviet_collapse_dynamic_unit_report_seen`. The normal-opening counts are parent-provided screenshot observations; all four rejection counts are source-inferred and unverified.
+
+## Validation limit
+
+The event MCP inspect/render/compare routes stalled without artifacts or revisions, and this audit did not retry them. The source matrix covers the direct calls in the three assigned files; it does not sum every possible sequence through 43 focus trees or prove live player UI behavior.

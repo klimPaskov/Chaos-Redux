@@ -53,6 +53,127 @@
 @soviet_collapse_focus_rail_authority_supply_hub_level = 1
 @soviet_collapse_focus_rail_authority_pra_link_level = 2
 
+# Settings-dispatch preflight. Input: caller temporary variable `event_id`.
+# Suppress Event 005 history when its root would no-op, then report the reason
+# once to the original human manual requester. The joint-opening continuation
+# remains allowed; direct chaosx.nr5.1 calls report in their current scope.
+soviet_collapse_prepare_event_fire = {
+	if = {
+		limit = { check_variable = { event_id = constant:soviet_collapse_event_log.event_id } }
+		if = {
+			limit = {
+				OR = {
+					SOV = { exists = no }
+					SOV = { exists = yes has_capitulated = yes }
+					SOV = { exists = yes NOT = { any_owned_state = { always = yes } } }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+					NOT = { has_country_flag = event_cluster_member_fire_context }
+					has_event_target = chaosx_manual_event_requester
+					event_target:chaosx_manual_event_requester = {
+						exists = yes
+						is_ai = no
+						has_country_flag = chaosx_manual_event_requested
+						NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+					}
+				}
+				event_target:chaosx_manual_event_requester = {
+					set_country_flag = chaosx_manual_event_failure_shown
+					country_event = { id = chaosx.nr5.138 }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				SOV = { exists = yes }
+				SOV = { NOT = { has_capitulated = yes } }
+				SOV = { any_owned_state = { always = yes } }
+				SOV = { NOT = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+				has_global_flag = soviet_collapse_active
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+					NOT = { has_country_flag = event_cluster_member_fire_context }
+					has_event_target = chaosx_manual_event_requester
+					event_target:chaosx_manual_event_requester = {
+						exists = yes
+						is_ai = no
+						has_country_flag = chaosx_manual_event_requested
+						NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+					}
+				}
+				event_target:chaosx_manual_event_requester = {
+					set_country_flag = chaosx_manual_event_failure_shown
+					country_event = { id = chaosx.nr5.139 }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				SOV = { exists = yes }
+				SOV = { NOT = { has_capitulated = yes } }
+				SOV = { any_owned_state = { always = yes } }
+				SOV = { NOT = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+				NOT = { has_global_flag = soviet_collapse_active }
+				SOV = { NOT = { individual_crisis_load_is_below_cap = yes } }
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+					NOT = { has_country_flag = event_cluster_member_fire_context }
+					has_event_target = chaosx_manual_event_requester
+					event_target:chaosx_manual_event_requester = {
+						exists = yes
+						is_ai = no
+						has_country_flag = chaosx_manual_event_requested
+						NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+					}
+				}
+				event_target:chaosx_manual_event_requester = {
+					set_country_flag = chaosx_manual_event_failure_shown
+					country_event = { id = chaosx.nr5.144 }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				SOV = { exists = yes }
+				SOV = { NOT = { has_capitulated = yes } }
+				SOV = { any_owned_state = { always = yes } }
+				SOV = { NOT = { has_country_flag = soviet_collapse_joint_opening_presentation_pending } }
+				NOT = { has_global_flag = soviet_collapse_active }
+				SOV = { individual_crisis_load_is_below_cap = yes }
+				has_global_flag = soviet_collapse_triggerable_scenario_suppressed_fire_once
+			}
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+					NOT = { has_country_flag = event_cluster_member_fire_context }
+					has_event_target = chaosx_manual_event_requester
+					event_target:chaosx_manual_event_requester = {
+						exists = yes
+						is_ai = no
+						has_country_flag = chaosx_manual_event_requested
+						NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+					}
+				}
+				event_target:chaosx_manual_event_requester = {
+					set_country_flag = chaosx_manual_event_failure_shown
+					country_event = { id = chaosx.nr5.145 }
+				}
+			}
+		}
+	}
+}
+
 soviet_collapse_clamp_crisis_components = {
 	clamp_variable = { var = soviet_collapse_moscow_authority min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
 	clamp_variable = { var = soviet_collapse_republic_confidence min = constant:soviet_collapse_baseline.component_min max = constant:soviet_collapse_baseline.component_max }
@@ -2612,6 +2733,8 @@ soviet_collapse_initialize_crisis_values = {
 	set_global_flag = soviet_collapse_active
 	set_global_flag = soviet_collapse_opening_wave_active
 	clr_global_flag = soviet_collapse_resolved_by_reconquest
+	clr_global_flag = soviet_collapse_internal_republic_news_aggregate_reported
+	clr_global_flag = soviet_collapse_regional_faction_growth_news_reported
 	clr_global_flag = soviet_collapse_opening_pressure_initialized
 	soviet_collapse_restore_internal_republic_release_cores = yes
 	set_temp_variable = { soviet_collapse_first_month_lock_days = constant:soviet_collapse_threat_guard.first_month_lock_days }
@@ -6073,7 +6196,6 @@ soviet_collapse_apply_breakaway_setup_package = {
 	soviet_collapse_ensure_breakaway_has_minimum_initial_units = yes
 	if = {
 		limit = {
-			NOT = { has_country_flag = soviet_collapse_internal_republic_news_reported }
 			OR = {
 				tag = KAR
 				tag = KOM
@@ -6086,8 +6208,11 @@ soviet_collapse_apply_breakaway_setup_package = {
 				tag = TAN
 			}
 		}
-		set_country_flag = soviet_collapse_internal_republic_news_reported
-		news_event = { id = chaosx.nr5.95 }
+		if = {
+			limit = { NOT = { has_global_flag = soviet_collapse_internal_republic_news_aggregate_reported } }
+			set_global_flag = soviet_collapse_internal_republic_news_aggregate_reported
+			news_event = { id = chaosx.nr5.95 }
+		}
 	}
 	if = {
 		limit = {
@@ -9097,20 +9222,17 @@ soviet_collapse_apply_foreign_league_conference = {
 soviet_collapse_apply_foreign_league_logistics_aid = {
 	soviet_collapse_mark_foreign_general_aid_sponsor = yes
 	soviet_collapse_mark_foreign_major_aid_sponsor = yes
-	add_political_power = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_political_power_spend
 	add_fuel = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_train_spend }
 	add_equipment_to_stockpile = { type = convoy_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_convoy_spend }
 	if = {
 		limit = { FROM = { is_soviet_collapse_foreign_aid_regional_target = yes } }
-		add_political_power = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_political_power_extra_spend
 		add_fuel = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_fuel_extra_spend
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_train_extra_spend }
 		add_equipment_to_stockpile = { type = convoy_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_regional_convoy_extra_spend }
 	}
 	if = {
 		limit = { FROM = { is_soviet_collapse_foreign_aid_major_target = yes } }
-		add_political_power = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_political_power_extra_spend
 		add_fuel = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_fuel_extra_spend
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_train_extra_spend }
 		add_equipment_to_stockpile = { type = convoy_1 amount = global.black_friday_price_soviet_collapse_foreign_intervention_league_logistics_major_convoy_extra_spend }
@@ -9176,7 +9298,6 @@ soviet_collapse_apply_anti_puppet_clause = {
 
 soviet_collapse_apply_moscow_union_treaty_offer = {
 	add_political_power = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_political_power_spend
-	add_command_power = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_command_power_spend
 	add_fuel = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_moscow_reintegration_union_treaty_train_spend }
 	FROM = {
@@ -9199,7 +9320,6 @@ soviet_collapse_apply_moscow_union_treaty_offer = {
 
 soviet_collapse_apply_moscow_negotiation_table = {
 	add_political_power = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_political_power_spend
-	add_command_power = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_command_power_spend
 	add_fuel = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_moscow_reintegration_negotiation_table_train_spend }
 	FROM = {
@@ -9282,7 +9402,6 @@ soviet_collapse_launch_moscow_punitive_operation = {
 
 soviet_collapse_apply_moscow_federal_compact = {
 	add_political_power = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_political_power_spend
-	add_command_power = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_command_power_spend
 	add_fuel = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_fuel_spend
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_moscow_reintegration_federal_compact_train_spend }
 	FROM = {
@@ -9420,7 +9539,6 @@ ukr_soviet_collapse_pay_league_arbitration_cost = {
 }
 
 ukr_soviet_collapse_pay_league_arms_quota_cost = {
-	add_political_power = global.black_friday_price_soviet_collapse_ukraine_league_arms_quota_political_power_spend
 	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = constant:soviet_collapse_ukraine_league.arms_quota_infantry_equipment_spend }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:soviet_collapse_ukraine_league.arms_quota_support_equipment_spend }
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:soviet_collapse_ukraine_league.arms_quota_trains_spend }
@@ -9434,7 +9552,6 @@ ukr_soviet_collapse_pay_grain_compact_cost = {
 
 ukr_soviet_collapse_pay_black_sea_mission_cost = {
 	add_political_power = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_political_power_spend
-	add_command_power = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_command_power_spend
 	add_equipment_to_stockpile = { type = convoy_1 amount = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_convoys_spend }
 	add_fuel = global.black_friday_price_soviet_collapse_ukraine_league_black_sea_mission_fuel_spend
 }
@@ -9446,7 +9563,6 @@ ukr_soviet_collapse_pay_anti_client_charter_cost = {
 
 ukr_soviet_collapse_pay_black_soil_committees_cost = {
 	add_political_power = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_political_power_spend
-	add_command_power = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_command_power_spend
 	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_infantry_equipment_spend }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = global.black_friday_price_soviet_collapse_ukraine_bread_state_granary_support_equipment_spend }
 }
@@ -9469,7 +9585,6 @@ ukr_soviet_collapse_pay_village_ration_relief_cost = {
 }
 
 ukr_soviet_collapse_pay_last_harvest_plan_cost = {
-	add_political_power = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_political_power_spend
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_trains_spend }
 	add_equipment_to_stockpile = { type = convoy_1 amount = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_convoys_spend }
 	add_fuel = global.black_friday_price_soviet_collapse_ukraine_bread_state_last_harvest_fuel_spend
@@ -9941,7 +10056,6 @@ central_asia_soviet_collapse_pay_cotton_rail_cost = {
 
 central_asia_soviet_collapse_pay_caravan_board_cost = {
 	add_command_power = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_command_power_spend
-	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_infantry_equipment_spend }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_support_equipment_spend }
 	add_fuel = global.black_friday_price_soviet_collapse_central_asia_league_caravan_board_fuel_spend
 }
@@ -9960,8 +10074,6 @@ central_asia_soviet_collapse_pay_mediation_cost = {
 central_asia_soviet_collapse_pay_settlement_cost = {
 	add_political_power = global.black_friday_price_soviet_collapse_central_asia_league_settlement_political_power_spend
 	add_command_power = global.black_friday_price_soviet_collapse_central_asia_league_settlement_command_power_spend
-	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = global.black_friday_price_soviet_collapse_central_asia_league_settlement_infantry_equipment_spend }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = global.black_friday_price_soviet_collapse_central_asia_league_settlement_support_equipment_spend }
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = global.black_friday_price_soviet_collapse_central_asia_league_settlement_trains_spend }
 }
 
@@ -13907,8 +14019,14 @@ soviet_collapse_apply_regional_faction_invite = {
 	if = { limit = { has_country_flag = soviet_collapse_iron_production_bloc_founder } soviet_collapse_invite_ideological_regional_partners = yes }
 	soviet_collapse_apply_regional_faction_soviet_pressure = yes
 	soviet_collapse_maybe_resolve_regional_faction_goal = yes
-	news_event = { id = chaosx.nr5.48 }
-	country_event = { id = chaosx.nr5.38 }
+	if = {
+		limit = { NOT = { has_global_flag = soviet_collapse_regional_faction_growth_news_reported } }
+		set_global_flag = soviet_collapse_regional_faction_growth_news_reported
+		news_event = { id = chaosx.nr5.48 }
+	}
+	else = {
+		country_event = { id = chaosx.nr5.38 }
+	}
 }
 
 soviet_collapse_apply_regional_faction_coordinate = {
@@ -21773,8 +21891,6 @@ soviet_collapse_pay_uwr_experiment_camp_cost = {
 }
 
 soviet_collapse_pay_uwr_field_release_raid_cost = {
-	army_experience = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_army_xp_spend
-	add_command_power = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_command_power_spend
 	add_manpower = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_manpower_spend
 	add_equipment_to_stockpile = {
 		type = infantry_equipment_1
@@ -21783,10 +21899,6 @@ soviet_collapse_pay_uwr_field_release_raid_cost = {
 	add_equipment_to_stockpile = {
 		type = support_equipment_1
 		amount = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_support_equipment_spend
-	}
-	add_equipment_to_stockpile = {
-		type = artillery_equipment_1
-		amount = global.black_friday_price_soviet_collapse_uwr_balance_field_release_raid_artillery_equipment_spend
 	}
 }
 
@@ -21994,7 +22106,6 @@ soviet_collapse_uwr_stockpile_absurd_payloads = {
 }
 
 soviet_collapse_pay_uwr_prisoner_intake_cost = {
-	add_command_power = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_command_power_spend
 	add_manpower = global.black_friday_price_soviet_collapse_uwr_balance_prisoner_intake_manpower_spend
 	add_equipment_to_stockpile = {
 		type = infantry_equipment_1

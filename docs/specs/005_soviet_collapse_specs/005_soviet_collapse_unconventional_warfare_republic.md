@@ -61,7 +61,7 @@ The five final ideology-aware UWR flag designs are installed at normal, medium, 
 - `uwr_authorize_field_release_raids` prepares deliberate native exact-state CBRN operations but cannot fabricate an actor, victim, payload, route, result, or target state.
 - `uwr_intake_prisoner_transports` is a state-targeted intake action restricted to valid UWR-controlled blacksite states.
 - Successful native biological raid, battlefield, or sabotage release paths mark the exact UWR actor and exact target state for the Event 005 aftermath ledger.
-- A foreign controller of a captured UWR aftermath site chooses exactly one of dismantlement, secure containment, or exploitation. The Event 005 marker clears after the choice while any active native biological episode remains owned by the native CBRN system.
+- A foreign controller of a captured UWR aftermath site chooses exactly one of dismantlement, secure containment, or exploitation. Dismantlement removes the UWR facilities; if a living administered camp shares the state, it closes that camp only after the shared custody and closure receipt is accepted. A state with no live camp obligation may resolve its UWR facilities without changing an unrelated closed camp. A rejected or stale execution restores the native Political Power cost and grants no reward. The Event 005 marker clears after an accepted choice while any active native biological episode remains owned by the native CBRN system.
 - Route-aware AI priorities cover the research, facility, camp, field-release, containment, and chaos-warfare milestones.
 - Final UWR flags, focus icons, decision icons, and the identity-idea icon have dedicated registered assets and manifests.
 
