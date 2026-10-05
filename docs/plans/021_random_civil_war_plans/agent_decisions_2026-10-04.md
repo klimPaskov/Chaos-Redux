@@ -365,3 +365,10 @@ Decision: both government opening reports offer three postures while `event021_o
 Each posture option has AI chance 100 for its own profile and 0 otherwise, so an AI government keeps the profile it was assigned. An AI government without a profile, such as a same-tag government, and every non-government recipient keep the plain report option.
 The profile helper `event021_clear_government_profile` is shared with `event021_parent_assign_government_profile`. Claimant (`chaosx.nr21.7`) and Event 006 (`chaosx.nr21.8`) reports and the AI strategy files are unchanged.
 Basis: the lead's round 2 assignment and spec part 9. The posture choice in play remains `needs_live_game`.
+
+## Round 2 tool evidence (D21 to D30)
+
+`hoi4.probability_inspect` for `event021_offer_emergency_settlement` returned `INTERNAL_ERROR`, and `hoi4.probability_compare` rejected its arguments. Neither was retried (D21).
+One narrow `hoi4.event_inspect` lint with selector `{ kind: event, eventId: chaosx.nr21.21 }`, depth 1 and 20 nodes, returned `EVENT_INSPECTED_PARTIAL` at revision `8153b19347fc69b5430657d9f6e7272ecde8e9e62df61e88eaa690972433d344` with zero blocking diagnostics. The server deferred whole-workspace helper projections, so it lists every Event 021 scripted helper, old and new, as an unresolved helper. That is a coverage limit of the run, not a finding, and the lint is not engine evidence for the new helpers.
+Source checks run on every touched script file: braces balance with comments removed, every `constant:` token resolves to a category with a schema block, every called `event021_*` effect or trigger is defined, every localisation key and `event021_Get*` scripted localisation referenced from the Event 021 event, decision, idea, and scripted localisation files exists, and the localisation file keeps its UTF-8 BOM.
+No decision or GUI render was attempted. The category text (D26), the new reports (D24, D25, D27, D30), and every timing claim remain `needs_live_game`.
