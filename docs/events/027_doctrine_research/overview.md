@@ -61,6 +61,8 @@ A confirmation runs one receipt transaction:
 
 The one-point loop stops at the reward cost of the level being reached: 100 by default and for Chaos Warfare, 60 for Special Forces, and 50 for People's War levels 1, 2, and 4 (`doctrine_research_prepare_transaction_step_limit`). When the country's folder, active Grand Doctrine, track, and subdoctrine mastery gain factors (read through `modifier@<doctrine>_mastery_gain_factor`) sum below zero, the guard is that cost divided by one plus the sum, rounded up and capped at twice the cost (`mastery_point_guard_cap_multiple`), so a country with reduced mastery gain, such as France with the land factor -0.15, still reaches the level (118 points for an Army step). A sum of zero or above leaves the guard at the reward cost. If the level readback does not update inside the effect, the transaction ends as ambiguous after crossing the target threshold once, spends no choice, and quarantines the batch.
 
+Every `<doctrine>_mastery_gain_factor` name read through `modifier@` is a dynamic token, so all 125 of them (4 folders, 12 Grand Doctrines, 14 tracks, and 95 subdoctrines) are pre-registered in `common/synchronized_dynamic_tokens/027_doctrine_research_tokens.txt` to keep multiplayer games in sync; a new `modifier@` read in an Event 027 effect adds its name there.
+
 Receipts record batch, choice number, action, domain, Grand Doctrine, track, track index, subdoctrine, and pre- and post-levels. A pending receipt is recovered only by its exact receipt ID, batch, and choice number; anything that cannot prove its outcome fails closed.
 
 ## Domains
