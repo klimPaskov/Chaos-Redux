@@ -207,6 +207,24 @@ class RogueSiteResolution(unittest.TestCase):
         self.assertEqual(sum(1 for node in descendants(isolate) if node == ('missiles_settle_lost_site_allocation', 'yes')), 1)
         for helper in ('missiles_suspend_damaged_site', 'missiles_finish_site_repair', 'missiles_complete_site_repair', 'missiles_release_suspended_site'):
             self.assertNotIn(('missiles_settle_lost_site_allocation', 'yes'), nodes(EFFECTS[helper]), helper)
+        # A programme whose only site is isolated has no working site and falls
+        # back to establishment, where the suspension is still offered.
+        offered = value(TRIGGERS['missiles_site_suspension_is_offered'], 'OR')
+        self.assertIn(('AND', [('has_country_flag', 'missiles_program_phase_establishment'),
+                               ('NOT', [('has_country_flag', 'missiles_program_capture_shell')])]), offered)
+
+    def test_ai_isolates_only_a_compromised_retaliation_site(self):
+        weight = dict(DECISIONS['missiles_isolate_retaliation_site'])['ai_will_do']
+        self.assertIn(('modifier', [('factor', '0'), ('FROM', [('NOT', [('has_state_flag', 'missiles_site_compromised')])])]), weight)
+
+    def test_removed_country_releases_its_open_rogue_crisis_count(self):
+        cleanup = EFFECTS['missiles_cleanup_removed_country']
+        release = next(child for key, child in cleanup if key == 'if' and ('subtract_from_variable', [('global.missiles_rogue_active_incidents', 'constant:missiles_program_value.one')]) in child)
+        self.assertIn(('has_country_flag', 'missiles_rogue_active_counted'), value(release, 'limit'))
+        keys = [node for node in cleanup]
+        self.assertLess(keys.index(('if', release)), keys.index(('clr_country_flag', 'missiles_rogue_active_counted')))
+        for name in ('missiles_rogue_site_state', 'missiles_rogue_site_id'):
+            self.assertIn(('clear_variable', name), cleanup)
 
     def test_rogue_target_tooltips_are_localised(self):
         self.assertTrue(LOCALISATION.startswith(b'\xef\xbb\xbf'))

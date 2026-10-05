@@ -143,6 +143,25 @@ class RefusedResponse(unittest.TestCase):
         self.assertIn(('missiles_clear_target', 'yes'), dict(restore)['else'])
         save = nodes(EFFECTS['missiles_save_target_choice_for_retaliation'])
         self.assertIn(('set_variable', [('missiles_retaliation_saved_target', 'missiles_selected_target')]), save)
+        # The target state and objective chosen for the earlier enemy come back too.
+        restored = nodes(saved)
+        for kept, live in (('missiles_retaliation_saved_pending_state', 'missiles_pending_target_state'),
+                           ('missiles_retaliation_saved_requested_profile', 'missiles_requested_target_profile')):
+            self.assertIn(('set_variable', [(kept, live)]), save)
+            self.assertIn(('set_variable', [(live, kept)]), restored)
+            self.assertIn(('clear_variable', kept), EFFECTS['missiles_clear_saved_retaliation_target_choice'])
+
+    def test_choice_against_another_enemy_does_not_block_the_retaliation(self):
+        route = dict(EFFECTS['missiles_accept_retaliation_response'])['if']
+        keys = [key for key, _ in route]
+        guard = next(child for key, child in route if key == 'if' and ('clear_variable', 'missiles_pending_target_state') in child)
+        self.assertIn(('clear_variable', 'missiles_requested_target_profile'), guard)
+        # Cleared after the choice is saved and before the attacker is prepared.
+        self.assertLess(keys.index('missiles_save_target_choice_for_retaliation'), route.index(('if', guard)))
+        self.assertLess(route.index(('if', guard)), keys.index('missiles_prepare_operation'))
+        same_enemy = dict(guard)['limit'][0]
+        self.assertEqual(same_enemy[0], 'NOT')
+        self.assertIn(('has_variable', 'missiles_retaliation_saved_target_id'), dict(same_enemy[1])['AND'])
 
 
 if __name__ == '__main__':

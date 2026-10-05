@@ -96,10 +96,16 @@ missiles_maintenance_actions_are_visible = {
 # human when no strike can be prepared and the doctrine choice is not shown,
 # so that view stays within six actions; an isolated or damaged site whose
 # programme cannot strike can then begin its repair without waiting for peace.
+# A programme whose only sites are isolated or damaged has no working site and
+# falls back to establishment, where its sites can still be repaired.
 missiles_site_suspension_is_offered = {
 	OR = {
 		has_country_flag = missiles_program_phase_incident
 		has_country_flag = missiles_program_phase_maintenance
+		AND = {
+			has_country_flag = missiles_program_phase_establishment
+			NOT = { has_country_flag = missiles_program_capture_shell }
+		}
 		AND = {
 			has_country_flag = missiles_program_phase_operations
 			OR = {

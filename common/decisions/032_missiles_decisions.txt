@@ -1641,7 +1641,12 @@ missiles_program_management_category = {
 				FROM = { missiles_isolate_site = yes }
 			}
 		}
-		ai_will_do = { base = @m32_ai_high }
+		# The AI cuts off only a compromised site and keeps trusted sites in the
+		# response.
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 0 FROM = { NOT = { has_state_flag = missiles_site_compromised } } }
+		}
 	}
 
 	# The same response route as the warning event's accept option: it prepares

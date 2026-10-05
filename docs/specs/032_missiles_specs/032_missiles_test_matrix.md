@@ -593,7 +593,7 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `PAY-01` | Special Warheads adopted with a nuclear stockpile; integrate, select, and set policy | Each order opens its choice event; a newly fitted warhead asks for standing orders |
 | `PAY-02` | Prepare and then abort a nuclear strike | One nuclear weapon leaves the stockpile at preparation and returns on abort |
 | `PAY-03` | Prepare and launch a nuclear strike | The held warhead is consumed once with no second debit |
-| `PAY-04` | Prepare a chemical strike, then spend the chemical agent stock before launch | Launch calls the strike off: the missiles return once, nothing is launched, and the category shows the chemical-stores reason; the AI follows the same path |
+| `PAY-04` | Prepare a chemical strike, then spend the chemical agent stock before launch | Launch calls the strike off: the missiles return once, nothing is launched, and the category shows the chemical-weapons reason; the AI follows the same path |
 | `DOC-01` | Saturation unlocked | No country adopts it until the doctrine decision is taken |
 | `DOC-02` | Automatic Retaliation unlocked | Posture starts Off; the posture decision is blocked during a warning |
 | `ALLOC-01` | Saturation barrage over sites with capacities 10 and 2 for 10 missiles | The order is accepted with allocations 8 and 2 |
@@ -608,6 +608,9 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `ROGUE-SITE-02` | Rogue crisis; a strike damages another site, then the crisis times out | The damage incident keeps its site and stays open after the rogue crisis closes |
 | `ROGUE-SITE-03` | Isolate the rogue site while a strike is being prepared there | The order is cancelled and its missiles return once; the crisis closes; the site can then be suspended and after 45 days returns to service |
 | `ROGUE-SITE-04` | Active warning; Isolate One Retaliation Site | Only the country's own working sites are offered; the isolated site can later be suspended and repaired |
+| `ROGUE-SITE-05` | Single-site program in peacetime; isolate its rogue site | The program falls back to establishment and Suspend the Damaged Site is still offered on the isolated site; after 45 days it returns to service |
+| `ROGUE-SITE-06` | AI with an active warning and one compromised and one trusted working site | The AI isolates only the compromised site and never the trusted one |
+| `WARN-04` | Human selected a target state of one enemy; a warning arrives from a different attacker within reach; take Accept the Current Response | The retaliation enters preparation against the attacker instead of being refused for the earlier target state |
 
 ## Long progression test
 

@@ -136,3 +136,9 @@ This record remains partial/blocked until the recorded MCP, probability, native-
 - New pins: `RogueSiteResolution` (rogue-only isolation and scuttling, no general incident-pointer writes, isolated-site repair), `NaturalDisasterBridge` (the Event 13 call, the queue-only adapter, and the controller-ROOT receiver `chaosx.nr32.9`), `RefusedResponse` (refused retaliation cleanup), `ChemicalLaunchCheck` (chemical agent re-proven at launch), and the transferred suspended-site tests in `test_event32_project_missions.py`.
 - `hoi4.event_inspect` (`trace`, `chaosx.nr32.9`, upstream depth 1) returned `EVENT_INSPECTED_PARTIAL` with no blocking diagnostics; `hoi4.probability_inspect` was not retried after the lead's recorded `INTERNAL_ERROR`, so the `missiles_scuttle_rogue_site` weight change is source-reviewed only.
 - Needs live game: `ROGUE-SITE-01` to `ROGUE-SITE-04`, `BRIDGE-13`, `WARN-03`, `PAY-04`, and `MISSION-07`.
+
+## Round 2 review (2026-10-05)
+
+- Source tests: all 12 `.tools/test_event32_*.py` modules pass; `test_event32_captured_sites` now runs 16 tests (establishment-phase suspension offer, compromised-only AI isolation of a retaliation site, and the removed-country rogue count) and `test_event32_retaliation_warning` runs 8 (a target state or objective chosen against another enemy is cleared before a retaliation and restored after a refusal).
+- `hoi4.probability_inspect` (`decision_ai_will_do`, candidate `missiles_isolate_retaliation_site`, source path, no refresh) returned `INTERNAL_ERROR`; not retried.
+- Needs live game: `ROGUE-SITE-05`, `ROGUE-SITE-06`, and `WARN-04`, in addition to the round-2 cases above.

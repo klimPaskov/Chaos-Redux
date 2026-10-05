@@ -5874,6 +5874,21 @@ missiles_accept_retaliation_response = {
 		# The current target choice is kept so that a refused order leaves it
 		# exactly as it was.
 		missiles_save_target_choice_for_retaliation = yes
+		# A target state or objective chosen against another enemy does not carry
+		# over to the attacker, as when a new enemy is selected; otherwise the
+		# order would look for that state inside the attacker and be refused.
+		if = {
+			limit = {
+				NOT = {
+					AND = {
+						has_variable = missiles_retaliation_saved_target_id
+						var:missiles_warning_actor = { check_variable = { var = THIS.id value = ROOT.missiles_retaliation_saved_target_id compare = equals } }
+					}
+				}
+			}
+			clear_variable = missiles_pending_target_state
+			clear_variable = missiles_requested_target_profile
+		}
 		set_variable = { missiles_selected_target = missiles_warning_actor }
 		var:missiles_warning_actor = { ROOT = { set_variable = { missiles_selected_target_country_id = PREV.id } } }
 		set_country_flag = missiles_target_selected
@@ -5927,6 +5942,8 @@ missiles_save_target_choice_for_retaliation = {
 	}
 	if = { limit = { has_variable = missiles_operation_target_profile } set_variable = { missiles_retaliation_saved_target_profile = missiles_operation_target_profile } }
 	if = { limit = { has_variable = missiles_operation_target_state } set_variable = { missiles_retaliation_saved_target_state = missiles_operation_target_state } }
+	if = { limit = { has_variable = missiles_pending_target_state } set_variable = { missiles_retaliation_saved_pending_state = missiles_pending_target_state } }
+	if = { limit = { has_variable = missiles_requested_target_profile } set_variable = { missiles_retaliation_saved_requested_profile = missiles_requested_target_profile } }
 	if = { limit = { has_country_flag = missiles_operation_target_profile_locked } set_country_flag = missiles_retaliation_saved_profile_locked }
 }
 
@@ -5942,6 +5959,10 @@ missiles_restore_target_choice_after_retaliation = {
 		else = { clear_variable = missiles_operation_target_profile }
 		if = { limit = { has_variable = missiles_retaliation_saved_target_state } set_variable = { missiles_operation_target_state = missiles_retaliation_saved_target_state } }
 		else = { clear_variable = missiles_operation_target_state }
+		if = { limit = { has_variable = missiles_retaliation_saved_pending_state } set_variable = { missiles_pending_target_state = missiles_retaliation_saved_pending_state } }
+		else = { clear_variable = missiles_pending_target_state }
+		if = { limit = { has_variable = missiles_retaliation_saved_requested_profile } set_variable = { missiles_requested_target_profile = missiles_retaliation_saved_requested_profile } }
+		else = { clear_variable = missiles_requested_target_profile }
 		if = { limit = { has_country_flag = missiles_retaliation_saved_profile_locked } set_country_flag = missiles_operation_target_profile_locked }
 		else = { clr_country_flag = missiles_operation_target_profile_locked }
 	}
@@ -5957,6 +5978,8 @@ missiles_clear_saved_retaliation_target_choice = {
 	clear_variable = missiles_retaliation_saved_target_id
 	clear_variable = missiles_retaliation_saved_target_profile
 	clear_variable = missiles_retaliation_saved_target_state
+	clear_variable = missiles_retaliation_saved_pending_state
+	clear_variable = missiles_retaliation_saved_requested_profile
 	clr_country_flag = missiles_retaliation_saved_profile_locked
 }
 
@@ -7062,7 +7085,19 @@ missiles_cleanup_removed_country = {
 	clear_array = missiles_root_participants
 	clr_country_flag = missiles_operation_active
 	clr_country_flag = missiles_incident_active
+	# A rogue crisis open when the country is removed no longer counts toward
+	# the global cap of open crises.
+	if = {
+		limit = {
+			has_country_flag = missiles_rogue_active_counted
+			check_variable = { var = global.missiles_rogue_active_incidents value = constant:missiles_program_value.zero compare = greater_than }
+		}
+		subtract_from_variable = { global.missiles_rogue_active_incidents = constant:missiles_program_value.one }
+	}
+	clr_country_flag = missiles_rogue_active_counted
 	clr_country_flag = missiles_rogue_command_active
+	clear_variable = missiles_rogue_site_state
+	clear_variable = missiles_rogue_site_id
 	clr_country_flag = missiles_retaliation_network_active
 	clr_country_flag = missiles_warning_active
 	clr_country_flag = missiles_warning_verified
