@@ -390,6 +390,8 @@ Every active Event 006 generation stores:
 
 The generation ID is part of active-country, host, patron, network, league-founder, league-member, and history row identity. Registry reconciliation removes dead, duplicate, ended, or stale-generation rows and derives public counts from the surviving arrays.
 
+These values are moved by recurring statehood incidents (`chaosx.nr6.150` to `.181`, documented in `statehood_incidents.md`) and by each Level 2 package's own incidents (`package_incidents.md`).
+
 ## Former-host relationship
 
 The released country owns eight bilateral values, mirrored to an aligned former-host ledger:

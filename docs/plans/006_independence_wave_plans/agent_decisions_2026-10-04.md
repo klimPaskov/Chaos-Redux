@@ -393,3 +393,27 @@ Validation: every effect, trigger and constant the events and localisation refer
 Not attempted: probability inspection of the new `ai_chance` weights (the lead folds the narrow probability attempt into the baseline-incident item).
 
 Needs live game: a released package receiving both incidents; a re-released tag not receiving an earlier generation's incident.
+
+
+## D16. Round 2: recurring statehood incidents and deeper evolution incidents
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-5 item. Part 2 (Baseline incidents) requires a recurring layer of founding, recognition, security, government, League and formable incidents for every active Event 006 country, and lists five to seven new incidents per evolution, where each evolution had one shared incident family.
+
+Decisions:
+
+- One pulse per country. `independence_wave_start_statehood_incidents` runs from the founding posture resolution (the same two effects that schedule the package incidents), and the hidden `chaosx.nr6.150` reschedules itself after a random 90 to 139 days. No daily, weekly, monthly or world hook is used.
+- Pool: 20 baseline incidents (`.151`-`.170`: four founding, three recognition, three security, four government, three League, three formable) and 11 evolution incidents (`.171`-`.181`: two Replicable Independence, two Dormant Nations, two Armed Birth, three Sovereign Congress, two Open Sovereignty). The new evolution incidents take spec-listed items that the existing `.360`-`.364` families do not already cover (volunteer civil servants, host anti-secession coordination, a returning claimant, the school language dispute, the Armed Birth coup and equipment crisis named in its failure section, the common defence clause, the patron scandal, the collective response to reconquest, the radical constitutional experiment and anti-host coalition planning).
+- Eligibility reads live country state only: founding phase, the five values, the former-host relation and outcome, patron influence, League membership, the League route and patron capture, formable progress flags, and the active and enabled evolutions. Disabling an evolution in the Event Logs removes its incidents.
+- Weights: each category has a base weight that doubles in the matching situation (emergency founding, recognition below de facto, war or a severe host threat, an undecided route, League leadership or crisis, an open founding proposal); a quiet-season weight grows for settled countries and shrinks in severe instability, so stable states see fewer incidents.
+- Cooldowns: each incident fires once per generation; opening one puts its category on a 240-day cooldown (150 for evolution incidents), stored as a date through `chaosx_convert_days_to_date_offset`.
+- Generation safety: the pulse stores the generation and a due date; the delay window (60-day first delay, 90 to 139-day interval) guarantees that a pulse left over from an earlier release of the tag arrives before the current due date and does nothing. Incident events also require the matching open-incident id. `independence_wave_clear_statehood_incident_runtime` runs in the generation reset and at origin end.
+- Options: every incident has a free answer. Costs reuse the shared light diplomatic and light security payments and a 35 political power cost; three answers add manpower or army experience; two League answers deliver equipment to the member that asked. ai_chance follows the `independence_wave_decision_ai` palette with route, war and host-threat modifiers.
+- Pictures reuse registered vanilla and Event 006 report pictures; no new art.
+
+Validation: brace balance 0 on the four new script files; every scripted effect, trigger and constant referenced by the events and effects is defined; all 194 localisation keys exist once.
+
+MCP: `hoi4.probability_inspect` (`event_option_ai_chance`, source `events/006_independence_wave_statehood_incident_events.txt`, candidate `chaosx.nr6.163`) returned `INTERNAL_ERROR`; not retried. `hoi4.event_inspect` (trace, `chaosx.nr6.165`, downstream, depth 1, helpers off) returned `EVENT_INSPECTED_PARTIAL` with 0 blocking diagnostics at revision `b64cae37af8b30b3de242281669ac26c9677f1190578cdbdd91f7831c9967795`.
+
+Needs live game: a released country receiving its first incident about 60 days after its founding posture and later incidents every few months; a re-released tag not receiving a pulse from its earlier generation.

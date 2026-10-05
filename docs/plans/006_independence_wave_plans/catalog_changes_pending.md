@@ -73,3 +73,10 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
 
 New country events `chaosx.nr6.101` to `.142`, two for each of Scotland, Wales, Brittany, Catalonia, Transylvania, Macedonia, Bosnia, Karelia, Crimea, Ruthenia, Kuban, Tatarstan, Bashkiria, Armenia, Georgia, Azerbaijan, Hawaii, California, the Basque Country, Galicia and the Don Host. The first arrives about 45 days after a released country chooses its founding posture, the second about 150 days after the first is answered. Titles are listed in `docs/events/006_independence_wave/package_incidents.md`.
+
+
+## 2026-10-05: Statehood incidents (D16)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+New country events `chaosx.nr6.151` to `.181` and the hidden pulse `chaosx.nr6.150`. Every released country now meets recurring incidents about every three to five months for as long as it survives: founding troubles (currency, clerks, railway junctions, refugees), recognition (envoys, conditional recognition, a failed vote), security (militias, defecting guards, officers), government (the constituent assembly, emergency rule, provincial councils, foreign-backed ministers), League business (arms requests, a motion for collective war, a rights charter) and union-building (flags, congress seats, a single command). Each evolution adds two or three incidents of its own. Titles are listed in `docs/events/006_independence_wave/statehood_incidents.md`.

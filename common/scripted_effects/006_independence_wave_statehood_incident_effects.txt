@@ -1,0 +1,523 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 STATEHOOD INCIDENT PULSE
+# ============================================================================
+# Overview:
+# - `independence_wave_start_statehood_incidents` runs in the released country
+#   when it resolves its founding posture and queues its first pulse.
+# - Each pulse (hidden event chaosx.nr6.150) weighs every eligible incident in
+#   six baseline categories (founding, recognition, security, government,
+#   League, formable) and in the evolution category, then opens at most one
+#   incident and queues the next pulse after a random interval.
+# - Weights come from live country state: the founding phase raises founding
+#   incidents, low recognition raises recognition incidents, war or a severe
+#   host threat raises security incidents, an undecided government raises
+#   government incidents, League leadership or crisis raises League incidents
+#   and an open founding proposal raises formable incidents. A settled country
+#   draws a quiet season more often, and a country in severe instability less
+#   often.
+# - Each incident fires once per generation. Opening one puts its whole
+#   category on a cooldown stored as a date through
+#   chaosx_convert_days_to_date_offset.
+# - `independence_wave_clear_statehood_incident_runtime` clears every receipt;
+#   the generation reset and origin end call it.
+# No effect iterates countries or runs on a periodic world hook.
+# ============================================================================
+
+# COUNTRY scope: the released country after its founding posture resolves.
+independence_wave_start_statehood_incidents = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_variable = independence_wave_generation_id
+			NOT = { has_country_flag = independence_wave_statehood_incident_pulse_queued }
+		}
+		set_temp_variable = { independence_wave_statehood_incident_delay = constant:independence_wave_statehood_incident.first_delay_days }
+		independence_wave_queue_statehood_incident_pulse = yes
+	}
+}
+
+# COUNTRY scope. Input: temporary `independence_wave_statehood_incident_delay`
+# in days. The due date sits one margin day before the event, so the event
+# always arrives on or after it.
+independence_wave_queue_statehood_incident_pulse = {
+	set_country_flag = independence_wave_statehood_incident_pulse_queued
+	set_variable = { independence_wave_statehood_incident_generation = independence_wave_generation_id }
+	set_temp_variable = { chaosx_date_days = independence_wave_statehood_incident_delay }
+	subtract_from_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.due_margin_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_incident_due_date = global.date }
+	add_to_variable = { independence_wave_statehood_incident_due_date = chaosx_date_offset }
+	country_event = { id = chaosx.nr6.150 days = independence_wave_statehood_incident_delay }
+}
+
+# COUNTRY scope: chaosx.nr6.150. Category weights and per-incident weights are
+# kept in this one effect so every temporary weight lives until the draw.
+independence_wave_run_statehood_incident_pulse = {
+	if = {
+		limit = { can_run_independence_wave_statehood_incident_pulse = yes }
+		clr_country_flag = independence_wave_statehood_incident_pulse_queued
+
+		# Category weights from the country's live state.
+		set_temp_variable = { independence_wave_statehood_founding_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = { check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.emergency_founding } }
+			multiply_temp_variable = { independence_wave_statehood_founding_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_recognition_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = { NOT = { has_independence_wave_de_facto_recognition = yes } }
+			multiply_temp_variable = { independence_wave_statehood_recognition_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_security_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = {
+				OR = {
+					has_war = yes
+					has_independence_wave_severe_host_threat = yes
+				}
+			}
+			multiply_temp_variable = { independence_wave_statehood_security_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_government_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = { has_independence_wave_undecided_government_route = yes }
+			multiply_temp_variable = { independence_wave_statehood_government_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_league_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = independence_wave_league_founder
+					check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+				}
+			}
+			multiply_temp_variable = { independence_wave_statehood_league_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_formable_weight = constant:independence_wave_statehood_incident.base_weight }
+		if = {
+			limit = { has_country_flag = independence_wave_formable_founding_proposal_active }
+			multiply_temp_variable = { independence_wave_statehood_formable_weight = constant:independence_wave_statehood_incident.focus_factor }
+		}
+		set_temp_variable = { independence_wave_statehood_evolution_weight = constant:independence_wave_statehood_incident.base_weight }
+		set_temp_variable = { independence_wave_statehood_quiet_weight = constant:independence_wave_statehood_incident.quiet_weight }
+		if = {
+			limit = {
+				check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.strained compare = less_than }
+				has_independence_wave_established_legitimacy = yes
+			}
+			multiply_temp_variable = { independence_wave_statehood_quiet_weight = constant:independence_wave_statehood_incident.quiet_settled_factor }
+		}
+		if = {
+			limit = { has_independence_wave_severe_instability = yes }
+			multiply_temp_variable = { independence_wave_statehood_quiet_weight = constant:independence_wave_statehood_incident.quiet_crisis_factor }
+		}
+
+		# Founding.
+		set_temp_variable = { independence_wave_statehood_weight_currency = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_currency_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_currency = independence_wave_statehood_founding_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_civil_servants = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_civil_servants_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_civil_servants = independence_wave_statehood_founding_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_junction = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_junction_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_junction = independence_wave_statehood_founding_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_refugees = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_refugees_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_refugees = independence_wave_statehood_founding_weight } }
+		# Recognition.
+		set_temp_variable = { independence_wave_statehood_weight_envoy = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_envoy_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_envoy = independence_wave_statehood_recognition_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_arms_pledge = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_arms_pledge_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_arms_pledge = independence_wave_statehood_recognition_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_failed_vote = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_failed_vote_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_failed_vote = independence_wave_statehood_recognition_weight } }
+		# Security.
+		set_temp_variable = { independence_wave_statehood_weight_militia = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_militia_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_militia = independence_wave_statehood_security_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_border_guards = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_border_guards_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_border_guards = independence_wave_statehood_security_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_officers = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_officers_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_officers = independence_wave_statehood_security_weight } }
+		# Government.
+		set_temp_variable = { independence_wave_statehood_weight_assembly = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_assembly_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_assembly = independence_wave_statehood_government_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_emergency_rule = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_emergency_rule_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_emergency_rule = independence_wave_statehood_government_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_provinces = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_provinces_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_provinces = independence_wave_statehood_government_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_patron_ministers = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_patron_ministers_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_patron_ministers = independence_wave_statehood_government_weight } }
+		# League.
+		set_temp_variable = { independence_wave_statehood_weight_arms_request = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_arms_request_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_arms_request = independence_wave_statehood_league_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_collective_war = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_collective_war_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_collective_war = independence_wave_statehood_league_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_rights_charter = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_rights_charter_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_rights_charter = independence_wave_statehood_league_weight } }
+		# Formable.
+		set_temp_variable = { independence_wave_statehood_weight_union_flag = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_union_flag_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_union_flag = independence_wave_statehood_formable_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_congress_seats = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_congress_seats_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_congress_seats = independence_wave_statehood_formable_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_single_command = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_single_command_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_single_command = independence_wave_statehood_formable_weight } }
+		# Evolutions.
+		set_temp_variable = { independence_wave_statehood_weight_volunteer_clerks = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_volunteer_clerks_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_volunteer_clerks = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_host_files = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_host_files_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_host_files = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_claimant = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_claimant_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_claimant = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_schoolroom = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_schoolroom_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_schoolroom = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_colonels = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_colonels_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_colonels = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_cartridges = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_cartridges_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_cartridges = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_defence_clause = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_defence_clause_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_defence_clause = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_secretariat_payments = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_secretariat_payments_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_secretariat_payments = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_invaded_member = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_invaded_member_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_invaded_member = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_street_constitution = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_street_constitution_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_street_constitution = independence_wave_statehood_evolution_weight } }
+		set_temp_variable = { independence_wave_statehood_weight_coalition_plans = constant:independence_wave_statehood_incident.weight_none }
+		if = { limit = { is_independence_wave_statehood_coalition_plans_eligible = yes } set_temp_variable = { independence_wave_statehood_weight_coalition_plans = independence_wave_statehood_evolution_weight } }
+
+		random_list = {
+			independence_wave_statehood_weight_currency = {
+				set_country_flag = independence_wave_statehood_currency_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.currency }
+				independence_wave_statehood_incident_cool_founding = yes
+				country_event = { id = chaosx.nr6.151 }
+			}
+			independence_wave_statehood_weight_civil_servants = {
+				set_country_flag = independence_wave_statehood_civil_servants_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.civil_servants }
+				independence_wave_statehood_incident_cool_founding = yes
+				country_event = { id = chaosx.nr6.152 }
+			}
+			independence_wave_statehood_weight_junction = {
+				set_country_flag = independence_wave_statehood_junction_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.junction }
+				independence_wave_statehood_incident_cool_founding = yes
+				country_event = { id = chaosx.nr6.153 }
+			}
+			independence_wave_statehood_weight_refugees = {
+				set_country_flag = independence_wave_statehood_refugees_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.refugees }
+				independence_wave_statehood_incident_cool_founding = yes
+				country_event = { id = chaosx.nr6.154 }
+			}
+			independence_wave_statehood_weight_envoy = {
+				set_country_flag = independence_wave_statehood_envoy_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.envoy }
+				independence_wave_statehood_incident_cool_recognition = yes
+				country_event = { id = chaosx.nr6.155 }
+			}
+			independence_wave_statehood_weight_arms_pledge = {
+				set_country_flag = independence_wave_statehood_arms_pledge_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.arms_pledge }
+				independence_wave_statehood_incident_cool_recognition = yes
+				country_event = { id = chaosx.nr6.156 }
+			}
+			independence_wave_statehood_weight_failed_vote = {
+				set_country_flag = independence_wave_statehood_failed_vote_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.failed_vote }
+				independence_wave_statehood_incident_cool_recognition = yes
+				country_event = { id = chaosx.nr6.157 }
+			}
+			independence_wave_statehood_weight_militia = {
+				set_country_flag = independence_wave_statehood_militia_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.militia }
+				independence_wave_statehood_incident_cool_security = yes
+				country_event = { id = chaosx.nr6.158 }
+			}
+			independence_wave_statehood_weight_border_guards = {
+				set_country_flag = independence_wave_statehood_border_guards_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.border_guards }
+				independence_wave_statehood_incident_cool_security = yes
+				country_event = { id = chaosx.nr6.159 }
+			}
+			independence_wave_statehood_weight_officers = {
+				set_country_flag = independence_wave_statehood_officers_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.officers }
+				independence_wave_statehood_incident_cool_security = yes
+				country_event = { id = chaosx.nr6.160 }
+			}
+			independence_wave_statehood_weight_assembly = {
+				set_country_flag = independence_wave_statehood_assembly_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.assembly }
+				independence_wave_statehood_incident_cool_government = yes
+				country_event = { id = chaosx.nr6.161 }
+			}
+			independence_wave_statehood_weight_emergency_rule = {
+				set_country_flag = independence_wave_statehood_emergency_rule_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.emergency_rule }
+				independence_wave_statehood_incident_cool_government = yes
+				country_event = { id = chaosx.nr6.162 }
+			}
+			independence_wave_statehood_weight_provinces = {
+				set_country_flag = independence_wave_statehood_provinces_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.provinces }
+				independence_wave_statehood_incident_cool_government = yes
+				country_event = { id = chaosx.nr6.163 }
+			}
+			independence_wave_statehood_weight_patron_ministers = {
+				set_country_flag = independence_wave_statehood_patron_ministers_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.patron_ministers }
+				independence_wave_statehood_incident_cool_government = yes
+				country_event = { id = chaosx.nr6.164 }
+			}
+			independence_wave_statehood_weight_arms_request = {
+				set_country_flag = independence_wave_statehood_arms_request_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.arms_request }
+				independence_wave_statehood_incident_cool_league = yes
+				country_event = { id = chaosx.nr6.165 }
+			}
+			independence_wave_statehood_weight_collective_war = {
+				set_country_flag = independence_wave_statehood_collective_war_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.collective_war }
+				independence_wave_statehood_incident_cool_league = yes
+				country_event = { id = chaosx.nr6.166 }
+			}
+			independence_wave_statehood_weight_rights_charter = {
+				set_country_flag = independence_wave_statehood_rights_charter_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.rights_charter }
+				independence_wave_statehood_incident_cool_league = yes
+				country_event = { id = chaosx.nr6.167 }
+			}
+			independence_wave_statehood_weight_union_flag = {
+				set_country_flag = independence_wave_statehood_union_flag_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.union_flag }
+				independence_wave_statehood_incident_cool_formable = yes
+				country_event = { id = chaosx.nr6.168 }
+			}
+			independence_wave_statehood_weight_congress_seats = {
+				set_country_flag = independence_wave_statehood_congress_seats_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.congress_seats }
+				independence_wave_statehood_incident_cool_formable = yes
+				country_event = { id = chaosx.nr6.169 }
+			}
+			independence_wave_statehood_weight_single_command = {
+				set_country_flag = independence_wave_statehood_single_command_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.single_command }
+				independence_wave_statehood_incident_cool_formable = yes
+				country_event = { id = chaosx.nr6.170 }
+			}
+			independence_wave_statehood_weight_volunteer_clerks = {
+				set_country_flag = independence_wave_statehood_volunteer_clerks_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.volunteer_clerks }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.171 }
+			}
+			independence_wave_statehood_weight_host_files = {
+				set_country_flag = independence_wave_statehood_host_files_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.host_files }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.172 }
+			}
+			independence_wave_statehood_weight_claimant = {
+				set_country_flag = independence_wave_statehood_claimant_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.claimant }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.173 }
+			}
+			independence_wave_statehood_weight_schoolroom = {
+				set_country_flag = independence_wave_statehood_schoolroom_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.schoolroom }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.174 }
+			}
+			independence_wave_statehood_weight_colonels = {
+				set_country_flag = independence_wave_statehood_colonels_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.colonels }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.175 }
+			}
+			independence_wave_statehood_weight_cartridges = {
+				set_country_flag = independence_wave_statehood_cartridges_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.cartridges }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.176 }
+			}
+			independence_wave_statehood_weight_defence_clause = {
+				set_country_flag = independence_wave_statehood_defence_clause_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.defence_clause }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.177 }
+			}
+			independence_wave_statehood_weight_secretariat_payments = {
+				set_country_flag = independence_wave_statehood_secretariat_payments_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.secretariat_payments }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.178 }
+			}
+			independence_wave_statehood_weight_invaded_member = {
+				set_country_flag = independence_wave_statehood_invaded_member_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.invaded_member }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.179 }
+			}
+			independence_wave_statehood_weight_street_constitution = {
+				set_country_flag = independence_wave_statehood_street_constitution_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.street_constitution }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.180 }
+			}
+			independence_wave_statehood_weight_coalition_plans = {
+				set_country_flag = independence_wave_statehood_coalition_plans_done
+				set_variable = { independence_wave_statehood_incident_open = constant:independence_wave_statehood_incident_id.coalition_plans }
+				independence_wave_statehood_incident_cool_evolution = yes
+				country_event = { id = chaosx.nr6.181 }
+			}
+			# A quiet season: nothing opens this time.
+			independence_wave_statehood_quiet_weight = { }
+		}
+
+		set_temp_variable_to_random = {
+			var = independence_wave_statehood_incident_delay
+			min = constant:independence_wave_statehood_incident.interval_minimum_days
+			max = constant:independence_wave_statehood_incident.interval_maximum_days
+			integer = yes
+		}
+		independence_wave_queue_statehood_incident_pulse = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Category cooldowns. Each stores the date from which its category may open
+# another incident.
+# ---------------------------------------------------------------------------
+
+independence_wave_statehood_incident_cool_founding = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_founding_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_founding_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_recognition = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_recognition_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_recognition_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_security = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_security_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_security_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_government = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_government_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_government_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_league = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_league_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_league_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_formable = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.category_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_formable_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_formable_ready_date = chaosx_date_offset }
+}
+
+independence_wave_statehood_incident_cool_evolution = {
+	set_temp_variable = { chaosx_date_days = constant:independence_wave_statehood_incident.evolution_cooldown_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_statehood_evolution_ready_date = global.date }
+	add_to_variable = { independence_wave_statehood_evolution_ready_date = chaosx_date_offset }
+}
+
+# ---------------------------------------------------------------------------
+# Option helpers
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Closes the open incident and zeroes every delta an option may
+# write, so an option only changes the values it sets afterwards.
+independence_wave_statehood_incident_resolve = {
+	clear_variable = independence_wave_statehood_incident_open
+	independence_wave_package_incident_clear_deltas = yes
+	set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_reserve_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_league_confidence_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_network_delta = constant:independence_wave_value.minimum }
+}
+
+# COUNTRY scope. Applies the option's host deltas only while the former host
+# lives, as every option that names the host expects.
+independence_wave_statehood_incident_apply_host_deltas = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cleanup
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Generation-local cleanup; the generation reset and origin end
+# call it.
+independence_wave_clear_statehood_incident_runtime = {
+	clr_country_flag = independence_wave_statehood_incident_pulse_queued
+	clear_variable = independence_wave_statehood_incident_generation
+	clear_variable = independence_wave_statehood_incident_due_date
+	clear_variable = independence_wave_statehood_incident_open
+	clear_variable = independence_wave_statehood_founding_ready_date
+	clear_variable = independence_wave_statehood_recognition_ready_date
+	clear_variable = independence_wave_statehood_security_ready_date
+	clear_variable = independence_wave_statehood_government_ready_date
+	clear_variable = independence_wave_statehood_league_ready_date
+	clear_variable = independence_wave_statehood_formable_ready_date
+	clear_variable = independence_wave_statehood_evolution_ready_date
+	clr_country_flag = independence_wave_statehood_currency_done
+	clr_country_flag = independence_wave_statehood_civil_servants_done
+	clr_country_flag = independence_wave_statehood_junction_done
+	clr_country_flag = independence_wave_statehood_refugees_done
+	clr_country_flag = independence_wave_statehood_envoy_done
+	clr_country_flag = independence_wave_statehood_arms_pledge_done
+	clr_country_flag = independence_wave_statehood_failed_vote_done
+	clr_country_flag = independence_wave_statehood_militia_done
+	clr_country_flag = independence_wave_statehood_border_guards_done
+	clr_country_flag = independence_wave_statehood_officers_done
+	clr_country_flag = independence_wave_statehood_assembly_done
+	clr_country_flag = independence_wave_statehood_emergency_rule_done
+	clr_country_flag = independence_wave_statehood_provinces_done
+	clr_country_flag = independence_wave_statehood_patron_ministers_done
+	clr_country_flag = independence_wave_statehood_arms_request_done
+	clr_country_flag = independence_wave_statehood_collective_war_done
+	clr_country_flag = independence_wave_statehood_rights_charter_done
+	clr_country_flag = independence_wave_statehood_union_flag_done
+	clr_country_flag = independence_wave_statehood_congress_seats_done
+	clr_country_flag = independence_wave_statehood_single_command_done
+	clr_country_flag = independence_wave_statehood_volunteer_clerks_done
+	clr_country_flag = independence_wave_statehood_host_files_done
+	clr_country_flag = independence_wave_statehood_claimant_done
+	clr_country_flag = independence_wave_statehood_schoolroom_done
+	clr_country_flag = independence_wave_statehood_colonels_done
+	clr_country_flag = independence_wave_statehood_cartridges_done
+	clr_country_flag = independence_wave_statehood_defence_clause_done
+	clr_country_flag = independence_wave_statehood_secretariat_payments_done
+	clr_country_flag = independence_wave_statehood_invaded_member_done
+	clr_country_flag = independence_wave_statehood_street_constitution_done
+	clr_country_flag = independence_wave_statehood_coalition_plans_done
+}

@@ -1,0 +1,466 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 STATEHOOD INCIDENT TRIGGERS
+# ============================================================================
+# Eligibility of the recurring statehood incidents. Every trigger reads the
+# checked country's own live state: founding phase, the five Statehood values,
+# the former-host relation, League membership, formable progress and the
+# evolutions that are active and enabled. Array checks walk only the bounded
+# Event 006 active-country and League-member registries.
+#
+# The incident triggers are evaluated by the pulse in chaosx.nr6.150 and by
+# the incident events themselves. In both, ROOT is the incident country, so the
+# registry checks compare members with ROOT.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Pulse and open-incident gates
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_incident_generation_current = {
+	has_variable = independence_wave_statehood_incident_generation
+	has_variable = independence_wave_generation_id
+	check_variable = { var = independence_wave_statehood_incident_generation value = independence_wave_generation_id compare = equals }
+}
+
+# COUNTRY scope. A pulse event runs only for the live generation that queued it,
+# and only on or after the stored due date, so a pulse left over from an
+# earlier release of the same tag does nothing.
+can_run_independence_wave_statehood_incident_pulse = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_statehood_incident_pulse_queued
+	is_independence_wave_statehood_incident_generation_current = yes
+	has_variable = independence_wave_statehood_incident_due_date
+	check_variable = { var = global.date value = independence_wave_statehood_incident_due_date compare = greater_than_or_equals }
+}
+
+# COUNTRY scope. Each incident event adds its own id check after this gate.
+can_fire_independence_wave_statehood_incident = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_statehood_incident_generation_current = yes
+	has_variable = independence_wave_statehood_incident_open
+}
+
+# ---------------------------------------------------------------------------
+# Category cooldowns and phase windows
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_founding_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_founding_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_founding_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_recognition_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_recognition_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_recognition_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_security_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_security_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_security_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_government_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_government_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_government_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_league_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_league_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_league_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_formable_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_formable_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_formable_ready_date compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_evolution_ready = {
+	OR = {
+		NOT = { has_variable = independence_wave_statehood_evolution_ready_date }
+		check_variable = { var = global.date value = independence_wave_statehood_evolution_ready_date compare = greater_than_or_equals }
+	}
+}
+
+# Emergency founding and provisional state.
+is_independence_wave_statehood_founding_period = {
+	check_variable = { var = independence_wave_founding_phase value = constant:independence_wave_founding_phase.recognized_state compare = less_than }
+}
+
+# Provisional state and later.
+is_independence_wave_statehood_government_period = {
+	check_variable = { var = independence_wave_founding_phase value = constant:independence_wave_founding_phase.provisional_state compare = greater_than_or_equals }
+}
+
+has_independence_wave_undecided_government_route = {
+	check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
+}
+
+# ---------------------------------------------------------------------------
+# Registry facts shared by eligibility and event triggers
+# ---------------------------------------------------------------------------
+
+has_independence_wave_statehood_league_member_at_war = {
+	any_of_scopes = {
+		array = global.independence_wave_league_member_country_entries
+		exists = yes
+		NOT = { tag = ROOT }
+		has_war = yes
+	}
+}
+
+has_independence_wave_statehood_league_member_invaded = {
+	any_of_scopes = {
+		array = global.independence_wave_league_member_country_entries
+		exists = yes
+		NOT = { tag = ROOT }
+		has_independence_wave_living_former_host = yes
+		var:independence_wave_former_host = { has_war_with = PREV }
+	}
+}
+
+has_independence_wave_statehood_radical_league_voice = {
+	OR = {
+		check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.armed_liberation }
+		check_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
+		any_of_scopes = {
+			array = global.independence_wave_league_member_country_entries
+			exists = yes
+			NOT = { tag = ROOT }
+			has_independence_wave_radical_sovereignty_route = yes
+		}
+	}
+}
+
+has_independence_wave_statehood_other_active_country = {
+	any_of_scopes = {
+		array = global.independence_wave_active_countries
+		exists = yes
+		NOT = { tag = ROOT }
+	}
+}
+
+has_independence_wave_statehood_hostile_host = {
+	has_independence_wave_living_former_host = yes
+	OR = {
+		has_independence_wave_severe_host_threat = yes
+		check_variable = { var = independence_wave_hostility value = constant:independence_wave_statehood_incident.refugee_hostility_threshold compare = greater_than_or_equals }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Founding incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_currency_eligible = {
+	is_independence_wave_statehood_founding_ready = yes
+	is_independence_wave_statehood_founding_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_currency_done }
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.institutional compare = less_than }
+}
+
+is_independence_wave_statehood_civil_servants_eligible = {
+	is_independence_wave_statehood_founding_ready = yes
+	is_independence_wave_statehood_founding_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_civil_servants_done }
+	has_independence_wave_living_former_host = yes
+	NOT = { has_independence_wave_capable_government = yes }
+}
+
+is_independence_wave_statehood_junction_eligible = {
+	is_independence_wave_statehood_founding_ready = yes
+	is_independence_wave_statehood_founding_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_junction_done }
+	has_independence_wave_living_former_host = yes
+	NOT = { has_independence_wave_settled_host_relation = yes }
+}
+
+# Refugees follow the host's hostility rather than the founding window.
+is_independence_wave_statehood_refugees_eligible = {
+	is_independence_wave_statehood_founding_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_refugees_done }
+	has_independence_wave_statehood_hostile_host = yes
+}
+
+# ---------------------------------------------------------------------------
+# Recognition incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_envoy_eligible = {
+	is_independence_wave_statehood_recognition_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_envoy_done }
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.observed compare = greater_than_or_equals }
+	NOT = { has_independence_wave_treaty_backed_recognition = yes }
+}
+
+is_independence_wave_statehood_arms_pledge_eligible = {
+	is_independence_wave_statehood_recognition_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_arms_pledge_done }
+	NOT = { has_independence_wave_treaty_backed_recognition = yes }
+	check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.guarded compare = greater_than_or_equals }
+}
+
+is_independence_wave_statehood_failed_vote_eligible = {
+	is_independence_wave_statehood_recognition_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_failed_vote_done }
+	check_variable = { var = independence_wave_recognition value = constant:independence_wave_recognition_band.observed compare = greater_than_or_equals }
+	NOT = { has_independence_wave_de_facto_recognition = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Security incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_militia_eligible = {
+	is_independence_wave_statehood_security_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_militia_done }
+	NOT = { has_independence_wave_prepared_security = yes }
+	OR = {
+		check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.strained compare = greater_than_or_equals }
+		has_independence_wave_disputed_legitimacy = yes
+	}
+}
+
+is_independence_wave_statehood_border_guards_eligible = {
+	is_independence_wave_statehood_security_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_border_guards_done }
+	has_independence_wave_living_former_host = yes
+	NOT = { has_independence_wave_settled_host_relation = yes }
+	check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.formidable compare = less_than }
+}
+
+is_independence_wave_statehood_officers_eligible = {
+	is_independence_wave_statehood_security_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_officers_done }
+	OR = {
+		check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = less_than }
+		has_war = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Government incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_assembly_eligible = {
+	is_independence_wave_statehood_government_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_assembly_done }
+	OR = {
+		has_independence_wave_undecided_government_route = yes
+		has_independence_wave_constitutional_route = yes
+		has_independence_wave_popular_council_route = yes
+	}
+}
+
+is_independence_wave_statehood_emergency_rule_eligible = {
+	is_independence_wave_statehood_government_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_emergency_rule_done }
+	OR = {
+		has_independence_wave_emergency_military_route = yes
+		AND = {
+			check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = greater_than_or_equals }
+			NOT = { has_independence_wave_established_legitimacy = yes }
+		}
+	}
+}
+
+is_independence_wave_statehood_provinces_eligible = {
+	is_independence_wave_statehood_government_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_provinces_done }
+	num_of_controlled_states > 1
+}
+
+is_independence_wave_statehood_patron_ministers_eligible = {
+	is_independence_wave_statehood_government_ready = yes
+	is_independence_wave_statehood_government_period = yes
+	NOT = { has_country_flag = independence_wave_statehood_patron_ministers_done }
+	has_independence_wave_patron_warning = yes
+	NOT = { has_independence_wave_patron_control = yes }
+}
+
+# ---------------------------------------------------------------------------
+# League incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_arms_request_eligible = {
+	is_independence_wave_statehood_league_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_arms_request_done }
+	has_country_flag = independence_wave_league_member
+	has_independence_wave_statehood_league_member_at_war = yes
+}
+
+is_independence_wave_statehood_collective_war_eligible = {
+	is_independence_wave_statehood_league_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_collective_war_done }
+	has_country_flag = independence_wave_league_member
+	has_independence_wave_statehood_radical_league_voice = yes
+}
+
+is_independence_wave_statehood_rights_charter_eligible = {
+	is_independence_wave_statehood_league_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_rights_charter_done }
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_evolution_congress_rights_charter }
+}
+
+# ---------------------------------------------------------------------------
+# Formable incidents
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_union_flag_eligible = {
+	is_independence_wave_statehood_formable_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_union_flag_done }
+	has_country_flag = independence_wave_formable_discovered
+	NOT = { has_country_flag = independence_wave_formable_active }
+}
+
+is_independence_wave_statehood_congress_seats_eligible = {
+	is_independence_wave_statehood_formable_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_congress_seats_done }
+	OR = {
+		has_country_flag = independence_wave_formable_method_selected
+		has_country_flag = independence_wave_formable_founding_proposal_active
+	}
+	NOT = { has_country_flag = independence_wave_formable_active }
+}
+
+is_independence_wave_statehood_single_command_eligible = {
+	is_independence_wave_statehood_formable_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_single_command_done }
+	has_country_flag = independence_wave_formable_active
+	NOT = { has_country_flag = independence_wave_formable_first_stage_integration_complete }
+}
+
+# ---------------------------------------------------------------------------
+# Evolution incidents. Each one needs its evolution active and enabled in the
+# Event Logs, so disabling an evolution removes its incidents from the pool.
+# ---------------------------------------------------------------------------
+
+is_independence_wave_statehood_volunteer_clerks_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_volunteer_clerks_done }
+	has_independence_wave_replicable_independence_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_1 }
+	NOT = { has_independence_wave_capable_government = yes }
+	has_independence_wave_statehood_other_active_country = yes
+}
+
+is_independence_wave_statehood_host_files_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_host_files_done }
+	has_independence_wave_replicable_independence_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_1 }
+	has_independence_wave_living_former_host = yes
+	NOT = { has_independence_wave_settled_host_relation = yes }
+}
+
+is_independence_wave_statehood_claimant_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_claimant_done }
+	has_independence_wave_dormant_nations_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_2 }
+	OR = {
+		has_independence_wave_undecided_government_route = yes
+		has_independence_wave_traditional_route = yes
+	}
+}
+
+is_independence_wave_statehood_schoolroom_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_schoolroom_done }
+	has_independence_wave_dormant_nations_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_2 }
+	is_independence_wave_statehood_government_period = yes
+}
+
+is_independence_wave_statehood_colonels_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_colonels_done }
+	has_independence_wave_armed_birth_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_3 }
+	check_variable = { var = independence_wave_security value = constant:independence_wave_security_band.organized compare = greater_than_or_equals }
+	check_variable = { var = independence_wave_capacity value = constant:independence_wave_capacity_band.institutional compare = less_than }
+}
+
+is_independence_wave_statehood_cartridges_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_cartridges_done }
+	has_independence_wave_armed_birth_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_3 }
+	NOT = { has_independence_wave_capable_government = yes }
+	OR = {
+		has_war = yes
+		NOT = { has_independence_wave_prepared_security = yes }
+	}
+}
+
+is_independence_wave_statehood_defence_clause_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_defence_clause_done }
+	has_independence_wave_sovereign_congress_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
+	has_country_flag = independence_wave_league_member
+}
+
+is_independence_wave_statehood_secretariat_payments_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_secretariat_payments_done }
+	has_independence_wave_sovereign_congress_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
+	has_country_flag = independence_wave_league_member
+	OR = {
+		has_independence_wave_patron_warning = yes
+		check_variable = { var = global.independence_wave_league_patron_capture value = constant:independence_wave_statehood_incident.patron_capture_threshold compare = greater_than_or_equals }
+	}
+}
+
+is_independence_wave_statehood_invaded_member_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_invaded_member_done }
+	has_independence_wave_sovereign_congress_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_4 }
+	has_country_flag = independence_wave_league_member
+	has_independence_wave_statehood_league_member_invaded = yes
+}
+
+is_independence_wave_statehood_street_constitution_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_street_constitution_done }
+	has_independence_wave_open_sovereignty_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_5 }
+	OR = {
+		has_independence_wave_undecided_government_route = yes
+		has_independence_wave_radical_sovereignty_route = yes
+		has_independence_wave_popular_council_route = yes
+	}
+	check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.strained compare = greater_than_or_equals }
+}
+
+is_independence_wave_statehood_coalition_plans_eligible = {
+	is_independence_wave_statehood_evolution_ready = yes
+	NOT = { has_country_flag = independence_wave_statehood_coalition_plans_done }
+	has_independence_wave_open_sovereignty_evolution = yes
+	NOT = { has_global_flag = events_log_disabled_evolution_6_21_5 }
+	has_independence_wave_living_former_host = yes
+	OR = {
+		has_independence_wave_severe_host_threat = yes
+		check_variable = { var = independence_wave_hostility value = constant:independence_wave_statehood_incident.coalition_hostility_threshold compare = greater_than_or_equals }
+	}
+	has_independence_wave_statehood_other_active_country = yes
+}

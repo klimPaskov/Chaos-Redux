@@ -6,6 +6,8 @@ Event 006 has five visible evolution stages that change both future release plan
 
 Each stage has one shared incident family with two paid outcomes. These incident families are a country-facing resolution layer inside the five evolution stages, not additional evolution rows.
 
+Each active and enabled stage also adds incidents to every country's statehood incident pool (`statehood_incidents.md`): two for Replicable Independence (`chaosx.nr6.171`, `.172`), two for Dormant Nations (`.173`, `.174`), two for Armed Birth (`.175`, `.176`), three for Sovereign Congress (`.177` to `.179`) and two for Open Sovereignty (`.180`, `.181`).
+
 The five player-facing stages are:
 
 1. **The Manuals Cross the Border**
