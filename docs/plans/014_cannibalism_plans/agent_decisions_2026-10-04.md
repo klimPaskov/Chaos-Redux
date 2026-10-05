@@ -268,3 +268,21 @@ Findings:
 - The Raise the First Anchors tooltip chained three "or" clauses in one sentence. It now states the anchor and authority rewards first and the fort placement in a second sentence.
 
 MCP evidence: `hoi4.source_lookup` resolved `cannibalism_hoard_review_state_is_in_reach` (revision 848a5bd0). `hoi4.event_inspect` `lint` with a plain string selector and with `{"event": ...}` returned "Invalid tool arguments", so the event was reviewed in source.
+
+## R3-1. The division designer shows the irregular battalions by name
+
+Disposition: `implemented` (localisation only; no unit statistic, cost or AI change). The designer check of the new names is `needs_live_game`.
+
+Basis: lead round 3 decision D-R3-1 and the routed live defect in which the CXT division designer listed Network Cadre as "NCD".
+
+Evidence:
+
+- The engine reads `<subunit>_short` as the sub-unit's short display name. Vanilla `localisation/english/unit_l_english.yml:582` defines `motorized_rocket_brigade_short: "Mot. R. Artillery"` for the 26-character Motorized Rocket Artillery, and `paradox_wiki/Country creation - Hearts of Iron 4 Wiki.md:555` (section Other localisation, `hoi4.reference_search` revision 0c0e5791) documents `_short` as an optional short name.
+- Vanilla `interface/divisiondesignerview.gui` `designer_subunit_entry` (lines 1891-1925) draws the name in a `hoi_18mbs` text box with `maxWidth = 160`.
+- Advance widths summed from vanilla `gfx/fonts/hoi_18mbs.fnt` (the font has no kerning pairs): Scavenger Warband 130, Network Cadre 101, Island Reavers 95, Feast Cohort 89, Siege Eaters 83, Feast Guard 81, Bone Riders 79, Bone Guard 77, March Predation Column 165, Predation Column 120. Vanilla's own shortened case measures 180 before and 109 after.
+
+Decision:
+
+- The eight `cannibal_*_short` keys whose full name fits the 160 px box are removed, so the designer falls back to the full name: Scavenger Warband, Feast Guard, Feast Cohort, Bone Guard, Bone Riders, Island Reavers, Siege Eaters and Network Cadre.
+- `cannibal_march_predation_column_short` reads "Predation Column", the only name that needs shortening.
+- The `abbreviation` fields in `common/units/014_cannibalism_irregular_infantry.txt` stay as the three-letter counter codes.
