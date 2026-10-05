@@ -588,6 +588,10 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `CAP-03` | Lose a captured site back before resolving it | The former captor leaves the incident phase |
 | `CAP-04` | Occupy an enemy launch site in war | The former owner loses the site and its readied missiles at once, the occupier opens a site-capture incident naming the former owner, and no scope error is logged |
 | `CAP-05` | Release a country whose territory holds another program's launch site | The released country takes the site as a captured site and the site's last holder, not the releasing overlord, loses it |
+| `LOG-01` | Open Event Details for Missiles before any firing | The Missiles description shows, and five evolution rows (Saturation Arsenals, Unreliable Guidance, Special Warheads, Rogue Launch Commands, Automatic Retaliation) each show their own name, tier, and enable toggle |
+| `LOG-02` | Switch off Unreliable Guidance in Event Details, then raise chaos and strain programmes until it would qualify | The track never arms or unlocks, no Unreliable Guidance row is logged, and no other event's evolution is switched off |
+| `LOG-03` | Let Saturation Arsenals unlock | The Evolutions tab shows one Saturation Arsenals row of type Missiles, and its details show the Saturation Arsenals title, body, and summary |
+| `LOG-04` | Fire Missiles with three valid recipients | The History row reads that three countries started or expanded missile programmes |
 | `PHASE-01` | Programme at war with readiness below 50 | Replenish, readiness, guidance, and code actions are visible in the operations view |
 | `PHASE-02` | War starts or peace is made | Both participants switch between maintenance and operations views immediately |
 | `AFTER-01` | Own neutral accident, unconfirmed | Compensate, deny, accelerate, and recalibrate appear; deny closes the incident with a disputed record |

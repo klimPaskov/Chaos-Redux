@@ -122,6 +122,21 @@ Event 13 reaches Event 32 through one guarded line at the end of its state-scope
 
 Event Logs owns the single global firing row, shared repeatable pacing, and the five global evolution rows. Event 032 owns operation, warning, incident, attribution, and achievement receipts but does not append a second global firing row for country processing.
 
+### Event Logs bindings
+
+Every Event 32 evolution uses the canonical Event Logs identity: `events_log_evolution_event_id = constant:missiles_event.id`, `events_log_evolution_type = constant:missiles_event.evolution_type` (32), and the stage is the catalog evolution number from `missiles_evolution` (I Saturation Arsenals 1, II Unreliable Guidance 2, III Special Warheads 3, IV Rogue Launch Commands 4, V Automatic Retaliation 5).
+`missiles_set_evolution_log_context` sets this context for both the unlock record (`missiles_record_evolution_unlock`) and the commit gate (`missiles_commit_evolution_track`), so the shared toggle `events_log_disabled_evolution_32_32_<stage>` is the flag every Event 32 gate reads.
+The logged tier is the chaos tier id of each track's minimum chaos: Saturation 3 (600), Guidance 2 (400), Special Warheads 4 (800), Rogue 1 (200), and Automatic Retaliation 4 (900); `is_current_evolution_enabled` therefore also requires that tier at commit, which the track's own eligibility already implies.
+
+| Event Logs surface | Event 32 entry |
+| --- | --- |
+| Event Details text (`GetEventsLogEventDetailDescription`) | `missiles.event_log.detail` |
+| History row (`GetEventsLogHistoryRowText`), firings with at least one recipient | `missiles.event_log.history.row`, showing the frozen recipient count carried as the row payload |
+| Event Details evolution preview (`events_log_rebuild_open_event_details_view`) | Five rows from `missiles_event.evolution_<i..v>_stage` and `_tier`, each with its enable toggle before the track unlocks |
+| Evolution type label (main list, history details, Event Details) | `missiles.evolution.type` |
+| Evolution names (main list, history details, Event Details) and selected evolution title | `missiles.evolution.<track>.title` |
+| Selected evolution body and summary | `missiles.evolution.<track>.body` and `missiles.evolution.summary` |
+
 ## Achievements
 
 The eight achievements are Exact Distance, Still on the Line, Break the Chain, Keys Returned, No Second Sun, Empty the Silos, Sky Full of Steel, and Long Reach. Persistent trackers record distinct target states/countries, operation profiles, site manifests, war identity, warning roots, chain depth, payload use, damage thresholds, repair windows, survival clocks, evolution gates, and disqualifiers. Scenario-origin, force, debug, ceased-country, special-payload, neutral/self-strike, ally-credit, rebuild, and unauthorized-launch disqualifiers are recorded at the relevant boundary.

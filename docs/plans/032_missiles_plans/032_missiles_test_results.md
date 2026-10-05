@@ -147,3 +147,5 @@ This record remains partial/blocked until the recorded MCP, probability, native-
 
 - Item 1 (inbox 032 L1): `test_event32_state_scope` runs 13 tests; the new `SiteCaptureFormerController` pins that `missiles_handle_site_control_changed` holds no FROM token, evaluates `exists` only in country scopes, and that `on_state_control_changed` and the release pass bind `missiles_capture_former_controller` before the call. All 12 `.tools/test_event32_*.py` modules pass.
 - Needs live game: `CAP-04` and `CAP-05`.
+- Item 2 (Event Logs identity and wiring): `test_event32_evolution_gates` runs 19 tests; `EvolutionLogIdentity` pins type 32 with catalog stages, real tier ids from each track's minimum chaos, the shared context helper in record and commit, no old toggle spelling in Event 32 sources or the shared Event Logs files, the five-row Event Details preview, and the Event 32 key on every evolution, detail, summary, and history surface. All 12 modules pass.
+- Needs live game: `LOG-01` to `LOG-04`.

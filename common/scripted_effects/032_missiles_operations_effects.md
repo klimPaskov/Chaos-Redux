@@ -26,7 +26,8 @@ See `docs/testing/live_qa/20260913_main_menu_startup/script_missile_handoff.md` 
 
 ## Evolution consumer contracts
 
-The Event Details shared toggle uses `events_log_disabled_evolution_32_<type>_1` for the five Event 32 tracks.
+The Event Details shared toggle uses `events_log_disabled_evolution_32_32_<stage>` for the five Event 32 tracks.
+`missiles_set_evolution_log_context` (input temp `missiles_evolution_log_stage_input`, a `missiles_evolution` value) sets `events_log_evolution_event_id` to the event id, `events_log_evolution_type` to `missiles_event.evolution_type` (32), `events_log_evolution_stage` to the catalog number, and `events_log_evolution_tier` to the track's tier constant; the unlock record and the commit gate both call it, so the shared gate and the logged row name the same track.
 The `missiles_*_enabled` triggers read that flag without changing any state.
 The matching `missiles_*_active` triggers also require the retained country adoption receipt.
 They are country-scoped read-only gates and hide implementation flag names from player requirements.

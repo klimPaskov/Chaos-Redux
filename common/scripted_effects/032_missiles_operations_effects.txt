@@ -141,14 +141,14 @@ missiles_evaluate_country_evolution_adoption = {
 	if = {
 		limit = {
 			has_global_flag = missiles_evolution_unreliable_guidance_unlocked
-			NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 		}
 		set_country_flag = missiles_evolution_unreliable_guidance
 	}
 	if = {
 		limit = {
 			has_global_flag = missiles_evolution_special_warheads_unlocked
-			NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_3 }
 			missiles_country_has_payload_owner_capability = yes
 			check_variable = { var = missiles_program_stage value = constant:missiles_evolution_pressure.minimum_guidance_stage compare = greater_than_or_equals }
 		}
@@ -158,14 +158,14 @@ missiles_evaluate_country_evolution_adoption = {
 	if = {
 		limit = {
 			has_global_flag = missiles_evolution_rogue_launch_commands_unlocked
-			NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_4 }
 		}
 		set_country_flag = missiles_evolution_rogue_launch_commands
 	}
 	if = {
 		limit = {
 			has_global_flag = missiles_evolution_automatic_retaliation_unlocked
-			NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
 			check_variable = { var = missiles_command_control value = constant:missiles_evolution_pressure.minimum_retaliation_control compare = greater_than_or_equals }
 			missiles_country_has_active_site = yes
 		}
@@ -410,74 +410,103 @@ missiles_evaluate_rogue_incident_from_firing = {
 }
 
 missiles_record_evolution_unlock = {
-	set_temp_variable = { events_log_evolution_type = constant:missiles_event.zero }
-	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
-	get_current_chaos_tier_value = yes
+	set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_event.zero }
 	if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.saturation compare = equals }
 			NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
-			NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_1 }
 		}
 		set_global_flag = missiles_evolution_saturation_unlocked
 		set_variable = { global.missiles_evolution_saturation_unlock_date = global.date }
-		set_temp_variable = { events_log_evolution_type = constant:missiles_evolution.saturation }
+		set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_evolution.saturation }
 		set_global_flag = missiles_evolution_saturation_arsenals
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.unreliable_guidance compare = equals }
 			NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
-			NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 		}
 		set_global_flag = missiles_evolution_unreliable_guidance_unlocked
 		set_variable = { global.missiles_evolution_unreliable_guidance_unlock_date = global.date }
-		set_temp_variable = { events_log_evolution_type = constant:missiles_evolution.unreliable_guidance }
+		set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_evolution.unreliable_guidance }
 		set_global_flag = missiles_evolution_unreliable_guidance
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.special_warheads compare = equals }
 			NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
-			NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_3 }
 		}
 		set_global_flag = missiles_evolution_special_warheads_unlocked
 		set_variable = { global.missiles_evolution_special_warheads_unlock_date = global.date }
-		set_temp_variable = { events_log_evolution_type = constant:missiles_evolution.special_warheads }
+		set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_evolution.special_warheads }
 		set_global_flag = missiles_evolution_special_warheads
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.rogue_commands compare = equals }
 			NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
-			NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_4 }
 		}
 		set_global_flag = missiles_evolution_rogue_launch_commands_unlocked
 		set_variable = { global.missiles_evolution_rogue_launch_commands_unlock_date = global.date }
-		set_temp_variable = { events_log_evolution_type = constant:missiles_evolution.rogue_commands }
+		set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_evolution.rogue_commands }
 		set_global_flag = missiles_evolution_rogue_launch_commands
 	}
 	else_if = {
 		limit = {
 			check_variable = { var = missiles_evolution_selection value = constant:missiles_evolution.automatic_retaliation compare = equals }
 			NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
-			NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
 		}
 		set_global_flag = missiles_evolution_automatic_retaliation_unlocked
 		set_variable = { global.missiles_evolution_automatic_retaliation_unlock_date = global.date }
-		set_temp_variable = { events_log_evolution_type = constant:missiles_evolution.automatic_retaliation }
+		set_temp_variable = { missiles_evolution_logged_stage = constant:missiles_evolution.automatic_retaliation }
 		set_global_flag = missiles_evolution_automatic_retaliation
 	}
 	if = {
 		limit = {
-			check_variable = { var = events_log_evolution_type value = constant:missiles_event.zero compare = greater_than }
+			check_variable = { var = missiles_evolution_logged_stage value = constant:missiles_event.zero compare = greater_than }
 		}
-		set_temp_variable = { events_log_evolution_event_id = constant:missiles_event.id }
-		set_temp_variable = { events_log_evolution_stage = constant:missiles_event.one }
-		set_temp_variable = { events_log_evolution_tier = current_chaos_tier_value }
+		set_temp_variable = { missiles_evolution_log_stage_input = missiles_evolution_logged_stage }
+		missiles_set_evolution_log_context = yes
 		set_temp_variable = { events_log_evolution_has_actor = constant:missiles_event.zero }
 		record_events_log_evolution_entry = yes
 		missiles_clear_evolution_track_pending = yes
+	}
+}
+
+# Input temp missiles_evolution_log_stage_input (a missiles_evolution value).
+# Sets the shared Event Logs context for that track: the type is the event id
+# and the stage is the catalog evolution number, so the shared views and the
+# events_log_disabled_evolution_32_32_<stage> toggle name the right track. The
+# tier is the chaos tier of the track's minimum chaos.
+missiles_set_evolution_log_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:missiles_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:missiles_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = missiles_evolution_log_stage_input }
+	set_temp_variable = { events_log_evolution_tier = constant:chaos_meter_tier_id.tier_0 }
+	if = {
+		limit = { check_variable = { var = missiles_evolution_log_stage_input value = constant:missiles_evolution.saturation compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:missiles_event.evolution_i_tier }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_log_stage_input value = constant:missiles_evolution.unreliable_guidance compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:missiles_event.evolution_ii_tier }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_log_stage_input value = constant:missiles_evolution.special_warheads compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:missiles_event.evolution_iii_tier }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_log_stage_input value = constant:missiles_evolution.rogue_commands compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:missiles_event.evolution_iv_tier }
+	}
+	else_if = {
+		limit = { check_variable = { var = missiles_evolution_log_stage_input value = constant:missiles_evolution.automatic_retaliation compare = equals } }
+		set_temp_variable = { events_log_evolution_tier = constant:missiles_event.evolution_v_tier }
 	}
 }
 
@@ -566,27 +595,27 @@ missiles_measure_evolution_pressure = {
 
 missiles_clear_disabled_evolution_pending = {
 	if = {
-		limit = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+		limit = { has_global_flag = events_log_disabled_evolution_32_32_4 }
 		clr_global_flag = missiles_evolution_rogue_launch_commands_pending
 		clear_variable = global.missiles_evolution_rogue_launch_commands_due_date
 	}
 	if = {
-		limit = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+		limit = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 		clr_global_flag = missiles_evolution_unreliable_guidance_pending
 		clear_variable = global.missiles_evolution_unreliable_guidance_due_date
 	}
 	if = {
-		limit = { has_global_flag = events_log_disabled_evolution_32_1_1 }
+		limit = { has_global_flag = events_log_disabled_evolution_32_32_1 }
 		clr_global_flag = missiles_evolution_saturation_pending
 		clear_variable = global.missiles_evolution_saturation_due_date
 	}
 	if = {
-		limit = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+		limit = { has_global_flag = events_log_disabled_evolution_32_32_3 }
 		clr_global_flag = missiles_evolution_special_warheads_pending
 		clear_variable = global.missiles_evolution_special_warheads_due_date
 	}
 	if = {
-		limit = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+		limit = { has_global_flag = events_log_disabled_evolution_32_32_5 }
 		clr_global_flag = missiles_evolution_automatic_retaliation_pending
 		clear_variable = global.missiles_evolution_automatic_retaliation_due_date
 	}
@@ -686,12 +715,8 @@ missiles_arm_evolution_track = {
 # shared evolution log, then every programme refreshes its access with ROOT
 # bound to itself.
 missiles_commit_evolution_track = {
-	set_temp_variable = { events_log_evolution_event_id = constant:missiles_event.id }
-	set_temp_variable = { events_log_evolution_type = missiles_evolution_selection }
-	set_temp_variable = { events_log_evolution_stage = constant:missiles_event.one }
-	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
-	get_current_chaos_tier_value = yes
-	set_temp_variable = { events_log_evolution_tier = current_chaos_tier_value }
+	set_temp_variable = { missiles_evolution_log_stage_input = missiles_evolution_selection }
+	missiles_set_evolution_log_context = yes
 	if = {
 		limit = { is_current_evolution_enabled = yes }
 		missiles_record_evolution_unlock = yes
@@ -798,7 +823,7 @@ missiles_evaluate_evolution_unlocks = {
 		if = {
 			limit = {
 				NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
-				NOT = { has_global_flag = events_log_disabled_evolution_32_4_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_4 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
 			if = {
@@ -828,7 +853,7 @@ missiles_evaluate_evolution_unlocks = {
 		if = {
 			limit = {
 				NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
-				NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
 			if = {
@@ -858,7 +883,7 @@ missiles_evaluate_evolution_unlocks = {
 		if = {
 			limit = {
 				NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
-				NOT = { has_global_flag = events_log_disabled_evolution_32_1_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_1 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
 			if = {
@@ -888,7 +913,7 @@ missiles_evaluate_evolution_unlocks = {
 		if = {
 			limit = {
 				NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
-				NOT = { has_global_flag = events_log_disabled_evolution_32_3_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_3 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
 			if = {
@@ -918,7 +943,7 @@ missiles_evaluate_evolution_unlocks = {
 		if = {
 			limit = {
 				NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
-				NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
 			}
 			set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
 			if = {
@@ -3664,7 +3689,7 @@ missiles_calculate_operation_guidance = {
 	if = {
 		limit = {
 			missiles_guidance_evolution_active = yes
-			NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 		}
 		subtract_from_variable = { missiles_operation_guidance_score = constant:missiles_guidance.unstable_program_penalty }
 	}
@@ -3712,7 +3737,7 @@ missiles_prepare_guidance_weights = {
 	if = {
 		limit = {
 			missiles_guidance_evolution_active = yes
-			NOT = { has_global_flag = events_log_disabled_evolution_32_2_1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
 		}
 		subtract_from_temp_variable = { missiles_guidance_weight_on_target = constant:missiles_resolution.guidance_failure_penalty }
 		add_to_temp_variable = { missiles_guidance_weight_degraded = constant:missiles_guidance.unstable_failure_weight }
@@ -5674,7 +5699,7 @@ missiles_queue_warning_for_impact_country = {
 				exists = yes
 				NOT = { tag = ROOT }
 				missiles_automatic_retaliation_active = yes
-				NOT = { has_global_flag = events_log_disabled_evolution_32_5_1 }
+				NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
 				check_variable = { var = missiles_retaliation_posture value = constant:missiles_retaliation_posture.off compare = greater_than }
 				missiles_country_has_active_site = yes
 				check_variable = { var = missiles_operational_reserve value = constant:missiles_reserve.retaliation_reserve_cap compare = greater_than_or_equals }
