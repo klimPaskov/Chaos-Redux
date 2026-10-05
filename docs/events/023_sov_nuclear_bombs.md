@@ -85,6 +85,15 @@ The fourth header line ends with a security label: secure, watched (25), penetra
 The AI treats a penetrated program, or a Suspected one, as custody duty and sweeps it (×2.00 when penetrated, ×1.50 when Suspected).
 All values are in `sov_nuclear_bombs_exposure`, `sov_nuclear_bombs_exposure_source`, `sov_nuclear_bombs_public_knowledge`, `sov_nuclear_bombs_duration` and `sov_nuclear_bombs_ai`.
 
+### Foreign reactions and arms-race hooks
+
+Foreign governments react to what they know (Part 3 foreign reaction framework, Part 5 Evolution I foreign package).
+The first time foreign knowledge reaches Confirmed in private, the first time it reaches Demonstrated, and when Evolution I is recorded, every major outside the Soviet camp (not SOV, not capitulated, not a Soviet subject or faction member) receives one strategic report through a one-time `every_country` dispatch guarded by a global flag: `chaosx.nr23.190` (private proof), `chaosx.nr23.191` (the public arsenal) and `chaosx.nr23.192` (the atomic race).
+Each report offers the same four answers: turn intelligence on the Soviet programme (`add_intel` on the Union), make the country's own atomic research a priority (the timed idea `sov_nuclear_bombs_foreign_atomic_priority`, a research bonus for the nuclear category for 365 days, never a technology), strengthen air defence (the timed idea `sov_nuclear_bombs_foreign_air_defence`, static anti-air damage and hit chance and a radar research bonus for 365 days), or guarantee a minor neighbour of the Union, preferring one already at war with it or under a Soviet demand.
+AI weights in `sov_nuclear_bombs_foreign_ai` follow the stage and the major's capability: intelligence leads on private proof, air defence and guarantees on the public arsenal, research in the race, and research doubles with an existing atomic programme and falls without one.
+The first Soviet combat use sends Soviet faction partners and subjects `chaosx.nr23.193`: standing with Moscow raises war support and lowers stability; keeping a distance does the reverse, and a partner that is not a Soviet subject leaves the faction.
+Six neutral arms-race hooks record their first moment as global flags with the Soviet actor's id (`sov_nuclear_bombs_arms_race_private_confirmation`, `_first_public_test`, `_first_public_ultimatum`, `_first_combat_use`, `_first_breakaway_crisis`, `_first_major_exchange`, each with an `_actor` global variable); they fire nothing and grant nothing (Part 7 "Accepted arms-race hook list").
+
 ### Coercion dossier, credibility and the enforcement window
 
 A coercion dossier opens on one state; its counterpart is the state's independent non-Soviet controller, otherwise its owner.

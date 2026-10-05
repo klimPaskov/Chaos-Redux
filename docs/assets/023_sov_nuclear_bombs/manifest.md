@@ -194,6 +194,22 @@ All three v2 triplets passed strict 64x64 BGRA and source/template equality audi
 
 The unique Event 023 exchange cue is `sound/023_sov_nuclear_bombs/super_event_108_first_major_exchange.wav`. Its public-domain source, rights evidence, conversion command, metadata, and checksum are recorded in `docs/super_events/023_sov_nuclear_bombs_super_event_research.md` and `provenance/`. The shared sound registry owns the playback definition `chaosx_super_event_108_track` and settings-aware wrappers.
 
+## Picture reuse for the round 2 report and news events
+
+The report and news events added in round 2 reuse existing Event 023 pictures, and the two foreign timed ideas reuse vanilla idea icons; no new art was made, by design (lead round 2 decision 8), so none is pending.
+
+| Runtime use | Sprite |
+| --- | --- |
+| `chaosx.nr23.107` intelligence report | `GFX_report_event_sov_nuclear_test_report` |
+| `chaosx.news.235` secret test detected | `GFX_news_event_sov_nuclear_public_test` |
+| `chaosx.nr23.190` and `chaosx.nr23.191` major strategic reports | `GFX_report_event_sov_nuclear_test_report` |
+| `chaosx.nr23.192` atomic race report | `GFX_report_event_sov_nuclear_arsenal_opening` |
+| `chaosx.nr23.193` Soviet partner report | `GFX_report_event_sov_nuclear_arsenal_opening` |
+| `sov_nuclear_bombs_enforcement_window_mission` | `GFX_mission_sov_nuclear_mission_ultimatum_response` |
+| `sov_nuclear_bombs_counterintelligence_sweep` | `GFX_decision_sov_nuclear_decision_counterintelligence` |
+| `sov_nuclear_bombs_foreign_atomic_priority` idea | vanilla `GFX_idea_generic_research_bonus` |
+| `sov_nuclear_bombs_foreign_air_defence` idea | vanilla `GFX_idea_generic_anti_air` |
+
 ## Scope exclusions
 
 Event 023 introduces no portrait, flag, custom unit, counter, 3D model, animation, or dedicated scripted GUI. No runtime file refers to those excluded asset families. Event 023 has no private Fallout or Final Silence picture and no Event 023 world-end row.

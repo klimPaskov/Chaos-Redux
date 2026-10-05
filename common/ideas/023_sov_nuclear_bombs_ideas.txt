@@ -4,6 +4,7 @@
 # The Event 023 posture spirit is the single visible national-spirit family for
 # the arsenal. The event swaps these ideas as command policy changes; all
 # inventory, authorization, and consequence logic remains in scripted systems.
+# Two timed foreign spirits record how a major answers its strategic report.
 # ============================================================================
 
 @sov_nuclear_secret_stability = 0.02
@@ -26,6 +27,13 @@
 @sov_nuclear_broken_stability = -0.12
 @sov_nuclear_broken_war_support = 0.06
 @sov_nuclear_broken_supply = 0.05
+# Foreign answers to the Soviet arsenal: a time-limited priority for the
+# country's own atomic research, or a stronger air defence. Neither grants a
+# technology.
+@sov_nuclear_foreign_atomic_research = 0.25
+@sov_nuclear_foreign_anti_air_damage = 0.15
+@sov_nuclear_foreign_anti_air_hit_chance = 0.10
+@sov_nuclear_foreign_radar_research = 0.10
 
 ideas = {
 	country = {
@@ -95,6 +103,26 @@ ideas = {
 				stability_factor = @sov_nuclear_broken_stability
 				war_support_factor = @sov_nuclear_broken_war_support
 				supply_consumption_factor = @sov_nuclear_broken_supply
+			}
+		}
+
+		sov_nuclear_bombs_foreign_atomic_priority = {
+			picture = GFX_idea_generic_research_bonus
+			allowed_civil_war = { always = yes }
+			research_bonus = {
+				nuclear = @sov_nuclear_foreign_atomic_research
+			}
+		}
+
+		sov_nuclear_bombs_foreign_air_defence = {
+			picture = GFX_idea_generic_anti_air
+			allowed_civil_war = { always = yes }
+			modifier = {
+				static_anti_air_damage_factor = @sov_nuclear_foreign_anti_air_damage
+				static_anti_air_hit_chance_factor = @sov_nuclear_foreign_anti_air_hit_chance
+			}
+			research_bonus = {
+				radar_tech = @sov_nuclear_foreign_radar_research
 			}
 		}
 	}

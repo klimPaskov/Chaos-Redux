@@ -10,6 +10,11 @@
 # calls Chaos, Fallout, civilian-death, contamination, or condemnation effects.
 # ============================================================================
 
+# `add_intel` documents only plain numbers, so the intelligence a major gains
+# from its strategic report is kept here as file-scoped values.
+@sov_nuclear_bombs_foreign_civilian_intel = 10
+@sov_nuclear_bombs_foreign_airforce_intel = 10
+
 sov_nuclear_bombs_set_posture = {
 	remove_ideas = {
 		sov_nuclear_bombs_hidden_arsenal
@@ -986,6 +991,7 @@ sov_nuclear_bombs_record_action_receipt = {
 			sov_nuclear_bombs_raise_public_knowledge = yes
 			set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 			set_country_flag = sov_nuclear_bombs_demonstration_confirmed
+			sov_nuclear_bombs_hook_first_public_test = yes
 			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.demonstration_gain }
 			sov_nuclear_bombs_change_credibility = yes
 			set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.demonstration_readiness }
@@ -1013,6 +1019,7 @@ sov_nuclear_bombs_record_action_receipt = {
 			sov_nuclear_bombs_raise_public_knowledge = yes
 			set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 			set_country_flag = sov_nuclear_bombs_confirmed_use_recorded
+			sov_nuclear_bombs_hook_first_combat_use = yes
 			clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 			sov_nuclear_bombs_refresh_world_threat_source = yes
 			if = {
@@ -1138,11 +1145,152 @@ sov_nuclear_bombs_apply_test_readiness = {
 
 # Country scope (the Soviet actor). Raises foreign knowledge of the arsenal to
 # a level and never lowers it. Input: temporary sov_nuclear_bombs_knowledge_target.
+# The first time knowledge reaches Confirmed in private or Demonstrated, the
+# arms-race hook is recorded and the majors outside the Soviet camp receive
+# their strategic report.
 sov_nuclear_bombs_raise_public_knowledge = {
 	if = {
 		limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = sov_nuclear_bombs_knowledge_target compare = less_than } }
 		set_variable = { sov_nuclear_bombs_public_knowledge = sov_nuclear_bombs_knowledge_target }
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.private compare = greater_than_or_equals } }
+			sov_nuclear_bombs_hook_private_confirmation = yes
+		}
+		if = {
+			limit = {
+				check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.private compare = equals }
+				NOT = { has_global_flag = sov_nuclear_bombs_major_report_private_sent }
+			}
+			set_global_flag = sov_nuclear_bombs_major_report_private_sent
+			every_country = {
+				limit = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+				country_event = { id = chaosx.nr23.190 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals }
+				NOT = { has_global_flag = sov_nuclear_bombs_major_report_demonstrated_sent }
+			}
+			set_global_flag = sov_nuclear_bombs_major_report_demonstrated_sent
+			every_country = {
+				limit = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+				country_event = { id = chaosx.nr23.191 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+		}
 	}
+}
+
+# Neutral arms-race hooks (Part 3 arms-race hook activation, Part 7 Event 32
+# and Event 76 links). Country scope (the Soviet actor). Each hook records its
+# first moment once as a global flag, with the actor id in a global variable,
+# for later events to read. No other event is fired and no technology is
+# granted.
+sov_nuclear_bombs_hook_private_confirmation = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_private_confirmation } }
+		set_global_flag = sov_nuclear_bombs_arms_race_private_confirmation
+		set_variable = { global.sov_nuclear_bombs_arms_race_private_confirmation_actor = THIS.id }
+	}
+}
+
+sov_nuclear_bombs_hook_first_public_test = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_first_public_test } }
+		set_global_flag = sov_nuclear_bombs_arms_race_first_public_test
+		set_variable = { global.sov_nuclear_bombs_arms_race_first_public_test_actor = THIS.id }
+	}
+}
+
+sov_nuclear_bombs_hook_first_public_ultimatum = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_first_public_ultimatum } }
+		set_global_flag = sov_nuclear_bombs_arms_race_first_public_ultimatum
+		set_variable = { global.sov_nuclear_bombs_arms_race_first_public_ultimatum_actor = THIS.id }
+	}
+}
+
+# The first combat use also reaches the Union's faction partners and subjects.
+sov_nuclear_bombs_hook_first_combat_use = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_first_combat_use } }
+		set_global_flag = sov_nuclear_bombs_arms_race_first_combat_use
+		set_variable = { global.sov_nuclear_bombs_arms_race_first_combat_use_actor = THIS.id }
+		every_country = {
+			limit = { sov_nuclear_bombs_event_country_is_soviet_partner = yes }
+			country_event = { id = chaosx.nr23.193 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		}
+	}
+}
+
+sov_nuclear_bombs_hook_first_breakaway_crisis = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_first_breakaway_crisis } }
+		set_global_flag = sov_nuclear_bombs_arms_race_first_breakaway_crisis
+		set_variable = { global.sov_nuclear_bombs_arms_race_first_breakaway_crisis_actor = THIS.id }
+	}
+}
+
+sov_nuclear_bombs_hook_first_major_exchange = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_arms_race_first_major_exchange } }
+		set_global_flag = sov_nuclear_bombs_arms_race_first_major_exchange
+		set_variable = { global.sov_nuclear_bombs_arms_race_first_major_exchange_actor = THIS.id }
+	}
+}
+
+# Country scope: a major answering a strategic report. Each answer commits its
+# own intelligence services, research or air defence; none grants nuclear
+# technology.
+sov_nuclear_bombs_foreign_order_intelligence = {
+	add_intel = {
+		target = SOV
+		civilian_intel = @sov_nuclear_bombs_foreign_civilian_intel
+		airforce_intel = @sov_nuclear_bombs_foreign_airforce_intel
+	}
+	set_country_flag = sov_nuclear_bombs_foreign_intelligence_ordered
+}
+
+sov_nuclear_bombs_foreign_order_research_priority = {
+	add_timed_idea = { idea = sov_nuclear_bombs_foreign_atomic_priority days = constant:sov_nuclear_bombs_foreign_duration.research_priority }
+	set_country_flag = sov_nuclear_bombs_foreign_research_priority_ordered
+}
+
+sov_nuclear_bombs_foreign_order_air_defence = {
+	add_timed_idea = { idea = sov_nuclear_bombs_foreign_air_defence days = constant:sov_nuclear_bombs_foreign_duration.air_defence }
+	set_country_flag = sov_nuclear_bombs_foreign_air_defence_ordered
+}
+
+# A minor already under Soviet pressure is guaranteed first.
+sov_nuclear_bombs_foreign_guarantee_soviet_neighbour = {
+	if = {
+		limit = {
+			SOV = {
+				any_neighbor_country = {
+					sov_nuclear_bombs_event_country_is_guarantee_candidate = yes
+					sov_nuclear_bombs_event_country_is_under_soviet_pressure = yes
+				}
+			}
+		}
+		SOV = {
+			random_neighbor_country = {
+				limit = {
+					sov_nuclear_bombs_event_country_is_guarantee_candidate = yes
+					sov_nuclear_bombs_event_country_is_under_soviet_pressure = yes
+				}
+				ROOT = { give_guarantee = PREV }
+			}
+		}
+	}
+	else = {
+		SOV = {
+			random_neighbor_country = {
+				limit = { sov_nuclear_bombs_event_country_is_guarantee_candidate = yes }
+				ROOT = { give_guarantee = PREV }
+			}
+		}
+	}
+	set_country_flag = sov_nuclear_bombs_foreign_guarantee_given
 }
 
 # Country scope (the Soviet actor). Changes the hidden exposure score (Part 3).
@@ -1240,6 +1388,7 @@ sov_nuclear_bombs_record_test_observation = {
 		limit = { check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.detected compare = greater_than_or_equals } }
 		set_country_flag = sov_nuclear_bombs_test_detected_publicly
 		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
+		sov_nuclear_bombs_hook_first_public_test = yes
 		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
 		sov_nuclear_bombs_raise_public_knowledge = yes
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
@@ -1284,6 +1433,7 @@ sov_nuclear_bombs_record_native_raid_use = {
 		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 		set_country_flag = sov_nuclear_bombs_confirmed_use_recorded
 		set_country_flag = sov_nuclear_bombs_native_raid_use_recorded
+		sov_nuclear_bombs_hook_first_combat_use = yes
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 		if = {
@@ -1660,6 +1810,7 @@ sov_nuclear_bombs_send_ultimatum = {
 		sov_nuclear_bombs_raise_public_knowledge = yes
 		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 		set_country_flag = sov_nuclear_bombs_ultimatum_target_was_independent
+		sov_nuclear_bombs_hook_first_public_ultimatum = yes
 		if = {
 			limit = { sov_nuclear_bombs_event_has_ultimatum_device_backing = yes }
 			set_country_flag = sov_nuclear_bombs_ultimatum_device_backed
@@ -2459,6 +2610,19 @@ sov_nuclear_bombs_record_evolution = {
 		set_temp_variable = { events_log_evolution_has_actor = constant:sov_nuclear_bombs_ledger.one }
 		record_events_log_evolution_entry = yes
 		country_event = { id = chaosx.nr23.106 days = constant:sov_nuclear_bombs_tuning.evolution_report_delay }
+		# Evolution I turns the arsenal into a race: majors outside the Soviet
+		# camp receive one strategic planning report.
+		if = {
+			limit = {
+				check_variable = { var = sov_nuclear_bombs_evolution_stage value = constant:sov_nuclear_bombs_evolution.stage_i compare = equals }
+				NOT = { has_global_flag = sov_nuclear_bombs_major_report_race_sent }
+			}
+			set_global_flag = sov_nuclear_bombs_major_report_race_sent
+			every_country = {
+				limit = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+				country_event = { id = chaosx.nr23.192 days = constant:sov_nuclear_bombs_tuning.evolution_report_delay }
+			}
+		}
 	}
 }
 
@@ -2470,6 +2634,7 @@ sov_nuclear_bombs_open_major_exchange = {
 		}
 		set_global_flag = sov_nuclear_bombs_major_exchange_super_event_fired
 		set_global_flag = sov_nuclear_bombs_major_exchange_active
+		sov_nuclear_bombs_hook_first_major_exchange = yes
 		set_country_flag = sov_nuclear_bombs_serious_crisis
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 		sov_nuclear_bombs_refresh_world_threat_source = yes
@@ -2519,6 +2684,7 @@ sov_nuclear_bombs_open_collapse_recovery = {
 		set_country_flag = sov_nuclear_bombs_collapse_active
 		clr_country_flag = sov_nuclear_bombs_collapse_board_seen
 		set_country_flag = sov_nuclear_bombs_collapse_crisis_recorded
+		sov_nuclear_bombs_hook_first_breakaway_crisis = yes
 		set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.collapse }
 		set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
 		sov_nuclear_bombs_add_exposure = yes

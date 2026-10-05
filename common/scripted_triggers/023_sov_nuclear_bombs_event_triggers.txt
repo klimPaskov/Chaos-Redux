@@ -1997,3 +1997,55 @@ sov_nuclear_bombs_event_ai_has_coercion_purpose = {
 	sov_nuclear_bombs_event_has_ultimatum_device_backing = yes
 	any_enemy_country = { sov_nuclear_bombs_event_country_is_ai_coercion_candidate = yes }
 }
+
+# Foreign reactions (Part 3, Part 5 Evolution I foreign package). Country
+# scope: a major outside the Soviet camp that receives the strategic reports.
+sov_nuclear_bombs_event_country_receives_major_report = {
+	is_major = yes
+	exists = yes
+	NOT = { tag = SOV }
+	NOT = { has_capitulated = yes }
+	NOT = { is_subject_of = SOV }
+	NOT = { is_in_faction_with = SOV }
+}
+
+# Country scope: a Soviet faction member or subject that receives the report
+# after the first Soviet combat use.
+sov_nuclear_bombs_event_country_is_soviet_partner = {
+	exists = yes
+	NOT = { tag = SOV }
+	NOT = { has_capitulated = yes }
+	OR = {
+		is_subject_of = SOV
+		is_in_faction_with = SOV
+	}
+}
+
+# Country scope: a minor next to the Union that ROOT, a major answering a
+# strategic report, could guarantee.
+sov_nuclear_bombs_event_country_is_guarantee_candidate = {
+	is_major = no
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_capitulated = yes }
+	NOT = { is_subject_of = SOV }
+	NOT = { is_in_faction_with = SOV }
+	NOT = { has_war_with = ROOT }
+	NOT = { ROOT = { has_guaranteed = PREV } }
+}
+
+# Country scope: the candidate is already under Soviet pressure.
+sov_nuclear_bombs_event_country_is_under_soviet_pressure = {
+	OR = {
+		has_war_with = SOV
+		has_country_flag = sov_nuclear_bombs_ultimatum_pending
+		has_country_flag = sov_nuclear_bombs_coercion_cooldown
+	}
+}
+
+# Country scope: ROOT, a major, has a Soviet neighbour it could guarantee.
+sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = {
+	SOV = {
+		any_neighbor_country = { sov_nuclear_bombs_event_country_is_guarantee_candidate = yes }
+	}
+}

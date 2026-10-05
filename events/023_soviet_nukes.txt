@@ -735,3 +735,186 @@ country_event = {
 		set_country_flag = sov_nuclear_bombs_breakaway_review_seen
 	}
 }
+
+# Foreign strategic reports (Part 3 foreign reaction framework, Part 5
+# Evolution I foreign package). Every major outside the Soviet camp receives
+# one report per stage through a one-time dispatch: private proof, the public
+# arsenal, and the wider race. Each answer commits the major's own services,
+# research or air defence; none grants nuclear technology.
+country_event = {
+	id = chaosx.nr23.190
+	title = chaosx.nr23.190.t
+	desc = chaosx.nr23.190.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+
+	option = {
+		name = sov_nuclear_bombs_foreign_intelligence_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.intelligence_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.private_stage_intelligence always = yes }
+		}
+		sov_nuclear_bombs_foreign_order_intelligence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_research_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.research_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.atomic_programme_research has_tech = atomic_research }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.no_atomic_programme_research NOT = { has_tech = atomic_research } }
+		}
+		sov_nuclear_bombs_foreign_order_research_priority = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_air_defence_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.air_defence_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_neighbour_air_defence is_neighbor_of = SOV }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_war_air_defence has_war_with = SOV }
+		}
+		sov_nuclear_bombs_foreign_order_air_defence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_guarantee_option
+		trigger = { sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.guarantee_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.faction_leader_guarantee is_faction_leader = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.at_war_guarantee has_war = yes }
+		}
+		sov_nuclear_bombs_foreign_guarantee_soviet_neighbour = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.191
+	title = chaosx.nr23.191.t
+	desc = chaosx.nr23.191.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+
+	option = {
+		name = sov_nuclear_bombs_foreign_intelligence_option
+		ai_chance = { base = constant:sov_nuclear_bombs_foreign_ai.intelligence_base }
+		sov_nuclear_bombs_foreign_order_intelligence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_research_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.research_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.atomic_programme_research has_tech = atomic_research }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.no_atomic_programme_research NOT = { has_tech = atomic_research } }
+		}
+		sov_nuclear_bombs_foreign_order_research_priority = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_air_defence_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.air_defence_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.demonstrated_stage_air_defence always = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_neighbour_air_defence is_neighbor_of = SOV }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_war_air_defence has_war_with = SOV }
+		}
+		sov_nuclear_bombs_foreign_order_air_defence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_guarantee_option
+		trigger = { sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.guarantee_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.demonstrated_stage_guarantee always = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.faction_leader_guarantee is_faction_leader = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.at_war_guarantee has_war = yes }
+		}
+		sov_nuclear_bombs_foreign_guarantee_soviet_neighbour = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.192
+	title = chaosx.nr23.192.t
+	desc = chaosx.nr23.192.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_country_receives_major_report = yes }
+
+	option = {
+		name = sov_nuclear_bombs_foreign_intelligence_option
+		ai_chance = { base = constant:sov_nuclear_bombs_foreign_ai.intelligence_base }
+		sov_nuclear_bombs_foreign_order_intelligence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_research_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.research_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.race_stage_research always = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.atomic_programme_research has_tech = atomic_research }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.no_atomic_programme_research NOT = { has_tech = atomic_research } }
+		}
+		sov_nuclear_bombs_foreign_order_research_priority = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_air_defence_option
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.air_defence_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_neighbour_air_defence is_neighbor_of = SOV }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_war_air_defence has_war_with = SOV }
+		}
+		sov_nuclear_bombs_foreign_order_air_defence = yes
+	}
+	option = {
+		name = sov_nuclear_bombs_foreign_guarantee_option
+		trigger = { sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.guarantee_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.faction_leader_guarantee is_faction_leader = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.at_war_guarantee has_war = yes }
+		}
+		sov_nuclear_bombs_foreign_guarantee_soviet_neighbour = yes
+	}
+}
+
+# Soviet faction partners and subjects after the first Soviet combat use
+# (Part 3 Soviet allies and subjects). A partner outside Soviet rule that
+# distances itself leaves the faction; a subject can only distance itself in
+# public.
+country_event = {
+	id = chaosx.nr23.193
+	title = chaosx.nr23.193.t
+	desc = chaosx.nr23.193.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_country_is_soviet_partner = yes }
+
+	option = {
+		name = chaosx.nr23.193.a
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.stand_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.subject_stand is_subject_of = SOV }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.communist_stand has_government = communism }
+		}
+		add_war_support = constant:sov_nuclear_bombs_foreign_effect.stand_war_support
+		add_stability = constant:sov_nuclear_bombs_foreign_effect.stand_stability
+		set_country_flag = sov_nuclear_bombs_partner_stood_with_moscow
+	}
+	option = {
+		name = chaosx.nr23.193.b
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_foreign_ai.distance_base
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.democratic_distance has_government = democratic }
+			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.at_peace_distance has_war = no }
+		}
+		add_stability = constant:sov_nuclear_bombs_foreign_effect.distance_stability
+		add_war_support = constant:sov_nuclear_bombs_foreign_effect.distance_war_support
+		if = {
+			limit = {
+				NOT = { is_subject_of = SOV }
+				is_in_faction_with = SOV
+			}
+			leave_faction = yes
+		}
+		set_country_flag = sov_nuclear_bombs_partner_distanced_from_moscow
+	}
+}

@@ -219,6 +219,24 @@ Event 23 may expose hooks for:
 
 If Event 76 is later implemented, it can use these hooks to modify its own availability, test preparation, or intensity. Event 23 should never create the United States event content inside its own chain.
 
+### Accepted arms-race hook list (2026-10-05)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover and the lead's round 2 planning decision 3 (the optional Event 32 and Event 76 hooks are folded into these flags only); agent decision R2b-5 in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Disposition: `implemented`.
+
+Event 23 records six neutral hooks, each once, as a global flag with the Soviet actor's country id in a global variable named after the flag with the suffix `_actor`:
+
+| Global flag | Moment |
+| --- | --- |
+| `sov_nuclear_bombs_arms_race_private_confirmation` | Foreign knowledge first reaches Confirmed in private or higher |
+| `sov_nuclear_bombs_arms_race_first_public_test` | The first public or wartime demonstration, or the first secret test detected beyond denial |
+| `sov_nuclear_bombs_arms_race_first_public_ultimatum` | The first public Soviet ultimatum |
+| `sov_nuclear_bombs_arms_race_first_combat_use` | The first recorded Soviet combat use, by the authorization chain or a native raid |
+| `sov_nuclear_bombs_arms_race_first_breakaway_crisis` | The Soviet custody board first opens after an Event 5 depot transfer |
+| `sov_nuclear_bombs_arms_race_first_major_exchange` | The first multi-major exchange opens |
+
+Event 32, Event 76 and any later event may read these flags to change their own availability or intensity. Event 23 fires no other event from them and grants no technology.
+
 ## Event 47 BOOM link
 
 The supplied catalog only identifies Event 47 as `BOOM` and does not provide a reworked implementation contract.
