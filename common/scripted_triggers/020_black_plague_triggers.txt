@@ -56,8 +56,18 @@ black_plague_has_valid_origin = {
 	any_state = { black_plague_state_is_valid_origin = yes }
 }
 
+# Initialization can run while the project and response UI are being prepared.
+# Only an actual outbreak consumes the natural-event slot.
+black_plague_outbreak_has_begun = {
+	OR = {
+		has_global_flag = black_plague_natural_outbreak_started
+		has_global_flag = black_plague_state_was_established
+		check_variable = { global.black_plague_active_states^num > constant:black_plague_value.zero }
+	}
+}
+
 black_plague_automatic_event_is_available = {
-	NOT = { has_global_flag = black_plague_system_started }
+	NOT = { black_plague_outbreak_has_begun = yes }
 	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
 	NOT = { has_global_flag = world_end }
 	black_plague_has_valid_origin = yes

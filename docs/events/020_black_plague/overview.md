@@ -1,14 +1,37 @@
 # Event 20: Black Plague
 
-Event 20 is a playable state-level epidemic, containment, biowarfare, and Rat emergence system. The source-of-truth design package is `docs/specs/020_black_plague_specs/`; this document records the live runtime contract and the content currently wired into it. The scripted gameplay core, 52-node RTA route, 71-node RTX route, and scoped Rat King defeat/slot-087 presentation tranche are wired for static validation, while the accepted full-design audit still tracks broader narrative depth, presentation polish, rights attribution, and live validation as remaining work.
+Event 20 models a state-level epidemic, containment, biowarfare, and Rat emergence.
+The source-of-truth design package is `docs/specs/020_black_plague_specs/`.
+This document records the source runtime contract and content wired into it.
+The gameplay core, 52-node RTA route, 71-node RTX route, and Rat King defeat presentation require the outstanding validation recorded in the [2026-10-05 review](../../plans/020_black_plague_plans/agent_decisions_2026-10-05.md).
 
 The natural incident is registered as a minor fire-once event and is default enabled through `constant:black_plague_identity.event_id`. Event 20 is the Severe member of the repeatable Diseases cluster, which uses a 120-day cooldown, and is registered in the public world-end scenario catalog; the terminal row remains inactive until Evolution V's earned conditions are met.
 
-The player-facing report chain is wired under `events/020_black_death.txt`. Natural play opens with one direct `Black Plague` recognition news event. The Threatened and Incubating states created by the opening transaction do not fire separate news windows, preventing three simultaneous announcements, while their later lifecycle behavior remains unchanged. Later reports cover severe origin failure, foreign and overseas infections, Severe Crisis, Collapsed, Containment, Recovery, relapse, cure, countermeasure learning, ten million deaths, eradication, Rat emergence, resurgence, and route-aware brood absorption. Distributed Instinct, Dominant Beast, and Emergent Cunning each describe what the surviving units and tunnel memory become after a merger, while the guarded neutral branch remains available before hierarchy selection. The chain continues through the sentient crown, royal crisis, Royal Node success or counterfire, emergency countermeasure timeout, and the earned terminal route. SCN-012 uses `chaosx.nr20.90` for its launch briefing. The active terminal event map reserves `.80` for target-continent selection, `.81` for Crown-the-Continent success, `.82` for Crown-the-Continent break, `.83` for harbor success, `.84` for capital success, `.85` for harbor invalidation, and `.86` for capital invalidation; these are report surfaces inside the existing Event 020 chain, not extra categories or tags.
+The report chain is wired under `events/020_black_death.txt`.
+Natural play opens with one worldwide `.2` recognition news event naming the origin district.
+Recognition also marks that district public on the disease map and sends any applicable local notices.
+Initial Threatened and Incubating states do not generate additional opening news.
+Each human country can receive one `.15` report when confirmed cases reach its land frontier and one `.16` report when its own or occupied territory has confirmed cases.
+Country flags aggregate many states into those two reports, and recipient-owned state pointers preserve each report's first location.
+The origin-severe duplicate and the first contained, cured, and recovering-state broadcasts are suppressed, retaining those milestones in state data and the containment interface.
+Foreign and overseas infections, severe crisis, collapse, relapse, the death threshold, and eradication retain their guarded world news.
+Reconstruction news after eradication requires Rat King defeat.
+Existing Rat emergence, evolution, government, terminal, defeat, and aftermath reports retain their source guards.
+SCN-012 uses `.90` for its launch briefing and suppresses natural reports during bootstrap.
+The terminal map retains `.80` through `.86` for its continent, capital, and harbour outcomes.
 
 ## Natural origin
 
 The natural entry event chooses one eligible mainland state through a weighted ticket pool. It favors population, crowding, underdevelopment, occupation, resistance, troops, refugees, war, ports, railways, and weak protection. Prevention, field hospitals, stability, infrastructure, and response capacity reduce the weight. The chosen state begins Incubating, nearby eligible states begin Threatened, and the system records the historical owner and controller.
+
+`black_plague_system_started` marks runtime initialization, not proof that an outbreak exists.
+Natural availability and the shared event-pool reason use `black_plague_outbreak_has_begun`, which reads the natural-start receipt, established-disease history, and actual active-state registry.
+An initialized empty runtime remains eligible for its first natural outbreak.
+The requester stores the selected state in `black_plague_pending_origin_state` across initialization, revalidates it, commits the origin and scheduler, and clears the private pointer on exit.
+Only a successful state commit publishes the natural-start receipt and the opening news.
+Rejected human launches receive `.904`, with distinct active, eradicated, terminal, and unsuccessful-origin text.
+The weekly state scheduler queues `.906` in its controller's country scope for global news, evolution, Rat, achievement and threat work.
+That receiver supplies a real country ROOT and consumes each global pulse sequence once, so duplicate deliveries cannot repeat the aftermath pass.
 
 ## State lifecycle
 
@@ -137,3 +160,14 @@ The dedicated Black Plague category carries three recurring post-defeat human pr
 The dedicated category also carries a 420-day Population Recovery Programme and a 120-day Memorial and Biosecurity Charter. Population Recovery applies the timed `black_plague_population_recovery_program` state modifier to controlled recovering or cured states with measurable devastation, lowers that devastation, improves treatment, and lowers relapse risk. The Memorial Charter is permanent for the country, advances findings, improves stability and war support, and applies `black_plague_memorial_biosecurity_stewardship` to recovered states. These projects make long-term demographic, ruined-state, memorial, and anti-biowarfare aftermath visible without adding a third rat tag, duplicating disease state, or instantly curing a state.
 
 The shared board now also carries a four-frame source-authored rat-infestation badge registered in `interface/020_black_plague_rat_identity.gfx` and gated by the existing Black Plague tab trigger. Evolution IV's Events Log detail surface uses the ten-frame source-authored Rat King portrait from `docs/assets/020_black_plague/rat_king_animation/manifest.md`; the Royal Burrows decision surface uses the five-frame source-authored seal from `docs/assets/020_black_plague/royal_burrows_seal_animation/manifest.md`; Severe Crisis and Collapsed selected cards use the eight-frame `black_plague_crisis_seal` package from `docs/assets/020_black_plague/animations/black_plague_crisis_seal/manifest.md`, registered as `GFX_black_plague_crisis_seal_static` and `GFX_black_plague_crisis_seal_animated` in `interface/020_black_plague_rat_identity.gfx` with textures under `gfx/interface/animated/020_black_plague/crisis_seal/`. The shared-board trigger is `disease_containment_board_view_state_is_black_plague_crisis` (Severe or Collapsed), exposed through `disease_containment_board_black_plague_crisis_seal_visible` and `_animated_visible`, and its tooltip is `disease_containment.gui.selected.black_plague_crisis_seal.tt`. The final-order decision uses the eight-frame `black_plague_rat_king_terminal_readiness` package from `docs/assets/020_black_plague/animations/rat_king_world_end_readiness_seal/manifest.md`, registered as `GFX_black_plague_rat_king_terminal_readiness_static` and `GFX_black_plague_rat_king_terminal_readiness_animated` with textures under `gfx/interface/animated/020_black_plague/world_end_readiness_seal/`; the animated sprite is consumed by `black_plague_rat_king_execute_terminal_takeover`, while no separate terminal-readiness scripted-GUI panel exists. The full audit and deferral record is `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md`.
+
+## Shared response cost contract
+
+Ordinary state orders consume population-scaled support equipment and fuel and reserve civilian factories and Response Capacity.
+Royal Node and Crown Strike consume infantry equipment and fuel and reserve their existing factories and response burden.
+Royal Sealing consumes support equipment and fuel with its factory and response reservations.
+Last-response Hold consumes support equipment, infantry equipment and manpower with its civilian factory commitment.
+Last-response Refuge consumes trucks, manpower and fuel with its civilian factory commitment.
+The inline row shows at most three amounts, and the full tooltip exposes every direct or committed cost and duration.
+Affordability accepts exactly the quoted retained reserves, and Royal Node checks both of its commitments before launch.
+The full action and amount matrix is recorded in the 2026-10-05 decision-cost handoff.

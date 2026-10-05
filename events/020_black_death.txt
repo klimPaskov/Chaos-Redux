@@ -20,8 +20,71 @@ country_event = {
 	immediate = {
 		hidden_effect = {
 			black_plague_start_natural_outbreak = yes
+			if = {
+				limit = {
+					is_ai = no
+					check_variable = { black_plague_start_result = constant:black_plague_value.zero }
+				}
+				country_event = { id = chaosx.nr20.904 }
+			}
 		}
 	}
+}
+
+country_event = {
+	id = chaosx.nr20.904
+	title = chaosx.nr20.904.t
+	desc = {
+		trigger = { OR = { has_global_flag = world_end has_global_flag = black_plague_terminal_takeover_complete } }
+		text = chaosx.nr20.904.terminal.d
+	}
+	desc = {
+		trigger = {
+			black_plague_outbreak_has_begun = yes
+			NOT = { has_global_flag = black_plague_system_eradicated }
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+		}
+		text = chaosx.nr20.904.active.d
+	}
+	desc = {
+		trigger = {
+			has_global_flag = black_plague_system_eradicated
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+		}
+		text = chaosx.nr20.904.eradicated.d
+	}
+	desc = {
+		trigger = {
+			NOT = { black_plague_outbreak_has_begun = yes }
+			NOT = { has_global_flag = black_plague_system_eradicated }
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+		}
+		text = chaosx.nr20.904.origin.d
+	}
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = { name = chaosx.nr20.904.a }
+}
+
+country_event = {
+	id = chaosx.nr20.15
+	title = chaosx.nr20.15.t
+	desc = chaosx.nr20.15.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = { name = chaosx.nr20.15.a }
+}
+
+country_event = {
+	id = chaosx.nr20.16
+	title = chaosx.nr20.16.t
+	desc = chaosx.nr20.16.d
+	picture = GFX_report_event_020_black_plague_unbound
+	is_triggered_only = yes
+	option = { name = chaosx.nr20.16.a }
 }
 
 state_event = {
@@ -58,6 +121,13 @@ country_event = {
 			black_plague_process_country_response_pulse = yes
 		}
 	}
+}
+
+country_event = {
+	id = chaosx.nr20.906
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { hidden_effect = { black_plague_process_global_country_pulse = yes } }
 }
 
 country_event = {

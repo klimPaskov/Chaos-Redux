@@ -68,89 +68,46 @@ black_plague_begin_shared_state_action = {
 			if = {
 				limit = { check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.strike_royal_node compare = equals } }
 				black_plague_reset_response_payment = yes
-				set_temp_variable = { black_plague_response_payment_support = global.black_friday_price_black_plague_shared_cost_country_support_equipment }
-				set_temp_variable = { black_plague_response_payment_motorized = global.black_friday_price_black_plague_shared_cost_country_motorized_equipment }
-				set_temp_variable = { black_plague_response_payment_fuel = global.black_friday_price_black_plague_shared_cost_country_fuel }
 				set_temp_variable = { black_plague_response_payment_infantry = global.black_friday_price_black_plague_shared_cost_country_infantry_equipment }
-				set_temp_variable = { black_plague_response_payment_manpower = global.black_friday_price_black_plague_shared_cost_country_manpower }
-				set_temp_variable = { black_plague_response_payment_command = global.black_friday_price_black_plague_shared_cost_country_command_power }
+				set_temp_variable = { black_plague_response_payment_fuel = global.black_friday_price_black_plague_shared_cost_country_fuel }
 				black_plague_pay_response_cost = yes
 			}
 			else_if = {
 				limit = { check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.seal_royal_burrows compare = equals } }
 				black_plague_reset_response_payment = yes
 				set_temp_variable = { black_plague_response_payment_support = global.black_friday_price_black_plague_shared_result_royal_seal_support_equipment }
-				set_temp_variable = { black_plague_response_payment_motorized = global.black_friday_price_black_plague_shared_result_royal_seal_motorized_equipment }
-				set_temp_variable = { black_plague_response_payment_infantry = global.black_friday_price_black_plague_shared_result_royal_seal_infantry_equipment }
-				set_temp_variable = { black_plague_response_payment_manpower = global.black_friday_price_black_plague_shared_result_royal_seal_manpower }
 				set_temp_variable = { black_plague_response_payment_fuel = global.black_friday_price_black_plague_shared_result_royal_seal_fuel }
-				set_temp_variable = { black_plague_response_payment_command = global.black_friday_price_black_plague_shared_result_royal_seal_command_power }
 				black_plague_pay_response_cost = yes
 			}
 			else_if = {
 				limit = { check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.strike_the_crown compare = equals } }
 				black_plague_reset_response_payment = yes
-				set_temp_variable = { black_plague_response_payment_support = global.black_friday_price_black_plague_shared_result_crown_strike_support_equipment }
-				set_temp_variable = { black_plague_response_payment_motorized = global.black_friday_price_black_plague_shared_result_crown_strike_motorized_equipment }
 				set_temp_variable = { black_plague_response_payment_infantry = global.black_friday_price_black_plague_shared_result_crown_strike_infantry_equipment }
-				set_temp_variable = { black_plague_response_payment_manpower = global.black_friday_price_black_plague_shared_result_crown_strike_manpower }
 				set_temp_variable = { black_plague_response_payment_fuel = global.black_friday_price_black_plague_shared_result_crown_strike_fuel }
-				set_temp_variable = { black_plague_response_payment_command = global.black_friday_price_black_plague_shared_result_crown_strike_command_power }
 				black_plague_pay_response_cost = yes
 			}
 			else = {
 				# Each population band pays its registered Black Friday table price,
 				# which outside a sale is the band's scaled standard bundle rounded up.
 				set_variable = { black_plague_shared_payment_support = global.black_friday_price_black_plague_shared_cost_scaled_min_support_equipment }
-				set_variable = { black_plague_shared_payment_motorized = global.black_friday_price_black_plague_shared_cost_scaled_min_motorized_equipment }
 				set_variable = { black_plague_shared_payment_fuel = global.black_friday_price_black_plague_shared_cost_scaled_min_fuel }
 				if = {
 					limit = { check_variable = { var = PREV.black_plague_shared_action_scale value = constant:black_plague_shared_scale.metropolitan compare = equals } }
 					set_variable = { black_plague_shared_payment_support = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_support_equipment }
-					set_variable = { black_plague_shared_payment_motorized = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_motorized_equipment }
 					set_variable = { black_plague_shared_payment_fuel = global.black_friday_price_black_plague_shared_cost_scaled_metropolitan_fuel }
 				}
 				else_if = {
 					limit = { check_variable = { var = PREV.black_plague_shared_action_scale value = constant:black_plague_shared_scale.large compare = equals } }
 					set_variable = { black_plague_shared_payment_support = global.black_friday_price_black_plague_shared_cost_scaled_large_support_equipment }
-					set_variable = { black_plague_shared_payment_motorized = global.black_friday_price_black_plague_shared_cost_scaled_large_motorized_equipment }
 					set_variable = { black_plague_shared_payment_fuel = global.black_friday_price_black_plague_shared_cost_scaled_large_fuel }
 				}
 				set_temp_variable = { equipment_stockpile_removal_amount = var:black_plague_shared_payment_support }
 				remove_support_equipment_from_stockpile = yes
-				set_temp_variable = { cbrn_motorized_stock_debit_requested = black_plague_shared_payment_motorized }
-				cbrn_debit_motorized_stockpile_oldest_first = yes
 				set_temp_variable = { fuel_stockpile_removal_amount = black_plague_shared_payment_fuel }
 				remove_fuel_from_stockpile = yes
 			}
-			if = {
-				limit = {
-					OR = {
-						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.port_inspections compare = equals }
-						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.relief_corridor compare = equals }
-						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.evacuate_threatened_perimeter compare = equals }
-					}
-				}
-				set_temp_variable = { equipment_stockpile_removal_amount = global.black_friday_price_black_plague_shared_cost_standard_trains }
-				remove_trains_from_stockpile = yes
-			}
-			if = {
-				limit = {
-					OR = {
-						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.restrict_troop_routes compare = equals }
-						check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.seal_all_transport compare = equals }
-					}
-				}
-				black_plague_reset_response_payment = yes
-				if = {
-					limit = { check_variable = { var = PREV.black_plague_shared_action value = constant:black_plague_shared_action.restrict_troop_routes compare = equals } }
-					set_temp_variable = { black_plague_response_payment_command = global.black_friday_price_black_plague_shared_cost_standard_command_power }
-				}
-				else = {
-					set_temp_variable = { black_plague_response_payment_command = global.black_friday_price_black_plague_shared_cost_country_command_power }
-				}
-				black_plague_pay_response_cost = yes
-			}
+
+
 			set_temp_variable = { black_plague_sale_family = constant:universal_cost_family.equipment }
 			black_plague_credit_black_friday_purchase = yes
 			clear_variable = black_plague_shared_payment_support

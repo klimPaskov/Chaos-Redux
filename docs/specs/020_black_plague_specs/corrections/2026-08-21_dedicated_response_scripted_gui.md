@@ -9,10 +9,16 @@ This correction supersedes the earlier presentation instruction that kept the de
 The compact display presents no more than three live values:
 
 - Countermeasure Progress from 0 to 100 as the primary meter, with its current programme stage.
-- Medical Reserve as current stock against capacity.
+- National Deaths as the human cost of the outbreak.
 - Response Capacity as remaining capacity against total capacity.
 
-Country deaths, worldwide deaths, and international-response status may appear as concise supporting text or tooltips rather than additional dashboard meters. The progress tooltip must explain that countermeasures reduce mortality and spread and enable sustained cleanup, but never remove an active outbreak instantly.
+Medical Reserve is available through the national decision and stockpile surface rather than a duplicate value in this window.
+Worldwide deaths and international-response status may appear in supporting text or tooltips rather than additional dashboard meters.
+The progress tooltip must explain that countermeasures reduce mortality and spread and enable sustained cleanup, but never remove an active outbreak instantly.
+
+Acceptance basis for National Deaths: the parent selected the existing current composition on 2026-10-05 within the user's G6 authority.
+The earlier Medical Reserve direction remains historical design evidence, and this decision does not assert retroactive approval.
+The current-source visual gate remains open as recorded in `docs/plans/020_black_plague_plans/subagent_handoffs/gui_audit_2026-10-05.md`.
 
 The attachment belongs only to `black_plague_response_category`. It must not alter or replace `chaosx_disease_containment_category`, the shared disease board, the selected-state action surface, the contamination mapmode, or the ownership boundary established by the dedicated-response-category correction.
 
