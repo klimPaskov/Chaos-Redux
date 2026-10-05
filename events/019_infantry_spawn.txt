@@ -16,8 +16,29 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { infantry_spawn_country_can_receive_generation = yes }
+			}
+			set_country_flag = infantry_spawn_entry_requester_excluded
+		}
 		infantry_spawn_fire_manifestation = yes
+		if = {
+			limit = { has_country_flag = infantry_spawn_entry_requester_excluded }
+			clr_country_flag = infantry_spawn_entry_requester_excluded
+			country_event = { id = chaosx.nr19.905 }
+		}
 	}
+}
+
+country_event = {
+	id = chaosx.nr19.905
+	title = chaosx.nr19.905.t
+	desc = chaosx.nr19.905.d
+	picture = GFX_report_event_infantry_spawn
+	is_triggered_only = yes
+	option = { name = chaosx.nr19.905.a }
 }
 
 # Country manifestation report. Conditional descriptions select the applicable
@@ -68,6 +89,7 @@ country_event = {
 	option = {
 		name = chaosx.nr19.2.a
 		trigger = { NOT = { has_country_flag = infantry_spawn_prefire_opening_pending } }
+		custom_effect_tooltip = chaosx.nr19.2.a.tt
 		ai_chance = { base = constant:infantry_spawn_event_option_weight.report_acknowledgement }
 	}
 

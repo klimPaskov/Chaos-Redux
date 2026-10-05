@@ -19,7 +19,17 @@ The owner-adapter census finds 19 providers with 14 required surfaces each: regi
 
 Provider 513 is structurally covered and remains package-gated until Event 012 sets `africa_strange_formation_package_ready`. Static package evidence includes all eight combat/support unit definitions, eight meshes/entities, packaged DDS maps, and 49 sound files. The setter is owned by `africa_register_strange_force_asset_manifests` in `common/scripted_effects/012_africa_strange_force_manifest_effects.txt`; `common/on_actions/012_africa_world_order_on_actions.txt` calls that manifest effect and the Event 12 provider registration from its bounded startup path. The 2026-07-18 final-audit and catalog statements below are historical tranche evidence for the surfaces they audited and do not close the current provider-extension validation boundary.
 
-Event 19 distributes fully formed military formations to every valid country. It uses diminishing territorial coverage, so a large country receives more units without receiving one unit in every state. Each selected state generates a weighted formation lot with an immutable generation, lot, unit, template, origin-state, composition, and obligation record. The rest of the system is a contest between the military value of those formations and the administrative, equipment, supply, claimant, and anomalous pressure created by keeping them.
+Event 19 distributes fully formed military formations to every valid country.
+It uses diminishing territorial coverage, so a large country receives more units without receiving one unit in every state.
+Each selected state generates a weighted formation lot with an immutable generation, lot, unit, template, origin-state, composition, and obligation record.
+The rest of the system is a contest between the military value of those formations and the equipment, supply, claimant, and anomalous pressure created by keeping them.
+One country report describes the arrivals, with the Evolution III and IV opening choices explaining admission or refusal in ordinary military language.
+The acknowledgement tooltip directs the player to the Muster decisions for training, supply, and discharge.
+A human requester excluded from the global manifestation receives `.905`, explaining why no troops arrive in its territory.
+The derivative focus tree has four navigation shortcuts for Command, Supply, Army, and Expansion.
+The Accept Demand cost row shows only the selected claimant demand, including its free or paid branch.
+Its normal, blocked and detailed text use the same indexed demand values and existing constants as payment.
+The [2026-10-05 review](../../plans/019_infantry_spawn_plans/agent_decisions_2026-10-05.md) records the presentation changes and validation limits.
 
 The 2026-07-18 focus, decision, country, localisation, and historical audit handoffs remain tranche evidence. The current provider-extension handoffs record localisation completion, an unresolved decision/localisation integration pass, unresolved normalized provider odds, and bounded MCP event evidence, so the current whole-event completion gate remains open.
 
