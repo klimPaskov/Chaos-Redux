@@ -1050,6 +1050,137 @@ country_event = {
 	}
 }
 
+# Breakaway bargaining (Part 6). The holder of a depot answers Moscow's
+# joint-custody talks or recall: return the devices, accept joint custody, or
+# refuse, which closes the Soviet mission without progress. Every device move
+# goes through the existing ledger helpers.
+country_event = {
+	id = chaosx.nr23.171
+	title = chaosx.nr23.171.t
+	desc = {
+		text = chaosx.nr23.171.recall.d
+		trigger = { SOV = { check_variable = { var = sov_nuclear_bombs_custody_talks_kind value = constant:sov_nuclear_bombs_breakaway.talks_recall compare = equals } } }
+	}
+	desc = chaosx.nr23.171.joint.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = sov_nuclear_bombs_custody_talks_site
+		event_target:sov_nuclear_bombs_custody_talks_site = {
+			has_variable = sov_nuclear_bombs_site_holder
+			var:sov_nuclear_bombs_site_holder = { tag = ROOT }
+		}
+		SOV = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			OR = {
+				has_country_flag = sov_nuclear_bombs_joint_custody_mission_active
+				has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr23.171.a
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.talks_joint_base
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_custody_talks_joint_tt
+		hidden_effect = { SOV = { sov_nuclear_bombs_answer_custody_talks_joint = yes } }
+	}
+	option = {
+		name = chaosx.nr23.171.b
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.talks_return_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.backed_return sov_nuclear_bombs_event_target_is_protected = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_custody_talks_return_tt
+		hidden_effect = { SOV = { sov_nuclear_bombs_answer_custody_talks_return = yes } }
+	}
+	option = {
+		name = chaosx.nr23.171.c
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.talks_refuse_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.imminent_refuse sov_nuclear_bombs_event_breakaway_talks_site_is_imminent = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.backed_refuse sov_nuclear_bombs_event_target_is_protected = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_custody_talks_refuse_tt
+		hidden_effect = { SOV = { sov_nuclear_bombs_answer_custody_talks_refuse = yes } }
+	}
+}
+
+# Foreign intervention (Part 6). FROM is the breakaway that asked for help. A
+# major that accepts sends technicians and guards for a dismantlement under
+# observation and never takes the devices over.
+country_event = {
+	id = chaosx.nr23.172
+	title = chaosx.nr23.172.t
+	desc = chaosx.nr23.172.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = {
+		FROM = {
+			has_country_flag = sov_nuclear_bombs_breakaway_removal_requested
+			sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+		}
+		NOT = { has_war_with = FROM }
+	}
+
+	option = {
+		name = chaosx.nr23.172.a
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.removal_accept_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.removal_accept_soviet_neighbour is_neighbor_of = SOV }
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.removal_accept_soviet_enemy has_war_with = SOV }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_removal_accept_tt
+		hidden_effect = {
+			FROM = {
+				set_country_flag = sov_nuclear_bombs_breakaway_foreign_removal
+				set_variable = { sov_nuclear_bombs_removal_partner = ROOT }
+				var:sov_nuclear_bombs_local_custody_state = { set_state_flag = sov_nuclear_bombs_site_foreign_observers }
+				sov_nuclear_bombs_start_breakaway_dismantlement = yes
+				set_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes
+				country_event = { id = chaosx.nr23.173 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+			set_country_flag = sov_nuclear_bombs_foreign_removal_assisted
+		}
+	}
+	option = {
+		name = chaosx.nr23.172.b
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.removal_decline_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.removal_decline_at_war has_war = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_removal_decline_tt
+		hidden_effect = {
+			FROM = {
+				clr_country_flag = sov_nuclear_bombs_breakaway_removal_requested
+				clr_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes
+				country_event = { id = chaosx.nr23.173 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+		}
+	}
+}
+
+# The breakaway learns the answer to its request for removal help.
+country_event = {
+	id = chaosx.nr23.173
+	title = chaosx.nr23.173.t
+	desc = {
+		text = chaosx.nr23.173.accepted.d
+		trigger = { has_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes }
+	}
+	desc = chaosx.nr23.173.declined.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr23.173.a
+		ai_chance = { base = 100 }
+		clr_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes
+	}
+}
+
 # Foreign strategic reports (Part 3 foreign reaction framework, Part 5
 # Evolution I foreign package). Every major outside the Soviet camp receives
 # one report per stage through a one-time dispatch: private proof, the public

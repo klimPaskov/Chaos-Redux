@@ -4284,6 +4284,257 @@ sov_nuclear_bombs_complete_joint_custody_transfer = {
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
+# Breakaway bargaining (Part 6). Country scope (the Soviet actor), when it
+# opens joint-custody talks or a recall on a depot a breakaway holds. Input:
+# temporary sov_nuclear_bombs_custody_talks_request (talks_joint or
+# talks_recall). The holder answers chaosx.nr23.171; without a recorded holder
+# the Soviet mission simply runs.
+sov_nuclear_bombs_open_custody_talks = {
+	if = {
+		limit = {
+			has_event_target = sov_nuclear_bombs_selected_state
+			event_target:sov_nuclear_bombs_selected_state = {
+				has_variable = sov_nuclear_bombs_site_holder
+				var:sov_nuclear_bombs_site_holder = { exists = yes NOT = { tag = SOV } }
+			}
+		}
+		set_variable = { sov_nuclear_bombs_custody_talks_kind = sov_nuclear_bombs_custody_talks_request }
+		event_target:sov_nuclear_bombs_selected_state = {
+			save_global_event_target_as = sov_nuclear_bombs_custody_talks_site
+			var:sov_nuclear_bombs_site_holder = {
+				country_event = { id = chaosx.nr23.171 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+		}
+	}
+}
+
+# Country scope (the Soviet actor). Ends the talks' Soviet mission without its
+# own effects; the caller records the outcome.
+sov_nuclear_bombs_close_custody_talks_mission = {
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_joint_custody_mission_active }
+		remove_mission = sov_nuclear_bombs_joint_custody_transfer_mission
+		clr_country_flag = sov_nuclear_bombs_joint_custody_mission_active
+	}
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active }
+		remove_mission = sov_nuclear_bombs_rail_corridor_security_mission
+		clr_country_flag = sov_nuclear_bombs_rail_corridor_mission_active
+		clear_variable = sov_nuclear_bombs_collapse_operation
+	}
+	clear_variable = sov_nuclear_bombs_custody_talks_kind
+	clear_global_event_target = sov_nuclear_bombs_custody_talks_site
+	sov_nuclear_bombs_clear_selected_state = yes
+	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.collapse }
+	sov_nuclear_bombs_clamp_command_values = yes
+	sov_nuclear_bombs_achievement_refresh_receipts = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+
+# The holder returns the devices: they come back through the existing ledger
+# helper, and a negotiated return restores more Integrity than a raid.
+sov_nuclear_bombs_answer_custody_talks_return = {
+	if = {
+		limit = { has_event_target = sov_nuclear_bombs_custody_talks_site }
+		event_target:sov_nuclear_bombs_custody_talks_site = { sov_nuclear_bombs_restore_site_to_soviet = yes }
+		if = {
+			limit = { event_target:sov_nuclear_bombs_custody_talks_site = { has_state_flag = sov_nuclear_bombs_site_returned_to_soviet } }
+			set_country_flag = sov_nuclear_bombs_negotiated_return_recorded
+			set_country_flag = sov_nuclear_bombs_custody_resolution_recorded
+			set_country_flag = sov_nuclear_bombs_custody_qualifying_resolution_recorded
+			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_breakaway.negotiated_return_integrity }
+		}
+		else = { set_country_flag = sov_nuclear_bombs_custody_talks_failed }
+	}
+	sov_nuclear_bombs_close_custody_talks_mission = yes
+}
+
+# The holder accepts joint custody: the depot is placed under joint custody at
+# once, as the full transfer mission would.
+sov_nuclear_bombs_answer_custody_talks_joint = {
+	if = {
+		limit = {
+			has_event_target = sov_nuclear_bombs_custody_talks_site
+			event_target:sov_nuclear_bombs_custody_talks_site = {
+				sov_nuclear_bombs_state_is_registered = yes
+				check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			}
+		}
+		event_target:sov_nuclear_bombs_custody_talks_site = {
+			set_state_flag = sov_nuclear_bombs_site_joint_custody
+			set_variable = { sov_nuclear_bombs_site_custody_state = constant:sov_nuclear_bombs_custody.joint }
+			set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.reconciled }
+		}
+		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.collapse_joint_integrity }
+		set_country_flag = sov_nuclear_bombs_joint_custody_recorded
+		set_country_flag = sov_nuclear_bombs_custody_resolution_recorded
+		set_country_flag = sov_nuclear_bombs_custody_qualifying_resolution_recorded
+	}
+	else = { set_country_flag = sov_nuclear_bombs_custody_talks_failed }
+	sov_nuclear_bombs_close_custody_talks_mission = yes
+}
+
+# The holder refuses: the Soviet mission closes without progress.
+sov_nuclear_bombs_answer_custody_talks_refuse = {
+	set_country_flag = sov_nuclear_bombs_custody_talks_refused
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_joint_custody_mission_active }
+		set_country_flag = sov_nuclear_bombs_joint_custody_failed
+	}
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active }
+		set_country_flag = sov_nuclear_bombs_recovery_operation_failed
+	}
+	sov_nuclear_bombs_close_custody_talks_mission = yes
+}
+
+# Country scope (the Soviet actor). "Reinforce the Depot": once per depot, a
+# garrison raises Integrity and delays the holder's technical access while it
+# stands. A timed flag takes literal days, so they are injected as integers.
+sov_nuclear_bombs_reinforce_selected_depot = {
+	if = {
+		limit = { has_event_target = sov_nuclear_bombs_selected_state }
+		if = {
+			limit = { sov_nuclear_bombs_event_selected_site_has_access_under_way = yes }
+			set_temp_variable = { sov_nuclear_bombs_garrison_delay = constant:sov_nuclear_bombs_breakaway.garrison_delay_days }
+			event_target:sov_nuclear_bombs_selected_state = {
+				var:sov_nuclear_bombs_site_holder = {
+					hidden_effect = {
+						meta_effect = {
+							text = {
+								add_days_mission_timeout = {
+									mission = sov_nuclear_bombs_breakaway_technical_access_mission
+									days = [GARRISON_DELAY]
+								}
+							}
+							GARRISON_DELAY = "[?sov_nuclear_bombs_garrison_delay|.0]"
+						}
+					}
+				}
+			}
+		}
+		set_temp_variable = { sov_nuclear_bombs_garrison_days = constant:sov_nuclear_bombs_breakaway.garrison_days }
+		event_target:sov_nuclear_bombs_selected_state = {
+			set_state_flag = sov_nuclear_bombs_site_reinforced
+			hidden_effect = {
+				meta_effect = {
+					text = {
+						set_state_flag = { flag = sov_nuclear_bombs_site_garrisoned days = [GARRISON_DAYS] }
+					}
+					GARRISON_DAYS = "[?sov_nuclear_bombs_garrison_days|.0]"
+				}
+			}
+		}
+		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_breakaway.reinforce_integrity }
+		sov_nuclear_bombs_clamp_command_values = yes
+		set_country_flag = sov_nuclear_bombs_depot_reinforced
+	}
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+
+# Country scope (a breakaway holder). "Conceal the Devices": the selected depot
+# is off limits to Soviet recall and raids for the concealment period, its
+# record can no longer be verified, and the holder's own accounting may lose
+# the devices, which then become missing through the ledger helper.
+sov_nuclear_bombs_breakaway_conceal_devices = {
+	if = {
+		limit = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes }
+		set_temp_variable = { sov_nuclear_bombs_concealment_days = constant:sov_nuclear_bombs_breakaway.concealment_days }
+		var:sov_nuclear_bombs_local_custody_state = {
+			hidden_effect = {
+				meta_effect = {
+					text = {
+						set_state_flag = { flag = sov_nuclear_bombs_site_concealed days = [CONCEALMENT_DAYS] }
+					}
+					CONCEALMENT_DAYS = "[?sov_nuclear_bombs_concealment_days|.0]"
+				}
+			}
+			set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }
+		}
+		set_country_flag = sov_nuclear_bombs_breakaway_devices_concealed
+		set_temp_variable = { sov_nuclear_bombs_concealment_loss_weight = constant:sov_nuclear_bombs_breakaway.concealment_missing_chance }
+		set_temp_variable = { sov_nuclear_bombs_concealment_safe_weight = constant:sov_nuclear_bombs_breakaway.certainty }
+		subtract_from_temp_variable = { sov_nuclear_bombs_concealment_safe_weight = sov_nuclear_bombs_concealment_loss_weight }
+		random_list = {
+			var:sov_nuclear_bombs_concealment_loss_weight = {
+				var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_mark_site_missing = yes }
+				set_country_flag = sov_nuclear_bombs_breakaway_concealment_lost_devices
+			}
+			var:sov_nuclear_bombs_concealment_safe_weight = { clr_country_flag = sov_nuclear_bombs_breakaway_concealment_lost_devices }
+		}
+		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+	}
+}
+
+# Country scope (a breakaway holder). Starts dismantlement under observation of
+# the selected depot, alone or with a foreign major's help.
+sov_nuclear_bombs_start_breakaway_dismantlement = {
+	if = {
+		limit = {
+			sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active }
+		}
+		set_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active
+		activate_mission = sov_nuclear_bombs_breakaway_dismantlement_mission
+	}
+}
+
+# The holder's devices are removed through the existing dismantlement
+# finalisation; the observers never take them over.
+sov_nuclear_bombs_complete_breakaway_dismantlement = {
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active }
+		if = {
+			limit = { sov_nuclear_bombs_event_breakaway_dismantlement_is_valid = yes }
+			var:sov_nuclear_bombs_local_custody_state = {
+				set_state_flag = sov_nuclear_bombs_site_dismantled_under_observation
+				sov_nuclear_bombs_mark_site_dismantled = yes
+			}
+			set_country_flag = sov_nuclear_bombs_breakaway_dismantlement_completed
+			clr_country_flag = sov_nuclear_bombs_breakaway_custody_secured
+			clr_country_flag = sov_nuclear_bombs_breakaway_technical_access
+			clr_country_flag = sov_nuclear_bombs_breakaway_command_formed
+			clear_variable = sov_nuclear_bombs_local_custody_state
+			clear_variable = sov_nuclear_bombs_local_custody_state_id
+			SOV = {
+				if = {
+					limit = { sov_nuclear_bombs_event_actor_is_valid = yes }
+					set_country_flag = sov_nuclear_bombs_custody_resolution_recorded
+					sov_nuclear_bombs_achievement_refresh_receipts = yes
+					sov_nuclear_bombs_ai_request_phase_review = yes
+				}
+			}
+		}
+		else = { set_country_flag = sov_nuclear_bombs_breakaway_dismantlement_failed }
+		sov_nuclear_bombs_end_breakaway_dismantlement = yes
+	}
+}
+
+sov_nuclear_bombs_cancel_breakaway_dismantlement = {
+	set_country_flag = sov_nuclear_bombs_breakaway_dismantlement_failed
+	sov_nuclear_bombs_end_breakaway_dismantlement = yes
+}
+
+sov_nuclear_bombs_end_breakaway_dismantlement = {
+	clr_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active
+	clr_country_flag = sov_nuclear_bombs_breakaway_foreign_removal
+	clr_country_flag = sov_nuclear_bombs_breakaway_removal_requested
+	clear_variable = sov_nuclear_bombs_removal_partner
+}
+
+# Country scope (a breakaway holder). One major outside the Soviet faction and
+# not at war with the holder is asked for removal help.
+sov_nuclear_bombs_breakaway_request_removal_assistance = {
+	if = {
+		limit = { sov_nuclear_bombs_event_breakaway_can_request_removal = yes }
+		set_country_flag = sov_nuclear_bombs_breakaway_removal_requested
+		random_country = {
+			limit = { sov_nuclear_bombs_event_country_is_removal_partner = yes }
+			country_event = { id = chaosx.nr23.172 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		}
+	}
+}
+
 sov_nuclear_bombs_cancel_joint_custody_transfer = {
 	clr_country_flag = sov_nuclear_bombs_joint_custody_mission_active
 	clr_country_flag = sov_nuclear_bombs_joint_custody_succeeded
@@ -4390,6 +4641,7 @@ sov_nuclear_bombs_start_breakaway_technical_access = {
 		limit = {
 			has_tech = atomic_research
 			has_tech = nukes
+			var:sov_nuclear_bombs_local_custody_state = { NOT = { has_state_flag = sov_nuclear_bombs_site_garrisoned } }
 			sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
 			sov_nuclear_bombs_event_no_active_project = yes
 			has_country_flag = sov_nuclear_bombs_breakaway_custody_secured

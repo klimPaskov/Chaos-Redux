@@ -1003,12 +1003,30 @@ sov_nuclear_bombs_command_category = {
 		ai_will_do = { base = 1.50 modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } }
 	}
 
+	# "Reinforce the Depot": once per depot, while a Soviet force holds it.
+	sov_nuclear_bombs_reinforce_depot = {
+		name = sov_nuclear_bombs_reinforce_depot
+		desc = sov_nuclear_bombs_reinforce_depot_desc
+		icon = GFX_decision_sov_nuclear_decision_storage_hardening
+		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_collapse_active sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_site_reinforced } } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_valid_tt sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes sov_nuclear_bombs_event_no_active_project = yes custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_depot_not_reinforced_tt NOT = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_site_reinforced } } } }
+		custom_cost_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
+		custom_cost_text = sov_nuclear_bombs_cost_security
+		cost = 0
+		days_remove = 0
+		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_reinforce_selected_depot = yes }
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.reinforce_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.reinforce_access_under_way sov_nuclear_bombs_event_selected_site_has_access_under_way = yes }
+		}
+	}
+
 	sov_nuclear_bombs_recall_devices = {
 		name = sov_nuclear_bombs_recall_devices
 		desc = sov_nuclear_bombs_recall_devices_desc
 		icon = GFX_decision_sov_nuclear_decision_depot_recall
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_collapse_active sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_return_requested } } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_transferred_tt sov_nuclear_bombs_event_selected_site_has_transferred_device = yes } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_valid_tt sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_rail_route_tt sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes } sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes sov_nuclear_bombs_event_no_active_project = yes }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_transferred_tt sov_nuclear_bombs_event_selected_site_has_transferred_device = yes } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_valid_tt sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_rail_route_tt sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes } sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes sov_nuclear_bombs_event_no_active_project = yes custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_depot_not_concealed_tt NOT = { sov_nuclear_bombs_event_selected_site_is_concealed = yes } } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_logistics_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_logistics
 		cost = 0
@@ -1018,6 +1036,8 @@ sov_nuclear_bombs_command_category = {
 			set_variable = { sov_nuclear_bombs_collapse_operation = constant:sov_nuclear_bombs_tuning.collapse_operation_recall }
 			set_country_flag = sov_nuclear_bombs_rail_corridor_mission_active
 			activate_mission = sov_nuclear_bombs_rail_corridor_security_mission
+			set_temp_variable = { sov_nuclear_bombs_custody_talks_request = constant:sov_nuclear_bombs_breakaway.talks_recall }
+			sov_nuclear_bombs_open_custody_talks = yes
 			hidden_effect = {
 				set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.rail_manifest }
 				sov_nuclear_bombs_roll_secrecy_incident = yes
@@ -1050,7 +1070,13 @@ sov_nuclear_bombs_command_category = {
 		custom_cost_text = sov_nuclear_bombs_cost_diplomatic
 		cost = 0
 		days_remove = 0
-		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes set_country_flag = sov_nuclear_bombs_joint_custody_mission_active activate_mission = sov_nuclear_bombs_joint_custody_transfer_mission }
+		complete_effect = {
+			sov_nuclear_bombs_pay_diplomatic_cost = yes
+			set_country_flag = sov_nuclear_bombs_joint_custody_mission_active
+			activate_mission = sov_nuclear_bombs_joint_custody_transfer_mission
+			set_temp_variable = { sov_nuclear_bombs_custody_talks_request = constant:sov_nuclear_bombs_breakaway.talks_joint }
+			sov_nuclear_bombs_open_custody_talks = yes
+		}
 		ai_will_do = { base = 1.00 }
 	}
 
@@ -1059,7 +1085,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_conduct_recovery_raid_desc
 		icon = GFX_decision_sov_nuclear_decision_recovery_raid
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_collapse_active sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_return_requested } } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_valid_tt sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } sov_nuclear_bombs_event_no_active_project = yes }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_selected_depot_valid_tt sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } sov_nuclear_bombs_event_no_active_project = yes custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_depot_not_concealed_tt NOT = { sov_nuclear_bombs_event_selected_site_is_concealed = yes } } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_strategic_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_strategic
 		cost = 0
@@ -1275,7 +1301,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_breakaway_attempt_technical_access_desc
 		icon = GFX_decision_sov_nuclear_decision_authentication
 		visible = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes NOT = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_breakaway_technical_requirements_tt sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes NOT = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } has_tech = atomic_research has_tech = nukes } hidden_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_breakaway_technical_requirements_tt sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes NOT = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } has_tech = atomic_research has_tech = nukes } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_depot_not_garrisoned_tt var:sov_nuclear_bombs_local_custody_state = { NOT = { has_state_flag = sov_nuclear_bombs_site_garrisoned } } } hidden_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_security
 		cost = 0
@@ -1328,6 +1354,98 @@ sov_nuclear_bombs_command_category = {
 			}
 		}
 		ai_will_do = { base = 0.10 }
+	}
+
+	# "Conceal the Devices": the holder hides the selected depot's devices from
+	# Soviet recall and raids, at the price of an unverifiable record.
+	sov_nuclear_bombs_breakaway_conceal_devices = {
+		name = sov_nuclear_bombs_breakaway_conceal_devices
+		desc = sov_nuclear_bombs_breakaway_conceal_devices_desc
+		icon = GFX_decision_sov_nuclear_decision_concealed_test
+		visible = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes var:sov_nuclear_bombs_local_custody_state = { NOT = { has_state_flag = sov_nuclear_bombs_site_concealed } } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_breakaway_selected_depot_tt sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes } }
+		custom_cost_trigger = { sov_nuclear_bombs_can_pay_logistics_cost = yes }
+		custom_cost_text = sov_nuclear_bombs_cost_logistics
+		cost = 0
+		days_remove = 0
+		complete_effect = {
+			if = {
+				limit = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes sov_nuclear_bombs_can_pay_logistics_cost = yes }
+				sov_nuclear_bombs_pay_logistics_cost = yes
+				custom_effect_tooltip = sov_nuclear_bombs_breakaway_conceal_devices_tt
+				hidden_effect = { sov_nuclear_bombs_breakaway_conceal_devices = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.conceal_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.conceal_threatened sov_nuclear_bombs_event_breakaway_depot_is_threatened = yes }
+		}
+	}
+
+	# "Request Foreign Removal Assistance": one major outside the Soviet
+	# faction may send technicians and guards to dismantle the devices.
+	sov_nuclear_bombs_breakaway_request_removal_assistance = {
+		name = sov_nuclear_bombs_breakaway_request_removal_assistance
+		desc = sov_nuclear_bombs_breakaway_request_removal_assistance_desc
+		icon = GFX_decision_sov_nuclear_decision_joint_custody
+		visible = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes NOT = { has_country_flag = sov_nuclear_bombs_breakaway_removal_requested } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_breakaway_removal_requirements_tt sov_nuclear_bombs_event_breakaway_can_request_removal = yes } }
+		custom_cost_trigger = { sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
+		custom_cost_text = sov_nuclear_bombs_cost_diplomatic
+		cost = 0
+		days_remove = 0
+		complete_effect = {
+			if = {
+				limit = { sov_nuclear_bombs_event_breakaway_can_request_removal = yes sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
+				sov_nuclear_bombs_pay_diplomatic_cost = yes
+				custom_effect_tooltip = sov_nuclear_bombs_breakaway_request_removal_assistance_tt
+				hidden_effect = { sov_nuclear_bombs_breakaway_request_removal_assistance = yes }
+			}
+		}
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.removal_request_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.removal_request_without_programme NOT = { has_tech = atomic_research } }
+		}
+	}
+
+	# "Dismantle Under Observation": the holder gives up the selected depot's
+	# devices through a verified process.
+	sov_nuclear_bombs_breakaway_dismantle_under_observation = {
+		name = sov_nuclear_bombs_breakaway_dismantle_under_observation
+		desc = sov_nuclear_bombs_breakaway_dismantle_under_observation_desc
+		icon = GFX_decision_sov_nuclear_decision_dismantlement
+		visible = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes NOT = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active } }
+		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_breakaway_selected_depot_tt sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes } }
+		custom_cost_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
+		custom_cost_text = sov_nuclear_bombs_cost_security
+		cost = 0
+		days_remove = 0
+		complete_effect = {
+			if = {
+				limit = { sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes sov_nuclear_bombs_can_pay_security_cost = yes }
+				sov_nuclear_bombs_pay_security_cost = yes
+				sov_nuclear_bombs_start_breakaway_dismantlement = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_breakaway_ai.dismantle_base
+			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.dismantle_without_programme NOT = { has_tech = atomic_research } }
+		}
+	}
+
+	sov_nuclear_bombs_breakaway_dismantlement_mission = {
+		name = sov_nuclear_bombs_breakaway_dismantlement_mission
+		desc = sov_nuclear_bombs_breakaway_dismantlement_mission_desc
+		icon = GFX_mission_sov_nuclear_mission_dismantlement_inspection
+		is_good = yes
+		selectable_mission = no
+		activation = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active }
+		available = { always = no }
+		days_mission_timeout = constant:sov_nuclear_bombs_breakaway.dismantlement_days
+		cancel_trigger = { NOT = { sov_nuclear_bombs_event_breakaway_dismantlement_is_valid = yes } }
+		cancel_effect = { sov_nuclear_bombs_cancel_breakaway_dismantlement = yes }
+		timeout_effect = { sov_nuclear_bombs_complete_breakaway_dismantlement = yes }
+		ai_will_do = { base = 1.00 }
 	}
 
 	sov_nuclear_bombs_breakaway_request_return = {
@@ -1521,7 +1639,19 @@ sov_nuclear_bombs_command_category = {
 		available = { always = no }
 		days_mission_timeout = constant:sov_nuclear_bombs_duration.rail_security_mission
 		complete_effect = { sov_nuclear_bombs_complete_rail_security = yes }
-		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } NOT = { sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes } NOT = { sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes } } }
+		# Devices hidden by their holder stop a recall or a raid already moving.
+		cancel_trigger = {
+			OR = {
+				NOT = { sov_nuclear_bombs_event_actor_is_valid = yes }
+				NOT = { sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes }
+				NOT = { sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = yes }
+				NOT = { sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = yes }
+				AND = {
+					sov_nuclear_bombs_event_selected_site_is_concealed = yes
+					NOT = { check_variable = { var = sov_nuclear_bombs_collapse_operation value = constant:sov_nuclear_bombs_tuning.collapse_operation_rail compare = equals } }
+				}
+			}
+		}
 		cancel_effect = { sov_nuclear_bombs_cancel_rail_security = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_rail_security = yes }
 		ai_will_do = { base = 0.70 }

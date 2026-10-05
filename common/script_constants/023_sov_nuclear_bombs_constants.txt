@@ -648,6 +648,58 @@ sov_nuclear_bombs_false_warning_ai = {
 	damaged_command_wait = 0.30
 }
 
+# Breakaway bargaining and collapse actions (Part 6). Durations in days;
+# chances in percent of certainty.
+sov_nuclear_bombs_breakaway = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	talks_joint = 1
+	talks_recall = 2
+	# Hidden devices are off limits to Soviet recall and raids for this long.
+	concealment_days = 180
+	# Chance that the holder's own accounting loses the hidden devices.
+	concealment_missing_chance = 10
+	certainty = 100
+	# A reinforced depot's garrison delays technical access for this long, and
+	# technical access already under way at the depot takes this much longer.
+	garrison_days = 180
+	garrison_delay_days = 60
+	reinforce_integrity = 6
+	# A negotiated return restores more Integrity than a forced raid.
+	negotiated_return_integrity = 14
+	dismantlement_days = 180
+}
+
+sov_nuclear_bombs_breakaway_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	talks_joint_base = 45
+	talks_return_base = 30
+	talks_refuse_base = 25
+	imminent_refuse = 2.50
+	backed_refuse = 2.00
+	backed_return = 0.50
+	conceal_base = 0.50
+	conceal_threatened = 2.00
+	removal_request_base = 0.30
+	removal_request_without_programme = 2.00
+	dismantle_base = 0.20
+	dismantle_without_programme = 2.00
+	removal_accept_base = 50
+	removal_decline_base = 50
+	removal_accept_soviet_neighbour = 1.50
+	removal_accept_soviet_enemy = 1.50
+	removal_decline_at_war = 1.50
+	reinforce_base = 0.90
+	reinforce_access_under_way = 2.00
+}
+
 # Credibility memory (Part 4). A hidden score, neutral at 0 and clamped between
 # minimum and maximum. It reads as three bands: Doubted below doubted_ceiling,
 # Credible above credible_floor, Uncertain between them. Each routine

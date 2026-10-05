@@ -1439,6 +1439,7 @@ sov_nuclear_bombs_event_no_active_project = {
 	NOT = { has_country_flag = sov_nuclear_bombs_standdown_verification_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_settlement_verification_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_counterintelligence_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active }
 }
 
 # Country scope (the Soviet actor). Security label of the hidden exposure
@@ -2149,4 +2150,89 @@ sov_nuclear_bombs_event_country_is_standdown_partner = {
 	has_tech = nukes
 	num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
 	NOT = { is_in_faction_with = SOV }
+}
+
+# Breakaway bargaining and collapse actions (Part 6).
+# Country scope (the Soviet actor): the holder has hidden the selected depot's
+# devices, so recall and raids cannot reach them.
+sov_nuclear_bombs_event_selected_site_is_concealed = {
+	has_event_target = sov_nuclear_bombs_selected_state
+	event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_site_concealed }
+}
+
+# Country scope (the Soviet actor): the holder of the selected depot is
+# already working on technical access there.
+sov_nuclear_bombs_event_selected_site_has_access_under_way = {
+	has_event_target = sov_nuclear_bombs_selected_state
+	event_target:sov_nuclear_bombs_selected_state = {
+		has_variable = sov_nuclear_bombs_site_holder
+		var:sov_nuclear_bombs_site_holder = {
+			exists = yes
+			has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active
+			check_variable = { var = sov_nuclear_bombs_breakaway_progress_stage value = constant:sov_nuclear_bombs_tuning.breakaway_technical_stage compare = equals }
+			has_variable = sov_nuclear_bombs_local_custody_state_id
+			check_variable = { var = sov_nuclear_bombs_local_custody_state_id value = PREV.id compare = equals }
+		}
+	}
+}
+
+# State scope: a removal convoy can reach the depot.
+sov_nuclear_bombs_event_state_has_removal_route = {
+	infrastructure > 0
+	rail_way > 0
+}
+
+# Country scope (a breakaway holder): its selected depot is free to act on.
+sov_nuclear_bombs_event_breakaway_holds_selected_depot = {
+	sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes
+	sov_nuclear_bombs_event_no_active_project = yes
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+}
+
+# Country scope (a breakaway holder): a Soviet recall or raid is moving on its
+# selected depot.
+sov_nuclear_bombs_event_breakaway_depot_is_threatened = {
+	has_variable = sov_nuclear_bombs_local_custody_state_id
+	SOV = { has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active }
+	has_event_target = sov_nuclear_bombs_selected_state
+	event_target:sov_nuclear_bombs_selected_state = {
+		check_variable = { var = THIS.id value = PREV.sov_nuclear_bombs_local_custody_state_id compare = equals }
+	}
+}
+
+# Country scope (a breakaway holder): the selected depot can be dismantled with
+# outside help, which needs a removal route and a willing major.
+sov_nuclear_bombs_event_breakaway_can_request_removal = {
+	sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_breakaway_removal_requested }
+	var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_removal_route = yes }
+	any_country = { sov_nuclear_bombs_event_country_is_removal_partner = yes }
+}
+
+# Country scope: a major that PREV, a breakaway holder, may ask to help remove
+# its devices. It never gains operational ownership of them.
+sov_nuclear_bombs_event_country_is_removal_partner = {
+	is_major = yes
+	exists = yes
+	NOT = { tag = SOV }
+	NOT = { tag = PREV }
+	NOT = { has_capitulated = yes }
+	NOT = { has_war_with = PREV }
+	NOT = { is_in_faction_with = SOV }
+}
+
+# Country scope (the breakaway holder): its dismantlement can go on. Help from
+# abroad also needs the removal route.
+sov_nuclear_bombs_event_breakaway_dismantlement_is_valid = {
+	sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+	OR = {
+		NOT = { has_country_flag = sov_nuclear_bombs_breakaway_foreign_removal }
+		var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_removal_route = yes }
+	}
+}
+
+# Country scope (the breakaway holder) for the custody talks Moscow opened.
+sov_nuclear_bombs_event_breakaway_talks_site_is_imminent = {
+	has_event_target = sov_nuclear_bombs_custody_talks_site
+	event_target:sov_nuclear_bombs_custody_talks_site = { sov_nuclear_bombs_event_state_breakaway_operationalization_is_imminent = yes }
 }
