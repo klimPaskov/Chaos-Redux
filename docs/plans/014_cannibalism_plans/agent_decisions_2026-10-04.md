@@ -301,3 +301,20 @@ Decision:
 - The Preserve the Pack description and the Drill the Original Pack tooltip describe `cannibalism_wendigo_focus_preserve_pack_contract` as a template locked to paid musters. The Drill tooltip also shows its `cannibalism_wendigo_focus.pack_capacity_small` capacity gain, matching Feed the Anchor Guardians.
 - The Island Reavers description says the unit lands and fights as marines (`marines = yes`, `category_marines`).
 - "Unified Authority" is capitalised in the hoard review lines and the seizure mission outcomes.
+
+## R3 review. Skeptical review of the round 3 commits
+
+Disposition: `implemented` (localisation only; no gameplay, tuning or AI change). On-screen checks remain `needs_live_game`.
+
+Basis: skeptical review of e5afb7571 and b5fb21249 against vanilla `localisation/english/unit_l_english.yml`, `interface/divisiondesignerview.gui` and `gfx/fonts/hoi_18mbs.fnt`, `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` (Formatting variables), and the Event 014 effects the reworded tooltips describe.
+
+Findings:
+
+- Vanilla defines only one sub-unit `_short` key (`motorized_rocket_brigade_short`), so every other vanilla battalion shows its full name in the designer and removing the eight Event 014 short keys falls back the same way. The font widths were recomputed from `hoi_18mbs.fnt` and match R3-1, and only `cannibal_march_predation_column_short` remains. Both commits touch only the localisation file and this decisions file, and no other agent's work was included or lost.
+- The reworded tooltips match their effects: the draft converts `recruitment_manpower_factor` of the removed people into manpower, `cannibalism_warlord_survival_order_open` is set only by Survive the First Encirclement, the two Summon the Warlords flags add `authority_small` to the absorb authority gain and `cost_reduction_small` (negative) to the absorb Command Power cost, which `cannibalism_unified_focus_finalize_reward` refreshes, and Island Reavers have `marines = yes`.
+- Preserve the Pack runs the same template lock and the same `pack_capacity_small` gain as Drill the Original Pack, but its tooltip still said only "increases its finite training capacity". It now names the lock and the capacity gain. Open the Pack Musters and Expand the Hunting Packs now show their `pack_capacity_large` gain, so every Wendigo Pack capacity focus states its number.
+- The Preserve the Pack description ended with "new Packs ... further packs". It now ends "how to sustain them".
+- Implementation wording outside the seven round 3 keys remained in player text: "the scored pre-lock target profile" (Open the Winter Hunt), "pre-lock countdown" (Accelerate the Transformation Countdown), "pre-lock counterwar" (the public reveal tooltip) and "queues the Bone Riders and Scavenged Elephant Column route" (Bind the Guard to One Mouth). They now describe what happens: the winter campaign targets the highest-ranked reachable enemies, the countdown runs before the transformation becomes irreversible, the counterwar against the transformation becomes public, and the first two guard musters go out as Bone Riders and a Scavenged Elephant Column.
+- "Warlord answers and their lieutenants come under central record" in the Summon the Warlords tooltip now reads "Every warlord's answer and lieutenants enter the central register", matching the focus description.
+
+MCP evidence: `hoi4.source_lookup` for `cannibal_march_predation_column_short` returned no definitions (revision 7b11b9d0); localisation keys are not indexed, so the keys were reviewed in source.
