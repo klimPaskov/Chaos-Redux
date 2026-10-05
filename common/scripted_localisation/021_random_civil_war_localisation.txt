@@ -187,12 +187,19 @@ defined_text = {
 	text = { localization_key = event021_review_loyalty_outcome_careful }
 }
 
-# Consequence line of the end-of-crisis report.
+# Consequence line of the end-of-crisis report. Only a breach
+# (breached_obligation_pressure) or terms upheld through Hold the Settlement
+# Terms (terms_upheld_recurrence_relief) moves the recurrence score, so a
+# settlement that merely held claims no change.
 defined_text = {
 	name = event021_GetSettlementVerdictConsequence
 	text = {
 		trigger = { has_country_flag = random_civil_war_settlement_obligation_breached }
 		localization_key = event021_settlement_verdict_breached
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_settlement_terms_upheld }
+		localization_key = event021_settlement_verdict_upheld
 	}
 	text = { localization_key = event021_settlement_verdict_held }
 }
