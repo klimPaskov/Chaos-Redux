@@ -74,7 +74,7 @@ The six recovery doctrines are Emergency Public Works, Rescue Strategic Industry
 
 Each doctrine has its own mapped actions, AI preference profile, crisis legacy, and recovery tradeoffs.
 
-The decision category contains 78 decisions and 15 missions.
+The decision category contains 79 decisions and 15 missions.
 
 Every doctrine has a state project and a Stabilization closer.
 Stabilize Finance and Trade restores a selected Distressed, Idled, or Shuttered center through Restore Local Credit and Trade Connection, which needs a completed bank audit and runs the finance restoration project; the center reopens as restructured.
@@ -113,6 +113,25 @@ Missions activate without an entry debit, require affordability at completion, a
 
 The National Employment Guarantee cannot be started again while its automatic mission is active, and its bounded partial-timeout result is terminal for that episode so the partial relief cannot be farmed through repeated activation.
 
+### Decision and mission tooltips
+
+Every complete, timeout and cancel effect of the 79 decisions and 15 missions carries a custom effect tooltip.
+The Severity change comes from `great_depression_apply_public_action_delta`, which prints `great_depression_severity_change_tt` from the same temporary value it adds; a partner's own Severity change appears under the partner.
+`great_depression_prepare_action_tooltip_values` fills the numbers each tooltip prints from the same script constants the effect or the hidden pressure rebuild uses: hidden relief and pressure per Severity update, project and protection days, the project failure penalty, the whiplash and mandate durations, and the Policy Fatigue switch count.
+A tooltip names each lasting consequence in plain words: pressure eased or added for each later Severity update and for how long, a project started with its length and failure penalty, a center written off, a mission requirement met, a partner affected, a worldwide contribution, or a recovery scar or political settlement the recovery can leave.
+Two shared lines come from scripted effects: `great_depression_global_contribution_tt` inside `great_depression_increment_global_contribution`, shown only when the contribution counts, and `great_depression_partner_link_opened_tt` from `great_depression_show_partner_link_tooltip`, shown when a partner action opens a Financial Contagion link.
+Payments, receipts, phase upkeep, Event 34 adapter calls, inherited-region dispatch and civilian-commitment release run inside `hidden_effect`, because the custom cost text and the tooltip already show what the player pays and gains.
+`great_depression_commit_partner_action` commits the cost and Severity change outside its partner block so the tooltip shows them even before the partner is saved as an event target.
+
+### Policy trade-offs
+
+Retrench the Relief Administration, Ration Strategic Inputs and Withdraw Emergency Support each leave a lasting trade-off read by `great_depression_rebuild_hidden_components` for the rest of the episode.
+Retrenchment releases the civilian capacity held by earlier paid measures until the next one and eases fiscal pressure by 2 on each update; in Stabilization or Recovery it also lowers Severity by 2 at once, while earlier it raises Severity by 2 and adds 1 social pressure on each update.
+Rationing eases industrial pressure by 2 and adds 1 trade pressure; withdrawn support eases fiscal pressure by 2 and adds 1 demand pressure.
+An Emergency Policy Review's whiplash lasts `great_depression_event.policy_whiplash_days` (42) days through a timed flag and a timed modifier.
+The Maximum-Severity Emergency mission grants its larger relief through the `great_depression_mission_relief_override` input of `great_depression_mission_complete`.
+Failed center projects count in the per-episode `great_depression_project_failure_count` that the National Employment Guarantee and the incident weights read.
+
 ## Depression Centers
 
 A normal episode selects one to three Depression Centers, bounded by the central registry cap.
@@ -131,6 +150,7 @@ The AI, which does not keep a selected center, uses one valid center of its own 
 The inherited-liability consumer adds ongoing hidden pressure for inherited regions; hidden-row paid paths, corridor outcomes, secured-value salvage, and multi-region inherited priority need a per-region Event 34 project system that does not exist and are closed for Event 35.
 
 Factory loss is delayed until sustained severe failure or a deliberate liquidation action.
+A center written off by Abandon Depression Center or Auction or Reorganize Failed Assets carries the `great_depression_center_liquidated` flag and adds only `demand_liquidated_center` (1) to hidden demand pressure on each update, instead of the full abandoned and hollowed weight that a center lost to sustained failure keeps.
 
 Factory-loss receipts compare against the frozen center baseline, remain capped, and prevent duplicate physical losses.
 

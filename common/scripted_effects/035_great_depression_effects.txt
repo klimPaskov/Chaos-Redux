@@ -817,10 +817,10 @@ great_depression_fail_center_project = {
 				clr_country_flag = great_depression_public_works_project_active
 				set_country_flag = great_depression_center_project_failure_recorded
 			if = {
-				limit = { has_variable = great_depression_center_project_failure_count }
-				add_to_variable = { great_depression_center_project_failure_count = constant:great_depression_api.one }
+				limit = { has_variable = great_depression_project_failure_count }
+				add_to_variable = { great_depression_project_failure_count = constant:great_depression_api.one }
 			}
-				else = { set_variable = { great_depression_center_project_failure_count = constant:great_depression_api.one } }
+				else = { set_variable = { great_depression_project_failure_count = constant:great_depression_api.one } }
 				if = {
 					limit = { has_variable = great_depression_failed_response_count }
 					add_to_variable = { great_depression_failed_response_count = constant:great_depression_api.one }
@@ -3192,6 +3192,7 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_emergency_budget_balanced
 	clr_country_flag = great_depression_public_obligations_restructured
 	clr_country_flag = great_depression_relief_retrenched
+	clr_country_flag = great_depression_relief_retrenched_early
 	clr_country_flag = great_depression_ordinary_budget_restored
 	clr_country_flag = great_depression_emergency_production_board
 	clr_country_flag = great_depression_strategic_inputs_rationed
@@ -4506,15 +4507,27 @@ great_depression_rebuild_hidden_components = {
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
 				}
+				# A deliberately liquidated center is written off: it leaves only a
+				# residual drag on demand instead of the full weight of a failed one.
 				if = {
-					limit = { has_state_flag = great_depression_center_abandoned }
+					limit = { has_state_flag = great_depression_center_liquidated }
+					ROOT = { add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_liquidated_center } }
+				}
+				if = {
+					limit = {
+						has_state_flag = great_depression_center_abandoned
+						NOT = { has_state_flag = great_depression_center_liquidated }
+					}
 					ROOT = {
 						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_abandoned_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
 				}
 				if = {
-					limit = { has_state_flag = great_depression_center_hollowed }
+					limit = {
+						has_state_flag = great_depression_center_hollowed
+						NOT = { has_state_flag = great_depression_center_liquidated }
+					}
 					ROOT = {
 						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_hollowed_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
@@ -4602,6 +4615,27 @@ great_depression_rebuild_hidden_components = {
 	if = {
 		limit = { great_depression_commitment_withdrawal_relief_is_active = yes }
 		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_currency_action.withdrawal_fiscal_relief }
+	}
+	# Lasting trade-offs of retrenchment, input rationing and withdrawn support:
+	# each eases one pressure and adds a smaller one elsewhere for the rest of
+	# the episode. The episode reset clears their flags.
+	if = {
+		limit = { has_country_flag = great_depression_relief_retrenched }
+		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.retrenchment_fiscal_relief }
+		if = {
+			limit = { has_country_flag = great_depression_relief_retrenched_early }
+			add_to_variable = { great_depression_hidden_social_stress = constant:great_depression_hidden_component.early_retrenchment_social }
+		}
+	}
+	if = {
+		limit = { has_country_flag = great_depression_strategic_inputs_rationed }
+		add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.rationing_industrial_relief }
+		add_to_variable = { great_depression_hidden_trade_stress = constant:great_depression_hidden_component.rationing_trade_pressure }
+	}
+	if = {
+		limit = { has_country_flag = great_depression_emergency_support_withdrawn }
+		add_to_variable = { great_depression_hidden_fiscal_stress = constant:great_depression_hidden_component.support_withdrawal_fiscal_relief }
+		add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.support_withdrawal_demand_pressure }
 	}
 
 	if = {
