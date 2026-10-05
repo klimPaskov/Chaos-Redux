@@ -74,6 +74,17 @@ Test results change Arsenal Readiness through `sov_nuclear_bombs_apply_test_read
 Tests and demonstrations are counted per attained evolution stage (`sov_nuclear_bombs_stage_test_uses`); beyond `test_purpose_count` (1) a gain is divided by `test_repeat_divisor` (2), and the test report states the change and notes a repeat.
 Aborting a prepared strike gives up its marked target unless a coercion dossier still owns that state.
 
+### Exposure, foreign knowledge and counterintelligence
+
+Foreign knowledge (`sov_nuclear_bombs_public_knowledge`) has five values: Unknown, Suspected, Confirmed in private, Demonstrated and Employed; every write goes through `sov_nuclear_bombs_raise_public_knowledge`, which never lowers it, except that a counter-measure can return Suspected to Unknown.
+A hidden exposure score (`sov_nuclear_bombs_exposure`, 0 to 100, never shown as a number) rises at existing seams through `sov_nuclear_bombs_add_exposure`: each reactor queued (+4), a reserve dispersal departure (+5), a device assembly start (+4), test preparation (instrumented +3, concealed +5), the test result (instrumented detonation +6, concealed detonation +12, failure +3, accident +20), holding a final authorization (+5) and the collapse crisis opening (+25).
+Reaching 35 makes the arsenal Suspected and 70 Confirmed in private, each with an intelligence report (`chaosx.nr23.107`) that names the latest source.
+A detonating secret test rolls foreign observation with a chance equal to the exposure after the test (halved for an instrumented test): an observed test gives a major private proof and counts as proof of the weapon for coerced governments, and at 85 or more it is detected beyond denial, which makes the arsenal Demonstrated and fires the news event `chaosx.news.235`.
+Exposure falls through "Order a Counterintelligence Sweep" (-20 after 90 days, command cost, visible in the custody and test boards while exposure is at least 25 and the arsenal is not public) and through cancelling a test while exposure is at least 25 (-8).
+The fourth header line ends with a security label: secure, watched (25), penetrated (55) or public (Demonstrated or later).
+The AI treats a penetrated program, or a Suspected one, as custody duty and sweeps it (×2.00 when penetrated, ×1.50 when Suspected).
+All values are in `sov_nuclear_bombs_exposure`, `sov_nuclear_bombs_exposure_source`, `sov_nuclear_bombs_public_knowledge`, `sov_nuclear_bombs_duration` and `sov_nuclear_bombs_ai`.
+
 ### Coercion dossier, credibility and the enforcement window
 
 A coercion dossier opens on one state; its counterpart is the state's independent non-Soviet controller, otherwise its owner.

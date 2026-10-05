@@ -1438,6 +1438,42 @@ sov_nuclear_bombs_event_no_active_project = {
 	NOT = { has_country_flag = sov_nuclear_bombs_moratorium_verification_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_standdown_verification_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_settlement_verification_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_counterintelligence_pending }
+}
+
+# Country scope (the Soviet actor). Security label of the hidden exposure
+# score: public once the arsenal is Demonstrated, otherwise penetrated,
+# watched or secure.
+sov_nuclear_bombs_event_security_is_public = {
+	check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals }
+}
+
+sov_nuclear_bombs_event_security_is_penetrated = {
+	has_variable = sov_nuclear_bombs_exposure
+	check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.penetrated compare = greater_than_or_equals }
+}
+
+sov_nuclear_bombs_event_security_is_watched = {
+	has_variable = sov_nuclear_bombs_exposure
+	check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.watched compare = greater_than_or_equals }
+}
+
+# Country scope (the Soviet actor). A counterintelligence sweep can still hide
+# something: the arsenal is not yet public and foreign services are watching.
+sov_nuclear_bombs_event_can_sweep_counterintelligence = {
+	NOT = { sov_nuclear_bombs_event_security_is_public = yes }
+	sov_nuclear_bombs_event_security_is_watched = yes
+}
+
+# Country scope (the Soviet actor). The AI sweeps once the program is
+# penetrated, or while foreign services suspect it.
+sov_nuclear_bombs_event_ai_needs_counterintelligence = {
+	sov_nuclear_bombs_event_can_sweep_counterintelligence = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_counterintelligence_pending }
+	OR = {
+		sov_nuclear_bombs_event_security_is_penetrated = yes
+		check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.suspected compare = equals }
+	}
 }
 
 sov_nuclear_bombs_event_has_secure_storage_network = {
@@ -1804,6 +1840,7 @@ sov_nuclear_bombs_event_ai_has_first_use_candidate = {
 sov_nuclear_bombs_event_ai_has_custody_duty = {
 	OR = {
 		NOT = { has_country_flag = sov_nuclear_bombs_stockpile_audited }
+		sov_nuclear_bombs_event_ai_needs_counterintelligence = yes
 		AND = {
 			has_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
 			sov_nuclear_bombs_native_custody_reconciles = yes

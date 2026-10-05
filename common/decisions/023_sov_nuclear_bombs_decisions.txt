@@ -164,6 +164,43 @@ sov_nuclear_bombs_command_category = {
 		ai_will_do = { base = 1.20 modifier = { factor = 0 has_country_flag = sov_nuclear_bombs_stockpile_audited NOT = { sov_nuclear_bombs_native_custody_reconciles = yes } } modifier = { factor = 2.00 check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
 	}
 
+	# Foreign services are watching the program: a sweep closes the known leaks.
+	sov_nuclear_bombs_counterintelligence_sweep = {
+		name = sov_nuclear_bombs_counterintelligence_sweep
+		desc = sov_nuclear_bombs_counterintelligence_sweep_desc
+		icon = GFX_decision_sov_nuclear_decision_counterintelligence
+		visible = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			OR = { sov_nuclear_bombs_event_phase_custody = yes sov_nuclear_bombs_event_phase_test = yes }
+			sov_nuclear_bombs_event_no_active_project = yes
+			sov_nuclear_bombs_event_can_sweep_counterintelligence = yes
+		}
+		available = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			sov_nuclear_bombs_event_no_active_project = yes
+			custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_counterintelligence_sweep_tt sov_nuclear_bombs_event_can_sweep_counterintelligence = yes }
+		}
+		custom_cost_trigger = { sov_nuclear_bombs_can_pay_command_cost = yes }
+		custom_cost_text = sov_nuclear_bombs_cost_command
+		cost = 0
+		days_remove = constant:sov_nuclear_bombs_duration.counterintelligence_sweep
+		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_country_flag = sov_nuclear_bombs_counterintelligence_pending }
+		remove_effect = {
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_counterintelligence_pending sov_nuclear_bombs_event_actor_is_valid = yes }
+				sov_nuclear_bombs_complete_counterintelligence_sweep = yes
+			}
+			clr_country_flag = sov_nuclear_bombs_counterintelligence_pending
+		}
+		cancel_trigger = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } }
+		cancel_effect = { clr_country_flag = sov_nuclear_bombs_counterintelligence_pending }
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.counterintelligence_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.counterintelligence_penetrated_factor sov_nuclear_bombs_event_security_is_penetrated = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_ai.counterintelligence_suspected_factor check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.suspected compare = equals } }
+		}
+	}
+
 	sov_nuclear_bombs_harden_storage_site = {
 		name = sov_nuclear_bombs_harden_storage_site
 		desc = sov_nuclear_bombs_harden_storage_site_desc
@@ -217,6 +254,12 @@ sov_nuclear_bombs_command_category = {
 					limit = { has_country_flag = sov_nuclear_bombs_transit_active }
 					sov_nuclear_bombs_pay_logistics_cost = yes
 					set_country_flag = sov_nuclear_bombs_reserve_dispersion_pending
+					# A guarded train moving the reserve is hard to hide.
+					hidden_effect = {
+						set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.rail }
+						set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
+						sov_nuclear_bombs_add_exposure = yes
+					}
 				}
 				else = {
 					set_country_flag = sov_nuclear_bombs_reserve_dispersion_cancelled

@@ -218,6 +218,9 @@ sov_nuclear_bombs_queue_reactor_site = {
 				add_to_variable = { sov_nuclear_bombs_reactor_pending_count = constant:sov_nuclear_bombs_ledger.one }
 			}
 			else = { set_variable = { sov_nuclear_bombs_reactor_pending_count = constant:sov_nuclear_bombs_ledger.one } }
+			set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.reactor }
+			set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.reactor }
+			sov_nuclear_bombs_add_exposure = yes
 		}
 	}
 }
@@ -458,6 +461,7 @@ sov_nuclear_bombs_initialize_event_state = {
 		set_variable = { sov_nuclear_bombs_breakaway_crises = constant:sov_nuclear_bombs_ledger.zero }
 		set_variable = { sov_nuclear_bombs_telephone_rounds = constant:sov_nuclear_bombs_ledger.zero }
 		set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.unknown }
+		set_variable = { sov_nuclear_bombs_exposure = constant:sov_nuclear_bombs_exposure.minimum }
 		set_variable = { sov_nuclear_bombs_target_demand = constant:sov_nuclear_bombs_target_demand.default }
 		set_variable = { sov_nuclear_bombs_credibility = constant:sov_nuclear_bombs_credibility.neutral }
 		set_variable = { sov_nuclear_bombs_back_down_count = constant:sov_nuclear_bombs_ledger.zero }
@@ -908,10 +912,48 @@ sov_nuclear_bombs_record_action_receipt = {
 				limit = { NOT = { has_country_flag = sov_nuclear_bombs_test_accident } }
 				sov_nuclear_bombs_apply_test_readiness = yes
 			}
-			# Once the arsenal is public, every Soviet test is watched, so a
-			# failure or an accident damages credibility.
+			# Exposure follows the profile: a concealed test vents and is
+			# watched more than an instrumented one. A detonating secret test
+			# may be observed abroad.
 			if = {
-				limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals } }
+				limit = { has_country_flag = sov_nuclear_bombs_test_accident }
+				set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.accident }
+				set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.accident }
+			}
+			else_if = {
+				limit = { has_country_flag = sov_nuclear_bombs_test_failure }
+				set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.test_failure }
+				set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_detonation }
+			}
+			else_if = {
+				limit = { has_country_flag = sov_nuclear_bombs_test_instrumented }
+				set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.test_detonation_instrumented }
+				set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_detonation }
+			}
+			else = {
+				set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.test_detonation_concealed }
+				set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_detonation }
+			}
+			sov_nuclear_bombs_add_exposure = yes
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = sov_nuclear_bombs_test_success
+						has_country_flag = sov_nuclear_bombs_test_partial_yield
+					}
+				}
+				sov_nuclear_bombs_roll_test_observation = yes
+			}
+			# Once the arsenal is public, every Soviet test is watched, so a
+			# failure or an accident damages credibility, as it does once
+			# foreign intelligence has penetrated the program.
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals }
+						check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.penetrated compare = greater_than_or_equals }
+					}
+				}
 				if = {
 					limit = { has_country_flag = sov_nuclear_bombs_test_accident }
 					set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.public_test_accident_loss }
@@ -940,10 +982,8 @@ sov_nuclear_bombs_record_action_receipt = {
 			limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals } }
 			add_to_variable = { sov_nuclear_bombs_public_demonstrations = constant:sov_nuclear_bombs_ledger.one }
 			set_country_flag = sov_nuclear_bombs_public_demonstration_completed
-			if = {
-				limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than } }
-				set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
-			}
+			set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
+			sov_nuclear_bombs_raise_public_knowledge = yes
 			set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 			set_country_flag = sov_nuclear_bombs_demonstration_confirmed
 			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.demonstration_gain }
@@ -969,10 +1009,8 @@ sov_nuclear_bombs_record_action_receipt = {
 		else_if = {
 			limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals } }
 			add_to_variable = { sov_nuclear_bombs_combat_uses = constant:sov_nuclear_bombs_ledger.one }
-			if = {
-				limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.used compare = less_than } }
-				set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
-			}
+			set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.used }
+			sov_nuclear_bombs_raise_public_knowledge = yes
 			set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 			set_country_flag = sov_nuclear_bombs_confirmed_use_recorded
 			clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
@@ -1098,6 +1136,134 @@ sov_nuclear_bombs_apply_test_readiness = {
 	subtract_from_variable = { sov_nuclear_bombs_last_test_readiness_change = sov_nuclear_bombs_readiness_before_test }
 }
 
+# Country scope (the Soviet actor). Raises foreign knowledge of the arsenal to
+# a level and never lowers it. Input: temporary sov_nuclear_bombs_knowledge_target.
+sov_nuclear_bombs_raise_public_knowledge = {
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = sov_nuclear_bombs_knowledge_target compare = less_than } }
+		set_variable = { sov_nuclear_bombs_public_knowledge = sov_nuclear_bombs_knowledge_target }
+	}
+}
+
+# Country scope (the Soviet actor). Changes the hidden exposure score (Part 3).
+# Inputs: temporary sov_nuclear_bombs_exposure_delta (positive from a seam,
+# negative from a counter-measure) and, for a rise, temporary
+# sov_nuclear_bombs_exposure_source_id. Knowledge follows the thresholds.
+sov_nuclear_bombs_add_exposure = {
+	if = {
+		limit = { NOT = { has_variable = sov_nuclear_bombs_exposure } }
+		set_variable = { sov_nuclear_bombs_exposure = constant:sov_nuclear_bombs_exposure.minimum }
+	}
+	add_to_variable = { sov_nuclear_bombs_exposure = sov_nuclear_bombs_exposure_delta }
+	clamp_variable = { var = sov_nuclear_bombs_exposure min = constant:sov_nuclear_bombs_exposure.minimum max = constant:sov_nuclear_bombs_exposure.maximum }
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_exposure_delta value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than } }
+		set_variable = { sov_nuclear_bombs_exposure_source = sov_nuclear_bombs_exposure_source_id }
+	}
+	sov_nuclear_bombs_refresh_knowledge_from_exposure = yes
+}
+
+# Country scope (the Soviet actor). Crossing the suspected threshold makes the
+# arsenal Suspected; crossing the confirmed threshold gives a major private
+# proof. Only Suspected can fall back to Unknown, when a counter-measure lowers
+# exposure below the suspected threshold.
+sov_nuclear_bombs_refresh_knowledge_from_exposure = {
+	if = {
+		limit = {
+			check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.private compare = less_than }
+			check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.confirmed compare = greater_than_or_equals }
+		}
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.private }
+		sov_nuclear_bombs_raise_public_knowledge = yes
+		set_temp_variable = { sov_nuclear_bombs_exposure_report_request = constant:sov_nuclear_bombs_exposure_report.confirmed }
+		sov_nuclear_bombs_queue_exposure_report = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.suspected compare = less_than }
+			check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.suspected compare = greater_than_or_equals }
+		}
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.suspected }
+		sov_nuclear_bombs_raise_public_knowledge = yes
+		set_temp_variable = { sov_nuclear_bombs_exposure_report_request = constant:sov_nuclear_bombs_exposure_report.suspected }
+		sov_nuclear_bombs_queue_exposure_report = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.suspected compare = equals }
+			check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.suspected compare = less_than }
+		}
+		set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.unknown }
+	}
+}
+
+# Country scope (the Soviet actor). Queues one intelligence report naming the
+# source of the exposure. Input: temporary sov_nuclear_bombs_exposure_report_request.
+# Reports raised on the same day merge into the latest one.
+sov_nuclear_bombs_queue_exposure_report = {
+	set_variable = { sov_nuclear_bombs_exposure_report_kind = sov_nuclear_bombs_exposure_report_request }
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_exposure_report_pending } }
+		set_country_flag = sov_nuclear_bombs_exposure_report_pending
+		country_event = { id = chaosx.nr23.107 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+}
+
+# Country scope (the Soviet actor), after a detonating secret test. Foreign
+# observation is rolled from exposure: an instrumented test is watched less
+# closely. Observed means private proof; at the detected exposure the test is
+# detected beyond denial and the arsenal becomes public.
+sov_nuclear_bombs_roll_test_observation = {
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than } }
+		set_temp_variable = { sov_nuclear_bombs_observation_weight = sov_nuclear_bombs_exposure }
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_test_instrumented }
+			divide_temp_variable = { sov_nuclear_bombs_observation_weight = constant:sov_nuclear_bombs_exposure.instrumented_observation_divisor }
+		}
+		clamp_temp_variable = { var = sov_nuclear_bombs_observation_weight min = constant:sov_nuclear_bombs_exposure.observation_weight_floor }
+		set_temp_variable = { sov_nuclear_bombs_unobserved_weight = constant:sov_nuclear_bombs_exposure.maximum }
+		subtract_from_temp_variable = { sov_nuclear_bombs_unobserved_weight = sov_nuclear_bombs_observation_weight }
+		clamp_temp_variable = { var = sov_nuclear_bombs_unobserved_weight min = constant:sov_nuclear_bombs_exposure.observation_weight_floor }
+		random_list = {
+			var:sov_nuclear_bombs_observation_weight = { sov_nuclear_bombs_record_test_observation = yes }
+			var:sov_nuclear_bombs_unobserved_weight = { set_country_flag = sov_nuclear_bombs_last_test_unobserved }
+		}
+	}
+}
+
+sov_nuclear_bombs_record_test_observation = {
+	clr_country_flag = sov_nuclear_bombs_last_test_unobserved
+	set_country_flag = sov_nuclear_bombs_test_observed
+	set_variable = { sov_nuclear_bombs_exposure_source = constant:sov_nuclear_bombs_exposure_source.test_detonation }
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.detected compare = greater_than_or_equals } }
+		set_country_flag = sov_nuclear_bombs_test_detected_publicly
+		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
+		sov_nuclear_bombs_raise_public_knowledge = yes
+		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
+		sov_nuclear_bombs_refresh_world_threat_source = yes
+		news_event = { id = chaosx.news.235 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		set_temp_variable = { sov_nuclear_bombs_exposure_report_request = constant:sov_nuclear_bombs_exposure_report.detected }
+	}
+	else = {
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.private }
+		sov_nuclear_bombs_raise_public_knowledge = yes
+		set_temp_variable = { sov_nuclear_bombs_exposure_report_request = constant:sov_nuclear_bombs_exposure_report.observed }
+	}
+	sov_nuclear_bombs_queue_exposure_report = yes
+}
+
+# Country scope (the Soviet actor). A finished counterintelligence sweep closes
+# the known leaks around the program.
+sov_nuclear_bombs_complete_counterintelligence_sweep = {
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.sweep }
+	sov_nuclear_bombs_add_exposure = yes
+	set_country_flag = sov_nuclear_bombs_counterintelligence_completed
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+
 # SOV country scope, called from on_nuke_drop when the Soviet Union detonates
 # a nuclear weapon outside an Event 23 request, normally through a vanilla
 # nuclear raid. The callback's shared hook has already applied the detonation
@@ -1113,10 +1279,8 @@ sov_nuclear_bombs_record_native_raid_use = {
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 		add_to_variable = { sov_nuclear_bombs_combat_uses = constant:sov_nuclear_bombs_ledger.one }
 		add_to_variable = { sov_nuclear_bombs_native_raid_uses = constant:sov_nuclear_bombs_ledger.one }
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.used compare = less_than } }
-			set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
-		}
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.used }
+		sov_nuclear_bombs_raise_public_knowledge = yes
 		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 		set_country_flag = sov_nuclear_bombs_confirmed_use_recorded
 		set_country_flag = sov_nuclear_bombs_native_raid_use_recorded
@@ -1293,6 +1457,13 @@ sov_nuclear_bombs_prepare_test = {
 		set_variable = { sov_nuclear_bombs_pending_action_type = constant:sov_nuclear_bombs_action.test }
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.test }
 		sov_nuclear_bombs_stage_action_context = yes
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_test_instrumented }
+			set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.test_preparation_instrumented }
+		}
+		else = { set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.test_preparation_concealed } }
+		set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_preparation }
+		sov_nuclear_bombs_add_exposure = yes
 		set_country_flag = sov_nuclear_bombs_test_prepared
 		set_country_flag = sov_nuclear_bombs_test_mission_active
 		activate_mission = sov_nuclear_bombs_proof_test_mission
@@ -1334,6 +1505,12 @@ sov_nuclear_bombs_cancel_test = {
 	sov_nuclear_bombs_clear_selected_state = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.cancel_test_readiness }
+	# Calling off a watched test removes what the observers came for.
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_exposure value = constant:sov_nuclear_bombs_exposure.watched compare = greater_than_or_equals } }
+		set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.cancel_test }
+		sov_nuclear_bombs_add_exposure = yes
+	}
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
@@ -1468,8 +1645,6 @@ sov_nuclear_bombs_send_ultimatum = {
 		clr_country_flag = sov_nuclear_bombs_ultimatum_refused
 		clr_country_flag = sov_nuclear_bombs_refusal_answered_by_demonstration
 		sov_nuclear_bombs_end_enforcement_window = yes
-		# The target judges the threat by what the world knew before it.
-		set_variable = { sov_nuclear_bombs_ultimatum_prior_knowledge = sov_nuclear_bombs_public_knowledge }
 		# A demand on a state the delivery force cannot reach is an empty threat.
 		clr_country_flag = sov_nuclear_bombs_ultimatum_route_unproven
 		if = {
@@ -1481,10 +1656,8 @@ sov_nuclear_bombs_send_ultimatum = {
 			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.unreachable_ultimatum_loss }
 			sov_nuclear_bombs_change_credibility = yes
 		}
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than } }
-			set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
-		}
+		set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
+		sov_nuclear_bombs_raise_public_knowledge = yes
 		set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 		set_country_flag = sov_nuclear_bombs_ultimatum_target_was_independent
 		if = {
@@ -1704,10 +1877,8 @@ sov_nuclear_bombs_resolve_coercion_response = {
 			set_variable = { sov_nuclear_bombs_response_recorded = constant:sov_nuclear_bombs_tuning.response_exposed }
 			set_country_flag = sov_nuclear_bombs_target_exposure_recorded
 			set_country_flag = sov_nuclear_bombs_ultimatum_response_window_reached
-			if = {
-				limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than } }
-				set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
-			}
+			set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
+			sov_nuclear_bombs_raise_public_knowledge = yes
 			set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
 			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_tuning.ultimatum_credibility_loss }
 			sov_nuclear_bombs_change_credibility = yes
@@ -2348,6 +2519,9 @@ sov_nuclear_bombs_open_collapse_recovery = {
 		set_country_flag = sov_nuclear_bombs_collapse_active
 		clr_country_flag = sov_nuclear_bombs_collapse_board_seen
 		set_country_flag = sov_nuclear_bombs_collapse_crisis_recorded
+		set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.collapse }
+		set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
+		sov_nuclear_bombs_add_exposure = yes
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.collapse }
@@ -2781,6 +2955,9 @@ sov_nuclear_bombs_begin_production = {
 		clr_country_flag = sov_nuclear_bombs_production_rejected
 		clr_country_flag = sov_nuclear_bombs_production_cancelled
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.production_start_readiness }
+		set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.assembly }
+		set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.assembly }
+		sov_nuclear_bombs_add_exposure = yes
 		activate_mission = sov_nuclear_bombs_device_assembly_mission
 	}
 }
@@ -2927,10 +3104,8 @@ sov_nuclear_bombs_investigate_test_failure = {
 
 sov_nuclear_bombs_send_private_signal = {
 	set_country_flag = sov_nuclear_bombs_private_signal_sent
-	if = {
-		limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.private compare = less_than } }
-		set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.private }
-	}
+	set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.private }
+	sov_nuclear_bombs_raise_public_knowledge = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.private_signal_readiness }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
@@ -3090,6 +3265,9 @@ sov_nuclear_bombs_overrule_safety_veto = {
 sov_nuclear_bombs_hold_authorization = {
 	set_country_flag = sov_nuclear_bombs_authorization_held
 	set_country_flag = sov_nuclear_bombs_final_authorization_reached
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.strike_hold }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.strike_hold }
+	sov_nuclear_bombs_add_exposure = yes
 	if = {
 		limit = {
 			sov_nuclear_bombs_event_severe_first_use_gate = yes

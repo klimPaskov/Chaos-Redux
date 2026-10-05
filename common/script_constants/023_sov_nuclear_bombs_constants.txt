@@ -92,10 +92,79 @@ sov_nuclear_bombs_public_knowledge = {
 		data = int
 	}
 
+	# Foreign knowledge only advances, except that a counterintelligence sweep
+	# can return Suspected to Unknown.
 	unknown = 0
-	private = 1
-	demonstrated = 2
-	used = 3
+	suspected = 1
+	private = 2
+	demonstrated = 3
+	used = 4
+}
+
+# Foreign intelligence exposure (Part 3). A hidden 0..100 score that is never
+# shown as a number. Reaching suspected or confirmed advances public knowledge;
+# the security label reads watched and penetrated. Positive keys are the
+# exposure each seam adds, negative keys what a counter-measure removes.
+sov_nuclear_bombs_exposure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 0
+	maximum = 100
+	watched = 25
+	suspected = 35
+	penetrated = 55
+	confirmed = 70
+	# An observed test at or above this exposure is detected beyond denial.
+	detected = 85
+	reactor = 4
+	rail = 5
+	assembly = 4
+	test_preparation_instrumented = 3
+	test_preparation_concealed = 5
+	test_detonation_instrumented = 6
+	test_detonation_concealed = 12
+	test_failure = 3
+	accident = 20
+	strike_hold = 5
+	collapse = 25
+	sweep = -20
+	cancel_test = -8
+	# An instrumented test is watched less closely than a concealed one.
+	instrumented_observation_divisor = 2
+	observation_weight_floor = 1
+}
+
+# Where the latest exposure came from, named in the intelligence report.
+sov_nuclear_bombs_exposure_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	reactor = 1
+	rail = 2
+	assembly = 3
+	test_preparation = 4
+	test_detonation = 5
+	accident = 6
+	strike_hold = 7
+	collapse = 8
+}
+
+# Which intelligence report the Soviet command receives.
+sov_nuclear_bombs_exposure_report = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	suspected = 1
+	confirmed = 2
+	observed = 3
+	detected = 4
 }
 
 sov_nuclear_bombs_profile = {
@@ -275,6 +344,9 @@ sov_nuclear_bombs_ai = {
 	back_down_base = 0.25
 	back_down_doubted_factor = 2.50
 	close_dossier_base = 0.05
+	counterintelligence_base = 1.00
+	counterintelligence_penetrated_factor = 2.00
+	counterintelligence_suspected_factor = 1.50
 }
 
 # Target answers to a Soviet ultimatum (chaosx.nr23.120, Part 4 compliance
@@ -591,8 +663,6 @@ sov_nuclear_bombs_tuning = {
 	ultimatum_evacuation_credibility_loss = -3
 	ultimatum_sabotage_integrity = -10
 	ultimatum_retaliation_credibility_loss = -10
-	public_reveal_knowledge = 2
-	private_knowledge = 1
 	# Public exchange stages (Part 5). The stage only advances. Limited is
 	# major_exchange_stage; Expanding needs exchange_expanding_detonations
 	# confirmed detonations between the Union and nuclear majors or a second
@@ -661,6 +731,7 @@ sov_nuclear_bombs_duration = {
 	# ultimatum it has received, up to the maximum.
 	coercion_cooldown = 120
 	coercion_cooldown_max = 360
+	counterintelligence_sweep = 90
 	strike_window = 7
 	rail_security_mission = 120
 	technical_mission = 180
