@@ -388,3 +388,13 @@ Decision:
 Which rows can be taken does not change, because every hidden check is still evaluated, and the simple resource `can_pay_*` lines stay visible (round 2 lead decision 6).
 Basis: CLAUDE.md player-visible requirement rule, chaos-redux-decisions-missions trigger clarity, R2-3 precedent.
 Disposition: `implemented`; the rendered tooltips are needs_live_game.
+
+### R3-4. Simulation Orthodoxy carries operational costs
+
+Finding: spec part 3 makes Orthodoxy strong but dangerous, with supply, adaptability, organisation-recovery, stability or political costs, but `video_game_simulation_orthodoxy` gave +5% army organisation (`army_org_factor`) and cost only -5% stability and -0.08 daily political power, so Evolution III was nearly free while no incident ran.
+Decision: the organisation bonus becomes an organisation-recovery cost, `army_org_regain = -0.03`, and the idea adds `supply_consumption_factor = +0.04`; the planning benefits (+15% planning speed, +15% maximum planning, -10% land doctrine cost) are unchanged.
+Both costs stay below the Trust the Model surge (`trust_army_org` -0.05, `trust_supply` +0.08), which stacks on top while a surge runs.
+Both tokens are listed in the installed `documentation/modifiers_documentation.md` (`army_org_regain` at line 1957, `supply_consumption_factor` at line 4966).
+The idea description now names the cost in period terms (worn formations receive orders written for fresh ones, supply columns follow roads the tables assumed), and the overview lists the full modifier set.
+Basis: spec part 3 Simulation Orthodoxy, round 3 lead decision on Orthodoxy.
+Disposition: `implemented`; balance in a live war is needs_live_game.

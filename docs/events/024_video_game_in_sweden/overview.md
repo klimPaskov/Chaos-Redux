@@ -78,6 +78,9 @@ The staged idea lifecycle has exactly one active idea at a time.
 | Simulation orthodoxy | `video_game_simulation_orthodoxy` | Offices begin treating the cabinet's categories as authoritative. |
 | Validated wargaming methods | `video_game_validated_wargaming_methods` | A successful field test gives the method a bounded institutional place. |
 
+Simulation Orthodoxy is strong and dangerous: +15% planning speed, +15% maximum planning and 10% cheaper land doctrines, against -5% stability, -0.08 daily political power, -3% organisation recovery and +4% supply consumption.
+Its operational costs stay below those of the Trust the Model surge (-5% organisation recovery, +8% supply consumption), and the two stack while a surge runs.
+
 The lifecycle is refreshed by removing the other four ideas before the selected stage is applied.
 
 Civil-war retention is restricted to the selected active Swedish host, rather than copying the staged spirit to both sides.
