@@ -109,6 +109,11 @@ Famine accepts explicit, owner-proven changes from occupation conduct, extractio
 
 Famine can create a migration flight request only after the famine state and affected people are proven. That connection does not merge the two mechanics.
 
+A successful Hunger Lines launch (Event 014, scenario SCN-010) calls `famine_apply_hunger_lines_scenario_pressure` once from the shared scenario launcher.
+It reads only Event 014's node registry and launch intensity, and gives each live node state a scenario food shock, a scenario food context on production, transport, governance and vulnerability that lasts 120 days, and scenario flight pressure for migration.
+The lowest intensity reaches supply strain (and acute shortage only after the reserve runs out), and the maximum reaches famine about 44 days after launch; a relaunch inside a state's 120-day window adds nothing to that state.
+The values sit in `famine_hunger_lines_scenario` in `famine_adapter_constants.txt`.
+
 A hostile capture of a state queues one food-safety assessment through `famine_enqueue_food_observation_assessment` from the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.
 The ordinary food job then reads the occupation law through `famine_resolve_occupation_profile` and decides whether a real food problem exists; the capture itself adds no famine stage and no deaths.
 

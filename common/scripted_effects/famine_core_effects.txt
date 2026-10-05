@@ -1257,6 +1257,18 @@ famine_collect_surface_context = {
 		add_to_temp_variable = { famine_external_production = constant:famine_surface_context.disaster_production_pressure }
 		add_to_temp_variable = { famine_external_need = constant:famine_surface_context.disaster_need_pressure }
 	}
+	# A scenario food context (the Hunger Lines launch) lasts until its date.
+	if = {
+		limit = {
+			has_variable = famine_scenario_food_context_until_date
+			has_variable = famine_scenario_food_context_pressure
+			check_variable = { var = famine_scenario_food_context_until_date value = global.date compare = greater_than }
+		}
+		add_to_temp_variable = { famine_external_production = famine_scenario_food_context_pressure }
+		add_to_temp_variable = { famine_external_transport = famine_scenario_food_context_pressure }
+		add_to_temp_variable = { famine_external_governance = famine_scenario_food_context_pressure }
+		add_to_temp_variable = { famine_external_vulnerability = famine_scenario_food_context_pressure }
+	}
 	if = {
 		limit = {
 			NOT = { is_owned_and_controlled_by = OWNER }
@@ -3087,6 +3099,8 @@ famine_cleanup_state_registration = {
 	clear_variable = famine_component_vulnerability
 	clear_variable = famine_component_governance
 	clear_variable = famine_component_relief
+	clear_variable = famine_food_deficit_score
+	clear_variable = famine_food_exhaustion_need
 	clear_variable = famine_blockade_island_proven
 	clear_variable = famine_blockade_isolation_proven
 	clear_variable = famine_blockade_maritime_dependence_proven

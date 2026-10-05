@@ -1234,7 +1234,14 @@ trigger_selected_chaosx_scenario = {
 				compare = equals
 			}
 		}
+		set_temp_variable = { cannibalism_scenario_setup_result = constant:humanitarian_runtime.zero }
 		trigger_cannibalism_scenario = yes
+		# The Hunger Lines bring hunger and flight to the regions they seized.
+		if = {
+			limit = { check_variable = { var = cannibalism_scenario_setup_result value = constant:humanitarian_runtime.zero compare = greater_than } }
+			set_temp_variable = { famine_hunger_lines_state_count = constant:humanitarian_runtime.zero }
+			famine_apply_hunger_lines_scenario_pressure = yes
+		}
 	}
 	else_if = {
 		limit = {

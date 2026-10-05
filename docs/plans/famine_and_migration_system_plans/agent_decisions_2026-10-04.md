@@ -2,7 +2,7 @@
 
 Disposition: accepted and recorded by the implementing agent under the user's grant of full design authority for the takeover from the stopped Codex thread.
 Each entry states the decision and its basis.
-No workbook or exported CSV was edited, and no catalog change is pending.
+No workbook or exported CSV was edited; pending catalog changes are listed in `catalog_changes_pending.md`.
 
 ## Lead decisions, round 1
 
@@ -157,3 +157,13 @@ Disposition: accepted and implemented by the round-2 implementing agent under th
     The protected floor is applied to every pulse; the largest modelled loss leaves 62 percent of the population.
     Probability route: `hoi4_decision_inspect`, mode `inspect`, decision `famine_release_reserves`, scenario `acute_stage_buffered_shortage` (actor GER, FROM state 64 in acute shortage with stored deficit, reserve and flags), returned `DECISION_ANALYZED_PARTIAL` at source revision `59f0014f84e743176e47abedf6db4d80f0be31933b0b96344d62536d44effe49`, report hash `6e922435370a3af160a26c8566430b44af7a6276c77293245b418022ece47d3c`, with the decision-coverage check failing on unbound inputs; this is the existing blocker and not engine evidence.
     Known limits: `famine_local_war_context_proven`, `famine_outbreak_context_proven` and `famine_disaster_context_proven` are read by the collector but no owner sets them, so war, outbreak and disaster context add nothing yet; the wartime-window profiles (Leningrad, Bengal, Greece, Dutch, Java, Vietnam, Henan, Spain) still open on the owner being at war anywhere, so they now reach famine in most campaigns where that owner fights in the window unless relief is used. Tightening those gates to local evidence is recommended as follow-up design work.
+
+18. **The Hunger Lines scenario starts famine and flight in the regions it seizes (B040).**
+    Neither `famine_request_scenario_pressure` nor `migration_request_scenario_pressure` had a caller, so a launched SCN-010 produced no food stage, no map colour and no famine decisions.
+    Following lead decision 3, a new famine-owned `famine_apply_hunger_lines_scenario_pressure` (`famine_adapter_effects.txt`) reads only Event 014's node registry `global.cannibalism_node_states` and the launch intensity it records in `global.cannibalism_scenario_last_intensity`, and one minimal edit in the shared `trigger_selected_chaosx_scenario` declares `cannibalism_scenario_setup_result` before `trigger_cannibalism_scenario` and calls the adapter only when that result is positive. Event 014's own files and localisation are untouched.
+    Per live node state, by intensity (low/medium/high/maximum): a scenario food request of 6/8/10/12 percent of the population, a scenario food context of 14/18/22/26 on production, transport, governance and vulnerability that the surface collector applies until `famine_scenario_food_context_until_date` (120 days), and a migration scenario flight request of 2/3/4/5 percent capped above a 20 percent protected share and skipped below 1,000 people. A state whose context window is still open is skipped, so a relaunch cannot stack pressure; a failed launch sends nothing.
+    Basis for the sizing: intensity, not Field Hunger, because Field Hunger is a country meter of the host actors and the four Field Hunger launch values (58 to 86) are too close to spread the stages; the scratch model under decision 17's constants gives low: supply strain day 7 (acute shortage only on day 63 once the reserve is gone), medium: acute shortage day 49, high: acute shortage day 24, maximum: famine day 44, all recovering after the context ends.
+    The flight shares sit below and around the hostile-capture base share (0.03) and the nuclear share (0.05), since the scenario's flight is terror and hunger rather than a front passing through.
+    The SCN-010 catalog text change is queued in `catalog_changes_pending.md` for the Event 014 owner.
+    Also in this change: `famine_cleanup_state_registration` clears the new `famine_food_deficit_score` and `famine_food_exhaustion_need` with the other components.
+    needs_live_game: the launch path itself (Event 014 setup result, node registry contents, map-mode colours and the famine category reveal for the affected owners).

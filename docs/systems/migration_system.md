@@ -56,6 +56,8 @@ The live cohort alignment check includes the visit-history ledger, so `migration
 In a new campaign the first proven flight therefore records cohort 1, and a state or country whose selection is rebuilt from an aligned registry clears both its ambiguity flag and its misalignment flag.
 See `common/scripted_effects/migration_cohort_history_effects.md`.
 
+A successful Hunger Lines launch (Event 014, scenario SCN-010) submits `migration_request_scenario_pressure` for each live Event 014 node state through the famine-owned `famine_apply_hunger_lines_scenario_pressure`: 2, 3, 4 or 5 percent of the state's population by launch intensity, capped above a 20 percent protected share and skipped below 1,000 people. Migration then owns the flight like any other request, and the map mode labels it as starting emergency conditions.
+
 Local integration settles one whole hosted cohort without moving anyone.
 `migration_settle_integrated_cohort` proves the cohort, its current host, the integrating owner-controller and both reception ledgers, debits the state and national reception load once, writes the row as completed with zero people, and only then credits national integration and the achievement history.
 A rejected settlement changes nothing, and a settled row can never be settled or credited again.
