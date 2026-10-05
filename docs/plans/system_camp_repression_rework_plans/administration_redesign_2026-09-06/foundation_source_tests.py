@@ -844,8 +844,8 @@ def tests():
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
     results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
     paid=sale.check_native_costs()
-    assert len(paid)==78,len(paid)
-    results.append('Event 026 sale: all 78 positive native camp costs read a registered price-table global and each order credits one purchase')
+    assert len(paid)==79,len(paid)
+    results.append('Event 026 sale: all 79 positive native camp costs (78 camp decisions and the Hungarian halt) read a registered price-table global and each order credits one purchase')
     sale.check_stock_prices()
     results.append('Event 026 sale: no camp purchase check compares stock with an ordinary price; only the AI capacity heuristic keeps ordinary thresholds')
     for ratio in sale.SALE_RATIOS:

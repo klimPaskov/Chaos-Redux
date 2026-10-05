@@ -2,6 +2,10 @@
 # immutable authority records, conservative outside-loss reconciliation and bounded processing.
 # Public contract, historical sources and limitations: camp_administration_occupation_effects.md.
 
+# add_autonomy_ratio rejects script constants. A German subject that halts the
+# 1944 deportations loses this much freedom (see camp_occ_partner_response).
+@CAMP_OCC_HUNGARY_HALT_AUTONOMY = -0.2
+
 camp_occ_initialize_country = {
 	if = {
 		limit = { NOT = { has_country_flag = camp_occ_initialized } }
@@ -1390,7 +1394,7 @@ camp_occ_try_partner_deportation = {
 			camp_occ_authority_has_campaign = yes
 			camp_occ_partner_deportation_window_open = yes
 			country_exists = HUN
-			HUN = { camp_occ_partner_under_german_influence = yes }
+			HUN = { camp_occ_partner_order_stands = yes }
 			88 = { camp_occ_killing_destination_active = yes }
 		}
 		set_temp_variable = { camp_occ_partner_authority = THIS }
@@ -1400,11 +1404,28 @@ camp_occ_try_partner_deportation = {
 				camp_occ_register_partner_state = yes
 			}
 		}
+		# The Hungarian government learns of the demand once, when its first
+		# cohorts are placed under German orders, and answers in camp_occ_partner.1.
+		if = {
+			limit = {
+				HUN = { NOT = { has_country_flag = camp_occ_partner_order_notified } }
+				any_of_scopes = { array = camp_occ_states camp_occ_state_has_partner_authority = yes }
+			}
+			HUN = {
+				set_country_flag = camp_occ_partner_order_notified
+				country_event = { id = camp_occ_partner.1 }
+			}
+		}
 		88 = {
 			set_temp_variable = { camp_occ_partner_throughput_people = non_damaged_building_level@extermination_camp }
 			multiply_temp_variable = { camp_occ_partner_throughput_people = constant:camp_occ_arrival.throughput_per_supported_level_k }
 			multiply_temp_variable = { camp_occ_partner_throughput_people = camp_admin_support_ratio }
 			multiply_temp_variable = { camp_occ_partner_throughput_people = constant:camp_occ_value.people_per_k }
+		}
+		# Delaying Hungarian officials hold back part of every month's trains.
+		if = {
+			limit = { HUN = { has_country_flag = camp_occ_partner_deportations_obstructed } }
+			multiply_temp_variable = { camp_occ_partner_throughput_people = constant:camp_occ_partner.obstructed_wave_share }
 		}
 		set_temp_variable = { camp_occ_partner_batch_count = 0 }
 		for_each_scope_loop = {
@@ -1490,6 +1511,60 @@ camp_occ_try_partner_deportation = {
 		}
 		set_temp_variable = { camp_occ_custody_row_id = 0 }
 		set_temp_variable = { camp_occ_custody_requested_people = 0 }
+	}
+}
+
+# Country, Hungary, answering the German demand (camp_occ_partner.1). The
+# transports continue until the dated order lapses.
+camp_occ_partner_comply_with_order = {
+	set_country_flag = camp_occ_partner_deportations_complied
+}
+
+# Country, Hungary. The transports continue, but each month only
+# camp_occ_partner.obstructed_wave_share of the supported trains leave, and
+# Germany's opinion of Hungary falls.
+camp_occ_partner_obstruct_deportations = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = camp_occ_partner_deportations_halted }
+			NOT = { has_country_flag = camp_occ_partner_deportations_obstructed }
+		}
+		set_country_flag = camp_occ_partner_deportations_obstructed
+		if = {
+			limit = { country_exists = GER }
+			reverse_add_opinion_modifier = { target = GER modifier = camp_occ_hungary_obstructed_deportations }
+		}
+	}
+}
+
+# Country, Hungary, from the event or the paid decision. Halting is permanent:
+# the order no longer stands, so the German monthly pass closes every Hungarian
+# host through camp_occ_close_state and releases the people still awaiting
+# deportation at home, recording no death, and the route never reopens. The
+# government loses stability and war support, Germany's opinion of Hungary falls,
+# and a German subject loses autonomy. Germany receives one notification and one
+# Records entry. A repeated call does nothing.
+camp_occ_partner_halt_deportations = {
+	if = {
+		limit = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }
+		set_country_flag = camp_occ_partner_deportations_halted
+		clr_country_flag = camp_occ_partner_deportations_obstructed
+		add_stability = constant:camp_occ_partner_response.halt_stability
+		add_war_support = constant:camp_occ_partner_response.halt_war_support
+		if = {
+			limit = { country_exists = GER is_subject_of = GER }
+			add_autonomy_ratio = { value = @CAMP_OCC_HUNGARY_HALT_AUTONOMY localization = camp_occ_hungary_halt_autonomy }
+		}
+		if = {
+			limit = { country_exists = GER }
+			reverse_add_opinion_modifier = { target = GER modifier = camp_occ_hungary_halted_deportations }
+			GER = {
+				set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.partner_halt }
+				set_temp_variable = { camp_admin_record_state_id = constant:camp_admin_value.zero }
+				camp_admin_record_history = yes
+				country_event = { id = camp_occ_partner.2 }
+			}
+		}
 	}
 }
 

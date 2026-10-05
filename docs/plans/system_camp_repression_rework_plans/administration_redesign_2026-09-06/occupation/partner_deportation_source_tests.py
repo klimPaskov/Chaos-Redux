@@ -15,7 +15,9 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from danish_rescue_source_tests import RescueRuntime, transform as rescue_transform, months
+from danish_rescue_source_tests import RescueRuntime, ROOT, transform as rescue_transform, months
+sys.path.insert(0, str(HERE.parent))
+from foundation_source_tests import get, parse
 from test_historical_envelopes import vanilla_european_origin_inventory
 
 
@@ -66,6 +68,77 @@ class PartnerRuntime(RescueRuntime):
             super().execute(pending, scope, prev)
 
 
+class ResponseRuntime(PartnerRuntime):
+    """Engine consumers of Hungary's answer: events, opinion, war support, autonomy."""
+
+    def __init__(self):
+        super().__init__()
+        self.events = []
+        self.opinions = []
+        self.autonomy = []
+
+    def cond(self, block, scope, previous=None):
+        def expand(entries, current):
+            rewritten = []
+            for key, op, value in entries:
+                if key == 'any_controlled_state':
+                    states = [state_id for state_id, state in self.scopes.items()
+                              if 'state_population_k' in state and state.get('controller') == current]
+                    rewritten.append(('OR', '=', [(str(state_id), '=', value) for state_id in states] or [('always', '=', 'no')]))
+                elif isinstance(value, list) and key in ('AND', 'OR', 'NOT', 'custom_trigger_tooltip', 'hidden_trigger'):
+                    rewritten.append((key, op, expand(value, current)))
+                else:
+                    rewritten.append((key, op, value))
+            return rewritten
+        return super().cond(expand(block, scope), scope, previous)
+
+    def execute(self, block, scope, prev=None):
+        pending = []
+        for key, op, value in block:
+            if key in ('country_event', 'reverse_add_opinion_modifier', 'add_war_support', 'add_autonomy_ratio'):
+                if pending:
+                    super().execute(pending, scope, prev)
+                    pending = []
+                if key == 'country_event':
+                    self.events.append((scope, get(value, 'id')))
+                elif key == 'reverse_add_opinion_modifier':
+                    self.opinions.append((get(value, 'target'), scope, get(value, 'modifier')))
+                elif key == 'add_war_support':
+                    self.scopes[scope]['war_support'] = self.scopes[scope].get('war_support', 0) + self.val(value, scope, prev)
+                else:
+                    self.autonomy.append((scope, get(value, 'value'), get(value, 'localization')))
+            else:
+                pending.append((key, op, value))
+        if pending:
+            super().execute(pending, scope, prev)
+
+
+EVENTS = parse((ROOT / 'events/camp_occ_partner_events.txt').read_text(encoding='utf-8-sig'))
+DECISIONS = parse((ROOT / 'common/decisions/camp_occ_partner_decisions.txt').read_text(encoding='utf-8-sig'))
+
+
+def event(event_id):
+    return next(body for key, _, body in EVENTS if key == 'country_event' and get(body, 'id') == event_id)
+
+
+def option(event_id, name):
+    return next(body for key, _, body in event(event_id) if key == 'option' and get(body, 'name') == name)
+
+
+def choose(r, scope, event_id, name):
+    body = option(event_id, name)
+    assert r.cond(get(body, 'trigger', []), scope), (event_id, name)
+    r.execute([item for item in body if item[0] not in ('name', 'trigger', 'ai_chance')], scope)
+
+
+def ai_weight(r, scope, block):
+    weight = r.val(get(block, 'base'), scope)
+    for key, _, body in block:
+        if key == 'modifier' and r.cond([item for item in body if item[0] != 'factor'], scope):
+            weight *= r.val(get(body, 'factor'), scope)
+    return weight
+
+
 def allocations():
     inventory, _ = vanilla_european_origin_inventory()
     states = dict(inventory['hun'])
@@ -77,8 +150,8 @@ def allocations():
 HUN_STATES = tuple(sorted(allocations()))
 
 
-def world(government='fascism', faction=True, puppet=False, at_war=False, destination='killing'):
-    r = PartnerRuntime()
+def world(government='fascism', faction=True, puppet=False, at_war=False, destination='killing', runtime=PartnerRuntime):
+    r = runtime()
     r.date = datetime.date(1944, 5, 1)
     ger = r.country('GER')
     ger['flags'].add('origin_test_campaign_eligible')
@@ -252,7 +325,135 @@ def tests():
     assert 'camp_occ_registered' in occupied.scopes[HUN_STATES[0]]['flags']
     assert len(hungarian_rows(occupied)) == len(HUN_STATES)
     cases.append('a Hungarian state under direct German control registers once through the ordinary occupation path and is not re-registered as a partner cohort')
+
+    response_cases, response_results = response_tests(share)
+    cases.extend(response_cases)
+    results.update(response_results)
     return cases, results, allocated
+
+
+def response_world(**kwargs):
+    r = world(runtime=ResponseRuntime, **kwargs)
+    r.global_flags.add('test_exists_GER')
+    r.scopes['HUN'].update(stability=0.5, war_support=0.5)
+    return r
+
+
+def response_tests(share):
+    cases = []
+    results = {}
+    baseline = response_world()
+    run_months(baseline, (1944, 6), (1944, 7))
+    june_moved = 150000
+    full = snapshot(baseline)
+    july_moved = full['deported_people'] - june_moved
+
+    # The demand reaches Hungary once, when its first cohorts are placed under orders.
+    notified = response_world()
+    run_months(notified, (1944, 6), (1944, 6))
+    assert notified.events == [('HUN', 'camp_occ_partner.1')]
+    assert 'camp_occ_partner_order_notified' in notified.scopes['HUN']['flags']
+    assert snapshot(notified)['deported_people'] == june_moved
+    run_months(notified, (1944, 7), (1944, 7))
+    assert notified.events == [('HUN', 'camp_occ_partner.1')]
+    cases.append('the German demand reaches Hungary once (camp_occ_partner.1), in the month its first cohorts are placed under orders, and never again')
+
+    comply = response_world()
+    run_months(comply, (1944, 6), (1944, 6))
+    choose(comply, 'HUN', 'camp_occ_partner.1', 'camp_occ_partner.1.a')
+    run_months(comply, (1944, 7), (1944, 9))
+    assert snapshot(comply) == snapshot(baseline) or snapshot(comply)['deported_people'] == full['deported_people']
+    assert not comply.opinions and 'camp_occ_partner_deportations_complied' in comply.scopes['HUN']['flags']
+    cases.append('comply: the trains keep running exactly as without an answer (%d people deported in July)' % july_moved)
+
+    obstruct = response_world()
+    run_months(obstruct, (1944, 6), (1944, 6))
+    choose(obstruct, 'HUN', 'camp_occ_partner.1', 'camp_occ_partner.1.b')
+    run_months(obstruct, (1944, 7), (1944, 9))
+    delayed = snapshot(obstruct)
+    wave_share = obstruct.constants['camp_occ_partner.obstructed_wave_share']
+    delayed_july = delayed['deported_people'] - june_moved
+    assert delayed_july <= june_moved * wave_share + 1 and delayed_july < july_moved
+    assert delayed['released_at_home_people'] == delayed['registered_people'] - delayed['deported_people'] > 0
+    assert delayed['occupation_deaths_people'] == 0
+    assert obstruct.opinions == [('GER', 'HUN', 'camp_occ_hungary_obstructed_deportations')]
+    results['hungary_obstructs_after_june'] = delayed
+    cases.append('obstruct: July trains are held to %.0f%% of the supported throughput (%d instead of %d people); the %d still at home when the order lapses are released there, and Germany resents the delay' % (wave_share * 100, delayed_july, july_moved, delayed['released_at_home_people']))
+
+    halt = response_world()
+    run_months(halt, (1944, 6), (1944, 6))
+    choose(halt, 'HUN', 'camp_occ_partner.1', 'camp_occ_partner.1.c')
+    hun = halt.scopes['HUN']
+    assert abs(hun['stability'] - (0.5 + halt.constants['camp_occ_partner_response.halt_stability'])) < 1e-9
+    assert abs(hun['war_support'] - (0.5 + halt.constants['camp_occ_partner_response.halt_war_support'])) < 1e-9
+    assert halt.opinions == [('GER', 'HUN', 'camp_occ_hungary_halted_deportations')] and not halt.autonomy
+    assert halt.events == [('HUN', 'camp_occ_partner.1'), ('GER', 'camp_occ_partner.2')]
+    kinds = halt.scopes['GER']['arrays']['camp_admin_history_kinds']
+    assert kinds.count(halt.constants['camp_admin_history_kind.partner_halt']) == 1
+    open_hosts = [s for s in HUN_STATES if 'camp_occ_closed' not in halt.scopes[s]['flags']]
+    assert open_hosts, 'the hosts close at the next monthly pass, not at once'
+    run_months(halt, (1944, 7), (1944, 9))
+    stopped = snapshot(halt)
+    assert stopped['deported_people'] == june_moved
+    assert all('camp_occ_closed' in halt.scopes[s]['flags'] for s in HUN_STATES)
+    assert stopped['released_at_home_people'] == stopped['registered_people'] - june_moved > 0
+    assert stopped['occupation_deaths_people'] == 0
+    for i in hungarian_rows(halt):
+        assert halt.scopes['GER']['arrays']['camp_occ_row_statuses'][i] == halt.constants['camp_occ_row_status.released']
+    choose(halt, 'HUN', 'camp_occ_partner.1', 'camp_occ_partner.1.e')
+    halt.run('camp_occ_partner_halt_deportations', 'HUN')
+    assert halt.events == [('HUN', 'camp_occ_partner.1'), ('GER', 'camp_occ_partner.2')] and len(halt.opinions) == 1
+    assert halt.scopes['GER']['arrays']['camp_admin_history_kinds'].count(halt.constants['camp_admin_history_kind.partner_halt']) == 1
+    reopened = response_world()
+    run_months(reopened, (1944, 6), (1944, 6))
+    reopened.run('camp_occ_partner_halt_deportations', 'HUN')
+    run_months(reopened, (1944, 7), (1944, 7))
+    for state_id in HUN_STATES:
+        reopened.scopes[state_id]['flags'].discard('camp_occ_registered')
+    reopened.date = datetime.date(1944, 7, 2)
+    reopened.run('camp_occ_try_partner_deportation', 'GER')
+    assert snapshot(reopened)['deported_people'] == june_moved
+    results['hungary_halts_after_june'] = stopped
+    cases.append('halt: Hungary loses stability and war support, Germany resents it, Germany is told once and its Records gain one halt entry; at the next monthly pass every Hungarian host closes through the ordinary closure, %d people are released at home with no death recorded, no train leaves after June, and the order never reopens' % stopped['released_at_home_people'])
+
+    subject = response_world(government='neutrality', faction=False, puppet=True)
+    run_months(subject, (1944, 6), (1944, 6))
+    choose(subject, 'HUN', 'camp_occ_partner.1', 'camp_occ_partner.1.c')
+    assert subject.autonomy == [('HUN', '@CAMP_OCC_HUNGARY_HALT_AUTONOMY', 'camp_occ_hungary_halt_autonomy')]
+    cases.append('a German subject that halts the deportations also loses autonomy')
+
+    import black_friday_sale_prices as sale
+    decision = get(get(DECISIONS, 'political_actions'), 'camp_occ_hun_halt_deportations')
+    for ratio in (10000, 5000):
+        paid = response_world()
+        sale.install(paid, ratio)
+        run_months(paid, (1944, 6), (1944, 6))
+        assert paid.cond(get(decision, 'visible'), 'HUN') and paid.cond(get(decision, 'available'), 'HUN')
+        price = paid.val(get(decision, 'cost'), 'HUN')
+        assert price == sale.production_quote(paid.constants['camp_occ_partner_response.halt_pp'], ratio)
+        paid.scopes['HUN']['political_power'] = 100 - price
+        paid.execute(get(decision, 'complete_effect'), 'HUN')
+        assert 'camp_occ_partner_deportations_halted' in paid.scopes['HUN']['flags'] and sale.credits(paid) == 1
+        assert not paid.cond(get(decision, 'visible'), 'HUN')
+        run_months(paid, (1944, 7), (1944, 7))
+        assert snapshot(paid)['deported_people'] == june_moved
+        late = response_world()
+        run_months(late, (1944, 6), (1944, 7))
+        assert not late.cond(get(decision, 'available'), 'HUN') or not late.cond(get(decision, 'visible'), 'HUN')
+    cases.append('the Halt the Deportations decision is offered while the trains run, charges the Event 026 sale price of camp_occ_partner_response.halt_pp (full and half price), halts exactly like the event answer and disappears once the trains stop')
+
+    weights = {}
+    for label, kwargs in (('fascist_axis_member', dict()), ('non_fascist_german_subject', dict(government='neutrality', faction=False, puppet=True)), ('fascist_german_subject', dict(puppet=True))):
+        r = response_world(**kwargs)
+        raw = {name.rsplit('.', 1)[1]: ai_weight(r, 'HUN', get(option('camp_occ_partner.1', name), 'ai_chance'))
+               for name in ('camp_occ_partner.1.a', 'camp_occ_partner.1.b', 'camp_occ_partner.1.c')}
+        total = sum(raw.values())
+        weights[label] = {key: round(value / total, 3) for key, value in raw.items()}
+        weights[label]['halt_decision_weight'] = ai_weight(r, 'HUN', get(decision, 'ai_will_do'))
+    assert weights['non_fascist_german_subject']['c'] > 0.5 and weights['fascist_axis_member']['c'] < 0.05
+    results['ai_answer_shares'] = weights
+    cases.append('AI answers: a non-fascist German subject halts with probability %.2f, a fascist government with %.2f' % (weights['non_fascist_german_subject']['c'], weights['fascist_axis_member']['c']))
+    return cases, results
 
 
 if __name__ == '__main__':

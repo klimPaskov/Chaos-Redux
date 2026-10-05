@@ -88,13 +88,19 @@ camp_occ_partner_under_german_influence = {
 		}
 	}
 }
+# COUNTRY, the partner. The German order stands while Hungary is dominated and
+# its government has not halted the transports; a halt is permanent.
+camp_occ_partner_order_stands = {
+	camp_occ_partner_under_german_influence = yes
+	NOT = { has_country_flag = camp_occ_partner_deportations_halted }
+}
 # STATE. A European partner-held state with a foreign origin cohort that no
 # authority has registered yet.
 camp_occ_partner_deportation_candidate = {
 	is_on_continent = europe
 	camp_occ_has_foreign_german_campaign_origin = yes
 	NOT = { has_state_flag = camp_occ_registered }
-	CONTROLLER = { camp_occ_partner_under_german_influence = yes }
+	CONTROLLER = { camp_occ_partner_order_stands = yes }
 }
 # STATE. A registered partner-held cohort while the dated order stands. This is
 # never a current authority: campaign violence, generic movement, rescue and the
@@ -106,7 +112,7 @@ camp_occ_state_has_partner_authority = {
 	has_variable = camp_occ_responsible_country
 	var:camp_occ_responsible_country = { exists = yes original_tag = GER camp_occ_authority_has_campaign = yes }
 	camp_occ_partner_deportation_window_open = yes
-	CONTROLLER = { camp_occ_partner_under_german_influence = yes }
+	CONTROLLER = { camp_occ_partner_order_stands = yes }
 }
 # STATE. Source authority for the exact custody transfer: the current authority,
 # or a partner-held cohort when the dated partner route staged its temp proof.

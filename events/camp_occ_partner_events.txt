@@ -1,0 +1,94 @@
+# ============================================================================
+# CHAOS REDUX - 1944 GERMAN DEPORTATION DEMAND ON HUNGARY
+# ============================================================================
+# Overview:
+# - camp_occ_partner.1 asks the Hungarian government (player or AI) to answer
+#   the German deportation order once, when camp_occ_try_partner_deportation
+#   first places Hungarian-held cohorts under German orders.
+# - camp_occ_partner.2 tells Germany once that Hungary halted the transports.
+# - The answers are camp_occ_partner_comply_with_order,
+#   camp_occ_partner_obstruct_deportations and camp_occ_partner_halt_deportations
+#   in camp_administration_occupation_effects.txt; the paid decision
+#   camp_occ_hun_halt_deportations offers the halt later in the window.
+# - USHMM: about 437,000 Jews were deported from Hungary between 15 May and
+#   9 July 1944; Regent Horthy halted the transports on 7 July.
+# ============================================================================
+
+add_namespace = camp_occ_partner
+
+country_event = {
+	id = camp_occ_partner.1
+	title = camp_occ_partner.1.t
+	desc = camp_occ_partner.1.d
+	picture = GFX_report_event_hungary_parliament
+	is_triggered_only = yes
+	trigger = { original_tag = HUN }
+
+	option = {
+		name = camp_occ_partner.1.a
+		trigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }
+		custom_effect_tooltip = camp_occ_partner.1.a.tt
+		camp_occ_partner_comply_with_order = yes
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.comply
+			modifier = {
+				factor = constant:camp_occ_partner_ai.fascist_comply_factor
+				has_government = fascism
+			}
+		}
+	}
+
+	option = {
+		name = camp_occ_partner.1.b
+		trigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }
+		custom_effect_tooltip = camp_occ_partner.1.b.tt
+		camp_occ_partner_obstruct_deportations = yes
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.obstruct
+			modifier = {
+				factor = constant:camp_occ_partner_ai.fascist_obstruct_factor
+				has_government = fascism
+			}
+		}
+	}
+
+	option = {
+		name = camp_occ_partner.1.c
+		trigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }
+		custom_effect_tooltip = camp_occ_partner_halt_release_tt
+		camp_occ_partner_halt_deportations = yes
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.halt
+			modifier = {
+				factor = constant:camp_occ_partner_ai.fascist_halt_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:camp_occ_partner_ai.subject_halt_factor
+				is_subject_of = GER
+				NOT = { has_government = fascism }
+			}
+		}
+	}
+
+	# The government already stopped the trains through the halt decision.
+	option = {
+		name = camp_occ_partner.1.e
+		trigger = { has_country_flag = camp_occ_partner_deportations_halted }
+		custom_effect_tooltip = camp_occ_partner.1.e.tt
+	}
+}
+
+country_event = {
+	id = camp_occ_partner.2
+	title = camp_occ_partner.2.t
+	desc = camp_occ_partner.2.d
+	picture = GFX_report_event_hungary_refused
+	is_triggered_only = yes
+	trigger = { original_tag = GER }
+
+	option = {
+		name = camp_occ_partner.2.a
+		custom_effect_tooltip = camp_occ_partner.2.a.tt
+	}
+}

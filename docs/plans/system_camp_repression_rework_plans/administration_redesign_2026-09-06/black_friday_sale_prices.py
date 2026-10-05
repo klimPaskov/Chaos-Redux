@@ -29,13 +29,14 @@ PRICE_TABLE = 'common/scripted_effects/026_black_friday_price_table_effects.txt'
 BLACK_FRIDAY_CONSTANTS = 'common/script_constants/026_black_friday_constants.txt'
 CAMP_CONSTANTS = 'common/script_constants/camp_repression_rework_constants.txt'
 GENOCIDE_CONSTANTS = 'common/script_constants/genocide_crisis_constants.txt'
+OCCUPATION_CONSTANTS = 'common/script_constants/camp_administration_occupation_constants.txt'
 UNIVERSAL_COST_CONSTANTS = 'common/script_constants/chaosx_universal_cost_constants.txt'
 SITE_COST_TRIGGERS = 'common/scripted_triggers/camp_repression_site_cost_triggers.txt'
 REWORK_EFFECTS = 'common/scripted_effects/camp_repression_rework_effects.txt'
 RATIO_BASIS = 10000
 # Ordinary price, the Event 026 baseline sale, and the evolved sale.
 SALE_RATIOS = (10000, 5000, 2500)
-PRICE_GROUPS = ('camp_rework_cost.', 'camp_rework_equipment_cost.', 'genocide_decision_cost.')
+PRICE_GROUPS = ('camp_rework_cost.', 'camp_rework_equipment_cost.', 'genocide_decision_cost.', 'camp_occ_partner_response.')
 CREDIT_COUNTER = 'camp_test_black_friday_credits'
 TABLE_RATIO = 'global.black_friday_price_table_ratio'
 SALE_HELPER_EFFECTS = ('camp_rework_mark_sale_stock_equipment', 'camp_rework_mark_sale_stock_convoys',
@@ -87,6 +88,7 @@ def price_constants():
     constants.update(_constants(CAMP_CONSTANTS, {'camp_rework_cost', 'camp_rework_equipment_cost',
                                                  'camp_rework_mission_equipment_reserve'}))
     constants.update(_constants(GENOCIDE_CONSTANTS, {'genocide_decision_cost'}))
+    constants.update(_constants(OCCUPATION_CONSTANTS, {'camp_occ_partner_response'}))
     constants.update(_constants(UNIVERSAL_COST_CONSTANTS, {'universal_cost_family', 'universal_cost_framework',
                                                            'universal_cost_fixed_point_quantum'}))
     return constants
@@ -224,6 +226,7 @@ CAMP_DECISION_FILES = (
     'common/decisions/camp_repression_generic_decisions.txt',
     'common/decisions/camp_administration_country_decisions.txt',
     'common/decisions/camp_administration_civil_decisions.txt',
+    'common/decisions/camp_occ_partner_decisions.txt',
 )
 # Decisions whose payload credits the purchase only when the order is kept.
 CREDIT_IN_EFFECT = {

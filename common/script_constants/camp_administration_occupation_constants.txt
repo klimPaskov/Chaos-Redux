@@ -47,6 +47,39 @@ camp_occ_rescue = {
 camp_occ_partner = {
 	schema = { any_key = yes data = fixed_point }
 	hungary_deportation_share = 0.53
+	# A Hungarian government that delays the transports lets this share of each
+	# month's supported killing-center throughput leave its provinces.
+	obstructed_wave_share = 0.5
+}
+# Hungary's answer to the German demand (camp_occ_partner.1 and the halt decision).
+# USHMM: Regent Horthy halted the deportations on 7 July 1944; Germany answered
+# with mounting pressure that ended in the October 1944 coup. Halting costs the
+# government stability and war support and Germany's goodwill; a subject also
+# loses autonomy (the file-scoped @CAMP_OCC_HUNGARY_HALT_AUTONOMY in
+# camp_administration_occupation_effects.txt, which add_autonomy_ratio needs).
+# The opinion values are the opinion modifiers in
+# common/opinion_modifiers/camp_occ_partner_opinion_modifiers.txt.
+# halt_pp is registered in the Event 026 sale price table.
+camp_occ_partner_response = {
+	schema = { any_key = yes data = fixed_point }
+	halt_pp = 50
+	halt_stability = -0.05
+	halt_war_support = -0.05
+}
+# AI answers. A fascist government complies; a non-fascist German subject, the
+# Horthy position of 1944, most often halts the transports.
+camp_occ_partner_ai = {
+	schema = { any_key = yes data = fixed_point }
+	comply = 5
+	obstruct = 10
+	halt = 5
+	fascist_comply_factor = 4
+	fascist_obstruct_factor = 0.5
+	fascist_halt_factor = 0.1
+	subject_halt_factor = 4
+	halt_decision = 1
+	halt_decision_subject_factor = 10
+	halt_decision_fascist_factor = 0
 }
 camp_occ_row_status = {
 	schema = { any_key = yes data = int }
