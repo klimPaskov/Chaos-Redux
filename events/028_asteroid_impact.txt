@@ -311,9 +311,13 @@ country_event = {
 	}
 }
 
-# The chooser country receives this hidden event exactly two days after the
-# coordinates are locked. Ownership and control may have changed, but the
-# saved state target and transaction id remain the accepted trajectory.
+# The chooser and the locked target country each receive this hidden event
+# exactly two days after the coordinates are locked, so the impact resolves
+# even if one of them no longer exists; the first callback resolves and the
+# guards make the second a no-op. Nothing here reads ROOT. The monthly
+# watchdog fires it late, with the lock marked overdue, if both were lost.
+# Ownership and control may have changed, but the saved state target and
+# transaction id remain the accepted trajectory.
 country_event = {
 	id = chaosx.nr28.4
 	hidden = yes

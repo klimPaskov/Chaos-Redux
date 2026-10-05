@@ -15,6 +15,19 @@ on_actions = {
 				limit = { FROM = { has_country_flag = asteroid_incoming_original_target_country } }
 				set_global_flag = asteroid_incoming_original_target_annexed
 			}
+			# A board or confirmation left unanswered by an annexed chooser closes
+			# through the fail-closed path. A locked trajectory still strikes:
+			# the locked country holds a backup resolver.
+			if = {
+				limit = {
+					has_global_flag = asteroid_incoming_transaction_active
+					NOT = { has_global_flag = asteroid_incoming_target_locked }
+					NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+					has_event_target = asteroid_incoming_chooser
+					FROM = { tag = event_target:asteroid_incoming_chooser }
+				}
+				asteroid_incoming_close_unavailable_board = yes
+			}
 			FROM = {
 				if = {
 					limit = {

@@ -368,3 +368,13 @@ The closeout tooltip adds a clause that the legacy stays in force, and the categ
 The other four missions keep the temporary burden-to-legacy swap, and a failure window still removes the legacy until it ends, after which the monthly pass restores it.
 `on_annex` clears the completion flag on the annexed country, so a later release does not bring the legacy back; idea removal before each re-add prevents duplicates.
 Basis: Part 6 says Regional Economy success "grants a lasting but measured recovery legacy", and the shipped success tooltip promises "a lasting recovery legacy replaces the national burden"; Part 6 describes the other successes as replacing the national recovery idea with a lighter form.
+
+### An impact resolves without its chooser
+
+Decision: at the lock, the hidden resolver `chaosx.nr28.4` is queued on both the chooser and the locked target country with the same constant-driven delay.
+Whichever fires first resolves the impact; the existing `impact_resolution_started`, `impact_recorded`, `transaction_resolved`, `miss_recorded` and `fail_closed_recorded` guards make the second a no-op, and no resolution helper reads ROOT (the history follow-up only uses ROOT as a scope for a temporary).
+If both callbacks are lost, the monthly `asteroid_incoming_resolve_orphaned_transaction` watchdog, called from the ungated `asteroid_incoming_update_achievements`, sees a lock past `global.asteroid_incoming_lock_expires_day` with no resolution started, sets `asteroid_incoming_lock_overdue` and fires the resolver on the global host; `asteroid_incoming_locked_transaction_is_valid` accepts an overdue lock, and `asteroid_incoming_cleanup_finished_transaction` clears the flag.
+The late strike happens on the watchdog's date rather than failing closed, because the trajectory was announced and Part 2 freezes it.
+A board or confirmation whose chooser is annexed closes at once from `on_annex`, and the watchdog closes any other board whose chooser no longer exists; both use the existing `asteroid_incoming_close_unavailable_board`, which writes the fail-closed history outcome and picks no new chooser or coordinate.
+Basis: Part 2 freezes the locked coordinates, Part 10 requires the impact to resolve two days after the lock, and the spec allows no reroll.
+Needs live game: that a queued country event is dropped for an annexed country, and the watchdog path.

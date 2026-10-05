@@ -612,10 +612,15 @@ asteroid_incoming_accept_selected_target = {
 			}
 			event_target:asteroid_incoming_locked_country = { country_event = { id = chaosx.nr28.3 } }
 			# An event delay takes a literal, so the constant is injected as an integer.
+			# A queued event is dropped when its country ceases to exist, so the
+			# locked target country receives the same resolver as a backup. The
+			# resolver never reads ROOT, and its guards make the second callback
+			# a no-op. The monthly watchdog covers the loss of both.
 			set_temp_variable = { asteroid_incoming_resolver_delay_days = constant:asteroid_incoming_runtime.lock_duration_days }
 			meta_effect = {
 				text = {
 					event_target:asteroid_incoming_chooser = { country_event = { id = chaosx.nr28.4 days = [RESOLVER_DELAY_DAYS] } }
+					event_target:asteroid_incoming_locked_country = { country_event = { id = chaosx.nr28.4 days = [RESOLVER_DELAY_DAYS] } }
 				}
 				RESOLVER_DELAY_DAYS = "[?asteroid_incoming_resolver_delay_days|.0]"
 			}
@@ -2101,6 +2106,7 @@ asteroid_incoming_update_achievements = {
 	# visits human-controlled countries, so campaigns where Event 028 never
 	# strikes receive no per-country Event 028 variables. AI site counts are
 	# refreshed by the mineral control hooks instead.
+	asteroid_incoming_resolve_orphaned_transaction = yes
 	if = {
 		limit = {
 			has_event_target = asteroid_incoming_original_target_country
@@ -2114,6 +2120,38 @@ asteroid_incoming_update_achievements = {
 			NOT = { has_global_flag = asteroid_incoming_miss_recorded }
 		}
 		asteroid_incoming_update_player_achievement_progress = yes
+	}
+}
+
+# COUNTRY SCOPE, the global host, monthly whether or not the Chaos Meter is on.
+# Watchdog for a transaction whose callbacks were lost with their countries.
+# A lock past its expiry day with no resolution started fires the resolver on
+# this country and lets it accept the overdue lock, so the impact still
+# happens. A board or confirmation whose chooser no longer exists closes
+# through the existing fail-closed path and writes its history outcome; no
+# replacement chooser or coordinate is picked.
+asteroid_incoming_resolve_orphaned_transaction = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_transaction_active
+			has_global_flag = asteroid_incoming_target_locked
+			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+			NOT = { has_global_flag = asteroid_incoming_impact_resolution_started }
+			has_variable = global.asteroid_incoming_lock_expires_day
+			check_variable = { global.asteroid_incoming_lock_expires_day < global.num_days }
+		}
+		set_global_flag = asteroid_incoming_lock_overdue
+		country_event = { id = chaosx.nr28.4 }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = asteroid_incoming_transaction_active
+			NOT = { has_global_flag = asteroid_incoming_target_locked }
+			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+			has_event_target = asteroid_incoming_chooser
+			event_target:asteroid_incoming_chooser = { exists = no }
+		}
+		asteroid_incoming_close_unavailable_board = yes
 	}
 }
 
@@ -2177,6 +2215,7 @@ asteroid_incoming_cleanup_finished_transaction = {
 	clr_global_flag = asteroid_incoming_board_ready
 	clr_global_flag = asteroid_incoming_transaction_active
 	clr_global_flag = asteroid_incoming_target_locked
+	clr_global_flag = asteroid_incoming_lock_overdue
 	clear_global_event_target = asteroid_incoming_candidate_country
 	clear_global_event_target = asteroid_incoming_candidate_state
 	clear_global_event_target = asteroid_incoming_locked_country

@@ -196,10 +196,15 @@ asteroid_incoming_locked_transaction_is_valid = {
 			value = constant:asteroid_incoming_runtime.zero
 			compare = greater_than
 		}
-		check_variable = {
-			var = global.asteroid_incoming_lock_expires_day
-			value = global.num_days
-			compare = greater_than_or_equals
+		# The monthly watchdog marks a lock whose resolver callbacks were all
+		# lost as overdue, so the late resolver still strikes.
+		OR = {
+			check_variable = {
+				var = global.asteroid_incoming_lock_expires_day
+				value = global.num_days
+				compare = greater_than_or_equals
+			}
+			has_global_flag = asteroid_incoming_lock_overdue
 		}
 		asteroid_incoming_locked_target_pair_is_valid = yes
 	}
