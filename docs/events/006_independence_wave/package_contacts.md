@@ -81,6 +81,21 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-044 | TAT | JAP | Volga Tatar communities in Japan and Manchuria |
 | IW-045 | BSK | TUR | Zeki Velidi Togan and the Bashkir emigres in Turkey |
 | IW-045 | BSK | POL | The Promethean movement |
+| IW-047 | MEL | FIN | Finno-Ugric kinship congresses and Finnish tribal societies |
+| IW-047 | MEL | EST | Finno-Ugric cultural congresses in Tallinn and Tartu |
+| IW-048 | UDM | FIN | Finno-Ugric kinship and Finnish scholarship of the Udmurt language |
+| IW-048 | UDM | HUN | Hungarian Finno-Ugric scholarship and Turanist circles |
+| IW-050 | KOM | FIN | Finno-Ugric kinship and Finnish scholarship of Komi |
+| IW-050 | KOM | EST | Finno-Ugric cultural congresses in Tallinn and Tartu |
+| IW-051 | YAK | MAN | White emigre circles in Harbin behind the 1922 Yakut expedition |
+| IW-051 | YAK | JAP | Japanese contacts with the Yakut revolt of the early 1920s |
+| IW-052 | BYA | MON | Buryat kin and refugees in Mongolia |
+| IW-052 | BYA | MAN | The Barga Buryats of Hulunbuir in Manchukuo |
+| IW-052 | BYA | JAP | Japanese pan-Mongolist policy |
+| IW-053 | ALT | MON | Oirat and western Mongol kin across the border |
+| IW-053 | ALT | TAN | Turkic Sayan-Altai kin in Tannu Tuva |
+| IW-054 | KHA | TAN | Turkic Sayan kin in Tannu Tuva |
+| IW-054 | KHA | MON | Sayan herding routes into western Mongolia |
 | IW-058 | ASY | ENG | The Assyrian Levies under British command |
 | IW-058 | ASY | FRA | Assyrian resettlement on the Khabur in French Syria |
 | IW-058 | ASY | USA | The Assyrian-American community |

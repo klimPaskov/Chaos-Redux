@@ -1,5 +1,7 @@
 # IW-050 Komi Northern Compact
 
+> Admission (2026-10-05, agent decision D20): IW-050 KOM is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-050 uses the registered `KOM` carrier and the installed compact anchor at state 397, Syktyvkar. The package models a Northern Council linking railway depots, forest settlements, mine committees, local guards, and a later Pechora–Northern Ural corridor.
 
 ## Package-local runtime contract

@@ -1,5 +1,7 @@
 # IW-054 Khakassia package
 
+> Admission (2026-10-05, agent decision D20): IW-054 KHA is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-054 KHA is a package-local, fail-closed Event 006 implementation for the installed vanilla KHA carrier and state 569. Its package blocks live in the consolidated Siberian registries under explicit KHA source markers. It is not centrally attested, dispatched, exposed to normal or SCN-008 preflight, or included in deterministic Join.
 
 ## Runtime contract

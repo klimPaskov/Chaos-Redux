@@ -111,7 +111,7 @@ independence_wave_altai_apply_project_failure = {
 
 independence_wave_altai_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -315,6 +315,9 @@ independence_wave_altai_checkpoint_vanilla_roster = {
 }
 
 independence_wave_setup_iw_053_altai = {
+	# The vanilla roster of the carrier is the accepted package identity
+	# (agent decision D20): no character, portrait or flag is added.
+	if = { limit = { is_independence_wave_altai_package = yes } set_country_flag = independence_wave_iw_053_identity_rights_cleared }
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_053_setup_complete
 	clr_country_flag = independence_wave_command_roster_ready
@@ -563,7 +566,7 @@ independence_wave_bya_apply_project_failure = {
 
 independence_wave_bya_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -779,6 +782,9 @@ independence_wave_bya_checkpoint_vanilla_roster = {
 }
 
 independence_wave_setup_iw_052_buryatia = {
+	# The vanilla roster of the carrier is the accepted package identity
+	# (agent decision D20): no character, portrait or flag is added.
+	if = { limit = { is_independence_wave_buryatia_package = yes } set_country_flag = independence_wave_iw_052_identity_rights_cleared }
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_052_setup_complete
 	clr_country_flag = independence_wave_command_roster_ready
@@ -1022,7 +1028,7 @@ independence_wave_kha_apply_project_failure = {
 
 independence_wave_kha_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -1238,6 +1244,10 @@ independence_wave_kha_checkpoint_vanilla_roster = {
 }
 
 independence_wave_setup_iw_054_khakassia = {
+	# KHA has no vanilla characters. The carrier keeps its vanilla roster and the
+	# leader the game appoints for it, which is the accepted institutional
+	# leadership (agent decision D20): no character, portrait or flag is added.
+	if = { limit = { is_independence_wave_khakassia_package = yes } set_country_flag = independence_wave_iw_054_identity_rights_cleared set_country_flag = independence_wave_kha_institutional_roster_ready }
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_054_setup_complete
 	clr_country_flag = independence_wave_command_roster_ready
@@ -1294,7 +1304,7 @@ independence_wave_setup_iw_054_khakassia = {
 			independence_wave_add_reinforce_regional_guards = yes
 			independence_wave_add_reinforce_secure_depots = yes
 			independence_wave_add_reinforce_terrain_units = yes
-			independence_wave_add_reinforce_professional_officers = yes
+			independence_wave_add_reinforce_capital_border_defense = yes
 			independence_wave_load_force_package_mapping = yes
 			independence_wave_apply_dynamic_starting_force = yes
 		}
@@ -1481,7 +1491,7 @@ independence_wave_yak_apply_project_failure = {
 
 independence_wave_yak_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -1717,6 +1727,9 @@ independence_wave_yak_apply_source_portrait = {
 # definitions; the runtime character-scoped override is guarded by the
 # package-local roster checkpoint.
 independence_wave_setup_iw_051_sakha = {
+	# The vanilla roster of the carrier is the accepted package identity
+	# (agent decision D20): no character, portrait or flag is added.
+	if = { limit = { is_independence_wave_sakha_package = yes } set_country_flag = independence_wave_iw_051_identity_rights_cleared }
 	if = {
 		limit = {
 			has_country_flag = independence_wave_yak_portrait_override
@@ -1783,7 +1796,7 @@ independence_wave_setup_iw_051_sakha = {
 		if = {
 			limit = { has_country_flag = independence_wave_command_roster_ready }
 			independence_wave_clear_reinforcement_pathways = yes
-			independence_wave_add_reinforce_convert_defectors = yes
+			independence_wave_add_reinforce_integrate_militias = yes
 			independence_wave_add_reinforce_regional_guards = yes
 			independence_wave_add_reinforce_secure_depots = yes
 			independence_wave_add_reinforce_terrain_units = yes

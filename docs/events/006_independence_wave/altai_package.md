@@ -1,5 +1,7 @@
 # IW-053 Altai Package
 
+> Admission (2026-10-05, agent decision D20): IW-053 ALT is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-053 is a package-local Event 006 tranche for the vanilla `ALT` carrier, state `654` as its anchor, optional state `40`, and reservation group `RG-654-40`.
 
 The package remains fail-closed and is not admitted to the central adapter, attestation, preflight, SCN-008, deterministic Join, dispatcher, or Event 005 paths by this tranche.

@@ -495,3 +495,32 @@ Walk-through (DOX, then SOK): the loaders publish region `west_central_africa`, 
 Validation: the allocator audit passes with 39 attested packages, 34 reservation groups, 41 adapters and IW-177 and IW-179 as the only adapter-only rows (its expected sets were updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on all touched files.
 
 Needs live game: a high-chaos wave or SCN-008 launch that releases DOX or SOK; Hasan leading a pre-1938 Sokoto and the June 1938 succession event.
+
+
+## D20. Round 2: admission of the Volga and Siberian packages; FER stays blocked
+
+Disposition: `implemented` for IW-047 MEL, IW-048 UDM, IW-050 KOM, IW-051 YAK, IW-052 BYA, IW-053 ALT and IW-054 KHA; `blocked` for IW-057 FER.
+
+Basis: the lead's round-2 priority-9 item and decision 5.
+
+Identity decision: each of the seven is a vanilla carrier, and its vanilla roster is the accepted package identity: `MEL_zinovy_zhadinov`, `UDM_boris`, `KOM_pavel_murashev`, `YAK_pavel_pevznyak` (with the user-supplied final already wired as a character-scoped override) and `YAK_anatoly_pepelyayev`, `BYA_seymon_ignatyev` and `BYA_bidia_dandaron`, `ALT_grigory_gurkin` and `ALT_samuil_yufit`. Event 006 adds no character, portrait or flag; the faces are the game's own assets. KHA has no vanilla characters, so it keeps its vanilla roster and the leader the game appoints, which is the accepted institutional leadership. The parent-owned `independence_wave_iw_0XX_identity_rights_cleared` flags, and KHA's `independence_wave_kha_institutional_roster_ready`, are now published at the start of each package setup, with this decision as their basis. UDM therefore uses its vanilla leadership with no Event 006 face, as the item allows.
+
+Setup defects found and fixed:
+
+- ROOT read for the carrier in every package: the anchor ownership, capital and host proofs in `can_initialize_*`, `has_prepared_*` and the runtime-ready triggers compared with ROOT, the launching country during setup. All now read PREV (state and host scopes entered from the carrier); the unsettled-host and host-settlement checks also read PREV.
+- YAK: the p51 force mapping (mask 647) raises integrate-militias, regional guards, secure depots, terrain units and professional officers, but setup and the prepared proof expected convert-defectors and forbade integrate-militias, so YAK always failed setup. Both now follow the mask.
+- KHA: the p54 mapping (mask 1159) raises capital-border defense, not professional officers, and the loader and candidate registry give KHA standard depth while its proofs required regional depth. Both are fixed, so KHA can pass setup.
+- ALT: the prepared proof read `independence_wave_force_reinforcement_pathway_count`, which nothing writes; it now reads `independence_wave_reinforcement_pathway_count`. ALT's mapped tradition (p53 = 61) already equals its accepted tradition, so the stale "blocked" branch never fires.
+- The planner gates used the retired `independence_wave_package_content_ready` flag; they now use new `is_independence_wave_runtime_automatic_package_iw_0XX_ready` triggers, as BSK does.
+
+Walk-through (all seven): the loaders publish region `volga_urals_siberia_far_east` and the depth and archetype each package checks (MEL standard river-or-corridor, UDM standard industrial breakaway, KOM and ALT standard mountain-or-frontier, YAK and BYA regional mountain-or-frontier, KHA standard mountain-or-frontier); the decoded force profiles (p47 river_jungle, p48 industrial_security, p50 and p51 mountain_frontier, p52, p53 and p54 mounted_mobile), traditions and reinforcement masks now match every prepared proof; every roster character is recruited at the top level of its vanilla 1936 history; the identity flags are set before `can_initialize_*`, which ALT, BYA and KHA read through their command-roster triggers; the cosmetic route tags used by MEL and YAK have flags in all three sizes and localisation.
+
+Admission: the seven IDs are in the adapter list, the content attestation, the execution and SCN-008 preflights, the Join probe order, the Liberations capacity probe and the three central package dispatchers. They were already in the SCN-008 ranked list, and their AI strategy profiles already existed. MEL shares RG-MIDDLE-VOLGA-KAZAN with TAT and CHU, so a wave holds at most one of the three. Foreign contacts: MEL FIN and EST, UDM FIN and HUN, KOM FIN and EST, YAK MAN and JAP, BYA MON, MAN and JAP, ALT MON and TAN, KHA TAN and MON.
+
+Formables: FORM-12 and FORM-13 invite exactly TAT, BSK, MEL, UDM and KOM, so three more of their member rows can now exist; their three-member, three-anchor rule is unchanged. FORM-14 (Siberian Federation) has a discovery profile only: no carrier, member contract, consent or flag, and it is not in the commit allowlist, so it stays closed.
+
+FER blocked: the vanilla FER tag has no characters and Event 006 has no sourced FER roster; its setup requires `independence_wave_iw_057_command_roster_ready`, and its vanilla flags are not the neutral flag with recorded provenance that the item requires. A sourced roster needs new photographs, which this run cannot download without the user's approval. FER stays out of the adapter list and unattested; its ROOT reads are left for its own admission.
+
+Validation: the allocator audit passes with 46 attested packages, 40 reservation groups and 48 adapters (its expected sets, group and anchor counts and the dispatcher-family count of 34 were updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on every touched file.
+
+Needs live game: a wave that releases one of the seven, especially YAK, KHA and ALT, whose force proofs changed.

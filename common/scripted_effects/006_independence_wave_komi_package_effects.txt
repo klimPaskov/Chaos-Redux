@@ -118,7 +118,7 @@ independence_wave_komi_apply_project_failure = {
 
 independence_wave_komi_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -327,6 +327,9 @@ independence_wave_komi_checkpoint_vanilla_roster = {
 }
 
 independence_wave_setup_iw_050_komi = {
+	# The vanilla roster of the carrier is the accepted package identity
+	# (agent decision D20): no character, portrait or flag is added.
+	if = { limit = { is_independence_wave_komi_package = yes } set_country_flag = independence_wave_iw_050_identity_rights_cleared }
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_050_setup_complete
 	clr_country_flag = independence_wave_command_roster_ready

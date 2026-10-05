@@ -1,5 +1,7 @@
 # IW-051 Sakha Package
 
+> Admission (2026-10-05, agent decision D20): IW-051 YAK is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-051 is a package-local Event 006 tranche for the vanilla `YAK` carrier and state `574`/Yakutsk, with optional reservation extensions `644`, `876`, and `877`.
 
 The package remains fail-closed and is not in the central adapter, attestation, normal/scenario preflight, or deterministic Join lists.

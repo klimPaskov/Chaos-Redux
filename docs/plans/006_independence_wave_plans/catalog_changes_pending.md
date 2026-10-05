@@ -95,3 +95,11 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - IW-093 Asante (DOX) and IW-098 Sokoto (SOK) can now appear in high-chaos Independence Waves, Join conversions and Every Banner Rises launches. They are the first Event 006 countries in West Africa.
 - Asante is led by the Asantehene Prempeh II. Sokoto is led by Sultan Hasan dan Mu'azu until June 1938, when the new event "A New Sultan in Sokoto" (`chaosx.nr006.9811`) installs Siddiq Abubakar III.
+
+
+## 2026-10-05: Volga and Siberian packages (D20)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Mari El (MEL), Udmurtia (UDM), Komi (KOM), Yakutia (YAK), Buryatia (BYA), Altai (ALT) and Khakassia (KHA) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, each led by its own vanilla leaders.
+- The Far Eastern Republic package remains unavailable.

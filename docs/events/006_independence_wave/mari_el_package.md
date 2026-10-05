@@ -1,5 +1,7 @@
 # IW-047 Mari El Forest Compact
 
+> Admission (2026-10-05, agent decision D20): IW-047 MEL is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-047 uses the registered `MEL` carrier and the current package anchor at state 833, Yoshkar-Ola. The package forms a compact forest republic around the Mari Forest Congress, village and woodland councils, railway depots, local guards, and a later Volga-Finnic network corridor.
 
 ## Package-local runtime contract

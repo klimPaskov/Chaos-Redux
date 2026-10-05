@@ -1,5 +1,7 @@
 # IW-048 Udmurtia package
 
+> Admission (2026-10-05, agent decision D20): IW-048 UDM is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order and package dispatchers. Setup reads the released country, the carrier keeps its vanilla roster, the identity clearance is published at setup, and the force proofs match the mapped reinforcement mask. Statements below that call the package fail-closed or unadmitted describe its earlier state.
+
 IW-048 is a package-local Event 006 implementation for vanilla UDM at Izhevsk, state 399. The package models an industrial-forest republic whose workshop administrations, rail communities, and local councils must stabilize a compact before a route government can carry it.
 
 ## Source and identity
