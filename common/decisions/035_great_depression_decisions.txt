@@ -2850,6 +2850,15 @@ great_depression_category = {
 		custom_cost_text = great_depression_cost_global_reconstruction
 		days_re_enable = constant:great_depression_event.recovery_proof_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_conference_days = constant:great_depression_conference.duration_days }
+			set_temp_variable = { great_depression_tt_conference_participants = constant:great_depression_conference.success_participant_minimum }
+			set_temp_variable = { great_depression_tt_conference_majors = constant:great_depression_conference.success_major_minimum }
+			set_temp_variable = { great_depression_tt_conference_weight = constant:great_depression_conference.success_industrial_weight_minimum }
+			set_temp_variable = { great_depression_tt_conference_advance = constant:great_depression_conference.proof_advance_days }
+			set_temp_variable = { great_depression_tt_conference_relief = constant:great_depression_conference.participant_severity_relief }
+			multiply_temp_variable = { great_depression_tt_conference_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_conference_dividend_days = constant:great_depression_conference.dividend_days }
+			custom_effect_tooltip = great_depression_global_recovery_conference_tt
 			great_depression_global_recovery_conference = yes
 		}
 		ai_will_do = {
@@ -2857,8 +2866,50 @@ great_depression_category = {
 			modifier = { add = constant:great_depression_ai_weight.urgent great_depression_ai_profile_is_relief_coalition = yes }
 			modifier = { add = constant:great_depression_ai_weight.priority great_depression_ai_profile_is_financial_stabilizer = yes }
 			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_global_stage_is_recovery = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated is_major = yes }
 			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_affordable = yes }
 			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_global_stage_is_not_ready = yes }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_profile_is_liquidation_gambler = yes }
+		}
+	}
+
+	great_depression_join_global_recovery_conference = {
+		icon = GFX_decision_great_depression_global_recovery_conference
+		priority = 78
+		visible = {
+			great_depression_conference_join_surface_is_ready = yes
+			NOT = { great_depression_is_recovery_conference_participant = yes }
+		}
+		available = {
+			hidden_trigger = { great_depression_can_pay_conference_share = yes }
+			NOT = { has_country_flag = great_depression_action_lock }
+			great_depression_recovery_conference_has_room = yes
+			great_depression_global_commitments_are_open = yes
+		}
+		custom_cost_trigger = {
+			great_depression_can_pay_conference_share = yes
+		}
+		custom_cost_text = great_depression_cost_global_reconstruction
+		fire_only_once = no
+		complete_effect = {
+			set_temp_variable = { great_depression_tt_conference_participants = constant:great_depression_conference.success_participant_minimum }
+			set_temp_variable = { great_depression_tt_conference_majors = constant:great_depression_conference.success_major_minimum }
+			set_temp_variable = { great_depression_tt_conference_weight = constant:great_depression_conference.success_industrial_weight_minimum }
+			set_temp_variable = { great_depression_tt_conference_relief = constant:great_depression_conference.participant_severity_relief }
+			multiply_temp_variable = { great_depression_tt_conference_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_conference_dividend_days = constant:great_depression_conference.dividend_days }
+			custom_effect_tooltip = great_depression_join_global_recovery_conference_tt
+			great_depression_join_global_recovery_conference = yes
+		}
+		ai_will_do = {
+			base = constant:great_depression_ai_weight.standard
+			modifier = { add = constant:great_depression_ai_weight.priority great_depression_active_crisis_is_coherent = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated is_major = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_profile_is_relief_coalition = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_profile_is_financial_stabilizer = yes }
+			modifier = { add = constant:great_depression_ai_weight.standard has_country_flag = great_depression_global_contribution_made }
+			modifier = { factor = constant:great_depression_ai_weight.blocked NOT = { great_depression_conference_stage_is_ready = yes } }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_profile_is_liquidation_gambler = yes }
 		}
 	}
 

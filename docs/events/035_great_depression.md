@@ -324,6 +324,17 @@ The reconstruction and end news name the country where the worldwide depression 
 They describe the world economy and never imply that every country is in a national depression.
 All three use the registered news picture, because the report pictures have report dimensions.
 
+### Global Recovery Conference
+
+A country in its own depression convenes the conference during Fragmented Recovery or International Reconstruction, when its phase is Stabilization or Recovery or its Severity trend is falling (`great_depression_can_start_global_recovery_conference`).
+Only one conference meets in each global episode (`global.great_depression_conference_episode_id`). Convening pays the reconstruction quote, changes no Severity, records the convener, and opens the bounded participant arrays `global.great_depression_conference_participants` and `_participant_weights` with the convener as the first seat.
+Countries in their own depression, countries with an open contagion exposure, Industrial Boom suppliers, and countries that contributed to the worldwide recovery in this episode see Join the Global Recovery Conference (`great_depression_conference_join_surface_is_ready`, which also opens the decision category for them). Joining pays the reconstruction quote through `great_depression_can_pay_conference_share`, outside the national and exposure slots, and is closed to countries that withdrew from their international commitments.
+The daily global pulse resolves the conference on its due day (`duration_days`) through `great_depression_resolve_recovery_conference`. It succeeds when the participants that still have a viable economy reach `success_participant_minimum` countries, `success_major_minimum` majors, and `success_industrial_weight_minimum` industrial weight (civilian factories twice, military factories and dockyards once, at most 100 per country).
+Success during Fragmented Recovery starts a stopped recovery proof or moves a running one `proof_advance_days` forward, and during International Reconstruction it brings retirement the same number of days closer; every other proof condition still applies. Participants in a depression lose `participant_severity_relief` Severity, and the others gain `great_depression_recovery_conference_dividend` for `dividend_days`.
+Failure during Fragmented Recovery stops the proof and returns the world to the Worldwide Depression stage, with one guarded Chaos change of `failure_chaos` per global episode; failure during International Reconstruction restarts the wait before retirement. Either failure queues the world news `chaosx.nr35.19` once per global episode through `great_depression_queue_global_news`, naming the convener, and never while the evolution is switched off.
+`great_depression_clear_recovery_conference` closes a conference without an outcome when its global episode ends, retires, or the evolution is switched off, and the global ledger reset clears the once-per-episode receipts.
+Values live in `great_depression_conference`.
+
 ### Competitive devaluation and withdrawal from international commitments
 
 Competitive Devaluation or Currency Break costs the market-clearing quote (political power, stability, war support), is available once per country in each global episode (`great_depression_devaluation_global_episode_id`), and gives standard Severity relief at once plus a trade-relief window for `devaluation_relief_days`.

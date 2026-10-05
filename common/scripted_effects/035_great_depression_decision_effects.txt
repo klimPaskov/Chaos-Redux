@@ -1255,19 +1255,70 @@ great_depression_receive_devaluation_pressure = {
 	}
 }
 
+# COUNTRY scope, the convener. Opens the one Global Recovery Conference of the
+# current global episode. Convening pays the reconstruction quote and changes
+# no Severity; the outcome comes when the global pulse resolves the conference.
 great_depression_global_recovery_conference = {
 	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.global_reconstruction }
-	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.global_recovery_relief }
+	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.no_change }
 	great_depression_commit_country_action = yes
-	if = {
-		limit = {
-			OR = {
-				NOT = { has_country_flag = great_depression_global_recovery_conference_complete }
-				NOT = { check_variable = { var = great_depression_contribution_global_episode_id value = global.great_depression_global_episode_id compare = equals } }
+	hidden_effect = {
+		set_global_flag = great_depression_recovery_conference_open
+		set_variable = { global.great_depression_conference_episode_id = global.great_depression_global_episode_id }
+		set_variable = { global.great_depression_conference_convener = THIS }
+		set_variable = { global.great_depression_conference_due_day = global.num_days }
+		add_to_variable = { global.great_depression_conference_due_day = constant:great_depression_conference.duration_days }
+		set_variable = { global.great_depression_conference_result = constant:great_depression_conference.result_none }
+		clear_array = global.great_depression_conference_participants
+		clear_array = global.great_depression_conference_participant_weights
+		great_depression_add_conference_participant = yes
+		# Earlier contributors keep a current quote so they can pay their share.
+		if = {
+			limit = { has_variable = global.great_depression_global_contribution_countries^num }
+			for_each_scope_loop = {
+				array = global.great_depression_global_contribution_countries
+				if = {
+					limit = { exists = yes }
+					great_depression_refresh_costs = yes
+				}
 			}
 		}
-		great_depression_increment_global_contribution = yes
-		set_country_flag = great_depression_global_recovery_conference_complete
+	}
+}
+
+# COUNTRY scope, a joining country. Pays the reconstruction quote and takes a
+# seat at the open conference.
+great_depression_join_global_recovery_conference = {
+	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.global_reconstruction }
+	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.no_change }
+	great_depression_commit_external_action = yes
+	hidden_effect = { great_depression_add_conference_participant = yes }
+}
+
+# COUNTRY scope. Adds this country once to the bounded participant list with
+# the same industrial weight the global contribution ledger uses.
+great_depression_add_conference_participant = {
+	if = {
+		limit = {
+			NOT = { is_in_array = { array = global.great_depression_conference_participants value = THIS } }
+			OR = {
+				NOT = { has_variable = global.great_depression_conference_participants^num }
+				NOT = { check_variable = { var = global.great_depression_conference_participants^num value = constant:great_depression_conference.participant_cap compare = greater_than_or_equals } }
+			}
+		}
+		set_temp_variable = { great_depression_conference_participant_weight = num_of_civilian_factories }
+		multiply_temp_variable = { great_depression_conference_participant_weight = constant:great_depression_api.two }
+		set_temp_variable = { great_depression_conference_military_weight = num_of_military_factories }
+		set_temp_variable = { great_depression_conference_naval_weight = num_of_naval_factories }
+		add_to_temp_variable = { great_depression_conference_participant_weight = great_depression_conference_military_weight }
+		add_to_temp_variable = { great_depression_conference_participant_weight = great_depression_conference_naval_weight }
+		clamp_temp_variable = {
+			var = great_depression_conference_participant_weight
+			min = constant:great_depression_api.one
+			max = constant:great_depression_event.public_value_maximum
+		}
+		add_to_array = { array = global.great_depression_conference_participants value = THIS }
+		add_to_array = { array = global.great_depression_conference_participant_weights value = great_depression_conference_participant_weight }
 	}
 }
 

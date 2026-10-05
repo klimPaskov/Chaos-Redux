@@ -24,3 +24,9 @@ The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only edi
 ## 2026-10-05: global episode news
 
 - For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.16` (The World Begins to Rebuild), `chaosx.nr35.17` (The Second Great Depression Ends) and `chaosx.nr35.18` (Supplier Collapse in the supplier country).
+
+## 2026-10-05: Global Recovery Conference
+
+- For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.19` (Recovery Conference Collapses), sent once per global episode when a Global Recovery Conference fails.
+- For any decision listing kept outside the main row, Event 35 gained the decision Join the Global Recovery Conference; Global Recovery Conference now convenes a conference instead of granting relief at once.
+- No change to the Event Details or evolution detail texts.

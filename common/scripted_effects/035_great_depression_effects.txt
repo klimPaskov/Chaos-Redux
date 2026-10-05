@@ -6282,6 +6282,9 @@ great_depression_reset_global_episode_ledgers = {
 	set_variable = { global.great_depression_global_recovery_proof_supplier_collapse = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_global_contribution_industrial_weight = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_global_recovery_drag_days = constant:great_depression_api.zero }
+	great_depression_clear_recovery_conference = yes
+	set_variable = { global.great_depression_conference_episode_id = constant:great_depression_api.zero }
+	set_variable = { global.great_depression_conference_result = constant:great_depression_conference.result_none }
 	set_variable = { global.great_depression_global_conversion_count = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_global_conversion_cursor = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_global_activation_day = constant:great_depression_api.zero }
@@ -8413,6 +8416,14 @@ great_depression_queue_global_news = {
 			set_variable = { global.great_depression_supplier_news_country = THIS }
 			news_event = { id = chaosx.nr35.18 days = 1 }
 		}
+		else_if = {
+			limit = {
+				check_variable = { var = great_depression_global_news_kind value = constant:great_depression_global_news.conference_failure compare = equals }
+				NOT = { check_variable = { var = global.great_depression_conference_news_episode_id value = global.great_depression_global_episode_id compare = equals } }
+			}
+			set_variable = { global.great_depression_conference_news_episode_id = global.great_depression_global_episode_id }
+			news_event = { id = chaosx.nr35.19 days = 1 }
+		}
 	}
 }
 
@@ -8420,6 +8431,7 @@ great_depression_process_global_episode = {
 	great_depression_register_supplier_risk = yes
 	great_depression_process_global_pressure_registry = yes
 	great_depression_recalculate_global_recovery_pressure = yes
+	great_depression_process_recovery_conference = yes
 	if = {
 		limit = {
 			has_global_flag = great_depression_supplier_collapse_unresolved
@@ -8577,10 +8589,179 @@ great_depression_process_global_episode = {
 			set_temp_variable = { great_depression_global_news_kind = constant:great_depression_global_news.retirement }
 			great_depression_queue_global_news = yes
 			great_depression_clear_global_pressure_registry = yes
+			great_depression_clear_recovery_conference = yes
 			clr_global_flag = great_depression_worldwide_episode_active
 			clear_global_event_target = great_depression_global_activation_source
 		}
 	}
+}
+
+# -----------------------------------------------------------------------------
+# Global Recovery Conference
+# -----------------------------------------------------------------------------
+
+# COUNTRY global-host scope, from the daily global pulse. A conference closes
+# without an outcome when the global episode it belongs to has ended or The
+# Second Great Depression evolution is switched off; otherwise it resolves on
+# its due day.
+great_depression_process_recovery_conference = {
+	if = {
+		limit = { has_global_flag = great_depression_recovery_conference_open }
+		set_temp_variable = { events_log_evolution_event_id = constant:great_depression_evolution_log.event_id }
+		set_temp_variable = { events_log_evolution_type = constant:great_depression_evolution_log.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:great_depression_evolution_log.second_great_depression_stage }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_global_flag = great_depression_worldwide_episode_active }
+					has_disabled_current_evolution = yes
+					NOT = { check_variable = { var = global.great_depression_conference_episode_id value = global.great_depression_global_episode_id compare = equals } }
+				}
+			}
+			great_depression_clear_recovery_conference = yes
+		}
+		else_if = {
+			limit = { check_variable = { var = global.num_days value = global.great_depression_conference_due_day compare = greater_than_or_equals } }
+			great_depression_resolve_recovery_conference = yes
+		}
+	}
+}
+
+# COUNTRY global-host scope. Counts the participants that still have a viable
+# economy, then applies success or failure. The tallies stay on the global
+# ledger for the news and the documentation.
+great_depression_resolve_recovery_conference = {
+	set_temp_variable = { great_depression_conference_count = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_conference_major_count = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_conference_weight = constant:great_depression_api.zero }
+	if = {
+		limit = { has_variable = global.great_depression_conference_participants^num }
+		for_loop_effect = {
+			start = 0
+			end = global.great_depression_conference_participants^num
+			value = great_depression_conference_tally_index
+			var:global.great_depression_conference_participants^great_depression_conference_tally_index = {
+				if = {
+					limit = {
+						exists = yes
+						great_depression_has_viable_economy = yes
+					}
+					add_to_temp_variable = { great_depression_conference_count = constant:great_depression_api.one }
+					if = {
+						limit = { is_major = yes }
+						add_to_temp_variable = { great_depression_conference_major_count = constant:great_depression_api.one }
+					}
+					add_to_temp_variable = { great_depression_conference_weight = global.great_depression_conference_participant_weights^great_depression_conference_tally_index }
+				}
+			}
+		}
+	}
+	set_variable = { global.great_depression_conference_last_participant_count = great_depression_conference_count }
+	set_variable = { global.great_depression_conference_last_major_count = great_depression_conference_major_count }
+	set_variable = { global.great_depression_conference_last_weight = great_depression_conference_weight }
+	if = {
+		limit = {
+			check_variable = { var = great_depression_conference_count value = constant:great_depression_conference.success_participant_minimum compare = greater_than_or_equals }
+			check_variable = { var = great_depression_conference_major_count value = constant:great_depression_conference.success_major_minimum compare = greater_than_or_equals }
+			check_variable = { var = great_depression_conference_weight value = constant:great_depression_conference.success_industrial_weight_minimum compare = greater_than_or_equals }
+		}
+		set_variable = { global.great_depression_conference_result = constant:great_depression_conference.result_success }
+		great_depression_apply_recovery_conference_success = yes
+	}
+	else = {
+		set_variable = { global.great_depression_conference_result = constant:great_depression_conference.result_failure }
+		great_depression_apply_recovery_conference_failure = yes
+	}
+	clr_global_flag = great_depression_recovery_conference_open
+	clear_array = global.great_depression_conference_participants
+	clear_array = global.great_depression_conference_participant_weights
+	clear_variable = global.great_depression_conference_due_day
+}
+
+# COUNTRY global-host scope. Success brings the worldwide proof closer: during
+# Fragmented Recovery it starts a stopped proof or moves a running one forward,
+# and during International Reconstruction it brings the end of the global
+# episode closer. The proof still needs every ordinary condition to hold.
+# Participants in a depression lose Severity; the others gain a dividend.
+great_depression_apply_recovery_conference_success = {
+	if = {
+		limit = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = equals } }
+		if = {
+			limit = { check_variable = { var = global.great_depression_global_recovery_proof value = constant:great_depression_api.one compare = less_than } }
+			set_variable = { global.great_depression_global_recovery_proof = constant:great_depression_api.one }
+			set_variable = { global.great_depression_global_recovery_proof_day = global.num_days }
+			set_variable = { global.great_depression_global_recovery_proof_episode_cutoff = global.great_depression_next_episode_id }
+			set_variable = { global.great_depression_global_recovery_proof_supplier_collapse = constant:great_depression_api.zero }
+		}
+		subtract_from_variable = { global.great_depression_global_recovery_proof_day = constant:great_depression_conference.proof_advance_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.international_reconstruction compare = equals } }
+		subtract_from_variable = { global.great_depression_global_stage_day = constant:great_depression_conference.proof_advance_days }
+	}
+	if = {
+		limit = { has_variable = global.great_depression_conference_participants^num }
+		set_temp_variable = { great_depression_conference_dividend_days = constant:great_depression_conference.dividend_days }
+		for_each_scope_loop = {
+			array = global.great_depression_conference_participants
+			if = {
+				limit = {
+					exists = yes
+					great_depression_active_crisis_is_coherent = yes
+				}
+				set_temp_variable = { great_depression_action_delta = constant:great_depression_conference.participant_severity_relief }
+				great_depression_apply_public_action_delta = yes
+			}
+			else_if = {
+				limit = {
+					exists = yes
+					great_depression_has_viable_economy = yes
+				}
+				add_dynamic_modifier = { modifier = great_depression_recovery_conference_dividend days = great_depression_conference_dividend_days }
+			}
+		}
+	}
+}
+
+# COUNTRY global-host scope. Failure during Fragmented Recovery throws the
+# world back into the Worldwide Depression stage, stops the proof, and adds
+# one guarded Chaos change for the global episode. Failure during
+# International Reconstruction restarts the wait before the episode can end.
+# The world news is sent once per global episode.
+great_depression_apply_recovery_conference_failure = {
+	if = {
+		limit = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = equals } }
+		set_variable = { global.great_depression_global_recovery_proof = constant:great_depression_api.zero }
+		set_variable = { global.great_depression_global_recovery_proof_day = constant:great_depression_api.zero }
+		set_variable = { global.great_depression_global_recovery_proof_episode_cutoff = constant:great_depression_api.zero }
+		clr_global_flag = great_depression_worldwide_recovery_stage
+		clr_global_flag = great_depression_worldwide_recovery_secured
+		set_variable = { global.great_depression_global_stage = constant:great_depression_global_stage.coordination }
+		set_variable = { global.great_depression_global_stage_day = global.num_days }
+		if = {
+			limit = { NOT = { check_variable = { var = global.great_depression_conference_failure_chaos_episode_id value = global.great_depression_global_episode_id compare = equals } } }
+			set_variable = { global.great_depression_conference_failure_chaos_episode_id = global.great_depression_global_episode_id }
+			set_temp_variable = { chaos_change = constant:great_depression_conference.failure_chaos }
+			great_depression_apply_global_chaos_receipt = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.international_reconstruction compare = equals } }
+		set_variable = { global.great_depression_global_stage_day = global.num_days }
+	}
+	set_temp_variable = { great_depression_global_news_kind = constant:great_depression_global_news.conference_failure }
+	great_depression_queue_global_news = yes
+}
+
+# Any scope. Ends an open conference without an outcome and forgets its
+# convener. The once-per-global-episode receipts stay, so a closed conference
+# cannot be convened again in the same global episode.
+great_depression_clear_recovery_conference = {
+	clr_global_flag = great_depression_recovery_conference_open
+	clear_array = global.great_depression_conference_participants
+	clear_array = global.great_depression_conference_participant_weights
+	clear_variable = global.great_depression_conference_due_day
+	clear_variable = global.great_depression_conference_convener
 }
 
 great_depression_activate_worldwide_episode = {
