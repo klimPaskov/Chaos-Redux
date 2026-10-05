@@ -152,3 +152,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - The Rif and Tripolitania can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - The Rif has a starting problem, its own decisions and two incidents of its own.
 - Kabylia, Fezzan, the Tuareg confederation, Darfur, Wadai, the Toubou state and the Amazigh Atlas state remain unavailable.
+
+
+## 2026-10-05: West and Central Africa packages (D27)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Oyo, Kanem-Bornu, the Aro Confederacy and the Biafran regional state can now appear in Independence Waves, Join conversions and Every Banner Rises launches; a wave releases at most one Nigerian country.
+- Oyo and Kanem-Bornu each have a starting problem, their own decisions and two incidents of their own.
+- Fante, the Benin Kingdom, the Hausa Federation, Luba and Lunda remain unavailable.

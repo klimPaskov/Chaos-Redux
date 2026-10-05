@@ -1237,6 +1237,51 @@ is_independence_wave_runtime_automatic_package_iw_086_ready = {
 	448 = { is_independence_wave_candidate_anchor_available = yes }
 }
 
+# West and Central Africa regional framework rows (D27): IW-097 Oyo, IW-099 Kanem-Bornu, IW-106 Aro Confederacy and IW-107 Biafran regional state.
+is_independence_wave_runtime_automatic_package_iw_097_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_097 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = DSX
+		is_independence_wave_exact_package_iw_097_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	558 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_099_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_099 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = DUX
+		is_independence_wave_exact_package_iw_099_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	901 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_106_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_106 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = EBX
+		is_independence_wave_exact_package_iw_106_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	900 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_107_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_107 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = BIA
+		is_independence_wave_exact_package_iw_107_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	900 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
 # COUNTRY scope. These are the only tags the current Event 005 joint opening
 # allocator can freeze. Event 006 capacity never claims a colliding tag.
 is_independence_wave_liberations_capacity_country_clear_of_event5 = {
@@ -2319,6 +2364,118 @@ independence_wave_liberations_capacity_try_iw_086 = {
 	}
 }
 
+independence_wave_liberations_capacity_try_iw_097 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p97 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p97 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_097_ready = yes
+			DSX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = DSX } }
+			}
+			558 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_097 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = DSX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 558 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_099 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p99 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p99 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_099_ready = yes
+			DUX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = DUX } }
+			}
+			901 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_099 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = DUX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 901 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_106 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p106 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p106 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_106_ready = yes
+			EBX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = EBX } }
+			}
+			900 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_106 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = EBX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 900 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_107 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p107 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p107 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_107_ready = yes
+			BIA = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = BIA } }
+			}
+			900 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_107 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = BIA }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 900 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_nigeria_coarse }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
 independence_wave_liberations_capacity_try_iw_033 = {
 	if = {
 		limit = {
@@ -2963,6 +3120,10 @@ is_independence_wave_liberations_cluster_member_capacity_available = {
 	independence_wave_liberations_capacity_try_iw_082 = yes
 	independence_wave_liberations_capacity_try_iw_083 = yes
 	independence_wave_liberations_capacity_try_iw_086 = yes
+	independence_wave_liberations_capacity_try_iw_097 = yes
+	independence_wave_liberations_capacity_try_iw_099 = yes
+	independence_wave_liberations_capacity_try_iw_106 = yes
+	independence_wave_liberations_capacity_try_iw_107 = yes
 	independence_wave_liberations_capacity_try_iw_014 = yes
 	independence_wave_liberations_capacity_try_iw_023 = yes
 	independence_wave_liberations_capacity_try_iw_184 = yes

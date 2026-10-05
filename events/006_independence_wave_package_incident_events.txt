@@ -2740,3 +2740,198 @@ country_event = {
 	}
 }
 
+
+# West and Central Africa framework packages (agent decision D27): Oyo and
+# Kanem-Bornu.
+
+country_event = {
+	id = chaosx.nr6.210
+	title = chaosx.nr6.210.t
+	desc = chaosx.nr6.210.d
+	picture = GFX_report_event_generic_read_write
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_dsx_package = yes
+		can_fire_independence_wave_package_incident = yes
+		has_country_flag = independence_wave_package_incident_a_scheduled
+		NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
+	}
+
+	option = {
+		name = chaosx.nr6.210.a
+		trigger = { NOT = { has_political_power < constant:independence_wave_package_incident.political_power_requirement } }
+		custom_effect_tooltip = chaosx.nr6.210.a.tt
+		add_political_power = constant:independence_wave_package_incident.political_power_spend
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_a_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_schedule_package_incident_b = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_constitutional_route = yes has_independence_wave_popular_council_route = yes } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.210.b
+		custom_effect_tooltip = chaosx.nr6.210.b.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_a_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minor_gain }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_schedule_package_incident_b = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_traditional_route = yes } }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.211
+	title = chaosx.nr6.211.t
+	desc = chaosx.nr6.211.d
+	picture = GFX_report_event_worker_protests
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_dsx_package = yes
+		can_fire_independence_wave_package_incident = yes
+		has_country_flag = independence_wave_package_incident_b_scheduled
+		NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
+	}
+
+	option = {
+		name = chaosx.nr6.211.a
+		custom_effect_tooltip = chaosx.nr6.211.a.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_b_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.standard_gain }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_popular_council_route = yes has_independence_wave_traditional_route = yes } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.211.b
+		custom_effect_tooltip = chaosx.nr6.211.b.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_b_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_patron_client_route = yes has_independence_wave_constitutional_route = yes } }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.212
+	title = chaosx.nr6.212.t
+	desc = chaosx.nr6.212.d
+	picture = GFX_report_event_generic_read_write
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_dux_package = yes
+		can_fire_independence_wave_package_incident = yes
+		has_country_flag = independence_wave_package_incident_a_scheduled
+		NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
+	}
+
+	option = {
+		name = chaosx.nr6.212.a
+		trigger = { NOT = { has_political_power < constant:independence_wave_package_incident.political_power_requirement } }
+		custom_effect_tooltip = chaosx.nr6.212.a.tt
+		add_political_power = constant:independence_wave_package_incident.political_power_spend
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_a_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.standard_gain }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_schedule_package_incident_b = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_traditional_route = yes } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.212.b
+		custom_effect_tooltip = chaosx.nr6.212.b.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_a_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.standard_gain }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+			independence_wave_schedule_package_incident_b = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_constitutional_route = yes has_independence_wave_emergency_military_route = yes } }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr6.213
+	title = chaosx.nr6.213.t
+	desc = chaosx.nr6.213.d
+	picture = GFX_report_event_merchant_ship_01
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_dux_package = yes
+		can_fire_independence_wave_package_incident = yes
+		has_country_flag = independence_wave_package_incident_b_scheduled
+		NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
+	}
+
+	option = {
+		name = chaosx.nr6.213.a
+		custom_effect_tooltip = chaosx.nr6.213.a.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_b_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minor_gain }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minor_gain }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_constitutional_route = yes has_independence_wave_patron_client_route = yes } }
+		}
+	}
+
+	option = {
+		name = chaosx.nr6.213.b
+		custom_effect_tooltip = chaosx.nr6.213.b.tt
+		hidden_effect = {
+			set_country_flag = independence_wave_package_incident_b_resolved
+			independence_wave_package_incident_clear_deltas = yes
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.standard_gain }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minor_loss }
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		ai_chance = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double OR = { has_independence_wave_emergency_military_route = yes has_independence_wave_severe_host_threat = yes } }
+		}
+	}
+}
+

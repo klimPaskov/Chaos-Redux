@@ -1,0 +1,116 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 WEST AND CENTRAL AFRICA PACKAGE LAYERS
+# ============================================================================
+# Overview:
+# - Level 2 layers on the regional framework engine (agent decision D27) for
+#   IW-097 Oyo (DSX) and IW-099 Kanem-Bornu (DUX): a starting problem, paid
+#   projects in common/decisions/006_independence_wave_west_africa_decisions.txt
+#   and cleanup checked by package id.
+# No effect iterates countries or states.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-097 Oyo (DSX)
+# ---------------------------------------------------------------------------
+
+independence_wave_dsx_apply_package_layer = {
+	add_ideas = independence_wave_dsx_oyo_mesi_deadlock
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_dsx_complete_oyo_mesi = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_dsx_oyo_mesi_deadlock
+	add_ideas = independence_wave_dsx_oyo_mesi_council
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dsx_oyo_mesi_seated
+}
+
+independence_wave_dsx_complete_ibadan = {
+	independence_wave_regional_framework_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dsx_ibadan_reconciled
+}
+
+independence_wave_dsx_complete_horse_guard = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_dsx_horse_guard
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dsx_horse_guard_raised
+}
+
+independence_wave_dsx_complete_yoruba_towns = {
+	independence_wave_regional_framework_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dsx_yoruba_towns_convened
+}
+
+independence_wave_dsx_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = DSX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_097 } }
+		remove_decision = independence_wave_dsx_seat_oyo_mesi
+		remove_decision = independence_wave_dsx_reconcile_ibadan
+		remove_decision = independence_wave_dsx_raise_horse_guard
+		remove_decision = independence_wave_dsx_convene_yoruba_towns
+		remove_ideas = { independence_wave_dsx_oyo_mesi_deadlock independence_wave_dsx_oyo_mesi_council independence_wave_dsx_horse_guard }
+		clr_country_flag = independence_wave_dsx_oyo_mesi_seated
+		clr_country_flag = independence_wave_dsx_ibadan_reconciled
+		clr_country_flag = independence_wave_dsx_horse_guard_raised
+		clr_country_flag = independence_wave_dsx_yoruba_towns_convened
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-099 Kanem-Bornu (DUX)
+# ---------------------------------------------------------------------------
+
+independence_wave_dux_apply_package_layer = {
+	add_ideas = independence_wave_dux_lake_trade_decline
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_dux_complete_shehus_council = {
+	independence_wave_regional_framework_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dux_shehus_council_seated
+}
+
+independence_wave_dux_complete_lake_routes = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_dux_lake_trade_decline
+	add_ideas = independence_wave_dux_lake_chad_trade
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dux_lake_routes_reopened
+}
+
+independence_wave_dux_complete_kanembu_horse = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_dux_kanembu_horse
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_dux_kanembu_horse_raised
+}
+
+independence_wave_dux_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = DUX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_099 } }
+		remove_decision = independence_wave_dux_seat_shehus_council
+		remove_decision = independence_wave_dux_reopen_lake_chad_routes
+		remove_decision = independence_wave_dux_raise_kanembu_horse
+		remove_ideas = { independence_wave_dux_lake_trade_decline independence_wave_dux_lake_chad_trade independence_wave_dux_kanembu_horse }
+		clr_country_flag = independence_wave_dux_shehus_council_seated
+		clr_country_flag = independence_wave_dux_lake_routes_reopened
+		clr_country_flag = independence_wave_dux_kanembu_horse_raised
+	}
+}

@@ -17,6 +17,7 @@ Level 2 rows add their own layer on top: a starting problem, a decision family a
 
 - Levant and Arabia (D25): IW-073 Hejaz, IW-076 Hadhramaut, IW-078 Imamate of Oman, IW-081 Lebanon, IW-082 Palestine. See `levant_arabia_packages.md`.
 - North Africa and Sahara (D26): IW-083 Rif, IW-086 Tripolitania. See `north_africa_packages.md`.
+- West and Central Africa (D27): IW-097 Oyo, IW-099 Kanem-Bornu, IW-106 Aro Confederacy, IW-107 Biafran regional state. See `west_africa_packages.md`.
 
 ## How it works
 

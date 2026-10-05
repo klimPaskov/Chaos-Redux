@@ -695,3 +695,33 @@ Blocked rows:
 Validation: the allocator audit passes with 56 attested packages, 47 reservation groups and 57 adapters (expected sets and counts updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
 
 Needs live game: a wave that releases RIF from Spain and DHX from Italy, and the Rif decision and incident flow.
+
+
+## D27. Round 2: West and Central Africa tranche
+
+Disposition: `implemented` for IW-097 Oyo (DSX), IW-099 Kanem-Bornu (DUX), IW-106 Aro Confederacy (EBX) and IW-107 Biafran regional state (BIA); `blocked` for IW-094, IW-096, IW-100, IW-103 and IW-104. IW-097's registry Level 3 signature module is `accepted and queued`.
+
+Basis: the lead's round-2 priority-14 item, using the D25 regional framework engine.
+
+Decisions:
+
+- Oyo is a registry Level 3 row. It is admitted now with a Level 2 layer (the Oyo Mesi deadlock as its starting problem, four projects and two incidents), because a release with a real layer is better than no coverage; the signature module (the Alaafin Siyanbola Ladigbolu I with a sourced portrait, the Oyo Mesi balance and city-state relations) stays queued. Leadership is the institutional government of the Oyo Mesi and the city interests, led by the leader the game appoints. Event 012's dormant Oyo sovereign, recruited by the DSX history, belongs to Event 012 and is not used.
+- Kanem-Bornu (Level 2): the Shehu's council at Maiduguri, led by the leader the game appoints; a starting problem (the declining Lake Chad trade), three projects and two incidents.
+- The Aro Confederacy (Level 1): a confederated council led by the appointed leader.
+- The Biafran regional state (Level 1) keeps the vanilla BIA roster; its democratic government opens under the leader the game appoints, and the vanilla Akenzua II leads only on the neutrality routes.
+- Institutional leadership through the leader the game appoints follows the D20 and D22 precedent. The research resolution asks for a sourced officeholder or institution and otherwise a block; the appointed leader is not presented as a real person, and a sourced leader or institutional character for each council is queued in the package doc.
+- EBX and BIA share the Benue anchor 900. Both are in RG-NIGERIA-COARSE with every other Nigerian row, so a wave holds at most one of them, and once one owns state 900 the other's anchor is unavailable. The allocator audit records this as its second shared-anchor exception beside CHU and TAT.
+- DSX, DUX and EBX get the dynamic-country release branch and the baseline-law entry; BIA is released from its vanilla core.
+- Contacts: DSX FRA and BRA; DUX FRA and SAU; EBX ENG and FRA; BIA ENG and SPR.
+
+Blocked rows:
+
+- IW-094 Fante, IW-103 Luba and IW-104 Lunda: no planner gate, loader or reservation; each needs a distinct map state.
+- IW-096 Benin Kingdom: no planner gate, and its registered tag BIA is the carrier of the admitted IW-107.
+- IW-100 Hausa Federation: formable or route only, and its anchor 902 is IW-098 Sokoto's.
+
+Formables: FORM-24 West African Federation and FORM-25 Sahel Confederation stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist). FORM-26 Kongo Basin Federation has no admitted member.
+
+Validation: the allocator audit passes with 60 attested packages, 47 reservation groups and 61 adapters (expected sets, the closure text and the shared-anchor exception updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
+
+Needs live game: a wave that releases one Nigerian framework row from Britain through the dynamic-country path, and the Oyo and Bornu decision and incident flow.

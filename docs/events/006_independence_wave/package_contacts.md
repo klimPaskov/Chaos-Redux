@@ -144,6 +144,14 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-086 | DHX | TUR | Ottoman officers of the 1911 to 1918 resistance and Suleiman al-Baruni |
 | IW-086 | DHX | EGY | Tripolitanian exiles in Alexandria and Cairo |
 | IW-086 | DHX | TUN | The shared Jefara borderland and its families |
+| IW-097 | DSX | FRA | The Yoruba towns of Ketu and Sabe in French Dahomey |
+| IW-097 | DSX | BRA | The Afro-Brazilian returnee families of Lagos and the Yoruba of Bahia |
+| IW-099 | DUX | FRA | Kanem and the Lake Chad shore in French Chad, once part of the same empire |
+| IW-099 | DUX | SAU | The Bornu pilgrim route to Mecca |
+| IW-106 | EBX | ENG | The colonial courts that broke up the Aro trade network in 1902 |
+| IW-106 | EBX | FRA | The Aro trading posts of the Cameroon border |
+| IW-107 | BIA | ENG | The colonial Eastern Provinces administration |
+| IW-107 | BIA | SPR | The labour contracts on the cocoa farms of Fernando Po |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

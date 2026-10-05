@@ -68,6 +68,10 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Hejaz (IW-073) | `chaosx.nr6.207` | The Hashemite Question | Invite the Hashemite family home; Keep the council in charge |
 | Rif (IW-083) | `chaosx.nr6.208` | Veterans of Anual | Give them commands in the army; Settle them on the plain of Nekor |
 | Rif (IW-083) | `chaosx.nr6.209` | The Mines of Uixan | Honour the mining concession; Take the mines for the republic |
+| Oyo (IW-097) | `chaosx.nr6.210` | The Ibadan Toll Gates | Buy out the tolls; Leave the tolls to Ibadan |
+| Oyo (IW-097) | `chaosx.nr6.211` | The Cocoa Buyers | Back the farmers' hold-up; Sell through the buying pool |
+| Kanem-Bornu (IW-099) | `chaosx.nr6.212` | The Scholars of Kukawa | Fund the Kukawa schools; Open state schools in Maiduguri |
+| Kanem-Bornu (IW-099) | `chaosx.nr6.213` | Salt from Bilma | Let the caravans pass free; Tax the caravans at the lake |
 
 ## Files
 
