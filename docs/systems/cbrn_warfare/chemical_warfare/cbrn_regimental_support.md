@@ -71,9 +71,9 @@ Stage 10 adds the final route-aware country profile weights, preferred delivery/
 
 ## Legacy safety
 
-Legacy agent-specific projector and chemical-tank identifiers stay parseable for existing templates, but current agent technologies no longer unlock them. Retained Livens definitions share `cbrn_offensive_delivery`; retained chemical tanks share both `cbrn_offensive_delivery` and vanilla's `flame` key and cannot parachute. An old template therefore cannot bypass the consolidated exclusions when it is edited. The stable `chaos_battalion` ID is redefined in place. Passive combat presence of that battalion is not a chemical-release trigger; its former on-action calls are disconnected so no exposure or Condemnation can occur without payload proof.
+Legacy agent-specific Livens projector identifiers stay parseable for existing templates, but current agent technologies no longer unlock them. Retained Livens definitions share `cbrn_offensive_delivery`, so an old template cannot bypass the consolidated exclusions when it is edited. There are no agent-specific chemical tank companies; armored delivery uses only the three consolidated armored delivery detachments. The stable `chaos_battalion` ID is redefined in place. Passive combat presence of that battalion is not a chemical-release trigger; its former on-action calls are disconnected so no exposure or Condemnation can occur without payload proof.
 
-There is no documented effect that safely removes one named subunit from every arbitrary player template. The compatibility definitions therefore remain inactive and resolvable until the Stage 6 adapter migration is complete. No whole-template replacement or hidden conversion is performed.
+There is no documented effect that safely removes one named subunit from every arbitrary player template. The Livens compatibility definitions therefore remain inactive and resolvable until the Stage 6 adapter migration is complete. No whole-template replacement or hidden conversion is performed.
 
 ## Visual assets and wiring
 

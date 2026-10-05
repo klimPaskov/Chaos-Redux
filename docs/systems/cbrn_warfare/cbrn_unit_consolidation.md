@@ -15,7 +15,7 @@ The Operations and Intelligence section retains the sealing command ability, whi
 | `cbrn_medical_countermeasure_detachment` | Field hospitals, epidemiology, and quarantine | `cbrn_field_epidemiology_detachment` |
 | Nerve-delivery certification | Operation-only upgrade; it does not field a standing suppression company | `cbrn_nerve_suppression_detachment` (retired compatibility reference) |
 
-The 18 agent-specific chemical tank companies and the six agent-specific Livens projector companies remain inactive definitions for compatibility. They are absent from CXT playable templates and AI formations. Existing surviving IDs remain stable so technology, counter sprites, and save-facing references have one canonical consumer.
+The six agent-specific Livens projector companies remain inactive definitions for compatibility. They are absent from CXT playable templates and AI formations. Existing surviving IDs remain stable so technology, counter sprites, and save-facing references have one canonical consumer. There are no agent-specific chemical tank companies; armored chemical delivery uses only the light, medium, and heavy armored delivery roles.
 
 ## Research and AI formation flow
 
