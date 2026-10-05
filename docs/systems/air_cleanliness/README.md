@@ -10,5 +10,6 @@ This directory documents shared air contamination, atmospheric recovery, natural
 - [`winter.md`](winter.md) defines the Air Winter pressure and mitigation model.
 - [`air_cleanliness_treaty.md`](air_cleanliness_treaty.md) defines the treaty lifecycle and its current implementation boundary.
 - [`fallout_generic_focus_tree.md`](fallout_generic_focus_tree.md) documents the generic fallout-survivor focus tree that consumes the shared atmospheric state.
+- [`fallout_offices.md`](fallout_offices.md) documents the first public office each survivor appoints in the Ash week and the arcs that turn it into an institution.
 
 Chemical and biological delivery mechanics belong in `../cbrn_warfare/`. Chaos gains and death accounting belong in `../chaos_meter/`.

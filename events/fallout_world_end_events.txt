@@ -8474,6 +8474,12 @@ country_event = {
 			fallout_orientation_choose_branch = yes
 		}
 		custom_effect_tooltip = chaosx.fallout.78.a.tt
+		if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.quartermaster } } show_ideas_tooltip = fallout_office_quartermaster }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.physician } } show_ideas_tooltip = fallout_office_physician }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.engineer } } show_ideas_tooltip = fallout_office_engineer }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.commander } } show_ideas_tooltip = fallout_office_commander }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.ward_chair } } show_ideas_tooltip = fallout_office_ward_chair }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_1_role = constant:fallout_office_role.magistrate } } show_ideas_tooltip = fallout_office_magistrate }
 		ai_chance = { base = constant:fallout_orientation_ai_weight.primary }
 	}
 
@@ -8486,6 +8492,12 @@ country_event = {
 			fallout_orientation_choose_branch = yes
 		}
 		custom_effect_tooltip = chaosx.fallout.78.b.tt
+		if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.quartermaster } } show_ideas_tooltip = fallout_office_quartermaster }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.physician } } show_ideas_tooltip = fallout_office_physician }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.engineer } } show_ideas_tooltip = fallout_office_engineer }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.commander } } show_ideas_tooltip = fallout_office_commander }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.ward_chair } } show_ideas_tooltip = fallout_office_ward_chair }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_2_role = constant:fallout_office_role.magistrate } } show_ideas_tooltip = fallout_office_magistrate }
 		ai_chance = { base = constant:fallout_orientation_ai_weight.secondary }
 	}
 
@@ -8498,6 +8510,12 @@ country_event = {
 			fallout_orientation_choose_branch = yes
 		}
 		custom_effect_tooltip = chaosx.fallout.78.c.tt
+		if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.quartermaster } } show_ideas_tooltip = fallout_office_quartermaster }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.physician } } show_ideas_tooltip = fallout_office_physician }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.engineer } } show_ideas_tooltip = fallout_office_engineer }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.commander } } show_ideas_tooltip = fallout_office_commander }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.ward_chair } } show_ideas_tooltip = fallout_office_ward_chair }
+		else_if = { limit = { check_variable = { fallout_orientation_candidate_registry_slot_3_role = constant:fallout_office_role.magistrate } } show_ideas_tooltip = fallout_office_magistrate }
 		ai_chance = { base = constant:fallout_orientation_ai_weight.tertiary }
 	}
 }
@@ -23624,4 +23642,701 @@ country_event = {
 		NOT = { has_country_flag = fallout_generic_year_ten_order_acknowledged }
 	}
 	immediate = { set_country_flag = fallout_generic_year_ten_order_acknowledged }
+}
+
+# ---------------------------------------------------------------------------
+# Ash-week office arcs (chaosx.fallout.1060 to 1101)
+# ---------------------------------------------------------------------------
+# Each role arc opens with an introduction (human N, hidden AI N+1), a pressure
+# event after forty days (N+2, N+3), a delayed outcome (N+4, N+5) and cleanup
+# (N+6). The office installed by Ash-week step 5 decides the role.
+
+# The Ration Rolls
+country_event = {
+	id = chaosx.fallout.1060
+	title = chaosx.fallout.1060.t
+	desc = chaosx.fallout.1060.d
+	picture = GFX_report_event_fallout_last_inventory
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_quartermaster_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1060.a
+		trigger = { fallout_office_arc_quartermaster_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1060.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1060.b
+		trigger = { fallout_office_arc_quartermaster_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1060.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1060.c
+		trigger = { fallout_office_arc_quartermaster_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1060.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1061
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_quartermaster_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1062
+	title = chaosx.fallout.1062.t
+	desc = { text = chaosx.fallout.1062.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1062.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1062.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_ration_thief_election
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_quartermaster_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1062.a
+		trigger = { OR = { fallout_office_arc_quartermaster_civic_affordable = yes NOT = { fallout_office_arc_quartermaster_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1062.a.tt
+		show_ideas_tooltip = fallout_institution_quartermaster_civic
+	}
+	option = {
+		name = chaosx.fallout.1062.b
+		trigger = { fallout_office_arc_quartermaster_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1062.b.tt
+		show_ideas_tooltip = fallout_institution_quartermaster_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1063
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_quartermaster_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1064
+	title = chaosx.fallout.1064.t
+	desc = { text = chaosx.fallout.1064.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1064.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1064.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1064.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1064.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1064.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_work_for_rations
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_quartermaster_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1064.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_quartermaster_civic }
+			else = { show_ideas_tooltip = fallout_institution_quartermaster_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1065
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_quartermaster_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1066
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_quartermaster_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
+}
+
+# The Triage Order
+country_event = {
+	id = chaosx.fallout.1067
+	title = chaosx.fallout.1067.t
+	desc = chaosx.fallout.1067.d
+	picture = GFX_report_event_fallout_triage_wall
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_physician_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1067.a
+		trigger = { fallout_office_arc_physician_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1067.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1067.b
+		trigger = { fallout_office_arc_physician_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1067.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1067.c
+		trigger = { fallout_office_arc_physician_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1067.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1068
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_physician_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1069
+	title = chaosx.fallout.1069.t
+	desc = { text = chaosx.fallout.1069.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1069.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1069.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_counterfeit_antibiotics
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_physician_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1069.a
+		trigger = { OR = { fallout_office_arc_physician_civic_affordable = yes NOT = { fallout_office_arc_physician_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1069.a.tt
+		show_ideas_tooltip = fallout_institution_physician_civic
+	}
+	option = {
+		name = chaosx.fallout.1069.b
+		trigger = { fallout_office_arc_physician_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1069.b.tt
+		show_ideas_tooltip = fallout_institution_physician_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1070
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_physician_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1071
+	title = chaosx.fallout.1071.t
+	desc = { text = chaosx.fallout.1071.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1071.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1071.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1071.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1071.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1071.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_fever_dormitory
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_physician_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1071.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_physician_civic }
+			else = { show_ideas_tooltip = fallout_institution_physician_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_deaths_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1072
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_physician_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1073
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_physician_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
+}
+
+# The Repair Schedule
+country_event = {
+	id = chaosx.fallout.1074
+	title = chaosx.fallout.1074.t
+	desc = chaosx.fallout.1074.d
+	picture = GFX_report_event_fallout_last_transformer
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_engineer_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1074.a
+		trigger = { fallout_office_arc_engineer_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1074.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1074.b
+		trigger = { fallout_office_arc_engineer_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1074.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1074.c
+		trigger = { fallout_office_arc_engineer_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1074.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1075
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_engineer_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1076
+	title = chaosx.fallout.1076.t
+	desc = { text = chaosx.fallout.1076.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1076.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1076.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_manual_nobody_read
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_engineer_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1076.a
+		trigger = { OR = { fallout_office_arc_engineer_civic_affordable = yes NOT = { fallout_office_arc_engineer_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1076.a.tt
+		show_ideas_tooltip = fallout_institution_engineer_civic
+	}
+	option = {
+		name = chaosx.fallout.1076.b
+		trigger = { fallout_office_arc_engineer_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1076.b.tt
+		show_ideas_tooltip = fallout_institution_engineer_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1077
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_engineer_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1078
+	title = chaosx.fallout.1078.t
+	desc = { text = chaosx.fallout.1078.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1078.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1078.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1078.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1078.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1078.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_first_streetlight
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_engineer_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1078.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_engineer_civic }
+			else = { show_ideas_tooltip = fallout_institution_engineer_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1079
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_engineer_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1080
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_engineer_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
+}
+
+# The Militia Oath
+country_event = {
+	id = chaosx.fallout.1081
+	title = chaosx.fallout.1081.t
+	desc = chaosx.fallout.1081.d
+	picture = GFX_report_event_fallout_captain_refuses
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_commander_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1081.a
+		trigger = { fallout_office_arc_commander_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1081.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1081.b
+		trigger = { fallout_office_arc_commander_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1081.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1081.c
+		trigger = { fallout_office_arc_commander_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1081.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1082
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_commander_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1083
+	title = chaosx.fallout.1083.t
+	desc = { text = chaosx.fallout.1083.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1083.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1083.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_missing_patrol
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_commander_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1083.a
+		trigger = { OR = { fallout_office_arc_commander_civic_affordable = yes NOT = { fallout_office_arc_commander_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1083.a.tt
+		show_ideas_tooltip = fallout_institution_commander_civic
+	}
+	option = {
+		name = chaosx.fallout.1083.b
+		trigger = { fallout_office_arc_commander_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1083.b.tt
+		show_ideas_tooltip = fallout_institution_commander_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1084
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_commander_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1085
+	title = chaosx.fallout.1085.t
+	desc = { text = chaosx.fallout.1085.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1085.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1085.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1085.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1085.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1085.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_hungry_battalion
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_commander_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1085.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_commander_civic }
+			else = { show_ideas_tooltip = fallout_institution_commander_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_deaths_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1086
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_commander_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1087
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_commander_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
+}
+
+# The Ward Petitions
+country_event = {
+	id = chaosx.fallout.1088
+	title = chaosx.fallout.1088.t
+	desc = chaosx.fallout.1088.d
+	picture = GFX_report_event_fallout_tunnel_ward_committees
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_ward_chair_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1088.a
+		trigger = { fallout_office_arc_ward_chair_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1088.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1088.b
+		trigger = { fallout_office_arc_ward_chair_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1088.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1088.c
+		trigger = { fallout_office_arc_ward_chair_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1088.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1089
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_ward_chair_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1090
+	title = chaosx.fallout.1090.t
+	desc = { text = chaosx.fallout.1090.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1090.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1090.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_door_list
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_ward_chair_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1090.a
+		trigger = { OR = { fallout_office_arc_ward_chair_civic_affordable = yes NOT = { fallout_office_arc_ward_chair_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1090.a.tt
+		show_ideas_tooltip = fallout_institution_ward_chair_civic
+	}
+	option = {
+		name = chaosx.fallout.1090.b
+		trigger = { fallout_office_arc_ward_chair_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1090.b.tt
+		show_ideas_tooltip = fallout_institution_ward_chair_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1091
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_ward_chair_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1092
+	title = chaosx.fallout.1092.t
+	desc = { text = chaosx.fallout.1092.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1092.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1092.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1092.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1092.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1092.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_cohorts_first_ballot
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_ward_chair_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1092.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_ward_chair_civic }
+			else = { show_ideas_tooltip = fallout_institution_ward_chair_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1093
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_ward_chair_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1094
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_ward_chair_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
+}
+
+# The First Verdict
+country_event = {
+	id = chaosx.fallout.1095
+	title = chaosx.fallout.1095.t
+	desc = chaosx.fallout.1095.d
+	picture = GFX_report_event_fallout_old_doctor_trial
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_magistrate_opening_event_can_enter = yes }
+	option = {
+		name = chaosx.fallout.1095.a
+		trigger = { fallout_office_arc_magistrate_first_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1095.a.tt
+	}
+	option = {
+		name = chaosx.fallout.1095.b
+		trigger = { fallout_office_arc_magistrate_second_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1095.b.tt
+	}
+	option = {
+		name = chaosx.fallout.1095.c
+		trigger = { fallout_office_arc_magistrate_third_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } fallout_office_arc_choose_intro = yes }
+		custom_effect_tooltip = chaosx.fallout.1095.c.tt
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1096
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_magistrate_hidden_ai_opening_can_enter = yes }
+	immediate = { fallout_office_arc_choose_ai_intro = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1097
+	title = chaosx.fallout.1097.t
+	desc = { text = chaosx.fallout.1097.first.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.first } } }
+	desc = { text = chaosx.fallout.1097.second.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.second } } }
+	desc = { text = chaosx.fallout.1097.third.d trigger = { check_variable = { fallout_office_arc_selected_branch = constant:fallout_office_arc_branch.third } } }
+	picture = GFX_report_event_fallout_dead_city_permit
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_magistrate_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_result compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	option = {
+		name = chaosx.fallout.1097.a
+		trigger = { OR = { fallout_office_arc_magistrate_civic_affordable = yes NOT = { fallout_office_arc_magistrate_command_affordable = yes } } }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.civic } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1097.a.tt
+		show_ideas_tooltip = fallout_institution_magistrate_civic
+	}
+	option = {
+		name = chaosx.fallout.1097.b
+		trigger = { fallout_office_arc_magistrate_command_affordable = yes }
+		hidden_effect = { set_temp_variable = { fallout_office_arc_requested_route = constant:fallout_office_arc_route.command } fallout_office_arc_resolve_pressure = yes }
+		custom_effect_tooltip = chaosx.fallout.1097.b.tt
+		show_ideas_tooltip = fallout_institution_magistrate_command
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1098
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_magistrate_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_result_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_choose_ai_route_and_resolve = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1099
+	title = chaosx.fallout.1099.t
+	desc = { text = chaosx.fallout.1099.civic.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1099.civic.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1099.civic.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	desc = { text = chaosx.fallout.1099.command.success.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } } }
+	desc = { text = chaosx.fallout.1099.command.partial.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } } }
+	desc = { text = chaosx.fallout.1099.command.failure.d trigger = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.command } check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.failure } } }
+	picture = GFX_report_event_fallout_permit_market
+	is_triggered_only = yes
+	trigger = { is_ai = no fallout_office_arc_magistrate_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_callback compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals } }
+	immediate = { hidden_effect = { fallout_office_arc_calculate_outcome = yes } }
+	option = {
+		name = chaosx.fallout.1099.a
+		hidden_effect = { fallout_office_arc_resolve_outcome = yes }
+		if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.success } }
+			custom_effect_tooltip = fallout_office_arc_outcome_success_tt
+			if = { limit = { check_variable = { fallout_office_arc_selected_route = constant:fallout_office_arc_route.civic } } show_ideas_tooltip = fallout_institution_magistrate_civic }
+			else = { show_ideas_tooltip = fallout_institution_magistrate_command }
+		}
+		else_if = {
+			limit = { check_variable = { fallout_office_arc_outcome = constant:fallout_event_outcome_type.partial } }
+			custom_effect_tooltip = fallout_office_arc_outcome_partial_tt
+		}
+		else = { custom_effect_tooltip = fallout_office_arc_outcome_failure_tt }
+	}
+}
+
+country_event = {
+	id = chaosx.fallout.1100
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { is_ai = yes fallout_office_arc_magistrate_delayed_can_enter = yes check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_callback_ai compare = equals } check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals } }
+	immediate = { fallout_office_arc_calculate_outcome = yes fallout_office_arc_resolve_outcome = yes }
+}
+
+country_event = {
+	id = chaosx.fallout.1101
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { fallout_office_arc_magistrate_cleanup_can_enter = yes }
+	immediate = { fallout_office_arc_cleanup = yes }
 }

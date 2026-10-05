@@ -1214,3 +1214,18 @@ The row requires the Congo Green Basin country memory and mutant-polity archetyp
 The four branches are Accept the Named Controls, Negotiate a Joint Inspection, Defy the Red Line, and Seek Allies Along the Hill Road. The chain freezes country, state, witness, generation, Air Winter, Supply Access, and gate ledgers, resolves after `56` days, schedules the wet-season review after `330` days, applies bounded Deaths failure, writes quarantine and bilateral memories, records Event Log history `9210`, preserves hidden AI parity, and uses authenticated cleanup. Dedicated report art and a catalog row are wired under the consolidated Fallout asset folder.
 
 The chain remains dormant and outside release-floor credit. Scheduler activation, host authority, save recovery, delayed queue delivery, multiplayer behavior, runtime Event Log rendering, and the exact engine-native all-valid-province thermonuclear sweep remain unproven. The dedicated proof is `FALLOUT_QUARANTINE_ULTIMATUM_CHAIN_PROOF.md`.
+
+## Ash-week office arcs
+
+Agent decision A16 adds six office arcs at event ids `1060` through `1101`, seven blocks per role: human introduction N, hidden AI introduction N+1, human and hidden AI pressure events N+2 and N+3, human and hidden AI outcomes N+4 and N+5, and cleanup N+6.
+
+| Role | Arc | Event ids | Candidate id | Transaction key | Route | History |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| Quartermaster | The Ration Rolls | `1060` to `1066` | 1060 | 710105 | 7244 | 9211 |
+| Doctor or medical board | The Triage Order | `1067` to `1073` | 1067 | 710106 | 7246 | 9212 |
+| Grid engineer | The Repair Schedule | `1074` to `1080` | 1074 | 710107 | 7248 | 9213 |
+| Militia commander | The Militia Oath | `1081` to `1087` | 1081 | 710108 | 7250 | 9214 |
+| Local mayor or ward chair | The Ward Petitions | `1088` to `1094` | 1088 | 710109 | 7252 | 9215 |
+| Judge or tribunal chair | The First Verdict | `1095` to `1101` | 1095 | 710110 | 7254 | 9216 |
+
+Each row is admitted for a country that holds the office of that role in the current Fallout generation, uses the office as its institution actor, and closes for the generation at cleanup. The reserved route upper bound is `7256`. The step 5 candidates and roles are listed in `FALLOUT_OFFICE_CANDIDATES.md`.

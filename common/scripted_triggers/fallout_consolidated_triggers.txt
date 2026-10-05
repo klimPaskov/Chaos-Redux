@@ -11476,9 +11476,10 @@ fallout_event_subject_is_current = {
 		}
 		AND = {
 			check_variable = { fallout_event_subject_type_to_check = constant:fallout_event_subject_type.institution }
-			# No generic engine liveness surface exists for an opaque institution
-			# token. Future content must add a generation-bound registry first.
-			always = no
+			# An institution subject is the office this country appointed in
+			# Ash-week step 5, held in the current Fallout generation.
+			fallout_office_is_current = yes
+			check_variable = { var = fallout_office_candidate_id value = fallout_event_subject_value_to_check compare = equals }
 		}
 	}
 }
@@ -13450,11 +13451,35 @@ fallout_orientation_candidate_mapping_is_current = {
 		AND = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.ethiopian_highland_refuge } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } check_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.ethiopian_highland_storehouse_relief_coordinator } check_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.ethiopian_mountain_road_protection_captain } check_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.ethiopian_highland_sanctuary_council } }
 		AND = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state } check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } check_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.atacama_desert_pump_engineer } check_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.atacama_mine_port_supply_captain } check_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.atacama_observatory_data_council } }
 		AND = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government } check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } check_variable = { fallout_orientation_candidate_registry_slot_1_id = constant:fallout_orientation_candidate_id.antarctic_human_survival_records_officer } check_variable = { fallout_orientation_candidate_registry_slot_2_id = constant:fallout_orientation_candidate_id.antarctic_station_maintenance_chief } check_variable = { fallout_orientation_candidate_registry_slot_3_id = constant:fallout_orientation_candidate_id.antarctic_weather_rescue_protocol_council } }
+		AND = {
+			NOT = { fallout_orientation_country_has_pilot_row = yes }
+			fallout_office_candidate_mapping_is_cell_row = yes
+		}
 	}
 }
 
-# Supported scope: COUNTRY. Written only by a future reviewed package producer.
-# This proof deliberately has no setter in the dormant registry tranche.
+# Supported scope: COUNTRY. The three registry slots hold the candidates of the
+# live region and archetype cell (ids 101 to 424).
+fallout_office_candidate_mapping_is_cell_row = {
+	fallout_orientation_cell_row_is_current = yes
+	set_temp_variable = { fallout_office_cell_candidate_check = fallout_region_id }
+	subtract_from_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_runtime.one }
+	multiply_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_candidate_id.cell_region_stride }
+	set_temp_variable = { fallout_office_cell_archetype_check = fallout_government_archetype }
+	subtract_from_temp_variable = { fallout_office_cell_archetype_check = constant:fallout_orientation_runtime.one }
+	multiply_temp_variable = { fallout_office_cell_archetype_check = constant:fallout_orientation_candidate_id.cell_archetype_stride }
+	add_to_temp_variable = { fallout_office_cell_candidate_check = fallout_office_cell_archetype_check }
+	add_to_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_candidate_id.cell_base }
+	add_to_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_runtime.one }
+	check_variable = { var = fallout_orientation_candidate_registry_slot_1_id value = fallout_office_cell_candidate_check compare = equals }
+	add_to_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_runtime.one }
+	check_variable = { var = fallout_orientation_candidate_registry_slot_2_id value = fallout_office_cell_candidate_check compare = equals }
+	add_to_temp_variable = { fallout_office_cell_candidate_check = constant:fallout_orientation_runtime.one }
+	check_variable = { var = fallout_orientation_candidate_registry_slot_3_id value = fallout_office_cell_candidate_check compare = equals }
+}
+
+# Supported scope: COUNTRY. Written by fallout_office_install_candidate_package
+# once per Fallout generation for every country with a cell row.
 fallout_orientation_candidate_package_receipt_is_current = {
 	has_country_flag = fallout_orientation_candidate_package_installed
 	has_variable = fallout_orientation_candidate_package_schema_version
@@ -13737,6 +13762,17 @@ fallout_orientation_requested_government_has_affordable_branch = {
 	}
 }
 
+# Supported scope: COUNTRY. At least one of the requested step 5 candidates can
+# be paid for (the institution only when a third candidate exists).
+fallout_orientation_requested_character_has_affordable_branch = {
+	check_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution }
+	OR = {
+		AND = { check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_orientation_cost.character_relief_medicine compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_orientation_cost.character_relief_food compare = greater_than_or_equals } }
+		AND = { check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_orientation_cost.character_security_fuel compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.character_security_scrap compare = greater_than_or_equals } }
+		AND = { check_variable = { fallout_orientation_requested_candidate_slot_3_id > constant:fallout_orientation_candidate_id.none } check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_orientation_cost.character_institution_power compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^8 value = constant:fallout_orientation_cost.character_institution_shelter compare = greater_than_or_equals } check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_orientation_cost.character_institution_scrap compare = greater_than_or_equals } }
+	}
+}
+
 fallout_orientation_begin_request_is_valid = {
 	fallout_orientation_runtime_is_open = yes
 	has_variable = global.fallout_transition_generation
@@ -13766,7 +13802,10 @@ fallout_orientation_begin_request_is_valid = {
 	}
 	OR = {
 		NOT = { check_variable = { fallout_orientation_requested_component = constant:fallout_event_orientation_component.character_or_institution } }
-		fallout_orientation_character_install_surface_is_approved = yes
+		AND = {
+			fallout_orientation_character_install_surface_is_approved = yes
+			fallout_orientation_requested_character_has_affordable_branch = yes
+		}
 	}
 	fallout_orientation_regional_row_surface_is_approved = yes
 	fallout_orientation_archetype_row_surface_is_approved = yes
@@ -35456,3 +35495,497 @@ fallout_generic_has_regional_program = {
 		has_country_flag = fallout_generic_region_oceania
 	}
 }
+
+# ============================================================================
+# Ash-week offices and office arcs
+# ============================================================================
+
+# Supported scope: COUNTRY. The office or institution installed by step 5 of
+# the Ash-week orientation is held in the current Fallout generation.
+fallout_office_is_current = {
+	has_country_flag = fallout_office_held
+	has_variable = global.fallout_transition_generation
+	has_variable = fallout_office_generation
+	check_variable = { var = fallout_office_generation value = global.fallout_transition_generation compare = equals }
+	has_variable = fallout_office_candidate_id
+	has_variable = fallout_office_role
+	check_variable = { fallout_office_role > constant:fallout_office_role.none }
+	check_variable = { fallout_office_role < constant:fallout_office_role.upper_bound }
+}
+
+# Supported scope: COUNTRY. Every office arc is a country-level row without a
+# state target; the capital receives its state effects when they apply.
+fallout_office_arc_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.none compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = equals }
+}
+
+fallout_office_arc_registry_is_current = {
+	has_variable = fallout_office_arc_registry_generation
+	has_variable = fallout_office_arc_registry_owner
+	has_variable = fallout_office_arc_role
+	has_variable = fallout_office_arc_office_candidate
+	has_variable = fallout_office_arc_selected_branch
+	has_variable = fallout_office_arc_result_generation
+	check_variable = { var = fallout_office_arc_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_office_arc_result_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_office_arc_registry_owner value = ROOT compare = equals }
+	check_variable = { fallout_office_arc_role > constant:fallout_office_role.none }
+	check_variable = { fallout_office_arc_role < constant:fallout_office_role.upper_bound }
+	check_variable = { fallout_office_arc_selected_branch > constant:fallout_office_arc_branch.none }
+	check_variable = { fallout_office_arc_selected_branch < constant:fallout_office_arc_branch.upper_bound }
+	has_country_flag = fallout_office_arc_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+}
+
+fallout_office_arc_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.quartermaster } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_quartermaster_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.quartermaster } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_quartermaster_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.quartermaster } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_quartermaster_third_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.physician } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_physician_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.physician } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_physician_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.physician } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_physician_third_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.engineer } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_engineer_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.engineer } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_engineer_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.engineer } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_engineer_third_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.commander } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_commander_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.commander } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_commander_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.commander } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_commander_third_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.ward_chair } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_ward_chair_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.ward_chair } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_ward_chair_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.ward_chair } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_ward_chair_third_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.magistrate } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.first } } fallout_office_arc_magistrate_first_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.magistrate } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.second } } fallout_office_arc_magistrate_second_affordable = yes }
+	else_if = { limit = { check_variable = { fallout_office_role = constant:fallout_office_role.magistrate } check_variable = { fallout_office_arc_requested_branch = constant:fallout_office_arc_branch.third } } fallout_office_arc_magistrate_third_affordable = yes }
+	else = { always = no }
+}
+
+# The Ration Rolls arc (chaosx.fallout.1060 to 1066)
+fallout_office_arc_quartermaster_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.quartermaster_first_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.quartermaster_first_scrap compare = greater_than_or_equals }
+}
+fallout_office_arc_quartermaster_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.quartermaster_second_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.quartermaster_second_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_quartermaster_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.quartermaster_third_food compare = greater_than_or_equals }
+}
+fallout_office_arc_quartermaster_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.quartermaster_civic_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.quartermaster_civic_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_quartermaster_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.quartermaster_command_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_quartermaster_can_pay_any_intro = {
+	OR = { fallout_office_arc_quartermaster_first_affordable = yes fallout_office_arc_quartermaster_second_affordable = yes fallout_office_arc_quartermaster_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The quartermaster office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_quartermaster_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.quartermaster }
+	fallout_office_arc_quartermaster_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_quartermaster_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_quartermaster_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_quartermaster_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_quartermaster_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_quartermaster_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.quartermaster }
+}
+
+fallout_office_arc_quartermaster_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_quartermaster_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+
+# The Triage Order arc (chaosx.fallout.1067 to 1073)
+fallout_office_arc_physician_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_office_arc_cost.physician_first_medicine compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.physician_first_food compare = greater_than_or_equals }
+}
+fallout_office_arc_physician_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_office_arc_cost.physician_second_medicine compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.physician_second_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_physician_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.physician_third_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^7 value = constant:fallout_office_arc_cost.physician_third_filters compare = greater_than_or_equals }
+}
+fallout_office_arc_physician_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_office_arc_cost.physician_civic_medicine compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.physician_civic_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_physician_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.physician_command_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.physician_command_scrap compare = greater_than_or_equals }
+}
+fallout_office_arc_physician_can_pay_any_intro = {
+	OR = { fallout_office_arc_physician_first_affordable = yes fallout_office_arc_physician_second_affordable = yes fallout_office_arc_physician_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The doctor or medical board office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_physician_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.physician }
+	fallout_office_arc_physician_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_physician_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_physician_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_physician_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_physician_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_physician_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.physician }
+}
+
+fallout_office_arc_physician_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_physician_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+
+# The Repair Schedule arc (chaosx.fallout.1074 to 1080)
+fallout_office_arc_engineer_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.engineer_first_scrap compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.engineer_first_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_engineer_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.engineer_second_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_office_arc_cost.engineer_second_medicine compare = greater_than_or_equals }
+}
+fallout_office_arc_engineer_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.engineer_third_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_engineer_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.engineer_civic_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.engineer_civic_scrap compare = greater_than_or_equals }
+}
+fallout_office_arc_engineer_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.engineer_command_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.engineer_command_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_engineer_can_pay_any_intro = {
+	OR = { fallout_office_arc_engineer_first_affordable = yes fallout_office_arc_engineer_second_affordable = yes fallout_office_arc_engineer_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The grid engineer office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_engineer_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.engineer }
+	fallout_office_arc_engineer_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_engineer_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_engineer_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_engineer_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_engineer_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_engineer_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.engineer }
+}
+
+fallout_office_arc_engineer_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_engineer_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+
+# The Militia Oath arc (chaosx.fallout.1081 to 1087)
+fallout_office_arc_commander_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.commander_first_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.commander_first_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_commander_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.commander_second_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_commander_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.commander_third_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.commander_third_food compare = greater_than_or_equals }
+}
+fallout_office_arc_commander_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.commander_civic_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.commander_civic_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_commander_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.commander_command_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_commander_can_pay_any_intro = {
+	OR = { fallout_office_arc_commander_first_affordable = yes fallout_office_arc_commander_second_affordable = yes fallout_office_arc_commander_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The militia commander office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_commander_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.commander }
+	fallout_office_arc_commander_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_commander_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_commander_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_commander_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_commander_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_commander_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.commander }
+}
+
+fallout_office_arc_commander_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_commander_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+
+# The Ward Petitions arc (chaosx.fallout.1088 to 1094)
+fallout_office_arc_ward_chair_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.ward_chair_first_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.ward_chair_first_scrap compare = greater_than_or_equals }
+}
+fallout_office_arc_ward_chair_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.ward_chair_second_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_ward_chair_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^8 value = constant:fallout_office_arc_cost.ward_chair_third_shelter compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.ward_chair_third_food compare = greater_than_or_equals }
+}
+fallout_office_arc_ward_chair_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.ward_chair_civic_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.ward_chair_civic_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_ward_chair_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.ward_chair_command_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_ward_chair_can_pay_any_intro = {
+	OR = { fallout_office_arc_ward_chair_first_affordable = yes fallout_office_arc_ward_chair_second_affordable = yes fallout_office_arc_ward_chair_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The local mayor or ward chair office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_ward_chair_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.ward_chair }
+	fallout_office_arc_ward_chair_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_ward_chair_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_ward_chair_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_ward_chair_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_ward_chair_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_ward_chair_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.ward_chair }
+}
+
+fallout_office_arc_ward_chair_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_ward_chair_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+
+# The First Verdict arc (chaosx.fallout.1095 to 1101)
+fallout_office_arc_magistrate_first_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.magistrate_first_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_office_arc_cost.magistrate_first_scrap compare = greater_than_or_equals }
+}
+fallout_office_arc_magistrate_second_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.magistrate_second_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_magistrate_third_affordable = {
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.magistrate_third_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_magistrate_civic_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_office_arc_cost.magistrate_civic_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_office_arc_cost.magistrate_civic_recognition compare = greater_than_or_equals }
+}
+fallout_office_arc_magistrate_command_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_office_arc_cost.magistrate_command_fuel compare = greater_than_or_equals }
+}
+fallout_office_arc_magistrate_can_pay_any_intro = {
+	OR = { fallout_office_arc_magistrate_first_affordable = yes fallout_office_arc_magistrate_second_affordable = yes fallout_office_arc_magistrate_third_affordable = yes }
+}
+
+# Supported scope: COUNTRY. The judge or tribunal chair office is current and its arc has not
+# run in this Fallout generation.
+fallout_office_arc_magistrate_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_office_is_current = yes
+	check_variable = { fallout_office_role = constant:fallout_office_role.magistrate }
+	fallout_office_arc_magistrate_can_pay_any_intro = yes
+	NOT = { has_country_flag = fallout_office_arc_chain_committed }
+	NOT = { has_country_flag = fallout_office_arc_pending }
+	NOT = { check_variable = { var = fallout_office_arc_closed_generation value = global.fallout_transition_generation compare = equals } }
+}
+
+fallout_office_arc_magistrate_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_office_arc_magistrate_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_magistrate_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_office_arc_magistrate_country_is_current = yes
+	fallout_office_arc_opening_target_is_current = yes
+}
+
+fallout_office_arc_magistrate_delayed_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_office_arc_branch.upper_bound compare = less_than }
+	fallout_office_arc_registry_is_current = yes
+	check_variable = { fallout_office_arc_role = constant:fallout_office_role.magistrate }
+}
+
+fallout_office_arc_magistrate_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_cleanup compare = equals }
+	fallout_office_arc_registry_is_current = yes
+}
+

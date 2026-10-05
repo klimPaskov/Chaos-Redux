@@ -198,6 +198,8 @@ All three candidates are fictional station roles or institutions. The protocol r
 
 ## Runtime and asset boundary
 
+Runtime status (agent decision A16, round 2): the candidate package installer, the character install approval and the step 5 events are implemented for every registry country. These pilot rows take precedence; every other country receives the three candidates of its region and archetype cell. Candidates are installed as offices named after the candidate, without a named holder or portrait, using vanilla generic idea art. The dedicated portraits and institution icons below remain a later addition. The paragraphs that follow describe the dormant period before that change.
+
 The future runtime producer must validate the exact country-memory id, region, archetype, transition generation, assignment row, country package, candidate eligibility, and asset installation surface before publishing a candidate. It must copy candidate ids and types into a country-owned current-generation registry. It may not derive candidates from a tag name alone.
 
 The future asset package needs twenty-four fictional character portraits and twelve dedicated institution icons. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
