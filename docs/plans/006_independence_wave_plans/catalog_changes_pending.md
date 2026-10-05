@@ -207,3 +207,13 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Quebec, Newfoundland, Texas, Yucatan, the Guarani state and the Patagonian state can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - Quebec, Newfoundland, Texas and Yucatan each have a starting problem, their own decisions and two incidents of their own; Newfoundland, Texas and Patagonia open under a named assembly or congress.
 - Acadia, Cascadia, the Cherokee, Haudenosaunee, Lakota, Dine, Pueblo, Maya, Oaxaca, Miskito, Garifuna, Aymara, Quechua, Muisca, Gran Chaco, Amazonian and Maroon states remain unavailable.
+
+
+## 2026-10-05: Europe, Persia and Caucasus packages (D33)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Occitania, Venice, the Trieste Free State, Courland, Polesia, Galicia-Lodomeria, Khuzestan, Circassia, Chechnya and Dagestan can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Venice, Circassia, Chechnya and Dagestan each have a starting problem, their own decisions and two incidents of their own; the six new custom states open under a named assembly or council.
+- Khuzestan completes the membership of the Council of Communities formable.
+- Cornwall, the Faroe Islands, Slavonia, Ingria, Chuvashia, Mordovia, the Nenets and Evenk states, the Far Eastern Republic, Luristan, Bakhtiari, Lazistan, Pontus and Cilicia remain unavailable.

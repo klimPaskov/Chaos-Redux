@@ -864,3 +864,25 @@ Formables: FORM-44 Rio de la Plata Confederation has GAR and HUX, and FORM-45 Me
 Validation: the allocator audit passes with 101 attested packages, 70 reservation groups and 102 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant, localisation key and picture exists.
 
 Needs live game: a wave that releases Newfoundland from the United Kingdom or Texas from the United States as a custom carrier under its institution, Guarani released on the Chaco Boreal, and the IW-196 and IW-204 guard missions counting divisions in the carrier's own anchor.
+
+## D33. Round 2: remaining Europe, Persia and Caucasus rows, FORM-06/10/17 readiness
+
+Disposition: `implemented` for IW-016 Occitania (OCC), IW-020 Venice (ATX), IW-021 Trieste Free State (ICX), IW-036 Courland (BJX), IW-037 Polesia (BKX), IW-042 Galicia-Lodomeria (GAL), IW-062 Khuzestan (CJX), IW-064 Circassia (CLX), IW-065 Chechnya (CIN) and IW-066 Dagestan (DAG); `blocked` for IW-003, IW-011, IW-032, IW-034, IW-046, IW-049, IW-055, IW-056, IW-057, IW-061, IW-063, IW-067, IW-068 and IW-069; IW-005, IW-022, IW-025, IW-035 and IW-059 stay vanilla route overlays; `accepted and queued` for a FORM-17 carrier contract.
+
+Basis: the lead's round-2 priority-20 item (IW-003 stays blocked), using the D25 regional framework engine, the D20/D22 leadership rule and the D29 named-institution rule.
+
+Decisions:
+
+- Four Level 2 rows (Venice, Circassia, Chechnya, Dagestan) and six Level 1 rows. CIN and DAG keep their vanilla rosters through the roster checkpoint; OCC (advisors only) and GAL (no characters) open under the leader the game appoints. Custom institutions: the Assembly of Venice (after the 1848 Republic of San Marco's assembly), the Municipal Council of Trieste, the Courland Provincial Assembly, the Polesian Provincial Council, the Provincial Anjoman of Khuzestan (the provincial councils of the 1907 Persian council law) and the Circassian Khase.
+- Level 2 layers: Venice's lagoon and mainland, Marghera works and Arsenale, with acqua alta and the Lido festival; Circassia's scattered nation, Khase, returning diaspora and Kabardian horse, with the stud farms and the Adyghe schools; Chechnya's mountain feuds, Mekhk-Khel, Grozny oil and mountain guard, with a blood feud and the refinery workers; Dagestan as a federation of many peoples with a federal assembly, languages of state and Caspian ports, with the winter pastures and the Kubachi silversmiths. Incidents are `chaosx.nr6.280` to `.287`. The Dagestan texts never treat Dagestan as one people.
+- GAL binds its first loader anchor, 91, and the release step's planned-anchor core covers its missing vanilla core.
+- Khuzestan is FORM-18's third member (its state puzzle requires 413 through CJX), so FORM-18 can now assemble all three members in a running game.
+- Contacts: OCC SPR and ITA; ATX YUG and AUS; ICX YUG and AUS; BJX GER and LIT; BKX SOV; GAL AUS and HUN; CJX IRQ and ENG; CLX TUR and JOR; CIN TUR and JOR; DAG TUR and AZR.
+
+Blocked rows: IW-003 by the round-2 instruction; IW-011 scenario variant only; IW-032, IW-049, IW-061 and IW-063 without a planner gate; IW-034 route only; IW-046 Chuvashia shares the CHU tag and Kazan group with the IW-043 signature package and needs a reviewed identity split; IW-055 and IW-056 need named community packages; IW-057 stays blocked by D20; IW-067 Lazistan has no sourced period institution; IW-068 Pontus and IW-069 Cilicia are restorations of communities that left in the 1920s, with no institution left to restore.
+
+FORM readiness: FORM-17 North Caucasian Federation has all three named members (CLX 827, CIN 821, DAG 232) in three different reservation groups and is queued first; FORM-06 Adriatic Federation has ATX and ICX; FORM-10 Baltic Federation has KAR and BJX. All three stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist).
+
+Validation: the allocator audit passes with 111 attested packages, 80 reservation groups and 112 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant, localisation key and picture exists.
+
+Needs live game: a Caucasus wave that releases Chechnya or Dagestan from the Soviet Union, Venice or Khuzestan as a custom carrier under its institution, and a FORM-18 formation with Khuzestan as a member.

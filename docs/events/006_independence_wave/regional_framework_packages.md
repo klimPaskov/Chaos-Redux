@@ -23,6 +23,7 @@ Level 2 rows add their own layer on top: a starting problem, a decision family a
 - South Asia and Himalaya (D30): IW-134 Punjab, IW-136 Sindh, IW-137 Balochistan, IW-138 Pashtunistan, IW-139 Kashmir, IW-140 Hyderabad, IW-141 Mysore, IW-143 Madras States, IW-145 Assam, IW-147 Manipur, IW-148 Sikkim. See `south_asia_packages.md`.
 - Southeast Asia, East Asia and Oceania (D31): IW-150 Aceh, IW-151 Minangkabau, IW-154 Bugis state, IW-155 Bali, IW-159 Shan federation, IW-161 Mon State, IW-162 Kachin state, IW-166 Laos, IW-167 Champa, IW-169 East Turkestan, IW-170 Inner Mongolia, IW-171 Ryukyu, IW-175 Samoa. See `east_asia_oceania_packages.md`.
 - Americas (D32): IW-180 Quebec, IW-182 Newfoundland, IW-185 Texas, IW-192 Yucatan, IW-200 Guarani state, IW-203 Patagonian state. See `americas_packages.md`.
+- Europe and Caucasus (D33): IW-016 Occitania, IW-020 Venice, IW-021 Trieste Free State, IW-036 Courland, IW-037 Polesia, IW-042 Galicia-Lodomeria, IW-062 Khuzestan, IW-064 Circassia, IW-065 Chechnya, IW-066 Dagestan. See `europe_caucasus_packages.md`.
 
 ## How it works
 

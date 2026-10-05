@@ -1742,6 +1742,117 @@ is_independence_wave_runtime_automatic_package_iw_203_ready = {
 	512 = { is_independence_wave_candidate_anchor_available = yes }
 }
 
+# Europe and Caucasus regional framework packages (agent decision D33)
+is_independence_wave_runtime_automatic_package_iw_016_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_016 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = OCC
+		is_independence_wave_exact_package_iw_016_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	22 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_020_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_020 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = ATX
+		is_independence_wave_exact_package_iw_020_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	160 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_021_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_021 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = ICX
+		is_independence_wave_exact_package_iw_021_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	736 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_036_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_036 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = BJX
+		is_independence_wave_exact_package_iw_036_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	190 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_037_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_037 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = BKX
+		is_independence_wave_exact_package_iw_037_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	94 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_042_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_042 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = GAL
+		is_independence_wave_exact_package_iw_042_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	91 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_062_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_062 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = CJX
+		is_independence_wave_exact_package_iw_062_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	413 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_064_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_064 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = CLX
+		is_independence_wave_exact_package_iw_064_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	827 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_065_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_065 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = CIN
+		is_independence_wave_exact_package_iw_065_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	821 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
+is_independence_wave_runtime_automatic_package_iw_066_ready = {
+	set_temp_variable = { independence_wave_execution_package_id = constant:independence_wave_package_id.iw_066 }
+	any_of_scopes = {
+		array = global.independence_wave_plan_possible_countries
+		tag = DAG
+		is_independence_wave_exact_package_iw_066_tag_available = yes
+		is_independence_wave_runtime_package_preflight_ready = yes
+	}
+	232 = { is_independence_wave_candidate_anchor_available = yes }
+}
+
 # COUNTRY scope. These are the only tags the current Event 005 joint opening
 # allocator can freeze. Event 006 capacity never claims a colliding tag.
 is_independence_wave_liberations_capacity_country_clear_of_event5 = {
@@ -4084,6 +4195,286 @@ independence_wave_liberations_capacity_try_iw_203 = {
 	}
 }
 
+independence_wave_liberations_capacity_try_iw_016 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p16 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p16 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_016_ready = yes
+			OCC = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = OCC } }
+			}
+			22 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_22 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_016 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = OCC }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 22 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_22 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_020 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p20 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p20 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_020_ready = yes
+			ATX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = ATX } }
+			}
+			160 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_160 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_020 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = ATX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 160 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_160 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_021 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p21 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p21 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_021_ready = yes
+			ICX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = ICX } }
+			}
+			736 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_adriatic_trieste_dalmatia } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_021 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = ICX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 736 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_adriatic_trieste_dalmatia }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_036 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p36 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p36 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_036_ready = yes
+			BJX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = BJX } }
+			}
+			190 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_baltic_livonia } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_036 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = BJX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 190 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_baltic_livonia }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_037 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p37 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p37 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_037_ready = yes
+			BKX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = BKX } }
+			}
+			94 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_94 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_037 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = BKX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 94 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_94 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_042 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p42 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p42 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_042_ready = yes
+			GAL = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = GAL } }
+			}
+			91 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_91_89 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_042 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = GAL }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 91 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_91_89 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_062 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p62 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p62 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_062_ready = yes
+			CJX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = CJX } }
+			}
+			413 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_413 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_062 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = CJX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 413 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_413 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_064 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p64 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p64 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_064_ready = yes
+			CLX = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = CLX } }
+			}
+			827 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_234 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_064 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = CLX }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 827 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_234 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_065 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p65 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p65 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_065_ready = yes
+			CIN = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = CIN } }
+			}
+			821 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_232 } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_065 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = CIN }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 821 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_232 }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
+independence_wave_liberations_capacity_try_iw_066 = {
+	if = {
+		limit = {
+			check_variable = { independence_wave_capacity_selected_count < independence_wave_capacity_target_count }
+			OR = {
+				check_variable = { independence_wave_capacity_chaos_band = constant:independence_wave_package_earliest_band.p66 }
+				check_variable = { independence_wave_capacity_chaos_band > constant:independence_wave_package_earliest_band.p66 }
+			}
+			is_independence_wave_runtime_automatic_package_iw_066_ready = yes
+			DAG = {
+				is_independence_wave_liberations_capacity_country_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_countries value = DAG } }
+			}
+			232 = {
+				is_independence_wave_liberations_capacity_anchor_clear_of_event5 = yes
+				NOT = { is_in_array = { array = independence_wave_capacity_selected_anchors value = THIS } }
+				owner = { is_independence_wave_liberations_capacity_host_clear_of_event5 = yes }
+			}
+			NOT = { is_in_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_dagestan } }
+		}
+		add_to_temp_array = { array = independence_wave_capacity_selected_packages value = constant:independence_wave_package_id.iw_066 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_countries value = DAG }
+		add_to_temp_array = { array = independence_wave_capacity_selected_anchors value = 232 }
+		add_to_temp_array = { array = independence_wave_capacity_selected_groups value = constant:independence_wave_reservation_group_id.rg_dagestan }
+		add_to_temp_variable = { independence_wave_capacity_selected_count = constant:independence_wave_plan.loop_increment }
+	}
+}
+
 independence_wave_liberations_capacity_try_iw_033 = {
 	if = {
 		limit = {
@@ -4773,6 +5164,16 @@ is_independence_wave_liberations_cluster_member_capacity_available = {
 	independence_wave_liberations_capacity_try_iw_192 = yes
 	independence_wave_liberations_capacity_try_iw_200 = yes
 	independence_wave_liberations_capacity_try_iw_203 = yes
+	independence_wave_liberations_capacity_try_iw_016 = yes
+	independence_wave_liberations_capacity_try_iw_020 = yes
+	independence_wave_liberations_capacity_try_iw_021 = yes
+	independence_wave_liberations_capacity_try_iw_036 = yes
+	independence_wave_liberations_capacity_try_iw_037 = yes
+	independence_wave_liberations_capacity_try_iw_042 = yes
+	independence_wave_liberations_capacity_try_iw_062 = yes
+	independence_wave_liberations_capacity_try_iw_064 = yes
+	independence_wave_liberations_capacity_try_iw_065 = yes
+	independence_wave_liberations_capacity_try_iw_066 = yes
 	independence_wave_liberations_capacity_try_iw_014 = yes
 	independence_wave_liberations_capacity_try_iw_023 = yes
 	independence_wave_liberations_capacity_try_iw_184 = yes

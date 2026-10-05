@@ -138,6 +138,14 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Texas (IW-185) | `chaosx.nr6.277` | The Border Bridges | Open the bridges to free trade; Tax the border trade |
 | Yucatan (IW-192) | `chaosx.nr6.278` | The Leagues of Resistance | Recognise the leagues; Ban the leagues |
 | Yucatan (IW-192) | `chaosx.nr6.279` | The Price of Twine | Buy the crop at a fixed price; Let the price fall |
+| Venice (IW-020) | `chaosx.nr6.280` | Acqua Alta | Fund the lagoon defences; Leave the repairs to the parishes |
+| Venice (IW-020) | `chaosx.nr6.281` | The Festival on the Lido | Invite the foreign studios; Keep it a showcase of our own |
+| Circassia (IW-064) | `chaosx.nr6.282` | The Stud Farms of Kabarda | Keep the horses for the guard; Sell the horses abroad |
+| Circassia (IW-064) | `chaosx.nr6.283` | The Adyghe Schools | Teach in Adyghe and Kabardian; Keep Russian in the schools |
+| Chechnya (IW-065) | `chaosx.nr6.284` | A Blood Feud in the Mountains | Let the elders reconcile the families; Send the guard |
+| Chechnya (IW-065) | `chaosx.nr6.285` | The Refinery Workers | Raise the refinery wages; Keep the refineries running |
+| Dagestan (IW-066) | `chaosx.nr6.286` | The Winter Pastures | Guarantee the winter pastures; Open the plains to farming |
+| Dagestan (IW-066) | `chaosx.nr6.287` | The Silversmiths of Kubachi | Fund the craft school; Tax the silver trade |
 
 ## Files
 

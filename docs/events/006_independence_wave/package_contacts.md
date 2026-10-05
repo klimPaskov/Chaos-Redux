@@ -250,6 +250,25 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-200 | GAR | BRA | The Guarani of Mato Grosso |
 | IW-203 | HUX | ENG | The Welsh settlers of the Chubut valley |
 | IW-203 | HUX | CHL | The Chilean ranch hands of the southern estancias |
+| IW-016 | OCC | SPR | The Catalan writers across the Pyrenees |
+| IW-016 | OCC | ITA | The Occitan valleys of Piedmont |
+| IW-020 | ATX | YUG | The old Venetian towns of the Dalmatian coast |
+| IW-020 | ATX | AUS | The Habsburg years of the Veneto |
+| IW-021 | ICX | YUG | The Slovene and Croat villages of the Karst |
+| IW-021 | ICX | AUS | The old Habsburg port trade |
+| IW-036 | BJX | GER | The Baltic German families of Courland |
+| IW-036 | BJX | LIT | The Lithuanian border towns |
+| IW-037 | BKX | SOV | The Belarusian and Ukrainian villages across the border |
+| IW-042 | GAL | AUS | The memory of the Habsburg crownland |
+| IW-042 | GAL | HUN | The old Carpathian trade |
+| IW-062 | CJX | IRQ | The Arab tribes of Basra across the Shatt al-Arab |
+| IW-062 | CJX | ENG | The Anglo-Iranian Oil Company at Abadan |
+| IW-064 | CLX | TUR | The Circassian families of Anatolia |
+| IW-064 | CLX | JOR | The Circassians of Amman |
+| IW-065 | CIN | TUR | The Chechen families of Anatolia |
+| IW-065 | CIN | JOR | The Chechens of Zarqa |
+| IW-066 | DAG | TUR | The Dagestani families of Anatolia |
+| IW-066 | DAG | AZR | The Lezgin villages across the Samur |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.
