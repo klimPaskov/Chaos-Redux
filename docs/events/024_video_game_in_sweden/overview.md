@@ -374,6 +374,13 @@ Admitting the error halves the penalty and its duration, and dismissing it pays 
 Admitting answers also lower Reliance and may file a review, protect shifts, separate play from policy or close the licence office, while dismissing answers raise Reliance and make that family more common.
 
 When an evolution becomes disabled, the handler cancels the active mission, removes temporary route ideas and modifiers, clears transient targets, and returns to the last permitted phase or baseline.
+Every such step back caps Reliance at Habit (49) through `video_game_in_sweden_cap_reliance` and rebuilds the stage idea and programme package, so a Trust the Model surge or a Worldview craze lands in the conclusion band of the earlier stage.
+
+While the stage the current phase would evolve into is switched off (`video_game_in_sweden_next_evolution_disabled`), `video_game_in_sweden_change_reliance` stops gains just below that stage's gate: Habit (49) for the baseline with Evolution I off and for Evolution I with Evolution II off, and Doctrine (74) for Evolution II with Evolution III off.
+A commercial baseline can step straight into Evolution II, so with Evolution I off it is held only when Evolution II is off as well.
+Losses are never limited, and a value already above the ceiling (such as the officer opening's 62 with Evolution II off) stays where it is but cannot rise.
+Evolution II therefore never reaches Worldview without an Evolution III to enter, and its conclusion needs only a protection, preparedness or separation choice plus enough Reliance loss to fall below Doctrine.
+The category header shows "none while the next stage is switched off" with the ceiling instead of an unreachable threshold, and the AI treats Reliance gains at Doctrine or above as pointless while the next stage is off (the same 0.1 factor as the crisis threshold caution).
 
 The handler also applies the safer fallback when Chaos falls below a route gate after a high-Chaos opening.
 

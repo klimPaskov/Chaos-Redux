@@ -912,27 +912,42 @@ video_game_in_sweden_needs_containment_review = {
 }
 
 # AI caution. Sweden is in a severe crisis, Reliance sits just below Doctrine
-# or Worldview, and the evolution that threshold would feed is enabled.
+# or Worldview, and the evolution that threshold would feed is enabled. With the
+# next stage switched off, a gain at Doctrine or above only delays the
+# conclusion, which needs Reliance below Doctrine.
 video_game_in_sweden_ai_avoids_reliance_gain = {
-	video_game_in_sweden_is_severe_campaign_crisis = yes
 	OR = {
 		AND = {
-			NOT = { has_global_flag = events_log_disabled_evolution_24_24_2 }
-			check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.doctrine_min compare = less_than }
-			set_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_reliance.doctrine_min }
-			subtract_from_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_ai_factor.reliance_threshold_margin }
-			check_variable = { var = simulation_reliance value = video_game_in_sweden_ai_threshold_floor compare = greater_than_or_equals }
+			video_game_in_sweden_is_severe_campaign_crisis = yes
+			OR = {
+				AND = {
+					NOT = { has_global_flag = events_log_disabled_evolution_24_24_2 }
+					check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.doctrine_min compare = less_than }
+					set_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_reliance.doctrine_min }
+					subtract_from_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_ai_factor.reliance_threshold_margin }
+					check_variable = { var = simulation_reliance value = video_game_in_sweden_ai_threshold_floor compare = greater_than_or_equals }
+				}
+				AND = {
+					NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
+					check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.worldview_min compare = less_than }
+					set_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_reliance.worldview_min }
+					subtract_from_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_ai_factor.reliance_threshold_margin }
+					check_variable = { var = simulation_reliance value = video_game_in_sweden_ai_threshold_floor compare = greater_than_or_equals }
+				}
+			}
 		}
 		AND = {
-			NOT = { has_global_flag = events_log_disabled_evolution_24_24_3 }
-			check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.worldview_min compare = less_than }
-			set_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_reliance.worldview_min }
-			subtract_from_temp_variable = { video_game_in_sweden_ai_threshold_floor = constant:video_game_in_sweden_ai_factor.reliance_threshold_margin }
-			check_variable = { var = simulation_reliance value = video_game_in_sweden_ai_threshold_floor compare = greater_than_or_equals }
+			video_game_in_sweden_next_evolution_disabled = yes
+			check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.doctrine_min compare = greater_than_or_equals }
 		}
 	}
 }
 
+# The stage the current phase would evolve into is switched off in the event
+# settings. A commercial baseline can also step straight into Evolution II, so
+# with Evolution I off it counts only when Evolution II is off as well.
+# video_game_in_sweden_change_reliance holds Reliance below the switched-off
+# stage's gate while this is true.
 video_game_in_sweden_next_evolution_disabled = {
 	OR = {
 		AND = {
@@ -942,6 +957,10 @@ video_game_in_sweden_next_evolution_disabled = {
 				compare = equals
 			}
 			has_global_flag = events_log_disabled_evolution_24_24_1
+			OR = {
+				NOT = { has_country_flag = video_game_in_sweden_commercial_route }
+				has_global_flag = events_log_disabled_evolution_24_24_2
+			}
 		}
 		AND = {
 			check_variable = {

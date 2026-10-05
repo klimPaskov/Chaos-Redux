@@ -32,6 +32,33 @@ defined_text = {
 
 defined_text = {
 	name = GetVideoGameNextRelianceThreshold
+	# With the next stage switched off, gains stop below that stage's gate.
+	text = {
+		trigger = {
+			video_game_in_sweden_next_evolution_disabled = yes
+			check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_ii compare = equals }
+			check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.doctrine_max compare = greater_than }
+		}
+		localization_key = video_game_reliance_threshold_held_current
+	}
+	text = {
+		trigger = {
+			video_game_in_sweden_next_evolution_disabled = yes
+			check_variable = { var = video_game_in_sweden_phase value = constant:video_game_in_sweden_value.phase_evolution_ii compare = equals }
+		}
+		localization_key = video_game_reliance_threshold_held_doctrine
+	}
+	text = {
+		trigger = {
+			video_game_in_sweden_next_evolution_disabled = yes
+			check_variable = { var = simulation_reliance value = constant:video_game_in_sweden_reliance.habit_max compare = greater_than }
+		}
+		localization_key = video_game_reliance_threshold_held_current
+	}
+	text = {
+		trigger = { video_game_in_sweden_next_evolution_disabled = yes }
+		localization_key = video_game_reliance_threshold_held_habit
+	}
 	text = {
 		trigger = { has_country_flag = video_game_in_sweden_reliance_instrument }
 		localization_key = video_game_reliance_threshold_habit

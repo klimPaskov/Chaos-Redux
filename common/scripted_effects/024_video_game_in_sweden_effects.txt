@@ -318,6 +318,32 @@ video_game_in_sweden_change_reliance = {
 			max = video_game_in_sweden_reliance_ceiling
 		}
 	}
+	# With the next evolution switched off, the current stage keeps a clean
+	# conclusion: gains stop just below the gate of the switched-off stage
+	# (Doctrine for the baseline and Evolution I, Worldview for Evolution II).
+	# Losses are never affected, and a value already above the ceiling holds.
+	if = {
+		limit = { video_game_in_sweden_next_evolution_disabled = yes }
+		set_temp_variable = { video_game_in_sweden_reliance_ceiling = constant:video_game_in_sweden_reliance.habit_max }
+		if = {
+			limit = {
+				check_variable = {
+					var = video_game_in_sweden_phase
+					value = constant:video_game_in_sweden_value.phase_evolution_ii
+					compare = equals
+				}
+			}
+			set_temp_variable = { video_game_in_sweden_reliance_ceiling = constant:video_game_in_sweden_reliance.doctrine_max }
+		}
+		if = {
+			limit = { check_variable = { simulation_reliance > video_game_in_sweden_reliance_ceiling } }
+			set_temp_variable = { video_game_in_sweden_reliance_ceiling = simulation_reliance }
+		}
+		clamp_temp_variable = {
+			var = video_game_in_sweden_reliance_next
+			max = video_game_in_sweden_reliance_ceiling
+		}
+	}
 	set_variable = { simulation_reliance = video_game_in_sweden_reliance_next }
 	# Consumed arithmetic input. Zero prevents accidental reuse within this chain.
 	set_temp_variable = { video_game_in_sweden_reliance_delta = 0 }
@@ -1815,6 +1841,10 @@ video_game_in_sweden_handle_disabled_evolution = {
 			set_variable = { video_game_in_sweden_evolution_stage = 0 }
 		}
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_review }
+		# Every step back lands in the conclusion band, so a surge or a Worldview
+		# craze never leaves the earlier stage without an exit.
+		set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.habit_max }
+		video_game_in_sweden_cap_reliance = yes
 		video_game_in_sweden_refresh_stage_idea = yes
 	}
 	else_if = {
@@ -1846,6 +1876,8 @@ video_game_in_sweden_handle_disabled_evolution = {
 			set_variable = { video_game_in_sweden_evolution_stage = 0 }
 		}
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_review }
+		set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.habit_max }
+		video_game_in_sweden_cap_reliance = yes
 		video_game_in_sweden_refresh_stage_idea = yes
 	}
 	else_if = {
@@ -1866,18 +1898,8 @@ video_game_in_sweden_handle_disabled_evolution = {
 		set_variable = { video_game_in_sweden_phase = constant:video_game_in_sweden_value.phase_baseline }
 		set_variable = { video_game_in_sweden_evolution_stage = 0 }
 		set_variable = { video_game_in_sweden_status = constant:video_game_in_sweden_value.status_review }
-		if = {
-			limit = {
-				has_global_flag = events_log_disabled_evolution_24_24_1
-				check_variable = {
-					var = simulation_reliance
-					value = constant:video_game_in_sweden_reliance.doctrine_min
-					compare = greater_than_or_equals
-				}
-			}
-			set_variable = { simulation_reliance = constant:video_game_in_sweden_reliance.habit_max }
-			video_game_in_sweden_refresh_reliance_state = yes
-		}
+		set_temp_variable = { video_game_in_sweden_reliance_cap = constant:video_game_in_sweden_reliance.habit_max }
+		video_game_in_sweden_cap_reliance = yes
 		video_game_in_sweden_refresh_stage_idea = yes
 	}
 }

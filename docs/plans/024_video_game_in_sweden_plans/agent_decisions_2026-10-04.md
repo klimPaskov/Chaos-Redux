@@ -345,3 +345,24 @@ Weighted surfaces changed this round, for the auditor once the service works:
 - Option `.30.supply_b` no longer sets the supply crisis in peace (R2-2), which removes a peacetime path into the severe-crisis AI factors.
 Decision: no numeric probability acceptance is claimed for D23 or this round. Once an inline test no longer returns INTERNAL_ERROR, the auditor runs the baseline and compare with the documented scenario schema (`schemaVersion`, `scenarios[].actor/state/flags`, and `scopes` bindings for the foreign-response `event_target:video_game_in_sweden_host` factors) against the scenario ids in D23, and the results are recorded against D23.
 Disposition: `blocked` (missing input: a working `hoi4.probability_*` route).
+
+## Round 3 decisions
+
+Disposition: accepted under the same standing grant of design authority, taking the round 3 lead's decisions as the basis.
+Implementation evidence is source review and the bounded runtime-observation fixture; anything only the engine can show is marked needs_live_game.
+
+### R3-1. A switched-off next stage holds Reliance below its gate, and every step back lands in the conclusion band
+
+Finding: `video_game_in_sweden_handle_disabled_evolution` stepped the phase back without capping Reliance except in the Evolution I branch, so switching Evolution III off during a Trust the Model surge left Evolution II at 100, which no remaining one-time reduction could bring below Doctrine; with Evolution III off from the start, national league seasons could push Evolution II into Worldview with no exit (spec part 2 "No Worldview-stage lock may remain", acceptance A9).
+The trigger `video_game_in_sweden_next_evolution_disabled` existed but was never read.
+Decision:
+- `video_game_in_sweden_change_reliance` stops gains just below the switched-off stage's gate while `video_game_in_sweden_next_evolution_disabled` holds: `habit_max` (49) for the baseline with Evolution I off and for Evolution I with Evolution II off, `doctrine_max` (74) for Evolution II with Evolution III off. It follows the auxiliary-cap pattern: losses are never limited, and a value already above the ceiling holds but cannot rise. The ceilings are the existing band constants, so the bands remain the single tuning point.
+- The trigger now excludes a commercial baseline whose Evolution II is still on, because that baseline can step straight into Evolution II (spec part 2: "Evolution II and III cannot require" Evolution I); with both off it is held at Habit like any other baseline.
+- Every step-back branch (III to II, I or baseline; II to I or baseline; I to baseline) caps Reliance at `habit_max` through `video_game_in_sweden_cap_reliance`, which refreshes the Reliance state, achievement tracking and programme package, and then rebuilds the stage idea. The Evolution I branch's old direct `set_variable` is replaced by the same call.
+- The category header's next-threshold text reads "none while the next stage is switched off" with the ceiling, or "cannot rise further" when Reliance is already above it, so it never names an unreachable threshold.
+- `video_game_in_sweden_ai_avoids_reliance_gain` also holds while the next stage is off and Reliance is at Doctrine or above, so the AI's widening, rules revision, officer league, national league, preparedness and licence weights fall to the existing 0.1 factor when a gain would only delay the conclusion. This is a new branch on an existing weighted surface; its probability comparison joins the blocked R2-8 list.
+Rejected: a separate containment review for Evolution I and II (lead decision, adds a surface without need).
+Trace (fixture cases `test_switched_off_next_stage_holds_reliance_below_its_gate` and `test_step_back_from_a_switched_off_stage_lands_in_the_conclusion_band`, every fixture case passes): Evolution II at 70 with Evolution III off goes 74, 74, 56, 70 for +14, +6, -18, +14, while the same +14 with Evolution III on reaches 84; Evolution III switched off at Reliance 100 returns to Evolution II at 49, and with protected shifts `video_game_in_sweden_can_conclude_low_value` holds.
+Basis: spec part 2 Disabled evolution handling, acceptance A9, the README rule that Reliance is capped at a safer public band, round 3 lead decision on the disabled-stage fix.
+Disposition: `implemented`; the header rendering is needs_live_game.
+

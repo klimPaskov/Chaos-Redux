@@ -39,7 +39,15 @@ class ObserverModel(life.FrameModel):
         self.modifier_grants = []
         self.dispatch_only = False
         self.native_nodes = {}
+        # Helpers recorded instead of executed. A case may clear an entry to run
+        # the real source of that helper.
+        self.stubs = {"video_game_in_sweden_open_trust_reassessment", "video_game_in_sweden_update_trust_model_progress",
+                      "video_game_in_sweden_refresh_crisis_state"}
+        # Explicit enemy roster for random_enemy_country, in selection order.
+        self.enemies = []
         self.facts.update({("SWE", "has_war", "no"): False,
+                           ("SWE", "has_war", "yes"): False,
+                           ("SWE", "has_war_with_major", "yes"): False,
                            ("SWE", "has_global_flag", "world_end"): False,
                            ("SWE", "has_global_flag", "events_log_disabled_evolution_24_24_3"): False,
                            ("SWE", "owns_state", "constant:video_game_in_sweden_event.stockholm_state"): True,
@@ -57,7 +65,8 @@ class ObserverModel(life.FrameModel):
             if n.key in ("clr_country_flag", "country_event", "FROM.FROM", "state", "is_core_of",
                          "clear_global_event_target", "remove_mission", "remove_decision", "remove_ideas",
                          "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier",
-                         "clear_array", "force_update_dynamic_modifier"):
+                         "clear_array", "force_update_dynamic_modifier", "clamp_temp_variable", "clear_variable",
+                         "random_enemy_country", "any_enemy_country", "save_global_event_target_as"):
                 name = f"__native_{n.path}_{n.start}_{n.key}"
                 self.native_nodes[name] = n
                 life.APIS[name] = n
@@ -119,10 +128,34 @@ class ObserverModel(life.FrameModel):
                 return True
             if n.key in ("clear_array", "force_update_dynamic_modifier"):
                 return True
+            if n.key == "clamp_temp_variable":
+                # One-sided clamps are native; a missing side does not bound.
+                variable = life.field(n.body, "var")
+                value = self.temp[variable]
+                if life.field(n.body, "min") is not None:
+                    value = max(self.number(life.field(n.body, "min")), value)
+                if life.field(n.body, "max") is not None:
+                    value = min(self.number(life.field(n.body, "max")), value)
+                self.temp[variable] = value
+                return True
+            if n.key == "clear_variable":
+                self.saved.pop((self.actor, n.body), None)
+                return True
+            if n.key == "save_global_event_target_as":
+                self.targets[n.body] = self.actor
+                return True
+            if n.key == "any_enemy_country":
+                return any(self.scope(enemy, n.body) for enemy in self.enemies)
+            if n.key == "random_enemy_country":
+                limit = life.field(n.body, "limit", [])
+                for enemy in self.enemies:
+                    if self.scope(enemy, limit):
+                        self.scope(enemy, [c for c in n.body if c.key != "limit"])
+                        break
+                return True
         if name in self.native_predicates:
             return self.native_predicates[name]
-        if name in ("video_game_in_sweden_open_trust_reassessment", "video_game_in_sweden_update_trust_model_progress",
-                    "video_game_in_sweden_refresh_crisis_state"):
+        if name in self.stubs:
             self.called.append(name)
             return True
         return super().call(name)
@@ -310,6 +343,73 @@ class ObservationSourceTests(unittest.TestCase):
                 model.saved[("SWE", "video_game_in_sweden_active_mission")] = Decimal(mission_id)
                 model.call(callback)
                 self.assertEqual(model.called, [callback + "_apply_current"])
+
+    # Switched-off next stage (R3-1). Package, stage-idea and achievement
+    # refreshes are recorded, not executed.
+    def stage_model(self, phase, disabled):
+        model = self.model()
+        model.stubs |= {"video_game_in_sweden_refresh_program_package", "video_game_in_sweden_refresh_stage_idea",
+                        "video_game_in_sweden_update_achievement_tracking"}
+        model.saved[("SWE", "video_game_in_sweden_phase")] = Decimal(phase)
+        for stage in (1, 2, 3):
+            model.facts[("SWE", "has_global_flag", f"events_log_disabled_evolution_24_24_{stage}")] = stage in disabled
+        return model
+
+    def change(self, model, delta):
+        model.temp["video_game_in_sweden_reliance_delta"] = Decimal(delta)
+        model.call("video_game_in_sweden_change_reliance")
+        return model.saved[("SWE", "simulation_reliance")]
+
+    def test_switched_off_next_stage_holds_reliance_below_its_gate(self):
+        # Evolution II with Evolution III off from the start never reaches Worldview.
+        model = self.stage_model(3, {3})
+        model.saved[("SWE", "simulation_reliance")] = Decimal(70)
+        self.assertEqual([self.change(model, d) for d in (14, 6, -18, 14)],
+                         [Decimal(74), Decimal(74), Decimal(56), Decimal(70)])
+        self.assertIn("video_game_in_sweden_reliance_doctrine", model.flags["SWE"])
+        # With Evolution III on, the same gain crosses into Worldview.
+        model = self.stage_model(3, set())
+        model.saved[("SWE", "simulation_reliance")] = Decimal(70)
+        self.assertEqual(self.change(model, 14), Decimal(84))
+        # Evolution I with Evolution II off stops at Habit; a value already
+        # above the ceiling holds but cannot rise, and losses still apply.
+        model = self.stage_model(2, {2})
+        model.saved[("SWE", "simulation_reliance")] = Decimal(40)
+        self.assertEqual(self.change(model, 9), Decimal(49))
+        model.saved[("SWE", "simulation_reliance")] = Decimal(62)
+        self.assertEqual([self.change(model, d) for d in (9, -10, 9)], [Decimal(62), Decimal(52), Decimal(52)])
+        # A commercial baseline with Evolution I off may still grow into
+        # Evolution II unless that stage is off as well.
+        for commercial, disabled, expected in ((False, {1}, 49), (True, {1}, 53), (True, {1, 2}, 49)):
+            model = self.stage_model(1, disabled)
+            if commercial:
+                model.flags["SWE"].add("video_game_in_sweden_commercial_route")
+            model.saved[("SWE", "simulation_reliance")] = Decimal(45)
+            self.assertEqual(self.change(model, 8), Decimal(expected))
+
+    def test_step_back_from_a_switched_off_stage_lands_in_the_conclusion_band(self):
+        # Evolution III switched off during a Trust the Model surge.
+        model = self.stage_model(4, {3})
+        model.flags["SWE"].update({"video_game_in_sweden_evolution_iii_active", "video_game_in_sweden_evolution_ii_recorded",
+                                   "video_game_in_sweden_trust_model_active", "video_game_in_sweden_model_surge_active",
+                                   "video_game_in_sweden_protected_shifts"})
+        model.saved[("SWE", "simulation_reliance")] = Decimal(100)
+        model.saved[("SWE", "video_game_in_sweden_program_days")] = Decimal(600)
+        model.call("video_game_in_sweden_handle_disabled_evolution")
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_phase")], Decimal(3))
+        self.assertEqual(model.saved[("SWE", "simulation_reliance")], Decimal(49))
+        self.assertIn("video_game_in_sweden_evolution_ii_active", model.flags["SWE"])
+        self.assertNotIn("video_game_in_sweden_trust_model_active", model.flags["SWE"])
+        self.assertIn("video_game_in_sweden_refresh_program_package", model.called)
+        model.native_predicates["video_game_in_sweden_no_active_mission"] = True
+        self.assertTrue(model.call("video_game_in_sweden_can_conclude_low_value"))
+        # Evolution II switched off at Doctrine steps back to Evolution I at Habit.
+        model = self.stage_model(3, {2})
+        model.flags["SWE"].update({"video_game_in_sweden_evolution_ii_active", "video_game_in_sweden_evolution_i_recorded"})
+        model.saved[("SWE", "simulation_reliance")] = Decimal(74)
+        model.call("video_game_in_sweden_handle_disabled_evolution")
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_phase")], Decimal(2))
+        self.assertEqual(model.saved[("SWE", "simulation_reliance")], Decimal(49))
 
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
