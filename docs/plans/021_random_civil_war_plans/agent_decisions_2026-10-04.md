@@ -329,3 +329,12 @@ Decision: `event021_civil_war_crisis_category_desc` is `[event021_GetCategorySta
 The phase getter now names Settlement before Reconstruction while the obligation is open and uses the opening phase for the opening scramble. The summary getter is ordered by severity: settlement, reconstruction, exposure, lost or threatened capital, lost supply, Failing or Collapse authority, command or political claimants, and an active-war fallback.
 No raw pressure value or implementation term is shown, and the localisation file stays UTF-8 with BOM. Rendering in the decision panel remains a live or MCP GUI check (`needs_live_game`).
 Basis: the lead's round 2 assignment and spec parts 3 and 6.
+
+## D27. The end of a crisis is reported, and a breached obligation counts against the peace
+
+Finding: the final reconstruction block fired only the hidden cleanup `chaosx.nr21.10`, whose unused text keys claimed every obligation had been met. The player never learned whether the settlement obligation held, although it decides recurrence and The Terms Hold, and a breach had no effect on the recurrence score.
+Decision: the final block fires the visible report `chaosx.nr21.22` (The Peace Is Judged) immediately before `chaosx.nr21.10`, whose content and timing are unchanged. The report names the obligation through `event021_GetSettlementObligationName`, picks its description from `random_civil_war_settlement_obligation_breached`, and states the consequence through `event021_GetSettlementVerdictConsequence`. Its AI chance is 100.
+It reads only the obligation variable and flags, which crisis cleanup leaves in place until the next settlement or crisis, so the report is correct even if the cleanup event is processed first.
+To make the stated consequence true, `event021_prepare_recurrence` adds `breached_obligation_pressure` (15) to the recurrence score for a breached obligation, as the recurrence matrix row REC-05 (broken guarantee, strong increase) expects. The orphaned `chaosx.nr21.10.t/.d/.a` keys are replaced by the `chaosx.nr21.22` keys.
+The recurrence change and the report timing remain `needs_live_game`, and no MCP probability compare was run because the probability routes failed earlier in this round.
+Basis: the lead's round 2 assignment and the probability matrix row REC-05.

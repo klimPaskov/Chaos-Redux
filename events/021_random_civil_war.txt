@@ -212,6 +212,31 @@ country_event = {
 	}
 }
 
+# End-of-crisis report, fired by the final reconstruction block just before
+# the hidden cleanup event. It names the obligation and says whether the
+# terms held or were breached.
+country_event = {
+	id = chaosx.nr21.22
+	title = chaosx.nr21.22.t
+	desc = {
+		trigger = { NOT = { has_country_flag = random_civil_war_settlement_obligation_breached } }
+		text = chaosx.nr21.22.d_held
+	}
+	desc = {
+		trigger = { has_country_flag = random_civil_war_settlement_obligation_breached }
+		text = chaosx.nr21.22.d_breached
+	}
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_reconstruction_resolved }
+
+	option = {
+		name = chaosx.nr21.22.a
+		custom_effect_tooltip = event021_settlement_verdict_tt
+		ai_chance = { base = constant:random_civil_war_value.hundred }
+	}
+}
+
 country_event = {
 	id = chaosx.nr21.10
 	hidden = yes

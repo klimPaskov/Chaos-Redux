@@ -230,6 +230,7 @@ Hold the Settlement Terms starts a hold that ends on the obligation's review dat
 Reconstruction restores administration through a finite due-date sequence instead of an always-running maintenance loop.
 
 Completion applies reconstruction relief, records the settlement and achievement receipts, prepares recurrence memory, and then cleans temporary Event 021 state.
+Just before the cleanup, the government receives The Peace Is Judged, which names the obligation and says whether the terms held or were breached. A breached obligation adds to the recurrence score, so renewed civil war becomes more likely.
 
 The global review keeps visiting a settled crisis after reconstruction ends. The obligation is judged on the first review at or after its hold date, and the crisis then closes, which frees its theater for a new civil war.
 
