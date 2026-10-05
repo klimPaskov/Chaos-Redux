@@ -6158,12 +6158,14 @@ infantry_spawn_derivative_evaluate_current_family_management = {
 
 infantry_spawn_derivative_pay_current_family_management = {
 	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_paid_family_provider_id = constant:infantry_spawn_derivative_package_value.zero }
 	if = {
 		limit = { check_variable = { infantry_spawn_derivative_registry_index > constant:infantry_spawn_event.invalid_index } }
 		meta_effect = {
 			text = { chaos_unit_family_provider_[PROVIDER]_event19_pay_management_action = yes }
 			PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
 		}
+		set_temp_variable = { infantry_spawn_paid_family_provider_id = infantry_spawn_current_registry_provider_id }
 	}
 }
 
@@ -6218,6 +6220,7 @@ infantry_spawn_derivative_authorize_zombie_training = {
 		if = {
 			limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
 			infantry_spawn_derivative_unlock_zombie_templates = yes
+			infantry_spawn_credit_family_provider_purchase = yes
 		}
 	}
 }
@@ -6276,6 +6279,7 @@ infantry_spawn_derivative_manifest_paid_family_formation = {
 				limit = { check_variable = { infantry_spawn_derivative_materialization_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
 				set_temp_variable = { infantry_spawn_derivative_cooldown_days = constant:infantry_spawn_derivative_runtime.reinforcement_cooldown_days }
 				set_country_flag = { flag = infantry_spawn_derivative_reinforcement_cooldown days = infantry_spawn_derivative_cooldown_days }
+				infantry_spawn_credit_family_provider_purchase = yes
 			}
 			else_if = {
 				limit = { check_variable = { infantry_spawn_derivative_materialization_rollback_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
@@ -6300,6 +6304,7 @@ infantry_spawn_derivative_pay_family_sustainment = {
 			limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
 			add_to_variable = { infantry_spawn_derivative_sustainment_actions = constant:infantry_spawn_derivative_package_value.one }
 			set_country_flag = infantry_spawn_derivative_family_sustained
+			infantry_spawn_credit_family_provider_purchase = yes
 			set_temp_variable = { infantry_spawn_derivative_cooldown_days = constant:infantry_spawn_derivative_runtime.sustainment_cooldown_days }
 			set_country_flag = { flag = infantry_spawn_derivative_sustainment_cooldown days = infantry_spawn_derivative_cooldown_days }
 		}

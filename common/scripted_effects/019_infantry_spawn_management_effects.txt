@@ -5788,7 +5788,10 @@ infantry_spawn_build_request_candidate_pool = {
 
 # Dispatches every registered provider's owner-side custom-equipment publisher.
 # A future family extends this proof through its provider package alone.
+# The caller's provider id is restored afterwards, because resource snapshots
+# run between a family's registry lookup and its provider payment or refund.
 infantry_spawn_publish_registered_family_custom_equipment_tokens = {
+	set_temp_variable = { infantry_spawn_family_equipment_caller_provider_id = infantry_spawn_current_registry_provider_id }
 	if = {
 		limit = { chaos_unit_family_registry_is_aligned = yes }
 		set_temp_variable = { infantry_spawn_family_equipment_provider_scan_index = constant:chaos_unit_family_registry.first_index }
@@ -5803,6 +5806,7 @@ infantry_spawn_publish_registered_family_custom_equipment_tokens = {
 		}
 	}
 	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+	set_temp_variable = { infantry_spawn_current_registry_provider_id = infantry_spawn_family_equipment_caller_provider_id }
 }
 
 infantry_spawn_snapshot_family_pre_payment_equipment_balances = {

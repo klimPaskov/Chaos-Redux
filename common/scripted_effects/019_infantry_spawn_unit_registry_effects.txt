@@ -4312,17 +4312,17 @@ chaos_unit_family_provider_501_event19_evaluate_management = {
 		limit = {
 			NOT = { is_in_array = { array = infantry_spawn_trainable_family_ids value = constant:event19_zombie_family.family_id } }
 			infantry_spawn_country_has_eligible_state = yes
-			check_variable = { var = army_experience value = constant:event19_zombie_family.training_army_experience_cost compare = greater_than_or_equals }
-			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.training_infantry_equipment_cost compare = greater_than_or_equals }
-			NOT = { has_manpower < constant:event19_zombie_family.training_manpower_cost }
+			check_variable = { var = army_experience value = global.black_friday_price_event19_zombie_family_training_army_experience_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@infantry_equipment value = global.black_friday_price_event19_zombie_family_training_infantry_equipment_cost compare = greater_than_or_equals }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_zombie_family_training_manpower_cost } NOT = { has_manpower < infantry_spawn_sale_price_check }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
 	}
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_family_live_division_count > 0 }
-			check_variable = { var = num_equipment@infantry_equipment value = constant:event19_zombie_family.sustainment_infantry_equipment_cost compare = greater_than_or_equals }
-			NOT = { has_manpower < constant:event19_zombie_family.sustainment_manpower_cost }
+			check_variable = { var = num_equipment@infantry_equipment value = global.black_friday_price_event19_zombie_family_sustainment_infantry_equipment_cost compare = greater_than_or_equals }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_zombie_family_sustainment_manpower_cost } NOT = { has_manpower < infantry_spawn_sale_price_check }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}
@@ -4336,13 +4336,13 @@ chaos_unit_family_provider_501_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_train > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_army_experience_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_zombie_family_training_army_experience_cost }
 		army_experience = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_infantry_equipment_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_zombie_family_training_infantry_equipment_cost }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.training_manpower_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_zombie_family_training_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4352,10 +4352,10 @@ chaos_unit_family_provider_501_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.sustainment_infantry_equipment_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_zombie_family_sustainment_infantry_equipment_cost }
 		add_equipment_to_stockpile = { type = infantry_equipment amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_zombie_family.sustainment_manpower_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_zombie_family_sustainment_manpower_cost }
 		add_manpower = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4367,9 +4367,9 @@ chaos_unit_family_provider_501_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
 		}
-		army_experience = constant:event19_zombie_family.training_army_experience_cost
-		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event19_zombie_family.training_infantry_equipment_cost }
-		add_manpower = constant:event19_zombie_family.training_manpower_cost
+		army_experience = global.black_friday_price_event19_zombie_family_training_army_experience_cost
+		add_equipment_to_stockpile = { type = infantry_equipment amount = global.black_friday_price_event19_zombie_family_training_infantry_equipment_cost }
+		add_manpower = global.black_friday_price_event19_zombie_family_training_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 	else_if = {
@@ -4377,8 +4377,8 @@ chaos_unit_family_provider_501_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
 		}
-		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event19_zombie_family.sustainment_infantry_equipment_cost }
-		add_manpower = constant:event19_zombie_family.sustainment_manpower_cost
+		add_equipment_to_stockpile = { type = infantry_equipment amount = global.black_friday_price_event19_zombie_family_sustainment_infantry_equipment_cost }
+		add_manpower = global.black_friday_price_event19_zombie_family_sustainment_manpower_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 }
@@ -4560,8 +4560,8 @@ chaos_unit_family_provider_502_event19_evaluate_management = {
 	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
 	if = {
 		limit = {
-			NOT = { has_political_power < constant:event19_ghost_family.manifest_political_power_cost }
-			NOT = { command_power < constant:event19_ghost_family.manifest_command_power_cost }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_ghost_family_manifest_political_power_cost } NOT = { has_political_power < infantry_spawn_sale_price_check }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_ghost_family_manifest_command_power_cost } NOT = { command_power < infantry_spawn_sale_price_check }
 			infantry_spawn_country_has_eligible_state = yes
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
@@ -4569,8 +4569,8 @@ chaos_unit_family_provider_502_event19_evaluate_management = {
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_family_live_division_count > 0 }
-			NOT = { has_political_power < constant:event19_ghost_family.sustainment_political_power_cost }
-			NOT = { command_power < constant:event19_ghost_family.sustainment_command_power_cost }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_ghost_family_sustainment_political_power_cost } NOT = { has_political_power < infantry_spawn_sale_price_check }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_ghost_family_sustainment_command_power_cost } NOT = { command_power < infantry_spawn_sale_price_check }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}
@@ -4584,10 +4584,10 @@ chaos_unit_family_provider_502_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_ghost_family.manifest_political_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_ghost_family_manifest_political_power_cost }
 		add_political_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_ghost_family.manifest_command_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_ghost_family_manifest_command_power_cost }
 		add_command_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4597,10 +4597,10 @@ chaos_unit_family_provider_502_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_ghost_family.sustainment_political_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_ghost_family_sustainment_political_power_cost }
 		add_political_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_ghost_family.sustainment_command_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_ghost_family_sustainment_command_power_cost }
 		add_command_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4612,8 +4612,8 @@ chaos_unit_family_provider_502_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
 		}
-		add_political_power = constant:event19_ghost_family.manifest_political_power_cost
-		add_command_power = constant:event19_ghost_family.manifest_command_power_cost
+		add_political_power = global.black_friday_price_event19_ghost_family_manifest_political_power_cost
+		add_command_power = global.black_friday_price_event19_ghost_family_manifest_command_power_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 	else_if = {
@@ -4621,8 +4621,8 @@ chaos_unit_family_provider_502_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
 		}
-		add_political_power = constant:event19_ghost_family.sustainment_political_power_cost
-		add_command_power = constant:event19_ghost_family.sustainment_command_power_cost
+		add_political_power = global.black_friday_price_event19_ghost_family_sustainment_political_power_cost
+		add_command_power = global.black_friday_price_event19_ghost_family_sustainment_command_power_cost
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 }
@@ -4806,10 +4806,10 @@ chaos_unit_family_provider_503_event19_evaluate_management = {
 	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
 	if = {
 		limit = {
-			NOT = { has_political_power < constant:event19_golem_family.binding_political_power_cost }
-			NOT = { command_power < constant:event19_golem_family.binding_command_power_cost }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_golem_family_binding_political_power_cost } NOT = { has_political_power < infantry_spawn_sale_price_check }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_golem_family_binding_command_power_cost } NOT = { command_power < infantry_spawn_sale_price_check }
 			NOT = { num_of_civilian_factories_available_for_projects < constant:event19_golem_family.binding_civilian_factory_gate }
-			check_variable = { var = num_equipment@coal_golem_equipment_1 value = constant:event19_golem_family.binding_equipment_cost compare = greater_than_or_equals }
+			check_variable = { var = num_equipment@coal_golem_equipment_1 value = global.black_friday_price_event19_golem_family_binding_equipment_cost compare = greater_than_or_equals }
 			infantry_spawn_country_has_eligible_state = yes
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
@@ -4817,8 +4817,8 @@ chaos_unit_family_provider_503_event19_evaluate_management = {
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_family_live_division_count > 0 }
-			NOT = { has_political_power < constant:event19_golem_family.sustainment_political_power_cost }
-			check_variable = { var = num_equipment@coal_golem_equipment_1 value = constant:event19_golem_family.sustainment_equipment_cost compare = greater_than_or_equals }
+			set_temp_variable = { infantry_spawn_sale_price_check = global.black_friday_price_event19_golem_family_sustainment_political_power_cost } NOT = { has_political_power < infantry_spawn_sale_price_check }
+			check_variable = { var = num_equipment@coal_golem_equipment_1 value = global.black_friday_price_event19_golem_family_sustainment_equipment_cost compare = greater_than_or_equals }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
 	}
@@ -4832,13 +4832,13 @@ chaos_unit_family_provider_503_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_spawn > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_golem_family.binding_political_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_golem_family_binding_political_power_cost }
 		add_political_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_golem_family.binding_command_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_golem_family_binding_command_power_cost }
 		add_command_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_golem_family.binding_equipment_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_golem_family_binding_equipment_cost }
 		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4848,10 +4848,10 @@ chaos_unit_family_provider_503_event19_pay_management_action = {
 			check_variable = { infantry_spawn_family_provider_can_sustain > 0 }
 		}
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_golem_family.sustainment_political_power_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_golem_family_sustainment_political_power_cost }
 		add_political_power = infantry_spawn_family_provider_negative_cost
 		set_temp_variable = { infantry_spawn_family_provider_negative_cost = 0 }
-		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = constant:event19_golem_family.sustainment_equipment_cost }
+		subtract_from_temp_variable = { infantry_spawn_family_provider_negative_cost = global.black_friday_price_event19_golem_family_sustainment_equipment_cost }
 		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = infantry_spawn_family_provider_negative_cost }
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
 	}
@@ -4863,9 +4863,9 @@ chaos_unit_family_provider_503_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
 		}
-		add_political_power = constant:event19_golem_family.binding_political_power_cost
-		add_command_power = constant:event19_golem_family.binding_command_power_cost
-		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:event19_golem_family.binding_equipment_cost }
+		add_political_power = global.black_friday_price_event19_golem_family_binding_political_power_cost
+		add_command_power = global.black_friday_price_event19_golem_family_binding_command_power_cost
+		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = global.black_friday_price_event19_golem_family_binding_equipment_cost }
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 	else_if = {
@@ -4873,8 +4873,8 @@ chaos_unit_family_provider_503_event19_refund_management_action = {
 			check_variable = { infantry_spawn_family_provider_payment_succeeded > 0 }
 			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
 		}
-		add_political_power = constant:event19_golem_family.sustainment_political_power_cost
-		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = constant:event19_golem_family.sustainment_equipment_cost }
+		add_political_power = global.black_friday_price_event19_golem_family_sustainment_political_power_cost
+		add_equipment_to_stockpile = { type = coal_golem_equipment_1 amount = global.black_friday_price_event19_golem_family_sustainment_equipment_cost }
 		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
 	}
 }

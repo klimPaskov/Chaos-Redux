@@ -219,6 +219,6 @@ The authoritative workbook row for ID 26 is Black Friday, the duplicate no-ID ro
 ## Current conclusion (2026-10-05)
 
 The lifecycle, event-log, presentation, arithmetic, asset, and catalog source paths are implemented, and Event 26 is on the default-enabled event list (agent decision D8). The sale opens on the in-game Friday (D1).
-The queued owners' native and custom costs read the sale price table or the simple API (D4, D5, D11 to D22, and D28), their paid event options are classified as purchases or not (D26), and every native price-table decision credits the achievement (D27).
+The queued owners' native and custom costs read the sale price table or the simple API (D4, D5, D11 to D22, D28, and D30, which covers Event 019's family management and its own family providers), their paid event options are classified as purchases or not (D26), and every native price-table decision credits the achievement (D27).
 Engine costs that no modifier can multiply keep their normal price, and the report and Event Details name them (D7 and D24).
-The open work is the active workstreams' own adoption of the sale (`owner_adoption_requests.md`), which leaves a missed discount rather than a wrong charge, the queued Event 019 family providers `_501` to `_503`, and the live evidence listed above, which belongs to the user's live sessions.
+The open work is the active workstreams' own adoption of the sale (`owner_adoption_requests.md`), which leaves a missed discount rather than a wrong charge, and the live evidence listed above, which belongs to the user's live sessions.
