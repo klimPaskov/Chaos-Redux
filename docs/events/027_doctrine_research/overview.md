@@ -59,7 +59,7 @@ A confirmation runs one receipt transaction:
 - Mastery on an assigned track reads the branch's native level, adds mastery one point at a time, re-reads the level after every point, and succeeds only when the branch reaches exactly the next level.
 - An empty track first receives the selected subdoctrine through `set_sub_doctrine` with its folder and numeric track index. The level is read again, written to the receipt as the pre-level, and the same one-step loop runs. When stored mastery already completes the branch on assignment, the assignment stands, no choice is spent, and `.13` explains the result.
 
-The one-point loop stops at the reward cost of the level being reached: 100 by default and for Chaos Warfare, 60 for Special Forces, and 50 for People's War levels 1, 2, and 4. If the level readback does not update inside the effect, the transaction ends as ambiguous after crossing the target threshold once, spends no choice, and quarantines the batch.
+The one-point loop stops at the reward cost of the level being reached: 100 by default and for Chaos Warfare, 60 for Special Forces, and 50 for People's War levels 1, 2, and 4 (`doctrine_research_prepare_transaction_step_limit`). When the country's folder, active Grand Doctrine, track, and subdoctrine mastery gain factors (read through `modifier@<doctrine>_mastery_gain_factor`) sum below zero, the guard is that cost divided by one plus the sum, rounded up and capped at twice the cost (`mastery_point_guard_cap_multiple`), so a country with reduced mastery gain, such as France with the land factor -0.15, still reaches the level (118 points for an Army step). A sum of zero or above leaves the guard at the reward cost. If the level readback does not update inside the effect, the transaction ends as ambiguous after crossing the target threshold once, spends no choice, and quarantines the batch.
 
 Receipts record batch, choice number, action, domain, Grand Doctrine, track, track index, subdoctrine, and pre- and post-levels. A pending receipt is recovered only by its exact receipt ID, batch, and choice number; anything that cannot prove its outcome fails closed.
 
@@ -156,7 +156,7 @@ A successful adoption calls Event 016's `brilliant_scientist_record_doctrine_res
 These behaviours depend on the live engine and are checked in a live session:
 
 - `has_mastery_level` updating in the same effect after `add_mastery`, which the one-step loop relies on;
-- `add_mastery` granting its literal amount for a country with a negative `<doctrine>_mastery_gain_factor`, because the one-point guard stops at exactly one level's reward cost;
+- whether `add_mastery` applies `<doctrine>_mastery_gain_factor`; the guard is scaled for a negative factor sum, so the step reaches its level in either case, and with a lagging readback and unscaled grants a country with a negative sum and partial progress above the scaled margin could cross a second level;
 - `set_sub_doctrine` with a folder and numeric index on an empty track, and the banked-mastery level read after it;
 - two Special Forces tracks never holding the same token;
 - receipt recovery across save and reload, and lifecycle callbacks after tag switches;

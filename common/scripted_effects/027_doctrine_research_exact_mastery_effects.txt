@@ -16,10 +16,14 @@
 # - Selects the registered branch once, then reads its native levels 1 through
 #   20. The lookup preserves the pre-level and observed-level output contract.
 # - Stops only when the selected branch reaches exactly the next observed level.
-#   The point guard equals the reward cost of the level being reached: 100 by
-#   default, 60 for every Special Forces subdoctrine, and 50 for People's War
-#   levels 1, 2 and 4. A readback that does not update inside the effect ends
-#   the transaction as ambiguous after crossing the target threshold once.
+#   The point guard (doctrine_research_prepare_transaction_step_limit) equals
+#   the reward cost of the level being reached: 100 by default, 60 for every
+#   Special Forces subdoctrine, and 50 for People's War levels 1, 2 and 4.
+#   When the country's folder, Grand Doctrine, track, and subdoctrine mastery
+#   gain factors sum below zero, the guard is divided by one plus that sum, so
+#   a country with reduced mastery gain can still reach the level. A readback
+#   that does not update inside the effect ends the transaction as ambiguous
+#   after crossing the target threshold once.
 # - Uses the owning doctrine filters, preserving banked mastery and native
 #   completion behavior. Unknown or unresolvable levels fail closed.
 # - Empty-track selection uses native set_sub_doctrine followed by the same
@@ -10229,12 +10233,164 @@ doctrine_research_capture_transaction_level = {
 	}
 }
 
+# Country scope, at the start of an exact mastery step, after the step has
+# set doctrine_research_transaction_gain_factor to its own subdoctrine's
+# <subdoctrine>_mastery_gain_factor (0 for the Chaos Warfare subdoctrines,
+# which no content modifies). Reads doctrine_research_selected_domain,
+# doctrine_research_selected_track, doctrine_research_selected_subdoctrine, and
+# doctrine_research_transaction_expected_level.
+# Sets doctrine_research_transaction_step_limit, the number of one-point
+# add_mastery calls the step may spend:
+# - the reward cost of the level being reached: 100 by default and for Chaos
+#   Warfare, 60 for Special Forces, 50 for People's War levels 1, 2 and 4;
+# - when the folder, active Grand Doctrine, track, and subdoctrine mastery gain
+#   factors sum below zero, that cost divided by one plus the sum, rounded up
+#   and capped at mastery_point_guard_cap_multiple times the cost. A sum of
+#   zero or above leaves the cost unchanged.
+# The Special Forces track factor takes the lower of the two Special Forces
+# tracks, because a token can sit in either native track. Chaos Warfare reads
+# the land folder and land track factors only.
+doctrine_research_prepare_transaction_step_limit = {
+	set_temp_variable = { doctrine_research_transaction_step_cost = constant:doctrine_research_event.mastery_point_loop_limit }
+	if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } }
+		set_temp_variable = { doctrine_research_transaction_step_cost = constant:doctrine_research_event.special_forces_mastery_point_loop_limit }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = doctrine_research_selected_subdoctrine value = constant:doctrine_research_subdoctrine.peoples_war compare = equals }
+			NOT = { check_variable = { var = doctrine_research_transaction_expected_level value = constant:doctrine_research_event.peoples_war_full_cost_level compare = equals } }
+		}
+		set_temp_variable = { doctrine_research_transaction_step_cost = constant:doctrine_research_event.peoples_war_short_level_point_limit }
+	}
+	# Folder and Grand Doctrine factors.
+	if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@land_mastery_gain_factor }
+		if = { limit = { has_doctrine = new_mobile_warfare } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_mobile_warfare_mastery_gain_factor } }
+		if = { limit = { has_doctrine = superior_firepower } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@superior_firepower_mastery_gain_factor } }
+		if = { limit = { has_doctrine = grand_battleplan } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@grand_battleplan_mastery_gain_factor } }
+		if = { limit = { has_doctrine = mass_assault } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mass_assault_mastery_gain_factor } }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@land_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@naval_mastery_gain_factor }
+		if = { limit = { has_doctrine = new_fleet_in_being } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_fleet_in_being_mastery_gain_factor } }
+		if = { limit = { has_doctrine = new_convoy_raiding } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_convoy_raiding_mastery_gain_factor } }
+		if = { limit = { has_doctrine = new_base_strike } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_base_strike_mastery_gain_factor } }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_mastery_gain_factor }
+		if = { limit = { has_doctrine = new_strategic_destruction } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_strategic_destruction_mastery_gain_factor } }
+		if = { limit = { has_doctrine = new_battlefield_support } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_battlefield_support_mastery_gain_factor } }
+		if = { limit = { has_doctrine = new_operational_integrity } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@new_operational_integrity_mastery_gain_factor } }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@special_forces_mastery_gain_factor }
+		if = { limit = { has_doctrine = special_forces_quantity } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@special_forces_quantity_mastery_gain_factor } }
+		if = { limit = { has_doctrine = special_forces_quality } add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@special_forces_quality_mastery_gain_factor } }
+	}
+	# Track factor.
+	if = {
+		limit = { check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals } }
+		set_temp_variable = { doctrine_research_transaction_track_gain = modifier@special_forces_first_track_mastery_gain_factor }
+		set_temp_variable = { doctrine_research_transaction_other_track_gain = modifier@special_forces_second_track_mastery_gain_factor }
+		if = {
+			limit = { check_variable = { var = doctrine_research_transaction_other_track_gain value = doctrine_research_transaction_track_gain compare = less_than } }
+			set_temp_variable = { doctrine_research_transaction_track_gain = doctrine_research_transaction_other_track_gain }
+		}
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = doctrine_research_transaction_track_gain }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.infantry compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@infantry_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@combat_support_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armor_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@operations_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.submarines compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@submarines_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.screens compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@screens_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.carriers compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@carriers_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.capital_ships compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@capital_ships_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.fighter_aircraft compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@fighter_aircraft_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.strike_aircraft compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@strike_aircraft_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.medium_aircraft compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@medium_aircraft_track_mastery_gain_factor }
+	}
+	else_if = {
+		limit = { check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.heavy_aircraft compare = equals } }
+		add_to_temp_variable = { doctrine_research_transaction_gain_factor = modifier@heavy_aircraft_track_mastery_gain_factor }
+	}
+	# Guard: the reward cost, scaled only for a negative factor sum.
+	set_temp_variable = { doctrine_research_transaction_step_limit = doctrine_research_transaction_step_cost }
+	if = {
+		limit = { check_variable = { doctrine_research_transaction_gain_factor < 0 } }
+		set_temp_variable = { doctrine_research_transaction_step_cap = doctrine_research_transaction_step_cost }
+		multiply_temp_variable = { doctrine_research_transaction_step_cap = constant:doctrine_research_event.mastery_point_guard_cap_multiple }
+		set_temp_variable = { doctrine_research_transaction_step_limit = doctrine_research_transaction_step_cap }
+		# Each point grants one plus the factor sum in real mastery.
+		set_temp_variable = { doctrine_research_transaction_gain_divisor = 1 }
+		add_to_temp_variable = { doctrine_research_transaction_gain_divisor = doctrine_research_transaction_gain_factor }
+		if = {
+			limit = { check_variable = { doctrine_research_transaction_gain_divisor > 0 } }
+			set_temp_variable = { doctrine_research_transaction_step_scaled = doctrine_research_transaction_step_cost }
+			divide_temp_variable = { doctrine_research_transaction_step_scaled = doctrine_research_transaction_gain_divisor }
+			set_temp_variable = { doctrine_research_transaction_step_rounded = doctrine_research_transaction_step_scaled }
+			round_temp_variable = doctrine_research_transaction_step_rounded
+			if = {
+				limit = { check_variable = { var = doctrine_research_transaction_step_rounded value = doctrine_research_transaction_step_scaled compare = less_than } }
+				add_to_temp_variable = { doctrine_research_transaction_step_rounded = constant:doctrine_research_event.mastery_point_increment }
+			}
+			if = {
+				limit = { check_variable = { var = doctrine_research_transaction_step_rounded value = doctrine_research_transaction_step_cap compare = less_than } }
+				set_temp_variable = { doctrine_research_transaction_step_limit = doctrine_research_transaction_step_rounded }
+			}
+		}
+	}
+}
+
 doctrine_research_exact_step_mobile_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_infantry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10254,10 +10410,12 @@ doctrine_research_exact_step_mobile_infantry_track_infantry = {
 
 doctrine_research_exact_step_defensive_postures_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@defensive_postures_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10277,10 +10435,12 @@ doctrine_research_exact_step_defensive_postures_track_infantry = {
 
 doctrine_research_exact_step_large_unit_tactics_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@large_unit_tactics_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10300,10 +10460,12 @@ doctrine_research_exact_step_large_unit_tactics_track_infantry = {
 
 doctrine_research_exact_step_assault_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@assault_infantry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10323,10 +10485,12 @@ doctrine_research_exact_step_assault_infantry_track_infantry = {
 
 doctrine_research_exact_step_mounted_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mounted_infantry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10346,10 +10510,12 @@ doctrine_research_exact_step_mounted_infantry_track_infantry = {
 
 doctrine_research_exact_step_commandos_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@commandos_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10369,10 +10535,12 @@ doctrine_research_exact_step_commandos_track_infantry = {
 
 doctrine_research_exact_step_irregulars_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@irregulars_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10392,13 +10560,8 @@ doctrine_research_exact_step_irregulars_track_infantry = {
 
 doctrine_research_exact_step_peoples_war_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
-	# People's War rewards 1, 2 and 4 cost 50 mastery and reward 3 uses the
-	# default 100, so the point guard follows the cost of the level being reached.
-	set_temp_variable = { doctrine_research_transaction_step_limit = constant:doctrine_research_event.peoples_war_short_level_point_limit }
-	if = {
-		limit = { check_variable = { var = doctrine_research_transaction_expected_level value = constant:doctrine_research_event.peoples_war_full_cost_level compare = equals } }
-		set_temp_variable = { doctrine_research_transaction_step_limit = constant:doctrine_research_event.mastery_point_loop_limit }
-	}
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@peoples_war_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
@@ -10422,10 +10585,12 @@ doctrine_research_exact_step_peoples_war_track_infantry = {
 
 doctrine_research_exact_step_great_war_infantry_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@great_war_infantry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10445,10 +10610,12 @@ doctrine_research_exact_step_great_war_infantry_track_infantry = {
 
 doctrine_research_exact_step_fire_concentration_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@fire_concentration_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10468,10 +10635,12 @@ doctrine_research_exact_step_fire_concentration_track_combat_support = {
 
 doctrine_research_exact_step_anti_tank_frontline_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@anti_tank_frontline_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10491,10 +10660,12 @@ doctrine_research_exact_step_anti_tank_frontline_track_combat_support = {
 
 doctrine_research_exact_step_flying_batteries_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@flying_batteries_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10514,10 +10685,12 @@ doctrine_research_exact_step_flying_batteries_track_combat_support = {
 
 doctrine_research_exact_step_air_cavalry_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_cavalry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10537,10 +10710,12 @@ doctrine_research_exact_step_air_cavalry_track_combat_support = {
 
 doctrine_research_exact_step_mobile_recon_and_assault_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_recon_and_assault_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10560,10 +10735,12 @@ doctrine_research_exact_step_mobile_recon_and_assault_track_combat_support = {
 
 doctrine_research_exact_step_mobile_recon_and_assault_no_lar_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_recon_and_assault_no_lar_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10583,10 +10760,12 @@ doctrine_research_exact_step_mobile_recon_and_assault_no_lar_track_combat_suppor
 
 doctrine_research_exact_step_self_propelled_support_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@self_propelled_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10606,10 +10785,12 @@ doctrine_research_exact_step_self_propelled_support_track_combat_support = {
 
 doctrine_research_exact_step_siege_artillery_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@siege_artillery_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10629,10 +10810,12 @@ doctrine_research_exact_step_siege_artillery_track_combat_support = {
 
 doctrine_research_exact_step_field_engineering_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@field_engineering_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10652,10 +10835,12 @@ doctrine_research_exact_step_field_engineering_track_combat_support = {
 
 doctrine_research_exact_step_armored_spearhead_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_spearhead_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10675,10 +10860,12 @@ doctrine_research_exact_step_armored_spearhead_track_armor = {
 
 doctrine_research_exact_step_armored_spearhead_no_lar_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_spearhead_no_lar_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10698,10 +10885,12 @@ doctrine_research_exact_step_armored_spearhead_no_lar_track_armor = {
 
 doctrine_research_exact_step_armored_infantry_support_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_infantry_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10721,10 +10910,12 @@ doctrine_research_exact_step_armored_infantry_support_track_armor = {
 
 doctrine_research_exact_step_streamlined_deployment_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@streamlined_deployment_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10744,10 +10935,12 @@ doctrine_research_exact_step_streamlined_deployment_track_armor = {
 
 doctrine_research_exact_step_mobile_defense_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mobile_defense_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10767,10 +10960,12 @@ doctrine_research_exact_step_mobile_defense_track_armor = {
 
 doctrine_research_exact_step_armored_cavalry_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_cavalry_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10790,10 +10985,12 @@ doctrine_research_exact_step_armored_cavalry_track_armor = {
 
 doctrine_research_exact_step_armored_cavalry_no_lar_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_cavalry_no_lar_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10813,10 +11010,12 @@ doctrine_research_exact_step_armored_cavalry_no_lar_track_armor = {
 
 doctrine_research_exact_step_tank_destroyer_force_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@tank_destroyer_force_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10836,10 +11035,12 @@ doctrine_research_exact_step_tank_destroyer_force_track_armor = {
 
 doctrine_research_exact_step_mission_type_tactics_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mission_type_tactics_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10859,10 +11060,12 @@ doctrine_research_exact_step_mission_type_tactics_track_operations = {
 
 doctrine_research_exact_step_last_stand_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@last_stand_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10882,10 +11085,12 @@ doctrine_research_exact_step_last_stand_track_operations = {
 
 doctrine_research_exact_step_infiltration_tactics_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@infiltration_tactics_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10905,10 +11110,12 @@ doctrine_research_exact_step_infiltration_tactics_track_operations = {
 
 doctrine_research_exact_step_grand_assault_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@grand_assault_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10928,10 +11135,12 @@ doctrine_research_exact_step_grand_assault_track_operations = {
 
 doctrine_research_exact_step_deep_battle_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@deep_battle_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10951,10 +11160,12 @@ doctrine_research_exact_step_deep_battle_track_operations = {
 
 doctrine_research_exact_step_deep_battle_no_lar_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@deep_battle_no_lar_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10974,10 +11185,12 @@ doctrine_research_exact_step_deep_battle_no_lar_track_operations = {
 
 doctrine_research_exact_step_guerilla_war_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@guerilla_war_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -10997,10 +11210,12 @@ doctrine_research_exact_step_guerilla_war_track_operations = {
 
 doctrine_research_exact_step_rapid_domination_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rapid_domination_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11020,10 +11235,12 @@ doctrine_research_exact_step_rapid_domination_track_operations = {
 
 doctrine_research_exact_step_expeditionary_warfare_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@expeditionary_warfare_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11043,10 +11260,12 @@ doctrine_research_exact_step_expeditionary_warfare_track_operations = {
 
 doctrine_research_exact_step_dispersed_operations_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@dispersed_operations_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11066,10 +11285,12 @@ doctrine_research_exact_step_dispersed_operations_track_operations = {
 
 doctrine_research_exact_step_extermination_columns_track_infantry = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11089,10 +11310,12 @@ doctrine_research_exact_step_extermination_columns_track_infantry = {
 
 doctrine_research_exact_step_contaminant_firebases_track_combat_support = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11112,10 +11335,12 @@ doctrine_research_exact_step_contaminant_firebases_track_combat_support = {
 
 doctrine_research_exact_step_chemical_suppression_track_armor = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11135,10 +11360,12 @@ doctrine_research_exact_step_chemical_suppression_track_armor = {
 
 doctrine_research_exact_step_integrated_chemical_operations_track_operations = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = 0 }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11158,10 +11385,12 @@ doctrine_research_exact_step_integrated_chemical_operations_track_operations = {
 
 doctrine_research_exact_step_wolfpacks_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@wolfpacks_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11181,10 +11410,12 @@ doctrine_research_exact_step_wolfpacks_track_submarines = {
 
 doctrine_research_exact_step_submarine_fleet_operations_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@submarine_fleet_operations_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11204,10 +11435,12 @@ doctrine_research_exact_step_submarine_fleet_operations_track_submarines = {
 
 doctrine_research_exact_step_capital_hunters_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@capital_hunters_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11227,10 +11460,12 @@ doctrine_research_exact_step_capital_hunters_track_submarines = {
 
 doctrine_research_exact_step_submarine_coastal_defense_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@submarine_coastal_defense_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11250,10 +11485,12 @@ doctrine_research_exact_step_submarine_coastal_defense_track_submarines = {
 
 doctrine_research_exact_step_coastal_minelaying_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@coastal_minelaying_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11273,10 +11510,12 @@ doctrine_research_exact_step_coastal_minelaying_track_submarines = {
 
 doctrine_research_exact_step_long_range_submarines_track_submarines = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@long_range_submarines_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11296,10 +11535,12 @@ doctrine_research_exact_step_long_range_submarines_track_submarines = {
 
 doctrine_research_exact_step_convoy_escort_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@convoy_escort_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11319,10 +11560,12 @@ doctrine_research_exact_step_convoy_escort_track_screens = {
 
 doctrine_research_exact_step_support_integrated_operations_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@support_integrated_operations_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11342,10 +11585,12 @@ doctrine_research_exact_step_support_integrated_operations_track_screens = {
 
 doctrine_research_exact_step_hunter_killers_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@hunter_killers_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11365,10 +11610,12 @@ doctrine_research_exact_step_hunter_killers_track_screens = {
 
 doctrine_research_exact_step_torpedo_primacy_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@torpedo_primacy_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11388,10 +11635,12 @@ doctrine_research_exact_step_torpedo_primacy_track_screens = {
 
 doctrine_research_exact_step_anti_aircraft_cruisers_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@anti_aircraft_cruisers_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11411,10 +11660,12 @@ doctrine_research_exact_step_anti_aircraft_cruisers_track_screens = {
 
 doctrine_research_exact_step_screen_support_focus_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@screen_support_focus_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11434,10 +11685,12 @@ doctrine_research_exact_step_screen_support_focus_track_screens = {
 
 doctrine_research_exact_step_jeune_ecole_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@jeune_ecole_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11457,10 +11710,12 @@ doctrine_research_exact_step_jeune_ecole_track_screens = {
 
 doctrine_research_exact_step_patrol_boats_track_screens = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@patrol_boats_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11480,10 +11735,12 @@ doctrine_research_exact_step_patrol_boats_track_screens = {
 
 doctrine_research_exact_step_carrier_battlegroups_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@carrier_battlegroups_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11503,10 +11760,12 @@ doctrine_research_exact_step_carrier_battlegroups_track_carriers = {
 
 doctrine_research_exact_step_floating_airfields_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@floating_airfields_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11526,10 +11785,12 @@ doctrine_research_exact_step_floating_airfields_track_carriers = {
 
 doctrine_research_exact_step_escort_carrier_support_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@escort_carrier_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11549,10 +11810,12 @@ doctrine_research_exact_step_escort_carrier_support_track_carriers = {
 
 doctrine_research_exact_step_broad_naval_support_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@broad_naval_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11572,10 +11835,12 @@ doctrine_research_exact_step_broad_naval_support_track_carriers = {
 
 doctrine_research_exact_step_massed_carrier_fleet_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@massed_carrier_fleet_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11595,10 +11860,12 @@ doctrine_research_exact_step_massed_carrier_fleet_track_carriers = {
 
 doctrine_research_exact_step_light_task_forces_track_carriers = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@light_task_forces_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11618,10 +11885,12 @@ doctrine_research_exact_step_light_task_forces_track_carriers = {
 
 doctrine_research_exact_step_line_of_battle_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@line_of_battle_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11641,10 +11910,12 @@ doctrine_research_exact_step_line_of_battle_track_capital_ships = {
 
 doctrine_research_exact_step_battlecruiser_supremacy_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@battlecruiser_supremacy_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11664,10 +11935,12 @@ doctrine_research_exact_step_battlecruiser_supremacy_track_capital_ships = {
 
 doctrine_research_exact_step_armored_raiders_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@armored_raiders_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11687,10 +11960,12 @@ doctrine_research_exact_step_armored_raiders_track_capital_ships = {
 
 doctrine_research_exact_step_coastal_defence_fleet_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@coastal_defence_fleet_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11710,10 +11985,12 @@ doctrine_research_exact_step_coastal_defence_fleet_track_capital_ships = {
 
 doctrine_research_exact_step_naval_gunfire_support_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@naval_gunfire_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11733,10 +12010,12 @@ doctrine_research_exact_step_naval_gunfire_support_track_capital_ships = {
 
 doctrine_research_exact_step_battleship_antiair_screen_track_capital_ships = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@battleship_antiair_screen_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11756,10 +12035,12 @@ doctrine_research_exact_step_battleship_antiair_screen_track_capital_ships = {
 
 doctrine_research_exact_step_air_subdoctrine_fighter_homeland_defense_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_homeland_defense_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11779,10 +12060,12 @@ doctrine_research_exact_step_air_subdoctrine_fighter_homeland_defense_track_figh
 
 doctrine_research_exact_step_air_subdoctrine_escort_fighter_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_escort_fighter_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11802,10 +12085,12 @@ doctrine_research_exact_step_air_subdoctrine_escort_fighter_track_fighter_aircra
 
 doctrine_research_exact_step_air_subdoctrine_fighter_bombers_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_bombers_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11825,10 +12110,12 @@ doctrine_research_exact_step_air_subdoctrine_fighter_bombers_track_fighter_aircr
 
 doctrine_research_exact_step_air_subdoctrine_tactical_flexibility_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_tactical_flexibility_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11848,10 +12135,12 @@ doctrine_research_exact_step_air_subdoctrine_tactical_flexibility_track_fighter_
 
 doctrine_research_exact_step_air_subdoctrine_dogfighting_mastery_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_dogfighting_mastery_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11871,10 +12160,12 @@ doctrine_research_exact_step_air_subdoctrine_dogfighting_mastery_track_fighter_a
 
 doctrine_research_exact_step_air_subdoctrine_fighter_central_field_track_fighter_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_fighter_central_field_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11894,10 +12185,12 @@ doctrine_research_exact_step_air_subdoctrine_fighter_central_field_track_fighter
 
 doctrine_research_exact_step_air_subdoctrine_flying_artillery_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flying_artillery_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11917,10 +12210,12 @@ doctrine_research_exact_step_air_subdoctrine_flying_artillery_track_strike_aircr
 
 doctrine_research_exact_step_air_subdoctrine_dive_bombers_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_dive_bombers_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11940,10 +12235,12 @@ doctrine_research_exact_step_air_subdoctrine_dive_bombers_track_strike_aircraft 
 
 doctrine_research_exact_step_air_subdoctrine_flexible_fire_support_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flexible_fire_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11963,10 +12260,12 @@ doctrine_research_exact_step_air_subdoctrine_flexible_fire_support_track_strike_
 
 doctrine_research_exact_step_air_subdoctrine_carrier_strikes_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_carrier_strikes_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -11986,10 +12285,12 @@ doctrine_research_exact_step_air_subdoctrine_carrier_strikes_track_strike_aircra
 
 doctrine_research_exact_step_air_subdoctrine_naval_strike_tactics_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_naval_strike_tactics_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12009,10 +12310,12 @@ doctrine_research_exact_step_air_subdoctrine_naval_strike_tactics_track_strike_a
 
 doctrine_research_exact_step_air_subdoctrine_naval_torpedo_tactics_track_strike_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_naval_torpedo_tactics_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12032,10 +12335,12 @@ doctrine_research_exact_step_air_subdoctrine_naval_torpedo_tactics_track_strike_
 
 doctrine_research_exact_step_air_subdoctrine_bomber_interception_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_bomber_interception_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12055,10 +12360,12 @@ doctrine_research_exact_step_air_subdoctrine_bomber_interception_track_medium_ai
 
 doctrine_research_exact_step_air_subdoctrine_long_range_escort_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_long_range_escort_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12078,10 +12385,12 @@ doctrine_research_exact_step_air_subdoctrine_long_range_escort_track_medium_airc
 
 doctrine_research_exact_step_air_subdoctrine_operational_air_support_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_operational_air_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12101,10 +12410,12 @@ doctrine_research_exact_step_air_subdoctrine_operational_air_support_track_mediu
 
 doctrine_research_exact_step_air_subdoctrine_tactical_battlefield_support_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_tactical_battlefield_support_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12124,10 +12435,12 @@ doctrine_research_exact_step_air_subdoctrine_tactical_battlefield_support_track_
 
 doctrine_research_exact_step_air_subdoctrine_theater_interdiction_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_theater_interdiction_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12147,10 +12460,12 @@ doctrine_research_exact_step_air_subdoctrine_theater_interdiction_track_medium_a
 
 doctrine_research_exact_step_air_subdoctrine_aerial_reconnaissance_track_medium_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_aerial_reconnaissance_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12170,10 +12485,12 @@ doctrine_research_exact_step_air_subdoctrine_aerial_reconnaissance_track_medium_
 
 doctrine_research_exact_step_air_subdoctrine_night_bombing_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_night_bombing_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12193,10 +12510,12 @@ doctrine_research_exact_step_air_subdoctrine_night_bombing_track_heavy_aircraft 
 
 doctrine_research_exact_step_air_subdoctrine_carpet_bombing_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_carpet_bombing_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12216,10 +12535,12 @@ doctrine_research_exact_step_air_subdoctrine_carpet_bombing_track_heavy_aircraft
 
 doctrine_research_exact_step_air_subdoctrine_deep_air_raids_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_deep_air_raids_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12239,10 +12560,12 @@ doctrine_research_exact_step_air_subdoctrine_deep_air_raids_track_heavy_aircraft
 
 doctrine_research_exact_step_air_subdoctrine_flying_fortresses_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_flying_fortresses_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12262,10 +12585,12 @@ doctrine_research_exact_step_air_subdoctrine_flying_fortresses_track_heavy_aircr
 
 doctrine_research_exact_step_air_subdoctrine_coastal_air_patrol_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_coastal_air_patrol_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12285,10 +12610,12 @@ doctrine_research_exact_step_air_subdoctrine_coastal_air_patrol_track_heavy_airc
 
 doctrine_research_exact_step_air_subdoctrine_open_ocean_air_patrol_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_open_ocean_air_patrol_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12308,10 +12635,12 @@ doctrine_research_exact_step_air_subdoctrine_open_ocean_air_patrol_track_heavy_a
 
 doctrine_research_exact_step_air_subdoctrine_heavy_aircraft_focus_track_heavy_aircraft = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@air_subdoctrine_heavy_aircraft_focus_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12331,10 +12660,12 @@ doctrine_research_exact_step_air_subdoctrine_heavy_aircraft_focus_track_heavy_ai
 
 doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12353,10 +12684,12 @@ doctrine_research_exact_step_mountaineers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12375,10 +12708,12 @@ doctrine_research_exact_step_mountaineers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_marines_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12397,10 +12732,12 @@ doctrine_research_exact_step_marines_1_track_special_forces_first = {
 
 doctrine_research_exact_step_marines_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12419,10 +12756,12 @@ doctrine_research_exact_step_marines_2_track_special_forces_first = {
 
 doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12441,10 +12780,12 @@ doctrine_research_exact_step_paratroopers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12463,10 +12804,12 @@ doctrine_research_exact_step_paratroopers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_rangers_1_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12485,10 +12828,12 @@ doctrine_research_exact_step_rangers_1_track_special_forces_first = {
 
 doctrine_research_exact_step_rangers_2_track_special_forces_first = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12507,10 +12852,12 @@ doctrine_research_exact_step_rangers_2_track_special_forces_first = {
 
 doctrine_research_exact_step_mountaineers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12529,10 +12876,12 @@ doctrine_research_exact_step_mountaineers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_mountaineers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@mountaineers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12551,10 +12900,12 @@ doctrine_research_exact_step_mountaineers_2_track_special_forces_second = {
 
 doctrine_research_exact_step_marines_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12573,10 +12924,12 @@ doctrine_research_exact_step_marines_1_track_special_forces_second = {
 
 doctrine_research_exact_step_marines_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@marines_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12595,10 +12948,12 @@ doctrine_research_exact_step_marines_2_track_special_forces_second = {
 
 doctrine_research_exact_step_paratroopers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12617,10 +12972,12 @@ doctrine_research_exact_step_paratroopers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_paratroopers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@paratroopers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12639,10 +12996,12 @@ doctrine_research_exact_step_paratroopers_2_track_special_forces_second = {
 
 doctrine_research_exact_step_rangers_1_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_1_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
@@ -12661,10 +13020,12 @@ doctrine_research_exact_step_rangers_1_track_special_forces_second = {
 
 doctrine_research_exact_step_rangers_2_track_special_forces_second = {
 	set_temp_variable = { doctrine_research_transaction_step_guard = 0 }
+	set_temp_variable = { doctrine_research_transaction_gain_factor = modifier@rangers_2_mastery_gain_factor }
+	doctrine_research_prepare_transaction_step_limit = yes
 	while_loop_effect = {
 		limit = {
 			check_variable = { var = doctrine_research_transaction_observed_level value = doctrine_research_transaction_expected_level compare = less_than }
-			check_variable = { var = doctrine_research_transaction_step_guard value = constant:doctrine_research_event.special_forces_mastery_point_loop_limit compare = less_than }
+			check_variable = { var = doctrine_research_transaction_step_guard value = doctrine_research_transaction_step_limit compare = less_than }
 		}
 		add_mastery = {
 			amount = @DOCTRINE_RESEARCH_MASTERY_POINT_INCREMENT
