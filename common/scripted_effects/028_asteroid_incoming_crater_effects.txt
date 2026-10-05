@@ -88,30 +88,73 @@ asteroid_incoming_apply_crater_perimeter_security = {
 	}
 }
 
-# STATE SCOPE. The survey record is permanent and site-specific. Each site
-# grants one limited industry research bonus and cannot grant it again after a
-# controller transfer because the survey flag stays on the crater state.
+# STATE SCOPE. The survey record is permanent and site-specific. It reveals
+# the site's persistent scientific profile as a named state modifier and grants
+# one limited research bonus whose field follows the profile: dense metallic
+# material feeds industry, fused silicate composite feeds synthetic resources,
+# and shock-formed crystal and glass feeds electronics. A site cannot grant it
+# again after a controller transfer because the survey flag stays on the
+# crater state. No profile changes armour.
 asteroid_incoming_apply_crater_material_survey = {
 	if = {
 		limit = { asteroid_incoming_crater_survey_requirements = yes }
 		set_state_flag = asteroid_incoming_material_surveyed
-		add_dynamic_modifier = { modifier = asteroid_incoming_crater_surveyed_material }
+		asteroid_incoming_assign_crater_site_profile = yes
 		set_temp_variable = { asteroid_incoming_crater_survey_bonus = constant:asteroid_incoming_crater.survey_research_bonus }
 		set_temp_variable = { asteroid_incoming_crater_survey_uses = constant:asteroid_incoming_crater.survey_research_uses }
-		ROOT = {
-			# The tech-bonus fields take literal values, so the constants are
-			# injected through meta text.
-			meta_effect = {
-				text = {
-					add_tech_bonus = {
-						name = asteroid_incoming_crater_survey_bonus
-						bonus = [SURVEY_BONUS]
-						uses = [SURVEY_USES]
-						category = industry
+		# The tech-bonus fields take literal values, so the constants are
+		# injected through meta text; the category is a literal per profile.
+		if = {
+			limit = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.dense_metallic compare = equals } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_crater_material_dense_metallic }
+			ROOT = {
+				meta_effect = {
+					text = {
+						add_tech_bonus = {
+							name = asteroid_incoming_crater_survey_bonus
+							bonus = [SURVEY_BONUS]
+							uses = [SURVEY_USES]
+							category = industry
+						}
 					}
+					SURVEY_BONUS = "[?asteroid_incoming_crater_survey_bonus|.2]"
+					SURVEY_USES = "[?asteroid_incoming_crater_survey_uses|.0]"
 				}
-				SURVEY_BONUS = "[?asteroid_incoming_crater_survey_bonus|.2]"
-				SURVEY_USES = "[?asteroid_incoming_crater_survey_uses|.0]"
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.fused_silicate compare = equals } }
+			add_dynamic_modifier = { modifier = asteroid_incoming_crater_material_fused_silicate }
+			ROOT = {
+				meta_effect = {
+					text = {
+						add_tech_bonus = {
+							name = asteroid_incoming_crater_survey_bonus
+							bonus = [SURVEY_BONUS]
+							uses = [SURVEY_USES]
+							category = synth_resources
+						}
+					}
+					SURVEY_BONUS = "[?asteroid_incoming_crater_survey_bonus|.2]"
+					SURVEY_USES = "[?asteroid_incoming_crater_survey_uses|.0]"
+				}
+			}
+		}
+		else = {
+			add_dynamic_modifier = { modifier = asteroid_incoming_crater_material_shock_crystal }
+			ROOT = {
+				meta_effect = {
+					text = {
+						add_tech_bonus = {
+							name = asteroid_incoming_crater_survey_bonus
+							bonus = [SURVEY_BONUS]
+							uses = [SURVEY_USES]
+							category = electronics
+						}
+					}
+					SURVEY_BONUS = "[?asteroid_incoming_crater_survey_bonus|.2]"
+					SURVEY_USES = "[?asteroid_incoming_crater_survey_uses|.0]"
+				}
 			}
 		}
 		set_temp_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one }

@@ -977,6 +977,7 @@ asteroid_incoming_choose_fragment_sites = {
 				set_state_flag = asteroid_incoming_fragment_site
 				set_state_flag = asteroid_incoming_mineral_site
 				set_variable = { asteroid_incoming_state_transaction_id = global.asteroid_incoming_transaction_id }
+				asteroid_incoming_assign_crater_site_profile = yes
 				if = {
 					limit = {
 						NOT = {
@@ -1361,6 +1362,31 @@ asteroid_incoming_play_next_fragment_visual = {
 	}
 }
 
+# STATE SCOPE, the main crater or a fragment centre at registration. Rolls the
+# site's persistent scientific profile once (asteroid_incoming_site_profile ids
+# and weights). A site that already carries a profile keeps it, so a save and
+# reload or a second call never re-rolls it. The profile is revealed by Survey
+# Extraordinary Material and never changes armour.
+asteroid_incoming_assign_crater_site_profile = {
+	if = {
+		limit = { NOT = { has_variable = asteroid_incoming_crater_site_profile } }
+		set_temp_variable = { asteroid_incoming_site_profile_weight_metallic = constant:asteroid_incoming_site_profile.dense_metallic_weight }
+		set_temp_variable = { asteroid_incoming_site_profile_weight_silicate = constant:asteroid_incoming_site_profile.fused_silicate_weight }
+		set_temp_variable = { asteroid_incoming_site_profile_weight_crystal = constant:asteroid_incoming_site_profile.shock_crystal_weight }
+		random_list = {
+			asteroid_incoming_site_profile_weight_metallic = {
+				set_variable = { asteroid_incoming_crater_site_profile = constant:asteroid_incoming_site_profile.dense_metallic }
+			}
+			asteroid_incoming_site_profile_weight_silicate = {
+				set_variable = { asteroid_incoming_crater_site_profile = constant:asteroid_incoming_site_profile.fused_silicate }
+			}
+			asteroid_incoming_site_profile_weight_crystal = {
+				set_variable = { asteroid_incoming_crater_site_profile = constant:asteroid_incoming_site_profile.shock_crystal }
+			}
+		}
+	}
+}
+
 # STATE SCOPE, inside asteroid_incoming_apply_state_profile, once per struck
 # state. Every army in the state, whatever its country, loses the share of its
 # own strength and organisation set by the state's strongest profile
@@ -1477,6 +1503,7 @@ asteroid_incoming_apply_state_profile = {
 			remove_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone }
 			add_dynamic_modifier = { modifier = asteroid_incoming_main_crater }
 			set_global_flag = asteroid_incoming_main_crater_registered
+			asteroid_incoming_assign_crater_site_profile = yes
 			# The struck state carries a timed marker so every on_nuke_drop
 			# consumer can skip this map visual even if the callback is late.
 			asteroid_incoming_mark_visual_strike_state = yes

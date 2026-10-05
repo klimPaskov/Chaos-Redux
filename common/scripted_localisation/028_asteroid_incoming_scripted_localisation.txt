@@ -779,6 +779,64 @@ defined_text = {
 	text = { localization_key = asteroid_incoming.value.na }
 }
 
+# STATE SCOPE, a crater site. Its persistent scientific profile, rolled when
+# the site was registered (asteroid_incoming_assign_crater_site_profile).
+defined_text = {
+	name = GetAsteroidIncomingCraterSiteProfile
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.dense_metallic compare = equals } }
+		localization_key = asteroid_incoming.site_profile.dense_metallic
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.fused_silicate compare = equals } }
+		localization_key = asteroid_incoming.site_profile.fused_silicate
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.shock_crystal compare = equals } }
+		localization_key = asteroid_incoming.site_profile.shock_crystal
+	}
+	text = {
+		localization_key = asteroid_incoming.site_profile.unknown
+	}
+}
+
+# STATE SCOPE, a crater site. The research field its survey bonus applies to,
+# matching the category branches in asteroid_incoming_apply_crater_material_survey.
+defined_text = {
+	name = GetAsteroidIncomingCraterSiteResearchField
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.dense_metallic compare = equals } }
+		localization_key = asteroid_incoming.site_profile.research.dense_metallic
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.fused_silicate compare = equals } }
+		localization_key = asteroid_incoming.site_profile.research.fused_silicate
+	}
+	text = {
+		trigger = { check_variable = { var = asteroid_incoming_crater_site_profile value = constant:asteroid_incoming_site_profile.shock_crystal compare = equals } }
+		localization_key = asteroid_incoming.site_profile.research.shock_crystal
+	}
+	text = {
+		localization_key = asteroid_incoming.site_profile.research.unknown
+	}
+}
+
+# STATE SCOPE, a rival crater site. Reconnaissance names the material only
+# once some survey has revealed it.
+defined_text = {
+	name = GetAsteroidIncomingReconSiteProfileClause
+	text = {
+		trigger = {
+			has_state_flag = asteroid_incoming_material_surveyed
+			has_variable = asteroid_incoming_crater_site_profile
+		}
+		localization_key = asteroid_incoming.site_profile.recon_surveyed
+	}
+	text = {
+		localization_key = asteroid_incoming.site_profile.recon_unsurveyed
+	}
+}
+
 # Repair prices carry a mark while a mission-failure surcharge runs.
 defined_text = {
 	name = GetAsteroidIncomingRepairSurchargeMark
