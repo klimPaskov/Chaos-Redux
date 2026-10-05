@@ -634,6 +634,19 @@ random_terror_apply_incident = {
 	set_temp_variable = { random_terror_draw_incident_joint_operation = constant:random_terror_incident_weight.joint_operation }
 	set_temp_variable = { random_terror_draw_incident_sponsor_exposure = constant:random_terror_incident_weight.sponsor_exposure }
 	set_temp_variable = { random_terror_draw_incident_cannibal_clash = constant:random_terror_incident_weight.cannibal_clash }
+	# Event 14 rivalry: a clash with cannibal warbands needs one next door;
+	# otherwise its weight goes to a clash between rival organizations.
+	if = {
+		limit = {
+			NOT = {
+				any_neighbor_state = {
+					CONTROLLER = { is_cannibalism_country = yes }
+				}
+			}
+		}
+		add_to_temp_variable = { random_terror_draw_incident_rival_organization = random_terror_draw_incident_cannibal_clash }
+		set_temp_variable = { random_terror_draw_incident_cannibal_clash = constant:random_terror_value.zero }
+	}
 	random_list = {
 		random_terror_draw_incident_civilian_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.civilian_attack } }
 		random_terror_draw_incident_transport_disruption = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.transport_disruption } }
@@ -866,6 +879,8 @@ random_terror_apply_incident = {
 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.cannibal_clash } }
 		set_state_flag = random_terror_cannibal_clash_recorded
 		subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_tuning.network_reach_gain }
+		random_terror_resolve_cannibal_clash = yes
+		set_temp_variable = { random_terror_report_loss = state_civilian_population_loss_applied }
 	}
 	clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -7329,6 +7344,45 @@ random_terror_revelation_uprising = {
 			random_terror_start_pressure_uprising = yes
 		}
 	}
+}
+
+# STATE scope: an incident state where the network's fighters clashed with a
+# neighbouring Event 14 cannibal warband (the incident draw requires one).
+# Civilians caught between them die through the exact state-loss helper,
+# which logs them in Deaths; the fighting damages local infrastructure; and
+# the cannibal country draws public atrocity Condemnation.
+random_terror_resolve_cannibal_clash = {
+	set_temp_variable = { state_civilian_population_loss_applied = constant:random_terror_value.zero }
+	set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_cannibal_rivalry.clash_deaths }
+	random_terror_apply_exact_state_loss = yes
+	set_temp_variable = { dynamic_building_damage_type = token:infrastructure }
+	set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_cannibal_rivalry.clash_building_damage }
+	damage_state_building_dynamic = yes
+	if = {
+		limit = {
+			any_neighbor_state = {
+				CONTROLLER = { is_cannibalism_country = yes }
+			}
+		}
+		random_neighbor_state = {
+			limit = {
+				CONTROLLER = { is_cannibalism_country = yes }
+			}
+			CONTROLLER = { random_terror_add_cannibal_clash_condemnation = yes }
+		}
+	}
+}
+
+# COUNTRY scope: an Event 14 cannibal country in a clash with Event 31 cells.
+# Input: temp state_civilian_population_loss_applied from the clash.
+random_terror_add_cannibal_clash_condemnation = {
+	set_temp_variable = { random_terror_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { random_terror_condemnation_base_gain = constant:random_terror_cannibal_rivalry.clash_condemnation_gain }
+	set_temp_variable = { random_terror_condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { random_terror_condemnation_severity_type = constant:condemnation_severity.major }
+	set_temp_variable = { random_terror_condemnation_civilian_deaths = state_civilian_population_loss_applied }
+	set_temp_variable = { random_terror_condemnation_context_type = constant:condemnation_context.unspecified }
+	random_terror_add_condemnation_source = yes
 }
 
 random_terror_emit_super_event = {

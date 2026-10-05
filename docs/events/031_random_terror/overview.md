@@ -257,7 +257,11 @@ Negotiated Enclave ends the command failures, Local Revolt and Failed Rule the a
 The terminal transition (`random_terror_mark_final_actor`) removes every slot and failure form, International Mandate included, and any flat Presence of the Entity, World in Revolt or Supply Through Ruin spirit, because the final command carries those strengths as scaling dynamic modifiers instead.
 Ambiguous Light adds `focus_overlay_points` to each final strength and raises one final formation (`random_terror_focus_reward_ambiguous_light`).
 
-`common/ai_strategy/031_random_terror_ai_strategy.txt` steers live actors only.
+`common/ai_strategy/031_random_terror_ai_strategy.txt` steers live actors and, for the Event 14 rivalry, the cannibal tags next to them.
+Event 14 cannibals are a real rival (Part 10): the `cannibal_clash` incident draw keeps its weight only when a country passing `is_cannibalism_country` controls a state next to the incident state, and otherwise moves it to `rival_organization`, so the Enemy of My Enemy proof flag (`random_terror_cannibal_clash_recorded`) needs a real cannibal neighbour.
+A clash (`random_terror_resolve_cannibal_clash`) kills `random_terror_cannibal_rivalry.clash_deaths` civilians through the exact state-loss helper (logged in Deaths and shown in the report), damages infrastructure, lowers Network Reach and puts public atrocity Condemnation on the cannibal country (`random_terror_add_cannibal_clash_condemnation`); its report keeps the rival-factions picture with its own text.
+Each live actor antagonizes and seeks to conquer each neighbouring cannibal tag (CBA-CBH warbands and the unified CBL), and each cannibal country does the same to each neighbouring actor, one strategy per target tag.
+No Event 31 faction, merger or join path can take a cannibal country, because each adds only live actors, and the shared sponsor check excludes `is_cannibalism_country`.
 At war, an actor weights units and force concentration toward its own parent, which carries `random_terror_parent_of_<actor tag>` from the moment the actor forms until its runtime is cleared, and pulls units away from fronts against non-neighbouring enemies.
 Each carrier befriends and supports the other carriers while it is a live actor, unless Global Jihad setup kept it independent or it is in a leadership contest.
 

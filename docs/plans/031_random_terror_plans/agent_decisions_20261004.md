@@ -440,3 +440,13 @@ D12 settled only the size of the government action budget; it is amended, not re
 - The Ambiguous Light now adds 10 points to each strength instead of re-adding the flat spirits, and Seal the Final Command adds 10 to Presence.
 - The uprising wave runs at the world-end transition only for governments with Terror Pressure above the uprising gate and a pressured active state, and gives them the existing Stop the Coordinated Uprising mission where a slot is free.
 - Route evidence: the strength weights are not AI or random weights; no probability route was needed.
+
+### R39 Event 14 cannibals become a real rival
+
+Basis: Part 10 (the Event 14 interaction is mandatory; cannibals are never sponsors or partners) and the accepted improvement-review item "Cannibal rivalry as a full interaction".
+
+- The clash draw keeps its weight only next to a cannibal-held state and otherwise gives it to the rival-organization clash, so the incident and the Enemy of My Enemy proof flag need a real cannibal neighbour.
+- A clash kills 150 civilians through the exact state-loss helper, so Deaths records them once, damages infrastructure, keeps its Network Reach loss and puts public atrocity Condemnation on the cannibal country, which the clash attributes because its warbands strike the civilians.
+- The AI rivalry uses one `antagonize` and `conquer` strategy per target tag, enabled only while that tag is a live neighbour, in both directions; the wendigo tag of Event 14 stays out because it is a nonhuman country outside the cannibal warlord and unified tags the lead listed.
+- No cooperation path needed a code change beyond R34: every Event 31 faction, merger and join path adds only live actors.
+- Route evidence: the incident draw change moves weight between two families; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.
