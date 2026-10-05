@@ -24,6 +24,8 @@
 @murder_mystery_ai_hint_brotherhood_council = 30
 @murder_mystery_ai_hint_local_administration = 25
 @murder_mystery_ai_hint_terminal_settlement = 60
+# A derivative this close to surrender asks the central state for obedience.
+@murder_mystery_priority_obedience_surrender = 0.1
 
 murder_mystery_investigation_category = {
 	# -----------------------------------------------------------------------
@@ -1390,6 +1392,63 @@ murder_mystery_foreign_cell_investigation_category = {
 		}
 	}
 
+	# Targeted: another government fighting a registered cell.
+	murder_mystery_support_threatened_partner = {
+		name = murder_mystery_support_threatened_partner
+		desc = murder_mystery_support_threatened_partner_desc
+		icon = GFX_decision_039_murder_mystery_support_threatened_partner
+		target_array = global.murder_mystery_cell_country_entries
+		target_root_trigger = {
+			murder_mystery_foreign_category_visible = yes
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				murder_mystery_country_has_registered_cell = yes
+				NOT = { murder_mystery_terminal_is_movement_side = yes }
+				NOT = { has_country_flag = murder_mystery_partner_supported }
+			}
+		}
+		visible = {
+			murder_mystery_foreign_category_visible = yes
+			NOT = { has_war_with = FROM }
+		}
+		available = {
+			murder_mystery_action_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_partner_route_access_tt
+				murder_mystery_partner_has_route_access = yes
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_route_watch = yes }
+		custom_cost_text = murder_mystery_cost_route_watch
+		days_re_enable = constant:murder_mystery_cooldown.action_days
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_support_threatened_partner_tt
+			hidden_effect = { murder_mystery_decision_support_threatened_partner = yes }
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.standard
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				OR = {
+					is_in_faction_with = FROM
+					has_guaranteed = FROM
+				}
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.low
+				check_variable = { var = murder_mystery_investigator_exposure value = constant:murder_mystery_value.seventy compare = greater_than }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				NOT = { murder_mystery_partner_has_route_access = yes }
+			}
+		}
+	}
+
 	murder_mystery_interdict_known_route = {
 		name = murder_mystery_interdict_known_route
 		desc = murder_mystery_interdict_known_route_desc
@@ -1750,6 +1809,66 @@ murder_mystery_brotherhood_operations_category = {
 					has_event_target = murder_mystery_selected_cell
 					NOT = { murder_mystery_cell_registry_has_capacity = yes }
 				}
+			}
+		}
+	}
+
+	# Targeted: one active derivative of the central state.
+	murder_mystery_reinforce_derivative = {
+		name = murder_mystery_reinforce_derivative
+		desc = murder_mystery_reinforce_derivative_desc
+		icon = GFX_decision_039_murder_mystery_reinforce_derivative
+		target_array = global.murder_mystery_derivative_country_entries
+		target_root_trigger = {
+			murder_mystery_brotherhood_category_visible = yes
+			has_country_flag = murder_mystery_assassin_state
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = murder_mystery_derivative_active
+				NOT = { has_country_flag = murder_mystery_derivative_reinforced }
+			}
+		}
+		visible = {
+			murder_mystery_brotherhood_category_visible = yes
+		}
+		available = {
+			murder_mystery_action_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_reinforce_stockpile_tt
+				murder_mystery_can_pay_derivative_reinforcement = yes
+			}
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_derivative_reinforcement = yes }
+		custom_cost_text = murder_mystery_cost_cell_supply
+		days_re_enable = constant:murder_mystery_cooldown.action_days
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_reinforce_derivative_tt
+			if = {
+				limit = { NOT = { FROM = { murder_mystery_derivative_reinforcement_is_cheap = yes } } }
+				custom_effect_tooltip = murder_mystery_reinforce_derivative_far_tt
+			}
+			custom_effect_tooltip = murder_mystery_reinforce_derivative_strain_tt
+			hidden_effect = { murder_mystery_decision_reinforce_derivative = yes }
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.standard
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				FROM = { has_war = yes }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				FROM = { check_variable = { var = murder_mystery_derivative_priority value = constant:murder_mystery_derivative_priority.obedience compare = equals } }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.low
+				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				NOT = { murder_mystery_can_pay_derivative_reinforcement = yes }
 			}
 		}
 	}
@@ -2933,6 +3052,130 @@ murder_mystery_cell_administration_category = {
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
 				NOT = { event_target:murder_mystery_assassin_state = { murder_mystery_action_is_available = yes } }
+			}
+		}
+	}
+
+	# The derivative's priority toward the central state; one at a time,
+	# changeable after a cooldown.
+	murder_mystery_derivative_priority_obedience = {
+		name = murder_mystery_derivative_priority_obedience
+		desc = murder_mystery_derivative_priority_obedience_desc
+		icon = GFX_decision_039_murder_mystery_priority_obedience
+		visible = {
+			murder_mystery_cell_category_visible = yes
+			NOT = { check_variable = { var = murder_mystery_derivative_priority value = constant:murder_mystery_derivative_priority.obedience compare = equals } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_derivative_priority_cooldown_tt
+				NOT = { has_country_flag = murder_mystery_derivative_priority_cooldown }
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_derivative_priority_obedience_tt
+			hidden_effect = {
+				set_temp_variable = { murder_mystery_priority_choice = constant:murder_mystery_derivative_priority.obedience }
+				murder_mystery_decision_set_derivative_priority = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.low
+			modifier = {
+				factor = constant:murder_mystery_ai.urgent
+				has_war = yes
+				surrender_progress > @murder_mystery_priority_obedience_surrender
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				has_country_flag = murder_mystery_derivative_priority_cooldown
+			}
+		}
+	}
+
+	murder_mystery_derivative_priority_autonomy = {
+		name = murder_mystery_derivative_priority_autonomy
+		desc = murder_mystery_derivative_priority_autonomy_desc
+		icon = GFX_decision_039_murder_mystery_priority_autonomy
+		visible = {
+			murder_mystery_cell_category_visible = yes
+			NOT = { check_variable = { var = murder_mystery_derivative_priority value = constant:murder_mystery_derivative_priority.autonomy compare = equals } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_derivative_priority_cooldown_tt
+				NOT = { has_country_flag = murder_mystery_derivative_priority_cooldown }
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_derivative_priority_autonomy_tt
+			hidden_effect = {
+				set_temp_variable = { murder_mystery_priority_choice = constant:murder_mystery_derivative_priority.autonomy }
+				murder_mystery_decision_set_derivative_priority = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.low
+			modifier = {
+				factor = constant:murder_mystery_ai.urgent
+				has_event_target = murder_mystery_assassin_state
+				NOT = { is_neighbor_of = event_target:murder_mystery_assassin_state }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				has_country_flag = murder_mystery_derivative_priority_cooldown
+			}
+		}
+	}
+
+	murder_mystery_derivative_priority_local_campaign = {
+		name = murder_mystery_derivative_priority_local_campaign
+		desc = murder_mystery_derivative_priority_local_campaign_desc
+		icon = GFX_decision_039_murder_mystery_priority_local_campaign
+		visible = {
+			murder_mystery_cell_category_visible = yes
+			NOT = { check_variable = { var = murder_mystery_derivative_priority value = constant:murder_mystery_derivative_priority.local_campaign compare = equals } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_derivative_priority_cooldown_tt
+				NOT = { has_country_flag = murder_mystery_derivative_priority_cooldown }
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_local_administration = yes }
+		custom_cost_text = murder_mystery_cost_local_administration
+		ai_hint_pp_cost = @murder_mystery_ai_hint_local_administration
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_derivative_priority_local_campaign_tt
+			hidden_effect = {
+				set_temp_variable = { murder_mystery_priority_choice = constant:murder_mystery_derivative_priority.local_campaign }
+				murder_mystery_decision_set_derivative_priority = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.low
+			modifier = {
+				factor = constant:murder_mystery_ai.urgent
+				has_war = yes
+				NOT = { surrender_progress > @murder_mystery_priority_obedience_surrender }
+				is_neighbor_of = event_target:murder_mystery_assassin_state
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				has_country_flag = murder_mystery_derivative_priority_cooldown
 			}
 		}
 	}

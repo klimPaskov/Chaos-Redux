@@ -251,6 +251,25 @@ Its row appears in the Event Details world-end list beside the other terminal ou
 `murder_mystery_world_branch_is_enabled` reads that toggle through `world_end_murder_mystery_world_of_anarchy_scenario_enabled` and the global `world_end_disabled` flag, so disabling the row blocks only the Evolution V world branch; the movement, its cells and its Assassin State keep running.
 The row shows as active while `world_end_murder_mystery` is set.
 
+## Partner support, derivative reinforcement and priorities
+
+Support a Threatened Partner (foreign cell investigation) is a targeted decision over the cell registry for another government fighting a registered cell that is not on the movement's side.
+It needs route access (a land border, a shared faction or military access), costs the route watch family, and on arrival raises the partner's local case (`murder_mystery_partner_support.local_case_gain`, written to its cell row), its witness safety and its target protection (lower target vulnerability).
+While the movement's Network Reach is above `intercept_reach`, the convoy is intercepted with a 35% chance: the partner gains nothing, the movement gains Reach, the sender's investigators are exposed, and the sender receives `chaosx.nr39.67`.
+A supported partner is not offered again.
+
+Reinforce a Derivative (Brotherhood operations) is a targeted decision over the derivative registry for the central state.
+It ships `infantry_shipment` rifles and `support_shipment` support equipment from the central stockpile with `send_equipment`, transfers `manpower`, and pays the cell supply family once for a derivative that borders the center or chose obedience, twice otherwise; the decision checks the stockpile for the shipment and the transport together.
+A derivative counts as reinforced for `reinforcement_window_days`; reinforcing a second one inside that window costs `stretched_cohesion` Cohesion.
+
+Each derivative chooses one priority in Cell Administration (Answer to the Center, Govern Ourselves, Fight Our Own War), paid from its own political power and manpower and changeable after `murder_mystery_derivative_priority.cooldown_days`:
+
+| Priority | Spirit | Other effect |
+| --- | --- | --- |
+| Obedience | Answering to the Center: stability, political power, slower autonomy gain | Autonomy falls; reinforcement costs the neighbour rate wherever it is |
+| Autonomy | Governing Ourselves: faster autonomy gain, defence, dig-in | Autonomy rises |
+| Local campaign | Local Campaign: attack, breakthrough, a stability cost | The central state loses `local_campaign_cohesion` Cohesion |
+
 ## World of Anarchy war
 
 Activation registers every ordinary government once (`murder_mystery_register_terminal_country`): it must exist, use normal civilian systems, own at least one state, and be neither special Chaos, nonhuman, exempt, nor on the movement's side (the central state, a derivative, or a subject of either or of a successor administration).

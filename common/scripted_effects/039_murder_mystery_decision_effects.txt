@@ -1738,3 +1738,213 @@ murder_mystery_decision_resolve_terminal_victory = {
 	clear_variable = murder_mystery_pending_action
 	clear_variable = murder_mystery_pending_phase
 }
+
+# ---------------------------------------------------------------------------
+# Partner support, derivative reinforcement and derivative priorities
+# ---------------------------------------------------------------------------
+# The interception chance and autonomy steps are literal fields, so they are
+# file constants here; every other value lives in the script constants.
+@murder_mystery_partner_intercept_chance = 35
+@murder_mystery_priority_autonomy_obedience = -0.1
+@murder_mystery_priority_autonomy_autonomy = 0.1
+
+# COUNTRY scope: a country with a registered cell. Input: temp
+# murder_mystery_cell_local_case_change. Adds it to the cell row's local case.
+murder_mystery_adjust_cell_local_case = {
+	if = {
+		limit = { murder_mystery_cell_registry_is_aligned = yes }
+		save_event_target_as = murder_mystery_local_case_country
+		set_temp_variable = { murder_mystery_local_case_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_local_case_index value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+			set_temp_variable = { murder_mystery_local_case_match = constant:murder_mystery_value.zero }
+			var:global.murder_mystery_cell_country_entries^murder_mystery_local_case_index = {
+				if = {
+					limit = { tag = event_target:murder_mystery_local_case_country }
+					set_temp_variable = { murder_mystery_local_case_match = constant:murder_mystery_value.one }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_local_case_match value = constant:murder_mystery_value.one compare = equals } }
+				set_temp_variable = { murder_mystery_local_case_value = global.murder_mystery_cell_local_case_entries^murder_mystery_local_case_index }
+				add_to_temp_variable = { murder_mystery_local_case_value = murder_mystery_cell_local_case_change }
+				clamp_temp_variable = { var = murder_mystery_local_case_value min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
+				set_variable = { global.murder_mystery_cell_local_case_entries^murder_mystery_local_case_index = murder_mystery_local_case_value }
+				set_temp_variable = { murder_mystery_local_case_index = global.murder_mystery_cell_country_entries^num }
+			}
+			add_to_temp_variable = { murder_mystery_local_case_index = constant:murder_mystery_identity.loop_increment }
+		}
+	}
+}
+
+# COUNTRY scope: the supporting government; FROM is the partner chosen in
+# Support a Threatened Partner. The support costs the route watch family.
+# While the movement's Network Reach is above intercept_reach it can intercept
+# the convoy: the partner gains nothing, the movement learns from the
+# shipment and the sender's investigators are exposed. Otherwise the partner's
+# local case and the protection of its likely targets improve.
+murder_mystery_decision_support_threatened_partner = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.route_watch }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	murder_mystery_start_action_cooldown = yes
+	FROM = { save_event_target_as = murder_mystery_supported_partner }
+	murder_mystery_read_movement_reach = yes
+	set_temp_variable = { murder_mystery_partner_intercepted = constant:murder_mystery_value.zero }
+	if = {
+		limit = { check_variable = { var = murder_mystery_pulse_reach value = constant:murder_mystery_partner_support.intercept_reach compare = greater_than } }
+		random = {
+			chance = @murder_mystery_partner_intercept_chance
+			set_temp_variable = { murder_mystery_partner_intercepted = constant:murder_mystery_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_partner_intercepted value = constant:murder_mystery_value.one compare = equals } }
+		murder_mystery_initialize_country_runtime = yes
+		add_to_variable = { murder_mystery_investigator_exposure = constant:murder_mystery_partner_support.intercept_exposure }
+		murder_mystery_clamp_country_values = yes
+		if = {
+			limit = {
+				has_global_flag = murder_mystery_assassin_state_exists
+				has_event_target = murder_mystery_assassin_state
+				event_target:murder_mystery_assassin_state = { exists = yes }
+			}
+			event_target:murder_mystery_assassin_state = {
+				add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_partner_support.intercept_reach_gain }
+				murder_mystery_clamp_country_values = yes
+			}
+		}
+		else_if = {
+			limit = {
+				has_event_target = murder_mystery_original_host
+				event_target:murder_mystery_original_host = { exists = yes }
+			}
+			event_target:murder_mystery_original_host = {
+				add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_partner_support.intercept_reach_gain }
+				murder_mystery_clamp_country_values = yes
+			}
+		}
+		country_event = { id = chaosx.nr39.67 }
+	}
+	else = {
+		FROM = {
+			murder_mystery_initialize_country_runtime = yes
+			add_to_variable = { murder_mystery_witness_safety = constant:murder_mystery_partner_support.witness_safety_gain }
+			subtract_from_variable = { murder_mystery_target_vulnerability = constant:murder_mystery_partner_support.vulnerability_loss }
+			murder_mystery_clamp_country_values = yes
+			set_temp_variable = { murder_mystery_cell_local_case_change = constant:murder_mystery_partner_support.local_case_gain }
+			murder_mystery_adjust_cell_local_case = yes
+			set_country_flag = murder_mystery_partner_supported
+		}
+	}
+}
+
+# COUNTRY scope: the central state; FROM is the derivative chosen in Reinforce
+# a Derivative. Ships rifles and support equipment from the central stockpile
+# and transfers manpower. A derivative that does not border the center costs
+# the cell supply family twice, unless it chose obedience. Supporting several
+# derivatives inside reinforcement_window_days strains Cohesion.
+murder_mystery_decision_reinforce_derivative = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.cell_supply }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	if = {
+		limit = {
+			NOT = { FROM = { murder_mystery_derivative_reinforcement_is_cheap = yes } }
+		}
+		set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.cell_supply }
+		murder_mystery_pay_action_cost = yes
+		murder_mystery_clear_action_cost_receipt = yes
+	}
+	murder_mystery_start_action_cooldown = yes
+	send_equipment = {
+		equipment = infantry_equipment
+		amount = constant:murder_mystery_derivative_support.infantry_shipment
+		target = FROM
+	}
+	send_equipment = {
+		equipment = support_equipment
+		amount = constant:murder_mystery_derivative_support.support_shipment
+		target = FROM
+	}
+	set_temp_variable = { murder_mystery_reinforce_manpower = constant:murder_mystery_value.zero }
+	subtract_from_temp_variable = { murder_mystery_reinforce_manpower = constant:murder_mystery_derivative_support.manpower }
+	add_manpower = murder_mystery_reinforce_manpower
+	FROM = {
+		add_manpower = constant:murder_mystery_derivative_support.manpower
+		set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_derivative_support.reinforcement_window_days }
+		meta_effect = {
+			text = {
+				set_country_flag = { flag = murder_mystery_derivative_reinforced days = [TIMED_FLAG_DAYS] }
+			}
+			TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+		}
+	}
+	set_temp_variable = { murder_mystery_reinforced_derivatives = constant:murder_mystery_value.zero }
+	for_each_scope_loop = {
+		array = global.murder_mystery_derivative_country_entries
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = murder_mystery_derivative_reinforced
+			}
+			add_to_temp_variable = { murder_mystery_reinforced_derivatives = constant:murder_mystery_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = murder_mystery_reinforced_derivatives value = constant:murder_mystery_derivative_support.stretched_count compare = greater_than_or_equals } }
+		set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_derivative_support.stretched_cohesion }
+		murder_mystery_adjust_brotherhood_cohesion = yes
+		clear_variable = murder_mystery_brotherhood_cohesion_delta
+	}
+}
+
+# COUNTRY scope: a derivative. Input: temp murder_mystery_priority_choice (a
+# murder_mystery_derivative_priority constant). Sets its priority toward the
+# central state, swaps the matching spirit and starts the cooldown.
+murder_mystery_decision_set_derivative_priority = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.local_administration }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	remove_ideas = murder_mystery_priority_spirit_obedience
+	remove_ideas = murder_mystery_priority_spirit_autonomy
+	remove_ideas = murder_mystery_priority_spirit_local_campaign
+	set_variable = { murder_mystery_derivative_priority = murder_mystery_priority_choice }
+	if = {
+		limit = { check_variable = { var = murder_mystery_priority_choice value = constant:murder_mystery_derivative_priority.obedience compare = equals } }
+		add_ideas = murder_mystery_priority_spirit_obedience
+		if = {
+			limit = { is_subject = yes }
+			add_autonomy_ratio = { value = @murder_mystery_priority_autonomy_obedience localization = murder_mystery_priority_obedience_autonomy }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_priority_choice value = constant:murder_mystery_derivative_priority.autonomy compare = equals } }
+		add_ideas = murder_mystery_priority_spirit_autonomy
+		if = {
+			limit = { is_subject = yes }
+			add_autonomy_ratio = { value = @murder_mystery_priority_autonomy_autonomy localization = murder_mystery_priority_autonomy_autonomy }
+		}
+	}
+	else = {
+		add_ideas = murder_mystery_priority_spirit_local_campaign
+		if = {
+			limit = {
+				has_event_target = murder_mystery_assassin_state
+				event_target:murder_mystery_assassin_state = { exists = yes }
+			}
+			event_target:murder_mystery_assassin_state = {
+				set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_derivative_priority.local_campaign_cohesion }
+				murder_mystery_adjust_brotherhood_cohesion = yes
+				clear_variable = murder_mystery_brotherhood_cohesion_delta
+			}
+		}
+	}
+	set_temp_variable = { murder_mystery_timed_flag_days = constant:murder_mystery_derivative_priority.cooldown_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = murder_mystery_derivative_priority_cooldown days = [TIMED_FLAG_DAYS] }
+		}
+		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
+	}
+}

@@ -282,3 +282,15 @@ Event 039 uses Event 009's existing opt-out flag `white_peace_protected_war_acto
 Protected: the central state (commit and heir), every active derivative (the shared derivative commit, so revolts and cell territories), the original host while at war with the central state, and every World of Anarchy target at war with it.
 The movement pulse reconciles the set every ten days, which also covers wars that end by separate peace; cleanup, defeat, annexation, successor administrations, terminal cleanup and victory clear it.
 Event 009's flag blocks a country from every white peace, not one war; Part 11's concern is that any white peace of these actors strands the split, inheritance or administration state, so the country-wide opt-out is the intended behaviour.
+
+## D27. The three missing Part 8 decisions
+
+Disposition: implemented (round 2); targets, costs, the interception roll and the spirits need live confirmation.
+Basis: Part 8 (Support a Threatened Partner, Reinforce a Derivative, the derivative's choice of obedience, autonomy or local campaign) and the existing transaction and cost-family pattern.
+
+- Support a Threatened Partner targets countries in the cell registry, because the local case of a foreign government lives in its cell row; "route access" is a land border, a shared faction or military access, the native relations a convoy of investigators and vehicles would need. It uses the existing route watch family (trucks, manpower, command power). Interception is a 35% roll while the movement's Reach is above 60, so a strong network makes help unreliable without making it pointless; an intercepted convoy exposes the sender and feeds the movement, and only then fires a report.
+- Target protection is the partner's witness safety and target vulnerability, the two country values Event 039 already uses for protecting likely victims.
+- Reinforce a Derivative sends real equipment with `send_equipment` (the Event 006 pattern with script-constant amounts) and moves manpower from the central pool. Distance scaling reuses the cell supply family: a distant derivative pays it twice, an obedient one never does; the affordability trigger computes the doubled amount with temporary variables, which triggers support, so no parallel constants are needed.
+- "Several derivatives supported" means a second derivative reinforced within 180 days.
+- The priority choice is three decisions sharing one variable, mutually exclusive by visibility, each swapping one spirit and changing subject autonomy through `add_autonomy_ratio`; "more central support" for obedience is the neighbour reinforcement rate everywhere plus a higher central AI weight to reinforce it. The decisions are paid by the derivative itself (local administration family), since the choice is its own.
+- New icons reuse existing Event 039 decision textures under new sprite names (`GFX_decision_039_murder_mystery_priority_*`); Support and Reinforce consume their already registered sprites.

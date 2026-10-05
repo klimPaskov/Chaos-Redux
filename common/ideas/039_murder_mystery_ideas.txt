@@ -15,6 +15,7 @@
 @MURDER_MYSTERY_SMALL_PENALTY = -0.03
 @MURDER_MYSTERY_MEDIUM_PENALTY = -0.06
 @MURDER_MYSTERY_LARGE_PENALTY = -0.10
+@MURDER_MYSTERY_DIG_IN_BONUS = 2
 
 ideas = {
 	country = {
@@ -263,6 +264,40 @@ ideas = {
 			modifier = {
 				planning_speed = @MURDER_MYSTERY_MEDIUM_PENALTY
 				army_defence_factor = @MURDER_MYSTERY_SMALL_PENALTY
+				stability_factor = @MURDER_MYSTERY_SMALL_PENALTY
+			}
+		}
+
+		# A derivative's priority toward the central state.
+		murder_mystery_priority_spirit_obedience = {
+			picture = GFX_idea_039_murder_mystery_centralized_cells_under_arms
+			allowed = { murder_mystery_assassin_actor = yes }
+			removal_cost = -1
+			modifier = {
+				stability_factor = @MURDER_MYSTERY_SMALL_BONUS
+				political_power_gain = @MURDER_MYSTERY_SMALL_BONUS
+				autonomy_gain = @MURDER_MYSTERY_MEDIUM_PENALTY
+			}
+		}
+
+		murder_mystery_priority_spirit_autonomy = {
+			picture = GFX_idea_039_murder_mystery_decentralized_cells_under_arms
+			allowed = { murder_mystery_assassin_actor = yes }
+			removal_cost = -1
+			modifier = {
+				autonomy_gain = @MURDER_MYSTERY_MEDIUM_BONUS
+				army_defence_factor = @MURDER_MYSTERY_MEDIUM_BONUS
+				max_dig_in = @MURDER_MYSTERY_DIG_IN_BONUS
+			}
+		}
+
+		murder_mystery_priority_spirit_local_campaign = {
+			picture = GFX_idea_039_murder_mystery_pragmatic_cells_under_arms
+			allowed = { murder_mystery_assassin_actor = yes }
+			removal_cost = -1
+			modifier = {
+				army_attack_factor = @MURDER_MYSTERY_MEDIUM_BONUS
+				breakthrough_factor = @MURDER_MYSTERY_MEDIUM_BONUS
 				stability_factor = @MURDER_MYSTERY_SMALL_PENALTY
 			}
 		}

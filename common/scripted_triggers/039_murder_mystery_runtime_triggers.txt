@@ -1114,3 +1114,52 @@ murder_mystery_terminal_state_is_strategic = {
 murder_mystery_terminal_sector_query_is_active = {
 	is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = murder_mystery_terminal_sector_query }
 }
+
+# ---------------------------------------------------------------------------
+# Partner support and derivative reinforcement
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the supporting government; FROM is the partner. The convoy
+# needs a land border, a shared faction or military access.
+murder_mystery_partner_has_route_access = {
+	OR = {
+		is_neighbor_of = FROM
+		is_in_faction_with = FROM
+		has_military_access_to = FROM
+	}
+}
+
+# COUNTRY scope: a derivative. Reinforcement is cheap when it borders the
+# central state or chose obedience.
+murder_mystery_derivative_reinforcement_is_cheap = {
+	OR = {
+		AND = {
+			has_event_target = murder_mystery_assassin_state
+			is_neighbor_of = event_target:murder_mystery_assassin_state
+		}
+		check_variable = { var = murder_mystery_derivative_priority value = constant:murder_mystery_derivative_priority.obedience compare = equals }
+	}
+}
+
+# COUNTRY scope: the central state; FROM is the derivative. The stockpile
+# holds the shipment and the cell supply family once, or twice for a distant
+# derivative.
+murder_mystery_can_pay_derivative_reinforcement = {
+	check_variable = { var = num_equipment@support_equipment value = constant:murder_mystery_derivative_support.support_shipment compare = greater_than_or_equals }
+	NOT = { has_manpower < constant:murder_mystery_derivative_support.manpower }
+	set_temp_variable = { murder_mystery_reinforce_cost_multiplier = constant:murder_mystery_value.one }
+	if = {
+		limit = { NOT = { FROM = { murder_mystery_derivative_reinforcement_is_cheap = yes } } }
+		set_temp_variable = { murder_mystery_reinforce_cost_multiplier = constant:murder_mystery_value.two }
+	}
+	set_temp_variable = { murder_mystery_reinforce_due = constant:murder_mystery_cost.cell_supply_operations_kits }
+	multiply_temp_variable = { murder_mystery_reinforce_due = murder_mystery_reinforce_cost_multiplier }
+	check_variable = { var = num_equipment@assassin_operations_kit_1 value = murder_mystery_reinforce_due compare = greater_than_or_equals }
+	set_temp_variable = { murder_mystery_reinforce_due = constant:murder_mystery_cost.cell_supply_trucks }
+	multiply_temp_variable = { murder_mystery_reinforce_due = murder_mystery_reinforce_cost_multiplier }
+	check_variable = { var = num_equipment@motorized_equipment value = murder_mystery_reinforce_due compare = greater_than_or_equals }
+	set_temp_variable = { murder_mystery_reinforce_due = constant:murder_mystery_cost.cell_supply_infantry_equipment }
+	multiply_temp_variable = { murder_mystery_reinforce_due = murder_mystery_reinforce_cost_multiplier }
+	add_to_temp_variable = { murder_mystery_reinforce_due = constant:murder_mystery_derivative_support.infantry_shipment }
+	check_variable = { var = num_equipment@infantry_equipment value = murder_mystery_reinforce_due compare = greater_than_or_equals }
+}
