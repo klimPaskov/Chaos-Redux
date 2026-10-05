@@ -1507,7 +1507,17 @@ country_event = {
 
 	option = {
 		name = chaosx.nr25.174.a
-		custom_effect_tooltip = chaosx_nr25_seizure_answer_tt
+		if = {
+			limit = { has_country_flag = chaosx_nr25_seizure_demand_accepted }
+			custom_effect_tooltip = chaosx_nr25_seizure_answer_tt
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_seizure_demand_accepted
+				has_country_flag = chaosx_nr25_seizure_fragment_returned
+			}
+			custom_effect_tooltip = chaosx_nr25_seizure_fragment_back_tt
+		}
 		ai_chance = { base = 100 }
 	}
 }
@@ -2418,7 +2428,11 @@ country_event = {
 
 	option = {
 		name = chaosx.nr25.336.a
-		custom_effect_tooltip = chaosx_nr25_survivor_outpost_tt
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_survivor_security_loss value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			custom_effect_tooltip = chaosx_nr25_survivor_outpost_tt
+		}
+		else = { custom_effect_tooltip = chaosx_nr25_survivor_camp_readiness_tt }
 		ai_chance = { base = 100 }
 	}
 }
@@ -2490,7 +2504,11 @@ country_event = {
 
 	option = {
 		name = chaosx.nr25.340.a
-		custom_effect_tooltip = chaosx_nr25_survivor_turned_on_us_tt
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_survivor_security_loss value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			custom_effect_tooltip = chaosx_nr25_survivor_turned_on_us_tt
+		}
+		else = { custom_effect_tooltip = chaosx_nr25_survivor_camp_readiness_tt }
 		ai_chance = { base = 100 }
 	}
 }

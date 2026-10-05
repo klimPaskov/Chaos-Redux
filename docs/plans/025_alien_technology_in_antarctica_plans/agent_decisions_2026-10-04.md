@@ -676,3 +676,20 @@ Decision:
 - Every category has its own 52x40 icon in the existing glacial-ice category style: evolution, outpost, cooperation, rival operations (`GFX_decision_category_025_antarctic_countermeasure`), safety and analysis join the expedition icon. The board's action icons keep only their board consumers.
 - The Open the Expedition Board control (D33) uses the board family icon instead of the expedition category icon.
 - The evolution category picture still shares the expedition category picture; the asset inventory requires one category picture, so this is not changed.
+
+## D44. Round 2 review corrections
+
+Disposition: `implemented`; the corrected behaviour is `needs_live_game` like the D36 to D41 systems it touches.
+
+Basis: the skeptical review of the round 2 commits (`8024eb5df` to `cda7e3cf8`) under the delegated design authority.
+
+Decision:
+
+- Seizure returns (D41) follow the victim and the seizer, not the seizer's last seizure. `chaosx_nr25_take_seized_material` adds what it took to the victim's `chaosx_nr25_seized_evidence_by_<seizer>` and records the moved slot in `chaosx_nr25_seized_slot_by_<seizer>`; `chaosx_nr25_accept_seizure_return` returns exactly that record and zeroes it. Before, a seizer that took a second camp before answering would hand the second camp's evidence and fragment to the first victim.
+- A seizure demand stays pending for the answer window (`chaosx_nr25_militarisation.offer_days`), so a seizer that never answers cannot block later demands. The answer report `.174` shows the returned evidence only after an acceptance and states when the fragment is back; a refusal clears the fragment-returned flag. The unread `chaosx_nr25_accusation_made` flag is removed.
+- A corridor offered from the clash report (`.165`) no longer clears the player's board rival selection; the Offer a Demilitarised Corridor decision clears it after the offer, like the other targeted armed orders (D38).
+- The five Something Survived orders are listed only while the survivor is loose (`chaosx_nr25_survivor_at_large`, which replaces the capture-only `chaosx_nr25_survivor_capture_open`); after a capture, Turn It Toward a Rival no longer strikes rivals with a contained survivor and the other stances no longer cost resources for nothing. Turn It Toward a Rival is not listed while only one expedition is in the race, where it had no target (D37).
+- The guard, path and turn gains read new survivor constants (`guard_readiness`, `path_access`, `path_progress`, `turn_intelligence`), and their tooltips print them instead of a literal 10 or no amount; the turn tooltip also states that an untraced diversion lowers Exposure Risk.
+- The camp-damage (`.336`) and turned-trace (`.340`) reports show only the loss that applied (outpost security, or readiness without an outpost) instead of a line with a zero in it.
+- The lost-site report `.344` is titled "A Fragment Field Is Lost" so the destroyed variant is not called buried, and a buried field is described as permanently out of reach. The broadcast report `.327` says the sector is ruled out as the core's resting place instead of claiming nothing is buried there, since fragment fields remain possible.
+- The ledger API table names the real caller of `chaosx_alien_recovery_ledger_return_fragment`.

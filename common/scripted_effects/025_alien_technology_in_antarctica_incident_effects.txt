@@ -19,7 +19,6 @@
 # accusation: world tension, and the accused must answer.
 chaosx_nr25_accuse_publicly = {
 	add_named_threat = { threat = constant:chaosx_nr25_incident.public_threat name = chaosx_nr25_public_accusation }
-	set_country_flag = chaosx_nr25_accusation_made
 	FROM = { country_event = { id = chaosx.nr25.171 days = 1 } }
 }
 
@@ -70,17 +69,28 @@ chaosx_nr25_answer_accusation_admit = {
 }
 
 # COUNTRY scope (the victim of a seizure; FROM is the seizer). Demand the
-# return of people, records and the seized fragment.
+# return of people, records and the seized fragment. The demand stays open
+# for the answer window only, so a seizer that never answers cannot block a
+# later demand.
 chaosx_nr25_demand_seizure_return = {
-	set_country_flag = chaosx_nr25_seizure_demand_pending
+	set_temp_variable = { chaosx_nr25_militarisation_days = constant:chaosx_nr25_militarisation.offer_days }
+	set_country_flag = { flag = chaosx_nr25_seizure_demand_pending days = chaosx_nr25_militarisation_days value = 1 }
 	FROM = { country_event = { id = chaosx.nr25.173 days = 1 } }
 }
 
 # COUNTRY scope (the seizer; FROM is the victim). Accept: the detained crews,
-# the carried-off survey evidence and the seized fragment go back, and the
-# ice grows less militarised.
+# the survey evidence and the fragment this seizer took from the victim go
+# back, and the ice grows less militarised. The victim's record of this
+# seizer's seizures (chaosx_nr25_take_seized_material) is what returns, so
+# material taken from another camp never goes to the wrong government.
 chaosx_nr25_accept_seizure_return = {
-	set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_last_seized_evidence }
+	# Inside FROM's scope PREV is this seizer.
+	FROM = {
+		set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_seized_evidence_by_@PREV }
+		set_temp_variable = { chaosx_alien_recovery_return_slot = chaosx_nr25_seized_slot_by_@PREV }
+		set_variable = { chaosx_nr25_seized_evidence_by_@PREV = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_seized_slot_by_@PREV = constant:chaosx_nr25_value.zero }
+	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_survey_evidence value = chaosx_nr25_returned_evidence compare = less_than } }
 		set_temp_variable = { chaosx_nr25_returned_evidence = chaosx_nr25_survey_evidence }
@@ -92,13 +102,9 @@ chaosx_nr25_accept_seizure_return = {
 	subtract_from_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_returned_evidence }
 	FROM = { add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_returned_evidence } }
 	FROM = { save_event_target_as = chaosx_alien_recovery_return_recipient }
-	set_temp_variable = { chaosx_alien_recovery_return_slot = chaosx_nr25_last_seized_slot }
 	set_temp_variable = { chaosx_alien_recovery_fragment_returned = constant:chaosx_nr25_value.zero }
 	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
 	chaosx_alien_recovery_ledger_return_fragment = yes
-	clr_country_flag = chaosx_nr25_last_seizure_took_fragment
-	set_variable = { chaosx_nr25_last_seized_slot = constant:chaosx_nr25_value.zero }
-	set_variable = { chaosx_nr25_last_seized_evidence = constant:chaosx_nr25_value.zero }
 	add_opinion_modifier = { target = FROM modifier = chaosx_nr25_seizure_settled }
 	chaosx_nr25_clamp_values = yes
 	FROM = {
@@ -128,6 +134,7 @@ chaosx_nr25_refuse_seizure_return = {
 		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_seizure_refused }
 		clr_country_flag = chaosx_nr25_seizure_demand_pending
 		clr_country_flag = chaosx_nr25_seizure_demand_accepted
+		clr_country_flag = chaosx_nr25_seizure_fragment_returned
 	}
 	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_incident.refused_militarisation_rise }
 	chaosx_nr25_change_militarisation = yes

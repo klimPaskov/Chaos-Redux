@@ -155,6 +155,7 @@ The profile only weights which evidence appears (`chaosx_nr25_survivor_weight` i
 Each expedition with a camp on the ice rolls a survivor incident on its own pulse through the MTTH entry `chaosx_nr25_survivor_incident_chance` (10%, plus 4 at Exposure Risk 50 or more, capped at 30%).
 The seven incidents follow spec 004's visible evidence: tracks, opened compartments, a missing field party (one crew and the Antarctic expedition deaths band), cut and rearranged cables, fragments moved between survey visits, a camp damaged by night, and answers on the radio (which also raise Active Signal intensity while it is in force); each has its own ambiguous report, `chaosx.nr25.331` to `.337`.
 Incidents stop for every expedition once the survivor is contained, and none of them can block recovery.
+Once it is contained the five survivor orders leave every decision list (`chaosx_nr25_survivor_at_large`), and Turn It Toward a Rival is never listed while only one expedition is in the race.
 
 The stances are exclusive.
 Avoid Contact makes incidents rarer (×0.6), removes the missing-party draw and costs 1 progress per pulse once surveying begins; Guard Every Movement halves incident damage, prevents deaths and costs 1 readiness per pulse; Offer a Controlled Path makes incidents rarer (×0.7) but can lead the trace straight back (25%); Attempt Capture draws incidents closer (×1.5) and is one roll at 25% plus half the expedition's Intelligence, plus 15 when already guarding, at most 75%.
@@ -172,7 +173,7 @@ Each expedition pulse adds the evolution's base exposure plus 0.04 per point of 
 
 Offer a Demilitarised Corridor targets one rival (the board-selected one for a human) and sends it `chaosx.nr25.166`; acceptance sets targeted compact flags on both countries (`chaosx_nr25_compact_<TAG>`, 180 days) that hide blockade, seizure and interception between them, gives both readiness and the compact opinion, and the offerer hears the answer in `.167`.
 Seizure needs the target's camp to stand while compromised or below 30 security; it carries off up to 10 survey evidence and the target's lowest fragment slot through `chaosx_alien_recovery_ledger_seize_fragment`, and the seizer's report is `.168`.
-The armed-incident report `.165` now offers a public protest (world tension, and AI armed actions against the protester are halved for 120 days), a corridor offer to the attacker, or reinforcement of the camp; none declares war.
+The armed-incident report `.165` offers a public protest (world tension, and AI armed actions against the protester are halved for 120 days), a corridor offer to the attacker, or reinforcement of the camp; none declares war.
 AI tendencies follow spec 009: risk-averse and weak expeditions seek corridors, more once the ice is armed or against a known attacker, and aggressive ones refuse them; armed actions avoid compact partners and protesters.
 
 ### The Wreck Is Breaking Apart (Evolution IV)
@@ -193,6 +194,8 @@ At zero the hull breaks (`chaosx_nr25_hull_broken`, report `.345` to every exped
 `025_alien_technology_in_antarctica_incident_effects.txt` carries spec 007's incident ladder, with tuning in `025_alien_technology_in_antarctica_incident_constants.txt`.
 A victim that identifies a rival operation (`chaosx.nr25.61`) accuses it publicly (world tension through a named threat) or keeps quiet (6 Intelligence); the accused answers in `.171` by denying (a denial grudge), compensating (30 political power; the accuser gains 8 readiness and 5 survey evidence and its suspicion turns into goodwill) or admitting a limited operation (10 political power and 6 exposure; a milder grudge replaces the suspicion), and the accuser hears the answer in `.172`.
 After an armed seizure the victim can demand its people and records back from the clash report (`.165`); the seizer accepts in `.173` (detained crews, the carried-off evidence and the seized fragment return through `chaosx_alien_recovery_ledger_return_fragment`, both governments gain the settlement opinion and militarisation falls by 8) or refuses publicly (world tension, the refusal grudge, militarisation +3), and the victim hears the answer in `.174`.
+The victim keeps what each seizer took from it (`chaosx_nr25_seized_evidence_by_<seizer>` and `chaosx_nr25_seized_slot_by_<seizer>`, written by `chaosx_nr25_take_seized_material`), so an accepted demand returns exactly that evidence and fragment even after the seizer has taken another camp, and a demand stays open only for the 30-day answer window.
+A corridor offered from the clash report leaves the player's board selection alone; the Offer a Demilitarised Corridor decision uses it up like the other targeted armed orders.
 Every step is bilateral, an unidentified operation never reaches the ladder, and nothing declares war.
 
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
