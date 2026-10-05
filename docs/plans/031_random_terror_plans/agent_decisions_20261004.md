@@ -415,3 +415,14 @@ Basis: Part 10 Special-country classifiers (one generic actor marker in the shar
 
 - One OR entry, `random_terror_is_actor = yes`, was added to `is_special_chaos_country` with a minimal edit; it covers live commands only, because the trigger requires the actor flag without the cleanup flag.
 - Actors stay out of `is_actual_nonhuman_country`, and governments with Terror Pressure are not classified.
+
+### R37 Response Capacity improves raids and sweeps, and part of it lasts
+
+Basis: Part 3 (Establish Joint Response Cell creates coordination capacity; intelligence-led responses depend on capacity) and Part 1 (clean containment gives a limited long-term counterterror capacity); the lead found the value written but never read, and cleared by the same closure Security Reform causes.
+
+- Capacity raises the clean-success weight of every Targeted Raid band (3 per point) and deepens Intelligence Sweep (1 more activity per point), counting at most 6 points, all in the new `random_terror_capacity` constants.
+  A weight bonus was chosen over a band jump so that every point matters and the abusive and failure weights stay as tuned.
+- The response cell adds 2 more capacity than an ordinary response, so it is the coordination step Part 3 describes.
+- Security Reform adds 2 lasting capacity and a clean containment adds 1, capped at 4 in all; closure resets the crisis capacity to that lasting value instead of clearing it.
+- The header and the response cell, Security Reform, Intelligence Sweep and Targeted Raid tooltips state the values.
+- Route evidence: the raid weight change is probability-bearing; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.

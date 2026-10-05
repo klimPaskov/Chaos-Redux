@@ -139,6 +139,10 @@ random_terror_initialize_country_state = {
 	if = {
 		limit = { NOT = { has_variable = random_terror_response_capacity } }
 		set_variable = { random_terror_response_capacity = constant:random_terror_value.zero }
+		if = {
+			limit = { has_variable = random_terror_lasting_capacity }
+			set_variable = { random_terror_response_capacity = random_terror_lasting_capacity }
+		}
 	}
 	if = {
 		limit = { NOT = { has_variable = random_terror_movement_restrictions_uses } }
@@ -3719,7 +3723,21 @@ random_terror_response_raise_legitimacy = {
 	set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_gain }
 	random_terror_apply_legitimacy = yes
 	add_to_variable = { random_terror_response_capacity = constant:random_terror_tuning.response_capacity_gain }
+	clamp_variable = { var = random_terror_response_capacity min = constant:random_terror_value.zero max = constant:random_terror_capacity.maximum }
 	set_country_flag = random_terror_response_action_recorded
+}
+
+# COUNTRY scope.  Adds caller-owned temp random_terror_pending_lasting_capacity
+# to the capacity that outlasts the crisis, up to random_terror_capacity.lasting_cap,
+# and resets the input.
+random_terror_add_lasting_capacity = {
+	if = {
+		limit = { NOT = { has_variable = random_terror_lasting_capacity } }
+		set_variable = { random_terror_lasting_capacity = constant:random_terror_value.zero }
+	}
+	add_to_variable = { random_terror_lasting_capacity = random_terror_pending_lasting_capacity }
+	clamp_variable = { var = random_terror_lasting_capacity min = constant:random_terror_value.zero max = constant:random_terror_capacity.lasting_cap }
+	set_temp_variable = { random_terror_pending_lasting_capacity = constant:random_terror_value.zero }
 }
 
 random_terror_response_action_lock = {
@@ -3733,6 +3751,9 @@ random_terror_response_action_lock = {
 
 random_terror_decision_establish_response_cell = {
 	random_terror_response_raise_legitimacy = yes
+	# The joint cell is the coordination capacity of Part 3.
+	add_to_variable = { random_terror_response_capacity = constant:random_terror_capacity.response_cell_gain }
+	clamp_variable = { var = random_terror_response_capacity min = constant:random_terror_value.zero max = constant:random_terror_capacity.maximum }
 	set_country_flag = random_terror_response_cell_active
 	random_terror_response_action_lock = yes
 }
@@ -3776,6 +3797,15 @@ random_terror_decision_support_victims = {
 
 random_terror_decision_intelligence_sweep = {
 	random_terror_response_reduce_target = yes
+	# Response Capacity turns the sweep into a deeper strike on the cell.
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		set_temp_variable = { random_terror_pending_activity_delta = random_terror_response_capacity }
+		clamp_temp_variable = { var = random_terror_pending_activity_delta min = constant:random_terror_value.zero max = constant:random_terror_capacity.effective_cap }
+		multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_capacity.sweep_activity_per_point }
+		multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.negative_one }
+		event_target:random_terror_action_state = { random_terror_add_state_activity = yes }
+	}
 	subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_tuning.global_network_intelligence_reduction }
 	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	random_terror_response_raise_legitimacy = yes
@@ -4014,6 +4044,10 @@ random_terror_decision_public_accounting = {
 random_terror_decision_security_reform = {
 	random_terror_response_raise_legitimacy = yes
 	add_to_variable = { random_terror_response_capacity = constant:random_terror_tuning.response_reform_capacity_gain }
+	clamp_variable = { var = random_terror_response_capacity min = constant:random_terror_value.zero max = constant:random_terror_capacity.maximum }
+	# Part of the reform outlasts this crisis.
+	set_temp_variable = { random_terror_pending_lasting_capacity = constant:random_terror_capacity.reform_lasting_gain }
+	random_terror_add_lasting_capacity = yes
 	set_country_flag = random_terror_security_reform_complete
 	random_terror_response_action_lock = yes
 	hidden_effect = { random_terror_close_country_recovery = yes }
@@ -5110,6 +5144,10 @@ random_terror_reconcile_pressure_uprising = {
 
 random_terror_resolve_targeted_raid_outcome = {
 	random_terror_initialize_country_state = yes
+	# Response Capacity adds to the clean-success weight of every band.
+	set_temp_variable = { random_terror_capacity_clean_bonus = random_terror_response_capacity }
+	clamp_temp_variable = { var = random_terror_capacity_clean_bonus min = constant:random_terror_value.zero max = constant:random_terror_capacity.effective_cap }
+	multiply_temp_variable = { random_terror_capacity_clean_bonus = constant:random_terror_capacity.raid_clean_weight_per_point }
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
@@ -5152,6 +5190,7 @@ random_terror_resolve_targeted_raid_outcome = {
 			if = {
 				limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.high } }
 				set_temp_variable = { random_terror_draw_runtime_raid_clean = constant:random_terror_runtime_weight.raid_clean }
+				add_to_temp_variable = { random_terror_draw_runtime_raid_clean = random_terror_capacity_clean_bonus }
 				set_temp_variable = { random_terror_draw_runtime_raid_costly = constant:random_terror_runtime_weight.raid_costly }
 				set_temp_variable = { random_terror_draw_runtime_raid_partial = constant:random_terror_runtime_weight.raid_partial }
 				set_temp_variable = { random_terror_draw_runtime_raid_failure = constant:random_terror_runtime_weight.raid_failure }
@@ -5167,6 +5206,7 @@ random_terror_resolve_targeted_raid_outcome = {
 			else_if = {
 				limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.low } }
 				set_temp_variable = { random_terror_draw_runtime_raid_low_clean = constant:random_terror_runtime_weight.raid_low_clean }
+				add_to_temp_variable = { random_terror_draw_runtime_raid_low_clean = random_terror_capacity_clean_bonus }
 				set_temp_variable = { random_terror_draw_runtime_raid_low_costly = constant:random_terror_runtime_weight.raid_low_costly }
 				set_temp_variable = { random_terror_draw_runtime_raid_low_partial = constant:random_terror_runtime_weight.raid_low_partial }
 				set_temp_variable = { random_terror_draw_runtime_raid_low_failure = constant:random_terror_runtime_weight.raid_low_failure }
@@ -5181,6 +5221,7 @@ random_terror_resolve_targeted_raid_outcome = {
 			}
 			else = {
 				set_temp_variable = { random_terror_draw_runtime_raid_mid_clean = constant:random_terror_runtime_weight.raid_mid_clean }
+				add_to_temp_variable = { random_terror_draw_runtime_raid_mid_clean = random_terror_capacity_clean_bonus }
 				set_temp_variable = { random_terror_draw_runtime_raid_mid_costly = constant:random_terror_runtime_weight.raid_mid_costly }
 				set_temp_variable = { random_terror_draw_runtime_raid_mid_partial = constant:random_terror_runtime_weight.raid_mid_partial }
 				set_temp_variable = { random_terror_draw_runtime_raid_mid_failure = constant:random_terror_runtime_weight.raid_mid_failure }
@@ -6260,6 +6301,9 @@ random_terror_resolve_containment_mission_success = {
 	}
 	set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_gain }
 	random_terror_apply_legitimacy = yes
+	# A clean containment leaves a little lasting counterterror capacity.
+	set_temp_variable = { random_terror_pending_lasting_capacity = constant:random_terror_capacity.containment_lasting_gain }
+	random_terror_add_lasting_capacity = yes
 	set_temp_variable = { random_terror_mission_outcome = constant:random_terror_operation_outcome.clean_success }
 	random_terror_apply_mission_outcome_pressure = yes
 	set_country_flag = random_terror_containment_mission_success
@@ -7181,7 +7225,12 @@ random_terror_reset_crisis_cycle = {
 	clr_country_flag = random_terror_uprising_mission_cancelled
 	clear_variable = random_terror_pressure
 	clear_variable = random_terror_response_legitimacy
-	clear_variable = random_terror_response_capacity
+	# The crisis capacity ends with the crisis; the lasting part stays.
+	set_variable = { random_terror_response_capacity = constant:random_terror_value.zero }
+	if = {
+		limit = { has_variable = random_terror_lasting_capacity }
+		set_variable = { random_terror_response_capacity = random_terror_lasting_capacity }
+	}
 	clear_variable = random_terror_cycle_incident_count
 	clear_variable = random_terror_spread_ready_date
 	# A closed crisis leaves no rising under way in the country's own states.

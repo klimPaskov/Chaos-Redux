@@ -248,7 +248,7 @@ random_terror_world_end_desc: "A final territorial command gathers around an une
 
 # Decision categories and actions
 random_terror_government_response_category: "National Terror Response"
-random_terror_government_response_category_desc: "Terror Pressure: §Y[?random_terror_pressure|0]§! ([GetRandomTerrorPressureBand])  Response Legitimacy: §Y[?random_terror_response_legitimacy|0]§!\nCrisis states: §Y[?random_terror_active_state_count|0]§!  Next band: [GetRandomTerrorPressureNextThreshold]\nCurrent mission: [GetRandomTerrorCurrentMission]\n[GetRandomTerrorSpreadStatus]\nProtect civilians, break active networks, and restore lawful authority in affected states."
+random_terror_government_response_category_desc: "Terror Pressure: §Y[?random_terror_pressure|0]§! ([GetRandomTerrorPressureBand])  Response Legitimacy: §Y[?random_terror_response_legitimacy|0]§!  Response Capacity: §Y[?random_terror_response_capacity|0]§!\nCrisis states: §Y[?random_terror_active_state_count|0]§!  Next band: [GetRandomTerrorPressureNextThreshold]\nCurrent mission: [GetRandomTerrorCurrentMission]\n[GetRandomTerrorSpreadStatus]\nProtect civilians, break active networks, and restore lawful authority in affected states."
 random_terror_pressure_band_cleared: "§GCleared§!"
 random_terror_pressure_band_traces: "§GTraces§!"
 random_terror_pressure_band_local: "§YLocal Cells§!"
@@ -288,7 +288,7 @@ random_terror_establish_response_cell_requirements_tt: "An affected country must
 random_terror_establish_response_cell_cost: "£command_power §Y[?constant:random_terror_cost.response_cell_command_power|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.response_cell_support_equipment|0]§!"
 random_terror_establish_response_cell_cost_blocked: "£command_power §R[?constant:random_terror_cost.response_cell_command_power|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.response_cell_support_equipment|0]§!"
 random_terror_establish_response_cell_cost_tooltip: "Spends £command_power §Y[?constant:random_terror_cost.response_cell_command_power|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.response_cell_support_equipment|0]§!."
-random_terror_establish_response_cell_effect_tt: "Creates the response cell and begins Contain the Attack Wave."
+random_terror_establish_response_cell_effect_tt: "Creates the response cell and begins Contain the Attack Wave. Response Capacity rises by §G[?constant:random_terror_capacity.response_cell_gain|0]§! on top of the §G[?constant:random_terror_tuning.response_capacity_gain|0]§! every response adds, until the crisis closes. Each point, up to §Y[?constant:random_terror_capacity.effective_cap|0]§!, makes a clean Targeted Raid more likely and lets an Intelligence Sweep remove §Y[?constant:random_terror_capacity.sweep_activity_per_point|0]§! more activity."
 
 random_terror_protect_transport: "Protect Transport in [FROM.GetName]"
 random_terror_protect_transport_desc: "Guard stations, repair routes, and keep emergency traffic moving through [FROM.GetName]."
@@ -312,7 +312,7 @@ random_terror_intelligence_sweep_requirements_tt: "An active domestic crisis and
 random_terror_intelligence_sweep_cost: "£command_power §Y[?constant:random_terror_cost.intelligence_command_power|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.intelligence_support_equipment|0]§!"
 random_terror_intelligence_sweep_cost_blocked: "£command_power §R[?constant:random_terror_cost.intelligence_command_power|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.intelligence_support_equipment|0]§!"
 random_terror_intelligence_sweep_cost_tooltip: "Spends £command_power §Y[?constant:random_terror_cost.intelligence_command_power|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.intelligence_support_equipment|0]§!."
-random_terror_intelligence_sweep_effect_tt: "Reveals network activity and can weaken active cells without a public crackdown."
+random_terror_intelligence_sweep_effect_tt: "Reveals network activity and can weaken active cells without a public crackdown. Each point of Response Capacity, up to §Y[?constant:random_terror_capacity.effective_cap|0]§!, removes §Y[?constant:random_terror_capacity.sweep_activity_per_point|0]§! more activity in [FROM.GetName]."
 
 random_terror_security_surge: "Deploy a Security Surge"
 random_terror_security_surge_desc: "Send mobile security teams to reinforce the most exposed crisis area."
@@ -329,7 +329,7 @@ random_terror_targeted_raid_requirements_tt: "[FROM.GetName] must be controlled 
 random_terror_targeted_raid_cost: "£command_power §Y[?constant:random_terror_cost.targeted_raid_command_power|0]§!  £army_experience §Y[?constant:random_terror_cost.targeted_raid_army_experience|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!"
 random_terror_targeted_raid_cost_blocked: "£command_power §R[?constant:random_terror_cost.targeted_raid_command_power|0]§!  £army_experience §R[?constant:random_terror_cost.targeted_raid_army_experience|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!"
 random_terror_targeted_raid_cost_tooltip: "Spends £command_power §Y[?constant:random_terror_cost.targeted_raid_command_power|0]§!, £army_experience §Y[?constant:random_terror_cost.targeted_raid_army_experience|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.targeted_raid_support_equipment|0]§!."
-random_terror_targeted_raid_effect_tt: "Attempts to reduce local activity and can free captives or break an uprising. Poor preparation can raise pressure, harm civilians, and damage legitimacy. A partial or costly raid scatters the survivors, who can open a new crisis in a neighbouring state unless a defection channel or allied intelligence keeps track of them."
+random_terror_targeted_raid_effect_tt: "Attempts to reduce local activity and can free captives or break an uprising. Poor preparation can raise pressure, harm civilians, and damage legitimacy. Each point of Response Capacity, up to §Y[?constant:random_terror_capacity.effective_cap|0]§!, makes a clean raid more likely. A partial or costly raid scatters the survivors, who can open a new crisis in a neighbouring state unless a defection channel or allied intelligence keeps track of them."
 
 random_terror_disrupt_support: "Disrupt the Corridor Through [FROM.GetName]"
 random_terror_disrupt_support_desc: "Interdict couriers, cargo, and communications moving through [FROM.GetName]."
@@ -465,7 +465,7 @@ random_terror_security_reform_requirements_tt: "No state may be Active or worse,
 random_terror_security_reform_cost: "£army_experience §Y[?constant:random_terror_cost.reform_army_experience|0]§!  £support_equipment_text_icon §Y[?constant:random_terror_cost.restore_support_equipment|0]§!  £manpower_texticon §Y[?constant:random_terror_tuning.government_military_manpower|0]§!"
 random_terror_security_reform_cost_blocked: "£army_experience §R[?constant:random_terror_cost.reform_army_experience|0]§!  £support_equipment_text_icon §R[?constant:random_terror_cost.restore_support_equipment|0]§!  £manpower_texticon §R[?constant:random_terror_tuning.government_military_manpower|0]§!"
 random_terror_security_reform_cost_tooltip: "Spends £army_experience §Y[?constant:random_terror_cost.reform_army_experience|0]§!, £support_equipment_text_icon §Y[?constant:random_terror_cost.restore_support_equipment|0]§!, £manpower_texticon §Y[?constant:random_terror_tuning.government_military_manpower|0]§!."
-random_terror_security_reform_effect_tt: "Strengthens Response Legitimacy. Once the crisis closes, the country is spared new attack waves for §Y[?constant:random_terror_recovery.reformed_cooldown_days|0]§! days instead of §Y[?constant:random_terror_recovery.cooldown_days|0]§!."
+random_terror_security_reform_effect_tt: "Strengthens Response Legitimacy and raises Response Capacity by §G[?constant:random_terror_tuning.response_reform_capacity_gain|0]§!; §G[?constant:random_terror_capacity.reform_lasting_gain|0]§! of it stays for later crises, up to §Y[?constant:random_terror_capacity.lasting_cap|0]§! lasting capacity in all. Once the crisis closes, the country is spared new attack waves for §Y[?constant:random_terror_recovery.reformed_cooldown_days|0]§! days instead of §Y[?constant:random_terror_recovery.cooldown_days|0]§!."
 
 random_terror_raise_local_militia: "Raise a Local Militia in [FROM.GetName]"
 random_terror_raise_local_militia_desc: "Recruit and arm local supporters under the territorial command in [FROM.GetName]."
