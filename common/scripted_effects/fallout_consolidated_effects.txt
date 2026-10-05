@@ -19004,6 +19004,21 @@ fallout_nzl_record_conflict_dispositions = {
 	}
 }
 
+# Supported scope: any, run from the snapshot epoch before the world snapshot
+# and the conflict ledger exist. An AI New Zealand that holds the five Lifeboat
+# states and Samoa releases Samoa, whose people hold its core, so no country is
+# created after the ledgers freeze (agent decision A18). A human New Zealand,
+# an existing Samoa, and a Samoa held or occupied by anyone else are untouched.
+fallout_nzl_apply_pretransition_samoa_disposition = {
+	if = {
+		limit = { fallout_nzl_samoa_pretransition_release_is_due = yes }
+		NZL = { release = SAM }
+		set_variable = { global.fallout_nzl_samoa_release_generation = global.fallout_transition_generation }
+		set_variable = { global.fallout_nzl_samoa_release_date = global.date }
+		NZL = { set_country_flag = fallout_nzl_samoa_released_before_transition }
+	}
+}
+
 # Supported scope: COUNTRY. Records one landless source after its sole state
 # has moved to NZL. The source row is retired only after the transfer effect
 # proves that the former country owns no state. No output country is written.
@@ -42309,6 +42324,9 @@ fallout_rebuild_complete_snapshot_epoch = {
 			set_variable = { global.fallout_pretransition_air_winter_ledger_schema_version = global.air_winter_fallout_snapshot_producer_schema_version }
 			set_variable = { global.fallout_pretransition_air_winter_ledger_generation = global.air_winter_fallout_snapshot_producer_generation }
 		}
+		# Samoa leaves an AI New Zealand before the world is frozen (agent
+		# decision A18), so the Lifeboat State footprint can pass allocation.
+		fallout_nzl_apply_pretransition_samoa_disposition = yes
 		fallout_capture_player_countries = yes
 		fallout_take_world_snapshot = yes
 	}

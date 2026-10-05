@@ -37,7 +37,7 @@ Static presentation is preferred for this pilot. A scripted decision-category he
 
 The reduced three-state package is not part of this design. If any of the five states fails the current grade, ownership, control, player-reservation, or event-reservation checks, the allocator skips this candidate.
 
-State 726 requires an explicit Samoa disposition. It is owned by vanilla NZL, cored by SAM, used as SAM's capital, and reserved by the Independence Wave Samoa package. The allocator must prove that 726 is outside the NZL assignment and that the SAM reservation has a compatible resolution.
+State 726 requires an explicit Samoa disposition. It is owned by vanilla NZL, cored by SAM, used as SAM's capital, and reserved by the Independence Wave Samoa package. The allocator must prove that 726 is outside the NZL assignment and that the SAM reservation has a compatible resolution. Resolution (agent decision A18): an AI NZL that owns and controls the five Lifeboat states and Samoa releases SAM before the pre-transition snapshot; an existing SAM, including an Independence Wave release, is left as it is.
 
 The Independence Wave Aotearoa candidate overlaps states 284 and 723. The allocator must prove that the overlapping identity is inactive, retired, or otherwise resolved before the NZL package can receive a current package receipt.
 
