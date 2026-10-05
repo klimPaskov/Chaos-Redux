@@ -433,3 +433,13 @@ Decision: one new option per family, each using a price already set when the inc
 These are new entries on the incident `ai_chance` surface for the blocked R2-8 audit.
 Basis: spec parts 1 and 2 incident answers, round 3 lead decision that third answers reuse the price drawn with the incident.
 Disposition: `implemented`; option display in a live report is needs_live_game.
+
+### R3-8. AI route matrix probability pass remains blocked
+
+Evidence this round: one narrow `hoi4.probability_inspect` call after the round 3 changes (adapter `event_option_ai_chance`, source `{path: events/024_hearts_of_iron.txt}`, `candidatePool` `[chaosx.nr24.38]`, no `refresh`) returned `{"artifactCount":0,"code":"INTERNAL_ERROR","status":"error","workspaceId":"current"}`, matching the lead's probe on 2026-10-05. Per the task rule it was not retried.
+Weighted surfaces added or changed in round 3, to add to the R2-8 list for the auditor:
+- `video_game_in_sweden_ai_avoids_reliance_gain` holds while the next stage is switched off and Reliance is at Doctrine or above (R3-1), which lowers the widening, rules revision, officer league, national league, preparedness and licence decision weights and the new recruitment and rules-revision answers to 0.1 in that state.
+- `chaosx.nr24.38` option `ai_chance` (R3-6): civic education, recruitment and limitation, scenarios to cover democratic peace, fascist war, high tension and low stability.
+- `chaosx.nr24.30` third answers (R3-7): `counterplan_c`, `bootleg_c` and `party_c`, scenarios to cover officer competition with and without field evidence, commercial route at peace and at war, and democratic, fascist and communist governments.
+Decision: no numeric probability acceptance is claimed. Once an inline test no longer returns INTERNAL_ERROR, the auditor runs the baseline and comparison for the D23 scenario ids, the R2-8 list and this list with the documented scenario schema, and owner patches follow only for orderings that contradict spec part 3.
+Disposition: `blocked` (missing input: a working `hoi4.probability_*` route).
