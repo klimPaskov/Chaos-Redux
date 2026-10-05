@@ -2348,7 +2348,7 @@ air_cleanliness_treaty_start_sampling_grid = {
 		air_winter_response_pay_support_equipment = yes
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_duration_days }
 		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
-		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_in_progress days = var:air_cleanliness_treaty_operation_lock_days }
+		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_in_progress days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		set_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
 		set_variable = { air_cleanliness_treaty_sampling_grid_generation = global.air_cleanliness_treaty_generation }
 	}
@@ -2381,9 +2381,9 @@ air_cleanliness_treaty_complete_sampling_grid = {
 		limit = { air_cleanliness_treaty_sampling_grid_project_is_valid = yes }
 		save_event_target_as = air_cleanliness_treaty_sampling_grid_sponsor
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_active_days }
-		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_active days = var:air_cleanliness_treaty_operation_lock_days }
+		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_active days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sampling_grid_cooldown_days }
-		set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_sampling_grid_cooldown days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		set_variable = { global.air_cleanliness_treaty_sampling_grid_generation = global.air_cleanliness_treaty_generation }
 		set_variable = { global.air_cleanliness_treaty_sampling_grid_built_date = global.date }
 		set_country_flag = air_cleanliness_treaty_sampling_grid_founder_memory
@@ -2409,7 +2409,7 @@ air_cleanliness_treaty_start_seed_archive = {
 		air_winter_response_pay_convoys = yes
 		set_country_flag = air_cleanliness_treaty_seed_archive_active
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.seed_archive_cooldown_days }
-		set_country_flag = { flag = air_cleanliness_treaty_seed_archive_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_seed_archive_cooldown days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		set_variable = { air_cleanliness_treaty_seed_archive_recipient = FROM }
 		set_variable = { air_cleanliness_treaty_seed_archive_generation = global.air_cleanliness_treaty_generation }
 	}
@@ -2458,7 +2458,7 @@ air_cleanliness_treaty_complete_seed_archive = {
 			set_variable = { air_cleanliness_treaty_seed_archive_last_state_count = air_cleanliness_treaty_seed_archive_state_count }
 			set_country_flag = air_cleanliness_treaty_seed_archive_memory
 			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.seed_archive_cooldown_days }
-			set_country_flag = { flag = air_cleanliness_treaty_seed_archive_recently_received days = var:air_cleanliness_treaty_operation_lock_days }
+			meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_seed_archive_recently_received days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 			country_event = { id = chaosx_air_treaty.11 }
 		}
 		air_cleanliness_treaty_clear_seed_archive_project = yes
@@ -2508,7 +2508,7 @@ air_cleanliness_treaty_start_evacuation_corridor = {
 			air_winter_response_pay_convoys = yes
 			set_country_flag = air_cleanliness_treaty_evacuation_active
 			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.evacuation_cooldown_days }
-			set_country_flag = { flag = air_cleanliness_treaty_evacuation_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+			meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_evacuation_cooldown days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 			set_variable = { air_cleanliness_treaty_evacuation_recipient = FROM }
 			set_variable = { air_cleanliness_treaty_evacuation_source_state = event_target:air_cleanliness_treaty_evacuation_source.id }
 			set_variable = { air_cleanliness_treaty_evacuation_receiver_state = event_target:air_cleanliness_treaty_evacuation_receiver.id }
@@ -2516,11 +2516,11 @@ air_cleanliness_treaty_start_evacuation_corridor = {
 			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.evacuation_duration_days }
 			add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
 			event_target:air_cleanliness_treaty_evacuation_source = {
-				set_state_flag = { flag = air_cleanliness_treaty_evacuation_reserved days = var:air_cleanliness_treaty_operation_lock_days }
+				meta_effect = { text = { set_state_flag = { flag = air_cleanliness_treaty_evacuation_reserved days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 				set_variable = { air_cleanliness_treaty_evacuation_sponsor = ROOT }
 			}
 			event_target:air_cleanliness_treaty_evacuation_receiver = {
-				set_state_flag = { flag = air_cleanliness_treaty_evacuation_receiving days = var:air_cleanliness_treaty_operation_lock_days }
+				meta_effect = { text = { set_state_flag = { flag = air_cleanliness_treaty_evacuation_receiving days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 				set_variable = { air_cleanliness_treaty_evacuation_sponsor = ROOT }
 			}
 		}
@@ -2682,7 +2682,7 @@ air_cleanliness_treaty_start_burner_sanction = {
 		set_variable = { air_cleanliness_treaty_sanction_generation = global.air_cleanliness_treaty_generation }
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sanction_duration_days }
 		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
-		FROM = { set_country_flag = { flag = air_cleanliness_treaty_sanction_pending days = var:air_cleanliness_treaty_operation_lock_days } }
+		FROM = { meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_sanction_pending days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" } }
 	}
 }
 
@@ -2716,7 +2716,7 @@ air_cleanliness_treaty_complete_burner_sanction = {
 		limit = { air_cleanliness_treaty_sanction_project_is_valid = yes }
 		save_event_target_as = air_cleanliness_treaty_sanction_sponsor
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.sanction_cooldown_days }
-		set_country_flag = { flag = air_cleanliness_treaty_sanction_cooldown days = var:air_cleanliness_treaty_operation_lock_days }
+		meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_sanction_cooldown days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		air_cleanliness_treaty_clear_burner_sanction = yes
 		FROM = {
 			save_event_target_as = air_cleanliness_treaty_sanctioned_burner
@@ -18522,10 +18522,10 @@ fallout_nzl_activate_sea_road_licensing = {
 fallout_nzl_issue_sea_road_patrol_window = {
 	if = {
 		limit = { fallout_nzl_sea_road_licensing_is_current = yes }
-		set_temp_variable = { fallout_nzl_patrol_window_days = constant:fallout_nzl_duration.cooldown }
+		set_variable = { fallout_nzl_patrol_window_days = constant:fallout_nzl_duration.cooldown }
 		set_country_flag = {
 			flag = fallout_nzl_sea_road_patrol_window_current
-			days = fallout_nzl_patrol_window_days
+			days = var:fallout_nzl_patrol_window_days
 		}
 		set_variable = { fallout_nzl_sea_road_patrol_window_generation = global.fallout_transition_generation }
 		if = {
