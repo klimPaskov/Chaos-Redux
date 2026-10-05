@@ -138,6 +138,12 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-082 | PAL | ENG | The mandate administration and its courts |
 | IW-082 | PAL | EGY | The Arab national movement and the coastal railway to Cairo |
 | IW-082 | PAL | JOR | Transjordan, governed with Palestine under one mandate until 1921 |
+| IW-083 | RIF | FRA | The Rif War across the Ouergha frontier with French Morocco |
+| IW-083 | RIF | MOR | The Moroccan nationalist movement of Fez and Tetouan |
+| IW-083 | RIF | SOV | The 1925 Comintern campaign against the Rif War |
+| IW-086 | DHX | TUR | Ottoman officers of the 1911 to 1918 resistance and Suleiman al-Baruni |
+| IW-086 | DHX | EGY | Tripolitanian exiles in Alexandria and Cairo |
+| IW-086 | DHX | TUN | The shared Jefara borderland and its families |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

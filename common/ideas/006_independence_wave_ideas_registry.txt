@@ -747,6 +747,12 @@
 @pal_council_political_power = 0.05
 @pal_holy_places_trade = 0.10
 @pal_holy_places_stability = 0.02
+# North Africa and Sahara framework packages (agent decision D26)
+@rif_levies_stability = -0.05
+@rif_levies_organisation = -0.05
+@rif_army_organisation = 0.05
+@rif_army_stability = 0.03
+@rif_redoubts_defence = 0.10
 
 ideas = {
 	country = {
@@ -1767,6 +1773,36 @@ ideas = {
 			modifier = {
 				trade_opinion_factor = @pal_holy_places_trade
 				stability_factor = @pal_holy_places_stability
+			}
+		}
+
+		# North Africa and Sahara framework packages (agent decision D26)
+		independence_wave_rif_tribal_levies = {
+			picture = independence_wave_fragmented_command
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @rif_levies_stability
+				army_org_factor = @rif_levies_organisation
+			}
+		}
+
+		independence_wave_rif_regular_army = {
+			picture = generic_army_motorization
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @rif_army_organisation
+				stability_factor = @rif_army_stability
+			}
+		}
+
+		independence_wave_rif_mountain_redoubts = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @rif_redoubts_defence
 			}
 		}
 

@@ -672,3 +672,26 @@ Blocked rows:
 Validation: the allocator audit passes with 54 attested packages, 45 reservation groups and 55 adapters (its expected sets, dispatcher-family count of 37, group and anchor counts were updated); the country API, flag, FORM-16 and SCN-008 matrix audits pass; brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists once.
 
 Needs live game: a wave or SCN-008 launch that releases IMO from Oman and CUX from Saudi Arabia (the dynamic-country path), the Palestine leader swap and its restoration after an origin ends, and the decision and incident flow of each Level 2 row.
+
+
+## D26. Round 2: North Africa and Sahara tranche
+
+Disposition: `implemented` for IW-083 Rif (RIF) and IW-086 Tripolitania (DHX); `blocked` for IW-084, IW-087, IW-088, IW-089, IW-090, IW-091 and IW-092; IW-085 Cyrenaica stays an implemented vanilla-overlay package.
+
+Basis: the lead's round-2 priority-13 item, using the D25 regional framework engine.
+
+Decisions:
+
+- RIF (Level 2) keeps its vanilla roster: Muhammad ibn Abd el-Krim al-Khattabi, President of the Rif Republic from 1921 to 1926. State 290 carries a RIF core, so the ordinary `release` path creates it. Routes: constitutional, traditional, emergency, patron client; power centres: the republic and the tribes. Its layer starts with The Tribal Levies and offers four projects (the National Assembly of Ajdir, unified levies, mountain redoubts and the Ajdir road and telephone network) and two incidents, Veterans of Anual (`chaosx.nr6.208`) and The Mines of Uixan (`chaosx.nr6.209`).
+- DHX (Level 1) is an institutional council in the tradition of the 1918 Tripolitanian Republic, led by the leader the game appoints; it is created as a dynamic country with its registered flags and names. Routes: constitutional, popular council, traditional, emergency, patron client.
+- Contacts: RIF FRA, MOR and SOV; DHX TUR, EGY and TUN.
+
+Blocked rows:
+
+- IW-089 Darfur and IW-091 Toubou: their anchors (767 and 775) have `force_link_ownership_to` in the installed map history, so they cannot be owned apart from the state they are linked to; IW-091 is also an unresearched reservation with no history or names.
+- IW-088 Tuareg Confederation: no planner gate, an unresearched reservation, and forced ownership links on states 514 and 515.
+- IW-084 Kabylia, IW-087 Fezzan, IW-090 Wadai and IW-092 Amazigh Atlas: no planner gate, loader or reservation, because each needs a distinct map state the current map does not have.
+
+Validation: the allocator audit passes with 56 attested packages, 47 reservation groups and 57 adapters (expected sets and counts updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
+
+Needs live game: a wave that releases RIF from Spain and DHX from Italy, and the Rif decision and incident flow.

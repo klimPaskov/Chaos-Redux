@@ -66,6 +66,8 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Imamate of Oman (IW-078) | `chaosx.nr6.205` | Surveyors at Fahud | Admit them on the Imam's terms; Turn them back at the wadi |
 | Hejaz (IW-073) | `chaosx.nr6.206` | The Pilgrim Ships from Java | Build our own quarantine station at Jeddah; Rely on the Kamaran station |
 | Hejaz (IW-073) | `chaosx.nr6.207` | The Hashemite Question | Invite the Hashemite family home; Keep the council in charge |
+| Rif (IW-083) | `chaosx.nr6.208` | Veterans of Anual | Give them commands in the army; Settle them on the plain of Nekor |
+| Rif (IW-083) | `chaosx.nr6.209` | The Mines of Uixan | Honour the mining concession; Take the mines for the republic |
 
 ## Files
 

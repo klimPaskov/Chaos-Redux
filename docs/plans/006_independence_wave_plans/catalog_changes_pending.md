@@ -143,3 +143,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - The Hejaz, Hadhramaut, the Imamate of Oman, Lebanon and Palestine can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - The Hejaz, the Imamate of Oman, Lebanon and Palestine each have a starting problem, their own decisions and two incidents of their own.
 - Najd, Jabal Shammar, Mahra, Jabal al-Druze and the Syrian coast remain unavailable.
+
+
+## 2026-10-05: North Africa and Sahara packages (D26)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- The Rif and Tripolitania can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- The Rif has a starting problem, its own decisions and two incidents of its own.
+- Kabylia, Fezzan, the Tuareg confederation, Darfur, Wadai, the Toubou state and the Amazigh Atlas state remain unavailable.

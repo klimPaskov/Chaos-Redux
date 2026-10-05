@@ -1,0 +1,121 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 NORTH AFRICA AND SAHARA PACKAGE DECISIONS
+# ============================================================================
+# Level 2 decision family for the regional framework row IW-083 Rif (agent
+# decision D26). Every project is paid through the shared Event 006 cost
+# helpers and removed by the package cleanup.
+# ============================================================================
+
+independence_wave_rif_republic_category = {
+	independence_wave_rif_convene_national_assembly = {
+		name = independence_wave_rif_convene_national_assembly
+		desc = independence_wave_rif_convene_national_assembly_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_rif_package = yes
+			is_independence_wave_regional_framework_project_ready = yes
+			NOT = { has_country_flag = independence_wave_rif_assembly_convened }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rif_convene_national_assembly_tt
+			independence_wave_rif_complete_national_assembly = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_rif_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+		}
+	}
+
+	independence_wave_rif_unify_tribal_levies = {
+		name = independence_wave_rif_unify_tribal_levies
+		desc = independence_wave_rif_unify_tribal_levies_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_rif_package = yes
+			is_independence_wave_regional_framework_project_ready = yes
+			NOT = { has_country_flag = independence_wave_rif_levies_unified }
+		}
+		available = {
+			has_country_flag = independence_wave_rif_assembly_convened
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_security_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rif_unify_tribal_levies_tt
+			independence_wave_rif_complete_regular_army = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_rif_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_rif_fortify_mountain_redoubts = {
+		name = independence_wave_rif_fortify_mountain_redoubts
+		desc = independence_wave_rif_fortify_mountain_redoubts_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_rif_package = yes
+			is_independence_wave_regional_framework_project_ready = yes
+			NOT = { has_country_flag = independence_wave_rif_redoubts_fortified }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_strategic = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rif_fortify_mountain_redoubts_tt
+			independence_wave_rif_complete_mountain_redoubts = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_rif_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_rif_restore_ajdir_network = {
+		name = independence_wave_rif_restore_ajdir_network
+		desc = independence_wave_rif_restore_ajdir_network_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_rif_package = yes
+			is_independence_wave_regional_framework_project_ready = yes
+			NOT = { has_country_flag = independence_wave_rif_ajdir_network_restored }
+		}
+		available = {
+			has_country_flag = independence_wave_rif_assembly_convened
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_rif_restore_ajdir_network_tt
+			independence_wave_rif_complete_ajdir_network = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_rif_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+		}
+	}
+}

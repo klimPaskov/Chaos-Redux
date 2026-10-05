@@ -13,6 +13,11 @@ Most rows of the Event 006 candidate registry have a planner gate, a loader, a r
 
 Level 2 rows add their own layer on top: a starting problem, a decision family and two incidents.
 
+## Admitted rows
+
+- Levant and Arabia (D25): IW-073 Hejaz, IW-076 Hadhramaut, IW-078 Imamate of Oman, IW-081 Lebanon, IW-082 Palestine. See `levant_arabia_packages.md`.
+- North Africa and Sahara (D26): IW-083 Rif, IW-086 Tripolitania. See `north_africa_packages.md`.
+
 ## How it works
 
 1. The planner gate of an admitted row reads `is_independence_wave_runtime_automatic_package_iw_NNN_ready`, which proves the exact dormant tag and anchor and the runtime preflight.

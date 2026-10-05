@@ -25,6 +25,9 @@ is_independence_wave_regional_framework_exact_carrier = {
 		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } original_tag = IMO }
 		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } original_tag = LEB }
 		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } original_tag = PAL }
+		# North Africa and Sahara
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_083 } original_tag = RIF }
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_086 } original_tag = DHX }
 	}
 }
 
@@ -156,6 +159,22 @@ is_independence_wave_regional_framework_live = {
 	NOT = { has_country_flag = independence_wave_origin_ended }
 }
 
+# Country scope. The package's projects are open: the framework setup receipt
+# exists for this generation and the capital is held.
+is_independence_wave_regional_framework_project_ready = {
+	is_independence_wave_regional_framework_live = yes
+	capital_scope = { is_controlled_by = PREV }
+}
+
+# Country scope. The former host exists and is at peace with us.
+has_independence_wave_regional_framework_peaceful_former_host = {
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_levant_peaceful_former_host_tt
+		has_independence_wave_living_former_host = yes
+		var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Exact dormant-tag availability (execution and SCN-008 preflights)
 # ---------------------------------------------------------------------------
@@ -202,5 +221,23 @@ is_independence_wave_exact_package_iw_082_tag_available = {
 	454 = {
 		is_independence_wave_exact_package_anchor_available = yes
 		owner = { exists = yes NOT = { tag = PAL } }
+	}
+}
+
+is_independence_wave_exact_package_iw_083_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = RIF
+	290 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { tag = RIF } }
+	}
+}
+
+is_independence_wave_exact_package_iw_086_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = DHX exists = no }
+	448 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { original_tag = DHX } }
 	}
 }
