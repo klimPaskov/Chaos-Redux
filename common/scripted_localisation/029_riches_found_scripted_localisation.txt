@@ -197,6 +197,26 @@ defined_text = {
 	text = { localization_key = riches_found.value.na }
 }
 
+# The selected mine's standing revenue route, most consequential first.
+defined_text = {
+	name = GetRichesFoundSelectedMineRevenueRoute
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_patronage_tolerated } } localization_key = riches_found.revenue_route.patronage }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_central_receipts NOT = { riches_found_revenue_has_oversight = yes } } } localization_key = riches_found.revenue_route.central_unwatched }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_central_receipts } } localization_key = riches_found.revenue_route.central }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_dividend_paid } } localization_key = riches_found.revenue_route.dividend }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_local_revenue_settled } } localization_key = riches_found.revenue_route.local }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT OR = { has_state_flag = riches_found_stabilization_fund has_state_flag = riches_found_curse_diversification_started } } } localization_key = riches_found.revenue_route.fund }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT } } localization_key = riches_found.revenue_route.none }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMineReserve
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_stabilization_reserve } } localization_key = riches_found.reserve.held }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT has_state_flag = riches_found_stabilization_reserve_spent } } localization_key = riches_found.reserve.spent }
+	text = { localization_key = riches_found.reserve.none }
+}
+
 defined_text = {
 	name = GetRichesFoundSelectedMineObjective
 	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { riches_found_mine_is_registered = yes is_controlled_by = ROOT  has_state_flag = riches_found_mission_secure_rush_subject } } localization_key = riches_found.objective.secure_rush }

@@ -430,6 +430,23 @@ riches_found_mine_can_hold_a_fund = {
 	check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_decision_threshold.legitimacy_floor compare = greater_than_or_equals }
 }
 
+# STATE scope. Someone outside the receiving administration watches the
+# mine's receipts: a completed audit or an independent revenue authority.
+riches_found_revenue_has_oversight = {
+	OR = {
+		has_state_flag = riches_found_audit_complete
+		has_state_flag = riches_found_independent_revenue_authority
+		has_state_flag = riches_found_curse_independent_authority
+	}
+}
+
+# STATE scope. The mine's stabilization reserve can pay a bill now: it holds
+# one and the owner still controls the mine.
+riches_found_stabilization_reserve_can_pay = {
+	has_state_flag = riches_found_stabilization_reserve
+	NOT = { riches_found_mine_is_occupied = yes }
+}
+
 # STATE scope. Mine Development is still low enough to trade access for a
 # foreign-built works program. Drive Deeper starts above this line.
 riches_found_mine_needs_foreign_builder = {

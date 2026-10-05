@@ -1081,6 +1081,33 @@ riches_found_refresh_mine_contribution = {
 		else_if = { limit = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.predatory compare = equals } } set_variable = { riches_found_policy_factor = constant:riches_found_scaling.policy_predatory } }
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_policy_factor }
 
+		# The standing revenue route: central receipts send more of the output
+		# to the treasury, while a dividend, a local share, a fund, worker
+		# housing or a workers' share hold part of it back and patronage leaks
+		# part of it away. An occupier does not inherit the owner's settlement.
+		set_variable = { riches_found_revenue_route_factor = constant:riches_found_value.one }
+		if = {
+			limit = { NOT = { riches_found_mine_is_occupied = yes } }
+			if = { limit = { has_state_flag = riches_found_central_receipts } add_to_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.central_receipts_bonus } }
+			if = { limit = { has_state_flag = riches_found_dividend_paid } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.dividend_share } }
+			if = { limit = { has_state_flag = riches_found_local_revenue_settled } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.local_revenue_share } }
+			if = {
+				limit = {
+					OR = {
+						has_state_flag = riches_found_stabilization_fund
+						has_state_flag = riches_found_curse_diversification_started
+					}
+				}
+				subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.stabilization_fund_share }
+			}
+			if = { limit = { has_state_flag = riches_found_development_fund } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.development_fund_share } }
+			if = { limit = { has_state_flag = riches_found_worker_housing } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.housing_share } }
+			if = { limit = { has_state_flag = riches_found_worker_cooperatives } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.participation_share } }
+			if = { limit = { has_state_flag = riches_found_patronage_tolerated } subtract_from_variable = { riches_found_revenue_route_factor = constant:riches_found_revenue_route.patronage_leak } }
+			clamp_variable = { var = riches_found_revenue_route_factor min = constant:riches_found_revenue_route.factor_floor max = constant:riches_found_revenue_route.factor_cap }
+		}
+		multiply_variable = { riches_found_mine_contribution_score = riches_found_revenue_route_factor }
+
 		set_variable = { riches_found_order_factor = constant:riches_found_scaling.public_factor_floor }
 		set_temp_variable = { riches_found_public_factor_component = riches_found_local_order }
 		multiply_temp_variable = { riches_found_public_factor_component = constant:riches_found_scaling.public_factor_slope }
@@ -2386,6 +2413,7 @@ riches_found_clear_occupation_choices = {
 # collapse flags are terminal/history facts and are never erased by this hook.
 riches_found_clear_closure_state = {
 	clr_state_flag = riches_found_mine_temporary_closure
+	clr_state_flag = riches_found_closure_crews_paid
 	clr_state_flag = riches_found_mine_quarantined
 	clr_state_flag = riches_found_mine_partial_seal
 	clr_state_flag = riches_found_restoration_partial_seal
@@ -2442,6 +2470,7 @@ riches_found_begin_temporary_closure = {
 		set_state_flag = riches_found_mine_temporary_closure
 		set_state_flag = riches_found_closure_history
 		clr_state_flag = riches_found_closure_review_complete
+		clr_state_flag = riches_found_closure_crews_paid
 		set_variable = { riches_found_operating_state = constant:riches_found_operating_state.temporarily_closed }
 		set_variable = { riches_found_closure_start_date = global.date }
 		set_variable = { riches_found_last_closure_service_date = global.date }

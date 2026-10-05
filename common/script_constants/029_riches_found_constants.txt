@@ -1444,3 +1444,31 @@ riches_found_occupation_choice = {
 	requisition_output_bonus = 0.25
 	strip_resistance = 15
 }
+
+# Standing revenue route. The contribution helper multiplies an owner-held
+# mine's score by one plus central_receipts_bonus minus each share the route
+# holds back, clamped between factor_floor and factor_cap. The drift terms
+# apply once per controller pulse interval while the mine yields to its owner
+# (riches_found_apply_revenue_route_drift); dividend and local capture relief
+# stop at riches_found_threshold.illicit_capture_gate, where capture is
+# entrenched and needs an audit, an independent authority or a new
+# administration.
+riches_found_revenue_route = {
+	schema = { any_key = yes data = fixed_point }
+	central_receipts_bonus = 0.20
+	dividend_share = 0.10
+	local_revenue_share = 0.08
+	stabilization_fund_share = 0.06
+	development_fund_share = 0.05
+	housing_share = 0.04
+	participation_share = 0.04
+	patronage_leak = 0.12
+	factor_floor = 0.6
+	factor_cap = 1.25
+	central_capture_drift = 2
+	dividend_capture_drift = -2
+	dividend_order_drift = 1
+	local_capture_drift = -1
+	local_order_drift = 2
+	patronage_capture_drift = 2
+}

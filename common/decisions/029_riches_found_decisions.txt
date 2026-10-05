@@ -2224,6 +2224,7 @@ decision_riches_found_stabilization_fund = {
 			}
 			FROM = {
 				set_state_flag = riches_found_stabilization_fund
+				set_state_flag = riches_found_stabilization_reserve
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_4 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_5 }
@@ -5015,6 +5016,14 @@ decision_riches_found_repair = {
 				set_state_flag = riches_found_repair_started
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }
 			}
+			# A stabilization reserve pays the repair bill once the crews arrive.
+			if = {
+				limit = { FROM = { riches_found_stabilization_reserve_can_pay = yes } }
+				FROM = { riches_found_spend_stabilization_reserve = yes }
+				add_manpower = constant:riches_found_decision_cost.manpower_standard
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
+				add_fuel = constant:riches_found_decision_cost.fuel_standard
+			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes
 		}
@@ -6250,6 +6259,8 @@ decision_riches_found_curse_stabilization_diversification = {
 			}
 			FROM = {
 				set_state_flag = riches_found_curse_diversification_started
+				# A new fund builds a stabilization reserve when none is held.
+				set_state_flag = riches_found_stabilization_reserve
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_5 }
 				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_10 }
 				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_8 }

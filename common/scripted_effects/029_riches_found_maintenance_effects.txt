@@ -34,6 +34,7 @@ riches_found_run_maintenance_pulse = {
 				riches_found_service_account_obligation = yes
 				riches_found_review_preentry_exposure = yes
 				riches_found_service_closed_mine = yes
+				riches_found_apply_revenue_route_drift = yes
 				riches_found_review_evolution_containment = yes
 				if = {
 					limit = { riches_found_mine_is_active = yes }
@@ -244,6 +245,8 @@ riches_found_service_closed_mine = {
 				# payment made within the current revenue cycle; a one-time
 				# dividend paid years earlier does not carry a closure. A district
 				# contained as a guarded or monitored closure has no waiting crews.
+				# A stabilization reserve pays the idle crews through one closure
+				# and is then spent.
 				if = {
 					limit = {
 						NOT = { has_state_flag = riches_found_demons_contained_closure }
@@ -251,6 +254,7 @@ riches_found_service_closed_mine = {
 							OR = {
 								has_state_flag = riches_found_worker_cooperatives
 								has_state_flag = riches_found_public_revenue_share_paid
+								has_state_flag = riches_found_closure_crews_paid
 								AND = {
 									has_variable = riches_found_revenue_settlement_expiry_date
 									check_variable = { var = riches_found_revenue_settlement_expiry_date value = global.date compare = greater_than }
@@ -258,7 +262,14 @@ riches_found_service_closed_mine = {
 							}
 						}
 					}
-					add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_closure.unsupported_legitimacy_per_pulse }
+					if = {
+						limit = { riches_found_stabilization_reserve_can_pay = yes }
+						riches_found_spend_stabilization_reserve = yes
+						set_state_flag = riches_found_closure_crews_paid
+					}
+					else = {
+						add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_closure.unsupported_legitimacy_per_pulse }
+					}
 				}
 				if = {
 					limit = {
@@ -296,4 +307,71 @@ riches_found_service_closed_mine = {
 			riches_found_clamp_mine_values = yes
 		}
 	}
+}
+
+# STATE scope, called once per mine by the controller pulse above. The
+# standing revenue route keeps working while the mine yields to its owner,
+# once each pulse interval: central receipts without an audit or an
+# independent revenue authority feed illicit capture, a citizens' dividend and
+# a local revenue share steady Local Order and wear down capture that is not
+# yet entrenched (below riches_found_threshold.illicit_capture_gate), and
+# tolerated patronage keeps feeding capture. Amounts are in
+# riches_found_revenue_route; the contribution side of the same route is in
+# riches_found_refresh_mine_contribution.
+riches_found_apply_revenue_route_drift = {
+	if = {
+		limit = {
+			riches_found_mine_provides_controller_output = yes
+			NOT = { riches_found_mine_is_occupied = yes }
+		}
+		if = {
+			limit = { NOT = { has_variable = riches_found_last_revenue_drift_date } }
+			set_variable = { riches_found_last_revenue_drift_date = global.date }
+		}
+		set_temp_variable = { riches_found_next_revenue_drift_date = riches_found_last_revenue_drift_date }
+		set_temp_variable = { chaosx_date_days = constant:riches_found_duration.controller_pulse_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_temp_variable = { riches_found_next_revenue_drift_date = chaosx_date_offset }
+		if = {
+			limit = { check_variable = { var = global.date value = riches_found_next_revenue_drift_date compare = greater_than_or_equals } }
+			set_variable = { riches_found_last_revenue_drift_date = global.date }
+			if = {
+				limit = {
+					has_state_flag = riches_found_central_receipts
+					NOT = { riches_found_revenue_has_oversight = yes }
+				}
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_revenue_route.central_capture_drift }
+			}
+			if = {
+				limit = { has_state_flag = riches_found_dividend_paid }
+				add_to_variable = { riches_found_local_order = constant:riches_found_revenue_route.dividend_order_drift }
+				if = {
+					limit = { check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = less_than } }
+					add_to_variable = { riches_found_illicit_capture = constant:riches_found_revenue_route.dividend_capture_drift }
+				}
+			}
+			if = {
+				limit = { has_state_flag = riches_found_local_revenue_settled }
+				add_to_variable = { riches_found_local_order = constant:riches_found_revenue_route.local_order_drift }
+				if = {
+					limit = { check_variable = { var = riches_found_illicit_capture value = constant:riches_found_threshold.illicit_capture_gate compare = less_than } }
+					add_to_variable = { riches_found_illicit_capture = constant:riches_found_revenue_route.local_capture_drift }
+				}
+			}
+			if = {
+				limit = { has_state_flag = riches_found_patronage_tolerated }
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_revenue_route.patronage_capture_drift }
+			}
+			riches_found_clamp_mine_values = yes
+		}
+	}
+}
+
+# STATE scope. Spends the mine's stabilization reserve. It is spent once, on
+# the first bill it meets (a repair when the crews arrive, or idle crews in a
+# closure), and only a new fund builds another.
+riches_found_spend_stabilization_reserve = {
+	clr_state_flag = riches_found_stabilization_reserve
+	set_state_flag = riches_found_stabilization_reserve_spent
 }

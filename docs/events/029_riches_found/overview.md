@@ -117,6 +117,12 @@ Rush actions establish camp administration, licensed traders, local or specialis
 Development actions build rail or port access, processing works, housing, shaft reinforcement and a development fund.
 Drive Deeper is open to any operating mine with a route, Mine Development above the high band and steady order, in the development, revenue and foreign concession layers, so repeated deepening stays possible after the development milestone.
 Revenue actions choose central receipts, local revenue, citizens' dividends, a stabilization fund, a replaced administration, or tolerated patronage.
+The settlement is a standing revenue route, shown on the category header's Revenue line.
+`riches_found_refresh_mine_contribution` multiplies an owner-held mine's score by a route factor (`riches_found_revenue_route`): central receipts add 20 percent, while a dividend (10), a local share (8), a stabilization fund or the curse diversification program (6), a development fund (5), worker housing (4) and a workers' share (4) hold output back and patronage leaks 12, clamped between 0.6 and 1.25.
+`riches_found_apply_revenue_route_drift` runs once per controller pulse interval while the mine yields to its owner: central receipts without an audit or independent revenue authority (`riches_found_revenue_has_oversight`) add 2 illicit capture, a dividend adds 1 Local Order and removes 2 capture, a local share adds 2 Local Order and removes 1 capture, and patronage adds 2 capture; the dividend and local relief stop at the illicit-capture gate, so a one-time settlement does not erase entrenched corruption.
+Central receipts also raise the mine's share of national receipts, which is what `riches_found_refresh_controller_receipt_dependence` turns into treasury dependence.
+The Stabilization Fund (and the curse diversification program when no reserve is held) builds one `riches_found_stabilization_reserve`.
+It is spent once, on the first bill it meets while the owner holds the mine: Repair's stockpile costs are returned when the crews arrive, or the idle crews of one closure are paid so Revenue Legitimacy does not slip (`riches_found_closure_crews_paid`); `riches_found_stabilization_reserve_spent` then records it, and only a new fund builds another.
 Audits, disclosure, publication, contract exits and the independent revenue authority belong to the foreign concession layer.
 
 Foreign participation is represented by one state-owned contract record with one partner, review clock, renewal state, and term flags.
