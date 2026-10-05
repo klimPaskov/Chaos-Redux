@@ -321,6 +321,8 @@ Its enforcement can succeed with a controlled political loss or fail with a fini
 Trust the Model costs the configured command power and political power, accepts a stability and war-support burden, and may begin before a qualifying war exists.
 
 During the active surge the first qualifying war against a major or materially stronger opponent is stored in a country event target, and its military context is retained for the final result.
+While the surge is active and Sweden is at war, the daily runtime watch runs `video_game_in_sweden_update_trust_model_progress` for the host alone, so a war declared and won between two maintenance checks still has its opponent, war score and result recorded.
+`on_capitulation` calls `video_game_in_sweden_record_opponent_capitulation` for the capitulating country: when it is the stored opponent, still at war with the surging host, and the host holds Stockholm before the reassessment deadline, the victory and its date are recorded at that moment, so a peace conference that annexes the opponent before the next check cannot hide it.
 
 The trust surge lasts no longer than the 365-day reassessment limit.
 

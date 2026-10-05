@@ -411,6 +411,77 @@ class ObservationSourceTests(unittest.TestCase):
         self.assertEqual(model.saved[("SWE", "video_game_in_sweden_phase")], Decimal(2))
         self.assertEqual(model.saved[("SWE", "simulation_reliance")], Decimal(49))
 
+    # Trust the Model victories (R3-2). The surging host is at war with GER.
+    def trust_model(self):
+        model = self.model()
+        model.flags["SWE"].update({"video_game_in_sweden_trust_model_active", "video_game_in_sweden_model_surge_active"})
+        model.targets["video_game_in_sweden_host"] = "SWE"
+        model.facts["global.date"] = Decimal(100)
+        model.saved[("SWE", "video_game_in_sweden_trust_model_reassessment_deadline")] = Decimal(465)
+        return model
+
+    def test_opponent_capitulation_is_recorded_before_an_annexing_peace(self):
+        captured = {"video_game_in_sweden_trust_model_meaningful_war", "video_game_in_sweden_trust_model_opponent_snapshot",
+                    "video_game_in_sweden_trust_model_stockholm_continuous", "video_game_in_sweden_trust_model_war_seen"}
+        annexed = {("GER", "has_war_with", "ROOT"): False, ("GER", "has_capitulated", "yes"): False}
+
+        def annex_then_review(model):
+            # The peace conference removes GER before the next monthly check,
+            # and the sampled war score never crossed the threshold.
+            model.root, model.actor = "SWE", "SWE"
+            model.stubs.discard("video_game_in_sweden_update_trust_model_progress")
+            model.facts.update(annexed)
+            model.facts[("SWE", "has_war", "yes")] = False
+            model.facts["global.date"] = Decimal(120)
+            model.call("video_game_in_sweden_update_trust_model_progress")
+
+        # Control: the monthly review alone cannot see the victory.
+        model = self.trust_model()
+        model.targets["video_game_in_sweden_trust_model_opponent"] = "GER"
+        model.flags["SWE"].update(captured)
+        annex_then_review(model)
+        self.assertNotIn("video_game_in_sweden_trust_model_opponent_victory", model.flags["SWE"])
+
+        for loser, date, recorded in (("GER", 110, True), ("ITA", 110, False), ("GER", 470, False)):
+            model = self.trust_model()
+            model.targets["video_game_in_sweden_trust_model_opponent"] = "GER"
+            model.flags["SWE"].update(captured)
+            model.facts[("SWE", "has_war_with", "PREV")] = True
+            model.facts["global.date"] = Decimal(date)
+            model.root, model.actor = loser, loser
+            model.call("video_game_in_sweden_record_opponent_capitulation")
+            self.assertEqual("video_game_in_sweden_trust_model_opponent_victory" in model.flags["SWE"], recorded)
+            if not recorded:
+                continue
+            self.assertEqual(model.saved[("SWE", "video_game_in_sweden_trust_model_victory_date")], Decimal(110))
+            annex_then_review(model)
+            self.assertIn("video_game_in_sweden_trust_model_opponent_victory", model.flags["SWE"])
+            model.call("video_game_in_sweden_mark_trust_reassessment")
+            self.assertIn("video_game_in_sweden_trust_model_favorable_result", model.flags["SWE"])
+
+    def test_war_declared_and_won_between_monthly_checks_is_recorded(self):
+        model = self.trust_model()
+        model.stubs.discard("video_game_in_sweden_update_trust_model_progress")
+        model.enemies = ["GER"]
+        model.facts.update({("SWE", "has_war", "yes"): True, ("SWE", "has_war_with_major", "yes"): True,
+                            ("SWE", "any_war_score", "constant:video_game_in_sweden_event.trust_model_favorable_war_score"): True,
+                            ("GER", "has_war_with", "ROOT"): True, ("GER", "has_capitulated", "yes"): False,
+                            ("GER", "surrender_progress", "constant:video_game_in_sweden_effect.maximum_risk_surrender_progress"): False,
+                            ("GER", "is_major", "yes"): True})
+        # Day one of the war: the daily watch stores the opponent and war score.
+        model.call("video_game_in_sweden_observe_runtime")
+        self.assertEqual(model.targets["video_game_in_sweden_trust_model_opponent"], "GER")
+        self.assertTrue({"video_game_in_sweden_trust_model_meaningful_war", "video_game_in_sweden_trust_model_war_seen",
+                         "video_game_in_sweden_trust_model_war_score_reached"} <= model.flags["SWE"])
+        # Days later GER signs a peace without capitulating, still inside the month.
+        model.facts.update({("SWE", "has_war", "yes"): False, ("SWE", "has_war", "no"): True,
+                            ("GER", "has_war_with", "ROOT"): False})
+        model.facts["global.date"] = Decimal(112)
+        model.call("video_game_in_sweden_observe_runtime")
+        self.assertIn("video_game_in_sweden_trust_model_opponent_victory", model.flags["SWE"])
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_trust_model_victory_date")], Decimal(112))
+        self.assertIn(("chaosx.nr24.50", Decimal(1)), model.scheduled)
+
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
         model.targets["video_game_in_sweden_host"] = "SWE"

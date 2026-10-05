@@ -108,6 +108,16 @@ video_game_in_sweden_observe_runtime = {
 			}
 			video_game_in_sweden_validate_commander = yes
 		}
+		# A surging Sweden at war is watched daily, so a meaningful war that
+		# starts and ends between maintenance checks still has its opponent,
+		# war score and result recorded. Only the host's own enemies are read.
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_trust_model_active
+				has_war = yes
+			}
+			video_game_in_sweden_update_trust_model_progress = yes
+		}
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_trust_model_active
@@ -287,6 +297,42 @@ video_game_in_sweden_record_control_loss = {
 			}
 			video_game_in_sweden_open_trust_reassessment = yes
 			country_event = { id = chaosx.nr24.50 days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		}
+	}
+}
+
+# COUNTRY scope, the capitulating country at the capitulation transaction
+# (on_capitulation ROOT). When the stored Trust the Model opponent capitulates
+# while still at war with the surging host, the victory is recorded at once, so
+# a quick peace conference that annexes the opponent before the next check
+# cannot hide it. Only the stored opponent and host pointers are read.
+video_game_in_sweden_record_opponent_capitulation = {
+	if = {
+		limit = {
+			has_event_target = video_game_in_sweden_trust_model_opponent
+			has_event_target = video_game_in_sweden_host
+			event_target:video_game_in_sweden_trust_model_opponent = { tag = PREV }
+			event_target:video_game_in_sweden_host = { has_war_with = PREV }
+		}
+		event_target:video_game_in_sweden_host = {
+			if = {
+				limit = {
+					video_game_in_sweden_is_current_host = yes
+					has_country_flag = video_game_in_sweden_trust_model_active
+					NOT = { has_country_flag = video_game_in_sweden_trust_model_opponent_victory }
+					owns_state = constant:video_game_in_sweden_event.stockholm_state
+					controls_state = constant:video_game_in_sweden_event.stockholm_state
+					has_variable = video_game_in_sweden_trust_model_reassessment_deadline
+					check_variable = {
+						var = global.date
+						value = video_game_in_sweden_trust_model_reassessment_deadline
+						compare = less_than_or_equals
+					}
+				}
+				set_country_flag = video_game_in_sweden_trust_model_war_seen
+				set_country_flag = video_game_in_sweden_trust_model_opponent_victory
+				set_variable = { video_game_in_sweden_trust_model_victory_date = global.date }
+			}
 		}
 	}
 }
