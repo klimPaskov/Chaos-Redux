@@ -523,3 +523,42 @@ The major's acceptance only records the partner and the answer on the holder and
 `chaosx.nr23.173` runs `sov_nuclear_bombs_begin_foreign_removal` in its `immediate` block in the holder's own scope: with the depot still held and the rail route open it sets the foreign-removal and observer flags and starts the observed dismantlement; otherwise the request closes and the report uses a new "offer lapses" description (`chaosx.nr23.173.lapsed.d`).
 Basis: Part 6 foreign intervention and Part 5 hotline stand-down; the decisions of R2b-7 and R2b-8 assumed these paths worked.
 Disposition: `implemented`; the live hotline and removal flows `needs_live_game`.
+
+## Round 2 skeptical review (2026-10-05)
+
+Scope: every round 2 commit from `c892ba133` to `db1e580c5`, read against the installed effects, triggers and script-constant documentation and the Part 2 to Part 6 specs.
+Confirmed sound: the `PREV` reading of R2b-12 (inside `event_target:sov_nuclear_bombs_standdown_partner` and `event_target:sov_nuclear_bombs_coercion_target`, entered from the Soviet scope, `PREV` is the Soviet actor), no remaining `ROOT` read on any helper reached from another country's answer (ultimatum, hotline, custody talks, foreign removal), every `constant:` key, scripted effect and trigger, mission, event id and localisation key of the Event 23 files resolving, and the R2b-11 refactor being value-for-value (an independent resolution of `bda8f3da8~1` and `bda8f3da8` gives identical AI weight sequences: events 203, decisions 182).
+`hoi4_probability_inspect` again returned `INTERNAL_ERROR` and `hoi4_event_inspect` rejected the event selector; one attempt each, no further calls.
+
+### R2c-1. A refused demand stays renewable and enforceable after a demonstration
+
+Finding: `sov_nuclear_bombs_resolve_test` (which also resolves the wartime demonstration), `sov_nuclear_bombs_cancel_test`, the board phase changes and the AI router all call `sov_nuclear_bombs_clear_selected_state`, and the coercion target selector is hidden while a dossier is open. After the demonstration that R2b-1 says lets the Union renew a refused demand, the renewed ultimatum (`sov_nuclear_bombs_event_has_valid_coercion_target`) and the limited strike (`sov_nuclear_bombs_event_has_valid_limited_strike_target`) both lost their state, so the only outcomes left were a back-down or a lapse, each costing credibility.
+Decision: `sov_nuclear_bombs_prepare_coercion` saves the demanded state as the global target `sov_nuclear_bombs_coercion_state` (cleared with the dossier in `sov_nuclear_bombs_clear_coercion_dossier`), and `sov_nuclear_bombs_clear_selected_state` selects it again while `sov_nuclear_bombs_coercion_open` holds. The ultimatum event names that state and its evacuation answer marks it, instead of whatever state was last selected.
+Basis: Part 4 refusal handling and R2b-1.
+Disposition: `implemented`; the renewal path `needs_live_game`.
+
+### R2c-2. A refused recall goes ahead by force
+
+Finding: R2b-8 closed the running Soviet mission on every refusal, so a breakaway could cancel the 120-day recall (a military operation that already needs Soviet control of the state and a division there) by simply refusing, which the AI holder does about one time in four by default and most of the time when a major backs it or its own use of the devices is near.
+Decision: a refused joint-custody offer still closes that mission without progress; a refused recall only closes the talks, and the rail operation keeps its own completion and cancel checks. Option c reads "Refuse to hand over the devices." and its tooltip depends on the talks: a refused recall says the Soviet troops will try to take the devices by force.
+Basis: Part 6 "Recall devices" (completes when the route is secure) and "Demand immediate transfer" (refusal can lead to a raid).
+Disposition: `implemented`; `needs_live_game`.
+
+### R2c-3. Accelerating a watched test brings it forward
+
+Finding: the "Accelerate the test" answer to foreign aircraft over the site only added accident weight and Integrity and exposure changes; the 120-day test window was unchanged.
+Decision: the answer also takes `accelerate_days` (30, `sov_nuclear_bombs_incident`) off `sov_nuclear_bombs_proof_test_mission` through `add_days_mission_timeout` with the meta-effect literal pattern, and its tooltip states the days.
+Basis: Part 3 "Accelerate it before more evidence is gathered".
+Disposition: `implemented`.
+
+### R2c-4. A foreign removal request always gets an answer
+
+Finding: `chaosx.nr23.172` still had a trigger that could fail (war with the holder, or the holder's depot pointer gone), and a request that never fires keeps `sov_nuclear_bombs_breakaway_removal_requested` set for good, hiding the decision forever.
+Decision: the event fires whenever the request stands; a major at war with the holder by then can only decline, and the holder's `chaosx.nr23.173` already closes an accepted request whose depot or rail route is gone.
+Disposition: `implemented`.
+
+### R2c-5. Readiness wears down only after the delivery force is lost
+
+Finding: R2b-10's basis is Part 2 "If suitable delivery aircraft, fuel, airbases, or range are lost", but the trigger also fired for a Union that had never fielded the force, so Readiness fell from the first cycle past the opening.
+Decision: maintenance records `sov_nuclear_bombs_delivery_route_established` the first time `sov_nuclear_bombs_event_has_delivery_route` holds, and `sov_nuclear_bombs_event_delivery_force_is_missing` requires it. The header note reads "the delivery force is lost: too few bombers, too little fuel or no air base; readiness is falling".
+Disposition: `implemented`; erosion pace `needs_live_game`.

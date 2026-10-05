@@ -718,8 +718,8 @@ country_event = {
 		name = chaosx.nr23.120.g
 		trigger = {
 			sov_nuclear_bombs_event_target_response_is_valid = yes
-			has_event_target = sov_nuclear_bombs_selected_state
-			event_target:sov_nuclear_bombs_selected_state = {
+			has_event_target = sov_nuclear_bombs_coercion_state
+			event_target:sov_nuclear_bombs_coercion_state = {
 				OR = { is_owned_by = ROOT is_controlled_by = ROOT }
 			}
 		}
@@ -729,7 +729,7 @@ country_event = {
 			modifier = { factor = constant:sov_nuclear_bombs_response_ai.nuclear_evacuate sov_nuclear_bombs_event_target_has_nuclear_capability = yes }
 		}
 		set_country_flag = sov_nuclear_bombs_response_evacuation
-		event_target:sov_nuclear_bombs_selected_state = { set_state_flag = sov_nuclear_bombs_target_evacuation_ordered }
+		event_target:sov_nuclear_bombs_coercion_state = { set_state_flag = sov_nuclear_bombs_target_evacuation_ordered }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
 			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
@@ -1052,8 +1052,9 @@ country_event = {
 
 # Breakaway bargaining (Part 6). The holder of a depot answers Moscow's
 # joint-custody talks or recall: return the devices, accept joint custody, or
-# refuse, which closes the Soviet mission without progress. Every device move
-# goes through the existing ledger helpers.
+# refuse. A refused joint-custody offer closes the Soviet mission without
+# progress; a refused recall goes ahead by force. Every device move goes
+# through the existing ledger helpers.
 country_event = {
 	id = chaosx.nr23.171
 	title = chaosx.nr23.171.t
@@ -1103,7 +1104,11 @@ country_event = {
 			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.imminent_refuse sov_nuclear_bombs_event_breakaway_talks_site_is_imminent = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.backed_refuse sov_nuclear_bombs_event_target_is_protected = yes }
 		}
-		custom_effect_tooltip = sov_nuclear_bombs_custody_talks_refuse_tt
+		if = {
+			limit = { SOV = { check_variable = { var = sov_nuclear_bombs_custody_talks_kind value = constant:sov_nuclear_bombs_breakaway.talks_recall compare = equals } } }
+			custom_effect_tooltip = sov_nuclear_bombs_custody_talks_refuse_recall_tt
+		}
+		else = { custom_effect_tooltip = sov_nuclear_bombs_custody_talks_refuse_tt }
 		hidden_effect = { SOV = { sov_nuclear_bombs_answer_custody_talks_refuse = yes } }
 	}
 }
@@ -1118,16 +1123,16 @@ country_event = {
 	desc = chaosx.nr23.172.d
 	picture = GFX_report_event_sov_nuclear_breakaway_custody
 	is_triggered_only = yes
+	# The request must always reach an answer: a request left unanswered would
+	# keep the holder from asking again. The holder's report closes a request
+	# whose depot is gone, and a major at war with the holder can only decline.
 	trigger = {
-		FROM = {
-			has_country_flag = sov_nuclear_bombs_breakaway_removal_requested
-			has_variable = sov_nuclear_bombs_local_custody_state
-		}
-		NOT = { has_war_with = FROM }
+		FROM = { has_country_flag = sov_nuclear_bombs_breakaway_removal_requested }
 	}
 
 	option = {
 		name = chaosx.nr23.172.a
+		trigger = { NOT = { has_war_with = FROM } }
 		ai_chance = {
 			base = constant:sov_nuclear_bombs_breakaway_ai.removal_accept_base
 			modifier = { factor = constant:sov_nuclear_bombs_breakaway_ai.removal_accept_soviet_neighbour is_neighbor_of = SOV }

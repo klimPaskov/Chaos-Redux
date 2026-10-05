@@ -1598,6 +1598,23 @@ sov_nuclear_bombs_incident_accelerate_test = {
 	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_preparation }
 	sov_nuclear_bombs_add_exposure = yes
 	set_country_flag = sov_nuclear_bombs_test_accelerated
+	# The test window closes sooner; mission days take a literal, so the
+	# constant is injected as an integer.
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_test_mission_active }
+		set_temp_variable = { sov_nuclear_bombs_accelerate_days = constant:sov_nuclear_bombs_incident.accelerate_days }
+		hidden_effect = {
+			meta_effect = {
+				text = {
+					add_days_mission_timeout = {
+						mission = sov_nuclear_bombs_proof_test_mission
+						days = -[ACCELERATE_DAYS]
+					}
+				}
+				ACCELERATE_DAYS = "[?sov_nuclear_bombs_accelerate_days|.0]"
+			}
+		}
+	}
 }
 
 sov_nuclear_bombs_incident_invite_observers = {
@@ -1836,6 +1853,16 @@ sov_nuclear_bombs_clear_selected_state = {
 	clr_country_flag = sov_nuclear_bombs_collapse_site_selected
 	clr_country_flag = sov_nuclear_bombs_retaliation_target_selected
 	clr_country_flag = sov_nuclear_bombs_dismantlement_site_selected
+	# An open coercion dossier keeps its demanded state selected, so a test,
+	# demonstration or board change cannot leave a refused demand impossible
+	# to renew or enforce.
+	if = {
+		limit = {
+			has_country_flag = sov_nuclear_bombs_coercion_open
+			has_event_target = sov_nuclear_bombs_coercion_state
+		}
+		event_target:sov_nuclear_bombs_coercion_state = { save_global_event_target_as = sov_nuclear_bombs_selected_state }
+	}
 }
 
 sov_nuclear_bombs_clear_selected_test_state = {
@@ -1968,11 +1995,14 @@ sov_nuclear_bombs_prepare_coercion = {
 		clr_country_flag = sov_nuclear_bombs_settlement_surrender_recorded
 		clear_variable = sov_nuclear_bombs_demand_kind
 		clear_variable = sov_nuclear_bombs_demand_state_id
+		clear_global_event_target = sov_nuclear_bombs_coercion_state
 		set_variable = { sov_nuclear_bombs_target_demand = constant:sov_nuclear_bombs_target_demand.default }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_selected_state }
 			set_variable = { sov_nuclear_bombs_action_state = event_target:sov_nuclear_bombs_selected_state }
 			set_variable = { sov_nuclear_bombs_demand_state_id = event_target:sov_nuclear_bombs_selected_state.id }
+			# The demanded state stays named for the whole dossier.
+			event_target:sov_nuclear_bombs_selected_state = { save_global_event_target_as = sov_nuclear_bombs_coercion_state }
 			var:sov_nuclear_bombs_action_state = {
 				if = { limit = { CONTROLLER = { exists = yes NOT = { tag = SOV } is_subject = no NOT = { has_capitulated = yes } } } CONTROLLER = { save_global_event_target_as = sov_nuclear_bombs_coercion_target } }
 				else_if = { limit = { OWNER = { exists = yes NOT = { tag = SOV } is_subject = no NOT = { has_capitulated = yes } } } OWNER = { save_global_event_target_as = sov_nuclear_bombs_coercion_target } }
@@ -2502,6 +2532,7 @@ sov_nuclear_bombs_clear_coercion_dossier = {
 	}
 	clear_global_event_target = sov_nuclear_bombs_coercion_target
 	clear_global_event_target = sov_nuclear_bombs_coercion_actor
+	clear_global_event_target = sov_nuclear_bombs_coercion_state
 }
 
 # Country scope (the Soviet actor). The only writer of the credibility memory
@@ -3273,7 +3304,12 @@ sov_nuclear_bombs_apply_routine_maintenance = {
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.maintenance_disputed_integrity_loss }
 		}
 		# A lost delivery force (bombers, fuel or air bases) wears Readiness
-		# down to the floor; nothing replaces the aircraft.
+		# down to the floor; nothing replaces the aircraft. A force counts as
+		# lost only after the Union has once fielded it.
+		if = {
+			limit = { sov_nuclear_bombs_event_has_delivery_route = yes }
+			set_country_flag = sov_nuclear_bombs_delivery_route_established
+		}
 		if = {
 			limit = { sov_nuclear_bombs_event_delivery_force_is_missing = yes }
 			set_country_flag = sov_nuclear_bombs_delivery_force_missing
@@ -4465,18 +4501,29 @@ sov_nuclear_bombs_answer_custody_talks_joint = {
 	sov_nuclear_bombs_close_custody_talks_mission = yes
 }
 
-# The holder refuses: the Soviet mission closes without progress.
+# The holder refuses: joint-custody talks close without progress, and a recall
+# continues by force.
 sov_nuclear_bombs_answer_custody_talks_refuse = {
 	set_country_flag = sov_nuclear_bombs_custody_talks_refused
+	# A refused recall goes ahead by force (Part 6: the recall completes once
+	# the route is secure); only the talks close, and the rail operation keeps
+	# its own outcome.
 	if = {
-		limit = { has_country_flag = sov_nuclear_bombs_joint_custody_mission_active }
-		set_country_flag = sov_nuclear_bombs_joint_custody_failed
+		limit = {
+			has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active
+			check_variable = { var = sov_nuclear_bombs_custody_talks_kind value = constant:sov_nuclear_bombs_breakaway.talks_recall compare = equals }
+		}
+		clear_variable = sov_nuclear_bombs_custody_talks_kind
+		clear_global_event_target = sov_nuclear_bombs_custody_talks_site
+		sov_nuclear_bombs_ai_request_phase_review = yes
 	}
-	if = {
-		limit = { has_country_flag = sov_nuclear_bombs_rail_corridor_mission_active }
-		set_country_flag = sov_nuclear_bombs_recovery_operation_failed
+	else = {
+		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_joint_custody_mission_active }
+			set_country_flag = sov_nuclear_bombs_joint_custody_failed
+		}
+		sov_nuclear_bombs_close_custody_talks_mission = yes
 	}
-	sov_nuclear_bombs_close_custody_talks_mission = yes
 }
 
 # Country scope (the Soviet actor). "Reinforce the Depot": once per depot, a
