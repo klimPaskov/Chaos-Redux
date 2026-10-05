@@ -240,3 +240,31 @@ The helper also creates the shared curve's output before calling it. The pool st
 The before and after ticket table and the named TGT scenario shares are in `target_ticket_resolution_2026-10-05.md`. TGT-02, TGT-03, and TGT-05 keep their intents, and TGT-04 now follows the score ratio (2:1) instead of a rounding artifact (3:1).
 The MCP baseline was attempted once and returned `INTERNAL_ERROR`, so no compare exists. This is recorded as a blocker and was not retried.
 This closes the "Target ticket conversion" tuning group in `subagent_handoffs/script_constant_completion_2026-09-02.md`. Live selection shares remain `needs_live_game`.
+
+## D21. Offer Emergency Terms waits for the war to run, and the AI offers terms only when the war turns
+
+Finding from the round 2 lead review: since D15 made signing settle the war at once, Offer Emergency Terms was available from the first day of every war, and its AI weight was base 1 for every government (x1.5 negotiator or Failing authority, x0.75 hardliner, never 0).
+AI governments therefore signed within days and ended almost every AI civil war by negotiation, contradicting SET-01 (dominant government: military or firm settlement) and SET-04 (hardliner: repression), and a player government could end its own war on day one.
+Decision: the decision needs `event021_settlement_offer_ready`, shown through the requirement line `event021_offer_emergency_settlement_ready_tt` ("The war has been fought for at least 90 days, which it reaches on [date]."), with every implementation check hidden.
+The ready date is the crisis start (`random_civil_war_crisis_start_date`) plus `constant:event021_settlement_offer.minimum_war_days` (90).
+A decision trigger cannot call an effect, so `event021_record_settlement_offer_baseline` computes the date once through `event021_days_to_date_offset`, which wraps the shared `chaosx_convert_days_to_date_offset`, when the opening commits; the trigger then compares `global.date` with it.
+A successor government copies the war's start date from its predecessor during roster preparation and records its own baseline when it adopts the government role, so the duration still counts from the original opening; a missing start date falls back to the current date rather than blocking the offer forever.
+The AI weight (base `event021_ai.base_action`) now reads the war:
+
+| Government | Factor | Weight |
+| --- | --- | --- |
+| Cohesive authority, not losing ground (SET-01) | 0 | 0 |
+| Contested, holding its ground | `ai_holding_ground` 0.25 | 0.25 (negotiator 0.375) |
+| Hardliner above Failing (SET-04) | `ai_hardliner_holdout` 0.05, x0.25 holding or x2 lost states | 0.0125 to 0.1 |
+| Failing authority | `ai_failing_authority` 3 | 3 (negotiator 4.5) |
+| Collapse authority | `ai_collapsed_authority` 5 | 5 |
+| Fewer of its own states than after the opening | `ai_lost_ground` 2 | multiplies the above |
+| Surrender above `near_defeat_threshold` (0.70) | `ai_near_defeat` 3 | multiplies the above |
+
+"Losing ground" (`event021_government_losing_ground`) is either of the last two rows.
+The opening baseline for lost states is `random_civil_war_opening_held_state_count` (`num_owned_controlled_states`), recorded at the commit and again on both host opening paths after `event021_parent_activate_planned_optional_front_rows`, because the Event 006 package and optional fronts take their states after the commit.
+The old hardliner x0.75 and failing x1.5 modifiers are replaced; the negotiator x1.5 stays.
+Costs, the settlement selector, and the player-side protection in `event021_settlement_offer_blocked` are unchanged.
+MCP: one narrow `hoi4.probability_inspect` baseline for this decision returned `INTERNAL_ERROR`, and the single same-scenario `hoi4.probability_compare` was rejected with "Invalid tool arguments"; neither was retried, so the table above is a source trace, not engine evidence.
+Basis: the lead's round 2 assignment and the probability matrix rows SET-01, SET-03, SET-04, and SET-05.
+The war duration and the AI timing of offers remain `needs_live_game`.

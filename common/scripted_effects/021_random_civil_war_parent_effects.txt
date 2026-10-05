@@ -4184,6 +4184,8 @@ event021_parent_finish_ordinary_host = {
 				event021_parent_record_system_log = yes
 				set_variable = { random_civil_war_total_belligerent_count = constant:random_civil_war_value.two }
 				event021_parent_activate_planned_optional_front_rows = yes
+				# Every opening front has taken its states; measure lost ground from here.
+				event021_record_opening_held_states = yes
 				for_each_scope_loop = {
 					array = random_civil_war_opposition_actors
 					event021_parent_refresh_retained_front_receipt = yes
@@ -5034,6 +5036,8 @@ event021_parent_abort_event6_opening = {
 	clear_variable = random_civil_war_front_id
 	clear_variable = random_civil_war_crisis_id
 	clear_variable = random_civil_war_crisis_start_date
+	clear_variable = random_civil_war_settlement_offer_ready_date
+	clear_variable = random_civil_war_opening_held_state_count
 	clear_variable = random_civil_war_last_target_date
 	clear_variable = random_civil_war_target_reservation_date
 	set_country_flag = random_civil_war_plan_rejected
@@ -5551,6 +5555,8 @@ event021_parent_execute_event6_front = {
 			has_country_flag = random_civil_war_active
 		}
 		event021_parent_activate_planned_optional_front_rows = yes
+		# The package and every optional front have taken their states.
+		event021_record_opening_held_states = yes
 		set_temp_variable = { event021_event6_retained_refresh_break = constant:random_civil_war_value.zero }
 		for_each_scope_loop = {
 			array = random_civil_war_opposition_actors

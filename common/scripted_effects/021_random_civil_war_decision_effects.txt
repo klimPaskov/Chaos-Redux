@@ -113,6 +113,31 @@ event021_decision_open_relief_corridor = {
 	event021_refresh_country_state = yes
 }
 
+# COUNTRY scope on a crisis government, when the crisis opens or a successor
+# takes over the government role. Records the date from which Offer Emergency
+# Terms can be taken (the crisis start plus the minimum war duration, through
+# the shared date converter; the current date stands in for a missing start)
+# and the number of its own states it holds now, which the AI later compares
+# to judge whether the war is going badly.
+event021_record_settlement_offer_baseline = {
+	if = {
+		limit = { has_variable = random_civil_war_crisis_start_date }
+		set_variable = { random_civil_war_settlement_offer_ready_date = random_civil_war_crisis_start_date }
+	}
+	else = { set_variable = { random_civil_war_settlement_offer_ready_date = global.date } }
+	set_temp_variable = { event021_date_offset = constant:event021_settlement_offer.minimum_war_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_settlement_offer_ready_date = event021_date_offset }
+	event021_record_opening_held_states = yes
+}
+
+# COUNTRY scope on a crisis government. Records how many of its own states it
+# owns and controls. The opening paths call it again once every opening front
+# has taken its states.
+event021_record_opening_held_states = {
+	set_variable = { random_civil_war_opening_held_state_count = num_owned_controlled_states }
+}
+
 # COUNTRY scope on the crisis government. Opens talks and asks the government
 # to sign at once through chaosx.nr21.5; signing applies the settlement
 # through event021_parent_apply_settlement, which accepts the pending marker

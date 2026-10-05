@@ -42,6 +42,12 @@ event021_prepare_successor_roster_adoption = {
 		set_variable = { random_civil_war_total_belligerent_count = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_total_belligerent_count }
 		set_variable = { random_civil_war_belligerent_cap = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_belligerent_cap }
 		set_variable = { random_civil_war_route_evidence_count = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_route_evidence_count }
+		# The war's start date follows the government role, so the minimum war
+		# duration for offering terms still counts from the original opening.
+		if = {
+			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_variable = random_civil_war_crisis_start_date } }
+			set_variable = { random_civil_war_crisis_start_date = event_target:event021_successor_roster_adoption_predecessor.random_civil_war_crisis_start_date }
+		}
 		if = {
 			limit = { event_target:event021_successor_roster_adoption_predecessor = { has_country_flag = random_civil_war_evolution_i_multifront } }
 			set_country_flag = random_civil_war_evolution_i_multifront
@@ -123,6 +129,7 @@ event021_adopt_successor_roster = {
 		}
 
 		event021_rebuild_successor_roster = yes
+		event021_record_settlement_offer_baseline = yes
 		save_event_target_as = event021_successor_roster_adoption_complete
 		clear_variable = random_civil_war_successor_adoption_crisis_id
 		clr_country_flag = random_civil_war_successor_roster_pending

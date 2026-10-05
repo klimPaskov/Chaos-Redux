@@ -238,6 +238,10 @@ event021_civil_war_crisis_category = {
 		}
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = event021_offer_emergency_settlement_ready_tt
+				event021_settlement_offer_ready = yes
+			}
+			custom_trigger_tooltip = {
 				tooltip = event021_offer_emergency_settlement_sides_tt
 				NOT = { event021_settlement_offer_blocked = yes }
 			}
@@ -267,11 +271,39 @@ event021_civil_war_crisis_category = {
 			add_manpower = constant:event021_action_cost.settlement_manpower_spend
 			event021_decision_offer_settlement = yes
 		}
+		# A government offers terms when the war is turning against it, not
+		# while it still commands the country and holds its ground (SET-01).
+		# Hardliners hold out until authority is failing (SET-04); failing or
+		# collapsing authority, lost states, and near defeat push toward terms
+		# (SET-03, SET-05).
 		ai_will_do = {
 			base = constant:event021_ai.base_action
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				random_civil_war_authority_is_cohesive = yes
+				NOT = { event021_government_losing_ground = yes }
+			}
+			modifier = {
+				factor = constant:event021_settlement_offer.ai_hardliner_holdout
+				has_country_flag = random_civil_war_hardliner_profile
+				NOT = { random_civil_war_authority_is_failing = yes }
+				NOT = { random_civil_war_authority_is_collapsed = yes }
+			}
+			modifier = {
+				factor = constant:event021_settlement_offer.ai_holding_ground
+				NOT = { event021_government_losing_ground = yes }
+				NOT = { random_civil_war_authority_is_failing = yes }
+				NOT = { random_civil_war_authority_is_collapsed = yes }
+			}
+			modifier = { factor = constant:event021_settlement_offer.ai_failing_authority random_civil_war_authority_is_failing = yes }
+			modifier = { factor = constant:event021_settlement_offer.ai_collapsed_authority random_civil_war_authority_is_collapsed = yes }
+			modifier = { factor = constant:event021_settlement_offer.ai_lost_ground event021_government_lost_opening_ground = yes }
+			modifier = {
+				factor = constant:event021_settlement_offer.ai_near_defeat
+				has_war = yes
+				surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+			}
 			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_negotiator_profile }
-			modifier = { factor = constant:event021_ai.priority_major random_civil_war_authority_is_failing = yes }
-			modifier = { factor = constant:event021_ai.discourage_concession has_country_flag = random_civil_war_hardliner_profile }
 		}
 	}
 

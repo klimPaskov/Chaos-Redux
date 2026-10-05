@@ -1283,6 +1283,34 @@ event021_country_can_offer_settlement = {
 	NOT = { has_country_flag = event021_settlement_talks_open }
 }
 
+# COUNTRY scope on a crisis government. Terms can be offered once the war has
+# lasted constant:event021_settlement_offer.minimum_war_days from its start;
+# event021_record_settlement_offer_ready_date stores that date through the
+# shared date converter when the crisis or a successor government begins.
+event021_settlement_offer_ready = {
+	has_variable = random_civil_war_settlement_offer_ready_date
+	check_variable = { var = global.date value = random_civil_war_settlement_offer_ready_date compare = greater_than_or_equals }
+}
+
+# COUNTRY scope on a crisis government. True when it holds fewer of its own
+# states than when the war began.
+event021_government_lost_opening_ground = {
+	has_variable = random_civil_war_opening_held_state_count
+	check_variable = { var = num_owned_controlled_states value = random_civil_war_opening_held_state_count compare = less_than }
+}
+
+# COUNTRY scope on a crisis government. Losing states held at the opening, or
+# a surrender close to the near-defeat threshold, means the war is going badly.
+event021_government_losing_ground = {
+	OR = {
+		event021_government_lost_opening_ground = yes
+		AND = {
+			has_war = yes
+			surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+		}
+	}
+}
+
 # COUNTRY scope on a crisis government. Signed terms reintegrate or partition
 # the ordinary claimants and end an Event 006 host war, but they cannot settle
 # a package-owned independence front fighting beside them, and they must never
