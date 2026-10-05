@@ -754,11 +754,16 @@ asteroid_incoming_clear_unstable_debris = {
 	}
 }
 
+# STATE SCOPE, the project's state with the acting country in ROOT. Like the
+# three national dust projects below, the protection lapses when the dust has
+# already cleared by the time the work period ends: the zero-dust pass has
+# removed every protection idea, and nothing would remove one added after it.
 asteroid_incoming_distribute_emergency_filters = {
 	if = {
 		limit = {
 			asteroid_incoming_action_state_is_valid = yes
 			NOT = { has_state_flag = asteroid_incoming_filters_distributed }
+			check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum }
 		}
 		set_state_flag = asteroid_incoming_filters_distributed
 		ROOT = {
@@ -832,39 +837,53 @@ asteroid_incoming_rehouse_displaced_workers = {
 	}
 }
 
+# COUNTRY SCOPE. The three national dust projects finish here, a work period
+# after they are paid. Each grants its protection, completion flag and
+# mitigation only while dust is still active; once the sky has cleared the
+# project lapses, because the zero-dust pass has already removed every
+# protection idea and nothing would remove one added afterwards.
 asteroid_incoming_harden_factories_against_dust = {
 	if = {
-		limit = {
-			NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_hardened compare = greater_than_or_equals } }
+		limit = { check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
+		if = {
+			limit = {
+				NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_hardened compare = greater_than_or_equals } }
+			}
+			set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_hardened }
+			remove_ideas = asteroid_incoming_dust_protection_basic
+			remove_ideas = asteroid_incoming_dust_protection_organized
+			add_ideas = asteroid_incoming_dust_protection_hardened
 		}
-		set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_hardened }
-		remove_ideas = asteroid_incoming_dust_protection_basic
-		remove_ideas = asteroid_incoming_dust_protection_organized
-		add_ideas = asteroid_incoming_dust_protection_hardened
+		asteroid_incoming_refresh_national_dust_protection = yes
+		set_country_flag = asteroid_incoming_factories_hardened
+		asteroid_incoming_add_mitigation = yes
 	}
-	asteroid_incoming_refresh_national_dust_protection = yes
-	set_country_flag = asteroid_incoming_factories_hardened
-	asteroid_incoming_add_mitigation = yes
 }
 
 asteroid_incoming_protect_transport_reserves = {
 	if = {
-		limit = {
-			NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_organized compare = greater_than_or_equals } }
+		limit = { check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
+		if = {
+			limit = {
+				NOT = { check_variable = { var = asteroid_incoming_dust_protection_level value = constant:asteroid_incoming_recovery.protection_organized compare = greater_than_or_equals } }
+			}
+			set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_organized }
+			remove_ideas = asteroid_incoming_dust_protection_basic
+			remove_ideas = asteroid_incoming_dust_protection_hardened
+			add_ideas = asteroid_incoming_dust_protection_organized
 		}
-		set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_organized }
-		remove_ideas = asteroid_incoming_dust_protection_basic
-		remove_ideas = asteroid_incoming_dust_protection_hardened
-		add_ideas = asteroid_incoming_dust_protection_organized
+		asteroid_incoming_refresh_national_dust_protection = yes
+		set_country_flag = asteroid_incoming_transport_protected
+		asteroid_incoming_add_mitigation = yes
 	}
-	asteroid_incoming_refresh_national_dust_protection = yes
-	set_country_flag = asteroid_incoming_transport_protected
-	asteroid_incoming_add_mitigation = yes
 }
 
 asteroid_incoming_join_observation_network = {
 	if = {
-		limit = { NOT = { has_country_flag = asteroid_incoming_observation_network } }
+		limit = {
+			NOT = { has_country_flag = asteroid_incoming_observation_network }
+			check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum }
+		}
 		set_country_flag = asteroid_incoming_observation_network
 		if = { limit = { NOT = { has_variable = global.asteroid_incoming_observation_networks } } set_variable = { global.asteroid_incoming_observation_networks = 0 } }
 		add_to_variable = { global.asteroid_incoming_observation_networks = 1 }
