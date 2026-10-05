@@ -233,10 +233,14 @@ doctrine_research_ai_fields_armour = {
 # - Naval and air tracks read their own ships and deployed planes.
 # - A Special Forces track reads the battalion family of the subdoctrine it
 #   holds; an empty Special Forces track reads any Special Forces battalion.
-# - Each Chaos Warfare track reads its own fielded CBRN battalions: Hazard
-#   Assault the protection and chemical reconnaissance detachments, Contaminant
-#   Fire Support the projector batteries, Toxic Armored Warfare the chemical
-#   tank detachments, and Integrated CBRN Command the HQ operations section.
+# - Each Chaos Warfare track reads its own fielded CBRN battalions, which are
+#   the mastery sub-units of its subdoctrine plus the companies its bonuses
+#   serve: Hazard Assault the protection and chemical reconnaissance
+#   detachments and Chaos Battalions; Contaminant Fire Support the chemical
+#   projector batteries, chemical ammunition trains, and Livens projector
+#   companies; Toxic Armored Warfare the armoured delivery detachments and
+#   chemical tank companies; Integrated CBRN Command the HQ operations,
+#   protective logistics, and medical countermeasure sections.
 doctrine_research_ai_selected_track_has_force_fit = {
 	OR = {
 		AND = {
@@ -378,12 +382,15 @@ doctrine_research_ai_selected_track_has_force_fit = {
 			OR = {
 				cbrn_chaos_warfare_has_fielded_protected_formation = yes
 				check_variable = { num_battalions_with_type@cbrn_chemical_recon_detachment > 0 }
+				check_variable = { num_battalions_with_type@chaos_battalion > 0 }
 			}
 		}
 		AND = {
 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
 			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.combat_support compare = equals }
 			OR = {
+				check_variable = { num_battalions_with_type@cbrn_chemical_projector_battery > 0 }
+				check_variable = { num_battalions_with_type@cbrn_chemical_ammunition_train > 0 }
 				check_variable = { num_battalions_with_type@livens_projector_support > 0 }
 				check_variable = { num_battalions_with_type@livens_projector_support_chlorine > 0 }
 				check_variable = { num_battalions_with_type@livens_projector_support_phosgene > 0 }
@@ -397,6 +404,9 @@ doctrine_research_ai_selected_track_has_force_fit = {
 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
 			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.armor compare = equals }
 			OR = {
+				check_variable = { num_battalions_with_type@cbrn_light_armored_delivery_detachment > 0 }
+				check_variable = { num_battalions_with_type@cbrn_medium_armored_delivery_detachment > 0 }
+				check_variable = { num_battalions_with_type@cbrn_heavy_armored_delivery_detachment > 0 }
 				check_variable = { num_battalions_with_type@light_chemical_tank_support_chlorine > 0 }
 				check_variable = { num_battalions_with_type@light_chemical_tank_support_phosgene > 0 }
 				check_variable = { num_battalions_with_type@light_chemical_tank_support_mustard > 0 }
@@ -420,7 +430,11 @@ doctrine_research_ai_selected_track_has_force_fit = {
 		AND = {
 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals }
 			check_variable = { var = doctrine_research_selected_track value = constant:doctrine_research_track.operations compare = equals }
-			cbrn_chaos_warfare_has_fielded_operations_hq = yes
+			OR = {
+				cbrn_chaos_warfare_has_fielded_operations_hq = yes
+				check_variable = { num_battalions_with_type@cbrn_hq_protective_logistics_section > 0 }
+				check_variable = { num_battalions_with_type@cbrn_hq_medical_countermeasure_directorate > 0 }
+			}
 		}
 	}
 }
@@ -1686,6 +1700,7 @@ doctrine_research_country_has_valid_action = {
 doctrine_research_selected_domain_has_valid_action = {
 	AND = {
 		has_global_flag = doctrine_research_adapter_registry_initialized
+		doctrine_research_country_has_doctrine_system = yes
 		OR = {
 			AND = {
 				check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.army compare = equals }
@@ -4483,7 +4498,10 @@ doctrine_research_selected_grand_doctrine_is_active = {
 	}
 }
 
+# A new choice also needs a doctrine system, so a country that turned nonhuman
+# while a page was open cannot confirm it; a pending receipt still recovers.
 doctrine_research_selected_choice_is_valid = {
+	doctrine_research_country_has_doctrine_system = yes
 	OR = {
 		AND = {
 			check_variable = { var = doctrine_research_selected_action value = constant:doctrine_research_action.adopt compare = equals }
