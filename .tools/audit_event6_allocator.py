@@ -506,9 +506,9 @@ def main() -> int:
 	expected_adapter_ids = {
 		1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19,
 		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48,
-		50, 51, 52, 53, 54, 58, 70, 71, 72, 93, 98, 173, 177, 179, 184,
+		50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 93, 95, 98, 173, 177, 179, 184,
 	}
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48, 50, 51, 52, 53, 54, 58, 70, 71, 72, 93, 98, 173, 177, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48, 50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 93, 95, 98, 173, 177, 184}
 	require(
 		set(adapter_ids) == expected_adapter_ids,
 		"runtime adapter set changed without updating the accepted Event 006 closure: "
@@ -565,7 +565,7 @@ def main() -> int:
 		family = re.sub(r"_package_(?:setup|final_validation|cleanup)$", "", call)
 		phase_families.setdefault(family, set()).add(phase)
 	require(
-		len(phase_families) == 34,
+		len(phase_families) == 36,
 		"central package dispatcher family count changed: " + repr(sorted(phase_families)),
 		errors,
 	)
@@ -616,7 +616,7 @@ def main() -> int:
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
 			len(set(attested_groups.values())) == 41,
-			"accepted forty-seven-package closure no longer exposes exactly forty-one compatible reservation groups: "
+			"accepted forty-nine-package closure no longer exposes exactly forty-one compatible reservation groups: "
 			+ repr(attested_groups),
 			errors,
 		)
@@ -633,7 +633,7 @@ def main() -> int:
 			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 46
+			len(set(attested_anchors.values())) == 48
 			and attested_anchors.get(43) == attested_anchors.get(44) == 249
 			and attested_groups.get(43) == attested_groups.get(44) == "rg_middle_volga_kazan",
 			"attested package anchors must be pairwise unique except the CHU/TAT Kazan anchor 249, "

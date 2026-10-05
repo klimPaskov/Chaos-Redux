@@ -111,3 +111,11 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - Fiji (FIJ) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, led by Ratu Sir Lala Sukuna.
 - Micronesia (FSM) remains unavailable, so the Pacific federation formable (FORM-48) cannot form yet.
+
+
+## 2026-10-05: Kurdistan and Dahomey packages (D22)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Kurdistan (KUR) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, released from Iran around Sanandaj and led by its own vanilla leaders.
+- Dahomey (DAH) can now appear in the same launches, led by its vanilla government.

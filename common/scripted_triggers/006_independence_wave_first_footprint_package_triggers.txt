@@ -3,8 +3,8 @@
 # ============================================================================
 # Package-local contracts for the Dahomey first-footprint row. Every visible
 # surface requires an active Event 006 origin, the exact current-map anchor
-# (state 776), the setup-generation witness, and the unresolved identity/rights
-# receipt. No dormant DAH shell can expose this package before release.
+# (state 776), the setup-generation witness, and the identity receipt that
+# setup publishes. No dormant DAH shell can expose this package before release.
 # ============================================================================
 
 is_independence_wave_iw095_package = {
@@ -36,7 +36,7 @@ is_independence_wave_iw095_project_ready = {
 	has_country_flag = independence_wave_dah_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_origin_ended }
 	NOT = { has_country_flag = independence_wave_dah_compact_crisis_failed }
-	776 = { is_owned_and_controlled_by = ROOT }
+	776 = { is_owned_and_controlled_by = PREV }
 }
 
 is_independence_wave_dahomey_project_ready = {
@@ -48,7 +48,7 @@ has_independence_wave_dahomey_unsettled_host = {
 		NOT = { has_independence_wave_living_former_host = yes }
 		AND = {
 			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { has_war_with = ROOT }
+			var:independence_wave_former_host = { has_war_with = PREV }
 		}
 	}
 }
@@ -82,13 +82,13 @@ is_independence_wave_exact_package_iw_095_runtime_ready = {
 	has_independence_wave_force_package_for_current_generation = yes
 	NOT = { has_country_flag = independence_wave_origin_ended }
 	776 = {
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 		is_capital = yes
 	}
 	has_variable = independence_wave_former_host
 	var:independence_wave_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 		has_variable = liberation_release_protected_state
 		var:liberation_release_protected_state = { is_owned_by = PREV }
 	}
@@ -116,8 +116,8 @@ can_initialize_independence_wave_iw_095_package = {
 
 has_independence_wave_dahomey_command_roster = {
 	has_independence_wave_dahomey_identity_rights_clearance = yes
-	# The parent publishes this receipt only after the approved DAH roster
-	# exists; identity clearance alone is not a command-roster proof.
+	# Setup publishes this receipt from the accepted vanilla DAH roster
+	# (agent decision D22) after the identity clearance.
 	has_country_flag = independence_wave_dah_roster_checkpoint
 }
 

@@ -1,13 +1,13 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-060 KURDISTAN PACKAGE EFFECTS
 # ============================================================================
-# Vanilla KUR/state 421 carrier adapter. The package models a Kurdish
+# Vanilla KUR/state 1001 carrier adapter. The package models a Kurdish
 # frontier council balancing Kurdish communities, mountain security, and
 # cross-border patron pressure. It
 # never creates a leader, portrait override, cosmetic tag, or vanilla history
-# mutation. The opening roster is checked only after parent-owned identity and
-# institutional-roster gates clear. Central attestation and deterministic Join
-# remain parent-owned and intentionally untouched here.
+# mutation. The vanilla KUR roster is the accepted identity (agent decision
+# D22), and setup publishes its identity clearance before the roster check.
+# Central admission, Join and SCN-008 wiring live in the shared registries.
 # ============================================================================
 
 independence_wave_remove_kur_package_ideas = {
@@ -120,7 +120,7 @@ independence_wave_kur_apply_project_failure = {
 
 independence_wave_kur_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -338,9 +338,9 @@ independence_wave_kur_focus_open_mountain_network_corridor = {
 # Setup, final-validation, dispatch, and cleanup. The setup is strict and never
 # mutates vanilla KUR history, flag, state, leader, portrait, or cosmetic-tag
 # definitions. Roster checkpointing is package-local and fail-closed.
-# KUR has no accepted Event 006 leader/portrait source yet. Keep the roster
-# checkpoint inert until the parent-owned identity and institutional-roster
-# flags are explicitly reviewed.
+# KUR uses its vanilla leaders and portraits. The checkpoint passes once
+# setup has published the identity clearance and the vanilla roster is
+# present.
 independence_wave_kur_checkpoint_vanilla_roster = {
 	if = {
 		limit = {
@@ -374,6 +374,9 @@ independence_wave_setup_iw_060_kurdistan = {
 	clr_country_flag = independence_wave_kur_mountain_corridor_open
 	clr_country_flag = independence_wave_kur_ai_profile
 	clr_country_flag = independence_wave_iw_060_lifecycle_initialized
+	# The vanilla KUR roster is the accepted package identity (D22), so setup
+	# publishes the identity clearance that the package gates read.
+	set_country_flag = independence_wave_iw_060_identity_rights_cleared
 	independence_wave_remove_kur_package_ideas = yes
 	clear_variable = independence_wave_kur_council_legitimacy
 	clear_variable = independence_wave_kur_mountain_readiness
@@ -454,7 +457,7 @@ independence_wave_cleanup_iw_060_kurdistan = {
 		remove_decision = independence_wave_kur_open_mountain_corridor
 		independence_wave_remove_kur_package_ideas = yes
 		set_politics = { ruling_party = democratic elections_allowed = yes }
-		set_popularities = { democratic = 40 communism = 25 neutrality = 5 fascism = 30 }
+		set_popularities = { democratic = constant:independence_wave_kurdistan_politics.restore_democratic communism = constant:independence_wave_kurdistan_politics.restore_communism neutrality = constant:independence_wave_kurdistan_politics.restore_neutrality fascism = constant:independence_wave_kurdistan_politics.restore_fascism }
 		set_party_name = { ideology = democratic long_name = KUR_democratic_party_long name = KUR_democratic_party }
 		set_party_name = { ideology = communism long_name = KUR_communism_party_long name = KUR_communism_party }
 		set_party_name = { ideology = neutrality long_name = KUR_neutrality_party_long name = KUR_neutrality_party }

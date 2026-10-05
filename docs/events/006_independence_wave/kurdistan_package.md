@@ -1,5 +1,7 @@
 # IW-060 Kurdistan package
 
+> Admission (2026-10-05, agent decision D22): IW-060 KUR is in the central adapter, content attestation, execution and SCN-008 preflights, Join probe order, Liberations capacity probe and package dispatchers. State 1001 (Kurdistan, around Sanandaj) is the accepted anchor that the loader, planner and package proofs share, and the release moves the capital there. The vanilla KUR roster, portraits and flags are the accepted identity, and setup publishes the identity clearance. Setup reads the released country, and the force proofs match the p60 mask. Statements below that call the package fail-closed, name state 421 or ask for a parent anchor decision describe its earlier state.
+
 IW-060 KUR is a package-local, fail-closed Event 006 implementation for the registered vanilla KUR carrier. It is not centrally attested, dispatched into normal or SCN-008 preflight, exposed through deterministic Join, or admitted to the release selector.
 
 ## Runtime contract

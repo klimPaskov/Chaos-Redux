@@ -553,3 +553,31 @@ FORM-48: its contract binds HBX as carrier and HAW and FSM as sovereign members.
 Validation: the allocator audit passes with 47 attested packages, 41 reservation groups, 48 adapters and IW-179 as the only adapter-only ID (its expected attested set and its group and anchor counts were updated); brace balance is 0 on every touched file.
 
 Needs live game: a wave that releases FIJ, and a second release of HAW, COR, KOS, MNT or RUT after an earlier one ended.
+
+
+## D22. Round 2: admission of IW-060 Kurdistan (KUR) and IW-095 Dahomey (DAH)
+
+Disposition: `implemented` for IW-060 KUR and IW-095 DAH.
+
+Basis: the lead's round-2 priority-10b item, decision 5 (every admission includes the ROOT-to-PREV fix), and the D20 rule that a vanilla carrier's vanilla roster is its accepted package identity.
+
+Anchor decision for KUR: the package-local proofs required state 421 (Ilam), but the loader, the planner gate and the reservation all bind state 1001, and the executor moves the capital to the reserved anchor. The proofs could therefore never pass. State 1001 is the accepted anchor. It is the vanilla state named Kurdistan, around Sanandaj, it is a KUR core with victory points, and it lies in the Iranian Kurdish heartland where Qazi Muhammad later led the Mahabad republic. State 421 (Ilam) is a southern border state with no victory point. The KUR triggers, the founding mission and its description now read state 1001. FORM-18 reads each member's stored anchor rather than a fixed state, so it needs no change. Vanilla KUR history keeps state 800 (Van) as its capital, and no history or map file changes.
+
+Identity decision: both are vanilla carriers. KUR keeps its vanilla roster: Seyid Riza leads the opening democratic government, with Qazi Muhammad, Mahmud Barzanji and Ihsan Nuri leading the other parties, all with the game's own portraits, and the vanilla KUR flags. Vanilla DAH defines advisors but no country leader, so it keeps its vanilla roster and the leader the game appoints, which is the accepted institutional leadership, as D20 accepted for KHA. Event 006 adds no character, portrait or flag for either. The parent-owned `independence_wave_iw_060_identity_rights_cleared` and `independence_wave_iw_095_identity_rights_cleared` flags, and DAH's `independence_wave_dah_roster_checkpoint`, are now published at the start of each package setup with this decision as their basis.
+
+Setup defects found and fixed:
+
+- KUR anchor mismatch, described above.
+- KUR read ROOT, the launching country during setup, in the anchor and former-host checks of `can_initialize_*`, `has_prepared_*` and the runtime-ready trigger. DAH read ROOT in its runtime-ready trigger. All now read PREV, and so do the unsettled-host and host-settlement checks of both packages.
+- DAH setup required a roster receipt that nothing published, so it always failed. Setup now publishes the identity flag and runs `independence_wave_dahomey_checkpoint_roster`.
+- DAH cleanup restored a democratic government with 60/10/10/20 popularities, but vanilla DAH is ruled by its neutral party without elections at 25/5/50/20. The cleanup and its constants now match vanilla. KUR cleanup restored its vanilla popularities as bare numbers. They are now `restore_*` constants in `independence_wave_kurdistan_politics`.
+
+Walk-through: the KUR loader publishes region `caucasus_anatolia_mesopotamia`, regional depth and `mountain_or_frontier`, and DAH's publishes `west_central_africa`, regional depth and `agrarian_regional`, which the proofs check. p60 decodes to `mountain_frontier`, tradition 72 and mask 653, which raises integrate-militias, secure depots, convert-defectors, terrain units and professional officers, exactly the five pathways the KUR proof expects. p95 decodes to `territorial_defense`, tradition 57 and mask 535, which raises integrate-militias, regional guards, secure depots, volunteer corridors and professional officers, exactly the DAH proof. Neither inherits a navy or air force. The KUR roster characters are recruited by vanilla KUR history.
+
+Admission: both IDs are in the adapter list, the content attestation, the execution and SCN-008 preflights, the Join probe order after IW-177, the Liberations capacity probe (new tries) and the central dispatchers (the `kurdistan` and `first_footprint` families). The planner gates use new runtime-ready triggers. Both were already in the SCN-008 ranked list, and their AI strategy profiles, shared-focus callbacks, decisions and ideas already existed. KUR shares `RG-NORTHERN-MESOPOTAMIA` with the admitted IW-058 ASY, and DAH shares `RG-NIGERIA-COARSE` with the admitted IW-098 SOK, so a wave holds at most one of each pair. Foreign contacts: KUR IRQ, TUR and SOV. DAH POR, BRA and ENG.
+
+Validation: the allocator audit passes with 49 attested packages, 41 reservation groups, 50 adapters and 48 anchors (its expected sets, anchor count and the dispatcher-family count of 36 were updated); brace balance is 0 on every touched file.
+
+Remaining gap: a DAH cleanup keeps the Event 006 party names, since vanilla DAH has no party name keys to restore.
+
+Needs live game: a wave that releases KUR from Iran with state 1001 as its capital, and a wave that releases DAH.

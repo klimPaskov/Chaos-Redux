@@ -2,10 +2,10 @@
 # CHAOS REDUX - EVENT 006 IW-095 DAHOMEY PACKAGE EFFECTS
 # ============================================================================
 # Package-local first-footprint lifecycle for Dahomey (`DAH`) at the current
-# installed-map anchor, state 776. The package is deliberately fail-closed:
-# the setup entry requires the parent-owned identity/rights receipt, while
-# central admission, dispatch, attestation, SCN-008, flags, portraits, and
-# Join wiring remain outside this tranche.
+# installed-map anchor, state 776. The vanilla DAH roster and the leader the
+# game appoints are the accepted identity (agent decision D22). Setup
+# publishes the identity and roster receipts, and the shared registries hold
+# the central admission, dispatch, SCN-008 and Join wiring.
 # ============================================================================
 
 independence_wave_remove_dahomey_package_ideas = {
@@ -122,7 +122,7 @@ independence_wave_dahomey_apply_project_failure = {
 
 independence_wave_dahomey_apply_former_host_settlement = {
 	if = {
-		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = PREV } } }
 		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
 		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
 		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
@@ -318,9 +318,9 @@ independence_wave_iw095_focus_open_west_african_trade_mission = {
 	}
 }
 
-# The custom roster receipt is intentionally separate from the shared roster
-# helper. It can only be published by the parent after the portrait/identity
-# review is accepted, so no generic DAH character is treated as proof.
+# The roster receipt is separate from the shared roster helper. Setup
+# publishes it after the identity clearance, since the accepted DAH identity
+# is its vanilla roster and the leader the game appoints.
 independence_wave_dahomey_checkpoint_roster = {
 	if = {
 		limit = { is_independence_wave_dahomey_package = yes has_independence_wave_dahomey_identity_rights_clearance = yes }
@@ -330,8 +330,8 @@ independence_wave_dahomey_checkpoint_roster = {
 }
 
 independence_wave_setup_iw_095_dahomey = {
-	# The parent-owned roster checkpoint must already be present. Do not
-	# synthesize a command roster from identity clearance during setup.
+	# The vanilla DAH roster and the leader the game appoints are the accepted
+	# package identity (D22). The receipts are published below, before the gates.
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw_095_setup_complete
 	clr_country_flag = independence_wave_dah_project_failure_applied
@@ -354,6 +354,8 @@ independence_wave_setup_iw_095_dahomey = {
 	clear_variable = independence_wave_dah_council_cohesion
 	clear_variable = independence_wave_dah_coastal_revenue
 	clear_variable = independence_wave_dah_package_generation_id
+	set_country_flag = independence_wave_iw_095_identity_rights_cleared
+	independence_wave_dahomey_checkpoint_roster = yes
 	if = {
 		limit = { can_initialize_independence_wave_iw_095_package = yes }
 		set_variable = { independence_wave_dah_package_generation_id = independence_wave_generation_id }
@@ -431,7 +433,7 @@ independence_wave_cleanup_iw_095_dahomey = {
 		remove_decision = iw095_authorize_emergency_directorate
 		remove_decision = iw095_open_west_african_trade_mission
 		independence_wave_remove_dahomey_package_ideas = yes
-		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_politics = { ruling_party = neutrality elections_allowed = no }
 		set_popularities = {
 			democratic = constant:independence_wave_dahomey_politics.cleanup_democratic
 			communism = constant:independence_wave_dahomey_politics.cleanup_communism
