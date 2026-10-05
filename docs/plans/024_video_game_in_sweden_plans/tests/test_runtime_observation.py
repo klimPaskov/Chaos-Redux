@@ -633,6 +633,39 @@ class ObservationSourceTests(unittest.TestCase):
             self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_response_count")], Decimal(2))
             self.assertIn("video_game_in_sweden_foreign_response_seen", model.flags["GER"])
 
+    def test_late_answer_keeps_a_newer_partner(self):
+        # R4-8: a released partner's late answer clears the pointer only when
+        # it still names that partner.
+        for name in ("copy", "study", "ban", "ridicule", "no_action"):
+            helper = life.APIS["video_game_in_sweden_resolve_foreign_" + name]
+            self.assertTrue(any(n.key == "video_game_in_sweden_clear_answering_partner" for n in life.walk(helper.body)))
+            self.assertFalse(any(n.key == "clear_global_event_target" for n in life.walk(helper.body)))
+        for answering, cleared in (("GER", False), ("DEN", True)):
+            model = self.model()
+            model.root, model.actor = answering, answering
+            model.targets["video_game_in_sweden_foreign_partner"] = "DEN"
+            model.call("video_game_in_sweden_clear_answering_partner")
+            self.assertEqual("video_game_in_sweden_foreign_partner" not in model.targets, cleared)
+
+    def test_retrigger_after_the_opening_prepares_nothing(self):
+        # R4-7: a forced or manual re-trigger after the fire-once opening keeps
+        # a running cabinet's host and its eligibility, and releases only a
+        # host that never started.
+        for started in (True, False):
+            model = self.model()
+            if not started:
+                model.flags["SWE"] = set()
+            model.native_predicates["video_game_in_sweden_can_receive_program"] = True
+            model.arrays["global.fired_events"] = [model.number("constant:video_game_in_sweden_event.id")]
+            model.targets["video_game_in_sweden_host"] = "SWE"
+            model.temp["events_log_manual_event_detail_trigger"] = Decimal(1)
+            model.temp["video_game_in_sweden_prefire_ready"] = Decimal(0)
+            model.call("video_game_in_sweden_prepare_random_event_fire")
+            self.assertEqual(model.temp["video_game_in_sweden_prefire_ready"], Decimal(0))
+            self.assertEqual("video_game_in_sweden_host" in model.targets, started)
+            self.assertNotIn("video_game_in_sweden_prefire_opening_pending", model.flags["SWE"])
+            self.assertNotIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
+
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
         model.targets["video_game_in_sweden_host"] = "SWE"

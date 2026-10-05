@@ -68,15 +68,26 @@ video_game_in_sweden_select_stockholm_owner_host = {
 
 video_game_in_sweden_prepare_random_event_fire = {
 	set_temp_variable = { video_game_in_sweden_prefire_ready = 0 }
+	# After the fire-once opening, a forced or manual re-trigger prepares
+	# nothing. It releases only a host that never started the programme and
+	# leaves a running cabinet's host in place.
 	if = {
 		limit = { is_in_array = { global.fired_events = constant:video_game_in_sweden_event.id } }
 		if = {
-			limit = { has_event_target = video_game_in_sweden_host }
+			limit = {
+				has_event_target = video_game_in_sweden_host
+				NOT = {
+					event_target:video_game_in_sweden_host = {
+						has_country_flag = video_game_in_sweden_host_selected
+					}
+				}
+			}
 			clear_global_event_target = video_game_in_sweden_host
 		}
 	}
 	if = {
 		limit = {
+			NOT = { is_in_array = { global.fired_events = constant:video_game_in_sweden_event.id } }
 			has_event_target = video_game_in_sweden_host
 			event_target:video_game_in_sweden_host = {
 				video_game_in_sweden_can_receive_program = yes
@@ -151,6 +162,7 @@ video_game_in_sweden_prepare_random_event_fire = {
 	}
 	if = {
 		limit = {
+			NOT = { is_in_array = { global.fired_events = constant:video_game_in_sweden_event.id } }
 			has_event_target = video_game_in_sweden_host
 			event_target:video_game_in_sweden_host = {
 				video_game_in_sweden_is_valid_host = yes
@@ -3776,6 +3788,20 @@ video_game_in_sweden_release_unreachable_foreign_partner = {
 	}
 }
 
+# COUNTRY scope (the answering partner), from a reply option. Clears the
+# partner pointer only while it still names this government, so a late answer
+# from a partner released by maintenance cannot take the pointer from a newer
+# partner whose reply is still on its way.
+video_game_in_sweden_clear_answering_partner = {
+	if = {
+		limit = {
+			has_event_target = video_game_in_sweden_foreign_partner
+			event_target:video_game_in_sweden_foreign_partner = { tag = PREV }
+		}
+		clear_global_event_target = video_game_in_sweden_foreign_partner
+	}
+}
+
 video_game_in_sweden_queue_foreign_report = {
 	if = {
 		limit = {
@@ -3849,10 +3875,7 @@ video_game_in_sweden_resolve_foreign_copy = {
 		}
 	}
 	video_game_in_sweden_queue_foreign_report = yes
-	if = {
-		limit = { has_event_target = video_game_in_sweden_foreign_partner }
-		clear_global_event_target = video_game_in_sweden_foreign_partner
-	}
+	video_game_in_sweden_clear_answering_partner = yes
 }
 
 video_game_in_sweden_resolve_foreign_study = {
@@ -3875,10 +3898,7 @@ video_game_in_sweden_resolve_foreign_study = {
 		}
 	}
 	video_game_in_sweden_queue_foreign_report = yes
-	if = {
-		limit = { has_event_target = video_game_in_sweden_foreign_partner }
-		clear_global_event_target = video_game_in_sweden_foreign_partner
-	}
+	video_game_in_sweden_clear_answering_partner = yes
 }
 
 video_game_in_sweden_resolve_foreign_ban = {
@@ -3903,10 +3923,7 @@ video_game_in_sweden_resolve_foreign_ban = {
 		}
 	}
 	video_game_in_sweden_queue_foreign_report = yes
-	if = {
-		limit = { has_event_target = video_game_in_sweden_foreign_partner }
-		clear_global_event_target = video_game_in_sweden_foreign_partner
-	}
+	video_game_in_sweden_clear_answering_partner = yes
 }
 
 video_game_in_sweden_resolve_foreign_ridicule = {
@@ -3931,10 +3948,7 @@ video_game_in_sweden_resolve_foreign_ridicule = {
 		}
 	}
 	video_game_in_sweden_queue_foreign_report = yes
-	if = {
-		limit = { has_event_target = video_game_in_sweden_foreign_partner }
-		clear_global_event_target = video_game_in_sweden_foreign_partner
-	}
+	video_game_in_sweden_clear_answering_partner = yes
 }
 
 video_game_in_sweden_resolve_foreign_no_action = {
@@ -3947,10 +3961,7 @@ video_game_in_sweden_resolve_foreign_no_action = {
 		}
 	}
 	video_game_in_sweden_queue_foreign_report = yes
-	if = {
-		limit = { has_event_target = video_game_in_sweden_foreign_partner }
-		clear_global_event_target = video_game_in_sweden_foreign_partner
-	}
+	video_game_in_sweden_clear_answering_partner = yes
 }
 
 video_game_in_sweden_update_achievement_tracking = {

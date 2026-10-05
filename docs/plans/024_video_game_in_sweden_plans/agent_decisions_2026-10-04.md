@@ -521,3 +521,21 @@ Findings confirmed without change:
 - `video_game_in_sweden_value.zero` and `chaosx_date_units.zero` exist in integer-schema categories; `achievement_reliance_days` (365) converts to exactly 8760 hours.
 Outside this round's scope: the older lifetime audit case `test_ticket_forwarded_scalar_and_load` in `tests/lifetime/actual_source_lifetime_audit.py` reports `[0, 2, 2]` instead of `[0, 4, 2]` for its frozen before-baseline of the pre-fire ticket helper, which none of the round 4 commits touch; it is not part of the runtime-observation fixture and is left for the next round's lead to triage.
 Disposition: `implemented`.
+
+## Round 4 skeptical review
+
+Disposition: accepted under the same standing grant of design authority. The reviewer re-read the five round 4 commits (`1f0a5869c`, `23fb7e436`, `1c49ca107`, `fcab107e1`, `dd5d1ada9`) against the shared dispatcher, the installed effects and triggers documentation and the vanilla `add_timed_idea` precedents. R4-1 to R4-5 are confirmed as recorded; the two findings below were fixed.
+
+### R4-7. A re-trigger after the opening no longer clears the running cabinet's host
+
+Finding: R4-1 relies on the first block of `video_game_in_sweden_prepare_random_event_fire`, which cleared `video_game_in_sweden_host` whenever Event 24 was already in `global.fired_events`. `force_trigger_selected_event`, and `trigger_selected_event` with `force_trigger_mode_enabled`, call `fire_event_by_id` without a fired-status check, so a forced re-trigger of Event 24 during a running cabinet cleared the host target and `video_game_in_sweden_is_current_host` failed at the next maintenance, which closed the programme. Only the dispatch itself was refused.
+Decision: once Event 24 has fired the preparation prepares nothing. Its first block clears the host only when that host has not started the programme (no `video_game_in_sweden_host_selected`), and the existing-host block and the host-marking block are gated on Event 24 not having fired, matching the host-selection block. A re-trigger therefore leaves the running cabinet, its eligibility and `video_game_in_sweden_debug_invalid` untouched and schedules no second opening. A stale pre-opening host is still released, and `chaosx.nr24.1` re-saves its own receiver if it was pending.
+Trace: fixture case `test_retrigger_after_the_opening_prepares_nothing` (a started host stays the target with readiness 0 and no opening or debug mark; a host that never started is released); it fails against the round 4 source. All 25 fixture cases pass.
+Disposition: `implemented`; a forced re-trigger in a live session is needs_live_game.
+
+### R4-8. A late licence answer cannot take the pointer from a newer partner
+
+Finding: the R4-4 residual risk. The five `video_game_in_sweden_resolve_foreign_*` helpers cleared `video_game_in_sweden_foreign_partner` unconditionally, so a partner released by maintenance that answered its `.40` popup late could clear the target of a newer partner whose reply was still on its way, dropping that reply after its response had been counted.
+Decision: the five helpers call `video_game_in_sweden_clear_answering_partner`, which clears the target only while it names the answering government (`tag = PREV`, the idiom of `video_game_in_sweden_is_current_host`). Ordinary answers behave as before. The late answer's own outcome still applies, because its response was counted when it was sent.
+Trace: fixture case `test_late_answer_keeps_a_newer_partner` (every resolve helper calls the guarded helper and none clears the target directly; a stale answerer keeps the newer target, the current partner clears it). All 25 fixture cases pass.
+Disposition: `implemented`; the multiplayer late answer is needs_live_game.

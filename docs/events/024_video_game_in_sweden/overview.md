@@ -479,6 +479,7 @@ The four response opinion modifiers decay by one point a month.
 The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. The host receives a compact report event after the foreign response is resolved.
 The engine drops reply event `chaosx.nr24.40` if, in the day before it opens, its partner stops existing, capitulates or goes to war with Sweden. The 30-day maintenance therefore releases such a partner through `video_game_in_sweden_release_unreachable_foreign_partner`, which clears the partner's pending flag and the `video_game_in_sweden_foreign_partner` target with the same cleanup as the dispatch fallback (`video_game_in_sweden_release_foreign_partner`).
 Foreign Licenses then becomes available again while responses and partners remain. A response already sent stays counted, so the cap of three is never exceeded, and a released partner keeps `video_game_in_sweden_foreign_response_seen` and is not drawn again. A partner that can still answer is never touched.
+Each reply option clears the partner target through `video_game_in_sweden_clear_answering_partner`, which clears it only while it still names the answering government, so a late answer from a released partner cannot take the target from a newer partner whose reply is on its way.
 
 ## AI and safety contract
 
@@ -517,6 +518,7 @@ When the shared dispatcher prepares the opening, `video_game_in_sweden_prepare_r
 `video_game_in_sweden_record_normal_campaign` then clears `video_game_in_sweden_normal_campaign` and `video_game_in_sweden_achievement_eligible` and sets `video_game_in_sweden_according_to_plan_disqualified`; it also still rejects a host that has `force_trigger_mode_enabled` itself.
 An ordinary random dispatch clears the mark, because before the fire-once opening it can only come from a manual preparation that never opened the cabinet.
 `is_debug` is deliberately not checked: the manual and forced paths already cover every debug trigger route, and live checks run in a `-debug` session.
+Once Event 24 is in `global.fired_events`, a forced or manual re-trigger prepares nothing: the preparation leaves a host that has started the programme (`video_game_in_sweden_host_selected`) in place, releases only a host that never started, and neither marks the host nor schedules a second opening.
 
 Achievement tracking is updated by bounded maintenance, daily observation, and outcome effects, with proof stored in country flags and variables.
 Native save-persistence acceptance remains outstanding.
