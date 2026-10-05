@@ -252,3 +252,19 @@ Findings:
 - The hoard review line for a cache state the host does not own read "is not our state"; it now reads "We do not own <state>".
 
 MCP evidence: `hoi4.decision_inspect` in `inventory` mode with an `id` returned a revision-pinned whole-mod inventory (source revision 060436ef), which does not isolate one decision; `inspect` mode with only an `id` and `hoi4.event_inspect` `lint` with object selectors (`id`, `kind`/`id`, `kind`/`value`, `eventIds`) returned "Invalid tool arguments". The selector format is documented only in the server's own `docs/events.md`, which is not exposed, so the event and the decision were reviewed in source.
+
+
+## R2 second review. Independent check of the round 2 commits
+
+Disposition: `implemented` (a code comment and one tooltip; no gameplay, tuning or AI change).
+
+Basis: independent review of 3954dd278, e5c3bb072, abacbd845, 364d07446, a49dc6df5 and c20dd3dc0 against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), `documentation/triggers_documentation.md` (`any_province_building_level`), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` (Variable types) and vanilla `SWE.txt`, `finland.txt`, `afghanistan.txt` and `ENG.txt` AI strategy.
+
+Findings:
+
+- Every vanilla bunker or naval base construction passes a province block (1056 of 1056 in `common/` and `events/`), which confirms the R2-2 premise. Vanilla `ENG.txt` reads `any_province_building_level` with `naval_base level < 1`, so provinces without the building are tested at level 0 and the `level > -1` placement checks match every filtered province.
+- A read-before-write scan of all 638 lines added by abacbd845, with nested helpers expanded, found no default that a helper reads before writing it; the only hits were `set_temp_variable = { x = constant:x.key }` lines whose constant category shares the variable name. Defaults that differ from a conditional helper write (pulse rehoming days, the spread cursor, the origin-specialist template) only replace a stale or unset value on the branch where the helper writes nothing.
+- The fort-placement comment cited `afghanistan.txt` for victory-point filters; that file filters by border. The comment now cites `finland.txt` for victory points and `afghanistan.txt` for borders.
+- The Raise the First Anchors tooltip chained three "or" clauses in one sentence. It now states the anchor and authority rewards first and the fort placement in a second sentence.
+
+MCP evidence: `hoi4.source_lookup` resolved `cannibalism_hoard_review_state_is_in_reach` (revision 848a5bd0). `hoi4.event_inspect` `lint` with a plain string selector and with `{"event": ...}` returned "Invalid tool arguments", so the event was reviewed in source.
