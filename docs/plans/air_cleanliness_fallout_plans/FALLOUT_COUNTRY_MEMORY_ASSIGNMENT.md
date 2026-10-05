@@ -36,6 +36,14 @@ Why sharing is allowed at stage 4: a 1936 world has about ninety land-holding co
 | `antarctic_listening_government` | `patagonian_food_haven` |
 | `west_african_port_confederacies` | `cape_verde_radio_anchor` |
 | `manchurian_reactor_keeps` | `yellow_river_famine_councils` |
+| `british_emergency_isles` | `scottish_hydro_parliament` |
+| `french_loire_continuity` | `breton_port_league` |
+| `italian_apennine_communes` | `balkan_mountain_wards` |
+| `ural_continuity_directorate` | `volga_ash_host` |
+| `japanese_shelter_archipelago` | `hokkaido_snow_administration` |
+| `yellow_river_famine_councils` | `sichuan_interior_shelter` |
+
+The last six rows were added with the major-power opening chains (agent decision A17). A neighbour that is itself a taken protected memory passes on once more, so a second Manchurian survivor reaches `sichuan_interior_shelter`.
 
 ## Pilot and chain memories in a vanilla 1936 world
 

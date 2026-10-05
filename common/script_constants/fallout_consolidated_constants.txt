@@ -13421,6 +13421,62 @@ fallout_event_id = {
 	office_magistrate_callback = 1099
 	office_magistrate_callback_ai = 1100
 	office_magistrate_cleanup = 1101
+	federal_chain_human = 1102
+	federal_chain_ai = 1103
+	federal_chain_result = 1104
+	federal_chain_result_ai = 1105
+	federal_chain_callback = 1106
+	federal_chain_callback_ai = 1107
+	federal_chain_cleanup = 1108
+	island_ration_book_human = 1109
+	island_ration_book_ai = 1110
+	island_ration_book_result = 1111
+	island_ration_book_result_ai = 1112
+	island_ration_book_callback = 1113
+	island_ration_book_callback_ai = 1114
+	island_ration_book_cleanup = 1115
+	prefects_return_human = 1116
+	prefects_return_ai = 1117
+	prefects_return_result = 1118
+	prefects_return_result_ai = 1119
+	prefects_return_callback = 1120
+	prefects_return_callback_ai = 1121
+	prefects_return_cleanup = 1122
+	factory_ghosts_human = 1123
+	factory_ghosts_ai = 1124
+	factory_ghosts_result = 1125
+	factory_ghosts_result_ai = 1126
+	factory_ghosts_callback = 1127
+	factory_ghosts_callback_ai = 1128
+	factory_ghosts_cleanup = 1129
+	parish_granaries_human = 1130
+	parish_granaries_ai = 1131
+	parish_granaries_result = 1132
+	parish_granaries_result_ai = 1133
+	parish_granaries_callback = 1134
+	parish_granaries_callback_ai = 1135
+	parish_granaries_cleanup = 1136
+	command_archive_human = 1137
+	command_archive_ai = 1138
+	command_archive_result = 1139
+	command_archive_result_ai = 1140
+	command_archive_callback = 1141
+	command_archive_callback_ai = 1142
+	command_archive_cleanup = 1143
+	dense_shelter_rules_human = 1144
+	dense_shelter_rules_ai = 1145
+	dense_shelter_rules_result = 1146
+	dense_shelter_rules_result_ai = 1147
+	dense_shelter_rules_callback = 1148
+	dense_shelter_rules_callback_ai = 1149
+	dense_shelter_rules_cleanup = 1150
+	river_grain_quotas_human = 1151
+	river_grain_quotas_ai = 1152
+	river_grain_quotas_result = 1153
+	river_grain_quotas_result_ai = 1154
+	river_grain_quotas_callback = 1155
+	river_grain_quotas_callback_ai = 1156
+	river_grain_quotas_cleanup = 1157
 }
 
 # Dormant reviewed-candidate pilot identities. These rows are owned by the
@@ -13762,7 +13818,31 @@ fallout_event_candidate_pilot = {
 	office_magistrate_candidate_id = 1095
 	office_magistrate_transaction_key = 710110
 	office_magistrate_route = 7254
-	upper_bound = 7256
+	federal_chain_candidate_id = 1102
+	federal_chain_transaction_key = 710111
+	federal_chain_route = 7256
+	island_ration_book_candidate_id = 1109
+	island_ration_book_transaction_key = 710112
+	island_ration_book_route = 7258
+	prefects_return_candidate_id = 1116
+	prefects_return_transaction_key = 710113
+	prefects_return_route = 7260
+	factory_ghosts_candidate_id = 1123
+	factory_ghosts_transaction_key = 710114
+	factory_ghosts_route = 7262
+	parish_granaries_candidate_id = 1130
+	parish_granaries_transaction_key = 710115
+	parish_granaries_route = 7264
+	command_archive_candidate_id = 1137
+	command_archive_transaction_key = 710116
+	command_archive_route = 7266
+	dense_shelter_rules_candidate_id = 1144
+	dense_shelter_rules_transaction_key = 710117
+	dense_shelter_rules_route = 7268
+	river_grain_quotas_candidate_id = 1151
+	river_grain_quotas_transaction_key = 710118
+	river_grain_quotas_route = 7270
+	upper_bound = 7272
 }
 
 # Branch tokens are event-specific. The scheduler stores the selected token but
@@ -43866,6 +43946,2795 @@ fallout_office_arc_log = {
 	command_success = 31
 	command_partial = 32
 	command_failure = 33
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ============================================================================
+# Country-memory opening chains for the major-power survivors (agent decision A17)
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# The Broken Federal Chain (chaosx.fallout.1102 to 1108)
+# ---------------------------------------------------------------------------
+# Federal Continuity Zone opening chain. State guards hold the depots, the emergency
+# congress lacks a quorum, and the military custodian offers to run the supply chain.
+
+fallout_event_1102_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	congress = 1
+	guard_bargain = 2
+	custodian = 3
+	upper_bound = 4
+}
+
+fallout_event_1102_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1102_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1102_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	congress_food = 5
+	congress_recognition = 4
+	guard_bargain_fuel = 5
+	guard_bargain_food = 4
+	custodian_fuel = 6
+	custodian_recognition = 3
+}
+
+fallout_event_1102_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 20
+	standing_weight = 25
+	cohesion_weight = 20
+	recognition_weight = 15
+	fuel_weight = 20
+	government_bonus = 0
+	congress_success_viability = 48
+	congress_partial_viability = 30
+	guard_bargain_success_viability = 46
+	guard_bargain_partial_viability = 28
+	custodian_success_viability = 44
+	custodian_partial_viability = 26
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_congress_success_disease = 0
+	result_congress_success_shelter_state = 0
+	result_congress_success_exposure = 0
+	result_congress_success_adaptation = 0
+	result_congress_success_reclamation = 0
+	result_congress_success_supply = 4
+	result_congress_success_food = 0
+	result_congress_success_water = 0
+	result_congress_success_medicine = 0
+	result_congress_success_scrap = 0
+	result_congress_success_fuel = 0
+	result_congress_success_power = 0
+	result_congress_success_filters = 0
+	result_congress_success_shelter = 0
+	result_congress_success_recognition = 8
+	result_congress_success_cohesion = 4
+	result_congress_success_standing = 12
+	result_congress_partial_disease = 0
+	result_congress_partial_shelter_state = 0
+	result_congress_partial_exposure = 0
+	result_congress_partial_adaptation = 0
+	result_congress_partial_reclamation = 0
+	result_congress_partial_supply = 0
+	result_congress_partial_food = 0
+	result_congress_partial_water = 0
+	result_congress_partial_medicine = 0
+	result_congress_partial_scrap = 0
+	result_congress_partial_fuel = 0
+	result_congress_partial_power = 0
+	result_congress_partial_filters = 0
+	result_congress_partial_shelter = 0
+	result_congress_partial_recognition = 3
+	result_congress_partial_cohesion = 0
+	result_congress_partial_standing = 4
+	result_congress_failure_disease = 0
+	result_congress_failure_shelter_state = 0
+	result_congress_failure_exposure = 0
+	result_congress_failure_adaptation = 0
+	result_congress_failure_reclamation = 0
+	result_congress_failure_supply = -3
+	result_congress_failure_food = 0
+	result_congress_failure_water = 0
+	result_congress_failure_medicine = 0
+	result_congress_failure_scrap = 0
+	result_congress_failure_fuel = 0
+	result_congress_failure_power = 0
+	result_congress_failure_filters = 0
+	result_congress_failure_shelter = 0
+	result_congress_failure_recognition = -5
+	result_congress_failure_cohesion = -4
+	result_congress_failure_standing = -8
+	result_guard_bargain_success_disease = 0
+	result_guard_bargain_success_shelter_state = 0
+	result_guard_bargain_success_exposure = 0
+	result_guard_bargain_success_adaptation = 0
+	result_guard_bargain_success_reclamation = 0
+	result_guard_bargain_success_supply = 6
+	result_guard_bargain_success_food = 0
+	result_guard_bargain_success_water = 0
+	result_guard_bargain_success_medicine = 0
+	result_guard_bargain_success_scrap = 0
+	result_guard_bargain_success_fuel = 8
+	result_guard_bargain_success_power = 0
+	result_guard_bargain_success_filters = 0
+	result_guard_bargain_success_shelter = 0
+	result_guard_bargain_success_recognition = 0
+	result_guard_bargain_success_cohesion = 3
+	result_guard_bargain_success_standing = 8
+	result_guard_bargain_partial_disease = 0
+	result_guard_bargain_partial_shelter_state = 0
+	result_guard_bargain_partial_exposure = 0
+	result_guard_bargain_partial_adaptation = 0
+	result_guard_bargain_partial_reclamation = 0
+	result_guard_bargain_partial_supply = 2
+	result_guard_bargain_partial_food = 0
+	result_guard_bargain_partial_water = 0
+	result_guard_bargain_partial_medicine = 0
+	result_guard_bargain_partial_scrap = 0
+	result_guard_bargain_partial_fuel = 3
+	result_guard_bargain_partial_power = 0
+	result_guard_bargain_partial_filters = 0
+	result_guard_bargain_partial_shelter = 0
+	result_guard_bargain_partial_recognition = 0
+	result_guard_bargain_partial_cohesion = 0
+	result_guard_bargain_partial_standing = 3
+	result_guard_bargain_failure_disease = 0
+	result_guard_bargain_failure_shelter_state = 0
+	result_guard_bargain_failure_exposure = 0
+	result_guard_bargain_failure_adaptation = 0
+	result_guard_bargain_failure_reclamation = 0
+	result_guard_bargain_failure_supply = -4
+	result_guard_bargain_failure_food = 0
+	result_guard_bargain_failure_water = 0
+	result_guard_bargain_failure_medicine = 0
+	result_guard_bargain_failure_scrap = 0
+	result_guard_bargain_failure_fuel = -5
+	result_guard_bargain_failure_power = 0
+	result_guard_bargain_failure_filters = 0
+	result_guard_bargain_failure_shelter = 0
+	result_guard_bargain_failure_recognition = 0
+	result_guard_bargain_failure_cohesion = -3
+	result_guard_bargain_failure_standing = -6
+	result_custodian_success_disease = 0
+	result_custodian_success_shelter_state = 0
+	result_custodian_success_exposure = 0
+	result_custodian_success_adaptation = 0
+	result_custodian_success_reclamation = 0
+	result_custodian_success_supply = 8
+	result_custodian_success_food = 6
+	result_custodian_success_water = 0
+	result_custodian_success_medicine = 0
+	result_custodian_success_scrap = 0
+	result_custodian_success_fuel = 0
+	result_custodian_success_power = 0
+	result_custodian_success_filters = 0
+	result_custodian_success_shelter = 0
+	result_custodian_success_recognition = 0
+	result_custodian_success_cohesion = -2
+	result_custodian_success_standing = 6
+	result_custodian_partial_disease = 0
+	result_custodian_partial_shelter_state = 0
+	result_custodian_partial_exposure = 0
+	result_custodian_partial_adaptation = 0
+	result_custodian_partial_reclamation = 0
+	result_custodian_partial_supply = 4
+	result_custodian_partial_food = 0
+	result_custodian_partial_water = 0
+	result_custodian_partial_medicine = 0
+	result_custodian_partial_scrap = 0
+	result_custodian_partial_fuel = 0
+	result_custodian_partial_power = 0
+	result_custodian_partial_filters = 0
+	result_custodian_partial_shelter = 0
+	result_custodian_partial_recognition = 0
+	result_custodian_partial_cohesion = -2
+	result_custodian_partial_standing = 2
+	result_custodian_failure_disease = 0
+	result_custodian_failure_shelter_state = 0
+	result_custodian_failure_exposure = 0
+	result_custodian_failure_adaptation = 0
+	result_custodian_failure_reclamation = 0
+	result_custodian_failure_supply = -4
+	result_custodian_failure_food = 0
+	result_custodian_failure_water = 0
+	result_custodian_failure_medicine = 0
+	result_custodian_failure_scrap = 0
+	result_custodian_failure_fuel = 0
+	result_custodian_failure_power = 0
+	result_custodian_failure_filters = 0
+	result_custodian_failure_shelter = 0
+	result_custodian_failure_recognition = -4
+	result_custodian_failure_cohesion = -6
+	result_custodian_failure_standing = -10
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_congress_priority = 50
+	ai_congress_bonus_1 = 20
+	ai_guard_bargain_priority = 45
+	ai_guard_bargain_bonus_1 = 15
+	ai_custodian_priority = 40
+	ai_custodian_bonus_1 = 20
+}
+
+fallout_event_1102_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_congress_stability_factor = 0.05
+	institution_congress_political_power_gain = 0.05
+	institution_guard_bargain_army_defence_factor = 0.05
+	institution_guard_bargain_supply_consumption_factor = -0.05
+	institution_custodian_supply_consumption_factor = -0.1
+	institution_custodian_stability_factor = -0.02
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1102_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9217
+	choice_congress = 1
+	choice_guard_bargain = 2
+	choice_custodian = 3
+	congress_success = 11
+	congress_partial = 12
+	congress_failure = 13
+	guard_bargain_success = 21
+	guard_bargain_partial = 22
+	guard_bargain_failure = 23
+	custodian_success = 31
+	custodian_partial = 32
+	custodian_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# The Island Ration Book (chaosx.fallout.1109 to 1115)
+# ---------------------------------------------------------------------------
+# British Emergency Isles opening chain. The old ration books are useless; the
+# government decides how the islands share food, fuel and the last convoys.
+
+fallout_event_1109_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ration_parliament = 1
+	convoy_imports = 2
+	royal_shelters = 3
+	upper_bound = 4
+}
+
+fallout_event_1109_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1109_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1109_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	ration_parliament_food = 5
+	ration_parliament_recognition = 3
+	convoy_imports_fuel = 6
+	convoy_imports_scrap = 4
+	royal_shelters_food = 4
+	royal_shelters_fuel = 3
+}
+
+fallout_event_1109_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 15
+	standing_weight = 25
+	cohesion_weight = 20
+	food_weight = 25
+	shelter_state_weight = 15
+	government_bonus = 0
+	ration_parliament_success_viability = 48
+	ration_parliament_partial_viability = 30
+	convoy_imports_success_viability = 46
+	convoy_imports_partial_viability = 28
+	royal_shelters_success_viability = 44
+	royal_shelters_partial_viability = 26
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_ration_parliament_success_disease = 0
+	result_ration_parliament_success_shelter_state = 0
+	result_ration_parliament_success_exposure = 0
+	result_ration_parliament_success_adaptation = 0
+	result_ration_parliament_success_reclamation = 0
+	result_ration_parliament_success_supply = 0
+	result_ration_parliament_success_food = 4
+	result_ration_parliament_success_water = 0
+	result_ration_parliament_success_medicine = 0
+	result_ration_parliament_success_scrap = 0
+	result_ration_parliament_success_fuel = 0
+	result_ration_parliament_success_power = 0
+	result_ration_parliament_success_filters = 0
+	result_ration_parliament_success_shelter = 0
+	result_ration_parliament_success_recognition = 6
+	result_ration_parliament_success_cohesion = 5
+	result_ration_parliament_success_standing = 12
+	result_ration_parliament_partial_disease = 0
+	result_ration_parliament_partial_shelter_state = 0
+	result_ration_parliament_partial_exposure = 0
+	result_ration_parliament_partial_adaptation = 0
+	result_ration_parliament_partial_reclamation = 0
+	result_ration_parliament_partial_supply = 0
+	result_ration_parliament_partial_food = 0
+	result_ration_parliament_partial_water = 0
+	result_ration_parliament_partial_medicine = 0
+	result_ration_parliament_partial_scrap = 0
+	result_ration_parliament_partial_fuel = 0
+	result_ration_parliament_partial_power = 0
+	result_ration_parliament_partial_filters = 0
+	result_ration_parliament_partial_shelter = 0
+	result_ration_parliament_partial_recognition = 0
+	result_ration_parliament_partial_cohesion = 2
+	result_ration_parliament_partial_standing = 4
+	result_ration_parliament_failure_disease = 0
+	result_ration_parliament_failure_shelter_state = 0
+	result_ration_parliament_failure_exposure = 0
+	result_ration_parliament_failure_adaptation = 0
+	result_ration_parliament_failure_reclamation = 0
+	result_ration_parliament_failure_supply = 0
+	result_ration_parliament_failure_food = -4
+	result_ration_parliament_failure_water = 0
+	result_ration_parliament_failure_medicine = 0
+	result_ration_parliament_failure_scrap = 0
+	result_ration_parliament_failure_fuel = 0
+	result_ration_parliament_failure_power = 0
+	result_ration_parliament_failure_filters = 0
+	result_ration_parliament_failure_shelter = 0
+	result_ration_parliament_failure_recognition = -4
+	result_ration_parliament_failure_cohesion = -4
+	result_ration_parliament_failure_standing = -8
+	result_convoy_imports_success_disease = 0
+	result_convoy_imports_success_shelter_state = 0
+	result_convoy_imports_success_exposure = 0
+	result_convoy_imports_success_adaptation = 0
+	result_convoy_imports_success_reclamation = 0
+	result_convoy_imports_success_supply = 4
+	result_convoy_imports_success_food = 10
+	result_convoy_imports_success_water = 0
+	result_convoy_imports_success_medicine = 0
+	result_convoy_imports_success_scrap = 0
+	result_convoy_imports_success_fuel = 0
+	result_convoy_imports_success_power = 0
+	result_convoy_imports_success_filters = 0
+	result_convoy_imports_success_shelter = 0
+	result_convoy_imports_success_recognition = 0
+	result_convoy_imports_success_cohesion = 0
+	result_convoy_imports_success_standing = 8
+	result_convoy_imports_partial_disease = 0
+	result_convoy_imports_partial_shelter_state = 0
+	result_convoy_imports_partial_exposure = 0
+	result_convoy_imports_partial_adaptation = 0
+	result_convoy_imports_partial_reclamation = 0
+	result_convoy_imports_partial_supply = 0
+	result_convoy_imports_partial_food = 4
+	result_convoy_imports_partial_water = 0
+	result_convoy_imports_partial_medicine = 0
+	result_convoy_imports_partial_scrap = 0
+	result_convoy_imports_partial_fuel = 0
+	result_convoy_imports_partial_power = 0
+	result_convoy_imports_partial_filters = 0
+	result_convoy_imports_partial_shelter = 0
+	result_convoy_imports_partial_recognition = 0
+	result_convoy_imports_partial_cohesion = 0
+	result_convoy_imports_partial_standing = 2
+	result_convoy_imports_failure_disease = 0
+	result_convoy_imports_failure_shelter_state = 0
+	result_convoy_imports_failure_exposure = 0
+	result_convoy_imports_failure_adaptation = 0
+	result_convoy_imports_failure_reclamation = 0
+	result_convoy_imports_failure_supply = 0
+	result_convoy_imports_failure_food = -3
+	result_convoy_imports_failure_water = 0
+	result_convoy_imports_failure_medicine = 0
+	result_convoy_imports_failure_scrap = 0
+	result_convoy_imports_failure_fuel = -4
+	result_convoy_imports_failure_power = 0
+	result_convoy_imports_failure_filters = 0
+	result_convoy_imports_failure_shelter = 0
+	result_convoy_imports_failure_recognition = 0
+	result_convoy_imports_failure_cohesion = -3
+	result_convoy_imports_failure_standing = -6
+	result_royal_shelters_success_disease = 0
+	result_royal_shelters_success_shelter_state = 8
+	result_royal_shelters_success_exposure = 0
+	result_royal_shelters_success_adaptation = 0
+	result_royal_shelters_success_reclamation = 0
+	result_royal_shelters_success_supply = 0
+	result_royal_shelters_success_food = 6
+	result_royal_shelters_success_water = 0
+	result_royal_shelters_success_medicine = 0
+	result_royal_shelters_success_scrap = 0
+	result_royal_shelters_success_fuel = 0
+	result_royal_shelters_success_power = 0
+	result_royal_shelters_success_filters = 0
+	result_royal_shelters_success_shelter = 0
+	result_royal_shelters_success_recognition = 0
+	result_royal_shelters_success_cohesion = -2
+	result_royal_shelters_success_standing = 6
+	result_royal_shelters_partial_disease = 0
+	result_royal_shelters_partial_shelter_state = 4
+	result_royal_shelters_partial_exposure = 0
+	result_royal_shelters_partial_adaptation = 0
+	result_royal_shelters_partial_reclamation = 0
+	result_royal_shelters_partial_supply = 0
+	result_royal_shelters_partial_food = 0
+	result_royal_shelters_partial_water = 0
+	result_royal_shelters_partial_medicine = 0
+	result_royal_shelters_partial_scrap = 0
+	result_royal_shelters_partial_fuel = 0
+	result_royal_shelters_partial_power = 0
+	result_royal_shelters_partial_filters = 0
+	result_royal_shelters_partial_shelter = 0
+	result_royal_shelters_partial_recognition = 0
+	result_royal_shelters_partial_cohesion = 0
+	result_royal_shelters_partial_standing = 2
+	result_royal_shelters_failure_disease = 6
+	result_royal_shelters_failure_shelter_state = 0
+	result_royal_shelters_failure_exposure = 0
+	result_royal_shelters_failure_adaptation = 0
+	result_royal_shelters_failure_reclamation = 0
+	result_royal_shelters_failure_supply = 0
+	result_royal_shelters_failure_food = 0
+	result_royal_shelters_failure_water = 0
+	result_royal_shelters_failure_medicine = 0
+	result_royal_shelters_failure_scrap = 0
+	result_royal_shelters_failure_fuel = 0
+	result_royal_shelters_failure_power = 0
+	result_royal_shelters_failure_filters = 0
+	result_royal_shelters_failure_shelter = 0
+	result_royal_shelters_failure_recognition = 0
+	result_royal_shelters_failure_cohesion = -5
+	result_royal_shelters_failure_standing = -8
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_ration_parliament_priority = 50
+	ai_ration_parliament_bonus_1 = 15
+	ai_convoy_imports_priority = 45
+	ai_convoy_imports_bonus_1 = 20
+	ai_royal_shelters_priority = 40
+	ai_royal_shelters_bonus_1 = 20
+}
+
+fallout_event_1109_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_ration_parliament_stability_factor = 0.05
+	institution_ration_parliament_consumer_goods_factor = -0.02
+	institution_convoy_imports_trade_opinion_factor = 0.1
+	institution_convoy_imports_supply_consumption_factor = -0.05
+	institution_royal_shelters_army_defence_factor = 0.05
+	institution_royal_shelters_stability_factor = 0.02
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1109_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9218
+	choice_ration_parliament = 1
+	choice_convoy_imports = 2
+	choice_royal_shelters = 3
+	ration_parliament_success = 11
+	ration_parliament_partial = 12
+	ration_parliament_failure = 13
+	convoy_imports_success = 21
+	convoy_imports_partial = 22
+	convoy_imports_failure = 23
+	royal_shelters_success = 31
+	royal_shelters_partial = 32
+	royal_shelters_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# The Prefects Return (chaosx.fallout.1116 to 1122)
+# ---------------------------------------------------------------------------
+# French Loire Continuity opening chain. The provisional committee must decide who
+# governs the departments and the Loire granaries now that Paris is silent.
+
+fallout_event_1116_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	prefects = 1
+	loire_granaries = 2
+	paris_claim = 3
+	upper_bound = 4
+}
+
+fallout_event_1116_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1116_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1116_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	prefects_fuel = 5
+	prefects_recognition = 3
+	loire_granaries_food = 4
+	loire_granaries_scrap = 4
+	paris_claim_fuel = 6
+	paris_claim_medicine = 3
+}
+
+fallout_event_1116_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 20
+	standing_weight = 25
+	cohesion_weight = 20
+	food_weight = 20
+	reclamation_weight = 15
+	government_bonus = 0
+	prefects_success_viability = 46
+	prefects_partial_viability = 28
+	loire_granaries_success_viability = 48
+	loire_granaries_partial_viability = 30
+	paris_claim_success_viability = 42
+	paris_claim_partial_viability = 24
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_prefects_success_disease = 0
+	result_prefects_success_shelter_state = 0
+	result_prefects_success_exposure = 0
+	result_prefects_success_adaptation = 0
+	result_prefects_success_reclamation = 0
+	result_prefects_success_supply = 6
+	result_prefects_success_food = 0
+	result_prefects_success_water = 0
+	result_prefects_success_medicine = 0
+	result_prefects_success_scrap = 0
+	result_prefects_success_fuel = 0
+	result_prefects_success_power = 0
+	result_prefects_success_filters = 0
+	result_prefects_success_shelter = 0
+	result_prefects_success_recognition = 6
+	result_prefects_success_cohesion = 2
+	result_prefects_success_standing = 10
+	result_prefects_partial_disease = 0
+	result_prefects_partial_shelter_state = 0
+	result_prefects_partial_exposure = 0
+	result_prefects_partial_adaptation = 0
+	result_prefects_partial_reclamation = 0
+	result_prefects_partial_supply = 2
+	result_prefects_partial_food = 0
+	result_prefects_partial_water = 0
+	result_prefects_partial_medicine = 0
+	result_prefects_partial_scrap = 0
+	result_prefects_partial_fuel = 0
+	result_prefects_partial_power = 0
+	result_prefects_partial_filters = 0
+	result_prefects_partial_shelter = 0
+	result_prefects_partial_recognition = 0
+	result_prefects_partial_cohesion = 0
+	result_prefects_partial_standing = 3
+	result_prefects_failure_disease = 0
+	result_prefects_failure_shelter_state = 0
+	result_prefects_failure_exposure = 0
+	result_prefects_failure_adaptation = 0
+	result_prefects_failure_reclamation = 0
+	result_prefects_failure_supply = 0
+	result_prefects_failure_food = 0
+	result_prefects_failure_water = 0
+	result_prefects_failure_medicine = 0
+	result_prefects_failure_scrap = 0
+	result_prefects_failure_fuel = 0
+	result_prefects_failure_power = 0
+	result_prefects_failure_filters = 0
+	result_prefects_failure_shelter = 0
+	result_prefects_failure_recognition = -4
+	result_prefects_failure_cohesion = -4
+	result_prefects_failure_standing = -8
+	result_loire_granaries_success_disease = 0
+	result_loire_granaries_success_shelter_state = 0
+	result_loire_granaries_success_exposure = 0
+	result_loire_granaries_success_adaptation = 0
+	result_loire_granaries_success_reclamation = 0
+	result_loire_granaries_success_supply = 0
+	result_loire_granaries_success_food = 10
+	result_loire_granaries_success_water = 0
+	result_loire_granaries_success_medicine = 0
+	result_loire_granaries_success_scrap = 0
+	result_loire_granaries_success_fuel = 0
+	result_loire_granaries_success_power = 0
+	result_loire_granaries_success_filters = 0
+	result_loire_granaries_success_shelter = 0
+	result_loire_granaries_success_recognition = 0
+	result_loire_granaries_success_cohesion = 2
+	result_loire_granaries_success_standing = 8
+	result_loire_granaries_partial_disease = 0
+	result_loire_granaries_partial_shelter_state = 0
+	result_loire_granaries_partial_exposure = 0
+	result_loire_granaries_partial_adaptation = 0
+	result_loire_granaries_partial_reclamation = 0
+	result_loire_granaries_partial_supply = 0
+	result_loire_granaries_partial_food = 4
+	result_loire_granaries_partial_water = 0
+	result_loire_granaries_partial_medicine = 0
+	result_loire_granaries_partial_scrap = 0
+	result_loire_granaries_partial_fuel = 0
+	result_loire_granaries_partial_power = 0
+	result_loire_granaries_partial_filters = 0
+	result_loire_granaries_partial_shelter = 0
+	result_loire_granaries_partial_recognition = 0
+	result_loire_granaries_partial_cohesion = 0
+	result_loire_granaries_partial_standing = 3
+	result_loire_granaries_failure_disease = 0
+	result_loire_granaries_failure_shelter_state = 0
+	result_loire_granaries_failure_exposure = 0
+	result_loire_granaries_failure_adaptation = 0
+	result_loire_granaries_failure_reclamation = 0
+	result_loire_granaries_failure_supply = 0
+	result_loire_granaries_failure_food = -4
+	result_loire_granaries_failure_water = 0
+	result_loire_granaries_failure_medicine = 0
+	result_loire_granaries_failure_scrap = 0
+	result_loire_granaries_failure_fuel = 0
+	result_loire_granaries_failure_power = 0
+	result_loire_granaries_failure_filters = 0
+	result_loire_granaries_failure_shelter = 0
+	result_loire_granaries_failure_recognition = 0
+	result_loire_granaries_failure_cohesion = -4
+	result_loire_granaries_failure_standing = -6
+	result_paris_claim_success_disease = 0
+	result_paris_claim_success_shelter_state = 0
+	result_paris_claim_success_exposure = 0
+	result_paris_claim_success_adaptation = 0
+	result_paris_claim_success_reclamation = 4
+	result_paris_claim_success_supply = 0
+	result_paris_claim_success_food = 0
+	result_paris_claim_success_water = 0
+	result_paris_claim_success_medicine = 0
+	result_paris_claim_success_scrap = 6
+	result_paris_claim_success_fuel = 0
+	result_paris_claim_success_power = 0
+	result_paris_claim_success_filters = 0
+	result_paris_claim_success_shelter = 0
+	result_paris_claim_success_recognition = 10
+	result_paris_claim_success_cohesion = 0
+	result_paris_claim_success_standing = 14
+	result_paris_claim_partial_disease = 0
+	result_paris_claim_partial_shelter_state = 0
+	result_paris_claim_partial_exposure = 0
+	result_paris_claim_partial_adaptation = 0
+	result_paris_claim_partial_reclamation = 0
+	result_paris_claim_partial_supply = 0
+	result_paris_claim_partial_food = 0
+	result_paris_claim_partial_water = 0
+	result_paris_claim_partial_medicine = 0
+	result_paris_claim_partial_scrap = 3
+	result_paris_claim_partial_fuel = 0
+	result_paris_claim_partial_power = 0
+	result_paris_claim_partial_filters = 0
+	result_paris_claim_partial_shelter = 0
+	result_paris_claim_partial_recognition = 3
+	result_paris_claim_partial_cohesion = 0
+	result_paris_claim_partial_standing = 4
+	result_paris_claim_failure_disease = 0
+	result_paris_claim_failure_shelter_state = 0
+	result_paris_claim_failure_exposure = 0
+	result_paris_claim_failure_adaptation = 0
+	result_paris_claim_failure_reclamation = 0
+	result_paris_claim_failure_supply = 0
+	result_paris_claim_failure_food = 0
+	result_paris_claim_failure_water = 0
+	result_paris_claim_failure_medicine = 0
+	result_paris_claim_failure_scrap = 0
+	result_paris_claim_failure_fuel = 0
+	result_paris_claim_failure_power = 0
+	result_paris_claim_failure_filters = 0
+	result_paris_claim_failure_shelter = 0
+	result_paris_claim_failure_recognition = -4
+	result_paris_claim_failure_cohesion = -5
+	result_paris_claim_failure_standing = -10
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_prefects_priority = 50
+	ai_prefects_bonus_1 = 20
+	ai_loire_granaries_priority = 45
+	ai_loire_granaries_bonus_1 = 20
+	ai_paris_claim_priority = 35
+	ai_paris_claim_bonus_1 = 20
+}
+
+fallout_event_1116_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_prefects_political_power_gain = 0.08
+	institution_prefects_stability_factor = 0.02
+	institution_loire_granaries_consumer_goods_factor = -0.03
+	institution_loire_granaries_stability_factor = 0.03
+	institution_paris_claim_war_support_factor = 0.05
+	institution_paris_claim_political_power_gain = 0.05
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1116_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9219
+	choice_prefects = 1
+	choice_loire_granaries = 2
+	choice_paris_claim = 3
+	prefects_success = 11
+	prefects_partial = 12
+	prefects_failure = 13
+	loire_granaries_success = 21
+	loire_granaries_partial = 22
+	loire_granaries_failure = 23
+	paris_claim_success = 31
+	paris_claim_partial = 32
+	paris_claim_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# Factory Ghosts (chaosx.fallout.1123 to 1129)
+# ---------------------------------------------------------------------------
+# Rhine Dead Cities opening chain. A sealed works with intact machines stands in a
+# dead district; the salvage senate decides who may enter and on what terms.
+
+fallout_event_1123_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	licensed_crews = 1
+	restart = 2
+	guild_claim = 3
+	upper_bound = 4
+}
+
+fallout_event_1123_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1123_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1123_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	licensed_crews_medicine = 4
+	licensed_crews_recognition = 3
+	restart_power = 6
+	restart_fuel = 4
+	guild_claim_food = 4
+	guild_claim_scrap = 3
+}
+
+fallout_event_1123_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 15
+	standing_weight = 25
+	cohesion_weight = 15
+	scrap_weight = 20
+	reclamation_weight = 15
+	exposure_relief_weight = 10
+	government_bonus = 0
+	licensed_crews_success_viability = 46
+	licensed_crews_partial_viability = 28
+	restart_success_viability = 44
+	restart_partial_viability = 26
+	guild_claim_success_viability = 48
+	guild_claim_partial_viability = 30
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_licensed_crews_success_disease = 0
+	result_licensed_crews_success_shelter_state = 0
+	result_licensed_crews_success_exposure = 0
+	result_licensed_crews_success_adaptation = 0
+	result_licensed_crews_success_reclamation = 6
+	result_licensed_crews_success_supply = 0
+	result_licensed_crews_success_food = 0
+	result_licensed_crews_success_water = 0
+	result_licensed_crews_success_medicine = 0
+	result_licensed_crews_success_scrap = 8
+	result_licensed_crews_success_fuel = 0
+	result_licensed_crews_success_power = 0
+	result_licensed_crews_success_filters = 0
+	result_licensed_crews_success_shelter = 0
+	result_licensed_crews_success_recognition = 0
+	result_licensed_crews_success_cohesion = 2
+	result_licensed_crews_success_standing = 10
+	result_licensed_crews_partial_disease = 0
+	result_licensed_crews_partial_shelter_state = 0
+	result_licensed_crews_partial_exposure = 0
+	result_licensed_crews_partial_adaptation = 0
+	result_licensed_crews_partial_reclamation = 2
+	result_licensed_crews_partial_supply = 0
+	result_licensed_crews_partial_food = 0
+	result_licensed_crews_partial_water = 0
+	result_licensed_crews_partial_medicine = 0
+	result_licensed_crews_partial_scrap = 4
+	result_licensed_crews_partial_fuel = 0
+	result_licensed_crews_partial_power = 0
+	result_licensed_crews_partial_filters = 0
+	result_licensed_crews_partial_shelter = 0
+	result_licensed_crews_partial_recognition = 0
+	result_licensed_crews_partial_cohesion = 0
+	result_licensed_crews_partial_standing = 3
+	result_licensed_crews_failure_disease = 4
+	result_licensed_crews_failure_shelter_state = 0
+	result_licensed_crews_failure_exposure = 0
+	result_licensed_crews_failure_adaptation = 0
+	result_licensed_crews_failure_reclamation = 0
+	result_licensed_crews_failure_supply = 0
+	result_licensed_crews_failure_food = 0
+	result_licensed_crews_failure_water = 0
+	result_licensed_crews_failure_medicine = 0
+	result_licensed_crews_failure_scrap = -2
+	result_licensed_crews_failure_fuel = 0
+	result_licensed_crews_failure_power = 0
+	result_licensed_crews_failure_filters = 0
+	result_licensed_crews_failure_shelter = 0
+	result_licensed_crews_failure_recognition = 0
+	result_licensed_crews_failure_cohesion = -4
+	result_licensed_crews_failure_standing = -8
+	result_restart_success_disease = 0
+	result_restart_success_shelter_state = 0
+	result_restart_success_exposure = 4
+	result_restart_success_adaptation = 0
+	result_restart_success_reclamation = 0
+	result_restart_success_supply = 6
+	result_restart_success_food = 0
+	result_restart_success_water = 0
+	result_restart_success_medicine = 0
+	result_restart_success_scrap = 6
+	result_restart_success_fuel = 0
+	result_restart_success_power = 4
+	result_restart_success_filters = 0
+	result_restart_success_shelter = 0
+	result_restart_success_recognition = 0
+	result_restart_success_cohesion = 0
+	result_restart_success_standing = 8
+	result_restart_partial_disease = 0
+	result_restart_partial_shelter_state = 0
+	result_restart_partial_exposure = 2
+	result_restart_partial_adaptation = 0
+	result_restart_partial_reclamation = 0
+	result_restart_partial_supply = 0
+	result_restart_partial_food = 0
+	result_restart_partial_water = 0
+	result_restart_partial_medicine = 0
+	result_restart_partial_scrap = 3
+	result_restart_partial_fuel = 0
+	result_restart_partial_power = 0
+	result_restart_partial_filters = 0
+	result_restart_partial_shelter = 0
+	result_restart_partial_recognition = 0
+	result_restart_partial_cohesion = 0
+	result_restart_partial_standing = 2
+	result_restart_failure_disease = 4
+	result_restart_failure_shelter_state = 0
+	result_restart_failure_exposure = 6
+	result_restart_failure_adaptation = 0
+	result_restart_failure_reclamation = 0
+	result_restart_failure_supply = 0
+	result_restart_failure_food = 0
+	result_restart_failure_water = 0
+	result_restart_failure_medicine = 0
+	result_restart_failure_scrap = 0
+	result_restart_failure_fuel = 0
+	result_restart_failure_power = 0
+	result_restart_failure_filters = 0
+	result_restart_failure_shelter = 0
+	result_restart_failure_recognition = 0
+	result_restart_failure_cohesion = -5
+	result_restart_failure_standing = -8
+	result_guild_claim_success_disease = 0
+	result_guild_claim_success_shelter_state = 0
+	result_guild_claim_success_exposure = 0
+	result_guild_claim_success_adaptation = 0
+	result_guild_claim_success_reclamation = 4
+	result_guild_claim_success_supply = 0
+	result_guild_claim_success_food = 0
+	result_guild_claim_success_water = 0
+	result_guild_claim_success_medicine = 0
+	result_guild_claim_success_scrap = 5
+	result_guild_claim_success_fuel = 0
+	result_guild_claim_success_power = 0
+	result_guild_claim_success_filters = 0
+	result_guild_claim_success_shelter = 0
+	result_guild_claim_success_recognition = 0
+	result_guild_claim_success_cohesion = 5
+	result_guild_claim_success_standing = 6
+	result_guild_claim_partial_disease = 0
+	result_guild_claim_partial_shelter_state = 0
+	result_guild_claim_partial_exposure = 0
+	result_guild_claim_partial_adaptation = 0
+	result_guild_claim_partial_reclamation = 0
+	result_guild_claim_partial_supply = 0
+	result_guild_claim_partial_food = 0
+	result_guild_claim_partial_water = 0
+	result_guild_claim_partial_medicine = 0
+	result_guild_claim_partial_scrap = 2
+	result_guild_claim_partial_fuel = 0
+	result_guild_claim_partial_power = 0
+	result_guild_claim_partial_filters = 0
+	result_guild_claim_partial_shelter = 0
+	result_guild_claim_partial_recognition = 0
+	result_guild_claim_partial_cohesion = 2
+	result_guild_claim_partial_standing = 2
+	result_guild_claim_failure_disease = 0
+	result_guild_claim_failure_shelter_state = 0
+	result_guild_claim_failure_exposure = 0
+	result_guild_claim_failure_adaptation = 0
+	result_guild_claim_failure_reclamation = 0
+	result_guild_claim_failure_supply = 0
+	result_guild_claim_failure_food = 0
+	result_guild_claim_failure_water = 0
+	result_guild_claim_failure_medicine = 0
+	result_guild_claim_failure_scrap = -3
+	result_guild_claim_failure_fuel = 0
+	result_guild_claim_failure_power = 0
+	result_guild_claim_failure_filters = 0
+	result_guild_claim_failure_shelter = 0
+	result_guild_claim_failure_recognition = 0
+	result_guild_claim_failure_cohesion = -4
+	result_guild_claim_failure_standing = -6
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_licensed_crews_priority = 50
+	ai_licensed_crews_bonus_1 = 20
+	ai_restart_priority = 45
+	ai_restart_bonus_1 = 20
+	ai_guild_claim_priority = 40
+	ai_guild_claim_bonus_1 = 15
+}
+
+fallout_event_1123_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_licensed_crews_production_speed_buildings_factor = 0.05
+	institution_licensed_crews_industrial_capacity_factory = 0.03
+	institution_restart_industrial_capacity_factory = 0.06
+	institution_restart_stability_factor = -0.02
+	institution_guild_claim_stability_factor = 0.04
+	institution_guild_claim_production_speed_industrial_complex_factor = 0.05
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1123_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9220
+	choice_licensed_crews = 1
+	choice_restart = 2
+	choice_guild_claim = 3
+	licensed_crews_success = 11
+	licensed_crews_partial = 12
+	licensed_crews_failure = 13
+	restart_success = 21
+	restart_partial = 22
+	restart_failure = 23
+	guild_claim_success = 31
+	guild_claim_partial = 32
+	guild_claim_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# The Parish Granaries (chaosx.fallout.1130 to 1136)
+# ---------------------------------------------------------------------------
+# Italian Apennine Communes opening chain. Parish storehouses, town communes and
+# mountain militias each hold food; the communes decide how the grain moves.
+
+fallout_event_1130_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	parish_kitchens = 1
+	toll_roads = 2
+	salvage_rome = 3
+	upper_bound = 4
+}
+
+fallout_event_1130_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1130_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1130_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	parish_kitchens_food = 4
+	parish_kitchens_medicine = 3
+	toll_roads_fuel = 4
+	toll_roads_recognition = 3
+	salvage_rome_fuel = 5
+	salvage_rome_scrap = 3
+}
+
+fallout_event_1130_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 20
+	standing_weight = 20
+	cohesion_weight = 25
+	food_weight = 20
+	shelter_state_weight = 15
+	government_bonus = 0
+	parish_kitchens_success_viability = 48
+	parish_kitchens_partial_viability = 30
+	toll_roads_success_viability = 44
+	toll_roads_partial_viability = 26
+	salvage_rome_success_viability = 42
+	salvage_rome_partial_viability = 24
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_parish_kitchens_success_disease = 0
+	result_parish_kitchens_success_shelter_state = 4
+	result_parish_kitchens_success_exposure = 0
+	result_parish_kitchens_success_adaptation = 0
+	result_parish_kitchens_success_reclamation = 0
+	result_parish_kitchens_success_supply = 0
+	result_parish_kitchens_success_food = 4
+	result_parish_kitchens_success_water = 0
+	result_parish_kitchens_success_medicine = 0
+	result_parish_kitchens_success_scrap = 0
+	result_parish_kitchens_success_fuel = 0
+	result_parish_kitchens_success_power = 0
+	result_parish_kitchens_success_filters = 0
+	result_parish_kitchens_success_shelter = 0
+	result_parish_kitchens_success_recognition = 0
+	result_parish_kitchens_success_cohesion = 6
+	result_parish_kitchens_success_standing = 8
+	result_parish_kitchens_partial_disease = 0
+	result_parish_kitchens_partial_shelter_state = 0
+	result_parish_kitchens_partial_exposure = 0
+	result_parish_kitchens_partial_adaptation = 0
+	result_parish_kitchens_partial_reclamation = 0
+	result_parish_kitchens_partial_supply = 0
+	result_parish_kitchens_partial_food = 0
+	result_parish_kitchens_partial_water = 0
+	result_parish_kitchens_partial_medicine = 0
+	result_parish_kitchens_partial_scrap = 0
+	result_parish_kitchens_partial_fuel = 0
+	result_parish_kitchens_partial_power = 0
+	result_parish_kitchens_partial_filters = 0
+	result_parish_kitchens_partial_shelter = 0
+	result_parish_kitchens_partial_recognition = 0
+	result_parish_kitchens_partial_cohesion = 3
+	result_parish_kitchens_partial_standing = 3
+	result_parish_kitchens_failure_disease = 0
+	result_parish_kitchens_failure_shelter_state = 0
+	result_parish_kitchens_failure_exposure = 0
+	result_parish_kitchens_failure_adaptation = 0
+	result_parish_kitchens_failure_reclamation = 0
+	result_parish_kitchens_failure_supply = 0
+	result_parish_kitchens_failure_food = -4
+	result_parish_kitchens_failure_water = 0
+	result_parish_kitchens_failure_medicine = 0
+	result_parish_kitchens_failure_scrap = 0
+	result_parish_kitchens_failure_fuel = 0
+	result_parish_kitchens_failure_power = 0
+	result_parish_kitchens_failure_filters = 0
+	result_parish_kitchens_failure_shelter = 0
+	result_parish_kitchens_failure_recognition = 0
+	result_parish_kitchens_failure_cohesion = -3
+	result_parish_kitchens_failure_standing = -6
+	result_toll_roads_success_disease = 0
+	result_toll_roads_success_shelter_state = 0
+	result_toll_roads_success_exposure = 0
+	result_toll_roads_success_adaptation = 0
+	result_toll_roads_success_reclamation = 0
+	result_toll_roads_success_supply = 8
+	result_toll_roads_success_food = 0
+	result_toll_roads_success_water = 0
+	result_toll_roads_success_medicine = 0
+	result_toll_roads_success_scrap = 0
+	result_toll_roads_success_fuel = 4
+	result_toll_roads_success_power = 0
+	result_toll_roads_success_filters = 0
+	result_toll_roads_success_shelter = 0
+	result_toll_roads_success_recognition = 0
+	result_toll_roads_success_cohesion = -2
+	result_toll_roads_success_standing = 6
+	result_toll_roads_partial_disease = 0
+	result_toll_roads_partial_shelter_state = 0
+	result_toll_roads_partial_exposure = 0
+	result_toll_roads_partial_adaptation = 0
+	result_toll_roads_partial_reclamation = 0
+	result_toll_roads_partial_supply = 3
+	result_toll_roads_partial_food = 0
+	result_toll_roads_partial_water = 0
+	result_toll_roads_partial_medicine = 0
+	result_toll_roads_partial_scrap = 0
+	result_toll_roads_partial_fuel = 0
+	result_toll_roads_partial_power = 0
+	result_toll_roads_partial_filters = 0
+	result_toll_roads_partial_shelter = 0
+	result_toll_roads_partial_recognition = 0
+	result_toll_roads_partial_cohesion = 0
+	result_toll_roads_partial_standing = 2
+	result_toll_roads_failure_disease = 0
+	result_toll_roads_failure_shelter_state = 0
+	result_toll_roads_failure_exposure = 0
+	result_toll_roads_failure_adaptation = 0
+	result_toll_roads_failure_reclamation = 0
+	result_toll_roads_failure_supply = -4
+	result_toll_roads_failure_food = 0
+	result_toll_roads_failure_water = 0
+	result_toll_roads_failure_medicine = 0
+	result_toll_roads_failure_scrap = 0
+	result_toll_roads_failure_fuel = 0
+	result_toll_roads_failure_power = 0
+	result_toll_roads_failure_filters = 0
+	result_toll_roads_failure_shelter = 0
+	result_toll_roads_failure_recognition = 0
+	result_toll_roads_failure_cohesion = -4
+	result_toll_roads_failure_standing = -8
+	result_salvage_rome_success_disease = 0
+	result_salvage_rome_success_shelter_state = 0
+	result_salvage_rome_success_exposure = 0
+	result_salvage_rome_success_adaptation = 0
+	result_salvage_rome_success_reclamation = 0
+	result_salvage_rome_success_supply = 0
+	result_salvage_rome_success_food = 10
+	result_salvage_rome_success_water = 0
+	result_salvage_rome_success_medicine = 0
+	result_salvage_rome_success_scrap = 4
+	result_salvage_rome_success_fuel = 0
+	result_salvage_rome_success_power = 0
+	result_salvage_rome_success_filters = 0
+	result_salvage_rome_success_shelter = 0
+	result_salvage_rome_success_recognition = 0
+	result_salvage_rome_success_cohesion = 0
+	result_salvage_rome_success_standing = 10
+	result_salvage_rome_partial_disease = 0
+	result_salvage_rome_partial_shelter_state = 0
+	result_salvage_rome_partial_exposure = 0
+	result_salvage_rome_partial_adaptation = 0
+	result_salvage_rome_partial_reclamation = 0
+	result_salvage_rome_partial_supply = 0
+	result_salvage_rome_partial_food = 4
+	result_salvage_rome_partial_water = 0
+	result_salvage_rome_partial_medicine = 0
+	result_salvage_rome_partial_scrap = 0
+	result_salvage_rome_partial_fuel = 0
+	result_salvage_rome_partial_power = 0
+	result_salvage_rome_partial_filters = 0
+	result_salvage_rome_partial_shelter = 0
+	result_salvage_rome_partial_recognition = 0
+	result_salvage_rome_partial_cohesion = 0
+	result_salvage_rome_partial_standing = 3
+	result_salvage_rome_failure_disease = 4
+	result_salvage_rome_failure_shelter_state = 0
+	result_salvage_rome_failure_exposure = 0
+	result_salvage_rome_failure_adaptation = 0
+	result_salvage_rome_failure_reclamation = 0
+	result_salvage_rome_failure_supply = 0
+	result_salvage_rome_failure_food = -2
+	result_salvage_rome_failure_water = 0
+	result_salvage_rome_failure_medicine = 0
+	result_salvage_rome_failure_scrap = 0
+	result_salvage_rome_failure_fuel = 0
+	result_salvage_rome_failure_power = 0
+	result_salvage_rome_failure_filters = 0
+	result_salvage_rome_failure_shelter = 0
+	result_salvage_rome_failure_recognition = 0
+	result_salvage_rome_failure_cohesion = -4
+	result_salvage_rome_failure_standing = -8
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_parish_kitchens_priority = 50
+	ai_parish_kitchens_bonus_1 = 20
+	ai_toll_roads_priority = 45
+	ai_toll_roads_bonus_1 = 20
+	ai_salvage_rome_priority = 35
+	ai_salvage_rome_bonus_1 = 20
+}
+
+fallout_event_1130_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_parish_kitchens_stability_factor = 0.05
+	institution_parish_kitchens_monthly_population = 0.05
+	institution_toll_roads_supply_consumption_factor = -0.05
+	institution_toll_roads_army_defence_factor = 0.04
+	institution_salvage_rome_production_speed_buildings_factor = 0.04
+	institution_salvage_rome_consumer_goods_factor = -0.02
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1130_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9221
+	choice_parish_kitchens = 1
+	choice_toll_roads = 2
+	choice_salvage_rome = 3
+	parish_kitchens_success = 11
+	parish_kitchens_partial = 12
+	parish_kitchens_failure = 13
+	toll_roads_success = 21
+	toll_roads_partial = 22
+	toll_roads_failure = 23
+	salvage_rome_success = 31
+	salvage_rome_partial = 32
+	salvage_rome_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# The Command Archive (chaosx.fallout.1137 to 1143)
+# ---------------------------------------------------------------------------
+# Ural Continuity Directorate opening chain. The directorate holds the plants and
+# the mines but not the command lines; it decides how authority is rebuilt.
+
+fallout_event_1137_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	command_lines = 1
+	reactor_privilege = 2
+	mine_hunger = 3
+	upper_bound = 4
+}
+
+fallout_event_1137_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1137_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1137_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	command_lines_power = 5
+	command_lines_fuel = 3
+	reactor_privilege_food = 6
+	reactor_privilege_recognition = 3
+	mine_hunger_food = 5
+	mine_hunger_fuel = 3
+}
+
+fallout_event_1137_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 20
+	standing_weight = 25
+	cohesion_weight = 15
+	power_weight = 20
+	reclamation_weight = 20
+	government_bonus = 0
+	command_lines_success_viability = 46
+	command_lines_partial_viability = 28
+	reactor_privilege_success_viability = 44
+	reactor_privilege_partial_viability = 26
+	mine_hunger_success_viability = 42
+	mine_hunger_partial_viability = 24
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_command_lines_success_disease = 0
+	result_command_lines_success_shelter_state = 0
+	result_command_lines_success_exposure = 0
+	result_command_lines_success_adaptation = 0
+	result_command_lines_success_reclamation = 0
+	result_command_lines_success_supply = 6
+	result_command_lines_success_food = 0
+	result_command_lines_success_water = 0
+	result_command_lines_success_medicine = 0
+	result_command_lines_success_scrap = 0
+	result_command_lines_success_fuel = 0
+	result_command_lines_success_power = 0
+	result_command_lines_success_filters = 0
+	result_command_lines_success_shelter = 0
+	result_command_lines_success_recognition = 6
+	result_command_lines_success_cohesion = 0
+	result_command_lines_success_standing = 12
+	result_command_lines_partial_disease = 0
+	result_command_lines_partial_shelter_state = 0
+	result_command_lines_partial_exposure = 0
+	result_command_lines_partial_adaptation = 0
+	result_command_lines_partial_reclamation = 0
+	result_command_lines_partial_supply = 2
+	result_command_lines_partial_food = 0
+	result_command_lines_partial_water = 0
+	result_command_lines_partial_medicine = 0
+	result_command_lines_partial_scrap = 0
+	result_command_lines_partial_fuel = 0
+	result_command_lines_partial_power = 0
+	result_command_lines_partial_filters = 0
+	result_command_lines_partial_shelter = 0
+	result_command_lines_partial_recognition = 0
+	result_command_lines_partial_cohesion = 0
+	result_command_lines_partial_standing = 4
+	result_command_lines_failure_disease = 0
+	result_command_lines_failure_shelter_state = 0
+	result_command_lines_failure_exposure = 0
+	result_command_lines_failure_adaptation = 0
+	result_command_lines_failure_reclamation = 0
+	result_command_lines_failure_supply = -3
+	result_command_lines_failure_food = 0
+	result_command_lines_failure_water = 0
+	result_command_lines_failure_medicine = 0
+	result_command_lines_failure_scrap = 0
+	result_command_lines_failure_fuel = 0
+	result_command_lines_failure_power = 0
+	result_command_lines_failure_filters = 0
+	result_command_lines_failure_shelter = 0
+	result_command_lines_failure_recognition = 0
+	result_command_lines_failure_cohesion = -4
+	result_command_lines_failure_standing = -8
+	result_reactor_privilege_success_disease = 0
+	result_reactor_privilege_success_shelter_state = 0
+	result_reactor_privilege_success_exposure = 0
+	result_reactor_privilege_success_adaptation = 0
+	result_reactor_privilege_success_reclamation = 0
+	result_reactor_privilege_success_supply = 0
+	result_reactor_privilege_success_food = 0
+	result_reactor_privilege_success_water = 0
+	result_reactor_privilege_success_medicine = 0
+	result_reactor_privilege_success_scrap = 0
+	result_reactor_privilege_success_fuel = 0
+	result_reactor_privilege_success_power = 10
+	result_reactor_privilege_success_filters = 0
+	result_reactor_privilege_success_shelter = 0
+	result_reactor_privilege_success_recognition = 0
+	result_reactor_privilege_success_cohesion = -3
+	result_reactor_privilege_success_standing = 8
+	result_reactor_privilege_partial_disease = 0
+	result_reactor_privilege_partial_shelter_state = 0
+	result_reactor_privilege_partial_exposure = 0
+	result_reactor_privilege_partial_adaptation = 0
+	result_reactor_privilege_partial_reclamation = 0
+	result_reactor_privilege_partial_supply = 0
+	result_reactor_privilege_partial_food = 0
+	result_reactor_privilege_partial_water = 0
+	result_reactor_privilege_partial_medicine = 0
+	result_reactor_privilege_partial_scrap = 0
+	result_reactor_privilege_partial_fuel = 0
+	result_reactor_privilege_partial_power = 4
+	result_reactor_privilege_partial_filters = 0
+	result_reactor_privilege_partial_shelter = 0
+	result_reactor_privilege_partial_recognition = 0
+	result_reactor_privilege_partial_cohesion = -2
+	result_reactor_privilege_partial_standing = 3
+	result_reactor_privilege_failure_disease = 0
+	result_reactor_privilege_failure_shelter_state = 0
+	result_reactor_privilege_failure_exposure = 0
+	result_reactor_privilege_failure_adaptation = 0
+	result_reactor_privilege_failure_reclamation = 0
+	result_reactor_privilege_failure_supply = 0
+	result_reactor_privilege_failure_food = 0
+	result_reactor_privilege_failure_water = 0
+	result_reactor_privilege_failure_medicine = 0
+	result_reactor_privilege_failure_scrap = 0
+	result_reactor_privilege_failure_fuel = 0
+	result_reactor_privilege_failure_power = -3
+	result_reactor_privilege_failure_filters = 0
+	result_reactor_privilege_failure_shelter = 0
+	result_reactor_privilege_failure_recognition = 0
+	result_reactor_privilege_failure_cohesion = -6
+	result_reactor_privilege_failure_standing = -8
+	result_mine_hunger_success_disease = 0
+	result_mine_hunger_success_shelter_state = 0
+	result_mine_hunger_success_exposure = 0
+	result_mine_hunger_success_adaptation = 0
+	result_mine_hunger_success_reclamation = 0
+	result_mine_hunger_success_supply = 4
+	result_mine_hunger_success_food = 0
+	result_mine_hunger_success_water = 0
+	result_mine_hunger_success_medicine = 0
+	result_mine_hunger_success_scrap = 8
+	result_mine_hunger_success_fuel = 0
+	result_mine_hunger_success_power = 0
+	result_mine_hunger_success_filters = 0
+	result_mine_hunger_success_shelter = 0
+	result_mine_hunger_success_recognition = 0
+	result_mine_hunger_success_cohesion = -2
+	result_mine_hunger_success_standing = 6
+	result_mine_hunger_partial_disease = 0
+	result_mine_hunger_partial_shelter_state = 0
+	result_mine_hunger_partial_exposure = 0
+	result_mine_hunger_partial_adaptation = 0
+	result_mine_hunger_partial_reclamation = 0
+	result_mine_hunger_partial_supply = 0
+	result_mine_hunger_partial_food = 0
+	result_mine_hunger_partial_water = 0
+	result_mine_hunger_partial_medicine = 0
+	result_mine_hunger_partial_scrap = 4
+	result_mine_hunger_partial_fuel = 0
+	result_mine_hunger_partial_power = 0
+	result_mine_hunger_partial_filters = 0
+	result_mine_hunger_partial_shelter = 0
+	result_mine_hunger_partial_recognition = 0
+	result_mine_hunger_partial_cohesion = 0
+	result_mine_hunger_partial_standing = 2
+	result_mine_hunger_failure_disease = 3
+	result_mine_hunger_failure_shelter_state = 0
+	result_mine_hunger_failure_exposure = 0
+	result_mine_hunger_failure_adaptation = 0
+	result_mine_hunger_failure_reclamation = 0
+	result_mine_hunger_failure_supply = 0
+	result_mine_hunger_failure_food = 0
+	result_mine_hunger_failure_water = 0
+	result_mine_hunger_failure_medicine = 0
+	result_mine_hunger_failure_scrap = -3
+	result_mine_hunger_failure_fuel = 0
+	result_mine_hunger_failure_power = 0
+	result_mine_hunger_failure_filters = 0
+	result_mine_hunger_failure_shelter = 0
+	result_mine_hunger_failure_recognition = 0
+	result_mine_hunger_failure_cohesion = -5
+	result_mine_hunger_failure_standing = -8
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_command_lines_priority = 50
+	ai_command_lines_bonus_1 = 15
+	ai_reactor_privilege_priority = 45
+	ai_reactor_privilege_bonus_1 = 20
+	ai_mine_hunger_priority = 40
+	ai_mine_hunger_bonus_1 = 20
+}
+
+fallout_event_1137_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_command_lines_political_power_gain = 0.06
+	institution_command_lines_planning_speed = 0.1
+	institution_reactor_privilege_industrial_capacity_factory = 0.06
+	institution_reactor_privilege_stability_factor = -0.02
+	institution_mine_hunger_army_org_factor = 0.05
+	institution_mine_hunger_production_speed_buildings_factor = 0.04
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1137_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9222
+	choice_command_lines = 1
+	choice_reactor_privilege = 2
+	choice_mine_hunger = 3
+	command_lines_success = 11
+	command_lines_partial = 12
+	command_lines_failure = 13
+	reactor_privilege_success = 21
+	reactor_privilege_partial = 22
+	reactor_privilege_failure = 23
+	mine_hunger_success = 31
+	mine_hunger_partial = 32
+	mine_hunger_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# Dense Shelter Rules (chaosx.fallout.1144 to 1150)
+# ---------------------------------------------------------------------------
+# Japanese Shelter Archipelago opening chain. The shelters are full; the cabinet
+# decides the rules for who lives where and how the islands feed them.
+
+fallout_event_1144_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	ward_rules = 1
+	fisheries = 2
+	shelter_court = 3
+	upper_bound = 4
+}
+
+fallout_event_1144_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1144_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1144_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	ward_rules_food = 4
+	ward_rules_scrap = 3
+	fisheries_fuel = 6
+	fisheries_medicine = 3
+	shelter_court_recognition = 4
+	shelter_court_fuel = 3
+}
+
+fallout_event_1144_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	shelter_state_weight = 25
+	standing_weight = 20
+	cohesion_weight = 20
+	food_weight = 20
+	disease_relief_weight = 15
+	government_bonus = 0
+	ward_rules_success_viability = 48
+	ward_rules_partial_viability = 30
+	fisheries_success_viability = 44
+	fisheries_partial_viability = 26
+	shelter_court_success_viability = 46
+	shelter_court_partial_viability = 28
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_ward_rules_success_disease = -3
+	result_ward_rules_success_shelter_state = 6
+	result_ward_rules_success_exposure = 0
+	result_ward_rules_success_adaptation = 0
+	result_ward_rules_success_reclamation = 0
+	result_ward_rules_success_supply = 0
+	result_ward_rules_success_food = 0
+	result_ward_rules_success_water = 0
+	result_ward_rules_success_medicine = 0
+	result_ward_rules_success_scrap = 0
+	result_ward_rules_success_fuel = 0
+	result_ward_rules_success_power = 0
+	result_ward_rules_success_filters = 0
+	result_ward_rules_success_shelter = 0
+	result_ward_rules_success_recognition = 0
+	result_ward_rules_success_cohesion = 6
+	result_ward_rules_success_standing = 8
+	result_ward_rules_partial_disease = 0
+	result_ward_rules_partial_shelter_state = 2
+	result_ward_rules_partial_exposure = 0
+	result_ward_rules_partial_adaptation = 0
+	result_ward_rules_partial_reclamation = 0
+	result_ward_rules_partial_supply = 0
+	result_ward_rules_partial_food = 0
+	result_ward_rules_partial_water = 0
+	result_ward_rules_partial_medicine = 0
+	result_ward_rules_partial_scrap = 0
+	result_ward_rules_partial_fuel = 0
+	result_ward_rules_partial_power = 0
+	result_ward_rules_partial_filters = 0
+	result_ward_rules_partial_shelter = 0
+	result_ward_rules_partial_recognition = 0
+	result_ward_rules_partial_cohesion = 3
+	result_ward_rules_partial_standing = 3
+	result_ward_rules_failure_disease = 5
+	result_ward_rules_failure_shelter_state = 0
+	result_ward_rules_failure_exposure = 0
+	result_ward_rules_failure_adaptation = 0
+	result_ward_rules_failure_reclamation = 0
+	result_ward_rules_failure_supply = 0
+	result_ward_rules_failure_food = 0
+	result_ward_rules_failure_water = 0
+	result_ward_rules_failure_medicine = 0
+	result_ward_rules_failure_scrap = 0
+	result_ward_rules_failure_fuel = 0
+	result_ward_rules_failure_power = 0
+	result_ward_rules_failure_filters = 0
+	result_ward_rules_failure_shelter = 0
+	result_ward_rules_failure_recognition = 0
+	result_ward_rules_failure_cohesion = -4
+	result_ward_rules_failure_standing = -6
+	result_fisheries_success_disease = 0
+	result_fisheries_success_shelter_state = 0
+	result_fisheries_success_exposure = 0
+	result_fisheries_success_adaptation = 0
+	result_fisheries_success_reclamation = 0
+	result_fisheries_success_supply = 2
+	result_fisheries_success_food = 10
+	result_fisheries_success_water = 0
+	result_fisheries_success_medicine = 0
+	result_fisheries_success_scrap = 0
+	result_fisheries_success_fuel = 0
+	result_fisheries_success_power = 0
+	result_fisheries_success_filters = 0
+	result_fisheries_success_shelter = 0
+	result_fisheries_success_recognition = 0
+	result_fisheries_success_cohesion = 0
+	result_fisheries_success_standing = 8
+	result_fisheries_partial_disease = 0
+	result_fisheries_partial_shelter_state = 0
+	result_fisheries_partial_exposure = 0
+	result_fisheries_partial_adaptation = 0
+	result_fisheries_partial_reclamation = 0
+	result_fisheries_partial_supply = 0
+	result_fisheries_partial_food = 4
+	result_fisheries_partial_water = 0
+	result_fisheries_partial_medicine = 0
+	result_fisheries_partial_scrap = 0
+	result_fisheries_partial_fuel = 0
+	result_fisheries_partial_power = 0
+	result_fisheries_partial_filters = 0
+	result_fisheries_partial_shelter = 0
+	result_fisheries_partial_recognition = 0
+	result_fisheries_partial_cohesion = 0
+	result_fisheries_partial_standing = 3
+	result_fisheries_failure_disease = 0
+	result_fisheries_failure_shelter_state = 0
+	result_fisheries_failure_exposure = 0
+	result_fisheries_failure_adaptation = 0
+	result_fisheries_failure_reclamation = 0
+	result_fisheries_failure_supply = 0
+	result_fisheries_failure_food = -2
+	result_fisheries_failure_water = 0
+	result_fisheries_failure_medicine = 0
+	result_fisheries_failure_scrap = 0
+	result_fisheries_failure_fuel = -3
+	result_fisheries_failure_power = 0
+	result_fisheries_failure_filters = 0
+	result_fisheries_failure_shelter = 0
+	result_fisheries_failure_recognition = 0
+	result_fisheries_failure_cohesion = -3
+	result_fisheries_failure_standing = -6
+	result_shelter_court_success_disease = 0
+	result_shelter_court_success_shelter_state = 8
+	result_shelter_court_success_exposure = 0
+	result_shelter_court_success_adaptation = 0
+	result_shelter_court_success_reclamation = 0
+	result_shelter_court_success_supply = 0
+	result_shelter_court_success_food = 0
+	result_shelter_court_success_water = 0
+	result_shelter_court_success_medicine = 0
+	result_shelter_court_success_scrap = 0
+	result_shelter_court_success_fuel = 0
+	result_shelter_court_success_power = 0
+	result_shelter_court_success_filters = 0
+	result_shelter_court_success_shelter = 0
+	result_shelter_court_success_recognition = 4
+	result_shelter_court_success_cohesion = -2
+	result_shelter_court_success_standing = 10
+	result_shelter_court_partial_disease = 0
+	result_shelter_court_partial_shelter_state = 3
+	result_shelter_court_partial_exposure = 0
+	result_shelter_court_partial_adaptation = 0
+	result_shelter_court_partial_reclamation = 0
+	result_shelter_court_partial_supply = 0
+	result_shelter_court_partial_food = 0
+	result_shelter_court_partial_water = 0
+	result_shelter_court_partial_medicine = 0
+	result_shelter_court_partial_scrap = 0
+	result_shelter_court_partial_fuel = 0
+	result_shelter_court_partial_power = 0
+	result_shelter_court_partial_filters = 0
+	result_shelter_court_partial_shelter = 0
+	result_shelter_court_partial_recognition = 0
+	result_shelter_court_partial_cohesion = 0
+	result_shelter_court_partial_standing = 3
+	result_shelter_court_failure_disease = 0
+	result_shelter_court_failure_shelter_state = 0
+	result_shelter_court_failure_exposure = 0
+	result_shelter_court_failure_adaptation = 0
+	result_shelter_court_failure_reclamation = 0
+	result_shelter_court_failure_supply = 0
+	result_shelter_court_failure_food = 0
+	result_shelter_court_failure_water = 0
+	result_shelter_court_failure_medicine = 0
+	result_shelter_court_failure_scrap = 0
+	result_shelter_court_failure_fuel = 0
+	result_shelter_court_failure_power = 0
+	result_shelter_court_failure_filters = 0
+	result_shelter_court_failure_shelter = 0
+	result_shelter_court_failure_recognition = -3
+	result_shelter_court_failure_cohesion = -5
+	result_shelter_court_failure_standing = -8
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_ward_rules_priority = 45
+	ai_ward_rules_bonus_1 = 15
+	ai_fisheries_priority = 45
+	ai_fisheries_bonus_1 = 20
+	ai_shelter_court_priority = 40
+	ai_shelter_court_bonus_1 = 20
+}
+
+fallout_event_1144_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_ward_rules_stability_factor = 0.05
+	institution_ward_rules_monthly_population = 0.05
+	institution_fisheries_consumer_goods_factor = -0.02
+	institution_fisheries_navy_max_range_factor = 0.1
+	institution_shelter_court_political_power_gain = 0.06
+	institution_shelter_court_stability_factor = 0.03
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1144_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9223
+	choice_ward_rules = 1
+	choice_fisheries = 2
+	choice_shelter_court = 3
+	ward_rules_success = 11
+	ward_rules_partial = 12
+	ward_rules_failure = 13
+	fisheries_success = 21
+	fisheries_partial = 22
+	fisheries_failure = 23
+	shelter_court_success = 31
+	shelter_court_partial = 32
+	shelter_court_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
+	cancelled = 99
+	upper_bound = 100
+}
+
+
+# ---------------------------------------------------------------------------
+# River Grain Quotas (chaosx.fallout.1151 to 1157)
+# ---------------------------------------------------------------------------
+# Yellow River Famine Councils opening chain. The famine council sets the first grain
+# quotas between the river districts, the army districts and the floodgates.
+
+fallout_event_1151_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	equal_quotas = 1
+	army_districts = 2
+	floodgates = 3
+	upper_bound = 4
+}
+
+fallout_event_1151_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	result_delay_days = 40
+	callback_delay_days = 270
+	result_modifier_days = 180
+	callback_modifier_days = 300
+}
+
+fallout_event_1151_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_budget_cost = 3
+	result_transaction_key_offset = 780
+	callback_transaction_key_offset = 1080
+}
+
+fallout_event_1151_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	equal_quotas_food = 5
+	equal_quotas_recognition = 3
+	army_districts_fuel = 5
+	army_districts_food = 2
+	floodgates_scrap = 5
+	floodgates_power = 3
+}
+
+fallout_event_1151_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1
+	minimum_country_cohesion = 20
+	minimum_country_recognition = 10
+	minimum_viability = 0
+	maximum_viability = 100
+	weight_divisor = 100
+	supply_weight = 20
+	standing_weight = 20
+	cohesion_weight = 20
+	food_weight = 25
+	adaptation_weight = 15
+	government_bonus = 0
+	equal_quotas_success_viability = 46
+	equal_quotas_partial_viability = 28
+	army_districts_success_viability = 44
+	army_districts_partial_viability = 26
+	floodgates_success_viability = 42
+	floodgates_partial_viability = 24
+	callback_success_score = 150
+	callback_partial_score = 105
+	result_failure_death_percent = 0.0005
+	callback_failure_death_percent = 0.0002
+	minimum_remaining_people = 100
+	ledger_minimum = 0
+	ledger_maximum = 100
+	initial_standing = 50
+	result_equal_quotas_success_disease = 0
+	result_equal_quotas_success_shelter_state = 0
+	result_equal_quotas_success_exposure = 0
+	result_equal_quotas_success_adaptation = 0
+	result_equal_quotas_success_reclamation = 0
+	result_equal_quotas_success_supply = 0
+	result_equal_quotas_success_food = 4
+	result_equal_quotas_success_water = 0
+	result_equal_quotas_success_medicine = 0
+	result_equal_quotas_success_scrap = 0
+	result_equal_quotas_success_fuel = 0
+	result_equal_quotas_success_power = 0
+	result_equal_quotas_success_filters = 0
+	result_equal_quotas_success_shelter = 0
+	result_equal_quotas_success_recognition = 0
+	result_equal_quotas_success_cohesion = 6
+	result_equal_quotas_success_standing = 10
+	result_equal_quotas_partial_disease = 0
+	result_equal_quotas_partial_shelter_state = 0
+	result_equal_quotas_partial_exposure = 0
+	result_equal_quotas_partial_adaptation = 0
+	result_equal_quotas_partial_reclamation = 0
+	result_equal_quotas_partial_supply = 0
+	result_equal_quotas_partial_food = 0
+	result_equal_quotas_partial_water = 0
+	result_equal_quotas_partial_medicine = 0
+	result_equal_quotas_partial_scrap = 0
+	result_equal_quotas_partial_fuel = 0
+	result_equal_quotas_partial_power = 0
+	result_equal_quotas_partial_filters = 0
+	result_equal_quotas_partial_shelter = 0
+	result_equal_quotas_partial_recognition = 0
+	result_equal_quotas_partial_cohesion = 3
+	result_equal_quotas_partial_standing = 3
+	result_equal_quotas_failure_disease = 0
+	result_equal_quotas_failure_shelter_state = 0
+	result_equal_quotas_failure_exposure = 0
+	result_equal_quotas_failure_adaptation = 0
+	result_equal_quotas_failure_reclamation = 0
+	result_equal_quotas_failure_supply = 0
+	result_equal_quotas_failure_food = -4
+	result_equal_quotas_failure_water = 0
+	result_equal_quotas_failure_medicine = 0
+	result_equal_quotas_failure_scrap = 0
+	result_equal_quotas_failure_fuel = 0
+	result_equal_quotas_failure_power = 0
+	result_equal_quotas_failure_filters = 0
+	result_equal_quotas_failure_shelter = 0
+	result_equal_quotas_failure_recognition = 0
+	result_equal_quotas_failure_cohesion = -4
+	result_equal_quotas_failure_standing = -8
+	result_army_districts_success_disease = 0
+	result_army_districts_success_shelter_state = 0
+	result_army_districts_success_exposure = 0
+	result_army_districts_success_adaptation = 0
+	result_army_districts_success_reclamation = 0
+	result_army_districts_success_supply = 4
+	result_army_districts_success_food = 8
+	result_army_districts_success_water = 0
+	result_army_districts_success_medicine = 0
+	result_army_districts_success_scrap = 0
+	result_army_districts_success_fuel = 0
+	result_army_districts_success_power = 0
+	result_army_districts_success_filters = 0
+	result_army_districts_success_shelter = 0
+	result_army_districts_success_recognition = 0
+	result_army_districts_success_cohesion = -3
+	result_army_districts_success_standing = 6
+	result_army_districts_partial_disease = 0
+	result_army_districts_partial_shelter_state = 0
+	result_army_districts_partial_exposure = 0
+	result_army_districts_partial_adaptation = 0
+	result_army_districts_partial_reclamation = 0
+	result_army_districts_partial_supply = 0
+	result_army_districts_partial_food = 4
+	result_army_districts_partial_water = 0
+	result_army_districts_partial_medicine = 0
+	result_army_districts_partial_scrap = 0
+	result_army_districts_partial_fuel = 0
+	result_army_districts_partial_power = 0
+	result_army_districts_partial_filters = 0
+	result_army_districts_partial_shelter = 0
+	result_army_districts_partial_recognition = 0
+	result_army_districts_partial_cohesion = -2
+	result_army_districts_partial_standing = 2
+	result_army_districts_failure_disease = 0
+	result_army_districts_failure_shelter_state = 0
+	result_army_districts_failure_exposure = 0
+	result_army_districts_failure_adaptation = 0
+	result_army_districts_failure_reclamation = 0
+	result_army_districts_failure_supply = 0
+	result_army_districts_failure_food = -2
+	result_army_districts_failure_water = 0
+	result_army_districts_failure_medicine = 0
+	result_army_districts_failure_scrap = 0
+	result_army_districts_failure_fuel = 0
+	result_army_districts_failure_power = 0
+	result_army_districts_failure_filters = 0
+	result_army_districts_failure_shelter = 0
+	result_army_districts_failure_recognition = 0
+	result_army_districts_failure_cohesion = -6
+	result_army_districts_failure_standing = -10
+	result_floodgates_success_disease = 0
+	result_floodgates_success_shelter_state = 0
+	result_floodgates_success_exposure = 0
+	result_floodgates_success_adaptation = 8
+	result_floodgates_success_reclamation = 0
+	result_floodgates_success_supply = 6
+	result_floodgates_success_food = -2
+	result_floodgates_success_water = 0
+	result_floodgates_success_medicine = 0
+	result_floodgates_success_scrap = 0
+	result_floodgates_success_fuel = 0
+	result_floodgates_success_power = 0
+	result_floodgates_success_filters = 0
+	result_floodgates_success_shelter = 0
+	result_floodgates_success_recognition = 0
+	result_floodgates_success_cohesion = 0
+	result_floodgates_success_standing = 8
+	result_floodgates_partial_disease = 0
+	result_floodgates_partial_shelter_state = 0
+	result_floodgates_partial_exposure = 0
+	result_floodgates_partial_adaptation = 4
+	result_floodgates_partial_reclamation = 0
+	result_floodgates_partial_supply = 0
+	result_floodgates_partial_food = -2
+	result_floodgates_partial_water = 0
+	result_floodgates_partial_medicine = 0
+	result_floodgates_partial_scrap = 0
+	result_floodgates_partial_fuel = 0
+	result_floodgates_partial_power = 0
+	result_floodgates_partial_filters = 0
+	result_floodgates_partial_shelter = 0
+	result_floodgates_partial_recognition = 0
+	result_floodgates_partial_cohesion = 0
+	result_floodgates_partial_standing = 3
+	result_floodgates_failure_disease = 0
+	result_floodgates_failure_shelter_state = 0
+	result_floodgates_failure_exposure = 0
+	result_floodgates_failure_adaptation = -2
+	result_floodgates_failure_reclamation = 0
+	result_floodgates_failure_supply = 0
+	result_floodgates_failure_food = -4
+	result_floodgates_failure_water = 0
+	result_floodgates_failure_medicine = 0
+	result_floodgates_failure_scrap = 0
+	result_floodgates_failure_fuel = 0
+	result_floodgates_failure_power = 0
+	result_floodgates_failure_filters = 0
+	result_floodgates_failure_shelter = 0
+	result_floodgates_failure_recognition = 0
+	result_floodgates_failure_cohesion = -3
+	result_floodgates_failure_standing = -6
+	callback_success_disease = 0
+	callback_success_shelter_state = 0
+	callback_success_exposure = 0
+	callback_success_adaptation = 0
+	callback_success_reclamation = 4
+	callback_success_supply = 4
+	callback_success_food = 0
+	callback_success_water = 0
+	callback_success_medicine = 0
+	callback_success_scrap = 0
+	callback_success_fuel = 0
+	callback_success_power = 0
+	callback_success_filters = 0
+	callback_success_shelter = 0
+	callback_success_recognition = 4
+	callback_success_cohesion = 3
+	callback_success_standing = 6
+	callback_partial_disease = 0
+	callback_partial_shelter_state = 0
+	callback_partial_exposure = 0
+	callback_partial_adaptation = 0
+	callback_partial_reclamation = 1
+	callback_partial_supply = 0
+	callback_partial_food = 0
+	callback_partial_water = 0
+	callback_partial_medicine = 0
+	callback_partial_scrap = 0
+	callback_partial_fuel = 0
+	callback_partial_power = 0
+	callback_partial_filters = 0
+	callback_partial_shelter = 0
+	callback_partial_recognition = 1
+	callback_partial_cohesion = 0
+	callback_partial_standing = 2
+	callback_failure_disease = 4
+	callback_failure_shelter_state = 0
+	callback_failure_exposure = 0
+	callback_failure_adaptation = 0
+	callback_failure_reclamation = 0
+	callback_failure_supply = -4
+	callback_failure_food = 0
+	callback_failure_water = 0
+	callback_failure_medicine = 0
+	callback_failure_scrap = 0
+	callback_failure_fuel = 0
+	callback_failure_power = 0
+	callback_failure_filters = 0
+	callback_failure_shelter = 0
+	callback_failure_recognition = -4
+	callback_failure_cohesion = -4
+	callback_failure_standing = -6
+	ai_invalid_option = -1000
+	ai_equal_quotas_priority = 45
+	ai_equal_quotas_bonus_1 = 20
+	ai_army_districts_priority = 45
+	ai_army_districts_bonus_1 = 20
+	ai_floodgates_priority = 40
+	ai_floodgates_bonus_1 = 20
+}
+
+fallout_event_1151_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	institution_equal_quotas_stability_factor = 0.05
+	institution_equal_quotas_consumer_goods_factor = -0.02
+	institution_army_districts_army_org_factor = 0.05
+	institution_army_districts_stability_factor = -0.03
+	institution_floodgates_production_speed_buildings_factor = 0.08
+	institution_floodgates_supply_consumption_factor = -0.03
+	result_failure_stability_factor = -0.04
+	result_failure_political_power_gain = -0.05
+	callback_success_stability_factor = 0.04
+	callback_success_production_speed_buildings_factor = 0.05
+	callback_failure_stability_factor = -0.05
+	callback_failure_war_support_factor = -0.03
+}
+
+fallout_event_1151_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	history_id = 9224
+	choice_equal_quotas = 1
+	choice_army_districts = 2
+	choice_floodgates = 3
+	equal_quotas_success = 11
+	equal_quotas_partial = 12
+	equal_quotas_failure = 13
+	army_districts_success = 21
+	army_districts_partial = 22
+	army_districts_failure = 23
+	floodgates_success = 31
+	floodgates_partial = 32
+	floodgates_failure = 33
+	callback_success = 91
+	callback_partial = 92
+	callback_failure = 93
 	cancelled = 99
 	upper_bound = 100
 }

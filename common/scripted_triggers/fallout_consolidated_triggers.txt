@@ -35244,6 +35244,12 @@ fallout_country_memory_candidate_is_protected = {
 		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.antarctic_listening_government }
 		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.west_african_port_confederacies }
 		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.manchurian_reactor_keeps }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.british_emergency_isles }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.french_loire_continuity }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.italian_apennine_communes }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ural_continuity_directorate }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.japanese_shelter_archipelago }
+		check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils }
 	}
 }
 
@@ -35972,5 +35978,1401 @@ fallout_office_arc_magistrate_cleanup_can_enter = {
 	fallout_event_issued_delayed_cleanup_is_current = yes
 	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.office_magistrate_cleanup compare = equals }
 	fallout_office_arc_registry_is_current = yes
+}
+
+
+# ============================================================================
+# Country-memory opening chains (agent decision A17)
+# ============================================================================
+
+# ============================================================================
+# The Broken Federal Chain triggers (chaosx.fallout.1102 to 1108)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1102_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1102_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1102_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1102_registry_committed }
+	NOT = { has_state_flag = fallout_event_1102_memory_closed }
+}
+
+fallout_event_1102_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1102_congress_affordable = yes
+		fallout_event_1102_guard_bargain_affordable = yes
+		fallout_event_1102_custodian_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1102_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.federal_continuity_zone compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1102_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1102_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1102_candidate_state_id
+	check_variable = { var = fallout_event_1102_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1102_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1102_chain_committed }
+	NOT = { has_country_flag = fallout_event_1102_pending }
+	NOT = { check_variable = { var = fallout_event_1102_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1102_candidate_state_id compare = equals }
+		fallout_event_1102_capital_is_current = yes
+	}
+}
+
+fallout_event_1102_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1102_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1102_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1102_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1102_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1102_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.federal_chain_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1102_country_is_current = yes
+	fallout_event_1102_opening_target_is_current = yes
+}
+
+fallout_event_1102_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.federal_chain_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1102_country_is_current = yes
+	fallout_event_1102_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1102_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1102_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1102_memory_closed }
+}
+
+fallout_event_1102_registry_is_current = {
+	has_variable = fallout_event_1102_registry_generation
+	has_variable = fallout_event_1102_registry_owner
+	has_variable = fallout_event_1102_candidate_id
+	has_variable = fallout_event_1102_registry_target_type
+	has_variable = fallout_event_1102_registry_target
+	has_variable = fallout_event_1102_selected_branch
+	has_variable = fallout_event_1102_result_outcome
+	has_variable = fallout_event_1102_result_generation
+	has_variable = fallout_event_1102_frozen_generation
+	has_variable = fallout_event_1102_frozen_owner
+	has_variable = fallout_event_1102_frozen_controller
+	has_variable = fallout_event_1102_frozen_shelter
+	has_variable = fallout_event_1102_frozen_supply
+	has_variable = fallout_event_1102_frozen_adaptation
+	has_variable = fallout_event_1102_frozen_exposure
+	has_variable = fallout_event_1102_frozen_disease
+	check_variable = { fallout_event_1102_target_state_id > 0 }
+	check_variable = { var = fallout_event_1102_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1102_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1102_candidate_id value = constant:fallout_event_candidate_pilot.federal_chain_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1102_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1102_registry_target value = fallout_event_1102_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1102_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1102_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1102_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1102_target_state_id compare = equals }
+		fallout_event_1102_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1102_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1102_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1102_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1102_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1102_branch.upper_bound compare = less_than }
+	fallout_event_1102_registry_is_current = yes
+}
+
+fallout_event_1102_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1102_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1102_branch.upper_bound compare = less_than }
+	fallout_event_1102_registry_is_current = yes
+}
+
+fallout_event_1102_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.federal_chain_cleanup compare = equals }
+	fallout_event_1102_registry_is_current = yes
+}
+
+fallout_event_1102_congress_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1102_cost.congress_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1102_cost.congress_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1102_guard_bargain_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1102_cost.guard_bargain_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1102_cost.guard_bargain_food compare = greater_than_or_equals }
+}
+
+fallout_event_1102_custodian_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1102_cost.custodian_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1102_cost.custodian_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1102_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1102_requested_branch value = constant:fallout_event_1102_branch.congress compare = equals } } fallout_event_1102_congress_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1102_requested_branch value = constant:fallout_event_1102_branch.guard_bargain compare = equals } } fallout_event_1102_guard_bargain_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1102_requested_branch value = constant:fallout_event_1102_branch.custodian compare = equals } } fallout_event_1102_custodian_affordable = yes }
+}
+
+
+# ============================================================================
+# The Island Ration Book triggers (chaosx.fallout.1109 to 1115)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1109_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1109_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1109_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1109_registry_committed }
+	NOT = { has_state_flag = fallout_event_1109_memory_closed }
+}
+
+fallout_event_1109_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1109_ration_parliament_affordable = yes
+		fallout_event_1109_convoy_imports_affordable = yes
+		fallout_event_1109_royal_shelters_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1109_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.british_emergency_isles compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1109_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1109_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1109_candidate_state_id
+	check_variable = { var = fallout_event_1109_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1109_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1109_chain_committed }
+	NOT = { has_country_flag = fallout_event_1109_pending }
+	NOT = { check_variable = { var = fallout_event_1109_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1109_candidate_state_id compare = equals }
+		fallout_event_1109_capital_is_current = yes
+	}
+}
+
+fallout_event_1109_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1109_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1109_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1109_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1109_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1109_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.island_ration_book_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1109_country_is_current = yes
+	fallout_event_1109_opening_target_is_current = yes
+}
+
+fallout_event_1109_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.island_ration_book_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1109_country_is_current = yes
+	fallout_event_1109_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1109_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1109_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1109_memory_closed }
+}
+
+fallout_event_1109_registry_is_current = {
+	has_variable = fallout_event_1109_registry_generation
+	has_variable = fallout_event_1109_registry_owner
+	has_variable = fallout_event_1109_candidate_id
+	has_variable = fallout_event_1109_registry_target_type
+	has_variable = fallout_event_1109_registry_target
+	has_variable = fallout_event_1109_selected_branch
+	has_variable = fallout_event_1109_result_outcome
+	has_variable = fallout_event_1109_result_generation
+	has_variable = fallout_event_1109_frozen_generation
+	has_variable = fallout_event_1109_frozen_owner
+	has_variable = fallout_event_1109_frozen_controller
+	has_variable = fallout_event_1109_frozen_shelter
+	has_variable = fallout_event_1109_frozen_supply
+	has_variable = fallout_event_1109_frozen_adaptation
+	has_variable = fallout_event_1109_frozen_exposure
+	has_variable = fallout_event_1109_frozen_disease
+	check_variable = { fallout_event_1109_target_state_id > 0 }
+	check_variable = { var = fallout_event_1109_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1109_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1109_candidate_id value = constant:fallout_event_candidate_pilot.island_ration_book_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1109_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1109_registry_target value = fallout_event_1109_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1109_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1109_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1109_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1109_target_state_id compare = equals }
+		fallout_event_1109_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1109_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1109_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1109_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1109_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1109_branch.upper_bound compare = less_than }
+	fallout_event_1109_registry_is_current = yes
+}
+
+fallout_event_1109_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1109_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1109_branch.upper_bound compare = less_than }
+	fallout_event_1109_registry_is_current = yes
+}
+
+fallout_event_1109_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.island_ration_book_cleanup compare = equals }
+	fallout_event_1109_registry_is_current = yes
+}
+
+fallout_event_1109_ration_parliament_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1109_cost.ration_parliament_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1109_cost.ration_parliament_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1109_convoy_imports_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1109_cost.convoy_imports_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1109_cost.convoy_imports_scrap compare = greater_than_or_equals }
+}
+
+fallout_event_1109_royal_shelters_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1109_cost.royal_shelters_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1109_cost.royal_shelters_fuel compare = greater_than_or_equals }
+}
+
+fallout_event_1109_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1109_requested_branch value = constant:fallout_event_1109_branch.ration_parliament compare = equals } } fallout_event_1109_ration_parliament_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1109_requested_branch value = constant:fallout_event_1109_branch.convoy_imports compare = equals } } fallout_event_1109_convoy_imports_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1109_requested_branch value = constant:fallout_event_1109_branch.royal_shelters compare = equals } } fallout_event_1109_royal_shelters_affordable = yes }
+}
+
+
+# ============================================================================
+# The Prefects Return triggers (chaosx.fallout.1116 to 1122)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1116_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1116_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1116_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1116_registry_committed }
+	NOT = { has_state_flag = fallout_event_1116_memory_closed }
+}
+
+fallout_event_1116_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1116_prefects_affordable = yes
+		fallout_event_1116_loire_granaries_affordable = yes
+		fallout_event_1116_paris_claim_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1116_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.french_loire_continuity compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1116_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1116_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1116_candidate_state_id
+	check_variable = { var = fallout_event_1116_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1116_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1116_chain_committed }
+	NOT = { has_country_flag = fallout_event_1116_pending }
+	NOT = { check_variable = { var = fallout_event_1116_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1116_candidate_state_id compare = equals }
+		fallout_event_1116_capital_is_current = yes
+	}
+}
+
+fallout_event_1116_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1116_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1116_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1116_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1116_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1116_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.prefects_return_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1116_country_is_current = yes
+	fallout_event_1116_opening_target_is_current = yes
+}
+
+fallout_event_1116_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.prefects_return_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1116_country_is_current = yes
+	fallout_event_1116_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1116_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1116_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1116_memory_closed }
+}
+
+fallout_event_1116_registry_is_current = {
+	has_variable = fallout_event_1116_registry_generation
+	has_variable = fallout_event_1116_registry_owner
+	has_variable = fallout_event_1116_candidate_id
+	has_variable = fallout_event_1116_registry_target_type
+	has_variable = fallout_event_1116_registry_target
+	has_variable = fallout_event_1116_selected_branch
+	has_variable = fallout_event_1116_result_outcome
+	has_variable = fallout_event_1116_result_generation
+	has_variable = fallout_event_1116_frozen_generation
+	has_variable = fallout_event_1116_frozen_owner
+	has_variable = fallout_event_1116_frozen_controller
+	has_variable = fallout_event_1116_frozen_shelter
+	has_variable = fallout_event_1116_frozen_supply
+	has_variable = fallout_event_1116_frozen_adaptation
+	has_variable = fallout_event_1116_frozen_exposure
+	has_variable = fallout_event_1116_frozen_disease
+	check_variable = { fallout_event_1116_target_state_id > 0 }
+	check_variable = { var = fallout_event_1116_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1116_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1116_candidate_id value = constant:fallout_event_candidate_pilot.prefects_return_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1116_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1116_registry_target value = fallout_event_1116_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1116_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1116_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1116_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1116_target_state_id compare = equals }
+		fallout_event_1116_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1116_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1116_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1116_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1116_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1116_branch.upper_bound compare = less_than }
+	fallout_event_1116_registry_is_current = yes
+}
+
+fallout_event_1116_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1116_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1116_branch.upper_bound compare = less_than }
+	fallout_event_1116_registry_is_current = yes
+}
+
+fallout_event_1116_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.prefects_return_cleanup compare = equals }
+	fallout_event_1116_registry_is_current = yes
+}
+
+fallout_event_1116_prefects_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1116_cost.prefects_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1116_cost.prefects_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1116_loire_granaries_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1116_cost.loire_granaries_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1116_cost.loire_granaries_scrap compare = greater_than_or_equals }
+}
+
+fallout_event_1116_paris_claim_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1116_cost.paris_claim_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_1116_cost.paris_claim_medicine compare = greater_than_or_equals }
+}
+
+fallout_event_1116_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1116_requested_branch value = constant:fallout_event_1116_branch.prefects compare = equals } } fallout_event_1116_prefects_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1116_requested_branch value = constant:fallout_event_1116_branch.loire_granaries compare = equals } } fallout_event_1116_loire_granaries_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1116_requested_branch value = constant:fallout_event_1116_branch.paris_claim compare = equals } } fallout_event_1116_paris_claim_affordable = yes }
+}
+
+
+# ============================================================================
+# Factory Ghosts triggers (chaosx.fallout.1123 to 1129)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1123_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1123_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1123_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1123_registry_committed }
+	NOT = { has_state_flag = fallout_event_1123_memory_closed }
+}
+
+fallout_event_1123_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1123_licensed_crews_affordable = yes
+		fallout_event_1123_restart_affordable = yes
+		fallout_event_1123_guild_claim_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1123_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.rhine_dead_cities compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1123_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1123_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1123_candidate_state_id
+	check_variable = { var = fallout_event_1123_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1123_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1123_chain_committed }
+	NOT = { has_country_flag = fallout_event_1123_pending }
+	NOT = { check_variable = { var = fallout_event_1123_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1123_candidate_state_id compare = equals }
+		fallout_event_1123_capital_is_current = yes
+	}
+}
+
+fallout_event_1123_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1123_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1123_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1123_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1123_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1123_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.factory_ghosts_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1123_country_is_current = yes
+	fallout_event_1123_opening_target_is_current = yes
+}
+
+fallout_event_1123_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.factory_ghosts_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1123_country_is_current = yes
+	fallout_event_1123_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1123_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1123_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1123_memory_closed }
+}
+
+fallout_event_1123_registry_is_current = {
+	has_variable = fallout_event_1123_registry_generation
+	has_variable = fallout_event_1123_registry_owner
+	has_variable = fallout_event_1123_candidate_id
+	has_variable = fallout_event_1123_registry_target_type
+	has_variable = fallout_event_1123_registry_target
+	has_variable = fallout_event_1123_selected_branch
+	has_variable = fallout_event_1123_result_outcome
+	has_variable = fallout_event_1123_result_generation
+	has_variable = fallout_event_1123_frozen_generation
+	has_variable = fallout_event_1123_frozen_owner
+	has_variable = fallout_event_1123_frozen_controller
+	has_variable = fallout_event_1123_frozen_shelter
+	has_variable = fallout_event_1123_frozen_supply
+	has_variable = fallout_event_1123_frozen_adaptation
+	has_variable = fallout_event_1123_frozen_exposure
+	has_variable = fallout_event_1123_frozen_disease
+	check_variable = { fallout_event_1123_target_state_id > 0 }
+	check_variable = { var = fallout_event_1123_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1123_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1123_candidate_id value = constant:fallout_event_candidate_pilot.factory_ghosts_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1123_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1123_registry_target value = fallout_event_1123_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1123_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1123_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1123_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1123_target_state_id compare = equals }
+		fallout_event_1123_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1123_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1123_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1123_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1123_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1123_branch.upper_bound compare = less_than }
+	fallout_event_1123_registry_is_current = yes
+}
+
+fallout_event_1123_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1123_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1123_branch.upper_bound compare = less_than }
+	fallout_event_1123_registry_is_current = yes
+}
+
+fallout_event_1123_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.factory_ghosts_cleanup compare = equals }
+	fallout_event_1123_registry_is_current = yes
+}
+
+fallout_event_1123_licensed_crews_affordable = {
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_1123_cost.licensed_crews_medicine compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1123_cost.licensed_crews_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1123_restart_affordable = {
+	check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_1123_cost.restart_power compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1123_cost.restart_fuel compare = greater_than_or_equals }
+}
+
+fallout_event_1123_guild_claim_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1123_cost.guild_claim_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1123_cost.guild_claim_scrap compare = greater_than_or_equals }
+}
+
+fallout_event_1123_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1123_requested_branch value = constant:fallout_event_1123_branch.licensed_crews compare = equals } } fallout_event_1123_licensed_crews_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1123_requested_branch value = constant:fallout_event_1123_branch.restart compare = equals } } fallout_event_1123_restart_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1123_requested_branch value = constant:fallout_event_1123_branch.guild_claim compare = equals } } fallout_event_1123_guild_claim_affordable = yes }
+}
+
+
+# ============================================================================
+# The Parish Granaries triggers (chaosx.fallout.1130 to 1136)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1130_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1130_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1130_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1130_registry_committed }
+	NOT = { has_state_flag = fallout_event_1130_memory_closed }
+}
+
+fallout_event_1130_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1130_parish_kitchens_affordable = yes
+		fallout_event_1130_toll_roads_affordable = yes
+		fallout_event_1130_salvage_rome_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1130_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.italian_apennine_communes compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1130_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1130_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1130_candidate_state_id
+	check_variable = { var = fallout_event_1130_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1130_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1130_chain_committed }
+	NOT = { has_country_flag = fallout_event_1130_pending }
+	NOT = { check_variable = { var = fallout_event_1130_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1130_candidate_state_id compare = equals }
+		fallout_event_1130_capital_is_current = yes
+	}
+}
+
+fallout_event_1130_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1130_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1130_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1130_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1130_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1130_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.parish_granaries_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1130_country_is_current = yes
+	fallout_event_1130_opening_target_is_current = yes
+}
+
+fallout_event_1130_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.parish_granaries_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1130_country_is_current = yes
+	fallout_event_1130_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1130_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1130_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1130_memory_closed }
+}
+
+fallout_event_1130_registry_is_current = {
+	has_variable = fallout_event_1130_registry_generation
+	has_variable = fallout_event_1130_registry_owner
+	has_variable = fallout_event_1130_candidate_id
+	has_variable = fallout_event_1130_registry_target_type
+	has_variable = fallout_event_1130_registry_target
+	has_variable = fallout_event_1130_selected_branch
+	has_variable = fallout_event_1130_result_outcome
+	has_variable = fallout_event_1130_result_generation
+	has_variable = fallout_event_1130_frozen_generation
+	has_variable = fallout_event_1130_frozen_owner
+	has_variable = fallout_event_1130_frozen_controller
+	has_variable = fallout_event_1130_frozen_shelter
+	has_variable = fallout_event_1130_frozen_supply
+	has_variable = fallout_event_1130_frozen_adaptation
+	has_variable = fallout_event_1130_frozen_exposure
+	has_variable = fallout_event_1130_frozen_disease
+	check_variable = { fallout_event_1130_target_state_id > 0 }
+	check_variable = { var = fallout_event_1130_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1130_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1130_candidate_id value = constant:fallout_event_candidate_pilot.parish_granaries_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1130_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1130_registry_target value = fallout_event_1130_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1130_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1130_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1130_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1130_target_state_id compare = equals }
+		fallout_event_1130_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1130_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1130_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1130_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1130_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1130_branch.upper_bound compare = less_than }
+	fallout_event_1130_registry_is_current = yes
+}
+
+fallout_event_1130_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1130_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1130_branch.upper_bound compare = less_than }
+	fallout_event_1130_registry_is_current = yes
+}
+
+fallout_event_1130_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.parish_granaries_cleanup compare = equals }
+	fallout_event_1130_registry_is_current = yes
+}
+
+fallout_event_1130_parish_kitchens_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1130_cost.parish_kitchens_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_1130_cost.parish_kitchens_medicine compare = greater_than_or_equals }
+}
+
+fallout_event_1130_toll_roads_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1130_cost.toll_roads_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1130_cost.toll_roads_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1130_salvage_rome_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1130_cost.salvage_rome_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1130_cost.salvage_rome_scrap compare = greater_than_or_equals }
+}
+
+fallout_event_1130_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1130_requested_branch value = constant:fallout_event_1130_branch.parish_kitchens compare = equals } } fallout_event_1130_parish_kitchens_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1130_requested_branch value = constant:fallout_event_1130_branch.toll_roads compare = equals } } fallout_event_1130_toll_roads_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1130_requested_branch value = constant:fallout_event_1130_branch.salvage_rome compare = equals } } fallout_event_1130_salvage_rome_affordable = yes }
+}
+
+
+# ============================================================================
+# The Command Archive triggers (chaosx.fallout.1137 to 1143)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1137_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1137_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1137_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1137_registry_committed }
+	NOT = { has_state_flag = fallout_event_1137_memory_closed }
+}
+
+fallout_event_1137_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1137_command_lines_affordable = yes
+		fallout_event_1137_reactor_privilege_affordable = yes
+		fallout_event_1137_mine_hunger_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1137_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.ural_continuity_directorate compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1137_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1137_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1137_candidate_state_id
+	check_variable = { var = fallout_event_1137_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1137_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1137_chain_committed }
+	NOT = { has_country_flag = fallout_event_1137_pending }
+	NOT = { check_variable = { var = fallout_event_1137_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1137_candidate_state_id compare = equals }
+		fallout_event_1137_capital_is_current = yes
+	}
+}
+
+fallout_event_1137_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1137_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1137_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1137_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1137_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1137_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.command_archive_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1137_country_is_current = yes
+	fallout_event_1137_opening_target_is_current = yes
+}
+
+fallout_event_1137_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.command_archive_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1137_country_is_current = yes
+	fallout_event_1137_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1137_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1137_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1137_memory_closed }
+}
+
+fallout_event_1137_registry_is_current = {
+	has_variable = fallout_event_1137_registry_generation
+	has_variable = fallout_event_1137_registry_owner
+	has_variable = fallout_event_1137_candidate_id
+	has_variable = fallout_event_1137_registry_target_type
+	has_variable = fallout_event_1137_registry_target
+	has_variable = fallout_event_1137_selected_branch
+	has_variable = fallout_event_1137_result_outcome
+	has_variable = fallout_event_1137_result_generation
+	has_variable = fallout_event_1137_frozen_generation
+	has_variable = fallout_event_1137_frozen_owner
+	has_variable = fallout_event_1137_frozen_controller
+	has_variable = fallout_event_1137_frozen_shelter
+	has_variable = fallout_event_1137_frozen_supply
+	has_variable = fallout_event_1137_frozen_adaptation
+	has_variable = fallout_event_1137_frozen_exposure
+	has_variable = fallout_event_1137_frozen_disease
+	check_variable = { fallout_event_1137_target_state_id > 0 }
+	check_variable = { var = fallout_event_1137_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1137_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1137_candidate_id value = constant:fallout_event_candidate_pilot.command_archive_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1137_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1137_registry_target value = fallout_event_1137_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1137_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1137_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1137_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1137_target_state_id compare = equals }
+		fallout_event_1137_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1137_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1137_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1137_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1137_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1137_branch.upper_bound compare = less_than }
+	fallout_event_1137_registry_is_current = yes
+}
+
+fallout_event_1137_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1137_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1137_branch.upper_bound compare = less_than }
+	fallout_event_1137_registry_is_current = yes
+}
+
+fallout_event_1137_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.command_archive_cleanup compare = equals }
+	fallout_event_1137_registry_is_current = yes
+}
+
+fallout_event_1137_command_lines_affordable = {
+	check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_1137_cost.command_lines_power compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1137_cost.command_lines_fuel compare = greater_than_or_equals }
+}
+
+fallout_event_1137_reactor_privilege_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1137_cost.reactor_privilege_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1137_cost.reactor_privilege_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1137_mine_hunger_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1137_cost.mine_hunger_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1137_cost.mine_hunger_fuel compare = greater_than_or_equals }
+}
+
+fallout_event_1137_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1137_requested_branch value = constant:fallout_event_1137_branch.command_lines compare = equals } } fallout_event_1137_command_lines_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1137_requested_branch value = constant:fallout_event_1137_branch.reactor_privilege compare = equals } } fallout_event_1137_reactor_privilege_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1137_requested_branch value = constant:fallout_event_1137_branch.mine_hunger compare = equals } } fallout_event_1137_mine_hunger_affordable = yes }
+}
+
+
+# ============================================================================
+# Dense Shelter Rules triggers (chaosx.fallout.1144 to 1150)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1144_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1144_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1144_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1144_registry_committed }
+	NOT = { has_state_flag = fallout_event_1144_memory_closed }
+}
+
+fallout_event_1144_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1144_ward_rules_affordable = yes
+		fallout_event_1144_fisheries_affordable = yes
+		fallout_event_1144_shelter_court_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1144_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.japanese_shelter_archipelago compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1144_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1144_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1144_candidate_state_id
+	check_variable = { var = fallout_event_1144_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1144_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1144_chain_committed }
+	NOT = { has_country_flag = fallout_event_1144_pending }
+	NOT = { check_variable = { var = fallout_event_1144_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1144_candidate_state_id compare = equals }
+		fallout_event_1144_capital_is_current = yes
+	}
+}
+
+fallout_event_1144_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1144_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1144_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1144_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1144_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1144_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.dense_shelter_rules_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1144_country_is_current = yes
+	fallout_event_1144_opening_target_is_current = yes
+}
+
+fallout_event_1144_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.dense_shelter_rules_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1144_country_is_current = yes
+	fallout_event_1144_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1144_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1144_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1144_memory_closed }
+}
+
+fallout_event_1144_registry_is_current = {
+	has_variable = fallout_event_1144_registry_generation
+	has_variable = fallout_event_1144_registry_owner
+	has_variable = fallout_event_1144_candidate_id
+	has_variable = fallout_event_1144_registry_target_type
+	has_variable = fallout_event_1144_registry_target
+	has_variable = fallout_event_1144_selected_branch
+	has_variable = fallout_event_1144_result_outcome
+	has_variable = fallout_event_1144_result_generation
+	has_variable = fallout_event_1144_frozen_generation
+	has_variable = fallout_event_1144_frozen_owner
+	has_variable = fallout_event_1144_frozen_controller
+	has_variable = fallout_event_1144_frozen_shelter
+	has_variable = fallout_event_1144_frozen_supply
+	has_variable = fallout_event_1144_frozen_adaptation
+	has_variable = fallout_event_1144_frozen_exposure
+	has_variable = fallout_event_1144_frozen_disease
+	check_variable = { fallout_event_1144_target_state_id > 0 }
+	check_variable = { var = fallout_event_1144_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1144_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1144_candidate_id value = constant:fallout_event_candidate_pilot.dense_shelter_rules_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1144_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1144_registry_target value = fallout_event_1144_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1144_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1144_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1144_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1144_target_state_id compare = equals }
+		fallout_event_1144_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1144_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1144_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1144_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1144_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1144_branch.upper_bound compare = less_than }
+	fallout_event_1144_registry_is_current = yes
+}
+
+fallout_event_1144_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1144_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1144_branch.upper_bound compare = less_than }
+	fallout_event_1144_registry_is_current = yes
+}
+
+fallout_event_1144_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.dense_shelter_rules_cleanup compare = equals }
+	fallout_event_1144_registry_is_current = yes
+}
+
+fallout_event_1144_ward_rules_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1144_cost.ward_rules_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1144_cost.ward_rules_scrap compare = greater_than_or_equals }
+}
+
+fallout_event_1144_fisheries_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1144_cost.fisheries_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_1144_cost.fisheries_medicine compare = greater_than_or_equals }
+}
+
+fallout_event_1144_shelter_court_affordable = {
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1144_cost.shelter_court_recognition compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1144_cost.shelter_court_fuel compare = greater_than_or_equals }
+}
+
+fallout_event_1144_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1144_requested_branch value = constant:fallout_event_1144_branch.ward_rules compare = equals } } fallout_event_1144_ward_rules_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1144_requested_branch value = constant:fallout_event_1144_branch.fisheries compare = equals } } fallout_event_1144_fisheries_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1144_requested_branch value = constant:fallout_event_1144_branch.shelter_court compare = equals } } fallout_event_1144_shelter_court_affordable = yes }
+}
+
+
+# ============================================================================
+# River Grain Quotas triggers (chaosx.fallout.1151 to 1157)
+# ============================================================================
+
+# Supported scope: STATE. The capital that hosts the chain.
+fallout_event_1151_capital_is_current = {
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	fallout_state_supply_access_row_is_current = yes
+	has_variable = air_winter_shelter_capacity
+	has_variable = air_winter_adaptation
+	has_variable = air_winter_reclamation
+	has_variable = air_winter_exposure
+	has_variable = air_winter_disease_pressure
+	has_variable = air_winter_phase
+	check_variable = { var = state_population_k value = constant:fallout_event_1151_threshold.minimum_population_k compare = greater_than }
+	NOT = { check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.phase_zero compare = less_than } }
+	check_variable = { var = air_winter_phase value = constant:fallout_event_air_winter_phase.upper_bound compare = less_than }
+	NOT = { has_state_flag = fallout_event_1151_registry_reserved }
+	NOT = { has_state_flag = fallout_event_1151_registry_committed }
+	NOT = { has_state_flag = fallout_event_1151_memory_closed }
+}
+
+fallout_event_1151_candidate_country_can_pay_any_branch = {
+	OR = {
+		fallout_event_1151_equal_quotas_affordable = yes
+		fallout_event_1151_army_districts_affordable = yes
+		fallout_event_1151_floodgates_affordable = yes
+	}
+}
+
+# Supported scope: COUNTRY. Admission for the opening; the candidate review
+# keeps the chosen capital id until its next rebuild.
+fallout_event_1151_country_is_current = {
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	has_variable = fallout_country_memory_id
+	check_variable = { var = fallout_country_memory_id value = constant:fallout_country_memory.yellow_river_famine_councils compare = equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_event_1151_threshold.minimum_country_cohesion compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1151_threshold.minimum_country_recognition compare = greater_than_or_equals }
+	has_variable = fallout_event_1151_candidate_state_id
+	check_variable = { var = fallout_event_1151_candidate_state_id value = constant:fallout_event_runtime.zero compare = greater_than }
+	fallout_event_1151_candidate_country_can_pay_any_branch = yes
+	NOT = { has_country_flag = fallout_event_1151_chain_committed }
+	NOT = { has_country_flag = fallout_event_1151_pending }
+	NOT = { check_variable = { var = fallout_event_1151_closed_generation value = global.fallout_transition_generation compare = equals } }
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1151_candidate_state_id compare = equals }
+		fallout_event_1151_capital_is_current = yes
+	}
+}
+
+fallout_event_1151_opening_target_is_current = {
+	check_variable = { var = fallout_event_dispatch_issued_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_target value = constant:fallout_event_runtime.zero compare = greater_than }
+	set_temp_variable = { fallout_event_1151_target_context_loaded = constant:fallout_event_runtime.zero }
+	var:fallout_event_dispatch_issued_target = {
+		set_temp_variable = { fallout_event_1151_target_context_loaded = constant:fallout_event_runtime.one }
+		owner = { tag = ROOT }
+		fallout_event_1151_capital_is_current = yes
+	}
+	check_variable = { var = fallout_event_1151_target_context_loaded value = constant:fallout_event_runtime.one compare = equals }
+}
+
+fallout_event_1151_opening_event_can_enter = {
+	is_ai = no
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.river_grain_quotas_human compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.human_visible compare = equals }
+	fallout_event_1151_country_is_current = yes
+	fallout_event_1151_opening_target_is_current = yes
+}
+
+fallout_event_1151_hidden_ai_opening_can_enter = {
+	is_ai = yes
+	fallout_event_country_can_receive_ordinary_event = yes
+	fallout_event_issued_ordinary_receipt_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.river_grain_quotas_ai compare = equals }
+	check_variable = { var = fallout_event_dispatch_issued_mode value = constant:fallout_event_dispatch_mode.hidden_ai compare = equals }
+	fallout_event_1151_country_is_current = yes
+	fallout_event_1151_opening_target_is_current = yes
+}
+
+# Supported scope: STATE. The committed capital still belongs to the chain.
+fallout_event_1151_registry_state_is_current = {
+	owner = { fallout_event_timeline_phase_receipt_is_current = yes }
+	is_controlled_by = ROOT
+	fallout_survival_state_identity_row_is_current = yes
+	fallout_survival_state_resource_row_is_durable = yes
+	check_variable = { var = state_population_k value = constant:fallout_event_1151_threshold.minimum_population_k compare = greater_than }
+	NOT = { has_state_flag = fallout_event_1151_memory_closed }
+}
+
+fallout_event_1151_registry_is_current = {
+	has_variable = fallout_event_1151_registry_generation
+	has_variable = fallout_event_1151_registry_owner
+	has_variable = fallout_event_1151_candidate_id
+	has_variable = fallout_event_1151_registry_target_type
+	has_variable = fallout_event_1151_registry_target
+	has_variable = fallout_event_1151_selected_branch
+	has_variable = fallout_event_1151_result_outcome
+	has_variable = fallout_event_1151_result_generation
+	has_variable = fallout_event_1151_frozen_generation
+	has_variable = fallout_event_1151_frozen_owner
+	has_variable = fallout_event_1151_frozen_controller
+	has_variable = fallout_event_1151_frozen_shelter
+	has_variable = fallout_event_1151_frozen_supply
+	has_variable = fallout_event_1151_frozen_adaptation
+	has_variable = fallout_event_1151_frozen_exposure
+	has_variable = fallout_event_1151_frozen_disease
+	check_variable = { fallout_event_1151_target_state_id > 0 }
+	check_variable = { var = fallout_event_1151_registry_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1151_registry_owner value = ROOT compare = equals }
+	check_variable = { var = fallout_event_1151_candidate_id value = constant:fallout_event_candidate_pilot.river_grain_quotas_candidate_id compare = equals }
+	check_variable = { var = fallout_event_1151_registry_target_type value = constant:fallout_event_subject_type.state compare = equals }
+	check_variable = { var = fallout_event_1151_registry_target value = fallout_event_1151_target_state_id compare = equals }
+	check_variable = { var = fallout_event_1151_frozen_generation value = global.fallout_transition_generation compare = equals }
+	check_variable = { var = fallout_event_1151_result_generation value = global.fallout_transition_generation compare = equals }
+	has_country_flag = fallout_event_1151_chain_committed
+	fallout_event_registry_country_row_is_current = yes
+	fallout_survival_country_resource_row_is_durable = yes
+	any_owned_state = {
+		check_variable = { var = THIS.id value = ROOT.fallout_event_1151_target_state_id compare = equals }
+		fallout_event_1151_registry_state_is_current = yes
+		check_variable = { var = ROOT.fallout_event_1151_frozen_owner value = OWNER compare = equals }
+		check_variable = { var = ROOT.fallout_event_1151_frozen_controller value = CONTROLLER compare = equals }
+	}
+}
+
+fallout_event_1151_delayed_result_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1151_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1151_branch.upper_bound compare = less_than }
+	fallout_event_1151_registry_is_current = yes
+}
+
+fallout_event_1151_callback_can_enter = {
+	fallout_event_issued_delayed_result_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1151_branch.none compare = greater_than }
+	check_variable = { var = fallout_event_dispatch_issued_branch value = constant:fallout_event_1151_branch.upper_bound compare = less_than }
+	fallout_event_1151_registry_is_current = yes
+}
+
+fallout_event_1151_cleanup_can_enter = {
+	fallout_event_issued_delayed_cleanup_is_current = yes
+	check_variable = { var = fallout_event_dispatch_issued_event_token value = constant:fallout_event_id.river_grain_quotas_cleanup compare = equals }
+	fallout_event_1151_registry_is_current = yes
+}
+
+fallout_event_1151_equal_quotas_affordable = {
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1151_cost.equal_quotas_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:fallout_event_1151_cost.equal_quotas_recognition compare = greater_than_or_equals }
+}
+
+fallout_event_1151_army_districts_affordable = {
+	check_variable = { var = fallout_survival_current_entries^5 value = constant:fallout_event_1151_cost.army_districts_fuel compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_event_1151_cost.army_districts_food compare = greater_than_or_equals }
+}
+
+fallout_event_1151_floodgates_affordable = {
+	check_variable = { var = fallout_survival_current_entries^4 value = constant:fallout_event_1151_cost.floodgates_scrap compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_event_1151_cost.floodgates_power compare = greater_than_or_equals }
+}
+
+fallout_event_1151_requested_branch_is_affordable = {
+	if = { limit = { check_variable = { var = fallout_event_1151_requested_branch value = constant:fallout_event_1151_branch.equal_quotas compare = equals } } fallout_event_1151_equal_quotas_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1151_requested_branch value = constant:fallout_event_1151_branch.army_districts compare = equals } } fallout_event_1151_army_districts_affordable = yes }
+	else_if = { limit = { check_variable = { var = fallout_event_1151_requested_branch value = constant:fallout_event_1151_branch.floodgates compare = equals } } fallout_event_1151_floodgates_affordable = yes }
 }
 

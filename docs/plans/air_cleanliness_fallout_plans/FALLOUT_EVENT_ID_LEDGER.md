@@ -1229,3 +1229,20 @@ Agent decision A16 adds six office arcs at event ids `1060` through `1101`, seve
 | Judge or tribunal chair | The First Verdict | `1095` to `1101` | 1095 | 710110 | 7254 | 9216 |
 
 Each row is admitted for a country that holds the office of that role in the current Fallout generation, uses the office as its institution actor, and closes for the generation at cleanup. The reserved route upper bound is `7256`. The step 5 candidates and roles are listed in `FALLOUT_OFFICE_CANDIDATES.md`.
+
+## Country-memory opening chains
+
+Agent decision A17 adds one opening chain for each memory a vanilla 1936 major-power survivor receives, at event ids `1102` through `1157`, seven blocks per chain: human opening N, hidden AI opening N+1, human and hidden AI results N+2 and N+3, human and hidden AI reviews N+4 and N+5, and cleanup N+6.
+
+| Memory | Chain | Event ids | Candidate id | Transaction key | Route | History |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| `federal_continuity_zone` | The Broken Federal Chain | `1102` to `1108` | 1102 | 710111 | 7256 | 9217 |
+| `british_emergency_isles` | The Island Ration Book | `1109` to `1115` | 1109 | 710112 | 7258 | 9218 |
+| `french_loire_continuity` | The Prefects Return | `1116` to `1122` | 1116 | 710113 | 7260 | 9219 |
+| `rhine_dead_cities` | Factory Ghosts | `1123` to `1129` | 1123 | 710114 | 7262 | 9220 |
+| `italian_apennine_communes` | The Parish Granaries | `1130` to `1136` | 1130 | 710115 | 7264 | 9221 |
+| `ural_continuity_directorate` | The Command Archive | `1137` to `1143` | 1137 | 710116 | 7266 | 9222 |
+| `japanese_shelter_archipelago` | Dense Shelter Rules | `1144` to `1150` | 1144 | 710117 | 7268 | 9223 |
+| `yellow_river_famine_councils` | River Grain Quotas | `1151` to `1157` | 1151 | 710118 | 7270 | 9224 |
+
+The reserved route upper bound is `7272`. The mechanic is described in `docs/systems/air_cleanliness/fallout_memory_chains.md`.
