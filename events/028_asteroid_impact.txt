@@ -101,7 +101,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_1_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -114,6 +113,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_1_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_1_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 1 }
@@ -126,7 +129,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_2_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -139,6 +141,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_2_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_2_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 2 }
@@ -151,7 +157,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_3_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -164,6 +169,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_3_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_3_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 3 }
@@ -580,7 +589,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_1_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_1_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -593,6 +601,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_1_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_1_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_1_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 1 }
@@ -605,7 +617,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_2_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_2_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -618,6 +629,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_2_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_2_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_2_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 2 }
@@ -630,7 +645,6 @@ country_event = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		ai_chance = {
 			base = constant:asteroid_incoming_ai.strike_base
-			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_enemy_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_major_add event_target:asteroid_incoming_target_3_country = { has_war_with = ROOT asteroid_incoming_ai_target_is_high_value = yes } }
 			modifier = { add = constant:asteroid_incoming_ai.strike_faction_leader_add event_target:asteroid_incoming_target_3_country = { is_faction_leader = yes has_war_with = ROOT } }
@@ -643,6 +657,10 @@ country_event = {
 			modifier = { factor = constant:asteroid_incoming_ai.strike_mineral_holder_factor asteroid_incoming_ai_chooser_holds_mineral_advantage = yes }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_near_capitulation_target_factor event_target:asteroid_incoming_target_3_country = { surrender_progress > constant:asteroid_incoming_ai.target_near_capitulation_threshold } }
 			modifier = { factor = constant:asteroid_incoming_ai.strike_high_chaos_factor check_variable = { var = global.chaos_meter_value value = constant:asteroid_incoming_runtime.minerals_chaos_threshold compare = greater_than_or_equals } }
+			# Rings that would devastate our own or friendly ground make a strike unattractive.
+			modifier = { factor = constant:asteroid_incoming_ai.strike_friendly_ground_factor event_target:asteroid_incoming_target_3_state = { asteroid_incoming_ai_strike_would_hit_friendly_ground = yes } }
+			# Last, so no later add can lift a protected target above zero.
+			modifier = { factor = constant:asteroid_incoming_ai.protected_target_factor event_target:asteroid_incoming_target_3_country = { asteroid_incoming_ai_target_is_protected = yes } }
 		}
 		hidden_effect = {
 			set_variable = { global.asteroid_incoming_selected_target = 3 }

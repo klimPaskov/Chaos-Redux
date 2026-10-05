@@ -212,7 +212,8 @@ asteroid_incoming_locked_transaction_is_valid = {
 
 # COUNTRY scope, with the chooser in ROOT. Protected diplomatic relationships
 # never receive a positive strike weight without a separately implemented and
-# audited betrayal strategy; Event 028 does not invent one.
+# audited betrayal strategy; Event 028 does not invent one. A co-belligerent
+# fighting on ROOT's side is protected even outside ROOT's faction.
 asteroid_incoming_ai_target_is_protected = {
 	hidden_trigger = {
 		OR = {
@@ -220,9 +221,42 @@ asteroid_incoming_ai_target_is_protected = {
 			is_subject_of = ROOT
 			ROOT = { is_subject_of = PREV }
 			AND = { is_in_faction_with = ROOT NOT = { has_war_with = ROOT } }
+			has_war_together_with = ROOT
 			has_non_aggression_pact_with = ROOT
 			has_guaranteed = ROOT
 			is_guaranteed_by = ROOT
+		}
+	}
+}
+
+# COUNTRY scope, with the chooser in ROOT. ROOT itself, a faction partner, or
+# a country fighting on ROOT's side.
+asteroid_incoming_ai_country_is_friendly_ground_holder = {
+	hidden_trigger = {
+		OR = {
+			tag = ROOT
+			AND = { is_in_faction_with = ROOT NOT = { has_war_with = ROOT } }
+			has_war_together_with = ROOT
+		}
+	}
+}
+
+# STATE scope, a candidate target state, with the chooser in ROOT. True when
+# the state itself, a neighbouring state, or a state two land steps away is
+# controlled by ROOT, a faction partner or a co-belligerent, so the inner
+# impact rings would devastate the chooser's own or friendly ground.
+asteroid_incoming_ai_strike_would_hit_friendly_ground = {
+	hidden_trigger = {
+		OR = {
+			CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+			any_neighbor_state = {
+				OR = {
+					CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+					any_neighbor_state = {
+						CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+					}
+				}
+			}
 		}
 	}
 }
