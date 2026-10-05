@@ -480,3 +480,16 @@ Basis: Part 4 Evolution II Safe havens ("the host receives political and militar
 - Refusal uses the shared Condemnation helper at minor public severity with an observer-report context and a 12-month opinion penalty; acceptance gives the demanding government Response Legitimacy and a 12-month opinion bonus.
 - Covert manipulation and its blowback (Part 4) stay with the existing Pressure the Sponsor in Private decision; no new covert action was added.
 - Route evidence: the consent weights follow the existing consent events' structure; the probability route stayed blocked as recorded under R32, so they are reviewed in source only.
+
+## Round 2 review fixes
+
+A source review of R32-R42 after the round found three defects in the committed work; each is `implemented` in the commit that records this section, and live-game behaviour remains with the user.
+
+### R43 One waiting report, caller-owned loss storage and no permanent uprising lock
+
+- Report coalescing (R33 follow-up): a pulse that applies an incident and then opens a spread hotspot queued two `chaosx.nr31.2` reports for the next day, and both read the latest `random_terror_last_report_*` values, so the player saw the spread report twice and could pick two first emphases.
+  A government now has at most one report waiting (`random_terror_report_queued`, cleared in the report's `immediate` and by `random_terror_reset_crisis_cycle` in case the closing crisis drops the queued report), and that report tells the latest incident, which for a spread names the new state and its origin.
+- Loss storage (R32 and R39 follow-up): `random_terror_apply_incident` read `state_civilian_population_loss_applied` after `random_terror_apply_exact_state_loss` and `random_terror_resolve_cannibal_clash` returned without allocating it itself, which the helper output lifetime rule of `chaos-redux-events` forbids (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` line 440); the incident now allocates it next to `random_terror_report_loss`.
+- Uprising lock (R35 and R38 follow-up): `random_terror_start_pressure_uprising` set `random_terror_uprising_recent` on every rising, but only the uprising mission clears it, so a revelation-wave state whose government had no free emergency slot stayed locked until the crisis closed, which in the terminal phase means for good.
+  The flag is now set only while the controller holds Stop the Coordinated Uprising for that state (`random_terror_uprising_subject_<tag>`); a rising without the mission leaves only the 28-day date window, which is what item 9 of the round asked for.
+- Route evidence: none of the three changes a weight; no probability route was needed.

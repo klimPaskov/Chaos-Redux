@@ -602,6 +602,8 @@ random_terror_apply_incident = {
 	# The incident report names this state and any measured civilian loss.
 	set_temp_variable = { random_terror_report_state_id = THIS }
 	set_temp_variable = { random_terror_report_loss = constant:random_terror_value.zero }
+	# Caller-owned storage for the loss the exact state-loss helpers return.
+	set_temp_variable = { state_civilian_population_loss_applied = constant:random_terror_value.zero }
 	if = {
 		limit = { has_global_flag = random_terror_evolution_2_unlocked }
 		set_state_flag = random_terror_transnational_link_active
@@ -964,7 +966,14 @@ random_terror_apply_incident = {
 			text = { set_country_flag = { flag = random_terror_recent_incident days = [MEMORY_DAYS] } }
 			MEMORY_DAYS = "[?random_terror_incident_memory_duration|.0]"
 		}
-		country_event = { id = chaosx.nr31.2 days = 1 }
+		# One report per government at a time: a second incident before the
+		# queued report opens (a pulse incident followed by a spread into a
+		# new state) is told by that report, which reads the latest incident.
+		if = {
+			limit = { NOT = { has_country_flag = random_terror_report_queued } }
+			set_country_flag = random_terror_report_queued
+			country_event = { id = chaosx.nr31.2 days = 1 }
+		}
 	}
 	# Re-read the stage before the controller refreshes its priority crisis
 	# state and schedules its next pulse.
@@ -5245,7 +5254,16 @@ random_terror_start_pressure_uprising = {
 			check_variable = { random_terror_state_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
 			random_terror_state_uprising_window_open = yes
 		}
-		set_state_flag = random_terror_uprising_recent
+		# A rising is under way only while its controller holds the Stop the
+		# Coordinated Uprising mission for this state, which clears the flag
+		# when it ends; a rising without that mission leaves only the date
+		# window below, so the state can never be locked for good.
+		CONTROLLER = {
+			if = {
+				limit = { PREV = { has_state_flag = random_terror_uprising_subject_@PREV } }
+				PREV = { set_state_flag = random_terror_uprising_recent }
+			}
+		}
 		set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.state_cooldown_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 		chaosx_convert_days_to_date_offset = yes
@@ -7853,6 +7871,7 @@ random_terror_reset_crisis_cycle = {
 	remove_from_array = { array = global.random_terror_affected_countries value = THIS }
 	random_terror_clear_safe_haven = yes
 	clr_country_flag = random_terror_haven_demand_pending
+	clr_country_flag = random_terror_report_queued
 	clr_country_flag = random_terror_emphasis_chosen
 	clr_country_flag = random_terror_response_cell_active
 	clr_country_flag = random_terror_response_action_recorded
