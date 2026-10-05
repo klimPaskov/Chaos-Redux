@@ -109,6 +109,7 @@ murder_mystery_run_pulse = {
 	murder_mystery_pulse_evolutions = yes
 	murder_mystery_pulse_revolts = yes
 	murder_mystery_pulse_objectives = yes
+	murder_mystery_pulse_cell_shipments = yes
 	murder_mystery_pulse_terminal = yes
 	murder_mystery_reconcile_white_peace_protection = yes
 	murder_mystery_achievement_pulse = yes
@@ -2079,6 +2080,17 @@ murder_mystery_retire_remnant_cells = {
 # murder_mystery_evaluate_global_resolution afterwards when the retirement can
 # end the movement.
 murder_mystery_retire_cell_row = {
+	# A cell that becomes a derivative takes its shipment with it; any other
+	# retirement stops the shipment.
+	if = {
+		limit = { check_variable = { var = murder_mystery_cell_retire_reason value = constant:murder_mystery_defeat.retire_reason_derivative compare = equals } }
+		if = {
+			limit = { has_country_flag = murder_mystery_shipment_pending }
+			set_variable = { murder_mystery_shipment_arrived_generation = murder_mystery_shipment_generation }
+			clr_country_flag = murder_mystery_shipment_pending
+		}
+	}
+	else = { murder_mystery_cancel_cell_shipment = yes }
 	save_event_target_as = murder_mystery_retiring_cell
 	set_temp_variable = { murder_mystery_retire_match = constant:murder_mystery_value.zero }
 	if = {
@@ -2143,6 +2155,7 @@ murder_mystery_retire_cell_row = {
 # COUNTRY scope: the cell country. A partial raid costs the row maturity and
 # one stage, never below an active cell.
 murder_mystery_damage_cell_row = {
+	murder_mystery_cancel_cell_shipment = yes
 	save_event_target_as = murder_mystery_damaged_cell
 	if = {
 		limit = { murder_mystery_cell_registry_is_aligned = yes }
@@ -2196,5 +2209,92 @@ murder_mystery_remove_derivative_row = {
 			}
 		}
 		set_variable = { global.murder_mystery_derivative_count = global.murder_mystery_derivative_country_entries^num }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Cell support shipments
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the cell country. Records one shipment with a unique
+# generation and its arrival date.
+murder_mystery_record_cell_shipment = {
+	add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
+	set_variable = { murder_mystery_shipment_generation = global.murder_mystery_transaction_sequence }
+	set_temp_variable = { chaosx_date_days = constant:murder_mystery_objective_tuning.shipment_transit_days }
+	set_temp_variable = { chaosx_date_offset = constant:murder_mystery_value.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { murder_mystery_shipment_arrival_date = global.date }
+	add_to_variable = { murder_mystery_shipment_arrival_date = chaosx_date_offset }
+	set_country_flag = murder_mystery_shipment_pending
+}
+
+# COUNTRY scope: the cell country. A raid or a lost stage stops the shipment.
+murder_mystery_cancel_cell_shipment = {
+	if = {
+		limit = { has_country_flag = murder_mystery_shipment_pending }
+		set_variable = { murder_mystery_shipment_cancelled_generation = murder_mystery_shipment_generation }
+		clr_country_flag = murder_mystery_shipment_pending
+	}
+}
+
+# COUNTRY scope: the cell country. The shipment arrives: the cell row gains
+# maturity and revolt readiness.
+murder_mystery_deliver_cell_shipment = {
+	if = {
+		limit = { has_country_flag = murder_mystery_shipment_pending }
+		set_variable = { murder_mystery_shipment_arrived_generation = murder_mystery_shipment_generation }
+		clr_country_flag = murder_mystery_shipment_pending
+		if = {
+			limit = { murder_mystery_cell_registry_is_aligned = yes }
+			save_event_target_as = murder_mystery_shipment_cell
+			set_temp_variable = { murder_mystery_shipment_index = constant:murder_mystery_identity.first_array_index }
+			while_loop_effect = {
+				limit = { check_variable = { var = murder_mystery_shipment_index value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+				set_temp_variable = { murder_mystery_shipment_match = constant:murder_mystery_value.zero }
+				var:global.murder_mystery_cell_country_entries^murder_mystery_shipment_index = {
+					if = {
+						limit = { tag = event_target:murder_mystery_shipment_cell }
+						set_temp_variable = { murder_mystery_shipment_match = constant:murder_mystery_value.one }
+					}
+				}
+				if = {
+					limit = { check_variable = { var = murder_mystery_shipment_match value = constant:murder_mystery_value.one compare = equals } }
+					set_temp_variable = { murder_mystery_shipment_value = global.murder_mystery_cell_maturity_entries^murder_mystery_shipment_index }
+					add_to_temp_variable = { murder_mystery_shipment_value = constant:murder_mystery_objective_tuning.shipment_maturity }
+					clamp_temp_variable = { var = murder_mystery_shipment_value min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
+					set_variable = { global.murder_mystery_cell_maturity_entries^murder_mystery_shipment_index = murder_mystery_shipment_value }
+					if = {
+						limit = {
+							check_variable = { var = global.murder_mystery_cell_stage_entries^murder_mystery_shipment_index value = constant:murder_mystery_cell_stage.entrenched compare = greater_than_or_equals }
+							check_variable = { var = murder_mystery_shipment_value value = constant:murder_mystery_action_tuning.high_value_maturity compare = greater_than_or_equals }
+						}
+						set_country_flag = murder_mystery_cell_mature
+					}
+					set_temp_variable = { murder_mystery_shipment_value = global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_shipment_index }
+					add_to_temp_variable = { murder_mystery_shipment_value = constant:murder_mystery_objective_tuning.shipment_readiness }
+					clamp_temp_variable = { var = murder_mystery_shipment_value min = constant:murder_mystery_cell.minimum_revolt_readiness max = constant:murder_mystery_cell.maximum_revolt_readiness }
+					set_variable = { global.murder_mystery_cell_revolt_readiness_entries^murder_mystery_shipment_index = murder_mystery_shipment_value }
+					set_temp_variable = { murder_mystery_shipment_index = global.murder_mystery_cell_country_entries^num }
+				}
+				add_to_temp_variable = { murder_mystery_shipment_index = constant:murder_mystery_identity.loop_increment }
+			}
+		}
+	}
+}
+
+# Any scope, called by the movement pulse. Delivers every shipment whose
+# arrival date has passed; reads only the cell registry.
+murder_mystery_pulse_cell_shipments = {
+	for_each_scope_loop = {
+		array = global.murder_mystery_cell_country_entries
+		if = {
+			limit = {
+				has_country_flag = murder_mystery_shipment_pending
+				has_variable = murder_mystery_shipment_arrival_date
+				check_variable = { var = global.date value = murder_mystery_shipment_arrival_date compare = greater_than_or_equals }
+			}
+			murder_mystery_deliver_cell_shipment = yes
+		}
 	}
 }

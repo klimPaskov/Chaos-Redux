@@ -176,6 +176,26 @@ murder_mystery_decision_bind_objective_context = {
 			set_variable = { murder_mystery_objective_state = PREV }
 		}
 	}
+	# Protect the Witness Transfer: the witnesses travel by rail from the
+	# capital to another state the government fully controls.
+	if = {
+		limit = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_witness_transfer compare = equals }
+			has_variable = murder_mystery_objective_origin_state
+		}
+		clear_variable = murder_mystery_objective_state
+		random_owned_controlled_state = {
+			limit = {
+				impassable = no
+				is_capital = no
+				has_railway_connection = {
+					start_state = PREV.murder_mystery_objective_origin_state
+					target_state = THIS
+				}
+			}
+			event_target:murder_mystery_objective_actor = { set_variable = { murder_mystery_objective_state = PREV } }
+		}
+	}
 	if = {
 		limit = {
 			has_event_target = murder_mystery_selected_cell
@@ -243,6 +263,8 @@ murder_mystery_decision_clear_objective_context = {
 	clear_variable = murder_mystery_objective_start_value
 	clear_variable = murder_mystery_objective_progress_value
 	clear_variable = murder_mystery_objective_floor_value
+	clear_variable = murder_mystery_objective_cell_generation
+	clear_variable = murder_mystery_objective_start_date
 	clear_array = murder_mystery_objective_subject_countries
 	clear_variable = murder_mystery_phase_mission_expiry_days
 }
@@ -507,6 +529,7 @@ murder_mystery_decision_start_bound_objective = {
 		set_variable = { murder_mystery_objective_start_case_progress = murder_mystery_case_progress }
 		set_variable = { murder_mystery_objective_start_network_reach = murder_mystery_network_reach }
 		set_variable = { murder_mystery_objective_start_cohesion = murder_mystery_brotherhood_cohesion }
+		set_variable = { murder_mystery_objective_start_date = global.date }
 		set_variable = { murder_mystery_objective_required_divisions = constant:murder_mystery_action_tuning.objective_required_divisions }
 		add_to_variable = { murder_mystery_objective_required_divisions = constant:murder_mystery_value.one }
 		set_country_flag = murder_mystery_objective_active
@@ -925,6 +948,63 @@ murder_mystery_decision_bind_movement_objective = {
 			}
 		}
 	}
+
+	# Intercept the Support Shipment binds the shipment on its way to the
+	# cell; without one the objective does not start.
+	clear_variable = murder_mystery_objective_cell_generation
+	if = {
+		limit = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.intercept_support_shipment compare = equals }
+			has_variable = murder_mystery_objective_country
+			var:murder_mystery_objective_country = { has_country_flag = murder_mystery_shipment_pending }
+		}
+		var:murder_mystery_objective_country = {
+			event_target:murder_mystery_objective_actor = { set_variable = { murder_mystery_objective_start_value = PREV.murder_mystery_shipment_generation } }
+		}
+	}
+	# Dismantle the Local Recruitment binds the cell row by its generation and
+	# records the maturity it must fall to.
+	if = {
+		limit = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.dismantle_local_recruitment compare = equals }
+			has_variable = murder_mystery_objective_country
+			murder_mystery_cell_registry_is_aligned = yes
+		}
+		var:murder_mystery_objective_country = { save_event_target_as = murder_mystery_objective_cell_country }
+		set_temp_variable = { murder_mystery_objective_cell_scan = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_objective_cell_scan value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+			set_temp_variable = { murder_mystery_objective_cell_match = constant:murder_mystery_value.zero }
+			var:global.murder_mystery_cell_country_entries^murder_mystery_objective_cell_scan = {
+				if = {
+					limit = { tag = event_target:murder_mystery_objective_cell_country }
+					set_temp_variable = { murder_mystery_objective_cell_match = constant:murder_mystery_value.one }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_objective_cell_match value = constant:murder_mystery_value.one compare = equals } }
+				set_variable = { murder_mystery_objective_cell_generation = global.murder_mystery_cell_generation_entries^murder_mystery_objective_cell_scan }
+				set_variable = { murder_mystery_objective_start_value = global.murder_mystery_cell_maturity_entries^murder_mystery_objective_cell_scan }
+				set_variable = { murder_mystery_objective_floor_value = murder_mystery_objective_start_value }
+				subtract_from_variable = { murder_mystery_objective_floor_value = constant:murder_mystery_objective_tuning.recruitment_maturity_drop }
+				set_temp_variable = { murder_mystery_objective_cell_scan = global.murder_mystery_cell_country_entries^num }
+			}
+			add_to_temp_variable = { murder_mystery_objective_cell_scan = constant:murder_mystery_identity.loop_increment }
+		}
+	}
+	# Protect the Local Government records how many offices the movement had
+	# already struck in the protected government.
+	if = {
+		limit = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_local_government compare = equals }
+			has_variable = murder_mystery_objective_country
+			var:murder_mystery_objective_country = { exists = yes }
+		}
+		var:murder_mystery_objective_country = {
+			murder_mystery_initialize_country_runtime = yes
+			event_target:murder_mystery_objective_actor = { set_variable = { murder_mystery_objective_start_value = PREV.murder_mystery_incident_history_count } }
+		}
+	}
 }
 
 # COUNTRY scope: the objective owner, inside an owner-valid resolution.
@@ -1329,16 +1409,36 @@ murder_mystery_decision_fail_cell_mission = {
 	clear_variable = murder_mystery_decision_mission_duration
 }
 
+# The cell's contacts and cover are arranged at once; the weapons and money
+# travel as a shipment that arrives after shipment_transit_days unless a
+# raid or a lost stage cancels it. A cell that already expects a shipment
+# receives the supplies directly.
 murder_mystery_decision_supply_selected_cell = {
 	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.assassin_state_preparation }
 	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
 	set_variable = { murder_mystery_decision_cell_stage = constant:murder_mystery_cell_stage.entrenched }
-	set_variable = { murder_mystery_decision_cell_maturity_delta = constant:murder_mystery_value.twenty }
+	set_variable = { murder_mystery_decision_cell_maturity_delta = constant:murder_mystery_value.zero }
 	set_variable = { murder_mystery_decision_cell_local_case_delta = constant:murder_mystery_value.ten }
 	set_variable = { murder_mystery_decision_cell_exposure_delta = constant:murder_mystery_value.negative_five }
 	set_variable = { murder_mystery_decision_cell_inherited_evidence_delta = constant:murder_mystery_value.ten }
-	set_variable = { murder_mystery_decision_cell_revolt_readiness_delta = constant:murder_mystery_value.fifteen }
+	set_variable = { murder_mystery_decision_cell_revolt_readiness_delta = constant:murder_mystery_value.zero }
+	if = {
+		limit = {
+			has_event_target = murder_mystery_selected_cell
+			event_target:murder_mystery_selected_cell = { has_country_flag = murder_mystery_shipment_pending }
+		}
+		set_variable = { murder_mystery_decision_cell_maturity_delta = constant:murder_mystery_objective_tuning.shipment_maturity }
+		set_variable = { murder_mystery_decision_cell_revolt_readiness_delta = constant:murder_mystery_objective_tuning.shipment_readiness }
+	}
 	murder_mystery_decision_run_cell_support = yes
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_decision_cell_update_succeeded
+			has_event_target = murder_mystery_selected_cell
+			event_target:murder_mystery_selected_cell = { NOT = { has_country_flag = murder_mystery_shipment_pending } }
+		}
+		event_target:murder_mystery_selected_cell = { murder_mystery_record_cell_shipment = yes }
+	}
 }
 
 murder_mystery_decision_execute_high_value_operation = {

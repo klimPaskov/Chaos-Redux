@@ -339,7 +339,31 @@ murder_mystery_objective_derivative_is_lost = {
 # agency operation bind their own context and always pass.
 murder_mystery_objective_binding_is_valid = {
 	OR = {
-		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = less_than }
+		AND = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = less_than }
+			NOT = { check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_witness_transfer compare = equals } }
+			NOT = { check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.intercept_support_shipment compare = equals } }
+			NOT = { check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.dismantle_local_recruitment compare = equals } }
+			NOT = { check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_local_government compare = equals } }
+		}
+		AND = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_witness_transfer compare = equals }
+			has_variable = murder_mystery_objective_origin_state
+			has_variable = murder_mystery_objective_state
+		}
+		AND = {
+			OR = {
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.intercept_support_shipment compare = equals }
+				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_local_government compare = equals }
+			}
+			has_variable = murder_mystery_objective_country
+			has_variable = murder_mystery_objective_start_value
+		}
+		AND = {
+			check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.dismantle_local_recruitment compare = equals }
+			has_variable = murder_mystery_objective_cell_generation
+			has_variable = murder_mystery_objective_floor_value
+		}
 		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.agency_operation compare = equals }
 		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.synchronized_operation compare = equals }
 		check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_central_command compare = equals }
@@ -375,6 +399,83 @@ murder_mystery_objective_binding_is_valid = {
 			}
 			has_variable = murder_mystery_objective_sector
 			check_variable = { var = murder_mystery_objective_sector_countries^num value = constant:murder_mystery_value.zero compare = greater_than }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Witness transfer, support shipment, recruitment and local government
+# ---------------------------------------------------------------------------
+# All run in the mission owner's COUNTRY scope.
+
+# No objective resolves on the day it starts.
+murder_mystery_objective_started_before_today = {
+	has_variable = murder_mystery_objective_start_date
+	check_variable = { var = global.date value = murder_mystery_objective_start_date compare = greater_than }
+}
+
+# The witnesses travel by rail from the origin state to the destination state;
+# both must stay under the owner's full control and stay connected.
+murder_mystery_objective_witness_transfer_holds = {
+	has_variable = murder_mystery_objective_origin_state
+	has_variable = murder_mystery_objective_state
+	has_full_control_of_state = var:murder_mystery_objective_origin_state
+	has_full_control_of_state = var:murder_mystery_objective_state
+	has_railway_connection = {
+		start_state = murder_mystery_objective_origin_state
+		target_state = murder_mystery_objective_state
+	}
+}
+
+# The bound shipment (generation in murder_mystery_objective_start_value) was
+# cancelled by a raid or by the cell losing a stage.
+murder_mystery_objective_shipment_was_cancelled = {
+	has_variable = murder_mystery_objective_country
+	has_variable = murder_mystery_objective_start_value
+	var:murder_mystery_objective_country = {
+		has_variable = murder_mystery_shipment_cancelled_generation
+		check_variable = { var = murder_mystery_shipment_cancelled_generation value = PREV.murder_mystery_objective_start_value compare = equals }
+	}
+}
+
+# The bound shipment reached the cell.
+murder_mystery_objective_shipment_has_arrived = {
+	has_variable = murder_mystery_objective_country
+	has_variable = murder_mystery_objective_start_value
+	var:murder_mystery_objective_country = {
+		has_variable = murder_mystery_shipment_arrived_generation
+		check_variable = { var = murder_mystery_shipment_arrived_generation value = PREV.murder_mystery_objective_start_value compare = equals }
+	}
+}
+
+# The bound cell row (by its unique generation) is gone, or its maturity fell
+# to the floor recorded when the mission began.
+murder_mystery_objective_recruitment_is_broken = {
+	has_variable = murder_mystery_objective_cell_generation
+	has_variable = murder_mystery_objective_floor_value
+	OR = {
+		NOT = { is_in_array = { array = global.murder_mystery_cell_generation_entries value = murder_mystery_objective_cell_generation } }
+		any_of = {
+			array = global.murder_mystery_cell_generation_entries
+			value = murder_mystery_objective_scan_generation
+			index = murder_mystery_objective_scan_index
+			check_variable = { var = murder_mystery_objective_scan_generation value = murder_mystery_objective_cell_generation compare = equals }
+			check_variable = { var = global.murder_mystery_cell_maturity_entries^murder_mystery_objective_scan_index value = murder_mystery_objective_floor_value compare = less_than_or_equals }
+		}
+	}
+}
+
+# The movement struck an office in the protected government (its incident
+# count rose above the value recorded when the mission began), or the
+# government fell.
+murder_mystery_objective_local_government_was_struck = {
+	has_variable = murder_mystery_objective_country
+	has_variable = murder_mystery_objective_start_value
+	var:murder_mystery_objective_country = {
+		OR = {
+			NOT = { exists = yes }
+			has_capitulated = yes
+			check_variable = { var = murder_mystery_incident_history_count value = PREV.murder_mystery_objective_start_value compare = greater_than }
 		}
 	}
 }

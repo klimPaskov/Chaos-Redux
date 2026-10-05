@@ -304,3 +304,14 @@ Basis: Part 6 (names derived from the host or region) and Part 5 (each derivativ
 - Derivatives draw the first carrier no living country uses from AXT, AXU, AXV, AXW, AXY and AXZ (AXX belongs to Event 006). The check is a one-time `any_country` test of six tags at creation, not a recurring scan. The concurrent cap drops from 12 to 6 (and the unused registry row ceiling to match) so the pool can never run out while the registry still has room; the evolution and achievement thresholds (3 and 4 derivatives) stay reachable.
 - Each derivative is "The [parent adjective] [carrier name]", for example "The Polish River Cell", keeping each carrier's distinct flag and flavour while tying the name to the government it rose against or, for a cell territory, the government it replaced.
 - The shared carrier setup moved into `murder_mystery_initialize_derivative_carrier`, so revolts and cell territories start from identical runtime, spirit, manpower and kits.
+
+## D29. The four case objectives bind real targets
+
+Disposition: implemented (round 2); the bindings, the shipment delivery and the mission outcomes need live confirmation.
+Basis: Part 8 (a witness transfer between named states, preventing a specific support shipment, dismantling recruitment before a deadline, protecting local leadership during a crisis) and the event doc's own list of simplified checks.
+
+- Every bound objective records its start date and its completion triggers require a later date, so none can resolve on its first day (the old recruitment and shipment checks were true at activation for any immature cell).
+- Witness transfer: origin is the capital, destination a random fully controlled state rail-connected to it at the start; the old witness-safety threshold is dropped because the named route is the objective.
+- Shipments: Supply the Selected Cell's maturity (+20) and readiness (+15) now travel as a recorded shipment that the pulse delivers after 45 days; the other supply effects stay immediate. Shipments are identified by a unique generation from the transaction sequence, so the interception mission binds exactly one shipment. Raids that damage or destroy the cell cancel it; a cell turning into a derivative counts as delivery, so it cannot hand the government a success. Delivery runs in the pulse (every 10 days), so arrival can lag the date by up to one pulse.
+- Recruitment: the cell row is bound by its unique generation rather than its country, so the trigger compares numbers only (`any_of` over the generation array, reading the maturity at the same index); the floor is 20 maturity below the start value.
+- Local government: the protected government's `murder_mystery_incident_history_count` (raised by every office casualty and ruler murder the movement commits there) is recorded at the start; any increase fails the objective. The old capital-control and target-vulnerability proxies are dropped.

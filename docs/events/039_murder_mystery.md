@@ -48,6 +48,16 @@ Force and depot objectives require actual divisions, a supply hub, and the rail 
 These checks establish logistical prerequisites but do not measure individual divisions' live supply percentages.
 That remaining validation and implementation question stays unresolved.
 
+No objective can resolve on the day it starts: every bound mission records `murder_mystery_objective_start_date` and its completion triggers require a later date.
+Four counterinsurgency and case objectives bind named targets:
+
+- Protect the Witness Transfer binds the capital as origin and a random fully controlled state rail-connected to it as destination (both highlighted and named in the mission); it fails as soon as either state leaves full control or `has_railway_connection` between them breaks, and succeeds at the deadline only if both still hold.
+- Intercept the Support Shipment binds the generation of the shipment that Supply the Selected Cell recorded on the cell country (`murder_mystery_record_cell_shipment`, arriving after `shipment_transit_days`); without a shipment on its way the objective does not start. It succeeds when a raid (`murder_mystery_damage_cell_row`) or the cell's destruction cancels that shipment first, and fails when the pulse delivers it, at which point the cell gains `shipment_maturity` and `shipment_readiness`. A cell that becomes a derivative takes its shipment with it.
+- Dismantle the Local Recruitment binds the cell row by its unique generation and records a floor `recruitment_maturity_drop` below its maturity at the start; it succeeds when the row's maturity reaches the floor or the row is gone.
+- Protect the Local Government records the protected government's Event 039 incident count; it fails as soon as the movement strikes one of its offices (an office casualty or a ruler's murder raises the count) or the government falls.
+
+Supply the Selected Cell therefore arranges cover and contacts at once (stage, local case, exposure, evidence) and sends its maturity and readiness as the shipment; a cell that already expects a shipment receives the supplies directly.
+
 The terminal mission copies only the countries already assigned to its selected sector from the bounded government registry.
 Changing or losing the presentation selector cannot alter that snapshot.
 Full mission success requires every snapshot country to capitulate, cease to exist, or become the actor's subject.
@@ -408,7 +418,7 @@ The asset audit remains governed by the full per-asset review and consumer cross
 ## Remaining acceptance work
 
 The mission family count is not proof of complete objective coverage.
-Every Part 8 mission family now has an objective, but foreign shipment receipts, the witness state-to-state transfer, recruitment network outcomes and protected-character survival still use the simplified checks described above.
+Every Part 8 mission family has an objective, and the witness transfer, support shipment, recruitment and local government objectives bind named states, a recorded shipment, a cell row and an incident count.
 The agency operation, movement and terminal objectives need live confirmation of their binding, timers and outcomes.
 Route rewards, country viability, native technology and focus evidence, probability comparisons, both Meshy model packages and actions, licensed audio, workbook reconciliation, and the full Part 18 matrix remain separate completion gates.
 No runtime or persistence claim in this document substitutes for observed game state.
