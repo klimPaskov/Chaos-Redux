@@ -1,0 +1,59 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ACTIVE SIGNAL (EVOLUTION I) TRIGGERS
+# ============================================================================
+# Overview:
+# - Band checks on the global Signal Intensity, the strong pulse gate, and the
+#   AI tendencies that read the signal. Only the expedition's own country,
+#   the global race values and the stored participant registry are read.
+# ============================================================================
+
+# Global. Signal Intensity has reached the steady band or higher.
+chaosx_nr25_signal_steady = {
+	has_variable = global.chaosx_nr25_signal_intensity
+	check_variable = { var = global.chaosx_nr25_signal_intensity value = constant:chaosx_nr25_signal.band_steady compare = greater_than_or_equals }
+}
+
+# Global. Signal Intensity has reached the strong band or higher.
+chaosx_nr25_signal_strong = {
+	has_variable = global.chaosx_nr25_signal_intensity
+	check_variable = { var = global.chaosx_nr25_signal_intensity value = constant:chaosx_nr25_signal.band_strong compare = greater_than_or_equals }
+}
+
+# Global. Signal Intensity is in the violent band.
+chaosx_nr25_signal_violent = {
+	has_variable = global.chaosx_nr25_signal_intensity
+	check_variable = { var = global.chaosx_nr25_signal_intensity value = constant:chaosx_nr25_signal.band_violent compare = greater_than_or_equals }
+}
+
+# Country scope. A strong pulse can strike this expedition: Evolution I is in
+# force, the race is open, and the expedition has a camp on the ice.
+chaosx_nr25_strong_pulse_possible = {
+	chaosx_nr25_active_signal_evolution_in_force = yes
+	has_global_flag = chaosx_nr25_active
+	NOT = { has_country_flag = chaosx_nr25_terminal }
+	chaosx_nr25_sustain_phase_active = yes
+	has_variable = global.chaosx_nr25_signal_intensity
+}
+
+# Country scope. The expedition's radio net still backs up its field sets.
+chaosx_nr25_radio_net_working = {
+	has_country_flag = chaosx_nr25_action_radio_used
+	NOT = { has_country_flag = chaosx_nr25_signal_radio_damaged }
+}
+
+# Country scope (the AI expedition). Another expedition still in the race is
+# already making its final recovery attempts.
+chaosx_nr25_ai_rival_near_final = {
+	any_of_scopes = {
+		array = global.chaosx_nr25_participants
+		chaosx_nr25_rival_card_candidate_valid = yes
+		check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+	}
+}
+
+# Country scope (the AI expedition). A high signal is dangerous for this
+# expedition: the signal is strong and its logistics are weak.
+chaosx_nr25_ai_signal_too_hot = {
+	chaosx_nr25_signal_strong = yes
+	chaosx_nr25_ai_weak = yes
+}

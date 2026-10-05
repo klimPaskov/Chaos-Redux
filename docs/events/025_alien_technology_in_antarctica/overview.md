@@ -132,6 +132,21 @@ Active Signal starts with the signal already answering, Something Survived with 
 These four begin at once and log once; The Technology Changes Its Users stays latent, raising every crew's starting Exposure Risk and starting their Dependence as soon as it activates during the race.
 Every baseline phase remains.
 
+### Active Signal (Evolution I)
+
+Signal Intensity is one global value, `global.chaosx_nr25_signal_intensity` (0 to 100), in `025_alien_technology_in_antarctica_signal_effects.txt` with its tuning in `025_alien_technology_in_antarctica_signal_constants.txt`.
+It starts at 10 when the evolution activates during the race and at 20 when the race opens with it, and the first expedition pulse of every pulse period raises it by 3 for the whole race.
+Its band (faint, steady from 25, strong from 50, violent from 75) appears in the Expedition Board's Exposure Risk tooltip and in every signal response tooltip.
+
+Each expedition with a camp on the ice rolls a strong pulse on its own pulse.
+The chance is the MTTH entry `chaosx_nr25_strong_pulse_chance` (10% at full intensity, scaled by the current intensity), multiplied by 0.5 after Shield the Instruments, 0.6 after Listen from a Distance and 0.75 while the radio net works, and by 1.25 for a signals station outpost; it is zero while the evolution is not in force.
+A strong pulse draws one of five consequences with equal weight: burned-out radios (readiness and intelligence loss, and the radio net no longer covers radio failures for 60 days), a drained camp (readiness), injured crews (one crew and the Antarctic expedition deaths band), corrupted survey records (survey evidence, drawn only while the expedition holds some), or a revealed position (Exposure Risk, every other camp on the ice gains intelligence, the concealed departure is lost, and AI rival operations favour the revealed expedition for 45 days).
+Shielded instruments halve the damage and remote listening cuts it to three quarters; either keeps the crews out of harm.
+Each consequence has its own report (`chaosx.nr25.321` to `.325`), and the pulse discharges 15 intensity.
+
+The responses read the signal: following the carrier wave adds survey evidence that grows with intensity and raises the signal by 2; broadcasting raises it by 8 and is then either answered by a strong pulse (25% plus half the intensity) or clears the first unexplored sector other than the hidden core from the expedition's charts (`chaosx.nr25.327`); jamming lowers the signal by 6, costs the jammer 6 Logistics Readiness, and for 60 days halves the signal response gains of the rival selected on the board (or otherwise the rival with the most progress), which learns who did it when its intelligence reaches the attribution threshold (`chaosx.nr25.326`).
+AI tendencies follow spec 009: scientific expeditions listen remotely, more so on a strong signal; aggressive ones follow the wave; any unshielded camp shields once the signal is strong; jamming rises when a rival is in its final recovery, most for an aggressive expedition; weak logistics avoid following and broadcasting into a strong signal, and nobody broadcasts into a violent one.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

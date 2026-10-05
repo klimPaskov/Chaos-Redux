@@ -566,3 +566,19 @@ Disposition: `implemented`.
 Basis: spec 014 section 14 and the super-event text research handoff.
 
 Decision: `chaosx_super_event.109.q` prints the two verified lines in quotation marks, one per line, followed by `§Y-Alfred, Lord Tennyson, Ulysses§!`, the format of super-events 12 and 74.
+
+## D36. Active Signal: global intensity, strong pulses and real responses
+
+Disposition: `implemented`; frequencies and AI behaviour are `needs_live_game`; the MCP probability baseline and compare stay blocked as recorded in D31.
+
+Basis: spec 004 Evolution I (global state, new actions, failure and counterplay, AI behaviour, evolved opening), spec 009 Active Signal and D31.
+
+Decision:
+
+- Signal Intensity is `global.chaosx_nr25_signal_intensity` (0 to 100), seeded at 10 when the evolution activates and at 20 when the race opens with it. The first expedition pulse of each pulse period raises it by 3, a strong pulse discharges 15, following the carrier wave adds 2, a broadcast adds 8 and jamming removes 6. The per-country variable, its registration and opening seeds, its clamp and the signals station's reversible intensity delta are retired.
+- Strong pulses strike expeditions with a camp on the ice. The chance per pulse is the MTTH entry `chaosx_nr25_strong_pulse_chance` (10% at full intensity) scaled by intensity, with factors 0.5 for shielded instruments, 0.6 for remote listening, 0.75 for a working radio net and 1.25 for a signals station outpost, and zero while the evolution is not in force.
+- The five spec consequences are drawn with equal weight (corrupted data only while the expedition holds survey evidence): damaged radios (the radio net stops covering radio failures for 60 days through `chaosx_nr25_radio_net_working`), lost readiness, injured crews (one crew and the hazard casualty band through the Antarctic expedition deaths reason), corrupted survey evidence, and a revealed position (exposure, intelligence for every other camp on the ice, the concealed departure lost, and a 45-day mark that AI rival operations favour). Shielding halves the damage, remote listening cuts it to three quarters, and either prevents casualties. Reports `chaosx.nr25.321` to `.325` reuse the signal report card.
+- Following the wave adds survey evidence of 2 plus a tenth of the intensity. Jamming targets the board-selected rival for a human, otherwise the valid rival with the most progress, halves that rival's signal response gains for 60 days, costs the jammer 6 readiness and reports to the rival (`.326`), which identifies the jammer and gains the existing sabotage suspicion opinion when its intelligence reaches the sabotage attribution threshold. A broadcast is answered by a strong pulse with chance 25 plus half the intensity, otherwise it marks the first unresolved sector other than the hidden core surveyed for the broadcaster (`.327`).
+- AI tendencies extend D28: scientific listening rises on a strong signal until the camp listens remotely; following gains weight on a strong signal unless logistics are weak and loses it while jammed; any unshielded camp shields on a strong signal; jamming rises when a rival is in final recovery, most for an aggressive expedition, and falls for a weak one; weak logistics avoid broadcasting into a strong signal and nobody broadcasts into a violent one.
+- The band appears in the five response tooltips and in the board's Exposure Risk tooltip; whether a tooltip on a click-through board element shows in game is `needs_live_game`, so the decision tooltips carry the same line.
+- The Evolution I body text and the pending catalog cell `D26` describe the pulses.

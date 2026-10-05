@@ -86,7 +86,7 @@ chaosx_nr25_hazard_chance = {
 	}
 	modifier = {
 		factor = constant:chaosx_nr25_hazard.prepared_factor
-		has_country_flag = chaosx_nr25_action_radio_used
+		chaosx_nr25_radio_net_working = yes
 	}
 	modifier = {
 		factor = constant:chaosx_nr25_hazard.prepared_factor
@@ -110,5 +110,34 @@ chaosx_nr25_hazard_chance = {
 	modifier = {
 		factor = constant:chaosx_nr25_hazard.solo_factor
 		chaosx_nr25_solo_expedition = yes
+	}
+}
+
+# Chance, in percent at full Signal Intensity, that a strong pulse strikes an
+# expedition on the ice this pulse; the signal effects scale it by the
+# current intensity. Shielded instruments, remote listening and a working
+# radio net lower it; a signals station tuned to the carrier raises it. It is
+# zero while Evolution I is not in force.
+chaosx_nr25_strong_pulse_chance = {
+	base = constant:chaosx_nr25_signal.strong_pulse_max_chance
+	modifier = {
+		factor = 0
+		NOT = { chaosx_nr25_active_signal_evolution_in_force = yes }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_signal.shield_factor
+		has_country_flag = chaosx_nr25_signal_shield_route
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_signal.remote_factor
+		has_country_flag = chaosx_nr25_signal_remote_route
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_signal.radio_net_factor
+		chaosx_nr25_radio_net_working = yes
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_signal.signals_station_factor
+		check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals }
 	}
 }

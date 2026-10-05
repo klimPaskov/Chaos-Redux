@@ -1,0 +1,112 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ACTIVE SIGNAL (EVOLUTION I)
+# ============================================================================
+# Overview:
+# - Tuning for the global Signal Intensity, the strong pulses it drives on
+#   expeditions with a camp on the ice, and the five signal responses.
+# - Signal Intensity runs from 0 to max_intensity. It rises once per pulse
+#   period for the whole race, a strong pulse discharges part of it, following
+#   the carrier wave and broadcasting raise it, and jamming drowns it out.
+# - Chances are percentages. Losses are positive amounts; the signal effects
+#   subtract them.
+# - Nothing here runs while Evolution I is disabled, so the baseline race is
+#   unchanged without it.
+# ============================================================================
+
+chaosx_nr25_signal = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Global intensity.
+	activation_intensity = 10
+	opening_intensity = 20
+	rise_per_pulse = 3
+	max_intensity = 100
+	# Band floors shown on the board and read by AI tendencies.
+	band_steady = 25
+	band_strong = 50
+	band_violent = 75
+
+	# Strong pulse chance per expedition pulse, in percent at full intensity;
+	# the chance scales with intensity / percent.
+	strong_pulse_max_chance = 10
+	percent = 100
+	# Intensity released by a strong pulse.
+	discharge = 15
+	# Mitigation factors on the chance (MTTH chaosx_nr25_strong_pulse_chance).
+	shield_factor = 0.5
+	remote_factor = 0.6
+	radio_net_factor = 0.75
+	signals_station_factor = 1.25
+
+	# Draw weight of each strong pulse consequence.
+	weight = 10
+	# Damage multipliers: shielded instruments take half; crews listening from
+	# a distance take three quarters. Either keeps the crews out of harm.
+	shield_severity = 0.5
+	remote_severity = 0.75
+
+	# Consequences.
+	radio_readiness = 6
+	radio_intelligence = 10
+	radio_damage_days = 60
+	readiness_loss = 12
+	injury_readiness = 4
+	injury_crew = 1
+	data_evidence = 8
+	reveal_exposure = 8
+	reveal_rival_intelligence = 6
+	reveal_days = 45
+
+	# Responses.
+	remote_intelligence = 12
+	remote_progress = 4
+	follow_progress = 8
+	follow_access = 4
+	shield_readiness = 8
+	jam_intelligence = 6
+	broadcast_intelligence = 15
+	follow_rise = 2
+	follow_evidence = 2
+	# Extra survey evidence per point of intensity when following the wave.
+	follow_evidence_per_intensity = 0.1
+	broadcast_rise = 8
+	broadcast_pulse_base_chance = 25
+	broadcast_pulse_per_intensity = 0.5
+	broadcast_sector_evidence = 3
+	jam_drop = 6
+	jam_days = 60
+	jam_readiness = 6
+	# A jammed expedition keeps this share of its signal response gains.
+	jammed_gain_factor = 0.5
+}
+
+# Strong pulse consequence kinds, in the order of the draw.
+chaosx_nr25_pulse_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	radio = 1
+	readiness = 2
+	injury = 3
+	data = 4
+	reveal = 5
+}
+
+# Signal Intensity bands for the board and tooltips.
+chaosx_nr25_signal_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	quiet = 0
+	steady = 1
+	strong = 2
+	violent = 3
+}

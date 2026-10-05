@@ -1,0 +1,434 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ACTIVE SIGNAL (EVOLUTION I)
+# ============================================================================
+# Overview:
+# - Signal Intensity is one global value, global.chaosx_nr25_signal_intensity,
+#   seeded when Evolution I activates (higher when the race opens with it).
+# - chaosx_nr25_signal_pulse is called by each expedition's own pulse while
+#   the evolution is in force. The first pulse of each pulse period raises the
+#   global intensity once for the whole race; then the expedition, if it has
+#   a camp on the ice, rolls a strong pulse whose chance is the intensity
+#   share of the MTTH entry chaosx_nr25_strong_pulse_chance.
+# - A strong pulse has one of five consequences (damaged radios, lost
+#   readiness, injured crews, corrupted survey data, or a revealed position),
+#   discharges part of the intensity and sends its own report. Shielded
+#   instruments and remote listening reduce the damage and keep crews safe.
+# - The five signal responses (Listen from a Distance, Follow the Carrier
+#   Wave, Shield the Instruments, Jam the Signal, Broadcast a Controlled
+#   Reply) apply their signal-specific effects here; costs and the shared
+#   action bookkeeping stay in chaosx_nr25_execute_evolution_action.
+# - Only the expedition's own country, the global race values and the stored
+#   participant registry are read. Nothing scans the world, and nothing runs
+#   while the evolution is disabled.
+# ============================================================================
+
+# GLOBAL value set from any scope. Seeds Signal Intensity when Evolution I
+# activates: higher when the race opened with the signal already active.
+chaosx_nr25_seed_signal_intensity = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_active_signal }
+		set_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.opening_intensity }
+	}
+	else = {
+		set_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.activation_intensity }
+	}
+	set_variable = { global.chaosx_nr25_signal_rise_date = global.date }
+}
+
+# GLOBAL. Keeps Signal Intensity inside its range.
+chaosx_nr25_clamp_signal_intensity = {
+	clamp_variable = {
+		var = global.chaosx_nr25_signal_intensity
+		min = constant:chaosx_nr25_value.zero
+		max = constant:chaosx_nr25_signal.max_intensity
+	}
+}
+
+# COUNTRY scope (the expedition, from its pulse while Evolution I is in force).
+chaosx_nr25_signal_pulse = {
+	if = {
+		limit = { NOT = { has_variable = global.chaosx_nr25_signal_intensity } }
+		chaosx_nr25_seed_signal_intensity = yes
+	}
+	# The first expedition pulse of each pulse period raises the intensity once.
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.chaosx_nr25_signal_rise_date }
+				check_variable = { var = global.date value = global.chaosx_nr25_signal_rise_date compare = greater_than_or_equals }
+			}
+		}
+		add_to_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.rise_per_pulse }
+		chaosx_nr25_clamp_signal_intensity = yes
+		set_temp_variable = { chaosx_date_days = constant:chaosx_nr25_timing.pulse_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { global.chaosx_nr25_signal_rise_date = global.date }
+		add_to_variable = { global.chaosx_nr25_signal_rise_date = chaosx_date_offset }
+	}
+	if = {
+		limit = { chaosx_nr25_strong_pulse_possible = yes }
+		set_temp_variable = { chaosx_nr25_pulse_chance = mtth:chaosx_nr25_strong_pulse_chance }
+		multiply_temp_variable = { chaosx_nr25_pulse_chance = global.chaosx_nr25_signal_intensity }
+		divide_temp_variable = { chaosx_nr25_pulse_chance = constant:chaosx_nr25_signal.percent }
+		set_temp_variable_to_random = chaosx_nr25_pulse_roll
+		multiply_temp_variable = { chaosx_nr25_pulse_roll = constant:chaosx_nr25_signal.percent }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_pulse_roll value = chaosx_nr25_pulse_chance compare = less_than } }
+			clr_country_flag = chaosx_nr25_last_pulse_from_broadcast
+			chaosx_nr25_apply_strong_pulse = yes
+		}
+	}
+}
+
+# COUNTRY scope. Draws one strong pulse consequence, applies it to this
+# expedition, discharges part of the global intensity and sends the report.
+# Corrupted data is drawn only while the expedition holds survey evidence.
+# The caller sets chaosx_nr25_last_pulse_from_broadcast when its own reply
+# provoked the pulse, for the report text.
+chaosx_nr25_apply_strong_pulse = {
+	set_temp_variable = { chaosx_nr25_pw_radio = constant:chaosx_nr25_signal.weight }
+	set_temp_variable = { chaosx_nr25_pw_readiness = constant:chaosx_nr25_signal.weight }
+	set_temp_variable = { chaosx_nr25_pw_injury = constant:chaosx_nr25_signal.weight }
+	set_temp_variable = { chaosx_nr25_pw_data = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		set_temp_variable = { chaosx_nr25_pw_data = constant:chaosx_nr25_signal.weight }
+	}
+	set_temp_variable = { chaosx_nr25_pw_reveal = constant:chaosx_nr25_signal.weight }
+	set_temp_variable = { chaosx_nr25_pw_total = chaosx_nr25_pw_radio }
+	add_to_temp_variable = { chaosx_nr25_pw_total = chaosx_nr25_pw_readiness }
+	add_to_temp_variable = { chaosx_nr25_pw_total = chaosx_nr25_pw_injury }
+	add_to_temp_variable = { chaosx_nr25_pw_total = chaosx_nr25_pw_data }
+	add_to_temp_variable = { chaosx_nr25_pw_total = chaosx_nr25_pw_reveal }
+	set_temp_variable_to_random = chaosx_nr25_pw_pick
+	multiply_temp_variable = { chaosx_nr25_pw_pick = chaosx_nr25_pw_total }
+
+	set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.none }
+	if = { limit = { check_variable = { var = chaosx_nr25_pw_pick value = chaosx_nr25_pw_radio compare = less_than } } set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.radio } }
+	subtract_from_temp_variable = { chaosx_nr25_pw_pick = chaosx_nr25_pw_radio }
+	if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.none compare = equals } check_variable = { var = chaosx_nr25_pw_pick value = chaosx_nr25_pw_readiness compare = less_than } } set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.readiness } }
+	subtract_from_temp_variable = { chaosx_nr25_pw_pick = chaosx_nr25_pw_readiness }
+	if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.none compare = equals } check_variable = { var = chaosx_nr25_pw_pick value = chaosx_nr25_pw_injury compare = less_than } } set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.injury } }
+	subtract_from_temp_variable = { chaosx_nr25_pw_pick = chaosx_nr25_pw_injury }
+	if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.none compare = equals } check_variable = { var = chaosx_nr25_pw_pick value = chaosx_nr25_pw_data compare = less_than } } set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.data } }
+	if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.none compare = equals } } set_temp_variable = { chaosx_nr25_pulse_kind = constant:chaosx_nr25_pulse_kind.reveal } }
+	set_variable = { chaosx_nr25_last_pulse_kind = chaosx_nr25_pulse_kind }
+
+	# Shielded instruments halve the damage; crews listening from a distance
+	# take three quarters. Either keeps the crews out of harm.
+	clr_country_flag = chaosx_nr25_last_pulse_mitigated
+	set_temp_variable = { chaosx_nr25_pulse_severity = constant:chaosx_nr25_value.one }
+	if = {
+		limit = { has_country_flag = chaosx_nr25_signal_shield_route }
+		set_temp_variable = { chaosx_nr25_pulse_severity = constant:chaosx_nr25_signal.shield_severity }
+		set_country_flag = chaosx_nr25_last_pulse_mitigated
+	}
+	else_if = {
+		limit = { has_country_flag = chaosx_nr25_signal_remote_route }
+		set_temp_variable = { chaosx_nr25_pulse_severity = constant:chaosx_nr25_signal.remote_severity }
+		set_country_flag = chaosx_nr25_last_pulse_mitigated
+	}
+
+	set_variable = { chaosx_nr25_pulse_readiness_loss = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_pulse_intelligence_loss = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_pulse_evidence_loss = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_pulse_exposure_gain = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_pulse_crew_loss = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.radio compare = equals } }
+		set_variable = { chaosx_nr25_pulse_readiness_loss = constant:chaosx_nr25_signal.radio_readiness }
+		set_variable = { chaosx_nr25_pulse_intelligence_loss = constant:chaosx_nr25_signal.radio_intelligence }
+		# Burned-out sets no longer back up the radio net for a while.
+		set_temp_variable = { chaosx_nr25_pulse_flag_days = constant:chaosx_nr25_signal.radio_damage_days }
+		set_country_flag = { flag = chaosx_nr25_signal_radio_damaged days = chaosx_nr25_pulse_flag_days value = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.readiness compare = equals } }
+		set_variable = { chaosx_nr25_pulse_readiness_loss = constant:chaosx_nr25_signal.readiness_loss }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.injury compare = equals } }
+		set_variable = { chaosx_nr25_pulse_readiness_loss = constant:chaosx_nr25_signal.injury_readiness }
+		set_variable = { chaosx_nr25_pulse_crew_loss = constant:chaosx_nr25_signal.injury_crew }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.data compare = equals } }
+		set_variable = { chaosx_nr25_pulse_evidence_loss = constant:chaosx_nr25_signal.data_evidence }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_pulse_evidence_loss value = chaosx_nr25_survey_evidence compare = greater_than } }
+			set_variable = { chaosx_nr25_pulse_evidence_loss = chaosx_nr25_survey_evidence }
+		}
+	}
+	else = {
+		set_variable = { chaosx_nr25_pulse_exposure_gain = constant:chaosx_nr25_signal.reveal_exposure }
+	}
+	multiply_variable = { chaosx_nr25_pulse_readiness_loss = chaosx_nr25_pulse_severity }
+	multiply_variable = { chaosx_nr25_pulse_intelligence_loss = chaosx_nr25_pulse_severity }
+	multiply_variable = { chaosx_nr25_pulse_evidence_loss = chaosx_nr25_pulse_severity }
+	multiply_variable = { chaosx_nr25_pulse_exposure_gain = chaosx_nr25_pulse_severity }
+	if = {
+		limit = { has_country_flag = chaosx_nr25_last_pulse_mitigated }
+		set_variable = { chaosx_nr25_pulse_crew_loss = constant:chaosx_nr25_value.zero }
+	}
+	subtract_from_variable = { chaosx_nr25_logistics_readiness = chaosx_nr25_pulse_readiness_loss }
+	subtract_from_variable = { chaosx_nr25_intelligence = chaosx_nr25_pulse_intelligence_loss }
+	subtract_from_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_pulse_evidence_loss }
+	add_to_variable = { chaosx_nr25_exposure_risk = chaosx_nr25_pulse_exposure_gain }
+	subtract_from_variable = { chaosx_nr25_crew = chaosx_nr25_pulse_crew_loss }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_crew_loss value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.hazard }
+		chaosx_nr25_record_casualties = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.reveal compare = equals } }
+		chaosx_nr25_signal_reveal_position = yes
+	}
+	subtract_from_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.discharge }
+	chaosx_nr25_clamp_signal_intensity = yes
+	chaosx_nr25_clamp_values = yes
+	if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.radio compare = equals } } country_event = { id = chaosx.nr25.321 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.readiness compare = equals } } country_event = { id = chaosx.nr25.322 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.injury compare = equals } } country_event = { id = chaosx.nr25.323 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_pulse_kind value = constant:chaosx_nr25_pulse_kind.data compare = equals } } country_event = { id = chaosx.nr25.324 days = 1 } }
+	else = { country_event = { id = chaosx.nr25.325 days = 1 } }
+}
+
+# COUNTRY scope. A strong pulse lit up this expedition's position: every other
+# expedition with a camp on the ice learns where it works, and its own
+# concealed departure no longer hides it.
+chaosx_nr25_signal_reveal_position = {
+	clr_country_flag = chaosx_nr25_departure_concealed
+	set_temp_variable = { chaosx_nr25_pulse_flag_days = constant:chaosx_nr25_signal.reveal_days }
+	set_country_flag = { flag = chaosx_nr25_signal_revealed days = chaosx_nr25_pulse_flag_days value = 1 }
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = {
+				chaosx_nr25_rival_card_candidate_valid = yes
+				chaosx_nr25_sustain_phase_active = yes
+			}
+			add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_signal.reveal_rival_intelligence }
+			clamp_variable = { var = chaosx_nr25_intelligence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+		}
+	}
+}
+
+# COUNTRY scope. Response gains are multiplied by the temporary
+# chaosx_nr25_signal_gain_factor: a jammed expedition keeps only part of them.
+chaosx_nr25_read_signal_gain_factor = {
+	set_temp_variable = { chaosx_nr25_signal_gain_factor = constant:chaosx_nr25_value.one }
+	if = {
+		limit = { has_country_flag = chaosx_nr25_signal_jammed }
+		set_temp_variable = { chaosx_nr25_signal_gain_factor = constant:chaosx_nr25_signal.jammed_gain_factor }
+	}
+}
+
+# COUNTRY scope. Listen from a Distance: passive receivers far from the wreck.
+# Gains intelligence and a little progress without raising the intensity, and
+# keeps the crews out of harm when a strong pulse strikes.
+chaosx_nr25_signal_response_remote = {
+	set_temp_variable = { chaosx_nr25_signal_gain_factor = constant:chaosx_nr25_value.one }
+	chaosx_nr25_read_signal_gain_factor = yes
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.remote_intelligence }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_intelligence = chaosx_nr25_signal_gain }
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.remote_progress }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_progress = chaosx_nr25_signal_gain }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_remote }
+	set_country_flag = chaosx_nr25_signal_remote_route
+}
+
+# COUNTRY scope. Follow the Carrier Wave: crews track the signal across the
+# ice. Progress, wreck access and survey evidence, with more evidence the
+# stronger the signal; the signal grows a little louder in answer.
+chaosx_nr25_signal_response_follow = {
+	set_temp_variable = { chaosx_nr25_signal_gain_factor = constant:chaosx_nr25_value.one }
+	chaosx_nr25_read_signal_gain_factor = yes
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.follow_progress }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_progress = chaosx_nr25_signal_gain }
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.follow_access }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_wreck_access = chaosx_nr25_signal_gain }
+	set_temp_variable = { chaosx_nr25_signal_gain = global.chaosx_nr25_signal_intensity }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.follow_evidence_per_intensity }
+	add_to_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.follow_evidence }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_signal_gain }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_follow }
+	add_to_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.follow_rise }
+	chaosx_nr25_clamp_signal_intensity = yes
+	set_country_flag = chaosx_nr25_signal_follow_route
+}
+
+# COUNTRY scope. Shield the Instruments: screened receivers and generators.
+# Readiness and lower exposure now; strong pulses later strike half as hard,
+# come less often and harm no crew.
+chaosx_nr25_signal_response_shield = {
+	add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_signal.shield_readiness }
+	subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_shield_reduction }
+	set_country_flag = chaosx_nr25_signal_shield_route
+}
+
+# COUNTRY scope. Jam the Signal: drowns out the carrier around the rival that
+# is selected on the Expedition Board, or otherwise the rival closest to the
+# wreck. That rival keeps only part of its signal gains for a time; the
+# jammer pays in readiness and exposure, and a rival with enough intelligence
+# learns who did it.
+chaosx_nr25_signal_response_jam = {
+	add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_signal.jam_intelligence }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_jam }
+	subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_signal.jam_readiness }
+	subtract_from_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.jam_drop }
+	chaosx_nr25_clamp_signal_intensity = yes
+	set_country_flag = chaosx_nr25_signal_jam_route
+	set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = chaosx_nr25_rival_target_selected
+		}
+		chaosx_nr25_resolve_rival_target_id = yes
+		if = {
+			limit = {
+				has_variable = chaosx_nr25_rival_target
+				has_event_target = chaosx_nr25_rival_target_scope
+				event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
+			}
+			event_target:chaosx_nr25_rival_target_scope = { save_event_target_as = chaosx_nr25_jam_target }
+			set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.zero compare = equals } }
+		set_temp_variable = { chaosx_nr25_jam_best = constant:chaosx_nr25_value.zero }
+		for_each_scope_loop = {
+			array = global.chaosx_nr25_participants
+			if = {
+				limit = {
+					chaosx_nr25_rival_card_candidate_valid = yes
+					OR = {
+						check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.zero compare = equals }
+						check_variable = { var = chaosx_nr25_progress value = chaosx_nr25_jam_best compare = greater_than }
+					}
+				}
+				set_temp_variable = { chaosx_nr25_jam_best = chaosx_nr25_progress }
+				set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.one }
+				save_event_target_as = chaosx_nr25_jam_target
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.one compare = equals } }
+		set_variable = { chaosx_nr25_last_jam_target = event_target:chaosx_nr25_jam_target }
+		event_target:chaosx_nr25_jam_target = {
+			set_temp_variable = { chaosx_nr25_pulse_flag_days = constant:chaosx_nr25_signal.jam_days }
+			set_country_flag = { flag = chaosx_nr25_signal_jammed days = chaosx_nr25_pulse_flag_days value = 1 }
+			clr_country_flag = chaosx_nr25_jammer_identified
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_report.sabotage_attribution_intelligence compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_jammer_identified
+				set_variable = { chaosx_nr25_jammer_id = ROOT.id }
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
+			}
+			country_event = { id = chaosx.nr25.326 days = 1 }
+		}
+	}
+}
+
+# COUNTRY scope. Broadcast a Controlled Reply: intelligence and evidence, a
+# louder signal, and then either a revealed sector or a strong pulse. The
+# pulse is likelier the stronger the signal already is.
+chaosx_nr25_signal_response_broadcast = {
+	set_temp_variable = { chaosx_nr25_signal_gain_factor = constant:chaosx_nr25_value.one }
+	chaosx_nr25_read_signal_gain_factor = yes
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_signal.broadcast_intelligence }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_intelligence = chaosx_nr25_signal_gain }
+	set_temp_variable = { chaosx_nr25_signal_gain = constant:chaosx_nr25_cost.evidence_signal_broadcast }
+	multiply_temp_variable = { chaosx_nr25_signal_gain = chaosx_nr25_signal_gain_factor }
+	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_signal_gain }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_broadcast }
+	add_to_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.broadcast_rise }
+	chaosx_nr25_clamp_signal_intensity = yes
+	set_country_flag = chaosx_nr25_signal_broadcast_route
+	set_temp_variable = { chaosx_nr25_pulse_chance = global.chaosx_nr25_signal_intensity }
+	multiply_temp_variable = { chaosx_nr25_pulse_chance = constant:chaosx_nr25_signal.broadcast_pulse_per_intensity }
+	add_to_temp_variable = { chaosx_nr25_pulse_chance = constant:chaosx_nr25_signal.broadcast_pulse_base_chance }
+	set_temp_variable_to_random = chaosx_nr25_pulse_roll
+	multiply_temp_variable = { chaosx_nr25_pulse_roll = constant:chaosx_nr25_signal.percent }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_pulse_roll value = chaosx_nr25_pulse_chance compare = less_than } }
+		set_country_flag = chaosx_nr25_last_pulse_from_broadcast
+		chaosx_nr25_apply_strong_pulse = yes
+	}
+	else = {
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.zero }
+		chaosx_nr25_signal_reveal_sector = yes
+		set_variable = { chaosx_nr25_broadcast_sector = chaosx_nr25_revealed_sector }
+		country_event = { id = chaosx.nr25.327 days = 1 }
+	}
+}
+
+# COUNTRY scope. Marks the first unresolved sector that is not the hidden core
+# as surveyed for this expedition and stores its number in the temporary
+# chaosx_nr25_revealed_sector (0 when none was left). The core is never
+# revealed this way, so the broadcast narrows the search without finding it.
+chaosx_nr25_signal_reveal_sector = {
+	if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.one compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_ice_shelf_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.two compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_mountain_shadow_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.two }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.three compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_signal_basin_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.three }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.four compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_coastal_fracture_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.four }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.five compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_magnetic_silence_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.five }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.unresolved compare = equals }
+			NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = constant:chaosx_nr25_value.six compare = equals } }
+		}
+		set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.surveyed }
+		set_temp_variable = { chaosx_nr25_revealed_sector = constant:chaosx_nr25_value.six }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_revealed_sector value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_signal.broadcast_sector_evidence }
+		chaosx_nr25_refresh_sector_frames = yes
+	}
+}

@@ -43,7 +43,6 @@ chaosx_nr25_register_participant = {
 		set_variable = { chaosx_nr25_rival_received_cooldown = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_value.zero }
-		set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_default }
 		set_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
@@ -581,7 +580,6 @@ chaosx_nr25_clamp_values = {
 	clamp_variable = { var = chaosx_nr25_survey_evidence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 	clamp_variable = { var = chaosx_nr25_wreck_access min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 	clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
-	clamp_variable = { var = chaosx_nr25_signal_intensity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 	clamp_variable = { var = chaosx_nr25_wreck_integrity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 }
 
@@ -605,7 +603,6 @@ chaosx_nr25_apply_outpost_emphasis = {
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } }
 		subtract_from_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_outpost_emphasis_delta.signals_intelligence }
-		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_outpost_emphasis_delta.signals_intensity }
 		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.signals_exposure }
 	}
 	if = {
@@ -643,7 +640,6 @@ chaosx_nr25_apply_outpost_emphasis = {
 		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } }
 		set_country_flag = chaosx_nr25_emphasis_signals_station
 		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_outpost_emphasis_delta.signals_intelligence }
-		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_outpost_emphasis_delta.signals_intensity }
 		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.signals_exposure }
 	}
 	if = {
@@ -1521,6 +1517,8 @@ chaosx_nr25_run_bounded_pulse = {
 	}
 	else = {
 		set_temp_variable = { chaosx_nr25_pulse_step = constant:chaosx_nr25_timing.pulse_days }
+		# Shared casualty band input, read by the incidents this pulse may record.
+		set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_value.zero }
 		# A missed controller event cannot hold the race in entry.
 		if = {
 			limit = {
@@ -1581,7 +1579,9 @@ chaosx_nr25_run_bounded_pulse = {
 			if = {
 				limit = { chaosx_nr25_active_signal_evolution_in_force = yes }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_pulse }
-				add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_pulse_intensity }
+				# Global Signal Intensity and strong pulses
+				# (025_alien_technology_in_antarctica_signal_effects.txt).
+				chaosx_nr25_signal_pulse = yes
 			}
 			if = {
 				limit = { chaosx_nr25_something_survived_evolution_in_force = yes }
@@ -1614,14 +1614,6 @@ chaosx_nr25_run_bounded_pulse = {
 		}
 		if = {
 			limit = { has_global_flag = chaosx_nr25_active NOT = { has_country_flag = chaosx_nr25_terminal } }
-			if = {
-				limit = {
-					chaosx_nr25_active_signal_evolution_in_force = yes
-					NOT = { has_country_flag = chaosx_nr25_signal_profile_initialized }
-				}
-				set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
-				set_country_flag = chaosx_nr25_signal_profile_initialized
-			}
 			if = {
 				limit = {
 					chaosx_nr25_something_survived_evolution_in_force = yes
@@ -3219,47 +3211,29 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.remote compare = equals } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
-		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.twelve }
-		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_remote }
-		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.two }
-		set_country_flag = chaosx_nr25_signal_remote_route
+		chaosx_nr25_signal_response_remote = yes
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.follow compare = equals } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
-		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.eight }
-		add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.four }
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_follow }
-		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.two }
-		set_country_flag = chaosx_nr25_signal_follow_route
+		chaosx_nr25_signal_response_follow = yes
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.shield compare = equals } }
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
-		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.eight }
-		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_shield_reduction }
-		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.five }
-		set_country_flag = chaosx_nr25_signal_shield_route
+		chaosx_nr25_signal_response_shield = yes
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.jam compare = equals } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
-		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_jam }
-		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.eight }
-		set_country_flag = chaosx_nr25_signal_jam_route
+		chaosx_nr25_signal_response_jam = yes
 		set_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.broadcast compare = equals } }
 		add_political_power = constant:chaosx_nr25_cost.pp_public_evolution
-		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.fifteen }
-		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_signal_broadcast }
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_broadcast }
-		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.ten }
-		set_country_flag = chaosx_nr25_signal_broadcast_route
+		chaosx_nr25_signal_response_broadcast = yes
 	}
 
 	if = {
@@ -3709,6 +3683,7 @@ chaosx_nr25_activate_evolution_active_signal = {
 		set_global_flag = chaosx_nr25_evolution_active_signal
 		clr_global_flag = chaosx_nr25_evolution_active_signal_pending
 		clear_global_event_target = chaosx_nr25_evolution_active_signal_scheduler
+		chaosx_nr25_seed_signal_intensity = yes
 		set_country_flag = chaosx_nr25_evolution_active_signal_holder
 		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.active_signal }
 		chaosx_nr25_record_evolution_milestone = yes
