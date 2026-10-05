@@ -56,7 +56,12 @@ equipment_from_heavens_prepare_random_event_fire = {
 		random_scope_in_array = {
 			array = efh_recipient_pool
 			save_event_target_as = efh_prefire_recipient
-			set_variable = { efh_pending_manual = efh_dispatch_manual }
+			set_temp_variable = { efh_prefire_ready = 1 }
+			clr_country_flag = efh_pending_manual
+			if = {
+				limit = { check_variable = { efh_dispatch_manual > 0 } }
+				set_country_flag = efh_pending_manual
+			}
 			set_country_flag = efh_prefire_pending
 		}
 	}
@@ -70,10 +75,6 @@ equipment_from_heavens_prepare_random_event_fire = {
 		}
 	}
 	clear_temp_array = efh_recipient_pool
-	if = {
-		limit = { has_event_target = efh_prefire_recipient }
-		set_temp_variable = { efh_prefire_ready = 1 }
-	}
 }
 
 # COUNTRY scope (recipient). Called from the shared history recorder so the
@@ -97,22 +98,39 @@ equipment_from_heavens_enter_delivery = {
 		limit = { equipment_from_heavens_country_is_valid_recipient = yes }
 		if = {
 			limit = { NOT = { has_country_flag = efh_prefire_pending } }
-			set_variable = { efh_pending_manual = 1 }
+			set_country_flag = efh_pending_manual
 		}
 		equipment_from_heavens_open_delivery = yes
 		country_event = { id = chaosx.nr42.2 }
 	}
 	else_if = {
 		limit = { equipment_from_heavens_has_any_valid_recipient = yes }
+		# Preserve prepared automatic/manual provenance. An unprepared direct
+		# entry is manual even when it must choose a different country.
+		set_temp_variable = { efh_reroute_manual = 1 }
+		if = {
+			limit = {
+				has_country_flag = efh_prefire_pending
+				NOT = { has_country_flag = efh_pending_manual }
+			}
+			set_temp_variable = { efh_reroute_manual = 0 }
+		}
+		clr_country_flag = efh_prefire_pending
+		clr_country_flag = efh_pending_manual
 		set_temp_variable = { efh_prefire_ready = 0 }
 		equipment_from_heavens_prepare_random_event_fire = yes
 		event_target:efh_prefire_recipient = {
+			clr_country_flag = efh_pending_manual
+			if = {
+				limit = { check_variable = { efh_reroute_manual > 0 } }
+				set_country_flag = efh_pending_manual
+			}
 			country_event = { id = chaosx.nr42.1 }
 		}
 	}
 	else = {
 		clr_country_flag = efh_prefire_pending
-		clear_variable = efh_pending_manual
+		clr_country_flag = efh_pending_manual
 		country_event = { id = chaosx.nr42.18 }
 	}
 }
@@ -129,11 +147,11 @@ equipment_from_heavens_open_delivery = {
 	set_variable = { efh_delivery_date = global.date }
 	set_variable = { global.efh_last_delivery_date = global.date }
 	set_country_flag = efh_chain_active
-	set_variable = { efh_manifest_manual = 0 }
+	clr_country_flag = efh_manifest_manual
 	if = {
-		limit = { has_variable = efh_pending_manual }
-		set_variable = { efh_manifest_manual = efh_pending_manual }
-		clear_variable = efh_pending_manual
+		limit = { has_country_flag = efh_pending_manual }
+		set_country_flag = efh_manifest_manual
+		clr_country_flag = efh_pending_manual
 	}
 
 	set_temp_variable = { efh_active_stage = 0 }
@@ -1244,7 +1262,7 @@ equipment_from_heavens_cleanup_chain = {
 	clear_variable = efh_manifest_scale
 	clear_variable = efh_manifest_nuclear_amount
 	clear_variable = efh_manifest_reroll_count
-	clear_variable = efh_manifest_manual
+	clr_country_flag = efh_manifest_manual
 	clear_variable = efh_accident_loss_amount
 	clear_variable = efh_grant_token
 	clear_variable = efh_grant_name_token

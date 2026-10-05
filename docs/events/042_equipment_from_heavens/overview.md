@@ -40,8 +40,8 @@ The stockpile grant happens only through the hidden `chaosx.nr42.1` entry. Repor
 
 Persistent recipient state during a chain:
 
-- flag `efh_chain_active`
-- variables `efh_delivery_sequence`, `efh_delivery_date`, `efh_manifest_stage`, `efh_manifest_magnitude`, `efh_manifest_group`, `efh_manifest_signature`, `efh_manifest_scale`, `efh_manifest_nuclear_amount`, `efh_manifest_reroll_count`, `efh_manifest_manual`, `efh_report_next_index`, `efh_report_total`
+- flags `efh_chain_active`, `efh_manifest_manual`, and the one-use `efh_pending_manual` marker
+- variables `efh_delivery_sequence`, `efh_delivery_date`, `efh_manifest_stage`, `efh_manifest_magnitude`, `efh_manifest_group`, `efh_manifest_signature`, `efh_manifest_scale`, `efh_manifest_nuclear_amount`, `efh_manifest_reroll_count`, `efh_report_next_index`, `efh_report_total`
 - arrays `efh_manifest_family_entries`, `efh_manifest_tier_entries`, `efh_manifest_role_entries`, `efh_manifest_amount_entries`, `efh_manifest_designer_entries`, `efh_manifest_special_entries`, `efh_manifest_special_amount_entries`, `efh_report_state_entries`, `efh_report_theme_entries`, `efh_report_day_entries`
 
 After closure only the compact global history remains: `global.efh_history_sequence_entries`, `_delivery_`, `_recipient_`, `_stage_`, `_magnitude_`, `_group_`, `_family_count_`, `_nuclear_`, `_special_count_`, and `_report_count_entries`.
@@ -216,3 +216,5 @@ Carrier `chaosx_cxt_extension_event042_equipment_from_heavens` registers `chaosx
 
 The owner decisions and exact remaining acceptance gates are in `docs/plans/042_equipment_from_heavens_plans/agent_decisions_2026-10-05.md` and `release_review_2026-10-05.md`.
 Catalog wording awaits the catalog owner in `catalog_changes_pending.md`; this task does not edit the workbook or its CSV exports.
+
+A replacement recipient inherits the pending delivery's manual status. A direct entry without prepared context is manual even when rerouted, so retargeting cannot make a forced delivery qualify for an achievement.

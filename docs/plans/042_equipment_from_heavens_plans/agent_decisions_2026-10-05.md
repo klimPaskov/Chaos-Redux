@@ -22,3 +22,7 @@ Required wording is queued in `catalog_changes_pending.md` for the catalog owner
 No event-specific process rule was added to a reusable skill: date units, helper-output lifetime, and shared-index commits are already covered by the repo skills.
 
 Discovery uses the native scripted-localisation picture selector: sealed special cargo, atomic cargo, aircraft, armor, then ordinary crate fields. Final summaries use the overwhelmed depot. This preserves all six report assets while keeping two popups; high Chaos alone never selects a special-cargo picture.
+
+The final entry audit retains manual provenance when a rejected recipient is replaced. Pending and active manual markers are country flags, and all three achievement snapshots reject the active manual flag. A direct unprepared entry stays manual after rerouting; a prepared ordinary automatic entry remains automatic. This closes an eligibility bypass without changing cargo weights or amounts.
+
+Prefire readiness is set only by a successful draw, so a stale same-chain event target cannot make an empty recipient pool look ready. The pointer is not cleared with an invented regular-target API; the caller uses the documented readiness output.

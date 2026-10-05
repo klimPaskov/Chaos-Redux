@@ -17,7 +17,7 @@ The read-only save-inspection `info` command was used; no game was launched.
 Every supplied full popup screenshot, the contact sheet and zlog screenshot was opened.
 `evt042_pop00.png` is the legacy `.news.47` world-news report for the Dominican Republic; pop01-pop03 are vanilla and pop04 has no event visible.
 Those screenshots do not validate the current rework.
-The parsed-source recovery interpreter passes 9 tests covering counts 3-7, accident summaries, lost states, fallback states, duplicate dispatches, persistent arrays, cleanup and grant isolation.
+The parsed-source recovery interpreter passes 12 tests covering counts 3-7, accident summaries, lost states, fallback states, duplicate dispatches, persistent arrays, cleanup, grant isolation, normal/forced reroutes and stale-target readiness.
 Physical modifiers and accident equipment loss are narrow stubs in that interpreter, not engine execution.
 All 27 keys from both prior localisation files are retained in the plural file, which has 190 keys.
 The report colour audit returns `total keys with colour: 0`.
@@ -90,3 +90,5 @@ The bounded accident snippet returned MCP `SCRIPT_CHECK_PARTIAL`: syntax, comman
 The final narrow event comparison and source lookup also timed out awaiting tools/call after 600s.
 
 The Windows user-mapped-file write problem was resolved by a verified atomic sibling replacement. A generic skill-maintenance note is accepted and queued in `subagent_handoffs/skill_note_2026-10-05.md`; skill files were not edited because they are outside this task's file ownership. Final MCP responses are retained in `evidence/mcp_final.json`.
+
+The final guard pass represents pending and active manual status with country flags, preserves that status through recipient replacement, and permits readiness only when the prefire draw succeeded. All three achievement snapshots reject the manual flag, and the eligibility tooltip states that forced deliveries do not qualify. Cargo tables and AI weights are unchanged.
