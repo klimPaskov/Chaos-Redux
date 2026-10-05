@@ -13,7 +13,9 @@
 #   is due, through the same measured transfer as any other payment, so each
 #   instalment is credited to the participant's contribution record.
 # - An instalment the participant cannot pay on its due day ends the contract
-#   as a failure of agreed terms through the ordinary deadline path.
+#   as a failure of agreed terms through the ordinary deadline path. A fuel
+#   instalment Africa has no tank room for waits one interval instead, and the
+#   contract deadline moves with it.
 # Every amount is a constant in 012_africa_gods_constants.txt.
 # ============================================================================
 
@@ -110,7 +112,19 @@ gods_of_africa_deliver_instalment = {
 		}
 		clamp_variable = { var = gods_of_africa_payment_amount max = gods_of_africa_demand_remaining }
 		gods_of_africa_set_payment_capacity_requirement = yes
+		# Africa has no room in its tanks for a fuel instalment: the participant
+		# is not at fault, so the instalment waits one interval and the
+		# agreement's deadline moves with it.
 		if = {
+			limit = {
+				gods_of_africa_demand_transfer_is_clear = yes
+				NOT = { gods_of_africa_host_can_receive_demand_payment = yes }
+			}
+			gods_of_africa_schedule_next_instalment = yes
+			add_to_variable = { gods_of_africa_demand_deadline = constant:gods_of_africa_instalments.interval_days }
+			gods_of_africa_sync_demand_mission_timeout = yes
+		}
+		else_if = {
 			limit = {
 				gods_of_africa_participant_has_capacity_for_family = yes
 				gods_of_africa_demand_transfer_is_clear = yes

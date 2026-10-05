@@ -3558,14 +3558,16 @@ gods_of_africa_execute_punishment = {
 					check_variable = { gods_of_africa_last_disaster_result = constant:natural_disaster_call_result.accepted }
 				}
 				gods_of_africa_apply_population_wave = yes
+				# The event log records a catastrophe only when the disaster
+				# really fell.
+				set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_catastrophe }
+				set_variable = { gods_of_africa_milestone_actor = event_target:africa_host.id }
+				set_variable = { gods_of_africa_milestone_secondary_actor = THIS.id }
+				gods_of_africa_record_milestone = yes
 			}
 			else = { set_country_flag = gods_of_africa_failed_manifestation }
 			set_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.disaster }
 			set_variable = { gods_of_africa_last_punishment_family_day = global.num_days }
-			set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_catastrophe }
-			set_variable = { gods_of_africa_milestone_actor = event_target:africa_host.id }
-			set_variable = { gods_of_africa_milestone_secondary_actor = THIS.id }
-			gods_of_africa_record_milestone = yes
 			set_country_flag = gods_of_africa_recent_extreme_punishment
 			set_variable = { gods_of_africa_recent_extreme_until = global.num_days }
 			add_to_variable = { gods_of_africa_recent_extreme_until = constant:gods_of_africa_timing.defiance_review_days }

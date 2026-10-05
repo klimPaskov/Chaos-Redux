@@ -440,3 +440,25 @@ The eligibility rules are unchanged: occupied territory for unrest, never Africa
 
 MCP route evidence (2026-10-05): `hoi4_decision_inspect` with `mode = inspect` for `gods_of_africa_final_ultimatum_mission` returned "Invalid tool arguments", and `mode = inventory` returned only a repository-wide 6.4 MB inventory (`DECISION_ANALYZED_PARTIAL`, revision `d7ce660b`), so neither gives narrow decision evidence; neither was retried.
 The probability audit stays `blocked` as recorded in L24.
+
+## L33. Round 2 review: fairness, Strength ceiling and accurate records
+
+Disposition: `implemented` (the native results of `while_loop_effect` with a temporary exclusion array, `add_resistance` and the fuel-room check on live countries are `needs_live_game`).
+
+Basis: the skeptical review of the round 2 commits (`71f827c1e`, `7f39e00f7`, `2757c1548`, `db77f0038`, `0df42bcc7`, `4e256b85f`, `9f4f3f5b0`, `a392c1548`, `ba5b3f0a4`, `5ce3f0187`, `deb074b03`) against L23 to L32, the spec's rule that a punishment never exceeds what Africa's Strength allows, `CLAUDE.md` section 2.7 (implementation-only requirement checks need a player-facing tooltip), `effects_documentation.md` (`while_loop_effect`) and `triggers_documentation.md` (`is_in_array`).
+
+Decisions:
+
+- A continuing-support fuel instalment that Africa has no tank room for (`gods_of_africa_host_can_receive_demand_payment` false) no longer ends the agreement as a broken agreement. The participant is not at fault, so the instalment waits one `gods_of_africa_instalments.interval_days` and the contract deadline moves with it. A participant that cannot pay, or an unaccounted earlier shipment, still goes through the ordinary deadline path as before.
+- Signing the support agreement checks the fuel operating floor (`capacity_floor_fuel`) for fuel and the equipment floor for rifles.
+- Refusing the final ultimatum or letting it expire runs `gods_of_africa_evaluate_punishment` again instead of forcing the catastrophe tier. The extreme gate, intent and the Strength ceiling are read at that moment, so the refusal tooltip's "as far as its Strength still allows" is true. Before this, a collapsed Africa still delivered an Ultimatum-tier punishment.
+- Every catastrophe is preceded by its own ultimatum (a resolved or expired ultimatum clears its flags), which is what the code always did; the Gods guide now says "whenever its full gate opens" instead of "the first time".
+- The `gods_catastrophe` event-log entry is written only when the Event 013 gateway accepted the disaster. A rejected disaster is a failed manifestation, and the log no longer claims disaster and deaths that did not happen.
+- State strikes (L32) use a `while_loop_effect` that counts real strikes: a drawn occupied state whose resistance cannot rise is set aside and another is drawn, bounded by the eligible states through the exclusion array. With L32's fixed-count loop an unrest punishment could draw such a state and strike nothing, where the earlier ordered walk kept going until it found one.
+- Player-facing text: the bluff report no longer mentions a promised disaster (a bluff happens only at the Pressure tier), and the first heavy punishment log entry no longer claims losses across several states, because its family may be diplomatic, stockpile or military.
+- The new round 2 decisions (the three ultimatum answers, the two Final Council voices, the expedition, the coalition shipment and No Sanctuary for Occupiers) wrap their implementation-only availability triggers in `custom_trigger_tooltip` with plain keys (`gods_of_africa_final_ultimatum_open_tt`, `gods_of_africa_council_open_tt`, `gods_of_africa_council_speech_stock_tt`, `gods_of_africa_expedition_target_tt`, `gods_of_africa_coalition_target_tt`, `gods_of_africa_coercion_host_tt`, `gods_of_africa_coercion_target_tt`), so no raw variable or generation check reaches the tooltip.
+
+Review findings kept as they are:
+
+- The Favored-track Wrath threshold in `gods_of_africa_ai_is_on_track_for_favored` reads `gods_of_africa_value.regional_strength` (40), which mirrors the grading's own Favored check in `012_africa_gods_grading_triggers.txt`; both stay aligned.
+- `activation` on host targeted decisions follows the round 1 host decisions and is not changed here.

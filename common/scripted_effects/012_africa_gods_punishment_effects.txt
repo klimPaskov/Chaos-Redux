@@ -208,7 +208,10 @@ gods_of_africa_strike_punishment_state = {
 # occupied territory for unrest, and states that are not African cores of the
 # host for every other family, so Africa never wrecks its own future land.
 # Each strike draws a different state at random, so repeated punishments do
-# not keep falling on the same places in the game's state order.
+# not keep falling on the same places in the game's state order. A drawn state
+# the strike cannot touch (resistance that cannot rise) is set aside and
+# another is drawn, so the budget counts real strikes; every drawn state joins
+# the exclusion array, which bounds the loop by the eligible states.
 gods_of_africa_strike_punishment_states = {
 	set_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.zero }
 	set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.pressure_states }
@@ -220,10 +223,27 @@ gods_of_africa_strike_punishment_states = {
 		set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.collapsing_target_states }
 	}
 	clear_temp_array = gods_of_africa_punishment_struck_states
-	for_loop_effect = {
-		end = gods_of_africa_punishment_state_budget
-		value = gods_of_africa_punishment_strike_index
+	while_loop_effect = {
 		break = gods_of_africa_punishment_strike_break
+		limit = {
+			check_variable = { gods_of_africa_punishment_report_state_count < gods_of_africa_punishment_state_budget }
+			OR = {
+				AND = {
+					check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest }
+					any_controlled_state = {
+						NOT = { is_owned_by = event_target:gods_of_africa_punishment_participant }
+						NOT = { is_in_array = { gods_of_africa_punishment_struck_states = THIS } }
+					}
+				}
+				AND = {
+					NOT = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
+					any_controlled_state = {
+						NOT = { is_core_of = event_target:africa_host }
+						NOT = { is_in_array = { gods_of_africa_punishment_struck_states = THIS } }
+					}
+				}
+			}
+		}
 		if = {
 			limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
 			random_controlled_state = {
@@ -561,7 +581,10 @@ gods_of_africa_ultimatum_pay_settlement = {
 
 # COUNTRY scope on a participant. Refusal or the deadline: the catastrophe
 # falls now if Africa can still deliver it, otherwise the strongest punishment
-# Africa's Strength allows.
+# Africa's Strength allows. The tier is decided again by
+# gods_of_africa_evaluate_punishment, so intent, the extreme gate and the
+# Strength ceiling all apply at the moment the ultimatum ends; the expired flag
+# lets that evaluation strike instead of issuing a new ultimatum.
 gods_of_africa_expire_final_ultimatum = {
 	if = {
 		limit = {
@@ -573,8 +596,7 @@ gods_of_africa_expire_final_ultimatum = {
 		remove_mission = gods_of_africa_final_ultimatum_mission
 		set_country_flag = gods_of_africa_final_ultimatum_expired
 		clr_country_flag = gods_of_africa_punishment_applied
-		set_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.catastrophe }
-		gods_of_africa_apply_punishment = yes
+		gods_of_africa_evaluate_punishment = yes
 		clr_country_flag = gods_of_africa_final_ultimatum_expired
 	}
 }

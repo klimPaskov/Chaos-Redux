@@ -1228,15 +1228,17 @@ gods_of_africa_instalments_can_be_signed = {
 	check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
 	NOT = { has_country_flag = gods_of_africa_instalments_signed }
 	has_variable = gods_of_africa_instalment_amount
-	set_temp_variable = { gods_of_africa_instalment_needed = gods_of_africa_instalment_amount }
-	add_to_temp_variable = { gods_of_africa_instalment_needed = constant:gods_of_africa_value.capacity_floor_equipment }
 	OR = {
 		AND = {
 			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+			set_temp_variable = { gods_of_africa_instalment_needed = gods_of_africa_instalment_amount }
+			add_to_temp_variable = { gods_of_africa_instalment_needed = constant:gods_of_africa_value.capacity_floor_fuel }
 			NOT = { has_fuel < gods_of_africa_instalment_needed }
 		}
 		AND = {
 			check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.land_equipment }
+			set_temp_variable = { gods_of_africa_instalment_needed = gods_of_africa_instalment_amount }
+			add_to_temp_variable = { gods_of_africa_instalment_needed = constant:gods_of_africa_value.capacity_floor_equipment }
 			NOT = { has_equipment = { infantry_equipment < gods_of_africa_instalment_needed } }
 		}
 	}
