@@ -23,7 +23,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.party } sov_nuclear_bombs_set_custody_doctrine = yes }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.25 has_government = communism } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = constant:sov_nuclear_bombs_ai.custody_party_communism_factor has_government = communism } }
 	}
 
 	sov_nuclear_bombs_custody_military = {
@@ -53,7 +53,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.scientific_safety } sov_nuclear_bombs_set_custody_doctrine = yes }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.50 has_government = democratic } modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_test_failure } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = constant:sov_nuclear_bombs_ai.custody_scientific_safety_democratic_factor has_government = democratic } modifier = { factor = constant:sov_nuclear_bombs_ai.custody_scientific_safety_test_failure_factor has_country_flag = sov_nuclear_bombs_test_failure } }
 	}
 
 	sov_nuclear_bombs_custody_dispersed_commands = {
@@ -68,7 +68,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.dispersed_commands } sov_nuclear_bombs_set_custody_doctrine = yes }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.20 has_war = yes } modifier = { factor = 1.20 has_country_flag = sov_nuclear_bombs_capital_threat_active } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = constant:sov_nuclear_bombs_ai.custody_dispersed_commands_war_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.custody_dispersed_commands_capital_threat_active_factor has_country_flag = sov_nuclear_bombs_capital_threat_active } }
 	}
 
 	# The selected command state is used by every later target action.
@@ -88,7 +88,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } country_event = { id = chaosx.nr23.100 } }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.command modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_factor has_war = yes } modifier = { factor = 0 NOT = { sov_nuclear_bombs_event_has_evolution_i = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.command modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.blocked NOT = { sov_nuclear_bombs_event_has_evolution_i = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_reform_custody_doctrine = {
@@ -114,7 +114,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_doctrine_reform_pending set_country_flag = sov_nuclear_bombs_doctrine_reform_cancelled }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine_reform modifier = { factor = 2.00 has_country_flag = sov_nuclear_bombs_test_failure_investigated } modifier = { factor = 1.60 has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine_reform modifier = { factor = constant:sov_nuclear_bombs_ai.reform_custody_doctrine_test_failure_investigated_factor has_country_flag = sov_nuclear_bombs_test_failure_investigated } modifier = { factor = constant:sov_nuclear_bombs_ai.reform_custody_doctrine_confirmed_enemy_nuclear_use_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	sov_nuclear_bombs_collapse_command = {
@@ -133,7 +133,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } country_event = { id = chaosx.nr23.110 } }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.collapse modifier = { factor = 1.40 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.collapse modifier = { factor = constant:sov_nuclear_bombs_ai.collapse_command_war_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } }
 	}
 
 	# Phase 1: custody, accounting, and survivability.
@@ -161,7 +161,7 @@ sov_nuclear_bombs_command_category = {
 		# After the first audit, the AI repeats it during a custody dispute only
 		# when the books would balance, so it does not pay for an audit that
 		# cannot close the dispute.
-		ai_will_do = { base = 1.20 modifier = { factor = 0 has_country_flag = sov_nuclear_bombs_stockpile_audited NOT = { sov_nuclear_bombs_native_custody_reconciles = yes } } modifier = { factor = 2.00 check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.audit_stockpile_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked has_country_flag = sov_nuclear_bombs_stockpile_audited NOT = { sov_nuclear_bombs_native_custody_reconciles = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.audit_stockpile_integrity_factor check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
 	}
 
 	# Foreign services are watching the program: a sweep closes the known leaks.
@@ -227,7 +227,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_phase_custody = yes } NOT = { sov_nuclear_bombs_event_selected_storage_site_is_valid = yes } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_storage_hardening_pending set_country_flag = sov_nuclear_bombs_storage_hardening_cancelled sov_nuclear_bombs_clear_selected_state = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 0 FROM = { NOT = { check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } } } modifier = { factor = 1.80 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.harden_storage_site_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked FROM = { NOT = { check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } } } } modifier = { factor = constant:sov_nuclear_bombs_ai.harden_storage_site_war_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_disperse_reserve_package = {
@@ -292,7 +292,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_reserve_dispersion_pending set_country_flag = sov_nuclear_bombs_reserve_dispersion_cancelled sov_nuclear_bombs_cancel_transit = yes sov_nuclear_bombs_clear_disperse_selection = yes sov_nuclear_bombs_clear_selected_state = yes }
 		# The AI disperses once per attained stage instead of cycling devices
 		# between depots whenever it waits in custody.
-		ai_will_do = { base = 0.90 modifier = { factor = 0 has_variable = sov_nuclear_bombs_ai_dispersal_stage check_variable = { var = sov_nuclear_bombs_ai_dispersal_stage value = sov_nuclear_bombs_evolution_stage compare = greater_than_or_equals } } modifier = { factor = 1.60 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.disperse_reserve_package_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked has_variable = sov_nuclear_bombs_ai_dispersal_stage check_variable = { var = sov_nuclear_bombs_ai_dispersal_stage value = sov_nuclear_bombs_evolution_stage compare = greater_than_or_equals } } modifier = { factor = constant:sov_nuclear_bombs_ai.disperse_reserve_package_war_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
 	}
 
 	sov_nuclear_bombs_centralize_release_authority = {
@@ -306,7 +306,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_centralize_authority = yes }
-		ai_will_do = { base = 0.70 modifier = { factor = 1.60 has_country_flag = sov_nuclear_bombs_ultimatum_response_window_reached } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.centralize_release_authority_base modifier = { factor = constant:sov_nuclear_bombs_ai.centralize_release_authority_ultimatum_response_window_reached_factor has_country_flag = sov_nuclear_bombs_ultimatum_response_window_reached } }
 	}
 
 	sov_nuclear_bombs_delegate_emergency_retaliation = {
@@ -320,7 +320,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_delegate_retaliation = yes }
-		ai_will_do = { base = 0.70 modifier = { factor = 1.60 has_country_flag = sov_nuclear_bombs_capital_threat_active } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.delegate_emergency_retaliation_base modifier = { factor = constant:sov_nuclear_bombs_ai.delegate_emergency_retaliation_capital_threat_active_factor has_country_flag = sov_nuclear_bombs_capital_threat_active } }
 	}
 
 	# Phase 2: reactor, assembly, delivery, and command preparation.
@@ -339,7 +339,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } sov_nuclear_bombs_expand_reactor_program = yes }
-		ai_will_do = { base = 1.10 modifier = { factor = 1.80 sov_nuclear_bombs_event_has_reactor_entitlement = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.reactor_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.expand_fissile_production_base modifier = { factor = constant:sov_nuclear_bombs_ai.expand_fissile_production_has_reactor_entitlement_factor sov_nuclear_bombs_event_has_reactor_entitlement = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.reactor_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_assemble_device_batch = {
@@ -367,7 +367,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		# The AI assembles only to replace expended devices up to the attained
 		# stage's grant reference; player production is unchanged.
-		ai_will_do = { base = 0.80 modifier = { factor = 0 NOT = { sov_nuclear_bombs_event_ai_has_production_deficit = yes } } modifier = { factor = 1.50 check_variable = { var = sov_nuclear_bombs_readiness value = 50 compare = less_than } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.assemble_device_batch_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked NOT = { sov_nuclear_bombs_event_ai_has_production_deficit = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.assemble_device_batch_readiness_factor check_variable = { var = sov_nuclear_bombs_readiness value = 50 compare = less_than } } }
 	}
 
 	sov_nuclear_bombs_prepare_delivery_crews = {
@@ -381,7 +381,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_logistics_cost = yes sov_nuclear_bombs_prepare_delivery_crews = yes }
-		ai_will_do = { base = 1.20 modifier = { factor = 2.00 NOT = { has_country_flag = sov_nuclear_bombs_command_exercise_complete } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.prepare_delivery_crews_base modifier = { factor = constant:sov_nuclear_bombs_ai.prepare_delivery_crews_no_command_exercise_complete_factor NOT = { has_country_flag = sov_nuclear_bombs_command_exercise_complete } } }
 	}
 
 	sov_nuclear_bombs_conduct_command_exercise = {
@@ -395,7 +395,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_command_exercise = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 1.50 has_war = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.conduct_command_exercise_base modifier = { factor = constant:sov_nuclear_bombs_ai.conduct_command_exercise_war_factor has_war = yes } }
 	}
 
 	sov_nuclear_bombs_install_stronger_authentication = {
@@ -409,7 +409,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_strengthen_authentication = yes }
-		ai_will_do = { base = 0.90 modifier = { factor = 1.60 check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.install_stronger_authentication_base modifier = { factor = constant:sov_nuclear_bombs_ai.install_stronger_authentication_integrity_factor check_variable = { var = sov_nuclear_bombs_integrity value = 70 compare = less_than } } }
 	}
 
 	# Phase 3: selected test ground and one-device test missions.
@@ -428,7 +428,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_logistics_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_test_state } sov_nuclear_bombs_survey_remote_test_state = yes }
-		ai_will_do = { base = 1.30 modifier = { factor = 0 FROM = { NOT = { sov_nuclear_bombs_event_state_is_ready_test_site = yes } } } modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_test_failure } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.survey_remote_test_state_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked FROM = { NOT = { sov_nuclear_bombs_event_state_is_ready_test_site = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.survey_remote_test_state_test_failure_factor has_country_flag = sov_nuclear_bombs_test_failure } modifier = { factor = constant:sov_nuclear_bombs_ai.remote_site_factor FROM = { NOT = { is_capital = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } }
 	}
 
 	sov_nuclear_bombs_prepare_instrumented_proof_test = {
@@ -442,7 +442,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_prepare_instrumented_test = yes }
-		ai_will_do = { base = 1.50 modifier = { factor = 1.40 check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.prepare_instrumented_proof_test_base modifier = { factor = constant:sov_nuclear_bombs_ai.prepare_instrumented_proof_test_custody_doctrine_factor check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals } } }
 	}
 
 	sov_nuclear_bombs_prepare_concealed_field_test = {
@@ -456,7 +456,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_logistics_cost = yes sov_nuclear_bombs_prepare_concealed_test = yes }
-		ai_will_do = { base = 1.00 modifier = { factor = 1.40 NOT = { has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.prepare_concealed_field_test_base modifier = { factor = constant:sov_nuclear_bombs_ai.prepare_concealed_field_test_no_public_arsenal_confirmed_factor NOT = { has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed } } }
 	}
 
 	sov_nuclear_bombs_prepare_public_test = {
@@ -470,7 +470,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_prepare_public_test_mission = yes }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.demonstration modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.demonstration modifier = { factor = constant:sov_nuclear_bombs_ai.prepare_public_test_confirmed_enemy_nuclear_use_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	sov_nuclear_bombs_strengthen_test_evacuation = {
@@ -494,7 +494,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { has_country_flag = sov_nuclear_bombs_test_prepared } NOT = { has_country_flag = sov_nuclear_bombs_test_mission_active } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_test_evacuation_pending set_country_flag = sov_nuclear_bombs_test_evacuation_cancelled }
-		ai_will_do = { base = 1.10 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.strengthen_test_evacuation_base }
 	}
 
 	sov_nuclear_bombs_cancel_prepared_test = {
@@ -506,7 +506,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_cancel_test = yes }
-		ai_will_do = { base = 0.20 modifier = { factor = 2.00 check_variable = { var = sov_nuclear_bombs_integrity value = 25 compare = less_than } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.cancel_prepared_test_base modifier = { factor = constant:sov_nuclear_bombs_ai.cancel_prepared_test_integrity_factor check_variable = { var = sov_nuclear_bombs_integrity value = 25 compare = less_than } } }
 	}
 
 	sov_nuclear_bombs_investigate_test_failure = {
@@ -530,7 +530,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_phase_test = yes } NOT = { has_country_flag = sov_nuclear_bombs_test_failure } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_test_investigation_pending set_country_flag = sov_nuclear_bombs_test_investigation_cancelled }
-		ai_will_do = { base = 1.60 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.investigate_test_failure_base }
 	}
 
 	# Phase 4: target selection, demands, and limited coercion.
@@ -553,7 +553,7 @@ sov_nuclear_bombs_command_category = {
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } sov_nuclear_bombs_prepare_coercion = yes }
 		# The AI opens one dossier per enemy minor and attained stage.
-		ai_will_do = { base = 1.00 modifier = { factor = 0 FROM = { NOT = { sov_nuclear_bombs_event_state_is_ai_coercion_candidate = yes } } } modifier = { factor = 1.30 has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.select_coercion_target_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked FROM = { NOT = { sov_nuclear_bombs_event_state_is_ai_coercion_candidate = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.select_coercion_target_war_factor has_war = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_close_coercion_target = {
@@ -698,7 +698,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_accept_partial_settlement = yes }
-		ai_will_do = { base = 0.90 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.accept_partial_settlement_base }
 	}
 
 	sov_nuclear_bombs_adjust_demand = {
@@ -712,7 +712,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_narrow_demand = yes }
-		ai_will_do = { base = 0.40 modifier = { factor = 1.40 check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.maximum compare = greater_than_or_equals } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.adjust_demand_base modifier = { factor = constant:sov_nuclear_bombs_ai.adjust_demand_target_demand_factor check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.maximum compare = greater_than_or_equals } } }
 	}
 
 	sov_nuclear_bombs_raise_demand = {
@@ -726,7 +726,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_raise_demand = yes }
-		ai_will_do = { base = 0.15 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.raise_demand_base }
 	}
 
 	sov_nuclear_bombs_back_down = {
@@ -757,7 +757,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_technical_certification = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.complete_technical_certification_base }
 	}
 
 	sov_nuclear_bombs_overrule_safety_veto = {
@@ -771,7 +771,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_strategic_cost = yes sov_nuclear_bombs_overrule_safety_veto = yes }
-		ai_will_do = { base = 0.10 modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_severe_first_use_gate = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.overrule_safety_veto_base modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_severe_first_use_gate = yes } }
 	}
 
 	sov_nuclear_bombs_give_final_authorization = {
@@ -785,7 +785,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_authorize_selected_strike = yes }
-		ai_will_do = { base = 0.10 modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_can_authorize_first_use = yes } modifier = { factor = 0 sov_nuclear_bombs_event_ai_prepared_major_strike_is_unguarded = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.give_final_authorization_base modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor sov_nuclear_bombs_event_can_authorize_first_use = yes } modifier = { factor = constant:sov_nuclear_bombs_ai.blocked sov_nuclear_bombs_event_ai_prepared_major_strike_is_unguarded = yes } }
 	}
 
 	sov_nuclear_bombs_hold_strike = {
@@ -799,7 +799,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_hold_authorization = yes }
-		ai_will_do = { base = 0.40 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.hold_strike_base }
 	}
 
 	sov_nuclear_bombs_redirect_strike_state = {
@@ -817,7 +817,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } sov_nuclear_bombs_redirect_state = yes }
-		ai_will_do = { base = 0.20 modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.redirect_strike_state_base modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_reduce_to_remote_demonstration = {
@@ -831,7 +831,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_reduce_to_remote_demo = yes }
-		ai_will_do = { base = 0.70 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.reduce_to_remote_demonstration_base }
 	}
 
 	sov_nuclear_bombs_abort_and_recover_device = {
@@ -843,7 +843,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_abort_and_recover = yes }
-		ai_will_do = { base = 0.30 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.abort_and_recover_device_base }
 	}
 
 	# Phase 6: cross-major crisis management and moratorium.
@@ -858,7 +858,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_prepare_hotline = yes }
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.moratorium modifier = { factor = 2.00 has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.moratorium modifier = { factor = constant:sov_nuclear_bombs_ai.establish_emergency_hotline_confirmed_enemy_nuclear_use_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	sov_nuclear_bombs_propose_reciprocal_standdown = {
@@ -872,7 +872,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_reciprocal_restraint = yes }
-		ai_will_do = { base = 1.10 modifier = { factor = constant:sov_nuclear_bombs_ai.restraint_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.propose_reciprocal_standdown_base modifier = { factor = constant:sov_nuclear_bombs_ai.restraint_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	sov_nuclear_bombs_limit_retaliation_profile = {
@@ -886,7 +886,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_limit_retaliation = yes }
-		ai_will_do = { base = 1.20 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.limit_retaliation_profile_base }
 	}
 
 	sov_nuclear_bombs_preserve_reserve = {
@@ -915,7 +915,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_has_evolution_iii = yes } NOT = { has_global_flag = sov_nuclear_bombs_major_exchange_active } NOT = { sov_nuclear_bombs_event_selected_storage_site_is_valid = yes } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_reserve_preservation_pending set_country_flag = sov_nuclear_bombs_reserve_preservation_cancelled sov_nuclear_bombs_clear_selected_state = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.preserve_reserve_base }
 	}
 
 	sov_nuclear_bombs_select_retaliation_target = {
@@ -937,7 +937,7 @@ sov_nuclear_bombs_command_category = {
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } set_country_flag = sov_nuclear_bombs_retaliation_target_selected }
 		# The AI marks only a state its bomber force can reach; an unreachable
 		# mark could never be prepared or authorized.
-		ai_will_do = { base = 1.30 modifier = { factor = 0 FROM = { NOT = { sov_nuclear_bombs_event_state_has_delivery_access = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.major_target_factor FROM = { owner = { is_major = yes has_tech = nukes } } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.select_retaliation_target_base modifier = { factor = constant:sov_nuclear_bombs_ai.blocked FROM = { NOT = { sov_nuclear_bombs_event_state_has_delivery_access = yes } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.air_base_target_factor FROM = { air_base > 0 } } modifier = { factor = constant:sov_nuclear_bombs_ai.major_target_factor FROM = { owner = { is_major = yes has_tech = nukes } } } }
 	}
 
 	sov_nuclear_bombs_authorize_retaliation = {
@@ -951,7 +951,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_authorize_retaliation = yes }
-		ai_will_do = { base = 0.30 modifier = { factor = 1.60 has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.authorize_retaliation_base modifier = { factor = constant:sov_nuclear_bombs_ai.authorize_retaliation_confirmed_enemy_nuclear_use_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	sov_nuclear_bombs_suspend_release_orders = {
@@ -965,7 +965,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes sov_nuclear_bombs_suspend_release_orders = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.suspend_release_orders_base }
 	}
 
 	sov_nuclear_bombs_enter_atomic_moratorium = {
@@ -981,7 +981,7 @@ sov_nuclear_bombs_command_category = {
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_set_atomic_moratorium = yes }
 		# Custody is the AI's idle board, so the AI seals its arsenal only for a
 		# restraint reason rather than for lack of other work.
-		ai_will_do = { base = constant:sov_nuclear_bombs_ai.moratorium modifier = { factor = 0 NOT = { sov_nuclear_bombs_event_ai_has_restraint_reason = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.restraint_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.moratorium modifier = { factor = constant:sov_nuclear_bombs_ai.blocked NOT = { sov_nuclear_bombs_event_ai_has_restraint_reason = yes } } modifier = { factor = constant:sov_nuclear_bombs_ai.restraint_factor has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } }
 	}
 
 	# Phase 7: Event 5 custody selection and recovery.
@@ -1000,7 +1000,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } set_country_flag = sov_nuclear_bombs_collapse_site_selected }
-		ai_will_do = { base = 1.50 modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.select_disputed_depot_base modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } }
 	}
 
 	# "Reinforce the Depot": once per depot, while a Soviet force holds it.
@@ -1043,7 +1043,7 @@ sov_nuclear_bombs_command_category = {
 				sov_nuclear_bombs_roll_secrecy_incident = yes
 			}
 		}
-		ai_will_do = { base = 1.10 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.recall_devices_base }
 	}
 
 	sov_nuclear_bombs_secure_rail_corridor = {
@@ -1057,7 +1057,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes set_variable = { sov_nuclear_bombs_collapse_operation = constant:sov_nuclear_bombs_tuning.collapse_operation_rail } set_country_flag = sov_nuclear_bombs_rail_corridor_mission_active activate_mission = sov_nuclear_bombs_rail_corridor_security_mission }
-		ai_will_do = { base = 0.90 modifier = { factor = 1.60 has_war = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.secure_rail_corridor_base modifier = { factor = constant:sov_nuclear_bombs_ai.secure_rail_corridor_war_factor has_war = yes } }
 	}
 
 	sov_nuclear_bombs_negotiate_joint_custody = {
@@ -1077,7 +1077,7 @@ sov_nuclear_bombs_command_category = {
 			set_temp_variable = { sov_nuclear_bombs_custody_talks_request = constant:sov_nuclear_bombs_breakaway.talks_joint }
 			sov_nuclear_bombs_open_custody_talks = yes
 		}
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.negotiate_joint_custody_base }
 	}
 
 	sov_nuclear_bombs_conduct_recovery_raid = {
@@ -1091,7 +1091,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_strategic_cost = yes set_variable = { sov_nuclear_bombs_collapse_operation = constant:sov_nuclear_bombs_tuning.collapse_operation_raid } set_country_flag = sov_nuclear_bombs_rail_corridor_mission_active activate_mission = sov_nuclear_bombs_rail_corridor_security_mission }
-		ai_will_do = { base = 0.20 modifier = { factor = 1.80 sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.conduct_recovery_raid_base modifier = { factor = constant:sov_nuclear_bombs_ai.conduct_recovery_raid_selected_breakaway_operationalization_is_imminent_factor sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent = yes } }
 	}
 
 	sov_nuclear_bombs_disable_devices = {
@@ -1105,7 +1105,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_disable_selected_devices = yes }
-		ai_will_do = { base = 1.40 modifier = { factor = 2.00 sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.disable_devices_base modifier = { factor = constant:sov_nuclear_bombs_ai.disable_devices_selected_breakaway_operationalization_is_imminent_factor sov_nuclear_bombs_event_selected_breakaway_operationalization_is_imminent = yes } }
 	}
 
 	sov_nuclear_bombs_destroy_compromised_site = {
@@ -1119,7 +1119,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_demolish_selected_site = yes }
-		ai_will_do = { base = 0.30 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.destroy_compromised_site_base }
 	}
 
 	sov_nuclear_bombs_restore_the_ledger = {
@@ -1145,7 +1145,7 @@ sov_nuclear_bombs_command_category = {
 				sov_nuclear_bombs_finalize_collapse = yes
 			}
 		}
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.restore_the_ledger_base }
 	}
 
 	# Phase 8: sealed reserve, dismantlement, verification, and reactivation.
@@ -1170,7 +1170,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_reserve_sealing_pending set_country_flag = sov_nuclear_bombs_reserve_sealing_cancelled }
-		ai_will_do = { base = 1.30 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.seal_reserve_batch_base }
 	}
 
 	sov_nuclear_bombs_select_dismantlement_site = {
@@ -1188,7 +1188,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes FROM = { save_global_event_target_as = sov_nuclear_bombs_selected_state } set_country_flag = sov_nuclear_bombs_dismantlement_site_selected }
-		ai_will_do = { base = 0.70 modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.select_dismantlement_site_base modifier = { factor = constant:sov_nuclear_bombs_ai.assigned_site_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_assigned value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.industrial_target_factor FROM = { arms_factory > 0 } } }
 	}
 
 	sov_nuclear_bombs_dismantle_batch = {
@@ -1202,7 +1202,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_security_cost = yes sov_nuclear_bombs_prepare_dismantlement_mission = yes }
-		ai_will_do = { base = 0.70 modifier = { factor = 1.70 check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.dismantle_batch_base modifier = { factor = constant:sov_nuclear_bombs_ai.dismantle_batch_custody_doctrine_factor check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals } } }
 	}
 
 	sov_nuclear_bombs_invite_observers = {
@@ -1216,7 +1216,7 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_invite_observers = yes }
-		ai_will_do = { base = 0.80 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.invite_observers_base }
 	}
 
 	sov_nuclear_bombs_record_reciprocal_restraint = {
@@ -1264,7 +1264,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_can_reactivate_moratorium = yes } } }
 		cancel_effect = { clr_country_flag = sov_nuclear_bombs_arsenal_reactivation_pending set_country_flag = sov_nuclear_bombs_arsenal_reactivation_cancelled }
-		ai_will_do = { base = 0.20 modifier = { factor = 2.00 sov_nuclear_bombs_event_has_serious_crisis = yes } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.reactivate_arsenal_base modifier = { factor = constant:sov_nuclear_bombs_ai.reactivate_arsenal_has_serious_crisis_factor sov_nuclear_bombs_event_has_serious_crisis = yes } }
 	}
 
 	# Breakaway actors get custody-only decisions. They never call the native
@@ -1293,7 +1293,7 @@ sov_nuclear_bombs_command_category = {
 				if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_custody_secured } sov_nuclear_bombs_pay_security_cost = yes }
 			}
 		}
-		ai_will_do = { base = 1.30 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_secure_custody_base }
 	}
 
 	sov_nuclear_bombs_breakaway_attempt_technical_access = {
@@ -1313,7 +1313,7 @@ sov_nuclear_bombs_command_category = {
 				if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } sov_nuclear_bombs_pay_security_cost = yes }
 			}
 		}
-		ai_will_do = { base = 0.40 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_attempt_technical_access_base }
 	}
 
 	sov_nuclear_bombs_breakaway_form_command = {
@@ -1333,7 +1333,7 @@ sov_nuclear_bombs_command_category = {
 				if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } sov_nuclear_bombs_pay_command_cost = yes }
 			}
 		}
-		ai_will_do = { base = 0.25 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_form_command_base }
 	}
 
 	sov_nuclear_bombs_breakaway_integrate_delivery = {
@@ -1353,7 +1353,7 @@ sov_nuclear_bombs_command_category = {
 				if = { limit = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } sov_nuclear_bombs_pay_logistics_cost = yes }
 			}
 		}
-		ai_will_do = { base = 0.10 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_integrate_delivery_base }
 	}
 
 	# "Conceal the Devices": the holder hides the selected depot's devices from
@@ -1445,7 +1445,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { NOT = { sov_nuclear_bombs_event_breakaway_dismantlement_is_valid = yes } }
 		cancel_effect = { sov_nuclear_bombs_cancel_breakaway_dismantlement = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_breakaway_dismantlement = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_dismantlement_mission_base }
 	}
 
 	sov_nuclear_bombs_breakaway_request_return = {
@@ -1471,7 +1471,7 @@ sov_nuclear_bombs_command_category = {
 				clear_variable = sov_nuclear_bombs_return_request_state
 			}
 		}
-		ai_will_do = { base = 1.00 modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_request_return_base modifier = { factor = constant:sov_nuclear_bombs_ai.transferred_custody_factor FROM = { check_variable = { var = sov_nuclear_bombs_site_transferred value = 0 compare = greater_than } } } modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor FROM = { is_capital = yes } } }
 	}
 
 	# Timed missions use an impossible availability trigger so they complete
@@ -1490,7 +1490,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_active_assembly_site_is_valid = yes } NOT = { sov_nuclear_bombs_event_has_production_capacity = yes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_production_mission = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_production_mission = yes }
-		ai_will_do = { base = 0.80 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.device_assembly_mission_base }
 	}
 
 	sov_nuclear_bombs_delivery_crews_mission = {
@@ -1507,7 +1507,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } }
 		cancel_effect = { sov_nuclear_bombs_cancel_delivery_crews = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_delivery_crews = yes }
-		ai_will_do = { base = 0.70 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.delivery_crews_mission_base }
 	}
 
 	sov_nuclear_bombs_command_exercise_mission = {
@@ -1524,7 +1524,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } }
 		cancel_effect = { sov_nuclear_bombs_cancel_command_exercise = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_command_exercise = yes }
-		ai_will_do = { base = 0.60 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.command_exercise_mission_base }
 	}
 
 	sov_nuclear_bombs_proof_test_mission = {
@@ -1558,7 +1558,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { has_event_target = sov_nuclear_bombs_coercion_target } NOT = { event_target:sov_nuclear_bombs_coercion_target = { sov_nuclear_bombs_event_target_response_is_valid = yes } } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_ultimatum_response = yes }
 		timeout_effect = { sov_nuclear_bombs_resolve_coercion_response = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.ultimatum_response_mission_base }
 	}
 
 	sov_nuclear_bombs_enforcement_window_mission = {
@@ -1578,7 +1578,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_effect = { sov_nuclear_bombs_cancel_enforcement_window = yes }
 		timeout_effect = { sov_nuclear_bombs_expire_enforcement_window = yes }
-		ai_will_do = { base = 1.00 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.enforcement_window_mission_base }
 	}
 
 	sov_nuclear_bombs_strike_preparation_mission = {
@@ -1595,7 +1595,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_has_valid_prepared_strike = yes } } }
 		cancel_effect = { sov_nuclear_bombs_abort_and_recover = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_strike_preparation = yes }
-		ai_will_do = { base = 0.40 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.strike_preparation_mission_base }
 	}
 
 	sov_nuclear_bombs_retaliation_window_mission = {
@@ -1627,7 +1627,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_effect = { sov_nuclear_bombs_cancel_retaliation_window = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_retaliation_window = yes }
-		ai_will_do = { base = 0.60 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.retaliation_window_mission_base }
 	}
 
 	sov_nuclear_bombs_rail_corridor_security_mission = {
@@ -1656,7 +1656,7 @@ sov_nuclear_bombs_command_category = {
 		}
 		cancel_effect = { sov_nuclear_bombs_cancel_rail_security = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_rail_security = yes }
-		ai_will_do = { base = 0.70 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.rail_corridor_security_mission_base }
 	}
 
 	# The three stages share one visible mission family and one icon, but keep
@@ -1675,7 +1675,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes } NOT = { sov_nuclear_bombs_event_selected_site_has_local_custody_receipt = yes } NOT = { has_tech = atomic_research } NOT = { has_tech = nukes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_breakaway_operationalization = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_breakaway_operationalization = yes }
-		ai_will_do = { base = 0.20 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_technical_access_mission_base }
 	}
 
 	sov_nuclear_bombs_breakaway_command_formation_mission = {
@@ -1692,7 +1692,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes } NOT = { sov_nuclear_bombs_event_selected_site_has_local_technical_receipt = yes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_breakaway_operationalization = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_breakaway_operationalization = yes }
-		ai_will_do = { base = 0.20 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_command_formation_mission_base }
 	}
 
 	sov_nuclear_bombs_breakaway_delivery_integration_mission = {
@@ -1709,7 +1709,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes } NOT = { sov_nuclear_bombs_event_selected_site_has_local_command_receipt = yes } NOT = { sov_nuclear_bombs_event_selected_breakaway_site_has_delivery_capability = yes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_breakaway_operationalization = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_breakaway_operationalization = yes }
-		ai_will_do = { base = 0.20 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.breakaway_delivery_integration_mission_base }
 	}
 
 	sov_nuclear_bombs_joint_custody_transfer_mission = {
@@ -1726,7 +1726,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_joint_custody_transfer = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_joint_custody_transfer = yes }
-		ai_will_do = { base = 0.70 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.joint_custody_transfer_mission_base }
 	}
 
 	sov_nuclear_bombs_dismantlement_inspection_mission = {
@@ -1743,7 +1743,7 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_selected_site_has_assigned_device = yes } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_dismantlement = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_dismantlement = yes }
-		ai_will_do = { base = 0.80 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.dismantlement_inspection_mission_base }
 	}
 
 }

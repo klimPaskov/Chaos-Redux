@@ -504,3 +504,10 @@ Decision: `sov_nuclear_bombs_apply_routine_maintenance` (the existing 30-day cyc
 The category header's readiness line adds "(no bombers, fuel or air base to deliver the weapons; readiness is falling)" while the condition holds, read live through `GetSovietNuclearBombsDeliveryStatus`.
 Basis: Part 2 delivery-force loss, D2, and the lead's round 2 decision 4.
 Disposition: `implemented`; live erosion pace `needs_live_game`.
+
+### R2b-11. Remaining AI weights read named constants
+
+Finding: about a hundred `ai_will_do` and `ai_chance` bases and factors in the Event 23 decisions and events were plain numbers (for example 1.20, 0.70, 1.60, 2.00, 0.10, the 1.25/1.50/1.40/1.20 opening-doctrine factors, the hard `factor = 0` gates and the `base = 100` single choices), against CLAUDE.md 1.3.
+Decision: every literal `base` or `factor` inside an `ai_will_do` or `ai_chance` block of `common/decisions/023_sov_nuclear_bombs_decisions.txt` and `events/023_soviet_nukes.txt` now reads a `sov_nuclear_bombs_ai` key holding the same value: 131 literals onto 104 new keys, named after the decision or event option and its condition (`<decision>_base`, `<decision>_<condition>_factor`, `opening_<doctrine>_<condition>_factor`), with `blocked` (0) for every hard zero and `default_choice` (100) for single-choice reports and the human command board's default option. `ai_strategy` keeps its file-scoped `@` values because `value` is documented as a plain integer there (R2-8).
+Evidence: a mapping script replaced each literal and asserted that its key holds the same value; an independent check then resolved every `base` and `factor` of every AI block in `HEAD` (`a47cbd0fa`) and in the result through the constants files of each and found identical sequences (decisions: 88 blocks, 182 weights; events: 82 blocks, 203 weights), and no literal remains in any AI block of either file. Before and after sources and the literal-to-key map are in `probability_source_snapshots/ai_constants_zero_delta_2026-10-05/`.
+Disposition: `implemented`; zero-delta, so no probability change and no MCP compare is needed beyond R2-10.
