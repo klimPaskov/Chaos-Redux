@@ -408,3 +408,10 @@ Basis: the decision matrix row for Call a Coordinated Uprising ("one uprising pe
 
 - `random_terror_uprising_recent` now means only that a rising is under way; `random_terror_finish_uprising_mission`, which every success, partial, failure and cancellation path calls, clears it, and so does crisis closure for the owner's states.
 - The 28-day date window is the only lasting limit, read through one trigger, `random_terror_state_uprising_window_open`, in the decision's three blocks, the transaction check, the focus host check and the uprising start.
+
+### R36 Live actors join the shared special-country classifier
+
+Basis: Part 10 Special-country classifiers (one generic actor marker in the shared special-country trigger).
+
+- One OR entry, `random_terror_is_actor = yes`, was added to `is_special_chaos_country` with a minimal edit; it covers live commands only, because the trigger requires the actor flag without the cleanup flag.
+- Actors stay out of `is_actual_nonhuman_country`, and governments with Terror Pressure are not classified.
