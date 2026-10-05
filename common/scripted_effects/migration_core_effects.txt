@@ -16,6 +16,9 @@
 
 migration_record_displaced_cohort = {
 	humanitarian_initialize_runtime = yes
+	# The live alignment check below includes the history ledger, so its zero
+	# count must exist before the first cohort can be written.
+	migration_initialize_cohort_history = yes
 	set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
 	set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
 	if = {
@@ -1364,6 +1367,7 @@ migration_reconcile_state_cohort_selection = {
 			clear_variable = migration_current_cohort_id
 			clr_state_flag = migration_cohort_selection_ambiguous
 		}
+		clr_state_flag = migration_cohort_registry_misaligned
 	}
 	else = {
 		clear_variable = migration_current_cohort_id
@@ -1449,6 +1453,7 @@ migration_reconcile_country_cohort_selection = {
 			clear_variable = migration_current_country_cohort_id
 			clr_country_flag = migration_country_cohort_selection_ambiguous
 		}
+		clr_country_flag = migration_country_cohort_registry_misaligned
 	}
 	else = {
 		clear_variable = migration_current_country_cohort_id
@@ -1989,6 +1994,9 @@ migration_initialize_runtime = {
 		if = { limit = { NOT = { has_variable = global.migration_runtime_schema_version } } set_variable = { global.migration_runtime_schema_version = constant:migration_core_reconciliation.schema_version } }
 		set_global_flag = migration_runtime_initialized
 	}
+	# Idempotent and outside the one-shot guard: live cohort alignment also
+	# requires the history count, which must exist before the first cohort.
+	migration_initialize_cohort_history = yes
 }
 
 migration_claim_mission_slot = {

@@ -52,6 +52,10 @@ Movement is never a death. Every physical route delegates to the neutral exact t
 
 Migration owns cohort identity, current host, historical origin, route role, generation, status, reception load, integration, resettlement, and return state. Exact aligned registries and generation checks prevent stale-host resolution, duplicated cohorts, and transfer cycling.
 
+The live cohort alignment check includes the visit-history ledger, so `migration_initialize_cohort_history` creates the zero history count at runtime start, outside the one-shot guards of `humanitarian_initialize_runtime` and `migration_initialize_runtime`, and again immediately before `migration_record_displaced_cohort` checks alignment.
+In a new campaign the first proven flight therefore records cohort 1, and a state or country whose selection is rebuilt from an aligned registry clears both its ambiguity flag and its misalignment flag.
+See `common/scripted_effects/migration_cohort_history_effects.md`.
+
 Local integration settles one whole hosted cohort without moving anyone.
 `migration_settle_integrated_cohort` proves the cohort, its current host, the integrating owner-controller and both reception ledgers, debits the state and national reception load once, writes the row as completed with zero people, and only then credits national integration and the achievement history.
 A rejected settlement changes nothing, and a settled row can never be settled or credited again.
