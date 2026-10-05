@@ -627,3 +627,17 @@ Decision:
 - Contaminated cutting halves the cut's progress, adds exposure, still grants custody and marks the holder `chaosx_nr25_holds_contaminated_fragment`; the reduced value is in the race, not in a separate ledger kind.
 - At zero integrity the hull breaks once with a report to every expedition still racing; final recovery reads nothing from integrity, so the command core stays the winning objective.
 - The broad hull label shows in the board's Exposure Risk tooltip and the stabilise and cut tooltips.
+
+## D40. Event 025 source tests back to green
+
+Disposition: `implemented`.
+
+Basis: the round 2 remaining-work list (the source tests are regression evidence for earlier decisions).
+
+Decision:
+
+- The custody interpreter evaluates `custom_trigger_tooltip` by its body, and the destruction-policy harness loads `chaosx_nr25_order_ready` (D24's action-cooldown wrapper) with the base action gate.
+- The lifecycle harness treats the gateway band refresh (D26) and the AI progress floor (D23) as modelled no-ops, like the departure report and the stall clock already were.
+- The fragment-acquisition caller count spans the runtime effects and the wreck effects, where cutting fragments now lives; it still requires exactly two callers that set the receipt to zero first.
+- The active-hazard test follows D36 to D39: the four evolution pulse helpers are recorded calls, each must run exactly when its own evolution is in force, a disabled set leaves every country and global value untouched, the pulse has seven guarded hazard branches, and a new source test checks that each global helper keeps its own in-force gate. The retired per-country signal, survivor-profile and wreck assertions were replaced by these global equivalents.
+- `python -m unittest discover -s .tools -p "test_event025_*.py"` runs 62 tests, all passing.

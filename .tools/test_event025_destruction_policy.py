@@ -47,8 +47,11 @@ class PolicyRuntime(CustodyRuntime):
             if key != "country_event"]
         self.effects["chaosx_nr25_publish_dependence_crisis"] = []
         self.temporary["casualty_calls"] = 0
+        # chaosx_nr25_order_ready is the shared action-cooldown check that
+        # chaosx_nr25_base_action_available reads.
         for name in ("chaosx_nr25_evolution_technology_changes_users_action_available",
-                     "chaosx_nr25_base_action_available", "chaosx_nr25_aftermath_action_available",
+                     "chaosx_nr25_base_action_available", "chaosx_nr25_order_ready",
+                     "chaosx_nr25_aftermath_action_available",
                      "chaosx_nr25_evolution_v_holder_valid", "chaosx_nr25_v_material_holder_valid"):
             self.triggers[name] = block(name, TRIGGERS)
         for key, value in re.findall(r"^\s*(\w+)\s*=\s*(-?\d+(?:\.\d+)?)\s*$", CONSTANTS, re.M):

@@ -10,6 +10,19 @@ GATES = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_evo
 RUNTIME = (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt").read_text(encoding="utf-8-sig")
 HOLDER = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_holder_effects.txt").read_text(encoding="utf-8-sig"))
 PULSE = block("chaosx_nr25_run_bounded_pulse", re.sub(r"#[^\n]*", "", RUNTIME))
+# Evolution track -> the pulse helper that carries its hazard.
+PULSE_HELPERS = {
+    "active_signal": "chaosx_nr25_signal_pulse",
+    "something_survived": "chaosx_nr25_survivor_pulse",
+    "militarised_antarctica": "chaosx_nr25_militarisation_pulse",
+    "wreck_breaking_apart": "chaosx_nr25_wreck_pulse",
+}
+HELPER_SOURCES = {
+    "chaosx_nr25_signal_pulse": "025_alien_technology_in_antarctica_signal_effects.txt",
+    "chaosx_nr25_survivor_pulse": "025_alien_technology_in_antarctica_survivor_effects.txt",
+    "chaosx_nr25_militarisation_pulse": "025_alien_technology_in_antarctica_militarisation_effects.txt",
+    "chaosx_nr25_wreck_pulse": "025_alien_technology_in_antarctica_wreck_effects.txt",
+}
 
 
 def hazard_branches(nodes):
@@ -42,8 +55,19 @@ class HazardRuntime(CustodyRuntime):
         self.effects["chaosx_nr25_publish_dependence_crisis"] = []
         self.effects["chaosx_nr25_report_outpost_lost"] = []
         self.temporary["casualty_calls"] = 0
+        # The four evolution hazards run in their own effect files (global
+        # signal, survivor incidents, militarisation exposure, wreck decay).
+        # Their bodies roll random numbers and read MTTH values, so the pulse
+        # branch test records each call; the files' own gating is checked by
+        # source below.
+        for helper in PULSE_HELPERS.values():
+            self.effects[helper] = [("add_to_temp_variable", [(helper + "_calls", "1")])]
+            self.temporary[helper + "_calls"] = 0
         policy = (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_custody_policy_triggers.txt").read_text(encoding="utf-8-sig")
         self.triggers["chaosx_nr25_active_material_incidents_allowed"] = block("chaosx_nr25_active_material_incidents_allowed", policy)
+
+    def calls(self, track):
+        return self.temporary.get(PULSE_HELPERS[track] + "_calls", 0)
 
     @property
     def casualty_calls(self):
@@ -74,17 +98,20 @@ class ActiveHazardTests(unittest.TestCase):
                 before = rt.global_flags.copy()
                 rt.execute(hazard_branches(PULSE), actor)
                 self.assertEqual(rt.global_flags, before)
+                for tested, track in enumerate(TRACKS[:4], 1):
+                    self.assertEqual(rt.calls(track), 0 if tested == stage else 1, track)
                 if stage == 1:
-                    self.assertNotIn("chaosx_nr25_signal_profile_initialized", actor.flags)
-                    self.assertEqual(actor.values.get("chaosx_nr25_signal_intensity", 0), 0)
+                    self.assertNotIn("chaosx_nr25_signal_intensity", rt.global_values)
                 if stage == 2:
                     self.assertEqual(actor.values["chaosx_nr25_crew"], 100)
-                    self.assertNotIn("chaosx_nr25_survivor_profile_initialized", actor.flags)
+                    self.assertNotIn("chaosx_nr25_survivor_profile", rt.global_values)
                 if stage == 3:
                     self.assertNotIn("chaosx_nr25_outpost_lost", actor.flags)
                     self.assertEqual(actor.values["chaosx_nr25_outpost_security"], 50)
+                    self.assertNotIn("chaosx_nr25_militarisation", rt.global_values)
                 if stage == 4:
                     self.assertEqual(actor.values["chaosx_nr25_wreck_integrity"], 100)
+                    self.assertNotIn("chaosx_nr25_wreck_integrity", rt.global_values)
                 if stage == 5:
                     self.assertEqual(actor.values["chaosx_nr25_dependence"], 90)
                     self.assertEqual(rt.casualty_calls, 0)
@@ -93,24 +120,46 @@ class ActiveHazardTests(unittest.TestCase):
     def test_all_disabled_tracks_leave_hazard_state_untouched(self):
         rt, actor = self.fixture(range(1, 6))
         values, flags = actor.values.copy(), actor.flags.copy()
+        global_values = rt.global_values.copy()
         rt.execute(hazard_branches(PULSE), actor)
         self.assertEqual((actor.values, actor.flags), (values, flags))
+        self.assertEqual(rt.global_values, global_values)
         self.assertEqual(rt.casualty_calls, 0)
+        for track in TRACKS[:4]:
+            self.assertEqual(rt.calls(track), 0, track)
 
     def test_earned_hazards_do_not_require_a_second_chaos_threshold(self):
         rt, actor = self.fixture()
         rt.execute(hazard_branches(PULSE), actor)
-        self.assertGreater(actor.values["chaosx_nr25_signal_intensity"], 0)
-        self.assertLess(actor.values["chaosx_nr25_crew"], 100)
-        self.assertEqual(actor.values["chaosx_nr25_survivor_profile"], rt.constants["constant:chaosx_nr25_cost.survivor_profile_default"])
+        for track in TRACKS[:4]:
+            self.assertEqual(rt.calls(track), 1, track)
+        # Signal exposure, militarised exposure and wreck exposure all land.
+        self.assertGreater(actor.values["chaosx_nr25_exposure_risk"], 90)
         self.assertIn("chaosx_nr25_outpost_lost", actor.flags)
-        self.assertLess(actor.values["chaosx_nr25_wreck_integrity"], 100)
         self.assertEqual(rt.casualty_calls, 1)
 
     def test_pulse_uses_only_exact_in_force_guards(self):
         body = RUNTIME.split("chaosx_nr25_run_bounded_pulse = {", 1)[1].split("chaosx_nr25_cleanup_invalid_participant = {", 1)[0]
         self.assertNotRegex(body, r"has_global_flag\s*=\s*chaosx_nr25_evolution_(?:" + "|".join(TRACKS) + r")\b")
-        self.assertEqual(len(hazard_branches(PULSE)), 9)
+        # Signal, survivor, militarisation and wreck pulses, race-time
+        # Dependence, the militarised camp loss and the Dependence accident.
+        self.assertEqual(len(hazard_branches(PULSE)), 7)
+
+    def test_global_hazard_helpers_keep_their_own_gates(self):
+        # A helper reached from outside the pulse cannot move a global hazard
+        # while its evolution is not in force.
+        for helper, path in HELPER_SOURCES.items():
+            with self.subTest(helper=helper):
+                text = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_effects" / path).read_text(encoding="utf-8-sig"))
+                self.assertRegex(text, r"\b" + helper + r"\s*=\s*\{")
+        signal = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_signal_triggers.txt").read_text(encoding="utf-8-sig"))
+        self.assertIn("'chaosx_nr25_active_signal_evolution_in_force', 'yes'", block("chaosx_nr25_strong_pulse_possible", signal).__repr__())
+        survivor = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_triggers/025_alien_technology_in_antarctica_survivor_triggers.txt").read_text(encoding="utf-8-sig"))
+        self.assertIn("'chaosx_nr25_something_survived_evolution_in_force', 'yes'", block("chaosx_nr25_survivor_incident_possible", survivor).__repr__())
+        militarisation = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_militarisation_effects.txt").read_text(encoding="utf-8-sig"))
+        self.assertIn("'chaosx_nr25_militarised_antarctica_evolution_in_force', 'yes'", block("chaosx_nr25_change_militarisation", militarisation).__repr__())
+        wreck = re.sub(r"#[^\n]*", "", (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_wreck_effects.txt").read_text(encoding="utf-8-sig"))
+        self.assertIn("'chaosx_nr25_wreck_breaking_apart_evolution_in_force', 'yes'", block("chaosx_nr25_damage_wreck", wreck).__repr__())
 
 
 if __name__ == "__main__":

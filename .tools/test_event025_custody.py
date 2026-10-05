@@ -89,6 +89,9 @@ class CustodyRuntime(Runtime):
                 result = any(self.condition([item], actor) for item in data)
             elif key in ("AND", "hidden_trigger"):
                 result = self.condition(data, actor)
+            elif key == "custom_trigger_tooltip":
+                # The tooltip key is presentation; the body is the check.
+                result = self.condition([(k, v) for k, v in data if k != "tooltip"], actor)
             elif key in self.triggers:
                 result = self.condition(self.triggers[key], actor) == (data == "yes")
             elif key.startswith("event_target:"):
@@ -311,7 +314,11 @@ class CustodyTests(unittest.TestCase):
                 self.assertEqual(self.runtime.temporary[PREFIX + "fragment_assigned"], 0)
 
     def test_acquisition_callers_do_not_double_count(self):
-        source = (ROOT / "common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt").read_text(encoding="utf-8-sig")
+        # Fragment recovery lives in the runtime effects; cutting fragments
+        # from the breaking wreck lives in the wreck effects.
+        source = "\n".join((ROOT / path).read_text(encoding="utf-8-sig") for path in (
+            "common/scripted_effects/025_alien_technology_in_antarctica_runtime_effects.txt",
+            "common/scripted_effects/025_alien_technology_in_antarctica_wreck_effects.txt"))
         self.assertNotRegex(source, r"add_to_variable\s*=\s*\{\s*chaosx_nr25_fragment_count\s*=")
         self.assertEqual(len(re.findall(r"set_temp_variable\s*=\s*\{\s*chaosx_alien_recovery_fragment_assigned\s*=\s*constant:chaosx_nr25_value.zero\s*\}\s*chaosx_alien_recovery_ledger_assign_fragment\s*=\s*yes", source)), 2)
 
