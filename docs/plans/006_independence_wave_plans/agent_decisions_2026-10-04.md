@@ -637,3 +637,38 @@ MCP: `hoi4.gui_inspect` (window `chaosx_independence_wave_formable_state_puzzle_
 Validation: the allocator, country API, flag, FORM-16, SCN-008 matrix and GUI matrix audits pass; brace balance is 0 on every touched script file; every scripted trigger, effect and script constant referenced by the added lines is defined.
 
 Needs live game: a DON wave and a later KUB wave, the charter and durable-sovereignty gates, the invitation, a member reply, the congress, the CHX names and flag, both integration choices, the charter projects, and a human member replying to a FORM-08 or FORM-09 invitation.
+
+
+## D25. Round 2: regional framework engine and the Levant and Arabia tranche
+
+Disposition: `implemented` for the framework engine and for IW-073 Hejaz (CUX), IW-076 Hadhramaut (CXX), IW-078 Imamate of Oman (IMO), IW-081 Lebanon (LEB) and IW-082 Palestine (PAL); `blocked` for IW-074, IW-075, IW-077, IW-079 and IW-080.
+
+Basis: the lead's round-2 priority-12 item (regional coverage, Levant and Arabia) and decision 5. Every bound row needs at least a Level 1 package, and Level 2 rows also need a decision family, a starting problem and incidents.
+
+Engine decision: most remaining rows already have a planner gate, loader, reservation, SCN-008 rank and force mapping, but no package engine, so the finalizer rejects them. Rather than copying a bespoke engine per row, one shared Level 1 engine (`common/scripted_effects/006_independence_wave_regional_framework_effects.txt` and its triggers) sets up any listed row: it checks the released country's anchor capital and former host, assigns the full Event 006 tree, allows the four host routes, registers the ambition family and League route, reloads the force mapping (whose loader already raises the mask's reinforcement pathways) and applies the dynamic starting force. The only per-row code is one identity block (identity basis, leadership, government routes, power centres) and one exact id-to-tag line. The engine reads the released country and its stored anchor and host, never ROOT; prepared, complete and runtime-ready checks mirror the bespoke packages; cleanup acts only for the generation that set the package up and restores a ruling party the row changed. The regional identity overlay, archetype and ambition family come from the shared systems, which is what Part 5 lists for Level 1. Level 2 content stays bespoke per row and is not generated from a template.
+
+Leadership decisions (D20 and D22 rule: a vanilla roster is an accepted identity, and the leader the game appoints is accepted institutional leadership; no face is generated for a real person):
+
+- IMO keeps the vanilla Imam Muhammad bin Abdullah al-Khalili, Imam of Oman from 1920 to 1954.
+- LEB keeps its vanilla roster led by Abdallah Bayhum.
+- If a vanilla leader is no longer present, the game appoints one; the framework records a roster checkpoint only when the vanilla leader exists, so a missing character never stops the all-or-nothing wave.
+- PAL's vanilla government is the mandate administration under the British High Commissioner. A released Palestine opens under its democratic party, led by the vanilla Ahmed Hilmi Pasha, and suspends the High Commissioner's leader role for its own generation (`remove_country_leader_role`); cleanup re-adds the role with its exact vanilla ideology, trait and expiry and restores the recorded ruling party.
+- CUX and CXX are institutional councils led by the leader the game appoints. Sourced leaders need new photographs, which this run cannot download without the user's approval. Their registered flags and names already exist (the flag audit counts them among the 102 complete families).
+- CUX and CXX are custom X-tags, so each gets a `create_dynamic_country` branch in the release step and the baseline-law entry of the custom-carrier startup helper.
+
+Government routes follow each row's researched route pool; radical sovereignty is excluded for all five. Power centres: traditional authority and assembly (CUX, IMO), central government and provinces (CXX, PAL), domestic cabinet and foreign patron (LEB).
+
+Level 2 layers (`common/scripted_effects/006_independence_wave_levant_arabia_package_effects.txt`, decisions in `common/decisions/006_independence_wave_levant_arabia_decisions.txt`): each row starts with a problem idea and has three or four paid projects through the shared cost helpers, with mutually exclusive settlements where the history offers a real choice (Lebanon's confessional apportionment or a civic charter; Oman's renewed Treaty of Seeb or a closed coast road). Incidents `chaosx.nr6.200` to `.207` (two per row) use the package incident scheduler. The full description is in `docs/events/006_independence_wave/levant_arabia_packages.md`.
+
+Admission: the five ids are in the adapter list, the content attestation, the execution and SCN-008 preflights, the Join probe order, the Liberations capacity probe and the three central dispatchers (one new `regional_framework` family); the planner gates read the new runtime-ready triggers. They were already in the SCN-008 ranked list. Foreign contacts: CUX IRQ, JOR and EGY; CXX ENG, YEM and HOL; IMO ENG and SAU; LEB FRA, SYR and BRA; PAL ENG, EGY and JOR. LEB and PAL share RG-LEVANT-MESOPOTAMIA-COARSE, so a wave holds at most one of them.
+
+Walk-through (all five): the loaders publish region `levant_arabia`; the force mapping exists for p73, p76, p78, p81 and p82 with no navy or air inheritance; the executor moves the capital to the anchor before setup; `can_initialize` reads the setup targets; the identity block writes the roster and route receipts that `has_prepared` requires; the force loader writes the mapping, pathway and application receipts; the setup receipt persists after commit for the decisions; IMO and LEB recruit their roster at the top level of their vanilla 1936 history files.
+
+Blocked rows:
+
+- IW-074 Najd: disposition formable or route only, and its anchor 292 holds the Saudi capital, which the planner protects; no route consumer exists.
+- IW-075 Jabal Shammar, IW-077 Mahra, IW-079 Jabal al-Druze and IW-080 Syrian Coast: no planner gate, loader or reservation exists. IW-075 could be bound to state 857 (Ha'il) in a later tranche; the other three need a map state the current map does not have.
+
+Validation: the allocator audit passes with 54 attested packages, 45 reservation groups and 55 adapters (its expected sets, dispatcher-family count of 37, group and anchor counts were updated); the country API, flag, FORM-16 and SCN-008 matrix audits pass; brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists once.
+
+Needs live game: a wave or SCN-008 launch that releases IMO from Oman and CUX from Saudi Arabia (the dynamic-country path), the Palestine leader swap and its restoration after an origin ends, and the decision and incident flow of each Level 2 row.

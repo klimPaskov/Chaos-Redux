@@ -58,6 +58,14 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Galicia (IW-015) | `chaosx.nr6.140` | The Foros Rents | Abolish the foros; Buy out the landlords |
 | Don Host (IW-039) | `chaosx.nr6.141` | The Novocherkassk Regalia | Restore the ataman's office; Keep the elected charter |
 | Don Host (IW-039) | `chaosx.nr6.142` | The Millerovo Railwaymen | Station guards at the yards; Negotiate safe passage |
+| Lebanon (IW-081) | `chaosx.nr6.200` | The Silk Mills of Mount Lebanon | Buy the cocoons for the state; Let Lyon set the price |
+| Lebanon (IW-081) | `chaosx.nr6.201` | Letters from the Mahjar | Give the emigrants a vote; Ask the emigrants for a loan |
+| Palestine (IW-082) | `chaosx.nr6.202` | The General Strike | Negotiate with the strike committee; Reopen the ports under emergency rule |
+| Palestine (IW-082) | `chaosx.nr6.203` | Two Harbours on One Coast | Keep Jaffa as the national harbour; License the Tel Aviv harbour too |
+| Imamate of Oman (IW-078) | `chaosx.nr6.204` | The Date Harvest Tithe | Collect the tithe for the treasury; Leave the tithe with the tribes |
+| Imamate of Oman (IW-078) | `chaosx.nr6.205` | Surveyors at Fahud | Admit them on the Imam's terms; Turn them back at the wadi |
+| Hejaz (IW-073) | `chaosx.nr6.206` | The Pilgrim Ships from Java | Build our own quarantine station at Jeddah; Rely on the Kamaran station |
+| Hejaz (IW-073) | `chaosx.nr6.207` | The Hashemite Question | Invite the Hashemite family home; Keep the council in charge |
 
 ## Files
 
@@ -68,7 +76,7 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 
 ## Icons and pictures
 
-The incidents use existing report pictures only: vanilla `GFX_report_event_merchant_ship_01`, `generic_train`, `generic_parliament`, `generic_read_write`, `gathering_protest`, `worker_protests`, `election_vote`, `generic_sign_treaty1`, `soldiers_parade`, `finnish_soldiers_snow`, `tank_factory` and `journalists_speech`. No new sprite is registered.
+The incidents use existing report pictures only: vanilla `GFX_report_event_merchant_ship_01`, `generic_train`, `generic_parliament`, `generic_read_write`, `gathering_protest`, `worker_protests`, `election_vote`, `generic_sign_treaty1`, `generic_conference`, `soldiers_parade`, `finnish_soldiers_snow`, `tank_factory` and `journalists_speech`. No new sprite is registered.
 
 ## Future plans
 

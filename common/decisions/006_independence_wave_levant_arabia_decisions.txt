@@ -1,0 +1,431 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 LEVANT AND ARABIA PACKAGE DECISIONS
+# ============================================================================
+# Level 2 decision families for the regional framework rows IW-073 Hejaz,
+# IW-078 Imamate of Oman, IW-081 Lebanon and IW-082 Palestine (agent decision
+# D25). Every project is paid through the shared Event 006 cost helpers, ends
+# the country's starting problem or builds on its settlement, and is removed by
+# the package cleanup.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-073 Hejaz
+# ---------------------------------------------------------------------------
+
+independence_wave_cux_hejaz_category = {
+	independence_wave_cux_seat_consultative_council = {
+		name = independence_wave_cux_seat_consultative_council
+		desc = independence_wave_cux_seat_consultative_council_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_cux_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_cux_council_seated }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_cux_seat_consultative_council_tt
+			independence_wave_cux_complete_consultative_council = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_cux_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_constitutional_route = yes }
+		}
+	}
+
+	independence_wave_cux_guarantee_hajj_routes = {
+		name = independence_wave_cux_guarantee_hajj_routes
+		desc = independence_wave_cux_guarantee_hajj_routes_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_cux_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_cux_hajj_routes_guaranteed }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_security_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_cux_guarantee_hajj_routes_tt
+			independence_wave_cux_complete_hajj_routes = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_cux_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+		}
+	}
+
+	independence_wave_cux_reopen_jeddah_customs = {
+		name = independence_wave_cux_reopen_jeddah_customs
+		desc = independence_wave_cux_reopen_jeddah_customs_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_cux_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_cux_jeddah_customs_reopened }
+		}
+		available = {
+			has_country_flag = independence_wave_cux_council_seated
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_cux_reopen_jeddah_customs_tt
+			independence_wave_cux_complete_jeddah_customs = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_cux_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-078 Imamate of Oman
+# ---------------------------------------------------------------------------
+
+independence_wave_imo_imamate_category = {
+	independence_wave_imo_convene_shaykhs_at_nizwa = {
+		name = independence_wave_imo_convene_shaykhs_at_nizwa
+		desc = independence_wave_imo_convene_shaykhs_at_nizwa_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_imo_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_imo_shaykhs_convened }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_imo_convene_shaykhs_at_nizwa_tt
+			independence_wave_imo_complete_shaykhs_council = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_imo_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+		}
+	}
+
+	independence_wave_imo_renew_treaty_of_seeb = {
+		name = independence_wave_imo_renew_treaty_of_seeb
+		desc = independence_wave_imo_renew_treaty_of_seeb_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_imo_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_imo_seeb_settled }
+			NOT = { has_decision = independence_wave_imo_close_the_coast_road }
+		}
+		available = {
+			has_country_flag = independence_wave_imo_shaykhs_convened
+			has_independence_wave_levant_peaceful_former_host = yes
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_imo_renew_treaty_of_seeb_tt
+			independence_wave_imo_complete_treaty_of_seeb = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_imo_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_imo_close_the_coast_road = {
+		name = independence_wave_imo_close_the_coast_road
+		desc = independence_wave_imo_close_the_coast_road_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_imo_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_imo_seeb_settled }
+			NOT = { has_decision = independence_wave_imo_renew_treaty_of_seeb }
+		}
+		available = {
+			has_country_flag = independence_wave_imo_shaykhs_convened
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_security_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_security_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_imo_close_the_coast_road_tt
+			independence_wave_imo_complete_coast_road_closure = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_imo_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_imo_open_caravan_routes = {
+		name = independence_wave_imo_open_caravan_routes
+		desc = independence_wave_imo_open_caravan_routes_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_imo_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_imo_caravan_routes_open }
+		}
+		available = {
+			has_country_flag = independence_wave_imo_seeb_settled
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_strategic = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_imo_open_caravan_routes_tt
+			independence_wave_imo_complete_caravan_routes = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_imo_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-081 Lebanon
+# ---------------------------------------------------------------------------
+
+independence_wave_leb_settlement_category = {
+	independence_wave_leb_apportion_great_offices = {
+		name = independence_wave_leb_apportion_great_offices
+		desc = independence_wave_leb_apportion_great_offices_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_leb_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_leb_pact_settled }
+			NOT = { has_decision = independence_wave_leb_open_offices_to_every_citizen }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_leb_apportion_great_offices_tt
+			independence_wave_leb_complete_great_offices = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_leb_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_popular_council_route = yes }
+		}
+	}
+
+	independence_wave_leb_open_offices_to_every_citizen = {
+		name = independence_wave_leb_open_offices_to_every_citizen
+		desc = independence_wave_leb_open_offices_to_every_citizen_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_leb_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_leb_pact_settled }
+			NOT = { has_decision = independence_wave_leb_apportion_great_offices }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_strategic = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_leb_open_offices_to_every_citizen_tt
+			independence_wave_leb_complete_civic_charter = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_leb_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_popular_council_route = yes }
+		}
+	}
+
+	independence_wave_leb_proclaim_free_port_of_beirut = {
+		name = independence_wave_leb_proclaim_free_port_of_beirut
+		desc = independence_wave_leb_proclaim_free_port_of_beirut_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_leb_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_leb_free_port_proclaimed }
+		}
+		available = {
+			has_country_flag = independence_wave_leb_pact_settled
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_leb_proclaim_free_port_of_beirut_tt
+			independence_wave_leb_complete_free_port = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_leb_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+		}
+	}
+
+	independence_wave_leb_settle_mandate_accounts = {
+		name = independence_wave_leb_settle_mandate_accounts
+		desc = independence_wave_leb_settle_mandate_accounts_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_leb_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_leb_mandate_accounts_settled }
+			has_independence_wave_living_former_host = yes
+		}
+		available = {
+			has_independence_wave_levant_peaceful_former_host = yes
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.short
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_leb_settle_mandate_accounts_tt
+			independence_wave_leb_complete_mandate_accounts = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_leb_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-082 Palestine
+# ---------------------------------------------------------------------------
+
+independence_wave_pal_mandate_end_category = {
+	independence_wave_pal_convene_legislative_council = {
+		name = independence_wave_pal_convene_legislative_council
+		desc = independence_wave_pal_convene_legislative_council_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_pal_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_pal_council_convened }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_administration_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_pal_convene_legislative_council_tt
+			independence_wave_pal_complete_legislative_council = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_pal_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.urgent
+		}
+	}
+
+	independence_wave_pal_appoint_land_commission = {
+		name = independence_wave_pal_appoint_land_commission
+		desc = independence_wave_pal_appoint_land_commission_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_pal_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_pal_land_commission_sat }
+		}
+		available = {
+			has_country_flag = independence_wave_pal_council_convened
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		days_remove = constant:independence_wave_decision_duration.long
+		complete_effect = { independence_wave_decision_pay_strategic = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_pal_appoint_land_commission_tt
+			independence_wave_pal_complete_land_commission = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_pal_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+		}
+	}
+
+	independence_wave_pal_seek_holy_places_guarantee = {
+		name = independence_wave_pal_seek_holy_places_guarantee
+		desc = independence_wave_pal_seek_holy_places_guarantee_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_pal_package = yes
+			is_independence_wave_levant_project_ready = yes
+			NOT = { has_country_flag = independence_wave_pal_holy_places_guaranteed }
+		}
+		available = {
+			capital_scope = { is_controlled_by = ROOT }
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_diplomatic_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_diplomatic_standard
+		days_remove = constant:independence_wave_decision_duration.standard
+		complete_effect = { independence_wave_decision_pay_diplomatic_standard = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_pal_seek_holy_places_guarantee_tt
+			independence_wave_pal_complete_holy_places_guarantee = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_pal_package = yes } }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_severe_host_threat = yes }
+		}
+	}
+}

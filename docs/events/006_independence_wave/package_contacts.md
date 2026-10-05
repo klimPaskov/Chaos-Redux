@@ -124,6 +124,20 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-177 | FIJ | NZL | Pacific shipping and Fijian students in New Zealand |
 | IW-184 | HBX | MEX | Former Mexican Alta California and its Mexican communities |
 | IW-184 | HBX | JAP | Japanese-Californian farmers |
+| IW-073 | CUX | IRQ | The Hashemite King of Iraq, son of the last King of the Hejaz |
+| IW-073 | CUX | JOR | The Hashemite Emir of Transjordan, son of the last King of the Hejaz |
+| IW-073 | CUX | EGY | The Egyptian pilgrim caravan and the Mahmal procession to Mecca |
+| IW-076 | CXX | ENG | The Aden Protectorate treaties with the Qu'aiti and Kathiri sultans |
+| IW-076 | CXX | YEM | Tribal and trade ties across the Yemeni highlands |
+| IW-076 | CXX | HOL | The Hadhrami merchant diaspora of Java and Sumatra |
+| IW-078 | IMO | ENG | The British consul at Muscat who brokered the Treaty of Seeb |
+| IW-078 | IMO | SAU | The contested Buraimi and desert frontier with the Saudi state |
+| IW-081 | LEB | FRA | The mandate administration, its schools and its banks |
+| IW-081 | LEB | SYR | The shared economy and families of Beirut and Damascus |
+| IW-081 | LEB | BRA | The large Lebanese emigrant community of Sao Paulo |
+| IW-082 | PAL | ENG | The mandate administration and its courts |
+| IW-082 | PAL | EGY | The Arab national movement and the coastal railway to Cairo |
+| IW-082 | PAL | JOR | Transjordan, governed with Palestine under one mandate until 1921 |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

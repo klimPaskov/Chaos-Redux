@@ -73,6 +73,10 @@ Receives everything in Level 2 plus:
 
 Signature countries include the highlighted packages in Part 4.
 
+### Regional framework engine (2026-10-05, agent decision D25)
+
+Disposition: `implemented`. Acceptance basis: the user's grant of full design authority to the implementing agent for Event 006, recorded in `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md`. Bound rows without a bespoke package are admitted through one shared Level 1 engine that supplies the common survival system, the regional overlay, the archetype and ambition family, a vanilla roster or institutional leadership, and the mapped dynamic starting force; each row has one reviewed identity block. Level 2 content (starting problem, decision family, incidents) remains bespoke per row. See `docs/events/006_independence_wave/regional_framework_packages.md`.
+
 ### Accepted REG-03 package group application (2026-09-25)
 
 Acceptance basis: the user approved Event 006 implementation broadly on 2026-09-25 and selected the recommended path to retain shared-focus definitions while recording the MCP shared-focus rendering limitation. The Part 4 accepted group contract applies to Level 2 featured regional packages IW-023/TRA, IW-029/BOS, and IW-026/MAC. Their five-node groups, package-specific institutional themes, exact focus IDs, ledger rewards, paid-action receipts, and shared carrier imports are listed in the accepted REG-03 section of Part 4 and the implementation detail plan `docs/plans/006_independence_wave_plans/006_event6_reg03_danube_package_focus_groups_improvement_addendum_2026-09-25.md`.

@@ -134,3 +134,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - The Don and Kuban hosts, released in different waves, can now form the Cossack Host Federation together under its own name and flag, with a charter that balances civilian control, cavalry integration and the rights of non-Cossack residents. Rostov stays outside the federation.
 - Countries invited to the Danubian Confederation, the Balkan Federation, the Volga-Ural and Idel-Ural federations and the Mesopotamian Federation can now answer their invitations, and released Balkan countries can now join or lead the Balkan Federation.
+
+
+## 2026-10-05: Levant and Arabia packages (D25)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- The Hejaz, Hadhramaut, the Imamate of Oman, Lebanon and Palestine can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- The Hejaz, the Imamate of Oman, Lebanon and Palestine each have a starting problem, their own decisions and two incidents of their own.
+- Najd, Jabal Shammar, Mahra, Jabal al-Druze and the Syrian coast remain unavailable.

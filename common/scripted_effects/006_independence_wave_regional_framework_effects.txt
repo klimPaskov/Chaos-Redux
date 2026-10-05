@@ -1,0 +1,241 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 REGIONAL FRAMEWORK PACKAGE EFFECTS
+# ============================================================================
+# Overview:
+# - Shared Level 1 package engine for regional rows that have no bespoke
+#   package of their own (agent decision D25). A framework country receives the
+#   full common survival system, its region's identity overlay, its archetype
+#   and ambition family, the shared Event 006 focus tree with the government
+#   routes its research supports, its mapped dynamic starting force, and its
+#   leadership: the vanilla roster of a registered tag, or the leader the game
+#   appoints for an institutional government.
+# - `independence_wave_regional_framework_apply_identity` holds the one
+#   per-package block of every admitted row. Level 2 rows call their regional
+#   layer from that block; Level 1 rows mark the layer as applied directly.
+# - Setup reads the released country and its stored anchor and former host.
+#   Cleanup runs only for the generation that set the package up.
+# - The central dispatchers call the three `independence_wave_dispatch_
+#   regional_framework_package_*` effects.
+# No effect iterates countries or states.
+# ============================================================================
+
+# COUNTRY scope. Clears framework flags before a new setup attempt.
+independence_wave_regional_framework_clear_setup_state = {
+	clr_country_flag = independence_wave_framework_identity_applied
+	clr_country_flag = independence_wave_framework_routes_applied
+	clr_country_flag = independence_wave_framework_ai_profile
+	clr_country_flag = independence_wave_framework_package_layer_applied
+	clr_country_flag = independence_wave_framework_setup_complete
+	clr_country_flag = independence_wave_command_roster_ready
+	clr_country_flag = independence_wave_framework_vanilla_roster_checkpoint
+}
+
+# COUNTRY scope. Records the ruling party before a package changes it, so
+# cleanup can restore the carrier's own government.
+independence_wave_regional_framework_record_ruling_party = {
+	if = {
+		limit = { NOT = { has_variable = independence_wave_framework_restore_party } }
+		if = { limit = { has_government = democratic } set_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_democratic } }
+		else_if = { limit = { has_government = communism } set_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_communism } }
+		else_if = { limit = { has_government = fascism } set_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_fascism } }
+		else = { set_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_neutrality } }
+	}
+}
+
+# COUNTRY scope. Restores the party recorded above.
+independence_wave_regional_framework_restore_ruling_party = {
+	if = {
+		limit = { has_variable = independence_wave_framework_restore_party }
+		if = { limit = { check_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_democratic } } set_politics = { ruling_party = democratic } }
+		else_if = { limit = { check_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_communism } } set_politics = { ruling_party = communism } }
+		else_if = { limit = { check_variable = { independence_wave_framework_restore_party = constant:independence_wave_regional_framework.party_fascism } } set_politics = { ruling_party = fascism } }
+		else = { set_politics = { ruling_party = neutrality } }
+		clear_variable = independence_wave_framework_restore_party
+	}
+}
+
+# COUNTRY scope. The host routes every framework country may take toward its
+# former host.
+independence_wave_regional_framework_allow_host_routes = {
+	independence_wave_focus_allow_host_negotiation_route = yes
+	independence_wave_focus_allow_host_guarded_frontier_route = yes
+	independence_wave_focus_allow_host_association_route = yes
+	independence_wave_focus_allow_host_reclamation_route = yes
+}
+
+# COUNTRY scope. One block per admitted framework row: identity basis,
+# leadership, opening government, government routes and power centres.
+# Each block sets `independence_wave_framework_identity_applied` only when its
+# leadership is in place, and `independence_wave_framework_routes_applied`.
+independence_wave_regional_framework_apply_identity = {
+	# IW-073 Hejaz (CUX), Level 2. Institutional government: the provisional
+	# council of Mecca and Jeddah is led by the leader the game appoints; no
+	# real person is depicted (agent decision D25).
+	if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } original_tag = CUX }
+		set_country_flag = independence_wave_iw_073_identity_rights_cleared
+		set_country_flag = independence_wave_command_roster_ready
+		set_country_flag = independence_wave_framework_identity_applied
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		set_country_flag = independence_wave_framework_routes_applied
+		independence_wave_cux_apply_package_layer = yes
+	}
+	# IW-076 Hadhramaut (CXX), Level 1. Institutional government with the
+	# appointed leader; the Qu'aiti coast and Kathiri interior are its two
+	# power centres.
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_076 } original_tag = CXX }
+		set_country_flag = independence_wave_iw_076_identity_rights_cleared
+		set_country_flag = independence_wave_command_roster_ready
+		set_country_flag = independence_wave_framework_identity_applied
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.central_government_vs_provinces }
+		independence_wave_focus_register_power_struggle = yes
+		set_country_flag = independence_wave_framework_routes_applied
+		set_country_flag = independence_wave_framework_package_layer_applied
+	}
+	# IW-078 Imamate of Oman (IMO), Level 2. Vanilla roster: Imam Muhammad bin
+	# Abdullah al-Khalili, the Imam of Oman from 1920 to 1954.
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } original_tag = IMO }
+		set_country_flag = independence_wave_iw_078_identity_rights_cleared
+		# The vanilla leader leads when present; otherwise the game appoints one,
+		# so a missing roster never stops the wave.
+		if = { limit = { has_character = IMO_muhammad_khalili } set_country_flag = independence_wave_framework_vanilla_roster_checkpoint }
+		set_country_flag = independence_wave_command_roster_ready
+		set_country_flag = independence_wave_framework_identity_applied
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		set_country_flag = independence_wave_framework_routes_applied
+		independence_wave_imo_apply_package_layer = yes
+	}
+	# IW-081 Lebanon (LEB), Level 2. Vanilla roster led by Abdallah Bayhum.
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } original_tag = LEB }
+		set_country_flag = independence_wave_iw_081_identity_rights_cleared
+		# The vanilla leader leads when present; otherwise the game appoints one,
+		# so a missing roster never stops the wave.
+		if = { limit = { has_character = LEB_abdallah_beyhum } set_country_flag = independence_wave_framework_vanilla_roster_checkpoint }
+		set_country_flag = independence_wave_command_roster_ready
+		set_country_flag = independence_wave_framework_identity_applied
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.domestic_cabinet_vs_foreign_patron }
+		independence_wave_focus_register_power_struggle = yes
+		set_country_flag = independence_wave_framework_routes_applied
+		independence_wave_leb_apply_package_layer = yes
+	}
+	# IW-082 Palestine (PAL), Level 2. The vanilla PAL government is the
+	# mandate administration, so the released country opens under its
+	# democratic party, led by the vanilla Ahmed Hilmi Pasha. Cleanup restores
+	# the recorded party.
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } original_tag = PAL }
+		set_country_flag = independence_wave_iw_082_identity_rights_cleared
+		independence_wave_regional_framework_record_ruling_party = yes
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_country_flag = independence_wave_command_roster_ready
+		set_country_flag = independence_wave_framework_identity_applied
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_popular_council_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		independence_wave_focus_allow_patron_client_route = yes
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.central_government_vs_provinces }
+		independence_wave_focus_register_power_struggle = yes
+		set_country_flag = independence_wave_framework_routes_applied
+		independence_wave_pal_apply_package_layer = yes
+	}
+}
+
+# COUNTRY scope. Removes the Level 2 layer of whichever row this country
+# carried. Each regional cleanup checks its own package id.
+independence_wave_regional_framework_cleanup_package_layer = {
+	independence_wave_cux_cleanup_package_layer = yes
+	independence_wave_imo_cleanup_package_layer = yes
+	independence_wave_leb_cleanup_package_layer = yes
+	independence_wave_pal_cleanup_package_layer = yes
+}
+
+# COUNTRY scope during package setup. Inputs: the published setup values and
+# event targets. Output: temporary `independence_wave_package_setup_success`.
+independence_wave_setup_regional_framework_package = {
+	independence_wave_regional_framework_clear_setup_state = yes
+	if = {
+		limit = { can_initialize_independence_wave_regional_framework_package = yes }
+		set_variable = { independence_wave_framework_generation_id = independence_wave_generation_id }
+		set_variable = { independence_wave_framework_package_id = independence_wave_package_id }
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_regional_framework_allow_host_routes = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		independence_wave_regional_framework_apply_identity = yes
+		independence_wave_clear_reinforcement_pathways = yes
+		independence_wave_load_force_package_mapping = yes
+		independence_wave_apply_dynamic_starting_force = yes
+		set_country_flag = independence_wave_framework_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_regional_framework_package_setup = yes }
+			set_country_flag = independence_wave_framework_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+# COUNTRY scope. Central setup dispatcher hook.
+independence_wave_dispatch_regional_framework_package_setup = {
+	if = {
+		limit = { is_independence_wave_regional_framework_exact_carrier = yes }
+		independence_wave_setup_regional_framework_package = yes
+	}
+}
+
+# COUNTRY scope. Central final-validation hook. Output: temporary
+# `independence_wave_package_final_validation_success`.
+independence_wave_dispatch_regional_framework_package_final_validation = {
+	if = {
+		limit = {
+			is_independence_wave_regional_framework_exact_carrier = yes
+			is_independence_wave_regional_framework_runtime_ready = yes
+		}
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+# COUNTRY scope. Central cleanup hook. Runs in the generation reset before a
+# new setup and when the origin ends; acts only for the generation that set
+# this framework package up.
+independence_wave_dispatch_regional_framework_package_cleanup = {
+	if = {
+		limit = {
+			has_variable = independence_wave_framework_generation_id
+			has_variable = independence_wave_generation_id
+			check_variable = { var = independence_wave_framework_generation_id value = independence_wave_generation_id compare = equals }
+		}
+		independence_wave_regional_framework_cleanup_package_layer = yes
+		independence_wave_regional_framework_restore_ruling_party = yes
+		independence_wave_regional_framework_clear_setup_state = yes
+		clear_variable = independence_wave_framework_generation_id
+		clear_variable = independence_wave_framework_package_id
+	}
+}

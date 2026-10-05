@@ -1,0 +1,50 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 LEVANT AND ARABIA PACKAGE TRIGGERS
+# ============================================================================
+# Overview:
+# - Level 2 identity helpers for the four featured Levant and Arabia rows that
+#   use the regional framework engine (agent decision D25): IW-073 Hejaz (CUX),
+#   IW-078 Imamate of Oman (IMO), IW-081 Lebanon (LEB) and IW-082 Palestine
+#   (PAL). IW-076 Hadhramaut (CXX) is a Level 1 framework row with no layer.
+# - Each helper reads the released country only. Decision availability checks
+#   the live framework receipt, which persists after the origin commit.
+# ============================================================================
+
+is_independence_wave_cux_package = {
+	original_tag = CUX
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 }
+	is_independence_wave_regional_framework_package = yes
+}
+
+is_independence_wave_imo_package = {
+	original_tag = IMO
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 }
+	is_independence_wave_regional_framework_package = yes
+}
+
+is_independence_wave_leb_package = {
+	original_tag = LEB
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 }
+	is_independence_wave_regional_framework_package = yes
+}
+
+is_independence_wave_pal_package = {
+	original_tag = PAL
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 }
+	is_independence_wave_regional_framework_package = yes
+}
+
+# Country scope. The package's projects are open: the framework setup receipt
+# exists for this generation and the capital is held.
+is_independence_wave_levant_project_ready = {
+	is_independence_wave_regional_framework_live = yes
+	capital_scope = { is_controlled_by = PREV }
+}
+
+has_independence_wave_levant_peaceful_former_host = {
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_levant_peaceful_former_host_tt
+		has_independence_wave_living_former_host = yes
+		var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
+	}
+}

@@ -1,0 +1,304 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 LEVANT AND ARABIA PACKAGE LAYERS
+# ============================================================================
+# Overview:
+# - Level 2 layers on the regional framework engine (agent decision D25) for
+#   IW-073 Hejaz (CUX), IW-078 Imamate of Oman (IMO), IW-081 Lebanon (LEB) and
+#   IW-082 Palestine (PAL).
+# - Each `_apply_package_layer` runs once inside framework setup: it installs
+#   the country's starting problem and marks the layer as applied.
+# - Each `_complete_*` effect is the result of one paid project in
+#   common/decisions/006_independence_wave_levant_arabia_decisions.txt. Values
+#   move through the shared clamped helpers.
+# - Each `_cleanup_package_layer` checks its own package id and removes the
+#   projects, ideas and receipts; the framework cleanup calls all four.
+# No effect iterates countries or states.
+# ============================================================================
+
+# COUNTRY scope. Shared delta reset for the project results below.
+independence_wave_levant_reset_deltas = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+# ---------------------------------------------------------------------------
+# IW-073 Hejaz (CUX)
+# ---------------------------------------------------------------------------
+
+independence_wave_cux_apply_package_layer = {
+	add_ideas = independence_wave_cux_pilgrim_dependence
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_cux_complete_consultative_council = {
+	independence_wave_levant_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_cux_council_seated
+}
+
+independence_wave_cux_complete_hajj_routes = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_cux_pilgrim_dependence
+	add_ideas = independence_wave_cux_hajj_guardianship
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_cux_hajj_routes_guaranteed
+}
+
+independence_wave_cux_complete_jeddah_customs = {
+	independence_wave_levant_reset_deltas = yes
+	add_ideas = independence_wave_cux_jeddah_customs
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_cux_jeddah_customs_reopened
+}
+
+independence_wave_cux_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = CUX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } }
+		remove_decision = independence_wave_cux_seat_consultative_council
+		remove_decision = independence_wave_cux_guarantee_hajj_routes
+		remove_decision = independence_wave_cux_reopen_jeddah_customs
+		remove_ideas = { independence_wave_cux_pilgrim_dependence independence_wave_cux_hajj_guardianship independence_wave_cux_jeddah_customs }
+		clr_country_flag = independence_wave_cux_council_seated
+		clr_country_flag = independence_wave_cux_hajj_routes_guaranteed
+		clr_country_flag = independence_wave_cux_jeddah_customs_reopened
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-078 Imamate of Oman (IMO)
+# ---------------------------------------------------------------------------
+
+independence_wave_imo_apply_package_layer = {
+	add_ideas = independence_wave_imo_seeb_unsettled
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_imo_complete_shaykhs_council = {
+	independence_wave_levant_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_imo_shaykhs_convened
+}
+
+independence_wave_imo_complete_treaty_of_seeb = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_imo_seeb_unsettled
+	add_ideas = independence_wave_imo_treaty_of_seeb
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	if = {
+		limit = { has_independence_wave_levant_peaceful_former_host = yes }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+	set_country_flag = independence_wave_imo_seeb_settled
+	set_country_flag = independence_wave_imo_treaty_renewed
+}
+
+independence_wave_imo_complete_coast_road_closure = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_imo_seeb_unsettled
+	add_ideas = independence_wave_imo_interior_self_reliance
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	if = {
+		limit = { has_independence_wave_living_former_host = yes }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_minor }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+	set_country_flag = independence_wave_imo_seeb_settled
+	set_country_flag = independence_wave_imo_coast_road_closed
+}
+
+independence_wave_imo_complete_caravan_routes = {
+	independence_wave_levant_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_imo_caravan_routes_open
+}
+
+independence_wave_imo_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = IMO check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } }
+		remove_decision = independence_wave_imo_convene_shaykhs_at_nizwa
+		remove_decision = independence_wave_imo_renew_treaty_of_seeb
+		remove_decision = independence_wave_imo_close_the_coast_road
+		remove_decision = independence_wave_imo_open_caravan_routes
+		remove_ideas = { independence_wave_imo_seeb_unsettled independence_wave_imo_treaty_of_seeb independence_wave_imo_interior_self_reliance }
+		clr_country_flag = independence_wave_imo_shaykhs_convened
+		clr_country_flag = independence_wave_imo_seeb_settled
+		clr_country_flag = independence_wave_imo_treaty_renewed
+		clr_country_flag = independence_wave_imo_coast_road_closed
+		clr_country_flag = independence_wave_imo_caravan_routes_open
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-081 Lebanon (LEB)
+# ---------------------------------------------------------------------------
+
+independence_wave_leb_apply_package_layer = {
+	add_ideas = independence_wave_leb_unwritten_pact
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_leb_complete_great_offices = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_leb_unwritten_pact
+	add_ideas = independence_wave_leb_national_pact
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_leb_pact_settled
+	set_country_flag = independence_wave_leb_offices_apportioned
+}
+
+independence_wave_leb_complete_civic_charter = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_leb_unwritten_pact
+	add_ideas = independence_wave_leb_civic_charter
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_leb_pact_settled
+	set_country_flag = independence_wave_leb_offices_opened
+}
+
+independence_wave_leb_complete_free_port = {
+	independence_wave_levant_reset_deltas = yes
+	add_ideas = independence_wave_leb_free_port
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_leb_free_port_proclaimed
+}
+
+independence_wave_leb_complete_mandate_accounts = {
+	independence_wave_levant_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	if = {
+		limit = { has_independence_wave_levant_peaceful_former_host = yes }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+	set_country_flag = independence_wave_leb_mandate_accounts_settled
+}
+
+independence_wave_leb_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = LEB check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } }
+		remove_decision = independence_wave_leb_apportion_great_offices
+		remove_decision = independence_wave_leb_open_offices_to_every_citizen
+		remove_decision = independence_wave_leb_proclaim_free_port_of_beirut
+		remove_decision = independence_wave_leb_settle_mandate_accounts
+		remove_ideas = { independence_wave_leb_unwritten_pact independence_wave_leb_national_pact independence_wave_leb_civic_charter independence_wave_leb_free_port }
+		clr_country_flag = independence_wave_leb_pact_settled
+		clr_country_flag = independence_wave_leb_offices_apportioned
+		clr_country_flag = independence_wave_leb_offices_opened
+		clr_country_flag = independence_wave_leb_free_port_proclaimed
+		clr_country_flag = independence_wave_leb_mandate_accounts_settled
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-082 Palestine (PAL)
+# ---------------------------------------------------------------------------
+
+# The vanilla PAL neutrality leader is the mandate's High Commissioner. A
+# released Palestine suspends that leader role for its own generation; cleanup
+# restores it exactly as vanilla defines it.
+independence_wave_pal_apply_package_layer = {
+	if = {
+		limit = { has_character = PAL_harold_macmichael }
+		remove_country_leader_role = {
+			character = PAL_harold_macmichael
+			ideology = oligarchism
+		}
+		set_country_flag = independence_wave_pal_mandate_leader_suspended
+	}
+	add_ideas = independence_wave_pal_divided_municipalities
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_pal_complete_legislative_council = {
+	independence_wave_levant_reset_deltas = yes
+	remove_ideas = independence_wave_pal_divided_municipalities
+	add_ideas = independence_wave_pal_legislative_council
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_pal_council_convened
+}
+
+independence_wave_pal_complete_land_commission = {
+	independence_wave_levant_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_pal_land_commission_sat
+}
+
+independence_wave_pal_complete_holy_places_guarantee = {
+	independence_wave_levant_reset_deltas = yes
+	add_ideas = independence_wave_pal_holy_places_guarantee
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_pal_holy_places_guaranteed
+}
+
+independence_wave_pal_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = PAL check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } }
+		remove_decision = independence_wave_pal_convene_legislative_council
+		remove_decision = independence_wave_pal_appoint_land_commission
+		remove_decision = independence_wave_pal_seek_holy_places_guarantee
+		remove_ideas = { independence_wave_pal_divided_municipalities independence_wave_pal_legislative_council independence_wave_pal_holy_places_guarantee }
+		if = {
+			limit = {
+				has_country_flag = independence_wave_pal_mandate_leader_suspended
+				has_character = PAL_harold_macmichael
+			}
+			add_country_leader_role = {
+				character = PAL_harold_macmichael
+				country_leader = {
+					ideology = oligarchism
+					traits = { PAL_experienced_high_commissioner }
+					expire = "1969.1.1.1"
+				}
+			}
+		}
+		clr_country_flag = independence_wave_pal_mandate_leader_suspended
+		clr_country_flag = independence_wave_pal_council_convened
+		clr_country_flag = independence_wave_pal_land_commission_sat
+		clr_country_flag = independence_wave_pal_holy_places_guaranteed
+	}
+}

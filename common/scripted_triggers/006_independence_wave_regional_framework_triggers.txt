@@ -1,0 +1,206 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 REGIONAL FRAMEWORK PACKAGE TRIGGERS
+# ============================================================================
+# Overview:
+# - One shared Level 1 package contract for regional rows that have no bespoke
+#   package engine of their own (agent decision D25). Each admitted row is
+#   listed once in `is_independence_wave_regional_framework_exact_carrier`
+#   with its exact package id and carrier tag.
+# - Setup, prepared, complete, runtime-ready and cleanup checks read the
+#   released country and its stored anchor and former host, never ROOT.
+# - Level 2 rows add their own decisions, ideas and incidents in their regional
+#   files; those files reuse `is_independence_wave_regional_framework_package`.
+# No trigger iterates countries or states.
+# ============================================================================
+
+# Country scope. The exact package id and carrier tag of every admitted
+# framework row. Reads `independence_wave_package_id`, which the origin
+# preparation publishes before package setup.
+is_independence_wave_regional_framework_exact_carrier = {
+	has_variable = independence_wave_package_id
+	OR = {
+		# Levant and Arabia
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } original_tag = CUX }
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_076 } original_tag = CXX }
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } original_tag = IMO }
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } original_tag = LEB }
+		AND = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } original_tag = PAL }
+	}
+}
+
+# Country scope. A live framework package of the current Event 006 origin.
+is_independence_wave_regional_framework_package = {
+	is_independence_wave_package_content_active = yes
+	is_independence_wave_regional_framework_exact_carrier = yes
+	check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { has_country_flag = soviet_collapse_event_created_republic }
+	NOT = { has_country_flag = soviet_collapse_breakaway_setup_complete }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+}
+
+# Country scope. The framework package set up for the current generation.
+has_current_independence_wave_regional_framework_generation = {
+	has_variable = independence_wave_framework_generation_id
+	check_variable = { var = independence_wave_framework_generation_id value = independence_wave_generation_id compare = equals }
+}
+
+# Country scope. The stored former host still holds its protected state.
+has_valid_independence_wave_regional_framework_former_host = {
+	has_variable = independence_wave_former_host
+	var:independence_wave_former_host = {
+		exists = yes
+		NOT = { tag = PREV }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+}
+
+# Country scope. The released country owns, controls and governs from its
+# stored anchor.
+has_independence_wave_regional_framework_anchor_capital = {
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = {
+		NOT = { state = 0 }
+		is_owned_and_controlled_by = PREV
+		is_capital = yes
+	}
+}
+
+# Country scope during package setup. Inputs: temporary
+# `independence_wave_setup_package_id` and the setup event targets.
+can_initialize_independence_wave_regional_framework_package = {
+	is_independence_wave_regional_framework_package = yes
+	check_variable = { var = independence_wave_package_id value = independence_wave_setup_package_id compare = equals }
+	has_valid_independence_wave_region = yes
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	event_target:independence_wave_setup_anchor_state = {
+		is_owned_and_controlled_by = PREV
+		is_capital = yes
+	}
+	event_target:independence_wave_setup_former_host = {
+		exists = yes
+		NOT = { tag = PREV }
+		has_variable = liberation_release_protected_state
+		var:liberation_release_protected_state = { is_owned_by = PREV }
+	}
+	has_independence_wave_regional_framework_anchor_capital = yes
+}
+
+# Country scope. Every flag, variable and force receipt the framework setup
+# writes. Transaction-time only: the origin commit later clears
+# `independence_wave_origin_prepared`.
+has_prepared_independence_wave_regional_framework_package_setup = {
+	is_independence_wave_regional_framework_package = yes
+	has_country_flag = independence_wave_origin_prepared
+	has_current_independence_wave_regional_framework_generation = yes
+	has_variable = independence_wave_framework_package_id
+	check_variable = { var = independence_wave_framework_package_id value = independence_wave_package_id compare = equals }
+	has_country_flag = independence_wave_framework_identity_applied
+	has_country_flag = independence_wave_command_roster_ready
+	has_independence_wave_regional_framework_anchor_capital = yes
+	has_valid_independence_wave_regional_framework_former_host = yes
+	has_country_flag = independence_wave_full_focus_framework
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_country_flag = independence_wave_framework_routes_applied
+	OR = {
+		has_country_flag = independence_wave_route_constitutional_available
+		has_country_flag = independence_wave_route_popular_council_available
+		has_country_flag = independence_wave_route_traditional_available
+		has_country_flag = independence_wave_route_emergency_military_available
+	}
+	has_country_flag = independence_wave_host_negotiation_route_available
+	has_country_flag = independence_wave_host_guarded_frontier_route_available
+	has_country_flag = independence_wave_host_association_route_available
+	has_country_flag = independence_wave_host_reclamation_route_available
+	has_country_flag = independence_wave_ambition_family_registered
+	has_country_flag = independence_wave_league_route_available
+	has_country_flag = independence_wave_force_mapping_loaded
+	check_variable = { var = independence_wave_force_mapping_package_id value = independence_wave_package_id compare = equals }
+	has_independence_wave_reinforcement_program = yes
+	has_independence_wave_force_package_for_current_generation = yes
+	has_country_flag = independence_wave_force_package_applied
+	has_country_flag = independence_wave_framework_ai_profile
+	has_country_flag = independence_wave_framework_package_layer_applied
+}
+
+# Country scope. Transaction-time proof after activation.
+has_complete_independence_wave_regional_framework_package_setup = {
+	has_prepared_independence_wave_regional_framework_package_setup = yes
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_framework_setup_complete
+	has_country_flag = independence_wave_origin_activation_ready
+	independence_wave_active_country_arrays_are_aligned = yes
+	independence_wave_network_member_arrays_are_aligned = yes
+	is_in_array = { array = global.independence_wave_network_member_country_entries value = THIS }
+	has_country_flag = independence_wave_network_member
+}
+
+# Country scope. Final validation of a framework package.
+is_independence_wave_regional_framework_runtime_ready = {
+	is_independence_wave_regional_framework_package = yes
+	has_complete_independence_wave_regional_framework_package_setup = yes
+	has_independence_wave_force_package_for_current_generation = yes
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	has_independence_wave_regional_framework_anchor_capital = yes
+	has_valid_independence_wave_regional_framework_former_host = yes
+}
+
+# Country scope. The framework package after release: the setup receipt
+# persists until package cleanup, unlike the transaction proofs above.
+is_independence_wave_regional_framework_live = {
+	is_independence_wave_regional_framework_package = yes
+	has_current_independence_wave_regional_framework_generation = yes
+	has_country_flag = independence_wave_framework_setup_complete
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
+# ---------------------------------------------------------------------------
+# Exact dormant-tag availability (execution and SCN-008 preflights)
+# ---------------------------------------------------------------------------
+
+is_independence_wave_exact_package_iw_073_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = CUX exists = no }
+	679 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { original_tag = CUX } }
+	}
+}
+
+is_independence_wave_exact_package_iw_076_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = CXX exists = no }
+	659 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { original_tag = CXX } }
+	}
+}
+
+is_independence_wave_exact_package_iw_078_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = IMO
+	1015 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { tag = IMO } }
+	}
+}
+
+is_independence_wave_exact_package_iw_081_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = LEB
+	553 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { tag = LEB } }
+	}
+}
+
+is_independence_wave_exact_package_iw_082_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	original_tag = PAL
+	454 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = { exists = yes NOT = { tag = PAL } }
+	}
+}
