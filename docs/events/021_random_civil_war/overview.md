@@ -222,7 +222,8 @@ Settlement obligations are recorded before temporary war state is removed.
 
 A government can offer emergency terms once its war has lasted the minimum duration from the opening. AI governments offer them only when the war turns against them: a Cohesive government holding its ground never offers, a hardliner holds out until its authority is Failing, and Failing or Collapse authority, lost states, or near defeat make an offer likely.
 
-The settlement phase stays open from the moment terms are applied until the obligation is fulfilled or breached, whether or not the settlement event has been answered. Throughout that period the obligation's own action, when it has one (Complete Disarmament, Complete Coalition Governance, or End Sponsor Commitment), and Hold the Settlement Terms remain available beside the reconstruction actions.
+The settlement phase stays open from the moment terms are applied until the obligation is fulfilled or breached, whether or not the settlement event has been answered.
+Hold the Settlement Terms starts a hold that ends on the obligation's review date and is offered only while at least a day remains. The hold judges the terms on that date: an upheld settlement raises State Authority, eases internal division, and lowers the recurrence risk prepared at the end of reconstruction, while a missed objective records a breach. Throughout that period the obligation's own action, when it has one (Complete Disarmament, Complete Coalition Governance, or End Sponsor Commitment), and Hold the Settlement Terms remain available beside the reconstruction actions.
 
 Reconstruction restores administration through a finite due-date sequence instead of an always-running maintenance loop.
 

@@ -6645,6 +6645,8 @@ event021_parent_review_settlement_obligation = {
 				}
 				NOT = { has_country_flag = random_civil_war_settlement_obligation_objective_met }
 				NOT = { event021_parent_settlement_obligation_objective_valid = yes }
+				# A running settlement hold judges the terms on its own timer.
+				NOT = { has_country_flag = event021_settlement_terms_mission_active }
 			}
 			set_country_flag = random_civil_war_settlement_obligation_objective_missed
 			set_country_flag = random_civil_war_settlement_violation
@@ -6664,6 +6666,7 @@ event021_parent_review_settlement_obligation = {
 					has_country_flag = random_civil_war_settlement_obligation_objective_met
 					event021_parent_settlement_obligation_objective_valid = yes
 				}
+				NOT = { has_country_flag = event021_settlement_terms_mission_active }
 			}
 			if = {
 				limit = {
@@ -6767,6 +6770,7 @@ event021_parent_select_settlement_obligation = {
 	set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days }
 	event021_days_to_date_offset = yes
 	add_to_variable = { random_civil_war_settlement_terms_hold_until = event021_date_offset }
+	event021_record_settlement_terms_offer_limit = yes
 	if = {
 		limit = { has_variable = random_civil_war_anchor_state }
 		set_variable = { random_civil_war_settlement_obligation_anchor_state = random_civil_war_anchor_state }
@@ -6848,6 +6852,7 @@ event021_parent_apply_settlement = {
 			set_temp_variable = { event021_date_offset = constant:event021_parent_tuning.settlement_terms_hold_days }
 			event021_days_to_date_offset = yes
 			add_to_variable = { random_civil_war_settlement_terms_hold_until = event021_date_offset }
+			event021_record_settlement_terms_offer_limit = yes
 		}
 		if = {
 			limit = { has_country_flag = random_civil_war_parent_capital_safe }

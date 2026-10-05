@@ -1004,9 +1004,10 @@ event021_civil_war_crisis_category = {
 			NOT = { has_country_flag = random_civil_war_settlement_obligation_objective_met }
 			NOT = { has_country_flag = event021_settlement_terms_mission_active }
 			NOT = { has_country_flag = event021_settlement_terms_offer_lapsed }
+			event021_settlement_terms_offer_open = yes
 		}
 		available = {
-			hidden_trigger = { has_variable = random_civil_war_settlement_terms_hold_until }
+			hidden_trigger = { event021_settlement_terms_offer_open = yes }
 			custom_trigger_tooltip = {
 				tooltip = event021_settlement_terms_requirement_tt
 				has_country_flag = random_civil_war_settlement_obligation_active
@@ -1017,14 +1018,14 @@ event021_civil_war_crisis_category = {
 			OR = {
 				NOT = { event021_country_can_manage_settlement = yes }
 				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+				NOT = { event021_settlement_terms_offer_open = yes }
 			}
 		}
+		# Selecting the card starts a hold that ends on the obligation's hold
+		# date, where the hold itself judges the terms.
 		complete_effect = {
 			custom_effect_tooltip = event021_settlement_terms_commit_tt
-			hidden_effect = {
-				set_country_flag = event021_settlement_terms_mission_active
-				activate_mission = event021_upholding_the_settlement_mission
-			}
+			hidden_effect = { event021_mission_start_settlement_terms_hold = yes }
 		}
 		# An unselected card lapses without penalty and returns after the
 		# action cooldown instead of restarting its timer at once.
@@ -1042,10 +1043,12 @@ event021_civil_war_crisis_category = {
 	}
 
 	# Timed settlement hold started by event021_hold_settlement_terms_mission.
-	# The timer judges the live obligation objective.
+	# Its timer is the whole days left until the obligation's hold date, which
+	# event021_mission_start_settlement_terms_hold stores before activation;
+	# the parent review leaves the hold-date judgment to this timer.
 	event021_upholding_the_settlement_mission = {
 		icon = GFX_mission_event021_settlement_terms
-		days_mission_timeout = constant:event021_mission_tuning.settlement_terms_days
+		days_mission_timeout = var:event021_settlement_terms_hold_days
 		is_good = yes
 		fire_only_once = no
 		activation = { always = no }

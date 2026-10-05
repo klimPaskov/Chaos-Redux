@@ -1287,6 +1287,14 @@ event021_protect_communications_offered = {
 	}
 }
 
+# COUNTRY scope. Hold the Settlement Terms can start while at least the
+# minimum remaining days are left before the obligation's hold date
+# (event021_record_settlement_terms_offer_limit stores the last such date).
+event021_settlement_terms_offer_open = {
+	has_variable = event021_settlement_terms_last_offer_date
+	check_variable = { var = global.date value = event021_settlement_terms_last_offer_date compare = less_than_or_equals }
+}
+
 event021_country_can_manage_multifront = {
 	event021_country_can_manage_crisis = yes
 	has_country_flag = random_civil_war_multifront_active

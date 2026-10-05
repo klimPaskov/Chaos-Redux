@@ -641,12 +641,42 @@ event021_mission_secure_rail_resolve = {
 	}
 }
 
+# COUNTRY scope. Starts Upholding the Settlement so that it ends on the
+# obligation's hold date. The days left are converted through the shared
+# converter (rounded up, never below the minimum remaining days) into the
+# normal variable that the hold mission's timer reads at activation.
+event021_mission_start_settlement_terms_hold = {
+	set_temp_variable = { chaosx_date_offset = random_civil_war_settlement_terms_hold_until }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { event021_settlement_terms_hold_days = chaosx_date_days }
+	clamp_variable = {
+		var = event021_settlement_terms_hold_days
+		min = constant:event021_mission_tuning.settlement_terms_minimum_remaining_days
+	}
+	set_country_flag = event021_settlement_terms_mission_active
+	activate_mission = event021_upholding_the_settlement_mission
+}
+
+# COUNTRY scope. A settlement upheld through its hold earns State Authority,
+# eases internal division, and lowers the recurrence score prepared at the end
+# of reconstruction (random_civil_war_settlement_terms_upheld).
+event021_mission_reward_settlement_terms_upheld = {
+	set_country_flag = random_civil_war_settlement_terms_upheld
+	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.settlement_terms_authority_gain }
+	event021_add_authority = yes
+	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.settlement_terms_pressure_relief }
+	event021_reduce_pressure = yes
+}
+
 event021_mission_hold_settlement_terms_complete = {
 	clr_country_flag = event021_settlement_terms_mission_active
 	if = {
 		limit = { event021_parent_settlement_obligation_objective_valid = yes }
 		set_country_flag = random_civil_war_settlement_obligation_objective_met
 		clr_country_flag = random_civil_war_settlement_obligation_failed
+		event021_mission_reward_settlement_terms_upheld = yes
 	}
 	else = { set_country_flag = random_civil_war_settlement_obligation_failed }
 	event021_parent_review_settlement_obligation = yes
@@ -669,6 +699,20 @@ event021_mission_hold_settlement_terms_resolve = {
 		event021_mission_hold_settlement_terms_complete = yes
 	}
 	else = { event021_mission_hold_settlement_terms_timeout = yes }
+}
+
+# COUNTRY scope. Records the last date on which Hold the Settlement Terms can
+# start: the obligation's hold date less the minimum remaining days, through
+# the shared date converter. Every writer of the hold date calls it.
+event021_record_settlement_terms_offer_limit = {
+	clear_variable = event021_settlement_terms_last_offer_date
+	if = {
+		limit = { has_variable = random_civil_war_settlement_terms_hold_until }
+		set_variable = { event021_settlement_terms_last_offer_date = random_civil_war_settlement_terms_hold_until }
+		set_temp_variable = { event021_date_offset = constant:event021_mission_tuning.settlement_terms_minimum_remaining_days }
+		event021_days_to_date_offset = yes
+		subtract_from_variable = { event021_settlement_terms_last_offer_date = event021_date_offset }
+	}
 }
 
 # COUNTRY scope. Clears the lapsed-offer cooldowns of Hold the Capital, Secure
@@ -706,6 +750,8 @@ event021_cleanup_decision_state = {
 	clear_variable = event021_hold_capital_mission_target_state
 	clr_country_flag = event021_secure_rail_mission_active
 	clr_country_flag = event021_settlement_terms_mission_active
+	clear_variable = event021_settlement_terms_hold_days
+	clear_variable = event021_settlement_terms_last_offer_date
 	event021_clear_crisis_action_receipts = yes
 	clr_country_flag = event021_relief_action_used
 	clear_variable = random_civil_war_priority_front_state
