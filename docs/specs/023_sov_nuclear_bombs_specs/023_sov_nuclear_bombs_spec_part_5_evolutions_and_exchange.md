@@ -440,7 +440,8 @@ The public exchange stage is `global.sov_nuclear_bombs_exchange_stage`, which on
 Detonations are counted in `global.sov_nuclear_bombs_exchange_detonations` on the existing major-power receipt path, with no new scan or pulse.
 Reaching General Exchange sets `sov_nuclear_bombs_general_exchange_reached` once, which disqualifies Firebreak; it never sets `world_end`, and Fallout stays with the shared route.
 The stage appears as the "Exchange" line in the Soviet Nuclear Command header and in the hotline and stand-down descriptions.
-The retaliation window keeps its fixed mission timer, so Expanding Exchange does not shorten it; the reason is recorded in R2-6.
+The retaliation window mission reads `days_mission_timeout = var:sov_nuclear_bombs_retaliation_window_days` (vanilla precedent: `CHI_decisions.txt`), set before every activation: a hotline keeps `hotline_mission` (30 days), and an authorized response gets `retaliation_intact_command` (10), `retaliation_suspected_launch` (14) while a launch warning is unconfirmed, or `retaliation_command_damage` (21) when Command Integrity is low, Moscow is lost or a custody collapse disputes authority.
+Reaching Expanding Exchange shortens an open response window by `retaliation_expanding_shortening` (5) days through `add_days_mission_timeout`, never below `retaliation_window_floor` (3) days remaining; a hotline window is not shortened (decision R2b-9, `implemented`).
 
 ## Writing direction
 

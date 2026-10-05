@@ -128,6 +128,11 @@ Every government that refuses, settles or outlasts a demand gets the timed flag 
 The Soviet AI prefers the private signal while public knowledge is below Demonstrated (×1.40) and halves the public ultimatum until a signal has been sent; the ultimatum falls ×0.40 when credibility is Doubted and ×0.70 after the first and again after the second back-down; back-down rises ×2.50 only when credibility is Doubted; the wartime demonstration rises ×1.50 after a refusal and ×1.50 when Doubted; and the limited strike rises ×1.50 after a refusal.
 All values are in `sov_nuclear_bombs_ai`, `sov_nuclear_bombs_credibility` and `sov_nuclear_bombs_duration`.
 
+### Retaliation timing
+
+The retaliation window mission reads its length from `sov_nuclear_bombs_retaliation_window_days`, set before every activation (Part 5 retaliation timing): a hotline keeps 30 days, an authorized response waits 10 days with intact command, 14 days while a launch warning is unconfirmed, and 21 days when Command Integrity is low, Moscow is lost or a custody collapse disputes authority (`sov_nuclear_bombs_duration`).
+When the exchange becomes Expanding, an open response window loses up to 5 days through `add_days_mission_timeout`, never below 3 days remaining, tracked by `sov_nuclear_bombs_retaliation_window_end_day`; a hotline window keeps its time, and the window can never open and close on the same day.
+
 ### False warnings
 
 From Evolution III, while the Union is at war with a nuclear major and Chaos is at least 900, each existing 30-day maintenance cycle rolls a 5% chance (`sov_nuclear_bombs_false_warning`) of a possible enemy launch with no confirmed detonation (`chaosx.nr23.141`), naming one enemy nuclear major as the suspected actor.

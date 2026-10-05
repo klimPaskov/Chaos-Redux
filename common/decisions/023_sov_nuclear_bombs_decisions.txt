@@ -1607,7 +1607,9 @@ sov_nuclear_bombs_command_category = {
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active }
 		activation = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active }
 		available = { always = no }
-		days_mission_timeout = constant:sov_nuclear_bombs_duration.hotline_mission
+		# Set before every activation: the hotline keeps its negotiating time,
+		# an authorized response follows the command situation.
+		days_mission_timeout = var:sov_nuclear_bombs_retaliation_window_days
 		complete_effect = { sov_nuclear_bombs_complete_retaliation_window = yes }
 		cancel_trigger = {
 			OR = {

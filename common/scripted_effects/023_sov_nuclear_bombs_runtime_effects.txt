@@ -356,7 +356,20 @@ sov_nuclear_bombs_advance_exchange_stage = {
 	}
 	if = {
 		limit = { check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = sov_nuclear_bombs_requested_exchange_stage compare = less_than } }
+		# Reaching Expanding Exchange shortens an open Soviet response window.
+		set_temp_variable = { sov_nuclear_bombs_expanding_crossed = constant:sov_nuclear_bombs_ledger.zero }
+		if = {
+			limit = {
+				check_variable = { var = global.sov_nuclear_bombs_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_expanding_stage compare = less_than }
+				check_variable = { var = sov_nuclear_bombs_requested_exchange_stage value = constant:sov_nuclear_bombs_tuning.exchange_expanding_stage compare = greater_than_or_equals }
+			}
+			set_temp_variable = { sov_nuclear_bombs_expanding_crossed = constant:sov_nuclear_bombs_ledger.one }
+		}
 		set_variable = { global.sov_nuclear_bombs_exchange_stage = sov_nuclear_bombs_requested_exchange_stage }
+		if = {
+			limit = { check_variable = { var = sov_nuclear_bombs_expanding_crossed value = constant:sov_nuclear_bombs_ledger.one compare = equals } }
+			SOV = { sov_nuclear_bombs_shorten_response_window = yes }
+		}
 	}
 	if = {
 		limit = {
