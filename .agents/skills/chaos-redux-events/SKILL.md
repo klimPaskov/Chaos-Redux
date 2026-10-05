@@ -153,6 +153,11 @@ Report and event descriptions drawn on light parchment must use plain text for n
 Keep colours only in supported dark option, tooltip, decision, or GUI consumers; use separate plain and coloured localisation variants when a shared helper feeds both.
 Audit the whole owned description family and its dynamic substitutions for contrast in the actual consumer, including at 1080p.
 
+Native PowerShell stdin can replace non-ASCII program text before Python receives it, even when Python writes a UTF-8 BOM correctly.
+For localisation writes through that route, use ASCII program text with Unicode escapes or `chr()` for the `U+00A3` texticon and `U+00A7` formatting glyphs, or read the intended text from an explicitly UTF-8 file.
+Re-read the affected values as UTF-8 and verify their actual glyphs after writing.
+When normalizing physical line endings, preserve authored `\n` escapes inside localisation values rather than rewriting them as literal `\r\n` escapes.
+
 Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
 
 Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path. Keep achievement conditions in achievement UI and docs, and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe what people see, fear, suffer, or fail to explain. Do not directly label the incident as a warning, a non-warning, a danger signal, or the absence of one.
