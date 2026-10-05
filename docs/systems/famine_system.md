@@ -67,6 +67,7 @@ A scratch model of these formulas with the current constants (recorded in `docs/
 
 A historical-window crisis profile (Henan 1942, Bengal 1943, Vietnam and Java 1944, Greece 1941, Leningrad, the Dutch Hunger Winter and early-1940s Spain) reactivates only inside its date window, under its historical owner or controller, and when the war reaches the state itself or a food shock is recorded.
 `famine_resolve_local_war_evidence` requires the state's controller to be at war and the state to be occupied, to border a state held by an enemy of its controller, to be under a harsher-than-standard occupation rule, to be a cut-off island, or to have lost local supply.
+Bengal counts as one food region, because its rice came from Burma through East Bengal: an enemy-held state on the border of either Bengal anchor (Arakan, for example) opens the profile in both East and West Bengal.
 A country fighting far from Bengal, Leningrad or Spain therefore does not starve those regions, which keeps Part 5's rule that a crisis does not fire once the campaign has removed its causes.
 
 Trapped-population need is population-scaled as `clamp((trapped people / live state population) * 100, 0, 100)`. It enters need and vulnerability only through the explicit migration adapter.
@@ -75,7 +76,7 @@ Trapped-population need is population-scaled as `clamp((trapped people / live st
 
 `famine_apply_mortality` runs only after the severe-stage exposure and due-date contract passes. It reads live population through the exact state-population API, applies the stage rate and bounded exposure, vulnerability, relief, extraction, environment, access, and governance factors, and respects the protected population floor.
 
-The stage rates are 0.03 percent of the population every 14 days for acute shortage, 0.08 percent every 7 days for famine, and 0.2 percent every 3 days for catastrophic famine. The product of the vulnerability, access, policy, environment and governance factors is capped at 2.5, exposure adds up to a threefold multiplier over 200 days, and relief reduces the pulse in proportion. Unmanaged famine therefore removes about 1.5 percent of a state's population each month, and catastrophic famine without relief removes a third or more over five months, while the protected floor keeps at least 15 percent of the state's population after every pulse.
+The stage rates are 0.03 percent of the population every 14 days for acute shortage, 0.08 percent every 7 days for famine, and 0.2 percent every 3 days for catastrophic famine. The product of the vulnerability, access, policy, environment and governance factors is capped at 2.5, exposure in the current stage adds 1 percent a day up to 2.8 times at the 180-day exposure cap, and relief reduces the pulse in proportion. Unmanaged famine therefore removes about 1.5 percent of a state's population each month, and catastrophic famine without relief removes a third or more over five months, while the protected floor keeps at least 15 percent of the state's population after every pulse.
 
 The famine owner performs one population debit and records the same applied amount under `constant:chaos_meter_deaths_reason.famine`, localized as `From famine`. No migration or adapter path applies a second debit for that mortality.
 
@@ -119,7 +120,7 @@ Famine can create a migration flight request only after the famine state and aff
 
 A successful Hunger Lines launch (Event 014, scenario SCN-010) calls `famine_apply_hunger_lines_scenario_pressure` once from the shared scenario launcher.
 It reads only Event 014's node registry and launch intensity, and gives each live node state a scenario food shock, a scenario food context on production, transport, governance and vulnerability that lasts 120 days, and scenario flight pressure for migration.
-The lowest intensity reaches supply strain (and acute shortage only after the reserve runs out), and the maximum reaches famine about 44 days after launch; a relaunch inside a state's 120-day window adds nothing to that state.
+The lowest intensity reaches supply strain about a week after launch in any state that starts with half its reserve target, even at the highest infrastructure, and acute shortage only after that reserve runs out (about 6 to 10 weeks); a state already holding its full reserve target rides out the lowest intensity. The maximum reaches famine about 44 days after launch; a relaunch inside a state's 120-day window adds nothing to that state.
 The values sit in `famine_hunger_lines_scenario` in `famine_adapter_constants.txt`.
 
 A hostile capture of a state queues one food-safety assessment through `famine_enqueue_food_observation_assessment` from the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.

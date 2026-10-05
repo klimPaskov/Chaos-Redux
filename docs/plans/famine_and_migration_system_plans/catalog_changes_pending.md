@@ -10,7 +10,7 @@ Source change: `famine_apply_hunger_lines_scenario_pressure` (committed with dec
 
 Requested `Details` addition, after the five type paragraphs:
 
-> In every type, the regions the Hunger Lines seize run short of food and their people begin to flee. At the lowest intensity the shortage stays a strain on supply; at Maximum those regions slide toward famine within weeks unless relief arrives.
+> In every type, the regions the Hunger Lines seize run short of food and their people begin to flee. At the lowest intensity supply is strained at first and turns into acute shortage once local stores run out; at Maximum those regions slide toward famine within weeks unless relief arrives.
 
 Requested `Intensity Scaling` addition to the Maximum line:
 

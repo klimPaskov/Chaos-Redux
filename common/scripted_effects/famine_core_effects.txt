@@ -203,8 +203,11 @@ famine_clear_historical_profile_context = {
 # and the war reaches this state: it is occupied, a neighbouring state is held
 # by an enemy of its controller (a front line or siege ring), it is under a
 # harsher-than-standard occupation rule, it is a cut-off island, or its local
-# supply has failed. Reads the temporary famine_occupation_profile, so callers
-# resolve the occupation profile first.
+# supply has failed. Bengal is treated as one food region: its rice came from
+# Burma through East Bengal (spec Part 5, Bengal activation: war disrupts the
+# Burma routes), so an enemy-held state on the border of either Bengal anchor
+# reaches both anchors. Reads the temporary famine_occupation_profile, so
+# callers resolve the occupation profile first.
 # Output: temporary famine_local_war_evidence (one when proven, else zero).
 famine_resolve_local_war_evidence = {
 	set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.zero }
@@ -219,6 +222,13 @@ famine_resolve_local_war_evidence = {
 					check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than }
 					famine_blockade_isolation_proof = yes
 					check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+					AND = {
+						OR = { state = @FAMINE_STATE_EAST_BENGAL state = @FAMINE_STATE_WEST_BENGAL }
+						any_neighbor_state = {
+							OR = { state = @FAMINE_STATE_EAST_BENGAL state = @FAMINE_STATE_WEST_BENGAL }
+							any_neighbor_state = { CONTROLLER = { has_war_with = event_target:famine_local_war_controller } }
+						}
+					}
 				}
 			}
 			set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.one }

@@ -194,3 +194,19 @@ Disposition: accepted and implemented by the round-2 implementing agent under th
     Source trace of the outcomes: Japanese troops holding Burma next to East Bengal open the Bengal profile there; West Bengal opens only if it also borders enemy-held territory, is occupied or takes a food shock. A German siege ring around Leningrad (enemy-held neighbours) or its occupation opens the Leningrad profile, while a Soviet war fought elsewhere does not. Axis occupation of Greece, Japanese occupation of Java and German control of Holland open those profiles as in history. Spain opens only in states on a front or under occupation. Component values and the decision 17 stage table for a reactivated profile are unchanged, and no anchor passes at the 1936 start.
     Known limit: the war, outbreak and disaster surface contexts (`famine_local_war_context_proven` and its siblings) still have no owner, so ordinary front-line states outside the profiles get no war food pressure; this helper is a natural owner for the war context and is recommended as follow-up design work.
     needs_live_game: the neighbour front check on a live front (East Bengal and Leningrad adjacency in particular).
+
+## Round-2 review decisions
+
+Disposition: accepted and implemented by the round-2 skeptical reviewer under the same grant of design authority.
+The reviewer re-read commits `112204230`, `cce88b947`, `22f54df93`, `5d7e331ba` and `8f29ac0f6` and accepts decisions 16 to 20 as implemented, with the two corrections below.
+
+21. **Bengal is one food region for the wartime-window gate.**
+    Decision 20 left West Bengal (state 431, Calcutta) outside the Bengal 1943 profile unless it bordered enemy-held territory itself, although Calcutta was the centre of the historical famine and spec Part 5 lists "war disrupts Bay of Bengal and Burma routes" as the Bengal activation condition.
+    Vanilla map adjacency (province bitmap and state files): East Bengal (430) borders West Bengal (431), 432 and Arakan (997, Burma); West Bengal borders 323, 324, 426, 430, 432, 435 and 985, none in Burma.
+    `famine_resolve_local_war_evidence` now also holds for either Bengal anchor when a neighbouring Bengal anchor borders a state held by an enemy of the controller, so an enemy in Arakan opens the profile in both anchors. The clause sits inside the controller-at-war branch, so the event target it reads is always this state's controller; no other profile changes, and the 1936 start is unaffected because the window opens in 1943.
+    needs_live_game: Japanese control of Arakan with British or Raj control of Bengal opening both anchors.
+
+22. **The lowest Hunger Lines intensity reaches supply strain in every state it starts.**
+    A day-by-day scratch mirror of `famine_evaluate_food_security` (decision 17 constants, 1M population, seeded half reserve) showed that at `low_food_share` 0.06 a state with infrastructure 5 never left stable: the seeded reserve relief held the score at 24.8 on the first assessment, the stable-stage shock decay then applied, and the shock was gone before the reserve drained. Infrastructure 1 to 4 reached supply strain on day 8.
+    `low_food_share` is now 0.07. The same mirror gives supply strain on day 8 at every infrastructure level, acute shortage on day 41 (infrastructure 1) to day 68 (infrastructure 5) once the reserve is gone, and no change for a state already holding its full reserve target. Medium (acute day 30 to 57), high (acute day 23 to 29) and maximum (famine day 45) are unchanged.
+    The SCN-010 catalog sentence queued in `catalog_changes_pending.md` said the lowest intensity "stays a strain on supply", which the model contradicts, so it now says supply is strained at first and turns into acute shortage once local stores run out.
