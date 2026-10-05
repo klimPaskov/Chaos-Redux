@@ -1,6 +1,9 @@
 # Famine and Migration Mechanics Planning Package
 
-> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context. The current implementation uses independent `famine_*` and `migration_*` mechanics, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`; no combined mechanic, category, runtime namespace, or mapmode is current. Use [takeover_status_2026-10-06.md](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) for current status, published corrections, preserved drafts, and remaining evidence gates. The older checkpoint reports remain historical evidence.
+> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context.
+> The current implementation uses independent `famine_*` and `migration_*` mechanics, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`.
+> Use [takeover_status_2026-10-06.md](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) for current status, published corrections, and remaining evidence gates.
+> The inherited round-3 gameplay drafts are published, and the older checkpoint reports remain explicitly historical evidence.
 
 This folder is the source design package for a shared Chaos Redux system. It is not an event and it has no event ID.
 

@@ -2,10 +2,16 @@
 
 Review date: 2026-10-06.
 Verdict: incomplete.
-This record supersedes the six stopped-thread checkpoint documents for current status without modifying their existing dirty hunks.
-It distinguishes committed source repairs, preserved round-3 drafts, and missing engine evidence.
+Source-publication follow-up: complete for the five director-assigned round-3 gameplay drafts and their API documentation.
+The full workstream verdict remains incomplete for missing probability, visual, external-owner, and live-game evidence listed below.
+This record supersedes the six stopped-thread checkpoint documents for current status.
+Their inherited hunks and nine old handoffs have been reviewed and published as explicitly historical evidence.
+It distinguishes committed source repairs from missing engine evidence.
 
 ## This pass
+
+The first five commits below belong to the previous pass.
+The director-authorized follow-up is recorded separately after that table.
 
 | Commit | Result |
 | --- | --- |
@@ -13,7 +19,15 @@ It distinguishes committed source repairs, preserved round-3 drafts, and missing
 | `8540b5be9fe129783bc84ea5abbc3ae69a8ebb43` | Shorter famine/migration decision names and plain report, requirement, and achievement prose. |
 | `562b9afcb60488573eed9b834fad84c7c15e4c3c` | First status/reference/draft-review checkpoint and six-case source regression baseline. This document's final revision supersedes that checkpoint's test count and source inventory. |
 | `0bca71eb15cfc2af783be2bafcc21378e7a5d8b6` | Outermost decision callback storage for movement/relief/corridor results and proofs, consistent temporary relief-delivery copies across donor/recipient scopes, and the seventh regression case. |
-| This document's commit | Current status, reference evidence, design decisions, inherited-draft review, source regressions, and the spec README status pointer. Resolve its exact hash with `git log -1 --format=%H -- docs/plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md`. |
+| `b9276b631` | Previous status, reference evidence, design decisions, inherited-draft review, source regressions, and spec README status pointer. |
+
+### Director-authorized follow-up commits
+
+| Commit | Result |
+| --- | --- |
+| `53d3a9e4afff10ed4ffb759b8439b5ddee5751ce` | Reviewed and published all five inherited gameplay drafts, paired context/profile/achievement API documentation, famine system documentation, independent source audit, and two added production-source achievement tests. |
+| `03ef0677a1267158f306cc2e7b02c654e48b99a7` | Reviewed all six checkpoint dirty hunks, the mapmode-audit hunk, and the exact nine inherited untracked handoffs. Preserved their bodies and dated evidence, added explicit supersession notes, and published the per-document disposition handoff. |
+| This document's follow-up commit | Updated current publication status, committed-source test evidence, specialist route evidence, and exact live acceptance checks. Resolve its hash with `git log -1 --format=%H -- docs/plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md`. |
 
 The implementing agent reviewed each published commit with `git show`.
 The commit workflow used a temporary index based on the observed HEAD, owned paths or isolated hunks, `commit-tree`, a compare-and-swap ref update, and reconciliation of only the affected real-index entries.
@@ -52,13 +66,15 @@ The older `inbox_fix_results.json` describes the state before the takeover publi
 Its working-tree-only wording is historical rather than a current source gap.
 The stopped Codex thread's famine `last` field is empty and supplies no independent completion verdict.
 
-## Preserved round-3 work
+## Published round-3 work
 
-Disposition: unresolved publication ownership.
+Disposition: implemented and published in `53d3a9e4afff10ed4ffb759b8439b5ddee5751ce`.
 At task start, five gameplay files already contained uncommitted round-3 changes dated 2026-10-05.
-The user's shared-tree instruction says to leave hunks written by other agents alone, so those changes were preserved and excluded from this pass's commits while their ownership was queried.
+The previous pass preserved them while ownership was unresolved.
+The director explicitly assigned those five drafts and their API documentation to this workstream in the follow-up.
+Every hunk was reviewed before publication, with no dropped gameplay hunk.
 
-| Preserved file | Draft behavior |
+| Published file | Behavior |
 | --- | --- |
 | `common/script_constants/famine_core_constants.txt` | Dated outbreak/disaster context tuning and associated component contributions. |
 | `common/scripted_effects/famine_core_effects.txt` | Local-war collector, expiring food contexts, shared profile gates, concealed-blockade mortality dispatch, context cleanup, and transition clock resets. |
@@ -66,22 +82,29 @@ The user's shared-tree instruction says to leave hunks written by other agents a
 | `common/scripted_triggers/famine_core_triggers.txt` | Shared China/Ceara/Congo cause gates. |
 | `common/scripted_effects/humanitarian_achievement_effects.txt` | Credited-country `PREV` comparisons and tracked concealed-mortality disqualification. |
 
-The source completion auditor found no remaining confirmed defect in these draft behaviors after the separate caller and clock fixes.
-[round3_draft_review_2026-10-06.md](round3_draft_review_2026-10-06.md) gives their exact API, cause, and achievement contracts and the permanent documentation still needed when they are published.
-The local-war collector's new caller-storage line remains with its unpublished dependent hunk.
-This report does not label the round-3 source or its missing paired API/system documentation as committed completion.
+The independent source completion auditor found no remaining confirmed defect in these behaviors after the separate caller and clock fixes.
+[round3_draft_review_2026-10-06.md](round3_draft_review_2026-10-06.md) records their exact API, cause, and achievement contracts and director acceptance basis.
+Permanent documentation is published in `famine_core_effects.md`, `famine_adapter_effects.md`, the new `famine_core_triggers.md`, `humanitarian_achievement_effects.md`, and `docs/systems/famine_system.md`.
+The local-war collector's caller-storage line is published with its dependent hunk.
+No source-only result establishes natural campaign balance, native achievement completion, or daily runtime performance.
 
-The stopped-thread checkpoint docs, mapmode audit hunk, nine untracked handoffs, and the Event 012 owner's `migration_adapter_effects.md` hunk remain untouched.
+The stopped-thread checkpoints, mapmode audit hunk, and nine historical handoffs are reconciled and published in `03ef0677a1267158f306cc2e7b02c654e48b99a7`.
+[checkpoint_reconciliation_20261006.md](subagent_handoffs/checkpoint_reconciliation_20261006.md) lists each document, its original dirty-hunk disposition, acceptance basis, retained evidence, and current replacement.
+The Event 012 owner's `migration_adapter_effects.md` hunk remains untouched.
 
 ## Meaningful checks and evidence limits
 
 Command: `python .tools/test_famine_takeover_20261006.py`.
-All seven bounded production-source tests pass against the current working tree.
+All nine bounded production-source tests pass against the current working tree.
 They cover conservative helper-return storage, the three cause gates, context expiry and recovery, stage-clock reversal and fresh recovery steps, stock conservation at the relief limit, rejected reserve requests, and the exact refund branch replayed on the same country/state.
-An isolated raw-source snapshot of commit `0bca71eb15cfc2af783be2bafcc21378e7a5d8b6` passes the five tests for published repairs and explicitly skips the two tests requiring unpublished round-3 cause/context definitions.
+The earlier snapshot of `0bca71eb15cfc2af783be2bafcc21378e7a5d8b6` passed its five published-repair cases and skipped two then-unpublished round-3 cases.
+The current isolated snapshot contains 21 raw committed source/dependency files from `53d3a9e4afff10ed4ffb759b8439b5ddee5751ce` and passes all nine cases with no skips.
+This confirms the publication includes its tested dependencies rather than relying on an unpublished working-tree draft.
 The additional case executes the real reserve transfer and the production donor-copy/recipient-publication slices, checking equal measured debit/credit, conserved stock, unscoped temporary returns, and correct durable delivery amounts.
 The fixture reuses the existing Event 035 parser/runtime and fails on unknown reached commands.
-It models scoped native facts and conservative temporary call frames, while registry, report/modifier/achievement consumers, map adjacency, daily reserve simulation, mortality, and live engine execution remain outside this bounded fixture.
+Two additional cases execute the six actual achievement recorders through STATE-to-COUNTRY wrappers with an unrelated ROOT, including stale-generation rejection, and the actual concealment-dispatch slice with zero and positive measured loss and matching/nonmatching distinct controller attempts.
+The fixture models native scope `id`, nested PREV, scoped facts, and conservative temporary call frames.
+Full registries, report/modifier consumers, complete achievement unlocking, daily reserve simulation, actual population-loss execution, and live engine execution remain outside this bounded fixture.
 The context score arithmetic is therefore a source model, not proof of full daily outcome timing.
 
 The report-colour audit ran with JSON output against the current tree and found no famine, migration, or Event 149 report/news reachability findings.
@@ -92,7 +115,7 @@ The decision auditor verified the payment profiles and existing refund guards an
 The completion auditor verified selector/mapper agreement, the 1936 live-shock gates, exact blockade identity/generation attribution, caller storage, and clock cleanup.
 Those are source audits rather than native gameplay results.
 
-MCP outcomes in the Luna specialist sessions:
+Earlier MCP outcomes in the Luna specialist sessions:
 
 - One `reference_context` result successfully identified the offline Data structures temporary-variable section, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`.
 - A bounded decision reference context call did not return after more than 115 seconds and was caller-terminated. Detailed relevant sections were read directly.
@@ -104,10 +127,35 @@ MCP outcomes in the Luna specialist sessions:
 The exposed specialist inventories have no health/version/task-negotiation route.
 No helper expansion, repository-wide state-flow query, unsupported HTTP route, or server modification was used.
 
+### Follow-up route evidence
+
+The current root inventory exposes the four reference/source routes and their live schemas.
+A bounded offline-wiki PREV search succeeded, but detailed reference/context/source reads did not return within the caller's observation window and were terminated.
+Direct installed-document and offline-wiki sections, with exact paths, line spans, and revisions, are recorded in `source_review_2026-10-06.md`.
+
+The follow-up visual auditor submitted famine and migration `gui_inspect`, then famine and migration `gui_render`, for all seven separate scene IDs with every scene/dormant flag explicitly true or false, generated scenarios disabled, and 1920 by 1080 at scale 1.
+An unsupported initial `scenario.actor` field was rejected and removed before the accepted fixture calls.
+Each of the four accepted requests returned no tool result within its 52-second observation bound and was caller-terminated.
+No source revision, scenario hash, continuation, full/cropped/annotated PNG, click-region artifact, or `validation.json` was returned.
+This is a route evidence gap, not a confirmed visual defect or successful comparison.
+The report's twelve current source SHA-256 rows were recomputed from raw files and independently matched by the parent.
+Full fixture details and source-only observations are in [round3_header_visual_audit_20261006.md](subagent_handoffs/round3_header_visual_audit_20261006.md).
+Neither GUI source nor its assets changed in this follow-up.
+
+The follow-up probability auditor's source-scoped `decision_ai_will_do` inspection of `common/decisions/famine_decisions.txt`, with `refresh:false`, returned no result through 61 seconds of observation and was caller-terminated.
+An initial unsupported `source.symbol` request was rejected, so the bounded retry used the accepted path selector.
+No artifact, revision, candidate inventory, scenario hash, or analysis ID was returned.
+No evaluate/compare was submitted against missing inspection data or fabricated bindings.
+The frozen manifest explicitly identifies `cost_stock_exact`, `cost_stock_one_short`, and `cost_stock_late_deficit` as descriptive labels rather than machine fixtures.
+Supported exact GER/FROM-state-64 bindings, complete candidate pools, and before/after numerical comparison remain open.
+The auditor independently traced inclusive current fee gates, the frozen strict comparisons, and the existing stage urgency factors without choosing a balance target or changing any AI weight.
+Detailed call records, before/current source hashes, source semantics, and scenario coverage limits are in [round3_probability_audit_20261006.md](subagent_handoffs/round3_probability_audit_20261006.md).
+
 ## Exact orchestrator live checks
 
 Use separate copies of `qa_001_fresh_head.hoi4`, inspected as USA on `1936.1.1.12`, normal difficulty, installed version 1.19.2.
-The preserved draft scenarios below require the current working tree including those explicitly listed drafts, and cannot be presented as acceptance of a clean checkout of only this pass's commits.
+The round-3 scenarios below use the published source including `53d3a9e4afff10ed4ffb759b8439b5ddee5751ce`.
+No uncommitted famine gameplay draft is required for them.
 Console probes are fixture setup, and direct field setup does not prove natural campaign reachability.
 Do not combine the independent fixtures into one accumulating campaign.
 
@@ -146,7 +194,7 @@ Compare one capture under protective conduct and one under harsh conduct in sepa
 ### 4. Reserve release and six refund paths
 
 Use an affected state with stores and enough resources for its quoted release fee: 20 political power, 50 support equipment, and 500 fuel.
-Record its stock and resources, take Release Food Stores, and let its three-day work complete.
+Record its stock and resources, take Release Food Stores, and let its 21-day work complete.
 Expected: one fee debit, a stock debit matching rationed food, protected rationing, relief presentation, and the existing relief mission behavior.
 Repeat with rationing relief already at 32 points and a request of ten days: only two days of food can be accepted at 1.5 relief points per day, with unused stock retained.
 For a paid action whose relief reaches 35 points before completion, expect zero stock debit and exactly one full fee return.
@@ -173,10 +221,24 @@ Expected: the next candidate starts from a fresh clock, with no credit for time 
 
 ### 6. Outbreak/disaster contexts and three profile gates
 
-These fixtures cover the preserved round-3 drafts.
+These fixtures cover the published round-3 contexts and cause gates.
 In separate baseline copies set one exact registered state's food shock through its real outbreak/disaster owner and verify the adapter accepts its complete food proof.
 Expected: outbreak context ends 30 days later, disaster/Acid Rain context ends 60 days later, repeated accepted requests extend the date without adding a second copy of each component, and recovery follows expiry.
 Quiet states outside the active registry must remain untouched.
+
+For an isolated native timer/collector check before the owner-driven cases, use separate baseline copies and run one of:
+
+```text
+eval_effect 362 = { famine_initialize_state = yes famine_open_outbreak_food_context = yes famine_register_active_state = yes }
+eval_effect 362 = { famine_initialize_state = yes famine_open_disaster_food_context = yes famine_register_active_state = yes }
+```
+
+Advance exactly one day, then check the current components and the appropriate expiry field on state 362.
+Expected outbreak contribution: production 20, transport 20, vulnerability 20, environment 10 before other current causes.
+Expected disaster contribution: production 30, transport 15, need 20 before other current causes.
+Advance beyond the respective 30/60-day window with no new request and confirm those context contributions disappear.
+Repeat the same helper ten days after the first call: the expiry moves ten days later but its component contribution does not double.
+These direct helper probes establish timer/collector behavior only, so the actual Black Plague, Event 013, and Acid Rain acceptance cases above remain required.
 
 For gate-only checks, run these independent console probes, then select and apply the profile in that state:
 
@@ -193,7 +255,7 @@ For natural reachability, repeat with extraction/concealment/movement restrictio
 
 ### 7. Blockade concealment and country attribution
 
-These checks cover the preserved achievement draft.
+These checks cover the published achievement recorders and mortality disqualifier.
 Create a genuine tracked blockade famine, conceal its crisis, and let a positive famine loss apply.
 Expected: the credited owner's `humanitarian_achievement_blockade_concealed_mortality` flag is set for the exact state/generation, and Break the Blockade cannot unlock after later relief/recovery.
 A different controller is disqualified only when its own tracked blockade identity matches.
@@ -242,14 +304,13 @@ No gameplay route, achievement, cost component, visible mechanic value, or asset
 The source fixes preserve the accepted separate systems and exact population accounting.
 The workstream is still incomplete for these explicit reasons:
 
-1. The five inherited round-3 dirty gameplay files require ownership resolution before publication. Their required permanent context/profile/achievement API documentation is queued with that publication, not silently marked complete.
-2. Mandatory current same-scenario probability comparisons remain blocked by the actual route/fixture limitations above, including the earlier affordability and stage-urgency changes.
-3. Current header visual artifacts were not returned. No successful PNG/validation review or current matched visual acceptance can be claimed.
-4. The exact live checks above remain orchestrator-owned, including SCN-010 successful launch, conservation/refunds, metadata lifetime in native execution, natural profile/achievement reachability, persistence, and long-run balance/performance.
-5. Event 014 setup/Settings feedback and its SCN-010 wording/catalog update remain with that owner. The existing `catalog_changes_pending.md` gives the requested text. No workbook or CSV was edited.
-6. Camp-owner cohort-origin resolver calls at `camp_repression_rework_effects.txt` lines 5350 and 5405 need equivalent caller-storage review by that owner. Their files were not edited.
-7. Generic strategic bombing has no documented callback, Events 118/120/131 remain absent, and the previously excluded event-specific hooks retain their recorded owner boundaries. These accepted exclusions are not claimed as implemented adapters.
-8. The probability auditor covered the 25 legacy-cost IDs in source only. Open Reception, corridor acceptance, and corridor rejection still need their own scenario evaluation, alongside the decision/donor cases. Four donor/contract-absent minimum-weight branches are dormant under the ordinary target gates. They remain defensive guards pending the required numeric comparison and do not make an invalid action selectable.
+1. Mandatory current same-scenario probability comparisons remain blocked by the actual route/fixture limitations above, including the earlier affordability and stage-urgency changes.
+2. Current header visual artifacts were not returned. No successful PNG/validation review or current matched visual acceptance can be claimed.
+3. The exact live checks above remain orchestrator-owned, including SCN-010 successful launch, conservation/refunds, metadata lifetime in native execution, natural profile/achievement reachability, persistence, and long-run balance/performance.
+4. Event 014 setup/Settings feedback and its SCN-010 wording/catalog update remain with that owner. The existing `catalog_changes_pending.md` gives the requested text. No workbook or CSV was edited.
+5. Camp-owner cohort-origin resolver calls at `camp_repression_rework_effects.txt` lines 5350 and 5405 need equivalent caller-storage review by that owner. Their files were not edited.
+6. Generic strategic bombing has no documented callback, Events 118/120/131 remain absent, and the previously excluded event-specific hooks retain their recorded owner boundaries. These accepted exclusions are not claimed as implemented adapters.
+7. Open Reception, corridor acceptance, and corridor rejection still need scenario evaluation, alongside the 25 legacy-cost and decision/donor cases. Four donor/contract-absent minimum-weight branches are dormant under the ordinary target gates. They remain defensive guards pending the required numeric comparison and do not make an invalid action selectable.
 
-Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-shared-git-commit`, `chaos-redux-scripted-gui`, `chaos-redux-event-assets`, `chaos-redux-save-inspection`, and the probability auditor's `chaos-redux-mtth` reference.
+Skills used across the previous pass and follow-up: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-shared-git-commit`, `chaos-redux-scripted-gui`, `chaos-redux-event-assets`, `chaos-redux-save-inspection`, and the probability auditor's `chaos-redux-mtth` reference.
 No skill was created or changed because helper-output lifetime, exact payments, sparse scheduling, and shared-index publication are already covered by the existing skills.

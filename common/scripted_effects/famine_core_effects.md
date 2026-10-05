@@ -36,7 +36,7 @@ The standalone unrelieved outbreak and disaster component totals each score 28.4
 Local-war components alone score 5.2, below the supply-strain threshold of 25.
 These are source calculations, not observed campaign timing.
 
-The China policy, Ceara, and Congo profile selector and mapper use the same cause gates documented in `famine_core_triggers.md`.
+The China policy, Ceara, and Congo profile selector and mapper use the same cause gates documented in `../scripted_triggers/famine_core_triggers.md`.
 All three require positive current food pressure, their existing regional ownership/control, and a present cause.
 Their anchor IDs, profile component tables, and stage thresholds stay in the existing tuning tables.
 A peaceful zero-pressure anchor never activates one of these profiles by date alone.
