@@ -178,6 +178,32 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-132 | FBX | ENG | The Crown colony and its Council of Government |
 | IW-132 | FBX | FRA | The Franco-Mauritian planter families and the French language of the courts |
 | IW-132 | FBX | RAJ | The Indian labour diaspora that forms most of the island's people |
+| IW-134 | FDX | ENG | The Punjabi regiments of the Indian Army |
+| IW-134 | FDX | USA | The Punjabi farmers of the Imperial and Sacramento valleys |
+| IW-134 | FDX | CAN | The Punjabi community of British Columbia |
+| IW-136 | SIN | ENG | The port and customs of Karachi |
+| IW-136 | SIN | OMA | Gwadar and the Gulf trade of the Karachi merchants |
+| IW-137 | BLC | PER | The Baloch of Persian Baluchistan |
+| IW-137 | BLC | AFG | The Baloch and Brahui tribes on the Afghan side of the border |
+| IW-137 | BLC | OMA | Gwadar and the Baloch soldiers of the Sultan of Muscat |
+| IW-138 | PSH | AFG | The Pashtun tribes on both sides of the Durand Line |
+| IW-138 | PSH | ENG | The tribal agencies and frontier treaties of the Raj |
+| IW-139 | KAS | ENG | The Residency at Srinagar and the frontier treaties |
+| IW-139 | KAS | TIB | The Leh to Lhasa caravan trade |
+| IW-140 | HYD | ENG | The Residency at Hyderabad and the Berar settlement |
+| IW-140 | HYD | TUR | The 1931 marriage of the Nizam's heir to the last Ottoman Caliph's daughter |
+| IW-140 | HYD | SAU | The Nizam's endowments for the holy cities |
+| IW-141 | MYS | ENG | The Kolar gold fields and the Bangalore cantonment |
+| IW-141 | MYS | USA | The American engineers of the Bhadravati iron works |
+| IW-143 | RAS | ENG | The Madras Presidency and the Residency at Trivandrum |
+| IW-143 | RAS | FRA | The French settlements of Pondicherry and Karaikal |
+| IW-143 | RAS | SRL | The Tamil plantation workers of Ceylon |
+| IW-145 | FOX | ENG | The tea companies and the Assam Oil Company |
+| IW-145 | FOX | BRM | The Burma frontier and the old Ahom ties to the Shan |
+| IW-147 | MPU | BRM | The Kabaw Valley frontier and the Burma road |
+| IW-147 | MPU | ENG | The Political Agent at Imphal |
+| IW-148 | SKK | TIB | The Chogyal's family and monasteries in Tibet |
+| IW-148 | SKK | NEP | The Nepali settlers of the Sikkimese hills |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

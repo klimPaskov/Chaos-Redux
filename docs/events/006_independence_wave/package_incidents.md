@@ -88,6 +88,26 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Barotseland (IW-126) | `chaosx.nr6.227` | Cattle Sickness on the Plain | Quarantine the herds; Sell the herds before the ban |
 | Madagascar restoration (IW-130) | `chaosx.nr6.228` | The Vanilla Planters | Set export grades; Let the planters sell freely |
 | Madagascar restoration (IW-130) | `chaosx.nr6.229` | The Rova Question | Restore the Rova; Keep the palace closed |
+| Punjab (IW-134) | `chaosx.nr6.230` | The Moneylenders' Bills | Pass the debt relief bills; Protect the market towns' credit |
+| Punjab (IW-134) | `chaosx.nr6.231` | The Returning Soldiers | Raise a provincial guard; Grant them colony land |
+| Sindh (IW-136) | `chaosx.nr6.232` | The Haris and the Zamindars | Protect the haris' tenancy; Leave the batai to custom |
+| Sindh (IW-136) | `chaosx.nr6.233` | Silt in the Barrage Canals | Fund the canal clearance; Leave the canals for next season |
+| Balochistan (IW-137) | `chaosx.nr6.234` | Raiders on the Western Border | Send the levies; Let the sardars settle it in jirga |
+| Balochistan (IW-137) | `chaosx.nr6.235` | The Gwadar Dhows | Let the dhows trade untaxed; Levy customs at Pasni |
+| Pashtunistan (IW-138) | `chaosx.nr6.236` | Tolls on the Khyber Railway | Charge tolls on the railway; Keep the pass free |
+| Pashtunistan (IW-138) | `chaosx.nr6.237` | A Feud at Bannu | Let the jirga judge it; Send the frontier constabulary |
+| Kashmir (IW-139) | `chaosx.nr6.238` | The Grievances Report | Carry out the recommendations; Postpone them |
+| Kashmir (IW-139) | `chaosx.nr6.239` | The Leh Caravans | Tax the caravans at Leh; Keep the caravan trade free |
+| Hyderabad (IW-140) | `chaosx.nr6.240` | The Telangana Villages | Abolish vetti labour; Leave the villages to the landlords |
+| Hyderabad (IW-140) | `chaosx.nr6.241` | The State Railway | Build from the treasury; Sell bonds abroad |
+| Mysore (IW-141) | `chaosx.nr6.242` | Strike at the Kolar Gold Fields | Mediate a wage award; Back the mining company |
+| Mysore (IW-141) | `chaosx.nr6.243` | The Sandalwood Monopoly | Keep the state monopoly; Sell licences to foreign buyers |
+| Madras States (IW-143) | `chaosx.nr6.244` | The Abstention Movement | Reserve seats for every community; Keep the property franchise |
+| Madras States (IW-143) | `chaosx.nr6.245` | The Coir Workers' Strike | Recognise the coir workers' union; Break the strike |
+| Assam (IW-145) | `chaosx.nr6.246` | The Digboi Lease | Raise the oil royalties; Renew the lease on the old terms |
+| Assam (IW-145) | `chaosx.nr6.247` | Settlers on the Char Lands | Keep settlement within the lines; Open the wastelands to settlement |
+| Manipur (IW-147) | `chaosx.nr6.248` | The Women of the Bazaar | Ban the rice exports; Let the rice mills keep exporting |
+| Manipur (IW-147) | `chaosx.nr6.249` | The Hill Porterage | Abolish the porterage duty; Refer it to a commission |
 
 ## Files
 

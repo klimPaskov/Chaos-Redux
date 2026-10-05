@@ -775,3 +775,32 @@ Formables: FORM-30 Southern African Confederation and FORM-31 Indian Ocean Leagu
 Validation: the allocator audit passes with 71 attested packages, 53 reservation groups and 72 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
 
 Needs live game: a wave that releases a custom carrier and shows its named institution as the ruling party, and the Barotseland and Madagascar decision and incident flow.
+
+## D30. Round 2: South Asia and Himalaya tranche, FORM-32 to FORM-35 readiness, and idea pictures
+
+Disposition: `implemented` for IW-134 Punjab (FDX), IW-136 Sindh (SIN), IW-137 Balochistan (BLC), IW-138 Pashtunistan (PSH), IW-139 Kashmir (KAS), IW-140 Hyderabad (HYD), IW-141 Mysore (MYS), IW-143 Madras States (RAS), IW-145 Assam (FOX), IW-147 Manipur (MPU) and IW-148 Sikkim (SKK); `blocked` for IW-133, IW-135, IW-142, IW-144, IW-146 and IW-149; `accepted and queued` for a FORM-32 carrier contract.
+
+Basis: the lead's round-2 priority-17 item, using the D25 regional framework engine, the D20/D22 leadership rule (a vanilla roster is accepted identity; a vanilla tag with no characters opens under the leader the game appoints) and the D29 named-institution rule for custom carriers.
+
+Decisions:
+
+- Ten Level 2 rows and one Level 1 row (Sikkim). Kashmir, Hyderabad, Mysore, the Madras States and Manipur keep their vanilla rulers through the roster checkpoint. SIN, BLC, PSH and SKK have no vanilla characters. FDX and FOX open under the Punjab and Assam Legislative Assemblies.
+- Each Level 2 layer is grounded in the province's 1930s politics: Punjab's canal colonies, regiments and debt bills; the Sukkur Barrage lands and Karachi in Sindh; the sardars, Bolan Pass and Makran coast in Balochistan; the tribal agencies, the Khudai Khidmatgar and the Khyber in Pashtunistan; the Praja Sabha, Banihal road and Srinagar weavers in Kashmir; the jagirs, Legislative Council and Osmania University in Hyderabad; the Representative Assembly, Bhadravati works and Irwin Canal in Mysore; the 1936 Temple Entry Proclamation, the Sree Mulam Assembly and Cochin harbour in the Madras States; tea garden contracts, Digboi and the Brahmaputra steamers in Assam; and the valley and hills, the Imphal road and hill schools in Manipur. Incidents are `chaosx.nr6.230` to `.249`. The texts present communities, castes and religions as parties to a settlement, never as the problem.
+- Pashtunistan has no vanilla core on its anchor 442; the release step's existing planned-anchor core makes `release` valid, so no special case is needed.
+- IW-134 Punjab has loader anchors 440 and 986. Runtime readiness binds 440, so every automatic and SCN-008 release uses 440 and the loader's fallback never diverges from the checked anchor.
+- Contacts: FDX ENG, USA and CAN; SIN ENG and OMA; BLC PER, AFG and OMA; PSH AFG and ENG; KAS ENG and TIB; HYD ENG, TUR and SAU; MYS ENG and USA; RAS ENG, FRA and SRL; FOX ENG and BRM; MPU BRM and ENG; SKK TIB and NEP.
+
+Blocked rows:
+
+- IW-133 Bengal, IW-144 Dravidian Federation and IW-149 Himalayan Confederation: formable or route only, with no route consumer.
+- IW-135 Khalistan (KHL): the vanilla tag's name belongs to a later era, and it shares RG-PUNJAB-SIKH and anchor 986 with Punjab.
+- IW-142 Travancore (FLX): it shares anchor 982 with the Madras States, whose vanilla ruler is the Maharaja of Travancore.
+- IW-146 (FPX): an unresearched reservation that needs a named Naga package.
+
+FORM-32 to FORM-35 readiness: FORM-32 Indus Federation has all four named members admitted (FDX, SIN, BLC, PSH); FORM-33 Dravidian Federation has RAS and MYS (Travancore blocked); FORM-34 Northeast Federation has FOX and MPU but requires the unresearched Naga package; FORM-35 Himalayan Confederation has KAS and SKK. All four stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist). FORM-32 is queued first because its member prerequisite is met; its contract needs a new X-ending carrier and flag, which this tranche does not create.
+
+Idea pictures (correction to D25 to D29 and the earlier consolidated registry): `generic_government`, `generic_political_discourse`, `generic_diplomatic_treaty` and `generic_army_motorization` have no `GFX_idea_` sprite in vanilla or the mod, so sixty Event 006 ideas showed no picture. They now use the vanilla `generic_constitutional_guarantees`, `generic_political_support`, `generic_flexible_foreign_policy` and `generic_infantry_bonus` sprites.
+
+Validation: the allocator audit passes with 82 attested packages, 58 reservation groups and 83 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists; every Event 006 idea picture now resolves to a defined sprite.
+
+Needs live game: a wave that releases a South Asian row from the Raj (in particular Pashtunistan through its planned-anchor core, and Punjab and Assam as custom carriers under their assemblies), and the decision and incident flow of the Level 2 rows.

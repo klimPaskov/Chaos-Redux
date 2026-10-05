@@ -180,3 +180,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Barotseland and Madagascar each have a starting problem, their own decisions and two incidents of their own.
 - The Hejaz, Hadhramaut, Tripolitania, Oyo, Kanem-Bornu, the Aro Confederacy, the Comoros and Mauritius open under a named council of their own.
 - The Zulu, Ndebele, Xhosa, Basotho, Eswatini, Herero, Nama and Ovambo states remain unavailable.
+
+
+## 2026-10-05: South Asia and Himalaya packages (D30)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Punjab, Sindh, Balochistan, Pashtunistan, Kashmir, Hyderabad, Mysore, the Madras States, Assam, Manipur and Sikkim can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Every one of them except Sikkim has a starting problem, its own decisions and two incidents of its own; Punjab and Assam open under their legislative assemblies.
+- Bengal, Khalistan, Travancore, the Dravidian Federation, the Naga state and the Himalayan Confederation remain unavailable.
