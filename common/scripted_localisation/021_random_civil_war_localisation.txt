@@ -56,23 +56,50 @@ defined_text = {
 	text = { localization_key = event021_authority_guidance_na }
 }
 
+# Category text. A side in a crisis, settlement, or reconstruction reads its
+# phase, State Authority, and one summary of its strongest visible pressure.
+# An exposed neighbour reads its exposure, and a country in Global Fracture
+# prevention reads its fracture band and one line on what it means.
+defined_text = {
+	name = event021_GetCategoryStatus
+	text = {
+		trigger = {
+			OR = {
+				has_country_flag = random_civil_war_active
+				event021_country_can_manage_settlement = yes
+				has_country_flag = random_civil_war_reconstruction_phase
+			}
+		}
+		localization_key = event021_category_status_crisis
+	}
+	text = {
+		trigger = { event021_country_can_manage_exposure = yes }
+		localization_key = event021_category_status_exposure
+	}
+	text = { localization_key = event021_category_status_prevention }
+}
+
 defined_text = {
 	name = event021_GetCrisisPhase
 	text = {
-		trigger = { has_country_flag = random_civil_war_reconstruction_phase }
-		localization_key = event021_phase_reconstruction
-	}
-	text = {
 		trigger = { has_country_flag = random_civil_war_settlement_phase }
 		localization_key = event021_phase_settlement
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_reconstruction_phase }
+		localization_key = event021_phase_reconstruction
 	}
 	text = {
 		trigger = { has_country_flag = random_civil_war_neighbor_exposure }
 		localization_key = event021_phase_exposure
 	}
 	text = {
-		trigger = { has_country_flag = random_civil_war_multifront_active }
+		trigger = { event021_country_can_manage_fronts = yes }
 		localization_key = event021_phase_multi_front
+	}
+	text = {
+		trigger = { event021_country_can_manage_opening = yes }
+		localization_key = event021_phase_opening
 	}
 	text = {
 		trigger = { has_country_flag = random_civil_war_active }
@@ -81,6 +108,7 @@ defined_text = {
 	text = { localization_key = event021_phase_prevention }
 }
 
+# The strongest visible pressure on a crisis side, most severe first.
 defined_text = {
 	name = event021_GetCrisisSummary
 	text = {
@@ -88,8 +116,34 @@ defined_text = {
 		localization_key = event021_summary_settlement
 	}
 	text = {
+		trigger = { has_country_flag = random_civil_war_reconstruction_phase }
+		localization_key = event021_summary_reconstruction
+	}
+	text = {
 		trigger = { has_country_flag = random_civil_war_neighbor_exposure }
 		localization_key = event021_summary_neighbor
+	}
+	text = {
+		trigger = {
+			OR = {
+				has_country_flag = random_civil_war_capital_lost
+				has_country_flag = random_civil_war_capital_supply_risk
+			}
+		}
+		localization_key = event021_summary_capital
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_supply_lost }
+		localization_key = event021_summary_supply
+	}
+	text = {
+		trigger = {
+			OR = {
+				random_civil_war_authority_is_failing = yes
+				random_civil_war_authority_is_collapsed = yes
+			}
+		}
+		localization_key = event021_summary_authority
 	}
 	text = {
 		trigger = { has_country_flag = random_civil_war_command_claimant }
@@ -100,14 +154,46 @@ defined_text = {
 		localization_key = event021_summary_politics
 	}
 	text = {
-		trigger = { has_country_flag = random_civil_war_capital_supply_risk }
-		localization_key = event021_summary_capital
-	}
-	text = {
-		trigger = { has_country_flag = random_civil_war_supply_lost }
-		localization_key = event021_summary_supply
+		trigger = { has_country_flag = random_civil_war_active }
+		localization_key = event021_summary_war
 	}
 	text = { localization_key = event021_summary_stable }
+}
+
+# Global Fracture band of a country outside a crisis, from its hidden
+# fracture pressure. A country without a pressure record reads as Stable.
+defined_text = {
+	name = event021_GetFractureBand
+	text = {
+		trigger = { random_civil_war_pressure_is_critical = yes }
+		localization_key = event021_fracture_band_critical
+	}
+	text = {
+		trigger = { random_civil_war_pressure_is_fractured = yes }
+		localization_key = event021_fracture_band_fractured
+	}
+	text = {
+		trigger = { random_civil_war_pressure_is_exposed = yes }
+		localization_key = event021_fracture_band_exposed
+	}
+	text = { localization_key = event021_fracture_band_stable }
+}
+
+defined_text = {
+	name = event021_GetFractureBandSummary
+	text = {
+		trigger = { random_civil_war_pressure_is_critical = yes }
+		localization_key = event021_fracture_summary_critical
+	}
+	text = {
+		trigger = { random_civil_war_pressure_is_fractured = yes }
+		localization_key = event021_fracture_summary_fractured
+	}
+	text = {
+		trigger = { random_civil_war_pressure_is_exposed = yes }
+		localization_key = event021_fracture_summary_exposed
+	}
+	text = { localization_key = event021_fracture_summary_stable }
 }
 
 # Strange-incident report text. The practice is read from the side's stored

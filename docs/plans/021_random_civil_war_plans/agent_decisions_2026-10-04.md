@@ -321,3 +321,11 @@ Assets: all nine aftermath ideas reuse `idea_021_unsettled_settlement`, followin
 Signed terms keep their single option. The settlement selector, the obligation selector, and the achievement predicates are unchanged. Accepted design merged into spec part 3 ("Accepted postwar direction and settlement aftermath") with its manifest hash refreshed. No catalog field changes.
 The direction choice, AI defaults, and idea magnitudes in play remain `needs_live_game`.
 Basis: the lead's round 2 assignment and spec parts 3 and 10.
+
+## D26. The category shows phase, pressure, and the Global Fracture band
+
+Finding: spec part 3 asks the category to show the current stage, one objective, and one summary of the strongest visible pressure, and part 6 asks Stable countries to see their band and Critical countries a visible emergency. The category text showed only State Authority, its band, guidance, and the current focus, `event021_GetCrisisPhase` and `event021_GetCrisisSummary` had no consumer, and a prevention country read "State Authority: N/A (N/A)".
+Decision: `event021_civil_war_crisis_category_desc` is `[event021_GetCategoryStatus]`, which picks one of three lines. A crisis, settlement, or reconstruction side reads its phase, State Authority with band and guidance (the objective), one pressure summary, and its current focus. An exposed neighbour reads its phase, the exposure summary, and the source war. A prevention country reads its band from `event021_GetFractureBand` (the `random_civil_war_pressure_is_*` triggers, Stable without a pressure record) and one resilience or emergency line from `event021_GetFractureBandSummary`.
+The phase getter now names Settlement before Reconstruction while the obligation is open and uses the opening phase for the opening scramble. The summary getter is ordered by severity: settlement, reconstruction, exposure, lost or threatened capital, lost supply, Failing or Collapse authority, command or political claimants, and an active-war fallback.
+No raw pressure value or implementation term is shown, and the localisation file stays UTF-8 with BOM. Rendering in the decision panel remains a live or MCP GUI check (`needs_live_game`).
+Basis: the lead's round 2 assignment and spec parts 3 and 6.

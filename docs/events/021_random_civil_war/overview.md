@@ -190,7 +190,7 @@ Disabling an evolution through the shared Event Log settings flags clears its ac
 
 The package uses one normal decision category with one static category picture and the dynamic category text `event021_civil_war_crisis_category_desc`.
 
-The category shows one State Authority value, the current authority band, current phase, target summary, and a concise dynamic crisis description.
+The category text comes from `event021_GetCategoryStatus`. A side in a crisis, settlement, or reconstruction sees its phase, its State Authority value and band with the next-threshold guidance, one summary of its strongest visible pressure, and its current focus. An exposed neighbour sees its exposure phase, the pressure it faces, and the source war. A country in Global Fracture prevention has no State Authority, so it sees its fracture band (Stable, Exposed, Fractured, or Critical) and one line on what that band means, with Critical shown as a state of emergency. No raw pressure number is shown.
 
 The opening view uses Secure the Arsenals, Defend the Capital, and Review Command Loyalty, with Seize an Opposition Depot atomically bound to an owned and controlled opening-front state containing a supply node or military factory.
 
