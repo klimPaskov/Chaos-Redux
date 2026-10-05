@@ -443,3 +443,13 @@ Weighted surfaces added or changed in round 3, to add to the R2-8 list for the a
 - `chaosx.nr24.30` third answers (R3-7): `counterplan_c`, `bootleg_c` and `party_c`, scenarios to cover officer competition with and without field evidence, commercial route at peace and at war, and democratic, fascist and communist governments.
 Decision: no numeric probability acceptance is claimed. Once an inline test no longer returns INTERNAL_ERROR, the auditor runs the baseline and comparison for the D23 scenario ids, the R2-8 list and this list with the documented scenario schema, and owner patches follow only for orderings that contradict spec part 3.
 Disposition: `blocked` (missing input: a working `hoi4.probability_*` route).
+
+### R3-9. Skeptical review of round 3
+
+Review scope: commits 180324af4, daab964e8, 04602696a, 96778916e, d9b1a0d19, 75903a81d, a3b498dbd and 52b83d3c0, read against the installed engine documentation, the spec parts and the existing Event 24 patterns. All 18 fixture cases still pass after the corrections below.
+Findings confirmed without change: the switched-off-stage ceiling and step-back cap (R3-1) match spec part 2 Disabled evolution handling; the capitulation callback scopes match vanilla `on_capitulation` (ROOT capitulated, FROM winner); every new localisation key, constant (with a matching schema type), scripted trigger and sprite exists; the requirement rows hide only always-true or guard checks; the new constants obey their category schemas.
+Corrections:
+- `video_game_incident_counterplan_revise_tt` stated the full terrain-adaptation cost of a rules revision although `video_game_in_sweden_refresh_program_package` halves it once field validation or a red team has tested the rules; the tooltip now names the halving, matching the Rules Revision decision text.
+- `video_game_in_sweden_update_trust_model_progress` now runs daily during a surge war (R3-2), so its two victory branches gained a `NOT = { has_country_flag = video_game_in_sweden_trust_model_opponent_victory }` guard; the first recorded victory date stays fixed instead of moving forward each day while Sweden fights another war. The favourable-result check is unchanged because the earlier date already sits before the deadline.
+Probability: one narrow `hoi4.probability_inspect` call (adapter `event_option_ai_chance`, source `events/024_hearts_of_iron.txt`, candidate pool `[chaosx.nr24.38]`, no refresh) again returned INTERNAL_ERROR and was not retried; R3-8 stays blocked.
+Disposition: `implemented` for the two corrections; tooltip rendering remains needs_live_game.
