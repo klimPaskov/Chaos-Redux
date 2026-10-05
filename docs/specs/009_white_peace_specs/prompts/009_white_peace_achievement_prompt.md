@@ -53,7 +53,7 @@ Implement the planned Event 009 achievements only after the core event, dynamic 
 - Title: The Circular Reaches Every Desk
 - Visibility: hidden
 - Eligible country: any player country in a campaign where Event 009 is active.
-- Unlock condition: one broad diplomatic settlement branch ends at least three separate safe conflicts or at least five safe pairs from one firing.
+- Unlock condition: one broad settlement ends at least three separate isolated minor-country wars.
 - Disqualifiers: branch settles fewer than the required count or uses any protected conflict.
 - Difficulty: very hard; requires late-stage war clutter and safe broad-branch execution.
 - Icon: circular telegraph/stamp motif over several envelopes.

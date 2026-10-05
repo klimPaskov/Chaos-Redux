@@ -58,13 +58,13 @@ White Peace has baseline behavior and three global evolution stages. These stage
 | Base | Minor White Peace | One minor pair signs a no-gain settlement. | Settles one safe minor-versus-minor pair. | Uses the full dynamic cap for the current environment. |
 | I | Repeated Minor Settlements | The machinery of quiet settlements begins repeating. | One firing can settle several minor pairs when safe. | Dynamic cap is multiplied down so stronger effects do not become common. |
 | II | Major-Country Settlement | A major power can be pulled into a no-gain exit. | A rare branch can settle a major country with one enemy participant or narrow enemy side. | Stronger multiplier penalty; major branch remains uncommon even when eligible. |
-| III | Broad Diplomatic Settlement | A circular of armistice notes moves through too many wars at once. | Can settle several valid wars or a larger safe segment of one war. | Strongest multiplier penalty; this stage is impactful but rare. |
+| III | Broad Diplomatic Settlement | Separate minor-country frontiers fall quiet under the same terms. | Can settle up to five separate isolated minor wars. | Strongest multiplier penalty; this stage is impactful but rare. |
 
-The event can unlock a higher stage even before White Peace has fired in the campaign if the world already has enough war pressure. In that case, the first firing uses the evolved opening rules. If White Peace has already fired, the stage immediately changes future runtime selection and branch weights; there is no persistent actor that needs a retroactive focus path or decision category.
+The event can reach a higher stage before White Peace has settled a war if existing war-pressure thresholds are already met. The matching Event Settings evolution and Chaos tier gate must also be enabled. A disabled stage does not regain gameplay access through an older global unlock flag.
 
 ### Evolution stage I — Repeated Minor Settlements
 
-Stage I represents diplomats, neutral mail routes, staff officers, and exhausted border commands learning that the first settlement worked. It does not mean everyone wants peace; it means the event can now clean several small fires in one pacing incident.
+Stage I represents separate minor-country wars falling quiet under the same terms. It does not mean that every belligerent wants peace; it means several isolated wars can end during one event chain.
 
 Unlock pressure should look at:
 
@@ -74,10 +74,7 @@ Unlock pressure should look at:
 - recent failure to find a safe settlement despite high active-war count;
 - Peace cluster availability over repeated checks.
 
-When a stage I firing selects the multi-settlement branch, it should either:
-
-1. pick one war with several safe minor participants and settle several pairings from that war, or
-2. pick several separate safe minor wars and resolve one pair from each.
+When Stage I selects the multi-settlement branch, it settles several separate safe one-on-one minor wars and applies the same terms to each pair. It never settles several pairs from one multi-country war.
 
 The branch must cap its reach. Suggested cap: two pairs at early stage I, three pairs when war pressure is high. It should never perform an unbounded loop through every possible pair.
 
@@ -87,11 +84,11 @@ Stage II does not convert White Peace into a major-event spectacle. It only adds
 
 This branch should remain rarer than minor settlement even after the stage unlocks. It must not fire on wars that carry obvious scripted significance, major crisis flags, nonhuman threat participation, civil conflict state, or near-capitulation conditions.
 
-Safe major-country settlements should usually target a narrow relationship:
+Safe major-country settlements are limited to an isolated two-country war:
 
-- one major and one enemy country;
-- one major and a small enemy participant;
-- one major and a narrow enemy side only when the implementation can prove that the side segment is safe.
+- at least one selected country is major;
+- neither selected country has another active enemy;
+- both selected countries pass every country and pair safety gate.
 
 It should not automatically dissolve a global alliance war just because one major is tired.
 
@@ -99,20 +96,17 @@ It should not automatically dissolve a global alliance war just because one majo
 
 Stage III exists for the late campaign state where the world has too many active conflicts and the war list itself becomes a chaos source. It is not meant to restore normality. It removes clutter in a way that still leaves important wars alive.
 
-Valid branch shapes:
+The valid Stage III branch shape is:
 
-- settle up to three separate safe minor wars;
-- settle up to five safe minor pairs from one overcrowded war;
-- settle one narrow major-country relationship plus one or two minor pairs in the same war;
-- settle several minor countries out of the same war while keeping major war leaders and protected scripted actors untouched.
+- settle up to five separate safe one-on-one minor wars.
 
-Stage III should not perform a total peace conference substitute. If the selected war is too scripted, too close to capitulation, or too tied to other Chaos Redux mechanics, the broad branch should fall back to a smaller valid branch or skip the firing cleanly.
+Stage III is not a total peace conference substitute. A candidate that is too scripted, too close to capitulation, or tied to other Chaos Redux mechanics is rejected before selection. A branch that settles fewer wars than planned reports only the number of completed settlements.
 
 ## Forced settlement behavior
 
-The popup has a single acknowledgement option. No actor receives a “continue the war” option. The event should not present itself as a choice.
+The hidden entry applies each valid settlement immediately. Every human-controlled participant in the affected wars receives one acknowledgement report after the peace has taken effect. Participants in a multi-war chain see the same aggregate result, once per country. No actor receives a “continue the war” option, and the report does not present the completed settlement as a choice.
 
-The effect should happen in the option block rather than only in the immediate block so the player can read what happened before accepting the popup. For AI-only settlements, the event may resolve through a hidden notification path or direct effect, but the history log must still record the settlement.
+When every settled participant is AI, one global news report informs observers after the settlement. If at least one affected participant is human-controlled, each affected human receives the aggregate report and no observer-news copy is sent. The event-history record must reflect a successful peace, not an open report option.
 
 Recommended option tone:
 
@@ -127,7 +121,7 @@ Use one option per displayed event, not parallel accept/decline options.
 
 Base settlement effects:
 
-- apply white peace between the selected countries;
+- apply white peace between the selected countries in an isolated one-on-one war;
 - mark both countries with a short recent-settlement flag;
 - mark the pair with a short pair-cooldown if pair tracking is available;
 - add a modest temporary opinion modifier between the two countries;
@@ -137,7 +131,7 @@ Base settlement effects:
 
 Multi-settlement effects:
 
-- apply the same pair-level effects to each safe pair;
+- apply the same effects to each selected pair from a separate isolated war;
 - cap Chaos reduction so the event cannot erase the consequences of a war-heavy world;
 - write one history entry summarizing the primary settlement and count of additional settlements;
 - optionally write compact internal debug metadata for validation, not player-facing spam.
@@ -212,14 +206,14 @@ Preferred candidates:
 - no obvious story, focus, or scripted-war protection is present;
 - the war has not just started;
 - both countries can plausibly stop fighting without changing ownership.
+- each selected country has no active enemy country other than its proposed partner.
 
 Cautious candidates:
 
 - a minor that has a major ally but is fighting another minor directly;
 - a subject country whose overlord is not the intended settled actor;
 - a war where one side has occupied a few noncapital states;
-- a major-country pair at stage II or III only;
-- a war that has many participants but a narrow pair can be safely separated.
+- a major-country pair at stage II or III only, with no third-country war participants.
 
 Forbidden candidates:
 
@@ -231,6 +225,17 @@ Forbidden candidates:
 - pairs whose capitals are occupied by the intended enemy;
 - wars where a focus, decision, or event chain has marked the war as protected until its resolution;
 - countries that recently received a White Peace settlement with each other.
+- any war where either selected country has another active enemy country.
+
+## Accepted whole-war safety boundary
+
+On 2026-10-05, the parent accepted an isolated one-on-one war boundary under the user's G6 design-authority instruction. The parent directed this restriction because Event 009 cannot prove that a nominal country pair is isolated from other participants in the engine's war state. The 1v1 gate requires each selected country to have no active enemy country besides its proposed partner.
+
+Stage I and Stage III continue to settle multiple separate safe wars, with each settlement limited to one isolated country pair. The prior proposal to settle several pairs within one overcrowded, multi-country war is rejected because the affected third-country participants cannot be proven safe through this target model. This is a documented design change and does not claim that the one-war route remains supported.
+
+On 2026-10-05, the parent also accepted the shared Event Settings evolution contract for White Peace. A stage's existing war-pressure threshold remains required, and the matching `is_current_evolution_enabled` event/tier gate must also pass before its behavior or weight is available. A disabled Stage I, Stage II, or Stage III branch stays disabled even if a global unlock flag was set earlier. The base isolated minor settlement remains available when every evolution is disabled.
+
+The parent also accepted a 181-day country cooldown around the 180-day No Winner check. This one-day margin prevents a different settlement from restoring a cleared survival watch at the delayed event's day-180 boundary.
 
 ## Safe-war protection standard
 
@@ -264,13 +269,13 @@ The history entry should show the primary country as actor. If the event-log sys
 
 Recommended event-detail text:
 
-> White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. At first it settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
+> Independent countries lay down their arms after a war yields no land worth holding and no payment worth demanding. Their former borders return, and soldiers withdraw from the front while other wars continue elsewhere.
 
 Recommended evolution-summary text:
 
-- **Repeated Minor Settlements** — one firing can quiet several minor fronts.
-- **Major-Country Settlement** — a rare settlement can involve a major country when the war is safe.
-- **Broad Diplomatic Settlement** — a late-stage firing can remove a larger portion of war clutter without touching protected wars.
+- **Repeated Minor Settlements**: separate minor wars fall quiet across more than one frontier.
+- **Major-Country Settlement**: a rare settlement can involve a major country when the war is safe.
+- **Broad Diplomatic Settlement**: a wider group of separate minor wars ends under the same no-gain terms.
 
 ## Localisation style guide
 
@@ -300,41 +305,41 @@ Dynamic values such as pair count or primary actor names can appear in tooltips 
 
 ### Base popup
 
-**Title direction:** A Note Without Demands
+**Title direction:** No Gains from the War
 
-**Description direction:** A neutral consular channel delivers identical terms to both governments. The papers name no victor, indemnity, or border change. Staff officers receive orders to hold the line drawn before the first shot mattered.
+**Description direction:** Name the two countries. Their armies return behind the lines they held before the war, and neither country gains land or demands payment.
 
-**Option direction:** Let the guns fall silent.
+**Option direction:** Acknowledge the armistice after the settlement has taken effect.
 
 ### Stage I popup variant
 
-**Title direction:** Tables in Several Rooms
+**Title direction:** Several Minor Wars End
 
-**Description direction:** Several minor fronts receive the same formula, with no claims, reparations, or ceremony. The notices move faster than newspapers can explain them.
+**Description direction:** Describe soldiers leaving their posts across several separate frontiers. State that the old borders hold and no indemnity changes hands.
 
-**Option direction:** No one claims victory.
+**Option direction:** Acknowledge the separate armistices after they have taken effect.
 
 ### Stage II popup variant
 
-**Title direction:** A Major Power Steps Back
+**Title direction:** A Major Front Falls Silent
 
-**Description direction:** A major government signs away one part of its war without procession or triumph. Diplomats and officers issue the order, and the border posts fall quiet.
+**Description direction:** A major government ends one isolated war with a smaller neighbor. The old border holds, and neither country receives payment.
 
-**Option direction:** The order has already been given.
+**Option direction:** Acknowledge the armistice after the settlement has taken effect.
 
 ### Stage III popup variant
 
-**Title direction:** The Armistice Circular
+**Title direction:** Armistices Across Several Fronts
 
-**Description direction:** A diplomatic circular passes through several capitals, carrying the same thin formula from front to front. It offers no treaty of friendship, surrender, or settlement of old hatred. The paper is enough to make guns stop.
+**Description direction:** Describe several separate minor wars ending at once. Armies return behind their former lines, and no country gains territory or an indemnity.
 
-**Option direction:** The line goes quiet.
+**Option direction:** Acknowledge the separate armistices after they have taken effect.
 
 ## Report and news presentation
 
-A normal report-event image is enough for this event. The visual should be restrained: a document table, a radio room, border officers lowering weapons, or diplomats in a dim corridor. It should not show a grand treaty hall or cheering crowd.
+The player report uses one restrained period scene of border soldiers lowering their weapons. It should not show a grand treaty hall or a cheering crowd.
 
-If a later implementation adds a news popup for stage III only, use a black-and-white news image showing newspaper bundles, telegraph offices, or a quiet border checkpoint rather than a triumphant peace conference.
+When every participant in a successful chain is AI-controlled, one global news event reports the outcome to observers. Use a separate black-and-white news image at `397x153` that shows a quiet border checkpoint rather than a triumphant peace conference.
 
 ## Animation pass
 
@@ -366,10 +371,10 @@ Planned achievements:
 | Working id | Title | Core challenge | Visibility |
 | --- | --- | --- | --- |
 | `achievement_white_peace_status_quo_ante` | Status Quo Ante | As a minor, have a prolonged war ended by White Peace while remaining independent and outside a major faction. | Visible |
-| `achievement_white_peace_no_winner` | No Winner, No Spoils | Have a White Peace settlement end a war where neither selected country has lost its capital and both survive at least 180 days afterward. | Visible |
-| `achievement_white_peace_chain_of_tables` | A Chain of Tables | In one campaign, see several separate minor pairs settled before any major-country settlement branch fires. | Hidden |
+| `achievement_white_peace_no_winner` | No Winner, No Spoils | Have both countries remain alive, independent, and uncapitulated for 180 days after their White Peace settlement. | Visible |
+| `achievement_white_peace_chain_of_tables` | A Chain of Tables | Settle six separate minor wars before any major-country war is settled. | Hidden |
 | `achievement_white_peace_silence_of_giants` | Silence of Giants | Be part of a major-country settlement after a long war without receiving conquered territory from that war. | Hidden |
-| `achievement_white_peace_the_circular` | The Circular Reaches Every Desk | Have a broad diplomatic settlement end at least three separate safe conflicts or five safe pairs from one firing. | Hidden |
+| `achievement_white_peace_the_circular` | The Circular Reaches Every Desk | Have one broad settlement end at least three separate isolated minor wars. | Hidden |
 
 Achievement implementation must track that the settlement came from Event 009 and not from ordinary peace conferences or scripted peace events.
 
@@ -378,7 +383,7 @@ Achievement implementation must track that the settlement came from Event 009 an
 Required asset directions:
 
 - one report event image, `210x176`, period-documentary style, likely generated unless a public-domain/source image clearly fits;
-- optional stage III news image, `397x153`, black-and-white, if the implementation adds news presentation;
+- one AI-only global news image, `397x153`, black-and-white;
 - five achievement icons, `64x64`, each with completed, grey, and not-eligible variants if the achievement system requires variants;
 - no focus icons, leader portraits, flags, or country assets;
 - no animated assets for the base spec.
@@ -411,12 +416,16 @@ The event is complete only when:
 4. It usually has a lower chance than a default `1000` event in ordinary campaigns.
 5. Higher evolution stages reduce selection likelihood even though they increase possible effect strength.
 6. Normal repeatable recovery and repeatable firing decay still apply.
-7. Base firing settles exactly one safe minor-versus-minor pair.
-8. Stage I can settle several safe minor pairs but stays capped.
-9. Stage II can rarely involve a major country only when safety gates pass.
-10. Stage III can settle a broader safe segment but cannot erase protected wars.
-11. The popup has no continue-war option.
-12. Candidate selection excludes protected scripted content, civil conflict, nonhuman/special threat actors, near-capitulation cases, and recent pair repeats.
-13. Event log, event detail, evolution detail, cluster detail, and localisation agree.
-14. Report image and achievement icon needs are handed off.
-15. Implementation validation includes no-war, one-minor-war, many-minor-war, major-war, protected-war, repeated-firing, and high-evolution test cases.
+7. The hidden entry applies one valid settlement immediately before it sends a result report.
+8. Base behavior settles exactly one isolated safe minor-country war.
+9. Stage I can settle several separate isolated minor-country wars within its cap.
+10. Stage II can rarely settle one isolated major-country war after the major stage is open.
+11. Stage III can settle several separate isolated minor-country wars within its cap.
+12. Every stage rejects a candidate when either country has another active enemy.
+13. A forced invalid entry gives the player a plain report that names the reason and confirms no peace was imposed.
+14. A successful chain sends one aggregate country report to each human-controlled participant, or one global news event when every settled participant is AI. A player receives at most one result popup for the chain.
+15. The popup has no continue-war option and its text describes the actual result.
+16. Candidate selection excludes protected scripted content, civil conflict, nonhuman/special threat actors, near-capitulation cases, and recent pair repeats.
+17. Event log, event detail, evolution detail, cluster detail, and localisation agree.
+18. Report and AI-news images and achievement icon needs are wired and documented.
+19. Implementation validation includes no-war, forced major-locked, one isolated minor war, multiple isolated wars, a third-country war participant, major-war, protected-war, repeated-firing, and high-evolution cases.

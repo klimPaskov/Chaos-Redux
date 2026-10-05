@@ -1,0 +1,55 @@
+# Overview: Narrow Event 009 callbacks invalidate the No Winner survival watch after capitulation, annexation, or a subject-status change.
+# These hooks run only for countries changing state and never scan countries on a timer.
+
+on_actions = {
+	on_capitulation = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = { clear_white_peace_no_winner_watch = yes }
+		}
+	}
+
+	on_puppet = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_subject_annexed = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_subject_free = {
+		effect = {
+			clear_white_peace_no_winner_watch = yes
+		}
+	}
+
+	on_subject_autonomy_level_change = {
+		effect = {
+			if = {
+				limit = { is_subject = yes }
+				clear_white_peace_no_winner_watch = yes
+			}
+		}
+	}
+}

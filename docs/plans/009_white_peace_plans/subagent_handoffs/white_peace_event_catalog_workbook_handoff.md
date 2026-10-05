@@ -1,3 +1,15 @@
+# Historical handoff disposition, 2026-10-05
+
+Disposition: superseded as proof of current alignment by `docs/plans/009_white_peace_plans/catalog_changes_pending.md`.
+The original body remains historical workbook evidence, and no workbook or CSV was read or edited during curation.
+Catalog alignment is accepted and queued because the parent's 2026-10-05 task explicitly excluded workbook and CSV changes.
+The original `Implemented` labels and wording claims describe that earlier snapshot and do not establish current approval, validation, or catalog status.
+Current detail direction is premise-only, and evolution text must refer to separate isolated wars under the parent acceptance of user G6.
+The workbook worker must mirror final shared localisation and follow the current catalog-status contract before exporting CSV snapshots.
+Original row numbers and sheet names are historical, so the worker must locate current rows in the authoritative XLSX.
+
+---
+
 # White Peace Event Catalog Workbook Handoff
 
 ## Workbook changed

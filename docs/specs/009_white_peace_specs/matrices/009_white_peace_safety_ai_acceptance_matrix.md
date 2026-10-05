@@ -1,5 +1,7 @@
 # Event 009 — Safety, AI, and Acceptance Matrices
 
+Parent accepted the isolated one-on-one war boundary on 2026-10-05 under the user's G6 design-authority instruction. The event may settle several separate safe wars in one chain, but it does not settle a multi-country war whose additional participants cannot be proven safe.
+
 ## Candidate veto matrix
 
 | Condition | Base | Stage I | Stage II | Stage III | Rationale |
@@ -17,7 +19,8 @@
 | Either participant is a special crisis/threat actor | Veto | Veto | Veto | Veto | Preserve major mechanics. |
 | Faction leader involved | Veto | Veto | Cautious | Cautious | Can alter too much war state. |
 | Major country involved | Veto | Veto | Cautious allow | Cautious allow | Only evolved branches can touch majors. |
-| War has several minor participants | Single pair | Multi-pair possible | Multi-pair possible | Broad possible | Higher stages can clean larger war clutter. |
+| Either selected country has another active enemy | Veto | Veto | Veto | Veto | The effect's wider war impact is not proven safe for other participants. |
+| War has several minor participants | Veto | Veto | Veto | Veto | Each settlement requires a single two-country war. |
 | War has scripted owner flag | Veto | Veto | Veto | Veto | Explicit protection wins. |
 
 ## Branch behavior matrix
@@ -25,11 +28,9 @@
 | Branch | Required stage | Required candidate | Max recommended effects | Skip/fallback behavior |
 | --- | --- | --- | --- | --- |
 | Single minor pair | Base | One Tier A minor pair | One pair, Chaos `-1` | Skip if no Tier A pair. |
-| Multi minor, one war | I | One war with several Tier A pairs | Two to three pairs | Fall back to single minor if only one safe pair. |
-| Multi minor, separate wars | I | Several Tier A pairs from separate wars | Two to three wars | Fall back to one war or single pair. |
-| Major-country narrow settlement | II | One Tier B major relationship | One major relationship, Chaos `-2/-3` | Fall back to minor branches if major unsafe. |
-| Broad separate-war settlement | III | Several Tier A/B safe pairs across separate wars | Three conflicts or capped pairs | Fall back to multi minor. |
-| Broad one-war segment | III | One overcrowded war with many safe minor participants | Up to five pairs | Keep protected leaders untouched. |
+| Multi minor settlement | I | Several safe, isolated minor-country wars | Two to three wars | Report the number of wars actually settled. |
+| Major-country settlement | II | One isolated war with a single major-country pair | One war, Chaos `-2` | Fall back to minor branches if the major war is locked or unsafe. |
+| Broad settlement | III | Several separate safe, isolated minor-country wars | Three to five wars | Report the number of wars actually settled. |
 
 ## Dynamic weight acceptance matrix
 

@@ -1,3 +1,18 @@
+# Historical handoff disposition, 2026-10-05
+
+Disposition: superseded as a current helper contract by `docs/events/009_white_peace/overview.md`, `docs/plans/009_white_peace_plans/agent_decisions_2026-10-05.md`, and `009_documentation_curator_2026_10_05.md`.
+The original body below remains historical integration evidence, and its parent-integration note does not establish current acceptance.
+Acceptance basis is the parent's 2026-10-05 task and decisions, including G6 and G7.
+`chaosx.nr9.1` applies `apply_white_peace_current_context` immediately before result dispatch, and acknowledgment options do not execute settlement.
+As of the parent-accepted 2026-10-06 G2 correction, dispatch sends the aggregate report once to every human-controlled participant in the settled wars, or one global news event when every participant is AI. The current implementation uses a per-country pending flag that is cleared at entry and after dispatch.
+`can_white_peace_conflict_be_isolated` rejects third-country participation and other active enemies, while Stages I and III retain several separate isolated wars.
+`load_white_peace_branch_weight_variables` replaces the described file-local branch mirrors.
+The carried No Winner partner target replaces `FROM`, and narrow capitulation, annexation, and subject callbacks invalidate its watch.
+The helper uses only the three-separate-wars Circular criterion, with the five-pair alternative rejected.
+Current evidence is the Event 009 event, effects, triggers, constants, and on-action source, and mandatory MCP lifecycle and weighted validation remains unresolved or blocked.
+
+---
+
 # Event 009 White Peace Scripted-System Handoff
 
 ## Files Changed

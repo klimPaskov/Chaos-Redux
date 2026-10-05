@@ -1,26 +1,50 @@
-# Event 009 White Peace Planning Package
+# Event 009 White Peace Source Package
 
-This package contains the source design and implementation handoffs for Event ID `9`, **White Peace**.
+This package records source design for Event ID `9`, White Peace.
+A spec location, date, status label, or old handoff does not establish approval.
+Accepted audit decisions are recorded in [agent_decisions_2026-10-05.md](../../plans/009_white_peace_plans/agent_decisions_2026-10-05.md).
 
-## Package map
+## Source-of-truth map
 
-- `specs/009_white_peace_spec.md` — main event specification.
-- `specs/009_white_peace_dynamic_weight_model.md` — dynamic weight, cap, recovery, and branch model.
-- `specs/009_white_peace_event_text_log_cluster.md` — localisation, event detail, evolution detail, history, and cluster wording handoff.
-- `matrices/009_white_peace_safety_ai_acceptance_matrix.md` — safety gates, AI handling, helper map, validation matrix.
-- `research/009_white_peace_diplomatic_design_notes.md` — vocabulary and visual design notes.
-- `prompts/009_white_peace_asset_prompt.md` — asset handoff.
-- `prompts/009_white_peace_achievement_prompt.md` — achievement handoff.
-- `prompts/009_white_peace_coding_prompt.md` — coding-agent implementation prompt.
-- `prompts/009_white_peace_goal_prompt.md` — compact `/goal` prompt.
-- `prompts/subagents/` — bounded prompts for relevant project subagents.
+| Surface | Document | Authority and disposition |
+| --- | --- | --- |
+| Accepted audit changes | [2026-10-05 decisions](../../plans/009_white_peace_plans/agent_decisions_2026-10-05.md) | Parent acceptance within the user-authorized audit, including G6 and G7. |
+| Main source design | [Main spec](specs/009_white_peace_spec.md) | Source design with acceptance recorded per claim. |
+| Weight model | [Dynamic model](specs/009_white_peace_dynamic_weight_model.md) | Current source observations and historical proposals, with numeric validation unresolved. |
+| Presentation | [Text, log, and cluster](specs/009_white_peace_event_text_log_cluster.md) | Accepted result delivery and implemented key map, with parent-owned wording follow-up. |
+| Safety criteria | [Safety matrix](matrices/009_white_peace_safety_ai_acceptance_matrix.md) | Parent-owned acceptance criteria with their stated evidence limits. |
+| Current behavior | [Overview](../../events/009_white_peace/overview.md) | Parent-owned implementation documentation. |
+| Validation | [Validation matrix](../../plans/009_white_peace_plans/009_white_peace_validation_matrix.md) | Parent-owned scenarios and unresolved checks. |
+| Catalog follow-up | [Catalog pending](../../plans/009_white_peace_plans/catalog_changes_pending.md) | Accepted and queued because workbook and CSV edits were excluded. |
+| Legacy reconciliation | [Curator handoff](../../plans/009_white_peace_plans/subagent_handoffs/009_documentation_curator_2026_10_05.md) | Exact document dispositions and evidence limits. |
 
-## Design summary
+## Accepted boundary
 
-White Peace is a low-impact repeatable Peace-cluster event. It searches for safe wars and forces no-gain settlements. The base version settles one minor-country pair. Later stages can settle several minor pairs, rarely include a major country, or quiet broader war clutter when many conflicts are active.
+The parent accepted isolated one-on-one candidate wars on 2026-10-05 under user G6 because Event 009 cannot prove third-country participants safe.
+The base settles one minor-country pair, and Stages I and III can settle several separate isolated wars.
+Current evolution settings gate actual branch behavior through `is_current_evolution_enabled` after caller-local Event 009 id, type, stage, and tier are set.
+Disabled Stage I multi, Stage II major, and Stage III broad paths have zero branch weight or eligibility, and historical unlock flags cannot restore disabled major settlements.
+Existing stage progression and war-pressure requirements remain additional gates, while base isolated minor peace remains eligible when all evolutions are disabled.
+The parent explicitly accepted this evolution-setting fix in its 2026-10-05 follow-up task.
+The earlier one-overcrowded-war multi-party route is rejected.
+Settlement runs immediately in hidden `chaosx.nr9.1` before notification.
+A successful chain sends one aggregate acknowledgment report to each human-controlled participant. If all settled participants are AI, it sends one global observer-news event.
+The result variant follows actual successful settlement count, and the broad variant requires a broad branch that settles at least three separate wars.
+User G7 requires a forced invalid entry to find a valid candidate or explain rejection, represented by plain `chaosx.nr9.6` feedback for a human root.
+The Circular achievement uses three distinct isolated wars without a five-pair alternative.
+No Winner keeps continuous survival, with narrow capitulation, annexation, and subject-transition hooks invalidating its watch and `.20` checking a carried partner target.
 
-The event uses a dynamic weight cap. The cap rises with active wars and safe minor-war candidates, is usually below default event prominence, never exceeds `1500`, and is multiplied down by stronger evolution stages and normal repeatable decay.
+Source uses an on-demand dynamic cap with a `1500` environment ceiling, stage multipliers, and repeatable decay.
+This is implementation evidence rather than numerical balance approval.
+The assigned probability inspection timed out after 600 seconds, so numerical scenario validation remains blocked.
 
-## Implementation warning
+## Supporting material
 
-The source spec intentionally avoids broad focus trees, country packages, formables, scripted GUI windows, or high-spectacle presentation. Adding them would make this low-impact Peace-cluster member too heavy. Future Peace-cluster members can reuse the helper patterns planned here.
+`research/009_white_peace_diplomatic_design_notes.md`, `prompts/009_white_peace_asset_prompt.md`, `prompts/009_white_peace_achievement_prompt.md`, `prompts/009_white_peace_coding_prompt.md`, `prompts/009_white_peace_goal_prompt.md`, and `prompts/subagents/` are outside this bounded reconciliation.
+Their existence does not establish acceptance, and their instructions must be checked against the 2026-10-05 decisions before reuse.
+The three legacy handoffs retain their original bodies beneath superseded notices.
+
+The source package excludes broad focus trees, country packages, formables, dedicated scripted GUI windows, and high-spectacle presentation.
+The installed observer image is `gfx/event_pictures/009_white_peace/news_event_009_white_peace.dds`, using `GFX_news_event_009_white_peace` in `interface/009_white_peace_event_images.gfx`.
+Production evidence is linked by [the news-art handoff](../../plans/009_white_peace_plans/subagent_handoffs/white_peace_news_art_handoff.md).
+Parent review, required MCP evidence, and completion claims remain parent-owned.

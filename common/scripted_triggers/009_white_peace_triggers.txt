@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 009 WHITE PEACE TRIGGERS
 # ============================================================================
-# Country and pair safety gates for Event 9. Pair triggers are evaluated in the
+# Country and isolated-pair safety gates for Event 9. Pair triggers are evaluated in the
 # candidate partner scope with PREV as the proposed primary country.
 # ============================================================================
 
@@ -33,13 +33,29 @@ has_recent_white_peace_pair_with_prev = {
 	}
 }
 
+can_white_peace_conflict_be_isolated = {
+	NOT = {
+		any_enemy_country = {
+			NOT = { tag = PREV.PREV }
+		}
+	}
+	PREV = {
+		NOT = {
+			any_enemy_country = {
+				NOT = { tag = PREV.PREV }
+			}
+		}
+	}
+}
+
 can_country_be_white_peace_major_target = {
 	can_country_be_white_peace_target = yes
-	OR = {
-		check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
-		check_variable = { global.white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
-		has_global_flag = white_peace_stage_2_unlocked
-		has_global_flag = white_peace_stage_3_unlocked
+	AND = {
+		has_global_flag = white_peace_major_branch_enabled
+		OR = {
+			check_variable = { white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
+			check_variable = { global.white_peace_stage > constant:white_peace_event_log.stage_repeated_minor }
+		}
 	}
 	NOT = { has_country_flag = recent_major_white_peace_country }
 }
@@ -63,6 +79,7 @@ can_pair_receive_white_peace = {
 	NOT = { tag = PREV }
 	NOT = { is_in_faction_with = PREV }
 	NOT = { has_recent_white_peace_pair_with_prev = yes }
+	can_white_peace_conflict_be_isolated = yes
 	OR = {
 		is_white_peace_minor_pair_for_prev = yes
 		AND = {
@@ -94,6 +111,7 @@ can_major_pair_receive_white_peace_if_stage_unlocked = {
 	NOT = { tag = PREV }
 	NOT = { is_in_faction_with = PREV }
 	NOT = { has_recent_white_peace_pair_with_prev = yes }
+	can_white_peace_conflict_be_isolated = yes
 	is_white_peace_major_pair_for_prev = yes
 	capital_scope = { is_controlled_by = PREV }
 	PREV = {

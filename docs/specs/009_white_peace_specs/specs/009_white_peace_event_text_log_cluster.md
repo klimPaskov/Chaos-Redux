@@ -1,194 +1,75 @@
-# Event 009 — Event Text, Details, Cluster, and Localisation Handoff
+# Event 009: Text, Log, Cluster, and Result Delivery
 
-## Key naming direction
+Disposition: implemented for accepted settlement and delivery rules, with MCP validation unresolved and catalog-workbook alignment accepted and queued. Parent G3 wording corrections are already applied to the current shared localisation.
+Acceptance basis is the parent's 2026-10-05 task and [accepted decisions](../../../plans/009_white_peace_plans/agent_decisions_2026-10-05.md), including user G6 for isolated wars and G7 for invalid-entry feedback. The parent accepted G2 per-human aggregate reports and G3 plain cause-first prose on 2026-10-06.
+This replaces the legacy popup-ID draft and does not certify gameplay completion.
 
-Recommended script namespace stays with the existing event pattern:
+## Settlement and delivery
 
-- entry event: `chaosx.nr9.1`
-- base report variant: `chaosx.nr9.1`
-- multi-settlement variant: `chaosx.nr9.2`
-- major-country settlement variant: `chaosx.nr9.3`
-- broad settlement variant: `chaosx.nr9.4`
-- hidden runtime/cleanup events may use later IDs only if needed.
+Hidden `chaosx.nr9.1` prepares a safe candidate and applies settlement immediately.
+Acknowledgment options do not execute peace or select another branch.
+Stages I and III settle multiple separate isolated wars within branch caps, and a third war participant or another active enemy disqualifies a candidate at every stage.
+One successful chain produces one aggregate country report to every human-controlled participant in the settled wars, or one global news event if every settled participant is AI. The pending-report queue is cleared at entry and after delivery, so each affected human sees one result per chain.
+The single-war displayed countries are preserved as `white_peace_report_primary` and `white_peace_report_partner`.
 
-If the existing repo has a different file naming pattern for Event 009, preserve the existing file and IDs.
-
-## Suggested localisation keys
-
-Use the existing Chaos Redux localisation file split. The implementation agent should map these names to the actual repo pattern.
-
-| Key | Direction |
-| --- | --- |
-| `chaosx_event_name_9` | `White Peace` |
-| `chaosx_event_debug_name_9` | `Event 009 — White Peace` |
-| `chaosx.nr9.1.t` | `A Note Without Demands` |
-| `chaosx.nr9.1.d` | Base single-pair description with `[white_peace_primary.GetName]` and `[white_peace_partner.GetName]` if safe. |
-| `chaosx.nr9.1.a` | `Let the guns fall silent.` |
-| `chaosx.nr9.2.t` | `Tables in Several Rooms` |
-| `chaosx.nr9.2.d` | Multi-pair description, with pair count if supported. |
-| `chaosx.nr9.2.a` | `No one claims victory.` |
-| `chaosx.nr9.3.t` | `A Major Power Steps Back` |
-| `chaosx.nr9.3.d` | Major-country settlement description. |
-| `chaosx.nr9.3.a` | `The order has already been given.` |
-| `chaosx.nr9.4.t` | `The Armistice Circular` |
-| `chaosx.nr9.4.d` | Broad-settlement description. |
-| `chaosx.nr9.4.a` | `The line goes quiet.` |
-
-## Base event text draft
-
-### `chaosx.nr9.1.t`
-
-A Note Without Demands
-
-### `chaosx.nr9.1.d`
-
-A neutral channel has delivered the same paper to both governments. It names no victor, no indemnity, and no border to be redrawn. The soldiers are ordered to stop where they stand, under the same flags and in the same towns that began the matter.
-
-The war between [?white_peace_primary.GetName] and [?white_peace_partner.GetName] ends without spoils.
-
-### `chaosx.nr9.1.a`
-
-Let the guns fall silent.
-
-Implementation note: Replace the exact country-name syntax with the existing event-target localisation pattern. If saved event targets cannot be used safely in the displayed event, use ordinary scope names from the event recipient and target.
-
-## Multi-settlement text draft
-
-### `chaosx.nr9.2.t`
-
-Tables in Several Rooms
-
-### `chaosx.nr9.2.d`
-
-The first note was copied, then copied again. Several minor governments receive the same thin formula, with no claims, reparations, procession, or speech from a balcony. Staff officers fold maps they had not been allowed to win.
-
-Across several fronts, the fighting stops without a declared victor.
-
-### `chaosx.nr9.2.a`
-
-No one claims victory.
-
-## Major-country settlement text draft
-
-### `chaosx.nr9.3.t`
-
-A Major Power Steps Back
-
-### `chaosx.nr9.3.d`
-
-A major government signs away one part of its war without ceremony. Diplomats and officers issue the same restrained order, and along the border, men who expected victory or ruin receive only a command to stand down.
-
-The settlement grants no spoils and demands no surrender.
-
-### `chaosx.nr9.3.a`
-
-The order has already been given.
-
-## Broad-settlement text draft
-
-### `chaosx.nr9.4.t`
-
-The Armistice Circular
-
-### `chaosx.nr9.4.d`
-
-A diplomatic circular moves through several capitals, carrying the same exhausted formula from front to front. It promises no friendship, surrender, or forgiveness. Its ink is enough to make rifles lower and artillery crews wait for orders that never come.
-
-Several wars have gone quiet, and the wider world remains tense.
-
-### `chaosx.nr9.4.a`
-
-The line goes quiet.
-
-## Event detail window text
-
-### Short detail
-
-White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. At first it settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
-
-### Long detail direction
-
-The event is a cleanup valve for war clutter. It should list these player-facing facts:
-
-- it needs at least one active war;
-- it also needs at least one safe candidate pair;
-- it favors minor-versus-minor settlements;
-- it avoids protected scripted wars;
-- it has no decline option;
-- it uses dynamic weight below ordinary event prominence most of the time;
-- it grows more likely as war clutter grows;
-- it becomes less likely as its evolved branches become stronger.
-
-Do not show the exact safety trigger list unless the event-detail UI already has a compact custom tooltip pattern for it.
-
-## Evolution display text
-
-| Evolution | Title direction | Detail direction |
+| Actual result | Human-participant report | AI-only observer news |
 | --- | --- | --- |
-| Stage I | `Repeated Minor Settlements` | White Peace can resolve several safe minor-country pairs from one firing. |
-| Stage II | `Major-Country Settlement` | A rare branch can involve a major country when the war segment is safe. |
-| Stage III | `Broad Diplomatic Settlement` | When active wars are excessive, one firing can quiet several safe conflicts or a larger safe segment. |
+| One minor war | `chaosx.nr9.2` | `chaosx.nr9.7` |
+| Multiple minor wars without the broad-result condition | `chaosx.nr9.3` | `chaosx.nr9.8` |
+| One major-branch war | `chaosx.nr9.4` | `chaosx.nr9.9` |
+| Broad branch settles at least three separate minor wars | `chaosx.nr9.5` | `chaosx.nr9.10` |
 
-Evolution history rows should use the existing event-evolution logging pattern with Event ID `9`, evolution stage, tier, and actor only when the current milestone belongs to a country. These stages are global; they normally do not need a country actor.
+A selected multi or broad branch that only settles one war uses the single-war result, and a broad branch that only settles two uses the multi-war result.
+Forced invalid human entry uses `chaosx.nr9.6`, whose plain description states a rejection reason and confirms that no peace was imposed.
+Reasons cover no active war, no safe pair, locked major stage, protected conflicts, and recent settlement memory.
+Source evidence is `events/009_white_peace.txt` and `prepare_white_peace_runtime_context`, `apply_white_peace_current_context`, `dispatch_white_peace_unavailable_report`, and `fire_white_peace_report_event` in `common/scripted_effects/009_white_peace_effects.txt`.
 
-## History row direction
+## Localisation key authority
 
-Preferred history formats:
+Current report and news wording is owned by `localisation/english/009_white_peace_l_english.yml`.
+Reports `.2` through `.6` use their own `.t`, `.d`, `.a`, and `.tt` keys, and news `.7` through `.10` uses `.t`, `.d`, and `.a`.
+`chaosx.nr9.1.t` names the hidden dispatcher, which has no visible description or acknowledgment contract.
+Event-name lookup uses `chaosx.event_name.9` in the shared event-log selectors.
+Use `[white_peace_report_primary.GetName]` and `[white_peace_report_partner.GetName]` for preserved report targets.
+Parchment descriptions and invalid-entry reasons use plain names and values.
 
-- `White Peace: [Primary] and [Partner] ended their war without spoils.`
-- `White Peace: [Primary] signed a no-gain settlement.`
-- `White Peace: several minor fronts went quiet.`
-- `White Peace: a major power stepped back from one war.`
+The former titles `A Note Without Demands`, `Tables in Several Rooms`, `A Major Power Steps Back`, and `The Armistice Circular` were prose proposals.
+Their base `.1`, multi `.2`, major `.3`, and broad `.4` draft mapping is superseded by the map above.
+The suggested `chaosx_event_name_9` and `chaosx_event_debug_name_9` keys and `[?white_peace_primary.GetName]` draft syntax are superseded by the current namespace and target syntax.
 
-If the existing history row only supports one actor, use the primary actor and keep partner details in the event popup or selected history detail.
+## Details, evolution, history, and cluster
 
-## Peace cluster detail direction
+Event Details and catalog detail fields describe the armistice premise without listing hidden branches or predicting later mechanical outcomes.
+This is parent-accepted prose direction in the 2026-10-05 decisions, and final shared-localisation reconciliation remains parent-owned.
+Evolution titles remain `Repeated Minor Settlements`, `Major-Country Settlement`, and `Broad Diplomatic Settlement`.
+The parent explicitly accepted actual branch gating by current evolution settings in its 2026-10-05 follow-up task.
+`set_white_peace_evolution_gates` sets caller-local event id and type, then stage and tier for each `is_current_evolution_enabled` check.
+Its computed flags are `white_peace_multi_branch_enabled`, `white_peace_major_branch_enabled`, and `white_peace_broad_branch_enabled`.
+A disabled Stage I blocks multi-settlement branches at all later stages, a disabled Stage II blocks major eligibility and branch weight, and a disabled Stage III blocks the broad branch.
+Stage progression and existing war-pressure gates still apply, and old global unlock history cannot bypass a disabled current setting.
+Disabling all three evolutions retains eligible base isolated minor peace.
+Evolution history and preview rows do not independently authorize a gameplay branch.
+Evolution descriptions must distinguish several separate isolated wars from a multi-party war and must not describe a larger safe segment of one overcrowded conflict.
+Cluster ID `4` is `Peace`, with Event ID `9` as a low-severity repeatable member.
+Availability requires an eligible isolated candidate, and compact reasons explain unavailable wars without exposing raw trigger identifiers.
+History uses Event ID `9` and a primary actor through the existing shared mapping.
+The curator did not review or edit shared GUI layouts, registries, history effects, or localisation selectors.
 
-Cluster ID `4`, cluster name `Peace`.
+## Achievements and image references
 
-Cluster description direction:
+The accepted Circular criterion is a broad branch settling three distinct isolated minor wars.
+The five-pair alternative is rejected because each eligible pair is already a separate war under the isolated boundary.
+No Winner keeps the continuous 180-day condition for both countries, and shared achievement prose follow-up belongs to the parent.
+Reports use `GFX_report_event_009_white_peace`, and news uses `GFX_news_event_009_white_peace`, both registered in `interface/009_white_peace_event_images.gfx`.
+The news runtime texture is opaque monochrome `397x153` `gfx/event_pictures/009_white_peace/news_event_009_white_peace.dds`.
+Production and DDS round-trip evidence is in [white_peace_news_art_handoff.md](../../../plans/009_white_peace_plans/subagent_handoffs/white_peace_news_art_handoff.md) and the active `docs/assets/009_white_peace/` workspace.
+The news handoff's pending-wiring statement predates the parent's integration evidence, and that new handoff is outside this curator's edit scope.
 
-> Peace events reduce conflict through settlements, ceasefires, exhaustion, negotiations, and other de-escalation incidents. White Peace is the low-impact member: it looks for safe wars that can end without territorial gain.
+## Catalog and validation limits
 
-White Peace member row:
-
-- event ID: `9`;
-- role: low-impact member;
-- danger/severity display: low;
-- availability reason: valid safe settlement candidate exists;
-- skip reasons: no active wars, no safe candidates, protected conflicts only, major branch not unlocked, recent settlement memory.
-
-## Dynamic tooltip directions
-
-Use scripted localisation for a compact status line:
-
-| State | Text direction |
-| --- | --- |
-| Available, low pressure | `Safe settlement candidate found. Current war pressure is low.` |
-| Available, high pressure | `Several safe settlement candidates found. War pressure is high.` |
-| Unavailable, no wars | `No active wars.` |
-| Unavailable, unsafe wars | `No safe war is available for White Peace.` |
-| Stage II major candidate | `A major-country settlement candidate is available. This branch is rare.` |
-| Stage III broad candidate | `A broad settlement candidate is available. Protected wars remain excluded.` |
-
-## Localisation audit requirements
-
-Before the implementation is called complete, run a localisation audit for:
-
-- missing keys in event names, event texts, details, cluster detail, and evolution detail;
-- broken actor/partner dynamic localisation;
-- raw trigger exposure in event list or cluster skip reasons;
-- mismatch between event detail text and catalog detail;
-- update-history wording;
-- duplicate keys;
-- UTF-8 BOM preservation in edited localisation files.
-
-## Spreadsheet/catalog alignment direction
-
-After implementation, the event catalog row for Event ID `9` should use player-facing wording equivalent to:
-
-**Details:** White Peace searches for wars that can end without conquest, indemnity, or damage to a larger story. The base version settles one minor-country pair. Later evolutions can settle several minor pairs, rarely include a major country, or issue broader settlements when too many wars crowd the world.
-
-**Evolution detail:** Repeated Minor Settlements can settle several minor pairs from one firing. Major-Country Settlement rarely involves a major country. Broad Diplomatic Settlement can quiet several safe conflicts or a larger safe war segment when the world has too many wars.
-
-The spreadsheet worker should mirror final in-game localisation rather than this draft if implementation wording changes.
+The older workbook handoff is historical evidence and does not establish current alignment.
+Workbook reconciliation is accepted and queued in [catalog_changes_pending.md](../../../plans/009_white_peace_plans/catalog_changes_pending.md).
+Its worker must mirror final in-game text in the authoritative XLSX and run the catalog exporter after saving.
+No workbook or CSV was read or edited in this reconciliation.
+Source confirms the ID map, immediate settlement, result-count selection, and image consumption, while MCP inspection, rendering, and comparison remain unresolved or blocked as recorded by the parent and curator handoff.
+Source review does not replace MCP evidence, parent integration review, or live-game observations.

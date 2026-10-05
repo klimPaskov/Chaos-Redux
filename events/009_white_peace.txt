@@ -12,6 +12,8 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		clr_country_flag = white_peace_current_invocation_has_human
+		clear_white_peace_human_report_queue = yes
 		if = {
 			limit = {
 				OR = {
@@ -28,7 +30,18 @@ country_event = {
 				has_event_target = white_peace_primary
 				has_event_target = white_peace_partner
 			}
-			fire_white_peace_report_event = yes
+			apply_white_peace_current_context = yes
+			if = {
+				limit = { check_variable = { global.white_peace_last_settled_pair_count > 0 } }
+				fire_white_peace_report_event = yes
+			}
+			else = {
+				set_variable = { global.white_peace_skip_reason = constant:white_peace_skip_reason.no_safe_pair }
+				dispatch_white_peace_unavailable_report = yes
+			}
+		}
+		else = {
+			dispatch_white_peace_unavailable_report = yes
 		}
 	}
 }
@@ -46,7 +59,6 @@ country_event = {
 	option = {
 		name = chaosx.nr9.2.a
 		custom_effect_tooltip = chaosx.nr9.2.tt
-		apply_white_peace_current_context = yes
 	}
 }
 
@@ -63,7 +75,6 @@ country_event = {
 	option = {
 		name = chaosx.nr9.3.a
 		custom_effect_tooltip = chaosx.nr9.3.tt
-		apply_white_peace_current_context = yes
 	}
 }
 
@@ -80,7 +91,6 @@ country_event = {
 	option = {
 		name = chaosx.nr9.4.a
 		custom_effect_tooltip = chaosx.nr9.4.tt
-		apply_white_peace_current_context = yes
 	}
 }
 
@@ -97,7 +107,80 @@ country_event = {
 	option = {
 		name = chaosx.nr9.5.a
 		custom_effect_tooltip = chaosx.nr9.5.tt
-		apply_white_peace_current_context = yes
+	}
+}
+
+##############################################################################################################
+
+country_event = {
+	id = chaosx.nr9.6
+	title = chaosx.nr9.6.t
+	desc = chaosx.nr9.6.d
+	picture = GFX_report_event_009_white_peace
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr9.6.a
+		custom_effect_tooltip = chaosx.nr9.6.tt
+	}
+}
+
+##############################################################################################################
+
+news_event = {
+	id = chaosx.nr9.7
+	title = chaosx.nr9.7.t
+	desc = chaosx.nr9.7.d
+	picture = GFX_news_event_009_white_peace
+	
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr9.7.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr9.8
+	title = chaosx.nr9.8.t
+	desc = chaosx.nr9.8.d
+	picture = GFX_news_event_009_white_peace
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr9.8.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr9.9
+	title = chaosx.nr9.9.t
+	desc = chaosx.nr9.9.d
+	picture = GFX_news_event_009_white_peace
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr9.9.a
+	}
+}
+
+news_event = {
+	id = chaosx.nr9.10
+	title = chaosx.nr9.10.t
+	desc = chaosx.nr9.10.d
+	picture = GFX_news_event_009_white_peace
+
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr9.10.a
 	}
 }
 
@@ -114,7 +197,8 @@ country_event = {
 				has_country_flag = white_peace_no_winner_watch
 				NOT = { has_capitulated = yes }
 				is_subject = no
-				FROM = {
+				has_event_target = white_peace_no_winner_partner
+				event_target:white_peace_no_winner_partner = {
 					exists = yes
 					has_country_flag = white_peace_no_winner_watch
 					NOT = { has_capitulated = yes }
@@ -122,7 +206,7 @@ country_event = {
 				}
 			}
 			set_country_flag = achievement_white_peace_no_winner_ready
-			FROM = { set_country_flag = achievement_white_peace_no_winner_ready }
+			event_target:white_peace_no_winner_partner = { set_country_flag = achievement_white_peace_no_winner_ready }
 		}
 	}
 }

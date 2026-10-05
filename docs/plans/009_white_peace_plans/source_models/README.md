@@ -1,0 +1,7 @@
+# Event 009 Source Model Evidence
+
+Run the current bounded source model from the mod root with `python docs/plans/009_white_peace_plans/source_models/009_white_peace_helper_output_lifetimes.py`. The 2026-10-06 result record is `009_white_peace_helper_output_lifetimes_results.json`.
+
+The seven passing tests exercise the actual Event 009 effect bodies with conservative helper-frame cleanup. They cover the base branch, Stage I single and multi branches, Stage II major, Stage III broad, stage outputs, caller-storage disappearance without preinitialization, and human/AI result routing. The scenarios assert selected branch, event-log actor, preserved report pair, pair cap, final settlement count, one report per human endpoint, and one news event for all-AI outcomes.
+
+The model replaces only native/engine boundaries with declared deterministic fixtures: requested `random_list` branches must have positive weight, `random_scope_in_array` takes the first source-built candidate, candidate eligibility is a bounded isolated-pair fixture, the `white_peace` transaction removes one reciprocal pair and increments the source-consumed count, and emitted `country_event`/`news_event` records are captured instead of rendered. It does not emulate Clausewitz scope semantics, native random probability, achievements or Chaos side effects, GUI layout, or a running HOI4 session. The separate HOI4 probability inspect/compare timed out; this source model does not replace that evidence.

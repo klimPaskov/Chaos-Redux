@@ -1,0 +1,200 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 009 WHITE PEACE CONSTANTS
+# ============================================================================
+# Shared tuning for Event 9: on-demand war-pressure checks, safe settlement
+# selection, evolution stages, pair memory, and capped Chaos reduction.
+# ============================================================================
+
+white_peace_event_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 9
+	evolution_type = 9
+	stage_base = 0
+	stage_repeated_minor = 1
+	stage_major_country = 2
+	stage_broad_settlement = 3
+}
+
+white_peace_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_cap = 125
+	min_valid_cap = 120
+	max_environment_cap = 1500
+	active_war_value = 90
+	active_war_cap = 540
+	safe_minor_pair_value = 85
+	safe_minor_pair_cap = 595
+	minor_only_war_value = 60
+	minor_only_war_cap = 240
+	clutter_bonus_5_wars = 125
+	clutter_bonus_8_wars = 175
+	clutter_bonus_12_wars = 225
+	recent_global_penalty = 0.80
+}
+
+white_peace_stage_multiplier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 1.00
+	repeated_minor = 0.78
+	major_country = 0.55
+	broad_settlement = 0.38
+}
+
+white_peace_stage_pressure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	repeated_minor_war_count = 5
+	repeated_minor_pair_count = 3
+	major_war_count = 8
+	major_pair_count = 4
+	broad_war_count = 12
+	broad_pair_count = 6
+}
+
+white_peace_branch = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	single_minor = 1
+	multi_minor = 2
+	major_country = 3
+	broad_settlement = 4
+}
+
+white_peace_branch_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_single = 100
+	stage_1_single = 70
+	stage_1_multi = 30
+	stage_2_single = 60
+	stage_2_multi = 25
+	stage_2_major = 15
+	stage_3_single = 50
+	stage_3_multi = 25
+	stage_3_major = 15
+	stage_3_broad = 10
+}
+
+white_peace_branch_min_candidate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	single_minor_pairs = 1
+	major_pairs = 1
+	multi_minor_pairs = 2
+	broad_minor_pairs = 3
+	stage_1_high_pressure_pairs = 4
+}
+
+white_peace_availability_min = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	active_wars = 1
+}
+
+white_peace_settlement_cap = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_pairs = 1
+	stage_1_pairs = 2
+	stage_1_high_pressure_pairs = 3
+	stage_2_pairs = 3
+	stage_3_pairs = 5
+}
+
+white_peace_memory = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	country_days = 180
+	pair_days = 360
+	major_country_days = 540
+	broad_days = 720
+}
+
+white_peace_pair_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 10
+	both_minor = 40
+	no_major_war = 30
+	long_war = 20
+	capitals_safe = 20
+	independent = 15
+	outside_factions = 15
+	major_penalty = -35
+	minimum = 1
+}
+
+white_peace_chaos_delta = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	single_minor = -1
+	multi_minor_cap = -3
+	major_country = -2
+	broad_cap = -3
+}
+
+white_peace_skip_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	available = 0
+	no_active_war = 1
+	no_safe_pair = 2
+	major_locked = 3
+	protected_conflicts = 4
+	recent_memory = 5
+}
+
+white_peace_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	long_war_months = 5
+	chain_minor_pairs_required = 6
+	no_winner_days = 180
+	broad_conflicts_required = 3
+	broad_pairs_required = 5
+}

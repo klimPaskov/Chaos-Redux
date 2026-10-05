@@ -1,3 +1,15 @@
+# Historical handoff disposition, 2026-10-05
+
+Disposition: superseded for current localisation acceptance by `009_localisation_readonly_audit_2026_10_05.md`, the parent's `agent_decisions_2026-10-05.md`, and `009_documentation_curator_2026_10_05.md` in this plans package.
+The original body below is historical evidence and does not certify current source.
+The parent accepted isolated wars under user G6 and plain invalid-entry feedback under G7, plus immediate settlement before one report or AI-only news result.
+The old three-conflicts-or-five-pairs Circular wording is rejected in favor of three distinct isolated minor wars.
+Current report targets are `white_peace_report_primary` and `white_peace_report_partner`.
+Shared detail and achievement prose follow-up remains parent-owned, and old hidden-branch detail instructions must not override accepted premise-only wording.
+The original encoding, missing-key, and alignment findings apply only to that audit snapshot.
+
+---
+
 # Event 009 White Peace Localisation Audit Handoff
 
 ## Parent Resolution
