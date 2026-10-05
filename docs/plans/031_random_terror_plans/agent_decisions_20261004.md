@@ -392,3 +392,12 @@ Basis: Part 2 Cross-state spread ("Spread requires a reason", the `90`-day ancho
   Its single `random_country` selection runs only after the roll succeeds, the same cost as one wave-target selection.
 - The report names the origin state and the strongest reason, and the government category shows whether a cell can move, which keeps the player able to understand each change.
 - Route evidence: the probability route stayed blocked as recorded under R32, so the new spread weights are reviewed in source only.
+
+### R34 One sponsor check for every sponsorship path
+
+Basis: the lead's defect report (Seek a Sponsor lacked the `has_war_with` exclusion its focus counterpart had, so a parent at war with its own insurgents could pay to supply them) and Part 10's rule that Event 14 cannibal countries are never Event 31 sponsors or partners.
+
+- `random_terror_sponsor_candidate` is the single check used by the decision's `visible`, `available` and `target_trigger`, by Identify the Sponsor (`random_terror_focus_sponsor_candidate` now only calls it), by `random_terror_commit_sponsor_request` and by the accept option of `chaosx.nr31.42`.
+- It excludes countries at war with the command, the command's parent and cannibal countries.
+  The consent event reads the relationship against `FROM`, because there the asked country is `ROOT`; the pending-offer check applies only on the asking side, because the asked country holds that flag while it answers.
+- The requirement tooltip now states every real condition instead of the old Network Authority wording, which no check read.

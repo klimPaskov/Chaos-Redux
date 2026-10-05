@@ -291,22 +291,52 @@ random_terror_state_is_enemy_held = {
 	CONTROLLER = { has_war_with = ROOT }
 }
 
-# COUNTRY scope, ROOT = an actor.  A country at peace with the actor that can
-# be asked to sponsor it (the same stock checks as Seek a Sponsor).
-random_terror_focus_sponsor_candidate = {
+# COUNTRY scope: a country that can sponsor an Event 31 actor.  The one
+# shared check for Seek a Sponsor, Identify the Sponsor, the request commit
+# and the consent event chaosx.nr31.42.  When ROOT is the actor (decision,
+# focus and commit), the country must border it or share its faction and
+# have no other request pending.  When ROOT is the asked country itself (the
+# consent event, whose FROM is the requesting actor), the same relationship
+# is read against FROM.  Either way it is never at war with the actor, never
+# the government the actor rose against (random_terror_parent_of_<tag>),
+# never an Event 14 cannibal country, and holds the sponsorship stock.
+random_terror_sponsor_candidate = {
 	exists = yes
-	NOT = { tag = ROOT }
 	NOT = { random_terror_is_actor = yes }
 	NOT = { has_capitulated = yes }
-	NOT = { has_war_with = ROOT }
-	NOT = { has_country_flag = random_terror_sponsor_contact_pending }
+	NOT = { is_cannibalism_country = yes }
 	OR = {
-		is_neighbor_of = ROOT
-		is_in_faction_with = ROOT
+		AND = {
+			NOT = { tag = ROOT }
+			ROOT = { random_terror_is_actor = yes }
+			NOT = { has_war_with = ROOT }
+			NOT = { has_country_flag = random_terror_parent_of_@ROOT }
+			NOT = { has_country_flag = random_terror_sponsor_contact_pending }
+			OR = {
+				is_neighbor_of = ROOT
+				is_in_faction_with = ROOT
+			}
+		}
+		AND = {
+			tag = ROOT
+			FROM = { random_terror_is_actor = yes }
+			NOT = { has_war_with = FROM }
+			NOT = { has_country_flag = random_terror_parent_of_@FROM }
+			OR = {
+				is_neighbor_of = FROM
+				is_in_faction_with = FROM
+			}
+		}
 	}
 	has_political_power > constant:random_terror_cost.partner_sponsor_political_power
 	has_equipment = { infantry_equipment > constant:random_terror_cost.partner_sponsor_infantry_equipment }
 	has_equipment = { support_equipment > constant:random_terror_cost.partner_sponsor_support_equipment }
+}
+
+# COUNTRY scope, ROOT = an actor.  Identify the Sponsor reads the shared
+# sponsor check.
+random_terror_focus_sponsor_candidate = {
+	random_terror_sponsor_candidate = yes
 }
 
 # STATE scope, ROOT = the responding government.  Government decisions with a
