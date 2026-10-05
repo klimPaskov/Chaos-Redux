@@ -386,3 +386,11 @@ The impact history row adds the fragment-site count and the opening dust stage; 
 `chaosx.nr28.3.d` says whether the locked state is the target country's current capital, reading the country's `capital` against the locked state, and says nothing once the lock pointers are cleared.
 The miss and fail-closed views are unchanged, and the preparedness clause carries no colour codes.
 Basis: Part 8 lists the chooser, locked state and region, current Dust Load and stage for the impact Details view, the actual fragment count and opening dust stage for the history row, and the capital status for the target emergency.
+
+### The observation network helps its own country
+
+Decision: while dust is active, a country with `asteroid_incoming_observation_network` adds `asteroid_incoming_dust_protection.observation_sky_fraction` (0.15) to the share of the current stage's air-mission and weather penalties that the hidden `asteroid_incoming_national_dust_protection` modifier offsets, with or without a protection tier.
+The combined share is clamped to `maximum_fraction` (1.00), and the modifier is removed at zero dust as before, so it can never become a bonus; at Residual Haze the weather penalty is zero, so only air missions gain.
+Joining the network refreshes the modifier at once; the decision tooltip states the value; `ai_will_do` is unchanged.
+Basis: Part 6 says the observation network "improves weather warning, contributes a bounded amount to global dust decay, and reduces the country's warning delay for linked disasters"; the air-weather share is the supported national form of the weather-warning benefit.
+The linked-disaster warning clause has nothing to act on: Event 028 calls its Event 013 secondary disasters only inside the impact transaction (`asteroid_incoming_apply_state_profile`), before any country can join the network, so no later linked disaster exists whose warning could be improved.

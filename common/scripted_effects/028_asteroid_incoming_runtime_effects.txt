@@ -1625,10 +1625,23 @@ asteroid_incoming_refresh_national_dust_protection = {
 		limit = { has_idea = asteroid_incoming_dust_protection_basic }
 		set_temp_variable = { asteroid_incoming_protection_fraction = constant:asteroid_incoming_dust_protection.basic_fraction }
 	}
+	# The observation network adds its own share to the air-mission and
+	# weather compensation, with or without a protection tier. The total never
+	# exceeds the stage's own penalty, so it cannot become a bonus.
+	set_temp_variable = { asteroid_incoming_sky_protection_fraction = asteroid_incoming_protection_fraction }
+	if = {
+		limit = { has_country_flag = asteroid_incoming_observation_network }
+		add_to_temp_variable = { asteroid_incoming_sky_protection_fraction = constant:asteroid_incoming_dust_protection.observation_sky_fraction }
+	}
+	clamp_temp_variable = {
+		var = asteroid_incoming_sky_protection_fraction
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust_protection.maximum_fraction
+	}
 	if = {
 		limit = {
 			check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum }
-			check_variable = { asteroid_incoming_protection_fraction > constant:asteroid_incoming_dust.minimum }
+			check_variable = { asteroid_incoming_sky_protection_fraction > constant:asteroid_incoming_dust.minimum }
 		}
 		if = {
 			limit = { has_global_flag = asteroid_incoming_dust_stage_residual }
@@ -1670,8 +1683,8 @@ asteroid_incoming_refresh_national_dust_protection = {
 		multiply_variable = { asteroid_incoming_protection_construction = asteroid_incoming_protection_fraction }
 		multiply_variable = { asteroid_incoming_protection_efficiency = asteroid_incoming_protection_fraction }
 		multiply_variable = { asteroid_incoming_protection_supply = asteroid_incoming_protection_fraction }
-		multiply_variable = { asteroid_incoming_protection_air = asteroid_incoming_protection_fraction }
-		multiply_variable = { asteroid_incoming_protection_weather = asteroid_incoming_protection_fraction }
+		multiply_variable = { asteroid_incoming_protection_air = asteroid_incoming_sky_protection_fraction }
+		multiply_variable = { asteroid_incoming_protection_weather = asteroid_incoming_sky_protection_fraction }
 		multiply_variable = { asteroid_incoming_protection_supply = -1 }
 		multiply_variable = { asteroid_incoming_protection_weather = -1 }
 		if = {
