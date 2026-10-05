@@ -378,3 +378,16 @@ Disposition: implemented under the full-authority mandate during the skeptical r
 Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, the review and adopt doctrine decisions, source the project board file) returned `INTERNAL_ERROR` again and was not retried. One `hoi4.decision_inspect` call on `brilliant_scientist_adopt_xeno_control_doctrine` recognised `cost = var:brilliant_scientist_xeno_control_review_cost` as an engine Political Power cost and scored the chemical-at-war scenario at the preferred weight, with the stability, Robotics stage, and civilian-factory inputs unresolved; no AI weight changed in this pass.
 
 Evidence: `events/016_brilliant_scientist_kruger_state_events.txt`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_dhrondan_focus_l_english.yml`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `common/scripted_effects/016_dhrondan_focus_effects.txt`.
+
+## D30. Round 2 second skeptical review corrections
+
+Disposition: implemented under the full-authority mandate during the second skeptical review of the round 2 commits (05bf6bfb5, 1c93a891e, e7782ef8a, e995ef8c8, d0ceff0b2, e0af8603d, 2a2ca9ac5, dd10a3f3e).
+
+- The three control-doctrine strings added in D22 (`brilliant_scientist_review_xeno_control_doctrine_desc`, `brilliant_scientist_adopt_xeno_control_doctrine_desc`, `brilliant_scientist_xeno_control_adopt_effect_tt`) broke across physical lines, which stopped the projects localisation file from loading past them. They were joined onto one line each with `\n` in 874fdc0bd and ce195cbe3 before this review; a scan of every localisation file the round 2 commits touched now finds no other line outside a key.
+- The D26 wording pass left implementation phrasing in player text. The fifteen incident mission descriptions said the "exact project family will be marked damaged" and now say the project will be damaged; the Biological Weapons Prototype and Weaponization descriptions no longer say "exact"; the sabotage tooltip damages "the selected project"; the sabotage report says the project keeps its stage instead of naming a ledger; and the counter-Kruger report option reads "File the countermeasure."
+- `dhrondan_enclave_crisis_resolved_tt` read as if Offer a Shared Horizon were the thing becoming a core; it now says an enclave counts once it has a supply bridge or, after Offer a Shared Horizon, is a core of D'Rhonda.
+
+Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, the four Rocketry selection and release decisions, source the Mengele selection decision file) returned `INTERNAL_ERROR` again and was not retried; no AI weight changed in this pass.
+`hoi4.decision_inspect` on `brilliant_scientist_review_xeno_control_doctrine` returned only partial coverage (`DECISION_ANALYZED_PARTIAL`).
+
+Evidence: `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_dhrondan_country_l_english.yml`.
