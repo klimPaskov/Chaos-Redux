@@ -16,14 +16,15 @@ chaosx_cxt_extension_famine_apply = {
 		}
 		set_country_flag = famine_cxt_fixture_initialized
 		capital_scope = {
-			set_temp_variable = { famine_input_production = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_transport = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_extraction = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_need = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_environment = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_vulnerability = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_governance = constant:famine_food_score.supply_strain_threshold }
-			set_temp_variable = { famine_input_relief = constant:famine_food_component.zero }
+			# The surface adapter reads the state-scoped famine_input_* values.
+			famine_initialize_state = yes
+			set_variable = { famine_input_transport = constant:famine_cxt_fixture.input_pressure }
+			set_variable = { famine_input_need = constant:famine_cxt_fixture.input_pressure }
+			set_variable = { famine_input_governance = constant:famine_cxt_fixture.input_pressure }
+			set_variable = { famine_input_relief = constant:famine_cxt_fixture.input_relief }
+			# An already empty reserve shows the settled supply-strain stage at once.
+			set_variable = { famine_food_reserve_amount = constant:famine_food_reserve.zero }
+			set_state_flag = famine_food_reserve_initialized
 			set_temp_variable = { famine_surface_context_proven = constant:humanitarian_runtime.one }
 			set_temp_variable = { famine_surface_context_actor_proven = constant:humanitarian_runtime.one }
 			famine_submit_surface_context = yes

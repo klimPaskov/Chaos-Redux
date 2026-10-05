@@ -36,19 +36,42 @@ Raw variables, flags, temporary values, transaction receipts, and diagnostic too
 
 ## Food-security formula
 
-Each input is clamped to 0 through 100. The normalized score is:
+Each input is clamped to 0 through 100. The score is:
 
-`clamp(((1.15 * production) + (1.10 * transport) + (1.25 * extraction) + (1.00 * need) + (0.80 * environment) + (0.90 * vulnerability) + (0.95 * governance) - (1.20 * relief)) / 7.15, 0, 200)`.
+`clamp(((1.15 * production) + (1.10 * transport) + (1.25 * extraction) + (1.00 * need) + (0.80 * environment) + (0.90 * vulnerability) + (0.95 * governance) - (1.20 * relief)) / 2.5, 0, 200)`.
+
+The divisor (`famine_food_weight.pressure_normalizer`) is deliberately smaller than the sum of the weights: two or three strongly pressed causes reach acute shortage or famine without every component being high at once.
 
 Stable is below 25. Supply strain begins at 25, acute shortage at 50, famine at 75, and catastrophic famine at 100.
 
-Upward exposure durations are 7 days for supply strain, 14 for acute shortage, 21 for famine, and 30 for catastrophic famine. Recovery uses lower thresholds of 20, 40, 60, and 80 plus longer 14, 21, 30, and 45 day confirmation windows to prevent oscillation.
+The committed stage moves one step at a time. Each step upward needs its requested stage held for 7 days (supply strain), 14 (acute shortage), 21 (famine) or 30 (catastrophic famine), so a state passes at least 42 days of warning before famine. Each step down needs the score below 20, 40, 60 or 80 for 14, 21, 21 or 30 days, so recovery is gradual and a 35-day relief delivery can lift a famine or catastrophic famine by one stage.
+
+### Reserves and exhaustion
+
+Reserves are thousand-person-days. A state's first assessment seeds half of its reserve target (30 days of need scaled by delivery efficiency), and reserve stock adds up to 35 relief points.
+
+The unrelieved shortage, the same sum before relief, is stored as `famine_food_deficit_score`. While it is at supply strain or above, the reserve is drawn by 25, 50, 75 or 100 percent of daily need for the matching stage, even when the reserve still holds the visible score below supply strain, and a cut-off island draws at least 60 percent of daily need. Only a settled stable state with no shortage replenishes, and a state whose stored shortage is still at supply strain stays registered.
+
+When the reserve covers fewer than 7 days under a real shortage or a proven island blockade, unmet need rises in proportion to the missing days, up to 55 points. This is the step that turns a buffered shortage into a deeper stage once stocks run out.
+
+### Expected outcomes
+
+A scratch model of these formulas with the current constants (recorded in `docs/plans/famine_and_migration_system_plans/agent_decisions_2026-10-04.md`, decision 17) gives:
+
+- Peacetime states, islands at war with a working port and escorts, standard occupation, and every historical anchor at the 1936 start stay stable.
+- A proven island blockade with a low reserve reaches supply strain in about two weeks, acute shortage in about six weeks, and famine after about three months; Air Contamination or camps can push it to catastrophic famine.
+- Extraction and forced-labour occupation reach acute shortage; collective-punishment and exterminatory occupation reach famine.
+- A normal or thermonuclear strike reaches acute shortage.
+- Reactivated Leningrad, Bengal, Henan, Greece and Ethiopia profiles reach famine; Spain and the Soviet memory profile under a live shock reach acute shortage; the Irish memory profile reaches supply strain.
+- A relief delivery lifts the state at least one stage, and sustained relief holds a reactivated profile at acute shortage.
 
 Trapped-population need is population-scaled as `clamp((trapped people / live state population) * 100, 0, 100)`. It enters need and vulnerability only through the explicit migration adapter.
 
 ## Mortality and Deaths ownership
 
 `famine_apply_mortality` runs only after the severe-stage exposure and due-date contract passes. It reads live population through the exact state-population API, applies the stage rate and bounded exposure, vulnerability, relief, extraction, environment, access, and governance factors, and respects the protected population floor.
+
+The stage rates are 0.03 percent of the population every 14 days for acute shortage, 0.08 percent every 7 days for famine, and 0.2 percent every 3 days for catastrophic famine. The product of the vulnerability, access, policy, environment and governance factors is capped at 2.5, exposure adds up to a threefold multiplier over 200 days, and relief reduces the pulse in proportion. Unmanaged famine therefore removes about 1.5 percent of a state's population each month, and catastrophic famine without relief removes a third or more over five months, while the protected floor keeps at least 15 percent of the state's population after every pulse.
 
 The famine owner performs one population debit and records the same applied amount under `constant:chaos_meter_deaths_reason.famine`, localized as `From famine`. No migration or adapter path applies a second debit for that mortality.
 
@@ -57,6 +80,8 @@ The formula uses no fixed historical death total. Historical profiles provide st
 ## Blockade proof
 
 Island blockade famine is not inferred from island status. The blockade branch requires current war, geographic isolation, maritime dependence, port or route disruption, convoy or escort shortage, inadequate local supply, and absence of a proven relief corridor. Missing evidence fails closed.
+
+Local supply is inadequate when the reserve covers fewer than 7 days, or fewer than 14 days while local production pressure is at least 20. While every physical clause except local supply holds (`famine_blockade_isolation_proof`), the island's imports are cut and its reserve drains, so an ordinary island reaches the full proof once its stock runs low. A proven blockade adds transport, need and vulnerability pressure that grows by 0.5 a day up to 40.
 
 ## Decisions and missions
 
@@ -74,7 +99,7 @@ These are action costs and private ownership evidence, not additional player-fac
 
 The runtime processes registered historical anchors, candidates, and active famine states through the existing host-only coordinator. State changes and exact owner callbacks register or invalidate only affected scopes. No whole-world daily, weekly, or monthly scan is added.
 
-Famine retirement is owner-local: a stable, pressure-free, non-blockaded state with no positive famine-owned reception-demand projection leaves only the famine registry and clears only famine state. It neither waits for migration obligations nor reconciles or cleans migration cohorts; any migration registry entry created through the survivor-flight adapter continues under migration ownership.
+Famine retirement is owner-local: a stable, pressure-free, non-blockaded state with no positive famine-owned reception-demand projection and no stored shortage at supply strain leaves only the famine registry and clears only famine state. It neither waits for migration obligations nor reconciles or cleans migration cohorts; any migration registry entry created through the survivor-flight adapter continues under migration ownership.
 
 ## Adapters
 
@@ -105,7 +130,7 @@ The current documentation inventory contains 61 declared final DDS outputs acros
 
 ## CXT fixture
 
-`famine_register_cxt_test_content` registers `chaosx_cxt_extension_famine`. Its idempotent apply effect submits a capital-state supply-strain surface with no migration route, population transfer, severe famine, or mortality transaction.
+`famine_register_cxt_test_content` registers `chaosx_cxt_extension_famine`. Its idempotent apply effect writes three capital-state inputs at `famine_cxt_fixture.input_pressure` with `input_relief` relief and an empty reserve, which settles in supply strain with no migration route, population transfer, severe famine, or mortality transaction.
 
 ## Open evidence gates
 

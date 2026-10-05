@@ -58,9 +58,11 @@ famine_pressure_request_is_valid = {
 }
 
 
-# Every condition is binding. A caller must provide the explicit physical and
-# political proof in addition to the engine's owner/controller war state.
-famine_blockade_proof = {
+# The physical isolation clauses: a true island at war whose sea route or port
+# is disrupted, whose owner lacks convoys or escorts, and with no relief
+# corridor. While this holds, the island's imports are cut and its reserve
+# drains, even before local supply has visibly failed.
+famine_blockade_isolation_proof = {
 	hidden_trigger = {
 		humanitarian_state_is_valid = yes
 		OR = {
@@ -79,6 +81,16 @@ famine_blockade_proof = {
 			check_variable = { var = famine_blockade_escort_shortage_proven value = constant:humanitarian_runtime.zero compare = greater_than }
 		}
 		check_variable = { var = famine_blockade_no_humanitarian_corridor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+	}
+}
+
+
+# Every condition is binding. A caller must provide the explicit physical and
+# political proof in addition to the engine's owner/controller war state, and
+# local reserves or production must no longer cover need.
+famine_blockade_proof = {
+	hidden_trigger = {
+		famine_blockade_isolation_proof = yes
 		check_variable = { var = famine_blockade_local_food_insufficient_proven value = constant:humanitarian_runtime.zero compare = greater_than }
 	}
 }
@@ -135,6 +147,18 @@ famine_state_can_retire = {
 		NOT = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } }
 		NOT = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } }
 		NOT = { has_state_flag = famine_blockade_candidate_active }
+		# A shortage that reserves still hold below supply strain keeps drawing
+		# stock, so the state stays registered until the shortage itself ends.
+		NOT = {
+			AND = {
+				has_variable = famine_food_deficit_score
+				check_variable = {
+					var = famine_food_deficit_score
+					value = constant:famine_food_score.supply_strain_threshold
+					compare = greater_than_or_equals
+				}
+			}
+		}
 		# A stable committed stage can still be awaiting a material candidate
 		# timer. Preserve only that current assessment until simulation settles.
 		NOT = {

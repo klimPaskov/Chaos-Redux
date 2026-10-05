@@ -111,3 +111,49 @@ Disposition: accepted and implemented by the round-2 implementing agent under th
     The aligned branches of the state and country cohort reconcilers now also clear `migration_cohort_registry_misaligned` and `migration_country_cohort_registry_misaligned`, so a state that was flagged while the history count was missing recovers on its next reconcile and its integration, resettlement, return and Camp repression decisions reappear.
     Source trace for the hostile-capture spontaneous path: `migration_process_spontaneous_movement_owner` selects a destination with `migration_destination_selection_history_required` at zero (new flight needs no history), then `migration_record_displaced_cohort` passes `migration_cohort_arrays_are_aligned` (all live and history arrays empty, both counts zero), writes cohort 1, and `migration_record_cohort_history_visit` appends the origin receipt with a valid record result; `civilian_transfer_execute_transaction` then runs with the spontaneous-exodus role, whose history preflight result defaults to valid, and its row check passes the same alignment trigger.
     The two history preflights (`migration_destination_selection_prepare_history_exclusion` and `migration_decision_preflight_destination_history`) still require a positive history count, which is correct because they run only for an already recorded cohort, whose origin receipt makes the count positive.
+
+17. **The food-security score is recalibrated so blockade, occupation, shock and reactivated-profile famines reach their stages (B040 root cause).**
+    The old score divided the weighted sum by 7.15, the sum of the weights, so it was a weighted mean: a full blockade topped out near 22 (stable) and catastrophic famine needed every component at 100.
+    Accepted changes, all tuning in `famine_core_constants.txt` and `famine_adapter_constants.txt`:
+    - `pressure_normalizer` 7.15 to 2.50; weights and stage thresholds unchanged.
+    - A first reserve refresh seeds half of the reserve target (`initial_target_share` 0.50) instead of zero; an owner-supplied initial amount or positive saved stock still wins.
+    - The reserve is drawn by the stage share of the stored unrelieved shortage (`famine_food_deficit_score`, the sum before relief and exhaustion), now 0.25/0.50/0.75/1.00 of daily need with the old need factor removed, and by at least 0.60 of daily need while the new `famine_blockade_isolation_proof` holds; only a settled stable state replenishes.
+    - New reserve-exhaustion term (`famine_apply_reserve_exhaustion`): with a real shortage (deficit at supply strain) or a proven blockade and fewer than 7 reserve days, unmet need rises by up to 55 in proportion to the missing days.
+    - The blockade local-supply clause holds with fewer than 7 reserve days alone, or fewer than 14 while production pressure is at least 20; blockade duration pressure caps at 40 and also raises vulnerability; one relief delivery suspends the blockade for 35 days.
+    - The committed stage moves one step at a time in both directions; famine and catastrophic recovery windows are 21 and 30 days.
+    - Mortality: acute 0.0003 per 14 days, famine 0.0008 per 7 days, catastrophic 0.0020 per 3 days, with the product of the five cause factors capped at 2.5 (`maximum_severity_factor`), so stacked causes no longer multiply a pulse tenfold.
+    - Occupation: extraction law pressure 20 to 30; collective-punishment laws use extraction 45 with the forced-labour vulnerability (30) and governance (25) pressures; exterminatory laws use the new extraction pressure 45. Basis: the profile enum orders collective punishment and exterminatory conduct above forced labour, which the old constants inverted.
+    - Nuclear strike food share 0.05 to 0.15 of the struck population.
+    - The extra stable-stage shock decay applies only while the last score is below supply strain, so an escalating shock is not erased before its candidate window.
+    - The Ethiopia profile (271, 842) is a dynamic policy analogue (Part 5): it now needs ETH or ITA ownership or control plus harsher-than-standard occupation or a live food shock, with the 1936-1942 window and the plain state-of-war gate removed. Basis: the Italo-Ethiopian war exists at the 1936 start, and under the new score the old gate would have imposed a famine at game start, which Part 5 forbids.
+    - `famine_state_can_retire` keeps a state registered while its stored shortage is at supply strain, so a buffered shortage can drain its stock instead of retiring.
+    - The CXT fixture wrote temporary inputs that the surface adapter never read; it now writes three state inputs (`famine_cxt_fixture`) with relief and an empty reserve that settle in supply strain without mortality.
+    Scratch model (not committed; a day-by-day Python mirror of `famine_evaluate_food_security` with these constants, 1M population unless stated, 240 days, no relief unless stated):
+
+    | Scenario | Highest stage | First day of each stage | Deaths |
+    | --- | --- | --- | --- |
+    | Peacetime ordinary state | stable | - | 0 |
+    | Island at war, working port, convoys and escorts | stable | - | 0 |
+    | Proven island blockade, 6 days of reserve | famine | strain 12, acute 40, famine 89 | 7.2% |
+    | Island cut off with the seeded reserve | famine | strain 25, acute 52, famine 101 | 6.3% |
+    | Blockade, relief delivery at day 95 | famine, lifted to acute day 116 and strain day 138 | | 1.2% |
+    | Blockade, relief delivery at day 50 | acute, lifted to strain day 71 | famine only at 174 after relief lapsed | 2.6% |
+    | Blockade with Air Contamination 75 | catastrophic | strain 7, acute 22, famine 49, catastrophic 100 | 33.8% |
+    | Dense 3M state, blockade, Air 75, camps | catastrophic | catastrophic 82 | 38.2% |
+    | Standard occupation | stable | - | 0 |
+    | Extraction occupation | acute | strain 20, acute 63 | 1.5% |
+    | Forced-labour occupation | acute | strain 7, acute 29 | 2.4% |
+    | Collective-punishment occupation | famine | famine 46 | 10.2% |
+    | Exterminatory occupation | famine | famine 45 | 10.2% |
+    | Nuclear strike, intensity 1 | acute | strain 7, acute 55 | 1.3% |
+    | Thermonuclear strike | acute | acute 22 | 2.4% |
+    | Leningrad, Bengal, Henan, Greece, Ethiopia profiles | famine | strain 7, acute 22, famine 44 | 9.8-10.2% |
+    | Spain profile | acute | acute 25 | 2.1% |
+    | Soviet memory profile with a live shock | acute | acute 54 | 1.8% |
+    | Irish memory profile with a live shock | strain | strain 44 | 0 |
+    | Bengal profile with sustained relief | acute | acute 28 | 1.4% |
+
+    At the 1936 start no historical anchor passes its gate (Soviet and Irish memory need a live shock, the other windows open in 1939 or later or need harsh occupation, and Ethiopia is gated as above), so all 52 anchors stay stable.
+    The protected floor is applied to every pulse; the largest modelled loss leaves 62 percent of the population.
+    Probability route: `hoi4_decision_inspect`, mode `inspect`, decision `famine_release_reserves`, scenario `acute_stage_buffered_shortage` (actor GER, FROM state 64 in acute shortage with stored deficit, reserve and flags), returned `DECISION_ANALYZED_PARTIAL` at source revision `59f0014f84e743176e47abedf6db4d80f0be31933b0b96344d62536d44effe49`, report hash `6e922435370a3af160a26c8566430b44af7a6276c77293245b418022ece47d3c`, with the decision-coverage check failing on unbound inputs; this is the existing blocker and not engine evidence.
+    Known limits: `famine_local_war_context_proven`, `famine_outbreak_context_proven` and `famine_disaster_context_proven` are read by the collector but no owner sets them, so war, outbreak and disaster context add nothing yet; the wartime-window profiles (Leningrad, Bengal, Greece, Dutch, Java, Vietnam, Henan, Spain) still open on the owner being at war anywhere, so they now reach famine in most campaigns where that owner fights in the window unless relief is used. Tightening those gates to local evidence is recommended as follow-up design work.

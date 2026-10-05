@@ -27,13 +27,22 @@ famine_blockade_runtime = {
 	minimum_available_convoys = 10
 	minimum_light_escorts = 4
 	convoy_route_threat_threshold = 0.25
+	# Local supply fails when reserves cover fewer days than this, or fewer
+	# than production_failure_reserve_days while local production pressure
+	# also reaches local_production_pressure_threshold.
 	local_production_pressure_threshold = 20
 	maximum_local_reserve_days = 7
-	relief_access_days = 30
+	production_failure_reserve_days = 14
+	# One relief delivery suspends the blockade for this many days, which is
+	# longer than the famine recovery window so relief can lift a stage.
+	relief_access_days = 35
 	transport_pressure_base = 18
 	need_pressure_base = 10
 	pressure_per_isolation_day = 0.5
-	maximum_duration_pressure = 30
+	maximum_duration_pressure = 40
+	# Share of the isolation-duration pressure that also raises vulnerability
+	# (cold, disease, and crowding in a cut-off population).
+	duration_vulnerability_share = 1.00
 	relief_transport_reduction = 20
 	relief_component_bonus = 15
 }
@@ -85,7 +94,10 @@ famine_food_weight = {
 	vulnerability = 0.90
 	governance = 0.95
 	relief = 1.20
-	pressure_normalizer = 7.15
+	# The score is the weighted component sum divided by this value. It is not
+	# the sum of the weights: two or three strongly pressed components reach
+	# acute shortage or famine without every component being high at once.
+	pressure_normalizer = 2.50
 	component_factor_base = 1.00
 	access_transport_share = 0.65
 	access_need_share = 0.35
@@ -114,6 +126,11 @@ famine_food_score = {
 # Persistent reserve units are thousand-person-days: one unit covers one day
 # of food for one thousand civilians. Capacity and replenishment therefore
 # scale with the live state population without touching the population ledger.
+# A state's first reserve refresh seeds initial_target_share of its target.
+# A shortage draws the reserve by the share of its unrelieved pressure stage;
+# an isolated island draws blockade_import_share while its imports are cut.
+# Once the reserve covers fewer than exhaustion_reserve_days days under a real
+# shortage, unmet need rises toward exhaustion_need_maximum.
 famine_food_reserve = {
 	schema = {
 		any_key = yes
@@ -125,6 +142,10 @@ famine_food_reserve = {
 	daily_need_per_k = 1.00
 	capacity_days = 45.00
 	target_days = 30.00
+	initial_target_share = 0.50
+	blockade_import_share = 0.60
+	exhaustion_reserve_days = 7.00
+	exhaustion_need_maximum = 55.00
 	logistics_factor_base = 0.50
 	logistics_factor_per_infrastructure = 0.10
 	logistics_factor_minimum = 0.25
@@ -133,10 +154,9 @@ famine_food_reserve = {
 	production_capacity_penalty = 0.002
 	replenishment_per_k_per_day = 0.15
 	replenishment_factor_minimum = 0.10
-	depletion_factor_minimum = 0.25
-	supply_strain_depletion_share = 0.05
-	acute_shortage_depletion_share = 0.20
-	famine_depletion_share = 0.50
+	supply_strain_depletion_share = 0.25
+	acute_shortage_depletion_share = 0.50
+	famine_depletion_share = 0.75
 	catastrophic_depletion_share = 1.00
 	relief_per_day_covered = 1.50
 	relief_maximum = 35.00
@@ -158,8 +178,8 @@ famine_food_timing = {
 	stable_recovery_days = 7
 	supply_strain_recovery_days = 14
 	acute_shortage_recovery_days = 21
-	famine_recovery_days = 30
-	catastrophic_recovery_days = 45
+	famine_recovery_days = 21
+	catastrophic_recovery_days = 30
 	maximum_exposure_days = 180
 }
 
@@ -170,9 +190,9 @@ famine_mortality = {
 		data = fixed_point
 	}
 
-	acute_shortage_rate = 0.0004
-	famine_rate = 0.0015
-	catastrophic_rate = 0.0030
+	acute_shortage_rate = 0.0003
+	famine_rate = 0.0008
+	catastrophic_rate = 0.0020
 	acute_shortage_interval_days = 14
 	famine_interval_days = 7
 	catastrophic_interval_days = 3
@@ -182,6 +202,10 @@ famine_mortality = {
 	exposure_multiplier_per_day = 0.01
 	minimum_exposure_multiplier = 1.00
 	maximum_exposure_multiplier = 3.00
+	# Cap on the product of the vulnerability, access, policy, environment,
+	# and governance factors, so stacked causes deepen a pulse without
+	# multiplying it beyond the stage band.
+	maximum_severity_factor = 2.50
 	protected_floor_share = 0.15
 	protected_floor_people = 1000
 	minimum_pulse_people = 1
@@ -222,12 +246,26 @@ famine_surface_context = {
 	occupation_vulnerability_pressure = 10
 	outbreak_environment_pressure = 10
 	camp_governance_pressure = 15
-	occupation_extraction_pressure = 20
+	occupation_extraction_pressure = 30
 	occupation_forced_extraction_pressure = 35
+	occupation_exterminatory_extraction_pressure = 45
 	occupation_forced_governance_pressure = 25
 	occupation_forced_vulnerability_pressure = 30
-	occupation_collective_punishment_pressure = 30
+	occupation_collective_punishment_pressure = 45
 	occupation_transfer_vulnerability_pressure = 35
+}
+
+
+# CXT test-country fixture: three inputs at this pressure with this relief
+# and an empty reserve settle in supply strain without reaching mortality.
+famine_cxt_fixture = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	input_pressure = 25
+	input_relief = 15
 }
 
 
