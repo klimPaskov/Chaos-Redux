@@ -1,5 +1,9 @@
 # Famine and Migration Systems Completion Report
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Date: 2026-10-03; August 26 evidence retained with its original provenance.
 
 Verdict: incomplete.
@@ -7,6 +11,33 @@ The user-authorized design remains separate famine and migration mechanics with 
 The original user instruction explicitly made all eight specification parts, supporting matrices, and binding implementation prompts required implementation scope; later user separation corrections govern their interpretation.
 Standalone addenda/proposals still require recorded acceptance, but the original required design is not optional or awaiting reapproval.
 The parent accepted six committed October source corrections; source review, partial MCP evidence, and completed historical audits do not certify the full goal.
+
+## Legacy-cost and reception-map checkpoint: 2026-10-03 19:17:59 UTC
+
+Published acceptance/architecture is `fcdd06433582602c73366210ac9aa105e7b5c511`, supported by the original complete valid-response goal and explicit parent review of the 25-action audit and transaction plan.
+Published legacy before-source archive is `e6ec73bcf26a43e400353a4e2d07ba9b8d35aea8`; parent and curator raw committed-byte checks match all 12 source/CSV hashes to its manifest without decoding, filters or checkout.
+Those commits publish design and provenance, not completed legacy gameplay.
+The 15-component/18-bundle core and parent quote/selectors are implemented but uncommitted; the decision owner is still integrating 20 paid continuations, four immediate whole-body guards, deferred negotiation and exact cleanup/docs.
+Stable localisation review is delivered, with final private guard/tooltip review awaiting parent readiness.
+All 25 nominal fees, resource types, durations, numeric AI factors and five measured zero-debit refunds stay binding; Airlift spends 10 XP while its separate strict 50-XP AI condition and worker support50 non-spend prerequisite stay distinct.
+The three four-resource rows are explicitly retained under the binding four-spendable-type prompt and parent direction; this resolves their design disposition, not native layout-fit evidence.
+No whole-cost completion, publication, native callback/stock/parser result, or generic same-payer ABA protection is claimed.
+
+Published map commit `a8b59870c26b402ef2475c198b3753031bf8869e` contains strict reception-capacity tooltip delegation, the independent 13-case source audit and the accepted receiver-front intent plan.
+Capacity status no longer treats a dirty cached-valid flag as usable capacity.
+Incoming requested/prepared/accepted-before-passage intent is accepted and source work is in progress, but no implementation delivery or final intent audit exists at this checkpoint.
+Intent must retain simultaneous identity-only receipts, owner/controller privacy, real arrival priority and matching generation cleanup without inventing population, capacity, route or a fourth value.
+
+Fresh MCP results recover bounded routes rather than certify execution: both correct decision-adapter inspections returned `PROBABILITY_SOURCE_DISCOVERED` with `requested_adapter_empty`; the suggested single mission-adapter probe returned `INTERNAL_ERROR` without an artifact.
+Narrow negotiation inspection returned `DECISION_ANALYZED_PARTIAL`, false coverage and an unbound scenario, not a timeout; its report body remains unread after a contract-invalid unlisted-URI generic read failed provenance lookup.
+Map lookup for province 406/state 96/region 39 returned `MAP_LOOKUP_COMPLETED` at revision `bcccf5a7783c4412afe1e1c4a25b41c4f90cb00ac485beef3e5396ed954d2f67`, with 64/2065 inline inventory truncation and zero network-query matches.
+Its body remains unread and custom colour/tooltip execution is still unsupported by the exposed renderer; earlier real timeouts remain dated request evidence, while ten-second yields are not timeout results.
+No legacy compare was submitted for missing decision candidates/supported bindings; legacy, prospective, observer and country-validity numeric/native gates remain required and unresolved.
+
+The fresh read-only workbook report finds no scoped repair: Event 149 at row 150 is retired/unavailable with appropriate blank evolution fields, and narrowly relevant IDs 5/13/15/20/118 match their current source wording or unavailable status.
+Existing CSV logical rows match the workbook during that audit; Events has 166 records including its header, not the old August count.
+No workbook save, exporter run, full unrelated-row certification or binary ownership is claimed; exact observed hashes/timestamps remain attributed to `current_workbook_alignment_20261003.md`.
+The full goal remains incomplete for pending integration/map intent, exact external-owner and missing Events 118/120/131, native/probability/dynamic evidence and live asset consumers.
 
 ## Published bounded runtime checkpoint
 
@@ -17,7 +48,7 @@ The committed `prospective_reception_parent_review_20261003.md` records commit-p
 Final reviewed nine-family source hashes are unchanged, including decision `66D5DACC...`, corrected corridor trigger `A580C3D9...` and preparation runtime `A0D5B870...`.
 Native execution, prospective/observer/country same-case comparisons, dynamic map and external-owner/full-goal obligations remain incomplete; the source commit is not their substitute.
 Catalogue/export hashes in the retained August record are dated historical evidence only; concurrent Event 001-040 authors may have changed the workbook, and no new whole-workbook verification or exporter run is claimed here.
-The newly started legacy-cost affordability review is read-only and has no accepted patch or source closure yet; existing strict-affordability/inline concerns remain unresolved pending its owner handoff and parent decision.
+At the prospective publication checkpoint the legacy-cost audit was read-only; the later accepted architecture, uncommitted core and unfinished owner integration are recorded above without retroactively claiming complete repair.
 
 ## Latest prospective-reception checkpoint: 2026-10-03 16:29:09 UTC
 
@@ -31,8 +62,8 @@ No numeric AI constant, GUI/layout, art, mapmode, workbook, event or public-valu
 Parent integration uses the existing registration/phase boundaries for three display-only cost quotes, three resource selectors and six ready/blocked strings, native Open Reception blocked/hover aliases, hidden completion mechanics and an explicit meaningful outcome tooltip.
 The localisation handoff's three prose/alias/first-display-quote findings are parent-patched source closure, without native colour/wrapping/action proof.
 Commit `2e06576ad0e0eb938533ed26e7136a2edbbc7d89` adds 50 suffix aliases for the remaining 25 families; all 26 custom-cost bases have blocked and hover coverage.
-Separate unresolved concerns remain in the legacy non-Open families: strict nominal affordability/colour comparisons and three four-entry inline cost strings.
-The inline concerns affect escorted relief convoy, emergency airlift and third-country resettlement, without a native clipping result or changed payment contract.
+The legacy non-Open strict affordability/colour concern has an accepted repair and uncommitted core/selectors, with owner integration still incomplete.
+Escorted relief convoy, emergency airlift and third-country resettlement retain all four resources by explicit accepted direction; native inline fit remains unproven rather than a reason to omit a fee.
 Aliases do not change those gates, approve a weaker payment/display contract, or prove native clipping.
 The native custom-cost skill paragraph/original handoff is parent-reviewed and committed in `f22c7cc30aaed8b4dde6f40f9733d4e3a8bb56b3`, alongside the already committed caller-output contract `72783cb91`.
 

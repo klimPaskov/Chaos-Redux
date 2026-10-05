@@ -1,5 +1,9 @@
 # Current famine and migration mapmode projection audit
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](../takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Date: 2026-10-03.
 Disposition: implemented narrow presentation corrections, with mandatory MCP map execution evidence blocked.
 Acceptance basis: the parent authorized endpoint selector corrections and expanded bounded ownership to corridor terminal-operation provenance, live/terminal display guards, paired helper documentation, and one tooltip label.
@@ -200,12 +204,14 @@ No MCP source revision or artifact is invented for those pending calls.
 
 Live input validation confirms that `mechanic_test` accepts only effect or advance_days steps.
 An effect source requires `kind` in scripted_effect/event_option/decision/focus_reward and an `id`, not path/identifier.
-Scenario state is a typed record map, not a flat variables object.
+Later live validation accepts flat numeric facts under `scenario.state` and rejects a nested `state.variables` object.
+The earlier inference of a required typed scope-record map is superseded by that actual validation result.
 Assertions require supported discriminators such as equals/conservation/cleanup rather than a variable discriminator.
+Equals assertions require `id`, `path = { key = ... }` and `expected`, and reject direct assertion `key`/`value` fields.
 `scenario_test` accepts mechanic/package/tool domains, not a scripted_localisation domain.
 These requests were rejected during input validation and produced no execution artifact.
-Do not reuse old flat scenario-state fixtures as if they satisfy the current route.
-A full typed fixture must be confirmed through the connected schema before any cleanup execution claim.
+Confirm each fixture against the connected validation response before any cleanup execution claim.
+Acceptance of flat numeric fixture fields establishes request shape only, not typed actor binding or engine execution.
 
 The exposed map-render layer enum contains province/state/strategic-region/terrain/continent/owner/controller/cores/claims/coast.
 It does not contain a custom scripted-mapmode layer or a tooltip execution option.

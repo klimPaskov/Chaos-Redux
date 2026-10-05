@@ -1,6 +1,40 @@
 # Famine and Migration Source-of-Truth Map
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Status: current split-source map reconciled on 2026-10-03; the full goal remains incomplete.
+
+## Current legacy-cost/map checkpoint: 2026-10-03 19:17:59 UTC
+
+Authority: original complete valid-response/two-comprehensive-mapmode goal plus explicit parent acceptance in `legacy_cost_affordability_parent_acceptance_20261003.md` and the accepted intent plan in `migration_mapmode_reception_lifecycle_20261003.md`.
+Acceptance/architecture commit `fcdd06433582602c73366210ac9aa105e7b5c511` and raw-byte archive commit `e6ec73bcf26a43e400353a4e2d07ba9b8d35aea8` are published; they do not publish the uncommitted cost implementation.
+Parent and curator read all 12 committed source/CSV blobs through raw byte streams and matched their manifest SHA-256 values without filters or decoding.
+The new core implements 15 fixed fee pairs, 15 inclusive resource predicates, 18 complete tuples and a display-only projector; parent selectors/quotes are present, but complete decision/20-delayed-receipt/negotiation/cleanup integration and final guard-localisation review remain unfinished.
+All existing prices, five measured zero-debit refunds, strict worker non-spend support50 and separate strict Airlift AI50 threshold remain binding; the actual paid Airlift XP is 10.
+Three four-resource rows are accepted intact under the binding four-type ceiling; pixel fit/native click/callback/parser and arbitrary same-payer ABA proof remain absent.
+
+Map commit `a8b59870c26b402ef2475c198b3753031bf8869e` publishes complete reception-capacity validity delegation and its independently checked 13 source cases, plus the accepted identity-only receiver-intent plan.
+Intent code is in progress without delivered implementation/audit; its accepted scope is private requested/prepared/agreed pending context, preserving real arrival roles and simultaneous exact origin/generation/actor/cohort identities rather than storing population or capacity.
+No third mapmode, GUI, asset family, public value, physical movement or route guarantee is accepted.
+
+| Source evidence at this checkpoint | Status/hash |
+| --- | --- |
+| Legacy constants | Uncommitted core, `44EBD402A9B1868E26863666F8AEFF5DA70D2B5B862F6E0721507229F19D0496` |
+| Legacy component/profile triggers | Uncommitted core, `F8AEF44112E5CCE33A0213A3877B555A3678DEB3343C0291C8E56BBBE6A72EAF` |
+| Legacy quote effect | Uncommitted core, `61DC8C2A4251C197BCFAE5072799F837E43DE537248D29AA48100E740276E38E` |
+| Parent cost selectors | Uncommitted integration, `77EC340FB89385DCC09ECA4E2316CBEFD93FC6A7D53EEE10036DDD147EEF01B4` |
+| Parent cost labels | Uncommitted integration, `BFF77078C1EC76CDB2730C490E2C609E9FCD9034D7DDE25F023DF36D51E21663` |
+| Famine decisions | Owner work in progress, `543412C97A8C39A49260B80702B160371624711D8FBDE1229D3AA0E05CEE5C1E` |
+| Migration decisions | Owner work in progress, `7046E5D815F2454D4EA117F220874E446A88D47F9E45359F2632921FC614C6D4` |
+| Published capacity status selector | `a8b59870`, `8088F09235A754776AF4DFED86FB5187671A1E341672BE7EB7A938ACFEC9C468` before later intent edits |
+
+These are dated concurrent-source captures, not final cost/map-intent identities; await parent delivery/review before promoting unfinished statuses.
+Fresh probability discovery succeeded for both before-source files but found no requested decision-adapter candidates; the single suggested mission probe failed internally without artifacts.
+Fresh negotiation and map lookups returned partial/lookup metadata with explicit incomplete coverage, inventory truncation and unread bodies; no SDK accessor, generic unlisted-URI read contract, numerical compare or dynamic map execution is invented.
+The fresh workbook handoff provides scoped read-only alignment and unchanged audit-interval hashes, with no save/export/whole-binary ownership; its 166 Events records include the header and remain separate from August snapshots.
+Use `subagent_handoffs/legacy_cost_and_map_checkpoint_20261003.md` for exact new dispositions, recovered artifact references and remaining queue; the previous curator handoff remains unchanged provenance.
 
 ## Published prospective runtime checkpoint
 
@@ -8,10 +42,10 @@ Disposition: implemented, parent-reviewed and committed as `59ee4eb62277982172b4
 The bounded 39-file runtime/source-documentation commit used the isolated shared-index workflow, including only the owned migration API-index rows and preserving unrelated owner hunks/index work.
 `prospective_reception_parent_review_20261003.md` records the source review before publication; its commit-pending wording is timestamped provenance, superseded for current commit status by this checkpoint.
 The saved independent completion report was fully read and reviewed; a later agent-capacity error after report creation does not invalidate the saved reviewed artifact.
-The nine source-family identities remain unchanged from final review, including corrected trigger `A580C3D9852927B3FB0BB2195A8BB894D4533ADD5750F4B5834022DB8DE8BE50`, runtime `A0D5B87081D0B8FF0D71BDE88EA1311954C03C657313FF7450461CC63993C5B8` and decision `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`.
+The published prospective source-family identities remain those reviewed at `59ee4eb62`, including corrected trigger `A580C3D9852927B3FB0BB2195A8BB894D4533ADD5750F4B5834022DB8DE8BE50`, runtime `A0D5B87081D0B8FF0D71BDE88EA1311954C03C657313FF7450461CC63993C5B8` and decision `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`; current legacy owner edits are distinct captures above.
 Only source review/commit status closes here; native execution, all required current probability comparisons, dynamic map evidence, external-owner obligations and full-system completion remain unresolved.
 Catalogue statements and hashes inherited from August remain dated snapshot evidence, not current whole-workbook certification amid concurrent Event 001-040 work.
-The new legacy-cost affordability audit is read-only; no source patch, proposal acceptance or concern closure is inferred before its owner handoff and parent review.
+At that published prospective checkpoint the legacy audit was read-only; explicit later acceptance and partial uncommitted implementation are recorded above, without whole-cost closure.
 
 ## Prospective-reception checkpoint: 2026-10-03 16:29:09 UTC
 
@@ -31,8 +65,8 @@ Parent source integration projects three display-only quotes at active-country r
 The exact incoming offered amount at the existing 1000-person threshold may reveal the host issue; unrelated whole-origin pressure cannot reveal one tiny offer.
 
 Commit `2e06576ad0e0eb938533ed26e7136a2edbbc7d89` adds 50 native blocked/hover aliases for the other 25 cost families; all 26 bases then have their two suffixes.
-That accepted key-coverage closure leaves non-Open-Reception strict affordability selectors and three existing four-entry inline cost rows as separate unresolved review concerns, not approved substitutes or native clipping findings.
-The four-entry families are escorted relief convoy, emergency airlift and third-country resettlement; no resource/debit change is authorized by the alias closure.
+That key-coverage closure did not itself repair strict affordability; the later accepted core/owner repair is separate and remains partially integrated/uncommitted.
+Escorted relief convoy, emergency airlift and third-country resettlement retain all four resources under the later explicit parent direction; native inline fit remains unproven and no fee deletion is approved.
 The custom-cost key skill paragraph/original handoff is committed and parent-reviewed in `f22c7cc30aaed8b4dde6f40f9733d4e3a8bb56b3`; the generic caller-output paragraph remains committed in `72783cb91893e901bb7003ddd08ce4efe885dd38`.
 
 The durable prospective baseline is commit `cdd43abe3b996c1bc3e5538da8d13384c9bb5b33`, with `validation_baselines/prospective_reception_20261003/SOURCE_MANIFEST.md` and directory-local `*.txt -text -filter` protection.

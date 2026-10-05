@@ -1,20 +1,51 @@
 # Famine and Migration Current Probability Evidence
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Status: 2026-10-03 reconciliation; current probability evidence remains unresolved.
+
+## Latest legacy-cost source discovery: recovered route, missing numeric gate
+
+`subagent_handoffs/legacy_cost_affordability_probability_20261003.md` records successful fresh `decision_ai_will_do` inspections of the real before files: `status=ok`, `PROBABILITY_SOURCE_DISCOVERED`, with `requested_adapter_empty` and no candidates under that requested adapter.
+The catalog maps ten famine and fifteen requested legacy migration IDs to the suggested mission adapter; that mapping is discovery, not a decision-score result or proof of absent AI.
+The one bounded mission-adapter probe for negotiation returned `INTERNAL_ERROR`, no scanned files and no artifact; no numerical result or retry success is inferred.
+
+| Before-source discovery | Stable provenance |
+| --- | --- |
+| Famine | Raw SHA-256 `52E84B51B6C9FAF5827F3152613870E4EBBD65215EDD35D70E913D18BA01DFAA`; MCP revision `56a56578b1fa22bd7197cd6a271c45c31f0fce74ac81986a1434a2789565452c`; MCP sourceHash `fc7f6c06488240e7b80b04f2fdbdf2be9234dfb1c7dcdf639a18d1ac0d2643a2`. |
+| Migration | Raw SHA-256 `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`; MCP revision `a6d5bce1a463dcec4c4179e7b8a78ad401d628604f4063613ce94a24c73fc87c`; MCP sourceHash `02d80deb47c1d51e6dfdaddef61ebdd56a35af333d3199913cdbf46de9b0a04c`. |
+
+Famine discovery artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5d94a891318ca31cf894ca69b226a1138acc78a9f0653e157ab27cc73fd26b8b/9f245bb3310e4915c8ef2c24cb5c5fc78c884e4565ac2ad73243076959525081/probability-inspect-fc7f6c064882.json`.
+Migration discovery artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/aaa94d7af2eb8d531311fc8d8e0eba06bd502102bd65c3c18ef5b8740a45b5a3/4eedc677a31387e54ba72869745afaa0c59c1988abc99e2c1a5e8ad4190624b3/probability-inspect-02d80deb47c1.json`.
+These source discovery identities bind the legacy before snapshot, not the edited working-tree files or any cost scenario result.
+
+Legacy acceptance/architecture is published in `fcdd06433582602c73366210ac9aa105e7b5c511`, and its distinct twelve-file source/CSV archive in `e6ec73bcf26a43e400353a4e2d07ba9b8d35aea8`.
+All twelve committed raw blobs match that manifest through parent and curator byte-stream SHA-256 checks; no decoding/filtering/checkout or older prospective archive is substituted.
+The core and parent selectors/quotes are uncommitted partial implementation; delayed receipt/negotiation/cleanup and final localisation integration still need completion and review.
+No legacy evaluate/compare was submitted because the requested decision adapter has no candidates and supported complete scenario/payer/stock/route bindings remain absent.
+Named `cost_stock_exact`, `cost_stock_one_short` and `cost_stock_late_deficit` are required case labels alongside relevant official scenarios, not fabricated machine fixtures or approval for `fm09_service_affordability`.
+Legacy, prospective, observer and country-validity comparisons remain required; recovery of source discovery does not waive them or establish native parser/stockpile/click/callback/ABA/inline behavior.
+
+The narrow negotiation decision inspect separately returned `DECISION_ANALYZED_PARTIAL`, false `decision-coverage` and unbound/unsupported input, with inventory limited to 64/6549 paths.
+Its linked URI is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/86f9a727fe3ab30767f110f133df4edaaa1e2c1670e816108c714541ebcf0875/242759efc89dfa2d55d29126e5f888efb7f6cae26e02ca81a7047865a3a98e94/decision-cb25461a3621fb9d0a57fe79.json`.
+The generic read attempted an unlisted dynamic URI outside that reader's contract and failed with `Artifact provenance manifest is unavailable`; body remains unread, and neither supported SDK accessor nor artifact-level complete coverage is invented.
+This metadata return is a partial success, not a timeout or global service-health result.
 
 The prospective runtime source is parent-reviewed and committed in `59ee4eb62277982172b408e2b61ace4eb1237a47`, with final reviewed source-family hashes unchanged.
 The committed parent-review document's earlier commit-pending wording is its timestamped provenance, not a current source blocker.
 Publication does not supply the missing prospective, food-observer or country-validity comparisons, complete bindings, native execution or dynamic evidence.
 
-## Current boundary: 2026-10-03
+## Earlier October boundary: before legacy route recovery
 
-The current specialist authority is [probability_capability_reaudit_20261003.md](subagent_handoffs/probability_capability_reaudit_20261003.md).
-Its current-source census finds ten famine and eighteen migration willingness candidates, but no October MCP inspection artifact or scenario result was returned.
+The earlier specialist authority is [probability_capability_reaudit_20261003.md](subagent_handoffs/probability_capability_reaudit_20261003.md).
+Its then-current source census found ten famine and eighteen migration willingness candidates without a returned inspection artifact or scenario result; later legacy discovery recovery is bounded separately above.
 These counts are source evidence only.
 The narrow `hoi4.probability_inspect` retry for `migration_select_general_safe_evacuation_destination` returned `timed out awaiting tools/call after 600s`; earlier caller-terminated attempts are abandoned requests rather than returned service failures.
 This timeout does not establish that every MCP route is unavailable.
 
-Decision-file SHA-256 values are famine `52E84B51B6C9FAF5827F3152613870E4EBBD65215EDD35D70E913D18BA01DFAA` and published prospective migration `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`, unchanged from the 2026-10-03 16:29:09 UTC capture and final audit.
+Published prospective/before-legacy SHA-256 values were famine `52E84B51B6C9FAF5827F3152613870E4EBBD65215EDD35D70E913D18BA01DFAA` and migration `66D5DACCB52B11787A53A899B748B2E8F5427E0A8B46A4B303E8BB6A37A01D2F`; legacy owner working-tree edits are distinct dated captures in `source_of_truth_map.md` and have no current numeric certification.
 The committed caller-output identity `5000DD59578763690E391A22C8F09E7BCC0FC16E8AA063CE068B2D6104BAA0D7` is the distinct prospective pre-edit source, not the current working file.
 The earlier October `279487DC7F2FCEF921F7294FD207BA8C1C33F871C652280EBB31D2D1FD2A3E8B` identity remains a frozen baseline; its caller-default delta changes no numerical AI expression, but the current file is not identical to that earlier inspection snapshot.
 They differ from the August identities below and are not MCP hashes or revisions.

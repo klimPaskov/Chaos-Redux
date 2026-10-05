@@ -1,6 +1,31 @@
 # Famine and migration resume packet: 2026-10-03
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Disposition: implemented documentation packet under the parent's narrow reconciliation assignment; the full implementation goal remains incomplete.
+
+## Latest checkpoint: legacy costs and reception intent, 2026-10-03 19:17:59 UTC
+
+Published design acceptance/architecture is `fcdd06433582602c73366210ac9aa105e7b5c511`; published fresh legacy before archive is `e6ec73bcf26a43e400353a4e2d07ba9b8d35aea8`, with all twelve raw committed source/CSV hashes matching the manifest.
+The 15-component/18-bundle core and parent quote/selectors are implemented but uncommitted, while 20 paid continuations, four immediate guards, deferred negotiation/cleanup/docs and final private-guard localisation review remain unfinished.
+Do not call the whole cost repair implemented, published or native-validated from the core/stable-text reports.
+Preserve every price, all resources in the three four-type rows, five measured zero-debit refunds, strict worker non-spend support50 and separate strict AI-only50 XP; actual Airlift fee remains 10 XP.
+Callback/stock/parser/click/ABA/inline limits remain exact, with no generic replay/discount system or blanket funded-work refunds.
+
+Map capacity status correction and its independent thirteen source cases are published in `a8b59870c26b402ef2475c198b3753031bf8869e`.
+Private receiver-front intent is accepted and code in progress, with no delivered source/audit yet; preserve simultaneous exact identities, public privacy and genuine arrival/role precedence without capacity/population/route grants or a fourth value.
+
+Fresh probability source discoveries succeeded but found an empty requested decision adapter; the single suggested mission probe failed `INTERNAL_ERROR` without artifacts.
+Fresh negotiation inspect is partial/unbound with false coverage, while map lookup for 406/96/39 succeeds only as bounded metadata with truncated inventory/zero network-query matches and unread body.
+Do not repeat the unsupported unlisted-URI generic resource request or invent an SDK accessor; domain artifact references and exact limits are in the current probability/map docs.
+No legacy compare was submitted for absent supported candidate/scenario bindings; legacy and earlier prospective/observer/country comparisons remain mandatory and unresolved.
+
+The fresh workbook audit requires no scoped repair: Event 149 row150 is retired/unavailable, blank evolution fields appropriate, and narrow IDs 5/13/15/20/118 match their current text or unavailable status.
+During that read-only pass existing CSV logical rows matched, Events had 166 records including the header, and workbook/export hashes stayed unchanged; no save/export/full unrelated-row or binary-ownership claim follows.
+Keep August counts/hashes as dated evidence, not replacements for this newer scoped read.
+Use the new `subagent_handoffs/legacy_cost_and_map_checkpoint_20261003.md`; preserve the previous curator handoff as an immutable checkpoint and await parent final delivery to adjust incomplete owner statuses.
 
 ## Published runtime checkpoint
 
@@ -9,8 +34,8 @@ The source hashes are unchanged from final review; no additional source edit is 
 `prospective_reception_parent_review_20261003.md` retains its pre-publication commit-pending timestamp as provenance, now superseded for current commit status.
 The parent fully read the saved independent audit; the later agent-capacity error does not invalidate its saved reviewed result.
 Native/probability/dynamic/full-system obligations remain missing; do not schedule another source-commit task for this already published tranche.
-Catalogue/export hashes remain their August snapshots, with no new workbook verification/export claimed amid concurrent Event 001-040 edits.
-Legacy-cost affordability review has started read-only; await its owner report and parent disposition before treating a proposal as accepted or a source concern as corrected.
+The August catalogue/export hashes remain dated snapshots; the newer scoped read-only workbook handoff above supplies fresh alignment without a save/export claim.
+Legacy-cost acceptance and partial uncommitted implementation now exist; unfinished guard/integration/localisation and native/probability evidence remain explicit above.
 
 ## Latest checkpoint: prospective reception, 2026-10-03 16:29:09 UTC
 
@@ -23,8 +48,8 @@ Three display-only quotes project at existing registration/phase refresh; three 
 No numeric AI weights, GUI/layout, art or workbook surface changed.
 
 Read `prospective_reception_localisation_20261003.md` for the parent-closed request wording/alias/quote findings, `humanitarian_cost_parent_key_closure_20261003.md` for committed 50 aliases/25 legacy families, and `native_custom_cost_key_contract_skill_20261003.md` for committed skill `f22c7cc30`.
-Non-Open strict affordability/colour selectors and three four-entry inline cost rows remain separate unresolved concerns; alias coverage does not silently approve them.
-The inline families are escorted relief convoy, emergency airlift and third-country resettlement, with no proven native clipping.
+Non-Open strict affordability/colour has an accepted bounded repair and partial uncommitted source; whole-action integration is not yet complete.
+Escorted relief convoy, emergency airlift and third-country resettlement retain all four resources by explicit accepted direction; native inline fit remains unproven rather than authorizing fee concealment.
 
 Durable prospective before source is commit `cdd43abe3b996c1bc3e5538da8d13384c9bb5b33`: 29 `.txt` raw committed blobs match `SOURCE_MANIFEST.md` after `git cat-file` `BaseStream` SHA-256 verification, with `*.txt -text -filter` protection.
 Prospective BEFORE narrow inspect and POST three-ID/single-ID inspections each returned actual 600-second timeouts without metadata/artifacts.

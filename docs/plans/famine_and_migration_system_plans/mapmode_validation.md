@@ -1,6 +1,31 @@
 # Famine and Migration Mapmode Validation
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Status: 2026-10-03 source reconciliation; dynamic scripted-mapmode execution remains unresolved.
+
+## Latest reception-capacity audit and queued intent implementation
+
+Commit `a8b59870c26b402ef2475c198b3753031bf8869e` publishes the read-only capacity-status correction, independently source-tested in `migration_mapmode_reception_lifecycle_20261003.md` over thirteen cases.
+The selector delegates to complete `migration_reception_capacity_is_valid` rather than a raw cached-valid token, so dirty/schema/revision/candidate/real-capacity invalidity is not labeled current usable capacity.
+The corrected source hash at publication is `8088F09235A754776AF4DFED86FB5187671A1E341672BE7EB7A938ACFEC9C468`, before later intent edits; cases prove source predicates, not native OWNER behavior or rendered labels.
+
+The same accepted audit identifies a quiet receiver-front gap after inventorying real state-targeted preparation icons: requested, paid-prepared and accepted-before-passage fronts still lack dedicated map intent context.
+The parent accepted a private identity-only simultaneous-context projection using existing mapmode/palette and exact owner boundaries, under the two-comprehensive-mapmode goal.
+Implementation is in progress without a delivered source/audit handoff; disposition is accepted and queued/in progress, not implemented or complete.
+Retain real trapped/overcrowded/arrival priority, owner/controller-only qualitative intent, unchanged public fallback, exact generation cleanup and surviving older accepted/newer pending records, with no hover mutation/global scan, headcount/capacity storage, route guarantee, new asset/GUI/mapmode or fourth value.
+
+Fresh read-only lookup for installed province 406, state 96 Wilejka and region 39 Eastern Poland returned `status=ok`, `MAP_LOOKUP_COMPLETED` at map/shared revision `bcccf5a7783c4412afe1e1c4a25b41c4f90cb00ac485beef3e5396ed954d2f67`.
+Only lookup validation was requested; the inline source inventory retained 64/2065 paths with `MCP_INLINE_FILES_TRUNCATED`, and free-text adjacency/supply/railway query matched zero records.
+Returned artifact, 240256 bytes, SHA-256 `5ff50dbcc4751d44ccac1e864d67b7c176bb3b43a365468f4f3ede5141764c72`:
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5ff50dbcc4751d44ccac1e864d67b7c176bb3b43a365468f4f3ede5141764c72/1bed48975995d6ced083cecb9ad0279338153900f5ca27295287b6fec0e0a864/map-lookup.bcccf5a7783c4412.984474afeaba046e.json`.
+Artifact templates with range selectors were returned, but a generic read of the unlisted dynamic URI violated that accessor contract and failed provenance lookup; no encoding/range/body/continuation was delivered.
+The body remains unread, and supported listed-resource access is unresolved; no SDK/client accessor, complete network connection or artifact-level map coverage is invented.
+The lookup succeeds as bounded metadata, not global service-health/full-map validation or colour/tooltip execution.
+Current exposed geographical renderer still lacks custom mapmode/tooltip execution; source cases and native action-icon inventory do not replace that required visual/engine evidence.
+Earlier actual 600-second request timeouts remain historical outcomes; a ten-second caller yield is not a timeout and was not used as one here.
 
 ## Current boundary: 2026-10-03
 

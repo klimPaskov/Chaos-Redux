@@ -1,5 +1,9 @@
 # Famine and Migration Handoff Dispositions
 
+> **Current-status disposition (2026-10-06): superseded by** [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) for current famine and migration status.
+> This dated document remains historical evidence, with its original acceptance basis, source snapshot, audit outcome, and validation limits scoped to the work described below.
+> This reconciliation grants no new design acceptance and upgrades no historical evidence to current or native validation.
+
 Status: documentation reconciliation on 2026-10-03; historical parent dispositions retained separately from current patch acceptance and evidence.
 
 ## Current acceptance and evidence boundary
@@ -19,6 +23,15 @@ The ledger records implemented documentation/source corrections and blocked or u
 Historical “accepted/current” labels below retain the earlier parent reconciliation and do not constitute fresh acceptance, source revalidation, or October probability certification.
 The old category-asset visual-review-pending wording is superseded by the parent contact-sheet review recorded in the retained August completion report; live consumer evidence remains user-owned.
 Historical provider limits and abandoned requests are not current proof of service absence.
+
+## Current legacy-cost and map acceptance boundary
+
+Legacy acceptance and architecture are published in `fcdd06433582602c73366210ac9aa105e7b5c511` under the original complete valid-response goal and explicit parent review; actual cost gameplay is not published by that planning commit.
+The fresh twelve-source/CSV archive is `e6ec73bcf26a43e400353a4e2d07ba9b8d35aea8`, with all raw committed hashes matched to its manifest by parent and curator byte-stream checks.
+Core and parent quote/selectors are implemented but uncommitted; decision/paid-work/negotiation/cleanup integration and final guard-localisation review remain unfinished.
+Map capacity correction, independent thirteen-case source audit and accepted incoming-intent plan are published in `a8b59870c26b402ef2475c198b3753031bf8869e`; intent code is in progress without delivered implementation/final audit.
+Fresh source discovery/partial decision/map metadata are route recovery with explicit adapter/coverage/body limits, not numerical/native or full-service certification.
+Scoped workbook alignment is read-only evidence without save/export or unrelated-row ownership; dated August facts stay separately preserved.
 
 ## October handoff dispositions
 
@@ -47,7 +60,21 @@ Historical provider limits and abandoned requests are not current proof of servi
 | `native_custom_cost_key_contract_skill_20261003.md` | implemented | Parent authorized/reviewed bounded reusable native base/blocked/tooltip contract; commit `f22c7cc30` preserves unrelated mixed skill work and original handoff. UTF-8 skill validation and local source/consumer references are package/source evidence only. Original pending-parent wording is historical; curator edited/staged no skill and no runtime/GUI claim follows. |
 | `prospective_reception_completion_audit_20261003.md` | implemented | Parent-authorized independent combined source review finds no remaining actionable source defect after whole-request/caller/refund/actor/row/generation/pulse/pointer/relief/integration corrections. Saved full report was read/reviewed before `59ee4eb62`; later final-turn agent-capacity error does not invalidate that artifact. Final hashes match published source. Raw archive proof remains verified; prospective/observer/country comparisons and native/dynamic/live evidence remain missing. First-food wording was author-corrected. |
 
-Final delivered-report 2026-10-03 census: 120 Markdown handoff files and 120 ledger rows, including this curator handoff and the independently read prospective completion report; every filename appears exactly once with zero missing, duplicate, or extra entries.
+## Legacy-cost and map handoff dispositions
+
+| Handoff | Disposition | Acceptance basis, evidence and unfinished boundary |
+| --- | --- | --- |
+| `legacy_custom_cost_affordability_audit_20261003.md` | accepted and queued | Parent reviewed 25-action strict-equality/gate-parity/unpaid-continuation findings under the original complete-response goal and accepted their repair in `fcdd06433`. Published finding/plan, not full gameplay correction. Partial decision metadata has false coverage/unbound input and unread report; source/current native results remain separate. |
+| `legacy_cost_affordability_probability_20261003.md` | implemented | Parent-authorized before-source and weighted audit, with twelve-byte archive published in `e6ec73bc`. Both correct decision inspections recovered source discovery but `requested_adapter_empty`; one suggested mission probe returned `INTERNAL_ERROR` without artifacts. Exact artifact/revision/case provenance retained. Numeric gate/complete bindings/same-case compare remains blocked and unsubmitted, not waived. |
+| `legacy_cost_transaction_architecture_20261003.md` | accepted and queued | Parent explicitly accepted fixed fees, complete tuple/start parity, twenty paid continuations, four immediate bodies, deferred negotiation, matching cleanup and exact refund limits in `legacy_cost_affordability_parent_acceptance_20261003.md`, published in `fcdd06433`. Architecture is published design; implementation integration/native/ABA/parser evidence remains unfinished. |
+| `legacy_cost_core_implementation_20261003.md` | implemented | Parent accepted architecture and assigned bounded five-file core; current uncommitted constants, 15 components/18 profiles and quote effect match reported hashes. Owner source models pass 60 component, 204 profile/poisoned-quote and 36 tuning cases, with native readers mocked. No completed decision/receipt/payment or publication claim; owner/parent integration and numeric/native gates remain pending. |
+| `legacy_cost_localisation_20261003.md` | implemented | Parent-authorized stable getter/quote/texticon/source review; 15 getters/30 labels/25 legacy lineages and 120 source cases checked, preserving all fees and accepted four-resource rows. Final private paid-guard/tooltip review waits for readiness; no native pixel/parser/click or whole-cost completion. |
+| `migration_mapmode_reception_lifecycle_20261003.md` | implemented | Parent accepted comprehensive-map audit and capacity correction; `a8b59870` publishes strict capacity delegation independently checked in thirteen source cases. Incoming intent plan is accepted and queued/in-progress without source delivery/audit. Fresh lookup 406/96/39 succeeds at `bcccf5a...d2f67`, with truncated inventory/zero query matches/unread body; not dynamic colour/tooltip or network proof. |
+| `current_workbook_alignment_20261003.md` | implemented | Parent-authorized read-only scoped catalog review finds Event 149 row150 retired/unavailable, appropriate blanks, no system/new ID rows and narrow 5/13/15/20/118 text alignment. Audit-interval hashes unchanged and CSV logical rows match (166 Events records including header); no repair/save/export/full unrelated-row or binary-ownership claim. |
+| `legacy_cost_and_map_checkpoint_20261003.md` | implemented | Parent assigned six active checkpoint docs plus this new handoff, preserving the old curator snapshot. Published design/archive/capacity and partial uncommitted cost/intent statuses, recovered MCP limits and scoped workbook evidence reconciled; final parent readiness/delivery/review can update the queue. Full goal remains incomplete. |
+
+Current delivered-report census is 128 Markdown handoff files and 128 exactly-once ledger rows, including this new curator checkpoint; no absent future handoff is pre-registered.
+Earlier 120-file and August 98-file counts remain historical snapshots, not current census evidence.
 The independent report and parent review/publication close bounded source audit/commit status only; all required native/probability/dynamic and broader full-goal obligations remain pending.
 Prospective plan acceptance is explicit in `621df57aa`; no runtime completion or probability waiver is inferred from it.
 This replaces the active census only; the retained August 98-file record is historical.
