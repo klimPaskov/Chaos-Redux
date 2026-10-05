@@ -4683,24 +4683,19 @@ random_terror_inherit_actor_technology = {
 }
 
 # COUNTRY scope: an actor.  A transnational or jihadist command gains its
-# fourth research slot once, from Build a Civil Administration or Establish
-# Political Offices.  Local commands stay at actor_research_slots_local, the
-# standard command at actor_research_slots and the final command at
-# actor_research_slots_final; runtime cleanup clears the record.
+# fourth research slot once, from Build a Civil Administration (decision, or
+# Codify the Doctrine) or Establish Political Offices; their tooltips show it
+# only when random_terror_can_gain_advanced_research_slot holds.  Local
+# commands stay at actor_research_slots_local, the standard command at
+# actor_research_slots and the final command at actor_research_slots_final;
+# runtime cleanup clears the record.
 random_terror_grant_advanced_research_slot = {
 	if = {
-		limit = {
-			random_terror_is_actor = yes
-			NOT = { has_country_flag = random_terror_final_actor }
-			NOT = { has_country_flag = random_terror_advanced_research_slot }
-			OR = {
-				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational }
-				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
-			}
-			check_variable = { amount_research_slots < constant:random_terror_tuning.actor_research_slots_advanced }
+		limit = { random_terror_can_gain_advanced_research_slot = yes }
+		hidden_effect = {
+			set_research_slots = constant:random_terror_tuning.actor_research_slots_advanced
+			set_country_flag = random_terror_advanced_research_slot
 		}
-		set_research_slots = constant:random_terror_tuning.actor_research_slots_advanced
-		set_country_flag = random_terror_advanced_research_slot
 	}
 }
 
@@ -7577,7 +7572,10 @@ random_terror_mark_safe_haven = {
 	}
 }
 
-# COUNTRY scope: a host that no longer shelters the network.
+# COUNTRY scope: a host that no longer shelters the network.  The governments
+# it fed lose their claim on it (random_terror_haven_link_<host>), so a host
+# that becomes a safe haven again can be pressed only by the governments its
+# new haven feeds.  The scan runs only when a marker actually clears.
 random_terror_clear_safe_haven = {
 	if = {
 		limit = { has_country_flag = random_terror_safe_haven }
@@ -7586,6 +7584,10 @@ random_terror_clear_safe_haven = {
 		remove_from_array = { array = global.random_terror_safe_haven_hosts value = THIS }
 		subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_safe_haven.reach_gain }
 		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+		every_country = {
+			limit = { has_country_flag = random_terror_haven_link_@PREV }
+			clr_country_flag = random_terror_haven_link_@PREV
+		}
 	}
 }
 

@@ -1119,7 +1119,10 @@ focus_tree = {
 		}
 		completion_reward = {
 			custom_effect_tooltip = random_terror_establish_political_offices_reward_tt
-			custom_effect_tooltip = random_terror_advanced_research_slot_tt
+			if = {
+				limit = { random_terror_can_gain_advanced_research_slot = yes }
+				custom_effect_tooltip = random_terror_advanced_research_slot_tt
+			}
 			hidden_effect = {
 				random_terror_focus_reward_political_offices = yes
 				random_terror_clamp_actor_values = yes
@@ -1582,6 +1585,10 @@ focus_tree = {
 			set_temp_variable = { random_terror_idea_form = constant:random_terror_idea_form.civil_administration }
 			random_terror_set_economy_form = yes
 			custom_effect_tooltip = random_terror_civil_administration_focus_reward_tt
+			if = {
+				limit = { random_terror_can_gain_advanced_research_slot = yes }
+				custom_effect_tooltip = random_terror_advanced_research_slot_tt
+			}
 			hidden_effect = {
 				set_temp_variable = { random_terror_focus_context = constant:random_terror_value.one }
 				random_terror_actor_build_civil_administration = yes
@@ -2968,12 +2975,22 @@ focus_tree = {
 			has_country_flag = random_terror_focus_final_jihad
 		}
 		completion_reward = {
-			add_ideas = random_terror_presence_of_the_entity
+			# The final command's Presence of the Entity is the scaling strength
+			# of random_terror_refresh_terminal_strength, which the seal raises;
+			# only a command that is not yet final takes the flat spirit.
+			if = {
+				limit = { has_country_flag = random_terror_final_actor }
+				custom_effect_tooltip = random_terror_seal_final_command_strength_tt
+			}
+			else = {
+				add_ideas = random_terror_presence_of_the_entity
+			}
 			custom_effect_tooltip = random_terror_network_authority_rises_tt
 			hidden_effect = {
 				add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
 				set_country_flag = random_terror_focus_final_command_sealed
 				random_terror_clamp_actor_values = yes
+				random_terror_refresh_terminal_strength = yes
 			}
 		}
 		ai_will_do = { base = 2 }

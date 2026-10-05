@@ -886,6 +886,21 @@ random_terror_country_is_pressable_haven = {
 	}
 }
 
+# COUNTRY scope.  A transnational or jihadist command, not the final command,
+# that has not yet risen to its fourth research slot
+# (random_terror_grant_advanced_research_slot reads this; the decision and
+# focus tooltips show the slot only while it holds).
+random_terror_can_gain_advanced_research_slot = {
+	random_terror_is_actor = yes
+	NOT = { has_country_flag = random_terror_final_actor }
+	NOT = { has_country_flag = random_terror_advanced_research_slot }
+	OR = {
+		check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational }
+		check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
+	}
+	check_variable = { amount_research_slots < constant:random_terror_tuning.actor_research_slots_advanced }
+}
+
 # STATE scope.  A pressured active crisis state that can rise in the opening
 # uprising wave of the False Revelation.
 random_terror_state_can_rise_in_revelation = {
