@@ -20794,6 +20794,8 @@ fallout_successor_b7_cleanup_dynamic_nzl = {
 		clear_variable = fallout_government_archetype_generation
 		clear_variable = fallout_region_id
 		clear_variable = fallout_country_memory_id
+		clear_variable = fallout_country_memory_assignment_generation
+		clr_country_flag = fallout_country_memory_assignment_pending
 		clr_country_flag = fallout_nzl_dynamic_country
 		reserve_dynamic_country = no
 	}
@@ -44063,6 +44065,8 @@ fallout_reset_successor_allocation_ledger = {
 		clear_variable = fallout_government_archetype_generation
 		clear_variable = fallout_region_id
 		clear_variable = fallout_country_memory_id
+		clear_variable = fallout_country_memory_assignment_generation
+		clr_country_flag = fallout_country_memory_assignment_pending
 		clear_variable = fallout_successor_conflict_source_country
 		clear_variable = fallout_successor_conflict_result
 		clear_variable = fallout_successor_conflict_resolution_generation
@@ -44210,7 +44214,10 @@ fallout_select_in_place_successor_capital = {
 fallout_apply_universal_survivor_package = {
 	set_variable = { fallout_government_archetype = fallout_government_origin_archetype }
 	set_variable = { fallout_government_archetype_generation = global.fallout_transition_generation }
-	fallout_generic_assign_country_memory = yes
+	# The memory is chosen for every survivor together once allocation ends.
+	fallout_generic_focus_assign_region = yes
+	clear_variable = fallout_country_memory_id
+	set_country_flag = fallout_country_memory_assignment_pending
 	set_variable = { fallout_country_package_generation = global.fallout_transition_generation }
 	set_variable = { fallout_focus_package_generation = global.fallout_transition_generation }
 	set_variable = { fallout_archetype_package_generation = global.fallout_transition_generation }
@@ -44336,6 +44343,7 @@ fallout_allocate_surviving_countries_in_place = {
 	}
 	if = {
 		limit = { NOT = { has_global_flag = fallout_transition_error } }
+		fallout_assign_successor_country_memories = yes
 		fallout_finalize_successor_allocation_transaction = yes
 	}
 }
@@ -46282,17 +46290,422 @@ fallout_generic_focus_assign_region = {
 	}
 }
 
+# Supported scope: COUNTRY. Stage 1 candidate: the exact tag. Empires with
+# overseas holdings keep their home memory only while seated at home.
+fallout_country_memory_tag_candidate = {
+	set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.none }
+	if = { limit = { tag = USA capital_scope = { is_on_continent = north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.federal_continuity_zone } }
+	else_if = { limit = { tag = CAN capital_scope = { is_on_continent = north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.northern_shield_shelters } }
+	else_if = { limit = { tag = MEX } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sonoran_water_board } }
+	else_if = { limit = { tag = QUE } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.quebec_winter_republic } }
+	else_if = { limit = { tag = YUC } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yucatan_cenote_compact } }
+	else_if = { limit = { tag = HAW } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.hawaiian_relay_kingdom } }
+	else_if = { limit = { tag = CUB } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.caribbean_port_chain } }
+	else_if = { limit = { tag = BRA capital_scope = { is_on_continent = south_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.brazilian_interior_leagues } }
+	else_if = { limit = { tag = ARG } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.la_plata_port_compact } }
+	else_if = { limit = { tag = CHL } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atacama_observatory_state } }
+	else_if = { limit = { tag = PRU } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.andean_sky_republics } }
+	else_if = { limit = { tag = COL } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.colombian_mountain_corridors } }
+	else_if = { limit = { tag = VEN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.venezuelan_fuel_remnant } }
+	else_if = { limit = { tag = PAR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.paraguay_river_holdfast } }
+	else_if = { limit = { tag = GYA } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.guiana_rain_stations } }
+	else_if = { limit = { tag = ENG capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.british_emergency_isles } }
+	else_if = { limit = { tag = SCO } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.scottish_hydro_parliament } }
+	else_if = { limit = { tag = IRE } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.irish_maritime_refuge } }
+	else_if = { limit = { tag = SWI } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.alpine_redoubt } }
+	else_if = { limit = { tag = AUS NOT = { country_exists = SWI } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.alpine_redoubt } }
+	else_if = { limit = { tag = GER capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.rhine_dead_cities } }
+	else_if = { limit = { tag = BAY } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bavarian_shelter_state } }
+	else_if = { limit = { tag = HOL capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.low_countries_polder_authority } }
+	else_if = { limit = { tag = FRA capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.french_loire_continuity } }
+	else_if = { limit = { tag = BRI } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.breton_port_league } }
+	else_if = { limit = { tag = SPR capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.iberian_sun_shelters } }
+	else_if = { limit = { tag = CAT } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.catalan_emergency_commune } }
+	else_if = { limit = { tag = ITA capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.italian_apennine_communes } }
+	else_if = { limit = { tag = SWE } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.scandinavian_cold_councils } }
+	else_if = { limit = { tag = FIN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.finnish_forest_army } }
+	else_if = { limit = { tag = POL } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.polish_ash_republics } }
+	else_if = { limit = { tag = HUN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.danube_ration_league } }
+	else_if = { limit = { tag = YUG } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.balkan_mountain_wards } }
+	else_if = { limit = { tag = GRE } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.greek_island_synods } }
+	else_if = { limit = { tag = EST } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.baltic_forest_brotherhoods } }
+	else_if = { limit = { tag = SOV capital_scope = { NOT = { fallout_country_memory_area_is_soviet_periphery = yes } } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ural_continuity_directorate } }
+	else_if = { limit = { tag = UKR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ukrainian_bread_bunkers } }
+	else_if = { limit = { tag = DON } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.don_steppe_hetmanates } }
+	else_if = { limit = { tag = GEO } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.caucasus_shelter_states } }
+	else_if = { limit = { tag = KAZ } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.steppe_convoy_republics } }
+	else_if = { limit = { tag = FER } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.vladivostok_radio_port } }
+	else_if = { limit = { tag = MON } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mongolian_nomad_grid } }
+	else_if = { limit = { tag = TAN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.baikal_monastic_line } }
+	else_if = { limit = { tag = TUR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.anatolian_plateau_remnant } }
+	else_if = { limit = { tag = PER } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.persian_tunnel_ministries } }
+	else_if = { limit = { tag = IRQ } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mesopotamian_water_courts } }
+	else_if = { limit = { tag = SAU } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.arabian_fuel_emirates } }
+	else_if = { limit = { tag = SYR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.levant_quarantine_cities } }
+	else_if = { limit = { tag = EGY } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.nile_food_command } }
+	else_if = { limit = { tag = SUD } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.upper_nile_cattle_federation } }
+	else_if = { limit = { tag = MOR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.maghreb_solar_forts } }
+	else_if = { limit = { tag = ETH } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ethiopian_highland_refuge } }
+	else_if = { limit = { tag = NGA } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.west_african_port_confederacies } }
+	else_if = { limit = { tag = LIB NOT = { country_exists = NGA } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.west_african_port_confederacies } }
+	else_if = { limit = { tag = MLI } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sahel_caravan_wards } }
+	else_if = { limit = { tag = COG } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.congo_green_basin } }
+	else_if = { limit = { tag = UGA } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.great_lakes_mutant_marsh } }
+	else_if = { limit = { tag = KEN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.east_african_rail_union } }
+	else_if = { limit = { tag = SAF } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.south_african_continuity_mines } }
+	else_if = { limit = { tag = MAD } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.madagascar_isolation_state } }
+	else_if = { limit = { tag = JAP capital_scope = { OR = { fallout_country_memory_area_japanese_shelter_archipelago = yes fallout_country_memory_area_hokkaido_snow_administration = yes } } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.japanese_shelter_archipelago } }
+	else_if = { limit = { tag = KOR } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.korean_tunnel_armies } }
+	else_if = { limit = { tag = MAN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.manchurian_reactor_keeps } }
+	else_if = { limit = { tag = CHI capital_scope = { is_on_continent = asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils } }
+	else_if = { limit = { tag = PRC NOT = { country_exists = CHI } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils } }
+	else_if = { limit = { tag = GXC } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.canton_port_commune } }
+	else_if = { limit = { tag = TIB } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.himalayan_shelter_belt } }
+	else_if = { limit = { tag = SIA } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mekong_greenhouse_compact } }
+	else_if = { limit = { tag = PHI } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.philippine_island_radio_kingdoms } }
+	else_if = { limit = { tag = INS } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indonesian_rice_archipelago } }
+	else_if = { limit = { tag = MAL } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.malayan_strait_board } }
+	else_if = { limit = { tag = RAJ capital_scope = { fallout_country_memory_area_indo_gangetic_relief_authority = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indo_gangetic_relief_authority } }
+	else_if = { limit = { tag = BAN } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bengal_delta_raft_republic } }
+	else_if = { limit = { tag = PAK } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indus_water_commands } }
+	else_if = { limit = { tag = HYD } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.deccan_greenhouse_states } }
+	else_if = { limit = { tag = AST capital_scope = { is_on_continent = australia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.australian_grain_shield } }
+	else_if = { limit = { tag = NZL } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.polynesian_lifeboat_confederacy } }
+	else_if = { limit = { tag = PNG } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.papua_highlands_shelters } }
+}
+
+# Supported scope: COUNTRY. Stage 2 candidate: a civil-war clone or other
+# country that shares an original tag with a major survivor.
+fallout_country_memory_clone_candidate = {
+	set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.none }
+	if = { limit = { original_tag = USA NOT = { tag = USA } capital_scope = { is_on_continent = north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atlantic_congressional_remnant } }
+	else_if = { limit = { original_tag = CAN NOT = { tag = CAN } capital_scope = { is_on_continent = north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.quebec_winter_republic } }
+	else_if = { limit = { original_tag = MEX NOT = { tag = MEX } capital_scope = { is_on_continent = north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yucatan_cenote_compact } }
+	else_if = { limit = { original_tag = ENG NOT = { tag = ENG } capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.scottish_hydro_parliament } }
+	else_if = { limit = { original_tag = GER NOT = { tag = GER } capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bavarian_shelter_state } }
+	else_if = { limit = { original_tag = FRA NOT = { tag = FRA } capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.breton_port_league } }
+	else_if = { limit = { original_tag = SPR NOT = { tag = SPR } capital_scope = { is_on_continent = europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.catalan_emergency_commune } }
+	else_if = { limit = { original_tag = SOV NOT = { tag = SOV } capital_scope = { NOT = { fallout_country_memory_area_is_soviet_periphery = yes } } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.volga_ash_host } }
+	else_if = { limit = { original_tag = JAP NOT = { tag = JAP } capital_scope = { is_on_continent = asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.hokkaido_snow_administration } }
+	else_if = { limit = { original_tag = CHI NOT = { tag = CHI } capital_scope = { is_on_continent = asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sichuan_interior_shelter } }
+	else_if = { limit = { original_tag = RAJ NOT = { tag = RAJ } capital_scope = { is_on_continent = asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.deccan_greenhouse_states } }
+	else_if = { limit = { original_tag = BRA NOT = { tag = BRA } capital_scope = { is_on_continent = south_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.amazon_altered_basin } }
+	else_if = { limit = { original_tag = ARG NOT = { tag = ARG } capital_scope = { is_on_continent = south_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.patagonian_food_haven } }
+}
+
+# Supported scope: COUNTRY. Stages 3 and 4 candidate: the area of the capital.
+fallout_country_memory_area_candidate = {
+	set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.none }
+	if = { limit = { capital_scope = { fallout_country_memory_area_alpine_redoubt = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.alpine_redoubt } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_rhine_dead_cities = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.rhine_dead_cities } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_bavarian_shelter_state = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bavarian_shelter_state } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_low_countries_polder_authority = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.low_countries_polder_authority } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_scottish_hydro_parliament = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.scottish_hydro_parliament } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_irish_maritime_refuge = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.irish_maritime_refuge } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_british_emergency_isles = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.british_emergency_isles } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_breton_port_league = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.breton_port_league } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_french_loire_continuity = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.french_loire_continuity } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_catalan_emergency_commune = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.catalan_emergency_commune } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_iberian_sun_shelters = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.iberian_sun_shelters } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_finnish_forest_army = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.finnish_forest_army } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_arctic_listening_posts = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.arctic_listening_posts } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_scandinavian_cold_councils = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.scandinavian_cold_councils } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_polish_ash_republics = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.polish_ash_republics } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_danube_ration_league = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.danube_ration_league } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_baltic_forest_brotherhoods = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.baltic_forest_brotherhoods } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_balkan_mountain_wards = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.balkan_mountain_wards } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_greek_island_synods = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.greek_island_synods } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_italian_apennine_communes = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.italian_apennine_communes } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_ukrainian_bread_bunkers = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ukrainian_bread_bunkers } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_don_steppe_hetmanates = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.don_steppe_hetmanates } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_volga_ash_host = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.volga_ash_host } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_caucasus_shelter_states = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.caucasus_shelter_states } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_ural_continuity_directorate = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ural_continuity_directorate } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_siberian_rail_spine = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.siberian_rail_spine } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_baikal_monastic_line = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.baikal_monastic_line } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_vladivostok_radio_port = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.vladivostok_radio_port } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_steppe_convoy_republics = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.steppe_convoy_republics } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_mongolian_nomad_grid = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mongolian_nomad_grid } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_manchurian_reactor_keeps = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.manchurian_reactor_keeps } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_korean_tunnel_armies = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.korean_tunnel_armies } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_taiwan_shelter_command = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.taiwan_shelter_command } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_hokkaido_snow_administration = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.hokkaido_snow_administration } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_japanese_shelter_archipelago = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.japanese_shelter_archipelago } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_micronesian_storm_ports = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.micronesian_storm_ports } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_sichuan_interior_shelter = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sichuan_interior_shelter } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_canton_port_commune = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.canton_port_commune } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_shanghai_glasshouse_syndicate = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.shanghai_glasshouse_syndicate } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_yellow_river_famine_councils = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_himalayan_shelter_belt = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.himalayan_shelter_belt } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_mekong_greenhouse_compact = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mekong_greenhouse_compact } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_philippine_island_radio_kingdoms = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.philippine_island_radio_kingdoms } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_indonesian_rice_archipelago = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indonesian_rice_archipelago } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_malayan_strait_board = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.malayan_strait_board } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_papua_highlands_shelters = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.papua_highlands_shelters } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_bengal_delta_raft_republic = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bengal_delta_raft_republic } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_indus_water_commands = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indus_water_commands } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_deccan_greenhouse_states = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.deccan_greenhouse_states } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_indo_gangetic_relief_authority = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indo_gangetic_relief_authority } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_indian_ocean_island_arc = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indian_ocean_island_arc } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_anatolian_plateau_remnant = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.anatolian_plateau_remnant } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_persian_tunnel_ministries = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.persian_tunnel_ministries } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_mesopotamian_water_courts = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mesopotamian_water_courts } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_levant_quarantine_cities = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.levant_quarantine_cities } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_arabian_fuel_emirates = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.arabian_fuel_emirates } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_nile_food_command = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.nile_food_command } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_maghreb_solar_forts = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.maghreb_solar_forts } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_upper_nile_cattle_federation = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.upper_nile_cattle_federation } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_sahel_caravan_wards = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sahel_caravan_wards } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_west_african_port_confederacies = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.west_african_port_confederacies } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_ethiopian_highland_refuge = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ethiopian_highland_refuge } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_congo_green_basin = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.congo_green_basin } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_great_lakes_mutant_marsh = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.great_lakes_mutant_marsh } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_east_african_rail_union = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.east_african_rail_union } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_south_african_continuity_mines = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.south_african_continuity_mines } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_madagascar_isolation_state = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.madagascar_isolation_state } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_cape_verde_radio_anchor = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.cape_verde_radio_anchor } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_alaska_listening_command = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.alaska_listening_command } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_quebec_winter_republic = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.quebec_winter_republic } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_northern_shield_shelters = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.northern_shield_shelters } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_cascadian_hydro_league = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.cascadian_hydro_league } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_california_aqueduct_republic = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.california_aqueduct_republic } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_sonoran_water_board = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sonoran_water_board } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_texan_oil_fortresses = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.texan_oil_fortresses } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_great_lakes_ice_authority = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.great_lakes_ice_authority } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_prairie_grain_authority = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.prairie_grain_authority } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_appalachian_tunnel_compact = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.appalachian_tunnel_compact } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_atlantic_congressional_remnant = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atlantic_congressional_remnant } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_hawaiian_relay_kingdom = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.hawaiian_relay_kingdom } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_caribbean_port_chain = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.caribbean_port_chain } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_yucatan_cenote_compact = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yucatan_cenote_compact } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_colombian_mountain_corridors = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.colombian_mountain_corridors } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_venezuelan_fuel_remnant = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.venezuelan_fuel_remnant } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_guiana_rain_stations = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.guiana_rain_stations } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_atacama_observatory_state = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atacama_observatory_state } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_andean_sky_republics = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.andean_sky_republics } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_amazon_altered_basin = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.amazon_altered_basin } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_patagonian_food_haven = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.patagonian_food_haven } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_la_plata_port_compact = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.la_plata_port_compact } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_paraguay_river_holdfast = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.paraguay_river_holdfast } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_brazilian_interior_leagues = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.brazilian_interior_leagues } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_australian_grain_shield = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.australian_grain_shield } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_polynesian_lifeboat_confederacy = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.polynesian_lifeboat_confederacy } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_pacific_radio_chain = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.pacific_radio_chain } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_antarctic_listening_government = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.antarctic_listening_government } }
+	else_if = { limit = { capital_scope = { fallout_country_memory_area_kerguelen_weather_state = yes } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.kerguelen_weather_state } }
+}
+
+# Supported scope: COUNTRY. A taken memory with single-identity content passes
+# its area to the neighbouring memory.
+fallout_country_memory_neighbour_candidate = {
+	if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.federal_continuity_zone } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atlantic_congressional_remnant } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.alpine_redoubt } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.danube_ration_league } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.rhine_dead_cities } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.low_countries_polder_authority } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.don_steppe_hetmanates } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ukrainian_bread_bunkers } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mekong_greenhouse_compact } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.malayan_strait_board } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.bengal_delta_raft_republic } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indo_gangetic_relief_authority } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.levant_quarantine_cities } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.mesopotamian_water_courts } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.congo_green_basin } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.great_lakes_mutant_marsh } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.sahel_caravan_wards } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.maghreb_solar_forts } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.ethiopian_highland_refuge } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.east_african_rail_union } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.atacama_observatory_state } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.andean_sky_republics } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.antarctic_listening_government } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.patagonian_food_haven } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.west_african_port_confederacies } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.cape_verde_radio_anchor } }
+	else_if = { limit = { check_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.manchurian_reactor_keeps } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils } }
+}
+
+# Country memory assignment.
+#
+# A survivor's memory comes from, in order:
+# 1. its exact tag (stage 1), while an empire is still seated in its homeland;
+# 2. the original tag of a civil-war clone (stage 2);
+# 3. the area that holds its capital (stage 3);
+# 4. the same area shared with the survivor that already holds it (stage 4);
+# 5. the regional default for its fallout_region_id (stage 5).
+# Stages 1 to 3 never hand out a memory that another survivor holds this
+# generation. Stage 4 lets a second survivor in an area share that area's
+# memory, except for memories with content written for one identity, which
+# pass the second survivor to a neighbouring memory. Allocation runs every
+# stage over all survivors in turn (fallout_assign_successor_country_memories),
+# so a tag rule always wins over another country's area claim. The memory is
+# fixed for the generation, so map return and every later caller read the
+# same value that the survival ledger recorded.
+
+# Supported scope: COUNTRY. Records the memory chosen for this generation.
+fallout_country_memory_finish_assignment = {
+	clr_country_flag = fallout_country_memory_assignment_pending
+	set_variable = { fallout_country_memory_assignment_generation = global.fallout_transition_generation }
+}
+
+# Supported scope: COUNTRY. Stages 1 to 3: take the temporary candidate only
+# when no other survivor holds it this generation.
+fallout_country_memory_take_unique_candidate = {
+	if = {
+		limit = {
+			has_country_flag = fallout_country_memory_assignment_pending
+			check_variable = { fallout_country_memory_candidate > constant:fallout_country_memory.none }
+			NOT = { is_in_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_candidate } }
+		}
+		add_to_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_candidate }
+		set_variable = { fallout_country_memory_id = fallout_country_memory_candidate }
+		fallout_country_memory_finish_assignment = yes
+	}
+}
+
+# Supported scope: COUNTRY. Stages 4 and 5: share the candidate, or move to
+# its neighbour when the candidate is a taken single-identity memory.
+fallout_country_memory_take_shared_candidate = {
+	if = {
+		limit = {
+			has_country_flag = fallout_country_memory_assignment_pending
+			check_variable = { fallout_country_memory_candidate > constant:fallout_country_memory.none }
+			fallout_country_memory_candidate_is_protected = yes
+			is_in_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_candidate }
+		}
+		fallout_country_memory_neighbour_candidate = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = fallout_country_memory_assignment_pending
+			check_variable = { fallout_country_memory_candidate > constant:fallout_country_memory.none }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_candidate } } }
+			add_to_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_candidate }
+		}
+		set_variable = { fallout_country_memory_id = fallout_country_memory_candidate }
+		fallout_country_memory_finish_assignment = yes
+	}
+}
+
+# Supported scope: COUNTRY. Stage 5 candidate: the regional default.
+fallout_country_memory_region_candidate = {
+	set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.none }
+	if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.north_america } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.federal_continuity_zone } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.europe } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.british_emergency_isles } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.siberian_rail_spine } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.east_asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.yellow_river_famine_councils } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.south_asia } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.indo_gangetic_relief_authority } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.levant_quarantine_cities } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.east_african_rail_union } }
+	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } } set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.brazilian_interior_leagues } }
+	else = { set_temp_variable = { fallout_country_memory_candidate = constant:fallout_country_memory.australian_grain_shield } }
+}
+
+# Supported scope: COUNTRY. One stage each; a country without the pending flag
+# is left unchanged.
+fallout_country_memory_stage_tag = {
+	if = {
+		limit = { has_country_flag = fallout_country_memory_assignment_pending }
+		fallout_country_memory_tag_candidate = yes
+		fallout_country_memory_take_unique_candidate = yes
+	}
+}
+
+fallout_country_memory_stage_clone = {
+	if = {
+		limit = { has_country_flag = fallout_country_memory_assignment_pending }
+		fallout_country_memory_clone_candidate = yes
+		fallout_country_memory_take_unique_candidate = yes
+	}
+}
+
+fallout_country_memory_stage_area = {
+	if = {
+		limit = { has_country_flag = fallout_country_memory_assignment_pending }
+		fallout_country_memory_area_candidate = yes
+		fallout_country_memory_take_unique_candidate = yes
+	}
+}
+
+fallout_country_memory_stage_area_shared = {
+	if = {
+		limit = { has_country_flag = fallout_country_memory_assignment_pending }
+		fallout_country_memory_area_candidate = yes
+		fallout_country_memory_take_shared_candidate = yes
+	}
+}
+
+fallout_country_memory_stage_region = {
+	if = {
+		limit = { has_country_flag = fallout_country_memory_assignment_pending }
+		fallout_country_memory_region_candidate = yes
+		fallout_country_memory_take_shared_candidate = yes
+	}
+}
+
+# Supported scope: any. Rebuilds the memories held this generation from every
+# survivor that is not waiting for assignment. Runs once per allocation and
+# only again for a survivor assigned outside allocation.
+fallout_country_memory_rebuild_claims = {
+	clear_array = global.fallout_country_memory_claimed_entries
+	every_country = {
+		limit = {
+			has_country_flag = fallout_country_survives
+			NOT = { has_country_flag = fallout_country_memory_assignment_pending }
+			has_variable = fallout_country_memory_id
+			has_variable = fallout_country_memory_package_generation
+			check_variable = { fallout_country_memory_package_generation = global.fallout_transition_generation }
+			check_variable = { fallout_country_memory_id > constant:fallout_country_memory.none }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_id } } }
+			add_to_array = { array = global.fallout_country_memory_claimed_entries value = fallout_country_memory_id }
+		}
+	}
+}
+
+# Supported scope: COUNTRY coordinator. Runs after in-place allocation and
+# before finalization. Each stage runs over every waiting survivor before the
+# next stage, players first, so assignment does not depend on country order
+# across stages.
+fallout_assign_successor_country_memories = {
+	fallout_country_memory_rebuild_claims = yes
+	for_each_scope_loop = {
+		array = global.fallout_successor_assigned_countries
+		fallout_country_memory_stage_tag = yes
+	}
+	for_each_scope_loop = {
+		array = global.fallout_successor_assigned_countries
+		fallout_country_memory_stage_clone = yes
+	}
+	for_each_scope_loop = {
+		array = global.fallout_successor_assigned_countries
+		fallout_country_memory_stage_area = yes
+	}
+	for_each_scope_loop = {
+		array = global.fallout_successor_assigned_countries
+		fallout_country_memory_stage_area_shared = yes
+	}
+	for_each_scope_loop = {
+		array = global.fallout_successor_assigned_countries
+		fallout_country_memory_stage_region = yes
+	}
+}
+
+# Supported scope: COUNTRY. Keeps the memory chosen this generation, including
+# the NZL and USA package memories. A survivor without one runs every stage on
+# its own.
 fallout_generic_assign_country_memory = {
 	fallout_generic_focus_assign_region = yes
-	if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.north_america } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.federal_continuity_zone } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.europe } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.british_emergency_isles } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.eurasian_interior } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.siberian_rail_spine } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.east_asia } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.yellow_river_famine_councils } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.south_asia } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.indo_gangetic_relief_authority } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.middle_east_north_africa } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.levant_quarantine_cities } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.east_african_rail_union } }
-	else_if = { limit = { check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } } set_variable = { fallout_country_memory_id = constant:fallout_country_memory.brazilian_interior_leagues } }
-	else = { set_variable = { fallout_country_memory_id = constant:fallout_country_memory.australian_grain_shield } }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = fallout_country_memory_assignment_pending
+				NOT = { has_variable = fallout_country_memory_id }
+				NOT = { check_variable = { fallout_country_memory_id > constant:fallout_country_memory.none } }
+				NOT = { has_variable = fallout_country_memory_package_generation }
+				NOT = { check_variable = { fallout_country_memory_package_generation = global.fallout_transition_generation } }
+			}
+		}
+		set_country_flag = fallout_country_memory_assignment_pending
+		fallout_country_memory_rebuild_claims = yes
+		fallout_country_memory_stage_tag = yes
+		fallout_country_memory_stage_clone = yes
+		fallout_country_memory_stage_area = yes
+		fallout_country_memory_stage_area_shared = yes
+		fallout_country_memory_stage_region = yes
+	}
 }
 
 fallout_generic_focus_standard_gain = {

@@ -18,6 +18,18 @@ The expansion layer claims eligible adjacent ash zones and dead cities. Issuing 
 
 The regional ledger exposes one of nine authored lanes through `fallout_region_id`: North America relays, European water councils, Eurasian inland roads, East Asian seed banks, South Asian delta routes, Middle East and North African quarantine roads, sub-Saharan river wards, Latin American water charters, and Oceanian remote stations.
 
+## Country memory
+
+Every universal survivor also receives one of the 99 `fallout_country_memory` identities. Survivor allocation marks each committed survivor with `fallout_country_memory_assignment_pending` and, once every row is committed and before finalization, `fallout_assign_successor_country_memories` runs five stages over all survivors in turn, players first:
+
+1. Exact tag (`fallout_country_memory_tag_candidate`). Empires with overseas holdings keep their home memory only while their capital is in their homeland; the Soviet Union keeps the Ural Continuity Directorate only while its capital is outside the Soviet periphery areas.
+2. Original tag of a civil-war clone (`fallout_country_memory_clone_candidate`).
+3. The area that holds the capital (`fallout_country_memory_area_<memory>` state triggers; every live state belongs to exactly one area).
+4. The same area, shared with the survivor that already holds it. A memory whose content is written for one identity (`fallout_country_memory_candidate_is_protected`: the twelve Ash-week pilot memories, West African Port Confederacies and Manchurian Reactor Keeps) is never shared; the second survivor receives the listed neighbouring memory instead.
+5. The regional default for `fallout_region_id`, under the same sharing rule.
+
+Stages 1 to 3 never hand out a memory that another survivor holds in the same generation, so a tag rule always beats another country's area claim. The memory is fixed for the generation (`fallout_country_memory_assignment_generation`). Map return calls `fallout_generic_assign_country_memory`, which keeps that value, so the survival ledger's `fallout_survival_country_source_memory` check stays valid. The NZL Lifeboat State and USA Federal Continuity packages set their own memory and are not reassigned. The full rule tables and the vanilla 1936 result are in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_COUNTRY_MEMORY_ASSIGNMENT.md`.
+
 ## Decision layer
 
 `fallout_generic_survivor_mandate_category` displays authority, cohesion, frontier pressure, regional influence, and memory. Its actions survey adjacent claims, consolidate the chosen government, repair one selected corridor, integrate a controlled state, pressure a selected neighbour, negotiate a Frontier Pact membership, and extend the assigned regional network.
