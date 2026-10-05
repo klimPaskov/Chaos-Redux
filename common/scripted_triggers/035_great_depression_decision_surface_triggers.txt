@@ -1595,6 +1595,13 @@ great_depression_ai_partner_is_valuable = {
 
 # Partner scope with ROOT as the AI actor. Abandoning or exploiting a faction
 # member, ally, overlord or subject costs more goodwill than it saves.
+# COUNTRY scope with FROM as the partner. Both are already clearing bloc
+# members, so the AI does not spend an action only to renew their terms.
+great_depression_ai_clearing_pair_is_member = {
+	is_in_array = { array = global.great_depression_clearing_bloc_members value = THIS }
+	is_in_array = { array = global.great_depression_clearing_bloc_members value = FROM }
+}
+
 great_depression_ai_partner_is_close_ally = {
 	OR = {
 		is_in_faction_with = ROOT
@@ -1792,6 +1799,39 @@ great_depression_can_start_protect_domestic_market = {
 
 great_depression_can_start_protectionist_bloc = {
 	great_depression_action_slot_is_open = yes
+	great_depression_protectionist_bloc_can_take_member = yes
+}
+
+# COUNTRY scope with FROM as the partner of the bloc decision. The decision
+# must bring at least one new member into a protectionist bloc with room.
+great_depression_protectionist_bloc_can_take_member = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_protectionist_bloc_can_take_member_tt
+		OR = {
+			NOT = { is_in_array = { array = global.great_depression_protectionist_bloc_members value = THIS } }
+			NOT = { is_in_array = { array = global.great_depression_protectionist_bloc_members value = FROM } }
+		}
+		OR = {
+			NOT = { has_variable = global.great_depression_protectionist_bloc_members^num }
+			check_variable = { var = global.great_depression_protectionist_bloc_members^num value = constant:great_depression_bloc.member_cap compare = less_than }
+		}
+	}
+}
+
+# COUNTRY scope with FROM as the partner. Two members renew their clearing
+# terms at any time; a newcomer needs room in the clearing bloc.
+great_depression_clearing_bloc_can_take_pair = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_clearing_bloc_can_take_pair_tt
+		OR = {
+			AND = {
+				is_in_array = { array = global.great_depression_clearing_bloc_members value = THIS }
+				is_in_array = { array = global.great_depression_clearing_bloc_members value = FROM }
+			}
+			NOT = { has_variable = global.great_depression_clearing_bloc_members^num }
+			check_variable = { var = global.great_depression_clearing_bloc_members^num value = constant:great_depression_bloc.member_cap compare = less_than }
+		}
+	}
 }
 
 great_depression_can_start_ration_strategic_inputs = {
@@ -1819,6 +1859,7 @@ great_depression_can_start_reconstruction_supplier_compact = {
 great_depression_can_start_regional_clearing_agreement = {
 	great_depression_action_slot_is_open = yes
 	great_depression_global_commitments_are_open = yes
+	great_depression_clearing_bloc_can_take_pair = yes
 }
 
 great_depression_can_start_remove_emergency_controls = {
@@ -1983,6 +2024,7 @@ great_depression_can_coordinate_international_rescue = {
 great_depression_can_establish_clearing_bloc = {
 	great_depression_action_slot_is_open = yes
 	great_depression_financial_contagion_surface_is_active = yes
+	great_depression_clearing_bloc_can_take_pair = yes
 }
 
 great_depression_can_exploit_supply_gap = {

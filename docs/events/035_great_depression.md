@@ -369,6 +369,27 @@ The country's civilian commitment is released, it gets light Severity relief at 
 
 Neither action raises the actor's Severity. Values live in `great_depression_currency_action`.
 
+### Economic blocs
+
+Two bounded global member sets record the blocs: `global.great_depression_clearing_bloc_members` and `global.great_depression_protectionist_bloc_members`, each capped at `great_depression_bloc.member_cap` (12).
+Establish a Clearing Bloc (Financial Contagion) and Regional Clearing Agreement (The Second Great Depression) put both the actor and the partner into the clearing bloc, and the clearing-bloc incident puts the crisis country and its incident partner there.
+`great_depression_join_clearing_bloc` records `great_depression_clearing_bloc_due_day` for `clearing_term_days` (365) and adds the timed `great_depression_clearing_bloc_membership` modifier (trade opinion +10%); a member that joins again renews its term.
+While a member is in its own depression, `great_depression_rebuild_hidden_components` gives it the clearing trade relief, and a member under worldwide pressure subtracts `clearing_exposure_relief` from its worldwide exposure score.
+The daily global pulse (`great_depression_process_economic_blocs`) removes clearing members whose term has run out or which no longer exist.
+
+Protectionist Bloc puts both countries into the protectionist bloc for the rest of the global episode and no longer raises the actor's Severity.
+Members carry `great_depression_protectionist_bloc_membership` (trade opinion -20%, consumer goods +2%, factory output growth +2%), which stands for the trade outsiders take elsewhere.
+A member under worldwide pressure subtracts `protectionist_exposure_shield` from its worldwide exposure score, which can drop it into a lighter contraction tier, and a member in its own depression adds `protectionist_global_pressure_factor` (0.15) instead of the ordinary worldwide pressure factor (0.35) to each Severity update during the early worldwide stages.
+Each member lengthens the international-reconstruction proof by `protectionist_drag_days_per_member` (10) days, at most `protectionist_drag_maximum_days` (40), computed from the current member count so the drag falls when members leave.
+The protectionist bloc ends at global retirement, at the start of a new global episode, and when no worldwide episode is active or the evolution is switched off.
+
+A new national episode removes the country from both blocs in `great_depression_reset_episode_policy_state`, so no membership carries relief into a later national episode; the country can rejoin.
+Clearing membership is not ended by global retirement or by recovery, because the payments arrangement keeps a post-crisis purpose until its term runs out.
+
+`great_depression_check_bloc_formation` counts living members and majors after every join; at `formation_member_minimum` (3) members with at least `formation_major_minimum` (1) major, `great_depression_queue_global_news` sends `chaosx.nr35.20` (A Clearing Bloc Forms) or `chaosx.nr35.21` (A Protectionist Bloc Forms) once per global episode, naming the country whose action formed the bloc and the member count, never outside a worldwide episode or while the evolution is switched off.
+Bloc decisions need a new member and room (`great_depression_protectionist_bloc_can_take_member`, `great_depression_clearing_bloc_can_take_pair`).
+The AI prefers blocs with close allies, does not spend an action renewing a clearing pair that is already in the bloc, and does not raise a protectionist wall during Fragmented Recovery or International Reconstruction.
+
 ## Shared-system adapters and Chaos accounting
 
 Event 35 uses owner adapters for humanitarian pressure, occupation, Deaths, Condemnation, environmental effects, event history, evolutions, clusters, Event 21 civil conflict, Event 34 suppliers, and the shared Chaos meter.

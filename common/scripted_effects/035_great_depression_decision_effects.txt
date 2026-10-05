@@ -222,6 +222,9 @@ great_depression_prepare_action_tooltip_values = {
 	set_temp_variable = { great_depression_tt_guarantee_failure_limit = constant:great_depression_scaling.second_center_count }
 	set_temp_variable = { great_depression_tt_strong_relief = constant:great_depression_action.strong_relief }
 	multiply_temp_variable = { great_depression_tt_strong_relief = constant:great_depression_api.negative_one }
+	set_temp_variable = { great_depression_tt_clearing_term = constant:great_depression_bloc.clearing_term_days }
+	set_temp_variable = { great_depression_tt_protectionist_drag = constant:great_depression_bloc.protectionist_drag_days_per_member }
+	set_temp_variable = { great_depression_tt_protectionist_drag_maximum = constant:great_depression_bloc.protectionist_drag_maximum_days }
 }
 
 # COUNTRY scope with FROM as the partner of a targeted decision. Names the new
@@ -1929,13 +1932,20 @@ great_depression_offer_debt_standstill = {
 	}
 }
 
+# Partner scope with ROOT as the founder. Both countries join or renew their
+# clearing bloc membership.
 great_depression_establish_clearing_bloc = {
 	save_event_target_as = great_depression_partner_action_target
-	set_country_flag = great_depression_clearing_bloc_member
+	hidden_effect = { great_depression_join_clearing_bloc = yes }
 	ROOT = {
 		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.contagion }
 		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
 		great_depression_commit_partner_action = yes
+		hidden_effect = {
+			great_depression_join_clearing_bloc = yes
+			set_temp_variable = { great_depression_bloc_kind = constant:great_depression_bloc.kind_clearing }
+			great_depression_check_bloc_formation = yes
+		}
 	}
 }
 
@@ -2115,10 +2125,17 @@ great_depression_withdraw_from_distressed_market = {
 	}
 }
 
+# Partner scope with ROOT as the founder. Both countries join or renew their
+# clearing bloc membership, and the founder counts a worldwide contribution.
 great_depression_regional_clearing_agreement = {
 	save_event_target_as = great_depression_partner_action_target
-	set_country_flag = great_depression_regional_clearing_partner
+	hidden_effect = { great_depression_join_clearing_bloc = yes }
 	ROOT = {
+		hidden_effect = {
+			great_depression_join_clearing_bloc = yes
+			set_temp_variable = { great_depression_bloc_kind = constant:great_depression_bloc.kind_clearing }
+			great_depression_check_bloc_formation = yes
+		}
 		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.global_reconstruction }
 		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
 		great_depression_commit_partner_action = yes
@@ -2135,13 +2152,155 @@ great_depression_regional_clearing_agreement = {
 	}
 }
 
+# Partner scope with ROOT as the founder. Both countries join the protectionist
+# bloc for the rest of the global episode. The shield and the costs live in the
+# worldwide pressure classification, the weekly pulse, the member modifier and
+# the global recovery proof, so the founder's Severity does not move at once.
 great_depression_protectionist_bloc = {
 	save_event_target_as = great_depression_partner_action_target
-	set_country_flag = great_depression_protectionist_bloc_member
+	hidden_effect = { great_depression_join_protectionist_bloc = yes }
 	ROOT = {
 		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.global_reconstruction }
-		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.moderate_pressure }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.no_change }
 		great_depression_commit_partner_action = yes
+		hidden_effect = {
+			great_depression_join_protectionist_bloc = yes
+			set_temp_variable = { great_depression_bloc_kind = constant:great_depression_bloc.kind_protectionist }
+			great_depression_check_bloc_formation = yes
+		}
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Economic blocs. Two bounded global member sets: the clearing bloc, joined by
+# Establish a Clearing Bloc, Regional Clearing Agreement and the clearing-bloc
+# incident for a fixed term, and the protectionist bloc, joined for the rest
+# of the worldwide depression. A country leaves both when a new national
+# episode starts there, so no membership carries relief into a later episode.
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Joins the clearing bloc, or renews the term of a member.
+# A non-member joins only while the bloc has room.
+great_depression_join_clearing_bloc = {
+	if = {
+		limit = {
+			exists = yes
+			OR = {
+				is_in_array = { array = global.great_depression_clearing_bloc_members value = THIS }
+				NOT = { has_variable = global.great_depression_clearing_bloc_members^num }
+				check_variable = { var = global.great_depression_clearing_bloc_members^num value = constant:great_depression_bloc.member_cap compare = less_than }
+			}
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = global.great_depression_clearing_bloc_members value = THIS } } }
+			add_to_array = { array = global.great_depression_clearing_bloc_members value = THIS }
+		}
+		set_country_flag = great_depression_clearing_bloc_member
+		set_variable = { great_depression_clearing_bloc_due_day = global.num_days }
+		add_to_variable = { great_depression_clearing_bloc_due_day = constant:great_depression_bloc.clearing_term_days }
+		set_temp_variable = { great_depression_clearing_bloc_term = constant:great_depression_bloc.clearing_term_days }
+		add_dynamic_modifier = { modifier = great_depression_clearing_bloc_membership days = great_depression_clearing_bloc_term }
+	}
+}
+
+# COUNTRY scope. Ends this country's clearing bloc membership. Safe for a
+# country that is not a member.
+great_depression_leave_clearing_bloc = {
+	if = {
+		limit = { is_in_array = { array = global.great_depression_clearing_bloc_members value = THIS } }
+		remove_from_array = { array = global.great_depression_clearing_bloc_members value = THIS }
+	}
+	clr_country_flag = great_depression_clearing_bloc_member
+	clear_variable = great_depression_clearing_bloc_due_day
+	remove_dynamic_modifier = { modifier = great_depression_clearing_bloc_membership }
+}
+
+# COUNTRY scope. Joins the protectionist bloc for the current global episode
+# while the bloc has room.
+great_depression_join_protectionist_bloc = {
+	if = {
+		limit = {
+			exists = yes
+			has_global_flag = great_depression_worldwide_episode_active
+			NOT = { is_in_array = { array = global.great_depression_protectionist_bloc_members value = THIS } }
+			OR = {
+				NOT = { has_variable = global.great_depression_protectionist_bloc_members^num }
+				check_variable = { var = global.great_depression_protectionist_bloc_members^num value = constant:great_depression_bloc.member_cap compare = less_than }
+			}
+		}
+		add_to_array = { array = global.great_depression_protectionist_bloc_members value = THIS }
+		set_country_flag = great_depression_protectionist_bloc_member
+		set_variable = { great_depression_protectionist_bloc_global_episode_id = global.great_depression_global_episode_id }
+		add_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership }
+	}
+}
+
+# COUNTRY scope. Ends this country's protectionist bloc membership. Safe for a
+# country that is not a member.
+great_depression_leave_protectionist_bloc = {
+	if = {
+		limit = { is_in_array = { array = global.great_depression_protectionist_bloc_members value = THIS } }
+		remove_from_array = { array = global.great_depression_protectionist_bloc_members value = THIS }
+	}
+	clr_country_flag = great_depression_protectionist_bloc_member
+	clear_variable = great_depression_protectionist_bloc_global_episode_id
+	remove_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership }
+}
+
+# COUNTRY scope, the country whose action grew the bloc. Input temp:
+# great_depression_bloc_kind. Counts the bloc's surviving members and majors;
+# at the formation size with a major member it asks for the bloc's world news,
+# which great_depression_queue_global_news sends once per global episode.
+great_depression_check_bloc_formation = {
+	set_temp_variable = { great_depression_bloc_member_count = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_bloc_major_count = constant:great_depression_api.zero }
+	if = {
+		limit = { check_variable = { var = great_depression_bloc_kind value = constant:great_depression_bloc.kind_clearing compare = equals } }
+		if = {
+			limit = { has_variable = global.great_depression_clearing_bloc_members^num }
+			for_each_scope_loop = {
+				array = global.great_depression_clearing_bloc_members
+				if = {
+					limit = { exists = yes }
+					add_to_temp_variable = { great_depression_bloc_member_count = constant:great_depression_api.one }
+					if = {
+						limit = { is_major = yes }
+						add_to_temp_variable = { great_depression_bloc_major_count = constant:great_depression_api.one }
+					}
+				}
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = { has_variable = global.great_depression_protectionist_bloc_members^num }
+			for_each_scope_loop = {
+				array = global.great_depression_protectionist_bloc_members
+				if = {
+					limit = { exists = yes }
+					add_to_temp_variable = { great_depression_bloc_member_count = constant:great_depression_api.one }
+					if = {
+						limit = { is_major = yes }
+						add_to_temp_variable = { great_depression_bloc_major_count = constant:great_depression_api.one }
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = great_depression_worldwide_episode_active
+			check_variable = { var = great_depression_bloc_member_count value = constant:great_depression_bloc.formation_member_minimum compare = greater_than_or_equals }
+			check_variable = { var = great_depression_bloc_major_count value = constant:great_depression_bloc.formation_major_minimum compare = greater_than_or_equals }
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_bloc_kind value = constant:great_depression_bloc.kind_clearing compare = equals } }
+			set_temp_variable = { great_depression_global_news_kind = constant:great_depression_global_news.clearing_bloc }
+		}
+		else = {
+			set_temp_variable = { great_depression_global_news_kind = constant:great_depression_global_news.protectionist_bloc }
+		}
+		great_depression_queue_global_news = yes
 	}
 }
 

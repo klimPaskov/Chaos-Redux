@@ -3193,6 +3193,9 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_public_obligations_restructured
 	clr_country_flag = great_depression_relief_retrenched
 	clr_country_flag = great_depression_relief_retrenched_early
+	# A new depression breaks earlier bloc commitments; the country can rejoin.
+	great_depression_leave_clearing_bloc = yes
+	great_depression_leave_protectionist_bloc = yes
 	clr_country_flag = great_depression_ordinary_budget_restored
 	clr_country_flag = great_depression_emergency_production_board
 	clr_country_flag = great_depression_strategic_inputs_rationed
@@ -4892,7 +4895,14 @@ great_depression_weekly_pulse = {
 						check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.coordination compare = equals }
 					}
 				}
-				add_to_temp_variable = { great_depression_pulse_delta = constant:great_depression_scaling.global_pressure_factor }
+				# A protectionist bloc member is shielded from part of the worldwide pressure.
+				if = {
+					limit = { has_country_flag = great_depression_protectionist_bloc_member }
+					add_to_temp_variable = { great_depression_pulse_delta = constant:great_depression_bloc.protectionist_global_pressure_factor }
+				}
+				else = {
+					add_to_temp_variable = { great_depression_pulse_delta = constant:great_depression_scaling.global_pressure_factor }
+				}
 			}
 			add_to_temp_variable = { great_depression_pulse_delta = great_depression_hidden_net_pressure }
 			if = {
@@ -6317,6 +6327,7 @@ great_depression_reset_global_episode_ledgers = {
 	set_variable = { global.great_depression_global_contribution_industrial_weight = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_global_recovery_drag_days = constant:great_depression_api.zero }
 	great_depression_clear_recovery_conference = yes
+	great_depression_clear_protectionist_bloc = yes
 	set_variable = { global.great_depression_conference_episode_id = constant:great_depression_api.zero }
 	set_variable = { global.great_depression_conference_result = constant:great_depression_conference.result_none }
 	set_variable = { global.great_depression_global_conversion_count = constant:great_depression_api.zero }
@@ -6462,6 +6473,16 @@ great_depression_classify_worldwide_pressure = {
 	if = {
 		limit = { great_depression_currency_pressure_is_active = yes }
 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_currency_action.devaluation_partner_exposure_score }
+	}
+	# Bloc members feel the worldwide contraction less: clearing keeps payments
+	# moving, and the protectionist wall shuts out falling world prices.
+	if = {
+		limit = { has_country_flag = great_depression_clearing_bloc_member }
+		subtract_from_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_bloc.clearing_exposure_relief }
+	}
+	if = {
+		limit = { has_country_flag = great_depression_protectionist_bloc_member }
+		subtract_from_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_bloc.protectionist_exposure_shield }
 	}
 	if = {
 		limit = {
@@ -8458,7 +8479,122 @@ great_depression_queue_global_news = {
 			set_variable = { global.great_depression_conference_news_episode_id = global.great_depression_global_episode_id }
 			news_event = { id = chaosx.nr35.19 days = 1 }
 		}
+		# Bloc formation: THIS is the country whose action brought the bloc to
+		# its formation size; great_depression_bloc_member_count is its size.
+		else_if = {
+			limit = {
+				check_variable = { var = great_depression_global_news_kind value = constant:great_depression_global_news.clearing_bloc compare = equals }
+				NOT = { check_variable = { var = global.great_depression_clearing_bloc_news_episode_id value = global.great_depression_global_episode_id compare = equals } }
+			}
+			set_variable = { global.great_depression_clearing_bloc_news_episode_id = global.great_depression_global_episode_id }
+			set_variable = { global.great_depression_clearing_bloc_news_country = THIS }
+			set_variable = { global.great_depression_clearing_bloc_news_member_count = great_depression_bloc_member_count }
+			news_event = { id = chaosx.nr35.20 days = 1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = great_depression_global_news_kind value = constant:great_depression_global_news.protectionist_bloc compare = equals }
+				NOT = { check_variable = { var = global.great_depression_protectionist_bloc_news_episode_id value = global.great_depression_global_episode_id compare = equals } }
+			}
+			set_variable = { global.great_depression_protectionist_bloc_news_episode_id = global.great_depression_global_episode_id }
+			set_variable = { global.great_depression_protectionist_bloc_news_country = THIS }
+			set_variable = { global.great_depression_protectionist_bloc_news_member_count = great_depression_bloc_member_count }
+			news_event = { id = chaosx.nr35.21 days = 1 }
+		}
 	}
+}
+
+# COUNTRY global-host scope, from the daily global pulse. Clearing bloc
+# members leave at the end of their term or when they no longer exist. The
+# protectionist bloc lasts only while a worldwide depression is active and The
+# Second Great Depression evolution is on. Both member sets stay bounded.
+great_depression_process_economic_blocs = {
+	if = {
+		limit = {
+			has_variable = global.great_depression_clearing_bloc_members^num
+			check_variable = { var = global.great_depression_clearing_bloc_members^num value = constant:great_depression_api.zero compare = greater_than }
+		}
+		# Reverse order tolerates removing the current row.
+		set_temp_variable = { great_depression_bloc_reverse_index = global.great_depression_clearing_bloc_members^num }
+		while_loop_effect = {
+			limit = { check_variable = { great_depression_bloc_reverse_index > constant:great_depression_api.zero } }
+			subtract_from_temp_variable = { great_depression_bloc_reverse_index = constant:great_depression_api.one }
+			set_temp_variable = { great_depression_bloc_member_expired = constant:great_depression_api.zero }
+			var:global.great_depression_clearing_bloc_members^great_depression_bloc_reverse_index = {
+				if = {
+					limit = {
+						OR = {
+							NOT = { exists = yes }
+							NOT = { has_variable = great_depression_clearing_bloc_due_day }
+							check_variable = { var = global.num_days value = great_depression_clearing_bloc_due_day compare = greater_than_or_equals }
+						}
+					}
+					set_temp_variable = { great_depression_bloc_member_expired = constant:great_depression_api.one }
+					clr_country_flag = great_depression_clearing_bloc_member
+					clear_variable = great_depression_clearing_bloc_due_day
+					remove_dynamic_modifier = { modifier = great_depression_clearing_bloc_membership }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = great_depression_bloc_member_expired value = constant:great_depression_api.one compare = equals } }
+				remove_from_array = { array = global.great_depression_clearing_bloc_members index = great_depression_bloc_reverse_index }
+			}
+		}
+	}
+	set_temp_variable = { events_log_evolution_event_id = constant:great_depression_evolution_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:great_depression_evolution_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = constant:great_depression_evolution_log.second_great_depression_stage }
+	if = {
+		limit = {
+			has_variable = global.great_depression_protectionist_bloc_members^num
+			check_variable = { var = global.great_depression_protectionist_bloc_members^num value = constant:great_depression_api.zero compare = greater_than }
+			OR = {
+				NOT = { has_global_flag = great_depression_worldwide_episode_active }
+				has_disabled_current_evolution = yes
+			}
+		}
+		great_depression_clear_protectionist_bloc = yes
+	}
+	else_if = {
+		limit = {
+			has_variable = global.great_depression_protectionist_bloc_members^num
+			check_variable = { var = global.great_depression_protectionist_bloc_members^num value = constant:great_depression_api.zero compare = greater_than }
+		}
+		set_temp_variable = { great_depression_bloc_reverse_index = global.great_depression_protectionist_bloc_members^num }
+		while_loop_effect = {
+			limit = { check_variable = { great_depression_bloc_reverse_index > constant:great_depression_api.zero } }
+			subtract_from_temp_variable = { great_depression_bloc_reverse_index = constant:great_depression_api.one }
+			set_temp_variable = { great_depression_bloc_member_expired = constant:great_depression_api.zero }
+			var:global.great_depression_protectionist_bloc_members^great_depression_bloc_reverse_index = {
+				if = {
+					limit = { NOT = { exists = yes } }
+					set_temp_variable = { great_depression_bloc_member_expired = constant:great_depression_api.one }
+					clr_country_flag = great_depression_protectionist_bloc_member
+					clear_variable = great_depression_protectionist_bloc_global_episode_id
+					remove_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = great_depression_bloc_member_expired value = constant:great_depression_api.one compare = equals } }
+				remove_from_array = { array = global.great_depression_protectionist_bloc_members index = great_depression_bloc_reverse_index }
+			}
+		}
+	}
+}
+
+# Any scope. Every protectionist bloc member leaves, for global retirement, a
+# new global episode, or a switched-off evolution.
+great_depression_clear_protectionist_bloc = {
+	if = {
+		limit = { has_variable = global.great_depression_protectionist_bloc_members^num }
+		for_each_scope_loop = {
+			array = global.great_depression_protectionist_bloc_members
+			clr_country_flag = great_depression_protectionist_bloc_member
+			clear_variable = great_depression_protectionist_bloc_global_episode_id
+			remove_dynamic_modifier = { modifier = great_depression_protectionist_bloc_membership }
+		}
+	}
+	clear_array = global.great_depression_protectionist_bloc_members
 }
 
 great_depression_process_global_episode = {
@@ -8466,6 +8602,7 @@ great_depression_process_global_episode = {
 	great_depression_process_global_pressure_registry = yes
 	great_depression_recalculate_global_recovery_pressure = yes
 	great_depression_process_recovery_conference = yes
+	great_depression_process_economic_blocs = yes
 	if = {
 		limit = {
 			has_global_flag = great_depression_supplier_collapse_unresolved
@@ -8593,6 +8730,17 @@ great_depression_process_global_episode = {
 						add_to_temp_variable = { great_depression_global_proof_required_days = global.great_depression_global_recovery_drag_days }
 					}
 					if = {
+						limit = { has_variable = global.great_depression_protectionist_bloc_members^num }
+						set_temp_variable = { great_depression_protectionist_drag_days = global.great_depression_protectionist_bloc_members^num }
+						multiply_temp_variable = { great_depression_protectionist_drag_days = constant:great_depression_bloc.protectionist_drag_days_per_member }
+						clamp_temp_variable = {
+							var = great_depression_protectionist_drag_days
+							min = constant:great_depression_api.zero
+							max = constant:great_depression_bloc.protectionist_drag_maximum_days
+						}
+						add_to_temp_variable = { great_depression_global_proof_required_days = great_depression_protectionist_drag_days }
+					}
+					if = {
 						limit = { check_variable = { var = great_depression_global_proof_elapsed value = great_depression_global_proof_required_days compare = greater_than_or_equals } }
 						set_variable = { global.great_depression_global_stage = constant:great_depression_global_stage.international_reconstruction }
 						set_variable = { global.great_depression_global_stage_day = global.num_days }
@@ -8624,6 +8772,7 @@ great_depression_process_global_episode = {
 			great_depression_queue_global_news = yes
 			great_depression_clear_global_pressure_registry = yes
 			great_depression_clear_recovery_conference = yes
+			great_depression_clear_protectionist_bloc = yes
 			clr_global_flag = great_depression_worldwide_episode_active
 			clear_global_event_target = great_depression_global_activation_source
 		}

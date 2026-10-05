@@ -30,3 +30,8 @@ The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only edi
 - For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.19` (Recovery Conference Collapses), sent once per global episode when a Global Recovery Conference fails.
 - For any decision listing kept outside the main row, Event 35 gained the decision Join the Global Recovery Conference; Global Recovery Conference now convenes a conference instead of granting relief at once.
 - No change to the Event Details or evolution detail texts.
+
+## 2026-10-05: economic blocs
+
+- For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.20` (A Clearing Bloc Forms) and `chaosx.nr35.21` (A Protectionist Bloc Forms), each sent once per worldwide depression when its bloc reaches three members including a major power.
+- No change to the Event Details or evolution detail texts.

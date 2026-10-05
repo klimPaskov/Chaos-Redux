@@ -692,7 +692,14 @@ great_depression_incident_apply_contagion_outcome = {
 	}
 	else_if = {
 		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.clearing_bloc compare = equals } }
-		set_country_flag = great_depression_clearing_bloc_member
+		# The crisis country and its partner join the clearing bloc together.
+		if = {
+			limit = { has_variable = great_depression_incident_partner_country }
+			var:great_depression_incident_partner_country = { great_depression_join_clearing_bloc = yes }
+		}
+		great_depression_join_clearing_bloc = yes
+		set_temp_variable = { great_depression_bloc_kind = constant:great_depression_bloc.kind_clearing }
+		great_depression_check_bloc_formation = yes
 		set_country_flag = great_depression_clearing_bloc_incident_observed
 		set_variable = { great_depression_incident_row_aid_state = constant:great_depression_contagion_aid_state.contained }
 		set_variable = { great_depression_incident_row_material_source = constant:great_depression_contagion_material_source.partner_aid }
