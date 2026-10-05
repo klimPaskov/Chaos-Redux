@@ -2078,3 +2078,81 @@ murder_mystery_decision_set_derivative_priority = {
 		TIMED_FLAG_DAYS = "[?murder_mystery_timed_flag_days|.0]"
 	}
 }
+
+# ---------------------------------------------------------------------------
+# Detention through the Event 022 camp system
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: a government with an operational detention system and a cell
+# on its soil. Mass detention breaks up the cell and exposes it, but it costs
+# stability, damages the evidence the case rests on and drives recruits to the
+# movement.
+murder_mystery_decision_detain_suspected_cells = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.public_strain }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	murder_mystery_start_action_cooldown = yes
+	murder_mystery_initialize_country_runtime = yes
+	add_stability = constant:murder_mystery_detention.stability_loss
+	subtract_from_variable = { murder_mystery_evidence_integrity = constant:murder_mystery_detention.evidence_integrity_loss }
+	if = {
+		limit = { has_country_flag = murder_mystery_original_host }
+		subtract_from_variable = { murder_mystery_cell_maturity = constant:murder_mystery_detention.cell_maturity_loss }
+	}
+	murder_mystery_clamp_country_values = yes
+	# The movement's Network Reach lives on the central state, or on the host
+	# before the split.
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_assassin_state_exists
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		event_target:murder_mystery_assassin_state = {
+			add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_detention.movement_reach_gain }
+			murder_mystery_clamp_country_values = yes
+		}
+	}
+	else_if = {
+		limit = {
+			has_event_target = murder_mystery_original_host
+			event_target:murder_mystery_original_host = { exists = yes }
+		}
+		event_target:murder_mystery_original_host = {
+			add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_detention.movement_reach_gain }
+			murder_mystery_clamp_country_values = yes
+		}
+	}
+	if = {
+		limit = { murder_mystery_country_has_registered_cell = yes murder_mystery_cell_registry_is_aligned = yes }
+		save_event_target_as = murder_mystery_detention_country
+		set_temp_variable = { murder_mystery_detention_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_detention_index value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+			set_temp_variable = { murder_mystery_detention_match = constant:murder_mystery_value.zero }
+			var:global.murder_mystery_cell_country_entries^murder_mystery_detention_index = {
+				if = {
+					limit = { tag = event_target:murder_mystery_detention_country }
+					set_temp_variable = { murder_mystery_detention_match = constant:murder_mystery_value.one }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_detention_match value = constant:murder_mystery_value.one compare = equals } }
+				set_temp_variable = { murder_mystery_detention_value = global.murder_mystery_cell_maturity_entries^murder_mystery_detention_index }
+				subtract_from_temp_variable = { murder_mystery_detention_value = constant:murder_mystery_detention.cell_maturity_loss }
+				clamp_temp_variable = { var = murder_mystery_detention_value min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
+				set_variable = { global.murder_mystery_cell_maturity_entries^murder_mystery_detention_index = murder_mystery_detention_value }
+				if = {
+					limit = { check_variable = { var = murder_mystery_detention_value value = constant:murder_mystery_action_tuning.high_value_maturity compare = less_than } }
+					clr_country_flag = murder_mystery_cell_mature
+				}
+				set_temp_variable = { murder_mystery_detention_value = global.murder_mystery_cell_exposure_entries^murder_mystery_detention_index }
+				add_to_temp_variable = { murder_mystery_detention_value = constant:murder_mystery_detention.cell_exposure_gain }
+				clamp_temp_variable = { var = murder_mystery_detention_value min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
+				set_variable = { global.murder_mystery_cell_exposure_entries^murder_mystery_detention_index = murder_mystery_detention_value }
+				set_temp_variable = { murder_mystery_detention_index = global.murder_mystery_cell_country_entries^num }
+			}
+			add_to_temp_variable = { murder_mystery_detention_index = constant:murder_mystery_identity.loop_increment }
+		}
+	}
+}

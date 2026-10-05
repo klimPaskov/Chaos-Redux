@@ -1492,6 +1492,9 @@ murder_mystery_validate_split_state_registry = {
 	if = {
 		limit = {
 			murder_mystery_host_is_registered = yes
+			# An Event 005 collapse or Event 006 release of the host must finish
+			# before the Assassin State can split from it.
+			NOT = { murder_mystery_country_has_foreign_transaction = yes }
 			has_event_target = murder_mystery_split_anchor_state
 			has_variable = global.murder_mystery_split_state_entries^num
 			check_variable = { var = global.murder_mystery_split_state_entries^num value = constant:murder_mystery_split.minimum_cluster_states compare = greater_than_or_equals }

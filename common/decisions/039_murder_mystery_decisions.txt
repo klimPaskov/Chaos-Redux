@@ -26,6 +26,8 @@
 @murder_mystery_ai_hint_terminal_settlement = 60
 # A derivative this close to surrender asks the central state for obedience.
 @murder_mystery_priority_obedience_surrender = 0.1
+# The AI never detains suspects below this stability.
+@murder_mystery_detention_ai_stability = 0.5
 
 murder_mystery_investigation_category = {
 	# -----------------------------------------------------------------------
@@ -982,6 +984,46 @@ murder_mystery_investigation_category = {
 	# Real investigation objectives. These are activated by the phase actions
 	# above and resolve from map, force, supply, evidence, and protection state.
 	# -----------------------------------------------------------------------
+
+	# Event 022: a government with an operational detention system can round
+	# up suspected cell members. Costly, and never the AI's first choice.
+	murder_mystery_detain_suspected_cells = {
+		name = murder_mystery_detain_suspected_cells
+		desc = murder_mystery_detain_suspected_cells_desc
+		icon = GFX_decision_039_murder_mystery_detain_suspected_cells
+		visible = {
+			murder_mystery_runtime_is_active = yes
+			murder_mystery_government_actor = yes
+			OR = {
+				has_country_flag = murder_mystery_original_host
+				murder_mystery_country_has_registered_cell = yes
+			}
+			murder_mystery_country_has_detention_system = yes
+		}
+		available = {
+			murder_mystery_action_is_available = yes
+			hidden_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_public_strain = yes }
+		custom_cost_text = murder_mystery_cost_public_strain
+		ai_hint_pp_cost = @murder_mystery_ai_hint_public_strain
+		days_re_enable = constant:murder_mystery_cooldown.action_days
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_detain_suspected_cells_tt
+			hidden_effect = { murder_mystery_decision_detain_suspected_cells = yes }
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.low
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				has_stability < @murder_mystery_detention_ai_stability
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				check_variable = { var = murder_mystery_evidence_integrity value = constant:murder_mystery_value.forty compare = less_than }
+			}
+		}
+	}
 
 	murder_mystery_protect_witness_transfer = {
 		name = murder_mystery_protect_witness_transfer

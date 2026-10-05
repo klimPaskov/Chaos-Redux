@@ -338,3 +338,13 @@ It was generated with native ImageGen (an empty council chair at a cabinet table
 Disposition: accepted; closes the round-1 unit-audio blocker.
 Basis: the lead's round-2 decision 7.
 The five Event 039 units already play fitting vanilla infantry, machine-gun and armoured-car sounds bound to their real actions (the 2026-09-28 model handoff). New audio would need a download that only the user can authorize, and the bound vanilla sounds already match the units' weapons and vehicles, so they are accepted as final rather than recorded as a pending gap.
+
+## D33. Part 11 reactive connections and collision guards
+
+Disposition: implemented (round 2); the gates and pulse adjustments need live confirmation alongside Events 005, 006, 022, 033, 034 and 035.
+Basis: the accepted Part 11 design; all reads are of other owners' existing triggers and flags, with no edit to their files.
+
+- Collision guard: Event 005 and 006 expose their in-progress state through the shared liberation-release predicates (`is_soviet_collapse_active_origin_country`, `is_independence_wave_active_origin_country`, `is_liberation_release_current_reserved_country`) and Event 006's `independence_wave_origin_prepared`; Event 039 refuses its split preflight, revolts and cell seeding for such a country. The preflight check sits in the split validation itself, so a split prepared earlier fails closed when a collapse starts.
+- Pulse context (bounded, constants in `murder_mystery_pulse_context`): war and the Great Depression each add 1 cell maturity and remove 1 case or local case per pulse; an industrial boom adds 1 case; acid rain at the capital removes 1 from both. These are deliberately small next to the base growth so the other events shape, but never decide, the investigation.
+- Event 022 detention is one explicit government decision, available only with an operational detention site and a cell on the country's soil. It uses the public strain cost family and trades 15 cell maturity and 15 exposure for 5% stability, 10 Evidence Integrity and 5 movement Reach; the AI weight is low and blocked below 50% stability or 40 Evidence Integrity, so detention is never the default investigation method. Condemnation is left to the shared source adapters, as Part 11 requires.
+- Contamination and CBRN connections stay with their shared owners; Event 039 grants its units no immunity and adds no new adapter.

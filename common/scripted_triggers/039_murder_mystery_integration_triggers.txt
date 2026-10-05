@@ -247,3 +247,35 @@ murder_mystery_triggerable_scenario_can_launch = {
 	NOT = { has_global_flag = murder_mystery_scenario_launched }
 	murder_mystery_has_any_scenario_host = yes
 }
+
+# ---------------------------------------------------------------------------
+# Other owners' systems (read only)
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. An Event 005 or Event 006 country transaction is in progress
+# for this government: an active collapse or independence origin, an origin
+# Event 006 is preparing, or a country reserved by the shared release plan.
+# Event 039 does not split it, raise a revolt from it or seed a cell in it
+# until that transaction is complete.
+murder_mystery_country_has_foreign_transaction = {
+	OR = {
+		is_soviet_collapse_active_origin_country = yes
+		is_independence_wave_active_origin_country = yes
+		has_country_flag = independence_wave_origin_prepared
+		is_liberation_release_current_reserved_country = yes
+	}
+}
+
+# COUNTRY scope. The government runs at least one operational Event 022
+# detention site.
+murder_mystery_country_has_detention_system = {
+	any_of_scopes = {
+		array = camp_active_site_states
+		camp_admin_site_is_operational = yes
+	}
+}
+
+# COUNTRY scope. Event 033 weather has struck the capital state.
+murder_mystery_country_capital_has_disaster = {
+	capital_scope = { acid_rain_state_is_touched = yes }
+}

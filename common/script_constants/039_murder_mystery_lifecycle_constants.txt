@@ -84,6 +84,40 @@ murder_mystery_cell_growth = {
 	host_reach_case_ceiling = 60
 }
 
+# How a country's situation changes each pulse's cell growth (maturity) and
+# investigation (case progress, local case for a foreign cell). War and a
+# depression help the cells and hurt the case; an industrial boom equips the
+# investigators; a disaster at the capital slows both sides.
+murder_mystery_pulse_context = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	war_cell_growth = 1
+	war_case = -1
+	depression_cell_growth = 1
+	depression_case = -1
+	boom_case = 1
+	disaster_cell_growth = -1
+	disaster_case = -1
+}
+
+# Detain Suspected Cell Members: a government with an operational Event 022
+# detention system trades its legitimacy and evidence for cell disruption.
+murder_mystery_detention = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cell_maturity_loss = 15
+	cell_exposure_gain = 15
+	evidence_integrity_loss = 10
+	movement_reach_gain = 5
+	stability_loss = -0.05
+}
+
 murder_mystery_seeding = {
 	schema = {
 		any_key = yes

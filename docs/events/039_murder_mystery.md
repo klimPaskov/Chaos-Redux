@@ -288,6 +288,21 @@ Each derivative chooses one priority in Cell Administration (Answer to the Cente
 | Autonomy | Governing Ourselves: faster autonomy gain, defence, dig-in | Autonomy rises |
 | Local campaign | Local Campaign: attack, breakthrough, a stability cost | The central state loses `local_campaign_cohesion` Cohesion |
 
+## Connections to other systems
+
+Event 039 reads these owners' state without editing their files:
+
+| System | Connection |
+| --- | --- |
+| Event 005 Soviet Collapse, Event 006 Independence Wave | `murder_mystery_country_has_foreign_transaction` (an active collapse or independence origin, an origin Event 006 is preparing, or a country reserved by the shared release plan) blocks the Assassin State split preflight, foreign revolts and new cell seeding in that country until the transaction is complete. |
+| Event 009 White Peace | Event 039 war actors carry Event 009's opt-out flag (see White Peace protection). |
+| War (Event 004 and ordinary wars) | Each pulse, a host or cell country at war adds `murder_mystery_pulse_context.war_cell_growth` to its cell's maturity growth and `war_case` to its case progress or local case. |
+| Event 035 Great Depression | `great_depression_active` adds `depression_cell_growth` and `depression_case`: weaker institutions, more recruits. |
+| Event 034 Industrial Boom | `industrial_boom_active` adds `boom_case`: better-equipped investigators. |
+| Event 033 Acid Rain | A capital state touched by acid rain (`acid_rain_state_is_touched`) slows both sides (`disaster_cell_growth`, `disaster_case`), so a disaster gives neither the cells nor the government immunity. |
+| Event 022 Concentration Camps | A government with an operational detention site (`camp_admin_site_is_operational` in its `camp_active_site_states`) and a cell on its soil gets Detain Suspected Cell Members: the public strain cost, stability and Evidence Integrity losses, cell maturity loss and exposure, and Network Reach for the movement; the AI weight is low and blocked below 50% stability or with weak evidence. |
+| Event 007 Fury and special Chaos countries | Excluded from targets, cells, terminal registration and leader handling by the existing special-Chaos and nonhuman gates. |
+
 ## World of Anarchy war
 
 Activation registers every ordinary government once (`murder_mystery_register_terminal_country`): it must exist, use normal civilian systems, own at least one state, and be neither special Chaos, nonhuman, exempt, nor on the movement's side (the central state, a derivative, or a subject of either or of a successor administration).

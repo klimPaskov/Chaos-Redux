@@ -192,6 +192,35 @@ murder_mystery_read_cell_stage_cap = {
 	}
 }
 
+# COUNTRY scope: the host or a cell country. Output: temp
+# murder_mystery_context_growth (added to cell maturity growth) and temp
+# murder_mystery_context_case (added to case progress, or to a foreign cell's
+# local case) for this pulse, from the country's war, economy and disaster
+# state. Reads Event 034, 035 and 033 state read-only.
+murder_mystery_read_country_context = {
+	set_temp_variable = { murder_mystery_context_growth = constant:murder_mystery_value.zero }
+	set_temp_variable = { murder_mystery_context_case = constant:murder_mystery_value.zero }
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { murder_mystery_context_growth = constant:murder_mystery_pulse_context.war_cell_growth }
+		add_to_temp_variable = { murder_mystery_context_case = constant:murder_mystery_pulse_context.war_case }
+	}
+	if = {
+		limit = { has_country_flag = great_depression_active }
+		add_to_temp_variable = { murder_mystery_context_growth = constant:murder_mystery_pulse_context.depression_cell_growth }
+		add_to_temp_variable = { murder_mystery_context_case = constant:murder_mystery_pulse_context.depression_case }
+	}
+	if = {
+		limit = { has_country_flag = industrial_boom_active }
+		add_to_temp_variable = { murder_mystery_context_case = constant:murder_mystery_pulse_context.boom_case }
+	}
+	if = {
+		limit = { murder_mystery_country_capital_has_disaster = yes }
+		add_to_temp_variable = { murder_mystery_context_growth = constant:murder_mystery_pulse_context.disaster_cell_growth }
+		add_to_temp_variable = { murder_mystery_context_case = constant:murder_mystery_pulse_context.disaster_case }
+	}
+}
+
 murder_mystery_pulse_grow_network = {
 	set_temp_variable = { murder_mystery_pulse_reach = constant:murder_mystery_value.zero }
 	murder_mystery_read_movement_reach = yes
@@ -213,10 +242,13 @@ murder_mystery_pulse_grow_network = {
 			}
 		}
 		event_target:murder_mystery_original_host = {
+			murder_mystery_read_country_context = yes
 			if = {
 				limit = { check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_cell_growth.suppressed_case_progress compare = less_than } }
 				add_to_variable = { murder_mystery_cell_maturity = murder_mystery_pulse_growth }
+				add_to_variable = { murder_mystery_cell_maturity = murder_mystery_context_growth }
 			}
+			add_to_variable = { murder_mystery_case_progress = murder_mystery_context_case }
 			if = {
 				limit = { check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_cell_growth.host_reach_case_ceiling compare = less_than } }
 				add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_cell_growth.host_reach_gain }
@@ -231,13 +263,19 @@ murder_mystery_pulse_grow_network = {
 		set_temp_variable = { murder_mystery_growth_index = constant:murder_mystery_identity.first_array_index }
 		while_loop_effect = {
 			limit = { check_variable = { var = murder_mystery_growth_index value = global.murder_mystery_cell_country_entries^num compare = less_than } }
+			var:global.murder_mystery_cell_country_entries^murder_mystery_growth_index = { murder_mystery_read_country_context = yes }
 			if = {
 				limit = { check_variable = { var = global.murder_mystery_cell_local_case_entries^murder_mystery_growth_index value = constant:murder_mystery_cell_growth.suppressed_case_progress compare = less_than } }
 				set_temp_variable = { murder_mystery_growth_value = global.murder_mystery_cell_maturity_entries^murder_mystery_growth_index }
 				add_to_temp_variable = { murder_mystery_growth_value = murder_mystery_pulse_growth }
+				add_to_temp_variable = { murder_mystery_growth_value = murder_mystery_context_growth }
 				clamp_temp_variable = { var = murder_mystery_growth_value min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
 				set_variable = { global.murder_mystery_cell_maturity_entries^murder_mystery_growth_index = murder_mystery_growth_value }
 			}
+			set_temp_variable = { murder_mystery_growth_case = global.murder_mystery_cell_local_case_entries^murder_mystery_growth_index }
+			add_to_temp_variable = { murder_mystery_growth_case = murder_mystery_context_case }
+			clamp_temp_variable = { var = murder_mystery_growth_case min = constant:murder_mystery_value.minimum max = constant:murder_mystery_value.maximum }
+			set_variable = { global.murder_mystery_cell_local_case_entries^murder_mystery_growth_index = murder_mystery_growth_case }
 			murder_mystery_promote_cell_row = yes
 			add_to_temp_variable = { murder_mystery_growth_index = constant:murder_mystery_identity.loop_increment }
 		}
