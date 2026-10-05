@@ -16,7 +16,17 @@ The retained package record lists catalog status `Needs Testing` and describes g
 6. `random_faction_join_selected_faction` revalidates the selected leader, joins its faction, stores the chosen leader, applies alignment shock, stores the aligned minor and faction leader in runtime arrays, binds the chosen leader to the exact Event Log history sequence, dispatches leader reaction `chaosx.nr17.40` when that leader is outside its 180-day reaction cooldown, pressures neutral neighbors, checks evolutions and achievements, and emits `chaosx.news.4`.
 7. Regional pressure builds `random_faction_current_region_targets` from eligible neighbors, or from same-continent/coastal reach when the selected country has no land neighbor bucket. Evolution I schedules at most one regional follow-up from that bucket, Evolution II reuses it for wartime pressure, and Evolution III uses it for capped cascade resolution.
 
-If all saved faction targets die between selection and choice display, `random_faction_reopen_dead_faction_file` re-collects live options in the same selected country scope. If no live faction remains, it clears obsolete pressure state instead of presenting a fake or hardcoded choice.
+Faction offers are collected before the selected country's pending-choice lock is set.
+If saved faction targets disappear, `random_faction_reopen_dead_faction_file` releases that lock, re-collects offers for the same country, and locks the replacement choice.
+If no live offer remains, it clears obsolete pressure state and gives a human recipient `chaosx.nr17.90`, explaining that no agreement can be arranged.
+Manual Settings preparation also sends that explanation to the requesting player when it cannot select a suitable foreign country.
+
+Ordinary accessions produce one world-news announcement with an article-independent faction sentence.
+Evolution III participants marked `random_faction_evo3_handled` do not each produce an accession announcement.
+Their regional chain produces one `.80` summary for eligible human countries, including countries outside the affected continent.
+Local faction choices and the faction leader's guarded reaction remain separate actionable reports.
+
+The [2026-10-05 review](../../plans/017_random_faction_plans/agent_decisions_2026-10-05.md) records the source changes, live screenshot evidence, and outstanding MCP validation.
 
 The chosen faction leader receives `chaosx.nr17.40` immediately after a successful accession only when it has no active `random_faction_rival_reaction_cooldown`. The first dispatch opens a 180-day reaction window. Later accessions during that window still update member count, cohesion strain, last-member, and last-region memory but cannot farm another free response. Both visible responses require the recipient to remain a valid living faction leader and the stored target to remain a living, independent member of the same faction, outside direct war with that leader, with that leader still stored as its chosen sponsor. If that context is lost before the report resolves, the event exposes only a cleanup response and applies no liaison or radio reward. Sending staff officers gives the new member Faction Liaison Mission for 180 days, removes 12 pressure, improves mutual relations, and records that member as supported. Building the radio net adds 10 pressure to the new member, applies Bloc Polarization for 240 days, and records the member as supported. Both responses feed the Liaison Web proof. A leader at war or without multiple reachable pressure targets favors staff officers. Multiple reachable targets, peace, fascist or communist government, and high chaos favor radio networks. Democratic leaders are cautious about the radio route.
 

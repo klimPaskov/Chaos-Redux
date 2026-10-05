@@ -149,6 +149,14 @@ random_faction_prepare_runtime_context = {
 			}
 		}
 	}
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = random_faction_exclude_dispatch_requester
+			check_variable = { random_faction_context_ready < 1 }
+		}
+		country_event = { id = chaosx.nr17.90 }
+	}
 }
 
 random_faction_add_current_leader_to_option_pool = {
@@ -267,7 +275,6 @@ random_faction_entry_route_current_country = {
 				}
 			}
 		}
-		random_faction_track_current_selection = yes
 		save_event_target_as = random_faction_target_country
 		if = {
 			limit = { NOT = { random_faction_has_saved_valid_option = yes } }
@@ -275,6 +282,7 @@ random_faction_entry_route_current_country = {
 		}
 		if = {
 			limit = { check_variable = { random_faction_option_count > 0 } }
+			random_faction_track_current_selection = yes
 			if = {
 				limit = { is_ai = no }
 				country_event = { id = chaosx.nr17.10 }
@@ -282,6 +290,10 @@ random_faction_entry_route_current_country = {
 			else = {
 				random_faction_ai_choose_option = yes
 			}
+		}
+		else_if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr17.90 }
 		}
 	}
 	else = {
@@ -294,6 +306,10 @@ random_faction_entry_route_current_country = {
 			event_target:random_faction_target_country = {
 				country_event = { id = chaosx.nr17.1 }
 			}
+		}
+		else_if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr17.90 }
 		}
 	}
 }
@@ -331,9 +347,13 @@ random_faction_choose_option_4_and_join = {
 }
 
 random_faction_reopen_dead_faction_file = {
+	# The pool excludes pending selections. Release the old choice lock while
+	# rebuilding this country's offers, then reacquire it for the new popup.
+	clr_country_flag = random_faction_selection_pending
 	random_faction_collect_faction_options = yes
 	if = {
 		limit = { random_faction_has_saved_valid_option = yes }
+		random_faction_track_current_selection = yes
 		if = {
 			limit = { is_ai = no }
 			country_event = { id = chaosx.nr17.10 }
@@ -345,6 +365,10 @@ random_faction_reopen_dead_faction_file = {
 	else = {
 		clr_country_flag = random_faction_four_doors_choice
 		random_faction_clear_current_country_pressure = yes
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr17.90 }
+		}
 	}
 }
 
@@ -465,7 +489,11 @@ random_faction_join_selected_faction = {
 			random_faction_check_evolution_unlocks = yes
 			random_faction_schedule_neighbor_followup = yes
 			random_faction_check_join_achievements = yes
-			news_event = { id = chaosx.news.4 days = constant:random_faction_days.news_report }
+			# The regional report summarizes cascade participants in one notice.
+			if = {
+				limit = { NOT = { has_country_flag = random_faction_evo3_handled } }
+				news_event = { id = chaosx.news.4 days = constant:random_faction_days.news_report }
+			}
 			set_temp_variable = { random_faction_current_duration = 0 }
 		}
 		else = {
@@ -1006,13 +1034,13 @@ random_faction_run_evo3_cascade = {
 						var = random_faction_evo3_cascade_count
 						value = constant:random_faction_requirement.regional_report_followups
 						compare = greater_than_or_equals
-					}
 				}
+				}
+				ROOT = { save_event_target_as = random_faction_cascade_report_origin }
 				every_country = {
 					limit = {
 						is_ai = no
 						random_faction_country_base_valid = yes
-						is_on_same_continent_as = ROOT
 					}
 					country_event = { id = chaosx.nr17.80 }
 				}
