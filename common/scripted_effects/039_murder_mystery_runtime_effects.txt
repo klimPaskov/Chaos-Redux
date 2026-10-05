@@ -1556,6 +1556,7 @@ murder_mystery_commit_assassin_state_transaction = {
 			set_country_flag = murder_mystery_assassin_state_carrier_validated
 			set_country_flag = murder_mystery_assassin_state_active
 			save_global_event_target_as = murder_mystery_assassin_state
+			murder_mystery_set_white_peace_protection = yes
 			# The tree is chosen when the carrier is created, before this flag
 			# exists, so the committed state loads it explicitly.
 			load_focus_tree = { tree = murder_mystery_assassin_focus_tree keep_completed = no }
@@ -1680,6 +1681,7 @@ murder_mystery_commit_derivative_transaction = {
 		event_target:murder_mystery_derivative_country_candidate = {
 			set_country_flag = murder_mystery_derivative_active
 			set_country_flag = murder_mystery_derivative_carrier_validated
+			murder_mystery_set_white_peace_protection = yes
 		}
 		set_variable = { global.murder_mystery_derivative_setup_status = constant:murder_mystery_assassin.setup_committed }
 		set_global_flag = murder_mystery_derivative_commit_succeeded
@@ -2258,7 +2260,11 @@ murder_mystery_clear_terminal_country_flags = {
 # ---------------------------------------------------------------------------
 # Event 009 skips any war actor that carries white_peace_protected_war_actor.
 # Event 039 sets it on its own war actors and records that it did, so clearing
-# never removes a protection another owner gave the country.
+# never removes a protection another owner gave the country. The central
+# state, every active derivative, the original host while it fights the
+# movement and every campaign target at war with it are protected, so an
+# unrelated white peace cannot strand a split, an inheritance or a successor
+# administration half done.
 
 # COUNTRY scope.
 murder_mystery_set_white_peace_protection = {
@@ -2278,11 +2284,67 @@ murder_mystery_clear_white_peace_protection = {
 	}
 }
 
+# Any scope, called by the movement pulse. Keeps the protection on exactly the
+# countries that need it: the central state, active derivatives, the original
+# host while at war with the central state, and campaign targets at war with
+# it. Reads only the host, the center and the derivative and terminal
+# registries.
+murder_mystery_reconcile_white_peace_protection = {
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_assassin_state_exists
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		event_target:murder_mystery_assassin_state = { murder_mystery_set_white_peace_protection = yes }
+	}
+	for_each_scope_loop = {
+		array = global.murder_mystery_derivative_country_entries
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = murder_mystery_derivative_active
+			}
+			murder_mystery_set_white_peace_protection = yes
+		}
+		else = { murder_mystery_clear_white_peace_protection = yes }
+	}
+	if = {
+		limit = { has_event_target = murder_mystery_original_host }
+		event_target:murder_mystery_original_host = {
+			if = {
+				limit = {
+					exists = yes
+					has_global_flag = murder_mystery_assassin_state_exists
+					has_event_target = murder_mystery_assassin_state
+					has_war_with = event_target:murder_mystery_assassin_state
+				}
+				murder_mystery_set_white_peace_protection = yes
+			}
+			else = { murder_mystery_clear_white_peace_protection = yes }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.murder_mystery_terminal_country_entries
+		if = {
+			limit = {
+				has_global_flag = murder_mystery_terminal_war_active
+				murder_mystery_terminal_target_is_open = yes
+				has_event_target = murder_mystery_assassin_state
+				has_war_with = event_target:murder_mystery_assassin_state
+			}
+			murder_mystery_set_white_peace_protection = yes
+		}
+		else = { murder_mystery_clear_white_peace_protection = yes }
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Cleanup and recovery
 # ---------------------------------------------------------------------------
 
 murder_mystery_cleanup_country_runtime = {
+	murder_mystery_clear_white_peace_protection = yes
 	murder_mystery_decision_cancel_bound_objectives = yes
 	murder_mystery_rollback_action_transaction = yes
 	murder_mystery_clear_selected_target_context = yes

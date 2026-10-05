@@ -273,3 +273,12 @@ Before this change the movement's own victory fired "The Network Breaks" (a gove
 - The movement no longer seeds cells in, strikes, or raises revolts from its own subjects, which after a victory would otherwise turn the pulse against the movement's administrations.
 - Defeat aftermath gate: Evolution IV or V and at least 4 countries held or administered (the center counts once; derivatives are counted by a new `global.murder_mystery_derivatives_ever_created` incremented in the shared derivative commit). Only then does `chaosx.nr39.61` show the super-event and world news and grant the existing (previously unused) Postwar Protection Compact to the government that owns the case; otherwise it is a plain report with its own text. Part 10 also names duration, deaths and coalition breadth; country count and evolution stage are the measurable, recorded proxies.
 - A movement that won World of Anarchy and is later destroyed clears `world_end_murder_mystery` and `world_end` when the movement ends.
+
+## D26. Event 039 wars opt out of Event 009 White Peace
+
+Disposition: implemented (round 2); needs live confirmation that Event 009 skips the protected actors.
+Basis: Part 11 (host wars and World of Anarchy wars must not receive an unrelated automatic white peace) and the lead's round-2 decision 8.
+Event 039 uses Event 009's existing opt-out flag `white_peace_protected_war_actor` from its own files only, with a private marker `murder_mystery_white_peace_protection_set` so it never clears a protection another owner gave.
+Protected: the central state (commit and heir), every active derivative (the shared derivative commit, so revolts and cell territories), the original host while at war with the central state, and every World of Anarchy target at war with it.
+The movement pulse reconciles the set every ten days, which also covers wars that end by separate peace; cleanup, defeat, annexation, successor administrations, terminal cleanup and victory clear it.
+Event 009's flag blocks a country from every white peace, not one war; Part 11's concern is that any white peace of these actors strands the split, inheritance or administration state, so the country-wide opt-out is the intended behaviour.

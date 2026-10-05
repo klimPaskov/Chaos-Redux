@@ -288,6 +288,13 @@ Break the Command Spine needs the current campaign target at war with the centra
 Reconstitute the Campaign Council appears while Cohesion is below `council_cohesion_ceiling`, restores `council_cohesion_repair` Cohesion and adds Campaign Council Reconstituting for `council_vulnerability_days`.
 Synchronize the Uprisings opens the home front the first time; afterwards it raises up to `uprising_wave_size` revolts from ready insurrection cells in the selected sector through the existing derivative path and continues that sector's war wave.
 
+## White Peace protection
+
+Event 009 never picks a country with `white_peace_protected_war_actor` for an automatic white peace.
+Event 039 sets that flag (and its own marker `murder_mystery_white_peace_protection_set`) on the central state at commit, on a territorial heir, on every derivative at commit, on the original host when the split war is declared, and on every World of Anarchy target that enters the war; the pulse (`murder_mystery_reconcile_white_peace_protection`) keeps exactly these countries protected.
+It is removed by country cleanup (defeat, annexation, runtime finalization), by host defeat, by a successor administration or annexation of a target, by the terminal registry cleanup and by victory, and only where Event 039 set it, so a protection another owner gave stays.
+No Event 009 file is edited.
+
 ## World of Anarchy victory and defeat
 
 Resolve the Leaderless World runs `murder_mystery_resolve_terminal_victory` once: it records the Every Chair Empty receipt, ends the campaign war (`murder_mystery_terminal_war_active` is cleared, so waves, objectives and the administration queue stop), removes the White Peace protection the campaign gave its targets, sets `murder_mystery_movement_victorious` and lifecycle `movement_rule`, and applies `murder_mystery_chaos.world_of_anarchy_victory` with the World of Anarchy history reason.
