@@ -172,7 +172,7 @@ Scope: any scope.
 
 Inputs: none. Each threat system sets or clears its own registered global source flag before calling the effect.
 
-Registered sources: `world_threat_source_zombies`, `world_threat_source_holy_realm`, `world_threat_source_mengele`, `world_threat_source_fury`, `world_threat_source_death`, `world_threat_source_cannibalism`, `world_threat_source_black_plague`, `world_threat_source_resources_found_caves`, `world_threat_source_brilliant_scientist`, and `world_threat_source_sov_nuclear_bombs`.
+Registered sources: `world_threat_source_zombies`, `world_threat_source_holy_realm`, `world_threat_source_mengele`, `world_threat_source_fury`, `world_threat_source_death`, `world_threat_source_cannibalism`, `world_threat_source_black_plague`, `world_threat_source_resources_found_caves`, `world_threat_source_brilliant_scientist`, `world_threat_source_sov_nuclear_bombs`, and `world_threat_source_random_terror`.
 
 The `world_threat_source_sov_nuclear_bombs` source counts only while none of `fallout_transition_active`, `fallout_active`, `world_end_final_silence`, and `world_end_final_silence_completed` is set, so the nuclear-bomb source stops contributing once fallout or the Final Silence takes over.
 

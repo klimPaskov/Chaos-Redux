@@ -163,6 +163,12 @@ When the revelation becomes the world-end state (`random_terror_finalize_false_r
 A country with no pressure or no active cell receives nothing.
 Member consent, merger accounting, faction handling and the full aftermath retain open validation and implementation findings.
 
+### World threat
+
+Event 31 registers `world_threat_source_random_terror` in the shared `refresh_world_threat_state` aggregate (checked by `has_world_threat_source_random_terror`), which raises `world_in_threat` for systems such as Utopia Manifesto.
+`random_terror_refresh_world_threat_source` sets the source only while the network is undefeated and `random_terror_world_threat_qualifies` holds: the terminal phase is open (`random_terror_terminal_active`), the Final Jihad is active while a command lives, or a Jihadist International leader (`random_terror_network_leader`) controls at least `random_terror_world_threat.leader_states` states; ordinary cells never set it.
+The source is recomputed only at transaction points: every global-value refresh (waves, takeovers, retakes, sponsorship, absorption, leadership contests, revelation scheduling and cycle reset), Final Jihad activation, Jihadist International founding, actor formation and cleanup, the terminal commit, the revelation and defeat; defeat also clears `random_terror_final_jihad_active`, so the source clears with the network.
+
 ## Decisions, missions, and exact states
 
 The system uses the compact government-response, actor-command, and False Revelation decision categories defined in `common/decisions/categories/031_random_terror_categories.txt`.

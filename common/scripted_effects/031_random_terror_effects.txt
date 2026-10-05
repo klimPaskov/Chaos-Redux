@@ -1522,6 +1522,7 @@ random_terror_apply_evolution_stage = {
 		set_global_flag = random_terror_evolution_5_unlocked
 		set_global_flag = random_terror_final_jihad_active
 		set_global_flag = random_terror_false_revelation_enabled
+		random_terror_refresh_world_threat_source = yes
 	}
 }
 
@@ -2007,6 +2008,7 @@ random_terror_apply_scenario_evolutions = {
 		set_global_flag = random_terror_final_jihad_active
 		set_global_flag = random_terror_false_revelation_enabled
 		set_variable = { global.random_terror_evolution_stage = constant:random_terror_evolution.final_jihad }
+		random_terror_refresh_world_threat_source = yes
 	}
 }
 
@@ -2260,6 +2262,7 @@ random_terror_scenario_form_coordination = {
 			}
 		}
 		clear_global_event_target = random_terror_scenario_leader
+		random_terror_refresh_world_threat_source = yes
 	}
 }
 
@@ -3699,6 +3702,7 @@ random_terror_try_spawn_actor = {
 			add_to_variable = { global.random_terror_territorial_control = constant:random_terror_tuning.actor_control_start }
 			set_global_flag = random_terror_territorial_actor_exists
 			random_terror_emit_first_actor_news = yes
+			random_terror_refresh_world_threat_source = yes
 			if = {
 				limit = { has_global_flag = random_terror_global_jihad_setup_in_progress }
 				add_to_variable = { global.random_terror_scenario_actors_created = constant:random_terror_value.one }
@@ -4880,6 +4884,7 @@ random_terror_focus_reward_lead_coordination = {
 	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
 	set_country_flag = random_terror_focus_coordination_structure
+	random_terror_refresh_world_threat_source = yes
 }
 
 # Challenge Rival Governments: every crisis state of another government that
@@ -5198,6 +5203,27 @@ random_terror_refresh_global_values = {
 	}
 	clamp_variable = { var = global.random_terror_territorial_control min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	random_terror_refresh_world_threat_source = yes
+}
+
+# Any scope.  Event 31's source in the shared world-threat aggregate (Part 10
+# World-threat aggregate), following the holy realm pattern: the owner sets
+# or clears world_threat_source_random_terror from the world state
+# (random_terror_world_threat_qualifies), then rebuilds the aggregate.
+# Ordinary cells never set it.  It runs only at transaction points: the
+# global-value refresh (waves, takeovers, retakes, sponsorship, absorption,
+# leadership contests, revelation scheduling and cycle reset), Final Jihad
+# activation, Jihadist International founding, actor formation and cleanup,
+# the terminal commit, the revelation and defeat; no periodic hook calls it.
+random_terror_refresh_world_threat_source = {
+	if = {
+		limit = { random_terror_world_threat_qualifies = yes }
+		set_global_flag = world_threat_source_random_terror
+	}
+	else = {
+		clr_global_flag = world_threat_source_random_terror
+	}
+	refresh_world_threat_state = yes
 }
 
 random_terror_try_takeover_state = {
@@ -7198,6 +7224,7 @@ random_terror_begin_false_revelation = {
 				event_target:random_terror_final_capital = { set_state_flag = random_terror_terminal_command_capital }
 			}
 			set_global_flag = random_terror_terminal_active
+			random_terror_refresh_world_threat_source = yes
 			random_terror_refresh_terminal_strength = yes
 			event_target:random_terror_final_actor = { random_terror_schedule_terminal_check = yes }
 			event_target:random_terror_final_actor = { random_terror_assign_actor_cosmetic_tag = yes }
@@ -7267,7 +7294,7 @@ random_terror_finalize_false_revelation = {
 		}
 		random_terror_refresh_terminal_strength = yes
 		set_global_flag = random_terror_world_end_ready
-		refresh_world_threat_state = yes
+		random_terror_refresh_world_threat_source = yes
 	}
 }
 
@@ -8070,6 +8097,7 @@ random_terror_resolve_defeat = {
 		set_global_flag = random_terror_defeat_resolved
 		clr_global_flag = random_terror_terminal_active
 		clr_global_flag = random_terror_global_jihad_active
+		clr_global_flag = random_terror_final_jihad_active
 		clear_variable = global.random_terror_presence_score
 		clear_variable = global.random_terror_revolt_score
 		clear_variable = global.random_terror_ruin_score
@@ -8113,7 +8141,7 @@ random_terror_resolve_defeat = {
 				set_global_flag = random_terror_network_defeat_news_sent
 			}
 		}
-		refresh_world_threat_state = yes
+		random_terror_refresh_world_threat_source = yes
 	}
 }
 
@@ -8519,6 +8547,7 @@ random_terror_cleanup_actor = {
 		clear_variable = random_terror_territorial_control
 		random_terror_clear_actor_runtime = yes
 	}
+	random_terror_refresh_world_threat_source = yes
 }
 
 random_terror_actor_surrender = {

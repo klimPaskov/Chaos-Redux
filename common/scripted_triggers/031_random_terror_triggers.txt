@@ -853,6 +853,28 @@ random_terror_has_unresolved_actor = {
 	}
 }
 
+# Any scope.  Part 10 World-threat aggregate: Event 31 threatens the world
+# only at an existential level, never through ordinary cells.  It holds while
+# the network is not yet defeated and the terminal False Revelation phase is
+# open, the Final Jihad is active while a command still lives, or a Jihadist
+# International leader controls at least random_terror_world_threat.leader_states
+# states.
+random_terror_world_threat_qualifies = {
+	NOT = { has_global_flag = random_terror_defeat_resolved }
+	OR = {
+		has_global_flag = random_terror_terminal_active
+		AND = {
+			has_global_flag = random_terror_final_jihad_active
+			any_country = { random_terror_is_actor = yes }
+		}
+		any_country = {
+			random_terror_is_actor = yes
+			has_country_flag = random_terror_network_leader
+			NOT = { num_of_controlled_states < constant:random_terror_world_threat.leader_states }
+		}
+	}
+}
+
 random_terror_can_takeover_state = {
 	random_terror_is_actor = yes
 	check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
