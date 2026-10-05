@@ -508,3 +508,17 @@ Decisions:
 - The code comment and `docs/events/012_africa/charter_autonomy_and_focus_ai.md` and `overview.md` describe the real rule; the earlier claim that national-tree hosts received the content through additive decisions was not true.
 
 MCP route evidence (2026-10-05): `hoi4_event_inspect` with `mode = trace` for `chaosx.nr12.1211` returned "Invalid tool arguments" with both an object and a string selector; it was not retried. `hoi4_reference_search` and `hoi4_reference_read` supplied the citations above.
+
+## L36. Aircraft tribute uses the light-airframe fighter type
+
+Disposition: `implemented` (the native `num_equipment@small_plane_airframe`, `has_equipment` and `send_equipment` results on live countries, with and without By Blood Alone, are `needs_live_game`).
+
+Basis: the routed load warning L1 (2026-10-05 13:50), "Token fighter_equipment_1 is a dynamic token" from `012_africa_gods_contribution_effects.txt` line 35. At HEAD that token is registered nowhere (only another owner's uncommitted Event 042 hunk in `chaosx_tokens.txt` adds it). With By Blood Alone installed, fighters are `small_plane_airframe` designs, so the aircraft family, which used only `fighter_equipment_1`, almost never qualified as Africa's need or as a payable demand.
+Vanilla `common/units/equipment/x_plane_airframes.txt` gives `fighter_equipment_1` the archetype `small_plane_airframe`, and vanilla registers `small_plane_airframe` in `common/synchronized_dynamic_tokens/tokens.txt` (line 33). Vanilla precedents: `num_equipment@small_plane_airframe` (`common/decisions/ITA.txt` line 963), `has_equipment = { small_plane_airframe > 99 }` (`common/decisions/CHI_decisions.txt` line 3661) and `send_equipment = { equipment = small_plane_airframe }` (`common/national_focus/czechoslovakia_mu.txt` line 7417). The installed `dynamic_variables_documentation.md` documents `num_equipment@<type>`.
+
+Decisions:
+
+- Every aircraft stock read, check and transfer in Event 012 uses `small_plane_airframe`: the contribution measurement (`gods_of_africa_read_contribution_native_stock`), Africa's aircraft need and surplus, the participant's capacity, substitute and partial checks, the material-receipt source check, and the payment `send_equipment`. The measured credit therefore compares the same type that was sent. No `fighter_equipment_1` reference remains in any Event 012 script.
+- Registering `fighter_equipment_1` as a token was rejected: it would only hide the warning and leave the aircraft demands dead under By Blood Alone. No new synchronized token is needed, and the shared `chaosx_tokens.txt` is not touched.
+- The Strength technology component read only `fighter3`, a tech in `air_techs_folder`, which vanilla `common/technology_tags` makes unavailable with By Blood Alone. It now reads `fighter3` or the By Blood Alone equivalent `advanced_small_airframe` (both start in 1944), so the fighter bonus can be earned in either setup.
+- The Gods guide and the contribution helper notes say that the aircraft family uses the light-airframe fighter type. Player text already says "aircraft" and "fighters" and names no model, so localisation is unchanged.

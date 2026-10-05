@@ -696,7 +696,7 @@ gods_of_africa_refresh_strength = {
 		if = { limit = { has_tech = radio_detection } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_radio_detection } }
 		if = { limit = { has_tech = construction5 } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_construction } }
 		if = { limit = { has_tech = advanced_machine_tools } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_machine_tools } }
-		if = { limit = { has_tech = fighter3 } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_fighter } }
+		if = { limit = { OR = { has_tech = fighter3 has_tech = advanced_small_airframe } } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_fighter } }
 		if = { limit = { has_tech = synth_oil_experiments } add_to_temp_variable = { gods_of_africa_strength_technology = constant:gods_of_africa_strength.technology_synthetic } }
 		add_to_temp_variable = { gods_of_africa_strength_reach = gods_of_africa_strength_technology }
 		divide_temp_variable = { gods_of_africa_strength_reach = constant:gods_of_africa_strength.component_average_divisor }
@@ -1127,7 +1127,7 @@ gods_of_africa_build_need_profile = {
 			set_variable = { gods_of_africa_need_transport = constant:gods_of_africa_value.one }
 		}
 		if = {
-			limit = { has_equipment = { fighter_equipment_1 < constant:gods_of_africa_transaction.aircraft_amount } }
+			limit = { has_equipment = { small_plane_airframe < constant:gods_of_africa_transaction.aircraft_amount } }
 			set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.one }
 		}
 		if = {
@@ -1161,7 +1161,7 @@ gods_of_africa_build_need_profile = {
 				set_variable = { gods_of_africa_need_support_equipment = constant:gods_of_africa_value.zero }
 			}
 			if = {
-				limit = { NOT = { has_equipment = { fighter_equipment_1 < constant:gods_of_africa_needs.aircraft_surplus } } }
+				limit = { NOT = { has_equipment = { small_plane_airframe < constant:gods_of_africa_needs.aircraft_surplus } } }
 				set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.zero }
 			}
 			if = {
@@ -2668,7 +2668,7 @@ gods_of_africa_transfer_payment = {
 			gods_of_africa_begin_payment_receipt = yes
 			if = {
 				limit = { has_country_flag = gods_of_africa_material_transfer_begin_ready }
-				send_equipment = { equipment = fighter_equipment_1 amount = gods_of_africa_payment_amount target = event_target:africa_host }
+				send_equipment = { equipment = small_plane_airframe amount = gods_of_africa_payment_amount target = event_target:africa_host }
 				gods_of_africa_complete_payment_receipt = yes
 			}
 		}

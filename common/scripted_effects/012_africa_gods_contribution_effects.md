@@ -98,7 +98,7 @@ Prices, existing fuel capacity, cooldowns, ordinary reinforcement reserves, dema
 | Trucks | num_equipment@motorized_equipment |
 | Artillery | num_equipment@artillery_equipment |
 | Armor | Separate raw num_equipment snapshots for light, medium, heavy, modern, super-heavy and amphibious chassis, with separate directed differences |
-| Aircraft | num_equipment@fighter_equipment_1, matching the current actual send |
+| Aircraft | num_equipment@small_plane_airframe, the light-airframe fighter type that the payment sends, counting both legacy fighters and By Blood Alone light-airframe designs |
 | Fuel | fuel_k, native thousands BEFORE/AFTER |
 | Convoys | num_equipment@convoy_1, matching the actual branch |
 | Trains | num_equipment@train_equipment |
