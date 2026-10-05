@@ -30,6 +30,7 @@ The CBL host can later investigate to locate the caches and, on the Break the Wa
    - Bargain: pays Command Power equal to a tenth of the cache (5 to 40) and recovers 80 percent with no resistance. Hidden when the host cannot pay.
    - Write off: shown instead of the three answers when neither the host nor one of its subjects controls the cache state. The review says the stores are beyond reach, and the cache is closed with no recovery, no payment, no resistance and no authority change.
    Every answer checks control again when it is chosen, so a cache lost while the event was open is closed the same way and a bargain is never charged for it.
+   Write off always closes a cache still on record, even one retaken while the event was open, because the host chose to write it off.
    After the answer the cache is marked reviewed and the next waiting cache is queued.
 5. Investigation (CBL, after Audit the Submitted Hosts). `cannibalism_unified_investigate_hidden_hoards` costs 15 Command Power and 5 Army Experience (plus the hostility command surcharge) and needs an unlocated cache.
    It locates every unlocated cache and reopens its review, so each owner answers again with the higher located confront share.

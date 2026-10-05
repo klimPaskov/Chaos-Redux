@@ -14647,13 +14647,18 @@ cannibalism_bargain_reviewed_hoard = {
 }
 
 # chaosx.nr14.82 option shown when the cache state is out of the host bloc's
-# reach: the stores are written off and nothing is recovered or paid.
+# reach: the stores are written off and nothing is recovered or paid. The
+# cache closes even if the host retook the state while the event was open,
+# because writing it off is the answer the host chose.
 cannibalism_write_off_reviewed_hoard = {
 	# Own the cannibalism_load_hoard_review_target outputs read after it returns.
 	set_temp_variable = { cannibalism_hoard_target_is_governor = constant:cannibalism_hoard.zero }
 	set_temp_variable = { cannibalism_hoard_target_valid = constant:cannibalism_hoard.zero }
 	cannibalism_load_hoard_review_target = yes
-	cannibalism_close_lost_target_hoard = yes
+	if = {
+		limit = { check_variable = { cannibalism_hoard_target_valid > constant:cannibalism_hoard.zero } }
+		cannibalism_close_target_hoard = yes
+	}
 	cannibalism_finish_hoard_review = yes
 }
 

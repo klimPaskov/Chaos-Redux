@@ -318,3 +318,18 @@ Findings:
 - "Warlord answers and their lieutenants come under central record" in the Summon the Warlords tooltip now reads "Every warlord's answer and lieutenants enter the central register", matching the focus description.
 
 MCP evidence: `hoi4.source_lookup` for `cannibal_march_predation_column_short` returned no definitions (revision 7b11b9d0); localisation keys are not indexed, so the keys were reviewed in source.
+
+## R2 third review. Write-off answer and capital fort tooltips
+
+Disposition: `implemented` (one hoard answer and four tooltips; no tuning or AI weight change).
+
+Basis: skeptical review of 3954dd278, e5c3bb072, abacbd845, a49dc6df5, 364d07446 and c20dd3dc0 at HEAD c03bcf4cc, against `documentation/effects_documentation.md` (`damage_building`, `add_building_construction`), the wiki `Effects` entry for `add_building_construction` (variable `level`, `limit_to_*` filters), `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` line 440 and vanilla `SWE.txt`, `afghanistan.txt`, `australia.txt` and `australia_taog.txt` naval base filters.
+
+Findings:
+
+- Write off the stores left a cache on record and marked it reviewed when the host retook the cache state while the event was open, although the option says the cache is lost and nothing is recovered. The cache then stayed seizable without any answer's effects. `cannibalism_write_off_reviewed_hoard` now closes any cache still on record, because writing it off is the answer the host chose; confront, tolerate and bargain keep their control recheck.
+- R2-2 says the focus tooltips name where the forts go, but Hold the Origin Ground, Protect the Command Body, Fortify the Feeding Districts and Fortify Independent Ground still said only "Fortifies the capital". They now say the Land Fort level goes to the capital's victory points, like the Choose the First Command Capital and Shield the Supreme Body tooltips.
+- No other defect was found. The raid trigger, strike flag and receipt, the fort and port helpers and their province filters, the caller-owned defaults (none is read by its helper before the helper writes it), the restored spread request, the lost-cache event branch and every new localisation key were checked in source; braces balance in every touched Event 014 file and no Event 014 file uses `non_damaged_building_level`.
+- The `days =` duration of the strike flag is a bare temporary variable, the form Event 014 already uses for its pulse, consumption and recruitment cooldown flags, so it was left unchanged; whether the flag expires after 30 days is `needs_live_game` with the rest of R2-1.
+
+MCP evidence: `hoi4.source_lookup` resolved `cannibalism_add_state_port_levels` (revision 34a12d5e). `hoi4.event_inspect` `lint` with `{"eventId": ...}` and `trace` with `{"type": "event", "id": ...}` returned "Invalid tool arguments", so the event was reviewed in source.
