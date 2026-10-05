@@ -79,11 +79,14 @@ def run_cases():
     # Against the original decision freeze, the only outside change admitted is
     # the Black Friday owner's 2026-10-04 cost substitution (commit c0cb6b007):
     # cost = constant:<category>.<key> became
-    # cost = global.black_friday_price_<category>_<key>.
+    # cost = global.black_friday_price_<category>_<key>, and its 2026-10-05
+    # Political Power credit line in each paid decision (commit 51c713118).
     old_decisions = mask_owned((HERE / 'before_germany_mengele_decisions.txt').read_bytes(), IDS).decode('utf-8-sig').replace('\r\n', '\n').splitlines()
     new_decisions = mask_owned(decisions_bytes, IDS).decode('utf-8-sig').replace('\r\n', '\n').splitlines()
     cost_line = re.compile(r'^(\t*)cost = constant:([a-z_]+)\.([a-z_]+)$')
     for tag, a, b, c, d in difflib.SequenceMatcher(None, old_decisions, new_decisions, autojunk=False).get_opcodes():
+        if tag == 'insert' and all(line.strip() == 'hidden_effect = { black_friday_credit_political_power_purchase = yes }' for line in new_decisions[c:d]):
+            continue
         if tag != 'equal':
             assert tag == 'replace' and b - a == d - c, ('Unreviewed decision edit', tag, old_decisions[a:b], new_decisions[c:d])
             for old_line, new_line in zip(old_decisions[a:b], new_decisions[c:d]):

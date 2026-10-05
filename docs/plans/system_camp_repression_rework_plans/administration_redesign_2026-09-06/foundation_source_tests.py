@@ -662,7 +662,9 @@ def tests():
     blocked=rework_loc.split('camp_cost_activation_non_pp_blocked:',1)[1].split('\n',1)[0]
     assert all('['+getter+']' in blocked for getter in ('GetCampUiActivationManpower','GetCampUiActivationCommand','GetCampUiActivationSupportCost'))
     activation_hover=rework_loc.split('camp_cost_activation_non_pp_tooltip:',1)[1].split('\n',1)[0]
-    assert all('constant:'+key in activation_hover for key in ('camp_rework_cost.activation_pp','camp_rework_cost.activation_manpower','camp_rework_cost.activation_command','camp_rework_equipment_cost.support_equipment'))
+    # The hover shows the Event 026 sale price that the decision charges, not the ordinary constant.
+    assert 'global.black_friday_price_camp_rework_cost_activation_pp' in activation_hover,activation_hover
+    assert all('constant:'+key in activation_hover for key in ('camp_rework_cost.activation_manpower','camp_rework_cost.activation_command','camp_rework_equipment_cost.support_equipment')),activation_hover
     results.append('Generic activation accepts exact manpower, command and support quotes in decision, Ledger, AI cap and UI, rejecting one unit short')
     ui=Runtime(); ui.country('GER'); selected=ui.state(country='GER')
     ui.root='GER'
@@ -832,6 +834,10 @@ def tests():
     sticky,sc=generic_fixture('sticky'); assert abs(sc['political_power']-84.25)<1e-8 and sticky.temp['camp_admin_generic_release_rows_ready']==1
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
     results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
+    import black_friday_sale_prices as sale
+    paid=sale.check_native_costs()
+    assert len(paid)==78,len(paid)
+    results.append('Event 026 sale: all 78 positive native camp costs read a registered price-table global and credit one Political Power purchase')
     return results
 
 if __name__=='__main__':

@@ -187,6 +187,8 @@ Positive native costs: 0; dynamic native costs: 0; custom cost declarations: 89.
 
 Positive native costs: 78; dynamic native costs: 0; custom cost declarations: 34.
 
+Disposition (Camps owner, 2026-10-05): native costs `converted`. All 78 read `global.black_friday_price_camp_rework_cost_<key>` for the nine registered `camp_rework_cost.*_pp` keys, credit one Political Power purchase, and refund the recorded charged amount (`camp_rework_native_pp_paid`) when an order is refused; the window's action prices read the same globals (`docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md`, entry 13). Custom costs and the three genocide-crisis payments below: `owner adoption pending`. The line numbers below predate the conversion.
+
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
 | --- | --- | --- | --- |
 | `common/decisions/camp_administration_country_decisions.txt` | - | - | 30 |

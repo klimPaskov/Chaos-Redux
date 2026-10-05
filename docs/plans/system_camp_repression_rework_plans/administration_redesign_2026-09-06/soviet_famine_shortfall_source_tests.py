@@ -6,9 +6,11 @@ This suite establishes source behavior, not observed Clausewitz execution.
 from pathlib import Path
 import json
 from foundation_source_tests import Runtime, parse, get
+import black_friday_sale_prices as sale
 
 ROOT = Path(__file__).resolve().parents[4]
 HERE = Path(__file__).resolve().parent
+SALE_RATIO = sale.RATIO_BASIS
 
 
 class FamineRuntime(Runtime):
@@ -39,6 +41,9 @@ class FamineRuntime(Runtime):
         self.events = {get(body, 'id'): body for key, _, body in source if key == 'country_event'}
         decisions = parse((ROOT / 'common/decisions/camp_repression_major_country_decisions.txt').read_text(encoding='utf-8-sig'))
         self.decision = next(body for _, _, category in decisions if isinstance(category, list) for key, _, body in category if key == 'sov_emergency_famine_relief')
+        assert get(self.decision, 'cost') == 'global.black_friday_price_camp_rework_cost_labor_project_pp'
+        sale.install(self, SALE_RATIO)
+        self.price = sale.price(self, 'labor_project_pp')
 
     def cond(self, body, scope, previous=None):
         for key, operator, value in body:
@@ -107,7 +112,7 @@ def run_cases():
     r.paid_decision()
     assert r.c['equipment'] == {kind: 0 for kind in r.quote}
     assert len(r.equipment_debits) == 3 and len(r.activations) == 1
-    assert r.c['political_power'] == 70
+    assert r.c['political_power'] == 100 - r.price and sale.credits(r) == 1
     assert r.timed_flag_writes == [('camp_gui_country_action_2_cooldown', r.constants['camp_rework_timing.standard_action_days'])]
     assert r.c['grain_extraction_burden'] < 60 and r.c['state_population_k'] == 1000 and r.logged == 0
     results.append('Exact stock: one quote, one mission, one PP debit and success cooldown')
@@ -121,7 +126,7 @@ def run_cases():
         for event, name in [('soviet_gulag.1', 'soviet_gulag.1.c'), ('soviet_gulag.2', 'soviet_gulag.2.shortfall')]:
             assert name in [get(option, 'name') for option in short.options(event)]
         short.paid_decision()  # Mock a click accepted before the stock changed.
-        assert short.c['political_power'] == 100 and short.c['equipment'] == before
+        assert short.c['political_power'] == 100 and short.c['equipment'] == before and sale.credits(short) == 0
         assert not short.timed_flag_writes and not short.activations
         assert short.c['grain_extraction_burden'] == 60 and short.c['famine_pressure'] == 85
         results.append(f'One-unit-short {kind}: selectable shortfall, stale paid refund, no success')
@@ -175,14 +180,15 @@ def run_cases():
     r.paid_decision()
     paid = r.c['equipment'].copy()
     r.paid_decision()
-    assert r.c['equipment'] == paid and len(r.activations) == 1 and r.c['political_power'] == 70
+    assert r.c['equipment'] == paid and len(r.activations) == 1 and r.c['political_power'] == 100 - r.price
+    assert sale.credits(r) == 1  # The refunded duplicate earns no second sale credit.
     assert r.timed_flag_writes == [('camp_gui_country_action_2_cooldown', r.constants['camp_rework_timing.standard_action_days'])]
     results.append('Concurrent duplicate order: refund and no second material payment or mission')
 
     r = FamineRuntime()
     r.c['famine_pressure'] = 0
     r.paid_decision()
-    assert not r.equipment_debits and not r.activations and r.c['political_power'] == 100
+    assert not r.equipment_debits and not r.activations and r.c['political_power'] == 100 and sale.credits(r) == 0
     results.append('Resolved famine rejects stale native order without relief or cooldown')
     r = FamineRuntime()
     r.c['original_tag'] = 'GER'
@@ -193,6 +199,9 @@ def run_cases():
 
 
 if __name__ == '__main__':
-    cases = run_cases()
+    cases = []
+    for ratio in sale.SALE_RATIOS:
+        SALE_RATIO = ratio
+        cases += [f'payment ratio {ratio}: {case}' for case in run_cases()]
     (HERE / 'soviet_famine_shortfall_source_results.json').write_text(json.dumps({'scope': 'Production-source interpretation with mocked native receipts', 'cases': cases, 'count': len(cases)}, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'passed': len(cases), 'cases': cases}, indent=2))

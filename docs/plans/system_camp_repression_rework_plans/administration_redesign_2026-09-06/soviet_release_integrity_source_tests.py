@@ -4,13 +4,16 @@ import json
 
 from foundation_source_tests import parse, get, prime_existing_custody
 from major_countries_source_tests import CountryRuntime
+import black_friday_sale_prices as sale
 
 
 ROOT = Path(__file__).resolve().parents[4]
+SALE_RATIO = sale.RATIO_BASIS
 
 
 def scenario(second_k=5, invalid_second=False, population_k=100):
     runtime = CountryRuntime()
+    sale.install(runtime, SALE_RATIO)
     country = runtime.country('SOV')
     country.update(government='communism', war=True, forced_labor_quota=30,
                    famine_pressure=20, old_movement_grievance=15, camp_policy_reform=0,
@@ -57,15 +60,16 @@ def scenario(second_k=5, invalid_second=False, population_k=100):
     tooltip = get(availability, 'custom_trigger_tooltip')
     assert get(tooltip, 'tooltip') == 'sov_release_prisoners_for_military_service_rows_tt'
     assert get(tooltip, 'camp_rework_soviet_service_release_ready') == 'yes'
-    assert get(block, 'cost') == 'constant:camp_rework_cost.review_pp'
+    assert get(block, 'cost') == 'global.black_friday_price_camp_rework_cost_review_pp'
+    runtime.release_decision = block
     return runtime, country, availability
 
 
 def execute_paid(runtime, country):
-    quote = runtime.constants['camp_rework_cost.review_pp']
+    quote = runtime.val(get(runtime.release_decision, 'cost'), 'SOV')
     country['political_power'] -= quote  # Native decision debit before complete_effect.
-    runtime.temp['camp_rework_action_id'] = runtime.constants['camp_rework_action.sov_release_prisoners_for_military_service']
-    runtime.run('camp_rework_route_country_specific_action', 'SOV')
+    runtime.execute(get(runtime.release_decision, 'complete_effect'), 'SOV')
+    assert runtime.temp['camp_rework_native_pp_paid'] == 0  # The charged amount is consumed by refund or credit.
 
 
 def decision_available(runtime, block):
@@ -90,6 +94,10 @@ def policy_description_key(runtime):
                 and (get(text, 'trigger') is None or runtime.cond(get(text, 'trigger'), 'SOV')))
 
 
+def PRICE():
+    return sale.sale_prices(SALE_RATIO)['global.black_friday_price_camp_rework_cost_review_pp']
+
+
 def run_cases():
     results = []
     runtime, country, available = scenario(second_k=10, invalid_second=True)
@@ -97,7 +105,7 @@ def run_cases():
     assert not decision_available(runtime, available)
     before = [(runtime.scopes[site]['camp_admin_detainees_k'], runtime.scopes[site]['state_population_k']) for site in ('A', 'B')]
     execute_paid(runtime, country)
-    assert country['political_power'] == 100 and country['forced_labor_quota'] == 30
+    assert country['political_power'] == 100 and country['forced_labor_quota'] == 30 and sale.credits(runtime) == 0
     assert country['famine_pressure'] == 20 and country['old_movement_grievance'] == 15
     assert country['camp_policy_reform'] == 0 and country['camp_admin_country_last_released_k'] == 0
     assert country['camp_admin_total_released_k'] == 0
@@ -105,13 +113,14 @@ def run_cases():
     assert all('camp_admin_census_intake_closed' not in runtime.scopes[site]['flags'] for site in ('A', 'B'))
     assert 'camp_gui_country_action_3_cooldown' not in country['flags']
     assert 'camp_rework_soviet_service_release_policy_enacted' not in country['flags']
-    results.append({'case': 'mixed_valid_invalid_rows', 'refund_pp': 45, 'actual_release_people': 0})
+    results.append({'case': 'mixed_valid_invalid_rows', 'refund_pp': PRICE(), 'actual_release_people': 0})
 
     runtime, country, available = scenario(second_k=5)
     assert decision_available(runtime, available)
     before = [runtime.scopes[site]['state_population_k'] for site in ('A', 'B')]
     execute_paid(runtime, country)
-    assert country['political_power'] == 55 and country['camp_admin_country_last_released_k'] == 15
+    assert country['political_power'] == 100 - PRICE() and country['camp_admin_country_last_released_k'] == 15
+    assert sale.credits(runtime) == 1
     assert country['camp_admin_total_released_k'] == 15
     assert runtime.scopes['A']['camp_admin_total_released_k'] == 10
     assert runtime.scopes['B']['camp_admin_total_released_k'] == 5
@@ -123,7 +132,7 @@ def run_cases():
     assert before == [runtime.scopes[site]['state_population_k'] for site in ('A', 'B')]
     assert country['camp_policy_reform'] == runtime.constants['camp_rework_country_value.reform_major']
     assert country['forced_labor_quota'] < 30 and country['famine_pressure'] < 20 and country['old_movement_grievance'] < 15
-    results.append({'case': 'two_valid_sites', 'paid_pp': 45, 'actual_release_people': 15000,
+    results.append({'case': 'two_valid_sites', 'paid_pp': PRICE(), 'actual_release_people': 15000,
                     'population_unchanged': True})
 
     runtime, country, available = scenario(second_k=0)
@@ -131,13 +140,13 @@ def run_cases():
     runtime.scopes['B']['state_population_k'] = runtime.constants['camp_admin_value.minimum_population_k']
     assert not decision_available(runtime, available)  # Fresh provenance also rejects the unobserved physical decline.
     execute_paid(runtime, country)
-    assert country['political_power'] == 100 and country['camp_admin_country_last_released_k'] == 0
+    assert country['political_power'] == 100 and country['camp_admin_country_last_released_k'] == 0 and sale.credits(runtime) == 0
     assert country['camp_admin_total_released_k'] == 0
     assert country['forced_labor_quota'] == 30 and country['camp_policy_reform'] == 0
     assert all('camp_admin_census_intake_closed' not in runtime.scopes[site]['flags'] for site in ('A', 'B'))
     assert 'camp_gui_country_action_3_cooldown' not in country['flags']
     assert 'camp_rework_soviet_service_release_policy_enacted' not in country['flags']
-    results.append({'case': 'headroom_exhausted_at_execution', 'refund_pp': 45,
+    results.append({'case': 'headroom_exhausted_at_execution', 'refund_pp': PRICE(),
                     'actual_release_people': 0, 'policy_relief': 0})
 
     runtime, country, available = scenario(second_k=0)
@@ -146,14 +155,14 @@ def run_cases():
     assert decision_available(runtime, available)
     before = runtime.scopes['A']['state_population_k']
     execute_paid(runtime, country)
-    assert country['political_power'] == 55 and country['camp_admin_country_last_released_k'] == .001
+    assert country['political_power'] == 100 - PRICE() and country['camp_admin_country_last_released_k'] == .001
     assert country['forced_labor_quota'] == 23 and country['famine_pressure'] == 8
     assert country['old_movement_grievance'] == 8 and country['camp_policy_reform'] == 6
     assert runtime.scopes['A']['state_population_k'] == before
     assert 'camp_admin_census_intake_closed' in runtime.scopes['A']['flags']
     assert 'camp_gui_country_action_3_cooldown' in country['flags']
     assert 'camp_rework_soviet_service_release_policy_enacted' in country['flags']
-    results.append({'case': 'one_survivor_fixed_policy_sensitivity', 'paid_pp': 45,
+    results.append({'case': 'one_survivor_fixed_policy_sensitivity', 'paid_pp': PRICE(),
                     'actual_release_people': 1, 'quota_delta': -7, 'famine_delta': -12,
                     'grievance_delta': -7, 'reform_delta': 6,
                     'interpretation': 'Fixed national policy effect; no accepted minimum cohort.'})
@@ -168,11 +177,12 @@ def run_cases():
     prime_existing_custody(runtime, 'C', .001)
     assert decision_available(runtime, available)
     execute_paid(runtime, country)
-    assert country['political_power'] == 10 and country['camp_admin_country_last_released_k'] == .001
+    assert country['political_power'] == 100 - 2 * PRICE() and country['camp_admin_country_last_released_k'] == .001
+    assert sale.credits(runtime) == 2
     assert country['camp_policy_reform'] == 6 and country['forced_labor_quota'] == 23
     assert country['camp_admin_total_released_k'] == 10.001
     assert policy_description_key(runtime) == 'sov_release_prisoners_repeat_consequence'
-    results.append({'case': 'later_new_site_repeat_sensitivity', 'orders': 2, 'paid_pp': 90,
+    results.append({'case': 'later_new_site_repeat_sensitivity', 'orders': 2, 'paid_pp': 2 * PRICE(),
                     'second_release_people': 1, 'total_reform_delta': 6,
                     'second_policy_delta': 0,
                     'premise': 'A new eligible Gulag site and a later native decision re-enable are declared.'})
@@ -180,8 +190,11 @@ def run_cases():
 
 
 if __name__ == '__main__':
-    cases = run_cases()
-    result = {'status': 'passed', 'source_scenarios': cases,
+    cases = {}
+    for ratio in sale.SALE_RATIOS:
+        SALE_RATIO = ratio
+        cases[f'payment_ratio_{ratio}'] = run_cases()
+    result = {'status': 'passed', 'source_scenarios': cases, 'sale_ratios': list(sale.SALE_RATIOS),
               'limit': 'Parsed production effects and triggers with mocked native PP debit; no live decision click or physical engine receipt.'}
     Path(__file__).with_name('soviet_release_integrity_source_results.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'status': result['status'], 'scenarios': len(cases)}, indent=2))
+    print(json.dumps({'status': result['status'], 'scenarios': sum(len(group) for group in cases.values())}, indent=2))

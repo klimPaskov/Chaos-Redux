@@ -2350,8 +2350,13 @@ camp_rework_soviet_release_prisoners_for_military_service = {
 	if = {
 		limit = { NOT = { check_variable = { camp_admin_country_last_released_k > constant:camp_admin_value.zero } } }
 		# The native decision pays before this effect. A stale row preflight or a
-		# zero actual release must not buy policy relief.
-		add_political_power = constant:camp_rework_cost.review_pp
+		# zero actual release must not buy policy relief, so the order returns the
+		# political power its caller recorded as charged.
+		if = {
+			limit = { check_variable = { camp_rework_native_pp_paid > 0 } }
+			add_political_power = camp_rework_native_pp_paid
+		}
+		set_temp_variable = { camp_rework_native_pp_paid = 0 }
 	}
 }
 

@@ -3007,7 +3007,7 @@ camp_rework_italy_raise_security_battalions = {
 			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_country_flag = camp_admin_civil_initialized }
 			NOT = { has_decision = ita_colonial_security_sweep }
-			check_variable = { camp_rework_italy_security_pp_paid = constant:camp_rework_cost.guard_pp }
+			check_variable = { camp_rework_italy_security_pp_paid = global.black_friday_price_camp_rework_cost_guard_pp }
 			camp_rework_italy_security_battalions_resources_ready = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = { camp_rework_italy_security_battalions_site_ready = yes }
@@ -3022,6 +3022,8 @@ camp_rework_italy_raise_security_battalions = {
 			set_variable = { ita_security_sweep_state_id = camp_selected_state_id }
 			activate_mission = ita_colonial_security_sweep
 			set_temp_variable = { camp_rework_italy_security_action_accepted = 1 }
+			# The deployment keeps the political power it was charged, so it counts as one sale purchase.
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			camp_rework_update_colonial_country_monthly_bridge = yes
 		}
 	}

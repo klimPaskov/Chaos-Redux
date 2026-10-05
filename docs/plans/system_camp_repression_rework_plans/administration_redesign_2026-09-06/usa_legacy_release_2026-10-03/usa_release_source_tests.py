@@ -20,6 +20,7 @@ ROOT = HANDOFF_DIR.parents[4]
 sys.path.insert(0, str(ADMIN_PLAN_DIR))
 
 from foundation_source_tests import Runtime, get, parse, prime_existing_custody
+import black_friday_sale_prices as sale
 
 
 SOURCE_PATHS = [
@@ -215,8 +216,12 @@ class ReleaseRuntime(Runtime):
             base_execute([(key, op, value)], scope, previous)
 
 
+SALE_RATIO = sale.RATIO_BASIS
+
+
 def new_release_runtime(stock=180, ai=False, rows_k=4):
     runtime = ReleaseRuntime()
+    sale.install(runtime, SALE_RATIO)
     country = runtime.country("USA")
     country.update(original_tag="USA", is_ai=ai, has_war=True, eligible=True)
     country["equipment"] = {"support_equipment_1": stock}
@@ -304,6 +309,7 @@ def assert_rejected(runtime, country, state, pp_before=100, support_before=180, 
     assert country["relocation_population_disruption"] == 20
     assert country["court_challenge_pressure"] == 5
     assert runtime.temp.get("camp_rework_usa_release_order_accepted", 0) == 0
+    assert sale.credits(runtime) == 0, "a refunded order earns no sale credit"
 
 
 def run_tests():
@@ -316,7 +322,8 @@ def run_tests():
     require_available(runtime, decision)
     population_before = state["state_population_k"]
     native_click(runtime, decision)
-    assert country["political_power"] == 80
+    assert country["political_power"] == 100 - sale.price(runtime, "guard_pp"), (country["political_power"], sale.price(runtime, "guard_pp"), SALE_RATIO)
+    assert sale.credits(runtime) == 1, "a kept release counts as one Political Power sale purchase"
     assert country["equipment"]["support_equipment_1"] == 0
     assert state["camp_admin_detainees_k"] == 0
     assert state["camp_admin_total_released_k"] == 4
@@ -364,7 +371,7 @@ def run_tests():
     # GUI action executes the same production release helper and cooldown route.
     gui, gui_country, gui_state = new_release_runtime(stock=180)
     gui.execute(gui.effects["camp_rework_gui_execute_country_action_2"], "USA")
-    assert gui_country["political_power"] == 80
+    assert gui_country["political_power"] == 100 - sale.price(gui, "guard_pp")
     assert gui_country["equipment"]["support_equipment_1"] == 0
     assert gui_state["camp_admin_detainees_k"] == 0
     assert gui_country["arrays"]["camp_admin_history_kinds"] == [gui.constants["camp_admin_history_kind.release"]]
@@ -376,7 +383,7 @@ def run_tests():
     stale_gui, stale_gui_country, stale_gui_state = new_release_runtime(stock=180)
     stale_gui.scopes["USA"]["camp_rework_action_id"] = stale_gui.constants["camp_rework_action.usa_release_detainees_under_supervision"]
     stale_gui.temp["camp_rework_action_id"] = stale_gui.constants["camp_rework_action.usa_release_detainees_under_supervision"]
-    stale_gui.temp["camp_gui_political_cost"] = stale_gui.constants["camp_rework_cost.guard_pp"]
+    stale_gui.temp["camp_gui_political_cost"] = sale.price(stale_gui, "guard_pp")
     stale_gui.gui_cutover_hook = True
     stale_gui.run("camp_rework_gui_execute_prepared_country_action", "USA")
     assert_rejected(stale_gui, stale_gui_country, stale_gui_state)
@@ -451,7 +458,10 @@ def run_tests():
 
 
 if __name__ == "__main__":
-    checks = run_tests()
+    checks = {}
+    for ratio in sale.SALE_RATIOS:
+        SALE_RATIO = ratio
+        checks[f"payment_ratio_{ratio}"] = run_tests()
     source_hashes = {
         relative: hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
         for relative in SOURCE_PATHS
@@ -461,5 +471,6 @@ if __name__ == "__main__":
         "evidence_type": "source-level production-helper interpreter with engine primitives mocked",
         "source_scenarios": checks,
         "source_sha256": source_hashes,
+        "sale_ratios": list(sale.SALE_RATIOS),
         "limits": "No HOI4 engine, live save, probability service, GUI renderer, or campaign state was executed. Random selection chose the first candidate as a deterministic primitive mock. Native PP prepayment and the GUI cutover interleaving are explicit test inputs."
     }, indent=2))

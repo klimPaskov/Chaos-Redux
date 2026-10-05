@@ -1,6 +1,7 @@
 """Exercise the production Italy local-modifier helpers with engine primitives mocked."""
 from pathlib import Path
 from foundation_source_tests import ROOT, Runtime, get, parse
+import black_friday_sale_prices as sale
 
 colonial = parse((ROOT / 'common/scripted_effects/camp_repression_colonial_country_effects.txt').read_text(encoding='utf-8-sig'))
 triggers = parse((ROOT / 'common/scripted_triggers/camp_repression_rework_triggers.txt').read_text(encoding='utf-8-sig'))
@@ -24,7 +25,11 @@ def fixture():
     return runtime, site
 
 
-def run_scenarios():
+def run_scenarios(ratio=sale.RATIO_BASIS):
+    decisions = parse((ROOT / 'common/decisions/camp_repression_colonial_country_decisions.txt').read_text(encoding='utf-8-sig'))
+    decision = get(get(decisions, 'camp_repression_network_category'), 'ita_raise_colonial_security_battalions')
+    assert get(decision, 'cost') == 'global.black_friday_price_camp_rework_cost_guard_pp'
+    assert ('set_temp_variable', '=', [('camp_rework_italy_security_pp_paid', '=', 'global.black_friday_price_camp_rework_cost_guard_pp')]) in get(decision, 'complete_effect')
     site_ready = get(triggers, 'camp_rework_italy_security_battalions_site_ready')
     assert ('is_italy_libya_repression_pool_state', '=', 'yes') in site_ready
     success_site = get(get(triggers, 'camp_rework_italy_security_sweep_requirements_met'), 'var:ita_security_sweep_state_id')
@@ -80,8 +85,9 @@ def run_scenarios():
 
     for modifier_accepts in (True, False):
         paid, paid_site = fixture()
+        sale.install(paid, ratio)
         country = paid.scopes['ITA']
-        guard_cost = float(get(get(constants, 'camp_rework_cost'), 'guard_pp'))
+        guard_cost = sale.price(paid, 'guard_pp')
         country['flags'].discard('camp_admin_initialized')  # Legacy Italy decision before administration cutover.
         country['camp_selected_state_id'] = 'LIB'
         country['political_power'] = 100 - guard_cost  # Native decision or Ledger charge.
@@ -103,13 +109,15 @@ def run_scenarios():
         assert paid.temp['camp_rework_italy_security_action_accepted'] == int(modifier_accepts)
         assert paid.temp.get('mock_non_pp_debits', 0) == int(modifier_accepts)
         assert country['political_power'] == (100 - guard_cost if modifier_accepts else 100)
+        assert sale.credits(paid) == int(modifier_accepts)  # Only a kept deployment is a sale purchase.
         assert ('ita_colonial_security_sweep' in country.get('missions', set())) == modifier_accepts
         assert ('ita_colonial_security_sweep_state' in paid_site['mods']) == modifier_accepts
 
     for cutover_flag in ('camp_admin_initialized', 'camp_admin_civil_initialized'):
         blocked, blocked_site = fixture()
+        sale.install(blocked, ratio)
         country = blocked.scopes['ITA']
-        cost = float(get(get(constants, 'camp_rework_cost'), 'guard_pp'))
+        cost = sale.price(blocked, 'guard_pp')
         country['flags'].add(cutover_flag)
         country['camp_selected_state_id'] = 'LIB'
         country['political_power'] = 100 - cost
@@ -119,11 +127,12 @@ def run_scenarios():
         blocked.triggers['camp_rework_italy_security_battalions_resources_ready'] = []
         blocked.run('camp_rework_italy_raise_security_battalions', 'ITA')
         assert blocked.temp['camp_rework_italy_security_action_accepted'] == 0
-        assert country['political_power'] == 100
+        assert country['political_power'] == 100 and sale.credits(blocked) == 0
         assert not blocked_site['mods'] and 'ita_colonial_security_sweep' not in country.get('missions', set())
 
-    print('Italy modifier lifecycle and paid success/refund source scenarios passed; native modifier execution remains unproved.')
 
 
 if __name__ == '__main__':
-    run_scenarios()
+    for ratio in sale.SALE_RATIOS:
+        run_scenarios(ratio)
+    print('Italy modifier lifecycle and paid success/refund source scenarios passed at payment ratios ' + ', '.join(str(r) for r in sale.SALE_RATIOS) + '; native modifier execution remains unproved.')

@@ -393,8 +393,12 @@ camp_rework_dispatch_soviet_action = {
 		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.sov_emergency_famine_relief } }
 		camp_rework_soviet_emergency_famine_relief = yes
 		if = {
-			limit = { NOT = { has_country_flag = camp_rework_soviet_relief_order_accepted } }
-			add_political_power = constant:camp_rework_cost.labor_project_pp
+			limit = {
+				NOT = { has_country_flag = camp_rework_soviet_relief_order_accepted }
+				check_variable = { camp_rework_native_pp_paid > 0 }
+			}
+			add_political_power = camp_rework_native_pp_paid
+			set_temp_variable = { camp_rework_native_pp_paid = 0 }
 		}
 	}
 	else_if = {
