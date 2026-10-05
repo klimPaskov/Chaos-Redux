@@ -985,7 +985,7 @@ great_depression_contain_outgoing_exposures = {
 						NOT = { has_country_flag = great_depression_contagion_converted }
 					}
 					set_country_flag = great_depression_contagion_contained
-					set_country_flag = great_depression_contagion_containment_action_receipt
+					great_depression_record_containment_action = yes
 					clr_country_flag = great_depression_contagion_exposure_open
 					remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 					set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
@@ -1029,7 +1029,7 @@ great_depression_ring_fence_domestic_finance = {
 	set_country_flag = great_depression_contagion_ring_fenced
 	clr_country_flag = great_depression_contagion_exposure_open
 	set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
-	set_country_flag = great_depression_contagion_containment_action_receipt
+	great_depression_record_containment_action = yes
 	if = {
 		limit = { has_country_flag = great_depression_active }
 		great_depression_contain_outgoing_exposures = yes
@@ -1046,7 +1046,7 @@ great_depression_restrict_capital_outflows = {
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.light_relief }
 	great_depression_commit_external_action = yes
 	set_country_flag = great_depression_capital_outflows_restricted
-	set_country_flag = great_depression_contagion_containment_action_receipt
+	great_depression_record_containment_action = yes
 	great_depression_record_controls_scar_receipt = yes
 	if = {
 		limit = {
@@ -1063,7 +1063,7 @@ great_depression_prioritize_domestic_recovery = {
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
 	great_depression_commit_external_action = yes
 	set_country_flag = great_depression_domestic_recovery_prioritized
-	set_country_flag = great_depression_contagion_containment_action_receipt
+	great_depression_record_containment_action = yes
 	if = {
 		limit = { NOT = { has_country_flag = great_depression_active } }
 		set_country_flag = great_depression_contagion_contained
@@ -1677,7 +1677,7 @@ great_depression_negotiate_clearing_and_import_agreements = {
 		great_depression_commit_partner_action = yes
 		set_country_flag = great_depression_clearing_agreement_active
 		set_country_flag = great_depression_freight_secured
-		set_country_flag = great_depression_contagion_containment_action_receipt
+		great_depression_record_containment_action = yes
 	}
 }
 
@@ -1694,7 +1694,9 @@ great_depression_extend_emergency_credit = {
 
 great_depression_shift_import_and_contract_dependence = {
 	save_event_target_as = great_depression_partner_action_target
-	set_country_flag = great_depression_import_contract_shifted
+	# The partner loses the contract for a bounded time, not for good.
+	set_temp_variable = { great_depression_import_shift_days = constant:great_depression_market_exit.import_shift_pressure_days }
+	set_country_flag = { flag = great_depression_import_contract_shifted days = great_depression_import_shift_days }
 	ROOT = {
 		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.contagion }
 		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.light_relief }
@@ -1758,7 +1760,7 @@ great_depression_coordinate_international_rescue = {
 		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
 		great_depression_commit_partner_action = yes
 		set_country_flag = great_depression_international_rescue_complete
-		set_country_flag = great_depression_contagion_containment_action_receipt
+		great_depression_record_containment_action = yes
 	}
 }
 
@@ -1880,7 +1882,7 @@ great_depression_support_contagion_source = {
 			}
 			else = { set_variable = { great_depression_contagion_containment_source_count = constant:great_depression_api.one } }
 		}
-		set_country_flag = great_depression_contagion_containment_action_receipt
+		great_depression_record_containment_action = yes
 		set_temp_variable = { great_depression_support_row_due_day = global.num_days }
 		add_to_temp_variable = { great_depression_support_row_due_day = constant:great_depression_contagion_row.pair_cooldown_days }
 		if = {
@@ -1940,7 +1942,7 @@ great_depression_support_contagion_source = {
 		set_country_flag = great_depression_contagion_support_provider
 		clr_country_flag = great_depression_contagion_exposure_open
 		set_country_flag = great_depression_contagion_contained
-		set_country_flag = great_depression_contagion_containment_action_receipt
+		great_depression_record_containment_action = yes
 		remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
 		set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
 		great_depression_release_idle_civilian_commitment = yes

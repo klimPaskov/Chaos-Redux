@@ -155,6 +155,15 @@ Its title, description, and option text follow the frozen Strong, Uneven, or Hol
 The description states the reopened, restructured, liquidated, and, for a hollow recovery, abandoned center counts and the peak Severity, names the institution the final doctrine leaves behind and its lasting weakness (`GetGreatDepressionRecoveryInstitution`), and names the lasting cost (`GetGreatDepressionRecoveryLoss`: the Event 35 factory levels lost, idle abandoned works, or no loss).
 The single option shows the recovery ideas the country now holds through `great_depression_show_recovery_report_ideas`, and its AI weight is `great_depression_event_option_weight.recovery_report`.
 
+### Episode cleanup
+
+`great_depression_clear_episode_action_flags` ends the conditions and action results that belong to one national episode: clearing agreement, boom supply contract, foreign support, supplier contract, emergency credit request, trade failure, lost import contract, supplier collapse, Event 34 supplier pressure, the containment receipt with its episode id, and socialized occupied industry.
+It runs with `great_depression_clear_market_exit_state` in `great_depression_reset_episode_policy_state` (episode start) and in `great_depression_clear_dynamic_state` (abort, invalid retirement, and recovery cleanup), so the recovery outcome, the political aftermath, and the country scar have already read them before they clear.
+A later episode therefore starts without trade relief from an old clearing agreement, accepts a new Event 34 boom supply contract, and cannot complete Keep Essential Freight Moving or the Maximum-Severity Emergency on an old agreement.
+Containment Line counts only a containment action whose `great_depression_containment_action_episode_id` matches the current episode, written by `great_depression_record_containment_action`.
+The lost import contract on a partner is a timed flag (`import_shift_pressure_days`) and also clears in the partner's own episode cleanup.
+Durable memory such as recovery legacies, scars, refire memory, and the last-recovery facts stays by design.
+
 ### Recovery legacies
 
 A completed episode leaves at most one doctrine legacy, chosen from the final doctrine by `great_depression_add_recovery_legacy`, which first removes every other legacy.

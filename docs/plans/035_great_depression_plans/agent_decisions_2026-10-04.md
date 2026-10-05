@@ -399,3 +399,14 @@ Disposition: implemented for the shared Severity path; the per-decision conseque
 - Basis: L5; paradox_wiki Data structures (variable and flag effects have no tooltip); vanilla `common/national_focus/france.txt` (FRA_force_the_issue) shows a temporary variable set in an effect block feeding the tooltip of the next effect.
 - `great_depression_apply_public_action_delta` shows `great_depression_severity_change_tt` ("Depression Severity: [?great_depression_action_delta|=-0]") whenever the change is not zero, from the same temporary value it adds, and wraps band, phase, spirit and modifier upkeep in `hidden_effect`.
 - `great_depression_commit_country_action` and `great_depression_commit_external_action` hide the cost payment (already shown by the custom cost text) and the action receipt.
+
+## D24. Episode flag lifecycle (round 2 attempt 2, item 6)
+
+Disposition: implemented.
+
+- Basis: L6; spec part 1 repeatability and acceptance tests I-01 and I-02.
+- Own action and condition flags (`great_depression_clearing_agreement_active`, `_boom_supply_contract_active`, `_foreign_support_active`, `_supplier_contract_active`, `_emergency_credit_requested`, `_trade_failure`, `_supplier_contract_collapsed`, `_event34_supplier_pressure`, `_contagion_containment_action_receipt`, `_occupied_industry_socialized`) clear in `great_depression_clear_episode_action_flags`, called at episode start and from `great_depression_clear_dynamic_state`. In the recovery transaction that call comes after `great_depression_resolve_recovery_outcome`, `great_depression_apply_political_aftermath` (D18) and `great_depression_apply_country_scar` (D20), so the outcomes still read them.
+- Agent decision on Event 34 timing: the collapse handoff and `great_depression_apply_supplier_collapse` set their flags after the opening reset, so a collapsing boom keeps its supplier pressure for the episode it opens.
+- Agent decision on the partner-held flag: `great_depression_import_contract_shifted` lives on the partner that lost the contract, so it becomes a timed flag for `great_depression_market_exit.import_shift_pressure_days` (84), passed through a temporary variable, and it also clears in that partner's own episode cleanup.
+- Containment Line: `great_depression_record_containment_action` writes the flag and `great_depression_containment_action_episode_id`; the achievement requires the id to match the current episode.
+- `.tools/test_event035_center_projects.py` (15 tests) and `.tools/test_event035_inherited_hooks.py` (8 tests) pass.

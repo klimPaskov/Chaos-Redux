@@ -2295,6 +2295,7 @@ great_depression_clear_civilian_commitment = {
 great_depression_clear_dynamic_state = {
 	great_depression_incident_clear_episode_state = yes
 	great_depression_clear_market_exit_state = yes
+	great_depression_clear_episode_action_flags = yes
 	great_depression_clear_outgoing_contagion_network = yes
 	great_depression_clear_civilian_commitment = yes
 	remove_dynamic_modifier = { modifier = great_depression_national_panic }
@@ -3159,6 +3160,7 @@ great_depression_clear_registered_center_runtime = {
 great_depression_reset_episode_policy_state = {
 	great_depression_incident_clear_episode_state = yes
 	great_depression_clear_market_exit_state = yes
+	great_depression_clear_episode_action_flags = yes
 	great_depression_cancel_all_missions = yes
 	set_variable = { great_depression_doctrine = constant:great_depression_doctrine.unassigned }
 	set_variable = { great_depression_doctrine_switch_count = constant:great_depression_api.zero }
@@ -5535,6 +5537,37 @@ great_depression_record_controls_scar_receipt = {
 	}
 }
 
+# COUNTRY scope. A Financial Contagion containment action taken by this
+# country. The flag marks the action; the episode id ties it to the current
+# episode so Containment Line cannot count an action from an earlier one.
+great_depression_record_containment_action = {
+	set_country_flag = great_depression_contagion_containment_action_receipt
+	if = {
+		limit = { has_variable = great_depression_active_episode_id }
+		set_variable = { great_depression_containment_action_episode_id = great_depression_active_episode_id }
+	}
+}
+
+# COUNTRY scope. Clears the conditions and action results that belong to one
+# national episode, so a later episode starts without them. It runs when an
+# episode starts, aborts or retires, and in recovery cleanup after the recovery
+# outcome, political aftermath and country scar have read them. Partner-held
+# results end on their own timer or in the partner's own cleanup.
+great_depression_clear_episode_action_flags = {
+	clr_country_flag = great_depression_clearing_agreement_active
+	clr_country_flag = great_depression_boom_supply_contract_active
+	clr_country_flag = great_depression_foreign_support_active
+	clr_country_flag = great_depression_supplier_contract_active
+	clr_country_flag = great_depression_emergency_credit_requested
+	clr_country_flag = great_depression_trade_failure
+	clr_country_flag = great_depression_import_contract_shifted
+	clr_country_flag = great_depression_supplier_contract_collapsed
+	clr_country_flag = great_depression_event34_supplier_pressure
+	clr_country_flag = great_depression_contagion_containment_action_receipt
+	clear_variable = great_depression_containment_action_episode_id
+	clr_country_flag = great_depression_occupied_industry_socialized
+}
+
 # COUNTRY scope, in the recovery transaction after the political aftermath and
 # before the active episode id is cleared. At most one country scar besides the
 # hollow-recovery scar, earned only from this episode's own receipts:
@@ -5921,6 +5954,7 @@ great_depression_evaluate_achievements = {
 			check_variable = { var = great_depression_contagion_material_count value = constant:great_depression_api.zero compare = greater_than }
 			check_variable = { var = great_depression_contagion_material_targets^num value = great_depression_contagion_required_target_count compare = greater_than_or_equals }
 			has_country_flag = great_depression_contagion_containment_action_receipt
+			check_variable = { var = great_depression_containment_action_episode_id value = great_depression_active_episode_id compare = equals }
 			has_country_flag = great_depression_contagion_contained
 			NOT = { has_country_flag = great_depression_contagion_conversion_attributable }
 		}
