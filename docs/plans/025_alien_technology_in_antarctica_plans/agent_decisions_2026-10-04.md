@@ -505,3 +505,64 @@ Decision:
 
 - All 48 Event 025 cost strings with literal amounts (expedition tray, outpost, rival operations, countermeasure, data exchange, Evolution I to V responses and the analysis decisions) now print `[?constant:chaosx_nr25_cost.*_required|0]` with the matching texticon. Every amount already had a positive requirement mirror, so no display constant was added. The gateway and emergency charter costs read `chaosx_nr25_gateway` (D26).
 - Each string was checked against the executed effect and the decision's cost trigger. Three mismatches were fixed where the shown cost was right and the code was wrong: Recruit a Polar Crew required and showed fuel but never deducted it (it now pays `fuel_crew`); Integrate the Systems required and showed support equipment but never deducted it (it now pays `support_evolution`); Conceal the Program showed and paid 20 political power but only required 10 (its cost gate now reads `pp_conceal_required`).
+
+## D31. Round 2 lead decisions adopted
+
+Disposition: `accepted and queued` for the items still open at the end of this round; the implemented items are recorded in D32 onward.
+
+Basis: the round 2 remaining-work list and the lead's decisions taken under the delegated design authority.
+
+Decision:
+
+- Signal Intensity and Wreck Integrity become single global values, following spec 004's global-state wording; per-expedition mitigation (shielding, remote listening, stabilisation flags) stays per country.
+- A closed Expedition Board comes back through a free decision rather than by removing the Close button; the closed flag set when the country's analysis closes stays permanent.
+- Rivals page through a per-viewer offset with one next-rivals control instead of more cards, keeping the accepted three-card layout (D17) and meeting spec 008's scrolling rule.
+- D27's reuse of report cards for hazard and incident reports and D12's reuse of the news image stay accepted.
+- The Event 044, 028, 052, 024, 027 and 011 hooks stay excluded, because spec 007 marks them as future or optional and those events are unreworked.
+- The AI probability baseline and compare remain blocked by the `hoi4_probability_inspect` `INTERNAL_ERROR` recorded in D19, D23 and D28.
+- The stopped thread's uncommitted handoff and matrix documents stay untouched and uncommitted as stale documentation.
+
+## D32. Temporary outputs are set before the effects that write them
+
+Disposition: `implemented`.
+
+Basis: the wiki's Data structures section on temporary variables (a temporary variable first created inside a scripted effect may not survive its return, while one defined before the call is modified in place) and the shared date helper documentation, which requires callers to set `chaosx_date_offset` first.
+
+Decision:
+
+- Every Event 025 call of `chaosx_convert_days_to_date_offset` is preceded by `set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }`: both stall-clock dates and the entry close date.
+- `chaosx_nr25_gw_rating` and `chaosx_nr25_gw_best_controller` are set at the top of `chaosx_nr25_refresh_gateway_bands`; `chaosx_nr25_gw_best` before `chaosx_nr25_read_best_gateway_band` in the AI progress floor; `chaosx_nr25_gw_band` before `chaosx_nr25_read_action_gateway_band` when sailing; `chaosx_nr25_hazard_kind` before `chaosx_nr25_draw_field_hazard`.
+- A dataflow scan of every Event 025 scripted effect, trigger, event, decision, scripted GUI and scripted localisation block (callee writes and reads followed transitively) finds no Event 025 temporary read after a scripted-effect call that created it.
+
+## D33. Reopening the Expedition Board
+
+Disposition: `implemented`.
+
+Basis: D31 and the decisions skill's category pattern.
+
+Decision:
+
+- `chaosx_nr25_open_expedition_board` heads the Antarctic Expedition category for a human participant while `chaosx_nr25_board_closed` is set and `chaosx_nr25_aftermath_closed` is not, during the race or its analysis. It is free, has `ai_will_do` 0, clears the closed and confirmation state and rebuilds the slots.
+- It uses the expedition category icon until the decision icon family is produced; the close tooltip names it.
+- The tray therefore lists at most its five actions plus this control, and the control never appears while the board is open.
+
+## D34. Rival paging
+
+Disposition: `implemented`; paging behaviour is `needs_live_game`.
+
+Basis: D31, spec 008's scrolling rule and D25's selected-rival targeting.
+
+Decision:
+
+- `chaosx_nr25_prepare_rival_cards` first counts the valid rivals into `chaosx_nr25_rival_candidate_count`, wraps a stale `chaosx_nr25_rival_page_offset` to 0, then skips that many valid rivals before filling the three cards (`chaosx_nr25_board.rival_cards`).
+- The selected rival keeps `chaosx_nr25_rival_target_selected` whenever it is still a valid rival, whether or not its card is on the current page, so its Rival Operations stay listed; the selected-target row prints the rival's name.
+- `nr25_rivals_next` sits at board position x 952, y 432, right of the cards' click regions, and is shown only while more than three valid rivals exist; `chaosx_nr25_next_rival_page` adds three to the offset and rebuilds the cards, wrapping after the last page.
+- MCP evidence is recorded in the visual asset audit (Rival paging control, 2026-10-05).
+
+## D35. Opening super-event quote
+
+Disposition: `implemented`.
+
+Basis: spec 014 section 14 and the super-event text research handoff.
+
+Decision: `chaosx_super_event.109.q` prints the two verified lines in quotation marks, one per line, followed by `§Y-Alfred, Lord Tennyson, Ulysses§!`, the format of super-events 12 and 74.
