@@ -398,3 +398,10 @@ Both tokens are listed in the installed `documentation/modifiers_documentation.m
 The idea description now names the cost in period terms (worn formations receive orders written for fresh ones, supply columns follow roads the tables assumed), and the overview lists the full modifier set.
 Basis: spec part 3 Simulation Orthodoxy, round 3 lead decision on Orthodoxy.
 Disposition: `implemented`; balance in a live war is needs_live_game.
+
+### R3-5. The restriction backlash is visible
+
+Finding: `video_game_in_sweden_restriction_backlash` had no icon, and the offline Modifiers wiki (line 125) says a dynamic modifier without an icon is hidden, so the stability penalty after a completed restriction never appeared in the spirits bar, a hidden cost after commitment that spec part 4 forbids.
+Decision: the modifier uses the existing Event 24 sprite `GFX_idea_024_video_game_in_sweden_national_craze` (registered in `interface/chaosx_ideas.gfx`), the same sprite as the other public-reaction modifiers (foreign ban, ridicule, embarrassment); its name and description keys already exist, and the restriction cost and report tooltips already state the value and duration.
+Basis: offline wiki Modifiers line 125, spec part 4 accessibility.
+Disposition: `implemented`; the spirits-bar display is needs_live_game.
