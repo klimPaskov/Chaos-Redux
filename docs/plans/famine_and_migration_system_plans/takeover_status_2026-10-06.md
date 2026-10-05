@@ -11,6 +11,8 @@ It distinguishes committed source repairs, preserved round-3 drafts, and missing
 | --- | --- |
 | `f3148c8e7df5a3101e89938557cbfbd1d4fda453` | Caller-owned return storage for famine profiles/adapters, occupation conduct, migration recording/resolution, and shared transfer reception deltas. Continuous stage clocks, retirement clock cleanup, conserved reserve release, and a once-only zero-consumption fee refund. |
 | `8540b5be9fe129783bc84ea5abbc3ae69a8ebb43` | Shorter famine/migration decision names and plain report, requirement, and achievement prose. |
+| `562b9afcb60488573eed9b834fad84c7c15e4c3c` | First status/reference/draft-review checkpoint and six-case source regression baseline. This document's final revision supersedes that checkpoint's test count and source inventory. |
+| `0bca71eb15cfc2af783be2bafcc21378e7a5d8b6` | Outermost decision callback storage for movement/relief/corridor results and proofs, consistent temporary relief-delivery copies across donor/recipient scopes, and the seventh regression case. |
 | This document's commit | Current status, reference evidence, design decisions, inherited-draft review, source regressions, and the spec README status pointer. Resolve its exact hash with `git log -1 --format=%H -- docs/plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md`. |
 
 The implementing agent reviewed each published commit with `git show`.
@@ -21,6 +23,7 @@ Design reasons are in [agent_decisions_2026-10-05.md](agent_decisions_2026-10-05
 Direct reference sections, paths, line spans, source hashes, and the baseline save inspection are in [source_review_2026-10-06.md](source_review_2026-10-06.md).
 
 Published runtime files: `common/decisions/famine_decisions.txt`; `common/scripted_effects/famine_core_effects.txt`, `famine_adapter_effects.txt`, `humanitarian_capture_effects.txt`, `migration_core_effects.txt`, `migration_decision_owner_effects.txt`, `migration_forced_movement_effects.txt`, and `migration_adapter_effects.txt`; the surgical four-line shared edit is `common/scripted_effects/civilian_transfer_effects.txt`.
+The callback follow-up also touches `common/decisions/migration_decisions.txt`, `common/scripted_effects/famine_relief_effects.txt`, and a single caller declaration in `common/scripted_effects/humanitarian_corridor_effects.txt`.
 API documentation updated: the Markdown pairs for famine core/adapters, humanitarian capture, migration core, migration decision owners, and migration forced movement.
 Player prose updated: `localisation/english/famine_l_english.yml` and `migration_l_english.yml`.
 Review artifacts updated: this status, the decisions/reference/draft-review records, `.tools/test_famine_takeover_20261006.py`, and the spec README's status link.
@@ -73,9 +76,10 @@ The stopped-thread checkpoint docs, mapmode audit hunk, nine untracked handoffs,
 ## Meaningful checks and evidence limits
 
 Command: `python .tools/test_famine_takeover_20261006.py`.
-All six bounded production-source tests pass against the current working tree.
+All seven bounded production-source tests pass against the current working tree.
 They cover conservative helper-return storage, the three cause gates, context expiry and recovery, stage-clock reversal and fresh recovery steps, stock conservation at the relief limit, rejected reserve requests, and the exact refund branch replayed on the same country/state.
-An isolated raw-source snapshot of commit `f3148c8e7df5a3101e89938557cbfbd1d4fda453` passes the four tests for published repairs and explicitly skips the two tests requiring unpublished round-3 cause/context definitions.
+An isolated raw-source snapshot of commit `0bca71eb15cfc2af783be2bafcc21378e7a5d8b6` passes the five tests for published repairs and explicitly skips the two tests requiring unpublished round-3 cause/context definitions.
+The additional case executes the real reserve transfer and the production donor-copy/recipient-publication slices, checking equal measured debit/credit, conserved stock, unscoped temporary returns, and correct durable delivery amounts.
 The fixture reuses the existing Event 035 parser/runtime and fails on unknown reached commands.
 It models scoped native facts and conservative temporary call frames, while registry, report/modifier/achievement consumers, map adjacency, daily reserve simulation, mortality, and live engine execution remain outside this bounded fixture.
 The context score arithmetic is therefore a source model, not proof of full daily outcome timing.
@@ -150,6 +154,11 @@ Repeat the callback or wait another day: it must grant no second refund.
 At one resource short, the complete fee line must be red and the decision unavailable.
 Repeat the five existing zero-origin failures for famine evacuation, migration evacuation of vulnerable people, evacuation of workers, voluntary return, and forced repatriation: the quoted fee returns only when the measured origin debit is zero.
 Positive movement, cancellation, lost control, or failed funded foreign delivery must not invent a blanket refund.
+
+For emergency imports, escorted sea relief, and airlift, record donor and recipient stores before the funded delivery completes.
+Expected: equal measured donor debit and recipient credit, positive recipient `famine_relief_last_delivery_debit` and `famine_relief_last_delivery_credit`, the relief proof and header, and the existing mission/achievement progression.
+The delivery must not move native population or add Deaths, and a failed route must produce no false delivery success.
+Repeat a protected corridor relief delivery to verify the same result survives its extra wrapper call.
 
 ### 5. Continuous stage intervals and retirement
 
