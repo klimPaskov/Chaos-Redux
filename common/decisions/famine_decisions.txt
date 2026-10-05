@@ -165,34 +165,19 @@ famine_decision_category = {
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
 			OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
-			FROM = {
-				humanitarian_state_is_valid = yes
-				has_state_flag = famine_food_security_active
-				has_state_flag = famine_food_reserve_initialized
-				check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
-				check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
-			}
+			FROM = { famine_state_can_release_reserves = yes }
 		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = famine_release_reserves_target_tt
-				FROM = {
-					humanitarian_state_is_valid = yes
-					check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
-					has_state_flag = famine_food_reserve_initialized
-					check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
-				}
+				FROM = { famine_state_can_release_reserves = yes }
 			}
 			hidden_trigger = { FROM = { is_controlled_by = ROOT } }
 			hidden_trigger = { humanitarian_cost_pp20_support50_fuel500_is_affordable = yes }
 			hidden_trigger = { NOT = { FROM = { has_state_flag = famine_release_reserves_cost_paid } } }
 		}
 		target_trigger = {
-			FROM = {
-				has_state_flag = famine_food_security_active
-				has_state_flag = famine_food_reserve_initialized
-				check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
-			}
+			FROM = { famine_state_can_release_reserves = yes }
 		}
 		custom_cost_text = famine_cost_release_reserves
 		custom_cost_trigger = {
@@ -207,6 +192,9 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.release_reserves_factor_1 FROM = { has_state_flag = famine_food_security_active } }
 			modifier = { factor = constant:famine_decision_ai.release_reserves_factor_2 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 			modifier = { factor = constant:famine_decision_ai.release_reserves_factor_3 has_war = yes }
+			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
+			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -761,6 +749,9 @@ famine_decision_category = {
 			}
 			modifier = { factor = constant:famine_decision_ai.escorted_relief_convoy_factor_1 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 			modifier = { factor = constant:famine_decision_ai.escorted_relief_convoy_factor_2 has_war = no }
+			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
+			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -1012,6 +1003,9 @@ famine_decision_category = {
 			}
 			modifier = { factor = constant:famine_decision_ai.emergency_airlift_factor_1 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 			modifier = { factor = constant:famine_decision_ai.emergency_airlift_factor_2 has_air_experience > constant:famine_decision_threshold.air_experience_minimum }
+			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
+			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -1225,6 +1219,9 @@ famine_decision_category = {
 			}
 			modifier = { factor = constant:famine_decision_ai.invite_relief_factor_1 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
 			modifier = { factor = constant:famine_decision_ai.invite_relief_factor_2 has_government = democratic }
+			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
+			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -1791,6 +1788,9 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.conceal_crisis_factor_1 has_government = fascism }
 			modifier = { factor = constant:famine_decision_ai.conceal_crisis_factor_2 has_government = communism }
 			modifier = { factor = constant:famine_decision_ai.conceal_crisis_factor_3 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
+			# Concealment loses its appeal as the crisis deepens toward collapse.
+			modifier = { factor = constant:famine_decision_ai.harmful_policy_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.harmful_policy_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -1896,6 +1896,9 @@ famine_decision_category = {
 			modifier = { factor = constant:famine_decision_ai.maintain_extraction_factor_2 has_government = communism }
 			modifier = { factor = constant:famine_decision_ai.maintain_extraction_factor_3 has_government = fascism }
 			modifier = { factor = constant:famine_decision_ai.maintain_extraction_factor_4 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
+			# Extraction that has already pushed the state into famine is rarely kept.
+			modifier = { factor = constant:famine_decision_ai.harmful_policy_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.harmful_policy_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {

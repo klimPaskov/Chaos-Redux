@@ -167,3 +167,20 @@ Disposition: accepted and implemented by the round-2 implementing agent under th
     The SCN-010 catalog text change is queued in `catalog_changes_pending.md` for the Event 014 owner.
     Also in this change: `famine_cleanup_state_registration` clears the new `famine_food_deficit_score` and `famine_food_exhaustion_need` with the other components.
     needs_live_game: the launch path itself (Event 014 setup result, node registry contents, map-mode colours and the famine category reveal for the affected owners).
+
+19. **Reserve release and famine AI urgency follow the food stage, not only shock pressure.**
+    Release Reserves, its start preflight and the reserve role selector all required `famine_food_pressure` above zero, which only adapter shocks set, so a blockade, occupation or profile famine could never release its reserves for the player or the AI.
+    The new state triggers `famine_state_needs_reserve_release` (stage at supply strain or worse, or a live shock) and `famine_state_can_release_reserves` (plus registration, initialized reserve and stock above the minimum grant) now drive `visible`, the `available` tooltip, `target_trigger`, `famine_release_reserves_can_start` and `famine_decision_has_reserve_response_target`; the tooltip reads that the state is short of food, and the description explains that rationed food lasts longer than depot stock during a shortage.
+    Supporting fix: reserve exhaustion (decision 17) counts released food (`famine_food_reserve_relief` over `relief_per_day_covered`) as covered days, otherwise releasing stock would have raised unmet need. Released relief decays by 0.33 days of food a day, slower than the famine and catastrophic draws (0.75 and 1.0), so release protects food in a deep shortage.
+    AI: stage-tier factors from `famine_decision_ai` on the selected state's committed stage flag, `relief_acute_shortage_factor` 1.5, `relief_famine_factor` 2.5 and `relief_catastrophic_factor` 4, for Release Reserves, Escorted Relief Convoy, Emergency Airlift and Invite Relief; `harmful_policy_famine_factor` 0.5 and `harmful_policy_catastrophic_factor` 0.1 for Conceal Crisis and Maintain Extraction. No other weight changed.
+    Probability evidence: no project subagent can be spawned in this session, so the `chaosx_ai_probability_auditor` route is unavailable; the direct `hoi4_probability_inspect` call with adapter `decision_ai_will_do`, source path `common/decisions/famine_decisions.txt` and the six decision ids returned `INTERNAL_ERROR` with no artifact, the same blocker as round 1, so the mandatory same-scenario `hoi4_probability_compare` cannot run. Source-calculated `ai_will_do` for named scenarios (before -> after; "-" means the decision was not visible):
+
+    | Scenario (selected state) | Release Reserves | Escorted Convoy | Airlift | Invite Relief | Conceal Crisis | Maintain Extraction |
+    | --- | --- | --- | --- | --- | --- | --- |
+    | A. Blockaded island in acute shortage, no shock, owner at war, air XP above 50, democratic | - -> 27 | 16 -> 24 | 16 -> 24 | 14 -> 21 | n/a | n/a |
+    | B. Profile famine, no shock, at war, fascist | - -> 45 | 16 -> 40 | 8 -> 20 | 7 -> 17.5 | 3 -> 1.5 | 18 -> 9 |
+    | C. Catastrophic famine, no shock, at war, fascist | - -> 72 | 16 -> 64 | 8 -> 32 | 7 -> 28 | 3 -> 0.3 | 18 -> 1.8 |
+    | D. Shock-driven acute shortage, at war, air XP above 50, democratic | 36 -> 54 | 64 -> 96 | 80 -> 120 | 56 -> 84 | n/a | n/a |
+    | E. Supply strain only, no shock, at war, non-democratic, neither fascist nor communist | - -> 18 | 16 -> 16 | 8 -> 8 | 7 -> 7 | 1 -> 1 | 6 -> 6 |
+
+    Ordering checks from Part 8: relief weight rises with severity in every family, concealment and extraction fall as collapse risk rises, and a state with no food problem gains nothing.

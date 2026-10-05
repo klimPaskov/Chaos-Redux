@@ -87,6 +87,10 @@ Local supply is inadequate when the reserve covers fewer than 7 days, or fewer t
 
 Famine owns its own category and phased actions, including reserve release, emergency imports, route repair, escorted relief convoy, emergency airlift, invited relief, famine evacuation, safer-state requisition, concealment, and extraction policy.
 
+Reserve release targets any registered state at supply strain or worse, or under a live food shock, that holds stock to release (`famine_state_can_release_reserves`). Released food keeps counting as covered days for reserve exhaustion and decays more slowly than stock drawn by a famine, so releasing early protects a state's food rather than shortening it.
+
+AI urgency for Release Reserves, Escorted Relief Convoy, Emergency Airlift and Invite Relief rises by 1.5, 2.5 and 4 times for acute shortage, famine and catastrophic famine in the selected state, while Conceal Crisis and Maintain Extraction fall to half in famine and to a tenth in catastrophic famine (`famine_decision_ai`).
+
 Famine missions own relief-route security and reserve-failure deadlines. Migration missions are never counted in famine mission slots or presented as famine actions.
 
 Legacy action fees use `humanitarian_legacy_cost_constants.txt` and the exact inclusive country-payer bundle predicates documented in `humanitarian_legacy_cost_triggers.md`.

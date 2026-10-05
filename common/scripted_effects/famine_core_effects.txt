@@ -2082,6 +2082,11 @@ famine_apply_reserve_exhaustion = {
 		}
 		set_temp_variable = { famine_food_exhaustion_cover = famine_food_reserve_amount }
 		divide_temp_variable = { famine_food_exhaustion_cover = famine_food_reserve_daily_need }
+		# Food already released for rationing still feeds people, so its
+		# remaining relief counts as covered days.
+		set_temp_variable = { famine_food_exhaustion_released_days = famine_food_reserve_relief }
+		divide_temp_variable = { famine_food_exhaustion_released_days = constant:famine_food_reserve.relief_per_day_covered }
+		add_to_temp_variable = { famine_food_exhaustion_cover = famine_food_exhaustion_released_days }
 		divide_temp_variable = { famine_food_exhaustion_cover = constant:famine_food_reserve.exhaustion_reserve_days }
 		set_temp_variable = { famine_food_exhaustion_fraction = constant:famine_food_weight.component_factor_base }
 		subtract_from_temp_variable = { famine_food_exhaustion_fraction = famine_food_exhaustion_cover }

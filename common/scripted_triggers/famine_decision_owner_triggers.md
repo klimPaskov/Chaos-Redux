@@ -2,6 +2,13 @@
 
 These additions are COUNTRY-scope hidden Boolean guards for the existing famine decision actions. They read the current decision actor as `ROOT` and the selected state as `FROM`; they do not mutate state, resources, cohorts, contracts, or country flags.
 
+## Reserve-release target
+
+`famine_state_needs_reserve_release` (STATE scope) holds when the committed food stage is supply strain or worse (`famine_state_has_visible_food_problem`) or a live food shock is recorded (`famine_food_pressure` above zero). Blockade, occupation and historical-profile famines raise the stage without any shock, so the stage alone qualifies.
+
+`famine_state_can_release_reserves` (STATE scope) adds a valid civilian state, the active food registration, an initialized reserve and stock above `famine_mission_contract.minimum_relief_grant`.
+The Release Reserves decision uses it in `visible`, in the `available` tooltip `famine_release_reserves_target_tt`, and in `target_trigger`; `famine_release_reserves_can_start` and the role selector `famine_decision_has_reserve_response_target` use the same trigger, so the AI and the player see one target rule.
+
 ## Complete-action start predicates
 
 Each `famine_<action>_can_start` predicate repeats that action's current visible, available, and selected-target prerequisites, confirms that `FROM` is still controlled by `ROOT`, and calls the action's exact inclusive `humanitarian_cost_*_is_affordable` bundle. The decision's `available` block retains the original player-facing non-cost requirements and uses the same cost profile; `custom_cost_trigger` also uses that exact profile. The `complete_effect` places its whole original body under this predicate so no setup, phase, payment, policy, service, mission, or report side effect runs after a stale or invalid start.

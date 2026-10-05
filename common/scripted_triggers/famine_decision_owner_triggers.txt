@@ -29,17 +29,38 @@ famine_decision_problem_is_active = {
 	}
 }
 
+# STATE scope. A selected state has a food problem worth releasing reserves
+# for: its committed stage is supply strain or worse, or a live food shock is
+# still recorded. Blockade, occupation, and historical-profile famines raise
+# the stage without any shock, so the stage alone is enough.
+famine_state_needs_reserve_release = {
+	hidden_trigger = {
+		OR = {
+			famine_state_has_visible_food_problem = yes
+			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		}
+	}
+}
+
+# STATE scope. The shared reserve-release target: a registered food state with
+# a food problem and enough initialized stock to release.
+famine_state_can_release_reserves = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_food_security_active
+		has_state_flag = famine_food_reserve_initialized
+		famine_state_needs_reserve_release = yes
+		check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
+	}
+}
+
 # Country-level response-role selectors keep the category legible without
 # deleting any decision. Each selector mirrors the underlying state-target
 # contract and is used only to hide a lower-priority sibling while the
 # higher-priority response is still actionable.
 famine_decision_has_reserve_response_target = {
 	any_controlled_state = {
-		humanitarian_state_is_valid = yes
-		has_state_flag = famine_food_security_active
-		has_state_flag = famine_food_reserve_initialized
-		check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
-		check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
+		famine_state_can_release_reserves = yes
 	}
 }
 
@@ -97,11 +118,7 @@ famine_release_reserves_can_start = {
 		OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 		FROM = {
 			is_controlled_by = ROOT
-			humanitarian_state_is_valid = yes
-			has_state_flag = famine_food_security_active
-			has_state_flag = famine_food_reserve_initialized
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
-			check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
+			famine_state_can_release_reserves = yes
 		}
 		humanitarian_cost_pp20_support50_fuel500_is_affordable = yes
 		NOT = { FROM = { has_state_flag = famine_release_reserves_cost_paid } }
