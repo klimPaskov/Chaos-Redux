@@ -64,6 +64,7 @@ brilliant_scientist_foreign_start_operation = {
 		clr_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
 		clr_country_flag = brilliant_scientist_foreign_operation_compromised
 		clr_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge
+		clr_country_flag = brilliant_scientist_foreign_family_knowledge_already_held
 		clr_country_flag = brilliant_scientist_foreign_transfer_received
 		clr_country_flag = brilliant_scientist_foreign_transfer_race_prevented
 		clr_country_flag = brilliant_scientist_foreign_defection_assistant_departed
@@ -206,24 +207,90 @@ brilliant_scientist_foreign_initialize_knowledge_ledger = {
 
 # COUNTRY scope on a foreign actor. Persistent selected family is the input.
 # Foreign acquisition is capped at Theory and never copies the Event 016 host
-# package, Kruger token, project armies, or later-stage ledgers.
+# package, Kruger token, project armies, or later-stage ledgers. The payoff is
+# the family's own Theory modifier, which reads the knowledge array through
+# brilliant_scientist_foreign_knows_<family>_theory and therefore stays after
+# the actor loses contact with the host. A family already held changes nothing.
 brilliant_scientist_foreign_grant_selected_family_theory = {
 	brilliant_scientist_foreign_initialize_knowledge_ledger = yes
+	clr_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge
+	clr_country_flag = brilliant_scientist_foreign_family_knowledge_already_held
 	set_temp_variable = { brilliant_scientist_foreign_knowledge_index = brilliant_scientist_foreign_selected_project_family }
 	subtract_from_temp_variable = { brilliant_scientist_foreign_knowledge_index = constant:brilliant_scientist_value.one }
 	if = {
 		limit = {
 			check_variable = { brilliant_scientist_foreign_knowledge_index > constant:brilliant_scientist_value.invalid }
 			check_variable = { brilliant_scientist_foreign_knowledge_index < constant:brilliant_scientist_event.project_family_count }
-			check_variable = {
-				var = brilliant_scientist_foreign_project_knowledge_entries^brilliant_scientist_foreign_knowledge_index
-				value = constant:brilliant_scientist_foreign_limit.project_knowledge_stage
-				compare = less_than
-			}
 		}
-		set_variable = { brilliant_scientist_foreign_project_knowledge_entries^brilliant_scientist_foreign_knowledge_index = constant:brilliant_scientist_foreign_limit.project_knowledge_stage }
-		add_to_variable = { brilliant_scientist_foreign_known_project_family_count = constant:brilliant_scientist_foreign_consequence.operation_increment }
-		set_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_foreign_project_knowledge_entries^brilliant_scientist_foreign_knowledge_index
+					value = constant:brilliant_scientist_foreign_limit.project_knowledge_stage
+					compare = less_than
+				}
+			}
+			set_variable = { brilliant_scientist_foreign_project_knowledge_entries^brilliant_scientist_foreign_knowledge_index = constant:brilliant_scientist_foreign_limit.project_knowledge_stage }
+			add_to_variable = { brilliant_scientist_foreign_known_project_family_count = constant:brilliant_scientist_foreign_consequence.operation_increment }
+			set_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge
+			brilliant_scientist_foreign_reconcile_knowledge_runtime = yes
+		}
+		else = {
+			set_country_flag = brilliant_scientist_foreign_family_knowledge_already_held
+		}
+	}
+}
+
+# COUNTRY scope. Reapplies the Theory modifier of every family held in this
+# country's foreign knowledge array. It runs after a new grant and after a host
+# stage-modifier removal, so stolen Theory survives host loss and suspension.
+# It never writes the host project ledger, Capacity, or a project stage.
+brilliant_scientist_foreign_reconcile_knowledge_runtime = {
+	if = { limit = { brilliant_scientist_foreign_knows_computation_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_computation_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_electronics_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_electronics_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_materials_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_materials_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_rocketry_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_rocketry_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_high_energy_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_high_energy_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_biomedical_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_biomedical_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_teleportation_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_teleportation_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_cloning_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_cloning_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_robotics_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_robotics_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_paleogenetics_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_paleogenetics_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_xenobiological_synthesis_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_xenobiological_synthesis_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_biological_weapons_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_biological_weapons_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_alien_arms_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_alien_arms_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_temporal_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_temporal_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_theory } }
+	if = { limit = { brilliant_scientist_foreign_knows_singularity_theory = yes NOT = { has_dynamic_modifier = brilliant_scientist_singularity_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_theory } }
+}
+
+# COUNTRY scope on the actor, inside an after-action report option. Names the
+# family and shows its Theory modifier when the operation delivered new
+# knowledge, or states that the family was already held.
+brilliant_scientist_foreign_show_theory_grant_tooltip = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_foreign_gained_new_family_knowledge }
+		custom_effect_tooltip = brilliant_scientist_foreign_theory_gained_tt
+		effect_tooltip = {
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.computation } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.electronics } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.materials } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.rocketry } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.high_energy } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.biomedical } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.teleportation } } add_dynamic_modifier = { modifier = brilliant_scientist_teleportation_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.cloning } } add_dynamic_modifier = { modifier = brilliant_scientist_cloning_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.robotics } } add_dynamic_modifier = { modifier = brilliant_scientist_robotics_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.paleogenetics } } add_dynamic_modifier = { modifier = brilliant_scientist_paleogenetics_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } } add_dynamic_modifier = { modifier = brilliant_scientist_xenobiological_synthesis_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.biological_weapons } } add_dynamic_modifier = { modifier = brilliant_scientist_biological_weapons_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.alien_arms } } add_dynamic_modifier = { modifier = brilliant_scientist_alien_arms_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.temporal } } add_dynamic_modifier = { modifier = brilliant_scientist_temporal_theory } }
+			if = { limit = { check_variable = { brilliant_scientist_foreign_selected_project_family = constant:brilliant_scientist_project_family.singularity } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_theory } }
+		}
+	}
+	else_if = {
+		limit = { has_country_flag = brilliant_scientist_foreign_family_knowledge_already_held }
+		custom_effect_tooltip = brilliant_scientist_foreign_theory_already_held_tt
 	}
 }
 

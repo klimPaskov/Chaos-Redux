@@ -32,8 +32,8 @@ Invalid response context closes only its matching receipt and preserves any resu
 |---|---:|---:|---|
 | Observe the program | 30 days | 15 Political Power | Foreign-interest threshold and a current host; builds a dossier and later operation access |
 | Send a formal invitation | Immediate host event | 25 Political Power | Relations, ideology, faction, or academic access; host can refuse, permit a visit, or let Kruger decide |
-| Recruit an assistant | 45 days | 30 Political Power | Access plus a project target; can acquire one family Theory stage or create exposure/scandal |
-| Steal an archive | 60 days | 45 Political Power | Intelligence access and an unstolen project family; can acquire exact family knowledge once |
+| Recruit an assistant | 45 days | 30 Political Power | Access plus a project target; success gives the actor the selected family's Theory modifier permanently (see [Foreign Theory knowledge](#foreign-theory-knowledge)) or creates exposure/scandal |
+| Steal an archive | 60 days | 45 Political Power | Intelligence access and an unstolen project family; success gives the actor that family's Theory modifier permanently and marks the host archive stolen |
 | Sabotage a project | 75 days | 55 Political Power | Hostile motive and an undamaged project family; damages only the selected family |
 | Encourage defection | 60 days | 45 Political Power | Prior contact, diplomatic access, and a transfer-ready Kruger; success revalidates the character transfer |
 | Extract Kruger | 75 days | 70 Political Power | Intelligence access and a transfer-ready Kruger outside the actor's faction; partial success captures an assistant or knowledge |
@@ -61,6 +61,22 @@ The public challenge is a separate actor-owned operation with its own per-host r
 The counter-Kruger programme is a separate one-use actor operation. It requires the counter-program interest threshold, intelligence access, an active host project, a prior observation, recruitment, theft, public-challenge, or strategic-project evidence receipt, and 250 support equipment. The 120-day operation selects the host's most advanced family through the existing project-target helper; a successful result records the host and family in the actor's countermeasure arrays, while a partial result records only a failed family study. The actor's later operation score against that same host, or against the Kruger State formed from it (`brilliant_scientist_foreign_has_countermeasure_against_operation_host`), receives the bounded `countermeasure_previous` bonus. A success also installs the studied family's standing countermeasure, described below. The programme never grants a project stage, a second Kruger, or a unit. A detected operation opens `chaosx.nr16.193` before the actor report `.194`; the host response uses the machine-security incident card and the actor report uses the Directorate dossier card, while the dedicated response still avoids the generic controlled-exchange reaction so countermeasure work cannot accidentally become a full project-theory reward.
 
 The host-facing foreign-operation reports (`chaosx.nr16.100`, `.110`, `.120`, `.130`, `.140`, `.150`, `.160`, `.170`, and `.180`) append the same retained host-archetype clause used by the Directorate reports. Universities, industrial hosts, militarized states, threatened governments, colonial administrations, refugee networks, and the default host therefore read invitations, observation, recruitment, theft, sabotage, defection, extraction, and assassination through their own institutional pressures. Actor after-action reports (`.101`, `.111`, `.121`, `.131`, `.141`, `.151`, `.161`, `.171`, and `.181`) use `GetBrilliantScientistForeignHostFlavorClause` to read the carried host target, so the reporting country does not accidentally substitute its own archetype or lose the original context.
+
+## Foreign Theory knowledge
+
+Five outcomes hand a foreign actor one family's Theory: assistant recruitment success, archive theft success, a partial defection (an assistant leaves while Kruger stays), a partial extraction, and the host's controlled exchange in `chaosx.nr16.9`.
+Each calls `brilliant_scientist_foreign_grant_selected_family_theory` on the actor with the persistent selected family as input.
+The helper writes Theory into the actor's 15-entry `brilliant_scientist_foreign_project_knowledge_entries` array (indexes 0 to 14 match family IDs 1 to 15), increments `brilliant_scientist_foreign_known_project_family_count`, and sets `brilliant_scientist_foreign_gained_new_family_knowledge`; a family already held sets `brilliant_scientist_foreign_family_knowledge_already_held` instead and changes nothing.
+
+The payoff is the family's own Theory dynamic modifier (`brilliant_scientist_<family>_theory`), the same research-speed and family bonuses a host receives at Theory.
+Each of the fifteen Theory modifiers lists `brilliant_scientist_foreign_knows_<family>_theory` as an `enable` branch and a `remove_trigger` exclusion, and that trigger reads the knowledge array, so the modifier stays after the actor loses contact with the host, after Kruger moves or dies, and after the actor itself hosts Kruger and loses him.
+`brilliant_scientist_foreign_reconcile_knowledge_runtime` adds the modifier for every held family after a grant and at the end of `brilliant_scientist_disable_project_stage_modifiers`, so a host suspension or transfer cleanup cannot strip stolen Theory.
+
+The grant never exceeds Theory and never copies the host package, Kruger, facilities, Directorate meters, the host project ledger, Project Capacity, or project forces.
+No family has a native project line outside Kruger's host or the Mengele provider: every Prototype special project and Directorate stage order writes the host ledger, so stolen Theory does not open a Prototype for the actor.
+
+The after-action reports `.131`, `.141`, `.161`, and `.171` call `brilliant_scientist_foreign_show_theory_grant_tooltip` in their option.
+It names the family through `brilliant_scientist_foreign_theory_gained_tt`, shows the Theory modifier, and reports how many Kruger families the actor now holds (the only reader of `brilliant_scientist_foreign_known_project_family_count`), or prints `brilliant_scientist_foreign_theory_already_held_tt` when the family was already known.
 
 ## Counter-Kruger countermeasures
 

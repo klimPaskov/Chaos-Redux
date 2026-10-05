@@ -391,3 +391,28 @@ Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_w
 `hoi4.decision_inspect` on `brilliant_scientist_review_xeno_control_doctrine` returned only partial coverage (`DECISION_ANALYZED_PARTIAL`).
 
 Evidence: `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_dhrondan_country_l_english.yml`.
+
+## D31. Foreign Theory knowledge pays out through the family Theory modifier
+
+Disposition: implemented under the full-authority mandate as the round 3 lead's first item.
+
+Defect: `brilliant_scientist_foreign_grant_selected_family_theory` wrote the actor's knowledge array, the known-family count, and a gained-knowledge flag, and nothing read any of them, so assistant recruitment success, archive theft success, a partial defection, a partial extraction, and the host's controlled exchange cost preparation and risk and gave the actor nothing.
+
+Decision: the payoff is the family's own Theory dynamic modifier, the same research-speed and family bonuses a host receives at Theory.
+Spec part 7 lists "Research bonus" and "One Theory stage" among the thief's rewards and caps foreign acquisition at Theory; every Theory modifier already carries a research-speed term, so one modifier delivers both without a parallel bonus table.
+The neutral conventional technology API was rejected because it grants Deployment-level packages and covers only six families.
+
+- Fifteen triggers `brilliant_scientist_foreign_knows_<family>_theory` read the knowledge array by the existing family index constants.
+- Each Theory modifier gains that trigger as an `enable` branch and a `remove_trigger` exclusion, so the bonus survives the actor losing contact with the host, Kruger moving or dying, and the actor later hosting and losing Kruger.
+- `brilliant_scientist_foreign_reconcile_knowledge_runtime` adds the modifier for every held family after a grant and at the end of `brilliant_scientist_disable_project_stage_modifiers`, beside the existing conventional-package reconcile.
+- The grant is idempotent per family; a family already held sets `brilliant_scientist_foreign_family_knowledge_already_held` and changes nothing.
+- The four actor reports (`.131`, `.141`, `.161`, `.171`) name the family, show the Theory modifier, and state how many Kruger families the actor now holds, which is the reader of `brilliant_scientist_foreign_known_project_family_count`.
+- The decision and controlled-exchange tooltips say the actor keeps the family's Theory bonuses permanently.
+
+Project-line eligibility: no family has a native project line outside Kruger's host or the Mengele provider. Every Prototype special project and Directorate stage order writes the host ledger and Capacity, so stolen Theory does not open a Prototype for a foreign actor; adding one would need a second project ledger that spec part 7 rules out.
+
+MCP: three narrow `hoi4.event_inspect` calls on `chaosx.nr16.141` (mode `lint` with a string selector, mode `scan` with an object selector, mode `trace` with an object `from`) were rejected as invalid arguments; the event schema documents its selector only by reference to `docs/events.md`, which the server does not expose. The change is source-reviewed.
+No weighted surface changed.
+
+Evidence: `common/scripted_effects/016_brilliant_scientist_foreign_effects.txt`, `common/scripted_triggers/016_brilliant_scientist_foreign_triggers.txt`, `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`, `common/scripted_effects/016_brilliant_scientist_project_effects.txt`, `events/016_brilliant_scientist_foreign_events.txt`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`, `docs/events/016_brilliant_scientist/systems/foreign_operations.md`, `docs/events/016_brilliant_scientist/systems/projects.md`.
+Needs live game: the Theory modifier tooltip inside the report option and the modifier staying on the actor after a host transfer.
