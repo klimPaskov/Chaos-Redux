@@ -485,3 +485,20 @@ These outcomes run a `decision_civilian_factory_days` work period after payment 
 The paid cost is not refunded: the four tooltips say that the project lapses if the sky has cleared when the work is done. Distribute Emergency Filters also gains the active-dust condition in `visible` and in `asteroid_incoming_state_is_open_for_emergency_filters`, as the three national projects already had, so it is not offered when it could only lapse. The project slot is still released by the finish callback either way.
 Projects finishing during active dust behave as before. A World Reconnected candidate whose project lapses does not get the matching flag, which matches the achievement's own requirement that the protection be in place while dust remains.
 Basis: the stale-idea defect in the round 3 lead list; Part 4 ties national protection to active dust stages.
+
+### Second review of the round 3 takeover (2026-10-05)
+
+A second skeptical review re-read commits 08cb48523, f83b2e4ed, c05bec3a5, 2aa5bc6d2, 57dab97f3, 9161231c7, 431b48dfb, 37fdab5cf and 9b376d0f9 against the current tree, including the later Event 028 commits that build on them.
+Confirmed in source: the five `_NAME` and `_DESC` keys match the award conditions (near miss at `minerals_chaos_threshold` with both evolutions enabled; capital relocation only when the locked state was the capital; collector and capture holds; the World Reconnected opening stage, non-target and Hardened checks); the ranking triggers use only documented temporary-variable triggers and `building_level@` with the profile ids ordered so a larger id is a stronger profile; `country_event` accepts `hours`; vanilla compares a variable with an event target in `check_variable` (`common/scripted_effects/AST_scripted_effects.txt:1724`); `GetContinent` is a documented state property; `state_target = any_controlled_state` and a `global.` `target_array` have vanilla precedents (`AFG.txt:1844`, `CHI_decisions.txt:7929`); every new constant is defined under a schema of the right type.
+
+Decision: the four Event Logs history rows for Event 028 use the two-line form every other row uses.
+The history entry is 41 pixels high and its text box stops at 38 pixels (`interface/chaosx_events_log_popup.gui`, `events_log_history_entry_country`), which holds two lines of `hoi_16mbs`, while the Event 028 rows had four or five lines (Actor, Target country, Outcome, and the fragment and opening-dust line added in 57dab97f3), so only the header and the actor line could show.
+The row's flags already show the chooser and, after an impact, the target country, so the second line now carries the outcome: the offered board, "Impact on <state>: <deaths> dead, <n> fragments" (the fragment clause comes from `GetAsteroidIncomingHistoryFragmentClause` and is empty when no fragment struck), the near-miss date, or the closed trajectory.
+Deaths use the compact `|*1` form so the line stays inside the 350-pixel text box. The opening dust stage, the impact date and the rest of the Part 8 history fields stay in the Event Details view the row opens, which already lists them.
+Basis: Part 8 Event History lists the fields of the history record, and the shared row convention (`chaosx.events_log.window.history.dynamic_entry.event`, `black_friday.history.50`) is a header plus one summary line.
+
+Decision: `on_annex` also removes `asteroid_incoming_recovery_legacy` from the annexed country when it clears `asteroid_incoming_regional_economy_complete`.
+The monthly pass that would otherwise remove the idea stops once dust and local recovery end, so clearing only the flag could let a released country return with the lasting legacy, which the c05bec3a5 decision rules out.
+
+MCP: `hoi4_gui_render` for `events_log_history_entry_country` returned "Invalid tool arguments"; the row fit was checked from the `.gui` source only.
+Needs live game: that each Event 028 history row shows both lines unclipped, including a long state name on the impact row, and that `[?constant:...]` resolves in the achievement list's `_DESC` text.
