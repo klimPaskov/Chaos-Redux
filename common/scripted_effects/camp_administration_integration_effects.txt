@@ -244,6 +244,8 @@ chaosx_cxt_extension_camp_administration_apply = {
 camp_admin_generic_reform_refresh_quote = {
 	if = { limit = { camp_admin_generic_reform_quote = yes }
 		set_variable = { camp_admin_generic_reform_pp = camp_admin_reform_quote_pp }
+		# The sale ratio the shown price was computed at; a sale start or end refreshes it.
+		set_variable = { camp_admin_generic_reform_sale_ratio = camp_sale_ratio }
 	}
 }
 
@@ -270,6 +272,7 @@ camp_admin_generic_reform = {
 		limit = { camp_admin_generic_reform_available = yes check_variable = { camp_admin_generic_release_rows_ready = constant:camp_admin_value.one } }
 		multiply_temp_variable = { camp_admin_reform_quote_pp = -1 }
 		add_political_power = camp_admin_reform_quote_pp
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
 		clear_array = camp_admin_generic_reform_states
 		for_each_scope_loop = {
 			array = camp_active_site_states

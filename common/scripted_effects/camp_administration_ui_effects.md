@@ -7,6 +7,9 @@ A rejected or unchanged request pays nothing.
 Control changes do not execute monthly production, replenish the current month's budget, advance projects or award research.
 `camp_admin_refresh_command_quotes` maintains the display, affordability and payment values from current network size and centralized administrative coefficients.
 Political power here pays for a deliberate administrative change; routine operation uses the foundation's material budget.
+These orders charge the Event 026 sale price: after computing the ordinary policy, mandate and role quotes, `camp_admin_refresh_command_quotes` passes each through the production `black_friday_price_table_quote` at the ratio the sale price table holds and stores that ratio in `camp_admin_command_quote_sale_ratio`.
+`black_friday_price_table_refresh_owner_quotes` refreshes every country whose stored ratio differs from the table when a sale starts or ends, so the window shows the price the next order charges.
+Each paid order credits one Political Power sale purchase.
 
 `camp_admin_toggle_selected_work` pauses or resumes production only at a selected operating site with living custody, a labor or penal purpose, and a coercive national mandate.
 The GUI click predicate and the effect use the same `camp_admin_can_toggle_selected_work` trigger; a rejected call records no work order.

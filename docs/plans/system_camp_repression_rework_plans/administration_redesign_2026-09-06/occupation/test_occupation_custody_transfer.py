@@ -219,9 +219,14 @@ class OccupationCustodyTransferTests(unittest.TestCase):
         self.assertNotIn("cost = constant:genocide_decision_cost.german_experiment_transfer", decision)
         self.assertNotIn("migration_execute_forced_transfer_exact", decision)
         self.assertNotIn("camp_rework_germany_apply_prisoner_transfer = yes", decision)
-        for term in ("genocide_decision_cost.german_experiment_transfer", "genocide_decision_cost.german_experiment_transfer_army_xp",
-                     "camp_rework_equipment_cost.support_equipment", "camp_rework_equipment_cost.trains"):
+        # The check and the payment read the same Event 026 sale prices.
+        for term in ("global.black_friday_price_genocide_decision_cost_german_experiment_transfer ", "global.black_friday_price_genocide_decision_cost_german_experiment_transfer_army_xp",
+                     "camp_rework_can_pay_support_equipment = yes", "camp_rework_can_pay_trains = yes"):
             self.assertIn(term, cost)
+        for term in ("global.black_friday_price_genocide_decision_cost_german_experiment_transfer ", "global.black_friday_price_genocide_decision_cost_german_experiment_transfer_army_xp",
+                     "global.black_friday_price_camp_rework_equipment_cost_support_equipment", "global.black_friday_price_camp_rework_equipment_cost_trains"):
+            self.assertIn(term, paid)
+        self.assertEqual(paid.count("camp_rework_credit_sale_order = yes"), 1)
         self.assertLess(paid.index("camp_occ_custody_result = constant:camp_occ_value.transfer_valid"), paid.index("add_political_power = camp_occ_manual_transfer_debit_pp"))
         self.assertLess(paid.index("camp_occ_custody_committed_people > 0"), paid.index("add_equipment_to_stockpile = { type = support_equipment_1"))
         self.assertEqual(paid.count("add_equipment_to_stockpile = { type = support_equipment_1"), 1)
@@ -389,6 +394,89 @@ class OccupationCustodyTransferTests(unittest.TestCase):
         self.assertIn("camp_occ_lodz_monthly_moved_people > 0", body)
         self.assertLess(body.index("camp_occ_lodz_monthly_moved_people = camp_occ_custody_committed_people"),
                         body.index("camp_admin_record_history = yes"))
+
+
+class ManualTransferSalePriceTests(unittest.TestCase):
+    """The manual order checks and pays the Event 026 sale price through production bodies.
+
+    The exact custody receipt has its own occupation suites; here it is a declared
+    accepted result, so only the price check, payment and purchase credit run.
+    """
+
+    @staticmethod
+    def runtime(ratio):
+        import sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        import black_friday_sale_prices as sale
+        from foundation_source_tests import Runtime, parse, get
+
+        class PaymentRuntime(Runtime):
+            def execute(self, block, scope, previous=None):
+                pending = []
+                for key, op, value in block:
+                    if key == "add_equipment_to_stockpile":
+                        if pending:
+                            super().execute(pending, scope, previous)
+                            pending = []
+                        stock = self.scopes[scope].setdefault("equipment", {})
+                        kind = get(value, "type")
+                        stock[kind] = stock.get(kind, 0) + self.val(get(value, "amount"), scope, previous)
+                    else:
+                        pending.append((key, op, value))
+                if pending:
+                    super().execute(pending, scope, previous)
+
+        r = PaymentRuntime()
+        r.country("GER")
+        r.state("S1", "GER")
+        sale.install(r, ratio)
+        for path, categories in (("common/script_constants/genocide_crisis_constants.txt", ("genocide_crisis_value",)),
+                                 ("common/script_constants/camp_repression_rework_constants.txt", ("camp_rework_germany", "camp_rework_country_value"))):
+            for category, _, body in parse((ROOT / path).read_text(encoding="utf-8-sig")):
+                if category in categories:
+                    for key, _, value in body:
+                        if key != "schema" and not isinstance(value, list):
+                            r.constants[category + "." + key] = float(value)
+        major = {key: value for key, _, value in parse(MAJOR) if not key.startswith("@")}
+        r.effects["camp_rework_germany_apply_exact_cohort_transfer"] = major["camp_rework_germany_apply_exact_cohort_transfer"]
+        r.triggers["camp_occ_manual_transfer_can_pay"] = get(parse(TRIGGERS), "camp_occ_manual_transfer_can_pay")
+        r.effects["camp_occ_refresh_manual_transfer_source"] = []
+        r.effects["camp_occ_try_manual_auschwitz_transfer"] = [
+            ("set_temp_variable", "=", [("camp_occ_custody_result", "=", "constant:camp_occ_value.transfer_valid")]),
+            ("set_temp_variable", "=", [("camp_occ_custody_committed_people", "=", "100")])]
+        for name in ("genocide_activate_crisis", "camp_rework_register_evidence_state", "camp_rework_recalculate_country_values"):
+            r.effects[name] = []
+        r.triggers["is_germany_occupied_poland_prisoner_source"] = [("always", "=", "no")]
+        ger = r.scopes["GER"]
+        ger.update(political_power=100, army_experience=20, camp_occ_manual_source_state_id="S1",
+                   equipment={"support_equipment_1": 500, "train_equipment_1": 50})
+        return r, ger, sale
+
+    def test_manual_order_checks_pays_and_credits_the_sale_price(self):
+        for ratio in (10000, 5000, 2500):
+            r, ger, sale = self.runtime(ratio)
+            pp = sale.price(r, "german_experiment_transfer", "genocide_decision_cost")
+            xp = sale.price(r, "german_experiment_transfer_army_xp", "genocide_decision_cost")
+            support, trains = sale.stock(r, "support_equipment"), sale.stock(r, "trains")
+            if ratio < 10000:
+                self.assertLess(pp + support + trains, 35 + 180 + 18)
+            exact = dict(political_power=pp, army_experience=xp, equipment={"support_equipment_1": support, "train_equipment_1": trains})
+            ger.update(exact)
+            self.assertTrue(r.cond([("camp_occ_manual_transfer_can_pay", "=", "yes")], "GER"))
+            for field, kind in (("political_power", None), ("army_experience", None), ("equipment", "support_equipment_1"), ("equipment", "train_equipment_1")):
+                ger.update(political_power=pp, army_experience=xp, equipment={"support_equipment_1": support, "train_equipment_1": trains})
+                if kind:
+                    ger[field][kind] -= 1
+                else:
+                    ger[field] -= 0.001 if field == "political_power" else 1
+                self.assertFalse(r.cond([("camp_occ_manual_transfer_can_pay", "=", "yes")], "GER"), (ratio, field, kind))
+            ger.update(political_power=100, army_experience=20, equipment={"support_equipment_1": 500, "train_equipment_1": 50})
+            r.run("camp_rework_germany_apply_exact_cohort_transfer", "GER")
+            self.assertAlmostEqual(ger["political_power"], 100 - pp)
+            self.assertAlmostEqual(ger["army_experience"], 20 - xp)
+            self.assertEqual(ger["equipment"], {"support_equipment_1": 500 - support, "train_equipment_1": 50 - trains})
+            self.assertEqual(sale.credits(r), 1)
+            self.assertEqual(sale.last_family(r), sale.family(r, "equipment"))
 
 
 if __name__ == "__main__":

@@ -4,8 +4,10 @@ Engine values and add_tech_bonus are explicit mocks; this is not engine proof.
 from pathlib import Path
 import datetime, json
 from foundation_source_tests import Runtime, parse, get, prime_existing_custody
+import black_friday_sale_prices as sale
 
 ROOT = Path(__file__).resolve().parents[4]
+SALE_RATIO = sale.RATIO_BASIS
 
 class CountryRuntime(Runtime):
     def __init__(self):
@@ -74,7 +76,7 @@ class CountryRuntime(Runtime):
         super().execute(b,s,prev)
 
 def new_country(tag='GER',date=(1936,1,1)):
-    r=CountryRuntime(); r.date=datetime.date(*date); c=r.country(tag)
+    r=CountryRuntime(); sale.install(r,SALE_RATIO); r.date=datetime.date(*date); c=r.country(tag)
     c['government']='communism' if tag=='SOV' else 'fascism'
     c.update(camp_admin_country_sponsor=1,camp_admin_country_authority_pressure=0,camp_admin_budget=2,camp_admin_mandate=2,camp_admin_country_program=0)
     return r,c
@@ -217,10 +219,12 @@ def tests():
     r,c=new_country(); a=r.state('A'); prime_existing_custody(r,'A',20); a['camp_admin_support_ratio']=1
     c.update(ai=True,camp_admin_budget=1,camp_active_site_count=1)
     pp=c['political_power']; stock=c['support']; r.run('camp_admin_country_prepare_ai_budget','GER')
-    assert c['camp_admin_budget']==2 and c['political_power']==pp-5.25 and c['support']==stock
+    # The ordered budget change charges the Event 026 sale price of its 5.25 PP quote; monthly work keeps its upkeep.
+    order_pp=sale.production_quote(5.25,SALE_RATIO)
+    assert c['camp_admin_budget']==2 and c['political_power']==pp-order_pp and c['support']==stock
     next_month=c['camp_admin_country_ai_policy_next_month']; c['support']=100
     r.run('camp_admin_country_prepare_ai_budget','GER'); assert c['camp_admin_budget']==2 and c['camp_admin_country_ai_policy_next_month']==next_month
-    r.date=datetime.date(1936,4,1); r.run('camp_admin_country_prepare_ai_budget','GER'); assert c['camp_admin_budget']==1 and c['political_power']==pp-10.5
+    r.date=datetime.date(1936,4,1); r.run('camp_admin_country_prepare_ai_budget','GER'); assert c['camp_admin_budget']==1 and c['political_power']==pp-2*order_pp
     r.date=datetime.date(1936,7,1); c['support']=10000; c['flags'].add('camp_admin_development_paused')
     r.run('camp_admin_country_prepare_ai_budget','GER'); assert c['camp_admin_budget']==1
     c['flags'].discard('camp_admin_development_paused'); c['ai']=False
@@ -274,4 +278,8 @@ def tests():
     return results
 
 if __name__=='__main__':
-    print(json.dumps({'status':'passed','source_scenarios':tests(),'limit':'Parsed-source evaluation; mocked engine primitives; no live-game evidence'},indent=2))
+    scenarios={}
+    for ratio in sale.SALE_RATIOS:
+        SALE_RATIO=ratio
+        scenarios[f'payment_ratio_{ratio}']=tests()
+    print(json.dumps({'status':'passed','source_scenarios':scenarios,'sale_ratios':list(sale.SALE_RATIOS),'limit':'Parsed-source evaluation; mocked engine primitives; no live-game evidence'},indent=2))

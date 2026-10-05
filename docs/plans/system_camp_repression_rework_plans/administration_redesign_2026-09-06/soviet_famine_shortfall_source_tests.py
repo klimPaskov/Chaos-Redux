@@ -35,14 +35,15 @@ class FamineRuntime(Runtime):
         self.activations = []
         self.c = self.country('SOV')
         self.c.update(original_tag='SOV', famine_pressure=85, grain_extraction_burden=60, forced_labor_quota=60, camp_administrator_corruption=20, camp_policy_evidence=10, state_population_k=1000)
-        self.quote = {kind: self.constants[f'camp_rework_equipment_cost.{key}'] for kind, key in [('motorized_equipment_1', 'motorized_equipment'), ('train_equipment_1', 'trains'), ('support_equipment_1', 'support_equipment')]}
+        # One sale-aware stock cost: the decision, the event options and the shortfall all read the Event 026 price.
+        sale.install(self, SALE_RATIO)
+        self.quote = {kind: sale.stock(self, key) for kind, key in [('motorized_equipment_1', 'motorized_equipment'), ('train_equipment_1', 'trains'), ('support_equipment_1', 'support_equipment')]}
         self.c['equipment'] = self.quote.copy()
         source = parse((ROOT / 'events/soviet_gulag.txt').read_text(encoding='utf-8-sig'))
         self.events = {get(body, 'id'): body for key, _, body in source if key == 'country_event'}
         decisions = parse((ROOT / 'common/decisions/camp_repression_major_country_decisions.txt').read_text(encoding='utf-8-sig'))
         self.decision = next(body for _, _, category in decisions if isinstance(category, list) for key, _, body in category if key == 'sov_emergency_famine_relief')
         assert get(self.decision, 'cost') == 'global.black_friday_price_camp_rework_cost_labor_project_pp'
-        sale.install(self, SALE_RATIO)
         self.price = sale.price(self, 'labor_project_pp')
 
     def cond(self, body, scope, previous=None):
@@ -136,7 +137,8 @@ def run_cases():
         assert [get(option, 'name') for option in r.options(event)] == [funded]
         r.choose(event, funded)
         assert r.c['political_power'] == 100 and len(r.equipment_debits) == 3 and len(r.activations) == 1
-        results.append(f'{event}: funded option without site, no additional PP charge')
+        assert r.c['equipment'] == {kind: 0 for kind in r.quote} and sale.credits(r) == 1 and sale.last_family(r) == sale.family(r, 'equipment')
+        results.append(f'{event}: funded option without site, no additional PP charge, sale-priced stock and one equipment purchase')
         r = FamineRuntime()
         r.c['equipment'] = {kind: 0 for kind in r.quote}
         assert [get(option, 'name') for option in r.options(event)] == [shortage]

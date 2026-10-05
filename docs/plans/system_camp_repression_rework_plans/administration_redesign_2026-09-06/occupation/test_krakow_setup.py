@@ -40,7 +40,10 @@ class KrakowSetupTests(unittest.TestCase):
         setup = block(EFFECTS, "camp_admin_ger_establish_krakow_site", "camp_admin_country_ai_ger_radical_mandate")
         decision = block(DECISIONS, "camp_admin_ger_establish_krakow_site", "camp_admin_ger_economic_authority")
         monthly = block(EFFECTS, "camp_admin_country_monthly", "camp_admin_country_action_1")
-        self.assertIn("genocide_decision_cost.build_concentration", setup)
+        # The site charges the Event 026 sale price of the ordinary build cost and credits one purchase.
+        self.assertIn("global.black_friday_price_genocide_decision_cost_build_concentration", setup)
+        self.assertNotIn("constant:genocide_decision_cost.build_concentration", setup)
+        self.assertEqual(setup.count("black_friday_credit_political_power_purchase = yes"), 1)
         self.assertLess(setup.index("add_political_power = camp_admin_krakow_setup_debit"), setup.index("genocide_ensure_concentration_camp_level = yes"))
         self.assertIn("camp_rework_site_type.detention", setup)
         self.assertNotIn("genocide_auschwitz_experiment_site", setup)

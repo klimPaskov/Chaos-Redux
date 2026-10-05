@@ -17,6 +17,25 @@ camp_admin_refresh_command_quotes = {
 	multiply_variable = { camp_admin_mandate_quote_pp = constant:camp_admin_command.mandate_pp_multiplier }
 	set_variable = { camp_admin_role_quote_pp = camp_admin_policy_quote_pp }
 	multiply_variable = { camp_admin_role_quote_pp = constant:camp_admin_command.role_pp_multiplier }
+	# Player orders charge the Event 026 sale price. The ratio the sale price table
+	# held is kept with the quotes, so a sale start or end refreshes them
+	# (black_friday_price_table_refresh_owner_quotes).
+	set_variable = { camp_admin_command_quote_sale_ratio = constant:black_friday_event.ratio_basis }
+	if = {
+		limit = { has_variable = global.black_friday_price_table_ratio }
+		set_variable = { camp_admin_command_quote_sale_ratio = global.black_friday_price_table_ratio }
+	}
+	set_temp_variable = { black_friday_price_ratio = camp_admin_command_quote_sale_ratio }
+	set_temp_variable = { black_friday_price_quantum = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_price_ordinary = camp_admin_policy_quote_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { camp_admin_policy_quote_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = camp_admin_mandate_quote_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { camp_admin_mandate_quote_pp = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = camp_admin_role_quote_pp }
+	black_friday_price_table_quote = yes
+	set_variable = { camp_admin_role_quote_pp = black_friday_price_payable }
 	# Trigger shorthand > compares against the previous representable fixed-point value.
 	set_variable = { camp_admin_policy_quote_floor = camp_admin_policy_quote_pp }
 	subtract_from_variable = { camp_admin_policy_quote_floor = constant:camp_admin_command.fixed_point_unit }
@@ -60,6 +79,7 @@ camp_admin_set_priority = {
 		set_temp_variable = { camp_admin_command_debit = camp_admin_policy_quote_pp }
 		multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
 		add_political_power = camp_admin_command_debit
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
 		set_variable = { camp_admin_priority = camp_admin_control_requested }
 		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.priority }
 		camp_admin_record_history = yes
@@ -76,6 +96,7 @@ camp_admin_set_budget = {
 			set_temp_variable = { camp_admin_command_debit = camp_admin_policy_quote_pp }
 			multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
 			add_political_power = camp_admin_command_debit
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			set_variable = { camp_admin_budget = camp_admin_control_requested }
 			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.budget }
 		}
@@ -93,6 +114,7 @@ camp_admin_set_mandate = {
 		set_temp_variable = { camp_admin_command_debit = camp_admin_mandate_quote_pp }
 		multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
 		add_political_power = camp_admin_command_debit
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
 		set_variable = { camp_admin_mandate = camp_admin_control_requested }
 		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.mandate }
 		camp_admin_record_history = yes
@@ -126,6 +148,7 @@ camp_admin_set_selected_role = {
 			set_temp_variable = { camp_admin_command_debit = camp_admin_role_quote_pp }
 			multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
 			add_political_power = camp_admin_command_debit
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			var:camp_selected_state_id = {
 				set_variable = { camp_admin_role = camp_admin_control_requested }
 				camp_admin_refresh_state_economy = yes

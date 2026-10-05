@@ -834,18 +834,20 @@ camp_rework_germany_apply_exact_cohort_transfer = {
 			check_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_valid }
 			check_variable = { camp_occ_custody_committed_people > 0 }
 		}
-		set_temp_variable = { camp_occ_manual_transfer_debit_pp = constant:genocide_decision_cost.german_experiment_transfer }
+		set_temp_variable = { camp_occ_manual_transfer_debit_pp = global.black_friday_price_genocide_decision_cost_german_experiment_transfer }
 		multiply_temp_variable = { camp_occ_manual_transfer_debit_pp = constant:camp_occ_value.negative_one }
 		add_political_power = camp_occ_manual_transfer_debit_pp
-		set_temp_variable = { camp_occ_manual_transfer_debit_xp = constant:genocide_decision_cost.german_experiment_transfer_army_xp }
+		set_temp_variable = { camp_occ_manual_transfer_debit_xp = global.black_friday_price_genocide_decision_cost_german_experiment_transfer_army_xp }
 		multiply_temp_variable = { camp_occ_manual_transfer_debit_xp = constant:camp_occ_value.negative_one }
 		army_experience = camp_occ_manual_transfer_debit_xp
-		set_temp_variable = { camp_occ_manual_transfer_debit_support = constant:camp_rework_equipment_cost.support_equipment }
+		set_temp_variable = { camp_occ_manual_transfer_debit_support = global.black_friday_price_camp_rework_equipment_cost_support_equipment }
 		multiply_temp_variable = { camp_occ_manual_transfer_debit_support = constant:camp_occ_value.negative_one }
 		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_occ_manual_transfer_debit_support }
-		set_temp_variable = { camp_occ_manual_transfer_debit_trains = constant:camp_rework_equipment_cost.trains }
+		set_temp_variable = { camp_occ_manual_transfer_debit_trains = global.black_friday_price_camp_rework_equipment_cost_trains }
 		multiply_temp_variable = { camp_occ_manual_transfer_debit_trains = constant:camp_occ_value.negative_one }
 		add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_occ_manual_transfer_debit_trains }
+		camp_rework_mark_sale_stock_equipment = yes
+		hidden_effect = { camp_rework_credit_sale_order = yes }
 		genocide_activate_crisis = yes
 		add_to_variable = { genocide_decisions_taken = constant:camp_admin_value.one }
 		add_to_variable = { genocide_escalation = constant:genocide_crisis_value.terror_escalation }

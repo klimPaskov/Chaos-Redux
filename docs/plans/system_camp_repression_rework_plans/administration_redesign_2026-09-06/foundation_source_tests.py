@@ -585,50 +585,52 @@ def tests():
         assert 'camp_rework_clear_legacy_closure_attempt' in str(get(colonial_effects,callback)),callback
     assert 'camp_rework_resolve_usa_security_sunset_active' in str(get(colonial_effects,'camp_rework_complete_usa_security_sunset'))
     results.append('Accepted colonial custody receipt permits physical retry once, but a reopened new cohort releases separately and final demolition clears the receipt')
-    exact=Runtime(); exact.country('TEST')
+    import black_friday_sale_prices as sale
     tuning=parse((ROOT/'common/script_constants/camp_repression_rework_constants.txt').read_text(encoding='utf-8-sig'))
-    for category,key in [('camp_rework_cost','dismantle_manpower'),('camp_rework_equipment_cost','support_equipment'),('camp_rework_equipment_cost','convoys')]:
-        exact.constants[category+'.'+key]=float(get(get(tuning,category),key))
+    # Fixed order stock is checked at the Event 026 sale price: exactly the quoted
+    # amount is enough and one unit short is refused, at full, half and quarter price.
+    stock_checks={'camp_rework_can_pay_dismantle_manpower':('manpower',None,'dismantle_manpower','camp_rework_cost'),
+                  'camp_rework_can_pay_support_equipment':('equipment','support_equipment_1','support_equipment','camp_rework_equipment_cost'),
+                  'camp_rework_can_pay_convoys':('equipment','convoy_1','convoys','camp_rework_equipment_cost')}
     decisions=[('common/decisions/camp_repression_major_country_decisions.txt','germany_dismantle_auschwitz_complex',2),('common/decisions/camp_repression_major_country_decisions.txt','japan_shut_down_prisoner_experiments',2),('common/decisions/camp_repression_major_country_decisions.txt','sov_dismantle_overextended_gulags',2),('common/decisions/camp_repression_generic_decisions.txt','camp_repression_close_dormant_legacy_site',2),('common/decisions/camp_repression_colonial_country_decisions.txt','uk_dismantle_raj_detention_network',1),('common/decisions/camp_repression_colonial_country_decisions.txt','fr_close_camp_legacy_sites',1),('common/decisions/camp_repression_colonial_country_decisions.txt','fr_dismantle_north_africa_labor_network',2)]
-    for file,decision_name,expected in decisions:
-        source=parse((ROOT/file).read_text(encoding='utf-8-sig'))
-        entry=next(get(category,decision_name) for _,_,category in source if isinstance(category,list) and get(category,decision_name) is not None)
-        available=get(entry,'available')
-        checks=[value for key,_,value in available if key=='NOT' and (get(value,'has_manpower') is not None or get(value,'has_equipment') is not None)]
-        assert len(checks)==expected,(decision_name,len(checks),expected)
-        for check in checks:
-            if get(check,'has_manpower') is not None:
-                quoted=exact.constants['camp_rework_cost.dismantle_manpower']; exact.scopes['TEST']['manpower']=quoted
-                assert exact.cond([('NOT','=',check)],'TEST')
-                exact.scopes['TEST']['manpower']=quoted-1
-                assert not exact.cond([('NOT','=',check)],'TEST')
+    for ratio in sale.SALE_RATIOS:
+        exact=Runtime(); exact.country('TEST'); sale.install(exact,ratio)
+        for file,decision_name,expected in decisions:
+            source=parse((ROOT/file).read_text(encoding='utf-8-sig'))
+            entry=next(get(category,decision_name) for _,_,category in source if isinstance(category,list) and get(category,decision_name) is not None)
+            available=get(entry,'available')
+            checks=[key for key,_,value in available if key in stock_checks and value=='yes']
+            assert len(checks)==expected,(decision_name,len(checks),expected)
+            for check in checks:
+                field,kind,cost_key,category=stock_checks[check]
+                quoted=sale.price(exact,cost_key,category)
+                assert ratio==sale.RATIO_BASIS or quoted<float(get(get(tuning,category),cost_key))
+                exact.scopes['TEST'][field]={kind:quoted} if kind else quoted
+                assert exact.cond([(check,'=','yes')],'TEST')
+                exact.scopes['TEST'][field]={kind:quoted-1} if kind else quoted-1
+                assert not exact.cond([(check,'=','yes')],'TEST')
+    results.append('Seven fixed-cost legacy closure decisions accept exactly the quoted manpower/equipment/convoy stock and reject one unit short, at the full, half and quarter sale price')
+    activation_runs=[]
+    for ratio in sale.SALE_RATIOS:
+        activation=Runtime(); activation.country('TEST'); sale.install(activation,ratio)
+        activation.triggers['camp_rework_generic_activation_resources_ready']=get(legacy_triggers,'camp_rework_generic_activation_resources_ready')
+        actor=activation.scopes['TEST']
+        actor['manpower']=sale.price(activation,'activation_manpower')
+        actor['command_power']=sale.price(activation,'activation_command')
+        actor['equipment']={'support_equipment_1':sale.stock(activation,'support_equipment')}
+        ready=[('camp_rework_generic_activation_resources_ready','=','yes')]
+        assert activation.cond(ready,'TEST')
+        for key,resource in [('manpower',None),('command_power',None),('equipment','support_equipment_1')]:
+            if resource:
+                actor[key][resource]-=1
             else:
-                kind=get(check,'has_equipment')[0][0]; cost_key='convoys' if kind=='convoy_1' else 'support_equipment'
-                quoted=exact.constants['camp_rework_equipment_cost.'+cost_key]; exact.scopes['TEST']['equipment']={kind:quoted}
-                assert exact.cond([('NOT','=',check)],'TEST')
-                exact.scopes['TEST']['equipment']={kind:quoted-1}
-                assert not exact.cond([('NOT','=',check)],'TEST')
-    results.append('Seven fixed-cost legacy closure decisions accept exactly the quoted manpower/equipment/convoy stock and reject one unit short')
-    activation=Runtime(); activation.country('TEST')
-    activation.triggers['camp_rework_generic_activation_resources_ready']=get(legacy_triggers,'camp_rework_generic_activation_resources_ready')
-    for category,key in [('camp_rework_cost','activation_manpower'),('camp_rework_cost','activation_command'),('camp_rework_equipment_cost','support_equipment')]:
-        activation.constants[category+'.'+key]=float(get(get(tuning,category),key))
-    actor=activation.scopes['TEST']
-    actor['manpower']=activation.constants['camp_rework_cost.activation_manpower']
-    actor['command_power']=activation.constants['camp_rework_cost.activation_command']
-    actor['equipment']={'support_equipment_1':activation.constants['camp_rework_equipment_cost.support_equipment']}
-    ready=[('camp_rework_generic_activation_resources_ready','=','yes')]
-    assert activation.cond(ready,'TEST')
-    for key,resource in [('manpower',None),('command_power',None),('equipment','support_equipment_1')]:
-        if resource:
-            actor[key][resource]-=1
-        else:
-            actor[key]-=1
-        assert not activation.cond(ready,'TEST'),key
-        if resource:
-            actor[key][resource]+=1
-        else:
-            actor[key]+=1
+                actor[key]-=1
+            assert not activation.cond(ready,'TEST'),key
+            if resource:
+                actor[key][resource]+=1
+            else:
+                actor[key]+=1
+        activation_runs.append((activation,actor))
     generic=parse((ROOT/'common/decisions/camp_repression_generic_decisions.txt').read_text(encoding='utf-8-sig'))
     activation_decision=next(get(category,'generic_activate_detention_network') for _,_,category in generic if isinstance(category,list) and get(category,'generic_activate_detention_network') is not None)
     assert 'camp_rework_generic_activation_resources_ready' in str(get(activation_decision,'custom_cost_trigger'))
@@ -642,19 +644,20 @@ def tests():
     ai_cap=str(get(legacy_effects,'camp_rework_apply_ai_cap'))
     assert "('NOT', '=', [('has_manpower', '<', 'constant:camp_rework_cost.activation_manpower')])" in ai_cap
     activation_loc=parse((ROOT/'common/scripted_localisation/camp_repression_ui_scripted_localisation.txt').read_text(encoding='utf-8-sig'))
-    for getter,key,resource in [('GetCampUiActivationManpower','manpower',None),('GetCampUiActivationCommand','command_power',None),('GetCampUiActivationSupportCost','equipment','support_equipment_1')]:
-        definition=next(block for name,_,block in activation_loc if name=='defined_text' and get(block,'name')==getter)
-        red_trigger=get(get(definition,'text'),'trigger')
-        assert not activation.cond(red_trigger,'TEST'),getter
-        if resource:
-            actor[key][resource]-=1
-        else:
-            actor[key]-=1
-        assert activation.cond(red_trigger,'TEST'),getter
-        if resource:
-            actor[key][resource]+=1
-        else:
-            actor[key]+=1
+    for activation,actor in activation_runs:
+        for getter,key,resource in [('GetCampUiActivationManpower','manpower',None),('GetCampUiActivationCommand','command_power',None),('GetCampUiActivationSupportCost','equipment','support_equipment_1')]:
+            definition=next(block for name,_,block in activation_loc if name=='defined_text' and get(block,'name')==getter)
+            red_trigger=get(get(definition,'text'),'trigger')
+            assert not activation.cond(red_trigger,'TEST'),getter
+            if resource:
+                actor[key][resource]-=1
+            else:
+                actor[key]-=1
+            assert activation.cond(red_trigger,'TEST'),getter
+            if resource:
+                actor[key][resource]+=1
+            else:
+                actor[key]+=1
     ui_loc=(ROOT/'localisation/english/camp_repression_ui_l_english.yml').read_text(encoding='utf-8-sig')
     assert '[GetCampUiActivationSupportCost]' in ui_loc.split('camp_ui_cost_activation:',1)[1].split('\n',1)[0]
     assert '[GetCampUiEvidenceManpower]' in ui_loc.split('camp_ui_directive_cost_evidence:',1)[1].split('\n',1)[0]
@@ -663,9 +666,8 @@ def tests():
     assert all('['+getter+']' in blocked for getter in ('GetCampUiActivationManpower','GetCampUiActivationCommand','GetCampUiActivationSupportCost'))
     activation_hover=rework_loc.split('camp_cost_activation_non_pp_tooltip:',1)[1].split('\n',1)[0]
     # The hover shows the Event 026 sale price that the decision charges, not the ordinary constant.
-    assert 'global.black_friday_price_camp_rework_cost_activation_pp' in activation_hover,activation_hover
-    assert all('constant:'+key in activation_hover for key in ('camp_rework_cost.activation_manpower','camp_rework_cost.activation_command','camp_rework_equipment_cost.support_equipment')),activation_hover
-    results.append('Generic activation accepts exact manpower, command and support quotes in decision, Ledger, AI cap and UI, rejecting one unit short')
+    assert all('global.black_friday_price_'+key.replace('.','_') in activation_hover for key in ('camp_rework_cost.activation_pp','camp_rework_cost.activation_manpower','camp_rework_cost.activation_command','camp_rework_equipment_cost.support_equipment')),activation_hover
+    results.append('Generic activation accepts exact manpower, command and support sale quotes in decision, Ledger and UI at full, half and quarter price, rejecting one unit short; the AI capacity heuristic keeps the ordinary thresholds')
     ui=Runtime(); ui.country('GER'); selected=ui.state(country='GER')
     ui.root='GER'
     old_target=ui.target
@@ -814,30 +816,48 @@ def tests():
     two['arrays']['camp_admin_row_amounts_k'][0]=3; assert not gate.cond(available,'HUN')
     two['flags'].add('camp_origin_ambiguous'); assert gate.cond(available,'HUN')
     two['flags'].discard('camp_origin_ambiguous'); two['arrays']['camp_admin_row_amounts_k'][0]=4
-    def generic_fixture(corrupt=None):
+    import black_friday_sale_prices as sale
+    def generic_fixture(corrupt=None,ratio=sale.RATIO_BASIS):
         g=Runtime(); country=g.country('HUN'); first=g.state('H1','HUN'); prime_existing_custody(g,'H1',10)
+        sale.install(g,ratio)
         if corrupt=='first': first['arrays']['camp_admin_row_amounts_k'][0]=9
         if corrupt in ('second','sticky'):
             second=g.state('H2','HUN'); prime_existing_custody(g,'H2',4)
             second['arrays']['camp_admin_row_amounts_k'][0]=3
             if corrupt=='sticky': second['flags'].add('camp_origin_counter_regressed')
+        country['camp_active_site_count']=len(country['arrays']['camp_active_site_states'])
         g.effects['camp_admin_generic_reform']=generic_order
-        g.triggers['camp_admin_generic_reform_available']=[]
+        # Availability is tested above; the paid effect reads the production sale-priced quote.
+        g.triggers['camp_admin_generic_reform_quote']=get(integration_triggers,'camp_admin_generic_reform_quote')
+        g.triggers['camp_admin_generic_reform_available']=[('camp_admin_generic_reform_quote','=','yes')]
         for consumer in ('camp_admin_integration_record_site_history','camp_occ_close_country','camp_admin_begin_reform','camp_rework_unregister_inactive_site','camp_admin_integration_cancel_routine_projects','camp_rework_refresh_country_specific_ideas','camp_rework_rebuild_display_values'):
             g.effects[consumer]=[]
-        g.temp['camp_admin_reform_quote_pp']=15.75
         g.run('camp_admin_generic_reform','HUN')
         return g,country
-    good,gc=generic_fixture(); assert abs(gc['political_power']-84.25)<1e-8 and good.temp['camp_admin_generic_release_rows_ready']==1
-    bad,bc=generic_fixture('first'); assert bc['political_power']==100 and bad.temp['camp_admin_generic_release_rows_ready']==0
-    mixed,mc=generic_fixture('second'); assert mc['political_power']==100 and mixed.temp['camp_admin_generic_release_rows_ready']==0
-    sticky,sc=generic_fixture('sticky'); assert abs(sc['political_power']-84.25)<1e-8 and sticky.temp['camp_admin_generic_release_rows_ready']==1
+    for ratio in sale.SALE_RATIOS:
+        one_site=sale.production_quote(15.75,ratio); two_sites=sale.production_quote(16.5,ratio)
+        good,gc=generic_fixture(ratio=ratio); assert abs(gc['political_power']-(100-one_site))<1e-8 and good.temp['camp_admin_generic_release_rows_ready']==1 and sale.credits(good)==1
+        bad,bc=generic_fixture('first',ratio); assert bc['political_power']==100 and bad.temp['camp_admin_generic_release_rows_ready']==0 and sale.credits(bad)==0
+        mixed,mc=generic_fixture('second',ratio); assert mc['political_power']==100 and mixed.temp['camp_admin_generic_release_rows_ready']==0 and sale.credits(mixed)==0
+        sticky,sc=generic_fixture('sticky',ratio); assert abs(sc['political_power']-(100-two_sites))<1e-8 and sticky.temp['camp_admin_generic_release_rows_ready']==1 and sale.credits(sticky)==1
+    results.append('Generic national reform charges the Event 026 sale price of its site-scaled quote (15.75 PP for one site, 16.5 for two at full price) and credits one purchase only when it pays')
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
     results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
-    import black_friday_sale_prices as sale
     paid=sale.check_native_costs()
     assert len(paid)==78,len(paid)
-    results.append('Event 026 sale: all 78 positive native camp costs read a registered price-table global and credit one Political Power purchase')
+    results.append('Event 026 sale: all 78 positive native camp costs read a registered price-table global and each order credits one purchase')
+    sale.check_stock_prices()
+    results.append('Event 026 sale: no camp purchase check compares stock with an ordinary price; only the AI capacity heuristic keeps ordinary thresholds')
+    for ratio in sale.SALE_RATIOS:
+        for ordinary in (1, 6, 18, 25, 45, 120, 180, 650, 1200, 10000, 15.75):
+            mirror=Runtime(); mirror.country('TEST'); sale.install(mirror,ratio)
+            mirror.temp.update(camp_sale_ordinary=ordinary)
+            assert mirror.cond([('camp_rework_sale_quote','=','yes')],'TEST')
+            assert mirror.temp['camp_sale_payable']==sale.production_quote(ordinary,ratio),(ordinary,ratio)
+        unbuilt=Runtime(); unbuilt.country('TEST'); sale.install(unbuilt,ratio,table_built=False)
+        unbuilt.temp.update(camp_sale_ordinary=45)
+        assert unbuilt.cond([('camp_rework_sale_quote','=','yes')],'TEST') and unbuilt.temp['camp_sale_payable']==45
+    results.append('The trigger-side camp sale quote equals the production table quote at full, half and quarter price, and charges the full price before the table is first built')
     return results
 
 if __name__=='__main__':

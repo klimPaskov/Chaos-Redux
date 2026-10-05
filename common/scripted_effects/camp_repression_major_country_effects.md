@@ -8,7 +8,8 @@ Other country modules retain their package specifications and existing administr
 `camp_rework_soviet_emergency_famine_relief` runs in the acting Soviet country scope.
 It needs positive famine pressure, every quoted equipment type, and no existing relief flag or mission.
 `camp_rework_soviet_relief_order_ready` is its read-only final preflight.
-The equipment quote comes from `camp_rework_equipment_cost` in `camp_repression_rework_constants.txt`.
+The equipment quote is the Event 026 sale price of `camp_rework_equipment_cost` (`camp_rework_can_pay_motorized_equipment`, `_trains` and `_support_equipment`), and the payment (`camp_rework_consume_labor_project_resources`) spends exactly those prices.
+The decision, both funded event options and both shortfall options read this one stock cost, so a shortfall option appears exactly when the funded option cannot be paid.
 
 The helper clears `camp_rework_soviet_relief_order_accepted` on entry.
 On success it removes motorized, trains and support stores once, sets the active relief and accepted-order flags, reduces grain extraction and forced-labor burdens, applies the existing stability consequence, and activates one relief mission.
@@ -22,6 +23,7 @@ The Soviet action dispatcher refunds exactly the recorded amount if the final he
 The shared package router records the scripted cooldown only with an accepted receipt and then clears it.
 The event choices declare no additional political-power payment and call the funded helper directly, so they cannot enter the decision refund branch.
 They clear the request receipt after selecting their result.
+A funded event option that sends the relief columns credits one equipment sale purchase through `camp_rework_credit_sale_order`; a refused order credits nothing.
 Native decision payment ordering, combined native/custom cost presentation and native re-enable timing remain engine evidence requirements.
 
 Usage from a funded event choice:

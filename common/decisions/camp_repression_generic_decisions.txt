@@ -200,7 +200,7 @@ camp_repression_network_category = {
 			set_variable = { camp_rework_action_state_id = FROM.id }
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_activate_detention_network }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		ai_will_do = {
 			base = 0
@@ -235,9 +235,9 @@ camp_repression_network_category = {
 		on_map_mode = map_and_decisions_view
 		cost = global.black_friday_price_camp_rework_cost_expansion_pp
 		custom_cost_trigger = {
-			has_manpower > constant:camp_rework_cost.expansion_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			camp_rework_can_pay_expansion_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
+			camp_rework_can_pay_trains = yes
 		}
 		custom_cost_text = camp_cost_expansion_non_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
@@ -263,9 +263,9 @@ camp_repression_network_category = {
 		available = {
 			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			camp_rework_country_can_expand_generic_labor = yes
-			has_manpower > constant:camp_rework_cost.expansion_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			camp_rework_can_pay_expansion_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
+			camp_rework_can_pay_trains = yes
 			FROM = {
 				is_valid_camp_active_site_state = yes
 				camp_rework_state_is_actor_responsible_controlled = yes
@@ -279,7 +279,7 @@ camp_repression_network_category = {
 			set_variable = { camp_rework_action_state_id = FROM.id }
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_expand_labor_quotas }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_authoritarian_activation
@@ -541,9 +541,9 @@ camp_repression_network_category = {
 		icon = GFX_decision_generic_guard_allocation
 		cost = global.black_friday_price_camp_rework_cost_guard_pp
 		custom_cost_trigger = {
-			has_manpower > constant:camp_rework_cost.guard_manpower
-			command_power > constant:camp_rework_cost.guard_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			camp_rework_can_pay_guard_manpower = yes
+			camp_rework_can_pay_guard_command = yes
+			camp_rework_can_pay_infantry_equipment = yes
 		}
 		custom_cost_text = camp_cost_guard_non_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
@@ -561,15 +561,15 @@ camp_repression_network_category = {
 		available = {
 			hidden_trigger = { NOT = { has_country_flag = camp_admin_initialized } }
 			NOT = { has_country_flag = camp_rework_guards_allocated }
-			has_manpower > constant:camp_rework_cost.guard_manpower
-			command_power > constant:camp_rework_cost.guard_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			camp_rework_can_pay_guard_manpower = yes
+			camp_rework_can_pay_guard_command = yes
+			camp_rework_can_pay_infantry_equipment = yes
 		}
 		complete_effect = {
 			custom_effect_tooltip = generic_allocate_additional_guards_effect_tt
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_allocate_additional_guards }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.guard_allocation
@@ -600,7 +600,7 @@ camp_repression_network_category = {
 			custom_effect_tooltip = generic_reduce_labor_quotas_effect_tt
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_reduce_labor_quotas }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.guard_allocation
@@ -617,9 +617,9 @@ camp_repression_network_category = {
 		on_map_mode = map_and_decisions_view
 		cost = global.black_friday_price_camp_rework_cost_expansion_pp
 		custom_cost_trigger = {
-			has_manpower > constant:camp_rework_cost.expansion_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			camp_rework_can_pay_expansion_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
+			camp_rework_can_pay_trains = yes
 		}
 		custom_cost_text = camp_cost_expansion_non_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
@@ -654,9 +654,9 @@ camp_repression_network_category = {
 				is_ai = no
 				camp_rework_country_under_ai_radicalized_cap = yes
 			}
-			has_manpower > constant:camp_rework_cost.expansion_manpower
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			camp_rework_can_pay_expansion_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
+			camp_rework_can_pay_trains = yes
 			FROM = {
 				is_valid_camp_active_site_state = yes
 				concentration_camp > 0
@@ -669,7 +669,7 @@ camp_repression_network_category = {
 			set_variable = { camp_rework_action_state_id = FROM.id }
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.generic_upgrade_existing_site_to_radicalized_atrocity_site }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		ai_will_do = {
 			base = constant:camp_rework_ai_weight.generic_radicalized
@@ -887,8 +887,8 @@ camp_repression_network_category = {
 		on_map_mode = map_and_decisions_view
 		cost = global.black_friday_price_camp_rework_cost_dismantle_pp
 		custom_cost_trigger = {
-			NOT = { has_manpower < constant:camp_rework_cost.dismantle_manpower }
-			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+			camp_rework_can_pay_dismantle_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
 		}
 		custom_cost_text = camp_cost_dismantlement_non_pp
 		days_remove = constant:camp_rework_timing.reform_days
@@ -906,8 +906,8 @@ camp_repression_network_category = {
 		}
 		target_trigger = { FROM = { is_valid_camp_dormant_reform_state = yes } }
 		available = {
-			NOT = { has_manpower < constant:camp_rework_cost.dismantle_manpower }
-			NOT = { has_equipment = { support_equipment_1 < constant:camp_rework_equipment_cost.support_equipment } }
+			camp_rework_can_pay_dismantle_manpower = yes
+			camp_rework_can_pay_support_equipment = yes
 			FROM = { is_valid_camp_dormant_reform_state = yes }
 		}
 		modifier = { consumer_goods_factor = @CR_SC_CAMP_REWORK_IDEA_MODIFIER_REFORM_CONSUMER_GOODS }
@@ -915,7 +915,7 @@ camp_repression_network_category = {
 			set_variable = { camp_rework_action_state_id = FROM.id }
 			set_temp_variable = { camp_rework_action_id = constant:camp_rework_action.camp_repression_close_dormant_legacy_site }
 			camp_rework_route_country_specific_action = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			hidden_effect = { camp_rework_credit_sale_order = yes }
 		}
 		cancel_trigger = { NOT = { FROM = { is_controlled_by = ROOT } } }
 		cancel_effect = { clr_country_flag = camp_rework_dormant_legacy_closure_active }

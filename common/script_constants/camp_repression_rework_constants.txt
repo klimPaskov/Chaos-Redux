@@ -635,6 +635,15 @@ camp_rework_chemical_contamination = {
 	soman_days = 65.00
 }
 
+# Order prices. The nine native political power keys (survey_pp to evidence_pp),
+# the manpower, command power and fuel keys, and the five stock keys of
+# camp_rework_equipment_cost are registered in the Event 026 sale price table
+# (black_friday_price_table_refresh_entries); decisions, checks, payments and
+# cost texts read global.black_friday_price_camp_rework_cost_<key> and
+# global.black_friday_price_camp_rework_equipment_cost_<key>. The stability and
+# war support keys are consequences, not prices, and the biological payloads
+# are the weapon stock a method uses. Bump black_friday_event.price_table_version
+# when a registered amount changes.
 camp_rework_cost = {
 	schema = {
 		any_key = yes
@@ -687,7 +696,10 @@ camp_rework_equipment_cost = {
 }
 
 # Equipment that must remain available for the full duration of a timed
-# logistics mission after its one-time start cost has been consumed.
+# logistics mission after its one-time start cost has been consumed. Starting
+# such a mission needs the Event 026 sale price of the matching
+# camp_rework_equipment_cost entry plus this reserve (camp_rework_can_start_*);
+# the reserve is held in service, not paid, so a sale never lowers it.
 camp_rework_mission_equipment_reserve = {
 	schema = {
 		any_key = yes
@@ -699,20 +711,6 @@ camp_rework_mission_equipment_reserve = {
 	motorized_equipment = 40
 	trains = 6
 	convoys = 4
-}
-
-# One-time charge plus the reserve that the associated mission maintains.
-camp_rework_equipment_start_requirement = {
-	schema = {
-		any_key = yes
-		data = int
-	}
-
-	infantry_equipment = 850
-	support_equipment = 240
-	motorized_equipment = 160
-	trains = 24
-	convoys = 16
 }
 
 camp_rework_mission_capacity = {

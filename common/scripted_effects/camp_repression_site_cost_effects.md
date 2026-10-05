@@ -64,11 +64,37 @@ The corresponding localisation prints `[?camp_site_quote_labor_motorized|0]`.
 It uses the paid amount for display and payment-plus-reserve for labour affordability.
 Each red/normal branch recomputes its own explicit-state quote rather than relying on a previous failed branch retaining temporary values.
 
+## Event 026 sale price
+
+Every payment amount in the quote is the Event 026 sale price.
+After the payments and their labor reserves are computed, `camp_rework_prepare_site_cost_quote` passes each payment (PP, trucks, trains, support equipment, manpower and command power) through `camp_rework_sale_quote`, then rebuilds each labor start requirement as the sale payment plus its reserve.
+The reserves follow the ordinary payments, because stock held in service is not a price; a sale never lowers them.
+The affordability predicates, the payment effects and the cost texts all read the same quote, so the shown, checked and charged amounts agree on the day a sale starts or ends.
+
+`camp_rework_sale_quote` is the trigger-side mirror of the production `black_friday_price_table_quote` (`026_black_friday_price_table_effects.txt`), needed because the site quote is computed inside a trigger.
+Inputs: temp `camp_sale_ordinary` and optional temp `camp_sale_quantum` (zero or unset means one whole unit).
+It reads the ratio the sale price table holds, `global.black_friday_price_table_ratio`, or the full price before the table is first built.
+Output: temp `camp_sale_payable`, the ordinary amount outside a sale; during a sale the amount times the payment ratio, rounded up to whole steps, at least one step and never above the ordinary amount.
+Zero and negative amounts are unchanged; it is always true.
+The foundation source suite compares the mirror with the production quote at full, half and quarter price.
+
+Fixed order stock uses the same table.
+The manpower, command power and fuel keys of `camp_rework_cost` and the five stock keys of `camp_rework_equipment_cost` are registered in the price table, and `camp_rework_can_pay_<key>` (country scope) checks one of them inclusively, so holding exactly the shown amount is enough.
+Each check wraps its comparison in a `custom_trigger_tooltip` (`camp_rework_can_pay_<key>_tt`) that names the current amount in requirement lists.
+`camp_rework_can_start_<key>` (trucks, trains, support equipment, convoys) adds `camp_rework_mission_equipment_reserve.<key>` to the sale price for a timed logistics order that keeps a reserve in service.
+Every `camp_rework_consume_*` effect pays those prices and marks the order through `camp_rework_mark_sale_stock_equipment` or `camp_rework_mark_sale_stock_convoys`.
+The AI capacity heuristic `camp_rework_apply_ai_cap` keeps the ordinary amounts as planning thresholds; it charges nothing.
+
+`camp_rework_credit_sale_order` (country scope) credits one Event 026 sale purchase for an order that kept its payment: an order that spent stock counts in that stock's family (equipment wins over convoys) with a non-political payment, and an order that paid only political power counts as a Political Power purchase.
+It clears the mark, so every order credits exactly one family, and it does nothing outside a valid natural sale.
+The site payment effects call it once after paying; decisions with a native cost call it once at the end of `complete_effect`, or only when the charged amount was not refunded.
+
 ## Affordability and payment
 
 `camp_rework_can_pay_site_labor`, `camp_rework_can_pay_site_inspect`, `camp_rework_can_pay_site_dismantle`, `camp_rework_can_pay_site_evidence`, and `camp_rework_can_pay_site_restricted` use boolean `= yes` calls in country scope and consume the required `camp_site_cost_state_id` temporary input.
 Each initializes the outputs it reads, recomputes the quote, and checks inclusive native balances.
 Manpower gates use `manpower_k` to avoid the deprecated full-manpower variable's overflow risk.
+Each predicate compares with the sale-priced quote above.
 The restricted predicate checks administrative PP only; its existing separate stock and route predicates remain required.
 
 `camp_rework_pay_site_labor`, `camp_rework_pay_site_inspect`, `camp_rework_pay_site_dismantle`, `camp_rework_pay_site_evidence`, and `camp_rework_pay_site_restricted` are scripted effects in the matching TXT file.
@@ -77,6 +103,7 @@ Their required precondition is successful action/target validation plus the corr
 They do not supply an alternative target or independently decide whether the requested action is legal.
 No live state or resource mutation occurs between the execution guard and payment in their direct call sites.
 The restricted payment effect debits only PP.
+Each payment effect then credits one sale purchase through `camp_rework_credit_sale_order`; labor, dismantlement and evidence payments mark their stock first.
 
 Selected GUI execution uses these payment effects directly.
 Targeted generic decisions have `cost = 0`, use the corresponding custom-cost predicate in both `available` and `custom_cost_trigger`, and pay through their guarded generic dispatcher branches.

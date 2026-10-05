@@ -1864,6 +1864,56 @@ black_friday_price_table_refresh_entries = {
 	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.evidence_pp }
 	black_friday_price_table_quote = yes
 	set_variable = { global.black_friday_price_camp_rework_cost_evidence_pp = black_friday_price_payable }
+	# camp_rework_cost and camp_rework_equipment_cost order stock (checks, payments, cost texts)
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.activation_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_activation_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.expansion_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_expansion_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.guard_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_guard_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.dismantle_manpower }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_dismantle_manpower = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.activation_command }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_activation_command = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.expansion_command }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_expansion_command = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.guard_command }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_guard_command = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.evidence_command }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_evidence_command = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_cost.transport_guard_fuel }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_cost_transport_guard_fuel = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_equipment_cost.infantry_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_equipment_cost_infantry_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_equipment_cost.support_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_equipment_cost_support_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_equipment_cost.motorized_equipment }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_equipment_cost_motorized_equipment = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_equipment_cost.trains }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_equipment_cost_trains = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:camp_rework_equipment_cost.convoys }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_camp_rework_equipment_cost_convoys = black_friday_price_payable }
+	# genocide_decision_cost prices of the camp-owned manual Auschwitz transfer
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.german_experiment_transfer }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_german_experiment_transfer = black_friday_price_payable }
+	set_temp_variable = { black_friday_price_ordinary = constant:genocide_decision_cost.german_experiment_transfer_army_xp }
+	black_friday_price_table_quote = yes
+	set_variable = { global.black_friday_price_genocide_decision_cost_german_experiment_transfer_army_xp = black_friday_price_payable }
 
 	# death_decision_cost (Event 010 human response actions). The owner stores
 	# each payment as a negative spend constant; the table holds the positive amount.
@@ -3154,6 +3204,22 @@ black_friday_price_table_refresh_owner_quotes = {
 	every_country = {
 		limit = { has_country_flag = resources_found_decision_cost_preview_ready }
 		resources_found_refresh_decision_cost_previews = yes
+	}
+	# Camps administration command quotes and the generic reform quote, cached with
+	# the sale ratio they were computed at
+	every_country = {
+		limit = {
+			has_variable = camp_admin_command_quote_sale_ratio
+			NOT = { check_variable = { camp_admin_command_quote_sale_ratio = global.black_friday_price_table_ratio } }
+		}
+		camp_admin_refresh_command_quotes = yes
+	}
+	every_country = {
+		limit = {
+			has_variable = camp_admin_generic_reform_sale_ratio
+			NOT = { check_variable = { camp_admin_generic_reform_sale_ratio = global.black_friday_price_table_ratio } }
+		}
+		camp_admin_generic_reform_refresh_quote = yes
 	}
 }
 

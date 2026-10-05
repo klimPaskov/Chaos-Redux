@@ -34,6 +34,11 @@ class ArchiveRuntime(LifecycleRuntime):
         self.display_rebuild_calls = 0
         for name in ("migration_persecution_prepare_camp_terminal", "migration_persecution_clear_owner_state", "camp_rework_recalculate_country_values", "camp_rework_rebuild_display_values", "camp_rework_refresh_state_site_profile"):
             self.effects[name] = []
+        # Administration command and reform quotes read the Event 026 sale price table (full price here).
+        if str(HERE.parent) not in sys.path:
+            sys.path.insert(0, str(HERE.parent))
+        import black_friday_sale_prices
+        black_friday_sale_prices.install(self)
 
     def run(self, name, scope, params=None, prev=None):
         self.register_calls += name == "camp_rework_register_country_for_monthly_pulse"

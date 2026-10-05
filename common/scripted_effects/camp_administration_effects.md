@@ -114,6 +114,7 @@ Development level starts at zero with a 25 percent productive-development fracti
 `camp_admin_prepare_project_quote` is read-only country-scope quotation: temporary `camp_admin_quote_support = 40` and `camp_admin_quote_pp = 0` for an ordinary monthly development installment.
 `camp_admin_try_pay_project` accepts those explicit temporary quotes, checks both current physical stock/reserves and country remaining ceilings, pays only a complete positive quote, returns `camp_admin_payment_accepted`, and zeroes both quotes so they cannot be replayed.
 Political-power quotes are supported for exceptional country-owner institutional administration; ordinary foundation maintenance and development consume no PP.
+These monthly payments (maintenance, development installments, and the monthly funding of ordered country and civil programs) are upkeep, not purchases, so they keep their ordinary amounts during an Event 026 sale; the orders that start the work and the administration commands charge the sale price.
 The shared support-equipment debit helper remains unmodified.
 All active obligations are quoted first at 0.5 support equipment per thousand people per month.
 The maintenance ceiling equals those existing obligations; development/priority budgets add 150/350 support-equipment units of optional development allowance.

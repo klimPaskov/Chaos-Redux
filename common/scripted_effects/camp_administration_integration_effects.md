@@ -30,6 +30,8 @@ No adapter adds population, directly records deaths, creates a global event targ
 `camp_admin_integration_month` stores the foundation's year-and-calendar-month key.
 `camp_admin_japan_liaotung_registered` marks the one-time accepted industrial-host registration.
 `camp_admin_generic_reform_pp` is a display cache; affordability and payment always compute the temporary quote afresh.
+The quote is the Event 026 sale price: `camp_admin_generic_reform_quote` passes the ordinary amount through `camp_rework_sale_quote`, the refresh stores the ratio it used in `camp_admin_generic_reform_sale_ratio`, and `black_friday_price_table_refresh_owner_quotes` refreshes a stale display when a sale starts or ends.
+The paid order credits one Political Power sale purchase.
 The native decision's custom cost uses `camp_admin_generic_reform_can_pay`, so the price turns red only for insufficient Political Power; site, closure and authority failures remain in the separate availability requirement. Normal, blocked and hover cost localisation display the same fresh quote with two decimals.
 The native decision wraps that separate availability requirement in a localized `custom_trigger_tooltip` to keep internal helper names out of the player-facing requirement list.
 Generic reform availability also requires every registered site to satisfy the same `camp_admin_site_authority_is_valid` gate used by `camp_admin_reform_site`, including the explicit subject-authority flag for a subject-controlled site. This prevents a national debit from preceding a site that the release effect would silently skip; the exact quote and payment remain unchanged.

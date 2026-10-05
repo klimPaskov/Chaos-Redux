@@ -2,17 +2,19 @@
 # Experiment-linked sites also request continuing measured institutional losses
 # through the foundation; no institution creates population or research slots.
 
-# A one-time German detention-site establishment in the package's KrakÃƒÂ³w-area state.
+# A one-time German detention-site establishment in the package's Krakow-area state.
+# It charges the Event 026 sale price of genocide_decision_cost.build_concentration.
 # The later killing-role conversion retains its separate radical mandate, quote and consequences.
 camp_admin_ger_establish_krakow_site = {
 	if = {
 		limit = {
 			camp_admin_ger_krakow_setup_eligible = yes
-			check_variable = { var = political_power value = constant:genocide_decision_cost.build_concentration compare = greater_than_or_equals }
+			check_variable = { var = political_power value = global.black_friday_price_genocide_decision_cost_build_concentration compare = greater_than_or_equals }
 		}
-		set_temp_variable = { camp_admin_krakow_setup_debit = constant:genocide_decision_cost.build_concentration }
+		set_temp_variable = { camp_admin_krakow_setup_debit = global.black_friday_price_genocide_decision_cost_build_concentration }
 		multiply_temp_variable = { camp_admin_krakow_setup_debit = constant:camp_admin_value.negative_one }
 		add_political_power = camp_admin_krakow_setup_debit
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
 		88 = {
 			set_variable = { genocide_responsible_country = ROOT }
 			set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.standard }

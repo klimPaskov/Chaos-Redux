@@ -324,7 +324,8 @@ def run_tests():
     native_click(runtime, decision)
     assert country["political_power"] == 100 - sale.price(runtime, "guard_pp"), (country["political_power"], sale.price(runtime, "guard_pp"), SALE_RATIO)
     assert sale.credits(runtime) == 1, "a kept release counts as one Political Power sale purchase"
-    assert country["equipment"]["support_equipment_1"] == 0
+    # One sale-priced support payment on a confirmed release.
+    assert country["equipment"]["support_equipment_1"] == 180 - sale.stock(runtime, "support_equipment")
     assert state["camp_admin_detainees_k"] == 0
     assert state["camp_admin_total_released_k"] == 4
     assert country["camp_admin_total_released_k"] == 4
@@ -372,7 +373,7 @@ def run_tests():
     gui, gui_country, gui_state = new_release_runtime(stock=180)
     gui.execute(gui.effects["camp_rework_gui_execute_country_action_2"], "USA")
     assert gui_country["political_power"] == 100 - sale.price(gui, "guard_pp")
-    assert gui_country["equipment"]["support_equipment_1"] == 0
+    assert gui_country["equipment"]["support_equipment_1"] == 180 - sale.stock(gui, "support_equipment")
     assert gui_state["camp_admin_detainees_k"] == 0
     assert gui_country["arrays"]["camp_admin_history_kinds"] == [gui.constants["camp_admin_history_kind.release"]]
     assert "camp_gui_country_action_2_cooldown" in gui_country["flags"]
@@ -397,7 +398,7 @@ def run_tests():
         ("mixed-origin ambiguity", lambda r, c, s: s["flags"].add("camp_origin_ambiguous"), 180),
         ("malformed aligned rows", lambda r, c, s: s["arrays"]["camp_admin_row_origins"].pop(), 180),
         ("capture", lambda r, c, s: s.update(controller="JAP"), 180),
-        ("one-short support stock", lambda r, c, s: c["equipment"].update(support_equipment_1=179), 179),
+        ("one-short support stock", lambda r, c, s: c["equipment"].update(support_equipment_1=sale.stock(r, "support_equipment") - 1), None),
         ("civil cutover", lambda r, c, s: c["flags"].add("camp_admin_civil_initialized"), 180),
     ]:
         runtime, country, state = new_release_runtime(stock=180)
@@ -411,7 +412,7 @@ def run_tests():
             runtime,
             country,
             state,
-            support_before=expected_support,
+            support_before=expected_support if expected_support is not None else sale.stock(runtime, "support_equipment") - 1,
             detainees_before=0 if case_name == "zero rows" else 4,
         )
         rejected_cases.append(case_name)
@@ -432,7 +433,7 @@ def run_tests():
     assert captured["camp_admin_detainees_k"] == 4
     assert valid["camp_admin_detainees_k"] == 0
     assert ai_country["arrays"]["camp_admin_history_states"] == ["377"]
-    assert ai_country["equipment"]["support_equipment_1"] == 0
+    assert ai_country["equipment"]["support_equipment_1"] == 180 - sale.stock(ai, "support_equipment")
     results.append("AI target: real production selector uses camp_active_site_states and the same site predicate; captured row is skipped")
 
     # Replay after a measured success cannot release or publish history twice,
