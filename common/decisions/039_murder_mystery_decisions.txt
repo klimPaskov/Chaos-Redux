@@ -1541,8 +1541,12 @@ murder_mystery_foreign_cell_investigation_category = {
 						limit = { has_country_flag = murder_mystery_cell_mature }
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.prevent_revolt_preparation }
 					}
+					# The interception needs a shipment actually on its way to the cell.
 					else_if = {
-						limit = { murder_mystery_country_has_registered_cell = yes }
+						limit = {
+							murder_mystery_country_has_registered_cell = yes
+							has_country_flag = murder_mystery_shipment_pending
+						}
 						set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.intercept_support_shipment }
 					}
 					else = { set_variable = { murder_mystery_objective_type = constant:murder_mystery_objective.secure_depots_rail_hubs } }
@@ -1749,8 +1753,22 @@ murder_mystery_foreign_cell_investigation_category = {
 				else = { murder_mystery_decision_resolve_objective_failure = yes }
 			}
 		}
-		cancel_trigger = { NOT = { murder_mystery_objective_owner_is_valid = yes } }
-		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
+		# A cell that rises in revolt ends the mission as a failure at once.
+		cancel_trigger = {
+			OR = {
+				NOT = { murder_mystery_objective_owner_is_valid = yes }
+				murder_mystery_objective_recruitment_became_revolt = yes
+			}
+		}
+		cancel_effect = {
+			hidden_effect = {
+				if = {
+					limit = { murder_mystery_objective_recruitment_became_revolt = yes }
+					murder_mystery_decision_resolve_objective_failure = yes
+				}
+				else = { murder_mystery_decision_clear_objective_context = yes }
+			}
+		}
 	}
 
 	murder_mystery_protect_local_government = {
@@ -3525,6 +3543,8 @@ murder_mystery_world_without_leaders_category = {
 		visible = {
 			murder_mystery_world_category_visible = yes
 			check_variable = { var = global.murder_mystery_active_terminal_sector_count value = constant:murder_mystery_terminal.maximum_active_sectors compare = less_than }
+			# The home front opens first, through Synchronize the Uprisings.
+			is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_one }
 			NOT = { is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_two } }
 			check_variable = { var = global.murder_mystery_terminal_open_sector_two value = constant:murder_mystery_value.zero compare = greater_than }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
@@ -3571,6 +3591,8 @@ murder_mystery_world_without_leaders_category = {
 		visible = {
 			murder_mystery_world_category_visible = yes
 			check_variable = { var = global.murder_mystery_active_terminal_sector_count value = constant:murder_mystery_terminal.maximum_active_sectors compare = less_than }
+			# The home front opens first, through Synchronize the Uprisings.
+			is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_one }
 			NOT = { is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_three } }
 			check_variable = { var = global.murder_mystery_terminal_open_sector_three value = constant:murder_mystery_value.zero compare = greater_than }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }

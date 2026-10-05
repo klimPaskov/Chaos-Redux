@@ -1044,14 +1044,21 @@ murder_mystery_terminal_target_is_open = {
 	NOT = { has_country_flag = murder_mystery_terminal_absorbed }
 }
 
-# COUNTRY scope. The government has lost the war against the movement: it
-# capitulated, every state it owns is occupied, or a peace made it a subject
-# of the movement.
+# COUNTRY scope. The government has lost the war against the movement: while
+# at war with the central state it capitulated or lost every state it owns,
+# or a peace made it a subject of the movement. A surrender in an unrelated
+# war never hands a government to the movement.
 murder_mystery_terminal_target_is_defeated = {
 	OR = {
-		has_capitulated = yes
-		num_of_controlled_states < constant:murder_mystery_value.one
 		murder_mystery_terminal_is_movement_side = yes
+		AND = {
+			has_event_target = murder_mystery_assassin_state
+			has_war_with = event_target:murder_mystery_assassin_state
+			OR = {
+				has_capitulated = yes
+				num_of_controlled_states < constant:murder_mystery_value.one
+			}
+		}
 	}
 }
 

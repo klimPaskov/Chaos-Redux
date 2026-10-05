@@ -52,8 +52,8 @@ No objective can resolve on the day it starts: every bound mission records `murd
 Four counterinsurgency and case objectives bind named targets:
 
 - Protect the Witness Transfer binds the capital as origin and a random fully controlled state rail-connected to it as destination (both highlighted and named in the mission); it fails as soon as either state leaves full control or `has_railway_connection` between them breaks, and succeeds at the deadline only if both still hold.
-- Intercept the Support Shipment binds the generation of the shipment that Supply the Selected Cell recorded on the cell country (`murder_mystery_record_cell_shipment`, arriving after `shipment_transit_days`); without a shipment on its way the objective does not start. It succeeds when a raid (`murder_mystery_damage_cell_row`) or the cell's destruction cancels that shipment first, and fails when the pulse delivers it, at which point the cell gains `shipment_maturity` and `shipment_readiness`. A cell that becomes a derivative takes its shipment with it.
-- Dismantle the Local Recruitment binds the cell row by its unique generation and records a floor `recruitment_maturity_drop` below its maturity at the start; it succeeds when the row's maturity reaches the floor or the row is gone.
+- Intercept the Support Shipment binds the generation of the shipment that Supply the Selected Cell recorded on the cell country (`murder_mystery_record_cell_shipment`, arriving after `shipment_transit_days`); Interdict a Known Route offers it only while a shipment is on its way to the government's cell, and offers Secure Depots and Rail Hubs instead when none is. It succeeds when a raid (`murder_mystery_damage_cell_row`) or the cell's destruction cancels that shipment first, and fails when the pulse delivers it, at which point the cell gains `shipment_maturity` and `shipment_readiness`. A cell that becomes a derivative takes its shipment with it.
+- Dismantle the Local Recruitment binds the cell row by its unique generation and records a floor `recruitment_maturity_drop` below its maturity at the start; it succeeds when the row's maturity reaches the floor or the row is destroyed, and fails at once if the cell leaves the registry by rising as a derivative revolt.
 - Protect the Local Government records the protected government's Event 039 incident count; it fails as soon as the movement strikes one of its offices (an office casualty or a ruler's murder raises the count) or the government falls.
 
 Supply the Selected Cell therefore arranges cover and contacts at once (stage, local case, exposure, evidence) and sends its maturity and readiness as the shipment; a cell that already expects a shipment receives the supplies directly.
@@ -292,6 +292,7 @@ Each derivative chooses one priority in Cell Administration (Answer to the Cente
 
 An AI derivative wants exactly one priority at a time (`murder_mystery_derivative_prefers_*` in `039_murder_mystery_runtime_triggers.txt`): obedience when it is close to surrender or its own Cohesion is below 40, its own campaign when it is at war beside the central state, and self-government otherwise.
 Because the three situations never overlap, it changes priority only when its situation changes, not every time the cooldown ends.
+A derivative that becomes the territorial heir gives up its priority and its spirit, and a carrier tag that is reused starts without the parent, priority and reinforcement of the derivative that held it before.
 
 ## Connections to other systems
 
@@ -321,7 +322,7 @@ The movement pulse repeats the wave for every active sector, so the remaining go
 No daily or weekly scan is added: the pulse and every hook iterate only the registry.
 After each wave the largest government at war becomes the current campaign target (`murder_mystery_terminal_target`) that Break the Command Spine and the terminal objectives act on.
 
-A registered government that capitulates while at war with the movement, or to a movement country, is flagged and queued; the pulse also queues any open row that is fully occupied while at war with the central state or that a peace made a movement subject.
+A registered government that capitulates while at war with the movement, or to a movement country, is flagged and queued; the pulse also queues any open row that capitulated or is fully occupied while at war with the central state, or that a peace made a movement subject. A government that surrendered only in an unrelated war is never handed to the movement.
 The queue sends `chaosx.nr39.65` to the central state after `administration_delay_days`, with the government as the regular event target `murder_mystery_terminal_choice`; a choice that never arrives is offered again after `administration_retry_days`.
 Establish a Successor Administration is a targeted decision over the registry for a defeated government that has no choice pending, and it sends the same choice for the settlement cost.
 The three options run `murder_mystery_dismantle_terminal_target` once:

@@ -1710,6 +1710,12 @@ murder_mystery_create_derivative_carrier = {
 # stockpile shared by revolts and cell territories.
 murder_mystery_initialize_derivative_carrier = {
 	save_global_event_target_as = murder_mystery_derivative_country_candidate
+	# A reused carrier starts without the parent, priority and support of the
+	# derivative that last held it.
+	clear_variable = murder_mystery_derivative_parent_government
+	clear_variable = murder_mystery_derivative_priority
+	clr_country_flag = murder_mystery_derivative_priority_cooldown
+	clr_country_flag = murder_mystery_derivative_reinforced
 	set_country_flag = murder_mystery_derivative_carrier_validated
 	set_country_flag = murder_mystery_derivative_country
 	set_country_flag = murder_mystery_cell_administration_open
@@ -2239,6 +2245,10 @@ murder_mystery_evaluate_terminal_victory = {
 							murder_mystery_terminal_country_is_eligible = yes
 						}
 						clr_country_flag = murder_mystery_terminal_dismantled
+						if = {
+							limit = { has_idea = murder_mystery_terminal_subject_administration }
+							remove_ideas = murder_mystery_terminal_subject_administration
+						}
 						set_variable = { global.murder_mystery_terminal_status_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.status_registered }
 						set_variable = { global.murder_mystery_terminal_war_state_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.status_registered }
 						set_variable = { global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.victory_unresolved }
@@ -2259,10 +2269,13 @@ murder_mystery_evaluate_terminal_victory = {
 			}
 			murder_mystery_save_terminal_sector_origin = yes
 			set_temp_variable = { murder_mystery_terminal_wave_declared = constant:murder_mystery_value.zero }
+			# Registry membership, not the campaign flag, decides: a government
+			# whose row was settled and removed keeps its old flags if it is
+			# later released again, and must still be fought.
 			every_country = {
 				limit = {
 					murder_mystery_terminal_country_is_eligible = yes
-					NOT = { has_country_flag = murder_mystery_terminal_target_registered }
+					NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = THIS } }
 				}
 				murder_mystery_register_terminal_country = yes
 				if = {

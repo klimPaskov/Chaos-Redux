@@ -1314,7 +1314,7 @@ murder_mystery_on_terminal_target_annexed = {
 					has_event_target = murder_mystery_loss_winner
 					event_target:murder_mystery_loss_winner = {
 						murder_mystery_terminal_country_is_eligible = yes
-						NOT = { has_country_flag = murder_mystery_terminal_target_registered }
+						NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = THIS } }
 					}
 				}
 				murder_mystery_save_terminal_sector_origin = yes
@@ -1390,15 +1390,15 @@ murder_mystery_find_local_derivative = {
 # murder_mystery_terminal_leader_protected.
 murder_mystery_replace_terminal_government_leader = {
 	clr_country_flag = murder_mystery_terminal_leader_protected
+	# A ruler murdered earlier in the campaign leaves its flags behind; only
+	# this transaction's commit proves the sitting ruler was replaced.
+	clr_country_flag = murder_mystery_foreign_leader_transaction_committed
 	if = {
 		limit = { murder_mystery_foreign_high_value_leader_is_safe = yes }
 		murder_mystery_execute_foreign_leader_transaction = yes
 	}
 	if = {
-		limit = {
-			NOT = { has_country_flag = murder_mystery_foreign_leader_assassinated }
-			NOT = { has_country_flag = murder_mystery_foreign_leader_transaction_committed }
-		}
+		limit = { NOT = { has_country_flag = murder_mystery_foreign_leader_transaction_committed } }
 		set_country_flag = murder_mystery_terminal_leader_protected
 	}
 	set_temp_variable = { murder_mystery_incident_role_input = constant:murder_mystery_target_role.cabinet }
@@ -1899,6 +1899,13 @@ murder_mystery_install_territorial_heir = {
 	clr_country_flag = murder_mystery_derivative_country
 	clr_country_flag = murder_mystery_derivative_active
 	clr_country_flag = murder_mystery_cell_administration_open
+	# The new center answers to no one, so its old priority toward the
+	# fallen center ends with it.
+	remove_ideas = murder_mystery_priority_spirit_obedience
+	remove_ideas = murder_mystery_priority_spirit_autonomy
+	remove_ideas = murder_mystery_priority_spirit_local_campaign
+	clear_variable = murder_mystery_derivative_priority
+	clr_country_flag = murder_mystery_derivative_priority_cooldown
 	set_country_flag = murder_mystery_assassin_state
 	set_country_flag = murder_mystery_assassin_state_active
 	set_country_flag = murder_mystery_assassin_state_carrier_validated
