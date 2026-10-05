@@ -205,67 +205,63 @@ equipment_from_heavens_achievement_fail_borrowed_nightmare = {
 	clear_variable = efh_ach_nightmare_baseline
 }
 
-# Hidden pulse body (chaosx.nr42.31), every fourteen days while open. The
-# route completes when the exact family is fielded in divisions during a war
-# and its combined stockpile and fielded count falls below the level recorded
-# when that war use began, which proves material use in combat rather than
-# passive ownership. The route fails if the owner event fires first.
+# Country scope. Recheck disqualification at cleanup and at victory.
+equipment_from_heavens_achievement_validate_nightmare = {
+	set_temp_variable = { chaosx_date_offset = global.date }
+	subtract_from_temp_variable = { chaosx_date_offset = efh_ach_nightmare_start_date }
+	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	chaosx_convert_date_offset_to_days = yes
+	set_temp_variable = { efh_ach_elapsed = chaosx_date_days }
+	if = {
+		limit = {
+			OR = {
+				is_ai = yes
+				is_in_array = { global.fired_events = efh_ach_nightmare_owner }
+				check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_victory_window_days }
+			}
+		}
+		equipment_from_heavens_achievement_fail_borrowed_nightmare = yes
+	}
+}
+
+# Unit-leader scope, FROM is the owner. Only the victorious leader's army counts.
+equipment_from_heavens_achievement_on_battle_victory = {
+	FROM = { equipment_from_heavens_achievement_validate_nightmare = yes }
+	if = {
+		limit = {
+			FROM = {
+				has_country_flag = efh_ach_nightmare_active
+				NOT = { has_country_flag = efh_ach_nightmare_complete }
+				NOT = { has_country_flag = efh_manifest_manual }
+			}
+		}
+		meta_effect = {
+			text = {
+				if = {
+					limit = { check_variable = { num_equipment@[TOKEN] > 0 } }
+					FROM = {
+						set_country_flag = efh_ach_nightmare_complete
+						equipment_from_heavens_achievement_fail_borrowed_nightmare = yes
+					}
+				}
+			}
+			TOKEN = "[?FROM.efh_ach_nightmare_token.GetTokenKey]"
+		}
+	}
+}
+
+# Hidden cleanup pulse (chaosx.nr42.31). Only the victory callback awards it.
 equipment_from_heavens_achievement_nightmare_pulse = {
 	if = {
 		limit = {
 			has_country_flag = efh_ach_nightmare_active
 			NOT = { has_country_flag = efh_ach_nightmare_complete }
 		}
-		set_temp_variable = { chaosx_date_offset = global.date }
-		subtract_from_temp_variable = { chaosx_date_offset = efh_ach_nightmare_start_date }
-		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
-		chaosx_convert_date_offset_to_days = yes
-		set_temp_variable = { efh_ach_elapsed = chaosx_date_days }
+		equipment_from_heavens_achievement_validate_nightmare = yes
 		if = {
-			limit = {
-				OR = {
-					is_ai = yes
-					is_in_array = { global.fired_events = efh_ach_nightmare_owner }
-					check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_victory_window_days }
-				}
-			}
-			equipment_from_heavens_achievement_fail_borrowed_nightmare = yes
-		}
-		else = {
-			meta_effect = {
-				text = {
-					set_temp_variable = { efh_ach_fielded = num_equipment_in_armies@[TOKEN] }
-					set_temp_variable = { efh_ach_total = num_equipment@[TOKEN] }
-				}
-				TOKEN = "[?efh_ach_nightmare_token.GetTokenKey]"
-			}
-			add_to_temp_variable = { efh_ach_total = efh_ach_fielded }
-			if = {
-				limit = {
-					has_war = yes
-					check_variable = { efh_ach_fielded > 0 }
-				}
-				if = {
-					limit = {
-						has_variable = efh_ach_nightmare_baseline
-						check_variable = { efh_ach_total < efh_ach_nightmare_baseline }
-					}
-					set_country_flag = efh_ach_nightmare_complete
-					clr_country_flag = efh_ach_nightmare_active
-				}
-				else_if = {
-					limit = { NOT = { has_variable = efh_ach_nightmare_baseline } }
-					set_variable = { efh_ach_nightmare_baseline = efh_ach_total }
-				}
-			}
-			else = {
-				clear_variable = efh_ach_nightmare_baseline
-			}
-			if = {
-				limit = { has_country_flag = efh_ach_nightmare_active }
-				set_temp_variable = { efh_ach_next_pulse = constant:equipment_from_heavens_achievement.nightmare_pulse_days }
-				country_event = { id = chaosx.nr42.31 days = efh_ach_next_pulse }
-			}
+			limit = { has_country_flag = efh_ach_nightmare_active }
+			set_temp_variable = { efh_ach_next_pulse = constant:equipment_from_heavens_achievement.nightmare_pulse_days }
+			country_event = { id = chaosx.nr42.31 days = efh_ach_next_pulse }
 		}
 	}
 }

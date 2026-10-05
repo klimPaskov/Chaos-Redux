@@ -22,7 +22,7 @@ The event is registered in `global.repeatable_events`, belongs to the reworked d
 | `chaosx.nr42.18` | Empty-recipient-pool explanation for manual firing. |
 | `chaosx.nr42.19` | Hidden stale-chain closer, scheduled 44 days after discovery acknowledgment. |
 | `chaosx.nr42.30` | Hidden Tiny Arsenal State pulse, every 30 days while the route is open. |
-| `chaosx.nr42.31` | Hidden Borrowed Nightmare pulse, every 14 days while the route is open. |
+| `chaosx.nr42.31` | Hidden Borrowed Nightmare expiry check, every 14 days while the route is open. |
 
 ## Trigger and runtime flow
 
@@ -155,9 +155,9 @@ Event 42 keeps its own level 1 eligibility. Each member has one row, so a transa
 | --- | --- | --- |
 | `042_equipment_from_heavens_tiny_arsenal_state` | Player recipient with fewer than ten factories fields fifty more divisions within a year while holding its capital, then makes a major capitulate or accept its conditional surrender within three years. | Snapshot at delivery, 30-day pulse with an exact final growth-window check `chaosx.nr42.30`, `on_capitulation` and `on_peace_proposal` hooks. |
 | `042_equipment_from_heavens_nuclear_lottery` | Player recipient with no bombs and no nuclear production access receives a cache and conducts a strike before gaining production access. | Snapshot after the cache, `on_nuke_drop` receipt. |
-| `042_equipment_from_heavens_borrowed_nightmare` | Player recipient receives a special family before its owner event fired, then fields it at war and loses some of it before the owner event fires. | Snapshot on the first special family, 14-day pulse `chaosx.nr42.31`. |
+| `042_equipment_from_heavens_borrowed_nightmare` | Player recipient receives a special family from a normal delivery before its owner event fires, then wins a land battle within 1095 days with a commander whose army contains that equipment, before the owner event fires. | Snapshot on the first special family, native `on_army_leader_won_combat` callback. |
 
-Safeguards: manual or force-triggered deliveries, AI recipients, and recipients that pass to AI control never qualify. Each route has separate active and completed flags, so a later delivery cannot overwrite an open route. Failed routes clear their state and may reopen on a later valid delivery. Borrowed Nightmare currently uses the stockpile-plus-fielded count falling during a war as a proxy. Attrition and transfers can satisfy that proxy; it does not prove the requested combat loss, so this achievement remains a release blocker rather than an approved substitute.
+Safeguards: manual or force-triggered deliveries, AI recipients, and recipients that pass to AI control never qualify. Each route has separate active and completed flags, so a later delivery cannot overwrite an open route. Failed routes clear their state and may reopen on a later valid delivery. Borrowed Nightmare checks the victorious commander's army for the saved equipment type. Stockpile declines, attrition, transfers, defeats, and victories by other armies cannot award it. The director approved this commander-army victory requirement on 6 October 2026. The 14-day pulse only expires the route.
 
 ## Runtime files
 
@@ -202,7 +202,7 @@ Carrier `chaosx_cxt_extension_event042_equipment_from_heavens` registers `chaosx
 - The HOI4 MCP event inspector traces the Event 42 events on this workspace in focused mode only. Helper projections are deferred, so the dispatcher path through scripted effects is proven by source review and not by MCP helper expansion.
 - Whether `create_equipment_variant` with `allow_without_tech` accepts modules the recipient has not researched is not documented. The stockpile-delta verification and reroll keep the package full if the engine rejects a variant, and the in-game check belongs to live testing.
 - Tier-4 airframes, jets, and rocket interceptors are outside the registry because their engine and module validity across DLC configurations is unproven.
-- Borrowed Nightmare lacks exact combat-loss evidence and remains unresolved; its proxy can count attrition or transfers.
+- Borrowed Nightmare uses the director-approved commander-army battle victory criterion. Native callback execution remains a live acceptance check.
 - Required post-change MCP event, probability comparison and shared-detail visual acceptance remain open while the connected routes time out.
 - The 5 October live screenshots show the legacy news event, not this package; live acceptance of the rework is pending.
 

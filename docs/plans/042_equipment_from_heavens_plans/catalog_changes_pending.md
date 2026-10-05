@@ -14,4 +14,4 @@ No availability promotion is authorized by this audit.
 | Presentation / consequences | One recipient receives discovery and one recovery summary; three-to-seven hidden recovery visits burden local supply, construction and infrastructure repairs. An accident is included in the summary; lost landing grounds produce a halt report. No world-news broadcast. |
 | Status | Preserve the current workbook status until orchestrator approval; the legacy screenshots do not validate this rework. |
 
-Borrowed Nightmare's exact combat-loss evidence, post-change MCP comparison/visual evidence and live acceptance remain unresolved.
+Borrowed Nightmare uses the director-approved commander-army battle victory criterion. Copy the updated achievement description and tooltip from the Event 042 localisation file. Its stock-loss requirement is superseded. Post-change MCP comparison/visual evidence and live acceptance remain pending.

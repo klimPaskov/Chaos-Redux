@@ -92,3 +92,13 @@ The final narrow event comparison and source lookup also timed out awaiting tool
 The Windows user-mapped-file write problem was resolved by a verified atomic sibling replacement. A generic skill-maintenance note is accepted and queued in `subagent_handoffs/skill_note_2026-10-05.md`; skill files were not edited because they are outside this task's file ownership. Final MCP responses are retained in `evidence/mcp_final.json`.
 
 The final guard pass represents pending and active manual status with country flags, preserves that status through recipient replacement, and permits readiness only when the prefire draw succeeded. All three achievement snapshots reject the manual flag, and the eligibility tooltip states that forced deliveries do not qualify. Cargo tables and AI weights are unchanged.
+
+## Director-approved achievement follow-up, 6 October 2026
+
+The Borrowed Nightmare combat-loss blocker above is superseded by the director-approved commander-army battle victory criterion.
+Implementation and references are recorded in `agent_decisions_2026-10-05.md`, section Borrowed Nightmare follow-up.
+The native victory callback replaces stock decline, and the hidden pulse only expires eligibility.
+Achievement text and Event Details describe the 1095-day window, source-event absence and forced-delivery exclusion.
+The report colour audit reports zero colour-bearing keys.
+MCP routes are absent from this follow-up session's connected tool list, so native execution and updated text rendering remain orchestrator live checks.
+Other release issues above retain their recorded status.
