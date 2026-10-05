@@ -1471,6 +1471,314 @@ independence_wave_form08_cleanup_runtime = {
 	clear_variable = independence_wave_form08_minority_settlement
 }
 
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-11 COSSACK HOST FEDERATION EFFECTS
+# ============================================================================
+# DON (state 245) and KUB (state 234) select FORM-11 when their own later gate
+# opens. The carrier takes the X-ending CHX identity and its flag triplet. A
+# consenting member either authorizes full integration, which transfers only
+# its own host states (245 and 238, or 234), or stays a sovereign autonomous
+# host member. Rostov (state 218) is never transferred, claimed or cored. The
+# post-formation Host Federation Charter tracks civilian control, cavalry
+# integration and the settlement with non-Cossack residents (agent decision
+# D24).
+# ============================================================================
+
+# Country scope (DON or KUB). Called from each package's own later gate.
+independence_wave_form11_select_family = {
+	if = {
+		limit = {
+			OR = { original_tag = DON original_tag = KUB }
+			NOT = { has_country_flag = independence_wave_formable_active }
+			NOT = { has_independence_wave_formable_transaction_lock = yes }
+			OR = {
+				NOT = { has_country_flag = independence_wave_formable_family_selected }
+				check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.cossack_host_federation }
+			}
+		}
+		set_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.cossack_host_federation }
+		set_country_flag = independence_wave_formable_family_selected
+		independence_wave_focus_register_formable_family = yes
+	}
+}
+
+independence_wave_form11_register_readiness = {
+	independence_wave_formable_clear_selected_family_readiness = yes
+	if = {
+		limit = {
+			has_variable = independence_wave_anchor_state
+			OR = {
+				AND = {
+					original_tag = DON
+					has_country_flag = independence_wave_don_form11_docket_open
+					owns_state = constant:independence_wave_form11_anchor.don
+					controls_state = constant:independence_wave_form11_anchor.don
+					245 = { is_capital = yes }
+				}
+				AND = {
+					original_tag = KUB
+					has_country_flag = independence_wave_kub_durable_sovereignty
+					owns_state = constant:independence_wave_form11_anchor.kub
+					controls_state = constant:independence_wave_form11_anchor.kub
+					234 = { is_capital = yes }
+				}
+			}
+		}
+		set_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.cossack_host_federation }
+		set_country_flag = independence_wave_formable_territory_adapter_ready
+		# CHX is the attested X-ending Cossack Host Federation identity with its
+		# own flag triplet. Only one carrier may hold it at a time.
+		set_country_flag = independence_wave_formable_x_tag_reserved
+		set_country_flag = independence_wave_form11_identity_attested
+		set_country_flag = independence_wave_formable_flag_package_ready
+		set_country_flag = independence_wave_formable_identity_adapter_ready
+		set_country_flag = independence_wave_formable_integration_adapter_ready
+		set_country_flag = independence_wave_formable_member_policy_audited
+		set_country_flag = independence_wave_form11_readiness_attested
+	}
+}
+
+independence_wave_formable_identity_adapter_11 = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_formable_mutation_prevalidated
+			has_independence_wave_form11_identity_clearance = yes
+			has_independence_wave_form11_runtime_commit_proof = yes
+		}
+		set_cosmetic_tag = CHX
+		set_global_flag = independence_wave_form11_identity_in_use
+		set_country_flag = independence_wave_form11_federation_carrier
+		set_country_flag = independence_wave_formable_identity_committed
+	}
+}
+
+independence_wave_formable_integration_adapter_11 = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_formable_mutation_prevalidated
+			has_country_flag = independence_wave_formable_identity_committed
+			has_cosmetic_tag = CHX
+			independence_wave_formable_member_arrays_are_aligned = yes
+		}
+		set_temp_variable = { independence_wave_form11_member_index = constant:independence_wave_formable_tuning.first_array_index }
+		set_temp_variable = { independence_wave_form11_additional_members_processed = constant:independence_wave_formable_tuning.no_entries }
+		set_temp_variable = { independence_wave_form11_required_additional_members = independence_wave_formable_minimum_members }
+		subtract_from_temp_variable = { independence_wave_form11_required_additional_members = constant:independence_wave_formable_tuning.loop_increment }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_form11_member_index value = independence_wave_formable_member_country_entries^num compare = less_than } }
+			set_temp_variable = { independence_wave_form11_member_consent = independence_wave_formable_member_consent_entries^independence_wave_form11_member_index }
+			var:independence_wave_formable_member_country_entries^independence_wave_form11_member_index = {
+				if = {
+					limit = {
+						NOT = { tag = ROOT }
+						has_independence_wave_form11_member_candidate = yes
+						check_variable = { independence_wave_form11_member_consent = constant:independence_wave_formable_consent.consenting_member }
+					}
+					if = {
+						limit = { has_country_flag = independence_wave_form0124_full_integration_authorized }
+						independence_wave_formable_end_consenting_member_origin = yes
+						if = { limit = { original_tag = DON owns_state = constant:independence_wave_form11_anchor.don controls_state = constant:independence_wave_form11_anchor.don } ROOT = { transfer_state = constant:independence_wave_form11_anchor.don add_state_core = constant:independence_wave_form11_anchor.don } }
+						if = { limit = { original_tag = DON owns_state = constant:independence_wave_form11_anchor.don_compact controls_state = constant:independence_wave_form11_anchor.don_compact } ROOT = { transfer_state = constant:independence_wave_form11_anchor.don_compact add_state_core = constant:independence_wave_form11_anchor.don_compact } }
+						if = { limit = { original_tag = KUB owns_state = constant:independence_wave_form11_anchor.kub controls_state = constant:independence_wave_form11_anchor.kub } ROOT = { transfer_state = constant:independence_wave_form11_anchor.kub add_state_core = constant:independence_wave_form11_anchor.kub } }
+					}
+					else = {
+						independence_wave_form0124_install_autonomous_member = yes
+						add_ideas = independence_wave_form11_autonomous_host_member
+					}
+					add_to_temp_variable = { independence_wave_form11_additional_members_processed = constant:independence_wave_formable_tuning.loop_increment }
+				}
+			}
+			add_to_temp_variable = { independence_wave_form11_member_index = constant:independence_wave_formable_tuning.loop_increment }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_form11_additional_members_processed
+					value = independence_wave_form11_required_additional_members
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = independence_wave_form11_integration_committed
+			set_country_flag = independence_wave_formable_integration_committed
+		}
+	}
+}
+
+independence_wave_form11_start_postformation_progression = {
+	if = {
+		limit = {
+			has_country_flag = independence_wave_formable_active
+			has_country_flag = independence_wave_form11_federation_carrier
+			NOT = { has_country_flag = independence_wave_form11_post_formation_active }
+		}
+		set_variable = { independence_wave_form11_civilian_control = constant:independence_wave_form11_value.initial_civilian_control }
+		set_variable = { independence_wave_form11_cavalry_integration = constant:independence_wave_form11_value.initial_cavalry_integration }
+		set_variable = { independence_wave_form11_resident_settlement = constant:independence_wave_form11_value.initial_resident_settlement }
+		set_country_flag = independence_wave_form11_post_formation_active
+		independence_wave_form11_refresh_charter_idea = yes
+	}
+}
+
+independence_wave_form11_refresh_charter_idea = {
+	remove_ideas = { independence_wave_form11_provisional_charter independence_wave_form11_coordinated_charter independence_wave_form11_integrated_charter }
+	if = {
+		limit = {
+			has_country_flag = independence_wave_form11_post_formation_active
+			check_variable = { var = independence_wave_form11_civilian_control value = constant:independence_wave_form11_value.integrated_threshold compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_form11_cavalry_integration value = constant:independence_wave_form11_value.integrated_threshold compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_form11_resident_settlement value = constant:independence_wave_form11_value.integrated_threshold compare = greater_than_or_equals }
+		}
+		add_ideas = independence_wave_form11_integrated_charter
+	}
+	else_if = {
+		limit = {
+			has_country_flag = independence_wave_form11_post_formation_active
+			check_variable = { var = independence_wave_form11_civilian_control value = constant:independence_wave_form11_value.coordinated_threshold compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_form11_cavalry_integration value = constant:independence_wave_form11_value.coordinated_threshold compare = greater_than_or_equals }
+			check_variable = { var = independence_wave_form11_resident_settlement value = constant:independence_wave_form11_value.coordinated_threshold compare = greater_than_or_equals }
+		}
+		add_ideas = independence_wave_form11_coordinated_charter
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_form11_post_formation_active }
+		add_ideas = independence_wave_form11_provisional_charter
+	}
+}
+
+# Inputs: temporary independence_wave_form11_civilian_delta,
+# independence_wave_form11_cavalry_delta and independence_wave_form11_settlement_delta.
+independence_wave_form11_change_charter_values = {
+	if = {
+		limit = { has_country_flag = independence_wave_form11_post_formation_active }
+		add_to_variable = { independence_wave_form11_civilian_control = independence_wave_form11_civilian_delta }
+		add_to_variable = { independence_wave_form11_cavalry_integration = independence_wave_form11_cavalry_delta }
+		add_to_variable = { independence_wave_form11_resident_settlement = independence_wave_form11_settlement_delta }
+		clamp_variable = { var = independence_wave_form11_civilian_control min = constant:independence_wave_form11_value.minimum max = constant:independence_wave_form11_value.maximum }
+		clamp_variable = { var = independence_wave_form11_cavalry_integration min = constant:independence_wave_form11_value.minimum max = constant:independence_wave_form11_value.maximum }
+		clamp_variable = { var = independence_wave_form11_resident_settlement min = constant:independence_wave_form11_value.minimum max = constant:independence_wave_form11_value.maximum }
+		independence_wave_form11_refresh_charter_idea = yes
+	}
+}
+
+independence_wave_form11_begin_project = {
+	set_country_flag = independence_wave_form11_project_running
+}
+
+independence_wave_form11_end_project = {
+	clr_country_flag = independence_wave_form11_project_running
+}
+
+independence_wave_form11_complete_council_project = {
+	independence_wave_form11_end_project = yes
+	set_temp_variable = { independence_wave_form11_civilian_delta = constant:independence_wave_form11_value.major_gain }
+	set_temp_variable = { independence_wave_form11_cavalry_delta = constant:independence_wave_form11_value.minor_gain }
+	set_temp_variable = { independence_wave_form11_settlement_delta = constant:independence_wave_form11_value.standard_gain }
+	independence_wave_form11_change_charter_values = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_form11_council_project_complete
+}
+
+independence_wave_form11_complete_corps_project = {
+	independence_wave_form11_end_project = yes
+	set_temp_variable = { independence_wave_form11_civilian_delta = constant:independence_wave_form11_value.minor_gain }
+	set_temp_variable = { independence_wave_form11_cavalry_delta = constant:independence_wave_form11_value.major_gain }
+	set_temp_variable = { independence_wave_form11_settlement_delta = constant:independence_wave_form11_value.minimum }
+	independence_wave_form11_change_charter_values = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_form11_corps_project_complete
+}
+
+independence_wave_form11_complete_land_project = {
+	independence_wave_form11_end_project = yes
+	set_temp_variable = { independence_wave_form11_civilian_delta = constant:independence_wave_form11_value.minor_gain }
+	set_temp_variable = { independence_wave_form11_cavalry_delta = constant:independence_wave_form11_value.minor_loss }
+	set_temp_variable = { independence_wave_form11_settlement_delta = constant:independence_wave_form11_value.major_gain }
+	independence_wave_form11_change_charter_values = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_form11_land_project_complete
+}
+
+independence_wave_form11_complete_circle_review = {
+	independence_wave_form11_end_project = yes
+	set_temp_variable = { independence_wave_form11_civilian_delta = constant:independence_wave_form11_value.minor_gain }
+	set_temp_variable = { independence_wave_form11_cavalry_delta = constant:independence_wave_form11_value.minor_gain }
+	set_temp_variable = { independence_wave_form11_settlement_delta = constant:independence_wave_form11_value.minor_gain }
+	independence_wave_form11_change_charter_values = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_form11_rollback_identity = {
+	if = {
+		limit = { has_cosmetic_tag = CHX NOT = { has_country_flag = independence_wave_formable_integration_committed } }
+		drop_cosmetic_tag = yes
+		clr_global_flag = independence_wave_form11_identity_in_use
+		clr_country_flag = independence_wave_form11_federation_carrier
+	}
+}
+
+independence_wave_form11_cleanup_runtime = {
+	remove_decision = independence_wave_form11_seat_federal_host_council
+	remove_decision = independence_wave_form11_raise_federal_mounted_corps
+	remove_decision = independence_wave_form11_open_stanitsa_lands
+	remove_decision = independence_wave_form11_convene_grand_host_circle
+	independence_wave_form0124_cleanup_frozen_autonomous_members = yes
+	if = {
+		limit = { independence_wave_formable_member_arrays_are_aligned = yes }
+		set_temp_variable = { independence_wave_form11_cleanup_member_index = constant:independence_wave_formable_tuning.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = independence_wave_form11_cleanup_member_index value = independence_wave_formable_member_country_entries^num compare = less_than } }
+			var:independence_wave_formable_member_country_entries^independence_wave_form11_cleanup_member_index = {
+				remove_ideas = independence_wave_form11_autonomous_host_member
+			}
+			add_to_temp_variable = { independence_wave_form11_cleanup_member_index = constant:independence_wave_formable_tuning.loop_increment }
+		}
+	}
+	remove_ideas = { independence_wave_form11_provisional_charter independence_wave_form11_coordinated_charter independence_wave_form11_integrated_charter independence_wave_form11_autonomous_host_member }
+	# Only the carrier that took CHX releases the shared identity lock.
+	if = {
+		limit = {
+			OR = {
+				has_cosmetic_tag = CHX
+				has_country_flag = independence_wave_form11_federation_carrier
+			}
+		}
+		if = { limit = { has_cosmetic_tag = CHX } drop_cosmetic_tag = yes }
+		clr_global_flag = independence_wave_form11_identity_in_use
+	}
+	clr_country_flag = independence_wave_form11_federation_carrier
+	clr_country_flag = independence_wave_form11_readiness_attested
+	clr_country_flag = independence_wave_form11_identity_attested
+	clr_country_flag = independence_wave_form11_post_formation_active
+	clr_country_flag = independence_wave_form11_integration_committed
+	clr_country_flag = independence_wave_form11_project_running
+	clr_country_flag = independence_wave_form11_council_project_complete
+	clr_country_flag = independence_wave_form11_corps_project_complete
+	clr_country_flag = independence_wave_form11_land_project_complete
+	clear_variable = independence_wave_form11_civilian_control
+	clear_variable = independence_wave_form11_cavalry_integration
+	clear_variable = independence_wave_form11_resident_settlement
+}
+
 # FORM08 merged-source continuation 34
 
 # FORM09 merged-source continuation:
@@ -2035,6 +2343,10 @@ independence_wave_formable_issue_founding_invitations = {
 									has_independence_wave_form08_member_candidate = yes
 								}
 								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation } }
+									has_independence_wave_form11_member_candidate = yes
+								}
+								AND = {
 									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
 									has_independence_wave_form09_member_candidate = yes
 								}
@@ -2269,6 +2581,7 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation } } }
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } } }
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } } }
+										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation } } }
 										ROOT = { NOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } } }
 									}
 									is_independence_wave_form48_eligible_member = yes
@@ -2301,6 +2614,10 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 							AND = {
 								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } }
 								is_independence_wave_form08_member = yes
+							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation } }
+								is_independence_wave_form11_member = yes
 							}
 							AND = {
 								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
@@ -2542,6 +2859,10 @@ independence_wave_formable_fail_transaction = {
 		independence_wave_form08_rollback_identity = yes
 	}
 	if = {
+		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation } }
+		independence_wave_form11_rollback_identity = yes
+	}
+	if = {
 		limit = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
 		independence_wave_form09_rollback_identity = yes
 	}
@@ -2727,6 +3048,10 @@ independence_wave_formable_commit_selected_family = {
 				limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.danubian_confederation } }
 				independence_wave_form08_start_postformation_progression = yes
 			}
+			if = {
+				limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.cossack_host_federation } }
+				independence_wave_form11_start_postformation_progression = yes
+			}
 			independence_wave_evaluate_danger_milestone = yes
 			independence_wave_milestone_record_regional_formable = yes
 			if = {
@@ -2810,6 +3135,10 @@ independence_wave_formable_cleanup_runtime = {
 	if = {
 		limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.danubian_confederation } }
 		independence_wave_form08_cleanup_runtime = yes
+	}
+	if = {
+		limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.cossack_host_federation } }
+		independence_wave_form11_cleanup_runtime = yes
 	}
 	if = {
 		limit = { check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.balkan_federation } }

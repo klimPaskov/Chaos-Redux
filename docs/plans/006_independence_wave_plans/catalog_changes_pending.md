@@ -126,3 +126,11 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
 
 - Transylvania and the Banat can now form the Danubian Confederation together, under its own name and flag.
+
+
+## 2026-10-05: Cossack Host Federation formable (D24)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- The Don and Kuban hosts, released in different waves, can now form the Cossack Host Federation together under its own name and flag, with a charter that balances civilian control, cavalry integration and the rights of non-Cossack residents. Rostov stays outside the federation.
+- Countries invited to the Danubian Confederation, the Balkan Federation, the Volga-Ural and Idel-Ural federations and the Mesopotamian Federation can now answer their invitations, and released Balkan countries can now join or lead the Balkan Federation.

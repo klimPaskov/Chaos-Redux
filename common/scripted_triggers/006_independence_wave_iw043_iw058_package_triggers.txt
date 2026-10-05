@@ -454,12 +454,14 @@ is_independence_wave_iw058_form18_carrier = {
 	has_country_flag = independence_wave_formable_profile_loaded
 }
 
-is_independence_wave_iw043_formable_member_candidate = {
+# Country scope with no ROOT read: the member's own package identity for
+# FORM-12 and FORM-13. The candidate form (ROOT is the proposing carrier) and
+# the invited form (the member's own scope, carrier read from the stored
+# invitation) both build on it (agent decision D24).
+has_independence_wave_iw043_formable_member_identity = {
 	exists = yes
 	is_independence_wave_package_content_active = yes
 	is_subject = no
-	NOT = { tag = ROOT }
-	NOT = { has_war_with = ROOT }
 	NOT = { has_country_flag = independence_wave_formable_active }
 	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
 	NOT = { has_country_flag = soviet_collapse_active_origin }
@@ -477,10 +479,6 @@ is_independence_wave_iw043_formable_member_candidate = {
 	var:independence_wave_anchor_state = {
 		NOT = { state = 0 }
 		is_owned_and_controlled_by = PREV
-	}
-	OR = {
-		ROOT = { is_independence_wave_iw043_form12_carrier = yes }
-		ROOT = { is_independence_wave_iw043_form13_carrier = yes }
 	}
 	# Exact Event 006 region-05 package/tag bindings. IW-043 and IW-046
 	# both publish CHU and are excluded above; only the distinct researched
@@ -509,12 +507,38 @@ is_independence_wave_iw043_formable_member_candidate = {
 	}
 }
 
-is_independence_wave_iw058_formable_member_candidate = {
+# Candidate-country scope with ROOT as the proposing carrier.
+is_independence_wave_iw043_formable_member_candidate = {
+	has_independence_wave_iw043_formable_member_identity = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		ROOT = { is_independence_wave_iw043_form12_carrier = yes }
+		ROOT = { is_independence_wave_iw043_form13_carrier = yes }
+	}
+}
+
+# Member-country scope. The member's own decisions and events evaluate the
+# invitation with ROOT set to the member, so the carrier comes from the stored
+# invitation.
+is_independence_wave_iw043_formable_invited_member = {
+	has_independence_wave_iw043_formable_member_identity = yes
+	has_variable = independence_wave_formable_inviting_carrier
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	var:independence_wave_formable_inviting_carrier = {
+		NOT = { tag = PREV }
+		OR = {
+			is_independence_wave_iw043_form12_carrier = yes
+			is_independence_wave_iw043_form13_carrier = yes
+		}
+	}
+}
+
+# Country scope with no ROOT read: the member's own package identity for FORM-18.
+has_independence_wave_iw058_formable_member_identity = {
 	exists = yes
 	is_independence_wave_package_content_active = yes
 	is_subject = no
-	NOT = { tag = ROOT }
-	NOT = { has_war_with = ROOT }
 	NOT = { has_country_flag = independence_wave_formable_active }
 	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
 	NOT = { has_country_flag = soviet_collapse_active_origin }
@@ -533,7 +557,6 @@ is_independence_wave_iw058_formable_member_candidate = {
 		NOT = { state = 0 }
 		is_owned_and_controlled_by = PREV
 	}
-	ROOT = { is_independence_wave_iw058_form18_carrier = yes }
 	# Exact corridor package/tag bindings admitted by the current region-06
 	# allocator. IW-059 is an overlay rather than an active country and the
 	# surrounding Caucasus rows are not FORM-18 members.
@@ -546,6 +569,25 @@ is_independence_wave_iw058_formable_member_candidate = {
 			original_tag = CJX
 			check_variable = { var = independence_wave_package_id value = constant:independence_wave_package_id.iw_062 compare = equals }
 		}
+	}
+}
+
+# Candidate-country scope with ROOT as the proposing carrier.
+is_independence_wave_iw058_formable_member_candidate = {
+	has_independence_wave_iw058_formable_member_identity = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	ROOT = { is_independence_wave_iw058_form18_carrier = yes }
+}
+
+# Member-country scope, carrier read from the stored invitation.
+is_independence_wave_iw058_formable_invited_member = {
+	has_independence_wave_iw058_formable_member_identity = yes
+	has_variable = independence_wave_formable_inviting_carrier
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	var:independence_wave_formable_inviting_carrier = {
+		NOT = { tag = PREV }
+		is_independence_wave_iw058_form18_carrier = yes
 	}
 }
 

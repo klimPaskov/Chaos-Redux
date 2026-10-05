@@ -107,6 +107,8 @@ Event 006 suppresses the vanilla `DON_cossack_host` opening divisions for this r
 
 FORM-11 remains a separate, later-gated regional objective and cannot be auto-formed by an IW-039 focus or release effect. Successful charter completion records only an internal package-owned later-gate flag; there is no current consumer or accession action. No carrier or exact accession implementation is selected here; any future carrier must obey the X-tag rule and the accepted exclusion of state 218.
 
+**FORM-11 carrier (2026-10-05, agent decision D24):** disposition `implemented`. Acceptance basis: the user's grant of full design authority to the implementing agent for Event 006, recorded in `docs/plans/006_independence_wave_plans/agent_decisions_2026-10-04.md`. The later gate is consumed: charter success selects FORM-11 for DON, and codified durable sovereignty selects it for KUB. Either host can carry the federation under the X-ending cosmetic tag `CHX`; the other consents through the shared invitation decisions. Full integration moves only the member's own host states (245 and 238, or 234), and state 218 stays outside every proof, transfer, claim and core. No IW-039 focus or release effect forms the federation.
+
 The service-quota focus records the district's mounted-service commitment through the shared former-host obligation ledger and improves security, capacity, and network standing. It does not grant another division or expose a numeric equipment or manpower purchase.
 
 The package may use the existing vanilla Sidorin portrait only after its source, DLC availability, sprite, and role consumer pass audit. Do not create an Event 006 portrait dependency or substitute another face.

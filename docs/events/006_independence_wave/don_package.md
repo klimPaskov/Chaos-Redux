@@ -21,7 +21,7 @@ Central admission is agent decision D5 in `docs/plans/006_independence_wave_plan
 - Paid projects: "Audit the Millerovo Railhead" (25 political power) and "Hear the District Petitions" (20 political power), one at a time.
 - Government settlements (30 political power): "Elect the Host Assembly", "Ratify the District Compact" (plus 10 command power), or "Establish the Emergency Host Staff", which opens the 90-day mission "Review the Emergency Host Staff" and the decision "Submit the Mandate for Civilian Review" (10 political power).
 - Five shared focuses: "Register the Millerovo Authorities", "Survey Rail and Remount Stores", "Hear the Land and Service Claims", "Set the Service Quota", "Ratify the Millerovo Charter".
-- Completing the charter grants the chartered-host idea and opens the internal FORM-11 later-gate marker; failure applies the fractured-charter idea.
+- Completing the charter grants the chartered-host idea, opens the FORM-11 gate and selects the Cossack Host Federation as the country's formable; failure applies the fractured-charter idea.
 
 ## AI
 
@@ -47,5 +47,5 @@ DON reuses the vanilla DON flag, the vanilla roster, and existing Event 006 deci
 
 ## Future plans
 
-- FORM-11 carrier, membership and consent for a DON and KUB host federation across distinct waves.
+- FORM-11 is operational (agent decision D24): see `systems/formable_registry.md`. A later tranche could add a third host (Terek or Astrakhan) once a package exists for it.
 - A corridor project that rewards actually holding state 238.

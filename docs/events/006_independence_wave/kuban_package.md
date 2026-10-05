@@ -34,7 +34,7 @@ The package retains the installed vanilla KUB flag family and Ivanis portrait co
 
 ## UI, formables, and cleanup
 
-The package uses the ordinary decision category and shared focus surfaces, with no dedicated scripted GUI. No Kuban formable is admitted. Cleanup removes package decisions, mission, ideas, route cosmetics, variables, flags, force receipts, and Event 006 setup state while restoring the vanilla Ivanis portrait.
+The package uses the ordinary decision category and shared focus surfaces, with no dedicated scripted GUI. Codifying durable sovereignty selects the FORM-11 Cossack Host Federation, which Kuban can found with a released Don host or join when the Don host proposes it (agent decision D24; see `systems/formable_registry.md`). Cleanup removes package decisions, mission, ideas, route cosmetics, variables, flags, force receipts, and Event 006 setup state while restoring the vanilla Ivanis portrait.
 
 ## Admission blockers
 

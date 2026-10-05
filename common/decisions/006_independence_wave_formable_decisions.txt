@@ -2,13 +2,17 @@
 # CHAOS REDUX - EVENT 006 FORMABLE DECISION REGISTRY
 # ============================================================================
 # This registry owns the shared FORM-01 through FORM-48 method-and-consent
-# surface plus the FORM-08, FORM-09, and FORM-39 federation project categories.
+# surface plus the FORM-08, FORM-09, FORM-11, and FORM-39 federation project categories.
 # Categories remain independent while related formable decisions share a file.
 # ============================================================================
 
 # FORM-39's civil-service project shows and checks the standard two-factory
 # commitment in its cost row; keep the decision reservation on the same tier.
 @CR_SC_INDEPENDENCE_WAVE_FORM39_CIVILIAN_FACTORY_USE = 2
+# The FORM-11 Grand Host Circle political-power cost and cooldown; decision
+# cost and re-enable fields do not read script constants.
+@CR_SC_INDEPENDENCE_WAVE_FORM11_CIRCLE_POLITICAL_POWER = 50
+@CR_SC_INDEPENDENCE_WAVE_FORM11_CIRCLE_REENABLE_DAYS = 180
 
 # ============================================================================
 # CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION DECISIONS
@@ -88,6 +92,143 @@ independence_wave_form08_danube_category = {
 		}
 		cancel_trigger = { NOT = { is_independence_wave_form08_postformation_carrier = yes } }
 		ai_will_do = { base = constant:independence_wave_decision_ai.high }
+	}
+}
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-11 COSSACK HOST FEDERATION DECISIONS
+# ============================================================================
+# The carrier funds three one-time charter projects, one at a time, and may
+# then reconvene the Grand Host Circle on a cooldown. Each project moves the
+# three public charter ledgers (agent decision D24).
+# ============================================================================
+
+independence_wave_form11_host_category = {
+	independence_wave_form11_seat_federal_host_council = {
+		name = independence_wave_form11_seat_federal_host_council
+		desc = independence_wave_form11_seat_federal_host_council_desc
+		icon = GFX_decision_independence_wave_league_votes
+		visible = {
+			is_independence_wave_form11_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form11_council_project_complete }
+		}
+		available = {
+			can_start_independence_wave_form11_charter_project = yes
+			can_pay_independence_wave_administration_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_administration_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_administration_standard
+		days_remove = constant:independence_wave_form11_duration.council_days
+		complete_effect = {
+			independence_wave_decision_pay_administration_standard = yes
+			independence_wave_form11_begin_project = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form11_seat_federal_host_council_tt
+			independence_wave_form11_complete_council_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form11_postformation_carrier = yes } }
+		cancel_effect = { independence_wave_form11_end_project = yes }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_constitutional_route = yes }
+		}
+	}
+
+	independence_wave_form11_raise_federal_mounted_corps = {
+		name = independence_wave_form11_raise_federal_mounted_corps
+		desc = independence_wave_form11_raise_federal_mounted_corps_desc
+		icon = GFX_decision_independence_wave_integration_missions
+		visible = {
+			is_independence_wave_form11_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form11_corps_project_complete }
+		}
+		available = {
+			can_start_independence_wave_form11_charter_project = yes
+			can_pay_independence_wave_security_standard_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_security_standard_cost = yes }
+		custom_cost_text = independence_wave_cost_security_standard
+		days_remove = constant:independence_wave_form11_duration.corps_days
+		complete_effect = {
+			independence_wave_decision_pay_security_standard = yes
+			independence_wave_form11_begin_project = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form11_raise_federal_mounted_corps_tt
+			independence_wave_form11_complete_corps_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form11_postformation_carrier = yes } }
+		cancel_effect = { independence_wave_form11_end_project = yes }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.high
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_major has_independence_wave_severe_host_threat = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_emergency_military_route = yes }
+		}
+	}
+
+	independence_wave_form11_open_stanitsa_lands = {
+		name = independence_wave_form11_open_stanitsa_lands
+		desc = independence_wave_form11_open_stanitsa_lands_desc
+		icon = GFX_decision_independence_wave_border_arbitration
+		visible = {
+			is_independence_wave_form11_postformation_carrier = yes
+			NOT = { has_country_flag = independence_wave_form11_land_project_complete }
+		}
+		available = {
+			can_start_independence_wave_form11_charter_project = yes
+			has_country_flag = independence_wave_form11_council_project_complete
+			can_pay_independence_wave_strategic_cost = yes
+		}
+		custom_cost_trigger = { can_pay_independence_wave_strategic_cost = yes }
+		custom_cost_text = independence_wave_cost_strategic
+		days_remove = constant:independence_wave_form11_duration.land_days
+		complete_effect = {
+			independence_wave_decision_pay_strategic = yes
+			independence_wave_form11_begin_project = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form11_open_stanitsa_lands_tt
+			independence_wave_form11_complete_land_project = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form11_postformation_carrier = yes } }
+		cancel_effect = { independence_wave_form11_end_project = yes }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_popular_council_route = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_double has_independence_wave_constitutional_route = yes }
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_severe_host_threat = yes }
+		}
+	}
+
+	independence_wave_form11_convene_grand_host_circle = {
+		name = independence_wave_form11_convene_grand_host_circle
+		desc = independence_wave_form11_convene_grand_host_circle_desc
+		icon = GFX_decision_independence_wave_formable_proclamation
+		visible = {
+			is_independence_wave_form11_postformation_carrier = yes
+			has_country_flag = independence_wave_form11_council_project_complete
+			has_country_flag = independence_wave_form11_corps_project_complete
+			has_country_flag = independence_wave_form11_land_project_complete
+			NOT = { has_idea = independence_wave_form11_integrated_charter }
+		}
+		available = {
+			can_start_independence_wave_form11_charter_project = yes
+		}
+		cost = @CR_SC_INDEPENDENCE_WAVE_FORM11_CIRCLE_POLITICAL_POWER
+		days_remove = constant:independence_wave_decision_duration.short
+		days_re_enable = @CR_SC_INDEPENDENCE_WAVE_FORM11_CIRCLE_REENABLE_DAYS
+		complete_effect = { independence_wave_form11_begin_project = yes }
+		remove_effect = {
+			custom_effect_tooltip = independence_wave_form11_convene_grand_host_circle_tt
+			independence_wave_form11_complete_circle_review = yes
+		}
+		cancel_trigger = { NOT = { is_independence_wave_form11_postformation_carrier = yes } }
+		cancel_effect = { independence_wave_form11_end_project = yes }
+		ai_will_do = {
+			base = constant:independence_wave_decision_ai.standard
+			modifier = { factor = constant:independence_wave_decision_ai.modifier_half has_independence_wave_severe_host_threat = yes }
+		}
 	}
 }
 

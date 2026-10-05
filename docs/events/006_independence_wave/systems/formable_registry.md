@@ -2,6 +2,8 @@
 
 ## Purpose and status
 
+> FORM-11 (2026-10-05, agent decision D24): the Cossack Host Federation is operational as a two-member family. A DON carrier at state 245 (after its Millerovo host charter) or a KUB carrier at state 234 (after codified durable sovereignty) invites the other host, which RG-DON-KUBAN releases in a different wave. The carrier takes the X-ending `CHX` identity with its own flag triplet. A consenting member either integrates (only its own host states 245 and 238, or 234, move) or stays a sovereign autonomous host member. Rostov (state 218) is never a candidate, transfer, claim or core. The post-formation Host Federation Charter tracks civilian control, cavalry integration and the settlement with non-Cossack residents through three one-time projects and a repeatable Grand Host Circle. The same decision also fixes two shared defects: invited members of FORM-08, FORM-09, FORM-12, FORM-13 and FORM-18 now pass the invitation check in their own scope (it read ROOT for the carrier), and FORM-09 members and carriers read their persistent package setup receipts instead of transaction-only proofs. FORM-18's Kurdistan piece now shows state 1001.
+
 > FORM-08 (2026-10-05, agent decision D23): the Danubian Confederation is operational as a two-member family. A TRA carrier at state 84 and an AXX member at state 82 form it once both consent, and the carrier takes the X-ending `DCX` identity with its own flag triplet instead of the vanilla `HUN_EMPIRE` cosmetic. The registered carrier stays a member while its own proposal is open, the state puzzle requires states 84 and 82, the three FORM-08 AI strategies are allowed for TRA, and only the carrier that holds `DCX` releases its identity lock. Statements below that call FORM-08 fail-closed, require three members or reuse `HUN_EMPIRE` describe its earlier state.
 
 The Event 006 formable registry is the shared discovery and transaction framework for FORM-01 through FORM-48. It replaces family-by-family copied decisions with one profile table, one method and consent surface, and one bounded member and anchor ledger.
@@ -250,7 +252,7 @@ readiness certificate.
 
 ## Event 006 state-puzzle consumers
 
-The Event 006 state-puzzle group is declared by fourteen consumer specs in `docs/formables/state_registry/consumers/006_form*_state_puzzle.json`. Each spec uses `group_id = independence_wave_formables`, the shared scripted GUI `independence_wave_formable_state_puzzle_scripted_gui`, the shared window `chaosx_independence_wave_formable_state_puzzle_window`, a family activation helper, and a finite `summary_required_count`. The compiled runtime contains fourteen manifests, 50 candidate-state rows, and 100 DDS state pieces. The family territory helper shown by the window is also required by the player and AI formation gate.
+The Event 006 state-puzzle group is declared by fifteen consumer specs in `docs/formables/state_registry/consumers/006_form*_state_puzzle.json`. Each spec uses `group_id = independence_wave_formables`, the shared scripted GUI `independence_wave_formable_state_puzzle_scripted_gui`, the shared window `chaosx_independence_wave_formable_state_puzzle_window`, a family activation helper, and a finite `summary_required_count`. The compiled runtime contains fifteen manifests, 52 candidate-state rows, and 104 DDS state pieces. The family territory helper shown by the window is also required by the player and AI formation gate.
 
 | Family | Candidate states | Summary count | Territory helper |
 | --- | --- | ---: | --- |
@@ -262,16 +264,17 @@ The Event 006 state-puzzle group is declared by fourteen consumer specs in `docs
 | FORM-07 | 165, 792, 171 | 3 | `independence_wave_formable_state_puzzle_form07_territory` |
 | FORM-08 | 84, 82 | 2 | `independence_wave_formable_state_puzzle_form08_territory` |
 | FORM-09 | 185, 184, 104, 106, 105, 802 | 3 | `independence_wave_formable_state_puzzle_form09_territory` |
+| FORM-11 | 245, 234 | 2 | `independence_wave_formable_state_puzzle_form11_territory` |
 | FORM-12 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form12_territory` |
 | FORM-13 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form13_territory` |
 | FORM-16 | 230, 231, 229 | 3 | `independence_wave_formable_state_puzzle_form16_territory` |
-| FORM-18 | 676, 421, 413 | carrier plus 2 members | `independence_wave_formable_state_puzzle_form18_territory` |
+| FORM-18 | 676, 1001, 413 | carrier plus 2 members | `independence_wave_formable_state_puzzle_form18_territory` |
 | FORM-39 | 636, 523, 669 | 3 | `independence_wave_formable_state_puzzle_form39_territory` |
 | FORM-48 | 378, 629, 684 | 3 | `independence_wave_formable_state_puzzle_form48_territory` |
 
 The qualification wrappers delegate to the package, tag, anchor, invitation, and frozen-consent contracts in the owning FORM trigger files. FORM-03 accepts either the second Event 006 carrier anchor or the sovereign `BEL_flanders` delegation at state 6. FORM-09 enumerates the finite twenty triplets needed for three of six candidates. FORM-12 and FORM-13 require the state 249 carrier plus three distinct consenting member anchors. FORM-18 requires the state 676 carrier plus both consenting member anchors. FORM-08 deliberately returns false because only states 84 and 82 are researched while its registry minimum is three; no third state is fabricated. No helper performs an all-country or geography scan, and the integration does not use GUI event targets.
 
-The shared GUI is attached to all seventeen current Event 006 formable decision categories: the discovery category, shared transaction and membership, FORM-01 congress, FORM-02 union, FORM-03 low countries, FORM-04 league, FORM-05 charter, FORM-08 Danube, FORM-09 Balkan, the Middle Volga Congress for FORM-12 and FORM-13, the Council of Communities for FORM-18, FORM-16 integration, FORM-39 invitation and federal compact, and FORM-48 invitation and federal compact.
+The shared GUI is attached to all eighteen current Event 006 formable decision categories: the discovery category, shared transaction and membership, FORM-01 congress, FORM-02 union, FORM-03 low countries, FORM-04 league, FORM-05 charter, FORM-08 Danube, FORM-09 Balkan, the FORM-11 Host Federation Charter, the Middle Volga Congress for FORM-12 and FORM-13, the Council of Communities for FORM-18, FORM-16 integration, FORM-39 invitation and federal compact, and FORM-48 invitation and federal compact.
 
 The exact activation helpers are in `common/scripted_triggers/006_independence_wave_formable_state_puzzle_triggers.txt`. Their pending-invitation branch is evaluated before selected/profile and post-formation branches; later branches explicitly reject a pending invitation so a category cannot expose two family overlays at once.
 

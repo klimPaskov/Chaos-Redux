@@ -434,6 +434,154 @@ can_pay_independence_wave_form08_transport_cost = {
 
 
 # ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-11 COSSACK HOST FEDERATION TRIGGERS
+# ============================================================================
+# FORM-11 joins the Don (IW-039, Millerovo state 245) and Kuban (IW-040,
+# Krasnodar state 234) packages, which RG-DON-KUBAN releases in separate
+# waves. Either package may carry the federation once its own later gate has
+# opened: the Millerovo host charter for DON, codified durable sovereignty for
+# KUB. The carrier takes the X-ending CHX identity. Rostov (state 218) stays
+# outside the federation: no proof, transfer, claim or core reads it (agent
+# decision D24).
+# ============================================================================
+
+is_independence_wave_form11_eligible_member = {
+	exists = yes
+	is_independence_wave_package_content_active = yes
+	is_subject = no
+	NOT = { has_country_flag = independence_wave_form0124_autonomous_member }
+	NOT = { has_country_flag = independence_wave_formable_active }
+	# A registered host carrier stays a member while its own proposal is open.
+	OR = {
+		NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+		has_country_flag = independence_wave_form11_readiness_attested
+	}
+	NOT = { has_country_flag = independence_wave_origin_ended }
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	has_country_flag = independence_wave_formable_family_selected
+	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.cossack_host_federation }
+	has_variable = independence_wave_anchor_state
+	OR = {
+		AND = {
+			original_tag = DON
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 }
+			has_country_flag = independence_wave_iw_039_don_setup_complete
+			has_country_flag = independence_wave_don_form11_docket_open
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form11_anchor.don }
+			owns_state = constant:independence_wave_form11_anchor.don
+			controls_state = constant:independence_wave_form11_anchor.don
+			245 = { is_capital = yes }
+		}
+		AND = {
+			original_tag = KUB
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_040 }
+			has_country_flag = independence_wave_iw_040_setup_complete
+			has_country_flag = independence_wave_kub_durable_sovereignty
+			check_variable = { independence_wave_anchor_state = constant:independence_wave_form11_anchor.kub }
+			owns_state = constant:independence_wave_form11_anchor.kub
+			controls_state = constant:independence_wave_form11_anchor.kub
+			234 = { is_capital = yes }
+		}
+	}
+}
+
+has_independence_wave_form11_identity_clearance = {
+	NOT = { has_global_flag = independence_wave_form11_identity_in_use }
+}
+
+has_independence_wave_form11_exact_carrier_anchor = {
+	is_independence_wave_form11_eligible_member = yes
+	has_country_flag = independence_wave_form11_readiness_attested
+	has_independence_wave_form11_identity_clearance = yes
+}
+
+is_independence_wave_form11_member = {
+	is_independence_wave_form11_eligible_member = yes
+}
+
+# Candidate-country scope with ROOT as the proposing carrier.
+has_independence_wave_form11_member_candidate = {
+	is_independence_wave_form11_member = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+# Member-country scope. Reads the carrier from the stored invitation, so the
+# member's own decisions and events can check it.
+has_independence_wave_form11_diplomatic_connection_to_inviting_carrier = {
+	has_pending_independence_wave_formable_founding_invitation = yes
+	NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+	OR = {
+		is_in_faction_with = var:independence_wave_formable_inviting_carrier
+		has_non_aggression_pact_with = var:independence_wave_formable_inviting_carrier
+		has_military_access_to = var:independence_wave_formable_inviting_carrier
+		gives_military_access_to = var:independence_wave_formable_inviting_carrier
+		has_guaranteed = var:independence_wave_formable_inviting_carrier
+		is_guaranteed_by = var:independence_wave_formable_inviting_carrier
+		is_neighbor_of = var:independence_wave_formable_inviting_carrier
+		# Both hosts belong to the same Event 006 region; Rostov usually lies
+		# between them, so a shared region stands in for a land border.
+		check_variable = { var = independence_wave_region value = var:independence_wave_formable_inviting_carrier.independence_wave_region compare = equals }
+	}
+}
+
+has_independence_wave_form11_host_ledger_ready = {
+	has_independence_wave_form11_exact_carrier_anchor = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_registry.cossack_host_federation.minimum_members
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_form11_strict_mutation_preconditions = {
+	has_independence_wave_form11_exact_carrier_anchor = yes
+	has_independence_wave_form11_host_ledger_ready = yes
+	has_valid_independence_wave_formable_founding_proposal = yes
+	independence_wave_formable_member_arrays_are_aligned = yes
+	has_independence_wave_formable_commit_readiness = yes
+}
+
+has_independence_wave_form11_runtime_commit_proof = {
+	has_independence_wave_form11_strict_mutation_preconditions = yes
+	check_variable = {
+		var = independence_wave_formable_member_count
+		value = constant:independence_wave_formable_registry.cossack_host_federation.minimum_members
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_consent_count
+		value = constant:independence_wave_formable_registry.cossack_host_federation.minimum_consents
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_formable_anchor_count
+		value = constant:independence_wave_formable_registry.cossack_host_federation.minimum_anchors
+		compare = greater_than_or_equals
+	}
+}
+
+is_independence_wave_form11_postformation_carrier = {
+	is_independence_wave_package_content_active = yes
+	has_country_flag = independence_wave_formable_active
+	has_country_flag = independence_wave_form11_federation_carrier
+	has_country_flag = independence_wave_form11_post_formation_active
+	has_cosmetic_tag = CHX
+}
+
+can_start_independence_wave_form11_charter_project = {
+	custom_trigger_tooltip = {
+		tooltip = independence_wave_form11_project_ready_tt
+		is_independence_wave_form11_postformation_carrier = yes
+		capital_scope = { is_controlled_by = ROOT }
+		NOT = { has_country_flag = independence_wave_form11_project_running }
+	}
+}
+
+
+
+# ============================================================================
 # Merged source: common/scripted_triggers/006_independence_wave_form09_triggers.txt
 # Source blocks and identifiers are preserved; this is a file-layout change only.
 # ============================================================================
@@ -447,6 +595,9 @@ can_pay_independence_wave_form08_transport_cost = {
 # selecting family 9.
 # ============================================================================
 
+# Members and carriers are checked long after release, when the origin commit
+# has already cleared the transaction-only setup proofs, so these checks read
+# each package's persistent setup receipt (agent decision D24).
 is_independence_wave_form09_eligible_member = {
 	exists = yes
 	is_independence_wave_package_content_active = yes
@@ -458,7 +609,7 @@ is_independence_wave_form09_eligible_member = {
 	OR = {
 		AND = {
 			is_independence_wave_bbx_package = yes
-			has_complete_independence_wave_iw_028_package_setup = yes
+			has_country_flag = independence_wave_iw_028_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
@@ -468,7 +619,7 @@ is_independence_wave_form09_eligible_member = {
 		}
 		AND = {
 			is_independence_wave_bax_package = yes
-			has_complete_independence_wave_iw_027_package_setup = yes
+			has_country_flag = independence_wave_iw_027_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
@@ -478,7 +629,7 @@ is_independence_wave_form09_eligible_member = {
 		}
 		AND = {
 			is_independence_wave_bos_package = yes
-			has_complete_independence_wave_iw_029_package_setup = yes
+			has_country_flag = independence_wave_iw_029_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bos }
@@ -488,7 +639,7 @@ is_independence_wave_form09_eligible_member = {
 		}
 		AND = {
 			is_independence_wave_mac_package = yes
-			has_complete_independence_wave_iw_026_package_setup = yes
+			has_country_flag = independence_wave_iw_026_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mac }
@@ -498,7 +649,7 @@ is_independence_wave_form09_eligible_member = {
 		}
 		AND = {
 			is_independence_wave_mnt_package = yes
-			has_complete_independence_wave_iw_030_package_setup = yes
+			has_country_flag = independence_wave_iw_030_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.mnt }
@@ -508,7 +659,7 @@ is_independence_wave_form09_eligible_member = {
 		}
 		AND = {
 			is_independence_wave_kos_package = yes
-			has_complete_independence_wave_iw_031_package_setup = yes
+			has_country_flag = independence_wave_iw_031_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			has_variable = independence_wave_anchor_state
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.kos }
@@ -548,7 +699,7 @@ has_independence_wave_form09_exact_carrier_anchor = {
 	OR = {
 		AND = {
 			is_independence_wave_bbx_package = yes
-			has_complete_independence_wave_iw_028_package_setup = yes
+			has_country_flag = independence_wave_iw_028_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bbx }
 			owns_state = constant:independence_wave_form09_anchor.bbx
@@ -557,7 +708,7 @@ has_independence_wave_form09_exact_carrier_anchor = {
 		}
 		AND = {
 			is_independence_wave_bax_package = yes
-			has_complete_independence_wave_iw_027_package_setup = yes
+			has_country_flag = independence_wave_iw_027_setup_complete
 			has_independence_wave_force_package_for_current_generation = yes
 			check_variable = { independence_wave_anchor_state = constant:independence_wave_form09_anchor.bax }
 			owns_state = constant:independence_wave_form09_anchor.bax
@@ -966,6 +1117,10 @@ is_valid_independence_wave_formable_founding_carrier = {
 			has_independence_wave_form08_exact_carrier_anchor = yes
 		}
 		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation }
+			has_independence_wave_form11_exact_carrier_anchor = yes
+		}
+		AND = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 			has_independence_wave_form09_exact_carrier_anchor = yes
 		}
@@ -1027,17 +1182,20 @@ has_valid_independence_wave_formable_founding_invitation = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.melanesian_federation }
 			is_independence_wave_form39_eligible_member = yes
 		}
+		# The invited member evaluates this in its own scope, where ROOT is the
+		# member, so these branches read the carrier from the stored invitation
+		# instead of from ROOT (agent decision D24).
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.volga_ural_federation }
-			is_independence_wave_iw043_formable_member_candidate = yes
+			is_independence_wave_iw043_formable_invited_member = yes
 		}
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.idel_ural }
-			is_independence_wave_iw043_formable_member_candidate = yes
+			is_independence_wave_iw043_formable_invited_member = yes
 		}
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.mesopotamian_federation }
-			is_independence_wave_iw058_formable_member_candidate = yes
+			is_independence_wave_iw058_formable_invited_member = yes
 		}
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.transcaucasian_federation }
@@ -1045,11 +1203,18 @@ has_valid_independence_wave_formable_founding_invitation = {
 		}
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.danubian_confederation }
-			has_independence_wave_form08_member_candidate = yes
+			is_independence_wave_form08_member = yes
+			NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
+		}
+		AND = {
+			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.cossack_host_federation }
+			is_independence_wave_form11_member = yes
+			NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
 		}
 		AND = {
 			check_variable = { independence_wave_formable_invitation_family = constant:independence_wave_formable_family.balkan_federation }
-			has_independence_wave_form09_member_candidate = yes
+			is_independence_wave_form09_eligible_member = yes
+			NOT = { has_war_with = var:independence_wave_formable_inviting_carrier }
 		}
 	}
 	var:independence_wave_formable_inviting_carrier = {
@@ -1286,6 +1451,7 @@ can_independence_wave_prepare_selected_formable_transaction = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 			}
 			has_valid_independence_wave_formable_founding_proposal = yes
@@ -1300,6 +1466,7 @@ can_independence_wave_prepare_selected_formable_transaction = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation }
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation }
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 			}
 		}
@@ -1422,6 +1589,10 @@ has_independence_wave_formable_commit_readiness = {
 				has_country_flag = independence_wave_form08_readiness_attested
 			}
 			AND = {
+				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation }
+				has_country_flag = independence_wave_form11_readiness_attested
+			}
+			AND = {
 				check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 				has_country_flag = independence_wave_form09_readiness_attested
 			}
@@ -1485,6 +1656,10 @@ can_independence_wave_commit_selected_formable = {
 			has_independence_wave_form08_runtime_commit_proof = yes
 		}
 		AND = {
+			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation }
+			has_independence_wave_form11_runtime_commit_proof = yes
+		}
+		AND = {
 			check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
 			has_independence_wave_form09_runtime_commit_proof = yes
 		}
@@ -1508,6 +1683,7 @@ has_independence_wave_selected_formable_state_puzzle_territory = {
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.rhine_federation } independence_wave_formable_state_puzzle_form04_territory = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.iberian_federation } independence_wave_formable_state_puzzle_form07_territory = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.danubian_confederation } independence_wave_formable_state_puzzle_form08_territory = yes }
+		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.cossack_host_federation } independence_wave_formable_state_puzzle_form11_territory = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } independence_wave_formable_state_puzzle_form09_territory = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.volga_ural_federation } independence_wave_formable_state_puzzle_form12_territory = yes }
 		AND = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.idel_ural } independence_wave_formable_state_puzzle_form13_territory = yes }

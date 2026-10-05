@@ -708,6 +708,56 @@ independence_wave_form08_settled_confederation = {
 	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM08_SETTLED_RESTRAINT }
 }
 
+# [source: FORM-11 Cossack Host Federation, agent decision D24]
+@CR_SC_INDEPENDENCE_WAVE_FORM11_ARMY_PRIORITY = 90
+@CR_SC_INDEPENDENCE_WAVE_FORM11_DEFENSE_PRIORITY = 70
+@CR_SC_INDEPENDENCE_WAVE_FORM11_FOUNDING_RESTRAINT = -260
+@CR_SC_INDEPENDENCE_WAVE_FORM11_SETTLED_RESTRAINT = -380
+
+# ============================================================================
+# CHAOS REDUX - EVENT 006 FORM-11 COSSACK HOST FEDERATION AI
+# ============================================================================
+# The DON or KUB carrier keeps its vanilla AI. These additive strategies build
+# the federal mounted corps, guard the host capitals, and avoid wars while the
+# charter projects are unresolved.
+# ============================================================================
+
+independence_wave_form11_host_mobilization = {
+	allowed = { OR = { original_tag = DON original_tag = KUB } }
+	enable = {
+		is_independence_wave_form11_postformation_carrier = yes
+		NOT = { has_country_flag = independence_wave_form11_corps_project_complete }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM11_ARMY_PRIORITY }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_INDEPENDENCE_WAVE_FORM11_DEFENSE_PRIORITY }
+}
+
+independence_wave_form11_charter_restraint = {
+	allowed = { OR = { original_tag = DON original_tag = KUB } }
+	enable = {
+		is_independence_wave_form11_postformation_carrier = yes
+		OR = {
+			NOT = { has_country_flag = independence_wave_form11_council_project_complete }
+			NOT = { has_country_flag = independence_wave_form11_land_project_complete }
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM11_FOUNDING_RESTRAINT }
+}
+
+independence_wave_form11_settled_federation = {
+	allowed = { OR = { original_tag = DON original_tag = KUB } }
+	enable = {
+		is_independence_wave_form11_postformation_carrier = yes
+		has_country_flag = independence_wave_form11_council_project_complete
+		has_country_flag = independence_wave_form11_land_project_complete
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_INDEPENDENCE_WAVE_FORM11_ARMY_PRIORITY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_INDEPENDENCE_WAVE_FORM11_SETTLED_RESTRAINT }
+}
+
 # [source: 006_independence_wave_generic.txt]
 @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARMY = 50
 @CR_SC_INDEPENDENCE_WAVE_GENERIC_AI_CONSOLIDATION_ARTILLERY = 30

@@ -705,6 +705,19 @@
 @don_chartered_organization = 0.05
 @don_failed_charter_stability = -0.05
 @don_failed_charter_supply = 0.05
+# FORM-11 Cossack Host Federation charter and autonomous membership (agent decision D24)
+@form11_provisional_stability = -0.05
+@form11_provisional_cavalry_defence = 0.05
+@form11_coordinated_stability = 0.03
+@form11_coordinated_cavalry_attack = 0.05
+@form11_coordinated_cavalry_defence = 0.10
+@form11_coordinated_recruitable = 0.03
+@form11_integrated_stability = 0.06
+@form11_integrated_cavalry_attack = 0.10
+@form11_integrated_cavalry_defence = 0.10
+@form11_integrated_political_power = 0.10
+@form11_member_stability = 0.03
+@form11_member_cavalry_defence = 0.05
 
 ideas = {
 	country = {
@@ -1547,6 +1560,51 @@ ideas = {
 			modifier = {
 				stability_factor = 0.03
 				trade_opinion_factor = 0.05
+			}
+		}
+
+		# FORM-11 Cossack Host Federation (agent decision D24)
+		independence_wave_form11_provisional_charter = {
+			picture = independence_wave_improvised_government
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @form11_provisional_stability
+				cavalry_defence_factor = @form11_provisional_cavalry_defence
+			}
+		}
+
+		independence_wave_form11_coordinated_charter = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @form11_coordinated_stability
+				cavalry_attack_factor = @form11_coordinated_cavalry_attack
+				cavalry_defence_factor = @form11_coordinated_cavalry_defence
+				conscription_factor = @form11_coordinated_recruitable
+			}
+		}
+
+		independence_wave_form11_integrated_charter = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @form11_integrated_stability
+				cavalry_attack_factor = @form11_integrated_cavalry_attack
+				cavalry_defence_factor = @form11_integrated_cavalry_defence
+				political_power_factor = @form11_integrated_political_power
+			}
+		}
+
+		independence_wave_form11_autonomous_host_member = {
+			picture = independence_wave_league_membership
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @form11_member_stability
+				cavalry_defence_factor = @form11_member_cavalry_defence
 			}
 		}
 
