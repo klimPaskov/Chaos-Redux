@@ -434,3 +434,8 @@ Deny the Mine to the Enemy (`decision_riches_found_deny_mine`) mirrors the occup
 It needs `riches_found_mine_can_be_denied_by_controller` (an active, undamaged mine not already denied), and the occupier's denial now needs the owner's denial absent, so the two never stack; Restore the Shaft clears the owner's denial with the damage.
 Layer count: Deny the Mine takes the slot of Escort the Pay Train, which now waits while the mine is about to fall, so the security layer stays at five and Repair with a supplied force and at five and Repair without one.
 AI: the expected-loss profile favours denial under militarized and state profiles and when the war is being lost (`urgent_factor` past the surrender threshold), disfavours it under the public profile, for democracies and while supplied troops can still hold the mine; this is a new `ai_will_do` surface that joins the blocked probability comparison.
+
+D39. A purged district can be sealed for good.
+Basis: lead item 10 and spec part 4 (the permanent seal is the cleanest end to the supernatural threat); D20 made evacuation and the Military Purge exclusive, and the Demons layer outranks the emergency layer that holds the baseline seal, so a purged mine had no permanent seal.
+Seal the Mine Permanently in the Demons layer now requires `riches_found_demons_district_cleared` (district evacuated, workforce evacuated or purged) instead of the evacuation flag in its visible, available and target blocks; its requirement label already reads "The district over the opened depths has been evacuated or purged".
+The Last Shift disqualifier (`riches_found_demons_military_purge` in `riches_found_achievement_last_shift_route` and its tracker) is unchanged, so a purged and sealed mine still fails that achievement.
