@@ -450,3 +450,13 @@ Basis: Part 10 (the Event 14 interaction is mandatory; cannibals are never spons
 - The AI rivalry uses one `antagonize` and `conquer` strategy per target tag, enabled only while that tag is a live neighbour, in both directions; the wendigo tag of Event 14 stays out because it is a nonhuman country outside the cannibal warlord and unified tags the lead listed.
 - No cooperation path needed a code change beyond R34: every Event 31 faction, merger and join path adds only live actors.
 - Route evidence: the incident draw change moves weight between two families; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.
+
+### R40 Actors inherit their parent's technology and advanced commands reach four research slots
+
+Basis: Part 5 Starting research and technology and the technology table of the country package matrix (a bounded set of compatible technology from the parent and donors; transnational and jihadist actors reach four research slots).
+
+- The eight-technology floor stays, except that its industry branch follows the parent: the floor adds dispersed industry only when the command holds neither branch after inheritance, so the floor still has eight technologies and never contradicts the parent's branch.
+- The curated list copies whole chains whose prerequisites are also in the list, so no copied technology lacks its prerequisite; it stops short of doctrines and the naval, air, nuclear, rocket and special-project trees.
+- A reused carrier can keep a branch from its earlier life; the inheritance never adds the other branch, so it never holds both.
+- The final command formed by annexing the dominant command copies that command's technology before the annexation, because the annexed tag no longer exists afterwards.
+- The fourth slot is granted once through `set_research_slots` to the constant, not added, so repeated decisions and focus completions cannot stack it.

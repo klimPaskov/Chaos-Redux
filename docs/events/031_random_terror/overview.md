@@ -207,6 +207,10 @@ Setup records its evolutions in the Event Logs but holds back their report popup
 Eight predeclared carrier tags provide bounded territorial-country capacity without dynamic tags, custom units, Event 19 providers, 3D models, custom unit sounds, or bespoke counters.
 
 The carrier framework declares capitals, fictional leaders and councils, existing infantry templates, basic technology, manpower and equipment setup, focus loading and diplomatic or cleanup helpers.
+At first setup an actor receives a technology floor (infantry weapons I, support company, recon, basic machine tools, construction I, radio and one industry branch) and then `random_terror_inherit_actor_technology` copies the parent's curated technology: infantry and support weapons, support companies, artillery, anti-tank and anti-air, trucks and motorized infantry, machine tools, construction and the parent's own industry branch (concentrated or dispersed, never both), and electronics, computing and basic encryption.
+Doctrines, naval, air, nuclear, rocket and special-project technology are never copied, and nothing is removed, so a reused carrier inherits from its new parent and keeps at least its floor; the dispersed floor branch applies only when the command holds neither branch.
+The final command formed by annexation (JMX) inherits the same set from the command it absorbs before the annexation.
+Research slots: local commands have `actor_research_slots_local` (2), others `actor_research_slots` (3), and transnational and jihadist commands rise once to `actor_research_slots_advanced` (4) through Build a Civil Administration or Establish Political Offices (`random_terror_grant_advanced_research_slot`, record `random_terror_advanced_research_slot` cleared with the actor's runtime); the final command has `actor_research_slots_final` (5).
 The complete accepted country package requires dynamic safe capitals, resource-grounded forces, compatible donor research, functional economy, reinforcement, diplomacy, AI and playable cleanup.
 The current capacity/force audit identifies gaps in those requirements and does not approve the eight declarations as complete packages.
 

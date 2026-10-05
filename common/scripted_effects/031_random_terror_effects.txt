@@ -2580,6 +2580,9 @@ random_terror_initialize_actor = {
 			limit = { check_variable = { random_terror_actor_division_count > constant:random_terror_tuning.actor_division_cap } }
 			set_temp_variable = { random_terror_actor_division_count = constant:random_terror_tuning.actor_division_cap }
 		}
+		# Technology floor, then the curated technology of the parent
+		# (Part 5): a reused carrier inherits from its new parent and keeps
+		# at least this floor.
 		set_technology = {
 			infantry_weapons = 1
 			infantry_weapons1 = 1
@@ -2587,8 +2590,28 @@ random_terror_initialize_actor = {
 			tech_recon = 1
 			basic_machine_tools = 1
 			construction1 = 1
-			dispersed_industry = 1
 			radio = 1
+			popup = no
+		}
+		if = {
+			limit = {
+				has_event_target = random_terror_actor_parent
+				event_target:random_terror_actor_parent = {
+					exists = yes
+					NOT = { tag = PREV }
+				}
+			}
+			event_target:random_terror_actor_parent = { save_event_target_as = random_terror_tech_donor }
+			random_terror_inherit_actor_technology = yes
+		}
+		# The floor's industry branch follows the parent: dispersed only when
+		# the command holds neither branch yet.
+		if = {
+			limit = {
+				NOT = { has_tech = concentrated_industry }
+				NOT = { has_tech = dispersed_industry }
+			}
+			set_technology = { dispersed_industry = 1 popup = no }
 		}
 		add_manpower = constant:random_terror_tuning.actor_manpower_start
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:random_terror_tuning.actor_infantry_equipment_start }
@@ -4339,6 +4362,7 @@ random_terror_actor_prepare_state_offensive = {
 # Offices replace improvised rule in a held state: roads and rail are rebuilt
 # and the command's hold on its territory and authority firms up.
 random_terror_actor_build_civil_administration = {
+	random_terror_grant_advanced_research_slot = yes
 	add_to_variable = { random_terror_territorial_control = constant:random_terror_tuning.actor_control_convert_gain }
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
 	if = {
@@ -4550,6 +4574,118 @@ random_terror_focus_reward_political_offices = {
 	}
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_civil_admin_gain }
 	set_country_flag = random_terror_focus_political_offices
+	random_terror_grant_advanced_research_slot = yes
+}
+
+# COUNTRY scope: an actor at its first setup.  Input: event target
+# random_terror_tech_donor, the government it rose from (or, for the final
+# command formed by annexation, the command it absorbs).  Copies a curated
+# set of the donor's technology (Part 5 Starting research and technology):
+# infantry and support weapons, support companies, artillery, motorization
+# basics, industry and construction including the donor's industry branch,
+# and electronics.  It never copies doctrines, naval, air, nuclear, rocket or
+# special-project technology, and never removes a technology, so a reused
+# carrier keeps at least its floor.
+random_terror_inherit_actor_technology = {
+	if = {
+		limit = {
+			has_event_target = random_terror_tech_donor
+			event_target:random_terror_tech_donor = { exists = yes }
+		}
+		# Infantry and support weapons
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = infantry_weapons2 } } set_technology = { infantry_weapons2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = improved_infantry_weapons } } set_technology = { improved_infantry_weapons = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = improved_infantry_weapons_2 } } set_technology = { improved_infantry_weapons_2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = advanced_infantry_weapons } } set_technology = { advanced_infantry_weapons = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = advanced_infantry_weapons2 } } set_technology = { advanced_infantry_weapons2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = infantry_at } } set_technology = { infantry_at = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = infantry_at2 } } set_technology = { infantry_at2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = support_weapons } } set_technology = { support_weapons = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = support_weapons2 } } set_technology = { support_weapons2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = support_weapons3 } } set_technology = { support_weapons3 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = support_weapons4 } } set_technology = { support_weapons4 = 1 popup = no } }
+		# Support companies
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_engineers } } set_technology = { tech_engineers = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_engineers2 } } set_technology = { tech_engineers2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_recon2 } } set_technology = { tech_recon2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_military_police } } set_technology = { tech_military_police = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_field_hospital } } set_technology = { tech_field_hospital = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_logistics_company } } set_technology = { tech_logistics_company = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_signal_company } } set_technology = { tech_signal_company = 1 popup = no } }
+		# Artillery
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = gw_artillery } } set_technology = { gw_artillery = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = interwar_artillery } } set_technology = { interwar_artillery = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = artillery1 } } set_technology = { artillery1 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = artillery2 } } set_technology = { artillery2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = artillery3 } } set_technology = { artillery3 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = interwar_antitank } } set_technology = { interwar_antitank = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = antitank1 } } set_technology = { antitank1 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = antitank2 } } set_technology = { antitank2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = interwar_antiair } } set_technology = { interwar_antiair = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = antiair1 } } set_technology = { antiair1 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = antiair2 } } set_technology = { antiair2 = 1 popup = no } }
+		# Motorization basics
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = tech_trucks } } set_technology = { tech_trucks = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = motorised_infantry } } set_technology = { motorised_infantry = 1 popup = no } }
+		# Industry and construction
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = improved_machine_tools } } set_technology = { improved_machine_tools = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = advanced_machine_tools } } set_technology = { advanced_machine_tools = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = construction2 } } set_technology = { construction2 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = construction3 } } set_technology = { construction3 = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = construction4 } } set_technology = { construction4 = 1 popup = no } }
+		# Electronics
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = electronic_mechanical_engineering } } set_technology = { electronic_mechanical_engineering = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = improved_radio } } set_technology = { improved_radio = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = mechanical_computing } } set_technology = { mechanical_computing = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = computing_machine } } set_technology = { computing_machine = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = basic_encryption } } set_technology = { basic_encryption = 1 popup = no } }
+		if = { limit = { event_target:random_terror_tech_donor = { has_tech = basic_decryption } } set_technology = { basic_decryption = 1 popup = no } }
+		# The donor's industry branch, never both branches.
+		if = {
+			limit = {
+				event_target:random_terror_tech_donor = { has_tech = concentrated_industry }
+				NOT = { has_tech = dispersed_industry }
+			}
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = concentrated_industry } } set_technology = { concentrated_industry = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = concentrated_industry2 } } set_technology = { concentrated_industry2 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = concentrated_industry3 } } set_technology = { concentrated_industry3 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = concentrated_industry4 } } set_technology = { concentrated_industry4 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = concentrated_industry5 } } set_technology = { concentrated_industry5 = 1 popup = no } }
+		}
+		if = {
+			limit = {
+				event_target:random_terror_tech_donor = { has_tech = dispersed_industry }
+				NOT = { has_tech = concentrated_industry }
+			}
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = dispersed_industry } } set_technology = { dispersed_industry = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = dispersed_industry2 } } set_technology = { dispersed_industry2 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = dispersed_industry3 } } set_technology = { dispersed_industry3 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = dispersed_industry4 } } set_technology = { dispersed_industry4 = 1 popup = no } }
+			if = { limit = { event_target:random_terror_tech_donor = { has_tech = dispersed_industry5 } } set_technology = { dispersed_industry5 = 1 popup = no } }
+		}
+	}
+}
+
+# COUNTRY scope: an actor.  A transnational or jihadist command gains its
+# fourth research slot once, from Build a Civil Administration or Establish
+# Political Offices.  Local commands stay at actor_research_slots_local, the
+# standard command at actor_research_slots and the final command at
+# actor_research_slots_final; runtime cleanup clears the record.
+random_terror_grant_advanced_research_slot = {
+	if = {
+		limit = {
+			random_terror_is_actor = yes
+			NOT = { has_country_flag = random_terror_final_actor }
+			NOT = { has_country_flag = random_terror_advanced_research_slot }
+			OR = {
+				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.transnational }
+				check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
+			}
+			check_variable = { amount_research_slots < constant:random_terror_tuning.actor_research_slots_advanced }
+		}
+		set_research_slots = constant:random_terror_tuning.actor_research_slots_advanced
+		set_country_flag = random_terror_advanced_research_slot
+	}
 }
 
 # Trace the Border Corridors: claims on every crisis state that borders the
@@ -6918,6 +7054,9 @@ random_terror_begin_false_revelation = {
 				random_owned_state = { save_global_event_target_as = random_terror_final_capital }
 			}
 			JMX = {
+				# The final command keeps the technology of the command it absorbs.
+				event_target:random_terror_dominant_actor = { save_event_target_as = random_terror_tech_donor }
+				random_terror_inherit_actor_technology = yes
 				annex_country = { target = event_target:random_terror_dominant_actor transfer_troops = yes }
 				if = {
 					limit = {
@@ -7923,6 +8062,7 @@ random_terror_clear_actor_runtime = {
 	remove_dynamic_modifier = { modifier = random_terror_entity_presence }
 	remove_dynamic_modifier = { modifier = random_terror_entity_revolt }
 	remove_dynamic_modifier = { modifier = random_terror_entity_ruin }
+	clr_country_flag = random_terror_advanced_research_slot
 	clr_country_flag = random_terror_terminal_check_pending
 	clear_variable = random_terror_presence_attack
 	clear_variable = random_terror_presence_defence
