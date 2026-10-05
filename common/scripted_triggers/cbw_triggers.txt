@@ -277,8 +277,24 @@ mapmode_state_has_disease_contamination = {
 	}
 }
 
+# Supported scope: STATE. An ordinary strike leaves the nuclear_fallout_state
+# marker. The Fallout sweep removes that marker on purpose so its fixed source
+# is not counted twice, but keeps the intensity and expiry record written by
+# chaos_meter_apply_nuclear_fallout_to_state, so the record is read as well.
 mapmode_state_has_nuclear_contamination = {
-	has_dynamic_modifier = { modifier = nuclear_fallout_state }
+	OR = {
+		has_dynamic_modifier = { modifier = nuclear_fallout_state }
+		mapmode_state_has_live_nuclear_fallout_record = yes
+	}
+}
+
+# Supported scope: STATE. The intensity variable is never cleared when fallout
+# ends, so the stored expiry day decides whether the record is still live.
+mapmode_state_has_live_nuclear_fallout_record = {
+	has_variable = nuclear_fallout_intensity
+	check_variable = { nuclear_fallout_intensity > constant:cbrn_math.zero }
+	has_variable = nuclear_fallout_expiry_day
+	check_variable = { nuclear_fallout_expiry_day > global.num_days }
 }
 
 mapmode_state_has_tracked_contamination = {

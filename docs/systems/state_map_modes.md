@@ -17,7 +17,7 @@ The contamination view reads the live state contamination systems:
 - `plague_contaminated_state`
 - `tularemia_contaminated_state`
 - `smallpox_contaminated_state`
-- `nuclear_fallout_state`
+- `nuclear_fallout_state`, or a live `nuclear_fallout_intensity` record whose `nuclear_fallout_expiry_day` is still ahead; the Fallout sweep removes the marker to keep one fixed source but keeps this record, so swept states still show as nuclear
 - Event 20 Black Plague state phase and monitoring memory
 
 The deaths view reads cumulative state-level civilian deaths from `chaos_state_civilian_deaths_total`, which is now written directly by the shared chaos-meter death registration pipeline whenever a civilian death source also reduces state population.

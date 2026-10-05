@@ -96,3 +96,9 @@ Those two lines belong to the Fallout owner, whose commit `c7da5a541` only wrapp
 The repair is theirs; this workstream owns the reading trigger and should confirm the mode colours once the marker survives.
 
 The Event 020 board inspect route was retried once with the minimal call carrying only `windowName`, and returned `Invalid tool arguments` again, as in the two previous rounds. No further attempt was made.
+
+## Implementation pass (2026-10-05)
+
+Contamination map mode (B037, this workstream's part): implemented on the consumer side, see `agent_decisions_2026-10-04.md` section 14.
+The Fallout marker removal turned out to be accepted Fallout design (spec 68 line 69), so the routing note above is superseded: the Fallout owner has nothing to change, and the nuclear branch now also reads the live intensity and expiry record that the sweep keeps.
+The colours remain a live-game check in a post-sweep save.
