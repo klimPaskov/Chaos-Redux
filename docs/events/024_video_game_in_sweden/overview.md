@@ -414,6 +414,21 @@ The final is still played if Evolution III has begun in the meantime, but not du
 The official favourite (weight 60, raised by half under state exhibitions) raises Reliance by 6 and adds 2% war support.
 An outsider's upset (weight 40, raised by half with a red team and by a quarter with civic clubs or a preparedness charter) lowers Reliance by 8 and grants 15 political power.
 
+### School and study-circle campaigns
+
+Once per programme, when the national craze has run for 60 days with broad public reach and a live programme package, maintenance queues report `chaosx.nr24.38` through `video_game_in_sweden_queue_study_circle_campaign`.
+The report marks itself shown when it opens, so a report whose trigger fails (Evolution II switched off, Evolution III begun, restriction or recovery) is not lost but offered again at the next check while Evolution II lasts.
+It uses the existing report picture.
+
+| Option | Reliance | Consequence |
+| --- | --- | --- |
+| Keep the lessons as civic education | -3 | +2% stability for 180 days through the programme package |
+| Let the army recruit through the circles | +6 | +2% recruitable population for 180 days through the programme package |
+| Keep the ministries out of the classroom | -8 | While the craze lasts, its political-attention cost falls by 25%, but its public reach shrinks: -1% war support and -1% recruitable population |
+
+Every value comes from the `school_*` constants in `video_game_in_sweden_reliance`, `video_game_in_sweden_timing` and `video_game_in_sweden_package`, and each option's tooltip states them.
+The AI favours civic education (base 2, democracies 1.5, at war 0.6), recruits at war (2), under high tension (1.5) or as a fascist or communist government (1.8) and rarely as a democracy (0.6), and keeps the ministries out as a democracy (1.3) or with low stability (1.5).
+
 ### Evolution II reach gate
 
 Every path into Evolution II requires broad public reach, including the step from Evolution I.

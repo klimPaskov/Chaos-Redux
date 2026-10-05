@@ -997,6 +997,62 @@ country_event = {
 	}
 }
 
+# School and study-circle campaigns, once per programme during the craze.
+country_event = {
+	id = chaosx.nr24.38
+	title = chaosx.nr24.38.t
+	desc = chaosx.nr24.38.d
+	picture = GFX_report_event_024_video_game_in_sweden_release
+	is_triggered_only = yes
+	trigger = {
+		video_game_in_sweden_study_circle_campaign_is_valid = yes
+	}
+
+	immediate = {
+		hidden_effect = { set_country_flag = video_game_in_sweden_study_circle_campaign_shown }
+	}
+
+	option = {
+		name = chaosx.nr24.38.a
+		ai_chance = {
+			base = constant:video_game_in_sweden_ai.school_educational
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_educational_democratic has_government = democratic }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_educational_war has_war = yes }
+		}
+		custom_effect_tooltip = video_game_schools_educational_tt
+		hidden_effect = { video_game_in_sweden_choose_schools_educational = yes }
+	}
+	option = {
+		name = chaosx.nr24.38.b
+		ai_chance = {
+			base = constant:video_game_in_sweden_ai.school_recruitment
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_recruitment_war has_war = yes }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_recruitment_tension check_variable = { global.threat > constant:video_game_in_sweden_pace.high_tension } }
+			modifier = {
+				factor = constant:video_game_in_sweden_ai_factor.school_recruitment_authoritarian
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_recruitment_democratic has_government = democratic }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_reliance_threshold_crisis video_game_in_sweden_ai_avoids_reliance_gain = yes }
+		}
+		custom_effect_tooltip = video_game_schools_recruiting_tt
+		hidden_effect = { video_game_in_sweden_choose_schools_recruiting = yes }
+	}
+	option = {
+		name = chaosx.nr24.38.c
+		ai_chance = {
+			base = constant:video_game_in_sweden_ai.school_limit
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_limit_democratic has_government = democratic }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.school_limit_low_stability has_stability < constant:video_game_in_sweden_effect.stable_program_stability }
+		}
+		custom_effect_tooltip = video_game_schools_limited_tt
+		hidden_effect = { video_game_in_sweden_choose_schools_limited = yes }
+	}
+}
+
 country_event = {
 	id = chaosx.nr24.40
 	title = chaosx.nr24.40.t

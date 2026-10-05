@@ -405,3 +405,20 @@ Finding: `video_game_in_sweden_restriction_backlash` had no icon, and the offlin
 Decision: the modifier uses the existing Event 24 sprite `GFX_idea_024_video_game_in_sweden_national_craze` (registered in `interface/chaosx_ideas.gfx`), the same sprite as the other public-reaction modifiers (foreign ban, ridicule, embarrassment); its name and description keys already exist, and the restriction cost and report tooltips already state the value and duration.
 Basis: offline wiki Modifiers line 125, spec part 4 accessibility.
 Disposition: `implemented`; the spirits-bar display is needs_live_game.
+
+### R3-6. The school and study-circle campaign is an Evolution II public report
+
+Finding: spec part 2 lists four Evolution II public event families; workplace leagues, political appropriation and the National Final exist, but school and study-circle campaigns (keep it educational, turn it into recruitment, or limit state involvement) had no event, although the research notes make study circles central to the Swedish civilian route.
+Decision:
+- A one-shot report `chaosx.nr24.38` in the National Final pattern, not a mismatch incident, because the spec presents it as a public event with three policy choices (round 3 lead decision).
+- Maintenance calls `video_game_in_sweden_queue_study_circle_campaign` after the evolution checks. It queues the report one day later once `video_game_in_sweden_study_circle_campaign_is_valid` holds (current host, event and Evolution II enabled, Evolution II active, broad public reach, live programme package, not yet shown) and the craze has run `study_circle_delay_days` (60). The report sets `video_game_in_sweden_study_circle_campaign_shown` in `immediate`, so a report whose trigger fails one day later is offered again at the next check rather than lost, and it is never shown twice. The marker and the three choice flags are cleared when a programme starts.
+- Options, each with a `custom_effect_tooltip` built from constants and its scripted body in `hidden_effect`:
+  - Civic education: Reliance -`school_educational_loss` (3), and `stability_factor` +`school_civic_stability` (2%) for `school_benefit_days` (180) through a new `video_game_in_sweden_pkg_stability` line on the programme package.
+  - Recruitment: Reliance +`school_recruitment_gain` (6), and recruitable population +`school_recruitable` (2%) for 180 days through the package; no permanent windfall.
+  - Limit state involvement: Reliance -`school_limit_loss` (8); while Evolution II lasts the political-attention cost is cut by `school_limit_attention_cut` (25%, applied in `video_game_in_sweden_add_public_costs`, so the category header shows it), and the lost public reach costs `school_limit_war_support` (1%) war support and `school_limit_recruitable` (1%) recruitable population through the package.
+- The 180-day timer `video_game_in_sweden_school_days` counts down in the daily package tick like the other action timers and is reset with the package.
+- AI: education base 2 (democratic 1.5, at war 0.6); recruitment base 1 (at war 2, world tension above 0.5 1.5, fascist or communist 1.8, democratic 0.6, and the shared 0.1 threshold caution of `video_game_in_sweden_ai_avoids_reliance_gain`); limitation base 1 (democratic 1.3, stability below 35% 1.5). All factors are in `video_game_in_sweden_ai` and `video_game_in_sweden_ai_factor`. This is a new weighted surface for the blocked R2-8 audit.
+- The text uses the existing report picture and period wording (elementary teachers, popular-movement study circles, chalk and printed counters).
+The Event Details and evolution texts are unchanged, so no catalog change is pending.
+Basis: spec part 2 Public event families, research notes on Swedish study circles, round 3 lead item.
+Disposition: `implemented`; the popup timing in a live campaign is needs_live_game.

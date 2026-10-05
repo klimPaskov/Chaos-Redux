@@ -505,6 +505,7 @@ video_game_in_sweden_refresh_program_package = {
 	set_variable = { video_game_in_sweden_pkg_recruitable = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_pkg_trade_opinion = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_pkg_war_support = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_pkg_stability = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_public_output_cost = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_public_attention_cost = constant:video_game_in_sweden_value.zero }
 	if = {
@@ -604,6 +605,28 @@ video_game_in_sweden_refresh_program_package = {
 			}
 			add_to_variable = { video_game_in_sweden_pkg_war_support = constant:video_game_in_sweden_package.exhibition_war_support }
 		}
+		# School and study-circle campaign: a finite civic or recruiting entry.
+		if = {
+			limit = { check_variable = { video_game_in_sweden_school_days > constant:video_game_in_sweden_value.zero } }
+			if = {
+				limit = { has_country_flag = video_game_in_sweden_schools_educational }
+				add_to_variable = { video_game_in_sweden_pkg_stability = constant:video_game_in_sweden_package.school_civic_stability }
+			}
+			else_if = {
+				limit = { has_country_flag = video_game_in_sweden_schools_recruiting }
+				add_to_variable = { video_game_in_sweden_pkg_recruitable = constant:video_game_in_sweden_package.school_recruitable }
+			}
+		}
+		# Ministries withdrawn from the classrooms: the craze reaches fewer
+		# young people while it lasts.
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_evolution_ii_active
+				has_country_flag = video_game_in_sweden_schools_limited
+			}
+			subtract_from_variable = { video_game_in_sweden_pkg_war_support = constant:video_game_in_sweden_package.school_limit_war_support }
+			subtract_from_variable = { video_game_in_sweden_pkg_recruitable = constant:video_game_in_sweden_package.school_limit_recruitable }
+		}
 		if = {
 			limit = { has_country_flag = video_game_in_sweden_evolution_ii_active }
 			video_game_in_sweden_add_public_costs = yes
@@ -692,6 +715,12 @@ video_game_in_sweden_add_public_costs = {
 		subtract_from_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_package.separate_policy_attention_cut }
 		multiply_temp_variable = { video_game_in_sweden_public_attention = video_game_in_sweden_public_keep }
 	}
+	if = {
+		limit = { has_country_flag = video_game_in_sweden_schools_limited }
+		set_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_value.one }
+		subtract_from_temp_variable = { video_game_in_sweden_public_keep = constant:video_game_in_sweden_package.school_limit_attention_cut }
+		multiply_temp_variable = { video_game_in_sweden_public_attention = video_game_in_sweden_public_keep }
+	}
 	set_variable = { video_game_in_sweden_public_output_cost = video_game_in_sweden_public_output }
 	set_variable = { video_game_in_sweden_public_attention_cost = video_game_in_sweden_public_attention }
 	subtract_from_variable = { video_game_in_sweden_pkg_factory_output = video_game_in_sweden_public_output }
@@ -721,6 +750,11 @@ video_game_in_sweden_tick_program_package = {
 		subtract_from_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_timing.runtime_watch_days }
 		clamp_variable = { var = video_game_in_sweden_licence_days min = constant:video_game_in_sweden_value.zero }
 	}
+	if = {
+		limit = { check_variable = { video_game_in_sweden_school_days > constant:video_game_in_sweden_value.zero } }
+		subtract_from_variable = { video_game_in_sweden_school_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		clamp_variable = { var = video_game_in_sweden_school_days min = constant:video_game_in_sweden_value.zero }
+	}
 	video_game_in_sweden_refresh_program_package = yes
 }
 
@@ -730,7 +764,12 @@ video_game_in_sweden_reset_program_package = {
 	set_variable = { video_game_in_sweden_logistics_days = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_field_training_days = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_value.zero }
+	set_variable = { video_game_in_sweden_school_days = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_rules_revision_count = constant:video_game_in_sweden_value.zero }
+	clr_country_flag = video_game_in_sweden_study_circle_campaign_shown
+	clr_country_flag = video_game_in_sweden_schools_educational
+	clr_country_flag = video_game_in_sweden_schools_recruiting
+	clr_country_flag = video_game_in_sweden_schools_limited
 	clear_variable = video_game_in_sweden_exercise_strength
 	clr_country_flag = video_game_in_sweden_exercise_at_war
 }
@@ -1541,6 +1580,57 @@ video_game_in_sweden_queue_national_final = {
 		}
 		country_event = { id = chaosx.nr24.35 days = constant:video_game_in_sweden_timing.national_final_days }
 	}
+}
+
+# ----------------------------------------------------------------------------
+# School and study-circle campaigns (report chaosx.nr24.38)
+# ----------------------------------------------------------------------------
+# COUNTRY scope, called by maintenance. Once per programme, after the craze has
+# run for study_circle_delay_days with broad public reach and a live package,
+# the school boards ask the Ministry how to treat the campaigns. The report
+# marks itself shown, so a report whose trigger fails is offered again at the
+# next maintenance check instead of being lost.
+video_game_in_sweden_queue_study_circle_campaign = {
+	if = {
+		limit = {
+			video_game_in_sweden_study_circle_campaign_is_valid = yes
+			check_variable = {
+				var = video_game_in_sweden_evolution_elapsed_days
+				value = constant:video_game_in_sweden_timing.study_circle_delay_days
+				compare = greater_than_or_equals
+			}
+		}
+		country_event = { id = chaosx.nr24.38 days = constant:video_game_in_sweden_timing.runtime_watch_days }
+	}
+}
+
+# COUNTRY scope. Keep the campaigns educational: Reliance falls slightly and
+# the classrooms give a finite civic benefit through the programme package.
+video_game_in_sweden_choose_schools_educational = {
+	set_country_flag = video_game_in_sweden_schools_educational
+	set_variable = { video_game_in_sweden_school_days = constant:video_game_in_sweden_timing.school_benefit_days }
+	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.school_educational_loss }
+	multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+	video_game_in_sweden_change_reliance = yes
+}
+
+# COUNTRY scope. Turn the study circles into recruiting rooms: Reliance rises
+# and recruitable population grows for a finite term.
+video_game_in_sweden_choose_schools_recruiting = {
+	set_country_flag = video_game_in_sweden_schools_recruiting
+	set_variable = { video_game_in_sweden_school_days = constant:video_game_in_sweden_timing.school_benefit_days }
+	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.school_recruitment_gain }
+	video_game_in_sweden_change_reliance = yes
+}
+
+# COUNTRY scope. Withdraw the ministries from the classrooms: Reliance falls
+# further and the political attention cost of the craze drops, but the craze
+# reaches fewer young people while it lasts.
+video_game_in_sweden_choose_schools_limited = {
+	set_country_flag = video_game_in_sweden_schools_limited
+	set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.school_limit_loss }
+	multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+	video_game_in_sweden_change_reliance = yes
 }
 
 video_game_in_sweden_do_protect_shifts = {
@@ -4175,6 +4265,7 @@ video_game_in_sweden_maintenance = {
 			}
 			video_game_in_sweden_begin_evolution_iii = yes
 		}
+		video_game_in_sweden_queue_study_circle_campaign = yes
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_trust_model_active
