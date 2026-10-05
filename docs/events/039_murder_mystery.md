@@ -26,7 +26,7 @@ The agent design decisions taken under the round-1 authority (D1 to D20: pool fi
 The opening murder and a foreign cell's high-value murder both target only the sitting ruler, resolved through the synchronous anchor-trait helper `murder_mystery_capture_current_ruling_character`; an unresolved or ambiguous ruler fails the transaction closed, so an opposition party leader is never killed in the ruler's place.
 The replacement takes office before the victim is retired, through `murder_mystery_install_emergency_successor`:
 
-1. A curated native successor row applies first. The only row is Britain: a murdered `ENG_stanley_baldwin` is succeeded by `ENG_neville_chamberlain`, recruited and promoted in the ruling democratic party, with his vanilla portrait.
+1. A curated native successor row applies first. The only row is Britain: a murdered `ENG_stanley_baldwin` is succeeded by `ENG_neville_chamberlain`, attached to the country with `set_nationality` when it does not already hold him (character recruitment is history-only, and a 1936 start recruits him only in the 1939 history block) and then promoted in the ruling democratic party, with his vanilla portrait.
 2. Otherwise an institutional body named from the country's adjective takes office in the ruling party's ideology: the "Emergency Council" after the opening murder, the "Acting Cabinet" after a foreign murder.
    It carries a marker trait (`murder_mystery_emergency_council` or `murder_mystery_acting_cabinet`) with a small stability penalty and uses `GFX_portrait_039_emergency_council`, an institutional portrait that shows no individual.
 

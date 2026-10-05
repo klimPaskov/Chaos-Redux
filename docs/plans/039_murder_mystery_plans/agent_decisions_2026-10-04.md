@@ -226,3 +226,11 @@ Disposition: implemented; each correction is source-reviewed and needs live conf
 - Timed flags take literal durations. The action cooldown, the country incident cooldown, the four role-group cooldowns, the cell immunity, the aftermath window and the three super-event flags passed a variable or a constant token as `days` (and the super-event slot as `value`), which a timed flag does not read (the Event 002, 005, 023 and 028 pattern). They now go through `meta_effect` helpers that inject the tuning constants as integers. Without this the action cooldown could block every Event 039 action after the first one, and the super-events could show the wrong slot.
 - A country whose cell was destroyed can receive a new cell again once its immunity lapses. The permanent `murder_mystery_cell_retired` flag made every later seeding attempt on that country fail silently, wasting the bounded seeding attempts; it is cleared when the country is chosen as a new candidate.
 - Three mission texts that open with a country name use `GetNameDefCap`.
+
+## D22. Chamberlain joins Britain by nationality, not recruitment
+
+Disposition: implemented (round 2); the Baldwin-to-Chamberlain succession needs live confirmation in a 1936 start.
+Basis: the lead's round-2 decision 1 and routed load defect B033, where `recruit_character` in a scripted effect logged "recruit_character should only happen in game/history files" at every load.
+The curated Britain row attaches `ENG_neville_chamberlain` with `set_nationality = PREV` when the country does not already hold him, then promotes him and keeps the ruling-only verification before the victim is retired.
+This mirrors the Assassin State setup, which attaches its predefined commanders the same way, and Kaiserreich's `CHN_recruit_character_effect`; vanilla recruits Chamberlain only in its 1939 history block, so he is unrecruited when Baldwin is murdered in a 1936 start.
+No Event 039 file calls `recruit_character`.

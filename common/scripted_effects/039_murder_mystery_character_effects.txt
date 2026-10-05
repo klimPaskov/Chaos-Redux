@@ -239,7 +239,12 @@ murder_mystery_try_curated_successor = {
 			has_event_target = murder_mystery_victim_character
 			event_target:murder_mystery_victim_character = { is_character = ENG_stanley_baldwin }
 		}
-		recruit_character = ENG_neville_chamberlain
+		# Recruitment is history-only; attach the defined character by nationality,
+		# as the Assassin State setup does for its commanders.
+		if = {
+			limit = { NOT = { has_character = ENG_neville_chamberlain } }
+			ENG_neville_chamberlain = { set_nationality = PREV }
+		}
 		promote_character = ENG_neville_chamberlain
 		if = {
 			limit = { has_country_leader = { character = ENG_neville_chamberlain ruling_only = yes } }
