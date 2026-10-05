@@ -30,11 +30,11 @@ The answer is built through the Commonwealth Ledger mechanic, a comprehensive fo
 
 The ideal recipient is a minor country whose small scale makes radical institutional rebuilding plausible and whose limited industry gives the manifesto something concrete to solve. The event should often reach a random weak AI country, but an eligible human player should remain a meaningful candidate.
 
-The event must avoid feeling like a punishment that deletes years of unique content. A player should receive the manifesto only when the current tree is generic, event-approved for replacement, or still shallow enough that replacement is a fair campaign transformation. The eligibility system is therefore part of the event's identity, not a hidden technical afterthought.
+The event must avoid feeling like a punishment that deletes years of unique content. The original target design allowed a generic tree, an approved replaceable tree, or a shallow tree judged safe for replacement. The eligibility system is therefore part of the event's identity, not a hidden technical afterthought.
 
 ## Recipient selection
 
-### Candidate classes
+### Original candidate classes
 
 The selection pass builds three candidate pools in order.
 
@@ -45,6 +45,12 @@ The selection pass builds three candidate pools in order.
 The first nonempty class is used. Within that class, the final recipient is chosen by a weighted weak-country score.
 
 This priority keeps the event relevant to players without forcing it onto a major or an established bespoke campaign. It also guarantees that the event can normally find an AI recipient when no player qualifies.
+
+### Accepted implementation disposition, 2026-10-05
+
+The current selector is restricted to safe human and AI countries whose active tree is `generic_focus`. The originally designed approved-light-tree class remains disabled because no approval-flag producer or literal original-tree capture and return mapping exists. This is a parent-accepted conservative restriction recorded in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md`. It does not grant `generic_focus` to entrants whose original tree was not captured. Safe teardown returns to `generic_focus` only when acceptance recorded that exact origin and Event 15 still owns the active tree. A foreign tree installed during the campaign is preserved. The five political interpretations and their focus paths remain unchanged.
+
+Manual requests bypass the Chaos Redux event-scheduler lottery, not Event 15's country-selection draw. Settings, Event Log, and forced event-cluster requests call the same selector as automatic Event 15 dispatch, use the human-generic then AI-generic class order, draw according to the class's ticket weights, and retain every absolute safety gate. A manual request cannot directly force a particular recipient.
 
 ### Hard exclusions
 
@@ -62,7 +68,7 @@ A country is excluded when any of the following is true.
 - It is a subject whose overlord relationship makes independent constitutional transformation impossible, unless the event-specific subject route is enabled by implementation review.
 - It already has the Utopia Manifesto event state.
 
-### Weak-country score
+### Original weak-country score direction
 
 The weighted score should prefer countries that have a reason to gamble on the manifesto.
 

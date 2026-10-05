@@ -49,6 +49,7 @@ utopia_manifesto_ledger_category = {
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_prepare_survey_decision_duration = yes
 				set_country_flag = utopia_manifesto_survey_active
+				set_country_flag = utopia_manifesto_foundation_survey_completion_pending
 				activate_mission = mission_utopia_count_houses_and_hands
 				utopia_manifesto_schedule_prefire_glosses_survey_event = yes
 			}
@@ -64,17 +65,37 @@ utopia_manifesto_ledger_category = {
 		activation = { has_country_flag = utopia_manifesto_survey_active }
 		days_mission_timeout = var:utopia_manifesto_survey_days
 		is_good = yes
-		available = { hidden_trigger = { always = no } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mission_utopia_count_houses_and_hands_available_tt
+				hidden_trigger = {
+					has_country_flag = utopia_manifesto_foundation_survey_completion_pending
+					has_country_flag = utopia_manifesto_foundation_survey_complete
+				}
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = mission_utopia_count_houses_and_hands_success_tt
+			hidden_effect = {
+				utopia_manifesto_complete_national_survey = yes
+			}
+		}
 		cancel_trigger = {
 			OR = {
 				NOT = { utopia_manifesto_has_ledger = yes }
 				capital_scope = { NOT = { is_controlled_by = ROOT } }
 			}
 		}
-		cancel_effect = { hidden_effect = { utopia_manifesto_fail_national_survey = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				utopia_manifesto_fail_national_survey = yes
+			}
+		}
 		timeout_effect = {
 			custom_effect_tooltip = mission_utopia_count_houses_and_hands_success_tt
-			hidden_effect = { utopia_manifesto_complete_national_survey = yes }
+			hidden_effect = {
+				utopia_manifesto_complete_national_survey = yes
+			}
 		}
 	}
 
@@ -1560,9 +1581,8 @@ utopia_manifesto_district_category = {
 		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_large
 		custom_cost_trigger = {
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_manpower_large } NOT = { has_manpower < utopia_manifesto_cost_check }
-			NOT = { has_equipment = { support_equipment < constant:utopia_manifesto_district_threshold.refugee_support_start } }
-			NOT = { has_equipment = { train_equipment < constant:utopia_manifesto_district_threshold.refugee_trains_start } }
-			NOT = { has_equipment = { motorized_equipment < constant:utopia_manifesto_district_threshold.refugee_motorized_start } }
+			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_support_large } NOT = { has_equipment = { support_equipment < utopia_manifesto_cost_check } }
+			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_trains_medium } NOT = { has_equipment = { train_equipment < utopia_manifesto_cost_check } }
 		}
 		custom_cost_text = utopia_manifesto_cost_refugee_municipality
 		complete_effect = {
@@ -1571,10 +1591,7 @@ utopia_manifesto_district_category = {
 				set_temp_variable = { utopia_manifesto_cost_manpower = global.black_friday_price_utopia_manifesto_decision_cost_manpower_large }
 				set_temp_variable = { utopia_manifesto_cost_support = global.black_friday_price_utopia_manifesto_decision_cost_support_large }
 				set_temp_variable = { utopia_manifesto_cost_trains = global.black_friday_price_utopia_manifesto_decision_cost_trains_medium }
-				set_temp_variable = { utopia_manifesto_cost_motorized = global.black_friday_price_utopia_manifesto_decision_cost_motorized_medium }
 				utopia_manifesto_pay_prepared_decision_cost = yes
-				subtract_from_variable = { utopia_reserve_score = constant:utopia_manifesto_decision_change.reserve_nudge }
-				utopia_manifesto_refresh_reserve_band = yes
 				utopia_manifesto_select_refugee_municipality_district_project = yes
 				utopia_manifesto_prepare_district_decision_duration = yes
 				set_country_flag = utopia_manifesto_district_build_active
@@ -2320,21 +2337,17 @@ utopia_manifesto_island_category = {
 		}
 		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_medium
 		custom_cost_trigger = {
-			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_manpower_medium } NOT = { has_manpower < utopia_manifesto_cost_check }
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_infantry_large } NOT = { has_equipment = { infantry_equipment < utopia_manifesto_cost_check } }
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_support_large } NOT = { has_equipment = { support_equipment < utopia_manifesto_cost_check } }
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_army_xp_medium } NOT = { has_army_experience < utopia_manifesto_cost_check }
-			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_stability_small } NOT = { has_stability < utopia_manifesto_cost_check }
 		}
 		custom_cost_text = utopia_manifesto_cost_close_gates
 		complete_effect = {
 			custom_effect_tooltip = decision_utopia_close_the_gates_effect_tt
 			hidden_effect = {
-				set_temp_variable = { utopia_manifesto_cost_manpower = global.black_friday_price_utopia_manifesto_decision_cost_manpower_medium }
 				set_temp_variable = { utopia_manifesto_cost_infantry = global.black_friday_price_utopia_manifesto_decision_cost_infantry_large }
 				set_temp_variable = { utopia_manifesto_cost_support = global.black_friday_price_utopia_manifesto_decision_cost_support_large }
 				set_temp_variable = { utopia_manifesto_cost_army_xp = global.black_friday_price_utopia_manifesto_decision_cost_army_xp_medium }
-				set_temp_variable = { utopia_manifesto_cost_stability = global.black_friday_price_utopia_manifesto_decision_cost_stability_small }
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_select_island_closed_gates_stage = yes
 				utopia_manifesto_prepare_island_decision_duration = yes
@@ -3324,8 +3337,6 @@ utopia_manifesto_necessary_ground_category = {
 			hidden_effect = {
 				set_temp_variable = { utopia_manifesto_cost_infantry = global.black_friday_price_utopia_manifesto_decision_cost_infantry_medium }
 				set_temp_variable = { utopia_manifesto_cost_command_power = global.black_friday_price_utopia_manifesto_decision_cost_command_power_medium }
-				set_temp_variable = { utopia_manifesto_cost_stability = global.black_friday_price_utopia_manifesto_decision_cost_stability_medium }
-				set_temp_variable = { utopia_manifesto_cost_war_support = global.black_friday_price_utopia_manifesto_decision_cost_war_support_small }
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_clear_case_response_state = yes
 				utopia_manifesto_issue_case_ultimatum = yes
@@ -3381,8 +3392,6 @@ utopia_manifesto_necessary_ground_category = {
 				set_temp_variable = { utopia_manifesto_cost_infantry = global.black_friday_price_utopia_manifesto_decision_cost_infantry_large }
 				set_temp_variable = { utopia_manifesto_cost_support = global.black_friday_price_utopia_manifesto_decision_cost_support_large }
 				set_temp_variable = { utopia_manifesto_cost_command_power = global.black_friday_price_utopia_manifesto_decision_cost_command_power_large }
-				set_temp_variable = { utopia_manifesto_cost_stability = global.black_friday_price_utopia_manifesto_decision_cost_stability_medium }
-				set_temp_variable = { utopia_manifesto_cost_war_support = global.black_friday_price_utopia_manifesto_decision_cost_war_support_medium }
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_enforce_active_need_case = yes
 				country_event = { id = chaosx.nr15.55 }
@@ -3776,7 +3785,6 @@ utopia_manifesto_stewardship_category = {
 				set_temp_variable = { utopia_manifesto_cost_manpower = global.black_friday_price_utopia_manifesto_decision_cost_manpower_medium }
 				set_temp_variable = { utopia_manifesto_cost_infantry = global.black_friday_price_utopia_manifesto_decision_cost_infantry_medium }
 				set_temp_variable = { utopia_manifesto_cost_support = global.black_friday_price_utopia_manifesto_decision_cost_support_medium }
-				set_temp_variable = { utopia_manifesto_cost_stability = global.black_friday_price_utopia_manifesto_decision_cost_stability_medium }
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				set_country_flag = utopia_manifesto_assigned_colony_active
 				set_country_flag = utopia_manifesto_conduct_assigned_colony
@@ -4017,7 +4025,6 @@ utopia_manifesto_stewardship_category = {
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_manpower_large } NOT = { has_manpower < utopia_manifesto_cost_check }
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_support_large } NOT = { has_equipment = { support_equipment < utopia_manifesto_cost_check } }
 			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_trains_large } NOT = { has_equipment = { train_equipment < utopia_manifesto_cost_check } }
-			set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_motorized_large } NOT = { has_equipment = { motorized_equipment < utopia_manifesto_cost_check } }
 		}
 		custom_cost_text = utopia_manifesto_cost_long_integration
 		complete_effect = {
@@ -4026,7 +4033,6 @@ utopia_manifesto_stewardship_category = {
 				set_temp_variable = { utopia_manifesto_cost_manpower = global.black_friday_price_utopia_manifesto_decision_cost_manpower_large }
 				set_temp_variable = { utopia_manifesto_cost_support = global.black_friday_price_utopia_manifesto_decision_cost_support_large }
 				set_temp_variable = { utopia_manifesto_cost_trains = global.black_friday_price_utopia_manifesto_decision_cost_trains_large }
-				set_temp_variable = { utopia_manifesto_cost_motorized = global.black_friday_price_utopia_manifesto_decision_cost_motorized_large }
 				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_prepare_stewardship_decision_duration = yes
 				multiply_variable = { utopia_manifesto_stewardship_days = constant:utopia_manifesto_decision_value.duration_triple }
@@ -4919,9 +4925,9 @@ utopia_manifesto_defense_category = {
 				}
 			}
 		}
-		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_small
+		custom_cost_trigger = { utopia_manifesto_can_afford_military_growth_foundation = yes }
+		custom_cost_text = utopia_manifesto_cost_citizen_watch_formation
 		complete_effect = {
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			custom_effect_tooltip = decision_utopia_raise_a_citizen_watch_effect_tt
 			hidden_effect = {
 				utopia_manifesto_prepare_defense_decision_duration = yes
@@ -4968,14 +4974,11 @@ utopia_manifesto_defense_category = {
 				}
 			}
 		}
-		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_medium
-		custom_cost_trigger = { set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_motorized_medium } NOT = { has_equipment = { motorized_equipment < utopia_manifesto_cost_check } } }
-		custom_cost_text = utopia_manifesto_cost_engineer_company_transport
+		custom_cost_trigger = { utopia_manifesto_can_afford_military_growth_foundation = yes }
+		custom_cost_text = utopia_manifesto_cost_engineer_company_formation
 		complete_effect = {
 			custom_effect_tooltip = decision_utopia_form_engineer_companies_effect_tt
 			hidden_effect = {
-				set_temp_variable = { utopia_manifesto_cost_motorized = global.black_friday_price_utopia_manifesto_decision_cost_motorized_medium }
-				utopia_manifesto_pay_prepared_decision_cost = yes
 				utopia_manifesto_prepare_defense_decision_duration = yes
 				set_country_flag = utopia_manifesto_engineer_company_training_active
 				activate_mission = mission_utopia_form_engineer_companies
@@ -5029,11 +5032,12 @@ utopia_manifesto_defense_category = {
 				tooltip = decision_utopia_hire_auxiliary_contracts_requirements_tt
 				hidden_trigger = {
 					utopia_manifesto_can_pay_auxiliary_contract = yes
+					utopia_manifesto_military_growth_capacity_available = yes
+					any_controlled_state = { is_controlled_by = ROOT }
 					FROM = { NOT = { has_war_with = ROOT } }
 				}
 			}
 		}
-		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_large
 		custom_cost_trigger = { utopia_manifesto_can_pay_auxiliary_contract = yes }
 		custom_cost_text = utopia_manifesto_cost_auxiliary_contract
 		complete_effect = {
@@ -5042,24 +5046,22 @@ utopia_manifesto_defense_category = {
 				set_temp_variable = { utopia_manifesto_growth_tier_input = constant:utopia_manifesto_decision_value.growth_foundation }
 				utopia_manifesto_refresh_dynamic_costs = yes
 				if = {
-					limit = { utopia_manifesto_can_pay_auxiliary_contract = yes }
+					limit = {
+						utopia_manifesto_can_pay_auxiliary_contract = yes
+						utopia_manifesto_military_growth_capacity_available = yes
+						any_controlled_state = { is_controlled_by = ROOT }
+						FROM = { NOT = { has_war_with = ROOT } }
+					}
 					set_temp_variable = { utopia_manifesto_military_formation_input = constant:utopia_manifesto_military_formation.auxiliary_column }
 					utopia_manifesto_apply_paid_military_growth = yes
 					if = {
 						limit = { NOT = { has_country_flag = utopia_manifesto_military_growth_payment_failed } }
 						set_temp_variable = { utopia_manifesto_cost_support = constant:utopia_manifesto_decision_cost.support_medium }
-						set_temp_variable = { utopia_manifesto_cost_motorized = constant:utopia_manifesto_decision_cost.motorized_medium }
-						set_temp_variable = { utopia_manifesto_cost_convoys = global.black_friday_price_utopia_manifesto_decision_cost_convoys_medium }
 						utopia_manifesto_pay_prepared_decision_cost = yes
 						FROM = {
 							add_equipment_to_stockpile = {
 								type = support_equipment
 								amount = constant:utopia_manifesto_decision_cost.support_medium
-								producer = ROOT
-							}
-							add_equipment_to_stockpile = {
-								type = motorized_equipment
-								amount = constant:utopia_manifesto_decision_cost.motorized_medium
 								producer = ROOT
 							}
 						}
@@ -5081,12 +5083,10 @@ utopia_manifesto_defense_category = {
 						}
 					}
 					else = {
-						set_temp_variable = { utopia_manifesto_refund_pp = global.black_friday_price_utopia_manifesto_decision_cost_pp_large } add_political_power = utopia_manifesto_refund_pp
 						set_country_flag = utopia_manifesto_auxiliary_hiring_failed
 					}
 				}
 				else = {
-					set_temp_variable = { utopia_manifesto_refund_pp = global.black_friday_price_utopia_manifesto_decision_cost_pp_large } add_political_power = utopia_manifesto_refund_pp
 					set_country_flag = utopia_manifesto_auxiliary_hiring_failed
 				}
 			}
@@ -5781,7 +5781,8 @@ utopia_manifesto_formation_category = {
 				}
 			}
 		}
-		cost = global.black_friday_price_utopia_manifesto_decision_cost_pp_medium
+		custom_cost_trigger = { utopia_manifesto_can_afford_military_growth_foundation = yes }
+		custom_cost_text = utopia_manifesto_cost_post_formation_defense
 		complete_effect = {
 			custom_effect_tooltip = decision_utopia_reinforce_post_formation_defense_effect_tt
 			hidden_effect = {

@@ -1,12 +1,12 @@
 # Event 15 Target Eligibility Matrix
 
-All thresholds are implemented through the centralized Event 15 candidate-limit, candidate-threshold, and candidate-score constants. This matrix describes the live gate and score rather than an unresolved tuning proposal.
+This matrix preserves the original target-selection design. Its approved-light-tree candidate class is not part of the current live pool. The parent-accepted implementation disposition of 2026-10-05 disables that class until the source has a literal original-tree capture and return mapping. Current code admits safe `generic_focus` recipients only. The five political interpretations remain in the replacement focus tree.
 
 | Check | Preferred | Eligible | Excluded | Reason |
 | --- | --- | --- | --- | --- |
 | Major status | no | no | yes | The event is for a weak or modest country. |
 | Industry | very small | modest | major-level or strong regional industry | Prevents the manifesto from becoming a free major-country overhaul. |
-| Focus tree | generic or approved replaceable | lightly developed approved tree | protected unique tree | Acceptance replaces the tree. |
+| Focus tree design intent | generic or approved replaceable | lightly developed approved tree | protected unique tree | The October implementation disposition restricts current eligibility to generic trees until a safe original-tree return mapping exists. |
 | Political focus depth | little progress | limited progress | mature political or identity route | Avoids deleting an established campaign. |
 | Country origin | ordinary country | approved subject or minor | another event-created package | Prevents incompatible country systems. |
 | War state | peace or defensive breathing room | limited war with secure capital | civil war, near capitulation, full offensive war | The founding survey must be playable. |
@@ -22,11 +22,17 @@ All thresholds are implemented through the centralized Event 15 candidate-limit,
 | Infrastructure weakness | positive | neutral | fatal collapse only | Gives the tree a problem to solve. |
 | Recent country transformation | no | distant prior transformation | active or recent full transformation | Avoids stacked replacement events. |
 
-## Candidate-pool order
+## Original candidate-pool order
 
 1. Safe eligible human players.
 2. Safe AI minors with generic or approved replaceable trees.
 3. Safe AI minors with lightly developed approved trees.
+
+## Current implementation disposition, 2026-10-05
+
+The active Event 15 selector has two possible classes: safe eligible human countries with `generic_focus`, followed by safe AI minors with `generic_focus`. The three candidate arrays remain allocated, but the approved-light array stays empty because `utopia_manifesto_candidate_has_approved_light_tree = { hidden_trigger = { always = no } }`. The repository has no producer for the approval flags and no literal mapping that returns a country to its actual original tree. This is an accepted conservative restriction under `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md`, not an automatic replacement with `generic_focus`.
+
+Manual requests use the same absolute safety boundary. They do not broaden the current recipient pool. Acceptance captures the generic origin, and repeal or collapse loads `generic_focus` only when that receipt exists and `utopia_manifesto_tree` remains active. A foreign replacement tree is preserved.
 
 ## Weighted score direction
 
@@ -52,11 +58,11 @@ Negative weight:
 
 ## Manual trigger behavior
 
-Manual firing bypasses the random ticket draw but uses the same absolute safety boundary. It cannot target a major, industrial power, special or terminal actor, protected or mature tree, active event package, dominant faction leader, civil-war or offensive-war country, near-capitulated country, subject empire, extensive occupier, insecure capital, or unsafe subject.
+Manual requests bypass the event scheduler's lottery that selects which Chaos Redux event fires. After the request, Event 15 uses the same candidate classes, priority order, weighted ticket draw, and absolute safety boundary as automatic selection. Manual input cannot force a blocked country into the recipient pool.
 
 ## Current implementation proof
 
-The live entry selector applies one reusable absolute gate and a bounded dynamic ticket score. It builds separate human-generic, AI-generic, and approved-light-tree arrays, then chooses from the first non-empty class. Acceptance and rejection are explicit player paths, while an AI recipient accepts with certainty. Manual firing remains separate from ordinary weighted selection but retains the absolute gate.
+The current entry selector applies one reusable absolute gate and a bounded dynamic ticket score. It prioritizes the human-generic class over the AI-generic class, then draws from the first non-empty class using its country ticket weights. The approved-light array remains allocated but empty under the accepted October restriction above. Acceptance and rejection are explicit player paths, while an AI recipient accepts with certainty. Manual requests enter the same selector and do not choose a recipient directly.
 
 Necessary Ground uses a second, case-specific target pipeline. A case requires a live relevant calling deficit, a valid selected country, a valid selected state, and method-specific reachability. State-transfer methods show and enforce the requirement that the selected target survive the transfer.
 

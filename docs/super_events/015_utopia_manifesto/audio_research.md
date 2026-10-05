@@ -89,7 +89,7 @@ The processing retains a measured `9.20 LU` final range. The final fade reaches 
 | Integrated loudness | `-17.97 LUFS` |
 | True peak | `-1.64 dBTP` |
 | Loudness range | `9.20 LU` |
-| Final WAV SHA-256 | `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9` |
+| Historical retained-cue digest; artifact mapping unresolved | `68ebdcb9a4d81ca9863e85344fc19ab1ad99ffb7e83c836691d7a92181bfd1b9` |
 | Final WAV SHA-256 | `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655` |
 | Decoded 44.1 kHz stereo PCM SHA-256 | `80c6bb438dcd427edf21a2213b4a5bf8f66fdf43713a01e6c5d982c4fb8a5c01` |
 | Decode result | Complete FFmpeg decode with exit code `0` |
@@ -150,3 +150,10 @@ The required offline wiki core pages were consulted together with `Music modding
 There is no source, licence, duration, format, loudness, uniqueness, or attribution blocker for the final WAV. No fallback, placeholder, ambiguous-rights recording, generated cue, or reused track remains in the delivered package.
 
 Music registration, music localisation, sound/WAV registration, script constants, settings-aware playback, and the five route display slots are integrated. The five route-specific image files for slots `96` through `100` exist and are registered in `interface/015_utopia_manifesto_super_event.gfx`. No text, audio, licence, attribution, uniqueness, or visual blocker remains in the super-event package. The two legacy Event 15 images remain historical assets and are not used as fallbacks.
+
+## Runtime digest review, 5 October 2026
+
+The runtime WAV at `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav` has SHA-256 `05da5a30ba49c6592e5295dd499e9ad3e97279586bb7e7d51228ad236ce58655`.
+The other previously duplicated ?Final WAV? digest does not identify that current file and is retained as historical unbound evidence rather than an alternate current WAV claim.
+The five display slots are route-specific visual/text variants of the same Event 015 regional proclamation moment and its single playback cue.
+No audio content or runtime registration is changed in this documentation repair.

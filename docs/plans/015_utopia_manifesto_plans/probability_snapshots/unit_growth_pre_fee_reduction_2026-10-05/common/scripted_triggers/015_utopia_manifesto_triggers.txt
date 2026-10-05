@@ -1,0 +1,3468 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR = 4
+@CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION = 25
+@CR_SC_UTOPIA_MANIFESTO_DISTRICT_THRESHOLD_FREE_SHARED_SLOT_FLOOR = 0
+@CR_SC_UTOPIA_MANIFESTO_MATH_ONE = 1
+# ============================================================================
+# CHAOS REDUX - EVENT 15: THE UTOPIA MANIFESTO
+# ============================================================================
+# Conservative candidate gates, Ledger and route predicates, scoped case and
+# league checks, formation proofs, evolution conditions, and paid-growth
+# affordability. These helpers do not iterate from an on_action.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Candidate eligibility and ordered classes
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_candidate_has_terminal_identity = {
+	OR = {
+		has_country_flag = death_country
+		has_country_flag = death_world_end_actor
+		has_country_flag = fury_actor
+		has_country_flag = fury_world_end_actor
+		has_country_flag = resources_found_world_end_actor
+		has_country_flag = cannibalism_terminal_host_active
+		has_country_flag = holy_realm_final_silence_terminal_completed
+		has_country_flag = utopia_manifesto_terminal_identity
+		is_special_chaos_country = yes
+		is_actual_nonhuman_country = yes
+	}
+}
+
+utopia_manifesto_candidate_has_active_event_package = {
+	OR = {
+		has_country_flag = holy_realm_active
+		has_country_flag = independence_wave_active_origin
+		has_country_flag = independence_wave_pending_package
+		has_country_flag = secret_alliance_active_member
+		has_country_flag = secret_alliance_founder
+		has_country_flag = natural_disaster_queue_active
+		has_country_flag = cannibalism_country_active
+		has_country_flag = brilliant_scientist_current_host
+		has_country_flag = random_faction_selection_pending
+		has_country_flag = random_faction_recent_alignment
+		has_variable = random_faction_chosen_leader
+		has_country_flag = resources_found_field_system_participant
+		has_country_flag = infantry_spawn_participant
+		has_country_flag = black_plague_crisis_board_available
+		has_country_flag = air_winter_response_project_active
+		has_country_flag = soviet_collapse_event_created_republic
+		has_country_flag = cannibalism_event_created_warlord
+		has_country_flag = zombie_outbreak_dynamic_country
+		has_country_flag = weaponized_zombie_outbreak_country
+		has_country_flag = resources_found_cave_country
+		has_country_flag = death_country_created
+	}
+}
+
+utopia_manifesto_candidate_has_protected_package = {
+	OR = {
+		has_country_flag = utopia_manifesto_tree_replacement_protected
+		has_country_flag = utopia_manifesto_transformation_active
+		has_country_flag = utopia_manifesto_transformation_recent
+		has_country_flag = soviet_collapse_regional_focus_tree_loaded
+	}
+}
+
+utopia_manifesto_candidate_has_mature_generic_tree = {
+	OR = {
+		has_country_flag = utopia_manifesto_tree_replacement_mature
+		has_completed_focus = military_youth
+		has_completed_focus = deterrence
+		has_completed_focus = volunteer_corps
+		has_completed_focus = paramilitarism
+		has_completed_focus = indoctrination_focus
+		has_completed_focus = foreign_expeditions
+		has_completed_focus = why_we_fight
+		has_completed_focus = political_commissars
+		has_completed_focus = ideological_fanaticism
+		has_completed_focus = technology_sharing
+	}
+}
+
+# A manual approval flag alone cannot identify the original tree for repeal.
+# Non-generic origins need an explicit capture/return mapping before selection.
+utopia_manifesto_candidate_has_approved_light_tree = {
+	hidden_trigger = { always = no }
+}
+
+utopia_manifesto_candidate_is_dominant_faction_leader = {
+	is_faction_leader = yes
+	OR = {
+		num_faction_members > constant:utopia_manifesto_candidate_limits.dominant_faction_member_threshold
+		NOT = { num_subjects < constant:utopia_manifesto_candidate_limits.extensive_subject_count }
+	}
+}
+
+utopia_manifesto_candidate_capital_is_secure = {
+	capital_scope = {
+		is_core_of = PREV
+		is_controlled_by = PREV
+	}
+}
+
+utopia_manifesto_candidate_has_valid_ordinary_overlord = {
+	is_subject = yes
+	overlord = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		NOT = { has_country_flag = death_country }
+		NOT = { has_war_with = PREV }
+	}
+}
+
+utopia_manifesto_subject_candidate_is_safe = {
+	is_subject = yes
+	num_subjects < constant:utopia_manifesto_candidate_limits.subject_candidate_subject_ceiling
+	num_occupied_states < constant:utopia_manifesto_candidate_limits.subject_occupation_count
+	has_civil_war = no
+	utopia_manifesto_candidate_capital_is_secure = yes
+	utopia_manifesto_candidate_has_valid_ordinary_overlord = yes
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { utopia_manifesto_candidate_has_protected_package = yes }
+}
+
+utopia_manifesto_candidate_passes_absolute_automatic_gates = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	OR = {
+		has_focus_tree = generic_focus
+		utopia_manifesto_candidate_has_approved_light_tree = yes
+	}
+	NOT = { utopia_manifesto_candidate_is_dominant_faction_leader = yes }
+	has_capitulated = no
+	has_civil_war = no
+	has_offensive_war = no
+	utopia_manifesto_candidate_capital_is_secure = yes
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { utopia_manifesto_candidate_has_protected_package = yes }
+	NOT = { utopia_manifesto_candidate_has_mature_generic_tree = yes }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	NOT = { has_country_flag = utopia_manifesto_rejected }
+	NOT = { has_country_flag = utopia_manifesto_focus_tree_loaded }
+	NOT = { num_of_factories > constant:utopia_manifesto_candidate_limits.maximum_total_factories }
+	num_subjects < constant:utopia_manifesto_candidate_limits.extensive_subject_count
+	num_occupied_states < constant:utopia_manifesto_candidate_limits.extensive_occupation_count
+	surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress
+	OR = {
+		is_subject = no
+		utopia_manifesto_subject_candidate_is_safe = yes
+	}
+}
+
+utopia_manifesto_is_class_one_candidate = {
+	is_ai = no
+	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
+}
+
+utopia_manifesto_is_class_two_candidate = {
+	is_ai = yes
+	has_focus_tree = generic_focus
+	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
+}
+
+utopia_manifesto_is_class_three_candidate = {
+	is_ai = yes
+	NOT = { has_focus_tree = generic_focus }
+	utopia_manifesto_candidate_has_approved_light_tree = yes
+	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
+}
+
+utopia_manifesto_automatic_event_is_available = {
+	any_country = {
+		OR = {
+			utopia_manifesto_is_class_one_candidate = yes
+			utopia_manifesto_is_class_two_candidate = yes
+			utopia_manifesto_is_class_three_candidate = yes
+		}
+	}
+}
+
+utopia_manifesto_manual_event_is_available = {
+	utopia_manifesto_candidate_passes_absolute_automatic_gates = yes
+}
+
+utopia_manifesto_candidate_is_weak_industrially = {
+	num_of_factories < constant:utopia_manifesto_candidate_limits.weak_factory_ceiling
+}
+
+utopia_manifesto_candidate_is_small = {
+	num_of_controlled_states < constant:utopia_manifesto_candidate_limits.small_state_ceiling
+}
+
+utopia_manifesto_candidate_has_low_research = {
+	num_researched_technologies < constant:utopia_manifesto_candidate_limits.low_research_ceiling
+}
+
+utopia_manifesto_candidate_has_weak_infrastructure = {
+	any_owned_state = {
+		infrastructure < constant:utopia_manifesto_candidate_thresholds.weak_infrastructure_average
+	}
+}
+
+utopia_manifesto_candidate_is_coastal_or_island = {
+	OR = {
+		has_country_flag = utopia_manifesto_inland_island
+		any_owned_state = { is_coastal = yes }
+	}
+}
+
+utopia_manifesto_country_has_coast = {
+	any_controlled_state = { is_coastal = yes }
+}
+
+utopia_manifesto_country_landlocked = {
+	NOT = { utopia_manifesto_country_has_coast = yes }
+}
+
+utopia_manifesto_can_select_existing_island_variant = {
+	capital_scope = {
+		is_island_state = yes
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_can_select_archipelago_network_variant = {
+	any_owned_state = {
+		count = constant:utopia_manifesto_island_project_limits.archipelago_required_states
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+		is_island_state = yes
+	}
+}
+
+utopia_manifesto_can_select_coastal_refuge_variant = {
+	any_owned_state = {
+		is_owned_and_controlled_by = PREV
+		is_core_of = PREV
+		is_coastal = yes
+	}
+}
+
+utopia_manifesto_can_select_inland_island_variant = {
+	utopia_manifesto_country_landlocked = yes
+	capital_scope = {
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_has_potential_leased_island_target = {
+	any_other_country = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		is_subject = no
+		has_capitulated = no
+		has_civil_war = no
+		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
+		NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+		NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+		OR = {
+			is_neighbor_of = ROOT
+			is_on_same_continent_as = ROOT
+		}
+		any_owned_state = {
+			is_owned_and_controlled_by = PREV
+			is_island_state = yes
+		}
+	}
+}
+
+utopia_manifesto_can_select_leased_island_variant = {
+	has_variable = utopia_manifesto_calling_maritime_and_settlement_uncommitted_severity
+	check_variable = {
+		var = utopia_manifesto_calling_maritime_and_settlement_uncommitted_severity
+		value = constant:utopia_manifesto_calling_limits.shortage_threshold
+		compare = greater_than
+	}
+	utopia_manifesto_has_potential_leased_island_target = yes
+}
+
+utopia_manifesto_has_live_migration_pressure = {
+	OR = {
+		AND = {
+			has_war = yes
+			num_occupied_states > constant:utopia_manifesto_math.zero
+		}
+		AND = {
+			OR = {
+				has_country_flag = utopia_manifesto_district_refugee_municipality
+				has_country_flag = utopia_manifesto_emergency_housing_required
+			}
+			NOT = { has_country_flag = utopia_manifesto_voluntary_migration_corridors }
+			NOT = { any_owned_state = { has_state_flag = utopia_manifesto_refugee_municipality } }
+		}
+	}
+}
+
+utopia_manifesto_has_live_housing_pressure = {
+	OR = {
+		has_country_flag = utopia_manifesto_emergency_housing_required
+		has_country_flag = utopia_manifesto_district_refugee_municipality
+	}
+	NOT = { any_owned_state = { has_state_flag = utopia_manifesto_industrial_housing_district } }
+	NOT = { any_owned_state = { has_state_flag = utopia_manifesto_refugee_municipality } }
+}
+
+utopia_manifesto_has_live_trade_pressure = {
+	OR = {
+		utopia_manifesto_country_landlocked = yes
+		has_equipment = { convoy_1 < constant:utopia_manifesto_decision_cost.convoys_medium }
+		AND = {
+			has_country_flag = utopia_manifesto_store_foreign_support_requested
+			NOT = { has_country_flag = utopia_manifesto_second_trade_complete }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Ledger, reserve, callings, routes, and crisis
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_has_ledger = {
+	has_country_flag = utopia_manifesto_ledger_visible
+	has_variable = utopia_need
+	has_variable = utopia_plenty
+	has_variable = utopia_concord
+	has_variable = utopia_assignment
+}
+
+utopia_manifesto_need_is_resolved = {
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_two compare = less_than }
+}
+
+utopia_manifesto_need_is_pressing = {
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_three compare = greater_than_or_equals }
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_four compare = less_than }
+}
+
+utopia_manifesto_need_is_severe = {
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_four compare = greater_than_or_equals }
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_five compare = less_than }
+}
+
+utopia_manifesto_need_is_existential = {
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_five compare = greater_than_or_equals }
+}
+
+utopia_manifesto_need_is_high = {
+	check_variable = { var = utopia_need value = constant:utopia_manifesto_ledger_limits.band_four compare = greater_than_or_equals }
+}
+
+utopia_manifesto_plenty_is_low = {
+	check_variable = { var = utopia_plenty value = constant:utopia_manifesto_ledger_limits.band_three compare = less_than }
+}
+
+utopia_manifesto_plenty_is_stable = {
+	check_variable = { var = utopia_plenty value = constant:utopia_manifesto_ledger_limits.band_three compare = greater_than_or_equals }
+}
+
+utopia_manifesto_plenty_is_abundant = {
+	check_variable = { var = utopia_plenty value = constant:utopia_manifesto_ledger_limits.band_four compare = greater_than_or_equals }
+}
+
+utopia_manifesto_concord_is_cooperative = {
+	check_variable = { var = utopia_concord value = constant:utopia_manifesto_ledger_limits.band_three compare = greater_than_or_equals }
+}
+
+utopia_manifesto_concord_is_low = {
+	check_variable = { var = utopia_concord value = constant:utopia_manifesto_ledger_limits.band_three compare = less_than }
+}
+
+utopia_manifesto_concord_is_trusted = {
+	check_variable = { var = utopia_concord value = constant:utopia_manifesto_ledger_limits.band_four compare = greater_than_or_equals }
+}
+
+utopia_manifesto_assignment_is_choice_led = {
+	check_variable = { var = utopia_assignment value = constant:utopia_manifesto_ledger_limits.band_two compare = less_than }
+}
+
+utopia_manifesto_assignment_is_planned = {
+	check_variable = { var = utopia_assignment value = constant:utopia_manifesto_ledger_limits.band_four compare = greater_than_or_equals }
+}
+
+utopia_manifesto_reserve_is_secure = {
+	check_variable = { var = utopia_reserve_score value = constant:utopia_manifesto_reserve_band.band_four compare = greater_than_or_equals }
+}
+
+utopia_manifesto_reserve_is_strong = {
+	check_variable = { var = utopia_reserve_score value = constant:utopia_manifesto_reserve_band.band_five compare = greater_than_or_equals }
+}
+
+# ---------------------------------------------------------------------------
+# Monotonic decision phases and family gates
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_decision_phase_has_reached_foundations = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.foundations compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_callings = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.callings compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_reserves = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.reserves compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_districts = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.districts compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_necessary_ground = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.necessary_ground compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_league = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.league compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_route = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.route compare = greater_than_or_equals }
+}
+
+utopia_manifesto_decision_phase_has_reached_formation = {
+	has_variable = utopia_manifesto_decision_phase
+	check_variable = { var = utopia_manifesto_decision_phase value = constant:utopia_manifesto_decision_phase.formation compare = greater_than_or_equals }
+}
+
+utopia_manifesto_calling_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_calling_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_callings = yes
+}
+
+utopia_manifesto_reserve_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_reserve_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_reserves = yes
+}
+
+utopia_manifesto_district_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_district_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_districts = yes
+}
+
+# ---------------------------------------------------------------------------
+# Garden Settlement suitability and live project obligations
+# ---------------------------------------------------------------------------
+
+# State scope. All roles use engine-visible proxies: population and building
+# capacity for settlement pressure, infrastructure/rail/supply buildings for
+# transport, and the owner's live Ledger/calling state for the named deficit.
+utopia_manifesto_state_is_open_district_candidate = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	is_core_of = ROOT
+	NOT = { has_state_flag = utopia_manifesto_district_built }
+	NOT = { has_state_flag = utopia_manifesto_district_project_refused }
+	NOT = { has_state_flag = utopia_manifesto_district_build_active }
+}
+
+utopia_manifesto_state_is_suitable_for_market_garden = {
+	utopia_manifesto_state_is_open_district_candidate = yes
+	state_population_k > constant:utopia_manifesto_district_threshold.market_population_floor_k
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	infrastructure < constant:utopia_manifesto_district_threshold.market_infrastructure_ceiling
+	ROOT = {
+		OR = {
+			utopia_manifesto_need_is_high = yes
+			NOT = { utopia_manifesto_reserve_is_secure = yes }
+			has_country_flag = utopia_manifesto_calling_provisioning_shortage
+		}
+	}
+}
+
+utopia_manifesto_state_is_suitable_for_industrial_housing = {
+	utopia_manifesto_state_is_open_district_candidate = yes
+	state_population_k > constant:utopia_manifesto_district_threshold.housing_population_floor_k
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	OR = {
+		industrial_complex > constant:utopia_manifesto_district_threshold.industry_factory_floor
+		arms_factory > constant:utopia_manifesto_district_threshold.industry_factory_floor
+	}
+	free_building_slots = {
+		building = industrial_complex
+		size > @CR_SC_UTOPIA_MANIFESTO_DISTRICT_THRESHOLD_FREE_SHARED_SLOT_FLOOR
+		include_locked = yes
+	}
+	ROOT = {
+		utopia_manifesto_has_live_housing_pressure = yes
+	}
+}
+
+utopia_manifesto_state_is_suitable_for_rail_junction = {
+	utopia_manifesto_state_is_open_district_candidate = yes
+	state_population_k > constant:utopia_manifesto_district_threshold.rail_population_floor_k
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	infrastructure < constant:utopia_manifesto_district_threshold.rail_infrastructure_ceiling
+	OR = {
+		infrastructure < constant:utopia_manifesto_district_threshold.secure_transport_floor
+		supply_node > constant:utopia_manifesto_district_threshold.industry_factory_floor
+		rail_way > constant:utopia_manifesto_district_threshold.industry_factory_floor
+	}
+	ROOT = {
+		OR = {
+			has_country_flag = utopia_manifesto_trade_pressure
+			has_country_flag = utopia_manifesto_common_transport_ground
+			has_country_flag = utopia_manifesto_calling_civic_works_shortage
+		}
+	}
+}
+
+utopia_manifesto_state_is_suitable_for_refugee_municipality = {
+	utopia_manifesto_state_is_open_district_candidate = yes
+	state_population_k > constant:utopia_manifesto_district_threshold.refugee_population_floor_k
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	free_building_slots = {
+		building = industrial_complex
+		size > @CR_SC_UTOPIA_MANIFESTO_DISTRICT_THRESHOLD_FREE_SHARED_SLOT_FLOOR
+		include_locked = yes
+	}
+	ROOT = {
+		OR = {
+			utopia_manifesto_has_live_migration_pressure = yes
+			utopia_manifesto_has_live_housing_pressure = yes
+		}
+		check_variable = { utopia_reserve_score > constant:utopia_manifesto_district_threshold.refugee_reserve_floor }
+	}
+}
+
+utopia_manifesto_state_has_any_suitable_district_role = {
+	OR = {
+		utopia_manifesto_state_is_suitable_for_market_garden = yes
+		utopia_manifesto_state_is_suitable_for_industrial_housing = yes
+		utopia_manifesto_state_is_suitable_for_rail_junction = yes
+		utopia_manifesto_state_is_suitable_for_refugee_municipality = yes
+	}
+}
+
+# State scope. These three obligations are recorded at project start and then
+# re-evaluated from live population, slots, infrastructure, stockpiles, and
+# reserves at the terminal mission tick.
+utopia_manifesto_district_housing_obligation_met = {
+	has_state_flag = utopia_manifesto_district_housing_commitment
+	OR = {
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_market_garden_active
+			state_population_k > constant:utopia_manifesto_district_threshold.market_population_floor_k
+			infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+		}
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_industrial_housing_active
+			state_population_k > constant:utopia_manifesto_district_threshold.housing_population_floor_k
+			free_building_slots = {
+				building = industrial_complex
+				size > @CR_SC_UTOPIA_MANIFESTO_DISTRICT_THRESHOLD_FREE_SHARED_SLOT_FLOOR
+				include_locked = yes
+			}
+		}
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_rail_junction_active
+			state_population_k > constant:utopia_manifesto_district_threshold.rail_population_floor_k
+		}
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_refugee_municipality_active
+			state_population_k > constant:utopia_manifesto_district_threshold.refugee_population_floor_k
+			free_building_slots = {
+				building = industrial_complex
+				size > @CR_SC_UTOPIA_MANIFESTO_DISTRICT_THRESHOLD_FREE_SHARED_SLOT_FLOOR
+				include_locked = yes
+			}
+		}
+	}
+}
+
+utopia_manifesto_district_transport_obligation_met = {
+	has_state_flag = utopia_manifesto_district_transport_commitment
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	OR = {
+		AND = {
+			OR = {
+				has_state_flag = utopia_manifesto_district_role_market_garden_active
+				has_state_flag = utopia_manifesto_district_role_rail_junction_active
+				has_state_flag = utopia_manifesto_district_role_refugee_municipality_active
+			}
+			ROOT = { has_equipment = { train_equipment > constant:utopia_manifesto_district_threshold.maintenance_trains } }
+		}
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_industrial_housing_active
+			ROOT = { has_equipment = { motorized_equipment > constant:utopia_manifesto_district_threshold.maintenance_motorized } }
+		}
+	}
+}
+
+utopia_manifesto_district_role_plan_obligation_met = {
+	OR = {
+		has_state_flag = utopia_manifesto_penal_works_method_active
+		AND = {
+			has_state_flag = utopia_manifesto_district_role_plan_commitment
+			OR = {
+				AND = {
+					has_state_flag = utopia_manifesto_district_role_market_garden_active
+					ROOT = {
+						has_equipment = { support_equipment > constant:utopia_manifesto_district_threshold.maintenance_support }
+						check_variable = { utopia_reserve_score > constant:utopia_manifesto_district_threshold.refugee_reserve_floor }
+					}
+				}
+				AND = {
+					has_state_flag = utopia_manifesto_district_role_industrial_housing_active
+					OR = {
+						industrial_complex > constant:utopia_manifesto_district_threshold.industry_factory_floor
+						arms_factory > constant:utopia_manifesto_district_threshold.industry_factory_floor
+					}
+					ROOT = { has_equipment = { support_equipment > constant:utopia_manifesto_district_threshold.maintenance_support } }
+				}
+				AND = {
+					has_state_flag = utopia_manifesto_district_role_rail_junction_active
+					ROOT = {
+						has_equipment = { support_equipment > constant:utopia_manifesto_district_threshold.maintenance_support }
+						has_equipment = { train_equipment > constant:utopia_manifesto_district_threshold.maintenance_trains }
+					}
+				}
+				AND = {
+					has_state_flag = utopia_manifesto_district_role_refugee_municipality_active
+					ROOT = {
+						has_equipment = { support_equipment > constant:utopia_manifesto_district_threshold.maintenance_support }
+						check_variable = { utopia_reserve_score > constant:utopia_manifesto_district_threshold.refugee_reserve_floor }
+					}
+				}
+			}
+		}
+	}
+}
+
+utopia_manifesto_district_project_obligations_met = {
+	is_controlled_by = ROOT
+	is_core_of = ROOT
+	has_state_flag = utopia_manifesto_district_build_active
+	utopia_manifesto_district_housing_obligation_met = yes
+	utopia_manifesto_district_transport_obligation_met = yes
+	utopia_manifesto_district_role_plan_obligation_met = yes
+}
+
+utopia_manifesto_district_charter_can_complete = {
+	is_controlled_by = ROOT
+	has_state_flag = utopia_manifesto_district_built
+	has_state_flag = utopia_manifesto_district_charter_active
+	NOT = { has_state_flag = utopia_manifesto_district_project_refused }
+	ROOT = { utopia_manifesto_has_resolved_route = yes }
+}
+
+utopia_manifesto_state_is_valid_active_penal_district = {
+	is_controlled_by = ROOT
+	is_core_of = ROOT
+	has_state_flag = utopia_manifesto_district_build_active
+	NOT = { has_state_flag = utopia_manifesto_district_project_refused }
+	NOT = { has_state_flag = utopia_manifesto_penal_works_method_active }
+	infrastructure > constant:utopia_manifesto_district_threshold.viable_infrastructure_floor
+	ROOT = {
+		utopia_manifesto_is_closed_island_route = yes
+		has_country_flag = utopia_manifesto_penal_works
+		has_country_flag = utopia_manifesto_district_build_active
+		NOT = { has_country_flag = utopia_manifesto_penal_works_method_active }
+		NOT = { has_country_flag = utopia_manifesto_assignment_revolt }
+		NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		check_variable = {
+			var = utopia_reserve_score
+			value = constant:utopia_manifesto_penal_method.reserve_start_floor
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+utopia_manifesto_necessary_ground_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_necessary_ground_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_necessary_ground = yes
+}
+
+utopia_manifesto_stewardship_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_stewardship_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_necessary_ground = yes
+}
+
+utopia_manifesto_league_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_league_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_league = yes
+}
+
+utopia_manifesto_formation_decisions_are_unlocked = {
+	has_country_flag = utopia_manifesto_formation_decisions_unlocked
+	utopia_manifesto_decision_phase_has_reached_formation = yes
+}
+
+utopia_manifesto_has_unresolved_route = {
+	OR = {
+		NOT = { has_variable = utopia_manifesto_route }
+		check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.unresolved }
+	}
+}
+
+utopia_manifesto_is_consent_of_households_route = {
+	check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.consent_of_households }
+}
+
+utopia_manifesto_is_common_table_route = {
+	check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.common_table }
+}
+
+utopia_manifesto_is_guardians_of_measure_route = {
+	check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.guardians_of_measure }
+}
+
+utopia_manifesto_is_closed_island_route = {
+	check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.closed_island }
+}
+
+utopia_manifesto_is_joke_understood_route = {
+	check_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.joke_understood }
+}
+
+utopia_manifesto_has_resolved_route = {
+	OR = {
+		utopia_manifesto_is_consent_of_households_route = yes
+		utopia_manifesto_is_common_table_route = yes
+		utopia_manifesto_is_guardians_of_measure_route = yes
+		utopia_manifesto_is_closed_island_route = yes
+		utopia_manifesto_is_joke_understood_route = yes
+	}
+}
+
+utopia_manifesto_has_active_constitutional_crisis = {
+	has_country_flag = utopia_manifesto_constitutional_crisis
+}
+
+utopia_manifesto_has_active_calling_shortage = {
+	OR = {
+		has_country_flag = utopia_manifesto_calling_provisioning_shortage
+		has_country_flag = utopia_manifesto_calling_workshops_shortage
+		has_country_flag = utopia_manifesto_calling_civic_works_shortage
+		has_country_flag = utopia_manifesto_calling_learning_and_care_shortage
+		has_country_flag = utopia_manifesto_calling_maritime_and_settlement_shortage
+		has_country_flag = utopia_manifesto_calling_defense_and_watches_shortage
+	}
+}
+
+utopia_manifesto_selected_calling_has_shortage = {
+	OR = {
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.provisioning }
+			has_country_flag = utopia_manifesto_calling_provisioning_shortage
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.workshops }
+			has_country_flag = utopia_manifesto_calling_workshops_shortage
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.civic_works }
+			has_country_flag = utopia_manifesto_calling_civic_works_shortage
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.learning_and_care }
+			has_country_flag = utopia_manifesto_calling_learning_and_care_shortage
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+			has_country_flag = utopia_manifesto_calling_maritime_and_settlement_shortage
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.defense_and_watches }
+			has_country_flag = utopia_manifesto_calling_defense_and_watches_shortage
+		}
+	}
+}
+
+utopia_manifesto_selected_calling_is_ready_for_method = {
+	utopia_manifesto_selected_calling_has_shortage = yes
+	OR = {
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.provisioning }
+			NOT = { has_country_flag = utopia_manifesto_calling_provisioning_method_recent }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.workshops }
+			NOT = { has_country_flag = utopia_manifesto_calling_workshops_method_recent }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.civic_works }
+			NOT = { has_country_flag = utopia_manifesto_calling_civic_works_method_recent }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.learning_and_care }
+			NOT = { has_country_flag = utopia_manifesto_calling_learning_and_care_method_recent }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+			NOT = { has_country_flag = utopia_manifesto_calling_maritime_and_settlement_method_recent }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_selected_calling = constant:utopia_manifesto_calling_family.defense_and_watches }
+			NOT = { has_country_flag = utopia_manifesto_calling_defense_and_watches_method_recent }
+		}
+	}
+}
+
+utopia_manifesto_calling_sustainment_conditions_met = {
+	utopia_manifesto_has_ledger = yes
+	OR = {
+		utopia_manifesto_is_consent_of_households_route = yes
+		utopia_manifesto_is_joke_understood_route = yes
+	}
+	NOT = { utopia_manifesto_has_active_calling_shortage = yes }
+	check_variable = {
+		var = utopia_assignment
+		value = constant:utopia_manifesto_formation_limits.voluntary_assignment_maximum
+		compare = less_than
+	}
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_formation_limits.voluntary_concord
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_plenty
+		value = constant:utopia_manifesto_formation_limits.council_plenty
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = utopia_manifesto_achievement_disqualifier_assignment_overreach }
+}
+
+utopia_manifesto_can_adopt_short_workday = {
+	utopia_manifesto_has_ledger = yes
+	utopia_manifesto_plenty_is_stable = yes
+	NOT = { utopia_manifesto_need_is_high = yes }
+	check_variable = { var = utopia_assignment value = constant:utopia_manifesto_ledger_limits.band_five compare = less_than }
+}
+
+utopia_manifesto_can_secure_two_year_reserve = {
+	has_country_flag = utopia_manifesto_reserve_decisions_unlocked
+	utopia_manifesto_plenty_is_abundant = yes
+	check_variable = { var = utopia_reserve_score value = constant:utopia_manifesto_reserve_band.band_five compare = greater_than_or_equals }
+}
+
+utopia_manifesto_has_exportable_surplus = {
+	check_variable = { var = utopia_plenty value = constant:utopia_manifesto_ledger_limits.band_five compare = greater_than_or_equals }
+	utopia_manifesto_reserve_is_strong = yes
+}
+
+utopia_manifesto_existing_island_project_proof_met = {
+	has_country_flag = utopia_manifesto_geography_existing_island
+	check_variable = {
+		var = utopia_manifesto_island_project_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_primary_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_states
+		is_capital = yes
+		is_island_state = yes
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_archipelago_project_is_valid = {
+	has_country_flag = utopia_manifesto_geography_archipelago_network
+	check_variable = {
+		var = utopia_manifesto_island_project_states^num
+		value = constant:utopia_manifesto_island_project_limits.archipelago_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_primary_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_states
+		is_island_state = yes
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_archipelago_network_project_proof_met = {
+	utopia_manifesto_archipelago_project_is_valid = yes
+	check_variable = {
+		var = utopia_manifesto_archipelago_project_state_count
+		value = constant:utopia_manifesto_island_project_limits.archipelago_required_states
+		compare = equals
+	}
+}
+
+utopia_manifesto_coastal_refuge_project_proof_met = {
+	has_country_flag = utopia_manifesto_geography_coastal_island
+	check_variable = {
+		var = utopia_manifesto_island_project_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_primary_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_states
+		is_coastal = yes
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_inland_island_project_proof_met = {
+	has_country_flag = utopia_manifesto_geography_inland_island
+	check_variable = {
+		var = utopia_manifesto_island_project_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_primary_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_states
+		is_capital = yes
+		is_owned_and_controlled_by = ROOT
+		is_core_of = ROOT
+	}
+}
+
+utopia_manifesto_island_project_lease_is_valid = {
+	has_country_flag = utopia_manifesto_geography_leased_island
+	has_country_flag = utopia_manifesto_island_project_lease_active
+	check_variable = {
+		var = utopia_manifesto_island_project_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_primary_states^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_lessor_targets^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_states
+		is_island_state = yes
+		is_controlled_by = ROOT
+		owner = {
+			has_country_flag = utopia_manifesto_island_project_lessor
+			is_in_array = { array = utopia_manifesto_island_project_lessor_founders value = ROOT }
+		}
+	}
+}
+
+# Lessor ROOT, founder FROM. A renewal popup belongs to this exact lease pair
+# only while both reservation directions, the live lease relationship, and the
+# founder's single recorded lessor still agree. Invalidation deliberately keeps
+# the slot reserved while making the old popup inert.
+utopia_manifesto_has_live_island_lease_renewal_request = {
+	exists = yes
+	has_country_flag = utopia_manifesto_island_project_lessor
+	is_in_array = { array = utopia_manifesto_island_project_lessor_founders value = FROM }
+	is_in_array = { array = utopia_manifesto_island_lease_renewal_pending_founders value = FROM }
+	NOT = { is_in_array = { array = utopia_manifesto_island_lease_renewal_invalidated_founders value = FROM } }
+	NOT = { has_war_with = FROM }
+	FROM = {
+		exists = yes
+		has_country_flag = utopia_manifesto_geography_leased_island
+		has_country_flag = utopia_manifesto_island_project_lease_active
+		is_in_array = { array = utopia_manifesto_island_project_lessor_targets value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_lease_renewal_pending_targets value = ROOT }
+		check_variable = {
+			var = utopia_manifesto_island_project_lessor_targets^num
+			value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+			compare = equals
+		}
+		check_variable = {
+			var = utopia_manifesto_island_project_lessor_id
+			value = ROOT.id
+			compare = equals
+		}
+	}
+}
+
+# Founder ROOT, lessor FROM. This is the reverse-scope response bridge used by
+# .214 after .213 has notified the founder. It mirrors the canonical request
+# trigger because event ROOT/FROM cannot be swapped inside a scripted trigger.
+utopia_manifesto_has_live_island_lease_renewal_response = {
+	exists = yes
+	has_country_flag = utopia_manifesto_geography_leased_island
+	has_country_flag = utopia_manifesto_island_project_lease_active
+	is_in_array = { array = utopia_manifesto_island_project_lessor_targets value = FROM }
+	is_in_array = { array = utopia_manifesto_island_lease_renewal_pending_targets value = FROM }
+	check_variable = {
+		var = utopia_manifesto_island_project_lessor_targets^num
+		value = constant:utopia_manifesto_island_project_limits.single_site_required_states
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_island_project_lessor_id
+		value = FROM.id
+		compare = equals
+	}
+	FROM = {
+		exists = yes
+		has_country_flag = utopia_manifesto_island_project_lessor
+		is_in_array = { array = utopia_manifesto_island_project_lessor_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_lease_renewal_pending_founders value = ROOT }
+		NOT = { is_in_array = { array = utopia_manifesto_island_lease_renewal_invalidated_founders value = ROOT } }
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+utopia_manifesto_leased_island_project_proof_met = {
+	utopia_manifesto_island_project_lease_is_valid = yes
+	all_of_scopes = {
+		array = utopia_manifesto_island_project_lessor_targets
+		exists = yes
+		has_country_flag = utopia_manifesto_island_project_lessor
+		is_in_array = { array = utopia_manifesto_island_project_lessor_founders value = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+utopia_manifesto_selected_island_project_is_valid = {
+	OR = {
+		utopia_manifesto_existing_island_project_proof_met = yes
+		utopia_manifesto_archipelago_network_project_proof_met = yes
+		utopia_manifesto_leased_island_project_proof_met = yes
+		utopia_manifesto_coastal_refuge_project_proof_met = yes
+		utopia_manifesto_inland_island_project_proof_met = yes
+	}
+}
+
+utopia_manifesto_selected_island_variant_site_is_ready = {
+	has_country_flag = utopia_manifesto_island_site_secured
+	utopia_manifesto_selected_island_project_is_valid = yes
+}
+
+utopia_manifesto_archipelago_needs_project_site = {
+	has_country_flag = utopia_manifesto_geography_archipelago_network
+	OR = {
+		NOT = { has_variable = utopia_manifesto_archipelago_project_state_count }
+		check_variable = {
+			var = utopia_manifesto_archipelago_project_state_count
+			value = constant:utopia_manifesto_island_project_limits.archipelago_required_states
+			compare = less_than
+		}
+	}
+}
+
+utopia_manifesto_island_project_can_be_replanned = {
+	has_country_flag = utopia_manifesto_island_variant_selected
+	NOT = { has_country_flag = utopia_manifesto_provision_ring_complete }
+	NOT = { has_country_flag = utopia_manifesto_island_material_proof }
+	NOT = { has_country_flag = utopia_manifesto_island_project_stage_active }
+	NOT = { has_country_flag = utopia_manifesto_archipelago_site_mission_active }
+	NOT = { has_country_flag = utopia_manifesto_make_island_mission_active }
+	NOT = { has_country_flag = utopia_manifesto_case_response_active }
+	NOT = { has_country_flag = utopia_manifesto_commonwealth_formed }
+}
+
+utopia_manifesto_island_project_proof_met = {
+	has_country_flag = utopia_manifesto_island_project_built
+	has_country_flag = utopia_manifesto_island_material_proof
+	has_country_flag = utopia_manifesto_provision_ring_complete
+	OR = {
+		has_country_flag = utopia_manifesto_common_harbor_complete
+		has_country_flag = utopia_manifesto_inland_terminal_complete
+	}
+	OR = {
+		has_country_flag = utopia_manifesto_island_open_fortification_complete
+		has_country_flag = utopia_manifesto_island_gates_closed
+	}
+	utopia_manifesto_selected_island_variant_site_is_ready = yes
+	utopia_manifesto_candidate_capital_is_secure = yes
+	utopia_manifesto_reserve_is_secure = yes
+	NOT = { has_country_flag = utopia_manifesto_island_project_stranded }
+}
+
+utopia_manifesto_has_valid_auxiliary_source = {
+	OR = {
+		has_country_flag = utopia_manifesto_auxiliary_source_valid
+		has_country_flag = utopia_manifesto_case_domestic_review_proven
+	}
+}
+
+utopia_manifesto_has_valid_escalation_case = {
+	utopia_manifesto_active_need_case_is_valid = yes
+	utopia_manifesto_case_has_offer = yes
+	check_variable = {
+		var = utopia_manifesto_case_integrity
+		value = constant:utopia_manifesto_case_limits.stewardship_minimum_integrity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_case_stage
+		value = constant:utopia_manifesto_case_stage.stewardship
+		compare = less_than
+	}
+}
+
+utopia_manifesto_has_eligible_league_partner = {
+	utopia_manifesto_league_entry_requirements_met = yes
+	any_country = { utopia_manifesto_league_candidate_is_valid = yes }
+}
+
+utopia_manifesto_has_defense_compact_partner = {
+	any_of_scopes = {
+		array = utopia_manifesto_league_members
+		exists = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+utopia_manifesto_has_meaningful_external_network = {
+	utopia_manifesto_has_external_network = yes
+}
+
+utopia_manifesto_can_take_coercive_need_fork = {
+	utopia_manifesto_has_valid_escalation_case = yes
+	utopia_manifesto_need_is_high = yes
+	OR = {
+		utopia_manifesto_assignment_is_planned = yes
+		utopia_manifesto_is_guardians_of_measure_route = yes
+		utopia_manifesto_is_closed_island_route = yes
+	}
+	NOT = { has_country_flag = utopia_manifesto_stewardship_proven }
+}
+
+utopia_manifesto_has_resolved_first_need_case = {
+	has_country_flag = utopia_manifesto_first_external_case_resolved
+	has_variable = utopia_manifesto_first_external_case_method
+}
+
+utopia_manifesto_has_valid_associate_network = {
+	utopia_manifesto_has_external_network = yes
+	OR = {
+		check_variable = { var = utopia_manifesto_external_case_count value = constant:utopia_manifesto_league_limits.minimum_formation_network compare = greater_than_or_equals }
+		check_variable = { var = utopia_manifesto_league_member_count value = constant:utopia_manifesto_league_limits.minimum_formation_network compare = greater_than_or_equals }
+	}
+}
+
+utopia_manifesto_has_stewardship_obligation = {
+	has_country_flag = utopia_manifesto_stewardship_active
+	utopia_manifesto_active_need_case_is_valid = yes
+}
+
+utopia_manifesto_stewardship_charter_period_met = {
+	utopia_manifesto_has_stewardship_obligation = yes
+	has_country_flag = utopia_manifesto_stewardship_charter_recorded
+	check_variable = { var = utopia_manifesto_stewardship_provisions value = constant:utopia_manifesto_case_limits.offer_required compare = greater_than_or_equals }
+}
+
+utopia_manifesto_stewardship_status_vote_ready = {
+	utopia_manifesto_stewardship_charter_period_met = yes
+	check_variable = {
+		var = utopia_manifesto_stewardship_checks_passed
+		value = constant:utopia_manifesto_case_limits.stewardship_required_checks
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_can_reveal_joke_understood = {
+	OR = {
+		utopia_manifesto_has_unresolved_route = yes
+		AND = {
+			has_country_flag = utopia_manifesto_constitutional_crisis
+			OR = {
+				utopia_manifesto_is_consent_of_households_route = yes
+				utopia_manifesto_is_common_table_route = yes
+				utopia_manifesto_is_guardians_of_measure_route = yes
+			}
+			NOT = { has_country_flag = utopia_manifesto_exact_obedience_imposed }
+			NOT = { has_country_flag = utopia_manifesto_coercive_conduct_used }
+		}
+	}
+	utopia_manifesto_assignment_is_choice_led = yes
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_formation_limits.practical_concord
+		compare = greater_than_or_equals
+	}
+	has_country_flag = utopia_manifesto_public_debate_proven
+	has_country_flag = utopia_manifesto_public_education_proven
+	has_country_flag = utopia_manifesto_criticism_permitted
+	NOT = { has_country_flag = utopia_manifesto_penal_labour_used }
+	NOT = { has_country_flag = utopia_manifesto_unjustified_enforced_case }
+	NOT = { has_country_flag = utopia_manifesto_emergency_levy_recent }
+	check_variable = {
+		var = utopia_manifesto_emergency_levy_extensions
+		value = constant:utopia_manifesto_calling_limits.emergency_levy_extension_limit
+		compare = less_than
+	}
+}
+
+# ---------------------------------------------------------------------------
+# State-aware route preferences used by the five mutually exclusive openers
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_has_found_manifesto_idea_stage = {
+	OR = {
+		has_idea = utopia_manifesto_found_manifesto
+		has_idea = utopia_manifesto_found_manifesto_mitigated
+		has_idea = utopia_manifesto_found_manifesto_failure
+	}
+}
+
+utopia_manifesto_has_unmeasured_country_idea_stage = {
+	OR = {
+		has_idea = utopia_manifesto_unmeasured_country
+		has_idea = utopia_manifesto_unmeasured_country_mitigated
+		has_idea = utopia_manifesto_unmeasured_country_final
+		has_idea = utopia_manifesto_unmeasured_country_failure
+	}
+}
+
+utopia_manifesto_has_inherited_order_idea_stage = {
+	OR = {
+		has_idea = utopia_manifesto_inherited_order
+		has_idea = utopia_manifesto_inherited_order_mitigated
+		has_idea = utopia_manifesto_household_land_trusts
+		has_idea = utopia_manifesto_common_ownership
+		has_idea = utopia_manifesto_measured_tenure
+		has_idea = utopia_manifesto_state_allotment
+		has_idea = utopia_manifesto_mixed_property_order
+		has_idea = utopia_manifesto_inherited_order_failure
+	}
+}
+
+utopia_manifesto_has_common_store_idea_stage = {
+	OR = {
+		has_idea = utopia_manifesto_common_store_network
+		has_idea = utopia_manifesto_common_store_network_mitigated
+		has_idea = utopia_manifesto_common_store_network_failure
+		has_idea = utopia_manifesto_common_store_network_final
+	}
+}
+
+utopia_manifesto_has_garden_district_stage = {
+	OR = {
+		has_country_flag = utopia_manifesto_garden_district_stage_founding
+		has_country_flag = utopia_manifesto_garden_district_stage_mitigated
+		has_country_flag = utopia_manifesto_garden_district_stage_failure
+		has_country_flag = utopia_manifesto_garden_district_stage_final
+	}
+}
+
+utopia_manifesto_has_stewardship_burden_idea_stage = {
+	OR = {
+		has_idea = utopia_manifesto_stewardship_burden
+		has_idea = utopia_manifesto_stewardship_burden_mitigated
+		has_idea = utopia_manifesto_stewardship_burden_failure
+		has_idea = utopia_manifesto_stewardship_burden_final
+	}
+}
+
+utopia_manifesto_ai_prefers_consent_route = {
+	OR = {
+		AND = {
+			has_government = democratic
+			check_variable = { var = stability value = constant:utopia_manifesto_route_ai_threshold.high_stability compare = greater_than }
+		}
+		AND = {
+			utopia_manifesto_concord_is_trusted = yes
+			NOT = { utopia_manifesto_need_is_high = yes }
+		}
+		AND = {
+			NOT = { has_war = yes }
+			any_neighbor_country = {
+				uses_normal_civilian_systems = yes
+				NOT = { has_war_with = ROOT }
+				num_of_factories < constant:utopia_manifesto_candidate_limits.weak_factory_ceiling
+			}
+		}
+	}
+}
+
+utopia_manifesto_ai_avoids_consent_route = {
+	OR = {
+		utopia_manifesto_can_reveal_joke_understood = yes
+		AND = {
+			has_war = yes
+			surrender_progress > constant:utopia_manifesto_route_ai_threshold.severe_surrender_pressure
+		}
+		has_country_flag = utopia_manifesto_calling_sustainment_failed
+		AND = {
+			NOT = { has_government = democratic }
+			NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+		}
+	}
+}
+
+utopia_manifesto_ai_prefers_common_table_route = {
+	OR = {
+		has_government = communism
+		AND = {
+			num_of_factories > constant:utopia_manifesto_route_ai_capacity.minimum_factories
+			OR = {
+				any_owned_state = { has_state_flag = utopia_manifesto_worker_council_established }
+				has_country_flag = utopia_manifesto_conduct_property_seizure
+			}
+		}
+		any_neighbor_country = { has_government = communism }
+		AND = {
+			has_country_flag = utopia_manifesto_constitutional_crisis
+			has_country_flag = utopia_manifesto_household_councils_proven
+		}
+	}
+}
+
+utopia_manifesto_ai_avoids_common_table_route = {
+	OR = {
+		AND = {
+			num_of_factories < constant:utopia_manifesto_route_ai_capacity.minimum_factories
+			NOT = { has_country_flag = utopia_manifesto_household_councils_proven }
+		}
+		AND = {
+			NOT = { any_neighbor_country = { uses_normal_civilian_systems = yes NOT = { has_war_with = ROOT } } }
+			NOT = { has_country_flag = utopia_manifesto_first_associate_recognized }
+		}
+		has_government = fascism
+	}
+}
+
+utopia_manifesto_ai_prefers_guardians_route = {
+	OR = {
+		has_government = neutrality
+		NOT = { utopia_manifesto_plenty_is_stable = yes }
+		utopia_manifesto_candidate_has_weak_infrastructure = yes
+		AND = {
+			num_researched_technologies > constant:utopia_manifesto_route_ai_capacity.technical_research_floor
+			NOT = { utopia_manifesto_country_has_coast = yes }
+		}
+		AND = {
+			utopia_manifesto_need_is_high = yes
+			utopia_manifesto_concord_is_cooperative = yes
+		}
+	}
+}
+
+utopia_manifesto_ai_avoids_guardians_route = {
+	OR = {
+		AND = {
+			utopia_manifesto_assignment_is_choice_led = yes
+			utopia_manifesto_concord_is_trusted = yes
+		}
+		AND = {
+			num_of_factories < constant:utopia_manifesto_route_ai_capacity.minimum_factories
+			num_researched_technologies < constant:utopia_manifesto_route_ai_capacity.technical_research_floor
+			NOT = { has_government = neutrality }
+			NOT = { utopia_manifesto_candidate_has_weak_infrastructure = yes }
+		}
+		AND = {
+			has_government = fascism
+			has_war = yes
+		}
+		has_country_flag = utopia_manifesto_conduct_council_deadlock
+	}
+}
+
+utopia_manifesto_ai_prefers_closed_island_route = {
+	OR = {
+		has_country_flag = utopia_manifesto_prefire_perfect_extreme_interpretations
+		has_government = fascism
+		AND = {
+			has_war = yes
+			OR = {
+				utopia_manifesto_need_is_high = yes
+				NOT = { utopia_manifesto_concord_is_cooperative = yes }
+				surrender_progress > constant:utopia_manifesto_route_ai_threshold.severe_surrender_pressure
+			}
+		}
+		AND = {
+			utopia_manifesto_candidate_is_small = yes
+			utopia_manifesto_candidate_is_coastal_or_island = yes
+		}
+		has_country_flag = utopia_manifesto_emergency_levy_recent
+	}
+}
+
+utopia_manifesto_ai_avoids_closed_island_route = {
+	NOT = { has_country_flag = utopia_manifesto_prefire_perfect_extreme_interpretations }
+	OR = {
+		AND = {
+			has_government = democratic
+			NOT = { has_war = yes }
+			utopia_manifesto_concord_is_trusted = yes
+			utopia_manifesto_assignment_is_choice_led = yes
+		}
+		AND = {
+			has_idea = free_trade
+			NOT = { utopia_manifesto_can_secure_two_year_reserve = yes }
+		}
+		AND = {
+			NOT = { utopia_manifesto_candidate_is_small = yes }
+			NOT = { utopia_manifesto_country_has_coast = yes }
+		}
+	}
+}
+
+utopia_manifesto_ai_prefers_joke_understood_route = {
+	utopia_manifesto_can_reveal_joke_understood = yes
+	OR = {
+		AND = {
+			num_researched_technologies > constant:utopia_manifesto_route_ai_capacity.technical_research_floor
+			utopia_manifesto_assignment_is_choice_led = yes
+			utopia_manifesto_concord_is_trusted = yes
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_public_debate_proven
+			has_country_flag = utopia_manifesto_criticism_permitted
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_constitutional_crisis
+			OR = {
+				has_country_flag = utopia_manifesto_store_project_failed
+				has_country_flag = utopia_manifesto_assignment_revolt
+				any_owned_state = { has_state_flag = utopia_manifesto_district_project_refused }
+				has_country_flag = utopia_manifesto_calling_sustainment_failed
+			}
+		}
+	}
+}
+
+utopia_manifesto_ai_avoids_joke_understood_route = {
+	OR = {
+		has_country_flag = utopia_manifesto_conduct_censorship
+		has_country_flag = utopia_manifesto_penal_labour_used
+		has_country_flag = utopia_manifesto_unjustified_enforced_case
+		has_country_flag = utopia_manifesto_emergency_levy_recent
+		has_offensive_war = yes
+		NOT = { utopia_manifesto_assignment_is_choice_led = yes }
+		NOT = { has_country_flag = utopia_manifesto_public_debate_proven }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Target selection and Necessary Ground
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_has_any_case_deficit = {
+	OR = {
+		check_variable = { var = utopia_manifesto_calling_provisioning_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		check_variable = { var = utopia_manifesto_calling_workshops_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		check_variable = { var = utopia_manifesto_calling_civic_works_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		check_variable = { var = utopia_manifesto_calling_learning_and_care_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		check_variable = { var = utopia_manifesto_calling_maritime_and_settlement_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		check_variable = { var = utopia_manifesto_calling_defense_and_watches_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+	}
+}
+
+utopia_manifesto_case_family_has_live_deficit = {
+	OR = {
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.provisioning }
+			check_variable = { var = utopia_manifesto_calling_provisioning_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.workshops }
+			check_variable = { var = utopia_manifesto_calling_workshops_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.civic_works }
+			check_variable = { var = utopia_manifesto_calling_civic_works_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.learning_and_care }
+			check_variable = { var = utopia_manifesto_calling_learning_and_care_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+			check_variable = { var = utopia_manifesto_calling_maritime_and_settlement_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+		AND = {
+			check_variable = { utopia_manifesto_case_family = constant:utopia_manifesto_calling_family.defense_and_watches }
+			check_variable = { var = utopia_manifesto_calling_defense_and_watches_uncommitted_severity value = constant:utopia_manifesto_calling_limits.shortage_threshold compare = greater_than }
+		}
+	}
+}
+
+utopia_manifesto_state_supports_port_access_case = {
+	is_coastal = yes
+	naval_base > constant:utopia_manifesto_case_limits.port_level_floor
+	ROOT = {
+		OR = {
+			NOT = {
+				any_owned_state = {
+					is_coastal = yes
+					naval_base > constant:utopia_manifesto_case_limits.port_level_floor
+				}
+			}
+			check_variable = {
+				var = utopia_manifesto_calling_maritime_and_settlement_uncommitted_severity
+				value = constant:utopia_manifesto_calling_limits.critical_threshold
+				compare = greater_than
+			}
+		}
+	}
+}
+
+utopia_manifesto_state_supports_defensive_corridor_case = {
+	any_neighbor_state = { is_owned_by = ROOT }
+	OR = {
+		infrastructure > constant:utopia_manifesto_case_limits.corridor_infrastructure_floor
+		rail_way > constant:utopia_manifesto_case_limits.relevant_building_floor
+		supply_node > constant:utopia_manifesto_case_limits.relevant_building_floor
+	}
+}
+
+utopia_manifesto_state_supports_essential_resource_case = {
+	OR = {
+		AND = {
+			ROOT = { has_resources_in_country = { resource = oil amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = oil amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = aluminium amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = aluminium amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = rubber amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = rubber amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = tungsten amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = tungsten amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = steel amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = steel amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = chromium amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = chromium amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+		AND = {
+			ROOT = { has_resources_in_country = { resource = coal amount < @CR_SC_UTOPIA_MANIFESTO_MATH_ONE } }
+			has_resources_amount = { resource = coal amount > @CR_SC_UTOPIA_MANIFESTO_CASE_LIMITS_RELEVANT_RESOURCE_FLOOR }
+		}
+	}
+}
+
+utopia_manifesto_state_supports_settlement_and_housing_case = {
+	state_population_k > constant:utopia_manifesto_case_limits.settlement_population_floor_k
+	OR = {
+		infrastructure > constant:utopia_manifesto_case_limits.relevant_infrastructure_floor
+		industrial_complex > constant:utopia_manifesto_case_limits.relevant_building_floor
+		is_capital = yes
+	}
+}
+
+utopia_manifesto_state_supports_island_or_capital_refuge_case = {
+	ROOT = {
+		OR = {
+			has_country_flag = utopia_manifesto_island_variant_choice_open
+			has_country_flag = utopia_manifesto_island_variant_selected
+		}
+	}
+	is_coastal = yes
+	OR = {
+		is_island_state = yes
+		is_capital = yes
+	}
+}
+
+utopia_manifesto_state_supports_island_project_lease_case = {
+	ROOT = {
+		has_country_flag = utopia_manifesto_leased_island_plan
+		has_country_flag = utopia_manifesto_leased_island_case_required
+	}
+	is_island_state = yes
+}
+
+utopia_manifesto_state_supports_reconstruction_zone_case = {
+	state_population_k > constant:utopia_manifesto_case_limits.relevant_population_floor_k
+	OR = {
+		infrastructure < constant:utopia_manifesto_case_limits.reconstruction_infrastructure_ceiling
+		has_state_flag = railway_damaged_flag
+		has_resistance = yes
+		owner = { has_damaged_buildings = yes }
+	}
+}
+
+utopia_manifesto_state_supports_prepared_case = {
+	OR = {
+		AND = {
+			ROOT = { has_country_flag = utopia_manifesto_leased_island_case_required }
+			utopia_manifesto_state_supports_island_project_lease_case = yes
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.provisioning }
+			OR = {
+				utopia_manifesto_state_supports_essential_resource_case = yes
+				utopia_manifesto_state_supports_settlement_and_housing_case = yes
+				utopia_manifesto_state_supports_reconstruction_zone_case = yes
+			}
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.workshops }
+			OR = {
+				utopia_manifesto_state_supports_essential_resource_case = yes
+				utopia_manifesto_state_supports_reconstruction_zone_case = yes
+			}
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.civic_works }
+			OR = {
+				utopia_manifesto_state_supports_defensive_corridor_case = yes
+				utopia_manifesto_state_supports_reconstruction_zone_case = yes
+			}
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.learning_and_care }
+			OR = {
+				utopia_manifesto_state_supports_settlement_and_housing_case = yes
+				utopia_manifesto_state_supports_reconstruction_zone_case = yes
+			}
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.maritime_and_settlement }
+			OR = {
+				utopia_manifesto_state_supports_island_or_capital_refuge_case = yes
+				utopia_manifesto_state_supports_port_access_case = yes
+				utopia_manifesto_state_supports_settlement_and_housing_case = yes
+			}
+		}
+		AND = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_leased_island_case_required } }
+			check_variable = { ROOT.utopia_manifesto_case_family_context = constant:utopia_manifesto_calling_family.defense_and_watches }
+			OR = {
+				utopia_manifesto_state_supports_defensive_corridor_case = yes
+				utopia_manifesto_state_supports_island_or_capital_refuge_case = yes
+			}
+		}
+	}
+}
+
+utopia_manifesto_case_state_is_relevant = {
+	OR = {
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.port_access }
+			utopia_manifesto_state_supports_port_access_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.defensive_corridor }
+			utopia_manifesto_state_supports_defensive_corridor_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+			utopia_manifesto_state_supports_essential_resource_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.settlement_and_housing }
+			utopia_manifesto_state_supports_settlement_and_housing_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_or_capital_refuge }
+			utopia_manifesto_state_supports_island_or_capital_refuge_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.reconstruction_zone }
+			utopia_manifesto_state_supports_reconstruction_zone_case = yes
+		}
+		AND = {
+			check_variable = { ROOT.utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_project_lease }
+			utopia_manifesto_state_supports_island_project_lease_case = yes
+		}
+	}
+}
+
+utopia_manifesto_case_candidate_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_subject = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+	}
+	any_owned_state = {
+		is_owned_and_controlled_by = PREV
+		utopia_manifesto_state_supports_prepared_case = yes
+	}
+}
+
+utopia_manifesto_selected_country_target_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+}
+
+utopia_manifesto_from_is_selected_country_target = {
+	has_variable = utopia_manifesto_selected_country_id
+	check_variable = {
+		var = utopia_manifesto_selected_country_targets^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_selected_country_id
+		value = FROM.id
+		compare = equals
+	}
+}
+
+utopia_manifesto_case_offer_is_live_for_target = {
+	FROM = {
+		has_country_flag = utopia_manifesto_need_case_active
+		has_country_flag = utopia_manifesto_case_response_active
+		has_variable = utopia_manifesto_case_state_id
+		has_variable = utopia_manifesto_case_method
+		check_variable = {
+			var = utopia_manifesto_selected_country_id
+			value = ROOT.id
+			compare = equals
+		}
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+utopia_manifesto_from_state_is_valid_case_state = {
+	FROM = {
+		NOT = { is_controlled_by = ROOT }
+		NOT = { is_core_of = ROOT }
+		owner = { utopia_manifesto_is_exact_active_case_target_for_root = yes }
+		controller = { utopia_manifesto_is_exact_active_case_target_for_root = yes }
+		utopia_manifesto_state_supports_prepared_case = yes
+	}
+}
+
+utopia_manifesto_is_exact_active_case_target_for_root = {
+	has_country_flag = utopia_manifesto_active_case_target
+	is_in_array = {
+		array = utopia_manifesto_case_founders
+		value = ROOT
+	}
+	check_variable = {
+		var = id
+		value = ROOT.utopia_manifesto_case_target_id
+		compare = equals
+	}
+}
+
+utopia_manifesto_active_case_target_is_live = {
+	utopia_manifesto_selected_country_target_is_valid = yes
+	utopia_manifesto_is_exact_active_case_target_for_root = yes
+	OR = {
+		NOT = { has_war_with = ROOT }
+		ROOT = { has_country_flag = utopia_manifesto_case_enforced }
+	}
+}
+
+utopia_manifesto_case_target_can_survive_state_transfer = {
+	exists = yes
+	check_variable = { num_owned_states > @CR_SC_UTOPIA_MANIFESTO_MATH_ONE }
+}
+
+utopia_manifesto_active_case_target_can_survive_state_transfer = {
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_targets
+		utopia_manifesto_active_case_target_is_live = yes
+		utopia_manifesto_case_target_can_survive_state_transfer = yes
+	}
+}
+
+utopia_manifesto_case_method_requires_state_transfer = {
+	OR = {
+		check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.purchase }
+		check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.ultimatum }
+		check_variable = { utopia_manifesto_case_method = constant:utopia_manifesto_case_method.unilateral_enforcement }
+	}
+}
+
+utopia_manifesto_active_case_has_resolved_state_possession = {
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_states
+		has_state_flag = utopia_manifesto_active_case_state
+		is_in_array = {
+			array = utopia_manifesto_case_state_founders
+			value = ROOT
+		}
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_case_state_id
+			compare = equals
+		}
+		OR = {
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+		}
+	}
+	OR = {
+		has_country_flag = utopia_manifesto_case_settlement_accepted
+		has_country_flag = utopia_manifesto_case_enforcement_war_active
+		check_variable = {
+			var = utopia_manifesto_case_stage
+			value = constant:utopia_manifesto_case_stage.stewardship
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+utopia_manifesto_active_case_state_is_live = {
+	has_state_flag = utopia_manifesto_active_case_state
+	is_in_array = {
+		array = utopia_manifesto_case_state_founders
+		value = ROOT
+	}
+	check_variable = {
+		var = id
+		value = ROOT.utopia_manifesto_case_state_id
+		compare = equals
+	}
+	OR = {
+		utopia_manifesto_case_state_is_relevant = yes
+		AND = {
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+			ROOT = {
+				OR = {
+					has_country_flag = utopia_manifesto_case_settlement_accepted
+					has_country_flag = utopia_manifesto_case_enforcement_war_active
+					check_variable = {
+						var = utopia_manifesto_case_stage
+						value = constant:utopia_manifesto_case_stage.stewardship
+						compare = greater_than_or_equals
+					}
+				}
+			}
+		}
+	}
+	owner = {
+		OR = {
+			tag = ROOT
+			utopia_manifesto_is_exact_active_case_target_for_root = yes
+		}
+	}
+	controller = {
+		OR = {
+			tag = ROOT
+			utopia_manifesto_is_exact_active_case_target_for_root = yes
+		}
+	}
+}
+
+utopia_manifesto_active_need_case_header_is_valid = {
+	has_country_flag = utopia_manifesto_need_case_active
+	has_variable = utopia_manifesto_case_target_id
+	has_variable = utopia_manifesto_case_family
+	has_variable = utopia_manifesto_case_stage
+	has_variable = utopia_manifesto_case_method
+	has_variable = utopia_manifesto_case_integrity
+	has_variable = utopia_manifesto_case_local_support
+	has_variable = utopia_manifesto_case_expiry_days
+	has_country_flag = utopia_manifesto_case_domestic_review_proven
+	check_variable = {
+		var = utopia_manifesto_active_case_targets^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_targets
+		utopia_manifesto_active_case_target_is_live = yes
+	}
+}
+
+utopia_manifesto_assessed_need_case_is_valid = {
+	utopia_manifesto_active_need_case_header_is_valid = yes
+	has_variable = utopia_manifesto_case_state_id
+	has_variable = utopia_manifesto_case_type
+	check_variable = {
+		var = utopia_manifesto_active_case_states^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_states
+		utopia_manifesto_active_case_state_is_live = yes
+	}
+}
+
+utopia_manifesto_active_need_case_is_valid = {
+	NOT = { has_country_flag = utopia_manifesto_obsolete_case_review_pending }
+	utopia_manifesto_active_need_case_header_is_valid = yes
+	OR = {
+		AND = {
+			check_variable = { utopia_manifesto_case_stage = constant:utopia_manifesto_case_stage.claim }
+			NOT = { has_variable = utopia_manifesto_case_state_id }
+			check_variable = {
+				var = utopia_manifesto_active_case_states^num
+				value = constant:utopia_manifesto_math.zero
+				compare = equals
+			}
+		}
+		utopia_manifesto_assessed_need_case_is_valid = yes
+	}
+	OR = {
+		check_variable = { var = utopia_manifesto_case_stage value = constant:utopia_manifesto_case_stage.stewardship compare = greater_than_or_equals }
+		has_country_flag = utopia_manifesto_obsolete_case_treaty_pending
+		utopia_manifesto_case_family_has_live_deficit = yes
+	}
+	OR = {
+		check_variable = { var = utopia_manifesto_case_stage value = constant:utopia_manifesto_case_stage.stewardship compare = greater_than_or_equals }
+		NOT = { utopia_manifesto_case_method_requires_state_transfer = yes }
+		utopia_manifesto_active_case_target_can_survive_state_transfer = yes
+		utopia_manifesto_active_case_has_resolved_state_possession = yes
+	}
+}
+
+# The ordinary case gate deliberately fails when its recorded deficit or state
+# relevance disappears. This narrower review gate preserves the exact target,
+# state, family, method, integrity, and local-support record long enough for the
+# public renunciation choice without restoring any enforcement right.
+utopia_manifesto_obsolete_case_review_is_live = {
+	has_country_flag = utopia_manifesto_obsolete_case_review_pending
+	has_country_flag = utopia_manifesto_need_case_active
+	utopia_manifesto_active_need_case_header_is_valid = yes
+}
+
+utopia_manifesto_obsolete_case_can_continue = {
+	utopia_manifesto_obsolete_case_review_is_live = yes
+	utopia_manifesto_case_family_has_live_deficit = yes
+	NOT = { has_country_flag = utopia_manifesto_case_enforcement_war_active }
+	OR = {
+		AND = {
+			NOT = { has_variable = utopia_manifesto_case_state_id }
+			check_variable = {
+				var = utopia_manifesto_active_case_states^num
+				value = constant:utopia_manifesto_math.zero
+				compare = equals
+			}
+		}
+		utopia_manifesto_assessed_need_case_is_valid = yes
+	}
+}
+
+utopia_manifesto_obsolete_case_can_convert_to_limited_treaty = {
+	utopia_manifesto_obsolete_case_review_is_live = yes
+	utopia_manifesto_assessed_need_case_is_valid = yes
+	NOT = { utopia_manifesto_has_active_external_case_term = yes }
+	NOT = { has_country_flag = utopia_manifesto_case_enforcement_war_active }
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_targets
+		NOT = { has_war_with = ROOT }
+	}
+	OR = {
+		utopia_manifesto_case_supports_long_supply_contract = yes
+		utopia_manifesto_case_supports_lease = yes
+		utopia_manifesto_case_supports_settlement_agreement = yes
+	}
+}
+
+# Target scope. FROM is the exact Event 15 founder offering to replace the
+# suspended case with a bounded commercial, settlement, or defensive compact.
+utopia_manifesto_obsolete_case_treaty_offer_is_live_for_target = {
+	has_country_flag = utopia_manifesto_obsolete_case_treaty_offered
+	utopia_manifesto_case_offer_is_live_for_target = yes
+	FROM = { has_country_flag = utopia_manifesto_obsolete_case_treaty_pending }
+}
+
+utopia_manifesto_case_supports_long_supply_contract = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.port_access }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+	}
+}
+
+utopia_manifesto_case_supports_purchase = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.port_access }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.settlement_and_housing }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_or_capital_refuge }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.reconstruction_zone }
+	}
+}
+
+utopia_manifesto_case_supports_lease = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.port_access }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.defensive_corridor }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_or_capital_refuge }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_project_lease }
+	}
+}
+
+utopia_manifesto_case_supports_settlement_agreement = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.settlement_and_housing }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_or_capital_refuge }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.reconstruction_zone }
+	}
+}
+
+utopia_manifesto_case_supports_joint_administration = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.port_access }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.defensive_corridor }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.settlement_and_housing }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_or_capital_refuge }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.reconstruction_zone }
+	}
+}
+
+utopia_manifesto_case_supports_association = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.essential_resource }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.settlement_and_housing }
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.reconstruction_zone }
+	}
+}
+
+utopia_manifesto_case_has_lawful_ladder_exception = {
+	NOT = { has_country_flag = utopia_manifesto_necessary_shores_peaceful_priority }
+	OR = {
+		AND = {
+			utopia_manifesto_is_closed_island_route = yes
+			utopia_manifesto_need_is_severe = yes
+		}
+		AND = {
+			has_war = yes
+			utopia_manifesto_need_is_existential = yes
+		}
+	}
+}
+
+utopia_manifesto_case_can_offer_lease = {
+	OR = {
+		check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_project_lease }
+		has_country_flag = utopia_manifesto_case_trade_attempted
+		utopia_manifesto_case_has_lawful_ladder_exception = yes
+	}
+}
+
+utopia_manifesto_case_can_offer_settlement_agreement = {
+	OR = {
+		has_country_flag = utopia_manifesto_case_trade_attempted
+		utopia_manifesto_case_has_lawful_ladder_exception = yes
+	}
+}
+
+utopia_manifesto_case_can_offer_joint_administration = {
+	OR = {
+		has_country_flag = utopia_manifesto_case_lease_attempted
+		has_country_flag = utopia_manifesto_case_settlement_attempted
+		utopia_manifesto_case_has_lawful_ladder_exception = yes
+	}
+}
+
+utopia_manifesto_case_can_offer_association = {
+	OR = {
+		has_country_flag = utopia_manifesto_case_joint_attempted
+		has_country_flag = utopia_manifesto_case_settlement_attempted
+		utopia_manifesto_case_has_lawful_ladder_exception = yes
+	}
+}
+
+utopia_manifesto_case_can_issue_ultimatum = {
+	NOT = { check_variable = { utopia_manifesto_case_type = constant:utopia_manifesto_case_type.island_project_lease } }
+	OR = {
+		AND = {
+			check_variable = {
+				var = utopia_manifesto_case_peaceful_attempt_count
+				value = constant:utopia_manifesto_case_limits.minimum_peaceful_attempts_before_ultimatum
+				compare = greater_than_or_equals
+			}
+			has_country_flag = utopia_manifesto_case_settlement_refused
+		}
+		AND = {
+			utopia_manifesto_case_has_lawful_ladder_exception = yes
+			utopia_manifesto_need_is_existential = yes
+		}
+	}
+}
+
+utopia_manifesto_case_has_domestic_alternative = {
+	has_country_flag = utopia_manifesto_case_domestic_review_proven
+}
+
+utopia_manifesto_domestic_review_matches_prepared_family = {
+	has_country_flag = utopia_manifesto_domestic_alternatives_reviewed
+	has_variable = utopia_manifesto_domestic_review_family
+	has_variable = utopia_manifesto_prepared_case_family
+	check_variable = {
+		var = utopia_manifesto_domestic_review_family
+		value = utopia_manifesto_prepared_case_family
+		compare = equals
+	}
+	NOT = { check_variable = { utopia_manifesto_domestic_review_family = constant:utopia_manifesto_calling_family.none } }
+}
+
+utopia_manifesto_domestic_review_authorizes_prepared_case = {
+	utopia_manifesto_domestic_review_matches_prepared_family = yes
+	has_country_flag = utopia_manifesto_domestic_review_external_case_authorized
+}
+
+utopia_manifesto_settlement_agreement_is_valid = {
+	has_country_flag = utopia_manifesto_settlement_agreement_active
+	has_variable = utopia_manifesto_settlement_agreement_target_id
+	has_variable = utopia_manifesto_settlement_agreement_state_id
+	has_variable = utopia_manifesto_settlement_agreement_family
+	has_variable = utopia_manifesto_settlement_agreement_type
+	check_variable = {
+		var = utopia_manifesto_settlement_agreement_targets^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_settlement_agreement_states^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_settlement_agreement_targets
+		exists = yes
+		has_country_flag = utopia_manifesto_settlement_agreement_target
+		is_in_array = { array = utopia_manifesto_settlement_agreement_founders value = ROOT }
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_settlement_agreement_target_id
+			compare = equals
+		}
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_settlement_agreement_states
+		has_state_flag = utopia_manifesto_settlement_agreement_state
+		is_in_array = { array = utopia_manifesto_settlement_agreement_state_founders value = ROOT }
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_settlement_agreement_state_id
+			compare = equals
+		}
+		owner = { is_in_array = { array = ROOT.utopia_manifesto_settlement_agreement_targets value = THIS } }
+		controller = { is_in_array = { array = ROOT.utopia_manifesto_settlement_agreement_targets value = THIS } }
+	}
+}
+
+utopia_manifesto_has_active_external_case_term = {
+	OR = {
+		has_country_flag = utopia_manifesto_settlement_agreement_active
+		has_country_flag = utopia_manifesto_long_supply_contract_active
+		has_country_flag = utopia_manifesto_association_duties_active
+		has_country_flag = utopia_manifesto_island_project_lease_active
+	}
+}
+
+utopia_manifesto_long_supply_contract_is_valid = {
+	has_country_flag = utopia_manifesto_long_supply_contract_active
+	has_variable = utopia_manifesto_long_supply_contract_target_id
+	has_variable = utopia_manifesto_long_supply_contract_state_id
+	has_variable = utopia_manifesto_long_supply_contract_family
+	has_variable = utopia_manifesto_long_supply_contract_type
+	check_variable = {
+		var = utopia_manifesto_long_supply_contract_targets^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_long_supply_contract_states^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_long_supply_contract_targets
+		exists = yes
+		has_country_flag = utopia_manifesto_long_supply_contract_target
+		is_in_array = { array = utopia_manifesto_long_supply_contract_founders value = ROOT }
+		NOT = { has_war_with = ROOT }
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_long_supply_contract_target_id
+			compare = equals
+		}
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_long_supply_contract_states
+		has_state_flag = utopia_manifesto_long_supply_contract_state
+		is_in_array = { array = utopia_manifesto_long_supply_contract_state_founders value = ROOT }
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_long_supply_contract_state_id
+			compare = equals
+		}
+		owner = { is_in_array = { array = ROOT.utopia_manifesto_long_supply_contract_targets value = THIS } }
+		controller = { is_in_array = { array = ROOT.utopia_manifesto_long_supply_contract_targets value = THIS } }
+	}
+}
+
+utopia_manifesto_association_duties_is_valid = {
+	has_country_flag = utopia_manifesto_association_duties_active
+	has_variable = utopia_manifesto_association_duties_target_id
+	has_variable = utopia_manifesto_association_duties_state_id
+	has_variable = utopia_manifesto_association_duties_family
+	has_variable = utopia_manifesto_association_duties_type
+	check_variable = {
+		var = utopia_manifesto_association_duties_targets^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	check_variable = {
+		var = utopia_manifesto_association_duties_states^num
+		value = @CR_SC_UTOPIA_MANIFESTO_MATH_ONE
+		compare = equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_association_duties_targets
+		exists = yes
+		is_subject = no
+		has_country_flag = utopia_manifesto_association_duties_target
+		is_in_array = { array = utopia_manifesto_association_duties_founders value = ROOT }
+		NOT = { has_war_with = ROOT }
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_association_duties_target_id
+			compare = equals
+		}
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_association_duties_states
+		has_state_flag = utopia_manifesto_association_charter_state
+		check_variable = {
+			var = id
+			value = ROOT.utopia_manifesto_association_duties_state_id
+			compare = equals
+		}
+		owner = { is_in_array = { array = ROOT.utopia_manifesto_association_duties_targets value = THIS } }
+	}
+}
+
+utopia_manifesto_case_has_offer = {
+	check_variable = {
+		var = utopia_manifesto_case_offers
+		value = constant:utopia_manifesto_case_limits.offer_required
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_stewardship_proof_met = {
+	utopia_manifesto_active_need_case_is_valid = yes
+	check_variable = {
+		var = utopia_manifesto_case_integrity
+		value = constant:utopia_manifesto_case_limits.stewardship_minimum_integrity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_case_local_support
+		value = constant:utopia_manifesto_case_limits.stewardship_minimum_local_support
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_stewardship_checks_passed
+		value = constant:utopia_manifesto_case_limits.stewardship_required_checks
+		compare = greater_than_or_equals
+	}
+	utopia_manifesto_case_has_domestic_alternative = yes
+	utopia_manifesto_case_has_offer = yes
+	NOT = { has_country_flag = utopia_manifesto_stewardship_failed }
+}
+
+utopia_manifesto_stewardship_vote_has_cultural_continuity = {
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_states
+		is_core_of = owner
+	}
+}
+
+utopia_manifesto_stewardship_vote_has_war_damage = {
+	OR = {
+		any_of_scopes = {
+			array = utopia_manifesto_active_case_states
+			has_state_flag = railway_damaged_flag
+		}
+		any_of_scopes = {
+			array = utopia_manifesto_active_case_states
+			owner = { has_damaged_buildings = yes }
+		}
+		has_country_flag = utopia_manifesto_case_enforcement_war_active
+	}
+}
+
+utopia_manifesto_stewardship_vote_has_repression_history = {
+	OR = {
+		has_country_flag = utopia_manifesto_conduct_assigned_colony
+		has_country_flag = utopia_manifesto_assigned_colony_active
+		has_country_flag = utopia_manifesto_conduct_colony_repressed
+		has_country_flag = utopia_manifesto_conduct_local_petition_ignored
+		has_country_flag = utopia_manifesto_penal_labour_used
+	}
+}
+
+utopia_manifesto_stewardship_vote_integration_is_available = {
+	has_country_flag = utopia_manifesto_stewardship_active
+	has_country_flag = utopia_manifesto_stewardship_proven
+	utopia_manifesto_stewardship_proof_met = yes
+	NOT = { utopia_manifesto_is_closed_island_route = yes }
+	NOT = { utopia_manifesto_stewardship_vote_has_repression_history = yes }
+	NOT = { utopia_manifesto_stewardship_vote_has_war_damage = yes }
+	check_variable = {
+		var = utopia_manifesto_case_integrity
+		value = constant:utopia_manifesto_case_limits.status_vote_integration_integrity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_case_local_support
+		value = constant:utopia_manifesto_case_limits.status_vote_integration_support
+		compare = greater_than_or_equals
+	}
+	OR = {
+		has_country_flag = utopia_manifesto_case_status_vote_promised
+		has_country_flag = utopia_manifesto_charter_autonomy_pact
+		utopia_manifesto_is_consent_of_households_route = yes
+		utopia_manifesto_is_common_table_route = yes
+		utopia_manifesto_is_joke_understood_route = yes
+		AND = {
+			utopia_manifesto_is_guardians_of_measure_route = yes
+			has_country_flag = utopia_manifesto_criticism_permitted
+			NOT = { has_country_flag = utopia_manifesto_conduct_data_suppression }
+		}
+	}
+}
+
+utopia_manifesto_stewardship_vote_association_is_available = {
+	has_country_flag = utopia_manifesto_stewardship_active
+	has_country_flag = utopia_manifesto_stewardship_proven
+	utopia_manifesto_stewardship_proof_met = yes
+	NOT = { utopia_manifesto_is_closed_island_route = yes }
+	NOT = { has_country_flag = utopia_manifesto_conduct_colony_repressed }
+	check_variable = {
+		var = utopia_manifesto_case_integrity
+		value = constant:utopia_manifesto_case_limits.status_vote_association_integrity
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_case_local_support
+		value = constant:utopia_manifesto_case_limits.status_vote_association_support
+		compare = greater_than_or_equals
+	}
+	OR = {
+		utopia_manifesto_stewardship_vote_has_cultural_continuity = yes
+		has_country_flag = utopia_manifesto_charter_autonomy_pact
+		utopia_manifesto_is_consent_of_households_route = yes
+		utopia_manifesto_is_common_table_route = yes
+		utopia_manifesto_is_joke_understood_route = yes
+	}
+}
+
+utopia_manifesto_stewardship_vote_autonomy_is_available = {
+	has_country_flag = utopia_manifesto_stewardship_active
+	has_country_flag = utopia_manifesto_stewardship_proven
+	utopia_manifesto_stewardship_proof_met = yes
+	check_variable = {
+		var = utopia_manifesto_case_local_support
+		value = constant:utopia_manifesto_case_limits.status_vote_autonomy_support
+		compare = greater_than_or_equals
+	}
+	any_of_scopes = {
+		array = utopia_manifesto_active_case_targets
+		exists = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# League
+# ---------------------------------------------------------------------------
+
+# Partner scope. Role flags may layer into one package for the same founder
+# (member plus defense, sponsor plus observer, or member plus aid), but the
+# package must never be owned by two Event 15 founders at once.
+utopia_manifesto_has_active_league_partner_role = {
+	OR = {
+		has_country_flag = utopia_manifesto_league_member
+		has_country_flag = utopia_manifesto_league_observer
+		has_country_flag = utopia_manifesto_league_sponsor
+		has_country_flag = utopia_manifesto_league_aid_received
+		has_country_flag = utopia_manifesto_league_reserve_contributor
+		has_country_flag = utopia_manifesto_league_defense_partner
+	}
+}
+
+# Partner scope. ROOT is the founder being tested. This is the exact active
+# package owned by that founder, independent of shared partner summary flags.
+utopia_manifesto_has_active_league_partner_role_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_league_members value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_observers value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsors value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_aid_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_defense_targets value = THIS }
+	}
+}
+
+utopia_manifesto_has_pending_league_partner_undertaking = {
+	OR = {
+		has_country_flag = utopia_manifesto_technical_mission_host
+		has_country_flag = utopia_manifesto_reserve_compact_invited
+		has_country_flag = utopia_manifesto_league_invited
+		has_country_flag = utopia_manifesto_league_sponsorship_request_pending
+		has_country_flag = utopia_manifesto_league_founder_betrayal_pending
+	}
+}
+
+# Partner scope. ROOT is the founder being tested. Pending work is exact on the
+# founder arrays even though the target-facing state is summarized by flags.
+utopia_manifesto_has_pending_league_partner_undertaking_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_league_technical_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_invited_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsorship_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_betrayal_pending_targets value = THIS }
+	}
+}
+
+# Partner scope. ROOT is the prospective or current founder. The generic
+# reverse-founder array is filtered through each founder's exact active and
+# pending arrays, so candidate-only and external-network links do not claim
+# League package ownership.
+utopia_manifesto_has_conflicting_league_partner_relationship_for_root = {
+	OR = {
+		any_of_scopes = {
+			array = utopia_manifesto_league_founders
+			exists = yes
+			NOT = { tag = ROOT }
+			OR = {
+				is_in_array = { array = utopia_manifesto_league_members value = PREV }
+				is_in_array = { array = utopia_manifesto_league_observers value = PREV }
+				is_in_array = { array = utopia_manifesto_league_sponsors value = PREV }
+				is_in_array = { array = utopia_manifesto_league_aid_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_reserve_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_defense_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_technical_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_reserve_pending_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_invited_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_sponsorship_pending_targets value = PREV }
+				is_in_array = { array = utopia_manifesto_league_betrayal_pending_targets value = PREV }
+			}
+		}
+		AND = {
+			utopia_manifesto_has_active_league_partner_role = yes
+			NOT = { utopia_manifesto_has_active_league_partner_role_for_root = yes }
+		}
+		AND = {
+			utopia_manifesto_has_pending_league_partner_undertaking = yes
+			NOT = { utopia_manifesto_has_pending_league_partner_undertaking_for_root = yes }
+		}
+	}
+}
+
+utopia_manifesto_league_candidate_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	is_in_faction = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = utopia_manifesto_active_case_target }
+	NOT = { utopia_manifesto_has_active_league_partner_role = yes }
+	NOT = { has_country_flag = utopia_manifesto_league_sponsorship_request_pending }
+	NOT = { has_country_flag = utopia_manifesto_reserve_compact_invited }
+	NOT = { has_country_flag = utopia_manifesto_technical_mission_host }
+	NOT = { has_country_flag = utopia_manifesto_league_refused }
+	NOT = { has_country_flag = utopia_manifesto_league_exited }
+	NOT = { has_country_flag = utopia_manifesto_league_invited }
+	surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress
+	OR = {
+		is_neighbor_of = ROOT
+		AND = {
+			is_on_same_continent_as = ROOT
+			has_opinion = { target = ROOT value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION }
+		}
+		ROOT = {
+			is_in_array = {
+				array = utopia_manifesto_recognized_external_partners
+				value = PREV
+			}
+		}
+	}
+	OR = {
+		has_opinion = { target = ROOT value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION }
+		ROOT = {
+			is_in_array = {
+				array = utopia_manifesto_recognized_external_partners
+				value = PREV
+			}
+		}
+	}
+}
+
+utopia_manifesto_league_sponsor_candidate_is_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = yes
+	is_subject = no
+	has_capitulated = no
+	has_civil_war = no
+	NOT = { tag = ROOT }
+	NOT = { utopia_manifesto_candidate_has_terminal_identity = yes }
+	NOT = { utopia_manifesto_candidate_has_active_event_package = yes }
+	NOT = { has_country_flag = utopia_manifesto_accepted }
+	NOT = { has_war_with = ROOT }
+	NOT = { has_country_flag = utopia_manifesto_active_case_target }
+	NOT = { utopia_manifesto_has_active_league_partner_role = yes }
+	NOT = { has_country_flag = utopia_manifesto_league_sponsorship_request_pending }
+	NOT = { has_country_flag = utopia_manifesto_league_invited }
+	NOT = { has_country_flag = utopia_manifesto_reserve_compact_invited }
+	NOT = { has_country_flag = utopia_manifesto_technical_mission_host }
+	surrender_progress < constant:utopia_manifesto_candidate_thresholds.maximum_surrender_progress
+	OR = {
+		is_neighbor_of = ROOT
+		is_on_same_continent_as = ROOT
+		has_opinion = { target = ROOT value > @CR_SC_UTOPIA_MANIFESTO_DECISION_THRESHOLD_POSITIVE_OPINION }
+	}
+}
+
+# Founder scope. FROM is the exact country answering either a full invitation
+# or a reserve compact. The bridge accepts a response only while this founder's
+# League and both sides of the matching request remain live. Exactly one valid
+# response flag for that request type must be present.
+utopia_manifesto_from_is_exact_pending_league_invitation_response = {
+	has_country_flag = utopia_manifesto_league_initialized
+	NOT = { has_country_flag = utopia_manifesto_league_cleanup_in_progress }
+	NOT = { has_country_flag = utopia_manifesto_league_collapsed }
+	FROM = {
+		exists = yes
+		NOT = { utopia_manifesto_has_conflicting_league_partner_relationship_for_root = yes }
+	}
+	OR = {
+		AND = {
+			has_country_flag = utopia_manifesto_league_invitation_pending
+			is_in_array = { array = utopia_manifesto_league_invited_targets value = FROM }
+			FROM = {
+				has_country_flag = utopia_manifesto_league_invited
+				OR = {
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_join
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_reserve }
+						NOT = { has_country_flag = utopia_manifesto_league_response_refuse }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_observer
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_reserve }
+						NOT = { has_country_flag = utopia_manifesto_league_response_refuse }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_reserve
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_refuse }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_refuse
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_reserve }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_guarantee
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_reserve }
+						NOT = { has_country_flag = utopia_manifesto_league_response_refuse }
+					}
+				}
+			}
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_reserve_compact_pending
+			is_in_array = { array = utopia_manifesto_league_reserve_pending_targets value = FROM }
+			FROM = {
+				has_country_flag = utopia_manifesto_reserve_compact_invited
+				OR = {
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_reserve
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_refuse }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+					AND = {
+						has_country_flag = utopia_manifesto_league_response_refuse
+						NOT = { has_country_flag = utopia_manifesto_league_response_join }
+						NOT = { has_country_flag = utopia_manifesto_league_response_observer }
+						NOT = { has_country_flag = utopia_manifesto_league_response_reserve }
+						NOT = { has_country_flag = utopia_manifesto_league_response_guarantee }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Founder scope. FROM is the exact major asked to sponsor the League. Both
+# sides of the request record the other, preventing a stale or unrelated
+# response event from installing a sponsorship package.
+utopia_manifesto_from_is_exact_pending_league_sponsorship_response = {
+	has_country_flag = utopia_manifesto_league_sponsorship_pending
+	is_in_array = { array = utopia_manifesto_league_sponsorship_pending_targets value = FROM }
+	FROM = {
+		exists = yes
+		NOT = { utopia_manifesto_has_active_league_partner_role = yes }
+		NOT = { utopia_manifesto_has_conflicting_league_partner_relationship_for_root = yes }
+		has_country_flag = utopia_manifesto_league_sponsorship_request_pending
+		is_in_array = { array = utopia_manifesto_league_sponsorship_pending_founders value = ROOT }
+		OR = {
+			AND = {
+				has_country_flag = utopia_manifesto_league_sponsorship_response_technical
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_guarantee }
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_refuse }
+			}
+			AND = {
+				has_country_flag = utopia_manifesto_league_sponsorship_response_guarantee
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_technical }
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_refuse }
+			}
+			AND = {
+				has_country_flag = utopia_manifesto_league_sponsorship_response_refuse
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_technical }
+				NOT = { has_country_flag = utopia_manifesto_league_sponsorship_response_guarantee }
+			}
+		}
+	}
+}
+
+# Founder scope. FROM is the exact member attacked by that founder. This is
+# the one-shot bridge contract used by events 15.217 and 15.218.
+utopia_manifesto_from_is_exact_pending_league_betrayal_response = {
+	has_country_flag = utopia_manifesto_league_betrayal_pending
+	is_in_array = { array = utopia_manifesto_league_betrayal_pending_targets value = FROM }
+	FROM = {
+		exists = yes
+		has_country_flag = utopia_manifesto_league_founder_betrayal_pending
+		is_in_array = { array = utopia_manifesto_league_betrayal_pending_founders value = ROOT }
+		OR = {
+			AND = {
+				has_country_flag = utopia_manifesto_league_betrayal_response_leave
+				NOT = { has_country_flag = utopia_manifesto_league_betrayal_response_remain }
+			}
+			AND = {
+				has_country_flag = utopia_manifesto_league_betrayal_response_remain
+				NOT = { has_country_flag = utopia_manifesto_league_betrayal_response_leave }
+			}
+		}
+	}
+}
+
+# Partner scope. ROOT is the founder. These exact League roles keep the shared
+# League-package recognition source marker alive when one layered role ends.
+utopia_manifesto_has_live_league_recognition_role_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_league_members value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_observers value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsors value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_aid_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_defense_targets value = THIS }
+	}
+}
+
+# Partner scope. ROOT is the founder considering removal of recognition that
+# Event 15's League package established. These are the independent live bases
+# that allow visible recognition to survive after the final marked role ends.
+utopia_manifesto_has_independent_league_recognition_basis_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_compacts value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_associates value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_colony_association_partners value = THIS }
+		is_in_array = { array = utopia_manifesto_colony_association_founders value = ROOT }
+	}
+}
+
+# Partner scope. ROOT is the founder whose one compact source has just been
+# removed. This deliberately excludes recognized_external_partners itself so
+# stale recognition cannot justify its own survival.
+utopia_manifesto_has_other_external_recognition_basis_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_compacts value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_associates value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_members value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_observers value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsors value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_aid_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_defense_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_created_recognized_partners value = THIS }
+		is_in_array = { array = utopia_manifesto_association_founders value = ROOT }
+		is_in_array = { array = ROOT.utopia_manifesto_colony_association_partners value = THIS }
+		is_in_array = { array = utopia_manifesto_colony_association_founders value = ROOT }
+	}
+}
+
+# Partner scope. ROOT is the exact Event 15 founder. These gates identify only
+# relations for which at least one live Event 15 package is an attributed
+# creator. A relation that predates Event 15 has no entry and is never claimed.
+utopia_manifesto_has_event15_access_creator_for_root = {
+	OR = {
+		is_in_array = { array = utopia_manifesto_case_created_access_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_created_access_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_association_created_access_founders value = ROOT }
+	}
+}
+
+utopia_manifesto_has_event15_founder_guarantee_creator_for_root = {
+	OR = {
+		is_in_array = { array = utopia_manifesto_case_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_association_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_stewardship_autonomy_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_founder_guarantee_founders value = ROOT }
+	}
+}
+
+# Scope-neutral exact-pair forms used by callbacks whose ROOT is not the
+# founder. Callers save both event targets before removing the current source.
+utopia_manifesto_saved_diplomacy_pair_has_access_creator = {
+	has_event_target = utopia_manifesto_diplomacy_founder_scope
+	has_event_target = utopia_manifesto_diplomacy_partner_scope
+	event_target:utopia_manifesto_diplomacy_partner_scope = {
+		OR = {
+			is_in_array = { array = utopia_manifesto_case_created_access_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_island_project_created_access_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_association_created_access_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+		}
+	}
+}
+
+utopia_manifesto_saved_diplomacy_pair_has_founder_guarantee_creator = {
+	has_event_target = utopia_manifesto_diplomacy_founder_scope
+	has_event_target = utopia_manifesto_diplomacy_partner_scope
+	event_target:utopia_manifesto_diplomacy_partner_scope = {
+		OR = {
+			is_in_array = { array = utopia_manifesto_case_created_guarantee_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_island_project_created_guarantee_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_association_created_guarantee_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_stewardship_autonomy_created_guarantee_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+			is_in_array = { array = utopia_manifesto_league_founder_guarantee_founders value = event_target:utopia_manifesto_diplomacy_founder_scope }
+		}
+	}
+}
+
+# Exact-pair recognition gate. Callers save both named event targets before
+# removing one source, then use this after the source-specific arrays are clean.
+# It deliberately excludes recognized_external_partners so the result cannot
+# justify itself.
+utopia_manifesto_saved_recognition_pair_has_external_basis = {
+	has_event_target = utopia_manifesto_recognition_founder_scope
+	has_event_target = utopia_manifesto_recognition_partner_scope
+	OR = {
+		event_target:utopia_manifesto_recognition_founder_scope = {
+			OR = {
+				is_in_array = { array = utopia_manifesto_recognized_compacts value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_recognized_associates value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_members value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_observers value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_sponsors value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_aid_targets value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_reserve_targets value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_defense_targets value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_league_created_recognized_partners value = event_target:utopia_manifesto_recognition_partner_scope }
+				is_in_array = { array = utopia_manifesto_colony_association_partners value = event_target:utopia_manifesto_recognition_partner_scope }
+			}
+		}
+		event_target:utopia_manifesto_recognition_partner_scope = {
+			OR = {
+				is_in_array = { array = utopia_manifesto_case_compact_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_island_project_compact_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_settlement_compact_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_long_supply_compact_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_stewardship_autonomy_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_association_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+				is_in_array = { array = utopia_manifesto_colony_association_founders value = event_target:utopia_manifesto_recognition_founder_scope }
+			}
+		}
+	}
+}
+
+utopia_manifesto_league_entry_requirements_met = {
+	utopia_manifesto_has_ledger = yes
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_league_limits.entry_concord
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_plenty
+		value = constant:utopia_manifesto_league_limits.entry_plenty
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+}
+
+utopia_manifesto_from_is_league_member = {
+	FROM = { has_country_flag = utopia_manifesto_league_member }
+}
+
+utopia_manifesto_league_is_stable = {
+	check_variable = {
+		var = utopia_manifesto_league_cohesion
+		value = constant:utopia_manifesto_league_limits.stable_cohesion
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_league_is_strong = {
+	check_variable = {
+		var = utopia_manifesto_league_cohesion
+		value = constant:utopia_manifesto_league_limits.strong_cohesion
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_league_can_formalize_defense = {
+	has_country_flag = utopia_manifesto_league_initialized
+	has_country_flag = utopia_manifesto_league_formal_defense_vote_passed
+	NOT = { has_country_flag = utopia_manifesto_league_formal_defense }
+	NOT = { has_country_flag = utopia_manifesto_league_collapsed }
+	is_subject = no
+	is_in_faction = no
+	utopia_manifesto_league_is_stable = yes
+	check_variable = {
+		var = utopia_manifesto_league_member_count
+		value = constant:utopia_manifesto_league_limits.formal_defense_members
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_league_shared_action_count
+		value = constant:utopia_manifesto_league_limits.formal_defense_shared_actions
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_manifesto_league_defense_count
+		value = constant:utopia_manifesto_league_limits.formal_defense_votes
+		compare = greater_than_or_equals
+	}
+	all_of_scopes = {
+		array = utopia_manifesto_league_members
+		exists = yes
+		is_in_faction = no
+	}
+}
+
+utopia_manifesto_league_failure_limit_reached = {
+	OR = {
+		check_variable = {
+			var = utopia_manifesto_league_failure_count
+			value = constant:utopia_manifesto_league_limits.failure_limit
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = utopia_manifesto_league_cohesion
+			value = constant:utopia_manifesto_league_limits.collapse_cohesion
+			compare = less_than
+		}
+	}
+}
+
+# Partner scope. ROOT is the exact Event 15 founder whose bounded League and
+# recognized-network arrays are being inspected. Historical refusal and exit
+# arrays are deliberately excluded: they record conduct rather than a live
+# relationship that can support current League or formation proof.
+utopia_manifesto_has_recorded_league_relation_for_root = {
+	OR = {
+		is_in_array = { array = ROOT.utopia_manifesto_league_candidate_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsor_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_action_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_technical_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_invited_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsorship_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_betrayal_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_association_duties_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_settlement_agreement_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_long_supply_contract_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_island_project_lessor_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_island_lease_renewal_pending_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_stewardship_autonomy_partners value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_colony_association_partners value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_members value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_observers value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_sponsors value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_aid_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_reserve_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_defense_targets value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_league_created_recognized_partners value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_external_partners value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_compacts value = THIS }
+		is_in_array = { array = ROOT.utopia_manifesto_recognized_associates value = THIS }
+		is_in_array = { array = utopia_manifesto_league_sponsorship_pending_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_betrayal_pending_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_case_created_access_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_case_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_created_access_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_association_created_access_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_association_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_stewardship_autonomy_created_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_founder_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_member_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_sponsor_guarantee_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_league_faction_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_settlement_agreement_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_long_supply_contract_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_association_duties_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_lessor_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_lease_renewal_pending_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_lease_renewal_invalidated_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_stewardship_autonomy_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_colony_association_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_case_compact_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_island_project_compact_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_settlement_compact_founders value = ROOT }
+		is_in_array = { array = utopia_manifesto_long_supply_compact_founders value = ROOT }
+	}
+}
+
+utopia_manifesto_has_live_league_relation_for_root = {
+	exists = yes
+	utopia_manifesto_has_recorded_league_relation_for_root = yes
+}
+
+utopia_manifesto_has_external_network = {
+	check_variable = {
+		var = utopia_manifesto_external_network_count
+		value = constant:utopia_manifesto_league_limits.minimum_formation_network
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_has_regional_proclamation_network = {
+	check_variable = {
+		var = utopia_manifesto_external_network_count
+		value = constant:utopia_manifesto_league_limits.regional_proclamation_network
+		compare = greater_than_or_equals
+	}
+}
+
+utopia_manifesto_super_event_network_threshold_met = {
+	utopia_manifesto_has_regional_proclamation_network = yes
+}
+
+utopia_manifesto_is_not_trivial_subject = {
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			compare_autonomy_state > autonomy_puppet
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Formation proof
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_completed_national_center_project_proof_met = {
+	OR = {
+		AND = {
+			has_country_flag = utopia_manifesto_island_project_complete
+			utopia_manifesto_island_project_proof_met = yes
+		}
+		AND = {
+			has_country_flag = utopia_manifesto_social_city_ring
+			has_country_flag = utopia_manifesto_district_system_proven
+		}
+	}
+}
+
+utopia_manifesto_external_conduct_is_resolved = {
+	NOT = { has_country_flag = utopia_manifesto_need_case_active }
+	NOT = { has_country_flag = utopia_manifesto_case_response_active }
+	NOT = { has_country_flag = utopia_manifesto_stewardship_active }
+	NOT = { has_country_flag = utopia_manifesto_settlement_agreement_active }
+	NOT = { has_country_flag = utopia_manifesto_long_supply_contract_active }
+	NOT = { has_country_flag = utopia_manifesto_association_duties_active }
+	OR = {
+		NOT = { has_country_flag = utopia_manifesto_foreign_opposition_from_case_shortcut }
+		has_country_flag = utopia_manifesto_case_peaceful_steps_restored
+		has_country_flag = utopia_manifesto_external_conduct_corrected
+	}
+	OR = {
+		NOT = { has_country_flag = utopia_manifesto_district_assignment_unresolved }
+		has_country_flag = utopia_manifesto_district_assignment_repaired
+		has_country_flag = utopia_manifesto_external_conduct_corrected
+	}
+	OR = {
+		NOT = { has_country_flag = utopia_manifesto_foreign_opposition_from_penal_works }
+		has_country_flag = utopia_manifesto_penal_works_rolls_published
+		has_country_flag = utopia_manifesto_penal_works_foreign_inspection
+		has_country_flag = utopia_manifesto_penal_works_halted_after_first_use
+		has_country_flag = utopia_manifesto_external_conduct_corrected
+	}
+}
+
+utopia_manifesto_common_formation_proof_met = {
+	utopia_manifesto_completed_national_center_project_proof_met = yes
+	has_country_flag = utopia_manifesto_first_external_case_resolved
+	utopia_manifesto_has_external_network = yes
+	utopia_manifesto_external_conduct_is_resolved = yes
+	check_variable = {
+		var = utopia_plenty
+		value = constant:utopia_manifesto_formation_limits.minimum_plenty
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = utopia_manifesto_constitutional_crisis }
+	NOT = { has_country_flag = utopia_manifesto_stewardship_failed }
+}
+
+utopia_manifesto_voluntary_formation_proof_met = {
+	utopia_manifesto_is_consent_of_households_route = yes
+	utopia_manifesto_common_formation_proof_met = yes
+	has_country_flag = utopia_manifesto_route_capstone_consent
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_formation_limits.voluntary_concord
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_assignment
+		value = constant:utopia_manifesto_formation_limits.voluntary_assignment_maximum
+		compare = less_than
+	}
+	has_country_flag = utopia_manifesto_consensual_partner_proven
+	NOT = { has_country_flag = utopia_manifesto_penal_labour_used }
+	NOT = { has_country_flag = utopia_manifesto_unjustified_enforced_case }
+}
+
+utopia_manifesto_council_formation_proof_met = {
+	utopia_manifesto_is_common_table_route = yes
+	utopia_manifesto_common_formation_proof_met = yes
+	has_country_flag = utopia_manifesto_route_capstone_common_table
+	check_variable = {
+		var = utopia_plenty
+		value = constant:utopia_manifesto_formation_limits.council_plenty
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_formation_limits.council_concord
+		compare = greater_than_or_equals
+	}
+	has_country_flag = utopia_manifesto_household_councils_proven
+	has_country_flag = utopia_manifesto_partner_autonomy_retained
+}
+
+utopia_manifesto_planned_formation_proof_met = {
+	utopia_manifesto_is_guardians_of_measure_route = yes
+	utopia_manifesto_common_formation_proof_met = yes
+	has_country_flag = utopia_manifesto_route_capstone_guardians
+	check_variable = {
+		var = utopia_plenty
+		value = constant:utopia_manifesto_formation_limits.planned_plenty
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_assignment
+		value = constant:utopia_manifesto_formation_limits.planned_assignment
+		compare = greater_than_or_equals
+	}
+	has_country_flag = utopia_manifesto_city_network_proven
+	NOT = { has_country_flag = utopia_manifesto_data_scandal }
+	NOT = { has_country_flag = utopia_manifesto_assignment_revolt }
+}
+
+utopia_manifesto_closed_formation_proof_met = {
+	utopia_manifesto_is_closed_island_route = yes
+	utopia_manifesto_common_formation_proof_met = yes
+	has_country_flag = utopia_manifesto_route_capstone_closed_island
+	check_variable = {
+		var = utopia_assignment
+		value = constant:utopia_manifesto_formation_limits.closed_assignment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_reserve_score
+		value = constant:utopia_manifesto_formation_limits.closed_reserve
+		compare = greater_than_or_equals
+	}
+	has_country_flag = utopia_manifesto_separation_project_complete
+	has_country_flag = utopia_manifesto_defense_proof_complete
+}
+
+utopia_manifesto_practical_formation_proof_met = {
+	utopia_manifesto_is_joke_understood_route = yes
+	utopia_manifesto_common_formation_proof_met = yes
+	has_country_flag = utopia_manifesto_route_capstone_joke
+	check_variable = {
+		var = utopia_concord
+		value = constant:utopia_manifesto_formation_limits.practical_concord
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = utopia_assignment
+		value = constant:utopia_manifesto_formation_limits.practical_assignment_maximum
+		compare = less_than
+	}
+	has_country_flag = utopia_manifesto_hidden_humanist_proven
+	has_country_flag = utopia_manifesto_mixed_property_proven
+	has_country_flag = utopia_manifesto_false_cases_resolved
+	has_country_flag = utopia_manifesto_broad_recognition_proven
+}
+
+utopia_manifesto_can_form_current_route = {
+	OR = {
+		utopia_manifesto_voluntary_formation_proof_met = yes
+		utopia_manifesto_council_formation_proof_met = yes
+		utopia_manifesto_planned_formation_proof_met = yes
+		utopia_manifesto_closed_formation_proof_met = yes
+		utopia_manifesto_practical_formation_proof_met = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution requirements
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_glosses_in_the_margin_requirements_met = {
+	has_country_flag = utopia_manifesto_accepted
+	utopia_manifesto_has_ledger = yes
+	utopia_manifesto_has_resolved_route = yes
+	NOT = { has_country_flag = utopia_manifesto_evolution_glosses_recorded }
+}
+
+utopia_manifesto_necessary_shores_requirements_met = {
+	has_country_flag = utopia_manifesto_first_external_case_resolved
+	NOT = { has_country_flag = utopia_manifesto_evolution_necessary_shores_recorded }
+}
+
+utopia_manifesto_cities_of_one_measure_requirements_met = {
+	has_country_flag = utopia_manifesto_district_system_proven
+	has_country_flag = utopia_manifesto_institutional_growth_proven
+	utopia_manifesto_reserve_is_secure = yes
+	NOT = { has_country_flag = utopia_manifesto_evolution_cities_recorded }
+}
+
+utopia_manifesto_nowhere_made_law_requirements_met = {
+	utopia_manifesto_can_form_current_route = yes
+	NOT = { has_country_flag = utopia_manifesto_evolution_nowhere_law_recorded }
+}
+
+utopia_manifesto_perfect_island_requirements_met = {
+	has_country_flag = utopia_manifesto_commonwealth_formed
+	utopia_manifesto_has_regional_proclamation_network = yes
+	NOT = { has_country_flag = utopia_manifesto_evolution_perfect_island_recorded }
+}
+
+# ---------------------------------------------------------------------------
+# Paid growth affordability
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_dynamic_military_costs_are_ready = {
+	has_variable = utopia_manifesto_military_manpower_cost
+	has_variable = utopia_manifesto_military_infantry_equipment_cost
+	has_variable = utopia_manifesto_military_support_equipment_cost
+	has_variable = utopia_manifesto_military_army_experience_cost
+}
+
+utopia_manifesto_military_growth_capacity_available = {
+	has_variable = utopia_manifesto_military_growth_batches
+	has_variable = utopia_manifesto_military_growth_capacity
+	# Paid formations need a real deployment scope. This check is part of every
+	# military-growth affordability transaction, including focus rewards.
+	any_controlled_state = { is_controlled_by = ROOT }
+	check_variable = {
+		var = utopia_manifesto_military_growth_batches
+		value = utopia_manifesto_military_growth_capacity
+		compare = less_than
+	}
+}
+
+utopia_manifesto_can_afford_military_growth = {
+	utopia_manifesto_dynamic_military_costs_are_ready = yes
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_army_experience < [ARMY_XP_COST] }
+			NOT = { has_equipment = { infantry_equipment < [INFANTRY_COST] } }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_military_manpower_cost|.0]"
+		ARMY_XP_COST = "[?utopia_manifesto_military_army_experience_cost|.0]"
+		INFANTRY_COST = "[?utopia_manifesto_military_infantry_equipment_cost|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_military_support_equipment_cost|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_military_growth = {
+	utopia_manifesto_military_growth_capacity_available = yes
+	utopia_manifesto_can_afford_military_growth = yes
+}
+
+utopia_manifesto_can_afford_military_growth_foundation = {
+	has_variable = utopia_manifesto_military_manpower_cost_foundation
+	has_variable = utopia_manifesto_military_infantry_equipment_cost_foundation
+	has_variable = utopia_manifesto_military_support_equipment_cost_foundation
+	has_variable = utopia_manifesto_military_army_experience_cost_foundation
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_army_experience < [ARMY_XP_COST] }
+			NOT = { has_equipment = { infantry_equipment < [INFANTRY_COST] } }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_military_manpower_cost_foundation|.0]"
+		ARMY_XP_COST = "[?utopia_manifesto_military_army_experience_cost_foundation|.0]"
+		INFANTRY_COST = "[?utopia_manifesto_military_infantry_equipment_cost_foundation|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_military_support_equipment_cost_foundation|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_military_growth_foundation = {
+	utopia_manifesto_military_growth_capacity_available = yes
+	utopia_manifesto_can_afford_military_growth_foundation = yes
+}
+
+# Country scope. The auxiliary contract deploys and pays for its foundation
+# formation first, then consumes and transfers the static contract resources,
+# so both obligations must be affordable together before either charge occurs.
+utopia_manifesto_can_pay_auxiliary_contract = {
+	utopia_manifesto_can_pay_military_growth_foundation = yes
+	has_variable = utopia_manifesto_auxiliary_total_support_equipment_cost
+	meta_trigger = {
+		text = {
+			NOT = { has_equipment = { support_equipment < [TOTAL_SUPPORT_COST] } }
+		}
+		TOTAL_SUPPORT_COST = "[?utopia_manifesto_auxiliary_total_support_equipment_cost|.0]"
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:utopia_manifesto_decision_cost.motorized_medium } }
+	set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_convoys_medium } NOT = { has_equipment = { convoy_1 < utopia_manifesto_cost_check } }
+	any_controlled_state = { is_controlled_by = ROOT }
+}
+
+utopia_manifesto_can_afford_military_growth_network = {
+	has_variable = utopia_manifesto_military_manpower_cost_network
+	has_variable = utopia_manifesto_military_infantry_equipment_cost_network
+	has_variable = utopia_manifesto_military_support_equipment_cost_network
+	has_variable = utopia_manifesto_military_army_experience_cost_network
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_army_experience < [ARMY_XP_COST] }
+			NOT = { has_equipment = { infantry_equipment < [INFANTRY_COST] } }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_military_manpower_cost_network|.0]"
+		ARMY_XP_COST = "[?utopia_manifesto_military_army_experience_cost_network|.0]"
+		INFANTRY_COST = "[?utopia_manifesto_military_infantry_equipment_cost_network|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_military_support_equipment_cost_network|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_military_growth_network = {
+	utopia_manifesto_military_growth_capacity_available = yes
+	utopia_manifesto_can_afford_military_growth_network = yes
+}
+
+utopia_manifesto_can_afford_military_growth_capstone = {
+	has_variable = utopia_manifesto_military_manpower_cost_capstone
+	has_variable = utopia_manifesto_military_infantry_equipment_cost_capstone
+	has_variable = utopia_manifesto_military_support_equipment_cost_capstone
+	has_variable = utopia_manifesto_military_army_experience_cost_capstone
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_army_experience < [ARMY_XP_COST] }
+			NOT = { has_equipment = { infantry_equipment < [INFANTRY_COST] } }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_military_manpower_cost_capstone|.0]"
+		ARMY_XP_COST = "[?utopia_manifesto_military_army_experience_cost_capstone|.0]"
+		INFANTRY_COST = "[?utopia_manifesto_military_infantry_equipment_cost_capstone|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_military_support_equipment_cost_capstone|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_military_growth_capstone = {
+	utopia_manifesto_military_growth_capacity_available = yes
+	utopia_manifesto_can_afford_military_growth_capstone = yes
+}
+
+utopia_manifesto_dynamic_institutional_costs_are_ready = {
+	has_variable = utopia_manifesto_institutional_manpower_cost
+	has_variable = utopia_manifesto_institutional_support_equipment_cost
+	has_variable = utopia_manifesto_institutional_political_power_cost
+}
+
+utopia_manifesto_can_pay_institutional_growth = {
+	utopia_manifesto_dynamic_institutional_costs_are_ready = yes
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_political_power < [POLITICAL_POWER_COST] }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_institutional_manpower_cost|.0]"
+		POLITICAL_POWER_COST = "[?utopia_manifesto_institutional_political_power_cost|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_institutional_support_equipment_cost|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_institutional_growth_foundation = {
+	has_variable = utopia_manifesto_institutional_manpower_cost_foundation
+	has_variable = utopia_manifesto_institutional_support_equipment_cost_foundation
+	has_variable = utopia_manifesto_institutional_political_power_cost_foundation
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_political_power < [POLITICAL_POWER_COST] }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_institutional_manpower_cost_foundation|.0]"
+		POLITICAL_POWER_COST = "[?utopia_manifesto_institutional_political_power_cost_foundation|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_institutional_support_equipment_cost_foundation|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_institutional_growth_network = {
+	has_variable = utopia_manifesto_institutional_manpower_cost_network
+	has_variable = utopia_manifesto_institutional_support_equipment_cost_network
+	has_variable = utopia_manifesto_institutional_political_power_cost_network
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_political_power < [POLITICAL_POWER_COST] }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_institutional_manpower_cost_network|.0]"
+		POLITICAL_POWER_COST = "[?utopia_manifesto_institutional_political_power_cost_network|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_institutional_support_equipment_cost_network|.0]"
+	}
+}
+
+utopia_manifesto_can_pay_institutional_growth_capstone = {
+	has_variable = utopia_manifesto_institutional_manpower_cost_capstone
+	has_variable = utopia_manifesto_institutional_support_equipment_cost_capstone
+	has_variable = utopia_manifesto_institutional_political_power_cost_capstone
+	meta_trigger = {
+		text = {
+			NOT = { has_manpower < [MANPOWER_COST] }
+			NOT = { has_political_power < [POLITICAL_POWER_COST] }
+			NOT = { has_equipment = { support_equipment < [SUPPORT_COST] } }
+		}
+		MANPOWER_COST = "[?utopia_manifesto_institutional_manpower_cost_capstone|.0]"
+		POLITICAL_POWER_COST = "[?utopia_manifesto_institutional_political_power_cost_capstone|.0]"
+		SUPPORT_COST = "[?utopia_manifesto_institutional_support_equipment_cost_capstone|.0]"
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Terminal constitutional and aftermath gates
+# ---------------------------------------------------------------------------
+
+utopia_manifesto_has_viable_post_founder_league_successor = {
+	has_country_flag = utopia_manifesto_league_initialized
+	any_of_scopes = {
+		array = utopia_manifesto_league_members
+		exists = yes
+		uses_normal_civilian_systems = yes
+		is_subject = no
+		has_capitulated = no
+		has_civil_war = no
+		OR = {
+			ROOT = { NOT = { has_country_flag = utopia_manifesto_league_formal_defense } }
+			is_in_faction_with = ROOT
+		}
+	}
+}
+
+utopia_manifesto_has_store_aftermath = {
+	OR = {
+		has_idea = utopia_manifesto_common_store_network
+		has_idea = utopia_manifesto_common_store_network_mitigated
+		has_idea = utopia_manifesto_common_store_network_final
+		has_country_flag = utopia_manifesto_capital_store_complete
+		has_country_flag = utopia_manifesto_two_year_reserve_complete
+	}
+}
+
+utopia_manifesto_has_district_aftermath = {
+	OR = {
+		has_idea = utopia_manifesto_garden_district_network
+		has_idea = utopia_manifesto_garden_district_network_mitigated
+		has_idea = utopia_manifesto_garden_district_network_final
+		check_variable = {
+			var = utopia_manifesto_completed_district_projects
+			value = constant:utopia_manifesto_math.zero
+			compare = greater_than
+		}
+	}
+}
+
+utopia_manifesto_has_colonial_aftermath = {
+	OR = {
+		has_country_flag = utopia_manifesto_stewardship_active
+		has_country_flag = utopia_manifesto_stewardship_revolt_pending
+		has_country_flag = utopia_manifesto_assigned_colony_active
+	}
+}
+
+utopia_manifesto_has_book_aftermath = {
+	OR = {
+		has_country_flag = utopia_manifesto_public_edition
+		has_country_flag = utopia_manifesto_institutional_edition
+		has_country_flag = utopia_manifesto_restricted_edition
+		has_country_flag = utopia_manifesto_conduct_book_dogma
+		has_country_flag = utopia_manifesto_conduct_censorship
+		has_idea = utopia_manifesto_found_manifesto_mitigated
+		has_idea = utopia_manifesto_found_manifesto_failure
+		has_idea = utopia_manifesto_found_manifesto_final
+	}
+}

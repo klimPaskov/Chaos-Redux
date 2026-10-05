@@ -1,0 +1,94 @@
+{
+  "scenarioSetId": "015_utopia_probability_release_2026_10_05",
+  "description": "Declared custom pool comparison inputs. One selection is evaluated per explicit launch request; no repeated cadence or sequence claim is made.",
+  "beforeManifest": {
+    "schemaVersion": "1.0",
+    "id": "utopia_prefire_synthetic_before",
+    "description": "Synthetic one-draw pool model mapped to the before selector snapshot. Ticket values are declared scenario inputs, not source-derived world weights. This before model does not apply the later opening-presented gate.",
+    "selection": {
+      "mode": "categorical_weighted",
+      "cadence": "timer",
+      "timerMinDays": 0,
+      "timerMaxDays": 0,
+      "rounding": "exact"
+    },
+    "state": {
+      "synthetic_human_ticket_weight": 25,
+      "synthetic_ai_a_ticket_weight": 25,
+      "synthetic_ai_b_ticket_weight": 60,
+      "synthetic_approved_tree_ticket_weight": 30
+    },
+    "candidates": [
+      {
+        "id": "SYN_HUMAN_GENERIC",
+        "category": "human_generic",
+        "weight": "state.synthetic_human_ticket_weight",
+        "eligibleWhen": "state.class_one_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_AI_GENERIC_A",
+        "category": "ai_generic",
+        "weight": "state.synthetic_ai_a_ticket_weight",
+        "eligibleWhen": "state.class_one_pool_nonempty == false and state.class_two_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_AI_GENERIC_B",
+        "category": "ai_generic",
+        "weight": "state.synthetic_ai_b_ticket_weight",
+        "eligibleWhen": "state.class_one_pool_nonempty == false and state.class_two_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_APPROVED_LIGHT_AI",
+        "category": "approved_registry",
+        "weight": "state.synthetic_approved_tree_ticket_weight",
+        "eligibleWhen": "state.class_one_pool_nonempty == false and state.class_two_pool_nonempty == false and state.class_three_pool_nonempty == true and state.manual_approval_flag_present == true and state.mature_generic_tree == false"
+      }
+    ],
+    "transitions": []
+  },
+  "afterManifest": {
+    "schemaVersion": "1.0",
+    "id": "utopia_prefire_synthetic_after",
+    "description": "Synthetic one-draw pool model mapped to the current fail-closed candidate gate and opening-presented guard. Ticket values are declared scenario inputs, not source-derived world weights.",
+    "selection": {
+      "mode": "categorical_weighted",
+      "cadence": "timer",
+      "timerMinDays": 0,
+      "timerMaxDays": 0,
+      "rounding": "exact"
+    },
+    "state": {
+      "synthetic_human_ticket_weight": 25,
+      "synthetic_ai_a_ticket_weight": 25,
+      "synthetic_ai_b_ticket_weight": 60,
+      "synthetic_approved_tree_ticket_weight": 30
+    },
+    "candidates": [
+      {
+        "id": "SYN_HUMAN_GENERIC",
+        "category": "human_generic",
+        "weight": "state.synthetic_human_ticket_weight",
+        "eligibleWhen": "state.selector_open == true and state.class_one_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_AI_GENERIC_A",
+        "category": "ai_generic",
+        "weight": "state.synthetic_ai_a_ticket_weight",
+        "eligibleWhen": "state.selector_open == true and state.class_one_pool_nonempty == false and state.class_two_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_AI_GENERIC_B",
+        "category": "ai_generic",
+        "weight": "state.synthetic_ai_b_ticket_weight",
+        "eligibleWhen": "state.selector_open == true and state.class_one_pool_nonempty == false and state.class_two_pool_nonempty == true"
+      },
+      {
+        "id": "SYN_APPROVED_LIGHT_AI",
+        "category": "approved_registry",
+        "weight": "state.synthetic_approved_tree_ticket_weight",
+        "eligibleWhen": "false"
+      }
+    ],
+    "transitions": []
+  }
+}

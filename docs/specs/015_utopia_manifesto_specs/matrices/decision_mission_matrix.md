@@ -2,9 +2,14 @@
 
 All names are working labels, not final localisation.
 
+## Accepted implementation disposition, 2026-10-05
+
+The current survey and four military-growth payment contracts below supersede the earlier fee suggestions in these rows. The parent accepted them in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md`, and the current decision and localisation source audit is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_release_audit_2026-10-05.md`. Costs are dynamic where the current source uses the foundation growth quote.
+
 | Family | Action or objective | Typical owner and target | Main cost | Duration | Success | Partial success | Failure |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Survey | Count Houses and Hands | founder country | civilian burden, transport | one season or more | initializes Ledger | incomplete regional data | disputed figures and project risk |
+| Survey | Count Houses and Hands | founder country | Political Power, trains, and Motorized Equipment at start | 90 to 210 days, with an early finish only for the paid founding survey after its focus completes | initializes and refreshes Common Provision | incomplete regional data | disputed figures and project risk |
+| Survey | Recount the Country | founder country | Political Power, trains, and Motorized Equipment at start using the current medium quote | full prepared term, 90 to 210 days, with no focus-triggered early finish | replaces the survey totals with current conditions | incomplete regional data | disputed figures and project risk |
 | Survey | Publish the Accounts | founder country | political embarrassment | immediate with cooldown | Concord and integrity | selected publication | concealment pressure |
 | Stores | Establish Capital Store | capital region | construction, tools, trains | medium | first reserve band | store opens understocked | credibility loss |
 | Stores | Fill Seasonal Reserve | founder country | consumer output, imports | medium | stable reserve | fragile reserve | shortfall event |
@@ -45,9 +50,10 @@ All names are working labels, not final localisation.
 | League | Invite to League | candidate country | credibility and autonomy guarantee | negotiation | membership | observer status | refusal |
 | League | Request Sponsorship | major sponsor candidate | political capital and public terms | variable negotiation | technical sponsorship or exact sponsor guarantee | no partial installation | refusal or silence |
 | League | Prove It Is Not a Mask | founder and members | real aid and restraint | long | cohesion and formation proof | one member dissatisfied | exits and sponsor pressure |
-| Defense | Raise Citizen Watch | founder districts | manpower and equipment | medium | capped militia | understrength watch | wasted equipment |
-| Defense | Form Engineer Companies | founder army | army XP, support equipment, trucks | medium | repair capability | limited cadres | delay |
-| Defense | Hire Auxiliaries | foreign source | equipment, convoys, payment | contract | temporary force | smaller contract | no force or bad terms |
+| Defense | Raise Citizen Watch | founder districts | Four dynamic formation costs: Manpower, Infantry Equipment, Support Equipment, and Army XP, charged only after successful deadline completion | dynamic training term | capped militia | understrength watch | no formation debit if creation fails |
+| Defense | Form Engineer Companies | founder army | Four dynamic formation costs: Manpower, Infantry Equipment, Support Equipment, and Army XP, charged only after successful deadline completion | dynamic training term | repair capability | limited cadres | no formation debit if creation fails |
+| Defense | Hire Auxiliaries | foreign source | Four dynamic formation costs plus a 50-unit Support Equipment gift to the selected partner; combined Support stock is required before either charge | immediate, one contract | temporary force | no partial formation | no force or bad terms |
+| Defense | Reinforce Post-Formation Defense | Commonwealth army | Four dynamic formation costs: Manpower, Infantry Equipment, Support Equipment, and Army XP, paid immediately | immediate, once | one Commonwealth Guard formation | no partial formation | no formation debit if creation fails |
 | Defense | End the Contract | auxiliary force | settlement or demobilization cost | medium | clean demobilization | partial integration | mutiny or banditry |
 | Formation | Prove the Commonwealth | founder and network | sustained thresholds | long | formation decision available | one missing proof | crisis or delay |
 

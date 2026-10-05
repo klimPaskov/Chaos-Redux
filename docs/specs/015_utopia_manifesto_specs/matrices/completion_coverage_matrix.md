@@ -2,34 +2,40 @@
 
 ## Purpose and status
 
-This matrix records the frozen completed Event 15 surface and the evidence that supports it. It replaces the earlier planning-only coverage checklist. All 63 data rows are closed: 11 runtime-inventory rows, 30 system-proof rows, 13 visual-proof rows, and 9 closing-gate rows. The fresh read-only whole-event audit passes in `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`, with 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2`.
+This matrix records the frozen July 18 Event 15 surface and its dated evidence. Its 63 closed data rows describe that snapshot only: 11 runtime-inventory rows, 30 system-proof rows, 13 visual-proof rows, and 9 closing-gate rows. The July whole-event audit in `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`, has a 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2`. This is a historical PASS, not the October release verdict.
 
-## Runtime inventory
+## Current review, 6 October 2026
 
-| Surface | Exact current inventory | Primary implementation evidence | Proof state |
+An Event 015 source inventory on 2026-10-06 counted 108 event definitions (105 country events and three news events), 11 English localisation files, 124 focuses with 11 navigation shortcuts, 121 decisions, 44 missions, nine categories, 50 staged spirits, 24 characters, 14 achievements, and five cosmetic identities. A non-header key-line inventory on the same date counted 2,645 English localisation keys with no exact or case-folded duplicates in that inventory.
+Current owner handoffs and the read-only completion handoff are indexed under `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/`. Parent-accepted repairs and their acceptance basis are recorded in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md`.
+The July PASS rows below describe only their cited frozen audit. They do not establish current MCP, visual, probability, or live-game proof.
+
+## Frozen audit inventory
+
+| Surface | Frozen July inventory | Primary implementation evidence | July 18 frozen status |
 | --- | ---: | --- | --- |
 | Event definitions | 106, including 12 hidden definitions | `events/015_utopia_manifesto.txt` | implemented, with all hidden definitions using documented `hidden = yes` |
-| National focuses | 124 | `common/national_focus/015_utopia_manifesto_focus_tree.txt` | focus re-audit passes |
-| Decisions | 121 total, 105 main, 15 evolution, 1 prefire | `common/decisions/015_utopia_manifesto_decisions.txt`, evolution and prefire decision files | current decision and mission re-audit PASS |
-| Missions | 44 total, 40 main, 1 evolution, 3 prefire | Event 15 decision files | current duration, outcome, cancellation, AI, lifecycle, and public-parity re-audit PASS |
+| National focuses | 124 | `common/national_focus/015_utopia_manifesto_focus_tree.txt` | July focus re-audit passed |
+| Decisions | 121 total, 105 main, 15 evolution, 1 prefire | `common/decisions/015_utopia_manifesto_decisions.txt`, evolution and prefire decision files | July decision and mission re-audit PASS |
+| Missions | 44 total, 40 main, 1 evolution, 3 prefire | Event 15 decision files | July duration, outcome, cancellation, AI, lifecycle, and public-parity re-audit PASS |
 | Decision categories | 9 | `common/decisions/categories/015_utopia_manifesto_categories.txt` | implemented |
 | Ideas | 50 definitions, 12 unique pictures | `common/ideas/015_utopia_manifesto_ideas.txt`, `interface/015_utopia_manifesto.gfx` | implemented |
-| Characters | 24 total | `common/characters/015_utopia_manifesto_characters.txt` | current country-package re-audit PASS |
-| Institutional entries | 8 founder and successor entries sharing 4 people-free built-in ImageGen institutional tableaux | Event 15 character file and portrait registry | current people-free ImageGen tableau, registration, and country-package checks PASS |
-| Advisors | 16 | Event 15 character file, advisor portrait registry, canonical-template migration handoff, and installed-validation report | current ImageGen source identity, canonical template composition, registration, independent visual approval, and decoded runtime equality checks PASS |
+| Characters | 24 total | `common/characters/015_utopia_manifesto_characters.txt` | July country-package re-audit PASS |
+| Institutional entries | 8 founder and successor entries sharing 4 people-free built-in ImageGen institutional tableaux | Event 15 character file and portrait registry | July people-free ImageGen tableau, registration, and country-package checks PASS |
+| Advisors | 16 | Event 15 character file, advisor portrait registry, canonical-template migration handoff, and installed-validation report | July ImageGen source identity, canonical template composition, registration, independent visual approval, and decoded runtime equality checks PASS |
 | Achievements | 14 | `common/achievements/chaos_redux_achievements.txt` | implemented with active, complete, and failed icon variants |
-| Cosmetic identities | 5 | `common/countries/cosmetic.txt`, Event 15 formation effects, route flags | current ImageGen flag, formation-timing, and country-package checks PASS |
+| Cosmetic identities | 5 | `common/countries/cosmetic.txt`, Event 15 formation effects, route flags | July ImageGen flag, formation-timing, and country-package checks PASS |
 
-## System proof
+## Frozen July 18 system proof
 
-| Surface | Implemented invariant | Evidence | Current gate |
+| Surface | Implemented invariant | July evidence | July 18 frozen status |
 | --- | --- | --- | --- |
 | Event classification and entry | Event 15 uses the fire-once entry root `chaosx.nr15.1`, with category registration, recipient selection, player acceptance, and rejection cleanup | Event file, category registration, on-actions, English localisation | implemented |
 | Replacement focus tree | One 124-focus tree covers opening, four public routes, hidden humanist recovery, stores, callings, districts, island variants, defense, league, Necessary Ground, stewardship, crisis, formation, and post-formation play | focus source and `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/focus_tree_completion_post_ui_reaudit_2026_07_15.md` | PASS |
 | Focus AI | Every focus has an AI block, route mutexes and shared-lane reachability were reviewed | focus source and focus re-audit | PASS, bounded static and existing render evidence |
 | Paid focus atomicity | All 34 paid focuses, split into 26 institutional and 8 military, explicitly cancel when invalid, refresh and recheck their live tier price, deduct before proof or deployment, and keep the full reward tail behind the matching success guard. ROOT and FROM state-control cost refreshes sit outside the Fallout-only callback guard | focus source, on-actions source, root structural parser, current focus/country/decision/localisation reports | PASS, exact-snapshot static proof with no unguarded tail |
 | Living Ledger | Displayed Need, Plenty, Concord, and Choice or Assignment are rebuilt as clamped base plus durable policy plus current live contributions. Repeated refreshes are idempotent | Event 15 scripted effects, constants, ledger GUI | implemented |
-| Ledger GUI | The decision category attaches `scripted_gui = utopia_manifesto_ledger_scripted_gui`, with 46 audited GUI sprite references | category source, ledger GUI, current asset report and `docs/assets/015_utopia_manifesto/final_icon_frame_audit.json` | implemented |
+| Ledger GUI | The decision category attaches `scripted_gui = utopia_manifesto_ledger_scripted_gui`, with 46 GUI sprite references in the July audit | category source, ledger GUI, and historical `final_icon_frame_audit.json` from the removed asset workspace | July source and asset audit passed; October production render remains unresolved |
 | Callings | Six families use structural pressure, raw and effective durable adjustment, temporary adjustment, present severity, uncovered severity, and hysteresis | Event 15 effects, triggers, constants, decisions | implemented |
 | Evolution obligations | All 15 evolution choices have a paid action and a shared-obligation consumer that reaches a second Event 15 system. Setup is idempotent | evolution decisions, evolution effects, evolution implementation handoff | implemented |
 | Districts | Four ordinary suitability roles use state evidence. Build and charter stages track three obligations, partial and failure outcomes, and route-specific charters. The Ledger reports the active state and role through 7 district-role cards and 6 district-state overlays paired on Stores and Settlements | district decisions, decision effects, triggers, scripted localisation, ledger GUI | implemented |
@@ -48,16 +54,16 @@ This matrix records the frozen completed Event 15 surface and the evidence that 
 | Decision AI | All 121 decisions contain `ai_will_do` | decision source and decision audit evidence | implemented |
 | Ideas | Three concurrent idea slots separate administration, social order, and institutions. All 50 definitions have localisation and registered pictures | idea source, English localisation, idea GFX | implemented |
 | Country identity | Five route identities retain the original tag and apply route flag, name, people-free institution, leader, and policy packages. League and charter relations have exact reverse-index cleanup | country files, cosmetic definitions, effects, character files, current country report | PASS |
-| Localisation | Nine Event 15 English files contain 2,480 quoted definitions, 2,480 exact unique keys, and 2,480 case-folded unique keys. No duplicate, missing, or unaccounted orphan key remains. Current proof covers 106 events including 12 hidden, 124 focuses, 121 decisions, 44 missions, 9 categories, 50 ideas, 24 characters, 14 achievements, 5 identities, 5 super-event slots, 25 Ledger GUI references, and 8 dynamic formation names | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17` | PASS after two idea-ID collision corrections and six prose-definition normalizations |
+| Localisation | The July 18 audit covered nine Event 15 English files and 2,480 quoted definitions with exact and case-folded uniqueness across its frozen surfaces | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17` | July PASS after two idea-ID collision corrections and six prose-definition normalizations |
 | Event log and details | Event 15 name, recipient actor, details, evolution details, and history mappings are wired to the implemented event | event log effects, details files, scripted localisation, English localisation | implemented |
 | Super-events | Route outcomes use slots 96 through 100 with five distinct 457x328 images, final route text, and audio ID 57 | super-event effects, scripted localisation, GFX, English localisation | implemented |
 | Super-event audio | All five route presentations share the unique Event 15 edit `super_event_57_utopia_has_neighbors`, derived from the CC0 Musopen performance of Brahms, Symphony No. 3, third movement | Event 15 audio research, package ledger, and sound registry | implemented |
 | Achievements | Fourteen route, conduct, reserve, district, defense, crisis, and association achievements have durable evidence and disqualifier tracking | achievements file, Event 15 effects and on-actions | implemented |
 | No recurring global scan | Event 15 maintenance uses actor-scoped event pulses and narrow affected-country hooks. It does not add daily, weekly, or monthly world iteration | Event 15 event and on-action sources | implemented |
 
-## Visual proof
+## Frozen July visual proof
 
-| Family | Exact audit evidence | Proof state |
+| Family | July audit evidence | July 18 frozen status |
 | --- | --- | --- |
 | Focus icons | 124 usages, 74 unique sprites | PASS |
 | Decision map | 174 mapped rows, 9 categories, 121 decisions, 44 missions | PASS |
@@ -65,7 +71,7 @@ This matrix records the frozen completed Event 15 surface and the evidence that 
 | Idea icons | 50 idea assignments, 12 unique sprites | PASS |
 | Achievement icons | 14 achievements, 42 active variants | PASS |
 | Scripted GUI | 46 unique sprite references | PASS |
-| Static Ledger families | 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays | PASS |
+| Static Common Provision families | 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays | July PASS |
 | Required animation families | Ledger seal 8, Need 8, Choice 8, Assignment 8, and formation 10 genuine source frames, with processed frames, sheets, previews, static fallbacks, and GFX wiring | PASS |
 | Additional runtime animation | Reserve fill 8 genuine source frames, outside the required-family count | PASS |
 | Sprite registry | 459 base definitions plus 5 route-super-event definitions, 464 total and 0 duplicate sprite names | PASS |
@@ -73,25 +79,25 @@ This matrix records the frozen completed Event 15 surface and the evidence that 
 | Institutional portraits | Four people-free built-in ImageGen, vanilla-HOI4-style institutional tableaux at 156x210 serve the eight founder and successor entries. Empty chambers, council tables, ledgers, apparatus, stores, seals, and route emblems replace human portraits | PASS |
 | Advisor portraits | Sixteen distinct 65x67 dossier cards use independent fictional ImageGen portrait masters plus separate generated frame and paper/seal overlays. The frozen v5 processor only crops, grades, angles, derives alpha shadows, composites the generated layers, validates, and exports; it does not draw the card. All 16 exact candidates passed producer-independent native-size and 4x review against six frozen vanilla references. Their package/runtime DDS files are byte-identical and decode pixel-identically to the approved PNGs | PASS |
 
-Current visual audit authority is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693`. The July 16 requirement report and crosswalk remain supporting evidence for unchanged families. `docs/assets/015_utopia_manifesto/decision_icon_mapping.csv`, SHA-256 `757ec0c51edca25b5453899f28816a3d34e8a5b330be268bed6ff4d27e0abcc0`, confirms 9 category, 121 decision, and 44 mission rows, for 174 mapped rows and 165 gameplay assignments. The decision-mapping subsection of `final_icon_frame_audit.json` remains frozen at the older 173/43/164 snapshot and is superseded for those counts only. Its animation and Ledger-binding evidence remains separately usable.
+The July visual audit is preserved in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`. The July 16 report and 24-row crosswalk remain historical evidence only. The October 6 source inventory counts 9 category, 121 decision, and 44 mission icon assignments in the current definition files, for 174 icon-bearing items and 165 gameplay assignments. The former `decision_icon_mapping.csv` and `final_icon_frame_audit.json` under `docs/assets/015_utopia_manifesto/` are absent. The July animation and Common Provision sprite-binding records remain historical claims and cannot establish current source-frame lineage or current GUI appearance.
 
-Current integrated source evidence: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/direct_integrated_validation_2026_07_15.md`.
+Historical integrated source evidence: `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/direct_integrated_validation_2026_07_15.md`.
 
-## Closing gates
+## July 18 closing gates, historical
 
-| Gate | State | Required proof |
+| Gate | July 18 frozen state | Dated evidence |
 | --- | --- | --- |
-| Current focus-tree snapshot | PASS after one narrow P2 token correction, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/focus_final_audit_2026_07_18.md`, SHA-256 `29ffa7c45d601bde8c90a4a717a4b19f4bcccab2ba92f0a832f232a499a043fa` |
-| Current English-localisation completion snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17`; 2,480 exact and case-folded unique Event-owned definitions |
-| Current country-package and reverse-link snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/country_final_audit_2026_07_18.md`, SHA-256 `ada264c49b233b0fb287693a5e685d57c0ee81eb91924b9c5b03bc86a3f72b1f`; frozen runtime-text manifest `F8E5F75FF910C753A8D1F2357933CA58931BE200E8CD6A03841FFD85B1A301E9` |
-| Current decision-and-mission snapshot | PASS, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_final_audit_2026_07_18.md`, SHA-256 `a5bb24e63977f5185872b1b11e0c054524a50816d1096a29a34cbaf20661826f` |
-| Spreadsheet and catalog alignment | PASS, no Event 15 workbook change required | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_current_hash_followup_2026_07_18.md`, SHA-256 `e0ba36c5805e0aca01b6bf74fec4f6dc29a24aecf4a3ec36382c334e5c741bd1`; current workbook SHA-256 `ed52b1f3ee3f0e602b3cc6a4b5fd7bc0d340445a3c085c6c8531fbcd2c0430f4`; `Events!A16:M16` passes 13/13 parity with normalized row SHA-256 `e330489603bd739e64fc356b8bb79498c4a34d54433f28cda4c2ba459dadab1e`. The older spreadsheet and localisation audit workbook snapshot `729e48a3135094d210b70e74ce3694ff0b66dbd5d2bc448051db931a41f4bd80` is pre-drift but Event 15-row-equivalent |
+| July focus-tree snapshot | PASS after one narrow P2 token correction, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/focus_final_audit_2026_07_18.md`, SHA-256 `29ffa7c45d601bde8c90a4a717a4b19f4bcccab2ba92f0a832f232a499a043fa` |
+| July English-localisation completion snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/localisation_final_audit_2026_07_18.md`, SHA-256 `8d6e12652670782aef40259c263e18d306989d9134e7059b4e732dc4bc4a0e17`; 2,480 exact and case-folded unique Event-owned definitions |
+| July country-package and reverse-link snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/country_final_audit_2026_07_18.md`, SHA-256 `ada264c49b233b0fb287693a5e685d57c0ee81eb91924b9c5b03bc86a3f72b1f`; frozen runtime-text manifest `F8E5F75FF910C753A8D1F2357933CA58931BE200E8CD6A03841FFD85B1A301E9` |
+| July decision-and-mission snapshot | PASS, no open P0 through P3 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/decision_final_audit_2026_07_18.md`, SHA-256 `a5bb24e63977f5185872b1b11e0c054524a50816d1096a29a34cbaf20661826f` |
+| July spreadsheet and catalog follow-up | PASS for its dated row snapshot | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/spreadsheet_current_hash_followup_2026_07_18.md`, SHA-256 `e0ba36c5805e0aca01b6bf74fec4f6dc29a24aecf4a3ec36382c334e5c741bd1`; July workbook SHA-256 `ed52b1f3ee3f0e602b3cc6a4b5fd7bc0d340445a3c085c6c8531fbcd2c0430f4`; `Events!A16:M16` passed 13/13 parity with normalized row SHA-256 `e330489603bd739e64fc356b8bb79498c4a34d54433f28cda4c2ba459dadab1e` |
 | Formal improvement-loop closure | STOP, closed with no unresolved accepted addendum | `docs/plans/015_utopia_manifesto_plans/015_utopia_manifesto_final_improvement_loop_closure_2026-07-18.md`, SHA-256 `deaef9e886974048fa05c61c6cb2ca377bf4f0b43637a6476bf544a371c9a268` |
-| Current complete asset-package snapshot | PASS, no open P0 through P2 finding | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693` |
+| July asset-package snapshot | PASS, no open P0 through P2 finding in that snapshot | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md` |
 | Independent documentation audit | PASS for the pre-final documentation gate | `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/documentation_final_audit_2026_07_18.md` |
-| Final event-completion audit | PASS, no open P0 through P3 finding, fallback, simplification, omission, blocker, or queued accepted plan | `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`; 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2` |
+| July event-completion audit | PASS in the frozen July source snapshot | `docs/plans/015_utopia_manifesto_plans/completion_audit.md`, SHA-256 `5a90b637478872d6f960c7e67630e0efd0fda3e17869bad2c094473596a12183`; 53-file runtime-text manifest SHA-256 `395873f4821fdf159cfb2f6edb9eecc0790a724f151cb0df62f89b969649d4b2` |
 
-All 63 rows are closed. `docs/plans/015_utopia_manifesto_plans/completion_audit.md` is the current whole-event PASS authority. The former FAIL snapshot previously stored at that path, SHA-256 `be9d0be100eed6ccae223ed60db7ce36a07dc2f3eb38442b099799feab40a093`, remains superseded historical evidence for its 43-mission inventory and missing Choice/Assignment finding.
+All 63 rows were closed for the July 18 snapshot. `completion_audit.md` is not the current release verdict. The former FAIL snapshot previously stored at that path, SHA-256 `be9d0be100eed6ccae223ed60db7ce36a07dc2f3eb38442b099799feab40a093`, remains superseded historical evidence for its 43-mission inventory and missing Choice/Assignment finding. The October source and release status is recorded in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/final_completion_release_audit_2026-10-05.md`, with a separate parent release report pending.
 
 ## Historical P2 dispositions
 

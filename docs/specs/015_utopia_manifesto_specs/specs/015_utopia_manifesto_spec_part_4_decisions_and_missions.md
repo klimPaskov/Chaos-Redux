@@ -100,9 +100,8 @@ Requirements:
 
 Costs:
 
-- temporary civilian factory burden
-- small train or truck commitment for larger countries
-- temporary reduction in construction speed or administrative output
+- The paid founding decision charges Political Power, Trains, and Motorized Equipment at survey start using the current small quote.
+- No additional resource fee is charged at survey completion.
 
 Success:
 
@@ -122,6 +121,8 @@ Failure:
 
 Used after major war damage, annexation, release, migration, or route change.
 
+The paid recount charges Political Power, Trains, and Motorized Equipment at survey start using the current medium quote. It runs its full prepared survey term and refreshes the four values at completion. It does not inherit the founding-survey early-completion condition from the opening focus.
+
 Dynamic cost factors:
 
 - number of controlled states
@@ -131,6 +132,10 @@ Dynamic cost factors:
 - planner route bonuses
 
 The action should have a cooldown and should not be spammed to fish for favorable values.
+
+### Accepted survey lifecycle disposition, 2026-10-05
+
+The paid founding survey sets a completion-pending receipt that allows `utopia_manifesto_count_houses_and_hands` to finish that same mission early after the focus records its completion. Later paid recounts do not set the receipt, so the shared focus condition cannot complete them early. Success, failure, and route-wide decision cleanup clear the receipt. The first survey report and evolved-shores follow-up retain their one-time guards. This accepted timing contract is recorded in `agent_decisions_2026-10-05.md` and the current decision release handoff. The source handoff documents the call sites. Live mission-update timing is not established here.
 
 ### Decision: Publish the Accounts
 
@@ -1192,9 +1197,10 @@ Failure:
 
 Costs:
 
-- manpower
-- infantry equipment
-- training time
+- Dynamic Manpower, Infantry Equipment, Support Equipment, and Army XP formation costs.
+- The decision requires the formation stock at training start, but charges nothing up front.
+- It charges the four costs only when one formation is successfully created at the mission deadline.
+- Failed or understrength completion does not debit the formation resources.
 
 Benefits:
 
@@ -1209,9 +1215,10 @@ Limits:
 
 Costs:
 
-- support equipment
-- army experience
-- trucks
+- Dynamic Manpower, Infantry Equipment, Support Equipment, and Army XP formation costs.
+- The decision requires the formation stock at training start, but charges nothing up front.
+- It charges the four costs only when one formation is successfully created at the mission deadline.
+- No Motorized Equipment or truck fee is charged.
 
 Benefits:
 
@@ -1221,10 +1228,11 @@ Benefits:
 
 Costs:
 
-- equipment
-- convoys
-- treasury or civilian factory payment
-- foreign leverage
+- Dynamic Manpower, Infantry Equipment, Support Equipment, and Army XP formation costs.
+- A 50-unit Support Equipment gift is transferred to the selected partner.
+- The affordability gate checks the formation Support cost and gift together before charging either obligation.
+- No Political Power, Motorized Equipment, or Convoy fee is charged.
+- The accepted partner must remain at peace and the formation must retain a valid deployment state and capacity at final dispatch.
 
 Benefits:
 
@@ -1238,6 +1246,14 @@ Risks:
 - exported casualties
 
 The decision should not recruit infinite units from a nonexistent manpower source.
+
+### Decision: Reinforce Post-Formation Defense
+
+The Commonwealth Guard uses the same dynamic four-resource formation cost as the other military-growth actions. Manpower, Infantry Equipment, Support Equipment, and Army XP are charged immediately when one valid Guard formation is created. No Political Power fee is charged.
+
+### Accepted military-growth payment disposition, 2026-10-05
+
+The four formation actions use current foundation growth quotes, which scale through the existing dynamic pricing model. Watch and Engineer defer payment until successful mission completion. Auxiliary and the post-formation Guard pay immediately. These accepted G6 costs remove redundant spendable fees while retaining the four formation resources, capacity limits, templates, and timing rules. The decision handoff records the seven additional cost-bundle corrections and exact fee matrix. The decision and localisation handoffs report source parity. Engine affordability boundaries remain a separate qualification check.
 
 ### Mission: End the Contract
 

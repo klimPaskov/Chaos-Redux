@@ -2,7 +2,7 @@
 
 ## Recorded package status
 
-`utopia_manifesto` is Event 15, a Minor Fire-Once country transformation event. Its entry is `chaosx.nr15.1`. The live package contains 106 Event 15 event definitions, a 124-focus replacement tree, 121 decisions, 44 missions, 9 decision categories, 50 staged ideas, 24 characters, 14 achievements, and five final cosmetic identities.
+`utopia_manifesto` is Event 15, a Minor Fire-Once country transformation event. Its entry is `chaosx.nr15.1`. The live package contains 108 Event 15 event definitions, a 124-focus replacement tree, 121 decisions, 44 missions, 9 decision categories, 50 staged ideas, 24 characters, 14 achievements, and five final cosmetic identities.
 
 This document retains the package implementation record. Source script owns runtime implementation, while design acceptance requires its recorded decision basis under `docs/specs/015_utopia_manifesto_specs/`. Dated handoffs under `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/` are evidence snapshots. The [documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-06_events_015_018_documentation.md) records current source checks, archive gaps, and validation limits.
 
@@ -11,6 +11,16 @@ The retained completion record states that Event 15 was complete against its acc
 ## Opening and recipient selection
 
 Automatic entry is registered through the fire-once event registry with the Event 15 script constant. Selection prefers an eligible player and otherwise uses a conservative weighted minor-country pool. The target gates reject major powers, strong industrial states, invalid or capitulated countries, nonhuman and special Chaos actors, active country-replacement packages, and countries whose focus package is not safe to replace.
+Current recipients use `generic_focus`.
+A manual light-tree approval flag alone is insufficient until a literal original-tree capture and return mapping is registered.
+This protects unique content and keeps repeal from leaving a country on a disabled replacement tree.
+
+Manual requests through Settings, Event Log and forced clusters use the same safe recipient selection.
+A human requester whose country is not selected receives one report naming the recipient.
+If no suitable country remains, or the manifesto has already appeared, the requester receives one explanation instead of a successful history entry.
+An eligible human recipient receives the manifesto itself without a redundant destination report.
+A single event-owned refusal consumes the shared manual-failure acknowledgement, so the fallback does not send a second report.
+An Event Log bulk request uses the shared one-report batch failure hook instead of an additional Utopia refusal.
 
 The selected country receives a real choice.
 
@@ -22,9 +32,9 @@ The selected country receives a real choice.
 
 The event history name is `Utopia Manifesto`. The Event Details entry is `chaosx.events_log.window.event_details.utopia_manifesto`, with the latest valid actor recorded for the event log. All twelve hidden Event 15 definitions use documented `hidden = yes`. The `.116`, `.150`, `.163`, `.164`, `.165`, `.205`, `.207`, `.212`, `.214`, `.216`, `.218`, and `.220` declarations use `hidden = yes` rather than `hide_window`.
 
-## Commonwealth Ledger
+## Common Provision
 
-The Commonwealth Ledger is the central state model. The visible axes are:
+Common Provision is the public board for the central state model. The visible axes are:
 
 - Need
 - Plenty
@@ -41,9 +51,9 @@ displayed total = base + durable policy record + current country contributions
 
 The result is clamped from 0 to 100. Current contributions are recalculated from the Event 15 actor's industry, infrastructure, war, occupation, capital condition, institutions, subject status, named pressure, and loss of core territory recorded at acceptance. A refresh replaces the previous live contribution rather than adding it again, so repeated refreshes with unchanged inputs are idempotent.
 
-Ledger refreshes occur through actor-scoped entry points such as acceptance, the National Survey, Ledger-changing decisions and events, the Recount button, the self-scheduling Event 15 pulse, and relevant war, peace, capitulation, annexation, peace-conference, and state-control hooks. Event 15 does not use a daily, weekly, or monthly world scan.
+Provision refreshes occur through actor-scoped entry points such as acceptance, the National Survey, Ledger-changing decisions and events, the Recount button, the self-scheduling Event 15 pulse, and relevant war, peace, capitulation, annexation, peace-conference, and state-control hooks. Event 15 does not use a daily, weekly, or monthly world scan.
 
-The Ledger window is defined by `interface/015_utopia_manifesto_ledger.gui` and `common/scripted_guis/015_utopia_manifesto_scripted_gui.txt`. It is attached to `utopia_manifesto_ledger_category` through:
+The Common Provision window is defined by `interface/015_utopia_manifesto_ledger.gui` and `common/scripted_guis/015_utopia_manifesto_scripted_gui.txt`. It is attached to `utopia_manifesto_ledger_category` through:
 
 ```txt
 scripted_gui = utopia_manifesto_ledger_scripted_gui
@@ -90,7 +100,20 @@ The island branch has five geographic variants:
 
 The leased-island path uses a fixed foreign lease, renewal choices, expiry, return, and paid replanning. It does not grant a free island.
 
+## Incident reports
+
+The recurring country pulse maintains the system and considers fresh story incidents.
+Reading rooms, missing workers, surplus grain, auxiliary bills, store shortfalls and the five institutional contradictions each produce one report in a country campaign.
+A stewardship shortfall produces one report per active Need case; closing that case clears its report guard.
+An already reported condition no longer blocks the next eligible incident, and an empty incident pass schedules maintenance without a substitute popup.
+Repeated unchanged conditions therefore do not repeatedly grant or remove policy points.
+
 ## Decisions and missions
+
+Common Provision and the paid founding survey are available immediately after acceptance.
+The opening focus retains its narrative route and rewards.
+A paid first survey can finish when the focus completes the same survey; a later recount follows its own full duration.
+The first survey and evolved-shores reports retain their existing one-time guards.
 
 The current operational inventory is:
 
@@ -193,7 +216,7 @@ Auxiliaries use paid sourcing, capped formation, dependency, incidents, betrayal
 
 ## Evolutions and event families
 
-The 106 Event 15 definitions cover the opening chain, founding incidents, calling incidents, provision incidents, settlement and island incidents, Necessary Ground, stewardship, the League, consentful sponsorship and wartime League responses, military and auxiliaries, constitutional contradictions, bilateral responses, five evolutions, five evolved openings, foreign reactions, aftermath, the actor pulse, three public news milestones, two hidden founder-rooted annexation bridges, one hidden founder-rooted state-control bridge, and the hidden association-review reservation bridge. Twelve definitions use `hidden = yes`. Visible `.221` carries the association review after `.207` releases the reserved slot.
+The 108 Event 15 definitions cover the opening chain, founding incidents, calling incidents, provision incidents, settlement and island incidents, Necessary Ground, stewardship, the League, consentful sponsorship and wartime League responses, military and auxiliaries, constitutional contradictions, bilateral responses, five evolutions, five evolved openings, foreign reactions, aftermath, the actor pulse, three public news milestones, two hidden founder-rooted annexation bridges, one hidden founder-rooted state-control bridge, and the hidden association-review reservation bridge. Twelve definitions use `hidden = yes`. Visible `.221` carries the association review after `.207` releases the reserved slot.
 
 The five evolutions are:
 
@@ -218,7 +241,9 @@ The 24-character package contains:
 
 Institutional leaders use people-free built-in ImageGen, vanilla-HOI4-style `156x210` tableaux: empty chambers, council tables, ledgers, standards apparatus, stores, seals, and route emblems represent the governing body without depicting a person, face, crowd, silhouette, statue, or portrait. The sixteen advisors use distinct vanilla-HOI4-style `65x67` dossier cards. Each begins with an independent fictional ImageGen portrait master. The complete source is resized to the native advisor canvas and uniformly fitted without warping beneath the unchanged canonical `advisor_template.png`. The template is applied once as the top layer. Advisor cards are not square portraits and are not resized institutional leader portraits. Focused provenance validation requires every one of the sixteen portrait masters to exactly match its recorded built-in ImageGen object before processing is accepted.
 
-Formation preserves the original country tag while applying one of five cosmetic identities. Native party names are not overwritten. Four institutional routes install a governing body and later successor body. Practical Commonwealth preserves the saved constitutional group and exact surviving leader. Teardown restores the saved political group, exact surviving leader with the saved ideology subtype, and original election permission before dropping the cosmetic identity.
+Formation preserves the original country tag while applying one of five cosmetic identities. Native party names are not overwritten. Four institutional routes install a governing body and later successor body. Practical Commonwealth preserves the saved constitutional group and exact surviving leader. Teardown restores the saved political group, exact surviving leader with the saved ideology subtype, and original election permission only while Event 15 or its original leader still owns the government.
+A foreign successor and its cosmetic identity are preserved.
+A recorded generic origin is reloaded only while the active tree still belongs to Event 15.
 
 The 14 achievements are the exact IDs recorded in `docs/specs/015_utopia_manifesto_specs/matrices/achievement_matrix.md`. Each has active base, grey, and not-eligible variants, for 42 current achievement images.
 
@@ -371,3 +396,11 @@ These retained recommendations do not authorize new design or implementation thr
 - Preserve the passing Necessary Ground scenario matrix as the regression baseline for later case-system changes.
 - Preserve the mandatory GUI inspection, render, and matching before-and-after evidence for authorized Ledger or super-event layout work. Unavailable artifact storage leaves the affected visual evidence unresolved and prevents a visual completion claim.
 - Extend route-specific AI tuning only after observed balance across small coastal, landlocked, island, subject, and war-pressured recipients.
+
+## 5 October 2026 release review
+
+The current source review and accepted repair decisions are recorded in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md` and the matching release audit handoffs.
+The event contains 108 definitions and 11 English localisation files, a 124-focus tree with 11 navigation shortcuts, nine decision categories, 50 staged spirits, 24 characters, 14 achievements and five cosmetic identities.
+The recorded July audit remains evidence for its frozen snapshot and does not certify the current source or current GUI.
+The required current MCP event, focus, probability and GUI evidence and orchestrator live checks remain separate qualification gates; the final release report states which were obtained.
+Catalog wording is handed off in `docs/plans/015_utopia_manifesto_plans/catalog_changes_pending.md`; the workbook and export CSVs are not edited by this repair task.

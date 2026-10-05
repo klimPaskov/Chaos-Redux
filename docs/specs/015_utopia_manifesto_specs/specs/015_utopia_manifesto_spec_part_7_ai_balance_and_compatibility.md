@@ -14,7 +14,7 @@ The event's target score should favor countries that can survive the transformat
 
 ### Strong positive target factors
 
-- generic or approved replaceable focus tree
+- `generic_focus` tree in the current accepted selector
 - low total industry
 - low research capacity
 - small state count
@@ -23,6 +23,10 @@ The event's target score should favor countries that can survive the transformat
 - coastal, island, or viable Inland Island geography
 - sufficient peace or defensive breathing room to complete the founding survey
 - no recent full country-transformation event
+
+The earlier design allowed an approved replaceable tree or a lightly developed approved tree as additional target classes. The parent-accepted 2026-10-05 implementation disposition blocks those non-generic classes until a literal original-tree capture and return mapping exists. The current fail-closed gate is documented in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md`. It preserves the accepted safety purpose and does not replace an unknown tree with a generic fallback.
+
+Manual requests bypass the event-scheduler lottery that chooses among Chaos Redux events. They call the same Event 15 country selector as automatic dispatch and retain its human-generic then AI-generic priority and weighted ticket draw. Manual callers cannot directly select a recipient or override the absolute eligibility gate.
 
 ### Moderate positive target factors
 
@@ -1009,7 +1013,8 @@ Expected:
 Expected:
 
 - excluded
-- weight or manual list shows unavailable rather than destructive replacement
+- automatic and manual recipient selection both leave it outside the eligible pool
+- any debug view that displays candidate reasons identifies the protected tree condition
 
 ### Scenario G: case target disappears
 

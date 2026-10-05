@@ -766,6 +766,14 @@ Formation should not automatically:
 - finish every district
 - erase route costs
 
+## Accepted identity-teardown ownership disposition, 2026-10-06
+
+The founding package records the original political state but does not change the recipient's party or election law before formation. Teardown restores saved politics only when Event 15 still owns the active political state. Any of the eight Event 15 institutional leaders qualifies as an Event 15-owned ruling leader. The saved original leader alone qualifies only when `utopia_manifesto_identity_practical_commonwealth` is set, the character remains alive and ruling, and elections match the package's expected state, paused before constitutional succession or open afterward.
+
+The original-leader branch requires elections to remain paused until `utopia_manifesto_successor_constitutional_election` is set and open afterward.
+
+If another package has installed a foreign leader or observably changed election state, teardown preserves the current politics. Native scripts cannot attribute an outside write that leaves the same election value, so the implementation makes no claim of perfect cross-system write ownership. This is the parent-accepted G6 guard recorded in `docs/plans/015_utopia_manifesto_plans/agent_decisions_2026-10-05.md` and implemented by `utopia_manifesto_snapshot_identity_political_ownership` in `common/scripted_effects/015_utopia_manifesto_identity_effects.txt`.
+
 ## Post-formation integration
 
 ### Capital and district integration

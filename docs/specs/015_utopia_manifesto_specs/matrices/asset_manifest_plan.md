@@ -1,6 +1,6 @@
 # Asset Manifest Plan
 
-> Implemented and promoted. This table is retained as the source planning inventory. The asset index and wiring records remain `docs/assets/015_utopia_manifesto/manifest.md` and `docs/assets/015_utopia_manifesto/gfx_handoff.md`. Current final asset authority is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md`, SHA-256 `d2f659ac4e968a9d48ae3f346c1a7d9d5e1cb6b09b67f3be16a789662b583693`. The July 16 requirement crosswalk and re-audit remain supporting evidence for unchanged families.
+> This table retains the source planning inventory. The former `docs/assets/015_utopia_manifesto/manifest.md` and `gfx_handoff.md` workspace is absent after its documented cleanup; those paths are historical references, not current files. The preserved advisor producer audit is `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/advisor_asset_final_audit_2026_07_18.md` (current document SHA-256 `e2062f21a09a887d26f11bc0563b969a957c89fa13999acd729f65cee31632b1`). Current runtime coverage and the unresolved row-level source-lineage checks are recorded in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/country_release_audit_2026-10-05.md`. Historical July producer attestations do not establish current visual or engine qualification.
 
 | Asset family | Required coverage | Source mode | Target or sizes | Primary visual direction | Animation |
 | --- | --- | --- | --- | --- | --- |
@@ -12,19 +12,19 @@
 | Focus icons | every focus or coherent focus family | generated | 94x86 | route-specific HOI4 focus art | no |
 | Idea icons | every staged institution and major burden | generated | 64x64 | compact institutional symbols | no |
 | Decision icons | all major action families | generated | 32x32 | simple action symbols | no |
-| Decision category icons | Ledger, Need, League if separate | generated | inspect live pattern | mechanic identity | Ledger seal can animate |
+| Decision category icons | Common Provision, Need, League if separate | generated | inspect live pattern | mechanic identity | Common Provision seal can animate |
 | Achievement icons | 14 completed plus variants | generated | 64x64 | route and conduct achievements | no |
 | Route flags | five cosmetic identity families and every active ideology lookup | built-in ImageGen, with one independent result per visually distinct design | 82x52, 41x26, 10x7 | flat orthographic civic or heraldic identity designs with layered authored emblems, never simple-shape or programmatically drawn substitutes | no |
 | League emblems | five leadership models | generated | live pattern | household, council, plan, island, plural | optional formation seal only |
 | Institutional leader tableaux | four governing bodies used by eight founder and successor entries | built-in ImageGen | 156x210 | people-free HOI4-style empty chamber, table, ledger, apparatus, stores, seal, tools, and route emblem | static |
 | Advisor dossier cards | sixteen implemented advisor roles | independent built-in ImageGen fictional portrait master per role plus separately generated frame and paper/seal overlays. Scripts perform presentation processing only | 65x67 | independently composed HOI4 dossier cards with readable faces and transparent outer corners | no |
 | Fictional personal portraits | any other implemented new people | built-in ImageGen | 156x210 | regional, period-appropriate | no baseline requirement |
-| Ledger panel | overview and tabs | generated art plus UI slicing | live GUI size | civic ledger and planning board | state elements only |
+| Common Provision panel | overview and tabs | generated art plus UI slicing | live GUI size | civic planning board | state elements only |
 | Value icons | Need, Plenty, Concord, balance | generated | live GUI size | readable compact symbols | Need warning, balance shift |
 | Calling icons | six callings | generated separately | live GUI size | distinct occupational families | no |
 | Case cards | ten eligibility, negotiation, and stewardship states | generated art plus UI processing | 300x96 | target, offer, refusal, stewardship | warning state optional |
 | District cards | seven role bases and six state overlays, presented together on Stores and Settlements | generated art plus UI processing | 300x96 role bases, 48x48 state overlays | settlement role and status | no |
-| Ledger seal | active category emblem | generated real frame sequence | frame size from GUI, 8 frames | subtle opening and measuring | yes |
+| Common Provision seal | active category emblem | generated real frame sequence | frame size from GUI, 8 frames | subtle opening and measuring | yes |
 | Need warning | critical state | generated real frame sequence | GUI state size, 8 frames | empty or cracking measure | yes |
 | Choice shift | threshold crossing toward Choice | generated real frame sequence | GUI state size, 8 frames | opening route instrument | yes |
 | Assignment shift | threshold crossing toward Assignment | generated real frame sequence | GUI state size, 8 frames | measured assignment instrument | yes |
@@ -43,11 +43,11 @@
 - Every animated asset needs separate source frames, processed frames, sheet PNG, sheet DDS, static fallback, preview GIF, contact sheet, manifest, and GFX handoff.
 - Every final DDS or TGA requires dimension and path verification.
 
-## Current asset proof
+## Historical July asset evidence and October runtime recheck
 
-This file began as a planning inventory. Current counts and registrations are fixed by the asset manifest, GFX and animation handoffs, the requirement-to-runtime crosswalk, the final asset audit, and the current decision-icon mapping. The current final audit passes the advisor, active flag, institutional portrait, Choice animation, and Assignment animation requirements with no P0 through P2 defect. The unchanged July 16 crosswalk remains the 24-row coverage record.
+This file began as a planning inventory. The July audit and requirement-to-runtime crosswalk preserve historical source and visual attestations, but the former `docs/assets/015_utopia_manifesto/` source workspace and row-level crosswalk are absent. Do not treat those records as a current full visual or source-lineage proof. The current country handoff `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/country_release_audit_2026-10-05.md` rechecks runtime paths, hashes, dimensions, and registrations for its bounded families and explicitly leaves original row-level lineage unresolved.
 
-| Current family | Exact proof |
+| Family recorded in July audit | July proof snapshot |
 | --- | --- |
 | Focus icons | 124 usages, 74 unique sprites |
 | Decision map | 174 rows, 9 categories, 121 decisions, 44 missions |
@@ -55,12 +55,14 @@ This file began as a planning inventory. Current counts and registrations are fi
 | Ideas | 50 assignments, 12 unique sprites |
 | Achievements | 14 achievements, 42 active variants |
 | Scripted GUI | 46 unique sprite references |
-| Static Ledger families | 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays. District role and state art is paired on Stores and Settlements |
+| Static Common Provision families | 4 value icons, 6 Calling icons, 10 case cards, 7 district-role cards, and 6 district-state overlays. District role and state art is paired on Stores and Settlements |
 | Sprite registry | 459 base definitions plus 5 route-super-event definitions, 464 total, no duplicate names |
 | Route super-events | five distinct 457x328 route images |
 | Required animation source families | Ledger seal 8, Need 8, Choice 8, Assignment 8, and formation 10 genuine source frames |
 | Additional runtime animation | reserve fill 8 genuine source frames, outside the required-family count |
 
-Every active route flag has a built-in ImageGen source. Twenty-one independent designs and four intentional engine-lookup aliases produce 75 runtime TGAs. Finishing preserves generated geometry and tonal detail without quantization, tracing, primitive redraw, motif substitution, or a palette ceiling. Four people-free built-in ImageGen, vanilla-HOI4-style 156x210 institutional tableaux serve eight institutional founder and successor entries. Sixteen advisors use distinct 65x67 dossier cards built from independent fictional ImageGen portrait masters and the unchanged canonical `advisor_template.png`. Each complete source is resized to the native advisor canvas and uniformly fitted without warping before the template is applied once as the top layer.
+The July source audit records built-in ImageGen masters for every active route flag, twenty-one independent designs plus four intentional engine-lookup aliases, four people-free institutional tableaux, and sixteen advisor dossier cards. The current country handoff rechecks runtime path and binary metadata coverage for 75 flags, 20 portrait paths, and five active route proclamation images. The removed asset workspace prevents reopening the flag and portrait source masters and the 24-row requirement crosswalk. Current runtime coverage does not prove current source-master lineage, independent visual review, or MCP-rendered use.
 
-`docs/assets/015_utopia_manifesto/decision_icon_mapping.csv`, SHA-256 `757ec0c51edca25b5453899f28816a3d34e8a5b330be268bed6ff4d27e0abcc0`, contains the current 9 category, 121 decision, and 44 mission rows. Its 165 decision and mission rows are the current gameplay-assignment count. The decision-mapping subsection of `final_icon_frame_audit.json` remains frozen at the earlier 173-row, 43-mission, 164-assignment snapshot and is superseded for those counts only. Its animation and Ledger-binding evidence remains separately usable.
+The October 6 source inventory counts nine category, 121 decision, and 44 mission icon assignments, for 174 icon-bearing items and 165 gameplay assignments. These counts come from the current definitions in `common/decisions/categories/015_utopia_manifesto_categories.txt`, `common/decisions/015_utopia_manifesto_decisions.txt`, `common/decisions/015_utopia_manifesto_evolution_consumption_decisions.txt`, and `common/decisions/015_utopia_manifesto_prefire_evolution_decisions.txt`. The former `docs/assets/015_utopia_manifesto/decision_icon_mapping.csv` and `final_icon_frame_audit.json` files are absent with the deleted workspace. The older recorded 173-row, 43-mission, 164-assignment mapping remains historical and is not treated as current source evidence.
+
+The October 5 country handoff rechecks the current runtime families at 12 referenced idea icons, 42 achievement variants, 75 route flags, 20 portrait paths, five active proclamation images, and the installed final WAV. It reports 29 registered idea sprites with no current consumers. These 29 sprites remain untouched pending the missing source-to-runtime crosswalk. No image was opened during that source recheck, and no current GUI render or event/focus artifact was returned for visual or engine qualification.

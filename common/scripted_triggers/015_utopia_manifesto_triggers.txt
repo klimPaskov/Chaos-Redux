@@ -82,9 +82,10 @@ utopia_manifesto_candidate_has_mature_generic_tree = {
 	}
 }
 
+# A manual approval flag alone cannot identify the original tree for repeal.
+# Non-generic origins need an explicit capture/return mapping before selection.
 utopia_manifesto_candidate_has_approved_light_tree = {
-	has_country_flag = utopia_manifesto_tree_replacement_approved
-	NOT = { utopia_manifesto_candidate_has_mature_generic_tree = yes }
+	hidden_trigger = { always = no }
 }
 
 utopia_manifesto_candidate_is_dominant_faction_leader = {
@@ -3273,7 +3274,7 @@ utopia_manifesto_can_pay_military_growth_foundation = {
 # formation first, then consumes and transfers the static contract resources,
 # so both obligations must be affordable together before either charge occurs.
 utopia_manifesto_can_pay_auxiliary_contract = {
-	utopia_manifesto_can_pay_military_growth_foundation = yes
+	utopia_manifesto_can_afford_military_growth_foundation = yes
 	has_variable = utopia_manifesto_auxiliary_total_support_equipment_cost
 	meta_trigger = {
 		text = {
@@ -3281,9 +3282,6 @@ utopia_manifesto_can_pay_auxiliary_contract = {
 		}
 		TOTAL_SUPPORT_COST = "[?utopia_manifesto_auxiliary_total_support_equipment_cost|.0]"
 	}
-	NOT = { has_equipment = { motorized_equipment < constant:utopia_manifesto_decision_cost.motorized_medium } }
-	set_temp_variable = { utopia_manifesto_cost_check = global.black_friday_price_utopia_manifesto_decision_cost_convoys_medium } NOT = { has_equipment = { convoy_1 < utopia_manifesto_cost_check } }
-	any_controlled_state = { is_controlled_by = ROOT }
 }
 
 utopia_manifesto_can_afford_military_growth_network = {

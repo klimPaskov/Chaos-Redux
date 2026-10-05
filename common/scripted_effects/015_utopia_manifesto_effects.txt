@@ -121,12 +121,16 @@ utopia_manifesto_add_current_country_to_candidate_pool = {
 }
 
 utopia_manifesto_prepare_random_event_fire = {
-	set_temp_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.none }
+	save_event_target_as = utopia_manifesto_prefire_dispatcher
+	# Caller reads this output after return; helper-created temporaries can expire.
+	# The dispatching country owns the result, replaced on every selection.
+	set_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.none }
 	clear_temp_array = utopia_manifesto_class_one_candidates
 	clear_temp_array = utopia_manifesto_class_two_candidates
 	clear_temp_array = utopia_manifesto_class_three_candidates
 
 	every_country = {
+		limit = { NOT = { has_global_flag = utopia_manifesto_opening_presented } }
 		if = {
 			limit = { utopia_manifesto_is_class_one_candidate = yes }
 			set_temp_variable = { utopia_manifesto_candidate_class = constant:utopia_manifesto_candidate_class.human_generic }
@@ -146,7 +150,7 @@ utopia_manifesto_prepare_random_event_fire = {
 
 	if = {
 		limit = { check_variable = { utopia_manifesto_class_one_candidates^num > constant:utopia_manifesto_math.zero } }
-		set_temp_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.human_generic }
+		set_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.human_generic }
 		random_scope_in_array = {
 			array = utopia_manifesto_class_one_candidates
 			save_event_target_as = utopia_manifesto_prefire_actor
@@ -156,7 +160,7 @@ utopia_manifesto_prepare_random_event_fire = {
 	}
 	else_if = {
 		limit = { check_variable = { utopia_manifesto_class_two_candidates^num > constant:utopia_manifesto_math.zero } }
-		set_temp_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.ai_generic }
+		set_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.ai_generic }
 		random_scope_in_array = {
 			array = utopia_manifesto_class_two_candidates
 			save_event_target_as = utopia_manifesto_prefire_actor
@@ -166,7 +170,7 @@ utopia_manifesto_prepare_random_event_fire = {
 	}
 	else_if = {
 		limit = { check_variable = { utopia_manifesto_class_three_candidates^num > constant:utopia_manifesto_math.zero } }
-		set_temp_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.approved_registry }
+		set_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.approved_registry }
 		random_scope_in_array = {
 			array = utopia_manifesto_class_three_candidates
 			save_event_target_as = utopia_manifesto_prefire_actor
@@ -178,6 +182,38 @@ utopia_manifesto_prepare_random_event_fire = {
 	clear_temp_array = utopia_manifesto_class_one_candidates
 	clear_temp_array = utopia_manifesto_class_two_candidates
 	clear_temp_array = utopia_manifesto_class_three_candidates
+
+	# A human manual initiator receives one destination or refusal report.
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { events_log_manual_event_detail_trigger > constant:utopia_manifesto_math.zero }
+		}
+		if = {
+			limit = { check_variable = { utopia_manifesto_prefire_candidate_class = constant:utopia_manifesto_candidate_class.none } }
+			if = {
+				limit = { has_country_flag = chaosx_manual_event_batch_dispatch }
+				set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_target }
+				if = {
+					limit = { has_global_flag = utopia_manifesto_opening_presented }
+					set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.already_active }
+				}
+				chaosx_report_forced_event_failure = yes
+			}
+			else = {
+				# Consume the shared acknowledgement before its generic fallback.
+				set_country_flag = chaosx_manual_event_failure_shown
+				country_event = { id = chaosx.nr15.98 }
+			}
+		}
+		else_if = {
+			limit = {
+				has_event_target = utopia_manifesto_prefire_actor
+				NOT = { tag = event_target:utopia_manifesto_prefire_actor }
+			}
+			country_event = { id = chaosx.nr15.97 }
+		}
+	}
 }
 
 # ---------------------------------------------------------------------------
@@ -212,12 +248,20 @@ utopia_manifesto_clear_candidate_unavailability_reason_flags = {
 utopia_manifesto_accept_manifesto = {
 	if = {
 		limit = { utopia_manifesto_manual_event_is_available = yes }
+		# Save the proven origin before forcing the replacement tree.
+		if = {
+			limit = { has_focus_tree = generic_focus }
+			set_country_flag = utopia_manifesto_original_tree_generic
+		}
 		set_country_flag = utopia_manifesto_accepted
 		clr_country_flag = utopia_manifesto_rejected
 		clr_country_flag = utopia_manifesto_kernel_disabled
 		set_country_flag = utopia_manifesto_ledger_visible
 		set_variable = { utopia_manifesto_route = constant:utopia_manifesto_route.unresolved }
 		utopia_manifesto_initialize_ledger = yes
+		# The accepted country can read its provision board and begin the paid survey.
+		set_temp_variable = { utopia_manifesto_decision_phase_input = constant:utopia_manifesto_decision_phase.foundations }
+		utopia_manifesto_set_decision_phase = yes
 		utopia_manifesto_initialize_callings = yes
 		utopia_manifesto_clear_league_runtime = yes
 		utopia_manifesto_prepare_island_variant = yes
@@ -1551,6 +1595,7 @@ utopia_manifesto_clear_active_case_state_links = {
 }
 
 utopia_manifesto_clear_active_need_case = {
+	clr_country_flag = utopia_manifesto_stewardship_shortfall_reported
 	utopia_manifesto_clear_case_response_state = yes
 	utopia_manifesto_remove_active_case_wargoal = yes
 	utopia_manifesto_clear_active_case_created_diplomacy = yes
@@ -4247,6 +4292,8 @@ utopia_manifesto_close_obsolete_case_after_treaty_refusal = {
 		set_country_flag = utopia_manifesto_case_limited_treaty_refused
 		set_country_flag = utopia_manifesto_case_renounced_when_need_ended
 		set_country_flag = utopia_manifesto_case_closed_for_domestic_alternative
+		set_temp_variable = { utopia_manifesto_achievement_case_target_input = constant:utopia_manifesto_narrative_count.zero }
+		set_temp_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.unset }
 		utopia_manifesto_record_achievement_obsolete_case_renunciation = yes
 		utopia_manifesto_record_achievement_peaceful_case_resolution = yes
 		utopia_manifesto_renounce_active_need_case = yes
@@ -7141,6 +7188,8 @@ utopia_manifesto_refresh_dynamic_costs_for_sale = {
 }
 
 utopia_manifesto_refresh_dynamic_costs = {
+	# Keep the quote result alive when its scripted helper returns.
+	set_temp_variable = { black_friday_price_payable = constant:black_friday_event.zero }
 	utopia_manifesto_refresh_military_growth_capacity = yes
 	if = {
 		limit = { NOT = { has_variable = utopia_manifesto_growth_tier_input } }
@@ -7711,6 +7760,7 @@ utopia_manifesto_clear_decision_runtime = {
 	clr_country_flag = utopia_manifesto_league_decisions_unlocked
 	clr_country_flag = utopia_manifesto_formation_decisions_unlocked
 	clr_country_flag = utopia_manifesto_survey_active
+	clr_country_flag = utopia_manifesto_foundation_survey_completion_pending
 	clr_country_flag = utopia_manifesto_capital_store_project_active
 	clr_country_flag = utopia_manifesto_seasonal_reserve_active
 	clr_country_flag = utopia_manifesto_two_year_reserve_active
@@ -7755,6 +7805,17 @@ utopia_manifesto_clear_decision_runtime = {
 		clr_state_flag = utopia_manifesto_district_charter_active
 		clr_state_flag = utopia_manifesto_island_project_stage_active
 	}
+	clr_country_flag = utopia_manifesto_reading_rooms_reported
+	clr_country_flag = utopia_manifesto_missing_names_reported
+	clr_country_flag = utopia_manifesto_surplus_grain_reported
+	clr_country_flag = utopia_manifesto_stewardship_shortfall_reported
+	clr_country_flag = utopia_manifesto_auxiliary_bill_reported
+	clr_country_flag = utopia_manifesto_storehouse_shortfall_reported
+	clr_country_flag = utopia_manifesto_survey_dogma_reported
+	clr_country_flag = utopia_manifesto_council_deadlock_reported
+	clr_country_flag = utopia_manifesto_household_exit_reported
+	clr_country_flag = utopia_manifesto_island_dependence_reported
+	clr_country_flag = utopia_manifesto_manifesto_censorship_reported
 	clear_variable = utopia_manifesto_decision_phase
 	clear_variable = utopia_manifesto_total_repeal_days
 }
@@ -7996,6 +8057,15 @@ utopia_manifesto_enter_disable_safe_state = {
 	clr_country_flag = utopia_manifesto_accepted
 	utopia_manifesto_clear_all_country_idea_lifecycles = yes
 	utopia_manifesto_teardown_identity_package = yes
+	# Return only our loaded tree; a later foreign replacement belongs to its owner.
+	if = {
+		limit = {
+			has_country_flag = utopia_manifesto_original_tree_generic
+			has_focus_tree = utopia_manifesto_tree
+		}
+		load_focus_tree = { tree = generic_focus keep_completed = no }
+	}
+	clr_country_flag = utopia_manifesto_original_tree_generic
 	utopia_manifesto_clear_all_runtime_state = yes
 	set_country_flag = utopia_manifesto_kernel_disabled
 	set_country_flag = utopia_manifesto_achievement_disqualifier_regime_collapsed

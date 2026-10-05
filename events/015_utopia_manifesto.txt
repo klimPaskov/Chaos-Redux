@@ -24,6 +24,21 @@ country_event = {
 
 	trigger = { utopia_manifesto_manual_event_is_available = yes }
 
+	immediate = {
+		hidden_effect = {
+			set_global_flag = utopia_manifesto_opening_presented
+			if = {
+				limit = {
+					has_event_target = utopia_manifesto_prefire_dispatcher
+					event_target:utopia_manifesto_prefire_dispatcher = { exists = yes }
+				}
+				event_target:utopia_manifesto_prefire_dispatcher = {
+					clear_variable = utopia_manifesto_prefire_candidate_class
+				}
+			}
+		}
+	}
+
 	option = {
 		name = chaosx.nr15.1.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.certain }
@@ -510,6 +525,10 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_reading_rooms_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_reading_rooms_reported } }
+
 	option = {
 		name = chaosx.nr15.11.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.even }
@@ -794,6 +813,10 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_missing_names_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_missing_names_reported } }
+
 	option = {
 		name = chaosx.nr15.22.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.preferred }
@@ -905,6 +928,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_store
 
 	is_triggered_only = yes
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_surplus_grain_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_surplus_grain_reported } }
 
 	option = {
 		name = chaosx.nr15.30.a
@@ -1328,6 +1355,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.45.a
+		custom_effect_tooltip = chaosx.nr15.45.a_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.preferred
 			modifier = {
@@ -1362,6 +1390,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.45.b
+		custom_effect_tooltip = chaosx.nr15.45.b_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.balanced
 			modifier = {
@@ -1387,6 +1416,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.45.c
+		custom_effect_tooltip = chaosx.nr15.45.c_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.very_low
 			modifier = {
@@ -1421,6 +1451,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.46.a
+		custom_effect_tooltip = chaosx.nr15.46.a_release_tt
 		trigger = { check_variable = { var = political_power value = global.black_friday_price_utopia_manifesto_decision_cost_pp_medium compare = greater_than_or_equals } }
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.preferred
@@ -1455,6 +1486,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.46.b
+		custom_effect_tooltip = chaosx.nr15.46.b_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.balanced
 			modifier = {
@@ -1485,6 +1517,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.46.c
+		custom_effect_tooltip = chaosx.nr15.46.c_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.low
 			modifier = {
@@ -1517,8 +1550,15 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		hidden_effect = {
+			set_variable = { utopia_manifesto_penal_works_report_civilian_loss = utopia_manifesto_penal_works_last_civilian_loss }
+		}
+	}
+
 	option = {
 		name = chaosx.nr15.47.a
+		custom_effect_tooltip = chaosx.nr15.47.a_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.preferred
 			modifier = {
@@ -1543,6 +1583,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.47.b
+		custom_effect_tooltip = chaosx.nr15.47.b_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.cautious
 			modifier = {
@@ -1572,6 +1613,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.47.c
+		custom_effect_tooltip = chaosx.nr15.47.c_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.low
 			modifier = {
@@ -1603,6 +1645,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr15.47.option_d
+		custom_effect_tooltip = chaosx.nr15.47.option_d_release_tt
 		ai_chance = {
 			base = constant:utopia_manifesto_narrative_ai_weight.very_low
 			modifier = {
@@ -1862,6 +1905,8 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = utopia_manifesto_case_renounced_when_need_ended
 			set_country_flag = utopia_manifesto_case_closed_for_domestic_alternative
+			set_temp_variable = { utopia_manifesto_achievement_case_target_input = constant:utopia_manifesto_narrative_count.zero }
+			set_temp_variable = { utopia_manifesto_achievement_case_method_input = constant:utopia_manifesto_case_method.unset }
 			utopia_manifesto_record_achievement_obsolete_case_renunciation = yes
 			utopia_manifesto_record_achievement_peaceful_case_resolution = yes
 			utopia_manifesto_renounce_active_need_case = yes
@@ -1991,6 +2036,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_stewardship
 
 	is_triggered_only = yes
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_stewardship_shortfall_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_stewardship_shortfall_reported } }
 
 	option = {
 		name = chaosx.nr15.61.a
@@ -2521,6 +2570,10 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_auxiliary_bill_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_auxiliary_bill_reported } }
+
 	option = {
 		name = chaosx.nr15.82.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.balanced }
@@ -2672,7 +2725,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
-	trigger = { NOT = { has_country_flag = utopia_manifesto_commonwealth_formed } }
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_storehouse_shortfall_reported } }
+	trigger = {
+		NOT = { has_country_flag = utopia_manifesto_storehouse_shortfall_reported } NOT = { has_country_flag = utopia_manifesto_commonwealth_formed } }
 
 	option = {
 		name = chaosx.nr15.90.a
@@ -2717,6 +2773,10 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_survey_dogma_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_survey_dogma_reported } }
+
 	option = {
 		name = chaosx.nr15.91.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.very_strong }
@@ -2758,6 +2818,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_council_deadlock_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_council_deadlock_reported } }
 
 	option = {
 		name = chaosx.nr15.92.a
@@ -2801,6 +2865,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_household_exit_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_household_exit_reported } }
 
 	option = {
 		name = chaosx.nr15.93.a
@@ -2857,6 +2925,10 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_island_dependence_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_island_dependence_reported } }
+
 	option = {
 		name = chaosx.nr15.94.a
 		ai_chance = { base = constant:utopia_manifesto_narrative_ai_weight.strong }
@@ -2899,6 +2971,10 @@ country_event = {
 	picture = GFX_report_event_utopia_manifesto_contradiction
 
 	is_triggered_only = yes
+
+	immediate = { hidden_effect = { set_country_flag = utopia_manifesto_manifesto_censorship_reported } }
+
+	trigger = { NOT = { has_country_flag = utopia_manifesto_manifesto_censorship_reported } }
 
 	option = {
 		name = chaosx.nr15.95.a
@@ -5277,6 +5353,7 @@ country_event = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_stewardship_shortfall_reported }
 				has_country_flag = utopia_manifesto_stewardship_active
 				NOT = { has_country_flag = utopia_manifesto_stewardship_proven }
 			}
@@ -5284,6 +5361,7 @@ country_event = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_survey_dogma_reported }
 				has_country_flag = utopia_manifesto_route_guardians_of_measure
 				has_country_flag = utopia_manifesto_conduct_data_suppression
 			}
@@ -5291,6 +5369,7 @@ country_event = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_council_deadlock_reported }
 				has_country_flag = utopia_manifesto_route_common_table
 				check_variable = { utopia_plenty < constant:utopia_manifesto_ledger_limits.band_three }
 			}
@@ -5298,6 +5377,7 @@ country_event = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_household_exit_reported }
 				has_country_flag = utopia_manifesto_route_consent_of_households
 				check_variable = { utopia_assignment > constant:utopia_manifesto_ledger_limits.band_four }
 			}
@@ -5305,35 +5385,50 @@ country_event = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_island_dependence_reported }
 				has_country_flag = utopia_manifesto_route_closed_island
 				has_country_flag = utopia_manifesto_first_external_case_complete
 			}
 			country_event = { id = chaosx.nr15.94 }
 		}
 		else_if = {
-			limit = { has_country_flag = utopia_manifesto_conduct_censorship }
+			limit = {
+				NOT = { has_country_flag = utopia_manifesto_manifesto_censorship_reported }
+				has_country_flag = utopia_manifesto_conduct_censorship
+			}
 			country_event = { id = chaosx.nr15.95 }
 		}
 		else_if = {
 			limit = {
+				NOT = { has_country_flag = utopia_manifesto_missing_names_reported }
 				check_variable = { utopia_assignment > constant:utopia_manifesto_ledger_limits.band_four }
 				check_variable = { utopia_concord < constant:utopia_manifesto_ledger_limits.band_three }
 			}
 			country_event = { id = chaosx.nr15.22 }
 		}
 		else_if = {
-			limit = { has_idea = utopia_manifesto_auxiliary_dependency }
+			limit = {
+				NOT = { has_country_flag = utopia_manifesto_auxiliary_bill_reported }
+				has_idea = utopia_manifesto_auxiliary_dependency
+			}
 			country_event = { id = chaosx.nr15.82 }
 		}
 		else_if = {
-			limit = { check_variable = { utopia_plenty > constant:utopia_manifesto_ledger_limits.band_four } }
+			limit = {
+				NOT = { has_country_flag = utopia_manifesto_surplus_grain_reported }
+				check_variable = { utopia_plenty > constant:utopia_manifesto_ledger_limits.band_four }
+			}
 			country_event = { id = chaosx.nr15.30 }
 		}
 		else_if = {
-			limit = { check_variable = { utopia_plenty < constant:utopia_manifesto_ledger_limits.band_three } }
+			limit = {
+				NOT = { has_country_flag = utopia_manifesto_storehouse_shortfall_reported }
+				check_variable = { utopia_plenty < constant:utopia_manifesto_ledger_limits.band_three }
+			}
 			country_event = { id = chaosx.nr15.90 }
 		}
-		else = {
+		else_if = {
+			limit = { NOT = { has_country_flag = utopia_manifesto_reading_rooms_reported } }
 			country_event = { id = chaosx.nr15.11 }
 		}
 
@@ -5460,4 +5555,34 @@ country_event = {
 		}
 		utopia_manifesto_reconcile_external_term_integrity = yes
 	}
+}
+
+
+# Settings feedback only reaches the human who requested the opening.
+country_event = {
+	id = chaosx.nr15.97
+	title = chaosx.nr15.97.t
+	desc = chaosx.nr15.97.d
+	picture = GFX_report_event_utopia_manifesto_found
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = utopia_manifesto_prefire_actor
+		event_target:utopia_manifesto_prefire_actor = { exists = yes }
+	}
+	option = { name = chaosx.nr15.97.a }
+}
+
+# An unavailable opening does not create history or consume the event.
+country_event = {
+	id = chaosx.nr15.98
+	title = chaosx.nr15.98.t
+	desc = {
+		trigger = { has_global_flag = utopia_manifesto_opening_presented }
+		text = chaosx.nr15.98.already.d
+	}
+	desc = { text = chaosx.nr15.98.d }
+	picture = GFX_report_event_utopia_manifesto_found
+	is_triggered_only = yes
+	immediate = { hidden_effect = { clear_variable = utopia_manifesto_prefire_candidate_class } }
+	option = { name = chaosx.nr15.98.a }
 }
