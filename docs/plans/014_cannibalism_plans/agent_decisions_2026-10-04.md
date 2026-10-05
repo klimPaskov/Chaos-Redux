@@ -235,3 +235,20 @@ The lead's heuristic scan (`lifetime.py`, effects and triggers files only) flags
 - Outer-frame accumulator: `cannibalism_scenario_setup_discipline_collapse` 10214, `cannibalism_scenario_setup_ritual_cells` 10230 and `cannibalism_scenario_setup_silent_islands` 10282 read `cannibalism_scenario_setup_failed`, which `trigger_cannibalism_scenario` and `cannibalism_setup_prefire_evolution_iii_opening` own at zero before any setup helper runs; the helpers only raise it.
 
 MCP evidence for this round: `hoi4.source_lookup` resolved `cannibalism_warlord_march_raid_target_is_valid` with its one decision reference (revision 5591ebee). `hoi4.event_inspect` lint on `chaosx.nr14.82` and `hoi4.decision_inspect` inspect on `cannibalism_march_raid_supply_depot` both returned "Invalid tool arguments" for a plain ID selector, so the event and decision were reviewed in source only.
+
+## R2 review. Skeptical review of the round 2 commits
+
+Disposition: `implemented` (review fixes are tooltip wording only; no gameplay, tuning or AI change).
+
+Basis: skeptical review of 3954dd278, e5c3bb072, abacbd845, a49dc6df5 and 364d07446 against the installed documentation (`triggers_documentation.md` `any_province_building_level`, the wiki `Effects` entry for `add_building_construction`, which accepts a variable `level` and the `limit_to_*` province filters) and vanilla precedents (`common/decisions/SWE.txt` raid check, `afghanistan.txt`, `finland.txt` and `abdacom_shared_branch.txt` province filters).
+
+Findings:
+
+- Every `constant:` reference added by the four gameplay commits resolves in `common/script_constants/`, braces balance in every touched Event 014 file, no Event 014 bunker or naval base construction lacks a province block, and no Event 014 file still uses `non_damaged_building_level`.
+- No caller-owned default added by abacbd845 is read by its helper, or by a helper it calls, before the helper writes it, so the defaults cannot change any helper input. `apply_exact_state_civilian_population_loss` sets `chaos_deaths_record_state_ledger` itself before registering deaths, so the zero default before it is inert.
+- No static call path leads from `cannibalism_resolve_loaded_spread_entry`, `cannibalism_finalize_loaded_spread_entry` or `cannibalism_load_spread_entry_context` back to `cannibalism_validate_spread_queue`, so the queue audit cannot overwrite the processing loop's cursor. Requiring all four request scopes in the availability check matches `cannibalism_spread_context_is_valid`, which the enqueue already required.
+- The Island Host port tooltip named only a landlocked capital, while the effect also moves the port work when the capital is not owned and controlled. It now names both cases.
+- The Wendigo "Raise the First Anchors" tooltip omitted the last fortification fallback for an anchor state with neither a victory point nor a border province. It now names it.
+- The hoard review line for a cache state the host does not own read "is not our state"; it now reads "We do not own <state>".
+
+MCP evidence: `hoi4.decision_inspect` in `inventory` mode with an `id` returned a revision-pinned whole-mod inventory (source revision 060436ef), which does not isolate one decision; `inspect` mode with only an `id` and `hoi4.event_inspect` `lint` with object selectors (`id`, `kind`/`id`, `kind`/`value`, `eventIds`) returned "Invalid tool arguments". The selector format is documented only in the server's own `docs/events.md`, which is not exposed, so the event and the decision were reviewed in source.
