@@ -836,3 +836,31 @@ Formables: FORM-36 Maritime Federation has Aceh, the Bugis state and Bali; FORM-
 Validation: the allocator audit passes with 95 attested packages, 64 reservation groups and 96 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant, localisation key and picture exists.
 
 Needs live game: a wave that releases a custom carrier in Southeast Asia under its council, a vanilla release such as Ryukyu from Japan or Laos from France, and the decision and incident flow of the Level 2 rows.
+
+## D32. Round 2: Americas tranche and the IW-196/IW-204 overlay scope fix
+
+Disposition: `implemented` for IW-180 Quebec (QUE), IW-182 Newfoundland (GZX), IW-185 Texas (HCX), IW-192 Yucatan (YUC), IW-200 Guarani state (GAR) and IW-203 Patagonian state (HUX), and for the IW-196/IW-204 overlay trigger fix; `blocked` for IW-181, IW-183, IW-186 to IW-191, IW-193 to IW-195, IW-198, IW-199, IW-201, IW-202, IW-205 and IW-206; IW-196, IW-197 and IW-204 stay vanilla route overlays.
+
+Basis: the lead's round-2 priority-19 item, using the D25 regional framework engine, the D20/D22 leadership rule and the D29 named-institution rule.
+
+Decisions:
+
+- Four Level 2 rows (Quebec, Newfoundland, Texas, Yucatan) and two Level 1 rows (Guarani, Patagonia). Vanilla QUE and YUC have no characters, so the game appoints their opening leaders; GAR keeps its vanilla Guarani Council. GZX opens under the Newfoundland House of Assembly (the assembly suspended in 1934), HCX under the Texas Legislature and HUX under the Congress of the Patagonian Territories (the five national territories).
+- Level 2 layers: Quebec's power trusts, Legislative Assembly and caisses populaires, with incidents on the Abitibi settlers and the Thetford asbestos strike; Newfoundland's dominion debt, restored responsible government and fisheries board, with the Labrador boundary and the Water Street merchants; Texas's oil glut, legislature, Railroad Commission proration and Ranger companies, with the hot oil runners and the border bridges; Yucatan's henequen haciendas, congress, ejidos and the port of Progreso, with the leagues of resistance and the price of twine. Incidents are `chaosx.nr6.272` to `.279`.
+- Anchors: HUX binds its first loader anchor, 512. GAR's first loader anchor, 301, is Paraguay's protected capital; GAR binds 688 Chaco Boreal, and its runtime readiness also requires 301 to be unavailable so the loader's choice and the readiness check agree. The guard lives only in the runtime-ready trigger, because the allocator audit forbids the pre-reservation anchor proof inside exact tag-availability triggers.
+- Contacts: QUE FRA and USA; GZX ENG, CAN and POR; HCX MEX, ENG and GER; YUC CUB and USA; GAR ARG and BRA; HUX ENG and CHL.
+- IW-196/IW-204 fix: `has_independence_wave_iw196_antilles_anchor_control`, `has_independence_wave_iw196_antilles_guard_objective`, `has_independence_wave_iw204_restoration_anchor_control`, `has_independence_wave_iw204_restoration_guard_objective` and the two `choose_anchor` effects read ownership, control and divisions in the calling carrier's scope (`owns_state`, `controls_state`, `divisions_in_state`) instead of ROOT, matching the IW-156 and IW-197 overlays. Their callers (the carrier's own decisions and `on_daily_TAG` hooks) are unchanged.
+
+Blocked rows:
+
+- IW-181 Acadia, IW-186 Cherokee, IW-188 Lakota, IW-189 Dine and IW-194 Miskito: no planner gate, loader or reservation.
+- IW-183 Cascadia: formable or route only.
+- IW-187, IW-190, IW-191, IW-195, IW-199, IW-202, IW-205 and IW-206: specific community variants without a planner gate.
+- IW-193 Oaxaca and IW-198 Aymara: their research requires a sourced leader of the exact named community or authentic institutional material and forbids a generated council.
+- IW-201 Muisca restoration: no period Muisca institution existed to restore, and a made-up council would be a generated institution.
+
+Formables: FORM-44 Rio de la Plata Confederation has GAR and HUX, and FORM-45 Mesoamerican Federation has YUC; FORM-40 to FORM-43, FORM-46 and FORM-47 have no admitted member. All stay closed.
+
+Validation: the allocator audit passes with 101 attested packages, 70 reservation groups and 102 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant, localisation key and picture exists.
+
+Needs live game: a wave that releases Newfoundland from the United Kingdom or Texas from the United States as a custom carrier under its institution, Guarani released on the Chaco Boreal, and the IW-196 and IW-204 guard missions counting divisions in the carrier's own anchor.

@@ -130,6 +130,14 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Ryukyu (IW-171) | `chaosx.nr6.269` | Shuri Castle | Restore Shuri Castle; Leave the work for later |
 | Samoa (IW-175) | `chaosx.nr6.270` | The Titles Court | Let the Fono judge titles; Keep the Land and Titles Court |
 | Samoa (IW-175) | `chaosx.nr6.271` | The Mau Procession | Honour the fallen of 1929; Ban the procession |
+| Quebec (IW-180) | `chaosx.nr6.272` | The Abitibi Settlers | Fund the settlers; End the settlement grants |
+| Quebec (IW-180) | `chaosx.nr6.273` | Strike at Thetford Mines | Recognise the miners' union; Back the mining companies |
+| Newfoundland (IW-182) | `chaosx.nr6.274` | The Labrador Boundary | Survey and post the boundary; Offer a joint commission |
+| Newfoundland (IW-182) | `chaosx.nr6.275` | The Merchants of Water Street | Set a fish price for the outports; Leave the trade to the merchants |
+| Texas (IW-185) | `chaosx.nr6.276` | The Hot Oil Runners | Enforce the quotas; Look the other way |
+| Texas (IW-185) | `chaosx.nr6.277` | The Border Bridges | Open the bridges to free trade; Tax the border trade |
+| Yucatan (IW-192) | `chaosx.nr6.278` | The Leagues of Resistance | Recognise the leagues; Ban the leagues |
+| Yucatan (IW-192) | `chaosx.nr6.279` | The Price of Twine | Buy the crop at a fixed price; Let the price fall |
 
 ## Files
 

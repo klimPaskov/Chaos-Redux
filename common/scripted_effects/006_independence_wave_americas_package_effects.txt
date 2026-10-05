@@ -1,0 +1,205 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 AMERICAS PACKAGE LAYERS
+# ============================================================================
+# Level 2 layers on the regional framework engine (agent decision D32): a
+# starting problem, paid projects in
+# common/decisions/006_independence_wave_americas_decisions.txt and cleanup
+# checked by package id. No effect iterates countries or states.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-180 Quebec (QUE)
+# ---------------------------------------------------------------------------
+
+independence_wave_que_apply_package_layer = {
+	add_ideas = independence_wave_que_power_trusts
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_que_complete_assembly = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_que_legislative_assembly
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_que_assembly_seated
+}
+
+independence_wave_que_complete_power_trusts = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_que_power_trusts
+	add_ideas = independence_wave_que_hydro_commission
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_que_power_trusts_nationalised
+}
+
+independence_wave_que_complete_caisses = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_que_caisses_populaires
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_que_caisses_chartered
+}
+
+independence_wave_que_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = QUE check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_180 } }
+		remove_decision = independence_wave_que_seat_legislative_assembly
+		remove_decision = independence_wave_que_nationalise_power_trusts
+		remove_decision = independence_wave_que_charter_caisses_populaires
+		remove_ideas = { independence_wave_que_power_trusts independence_wave_que_legislative_assembly independence_wave_que_hydro_commission independence_wave_que_caisses_populaires }
+		clr_country_flag = independence_wave_que_assembly_seated
+		clr_country_flag = independence_wave_que_power_trusts_nationalised
+		clr_country_flag = independence_wave_que_caisses_chartered
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-182 Newfoundland (GZX)
+# ---------------------------------------------------------------------------
+
+independence_wave_gzx_apply_package_layer = {
+	add_ideas = independence_wave_gzx_dominion_debt
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_gzx_complete_assembly = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_gzx_house_of_assembly
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_gzx_assembly_restored
+}
+
+independence_wave_gzx_complete_bondholders = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_gzx_dominion_debt
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_gzx_bondholders_settled
+}
+
+independence_wave_gzx_complete_fisheries = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_gzx_fisheries_board
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_gzx_fisheries_board_founded
+}
+
+independence_wave_gzx_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = GZX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_182 } }
+		remove_decision = independence_wave_gzx_restore_responsible_government
+		remove_decision = independence_wave_gzx_settle_the_bondholders
+		remove_decision = independence_wave_gzx_found_fisheries_board
+		remove_ideas = { independence_wave_gzx_dominion_debt independence_wave_gzx_house_of_assembly independence_wave_gzx_fisheries_board }
+		clr_country_flag = independence_wave_gzx_assembly_restored
+		clr_country_flag = independence_wave_gzx_bondholders_settled
+		clr_country_flag = independence_wave_gzx_fisheries_board_founded
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-185 Texas (HCX)
+# ---------------------------------------------------------------------------
+
+independence_wave_hcx_apply_package_layer = {
+	add_ideas = independence_wave_hcx_oil_glut
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_hcx_complete_legislature = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_hcx_texas_legislature
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_hcx_legislature_seated
+}
+
+independence_wave_hcx_complete_proration = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_hcx_oil_glut
+	add_ideas = independence_wave_hcx_proration_orders
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_hcx_proration_enforced
+}
+
+independence_wave_hcx_complete_rangers = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_hcx_ranger_companies
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_hcx_rangers_mustered
+}
+
+independence_wave_hcx_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = HCX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_185 } }
+		remove_decision = independence_wave_hcx_seat_legislature_at_austin
+		remove_decision = independence_wave_hcx_empower_railroad_commission
+		remove_decision = independence_wave_hcx_muster_ranger_companies
+		remove_ideas = { independence_wave_hcx_oil_glut independence_wave_hcx_texas_legislature independence_wave_hcx_proration_orders independence_wave_hcx_ranger_companies }
+		clr_country_flag = independence_wave_hcx_legislature_seated
+		clr_country_flag = independence_wave_hcx_proration_enforced
+		clr_country_flag = independence_wave_hcx_rangers_mustered
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-192 Yucatan (YUC)
+# ---------------------------------------------------------------------------
+
+independence_wave_yuc_apply_package_layer = {
+	add_ideas = independence_wave_yuc_henequen_haciendas
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_yuc_complete_congress = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_yuc_yucatan_congress
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_yuc_congress_seated
+}
+
+independence_wave_yuc_complete_ejidos = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_yuc_henequen_haciendas
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_yuc_ejidos_formed
+}
+
+independence_wave_yuc_complete_progreso = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_yuc_port_of_progreso
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_yuc_progreso_open
+}
+
+independence_wave_yuc_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = YUC check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_192 } }
+		remove_decision = independence_wave_yuc_seat_yucatan_congress
+		remove_decision = independence_wave_yuc_turn_haciendas_into_ejidos
+		remove_decision = independence_wave_yuc_open_port_of_progreso
+		remove_ideas = { independence_wave_yuc_henequen_haciendas independence_wave_yuc_yucatan_congress independence_wave_yuc_port_of_progreso }
+		clr_country_flag = independence_wave_yuc_congress_seated
+		clr_country_flag = independence_wave_yuc_ejidos_formed
+		clr_country_flag = independence_wave_yuc_progreso_open
+	}
+}

@@ -198,3 +198,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Aceh, Minangkabau, the Bugis state, Bali, the Shan federation, Mon State, the Kachin state, Laos, Champa, East Turkestan, Inner Mongolia, Ryukyu and Samoa can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - Every one of them except the Bugis state and Champa has a starting problem, its own decisions and two incidents of its own; the six new custom states open under a named council.
 - Riau, Pattani, the Dayak, Karen, Chin, Hmong, Arakan, Wa, Ainu, Aotearoa Maori, Papuan, West Papuan and Tongan states and the Moluccan federation remain unavailable.
+
+
+## 2026-10-05: Americas packages (D32)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Quebec, Newfoundland, Texas, Yucatan, the Guarani state and the Patagonian state can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Quebec, Newfoundland, Texas and Yucatan each have a starting problem, their own decisions and two incidents of their own; Newfoundland, Texas and Patagonia open under a named assembly or congress.
+- Acadia, Cascadia, the Cherokee, Haudenosaunee, Lakota, Dine, Pueblo, Maya, Oaxaca, Miskito, Garifuna, Aymara, Quechua, Muisca, Gran Chaco, Amazonian and Maroon states remain unavailable.

@@ -236,6 +236,20 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-171 | OKN | PRU | The Okinawan community of Lima |
 | IW-175 | SAM | USA | American Samoa and the Pago Pago naval station |
 | IW-175 | SAM | GER | The old German plantations and families of Apia |
+| IW-180 | QUE | FRA | The French language and the Catholic missions |
+| IW-180 | QUE | USA | The Franco-American mill towns of New England |
+| IW-182 | GZX | ENG | The Commission of Government and the London bondholders |
+| IW-182 | GZX | CAN | The Labrador boundary and the Gulf trade |
+| IW-182 | GZX | POR | The Portuguese cod fleet on the Grand Banks |
+| IW-185 | HCX | MEX | The border towns along the Rio Grande |
+| IW-185 | HCX | ENG | The Liverpool cotton buyers |
+| IW-185 | HCX | GER | The German settlers of the Hill Country |
+| IW-192 | YUC | CUB | The Havana trade across the Yucatan Channel |
+| IW-192 | YUC | USA | The American twine makers who buy the henequen |
+| IW-200 | GAR | ARG | The Guarani of Corrientes and Misiones |
+| IW-200 | GAR | BRA | The Guarani of Mato Grosso |
+| IW-203 | HUX | ENG | The Welsh settlers of the Chubut valley |
+| IW-203 | HUX | CHL | The Chilean ranch hands of the southern estancias |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.
