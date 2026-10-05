@@ -6883,10 +6883,15 @@ event021_parent_apply_settlement = {
 			}
 			set_country_flag = random_civil_war_postwar_direction_pending
 		}
+		# Terms signed under a neighbour's mediation count as negotiated even
+		# when they divide the country.
 		if = {
 			limit = {
 				has_country_flag = event021_settlement_talks_open
-				NOT = { has_country_flag = random_civil_war_harsh_settlement }
+				OR = {
+					NOT = { has_country_flag = random_civil_war_harsh_settlement }
+					event021_settlement_mediation_live = yes
+				}
 			}
 			set_country_flag = random_civil_war_settlement_negotiated
 		}

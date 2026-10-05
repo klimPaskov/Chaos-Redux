@@ -347,3 +347,13 @@ Secure the Arsenals gives a permanent penalty a 45-day end date and leaves a tim
 The unused `capital_idea_days` constant is removed. `event021_clear_crisis_action_receipts` clears the timer record, so a new crisis starts from a permanent penalty.
 The Secure the Arsenals, Review Command Loyalty, and Integrate Loyal Formations tooltips state the change. Review Command Loyalty picks its profile branch through `event021_GetLoyaltyReviewOutcome`. Costs and AI weights are unchanged.
 Basis: the lead's round 2 assignment, `effects_documentation.md` (`add_timed_idea`, `modify_timed_idea`), and the wiki Effects page.
+
+## D29. Neighbour mediation opens settlement talks in the mediated war
+
+Finding: spec part 5 says Mediate a Local Ceasefire can open settlement talks, but `event021_decision_offer_mediation` changed only the mediator's own authority, pressure, exposure, and flags, and `event021_mediation_until` had no consumer.
+Decision: mediation calls `event021_record_mediation_receipt`, which follows the mediator's `random_civil_war_exposure_source_country_scope` to the government of that war (the source itself, or a claimant's host government) and gives it `random_civil_war_mediator_scope` and `random_civil_war_mediation_until`, the current date plus the existing `mediation_days` (90) through `event021_days_to_date_offset`. The mediator-side `event021_mediation_until` write is replaced by this receipt.
+`event021_settlement_mediation_live` (the receipt has not expired and the mediator exists) lets `event021_settlement_offer_ready` pass before the minimum war duration from D21. Offer Emergency Terms' requirement line comes from `event021_GetSettlementOfferReadyLine` and names the mediator and the receipt's end date, and the mediation tooltip names the mediated government and what the talks allow.
+Terms signed while the receipt is live count as negotiated even for a partition, so `random_civil_war_settlement_negotiated` follows the mediated agreement. The partition's harsh classification and every settlement gate are unchanged.
+The government's Offer Emergency Terms AI weight gains `ai_mediated` (x2) while the receipt is live, so AI governments answer mediation, still never from a Cohesive position held without losses. Mediator AI weights are unchanged.
+The receipt expires on its date and `event021_clear_crisis_action_receipts` clears it at crisis cleanup and at any new crisis role.
+Basis: the lead's round 2 assignment, spec part 5 (Mediate a Local Ceasefire), and decision D21. The mediated offer remains `needs_live_game`.

@@ -1358,12 +1358,27 @@ event021_country_can_offer_settlement = {
 }
 
 # COUNTRY scope on a crisis government. Terms can be offered once the war has
-# lasted constant:event021_settlement_offer.minimum_war_days from its start;
-# event021_record_settlement_offer_ready_date stores that date through the
+# lasted constant:event021_settlement_offer.minimum_war_days from its start,
+# or at once while a neighbour's mediation is under way.
+# event021_record_settlement_offer_baseline stores the date through the
 # shared date converter when the crisis or a successor government begins.
 event021_settlement_offer_ready = {
-	has_variable = random_civil_war_settlement_offer_ready_date
-	check_variable = { var = global.date value = random_civil_war_settlement_offer_ready_date compare = greater_than_or_equals }
+	OR = {
+		event021_settlement_mediation_live = yes
+		AND = {
+			has_variable = random_civil_war_settlement_offer_ready_date
+			check_variable = { var = global.date value = random_civil_war_settlement_offer_ready_date compare = greater_than_or_equals }
+		}
+	}
+}
+
+# COUNTRY scope on a crisis government. A neighbour's mediation is under way:
+# its receipt has not expired and the mediator still exists.
+event021_settlement_mediation_live = {
+	has_variable = random_civil_war_mediation_until
+	check_variable = { var = global.date value = random_civil_war_mediation_until compare = less_than }
+	has_variable = random_civil_war_mediator_scope
+	var:random_civil_war_mediator_scope = { exists = yes }
 }
 
 # COUNTRY scope on a crisis government. True when it holds fewer of its own

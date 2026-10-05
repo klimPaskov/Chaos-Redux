@@ -198,6 +198,7 @@ The opening view uses Secure the Arsenals, Defend the Capital, and Review Comman
 The multi-front view, and the Evolution I management phase of a war that gained no new side, uses Review Command Loyalty, Integrate Loyal Formations, and Set the Priority Front, and keeps Defend the Capital until it is used or the capital hold ends, because Hold the Capital stays on offer there and needs that defense.
 
 The exposure view separates Open a Relief Corridor from armed Support the Government or Support the Opposition and also provides border monitoring or mediation according to the live target.
+Offer Regional Mediation leaves a mediation receipt on the government of the mediated war. While it lasts, that government can offer emergency terms before the minimum war duration, its requirement line names the mediator, its AI is more willing to offer terms, and terms it signs count as a negotiated peace.
 
 Regional Exposure uses a dedicated source-country target for the bounded neighbor pass and clears it when that pass ends; it does not reuse the opening transaction's global host pointer.
 
@@ -223,7 +224,7 @@ A government that wins on the battlefield chooses its postwar direction in The F
 
 Settlement obligations are recorded before temporary war state is removed.
 
-A government can offer emergency terms once its war has lasted the minimum duration from the opening. AI governments offer them only when the war turns against them: a Cohesive government holding its ground never offers, a hardliner holds out until its authority is Failing, and Failing or Collapse authority, lost states, or near defeat make an offer likely.
+A government can offer emergency terms once its war has lasted the minimum duration from the opening, or earlier while a neighbour mediates the war. AI governments offer them only when the war turns against them: a Cohesive government holding its ground never offers, a hardliner holds out until its authority is Failing, and Failing or Collapse authority, lost states, or near defeat make an offer likely.
 
 The settlement phase stays open from the moment terms are applied until the obligation is fulfilled or breached, whether or not the settlement event has been answered.
 Hold the Settlement Terms starts a hold that ends on the obligation's review date and is offered only while at least a day remains. The hold judges the terms on that date: an upheld settlement raises State Authority, eases internal division, and lowers the recurrence risk prepared at the end of reconstruction, while a missed objective records a breach. Throughout that period the obligation's own action, when it has one (Complete Disarmament, Complete Coalition Governance, or End Sponsor Commitment), and Hold the Settlement Terms remain available beside the reconstruction actions.

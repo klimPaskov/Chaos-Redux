@@ -508,10 +508,7 @@ event021_decision_offer_mediation = {
 		flag = event021_mediation_recent
 		days = event021_decision_flag_days
 	}
-	set_variable = { event021_mediation_until = global.date }
-	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.mediation_days }
-	event021_days_to_date_offset = yes
-	add_to_variable = { event021_mediation_until = event021_date_offset }
+	event021_record_mediation_receipt = yes
 	clr_country_flag = random_civil_war_neighbor_armed_support
 	clr_country_flag = random_civil_war_civilian_relief_available
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.mediation_pressure_relief }
@@ -521,6 +518,49 @@ event021_decision_offer_mediation = {
 	event021_record_neighbor_evidence = yes
 	event021_apply_regional_exposure = yes
 	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope on the mediating neighbour. Leaves a dated mediation receipt
+# on the government of the war it mediates: the exposure source itself when
+# it is the government, or that claimant's host government.
+event021_record_mediation_receipt = {
+	save_event_target_as = event021_mediation_mediator
+	if = {
+		limit = { has_variable = random_civil_war_exposure_source_country_scope }
+		var:random_civil_war_exposure_source_country_scope = {
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = random_civil_war_government_side
+				}
+				event021_receive_mediation = yes
+			}
+			else_if = {
+				limit = {
+					exists = yes
+					has_country_flag = random_civil_war_opposition_side
+					has_variable = random_civil_war_host_country_scope
+					var:random_civil_war_host_country_scope = {
+						exists = yes
+						has_country_flag = random_civil_war_government_side
+					}
+				}
+				var:random_civil_war_host_country_scope = { event021_receive_mediation = yes }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the mediated government. The receipt names the mediator
+# and lasts constant:event021_action_tuning.mediation_days. While it lasts the
+# government can offer terms before the minimum war duration, and terms it
+# signs count as a negotiated settlement.
+event021_receive_mediation = {
+	set_variable = { random_civil_war_mediator_scope = event_target:event021_mediation_mediator }
+	set_variable = { random_civil_war_mediation_until = global.date }
+	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.mediation_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { random_civil_war_mediation_until = event021_date_offset }
 }
 
 event021_decision_end_sponsor_commitment = {
@@ -884,6 +924,9 @@ event021_clear_crisis_action_receipts = {
 	clr_country_flag = event021_prevention_communications_used
 	# A crisis starts with a permanent Fractured Command, never an old timer.
 	clear_variable = event021_fractured_command_until
+	# A mediation receipt belongs to the crisis it was given for.
+	clear_variable = random_civil_war_mediation_until
+	clear_variable = random_civil_war_mediator_scope
 }
 
 event021_cleanup_decision_state = {
@@ -925,6 +968,5 @@ event021_cleanup_decision_state = {
 	clr_country_flag = random_civil_war_civilian_relief_active
 	clr_country_flag = random_civil_war_civilian_relief_available
 	clr_country_flag = random_civil_war_neighbor_armed_support
-	clear_variable = event021_mediation_until
 	clear_variable = random_civil_war_front_integration_progress
 }
