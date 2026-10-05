@@ -1,5 +1,10 @@
 add_namespace = chaosx.nr39
 
+# Successor administration choice weights: the central state's own route
+# against the other two outcomes.
+@murder_mystery_route_choice_weight = 90
+@murder_mystery_off_route_choice_weight = 5
+
 # ============================================================================
 # CHAOS REDUX - EVENT 039 MURDER MYSTERY
 # ============================================================================
@@ -14,6 +19,8 @@ add_namespace = chaosx.nr39
 #   repeatable actions and costs.
 # - chaosx.nr39.90 is the hidden movement pulse and chaosx.nr39.64 absorbs a
 #   capitulated movement country into its winner.
+# - chaosx.nr39.65 lets the central state choose the successor administration
+#   of a government it defeated during World of Anarchy.
 # ============================================================================
 
 country_event = {
@@ -544,6 +551,88 @@ country_event = {
 	is_triggered_only = yes
 	immediate = {
 		murder_mystery_dismantle_defeated_movement_countries = yes
+	}
+}
+
+# World of Anarchy: the central state decides who governs a government it
+# has defeated. The government arrives as the regular event target
+# murder_mystery_terminal_choice. The route's own outcome strengthens
+# Brotherhood Cohesion; the other two strain it.
+country_event = {
+	id = chaosx.nr39.65
+	title = chaosx.nr39.65.t
+	desc = chaosx.nr39.65.d
+	picture = GFX_news_event_039_murder_mystery_assassin_state_split
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = murder_mystery_terminal_war_active
+		has_country_flag = murder_mystery_assassin_state
+		has_event_target = murder_mystery_terminal_choice
+		event_target:murder_mystery_terminal_choice = { murder_mystery_terminal_target_can_be_administered = yes }
+	}
+	option = {
+		name = chaosx.nr39.65.a
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+				NOT = { has_country_flag = murder_mystery_necessary_mask_route }
+			}
+		}
+		custom_effect_tooltip = murder_mystery_terminal_outcome_subject_tt
+		if = {
+			limit = {
+				NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+				NOT = { has_country_flag = murder_mystery_necessary_mask_route }
+			}
+			custom_effect_tooltip = murder_mystery_terminal_outcome_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_terminal_outcome_off_route_tt }
+		hidden_effect = {
+			set_temp_variable = { murder_mystery_terminal_outcome_input = constant:murder_mystery_terminal.administration_central_subject }
+			event_target:murder_mystery_terminal_choice = { murder_mystery_dismantle_terminal_target = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr39.65.b
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				has_country_flag = murder_mystery_cells_without_masters_route
+			}
+		}
+		custom_effect_tooltip = murder_mystery_terminal_outcome_cells_tt
+		if = {
+			limit = { has_country_flag = murder_mystery_cells_without_masters_route }
+			custom_effect_tooltip = murder_mystery_terminal_outcome_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_terminal_outcome_off_route_tt }
+		hidden_effect = {
+			set_temp_variable = { murder_mystery_terminal_outcome_input = constant:murder_mystery_terminal.administration_autonomous }
+			event_target:murder_mystery_terminal_choice = { murder_mystery_dismantle_terminal_target = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr39.65.c
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				has_country_flag = murder_mystery_necessary_mask_route
+			}
+		}
+		custom_effect_tooltip = murder_mystery_terminal_outcome_staged_tt
+		if = {
+			limit = { has_country_flag = murder_mystery_necessary_mask_route }
+			custom_effect_tooltip = murder_mystery_terminal_outcome_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_terminal_outcome_off_route_tt }
+		hidden_effect = {
+			set_temp_variable = { murder_mystery_terminal_outcome_input = constant:murder_mystery_terminal.administration_staged_integration }
+			event_target:murder_mystery_terminal_choice = { murder_mystery_dismantle_terminal_target = yes }
+		}
 	}
 }
 

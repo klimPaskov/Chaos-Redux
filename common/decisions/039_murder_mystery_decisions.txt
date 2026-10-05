@@ -3225,6 +3225,7 @@ murder_mystery_world_without_leaders_category = {
 			murder_mystery_world_category_visible = yes
 			check_variable = { var = global.murder_mystery_active_terminal_sector_count value = constant:murder_mystery_terminal.maximum_active_sectors compare = less_than }
 			NOT = { is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_two } }
+			check_variable = { var = global.murder_mystery_terminal_open_sector_two value = constant:murder_mystery_value.zero compare = greater_than }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
 		}
 		available = {
@@ -3235,7 +3236,7 @@ murder_mystery_world_without_leaders_category = {
 		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
-			custom_effect_tooltip = murder_mystery_terminal_sector_tt
+			custom_effect_tooltip = murder_mystery_terminal_sector_two_tt
 			hidden_effect = {
 				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_two }
@@ -3270,6 +3271,7 @@ murder_mystery_world_without_leaders_category = {
 			murder_mystery_world_category_visible = yes
 			check_variable = { var = global.murder_mystery_active_terminal_sector_count value = constant:murder_mystery_terminal.maximum_active_sectors compare = less_than }
 			NOT = { is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = constant:murder_mystery_terminal.sector_three } }
+			check_variable = { var = global.murder_mystery_terminal_open_sector_three value = constant:murder_mystery_value.zero compare = greater_than }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
 		}
 		available = {
@@ -3280,7 +3282,7 @@ murder_mystery_world_without_leaders_category = {
 		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
-			custom_effect_tooltip = murder_mystery_terminal_sector_tt
+			custom_effect_tooltip = murder_mystery_terminal_sector_three_tt
 			hidden_effect = {
 				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
 				set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_three }
@@ -3314,29 +3316,26 @@ murder_mystery_world_without_leaders_category = {
 		visible = {
 			murder_mystery_world_category_visible = yes
 			murder_mystery_terminal_target_is_valid = yes
+			event_target:murder_mystery_terminal_target = { has_war_with = ROOT }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
 		}
 		available = {
 			murder_mystery_action_is_available = yes
 			murder_mystery_terminal_target_is_valid = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_command_spine_ready_tt
+				event_target:murder_mystery_terminal_target = { murder_mystery_terminal_command_spine_can_break = yes }
+			}
 			hidden_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		}
 		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_campaign = yes }
 		custom_cost_text = murder_mystery_cost_terminal_campaign
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
-			custom_effect_tooltip = murder_mystery_terminal_operation_tt
+			custom_effect_tooltip = murder_mystery_break_command_spine_tt
 			hidden_effect = {
 				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_campaign }
-				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.silent_arrest }
-				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_retired }
-				set_variable = { murder_mystery_terminal_outcome_war_state = constant:murder_mystery_terminal.status_retired }
-				set_variable = { murder_mystery_terminal_outcome_cell = constant:murder_mystery_value.one }
-				set_variable = { murder_mystery_terminal_outcome_protection = constant:murder_mystery_terminal.status_protected }
-				set_variable = { murder_mystery_terminal_outcome_administration = constant:murder_mystery_terminal.administration_none }
-				set_variable = { murder_mystery_terminal_outcome_victory = constant:murder_mystery_terminal.victory_contribution }
-				murder_mystery_decision_run_terminal_outcome = yes
+				murder_mystery_decision_break_command_spine = yes
 				if = {
 					limit = {
 						OR = { has_country_flag = murder_mystery_action_succeeded has_country_flag = murder_mystery_action_partial }
@@ -3347,10 +3346,10 @@ murder_mystery_world_without_leaders_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.urgent
+			base = constant:murder_mystery_ai.high
 			modifier = {
-				factor = constant:murder_mystery_ai.high
-				check_variable = { var = murder_mystery_target_vulnerability value = constant:murder_mystery_value.seventy compare = greater_than }
+				factor = constant:murder_mystery_ai.urgent
+				event_target:murder_mystery_terminal_target = { is_major = yes }
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
@@ -3359,18 +3358,32 @@ murder_mystery_world_without_leaders_category = {
 		}
 	}
 
+	# Targeted: a registered government the movement has defeated, chosen
+	# from the World of Anarchy registry.
 	murder_mystery_establish_successor_administration = {
 		name = murder_mystery_establish_successor_administration
 		desc = murder_mystery_establish_successor_administration_desc
 		icon = GFX_decision_039_murder_mystery_establish_successor_administration
+		target_array = global.murder_mystery_terminal_country_entries
+		target_root_trigger = {
+			murder_mystery_world_category_visible = yes
+			has_country_flag = murder_mystery_assassin_state
+		}
+		target_trigger = {
+			FROM = {
+				murder_mystery_terminal_target_can_be_administered = yes
+				NOT = { has_country_flag = murder_mystery_terminal_awaiting_administration }
+			}
+		}
 		visible = {
 			murder_mystery_world_category_visible = yes
-			murder_mystery_terminal_target_is_valid = yes
-			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			murder_mystery_terminal_target_is_valid = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_successor_administration_defeated_tt
+				FROM = { murder_mystery_terminal_target_can_be_administered = yes }
+			}
 			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
 		}
 		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
@@ -3378,36 +3391,14 @@ murder_mystery_world_without_leaders_category = {
 		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
-			custom_effect_tooltip = murder_mystery_terminal_operation_tt
-			hidden_effect = {
-				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
-				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.coordinated_raids }
-				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_administered }
-				set_variable = { murder_mystery_terminal_outcome_war_state = constant:murder_mystery_terminal.status_retired }
-				set_variable = { murder_mystery_terminal_outcome_cell = constant:murder_mystery_value.one }
-				set_variable = { murder_mystery_terminal_outcome_protection = constant:murder_mystery_terminal.status_protected }
-				set_variable = { murder_mystery_terminal_outcome_administration = constant:murder_mystery_terminal.administration_central_subject }
-				set_variable = { murder_mystery_terminal_outcome_victory = constant:murder_mystery_terminal.victory_contribution }
-				murder_mystery_decision_run_terminal_outcome = yes
-				if = {
-					limit = {
-						OR = { has_country_flag = murder_mystery_action_succeeded has_country_flag = murder_mystery_action_partial }
-					}
-					set_temp_variable = { murder_mystery_offered_objective = constant:murder_mystery_objective.protect_derivative }
-					murder_mystery_decision_offer_objective = yes
-				}
-			}
+			custom_effect_tooltip = murder_mystery_establish_successor_administration_tt
+			hidden_effect = { murder_mystery_decision_request_successor_administration = yes }
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.high
-			modifier = {
-				factor = constant:murder_mystery_ai.urgent
-				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
-			}
+			base = constant:murder_mystery_ai.urgent
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				NOT = { murder_mystery_terminal_target_is_valid = yes }
+				NOT = { FROM = { murder_mystery_terminal_target_can_be_administered = yes } }
 			}
 		}
 	}
@@ -3418,12 +3409,13 @@ murder_mystery_world_without_leaders_category = {
 		icon = GFX_decision_039_murder_mystery_reconstitute_campaign_council
 		visible = {
 			murder_mystery_world_category_visible = yes
-			murder_mystery_terminal_target_is_valid = yes
+			has_country_flag = murder_mystery_assassin_state
+			check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_terminal.council_cohesion_ceiling compare = less_than }
+			NOT = { has_idea = murder_mystery_campaign_council_reconstituting }
 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
 		}
 		available = {
 			murder_mystery_action_is_available = yes
-			murder_mystery_terminal_target_is_valid = yes
 			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
 		}
 		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
@@ -3431,36 +3423,18 @@ murder_mystery_world_without_leaders_category = {
 		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
 		days_re_enable = constant:murder_mystery_cooldown.terminal_sector_days
 		complete_effect = {
-			custom_effect_tooltip = murder_mystery_terminal_operation_tt
+			custom_effect_tooltip = murder_mystery_reconstitute_campaign_council_tt
 			hidden_effect = {
-				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
-				set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.baited_target }
-				set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-				set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_administered }
-				set_variable = { murder_mystery_terminal_outcome_war_state = constant:murder_mystery_terminal.status_retired }
-				set_variable = { murder_mystery_terminal_outcome_cell = constant:murder_mystery_value.one }
-				set_variable = { murder_mystery_terminal_outcome_protection = constant:murder_mystery_terminal.status_protected }
-				set_variable = { murder_mystery_terminal_outcome_administration = constant:murder_mystery_terminal.administration_council }
-				set_variable = { murder_mystery_terminal_outcome_victory = constant:murder_mystery_terminal.victory_contribution }
-				murder_mystery_decision_run_terminal_outcome = yes
-				if = {
-					limit = {
-						OR = { has_country_flag = murder_mystery_action_succeeded has_country_flag = murder_mystery_action_partial }
-					}
-					set_temp_variable = { murder_mystery_offered_objective = constant:murder_mystery_objective.protect_central_command }
-					murder_mystery_decision_offer_objective = yes
-				}
+				murder_mystery_decision_reconstitute_campaign_council = yes
+				set_temp_variable = { murder_mystery_offered_objective = constant:murder_mystery_objective.protect_central_command }
+				murder_mystery_decision_offer_objective = yes
 			}
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.high
+			base = constant:murder_mystery_ai.standard
 			modifier = {
 				factor = constant:murder_mystery_ai.urgent
-				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
-			}
-			modifier = {
-				factor = constant:murder_mystery_ai.blocked
-				NOT = { murder_mystery_terminal_target_is_valid = yes }
+				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
 			}
 		}
 	}

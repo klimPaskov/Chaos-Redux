@@ -1596,95 +1596,6 @@ murder_mystery_decision_activate_world_end = {
 	clear_variable = murder_mystery_pending_phase
 }
 
-murder_mystery_decision_activate_first_terminal_sector = {
-	set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_one }
-	murder_mystery_activate_terminal_sector = yes
-	murder_mystery_decision_mark_terminal_sector_engaged = yes
-}
-
-murder_mystery_decision_mark_terminal_sector_engaged = {
-	if = {
-		limit = {
-			has_global_flag = murder_mystery_terminal_sector_activation_succeeded
-			murder_mystery_terminal_target_is_valid = yes
-		}
-		set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_engaged }
-		set_variable = { murder_mystery_terminal_outcome_war_state = constant:murder_mystery_terminal.status_engaged }
-		set_variable = { murder_mystery_terminal_outcome_cell = constant:murder_mystery_value.one }
-		set_variable = { murder_mystery_terminal_outcome_protection = constant:murder_mystery_terminal.status_protected }
-		set_variable = { murder_mystery_terminal_outcome_administration = constant:murder_mystery_terminal.administration_central_subject }
-		set_variable = { murder_mystery_terminal_outcome_victory = constant:murder_mystery_terminal.victory_unresolved }
-		murder_mystery_mark_terminal_target_outcome = yes
-		murder_mystery_evaluate_terminal_victory = yes
-		clear_variable = murder_mystery_terminal_outcome_status
-		clear_variable = murder_mystery_terminal_outcome_war_state
-		clear_variable = murder_mystery_terminal_outcome_cell
-		clear_variable = murder_mystery_terminal_outcome_protection
-		clear_variable = murder_mystery_terminal_outcome_administration
-		clear_variable = murder_mystery_terminal_outcome_victory
-	}
-}
-
-murder_mystery_decision_synchronize_uprisings = {
-	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.world_sector_operation }
-	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
-	set_variable = { murder_mystery_terminal_outcome_status = constant:murder_mystery_terminal.status_engaged }
-	set_variable = { murder_mystery_terminal_outcome_war_state = constant:murder_mystery_terminal.status_engaged }
-	set_variable = { murder_mystery_terminal_outcome_cell = constant:murder_mystery_value.one }
-	set_variable = { murder_mystery_terminal_outcome_protection = constant:murder_mystery_terminal.status_protected }
-	set_variable = { murder_mystery_terminal_outcome_administration = constant:murder_mystery_terminal.administration_central_subject }
-	set_variable = { murder_mystery_terminal_outcome_victory = constant:murder_mystery_terminal.victory_unresolved }
-	murder_mystery_decision_run_terminal_outcome = yes
-}
-
-murder_mystery_decision_register_additional_terminal_sector = {
-	clr_global_flag = murder_mystery_terminal_target_registration_succeeded
-	if = {
-		limit = { has_event_target = murder_mystery_terminal_target }
-		clear_global_event_target = murder_mystery_terminal_target
-	}
-	random_country = {
-		limit = {
-			exists = yes
-			uses_normal_civilian_systems = yes
-			NOT = { is_special_chaos_country = yes }
-			NOT = { is_actual_nonhuman_country = yes }
-			NOT = { has_country_flag = murder_mystery_assassin_state }
-			NOT = { has_country_flag = murder_mystery_derivative_country }
-			NOT = { has_country_flag = murder_mystery_terminal_exempt }
-			NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = THIS } }
-		}
-		save_global_event_target_as = murder_mystery_terminal_target
-		set_country_flag = murder_mystery_terminal_target_classified
-	}
-	set_country_flag = murder_mystery_terminal_target_safe_callback
-	set_country_flag = murder_mystery_terminal_target_owner_proof
-	set_country_flag = murder_mystery_terminal_target_not_central_proof
-	set_country_flag = murder_mystery_terminal_target_not_derivative_proof
-	set_country_flag = murder_mystery_terminal_target_not_protected_proof
-	add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
-	set_variable = { murder_mystery_terminal_registration_sector = murder_mystery_selected_terminal_sector }
-	set_variable = { murder_mystery_terminal_registration_war_state = constant:murder_mystery_terminal.status_engaged }
-	set_variable = { murder_mystery_terminal_registration_cell = constant:murder_mystery_value.one }
-	set_variable = { murder_mystery_terminal_registration_protection = constant:murder_mystery_terminal.status_protected }
-	set_variable = { murder_mystery_terminal_registration_administration = constant:murder_mystery_terminal.administration_central_subject }
-	set_variable = { murder_mystery_terminal_registration_victory = constant:murder_mystery_terminal.victory_unresolved }
-	set_variable = { murder_mystery_terminal_registration_generation = global.murder_mystery_transaction_sequence }
-	murder_mystery_register_terminal_campaign_target = yes
-	if = {
-		limit = { has_global_flag = murder_mystery_terminal_target_registration_succeeded }
-		murder_mystery_activate_terminal_sector = yes
-		murder_mystery_decision_mark_terminal_sector_engaged = yes
-	}
-	clear_variable = murder_mystery_terminal_registration_sector
-	clear_variable = murder_mystery_terminal_registration_war_state
-	clear_variable = murder_mystery_terminal_registration_cell
-	clear_variable = murder_mystery_terminal_registration_protection
-	clear_variable = murder_mystery_terminal_registration_administration
-	clear_variable = murder_mystery_terminal_registration_victory
-	clear_variable = murder_mystery_terminal_registration_generation
-}
-
 murder_mystery_decision_activate_terminal_sector = {
 	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.world_sector_operation }
 	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
@@ -1697,18 +1608,69 @@ murder_mystery_decision_activate_terminal_sector = {
 				has_country_flag = murder_mystery_action_partial
 			}
 		}
-		if = {
-			limit = { check_variable = { var = murder_mystery_selected_terminal_sector value = constant:murder_mystery_terminal.sector_one compare = equals } }
-			murder_mystery_decision_activate_first_terminal_sector = yes
-		}
-		else = {
-			murder_mystery_decision_register_additional_terminal_sector = yes
-		}
+		murder_mystery_activate_terminal_sector = yes
 	}
 	murder_mystery_decision_clear_uncommitted_action = yes
 }
 
-murder_mystery_decision_record_terminal_outcome = {
+# COUNTRY scope: the central state, holding murder_mystery_selected_terminal_sector.
+# Raises up to uprising_wave_size revolts from ready insurrection cells in
+# the selected sector through the derivative registry, then continues that
+# sector's war wave. It never settles a registry row.
+murder_mystery_decision_synchronize_uprisings = {
+	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.world_sector_operation }
+	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
+	murder_mystery_decision_run_investigation_action = yes
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_action_completed
+			OR = {
+				has_country_flag = murder_mystery_action_succeeded
+				has_country_flag = murder_mystery_action_partial
+			}
+			has_variable = murder_mystery_selected_terminal_sector
+		}
+		set_temp_variable = { murder_mystery_terminal_uprisings_left = constant:murder_mystery_terminal.uprising_wave_size }
+		set_temp_variable = { murder_mystery_revolt_sector_filter = murder_mystery_selected_terminal_sector }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_terminal_uprisings_left value = constant:murder_mystery_value.zero compare = greater_than } }
+			subtract_from_temp_variable = { murder_mystery_terminal_uprisings_left = constant:murder_mystery_value.one }
+			if = {
+				limit = {
+					NOT = { has_event_target = murder_mystery_selected_cell }
+					NOT = { has_global_flag = murder_mystery_derivative_transaction_active }
+					murder_mystery_derivative_registry_has_capacity = yes
+				}
+				set_temp_variable = { murder_mystery_revolt_minimum_readiness = constant:murder_mystery_revolt.readiness_threshold }
+				murder_mystery_select_revolt_cell = yes
+				if = {
+					limit = { has_event_target = murder_mystery_selected_cell }
+					murder_mystery_start_derivative_creation = yes
+					murder_mystery_clear_selected_cell_context = yes
+				}
+				else = {
+					set_temp_variable = { murder_mystery_terminal_uprisings_left = constant:murder_mystery_value.zero }
+				}
+			}
+			else = {
+				set_temp_variable = { murder_mystery_terminal_uprisings_left = constant:murder_mystery_value.zero }
+			}
+		}
+		set_temp_variable = { murder_mystery_revolt_sector_filter = constant:murder_mystery_value.zero }
+		set_temp_variable = { murder_mystery_terminal_wave_sector = murder_mystery_selected_terminal_sector }
+		murder_mystery_run_terminal_war_wave = yes
+	}
+	murder_mystery_decision_clear_uncommitted_action = yes
+}
+
+# COUNTRY scope: the central state. Strikes the command staff of the current
+# campaign target. It disrupts the target's command and lowers its stability
+# and war support, but it never settles the target: only a capitulation,
+# occupation or annexation does.
+murder_mystery_decision_break_command_spine = {
+	set_variable = { murder_mystery_pending_action = constant:murder_mystery_action.silent_arrest }
+	set_variable = { murder_mystery_pending_phase = constant:murder_mystery_phase.final_operation }
+	murder_mystery_decision_run_investigation_action = yes
 	if = {
 		limit = {
 			has_country_flag = murder_mystery_action_completed
@@ -1718,20 +1680,55 @@ murder_mystery_decision_record_terminal_outcome = {
 			}
 			murder_mystery_terminal_target_is_valid = yes
 		}
-		murder_mystery_mark_terminal_target_outcome = yes
-		murder_mystery_evaluate_terminal_victory = yes
+		event_target:murder_mystery_terminal_target = {
+			set_temp_variable = { murder_mystery_timed_idea_days = constant:murder_mystery_terminal.command_spine_disruption_days }
+			meta_effect = {
+				text = {
+					add_timed_idea = { idea = murder_mystery_command_spine_broken days = [TIMED_IDEA_DAYS] }
+				}
+				TIMED_IDEA_DAYS = "[?murder_mystery_timed_idea_days|.0]"
+			}
+			add_stability = constant:murder_mystery_terminal_float.command_spine_stability
+			add_war_support = constant:murder_mystery_terminal_float.command_spine_war_support
+			set_temp_variable = { murder_mystery_incident_role_input = constant:murder_mystery_target_role.army_command }
+			murder_mystery_apply_generic_office_casualty = yes
+			set_temp_variable = { murder_mystery_incident_role_input = constant:murder_mystery_target_role.none }
+		}
+		set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_terminal.command_spine_cohesion }
+		murder_mystery_adjust_brotherhood_cohesion = yes
+		clear_variable = murder_mystery_brotherhood_cohesion_delta
 	}
-	clear_variable = murder_mystery_terminal_outcome_status
-	clear_variable = murder_mystery_terminal_outcome_war_state
-	clear_variable = murder_mystery_terminal_outcome_cell
-	clear_variable = murder_mystery_terminal_outcome_protection
-	clear_variable = murder_mystery_terminal_outcome_administration
-	clear_variable = murder_mystery_terminal_outcome_victory
+	murder_mystery_decision_clear_uncommitted_action = yes
 }
 
-murder_mystery_decision_run_terminal_outcome = {
-	murder_mystery_decision_run_investigation_action = yes
-	murder_mystery_decision_record_terminal_outcome = yes
+# COUNTRY scope: the central state. Rebuilds the campaign council after
+# expansion or a command loss: Cohesion returns, and the command is exposed
+# while the council is rebuilt.
+murder_mystery_decision_reconstitute_campaign_council = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_terminal.council_cohesion_repair }
+	murder_mystery_adjust_brotherhood_cohesion = yes
+	clear_variable = murder_mystery_brotherhood_cohesion_delta
+	set_temp_variable = { murder_mystery_timed_idea_days = constant:murder_mystery_terminal.council_vulnerability_days }
+	meta_effect = {
+		text = {
+			add_timed_idea = { idea = murder_mystery_campaign_council_reconstituting days = [TIMED_IDEA_DAYS] }
+		}
+		TIMED_IDEA_DAYS = "[?murder_mystery_timed_idea_days|.0]"
+	}
+	murder_mystery_start_action_cooldown = yes
+}
+
+# COUNTRY scope: the central state; FROM is the defeated government chosen in
+# Establish a Successor Administration. Pays for the settlement and sends the
+# successor administration choice.
+murder_mystery_decision_request_successor_administration = {
+	set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
+	murder_mystery_pay_action_cost = yes
+	murder_mystery_clear_action_cost_receipt = yes
+	FROM = { murder_mystery_queue_terminal_administration = yes }
 }
 
 murder_mystery_decision_resolve_terminal_victory = {

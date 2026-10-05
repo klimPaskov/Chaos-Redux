@@ -1785,37 +1785,9 @@ murder_mystery_initialize_terminal_registry = {
 		clear_array = global.murder_mystery_terminal_active_sector_entries
 		set_variable = { global.murder_mystery_terminal_registry_count = constant:murder_mystery_value.zero }
 		set_variable = { global.murder_mystery_active_terminal_sector_count = constant:murder_mystery_value.zero }
-		set_variable = { global.murder_mystery_terminal_sector_cursor = constant:murder_mystery_terminal.minimum_sector }
 		clr_global_flag = murder_mystery_terminal_registry_target_population_proven
 		clr_global_flag = murder_mystery_terminal_registry_setup_failed
 		set_global_flag = murder_mystery_terminal_registry_initialized
-	}
-}
-
-murder_mystery_classify_terminal_target = {
-	clr_country_flag = murder_mystery_terminal_target_classification_failed
-	if = {
-		limit = {
-			has_event_target = murder_mystery_terminal_target
-			has_country_flag = murder_mystery_terminal_target_owner_proof
-			has_country_flag = murder_mystery_terminal_target_not_central_proof
-			has_country_flag = murder_mystery_terminal_target_not_derivative_proof
-			has_country_flag = murder_mystery_terminal_target_not_protected_proof
-			event_target:murder_mystery_terminal_target = {
-				exists = yes
-				uses_normal_civilian_systems = yes
-				NOT = { is_special_chaos_country = yes }
-				NOT = { is_actual_nonhuman_country = yes }
-			}
-		}
-		event_target:murder_mystery_terminal_target = {
-			set_country_flag = murder_mystery_terminal_target_classified
-			clr_country_flag = murder_mystery_terminal_target_exempt
-		}
-		set_country_flag = murder_mystery_terminal_target_safe_callback
-	}
-	else = {
-		set_country_flag = murder_mystery_terminal_target_classification_failed
 	}
 }
 
@@ -1861,47 +1833,247 @@ murder_mystery_rollback_world_end_activation = {
 	}
 }
 
-murder_mystery_register_terminal_target = {
-	murder_mystery_initialize_terminal_registry = yes
+# Any scope. Saves the central capital state as
+# event_target:murder_mystery_terminal_sector_origin, the point every sector
+# distance is measured from.
+murder_mystery_save_terminal_sector_origin = {
+	if = {
+		limit = {
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		event_target:murder_mystery_assassin_state = {
+			capital_scope = { save_event_target_as = murder_mystery_terminal_sector_origin }
+		}
+	}
+}
+
+# COUNTRY scope: an ordinary government. Adds one registry row, sorted into
+# the home, near or far sector by the distance from its capital to the central
+# capital, and marks the government as a campaign target. Requires
+# event_target:murder_mystery_terminal_sector_origin.
+# Output: global flag murder_mystery_terminal_target_registration_succeeded.
+murder_mystery_register_terminal_country = {
 	clr_global_flag = murder_mystery_terminal_target_registration_succeeded
-	clr_global_flag = murder_mystery_terminal_target_registration_failed
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_terminal_registry_initialized
+			murder_mystery_terminal_registry_has_capacity = yes
+			murder_mystery_terminal_country_is_eligible = yes
+			has_event_target = murder_mystery_terminal_sector_origin
+			NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = THIS } }
+		}
+		set_temp_variable = { murder_mystery_terminal_row_sector = constant:murder_mystery_terminal.sector_three }
+		if = {
+			limit = { murder_mystery_terminal_capital_is_in_home_sector = yes }
+			set_temp_variable = { murder_mystery_terminal_row_sector = constant:murder_mystery_terminal.sector_one }
+		}
+		else_if = {
+			limit = { murder_mystery_terminal_capital_is_in_near_sector = yes }
+			set_temp_variable = { murder_mystery_terminal_row_sector = constant:murder_mystery_terminal.sector_two }
+		}
+		set_temp_variable = { murder_mystery_terminal_row_cell = constant:murder_mystery_value.zero }
+		if = {
+			limit = { has_country_flag = murder_mystery_cell_active }
+			set_temp_variable = { murder_mystery_terminal_row_cell = constant:murder_mystery_value.one }
+		}
+		add_to_variable = { global.murder_mystery_transaction_sequence = constant:murder_mystery_value.one }
+		add_to_array = { array = global.murder_mystery_terminal_country_entries value = THIS }
+		add_to_array = { array = global.murder_mystery_terminal_sector_entries value = murder_mystery_terminal_row_sector }
+		add_to_array = { array = global.murder_mystery_terminal_status_entries value = constant:murder_mystery_terminal.status_registered }
+		add_to_array = { array = global.murder_mystery_terminal_war_state_entries value = constant:murder_mystery_terminal.status_registered }
+		add_to_array = { array = global.murder_mystery_terminal_cell_entries value = murder_mystery_terminal_row_cell }
+		add_to_array = { array = global.murder_mystery_terminal_protection_entries value = constant:murder_mystery_target_protection.normal }
+		add_to_array = { array = global.murder_mystery_terminal_administration_entries value = constant:murder_mystery_terminal.administration_none }
+		add_to_array = { array = global.murder_mystery_terminal_victory_entries value = constant:murder_mystery_terminal.victory_unresolved }
+		add_to_array = { array = global.murder_mystery_terminal_generation_entries value = global.murder_mystery_transaction_sequence }
+		set_variable = { global.murder_mystery_terminal_registry_count = global.murder_mystery_terminal_country_entries^num }
+		set_variable = { murder_mystery_terminal_sector = murder_mystery_terminal_row_sector }
+		set_country_flag = murder_mystery_terminal_target_registered
+		set_country_flag = murder_mystery_terminal_target_classified
+		clr_country_flag = murder_mystery_terminal_dismantled
+		clr_country_flag = murder_mystery_terminal_absorbed
+		set_global_flag = murder_mystery_terminal_target_registration_succeeded
+	}
+}
+
+# COUNTRY scope: a registered government. Inputs: temp
+# murder_mystery_terminal_row_status, _war_state, _administration, _victory and
+# _protection. Writes the government's registry row. Only the war hooks and
+# the successor administration transaction write a settled victory value.
+murder_mystery_record_terminal_row = {
+	if = {
+		limit = { murder_mystery_terminal_registry_is_aligned = yes }
+		save_event_target_as = murder_mystery_terminal_row_target
+		set_temp_variable = { murder_mystery_terminal_row_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_terminal_row_index value = global.murder_mystery_terminal_country_entries^num compare = less_than } }
+			set_temp_variable = { murder_mystery_terminal_row_match = constant:murder_mystery_value.zero }
+			var:global.murder_mystery_terminal_country_entries^murder_mystery_terminal_row_index = {
+				if = {
+					limit = { tag = event_target:murder_mystery_terminal_row_target }
+					set_temp_variable = { murder_mystery_terminal_row_match = constant:murder_mystery_value.one }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_terminal_row_match value = constant:murder_mystery_value.one compare = equals } }
+				set_temp_variable = { murder_mystery_terminal_previous_victory = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_row_index }
+				set_variable = { global.murder_mystery_terminal_status_entries^murder_mystery_terminal_row_index = murder_mystery_terminal_row_status }
+				set_variable = { global.murder_mystery_terminal_war_state_entries^murder_mystery_terminal_row_index = murder_mystery_terminal_row_war_state }
+				set_variable = { global.murder_mystery_terminal_administration_entries^murder_mystery_terminal_row_index = murder_mystery_terminal_row_administration }
+				set_variable = { global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_row_index = murder_mystery_terminal_row_victory }
+				set_variable = { global.murder_mystery_terminal_protection_entries^murder_mystery_terminal_row_index = murder_mystery_terminal_row_protection }
+				if = {
+					limit = {
+						check_variable = { var = murder_mystery_terminal_previous_victory value = constant:murder_mystery_terminal.victory_unresolved compare = equals }
+						check_variable = { var = murder_mystery_terminal_row_victory value = constant:murder_mystery_terminal.victory_contribution compare = equals }
+					}
+					add_to_variable = { global.murder_mystery_terminal_target_completed_count = constant:murder_mystery_value.one }
+				}
+				set_temp_variable = { murder_mystery_terminal_row_index = global.murder_mystery_terminal_country_entries^num }
+			}
+			add_to_temp_variable = { murder_mystery_terminal_row_index = constant:murder_mystery_identity.loop_increment }
+		}
+	}
+}
+
+# COUNTRY scope: an open registered government. Brings it into the war with
+# the central state: a government already at war is only marked, an
+# independent one receives a declaration (after leaving a faction the central
+# state leads), and a subject follows its overlord into the war unless that
+# overlord is outside the campaign. Input: temp
+# murder_mystery_terminal_wave_declared, the declarations made in this wave.
+# Output: country flag murder_mystery_terminal_target_at_war.
+murder_mystery_engage_terminal_country = {
+	if = {
+		limit = {
+			murder_mystery_terminal_target_is_open = yes
+			murder_mystery_terminal_country_is_eligible = yes
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		if = {
+			limit = {
+				NOT = { has_war_with = event_target:murder_mystery_assassin_state }
+				murder_mystery_terminal_country_takes_declaration = yes
+				check_variable = { var = murder_mystery_terminal_wave_declared value = constant:murder_mystery_terminal.wave_declaration_limit compare = less_than }
+			}
+			if = {
+				limit = {
+					is_in_faction_with = event_target:murder_mystery_assassin_state
+					event_target:murder_mystery_assassin_state = { is_faction_leader = yes }
+				}
+				event_target:murder_mystery_assassin_state = { remove_from_faction = PREV }
+			}
+			event_target:murder_mystery_assassin_state = {
+				declare_war_on = { target = PREV type = annex_everything }
+			}
+			if = {
+				limit = { has_war_with = event_target:murder_mystery_assassin_state }
+				add_to_temp_variable = { murder_mystery_terminal_wave_declared = constant:murder_mystery_value.one }
+			}
+		}
+		if = {
+			limit = { has_war_with = event_target:murder_mystery_assassin_state }
+			set_country_flag = murder_mystery_terminal_target_at_war
+			murder_mystery_set_white_peace_protection = yes
+		}
+	}
+}
+
+# Any scope. Input: temp murder_mystery_terminal_wave_sector. One bounded war
+# wave over the registered governments of that sector: every open government
+# already at war is marked, and up to wave_declaration_limit independent ones
+# receive declarations. The pulse runs the same wave again for active sectors.
+murder_mystery_run_terminal_war_wave = {
 	if = {
 		limit = {
 			has_global_flag = murder_mystery_terminal_war_active
-			murder_mystery_terminal_registry_has_capacity = yes
-			murder_mystery_terminal_target_is_valid = yes
-			has_variable = murder_mystery_terminal_registration_sector
-			has_variable = murder_mystery_terminal_registration_war_state
-			has_variable = murder_mystery_terminal_registration_cell
-			has_variable = murder_mystery_terminal_registration_protection
-			has_variable = murder_mystery_terminal_registration_administration
-			has_variable = murder_mystery_terminal_registration_victory
-			has_variable = murder_mystery_terminal_registration_generation
-			check_variable = { var = murder_mystery_terminal_registration_sector value = constant:murder_mystery_terminal.minimum_sector compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_sector value = constant:murder_mystery_terminal.maximum_sector compare = less_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_war_state value = constant:murder_mystery_value.zero compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_cell value = constant:murder_mystery_value.zero compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_protection value = constant:murder_mystery_value.zero compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_administration value = constant:murder_mystery_terminal.administration_none compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_victory value = constant:murder_mystery_terminal.victory_unresolved compare = greater_than_or_equals }
-			check_variable = { var = murder_mystery_terminal_registration_generation value = constant:murder_mystery_value.zero compare = greater_than }
-			NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = event_target:murder_mystery_terminal_target } }
+			murder_mystery_terminal_registry_is_aligned = yes
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
 		}
-		add_to_array = { array = global.murder_mystery_terminal_country_entries value = event_target:murder_mystery_terminal_target }
-		add_to_array = { array = global.murder_mystery_terminal_sector_entries value = murder_mystery_terminal_registration_sector }
-		add_to_array = { array = global.murder_mystery_terminal_status_entries value = constant:murder_mystery_terminal.status_registered }
-		add_to_array = { array = global.murder_mystery_terminal_war_state_entries value = murder_mystery_terminal_registration_war_state }
-		add_to_array = { array = global.murder_mystery_terminal_cell_entries value = murder_mystery_terminal_registration_cell }
-		add_to_array = { array = global.murder_mystery_terminal_protection_entries value = murder_mystery_terminal_registration_protection }
-		add_to_array = { array = global.murder_mystery_terminal_administration_entries value = murder_mystery_terminal_registration_administration }
-		add_to_array = { array = global.murder_mystery_terminal_victory_entries value = murder_mystery_terminal_registration_victory }
-		add_to_array = { array = global.murder_mystery_terminal_generation_entries value = murder_mystery_terminal_registration_generation }
-		set_variable = { global.murder_mystery_terminal_registry_count = global.murder_mystery_terminal_country_entries^num }
-		event_target:murder_mystery_terminal_target = { set_country_flag = murder_mystery_terminal_target_registered }
-		set_global_flag = murder_mystery_terminal_target_registration_succeeded
+		set_temp_variable = { murder_mystery_terminal_wave_declared = constant:murder_mystery_value.zero }
+		set_temp_variable = { murder_mystery_terminal_wave_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_terminal_wave_index value = global.murder_mystery_terminal_country_entries^num compare = less_than } }
+			if = {
+				limit = {
+					check_variable = { var = global.murder_mystery_terminal_sector_entries^murder_mystery_terminal_wave_index value = murder_mystery_terminal_wave_sector compare = equals }
+					check_variable = { var = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_wave_index value = constant:murder_mystery_terminal.victory_unresolved compare = equals }
+				}
+				var:global.murder_mystery_terminal_country_entries^murder_mystery_terminal_wave_index = {
+					murder_mystery_engage_terminal_country = yes
+					if = {
+						limit = { has_country_flag = murder_mystery_terminal_target_at_war }
+						set_variable = { global.murder_mystery_terminal_status_entries^murder_mystery_terminal_wave_index = constant:murder_mystery_terminal.status_engaged }
+						set_variable = { global.murder_mystery_terminal_war_state_entries^murder_mystery_terminal_wave_index = constant:murder_mystery_terminal.status_engaged }
+					}
+				}
+			}
+			add_to_temp_variable = { murder_mystery_terminal_wave_index = constant:murder_mystery_identity.loop_increment }
+		}
+		murder_mystery_select_terminal_campaign_target = yes
+		murder_mystery_refresh_terminal_sector_counts = yes
 	}
-	else = {
-		set_global_flag = murder_mystery_terminal_target_registration_failed
+}
+
+# Any scope. The current campaign target is the open government at war with
+# the movement that owns the most states; the terminal objectives and Break
+# the Command Spine act on it.
+murder_mystery_select_terminal_campaign_target = {
+	if = { limit = { has_event_target = murder_mystery_terminal_target } clear_global_event_target = murder_mystery_terminal_target }
+	if = {
+		limit = { murder_mystery_terminal_registry_is_aligned = yes }
+		set_temp_variable = { murder_mystery_terminal_best_states = constant:murder_mystery_value.zero }
+		for_each_scope_loop = {
+			array = global.murder_mystery_terminal_country_entries
+			if = {
+				limit = {
+					murder_mystery_terminal_target_is_open = yes
+					has_country_flag = murder_mystery_terminal_target_at_war
+					murder_mystery_terminal_country_is_eligible = yes
+					check_variable = { var = num_owned_states value = murder_mystery_terminal_best_states compare = greater_than }
+				}
+				set_temp_variable = { murder_mystery_terminal_best_states = num_owned_states }
+				save_global_event_target_as = murder_mystery_terminal_target
+			}
+		}
+	}
+}
+
+# Any scope. Publishes the open governments of each sector for decision
+# visibility and the World Without Leaders text.
+murder_mystery_refresh_terminal_sector_counts = {
+	set_variable = { global.murder_mystery_terminal_route_cohesion = constant:murder_mystery_terminal.route_outcome_cohesion }
+	set_variable = { global.murder_mystery_terminal_off_route_cohesion = constant:murder_mystery_terminal.off_route_outcome_cohesion }
+	set_variable = { global.murder_mystery_terminal_open_sector_one = constant:murder_mystery_value.zero }
+	set_variable = { global.murder_mystery_terminal_open_sector_two = constant:murder_mystery_value.zero }
+	set_variable = { global.murder_mystery_terminal_open_sector_three = constant:murder_mystery_value.zero }
+	set_variable = { global.murder_mystery_terminal_open_total = constant:murder_mystery_value.zero }
+	if = {
+		limit = { murder_mystery_terminal_registry_is_aligned = yes }
+		set_temp_variable = { murder_mystery_terminal_count_index = constant:murder_mystery_identity.first_array_index }
+		while_loop_effect = {
+			limit = { check_variable = { var = murder_mystery_terminal_count_index value = global.murder_mystery_terminal_country_entries^num compare = less_than } }
+			if = {
+				limit = { check_variable = { var = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_count_index value = constant:murder_mystery_terminal.victory_unresolved compare = equals } }
+				add_to_variable = { global.murder_mystery_terminal_open_total = constant:murder_mystery_value.one }
+				set_temp_variable = { murder_mystery_terminal_count_sector = global.murder_mystery_terminal_sector_entries^murder_mystery_terminal_count_index }
+				if = {
+					limit = { check_variable = { var = murder_mystery_terminal_count_sector value = constant:murder_mystery_terminal.sector_one compare = equals } }
+					add_to_variable = { global.murder_mystery_terminal_open_sector_one = constant:murder_mystery_value.one }
+				}
+				else_if = {
+					limit = { check_variable = { var = murder_mystery_terminal_count_sector value = constant:murder_mystery_terminal.sector_two compare = equals } }
+					add_to_variable = { global.murder_mystery_terminal_open_sector_two = constant:murder_mystery_value.one }
+				}
+				else = {
+					add_to_variable = { global.murder_mystery_terminal_open_sector_three = constant:murder_mystery_value.one }
+				}
+			}
+			add_to_temp_variable = { murder_mystery_terminal_count_index = constant:murder_mystery_identity.loop_increment }
+		}
 	}
 }
 
@@ -1924,7 +2096,7 @@ murder_mystery_reconcile_terminal_registry = {
 				set_temp_variable = { murder_mystery_terminal_registry_row_invalid = constant:murder_mystery_value.one }
 			}
 			var:global.murder_mystery_terminal_country_entries^murder_mystery_terminal_registry_index = {
-				if = { limit = { NOT = { exists = yes } } ROOT = { set_temp_variable = { murder_mystery_terminal_registry_row_invalid = constant:murder_mystery_value.one } } }
+				if = { limit = { NOT = { exists = yes } } set_temp_variable = { murder_mystery_terminal_registry_row_invalid = constant:murder_mystery_value.one } }
 			}
 			if = {
 				limit = { check_variable = { var = murder_mystery_terminal_registry_row_invalid value = constant:murder_mystery_value.one compare = equals } }
@@ -1943,6 +2115,8 @@ murder_mystery_reconcile_terminal_registry = {
 	}
 }
 
+# COUNTRY scope: the acting country, holding murder_mystery_selected_terminal_sector.
+# Opens the sector and runs its first war wave.
 murder_mystery_activate_terminal_sector = {
 	clr_global_flag = murder_mystery_terminal_sector_activation_succeeded
 	if = {
@@ -1950,97 +2124,93 @@ murder_mystery_activate_terminal_sector = {
 		add_to_array = { array = global.murder_mystery_terminal_active_sector_entries value = murder_mystery_selected_terminal_sector }
 		set_variable = { global.murder_mystery_active_terminal_sector_count = global.murder_mystery_terminal_active_sector_entries^num }
 		set_global_flag = murder_mystery_terminal_sector_activation_succeeded
+		set_temp_variable = { murder_mystery_terminal_wave_sector = murder_mystery_selected_terminal_sector }
+		murder_mystery_run_terminal_war_wave = yes
 	}
 }
 
-murder_mystery_mark_terminal_target_outcome = {
-	if = {
-		limit = {
-			has_event_target = murder_mystery_terminal_target
-			murder_mystery_terminal_registry_is_aligned = yes
-			has_variable = murder_mystery_terminal_outcome_status
-			has_variable = murder_mystery_terminal_outcome_war_state
-			has_variable = murder_mystery_terminal_outcome_cell
-			has_variable = murder_mystery_terminal_outcome_protection
-			has_variable = murder_mystery_terminal_outcome_administration
-			has_variable = murder_mystery_terminal_outcome_victory
-		}
-		set_temp_variable = { murder_mystery_terminal_registry_index = constant:murder_mystery_identity.first_array_index }
-		set_temp_variable = { murder_mystery_terminal_registry_match = constant:murder_mystery_value.zero }
-		while_loop_effect = {
-			limit = { check_variable = { var = murder_mystery_terminal_registry_index value = global.murder_mystery_terminal_country_entries^num compare = less_than } }
-			set_temp_variable = { murder_mystery_terminal_registry_match = constant:murder_mystery_value.zero }
-			var:global.murder_mystery_terminal_country_entries^murder_mystery_terminal_registry_index = {
-				if = { limit = { tag = event_target:murder_mystery_terminal_target } ROOT = { set_temp_variable = { murder_mystery_terminal_registry_match = constant:murder_mystery_value.one } } }
-			}
-			if = {
-				limit = { check_variable = { var = murder_mystery_terminal_registry_match value = constant:murder_mystery_value.one compare = equals } }
-				set_temp_variable = { murder_mystery_terminal_previous_victory = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index }
-				set_variable = { global.murder_mystery_terminal_status_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_status }
-				set_variable = { global.murder_mystery_terminal_war_state_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_war_state }
-				set_variable = { global.murder_mystery_terminal_cell_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_cell }
-				set_variable = { global.murder_mystery_terminal_protection_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_protection }
-				set_variable = { global.murder_mystery_terminal_administration_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_administration }
-				set_variable = { global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index = murder_mystery_terminal_outcome_victory }
-				if = {
-					limit = {
-						check_variable = { var = murder_mystery_terminal_previous_victory value = constant:murder_mystery_terminal.victory_unresolved compare = equals }
-						check_variable = { var = murder_mystery_terminal_outcome_victory value = constant:murder_mystery_terminal.victory_contribution compare = greater_than_or_equals }
-					}
-					add_to_variable = { global.murder_mystery_terminal_target_completed_count = constant:murder_mystery_value.one }
-					event_target:murder_mystery_terminal_target = { set_country_flag = murder_mystery_terminal_target_contribution_recorded }
-				}
-			}
-			add_to_temp_variable = { murder_mystery_terminal_registry_index = constant:murder_mystery_identity.loop_increment }
-		}
-	}
-}
-
+# Any scope. Victory needs every registered row settled by a conquest, a
+# capitulation followed by a successor administration, or a reconciled
+# annexation. A subject administration that broke free reopens its row. When
+# every row is settled, one bounded reconciliation registers any ordinary
+# government created since activation; victory waits for those as well.
 murder_mystery_evaluate_terminal_victory = {
 	clr_global_flag = murder_mystery_terminal_registry_victory_ready
 	if = {
 		limit = {
+			has_global_flag = murder_mystery_terminal_war_active
 			murder_mystery_terminal_registry_is_aligned = yes
-			check_variable = { var = global.murder_mystery_terminal_country_entries^num value = constant:murder_mystery_world_end.minimum_terminal_registry_rows compare = greater_than_or_equals }
 		}
-		set_temp_variable = { murder_mystery_terminal_registry_index = constant:murder_mystery_identity.first_array_index }
+		murder_mystery_reconcile_terminal_registry = yes
 		set_temp_variable = { murder_mystery_terminal_unresolved_rows = constant:murder_mystery_value.zero }
+		set_temp_variable = { murder_mystery_terminal_registry_index = constant:murder_mystery_identity.first_array_index }
 		while_loop_effect = {
 			limit = { check_variable = { var = murder_mystery_terminal_registry_index value = global.murder_mystery_terminal_country_entries^num compare = less_than } }
-			set_temp_variable = { murder_mystery_terminal_registry_row_status = global.murder_mystery_terminal_status_entries^murder_mystery_terminal_registry_index }
-			set_temp_variable = { murder_mystery_terminal_registry_row_victory = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index }
 			if = {
-				limit = {
-					OR = {
-						check_variable = { var = murder_mystery_terminal_registry_row_status value = constant:murder_mystery_terminal.status_unclassified compare = equals }
-						check_variable = { var = murder_mystery_terminal_registry_row_status value = constant:murder_mystery_terminal.status_registered compare = equals }
-						check_variable = { var = murder_mystery_terminal_registry_row_status value = constant:murder_mystery_terminal.status_engaged compare = equals }
-						check_variable = { var = murder_mystery_terminal_registry_row_victory value = constant:murder_mystery_terminal.victory_unresolved compare = equals }
+				limit = { check_variable = { var = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index value = constant:murder_mystery_terminal.victory_contribution compare = equals } }
+				var:global.murder_mystery_terminal_country_entries^murder_mystery_terminal_registry_index = {
+					if = {
+						limit = {
+							has_country_flag = murder_mystery_terminal_dismantled
+							murder_mystery_terminal_country_is_eligible = yes
+						}
+						clr_country_flag = murder_mystery_terminal_dismantled
+						set_variable = { global.murder_mystery_terminal_status_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.status_registered }
+						set_variable = { global.murder_mystery_terminal_war_state_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.status_registered }
+						set_variable = { global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index = constant:murder_mystery_terminal.victory_unresolved }
+						subtract_from_variable = { global.murder_mystery_terminal_target_completed_count = constant:murder_mystery_value.one }
 					}
 				}
+			}
+			if = {
+				limit = { check_variable = { var = global.murder_mystery_terminal_victory_entries^murder_mystery_terminal_registry_index value = constant:murder_mystery_terminal.victory_unresolved compare = equals } }
 				add_to_temp_variable = { murder_mystery_terminal_unresolved_rows = constant:murder_mystery_value.one }
 			}
 			add_to_temp_variable = { murder_mystery_terminal_registry_index = constant:murder_mystery_identity.loop_increment }
 		}
 		if = {
-			limit = { check_variable = { var = murder_mystery_terminal_unresolved_rows value = constant:murder_mystery_value.zero compare = equals } }
-			set_global_flag = murder_mystery_terminal_registry_victory_ready
-			set_global_flag = murder_mystery_terminal_registry_completion_proven
+			limit = {
+				check_variable = { var = murder_mystery_terminal_unresolved_rows value = constant:murder_mystery_value.zero compare = equals }
+				check_variable = { var = global.murder_mystery_terminal_target_completed_count value = constant:murder_mystery_world_end.minimum_terminal_registry_rows compare = greater_than_or_equals }
+			}
+			murder_mystery_save_terminal_sector_origin = yes
+			set_temp_variable = { murder_mystery_terminal_wave_declared = constant:murder_mystery_value.zero }
+			every_country = {
+				limit = {
+					murder_mystery_terminal_country_is_eligible = yes
+					NOT = { has_country_flag = murder_mystery_terminal_target_registered }
+				}
+				murder_mystery_register_terminal_country = yes
+				if = {
+					limit = { has_global_flag = murder_mystery_terminal_target_registration_succeeded }
+					add_to_temp_variable = { murder_mystery_terminal_unresolved_rows = constant:murder_mystery_value.one }
+					set_temp_variable = { murder_mystery_terminal_sector_query = murder_mystery_terminal_sector }
+					if = {
+						limit = { murder_mystery_terminal_sector_query_is_active = yes }
+						murder_mystery_engage_terminal_country = yes
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = murder_mystery_terminal_unresolved_rows value = constant:murder_mystery_value.zero compare = equals } }
+				set_global_flag = murder_mystery_terminal_registry_victory_ready
+				set_global_flag = murder_mystery_terminal_registry_completion_proven
+			}
 		}
+		murder_mystery_refresh_terminal_sector_counts = yes
 	}
 }
 
 murder_mystery_clear_terminal_context = {
 	if = { limit = { has_event_target = murder_mystery_terminal_target } clear_global_event_target = murder_mystery_terminal_target }
 	clear_variable = murder_mystery_selected_terminal_sector
-	clr_country_flag = murder_mystery_terminal_target_safe_callback
-	clr_country_flag = murder_mystery_terminal_target_owner_proof
-	clr_country_flag = murder_mystery_terminal_target_not_central_proof
-	clr_country_flag = murder_mystery_terminal_target_not_derivative_proof
-	clr_country_flag = murder_mystery_terminal_target_not_protected_proof
 }
 
 murder_mystery_cleanup_terminal_registry = {
+	for_each_scope_loop = {
+		array = global.murder_mystery_terminal_country_entries
+		murder_mystery_clear_terminal_country_flags = yes
+	}
 	clear_array = global.murder_mystery_terminal_country_entries
 	clear_array = global.murder_mystery_terminal_sector_entries
 	clear_array = global.murder_mystery_terminal_status_entries
@@ -2053,7 +2223,12 @@ murder_mystery_cleanup_terminal_registry = {
 	clear_array = global.murder_mystery_terminal_active_sector_entries
 	set_variable = { global.murder_mystery_terminal_registry_count = global.murder_mystery_terminal_country_entries^num }
 	set_variable = { global.murder_mystery_active_terminal_sector_count = global.murder_mystery_terminal_active_sector_entries^num }
-	clear_variable = global.murder_mystery_terminal_sector_cursor
+	clear_variable = global.murder_mystery_terminal_open_sector_one
+	clear_variable = global.murder_mystery_terminal_open_sector_two
+	clear_variable = global.murder_mystery_terminal_open_sector_three
+	clear_variable = global.murder_mystery_terminal_open_total
+	clear_variable = global.murder_mystery_terminal_route_cohesion
+	clear_variable = global.murder_mystery_terminal_off_route_cohesion
 	clr_global_flag = murder_mystery_terminal_registry_initialized
 	clr_global_flag = murder_mystery_terminal_registry_victory_ready
 	clr_global_flag = murder_mystery_terminal_war_active
@@ -2061,6 +2236,45 @@ murder_mystery_cleanup_terminal_registry = {
 	clr_global_flag = murder_mystery_terminal_registry_target_population_proven
 	clr_global_flag = murder_mystery_terminal_registry_setup_failed
 	murder_mystery_clear_terminal_context = yes
+}
+
+# COUNTRY scope: a registered government. Removes its campaign markers,
+# including the White Peace protection the campaign gave it.
+murder_mystery_clear_terminal_country_flags = {
+	clr_country_flag = murder_mystery_terminal_target_registered
+	clr_country_flag = murder_mystery_terminal_target_classified
+	clr_country_flag = murder_mystery_terminal_target_at_war
+	clr_country_flag = murder_mystery_terminal_capitulated
+	clr_country_flag = murder_mystery_terminal_awaiting_administration
+	clr_country_flag = murder_mystery_terminal_dismantling_active
+	clear_variable = murder_mystery_terminal_sector
+	clear_variable = murder_mystery_terminal_administration_retry_date
+	murder_mystery_clear_white_peace_protection = yes
+}
+
+# ---------------------------------------------------------------------------
+# Event 009 White Peace protection
+# ---------------------------------------------------------------------------
+# Event 009 skips any war actor that carries white_peace_protected_war_actor.
+# Event 039 sets it on its own war actors and records that it did, so clearing
+# never removes a protection another owner gave the country.
+
+# COUNTRY scope.
+murder_mystery_set_white_peace_protection = {
+	if = {
+		limit = { NOT = { has_country_flag = white_peace_protected_war_actor } }
+		set_country_flag = white_peace_protected_war_actor
+		set_country_flag = murder_mystery_white_peace_protection_set
+	}
+}
+
+# COUNTRY scope.
+murder_mystery_clear_white_peace_protection = {
+	if = {
+		limit = { has_country_flag = murder_mystery_white_peace_protection_set }
+		clr_country_flag = white_peace_protected_war_actor
+		clr_country_flag = murder_mystery_white_peace_protection_set
+	}
 }
 
 # ---------------------------------------------------------------------------

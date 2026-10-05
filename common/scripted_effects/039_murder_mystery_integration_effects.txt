@@ -1274,10 +1274,15 @@ murder_mystery_execute_foreign_leader_transaction = {
 			set_country_flag = murder_mystery_foreign_leader_assassinated
 			set_country_flag = murder_mystery_foreign_leader_transaction_committed
 			murder_mystery_achievement_record_leader_murder = yes
-			add_stability = constant:murder_mystery_response_stability.foreign_assassination_stability
-			add_war_support = constant:murder_mystery_response_stability.foreign_assassination_war_support
 			murder_mystery_record_incident = yes
-			news_event = { id = chaosx.news.4406 }
+			# A conquered government's ruler falls with its administration; the
+			# rally and the world news belong to a murder in a living state.
+			if = {
+				limit = { NOT = { has_country_flag = murder_mystery_terminal_dismantling_active } }
+				add_stability = constant:murder_mystery_response_stability.foreign_assassination_stability
+				add_war_support = constant:murder_mystery_response_stability.foreign_assassination_war_support
+				news_event = { id = chaosx.news.4406 }
+			}
 		}
 	}
 	if = {
@@ -2126,7 +2131,6 @@ murder_mystery_prepare_world_end_registry = {
 		murder_mystery_initialize_terminal_registry = yes
 		set_global_flag = murder_mystery_terminal_settlement_validated
 		set_global_flag = murder_mystery_terminal_capital_validated
-		set_variable = { global.murder_mystery_terminal_sector_cursor = constant:murder_mystery_terminal.sector_one }
 		murder_mystery_begin_world_end_activation = yes
 		if = {
 			limit = { has_global_flag = murder_mystery_terminal_activation_in_progress }
@@ -2134,47 +2138,17 @@ murder_mystery_prepare_world_end_registry = {
 			murder_mystery_commit_world_end_activation = yes
 			if = {
 				limit = { has_global_flag = murder_mystery_terminal_war_active }
+				# Every ordinary government is registered once, sorted into the
+				# home, near or far sector by its distance from the central capital.
+				murder_mystery_save_terminal_sector_origin = yes
 				every_country = {
 					limit = {
-						exists = yes
-						uses_normal_civilian_systems = yes
-						NOT = { is_special_chaos_country = yes }
-						NOT = { is_actual_nonhuman_country = yes }
-						NOT = { has_country_flag = murder_mystery_assassin_state }
-						NOT = { has_country_flag = murder_mystery_derivative_country }
-						NOT = { has_country_flag = murder_mystery_terminal_exempt }
+						murder_mystery_terminal_country_is_eligible = yes
 						NOT = { is_in_array = { array = global.murder_mystery_terminal_country_entries value = THIS } }
-						murder_mystery_terminal_registry_has_capacity = yes
 					}
-					set_country_flag = murder_mystery_terminal_target_owner_proof
-					set_country_flag = murder_mystery_terminal_target_not_central_proof
-					set_country_flag = murder_mystery_terminal_target_not_derivative_proof
-					set_country_flag = murder_mystery_terminal_target_not_protected_proof
-					set_country_flag = murder_mystery_terminal_target_selected
-					save_global_event_target_as = murder_mystery_terminal_target
-					clr_global_flag = murder_mystery_terminal_target_registration_succeeded
-					set_variable = { murder_mystery_terminal_registration_sector = global.murder_mystery_terminal_sector_cursor }
-					set_variable = { murder_mystery_terminal_registration_war_state = constant:murder_mystery_terminal.status_engaged }
-					set_variable = { murder_mystery_terminal_registration_cell = constant:murder_mystery_value.zero }
-					set_variable = { murder_mystery_terminal_registration_protection = constant:murder_mystery_terminal.status_protected }
-					set_variable = { murder_mystery_terminal_registration_administration = constant:murder_mystery_terminal.administration_central_subject }
-					set_variable = { murder_mystery_terminal_registration_victory = constant:murder_mystery_terminal.victory_unresolved }
-					set_variable = { murder_mystery_terminal_registration_generation = global.murder_mystery_transaction_sequence }
-					murder_mystery_classify_terminal_target = yes
-					if = {
-						limit = { has_country_flag = murder_mystery_terminal_target_safe_callback }
-						murder_mystery_register_terminal_target = yes
-					}
-					if = {
-						limit = { has_global_flag = murder_mystery_terminal_target_registration_succeeded }
-						add_to_variable = { global.murder_mystery_terminal_sector_cursor = constant:murder_mystery_value.one }
-						if = {
-							limit = { check_variable = { var = global.murder_mystery_terminal_sector_cursor value = constant:murder_mystery_terminal.maximum_sector compare = greater_than } }
-							set_variable = { global.murder_mystery_terminal_sector_cursor = constant:murder_mystery_terminal.minimum_sector }
-						}
-					}
-					murder_mystery_clear_terminal_context = yes
+					murder_mystery_register_terminal_country = yes
 				}
+				murder_mystery_refresh_terminal_sector_counts = yes
 				if = {
 					limit = { check_variable = { var = global.murder_mystery_terminal_registry_count value = constant:murder_mystery_world_end.minimum_terminal_registry_rows compare = greater_than_or_equals } }
 					set_global_flag = murder_mystery_terminal_registry_target_population_proven
@@ -2184,27 +2158,15 @@ murder_mystery_prepare_world_end_registry = {
 		if = {
 			limit = { has_global_flag = murder_mystery_terminal_registry_target_population_proven }
 			set_country_flag = murder_mystery_world_without_leaders_open
+			if = {
+				limit = { NOT = { has_variable = murder_mystery_selected_terminal_sector } }
+				set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_one }
+			}
 		}
 		else = {
 			set_global_flag = murder_mystery_terminal_registry_setup_failed
 			murder_mystery_cleanup_terminal_registry = yes
 		}
-	}
-}
-
-murder_mystery_register_terminal_campaign_target = {
-	if = {
-		limit = {
-			has_event_target = murder_mystery_terminal_target
-			event_target:murder_mystery_terminal_target = {
-				exists = yes
-				NOT = { is_special_chaos_country = yes }
-				NOT = { is_actual_nonhuman_country = yes }
-				NOT = { has_country_flag = murder_mystery_terminal_exempt }
-			}
-		}
-		murder_mystery_classify_terminal_target = yes
-		murder_mystery_register_terminal_target = yes
 	}
 }
 

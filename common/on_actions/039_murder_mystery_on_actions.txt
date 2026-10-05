@@ -4,7 +4,8 @@
 # The startup registration enters one bounded existing-country scope. The
 # daily fallback is tag-scoped to CXT and never scans the world.
 # Capitulation and annexation hooks act only on countries that carry an
-# Event 039 actor flag while the movement runtime is active.
+# Event 039 actor flag while the movement runtime is active, or on registered
+# World of Anarchy campaign targets while the campaign is under way.
 # ============================================================================
 
 on_actions = {
@@ -42,6 +43,16 @@ on_actions = {
 				FROM = { save_event_target_as = murder_mystery_loss_winner }
 				murder_mystery_on_capitulation = yes
 			}
+			# World of Anarchy: a campaign target that surrendered to the
+			# movement waits for its successor administration.
+			if = {
+				limit = {
+					has_global_flag = murder_mystery_terminal_war_active
+					has_country_flag = murder_mystery_terminal_target_registered
+				}
+				FROM = { save_event_target_as = murder_mystery_loss_winner }
+				murder_mystery_on_terminal_target_capitulated = yes
+			}
 		}
 	}
 
@@ -55,6 +66,15 @@ on_actions = {
 				}
 				save_event_target_as = murder_mystery_loss_winner
 				FROM = { murder_mystery_on_annexed = yes }
+			}
+			# World of Anarchy: an annexed campaign target settles its row.
+			if = {
+				limit = {
+					has_global_flag = murder_mystery_terminal_war_active
+					FROM = { has_country_flag = murder_mystery_terminal_target_registered }
+				}
+				save_event_target_as = murder_mystery_loss_winner
+				FROM = { murder_mystery_on_terminal_target_annexed = yes }
 			}
 		}
 	}

@@ -620,7 +620,35 @@ murder_mystery_terminal = {
 	minimum_sector = 1
 	maximum_sector = 3
 	maximum_active_sectors = 3
-	maximum_registry_rows = 64
+	# Every ordinary government is registered at activation; the cap keeps
+	# registry loops bounded while covering a crowded map.
+	maximum_registry_rows = 128
+	# One wave declares war on at most this many governments; the pulse
+	# continues the wave in active sectors that still hold targets.
+	wave_declaration_limit = 12
+	# Synchronize the Uprisings raises at most this many revolts at once.
+	uprising_wave_size = 2
+	# Days between a capitulation and the successor administration choice.
+	administration_delay_days = 2
+	# A queued administration choice that never arrived is offered again
+	# after this many days.
+	administration_retry_days = 30
+	# Staged integration takes the capital and up to this many strategic
+	# states into the central state.
+	strategic_state_limit = 3
+	# Brotherhood Cohesion after a successor administration.
+	route_outcome_cohesion = 3
+	off_route_outcome_cohesion = -6
+	movement_annexation_cohesion = 2
+	# Reconstitute the Campaign Council restores this much Cohesion.
+	council_cohesion_repair = 15
+	# The council can be rebuilt while Cohesion is below this value.
+	council_cohesion_ceiling = 70
+	council_vulnerability_days = 60
+	# Break the Command Spine leaves the target's command disrupted for this
+	# many days.
+	command_spine_disruption_days = 90
+	command_spine_cohesion = 4
 	status_unclassified = 0
 	status_registered = 1
 	status_engaged = 2
@@ -637,6 +665,17 @@ murder_mystery_terminal = {
 	victory_unresolved = 0
 	victory_contribution = 1
 	victory_exempt = 2
+}
+
+murder_mystery_terminal_float = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Break the Command Spine: the target government's losses.
+	command_spine_stability = -0.05
+	command_spine_war_support = -0.05
 }
 
 murder_mystery_world_end = {

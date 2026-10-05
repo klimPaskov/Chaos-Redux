@@ -251,6 +251,43 @@ Its row appears in the Event Details world-end list beside the other terminal ou
 `murder_mystery_world_branch_is_enabled` reads that toggle through `world_end_murder_mystery_world_of_anarchy_scenario_enabled` and the global `world_end_disabled` flag, so disabling the row blocks only the Evolution V world branch; the movement, its cells and its Assassin State keep running.
 The row shows as active while `world_end_murder_mystery` is set.
 
+## World of Anarchy war
+
+Activation registers every ordinary government once (`murder_mystery_register_terminal_country`): it must exist, use normal civilian systems, own at least one state, and be neither special Chaos, nonhuman, exempt, nor on the movement's side (the central state, a derivative, or a subject of either or of a successor administration).
+The registry holds up to `murder_mystery_terminal.maximum_registry_rows` rows, and each row is sorted into a sector by the distance from its capital to the central capital: the home front within 1500, the near sector within 4000, the distant sector beyond (file constants in `039_murder_mystery_runtime_triggers.txt`, because `distance_to` reads literals).
+The central state starts with the home front selected.
+
+Opening a sector (Synchronize the Uprisings for the home front, Open the Near Sector, Open the Distant Sector) runs one bounded war wave over that sector's rows (`murder_mystery_run_terminal_war_wave`).
+A government already at war with the central state is only marked; an independent government, or a subject whose overlord is outside the campaign, receives `declare_war_on` with `annex_everything` from the central state, at most `wave_declaration_limit` per wave, after being expelled from a faction the central state leads.
+A subject of an open target follows its overlord into the war.
+The movement pulse repeats the wave for every active sector, so the remaining governments of an opened sector come under attack a few at a time.
+No daily or weekly scan is added: the pulse and every hook iterate only the registry.
+After each wave the largest government at war becomes the current campaign target (`murder_mystery_terminal_target`) that Break the Command Spine and the terminal objectives act on.
+
+A registered government that capitulates while at war with the movement, or to a movement country, is flagged and queued; the pulse also queues any open row that is fully occupied while at war with the central state or that a peace made a movement subject.
+The queue sends `chaosx.nr39.65` to the central state after `administration_delay_days`, with the government as the regular event target `murder_mystery_terminal_choice`; a choice that never arrives is offered again after `administration_retry_days`.
+Establish a Successor Administration is a targeted decision over the registry for a defeated government that has no choice pending, and it sends the same choice for the settlement cost.
+The three options run `murder_mystery_dismantle_terminal_target` once:
+
+| Outcome | Favoured by | Result |
+| --- | --- | --- |
+| Subject administration | The Hidden Hand | The government leaves its faction and becomes a subject of the central state with the Successor Administration idea. |
+| Cell territory | Cells Without Masters | A local derivative that rose against this government annexes it; otherwise a new autonomous derivative from the derivative registry takes every state (cores only where the old government held them) and absorbs it. A full derivative registry falls back to a subject administration. |
+| Staged integration | The Necessary Mask | The capital and up to `strategic_state_limit` states with more than one civilian or military factory join the central state; the rest goes to the local derivative, stays a subject administration, or is annexed when nothing is left. |
+
+The route's own outcome gives `route_outcome_cohesion` Brotherhood Cohesion and the others cost `off_route_outcome_cohesion`.
+A government that stays a subject loses its ruler only through the existing safe successor (`murder_mystery_execute_foreign_leader_transaction`, which installs the Acting Cabinet without the world news or rally of a murder in a living state), and its cabinet loss is a generic office casualty; a ruler the safety rules protect stays in office and the row records the protection.
+No outcome grants universal cores.
+
+The row is settled (`victory_contribution`) only by that transaction or by the annexation hook when a movement country annexes the government (a conquest, recorded as staged integration).
+Annexation by an ordinary government settles the row as absorbed (`victory_exempt`) and registers the annexing government if it was not yet a target, declaring war on it at once when its sector is open.
+No decision writes a settled value.
+`murder_mystery_evaluate_terminal_victory` passes only when every row is settled; a subject administration that has broken free reopens its row, and once every row is settled one bounded reconciliation registers any ordinary government created since activation, so victory waits for those as well.
+
+Break the Command Spine needs the current campaign target at war with the central state and more than 20% of the way to surrender; on success it adds Command Spine Broken (`command_spine_disruption_days`), lowers the target's stability and war support, strikes its command staff as a generic office casualty and adds `command_spine_cohesion`, but it never settles the row.
+Reconstitute the Campaign Council appears while Cohesion is below `council_cohesion_ceiling`, restores `council_cohesion_repair` Cohesion and adds Campaign Council Reconstituting for `council_vulnerability_days`.
+Synchronize the Uprisings opens the home front the first time; afterwards it raises up to `uprising_wave_size` revolts from ready insurrection cells in the selected sector through the existing derivative path and continues that sector's war wave.
+
 ## Achievements
 
 The eight achievements are registered in the Event 039 section of `common/achievements/chaos_redux_achievements.txt`.

@@ -12,8 +12,11 @@
 # - Movement inheritance and resolution: a defeated center hands the movement
 #   to the best derivative once, or the network survives underground in its
 #   mature cells, or the movement ends with a bounded remnant cleanup.
+# - World of Anarchy: capitulation, annexation and the pulse settle the
+#   terminal registry rows through one successor administration transaction.
 # - No effect in this file iterates over every country. Loops run over the
-#   Event 039 cell and derivative registries, the host, and the active center.
+#   Event 039 cell, derivative and terminal registries, the host, and the
+#   active center.
 # - No character is retired or created here.
 # ============================================================================
 
@@ -106,6 +109,7 @@ murder_mystery_run_pulse = {
 	murder_mystery_pulse_evolutions = yes
 	murder_mystery_pulse_revolts = yes
 	murder_mystery_pulse_objectives = yes
+	murder_mystery_pulse_terminal = yes
 	murder_mystery_achievement_pulse = yes
 	murder_mystery_evaluate_global_resolution = yes
 }
@@ -826,9 +830,11 @@ murder_mystery_commit_paced_evolution = {
 # Foreign revolts after Evolution IV
 # ---------------------------------------------------------------------------
 
-# Any scope. Input: temp murder_mystery_revolt_minimum_readiness. Saves
-# murder_mystery_selected_cell: the registered insurrection cell with the
-# highest revolt readiness whose government can lose a revolt cluster.
+# Any scope. Input: temp murder_mystery_revolt_minimum_readiness and optional
+# temp murder_mystery_revolt_sector_filter (a World of Anarchy sector; zero
+# accepts every cell). Saves murder_mystery_selected_cell: the registered
+# insurrection cell with the highest revolt readiness whose government can
+# lose a revolt cluster.
 murder_mystery_select_revolt_cell = {
 	murder_mystery_clear_selected_cell_context = yes
 	if = {
@@ -845,7 +851,17 @@ murder_mystery_select_revolt_cell = {
 				}
 				var:global.murder_mystery_cell_country_entries^murder_mystery_revolt_index = {
 					if = {
-						limit = { murder_mystery_country_can_lose_revolt_cluster = yes }
+						limit = {
+							murder_mystery_country_can_lose_revolt_cluster = yes
+							OR = {
+								check_variable = { var = murder_mystery_revolt_sector_filter value = constant:murder_mystery_value.zero compare = equals }
+								AND = {
+									has_variable = murder_mystery_terminal_sector
+									check_variable = { var = murder_mystery_terminal_sector value = murder_mystery_revolt_sector_filter compare = equals }
+									NOT = { has_country_flag = murder_mystery_terminal_dismantled }
+								}
+							}
+						}
 						set_temp_variable = { murder_mystery_revolt_best = murder_mystery_revolt_row_readiness }
 						save_global_event_target_as = murder_mystery_selected_cell
 					}
@@ -873,6 +889,7 @@ murder_mystery_pulse_revolts = {
 			murder_mystery_derivative_registry_has_capacity = yes
 		}
 		set_temp_variable = { murder_mystery_revolt_minimum_readiness = constant:murder_mystery_revolt.readiness_threshold }
+		set_temp_variable = { murder_mystery_revolt_sector_filter = constant:murder_mystery_value.zero }
 		murder_mystery_select_revolt_cell = yes
 		if = {
 			limit = { has_event_target = murder_mystery_selected_cell }
@@ -1176,6 +1193,535 @@ murder_mystery_dismantle_defeated_movement_countries = {
 		}
 	}
 	clear_array = murder_mystery_dismantle_targets
+}
+
+# ---------------------------------------------------------------------------
+# World of Anarchy: conquest and successor administrations
+# ---------------------------------------------------------------------------
+# A registered government that capitulates to the movement, is fully
+# occupied by it, or is made its subject at the peace receives one successor
+# administration. The capitulation and annexation hooks in
+# 039_murder_mystery_on_actions.txt and the pulse are the only callers that
+# can settle a registry row; decisions only choose among the outcomes.
+
+# COUNTRY scope: a registered government that capitulated. The winner is the
+# regular event target murder_mystery_loss_winner set by the on_action.
+murder_mystery_on_terminal_target_capitulated = {
+	if = {
+		limit = {
+			murder_mystery_terminal_target_is_open = yes
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+			OR = {
+				has_war_with = event_target:murder_mystery_assassin_state
+				AND = {
+					has_event_target = murder_mystery_loss_winner
+					event_target:murder_mystery_loss_winner = { murder_mystery_terminal_is_movement_side = yes }
+				}
+			}
+		}
+		set_country_flag = murder_mystery_terminal_capitulated
+		murder_mystery_queue_terminal_administration = yes
+	}
+}
+
+# COUNTRY scope: the annexed registered government. The winner is the regular
+# event target murder_mystery_loss_winner. Annexation by a movement country
+# settles the row as a conquest; annexation by an ordinary government settles
+# it as absorbed and registers the annexing government if it was not yet a
+# campaign target.
+murder_mystery_on_terminal_target_annexed = {
+	if = {
+		limit = {
+			has_country_flag = murder_mystery_terminal_target_registered
+			NOT = { has_country_flag = murder_mystery_terminal_dismantled }
+			NOT = { has_country_flag = murder_mystery_terminal_absorbed }
+			NOT = { has_country_flag = murder_mystery_terminal_dismantling_active }
+		}
+		set_temp_variable = { murder_mystery_terminal_row_war_state = constant:murder_mystery_terminal.status_retired }
+		set_temp_variable = { murder_mystery_terminal_row_protection = constant:murder_mystery_target_protection.normal }
+		if = {
+			limit = {
+				has_event_target = murder_mystery_loss_winner
+				event_target:murder_mystery_loss_winner = { murder_mystery_terminal_is_movement_side = yes }
+			}
+			set_country_flag = murder_mystery_terminal_dismantled
+			set_temp_variable = { murder_mystery_terminal_row_status = constant:murder_mystery_terminal.status_administered }
+			set_temp_variable = { murder_mystery_terminal_row_administration = constant:murder_mystery_terminal.administration_staged_integration }
+			set_temp_variable = { murder_mystery_terminal_row_victory = constant:murder_mystery_terminal.victory_contribution }
+			murder_mystery_record_terminal_row = yes
+			if = {
+				limit = {
+					has_event_target = murder_mystery_assassin_state
+					event_target:murder_mystery_assassin_state = { exists = yes }
+				}
+				event_target:murder_mystery_assassin_state = {
+					set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_terminal.movement_annexation_cohesion }
+					murder_mystery_adjust_brotherhood_cohesion = yes
+					clear_variable = murder_mystery_brotherhood_cohesion_delta
+				}
+			}
+		}
+		else = {
+			set_country_flag = murder_mystery_terminal_absorbed
+			set_temp_variable = { murder_mystery_terminal_row_status = constant:murder_mystery_terminal.status_retired }
+			set_temp_variable = { murder_mystery_terminal_row_administration = constant:murder_mystery_terminal.administration_none }
+			set_temp_variable = { murder_mystery_terminal_row_victory = constant:murder_mystery_terminal.victory_exempt }
+			murder_mystery_record_terminal_row = yes
+			if = {
+				limit = {
+					has_event_target = murder_mystery_loss_winner
+					event_target:murder_mystery_loss_winner = {
+						murder_mystery_terminal_country_is_eligible = yes
+						NOT = { has_country_flag = murder_mystery_terminal_target_registered }
+					}
+				}
+				murder_mystery_save_terminal_sector_origin = yes
+				event_target:murder_mystery_loss_winner = {
+					murder_mystery_register_terminal_country = yes
+					set_temp_variable = { murder_mystery_terminal_sector_query = murder_mystery_terminal_sector }
+					if = {
+						limit = {
+							has_global_flag = murder_mystery_terminal_target_registration_succeeded
+							murder_mystery_terminal_sector_query_is_active = yes
+						}
+						set_temp_variable = { murder_mystery_terminal_wave_declared = constant:murder_mystery_value.zero }
+						murder_mystery_engage_terminal_country = yes
+					}
+				}
+			}
+		}
+		murder_mystery_clear_terminal_country_flags = yes
+		murder_mystery_select_terminal_campaign_target = yes
+		murder_mystery_evaluate_terminal_victory = yes
+	}
+}
+
+# COUNTRY scope: a defeated registered government. Sends the successor
+# administration choice to the central state once; a choice that never
+# arrives is offered again after administration_retry_days.
+murder_mystery_queue_terminal_administration = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = murder_mystery_terminal_awaiting_administration }
+			murder_mystery_terminal_target_can_be_administered = yes
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		set_country_flag = murder_mystery_terminal_awaiting_administration
+		set_temp_variable = { chaosx_date_days = constant:murder_mystery_terminal.administration_retry_days }
+		set_temp_variable = { chaosx_date_offset = constant:murder_mystery_value.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { murder_mystery_terminal_administration_retry_date = global.date }
+		add_to_variable = { murder_mystery_terminal_administration_retry_date = chaosx_date_offset }
+		save_event_target_as = murder_mystery_terminal_choice
+		event_target:murder_mystery_assassin_state = {
+			country_event = { id = chaosx.nr39.65 days = constant:murder_mystery_terminal.administration_delay_days }
+		}
+	}
+}
+
+# COUNTRY scope: the government being dismantled. Output: global event target
+# murder_mystery_local_derivative, an active derivative that rose against this
+# government and still fights for the movement.
+murder_mystery_find_local_derivative = {
+	if = { limit = { has_event_target = murder_mystery_local_derivative } clear_global_event_target = murder_mystery_local_derivative }
+	save_event_target_as = murder_mystery_local_derivative_parent
+	for_each_scope_loop = {
+		array = global.murder_mystery_derivative_country_entries
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = murder_mystery_derivative_active
+				murder_mystery_terminal_is_movement_side = yes
+				has_variable = murder_mystery_derivative_parent_government
+				var:murder_mystery_derivative_parent_government = { tag = event_target:murder_mystery_local_derivative_parent }
+			}
+			save_global_event_target_as = murder_mystery_local_derivative
+		}
+	}
+}
+
+# COUNTRY scope: the government being dismantled. Replaces the sitting ruler
+# through the institutional successor when the safe character rules allow it
+# and records the loss of its cabinet as a generic office casualty. A ruler
+# the rules protect stays in office. Output: country flag
+# murder_mystery_terminal_leader_protected.
+murder_mystery_replace_terminal_government_leader = {
+	clr_country_flag = murder_mystery_terminal_leader_protected
+	if = {
+		limit = { murder_mystery_foreign_high_value_leader_is_safe = yes }
+		murder_mystery_execute_foreign_leader_transaction = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = murder_mystery_foreign_leader_assassinated }
+			NOT = { has_country_flag = murder_mystery_foreign_leader_transaction_committed }
+		}
+		set_country_flag = murder_mystery_terminal_leader_protected
+	}
+	set_temp_variable = { murder_mystery_incident_role_input = constant:murder_mystery_target_role.cabinet }
+	murder_mystery_apply_generic_office_casualty = yes
+	set_temp_variable = { murder_mystery_incident_role_input = constant:murder_mystery_target_role.none }
+}
+
+# COUNTRY scope: the government being dismantled. A subject administration of
+# the central state under the institutional successor.
+murder_mystery_install_terminal_subject_administration = {
+	murder_mystery_replace_terminal_government_leader = yes
+	if = {
+		limit = { NOT = { murder_mystery_terminal_is_movement_side = yes } }
+		if = { limit = { is_in_faction = yes } leave_faction = yes }
+		event_target:murder_mystery_assassin_state = {
+			puppet = { target = PREV end_wars = yes end_civil_wars = no }
+		}
+	}
+	if = {
+		limit = { murder_mystery_terminal_is_movement_side = yes }
+		add_ideas = murder_mystery_terminal_subject_administration
+		set_country_flag = murder_mystery_terminal_subject_administration_installed
+	}
+}
+
+# COUNTRY scope: the government being dismantled. The capital and up to
+# strategic_state_limit strategic states join the central state; a local
+# derivative takes the rest, otherwise the remainder stays a subject
+# administration, or the central state annexes an empty remainder.
+murder_mystery_stage_terminal_integration = {
+	clear_array = global.murder_mystery_terminal_integration_states
+	capital_scope = { add_to_array = { array = global.murder_mystery_terminal_integration_states value = THIS } }
+	set_temp_variable = { murder_mystery_terminal_strategic_left = constant:murder_mystery_terminal.strategic_state_limit }
+	every_owned_state = {
+		limit = {
+			is_capital = no
+			murder_mystery_terminal_state_is_strategic = yes
+		}
+		if = {
+			limit = { check_variable = { var = murder_mystery_terminal_strategic_left value = constant:murder_mystery_value.zero compare = greater_than } }
+			add_to_array = { array = global.murder_mystery_terminal_integration_states value = THIS }
+			subtract_from_temp_variable = { murder_mystery_terminal_strategic_left = constant:murder_mystery_value.one }
+		}
+	}
+	for_each_scope_loop = {
+		array = global.murder_mystery_terminal_integration_states
+		transfer_state_to = event_target:murder_mystery_assassin_state
+	}
+	clear_array = global.murder_mystery_terminal_integration_states
+	if = {
+		limit = { has_event_target = murder_mystery_local_derivative }
+		every_owned_state = { transfer_state_to = event_target:murder_mystery_local_derivative }
+		event_target:murder_mystery_local_derivative = {
+			annex_country = { target = event_target:murder_mystery_dismantled_government transfer_troops = no }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { num_owned_states > constant:murder_mystery_value.zero } }
+		murder_mystery_install_terminal_subject_administration = yes
+	}
+	else = {
+		event_target:murder_mystery_assassin_state = {
+			annex_country = { target = event_target:murder_mystery_dismantled_government transfer_troops = no }
+		}
+	}
+}
+
+# COUNTRY scope: the government being dismantled. An autonomous cell territory
+# through the derivative registry: a new movement country takes every state
+# the government owns (cores only where the old government held them), joins
+# the central state as an autonomous subject, receives its starting forces and
+# absorbs the old government. A full registry or a failed postcondition
+# returns every state and leaves no landless carrier.
+# Output: global flag murder_mystery_derivative_commit_succeeded.
+murder_mystery_create_terminal_cell_territory = {
+	clr_global_flag = murder_mystery_derivative_commit_succeeded
+	if = {
+		limit = {
+			has_event_target = murder_mystery_assassin_state
+			NOT = { has_global_flag = murder_mystery_derivative_transaction_active }
+			murder_mystery_derivative_registry_has_capacity = yes
+			check_variable = { num_owned_states > constant:murder_mystery_value.zero }
+		}
+		if = { limit = { has_event_target = murder_mystery_derivative_country_candidate } clear_global_event_target = murder_mystery_derivative_country_candidate }
+		if = { limit = { has_event_target = murder_mystery_derivative_anchor_state } clear_global_event_target = murder_mystery_derivative_anchor_state }
+		clear_array = global.murder_mystery_derivative_transfer_states
+		capital_scope = { save_global_event_target_as = murder_mystery_derivative_anchor_state }
+		create_dynamic_country = {
+			original_tag = AXT
+			save_global_event_target_as = murder_mystery_derivative_country_candidate
+			set_country_flag = murder_mystery_derivative_carrier_validated
+			set_country_flag = murder_mystery_derivative_country
+			set_country_flag = murder_mystery_cell_administration_open
+			set_country_flag = murder_mystery_nonterminal_play_enabled
+			set_country_flag = murder_mystery_terminal_cell_territory
+			set_country_flag = murder_mystery_cells_without_masters_route
+			set_country_flag = murder_mystery_derivative_autonomous
+			murder_mystery_initialize_country_runtime = yes
+			set_variable = { murder_mystery_case_progress = constant:murder_mystery_value.twenty }
+			set_variable = { murder_mystery_network_reach = constant:murder_mystery_value.forty }
+			set_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.fifty }
+			add_ideas = murder_mystery_foreign_derivative_administration
+			add_manpower = constant:murder_mystery_assassin.derivative_manpower
+			add_equipment_to_stockpile = { type = assassin_operations_kit_1 amount = constant:murder_mystery_assassin.derivative_operations_kits }
+			create_country_leader = {
+				name = MURDER_MYSTERY_CELLS_WITHOUT_MASTERS_NAME
+				desc = MURDER_MYSTERY_CELLS_WITHOUT_MASTERS_DESC
+				picture = GFX_portrait_039_cells_without_masters
+				ideology = despotism
+			}
+		}
+		every_owned_state = {
+			add_to_array = { array = global.murder_mystery_derivative_transfer_states value = THIS }
+			if = {
+				limit = { is_core_of = event_target:murder_mystery_dismantled_government }
+				add_core_of = event_target:murder_mystery_derivative_country_candidate
+			}
+		}
+		for_each_scope_loop = {
+			array = global.murder_mystery_derivative_transfer_states
+			transfer_state_to = event_target:murder_mystery_derivative_country_candidate
+		}
+		event_target:murder_mystery_derivative_country_candidate = {
+			if = {
+				limit = { murder_mystery_host_has_live_state = yes }
+				if = {
+					limit = {
+						has_event_target = murder_mystery_derivative_anchor_state
+						event_target:murder_mystery_derivative_anchor_state = { is_owned_by = event_target:murder_mystery_derivative_country_candidate }
+					}
+					set_capital = { state = event_target:murder_mystery_derivative_anchor_state remember_old_capital = no }
+				}
+				set_country_flag = murder_mystery_derivative_state_postcondition_passed
+			}
+		}
+		if = {
+			limit = { event_target:murder_mystery_derivative_country_candidate = { has_country_flag = murder_mystery_derivative_state_postcondition_passed } }
+			event_target:murder_mystery_assassin_state = {
+				puppet = {
+					target = event_target:murder_mystery_derivative_country_candidate
+					end_wars = yes
+					end_civil_wars = yes
+				}
+			}
+			event_target:murder_mystery_derivative_country_candidate = {
+				if = {
+					limit = { is_subject_of = event_target:murder_mystery_assassin_state }
+					set_country_flag = murder_mystery_derivative_subject_bound
+				}
+			}
+			if = {
+				limit = { event_target:murder_mystery_derivative_country_candidate = { has_country_flag = murder_mystery_derivative_subject_bound } }
+				set_global_flag = murder_mystery_derivative_subject_postcondition_passed
+			}
+			set_variable = { murder_mystery_derivative_stage_input = constant:murder_mystery_derivative.minimum_stage }
+			set_global_flag = murder_mystery_derivative_postcondition_passed
+			murder_mystery_begin_derivative_transaction = yes
+			if = {
+				limit = { has_global_flag = murder_mystery_derivative_transaction_active }
+				murder_mystery_commit_derivative_transaction = yes
+			}
+			clear_variable = murder_mystery_derivative_stage_input
+		}
+		if = {
+			limit = { has_global_flag = murder_mystery_derivative_commit_succeeded }
+			event_target:murder_mystery_derivative_country_candidate = {
+				set_variable = { murder_mystery_derivative_parent_government = PREV }
+				murder_mystery_setup_derivative_forces = yes
+				annex_country = { target = event_target:murder_mystery_dismantled_government transfer_troops = no }
+			}
+			clear_array = global.murder_mystery_derivative_transfer_states
+			clear_global_event_target = murder_mystery_derivative_country_candidate
+		}
+		else = {
+			for_each_scope_loop = {
+				array = global.murder_mystery_derivative_transfer_states
+				transfer_state_to = event_target:murder_mystery_dismantled_government
+			}
+			clear_array = global.murder_mystery_derivative_transfer_states
+			clr_global_flag = murder_mystery_derivative_transaction_active
+			clr_global_flag = murder_mystery_derivative_prepared
+			if = {
+				limit = { has_event_target = murder_mystery_derivative_country_candidate }
+				event_target:murder_mystery_derivative_country_candidate = {
+					set_country_flag = murder_mystery_derivative_requires_parent_retirement
+					clr_country_flag = murder_mystery_derivative_country
+					clr_country_flag = murder_mystery_derivative_carrier_validated
+				}
+				clear_global_event_target = murder_mystery_derivative_country_candidate
+			}
+		}
+		if = { limit = { has_event_target = murder_mystery_derivative_anchor_state } clear_global_event_target = murder_mystery_derivative_anchor_state }
+		clr_global_flag = murder_mystery_derivative_postcondition_passed
+		clr_global_flag = murder_mystery_derivative_subject_postcondition_passed
+	}
+}
+
+# COUNTRY scope: a defeated registered government. Input: temp
+# murder_mystery_terminal_outcome_input, one of the administration_* constants;
+# administration_none picks the central state's route. One transaction:
+# - The Hidden Hand: a subject administration of the central state.
+# - Cells Without Masters: an autonomous cell territory, or the local
+#   derivative that rose against this government absorbs it; a full
+#   derivative registry falls back to a subject administration.
+# - The Necessary Mask: staged integration of the capital and strategic
+#   states, the rest a subject administration or the local derivative.
+# Rulers are replaced only through the institutional successor and generic
+# office casualties, no state gains a new universal core, and the registry row
+# is settled only when the government is gone or serves the movement.
+murder_mystery_dismantle_terminal_target = {
+	if = {
+		limit = {
+			murder_mystery_terminal_target_can_be_administered = yes
+			NOT = { has_country_flag = murder_mystery_terminal_dismantling_active }
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		set_country_flag = murder_mystery_terminal_dismantling_active
+		save_event_target_as = murder_mystery_dismantled_government
+		set_temp_variable = { murder_mystery_terminal_route_outcome = constant:murder_mystery_terminal.administration_central_subject }
+		if = {
+			limit = { event_target:murder_mystery_assassin_state = { has_country_flag = murder_mystery_cells_without_masters_route } }
+			set_temp_variable = { murder_mystery_terminal_route_outcome = constant:murder_mystery_terminal.administration_autonomous }
+		}
+		else_if = {
+			limit = { event_target:murder_mystery_assassin_state = { has_country_flag = murder_mystery_necessary_mask_route } }
+			set_temp_variable = { murder_mystery_terminal_route_outcome = constant:murder_mystery_terminal.administration_staged_integration }
+		}
+		if = {
+			limit = { check_variable = { var = murder_mystery_terminal_outcome_input value = constant:murder_mystery_terminal.administration_none compare = equals } }
+			set_temp_variable = { murder_mystery_terminal_outcome_input = murder_mystery_terminal_route_outcome }
+		}
+		set_temp_variable = { murder_mystery_terminal_outcome_result = constant:murder_mystery_terminal.administration_none }
+		murder_mystery_find_local_derivative = yes
+
+		if = {
+			limit = { check_variable = { var = murder_mystery_terminal_outcome_input value = constant:murder_mystery_terminal.administration_autonomous compare = equals } }
+			if = {
+				limit = { has_event_target = murder_mystery_local_derivative }
+				event_target:murder_mystery_local_derivative = {
+					annex_country = { target = event_target:murder_mystery_dismantled_government transfer_troops = no }
+				}
+				set_temp_variable = { murder_mystery_terminal_outcome_result = constant:murder_mystery_terminal.administration_derivative_elevation }
+			}
+			else = {
+				murder_mystery_create_terminal_cell_territory = yes
+				if = {
+					limit = { has_global_flag = murder_mystery_derivative_commit_succeeded }
+					set_temp_variable = { murder_mystery_terminal_outcome_result = constant:murder_mystery_terminal.administration_autonomous }
+				}
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = murder_mystery_terminal_outcome_input value = constant:murder_mystery_terminal.administration_staged_integration compare = equals } }
+			murder_mystery_stage_terminal_integration = yes
+			if = {
+				limit = {
+					OR = {
+						NOT = { exists = yes }
+						murder_mystery_terminal_is_movement_side = yes
+					}
+				}
+				set_temp_variable = { murder_mystery_terminal_outcome_result = constant:murder_mystery_terminal.administration_staged_integration }
+			}
+		}
+		# The subject administration, also the fallback when no cell territory
+		# could be raised.
+		if = {
+			limit = {
+				exists = yes
+				check_variable = { var = murder_mystery_terminal_outcome_result value = constant:murder_mystery_terminal.administration_none compare = equals }
+			}
+			murder_mystery_install_terminal_subject_administration = yes
+			if = {
+				limit = { has_country_flag = murder_mystery_terminal_subject_administration_installed }
+				set_temp_variable = { murder_mystery_terminal_outcome_result = constant:murder_mystery_terminal.administration_central_subject }
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = { var = murder_mystery_terminal_outcome_result value = constant:murder_mystery_terminal.administration_none compare = greater_than }
+				OR = {
+					NOT = { exists = yes }
+					murder_mystery_terminal_is_movement_side = yes
+				}
+			}
+			set_country_flag = murder_mystery_terminal_dismantled
+			set_temp_variable = { murder_mystery_terminal_row_status = constant:murder_mystery_terminal.status_administered }
+			set_temp_variable = { murder_mystery_terminal_row_war_state = constant:murder_mystery_terminal.status_retired }
+			set_temp_variable = { murder_mystery_terminal_row_administration = murder_mystery_terminal_outcome_result }
+			set_temp_variable = { murder_mystery_terminal_row_victory = constant:murder_mystery_terminal.victory_contribution }
+			set_temp_variable = { murder_mystery_terminal_row_protection = constant:murder_mystery_target_protection.normal }
+			if = {
+				limit = { has_country_flag = murder_mystery_terminal_leader_protected }
+				set_temp_variable = { murder_mystery_terminal_row_protection = constant:murder_mystery_target_protection.protected }
+			}
+			murder_mystery_record_terminal_row = yes
+			set_variable = { murder_mystery_terminal_administration = murder_mystery_terminal_outcome_result }
+			event_target:murder_mystery_assassin_state = {
+				set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_terminal.off_route_outcome_cohesion }
+				if = {
+					limit = { check_variable = { var = murder_mystery_terminal_outcome_input value = murder_mystery_terminal_route_outcome compare = equals } }
+					set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_terminal.route_outcome_cohesion }
+				}
+				murder_mystery_adjust_brotherhood_cohesion = yes
+				clear_variable = murder_mystery_brotherhood_cohesion_delta
+			}
+			clr_country_flag = murder_mystery_terminal_awaiting_administration
+			clr_country_flag = murder_mystery_terminal_capitulated
+			clr_country_flag = murder_mystery_terminal_target_at_war
+			clear_variable = murder_mystery_terminal_administration_retry_date
+			murder_mystery_clear_white_peace_protection = yes
+			set_global_flag = murder_mystery_terminal_administration_recorded
+			murder_mystery_select_terminal_campaign_target = yes
+			murder_mystery_evaluate_terminal_victory = yes
+		}
+		else = {
+			clr_country_flag = murder_mystery_terminal_awaiting_administration
+		}
+		if = { limit = { has_event_target = murder_mystery_local_derivative } clear_global_event_target = murder_mystery_local_derivative }
+		clr_country_flag = murder_mystery_terminal_dismantling_active
+		clr_country_flag = murder_mystery_terminal_subject_administration_installed
+	}
+}
+
+# Any scope, called by the movement pulse. Continues the war waves of the
+# active sectors, offers successor administrations for governments the
+# movement has defeated, and checks victory. It reads only the registry.
+murder_mystery_pulse_terminal = {
+	if = {
+		limit = {
+			has_global_flag = murder_mystery_terminal_war_active
+			murder_mystery_terminal_registry_is_aligned = yes
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = { exists = yes }
+		}
+		murder_mystery_reconcile_terminal_registry = yes
+		for_each_loop = {
+			array = global.murder_mystery_terminal_active_sector_entries
+			value = murder_mystery_terminal_pulse_sector
+			set_temp_variable = { murder_mystery_terminal_wave_sector = murder_mystery_terminal_pulse_sector }
+			murder_mystery_run_terminal_war_wave = yes
+		}
+		for_each_scope_loop = {
+			array = global.murder_mystery_terminal_country_entries
+			if = {
+				limit = {
+					has_country_flag = murder_mystery_terminal_awaiting_administration
+					has_variable = murder_mystery_terminal_administration_retry_date
+					check_variable = { var = global.date value = murder_mystery_terminal_administration_retry_date compare = greater_than_or_equals }
+				}
+				clr_country_flag = murder_mystery_terminal_awaiting_administration
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = murder_mystery_terminal_awaiting_administration }
+					murder_mystery_terminal_target_can_be_administered = yes
+				}
+				murder_mystery_queue_terminal_administration = yes
+			}
+		}
+		murder_mystery_evaluate_terminal_victory = yes
+	}
 }
 
 # ---------------------------------------------------------------------------

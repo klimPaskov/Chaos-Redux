@@ -901,18 +901,16 @@ murder_mystery_terminal_registry_has_capacity = {
 	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = constant:murder_mystery_terminal.maximum_registry_rows compare = less_than }
 }
 
+# Any scope. The current campaign target: the largest government at war with
+# the movement in an active sector, chosen after every war wave.
 murder_mystery_terminal_target_is_valid = {
 	murder_mystery_runtime_is_active = yes
+	has_global_flag = murder_mystery_terminal_war_active
 	has_event_target = murder_mystery_terminal_target
 	event_target:murder_mystery_terminal_target = {
-		exists = yes
-		uses_normal_civilian_systems = yes
-		NOT = { is_special_chaos_country = yes }
-		NOT = { is_actual_nonhuman_country = yes }
-		has_country_flag = murder_mystery_terminal_target_classified
-		NOT = { has_country_flag = murder_mystery_terminal_target_exempt }
+		murder_mystery_terminal_target_is_open = yes
+		murder_mystery_terminal_country_is_eligible = yes
 	}
-	has_country_flag = murder_mystery_terminal_target_safe_callback
 }
 
 murder_mystery_terminal_sector_is_valid = {
@@ -971,4 +969,148 @@ murder_mystery_terminal_victory_is_ready = {
 	has_global_flag = murder_mystery_terminal_war_active
 	has_global_flag = murder_mystery_terminal_registry_victory_ready
 	NOT = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+}
+
+# ---------------------------------------------------------------------------
+# World of Anarchy war, sectors and successor administrations
+# ---------------------------------------------------------------------------
+# distance_to, surrender_progress and building counts read literal numbers,
+# so their thresholds are file constants.
+
+# A capital this close to the central capital belongs to the home sector,
+# up to the second distance to the near sector, beyond it to the far sector.
+@murder_mystery_terminal_home_distance = 1500
+@murder_mystery_terminal_near_distance = 4000
+# Break the Command Spine needs the target at least this close to surrender.
+@murder_mystery_terminal_command_spine_surrender = 0.2
+# A strategic state holds more than this many factories of one kind.
+@murder_mystery_terminal_strategic_factories = 1
+
+# COUNTRY scope. Fights for the movement: the central state, a derivative, a
+# subject of either, or a subject of a successor administration.
+murder_mystery_terminal_is_movement_side = {
+	OR = {
+		has_country_flag = murder_mystery_assassin_state
+		has_country_flag = murder_mystery_derivative_country
+		AND = {
+			is_subject = yes
+			if = {
+				limit = { is_subject = yes }
+				overlord = {
+					OR = {
+						has_country_flag = murder_mystery_assassin_state
+						has_country_flag = murder_mystery_derivative_country
+						has_country_flag = murder_mystery_terminal_dismantled
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. War is declared on independent governments; a subject
+# follows its overlord into the war unless that overlord is not itself an
+# open campaign target.
+murder_mystery_terminal_country_takes_declaration = {
+	OR = {
+		is_subject = no
+		AND = {
+			is_subject = yes
+			if = {
+				limit = { is_subject = yes }
+				overlord = { NOT = { murder_mystery_terminal_target_is_open = yes } }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. An ordinary government with territory that the campaign must
+# dismantle. Special Chaos, nonhuman and exempt countries never qualify.
+murder_mystery_terminal_country_is_eligible = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = murder_mystery_terminal_exempt }
+	NOT = { murder_mystery_terminal_is_movement_side = yes }
+	check_variable = { num_owned_states > constant:murder_mystery_value.zero }
+}
+
+# COUNTRY scope. A registered government the campaign has not settled.
+murder_mystery_terminal_target_is_open = {
+	exists = yes
+	has_country_flag = murder_mystery_terminal_target_registered
+	NOT = { has_country_flag = murder_mystery_terminal_dismantled }
+	NOT = { has_country_flag = murder_mystery_terminal_absorbed }
+}
+
+# COUNTRY scope. The government has lost the war against the movement: it
+# capitulated, every state it owns is occupied, or a peace made it a subject
+# of the movement.
+murder_mystery_terminal_target_is_defeated = {
+	OR = {
+		has_capitulated = yes
+		num_of_controlled_states < constant:murder_mystery_value.one
+		murder_mystery_terminal_is_movement_side = yes
+	}
+}
+
+# COUNTRY scope. A defeated open target that a successor administration can
+# replace. The capitulation flag keeps a government that surrendered to the
+# movement eligible while the choice is pending.
+murder_mystery_terminal_target_can_be_administered = {
+	has_global_flag = murder_mystery_terminal_war_active
+	murder_mystery_terminal_target_is_open = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = murder_mystery_assassin_state }
+	NOT = { has_country_flag = murder_mystery_derivative_country }
+	check_variable = { num_owned_states > constant:murder_mystery_value.zero }
+	OR = {
+		has_country_flag = murder_mystery_terminal_capitulated
+		murder_mystery_terminal_target_is_defeated = yes
+	}
+}
+
+# COUNTRY scope. Requires the event target murder_mystery_terminal_sector_origin,
+# the central capital state.
+murder_mystery_terminal_capital_is_in_home_sector = {
+	capital_scope = {
+		distance_to = {
+			value < @murder_mystery_terminal_home_distance
+			target = event_target:murder_mystery_terminal_sector_origin
+		}
+	}
+}
+
+murder_mystery_terminal_capital_is_in_near_sector = {
+	capital_scope = {
+		distance_to = {
+			value < @murder_mystery_terminal_near_distance
+			target = event_target:murder_mystery_terminal_sector_origin
+		}
+	}
+}
+
+# COUNTRY scope: a government at war with the movement whose command is close
+# enough to breaking for Break the Command Spine.
+murder_mystery_terminal_command_spine_can_break = {
+	surrender_progress > @murder_mystery_terminal_command_spine_surrender
+	NOT = { has_idea = murder_mystery_command_spine_broken }
+}
+
+# STATE scope. A state with enough factories to count as strategic in a
+# staged integration.
+murder_mystery_terminal_state_is_strategic = {
+	OR = {
+		industrial_complex > @murder_mystery_terminal_strategic_factories
+		arms_factory > @murder_mystery_terminal_strategic_factories
+	}
+}
+
+# Any scope. The given sector (temp murder_mystery_terminal_sector_query) is
+# already active.
+murder_mystery_terminal_sector_query_is_active = {
+	is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = murder_mystery_terminal_sector_query }
 }
