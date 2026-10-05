@@ -463,3 +463,21 @@ Basis: lead item 11 (one narrow retry, no refresh, no workspace-wide query, then
 `hoi4_probability_compare` with the frozen before-snapshot (`evidence/2026_10_04_ai_policy_before/common__decisions__029_riches_found_decisions.txt`, SHA-256 `a65710567441b29eda4f07e01c7fd2ef536fda2644998517be8b8529dd245355`), two typed scenarios from `evidence/2026_10_04_ai_policy_typed_scenarios.json` and four revenue-layer candidates returned "Invalid tool arguments"; the same call reduced to one scenario (`RF_AIPOL_PUBLIC_CALM`, development raised to 70) and two candidates (`decision_riches_found_drive_deeper`, `decision_riches_found_dividend`) returned `PROBABILITY_ANALYZED_PARTIAL` (analysis `probability-00043c730e83eb5f3d508a72`, source revision `a9a9afc1f38a9bf52534bbae8278d455ce8cb9652ad66649ff8b7a8d70824c4f`) with zero eligible candidates, one comparison change, sixteen unresolved items and the adapter again reported as `mission_ai_will_do`, so it gives no usable numbers.
 Its one actionable diagnostic, `PROBABILITY_CONFLICTING_MODIFIER_CONDITION` on Drive Deeper (`urgent_factor` and `high_factor` both conditioned on `has_war = yes`), is recorded and not changed, because lead item 1 requires the Drive Deeper weighting to stay as it is; it multiplies the wartime weight twice and belongs to the next probability pass.
 The same-scenario comparison for D7, D14, D27 and the new surfaces of D35, D37 and D38 remains blocked by the route; no further attempts were made.
+
+### Round 2, second tranche commit index
+
+| Decision | Lead item | Commit |
+| --- | --- | --- |
+| D32 (Drive Deeper for a mature mine) | 1 | `7d5fc8ed8` |
+| D33 (sign with the offered partner, refund otherwise) | 2 | `67cae57d6` |
+| D34 (occupation choices move resistance, compliance and output) | 3 | `cf15f28ba` |
+| D35 (standing revenue routes and the stabilization reserve) | 4 | `a8993916e` |
+| D36 (ranked partner list and Court a Partner) | 5 | `9fcda9bb4` |
+| D37 (Gilded Sovereignty outcomes, terms and transfer) | 6 | `7ec7796e5` |
+| D38 (front line and the owner's denial) | 7 | `3ac7dca58` |
+| D40 (Event 029 Deaths reasons) | 8 | `4b443daf5` |
+| D41 (hidden abuses and exposure) | 9 | `97f690d94` |
+| D39 (permanent seal after a purge) | 10 | `a9f5a2653` |
+| D42 (probability route retry) | 11 | `013eda503` |
+
+No catalog column changes: the workbook row's Details, evolution texts, type, chaos level, cluster and status are unaffected by this tranche.
