@@ -8,7 +8,9 @@
 # and supernatural losses, mine_violence for violence people inflict), and
 # adds a public atrocity condemnation entry for the current controller. The helper
 # never creates contamination, outbreak state, ordinary map resources, or
-# Event 018 cave state.
+# Event 018 cave state. The second half records abuses that stay hidden until
+# an audit, a disclosure, a published contract, an occupation or a records
+# raid by outsiders brings them to light.
 # ============================================================================
 
 # STATE scope. Inputs: temporary riches_found_harm_deaths,
@@ -247,4 +249,246 @@ riches_found_record_supernatural_incident_harm = {
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
 		riches_found_apply_harm_record = yes
 	}
+}
+
+# ---------------------------------------------------------------------------
+# Hidden abuses and their exposure
+# ---------------------------------------------------------------------------
+# Some abuses at a mine are not public when they happen: guards who rule the
+# district, records burned after deaths, corruption tolerated over a lethal
+# history, and soldiers' control of a gold-sick district. Each kind enters the
+# responsible controller's Condemnation once per mine as a hidden or suspected
+# source (condemnation_add_source), and the mine remembers the hidden amount
+# and who holds it. An audit, a disclosure, a published contract, an
+# occupation by another country or a records raid by outsiders brings the
+# hidden amount to light once through condemnation_expose_hidden_bucket.
+
+# STATE scope. Inputs: temporary riches_found_hidden_source_type,
+# riches_found_hidden_visibility, riches_found_hidden_severity,
+# riches_found_hidden_context and riches_found_hidden_base_gain. Adds the
+# source to the current controller and returns the part that stayed hidden in
+# temporary riches_found_hidden_recorded_amount.
+riches_found_add_hidden_abuse_source = {
+	set_temp_variable = { riches_found_hidden_recorded_amount = constant:riches_found_value.zero }
+	if = {
+		limit = { CONTROLLER = { exists = yes } }
+		if = {
+			limit = { OWNER = { exists = yes } }
+			OWNER = { save_event_target_as = riches_found_hidden_victim }
+		}
+		CONTROLLER = {
+			set_temp_variable = { condemnation_source_type = riches_found_hidden_source_type }
+			set_temp_variable = { condemnation_base_gain = riches_found_hidden_base_gain }
+			set_temp_variable = { condemnation_visibility_type = riches_found_hidden_visibility }
+			set_temp_variable = { condemnation_severity_type = riches_found_hidden_severity }
+			set_temp_variable = { condemnation_civilian_deaths = constant:riches_found_value.zero }
+			set_temp_variable = { condemnation_contamination_value = constant:riches_found_value.zero }
+			set_temp_variable = { condemnation_context_type = riches_found_hidden_context }
+			if = {
+				limit = { has_event_target = riches_found_hidden_victim }
+				set_temp_variable = { condemnation_victim_country = event_target:riches_found_hidden_victim }
+			}
+			condemnation_add_source = yes
+		}
+		set_temp_variable = { riches_found_hidden_recorded_amount = condemnation_gain_hidden }
+	}
+}
+
+# STATE scope, once per mine. Private guards that answer to no one (an
+# enclave, or guards past the private-security gate) abuse the district out
+# of sight.
+riches_found_record_hidden_security_abuse = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_hidden_security_recorded }
+			CONTROLLER = { exists = yes }
+			OR = {
+				has_state_flag = riches_found_private_enclave
+				AND = {
+					has_state_flag = riches_found_private_guards
+					NOT = { has_state_flag = riches_found_private_forces_disarmed }
+					check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_threshold.private_security_gate compare = greater_than_or_equals }
+				}
+			}
+		}
+		set_state_flag = riches_found_hidden_security_recorded
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { riches_found_hidden_visibility = constant:condemnation_visibility.hidden }
+		set_temp_variable = { riches_found_hidden_severity = constant:condemnation_severity.major }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.camp_operation }
+		set_temp_variable = { riches_found_hidden_base_gain = constant:riches_found_hidden_abuse.security_gain }
+		riches_found_add_hidden_abuse_source = yes
+		set_variable = { riches_found_hidden_security_amount = riches_found_hidden_recorded_amount }
+		set_variable = { riches_found_hidden_security_holder = CONTROLLER }
+	}
+}
+
+# STATE scope, once per mine. The controller's own guards or a corrupt unit
+# burned the records of a mine that has already cost lives.
+riches_found_record_hidden_records_destruction = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_hidden_records_recorded }
+			CONTROLLER = { exists = yes }
+			has_state_flag = riches_found_harm_occurred
+		}
+		set_state_flag = riches_found_hidden_records_recorded
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { riches_found_hidden_visibility = constant:condemnation_visibility.hidden }
+		set_temp_variable = { riches_found_hidden_severity = constant:condemnation_severity.major }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.destroyed_records }
+		set_temp_variable = { riches_found_hidden_base_gain = constant:riches_found_hidden_abuse.records_gain }
+		riches_found_add_hidden_abuse_source = yes
+		set_variable = { riches_found_hidden_records_amount = riches_found_hidden_recorded_amount }
+		set_variable = { riches_found_hidden_records_holder = CONTROLLER }
+	}
+}
+
+# STATE scope, once per mine. Corruption tolerated at a mine that has already
+# cost lives conceals those deaths.
+riches_found_record_hidden_corruption_coverup = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_hidden_corruption_recorded }
+			CONTROLLER = { exists = yes }
+			has_state_flag = riches_found_curse_corruption_tolerated
+			has_state_flag = riches_found_harm_occurred
+		}
+		set_state_flag = riches_found_hidden_corruption_recorded
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { riches_found_hidden_visibility = constant:condemnation_visibility.hidden }
+		set_temp_variable = { riches_found_hidden_severity = constant:condemnation_severity.minor }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.concealment_operation }
+		set_temp_variable = { riches_found_hidden_base_gain = constant:riches_found_hidden_abuse.corruption_gain }
+		riches_found_add_hidden_abuse_source = yes
+		set_variable = { riches_found_hidden_corruption_amount = riches_found_hidden_recorded_amount }
+		set_variable = { riches_found_hidden_corruption_holder = CONTROLLER }
+	}
+}
+
+# STATE scope, once per mine. Soldiers' control of a gold-sick district is
+# partly seen and partly hidden.
+riches_found_record_hidden_gold_control = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_hidden_gold_recorded }
+			CONTROLLER = { exists = yes }
+		}
+		set_state_flag = riches_found_hidden_gold_recorded
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { riches_found_hidden_visibility = constant:condemnation_visibility.suspected }
+		set_temp_variable = { riches_found_hidden_severity = constant:condemnation_severity.major }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.camp_operation }
+		set_temp_variable = { riches_found_hidden_base_gain = constant:riches_found_hidden_abuse.gold_control_gain }
+		riches_found_add_hidden_abuse_source = yes
+		set_variable = { riches_found_hidden_gold_amount = riches_found_hidden_recorded_amount }
+		set_variable = { riches_found_hidden_gold_holder = CONTROLLER }
+	}
+}
+
+# STATE scope, from the controller pulse. Records the state-based kinds when
+# they arise, whichever came first.
+riches_found_review_hidden_abuse = {
+	riches_found_record_hidden_security_abuse = yes
+	riches_found_record_hidden_corruption_coverup = yes
+}
+
+# COUNTRY scope, the country that holds a hidden entry. Inputs: temporary
+# riches_found_hidden_expose_amount, riches_found_hidden_source_type and
+# riches_found_hidden_context. Exposes exactly that amount of the matching
+# hidden bucket (as a fraction of the bucket) and refreshes the totals and
+# tier as condemnation_expose_hidden_evidence does.
+riches_found_expose_hidden_amount_in_country = {
+	set_temp_variable = { condemnation_hidden_exposure_fraction = constant:riches_found_value.zero }
+	if = {
+		limit = {
+			check_variable = { var = riches_found_hidden_source_type value = constant:condemnation_source.atrocity compare = equals }
+			has_variable = condemnation_hidden_atrocity
+			check_variable = { condemnation_hidden_atrocity > constant:riches_found_value.zero }
+		}
+		set_temp_variable = { condemnation_hidden_exposure_fraction = riches_found_hidden_expose_amount }
+		divide_temp_variable = { condemnation_hidden_exposure_fraction = condemnation_hidden_atrocity }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = riches_found_hidden_source_type value = constant:condemnation_source.coverup compare = equals }
+			has_variable = condemnation_hidden_coverup
+			check_variable = { condemnation_hidden_coverup > constant:riches_found_value.zero }
+		}
+		set_temp_variable = { condemnation_hidden_exposure_fraction = riches_found_hidden_expose_amount }
+		divide_temp_variable = { condemnation_hidden_exposure_fraction = condemnation_hidden_coverup }
+	}
+	clamp_temp_variable = { var = condemnation_hidden_exposure_fraction min = constant:riches_found_value.zero max = constant:riches_found_value.one }
+	if = {
+		limit = { check_variable = { condemnation_hidden_exposure_fraction > constant:riches_found_value.zero } }
+		set_temp_variable = { condemnation_source_type = riches_found_hidden_source_type }
+		set_temp_variable = { condemnation_context_type = riches_found_hidden_context }
+		condemnation_expose_hidden_bucket = yes
+		condemnation_recalculate_hidden_total = yes
+		condemnation_recalculate_total = yes
+		clamp_variable = { var = condemnation_recent_gain min = constant:riches_found_value.zero max = constant:condemnation_threshold.recent_gain_cap }
+		if = {
+			limit = { check_variable = { condemnation_recent_gain > constant:riches_found_value.zero } }
+			set_temp_variable = { condemnation_recent_gain_days = constant:condemnation_duration_days.recent_gain }
+			set_country_flag = { flag = condemnation_recent_gain_visible days = var:condemnation_recent_gain_days }
+		}
+		condemnation_refresh_tier = yes
+	}
+}
+
+# STATE scope. Brings every hidden entry the mine still holds to light, once
+# each, against the country that committed it.
+riches_found_expose_hidden_abuse = {
+	if = {
+		limit = {
+			has_variable = riches_found_hidden_security_holder
+			check_variable = { riches_found_hidden_security_amount > constant:riches_found_value.zero }
+			var:riches_found_hidden_security_holder = { exists = yes }
+		}
+		set_temp_variable = { riches_found_hidden_expose_amount = riches_found_hidden_security_amount }
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.camp_operation }
+		var:riches_found_hidden_security_holder = { riches_found_expose_hidden_amount_in_country = yes }
+	}
+	clear_variable = riches_found_hidden_security_amount
+	clear_variable = riches_found_hidden_security_holder
+	if = {
+		limit = {
+			has_variable = riches_found_hidden_records_holder
+			check_variable = { riches_found_hidden_records_amount > constant:riches_found_value.zero }
+			var:riches_found_hidden_records_holder = { exists = yes }
+		}
+		set_temp_variable = { riches_found_hidden_expose_amount = riches_found_hidden_records_amount }
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.destroyed_records }
+		var:riches_found_hidden_records_holder = { riches_found_expose_hidden_amount_in_country = yes }
+	}
+	clear_variable = riches_found_hidden_records_amount
+	clear_variable = riches_found_hidden_records_holder
+	if = {
+		limit = {
+			has_variable = riches_found_hidden_corruption_holder
+			check_variable = { riches_found_hidden_corruption_amount > constant:riches_found_value.zero }
+			var:riches_found_hidden_corruption_holder = { exists = yes }
+		}
+		set_temp_variable = { riches_found_hidden_expose_amount = riches_found_hidden_corruption_amount }
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.coverup }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.concealment_operation }
+		var:riches_found_hidden_corruption_holder = { riches_found_expose_hidden_amount_in_country = yes }
+	}
+	clear_variable = riches_found_hidden_corruption_amount
+	clear_variable = riches_found_hidden_corruption_holder
+	if = {
+		limit = {
+			has_variable = riches_found_hidden_gold_holder
+			check_variable = { riches_found_hidden_gold_amount > constant:riches_found_value.zero }
+			var:riches_found_hidden_gold_holder = { exists = yes }
+		}
+		set_temp_variable = { riches_found_hidden_expose_amount = riches_found_hidden_gold_amount }
+		set_temp_variable = { riches_found_hidden_source_type = constant:condemnation_source.atrocity }
+		set_temp_variable = { riches_found_hidden_context = constant:condemnation_context.camp_operation }
+		var:riches_found_hidden_gold_holder = { riches_found_expose_hidden_amount_in_country = yes }
+	}
+	clear_variable = riches_found_hidden_gold_amount
+	clear_variable = riches_found_hidden_gold_holder
 }

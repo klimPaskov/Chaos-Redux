@@ -733,7 +733,31 @@ riches_found_apply_raid_consequence = {
 		}
 		riches_found_mark_foreign_intervention = yes
 	}
-	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_contract_records compare = equals } } set_state_flag = riches_found_records_destroyed }
+	if = {
+		limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_contract_records compare = equals } }
+		set_state_flag = riches_found_records_destroyed
+		# Raiders with a cause publish what the records held; the controller's
+		# own guards or a corrupt unit burn them over the mine's dead.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.foreign_agents compare = equals }
+					check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.hostile_neighbor compare = equals }
+					check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.resistance compare = equals }
+				}
+			}
+			riches_found_expose_hidden_abuse = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.private_guards compare = equals }
+					check_variable = { var = riches_found_raid_actor value = constant:riches_found_raid_actor.corrupt_unit compare = equals }
+				}
+			}
+			riches_found_record_hidden_records_destruction = yes
+		}
+	}
 	if = {
 		limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_payroll compare = equals } }
 		set_state_flag = riches_found_pay_train_robbery_succeeded
