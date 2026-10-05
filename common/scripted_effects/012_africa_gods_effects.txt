@@ -944,6 +944,16 @@ gods_of_africa_compute_capacity_requirement = {
 			# Typed capacity already removes operating and reinforcement reserves.
 			set_variable = { gods_of_africa_capacity_requirement = gods_of_africa_capacity_work_amount }
 		}
+		# Continuing support paid in fuel keeps the fuel operating floor, the
+		# same floor its signing check uses (decisions L28 and L33).
+		else_if = {
+			limit = {
+				check_variable = { gods_of_africa_capacity_work_family = constant:gods_of_africa_demand_family.continuing_support }
+				has_variable = gods_of_africa_payment_instalment_material
+				check_variable = { gods_of_africa_payment_instalment_material = constant:gods_of_africa_demand_family.fuel }
+			}
+			add_to_variable = { gods_of_africa_capacity_requirement = constant:gods_of_africa_value.capacity_floor_fuel }
+		}
 		else_if = {
 			limit = {
 				OR = {
@@ -3551,6 +3561,11 @@ gods_of_africa_execute_punishment = {
 			# Keep the extreme gate open while the shared disaster gateway and the
 			# exact population-loss helper validate their own inputs. The cooldown
 			# marker is written only after those effects have completed.
+			# Each catastrophe follows its own ultimatum, so the once-only wave
+			# guard starts fresh here; this execution is itself guarded by
+			# gods_of_africa_punishment_applied. A defiant participant receives no
+			# new demand contract, which is the only other place the guard clears.
+			clr_country_flag = gods_of_africa_population_wave_applied
 			gods_of_africa_call_natural_disaster = yes
 			if = {
 				limit = {

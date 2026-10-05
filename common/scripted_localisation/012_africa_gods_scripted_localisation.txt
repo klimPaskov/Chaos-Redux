@@ -244,6 +244,16 @@ defined_text = {
 # (decision L28).
 defined_text = {
 	name = GetGodsOfAfricaDemandInstalmentLine
+	# The last instalment carries the whole remaining balance.
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+			has_country_flag = gods_of_africa_instalments_signed
+			has_variable = gods_of_africa_next_instalment_date
+			NOT = { check_variable = { gods_of_africa_instalments_left > constant:gods_of_africa_value.one } }
+		}
+		localization_key = gods_of_africa_instalment_line_signed_last
+	}
 	text = {
 		trigger = {
 			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
@@ -333,6 +343,13 @@ defined_text = {
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.undelivered } } localization_key = gods_of_africa_response_undelivered_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.lapsed } } localization_key = gods_of_africa_response_lapsed_report }
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.territory_lapsed } } localization_key = gods_of_africa_response_territory_lapsed_report }
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.instalment }
+			NOT = { check_variable = { gods_of_africa_last_instalments_left > constant:gods_of_africa_value.one } }
+		}
+		localization_key = gods_of_africa_response_instalment_report_last
+	}
 	text = { trigger = { check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.instalment } } localization_key = gods_of_africa_response_instalment_report }
 	text = { localization_key = gods_of_africa_response_unknown_report }
 }

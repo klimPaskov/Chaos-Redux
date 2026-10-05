@@ -462,3 +462,25 @@ Review findings kept as they are:
 
 - The Favored-track Wrath threshold in `gods_of_africa_ai_is_on_track_for_favored` reads `gods_of_africa_value.regional_strength` (40), which mirrors the grading's own Favored check in `012_africa_gods_grading_triggers.txt`; both stay aligned.
 - `activation` on host targeted decisions follows the round 1 host decisions and is not changed here.
+
+## L34. Round 2 second review: repeated catastrophes, the fuel floor of instalments, and instalment wording
+
+Disposition: `implemented` (the native results named in L23 to L33 stay `needs_live_game`).
+
+Basis: a second skeptical review of every round 2 commit (`71f827c1e`, `7f39e00f7`, `2757c1548`, `0df42bcc7`, `db77f0038`, `deb074b03`, `4d7d9f676`, `4e256b85f`, `9f4f3f5b0`, `a392c1548`, `ba5b3f0a4`, `5ce3f0187`) against L23 to L33, the installed `effects_documentation.md` (`white_peace`, `send_equipment`, `diplomatic_relation`, `give_military_access`, `give_guarantee`, `recall_volunteers_from`, `damage_building`, `add_resistance`, `while_loop_effect`, `for_loop_effect`, `create_wargoal`), `triggers_documentation.md` (`is_in_array`, `has_equipment`, `has_fuel`, `free_building_slots`), the vanilla precedents `common/decisions/NOR.txt` and `RAJ_GOE.txt` (`white_peace` called in the other country's scope with `tag = ROOT`), `common/decisions/FIN.txt` (`diplomatic_relation` direction), `common/decisions/AST.txt` (`send_equipment`) and `common/national_focus/afghanistan.txt` (`create_wargoal` per claimed state), and `CLAUDE.md` section 2.7.
+
+Decisions:
+
+- `gods_of_africa_population_wave_applied` cleared only when a new demand contract was created. A defiant government receives no ordinary demand, so after its first catastrophe every later catastrophe (each after its own ultimatum, which promises the waves) brought the disaster but no waves. `gods_of_africa_execute_punishment` now clears the guard when its catastrophe branch starts; the execution itself stays guarded by `gods_of_africa_punishment_applied`, so a catastrophe still applies its waves once.
+- `gods_of_africa_compute_capacity_requirement` gave a fuel-paid continuing-support payment the equipment operating floor. Signing already used the fuel floor (L33), so delivery and signing could disagree whenever the two floors differ. A `continuing_support` requirement whose `gods_of_africa_payment_instalment_material` is fuel now adds `capacity_floor_fuel`; rifles keep `capacity_floor_equipment`. Both constants are 500 today, so current play does not change.
+- "Sign the Support Agreement" showed the raw contract-currency check in its requirements; it is wrapped in `custom_trigger_tooltip` with the existing `gods_of_africa_demand_on_record_tt`, as L33 did for the other round 2 decisions.
+- The mission line and the `.604` instalment report said "1 instalments remain". With one instalment left they now read `gods_of_africa_instalment_line_signed_last` (naming the whole remaining balance, which the last instalment pays) and `gods_of_africa_response_instalment_report_last`; the mission lines show the material icon (`GetGodsOfAfricaInstalmentIcon`).
+
+Review findings kept as they are:
+
+- `white_peace` is called in Africa's scope with `tag = PREV` while ROOT is the answering participant, which is the vanilla NOR and RAJ_GOE pattern.
+- `create_wargoal` runs once per claimed state, as in the vanilla `afghanistan.txt` precedent.
+- Each continuing-support instalment is recorded as a partial payment in the relationship history and lowers Wrath by the negotiation step; the grading does not read the partial count, and the last instalment records compliance.
+- `ai_will_do` bases and factors read `constant:` values, the mod-wide pattern; whether that field reads script constants stays `needs_live_game` (the installed documentation says every field that takes a scoped variable accepts `constant:`).
+
+MCP route evidence (2026-10-05): `hoi4_probability_inspect` with `adapter = decision_ai_will_do` and a three-decision `candidatePool` (the ultimatum answers) returned "Invalid tool arguments" again; it was not retried, and the probability audit stays `blocked` as in L24.
