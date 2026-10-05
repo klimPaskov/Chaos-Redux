@@ -391,14 +391,198 @@ sov_nuclear_bombs_event_target_response_is_valid = {
 	event_target:sov_nuclear_bombs_coercion_actor = { exists = yes }
 }
 
+# Country scope: the threatened government. It can seek protection from its
+# own faction leader when that leader is a non-Soviet major, or otherwise from
+# one AI major that is outside the Soviet faction, not at war with it and not
+# already its guarantor.
 sov_nuclear_bombs_event_target_has_valid_foreign_support = {
 	sov_nuclear_bombs_event_target_response_is_valid = yes
+	OR = {
+		sov_nuclear_bombs_event_target_has_faction_backer = yes
+		any_country = { sov_nuclear_bombs_event_country_is_available_guarantor = yes }
+	}
+}
+
+sov_nuclear_bombs_event_target_has_faction_backer = {
 	is_in_faction = yes
 	faction_leader = {
 		exists = yes
 		is_major = yes
 		NOT = { tag = SOV }
 		NOT = { has_capitulated = yes }
+	}
+}
+
+# Country scope: a major that PREV, the threatened government, may ask for a
+# guarantee. A human major is never committed by another country's answer.
+sov_nuclear_bombs_event_country_is_available_guarantor = {
+	is_major = yes
+	is_ai = yes
+	exists = yes
+	NOT = { tag = SOV }
+	NOT = { tag = PREV }
+	NOT = { has_capitulated = yes }
+	NOT = { is_in_faction_with = SOV }
+	NOT = { has_war_with = PREV }
+	NOT = { has_guaranteed = PREV }
+}
+
+# Target assessment of a Soviet ultimatum (Part 4 compliance logic). Country
+# scope: the threatened government; the Soviet actor is the global event
+# target sov_nuclear_bombs_coercion_actor. Read by the AI weights of
+# chaosx.nr23.120 only.
+sov_nuclear_bombs_event_target_is_losing_to_union = {
+	has_war_with = SOV
+	surrender_progress > constant:sov_nuclear_bombs_response_threshold.losing_surrender
+}
+
+sov_nuclear_bombs_event_target_is_collapsing_before_union = {
+	has_war_with = SOV
+	surrender_progress > constant:sov_nuclear_bombs_response_threshold.collapsing_surrender
+}
+
+sov_nuclear_bombs_event_target_is_beating_union = {
+	has_war_with = SOV
+	NOT = { surrender_progress > constant:sov_nuclear_bombs_response_threshold.losing_surrender }
+	SOV = { surrender_progress > constant:sov_nuclear_bombs_response_threshold.soviet_losing_surrender }
+}
+
+sov_nuclear_bombs_event_target_is_at_peace_with_union = {
+	NOT = { has_war_with = SOV }
+}
+
+sov_nuclear_bombs_event_target_is_protected = {
+	OR = {
+		sov_nuclear_bombs_event_target_has_faction_backer = yes
+		any_country = {
+			is_major = yes
+			NOT = { tag = SOV }
+			NOT = { has_capitulated = yes }
+			has_guaranteed = PREV
+		}
+	}
+}
+
+sov_nuclear_bombs_event_target_is_isolated = {
+	is_in_faction = no
+	NOT = { sov_nuclear_bombs_event_target_is_protected = yes }
+}
+
+sov_nuclear_bombs_event_target_has_nuclear_capability = {
+	has_tech = atomic_research
+	has_tech = nukes
+}
+
+sov_nuclear_bombs_event_target_has_fragile_government = {
+	has_stability < constant:sov_nuclear_bombs_response_threshold.fragile_stability
+}
+
+sov_nuclear_bombs_event_response_threat_is_credible = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_event_credibility_is_credible = yes }
+}
+
+sov_nuclear_bombs_event_response_threat_is_doubted = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_event_credibility_is_doubted = yes }
+}
+
+sov_nuclear_bombs_event_response_arsenal_is_unproven = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { NOT = { sov_nuclear_bombs_event_arsenal_is_proven = yes } }
+}
+
+sov_nuclear_bombs_event_response_arsenal_is_employed = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.used compare = greater_than_or_equals }
+	}
+}
+
+sov_nuclear_bombs_event_response_command_is_unready = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.minimum_coercion_readiness compare = less_than }
+	}
+}
+
+sov_nuclear_bombs_event_response_command_is_divided = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.low_integrity_threshold compare = less_than }
+	}
+}
+
+sov_nuclear_bombs_event_response_route_is_unproven = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { has_country_flag = sov_nuclear_bombs_ultimatum_route_unproven }
+}
+
+sov_nuclear_bombs_event_response_threats_are_empty = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_event_has_repeated_back_downs = yes }
+}
+
+sov_nuclear_bombs_event_response_was_signalled = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { has_country_flag = sov_nuclear_bombs_private_signal_sent }
+}
+
+sov_nuclear_bombs_event_response_demand_is_limited = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		OR = {
+			check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.cease_hostilities compare = equals }
+			check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.withdraw_territory compare = equals }
+			check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.return_devices compare = equals }
+		}
+	}
+}
+
+sov_nuclear_bombs_event_response_demand_is_raised = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.default compare = greater_than }
+	}
+}
+
+sov_nuclear_bombs_event_response_demand_is_maximum = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.maximum compare = greater_than_or_equals }
+	}
+}
+
+sov_nuclear_bombs_event_response_demand_is_narrowed = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.default compare = less_than }
+	}
+}
+
+sov_nuclear_bombs_event_response_demand_is_protection = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.soviet_protection compare = equals }
+	}
+}
+
+# A surrender demand on a government that is no longer collapsing.
+sov_nuclear_bombs_event_response_demand_is_unearned_surrender = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = {
+		check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.surrender_collapsing_war compare = equals }
+	}
+	NOT = { sov_nuclear_bombs_event_target_is_collapsing_in_war = yes }
+}
+
+# Country scope (the Soviet actor). The world has seen the weapon work: a
+# public demonstration, a combat use, or a test observed abroad.
+sov_nuclear_bombs_event_arsenal_is_proven = {
+	OR = {
+		has_country_flag = sov_nuclear_bombs_public_demonstration_completed
+		has_country_flag = sov_nuclear_bombs_confirmed_use_recorded
+		has_country_flag = sov_nuclear_bombs_test_observed
 	}
 }
 

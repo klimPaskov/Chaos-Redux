@@ -201,6 +201,17 @@ Factors that make compliance less likely:
 
 Nuclear capability should not grant a flat coercion bonus that overrides these factors. Research on nuclear coercion indicates that compellent threats often suffer from credibility and cost problems. The gameplay should reflect that uncertainty.
 
+### Accepted compliance assessment (2026-10-05)
+
+Acceptance basis: the user's full design authority for the Event 23 takeover and the lead's round 2 planning decisions 3 and 4 (untracked Part 4 content is accepted design); agent decision R2b-2 in `docs/plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-04.md`.
+Disposition: `implemented`.
+
+Every AI answer to `chaosx.nr23.120` starts from a base weight in `sov_nuclear_bombs_response_ai` (accept 35, partial 25, delay 20, refuse 20, expose 10, foreign support 10, evacuate 12, prepare retaliation 8, delivery-chain raid 10) and multiplies stacking factors read from the same category.
+The inputs are the Soviet credibility band (Credible, Doubted), whether the weapon has been proven (a public demonstration, a combat use or an observed test) or used in war, the target's war with the Union (losing above 0.25 surrender progress, collapsing above 0.50, winning when the Union is above 0.25 and the target is not losing, or at peace), isolation (outside any faction and without a major guarantor) or protection (a non-Soviet major faction leader or a major guarantor), the target's own nuclear capability and fragile stability (below 0.35), the demand's kind (ceasefire, withdrawal and device return are limited; Soviet protection and an unearned surrender are not) and level (raised above the default, at the maximum, or narrowed), and Soviet readiness below the coercion floor, Integrity below the low threshold, an unreachable named state and repeated back-downs.
+Thresholds are in `sov_nuclear_bombs_response_threshold`.
+Seeking foreign support asks the faction leader of a faction member, as before, or otherwise one AI major that is outside the Soviet faction, not at war with the target and not already its guarantor; a human major is never committed by another country's answer.
+Human targets choose freely, and the event text states the named state and the same reading of the threat (empty, employed, proven or unproven).
+
 ## Partial settlements
 
 A partial settlement should be common enough to create bargaining play.

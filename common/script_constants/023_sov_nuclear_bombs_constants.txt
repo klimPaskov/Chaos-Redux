@@ -277,6 +277,100 @@ sov_nuclear_bombs_ai = {
 	close_dossier_base = 0.05
 }
 
+# Target answers to a Soviet ultimatum (chaosx.nr23.120, Part 4 compliance
+# logic). Each option starts from its base weight; every factor below applies
+# when its named condition holds, and factors stack. Only AI targets use them.
+sov_nuclear_bombs_response_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	accept_base = 35
+	partial_base = 25
+	delay_base = 20
+	refuse_base = 20
+	expose_base = 10
+	support_base = 10
+	evacuate_base = 12
+	retaliate_base = 8
+	sabotage_base = 10
+	# Soviet credibility band and proof of the weapon.
+	credible_accept = 1.50
+	credible_partial = 1.20
+	credible_refuse = 0.70
+	credible_evacuate = 1.30
+	credible_retaliate = 1.50
+	doubted_accept = 0.50
+	doubted_refuse = 1.60
+	doubted_delay = 1.30
+	unproven_accept = 0.50
+	unproven_delay = 2.00
+	unproven_refuse = 1.20
+	unproven_expose = 1.30
+	employed_accept = 1.30
+	# The conventional war with the Union.
+	losing_accept = 1.50
+	losing_partial = 1.30
+	losing_refuse = 0.60
+	collapsing_accept = 1.50
+	collapsing_partial = 1.30
+	collapsing_refuse = 0.60
+	collapsing_delay = 0.70
+	collapsing_sabotage = 0.70
+	winning_accept = 0.50
+	winning_refuse = 1.50
+	no_war_accept = 0.70
+	no_war_refuse = 1.30
+	# Isolation, guarantees and factions.
+	isolated_accept = 1.30
+	isolated_support = 0.40
+	protected_accept = 0.30
+	protected_partial = 0.60
+	protected_refuse = 1.50
+	protected_expose = 1.50
+	protected_support = 2.00
+	# The threatened government itself.
+	nuclear_accept = 0.40
+	nuclear_refuse = 1.30
+	nuclear_evacuate = 1.30
+	fragile_accept = 1.20
+	# Size and kind of the demand.
+	limited_demand_accept = 1.20
+	raised_demand_accept = 0.60
+	raised_demand_refuse = 1.30
+	maximum_demand_accept = 0.60
+	narrowed_demand_accept = 1.30
+	protection_demand_accept = 0.50
+	surrender_without_collapse_accept = 0.02
+	surrender_without_collapse_partial = 0.50
+	# Soviet command, delivery and record.
+	low_readiness_accept = 0.70
+	low_readiness_refuse = 1.20
+	low_integrity_accept = 0.70
+	low_integrity_sabotage = 1.50
+	unreachable_accept = 0.60
+	unreachable_refuse = 1.40
+	empty_threats_accept = 0.50
+	empty_threats_refuse = 2.00
+	empty_threats_expose = 1.50
+	signalled_partial = 1.30
+}
+
+# Thresholds of the target's assessment. Surrender progress and stability are
+# fractions from 0 to 1.
+sov_nuclear_bombs_response_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	losing_surrender = 0.25
+	collapsing_surrender = 0.50
+	soviet_losing_surrender = 0.25
+	fragile_stability = 0.35
+}
+
 # Credibility memory (Part 4). A hidden score, neutral at 0 and clamped between
 # minimum and maximum. It reads as three bands: Doubted below doubted_ceiling,
 # Credible above credible_floor, Uncertain between them. Each routine

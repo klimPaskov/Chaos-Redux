@@ -82,6 +82,11 @@ Any other answer, and silence until the response mission ends, is a refusal: the
 In that window the Union can prepare a limited strike (which ends the window), stage a wartime demonstration (which ends the window, and when it lands lets the demand be renewed once with a fresh window), or back down; if the window runs out the demand lapses as a back-down, and if the government falls or becomes a subject the dossier closes quietly.
 A strike that lands on the government that refused (`sov_nuclear_bombs_record_ultimatum_target_strike`, from both the authorized strike and a native raid) enforces the demand, raises credibility and closes the dossier.
 
+An AI target answers from its own assessment: every option starts from a base in `sov_nuclear_bombs_response_ai` and stacks factors for Soviet credibility and proof of the weapon, its war with the Union (losing, collapsing, winning or at peace), isolation or protection by a major, its own nuclear capability and stability, the kind and level of the demand, and Soviet readiness, Integrity, reach and back-down record (Part 4 "Accepted compliance assessment").
+An isolated, collapsing minor facing a credible ceasefire demand accepts or settles about four times in five; a stable minor under a major's guarantee almost never accepts a protection demand; an unproven arsenal makes delay the likeliest answer; repeated back-downs and an unreachable state make refusal the likeliest answer.
+"Seek foreign support" asks a faction member's major leader, or otherwise one AI major outside the Soviet faction that is not at war with the target and does not already guarantee it.
+The target's event names the threatened state and gives the same reading of the threat (empty, employed, proven or unproven).
+
 Credibility (`sov_nuclear_bombs_credibility`) is a hidden score, neutral at 0 and clamped to -30..30 (`sov_nuclear_bombs_credibility` constants), read as Doubted (below -5), Uncertain, or Credible (above 9).
 Routine maintenance moves it 2 toward neutral every 30-day cycle.
 It rises with a public or wartime demonstration (+6), a strike on a government that refused (+10), an accepted demand (+5), a verified settlement (+4) and a private signal (+2).
