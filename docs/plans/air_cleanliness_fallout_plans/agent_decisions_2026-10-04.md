@@ -140,3 +140,9 @@ Decision: steps 3 and 4 of the Ash-week orientation no longer need one of the tw
 Disposition: implemented (static review; expiry is `needs_live_game`). Acceptance basis: round 2 lead item 7.
 
 The ten Air Cleanliness Treaty operation flags (sampling grid progress, active and cooldown; seed archive cooldown and recent receipt; evacuation cooldown, reserved and receiving state flags; burner case pending and cooldown) passed `days = var:<temporary variable>`. They now set the flag inside a `meta_effect` whose `[LOCK_DAYS]` parameter is the literal value of the same script constant, so each flag has a fixed engine-read duration. Global, country and state flags all use the same form. The two NZL flags (`fallout_nzl_sea_road_patrol_window_current`, `fallout_nzl_weather_warning_current`) passed a bare temporary variable; they now store the duration in a normal country variable and pass it through `var:`, the installed precedent in `common/scripted_effects/SIA_scripted_effects.txt`. Every duration is unchanged and no `days = constant:` was introduced.
+
+## R3. Chain openings keep the state their review chose
+
+Disposition: implemented (static review; delivery is `needs_live_game`). A correction, not new design.
+
+Twenty-six living-world chains (754, the Congo Green Basin, West African Port Confederacies and Manchurian Reactor Keeps chains 761 to 929) check `fallout_event_<id>_country_is_current` in their opening triggers, and that trigger requires `fallout_event_<id>_candidate_state_id`. The candidate review cleared that variable right after appending the row, so a selected opening could never pass its own trigger and the transaction stalled. The same defect was fixed for four major-arc consumers in A7. The review now keeps the chosen state until the next review clears it in `fallout_event_clear_candidate_rows_for_rebuild`, which also gained the eighteen ids it did not yet clear.
