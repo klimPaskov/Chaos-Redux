@@ -497,8 +497,11 @@ sov_nuclear_bombs_command_category = {
 		on_map_mode = map_only
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_has_evolution_ii = yes sov_nuclear_bombs_event_phase_coercion = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_coercion_open } }
 		target_root_trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
-		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes sov_nuclear_bombs_event_state_has_valid_coercion_actor = yes NOT = { controller = { is_major = yes } } } }
-		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_coercion_target_requirements_tt sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes sov_nuclear_bombs_event_state_has_valid_coercion_actor = yes NOT = { controller = { is_major = yes } } } } }
+		target_trigger = { FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes sov_nuclear_bombs_event_state_has_valid_coercion_actor = yes NOT = { controller = { is_major = yes } } NOT = { sov_nuclear_bombs_event_state_coercion_counterpart_is_cooling_down = yes } } }
+		available = {
+			custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_coercion_target_requirements_tt sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes FROM = { sov_nuclear_bombs_event_state_is_valid_command_target = yes sov_nuclear_bombs_event_state_has_valid_coercion_actor = yes NOT = { controller = { is_major = yes } } } }
+			custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_coercion_target_not_cooling_down_tt FROM = { NOT = { sov_nuclear_bombs_event_state_coercion_counterpart_is_cooling_down = yes } } }
+		}
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_command_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_command
 		cost = 0
@@ -512,12 +515,13 @@ sov_nuclear_bombs_command_category = {
 		name = sov_nuclear_bombs_close_coercion_target
 		desc = sov_nuclear_bombs_close_coercion_target_desc
 		icon = GFX_decision_sov_nuclear_decision_target_selection
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open has_event_target = sov_nuclear_bombs_coercion_target sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued } }
-		available = { has_country_flag = sov_nuclear_bombs_coercion_open hidden_trigger = { has_event_target = sov_nuclear_bombs_coercion_target } sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued } }
+		# A dossier that has carried a threat can only be withdrawn, settled or enforced.
+		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open has_event_target = sov_nuclear_bombs_coercion_target sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued } NOT = { sov_nuclear_bombs_event_dossier_threat_made = yes } }
+		available = { has_country_flag = sov_nuclear_bombs_coercion_open hidden_trigger = { has_event_target = sov_nuclear_bombs_coercion_target } sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued } custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_dossier_no_threat_made_tt NOT = { sov_nuclear_bombs_event_dossier_threat_made = yes } } }
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_close_coercion_target = yes }
-		ai_will_do = { base = 0.05 }
+		ai_will_do = { base = constant:sov_nuclear_bombs_ai.close_dossier_base }
 	}
 
 	sov_nuclear_bombs_send_private_signal = {
@@ -531,21 +535,48 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_send_private_signal = yes }
-		ai_will_do = { base = 1.20 modifier = { factor = 1.40 NOT = { has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed } } }
+		# A secret arsenal is signalled privately before any public demand.
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.private_signal_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.private_signal_unproven_factor check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than } }
+		}
 	}
 
 	sov_nuclear_bombs_issue_public_ultimatum = {
 		name = sov_nuclear_bombs_issue_public_ultimatum
 		desc = sov_nuclear_bombs_issue_public_ultimatum_desc
 		icon = GFX_decision_sov_nuclear_decision_public_ultimatum
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open sov_nuclear_bombs_event_no_active_project = yes NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued } }
+		# A refused demand can only be renewed after a demonstration backs it.
+		visible = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			has_country_flag = sov_nuclear_bombs_coercion_open
+			sov_nuclear_bombs_event_no_active_project = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_issued }
+			OR = {
+				NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_refused }
+				has_country_flag = sov_nuclear_bombs_refusal_answered_by_demonstration
+			}
+		}
 		available = { custom_trigger_tooltip = { tooltip = sov_nuclear_bombs_public_ultimatum_requirements_tt sov_nuclear_bombs_event_has_valid_coercion_target = yes sov_nuclear_bombs_event_no_active_project = yes event_target:sov_nuclear_bombs_selected_state = { NOT = { controller = { is_major = yes } } } sov_nuclear_bombs_event_has_evolution_ii = yes sov_nuclear_bombs_event_has_ultimatum_device_backing = yes } }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_diplomatic
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_diplomatic_cost = yes sov_nuclear_bombs_send_ultimatum = yes }
-		ai_will_do = { base = 1.10 modifier = { factor = 1.30 has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed } }
+		# Doubted credibility and every withdrawn threat make a public demand
+		# less attractive; a secret arsenal is signalled first.
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.ultimatum_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.ultimatum_demonstrated_factor has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed }
+			modifier = {
+				factor = constant:sov_nuclear_bombs_ai.ultimatum_unsignalled_factor
+				check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = less_than }
+				NOT = { has_country_flag = sov_nuclear_bombs_private_signal_sent }
+			}
+			modifier = { factor = constant:sov_nuclear_bombs_ai.ultimatum_doubted_factor sov_nuclear_bombs_event_credibility_is_doubted = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_ai.ultimatum_back_down_factor check_variable = { var = sov_nuclear_bombs_back_down_count value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals } }
+			modifier = { factor = constant:sov_nuclear_bombs_ai.ultimatum_back_down_factor sov_nuclear_bombs_event_has_repeated_back_downs = yes }
+		}
 	}
 
 	sov_nuclear_bombs_stage_wartime_demonstration = {
@@ -559,7 +590,12 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_prepare_wartime_demonstration = yes }
-		ai_will_do = { base = 0.80 modifier = { factor = 1.50 has_country_flag = sov_nuclear_bombs_ultimatum_response_window_reached } }
+		# Proof is preferred when a demand was refused or the threat is doubted.
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.wartime_demonstration_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_demonstration_refused_factor has_country_flag = sov_nuclear_bombs_ultimatum_refused NOT = { has_country_flag = sov_nuclear_bombs_refusal_answered_by_demonstration } }
+			modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_demonstration_doubted_factor sov_nuclear_bombs_event_credibility_is_doubted = yes }
+		}
 	}
 
 	sov_nuclear_bombs_prepare_limited_strike = {
@@ -599,7 +635,11 @@ sov_nuclear_bombs_command_category = {
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_pay_release_cost = yes sov_nuclear_bombs_prepare_limited_strike = yes }
-		ai_will_do = { base = 0.60 modifier = { factor = 1.50 has_war = yes } }
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.limited_strike_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.limited_strike_war_factor has_war = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_ai.limited_strike_refused_factor has_country_flag = sov_nuclear_bombs_ultimatum_refused }
+		}
 	}
 
 	sov_nuclear_bombs_accept_partial_settlement = {
@@ -648,12 +688,16 @@ sov_nuclear_bombs_command_category = {
 		name = sov_nuclear_bombs_back_down
 		desc = sov_nuclear_bombs_back_down_desc
 		icon = GFX_decision_sov_nuclear_decision_hold_abort
-		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open NOT = { has_country_flag = sov_nuclear_bombs_test_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_strike_preparation_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_response_mission_active } }
+		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open sov_nuclear_bombs_event_dossier_threat_made = yes NOT = { has_country_flag = sov_nuclear_bombs_test_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_strike_preparation_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_response_mission_active } }
 		available = { has_country_flag = sov_nuclear_bombs_coercion_open NOT = { has_country_flag = sov_nuclear_bombs_test_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_strike_preparation_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active } NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_response_mission_active } }
 		cost = 0
 		days_remove = 0
 		complete_effect = { sov_nuclear_bombs_back_down = yes }
-		ai_will_do = { base = 0.25 modifier = { factor = 2.50 check_variable = { var = sov_nuclear_bombs_credibility value = 10 compare = less_than } } }
+		# Withdrawing is attractive only once threats are already doubted.
+		ai_will_do = {
+			base = constant:sov_nuclear_bombs_ai.back_down_base
+			modifier = { factor = constant:sov_nuclear_bombs_ai.back_down_doubted_factor sov_nuclear_bombs_event_credibility_is_doubted = yes }
+		}
 	}
 
 	# Phase 5: final authorization remains separate from target preparation.
@@ -1342,6 +1386,26 @@ sov_nuclear_bombs_command_category = {
 		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { has_event_target = sov_nuclear_bombs_coercion_target } NOT = { event_target:sov_nuclear_bombs_coercion_target = { sov_nuclear_bombs_event_target_response_is_valid = yes } } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_ultimatum_response = yes }
 		timeout_effect = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		ai_will_do = { base = 1.00 }
+	}
+
+	sov_nuclear_bombs_enforcement_window_mission = {
+		name = sov_nuclear_bombs_enforcement_window_mission
+		desc = sov_nuclear_bombs_enforcement_window_mission_desc
+		icon = GFX_mission_sov_nuclear_mission_ultimatum_response
+		is_good = no
+		selectable_mission = no
+		activation = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_enforcement_window_active }
+		available = { always = no }
+		days_mission_timeout = constant:sov_nuclear_bombs_duration.enforcement_window
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = sov_nuclear_bombs_enforcement_window_active }
+				NOT = { sov_nuclear_bombs_event_enforcement_window_is_valid = yes }
+			}
+		}
+		cancel_effect = { sov_nuclear_bombs_cancel_enforcement_window = yes }
+		timeout_effect = { sov_nuclear_bombs_expire_enforcement_window = yes }
 		ai_will_do = { base = 1.00 }
 	}
 

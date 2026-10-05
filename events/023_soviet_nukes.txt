@@ -305,7 +305,7 @@ country_event = {
 		set_country_flag = sov_nuclear_bombs_response_accepted
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -315,7 +315,7 @@ country_event = {
 		set_country_flag = sov_nuclear_bombs_response_partial
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -332,7 +332,7 @@ country_event = {
 		set_country_flag = sov_nuclear_bombs_response_refused
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -342,7 +342,7 @@ country_event = {
 		set_country_flag = sov_nuclear_bombs_response_exposed
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -353,7 +353,7 @@ country_event = {
 		faction_leader = { give_guarantee = ROOT }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -370,7 +370,7 @@ country_event = {
 		event_target:sov_nuclear_bombs_selected_state = { set_state_flag = sov_nuclear_bombs_target_evacuation_ordered }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes }
 		}
 	}
 	option = {
@@ -382,7 +382,7 @@ country_event = {
 		}
 		ai_chance = { base = 8 }
 		set_country_flag = sov_nuclear_bombs_response_retaliation
-		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes } }
+		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes } }
 	}
 	option = {
 		name = chaosx.nr23.120.i
@@ -393,7 +393,7 @@ country_event = {
 		}
 		ai_chance = { base = 10 }
 		set_country_flag = sov_nuclear_bombs_response_sabotage
-		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes } }
+		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_answer_ultimatum = yes } }
 	}
 }
 
@@ -588,6 +588,9 @@ country_event = {
 			set_country_flag = sov_nuclear_bombs_settlement_verified
 			set_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 			set_country_flag = sov_nuclear_bombs_verification_complete
+			# A kept settlement makes later Soviet terms easier to believe.
+			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.verified_settlement_gain }
+			sov_nuclear_bombs_change_credibility = yes
 		}
 		else = { set_country_flag = sov_nuclear_bombs_settlement_verification_failed }
 		clr_country_flag = sov_nuclear_bombs_settlement_verification_pending

@@ -72,6 +72,26 @@ Vanilla gives the Soviet AI no strategic bomber weight (`SOV_unit_production`: u
 A survey raises readiness once; moving the survey to another site while the first holds no device only changes the selected test ground.
 Aborting a prepared strike gives up its marked target unless a coercion dossier still owns that state.
 
+### Coercion dossier, credibility and the enforcement window
+
+A coercion dossier opens on one state; its counterpart is the state's independent non-Soviet controller, otherwise its owner.
+Before any threat the dossier can be closed quietly; once a private signal or a public ultimatum has been sent (`sov_nuclear_bombs_event_dossier_threat_made`) it can only be settled, enforced or withdrawn ("Back Down"), and the private signal can be sent once per dossier.
+The target answers `chaosx.nr23.120`; its answer goes through `sov_nuclear_bombs_answer_ultimatum`, which ends the response mission before recording the answer, so the mission's cancel check cannot overwrite an acceptance or clear the pointers the settlement verification needs.
+Acceptance closes the dossier and opens verification; a partial answer opens the settlement talks, and accepting the partial settlement also closes the dossier.
+Any other answer, and silence until the response mission ends, is a refusal: the dossier stays open, `sov_nuclear_bombs_ultimatum_refused` is set and the 60-day "Refused Demand" mission (`sov_nuclear_bombs_enforcement_window_mission`, `enforcement_window`) starts.
+In that window the Union can prepare a limited strike (which ends the window), stage a wartime demonstration (which ends the window, and when it lands lets the demand be renewed once with a fresh window), or back down; if the window runs out the demand lapses as a back-down, and if the government falls or becomes a subject the dossier closes quietly.
+A strike that lands on the government that refused (`sov_nuclear_bombs_record_ultimatum_target_strike`, from both the authorized strike and a native raid) enforces the demand, raises credibility and closes the dossier.
+
+Credibility (`sov_nuclear_bombs_credibility`) is a hidden score, neutral at 0 and clamped to -30..30 (`sov_nuclear_bombs_credibility` constants), read as Doubted (below -5), Uncertain, or Credible (above 9).
+Routine maintenance moves it 2 toward neutral every 30-day cycle.
+It rises with a public or wartime demonstration (+6), a strike on a government that refused (+10), an accepted demand (+5), a verified settlement (+4) and a private signal (+2).
+It falls with a back-down or lapsed demand (-8, which also costs 2 Integrity and adds one to `sov_nuclear_bombs_back_down_count`), an ultimatum whose named state the delivery force cannot reach (-5, `sov_nuclear_bombs_ultimatum_route_unproven`), a prepared strike aborted or redirected after the dossier's public ultimatum (-6), a broken pending settlement (-10, once), a failed test (-6) or test accident (-8) once the arsenal is public, a collapse crisis that opens with missing devices (-8), and the existing response-specific losses for exposure, foreign support, evacuation, sabotage and a nuclear counter-threat; a plain refusal costs nothing until the Union withdraws.
+The player sees only the band: a "Credibility" line in the category header while a dossier is open, and the same band in the ultimatum and back-down descriptions.
+
+Every government that refuses, settles or outlasts a demand gets the timed flag `sov_nuclear_bombs_coercion_cooldown`, 120 days per ultimatum it has received (`sov_nuclear_bombs_ultimatums_received`) up to 360, set through the meta-effect literal pattern; the coercion selector and the AI candidate list skip it, and the selector tooltip says so.
+The Soviet AI prefers the private signal while public knowledge is below Demonstrated (×1.40) and halves the public ultimatum until a signal has been sent; the ultimatum falls ×0.40 when credibility is Doubted and ×0.70 after the first and again after the second back-down; back-down rises ×2.50 only when credibility is Doubted; the wartime demonstration rises ×1.50 after a refusal and ×1.50 when Doubted; and the limited strike rises ×1.50 after a refusal.
+All values are in `sov_nuclear_bombs_ai`, `sov_nuclear_bombs_credibility` and `sov_nuclear_bombs_duration`.
+
 ### Evolution II and Evolution IV use
 
 An Evolution II limited strike against a nonnuclear minor or breakaway goes through the coercion dossier, strike preparation, technical certification and a separate final authorization.

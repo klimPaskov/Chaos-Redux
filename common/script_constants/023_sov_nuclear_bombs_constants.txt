@@ -258,6 +258,57 @@ sov_nuclear_bombs_ai = {
 	remote_site_factor = 1.20
 	standdown_acceptance = 0.70
 	standdown_refusal = 0.30
+	# Threat-method AI (Part 9). Bases and factors for the coercion dossier.
+	private_signal_base = 1.20
+	private_signal_unproven_factor = 1.40
+	ultimatum_base = 1.10
+	ultimatum_demonstrated_factor = 1.30
+	ultimatum_unsignalled_factor = 0.50
+	ultimatum_doubted_factor = 0.40
+	ultimatum_back_down_factor = 0.70
+	wartime_demonstration_base = 0.80
+	wartime_demonstration_refused_factor = 1.50
+	wartime_demonstration_doubted_factor = 1.50
+	limited_strike_base = 0.60
+	limited_strike_war_factor = 1.50
+	limited_strike_refused_factor = 1.50
+	back_down_base = 0.25
+	back_down_doubted_factor = 2.50
+	close_dossier_base = 0.05
+}
+
+# Credibility memory (Part 4). A hidden score, neutral at 0 and clamped between
+# minimum and maximum. It reads as three bands: Doubted below doubted_ceiling,
+# Credible above credible_floor, Uncertain between them. Each routine
+# maintenance cycle moves it decay_step toward neutral. Negative values are
+# losses added to the score.
+sov_nuclear_bombs_credibility = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	neutral = 0
+	minimum = -30
+	maximum = 30
+	doubted_ceiling = -5
+	credible_floor = 9
+	decay_step = 2
+	demonstration_gain = 6
+	strike_after_refusal_gain = 10
+	verified_settlement_gain = 4
+	private_signal_gain = 2
+	public_test_failure_loss = -6
+	public_test_accident_loss = -8
+	exposed_abort_loss = -6
+	unreachable_ultimatum_loss = -5
+	settlement_violation_loss = -10
+	collapse_missing_loss = -8
+	back_down_loss = -8
+	back_down_integrity = -2
+	# Back-downs from this count on make every later threat an empty one.
+	repeated_back_downs = 2
+	back_down_step = 1
 }
 
 sov_nuclear_bombs_tuning = {
@@ -499,6 +550,13 @@ sov_nuclear_bombs_duration = {
 	phase_action_cooldown = 14
 	ultimatum_response = 14
 	ultimatum_response_mission = 45
+	# After a refusal the Union has this long to enforce or renew its demand
+	# before the demand is withdrawn.
+	enforcement_window = 60
+	# A coerced government is spared new Soviet demands for this many days per
+	# ultimatum it has received, up to the maximum.
+	coercion_cooldown = 120
+	coercion_cooldown_max = 360
 	strike_window = 7
 	rail_security_mission = 120
 	technical_mission = 180

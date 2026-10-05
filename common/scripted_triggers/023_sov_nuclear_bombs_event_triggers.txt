@@ -402,6 +402,74 @@ sov_nuclear_bombs_event_target_has_valid_foreign_support = {
 	}
 }
 
+# Country scope (the Soviet actor). Credibility bands of the hidden credibility
+# memory (Part 4): Doubted, Uncertain (neither trigger) and Credible.
+sov_nuclear_bombs_event_credibility_is_doubted = {
+	has_variable = sov_nuclear_bombs_credibility
+	check_variable = { var = sov_nuclear_bombs_credibility value = constant:sov_nuclear_bombs_credibility.doubted_ceiling compare = less_than }
+}
+
+sov_nuclear_bombs_event_credibility_is_credible = {
+	has_variable = sov_nuclear_bombs_credibility
+	check_variable = { var = sov_nuclear_bombs_credibility value = constant:sov_nuclear_bombs_credibility.credible_floor compare = greater_than }
+}
+
+# Country scope (the Soviet actor). The Union has withdrawn enough threats that
+# a new one reads as empty.
+sov_nuclear_bombs_event_has_repeated_back_downs = {
+	has_variable = sov_nuclear_bombs_back_down_count
+	check_variable = { var = sov_nuclear_bombs_back_down_count value = constant:sov_nuclear_bombs_credibility.repeated_back_downs compare = greater_than_or_equals }
+}
+
+# Country scope (the Soviet actor). The open dossier has already carried a
+# private or public threat, so leaving it is a withdrawal, not a quiet close.
+sov_nuclear_bombs_event_dossier_threat_made = {
+	OR = {
+		has_country_flag = sov_nuclear_bombs_private_signal_sent
+		has_country_flag = sov_nuclear_bombs_dossier_ultimatum_public
+	}
+}
+
+# State scope. The government a coercion dossier on this state would name (its
+# independent non-Soviet controller, otherwise its owner) is still spared new
+# Soviet demands after a recent ultimatum.
+sov_nuclear_bombs_event_state_coercion_counterpart_is_cooling_down = {
+	OR = {
+		controller = {
+			exists = yes
+			NOT = { tag = SOV }
+			is_subject = no
+			NOT = { has_capitulated = yes }
+			has_country_flag = sov_nuclear_bombs_coercion_cooldown
+		}
+		AND = {
+			NOT = {
+				controller = {
+					exists = yes
+					NOT = { tag = SOV }
+					is_subject = no
+					NOT = { has_capitulated = yes }
+				}
+			}
+			owner = { has_country_flag = sov_nuclear_bombs_coercion_cooldown }
+		}
+	}
+}
+
+# Country scope (the Soviet actor). The refused demand in the open dossier can
+# still be enforced: the named government stands and has not become a subject.
+sov_nuclear_bombs_event_enforcement_window_is_valid = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	has_country_flag = sov_nuclear_bombs_coercion_open
+	has_country_flag = sov_nuclear_bombs_ultimatum_refused
+	has_event_target = sov_nuclear_bombs_coercion_target
+	event_target:sov_nuclear_bombs_coercion_target = {
+		exists = yes
+		is_subject = no
+		NOT = { has_capitulated = yes }
+	}
+}
+
 sov_nuclear_bombs_event_has_other_nuclear_major = {
 	any_country = {
 		is_major = yes
@@ -1669,6 +1737,7 @@ sov_nuclear_bombs_event_country_is_ai_coercion_candidate = {
 	is_subject = no
 	NOT = { has_capitulated = yes }
 	has_war_with = ROOT
+	NOT = { has_country_flag = sov_nuclear_bombs_coercion_cooldown }
 	OR = {
 		NOT = { ROOT = { has_variable = sov_nuclear_bombs_ai_coercion_attempt_stage } }
 		check_variable = { var = ROOT.sov_nuclear_bombs_ai_coercion_attempt_stage value = ROOT.sov_nuclear_bombs_evolution_stage compare = less_than }
