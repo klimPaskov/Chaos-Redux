@@ -4,14 +4,17 @@
 # STATE-scope wrappers for the finite civilian harm attached to Event 029
 # choices and mine collapse. Each wrapper has its own receipt flag, applies
 # the requested loss through the shared exact state-population transaction,
-# records the loss under the resource-field incident taxonomy, and adds a
-# public atrocity condemnation entry for the current controller. The helper
+# records the loss under its own Deaths reason (mine_disaster for collapses
+# and supernatural losses, mine_violence for violence people inflict), and
+# adds a public atrocity condemnation entry for the current controller. The helper
 # never creates contamination, outbreak state, ordinary map resources, or
 # Event 018 cave state.
 # ============================================================================
 
 # STATE scope. Inputs: temporary riches_found_harm_deaths,
-# riches_found_harm_condemnation, and optional riches_found_harm_context.
+# riches_found_harm_condemnation, riches_found_harm_reason (a
+# chaos_meter_deaths_reason id; mine_violence when absent) and optional
+# riches_found_harm_context.
 # Outputs: normal state variable riches_found_harm_applied and accumulated
 # riches_found_harm_total_deaths. A bounded owner target is retained only for
 # the current effect chain so the controller's condemnation names the victim.
@@ -30,13 +33,17 @@ riches_found_apply_harm_record = {
 			set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		}
 		if = {
+			limit = { NOT = { has_variable = riches_found_harm_reason } }
+			set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
+		}
+		if = {
 			limit = { OWNER = { exists = yes } }
 			OWNER = { save_event_target_as = riches_found_harm_victim }
 		}
 		set_temp_variable = { state_civilian_population_loss_requested = riches_found_harm_deaths }
 		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:riches_found_value.zero }
 		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:riches_found_value.one }
-		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.resource_field_incident }
+		set_temp_variable = { state_civilian_population_loss_reason = riches_found_harm_reason }
 		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:riches_found_value.one }
 		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:riches_found_value.one }
@@ -112,6 +119,7 @@ riches_found_record_barricade_harm = {
 		limit = { NOT = { has_state_flag = riches_found_barricade_harm_recorded } }
 		set_state_flag = riches_found_barricade_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.barricade_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.barricade_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
@@ -124,6 +132,7 @@ riches_found_record_workforce_replacement_harm = {
 		limit = { NOT = { has_state_flag = riches_found_workforce_replacement_harm_recorded } }
 		set_state_flag = riches_found_workforce_replacement_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.workforce_replacement_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.workforce_replacement_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
@@ -137,6 +146,7 @@ riches_found_record_military_purge_harm = {
 		limit = { NOT = { has_state_flag = riches_found_military_purge_harm_recorded } }
 		set_state_flag = riches_found_military_purge_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.military_purge_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.military_purge_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
@@ -150,6 +160,7 @@ riches_found_record_violent_nationalization_harm = {
 		limit = { NOT = { has_state_flag = riches_found_violent_nationalization_harm_recorded } }
 		set_state_flag = riches_found_violent_nationalization_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.violent_nationalization_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.violent_nationalization_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
@@ -163,6 +174,7 @@ riches_found_record_predatory_prosperity_harm = {
 		limit = { NOT = { has_state_flag = riches_found_predatory_prosperity_harm_recorded } }
 		set_state_flag = riches_found_predatory_prosperity_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.predatory_prosperity_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.predatory_prosperity_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
@@ -175,6 +187,7 @@ riches_found_record_collapse_harm = {
 		limit = { NOT = { has_state_flag = riches_found_collapse_harm_recorded } }
 		set_state_flag = riches_found_collapse_harm_recorded
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.collapse_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_disaster }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.collapse_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
 		riches_found_apply_harm_record = yes
@@ -193,6 +206,7 @@ riches_found_record_raid_harm = {
 		}
 		set_variable = { riches_found_raid_harm_recorded_sequence = riches_found_raid_instance_sequence }
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.raid_lethal_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.raid_lethal_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
 		riches_found_apply_harm_record = yes
@@ -210,6 +224,7 @@ riches_found_record_gold_incident_harm = {
 		}
 		set_variable = { riches_found_gold_harm_recorded_sequence = riches_found_incident_sequence }
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.gold_violence_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.gold_violence_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
 		riches_found_apply_harm_record = yes
@@ -227,6 +242,7 @@ riches_found_record_supernatural_incident_harm = {
 		}
 		set_variable = { riches_found_supernatural_harm_recorded_sequence = riches_found_incident_sequence }
 		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.supernatural_incident_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_disaster }
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.supernatural_incident_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
 		riches_found_apply_harm_record = yes

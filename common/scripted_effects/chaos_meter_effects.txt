@@ -967,10 +967,23 @@ chaos_meter_add_country_deaths_cause_total = {
 		}
 		else_if = {
 			limit = {
-				check_variable = {
-					var = chaos_deaths_country_cause_reason
-					value = constant:chaos_meter_deaths_reason.resource_field_incident
-					compare = equals
+				OR = {
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.resource_field_incident
+						compare = equals
+					}
+					# Event 029 mine disasters and mine violence share this bin.
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.mine_disaster
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_country_cause_reason
+						value = constant:chaos_meter_deaths_reason.mine_violence
+						compare = equals
+					}
 				}
 			}
 			add_to_variable = { chaos_meter_deaths_country_cause_resource_field_incident = chaos_deaths_country_cause_value }
@@ -2612,10 +2625,22 @@ chaos_meter_sync_chaos_from_deaths_delta = {
 		else_if = {
 			limit = {
 				has_variable = chaos_deaths_reason
-				check_variable = {
-					var = chaos_deaths_reason
-					value = constant:chaos_meter_deaths_reason.resource_field_incident
-					compare = equals
+				OR = {
+					check_variable = {
+						var = chaos_deaths_reason
+						value = constant:chaos_meter_deaths_reason.resource_field_incident
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_reason
+						value = constant:chaos_meter_deaths_reason.mine_disaster
+						compare = equals
+					}
+					check_variable = {
+						var = chaos_deaths_reason
+						value = constant:chaos_meter_deaths_reason.mine_violence
+						compare = equals
+					}
 				}
 			}
 			multiply_temp_variable = {
