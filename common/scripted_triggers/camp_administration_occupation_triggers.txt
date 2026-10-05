@@ -30,12 +30,25 @@ camp_occ_state_can_pulse = {
 	# External receipts retire exposure before each distinct campaign transaction.
 	# A generic occupation law is not a second debit of that transaction.
 }
-# STATE, row origin. USHMM: the largely independent Danish government kept
-# Danish Jews out of German deportation until the order of October 1943, so
-# the campaign does not reach a Danish-origin row before then.
+# STATE, row origin. Dated policy timing: the German campaign and the manual
+# deportation order reach an origin row only once mass deportation from that
+# country began (USHMM). The campaign rate itself is unchanged.
+# - Denmark: the largely independent Danish government kept Danish Jews out of
+#   German deportation until the order of October 1943.
+# - France: the first deportation train left for Auschwitz on 27 March 1942.
+# - Netherlands: the first train left Westerbork on 15 July 1942.
+# - Belgium: the first train left Mechelen on 4 August 1942.
+# - Norway: Norwegian police began arresting Jewish men on 26 October 1942.
+# - Greece: the first train left Salonika on 15 March 1943.
 camp_occ_origin_campaign_deferred = {
-	is_core_of = DEN
-	date < 1943.10.1
+	OR = {
+		AND = { is_core_of = DEN date < 1943.10.1 }
+		AND = { is_core_of = FRA date < 1942.3.27 }
+		AND = { is_core_of = HOL date < 1942.7.15 }
+		AND = { is_core_of = BEL date < 1942.8.4 }
+		AND = { is_core_of = NOR date < 1942.10.26 }
+		AND = { is_core_of = GRE date < 1943.3.15 }
+	}
 }
 # Any scope. The escape across the Oresund follows the October 1943 order
 # (USHMM: about 7,200 people reached Sweden in September and October 1943).
@@ -207,7 +220,8 @@ camp_occ_manual_transfer_source_ready = {
 	NOT = { has_state_flag = camp_occ_custody_rollback_failed }
 	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
 	var:camp_occ_responsible_country = { original_tag = GER }
-	# The dated Danish deferral keeps these people out of deportation orders too.
+	# The dated origin deferral (Denmark, France, the Netherlands, Belgium, Norway,
+	# Greece) keeps these people out of deportation orders too.
 	OR = {
 		NOT = { has_variable = camp_occ_cohort_origin_state }
 		var:camp_occ_cohort_origin_state = { NOT = { camp_occ_origin_campaign_deferred = yes } }

@@ -44,6 +44,12 @@ Each home state rescues once (`camp_occ_danish_rescue_done`); a cohort first exp
 Records count the escaped people in `camp_occ_total_escaped_k` (Occupation violence tooltip) and add one `escape` history entry per home state.
 `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/danish_rescue_source_tests.py` runs the production monthly pass from July 1941 to April 1945: the pre-change rule reproduces the rejected 2,859-death no-rescue model, while deferral plus rescue leaves 81 deaths with 3,940 escaped from 4,192 allocated people.
 
+### Dated deportation start for Western and Greek origins
+
+The same `camp_occ_origin_campaign_deferred` trigger holds the campaign and the manual order off the origin rows of five more occupied countries until their mass deportations began (USHMM): France before 1942-03-27 (first train to Auschwitz), the Netherlands before 1942-07-15 (first train from Westerbork), Belgium before 1942-08-04 (first train from Mechelen), Norway before 1942-10-26 (arrest of Jewish men by Norwegian police) and Greece before 1943-03-15 (first train from Salonika).
+The rule reads the origin state's cores (`is_core_of`), like the Danish rule, which is unchanged; other origins, including Poland, the Soviet Union, the Baltic states, Czechoslovakia and Yugoslavia, are never deferred, and the campaign rate is unchanged.
+`occupation/deportation_start_dates_source_tests.py` checks every boundary on the production trigger, runs the production monthly pass for the five changed states of the 13-state dated sensitivity and the manual-transfer source check, and reruns that sensitivity: modeled campaign deaths fall from 707,607 to 682,271 (France 25,347 to 21,166, the Netherlands 79,397 to 65,361, Belgium 13,431 to 9,898, Norway 316 to 244, Greece 8,434 to 4,920).
+
 ### Dated partner deportation (Hungary 1944)
 
 USHMM records that about 825,000 Jews lived in wartime Hungary and that about 437,000 were deported, almost all to Auschwitz-Birkenau, between 15 May and 9 July 1944, when Horthy halted the deportations; they began only after Germany took control of the Hungarian government.

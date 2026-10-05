@@ -47,3 +47,22 @@ HOI4 MCP map lookup covered these states among 36 requested IDs and returned `MA
 Its [controller](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5d57af25690c299ca9096f29752ad42d5e2fd04e1d533ce2ae97e5002b43ba9c/123789ec25fdf47667875401e8050338bf525748ff6ed52d8bcf81b079820910/map-controller-tile-b4b32c2cdb9a.json) and [owner](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e668d669965bb4f16938c78716af2fddc272fb61f6e66ba99aff618dc7c2dcea/5922af241513e3a746e6d46815d4f00315ac8bb66291b99b1ec1f7dfe2e05859/map-owner-tile-b4b32c2cdb9a.json) tiles rendered at the same revision and were visually reviewed by the map auditor.
 The lookup's 1936 `controller = null` and starting-owner tiles do not prove the staged wartime controller windows; the source-model scenario does not establish current population, cash reserves, site support or physical death receipts in a live game.
 The wider matrix must still reconcile documented transfers, rescue, outside loss, labor and custody causes against original responsibility without double debit.
+
+## Rerun with dated deportation starts (2026-10-05)
+
+Disposition: implemented (agent decision 16 in `docs/plans/system_camp_repression_rework_plans/agent_decisions_2026-10-04.md`).
+`camp_occ_origin_campaign_deferred` now also holds the campaign off French origins before 1942-03-27, Dutch before 1942-07-15, Belgian before 1942-08-04, Norwegian before 1942-10-26 and Greek before 1943-03-15; the Danish rule and the 2.5% monthly fraction are unchanged.
+[`deportation_start_dates_source_tests.py`](deportation_start_dates_source_tests.py) reruns the 13 staged windows of this file and the nine-state file with each origin's first campaign month (a monthly pass on the first of each month), after confirming that the unchanged windows reproduce the stored rows exactly; results are in `deportation_start_dates_source_results.json`.
+
+| Origin | States | Campaign months before / after | Modeled campaign deaths before | After |
+| --- | --- | ---: | ---: | ---: |
+| FRA | 16 | 37 / 28 | 25,347 | 21,166 |
+| HOL | 7 | 46 / 33 | 79,397 | 65,361 |
+| BEL | 6 | 38 / 24 | 13,431 | 9,898 |
+| NOR | 110 | 46 / 30 | 316 | 244 |
+| GRE | 731 | 39 / 18 | 8,434 | 4,920 |
+| POL, SOV, LIT, LAT, CZE, YUG | 87, 88, 206, 11, 808, 9, 75, 108 | unchanged | 580,682 | 580,682 |
+| **Thirteen states** | | **530 / 457** | **707,607** | **682,271** |
+
+The production monthly pass for each changed state records no campaign death before its first month and then matches the rerun within one person per campaign month.
+This is policy timing, not calibration: the result still counts only the local campaign cause and does not add the deportations themselves, which are not modeled for these origins.
