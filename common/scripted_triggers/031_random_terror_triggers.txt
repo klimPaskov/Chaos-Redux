@@ -275,7 +275,7 @@ random_terror_state_can_host_uprising = {
 	NOT = { is_controlled_by = ROOT }
 	random_terror_state_is_active_crisis = yes
 	has_state_flag = random_terror_transnational_link_active
-	NOT = { has_state_flag = random_terror_uprising_recent }
+	random_terror_state_uprising_window_open = yes
 	CONTROLLER = {
 		NOT = { random_terror_is_actor = yes }
 		check_variable = { var = random_terror_pressure value = constant:random_terror_value.minimum_pressure_for_uprising compare = greater_than_or_equals }
@@ -640,7 +640,7 @@ random_terror_coordinated_uprising_transaction_valid = {
 	FROM = {
 		NOT = { is_controlled_by = ROOT }
 		random_terror_state_is_active_crisis = yes
-		NOT = { has_state_flag = random_terror_uprising_recent }
+		random_terror_state_uprising_window_open = yes
 		CONTROLLER = {
 			check_variable = { var = random_terror_pressure value = constant:random_terror_value.minimum_pressure_for_uprising compare = greater_than_or_equals }
 			NOT = { has_country_flag = random_terror_mission_slot_2 }
@@ -865,11 +865,19 @@ random_terror_can_takeover_state = {
 random_terror_can_start_pressure_uprising = {
 	FROM = {
 		check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
-		NOT = { has_state_flag = random_terror_uprising_recent }
-		OR = {
-			NOT = { has_variable = random_terror_uprising_cooldown_until }
-			check_variable = { var = random_terror_uprising_cooldown_until value = global.date compare = less_than_or_equals }
-		}
+		random_terror_state_uprising_window_open = yes
+	}
+}
+
+# STATE scope.  No uprising is under way in the state
+# (random_terror_uprising_recent, cleared when its mission ends or the crisis
+# closes) and its one-uprising window (random_terror_uprising_cooldown_until,
+# state_cooldown_days after the last rising) has passed.
+random_terror_state_uprising_window_open = {
+	NOT = { has_state_flag = random_terror_uprising_recent }
+	OR = {
+		NOT = { has_variable = random_terror_uprising_cooldown_until }
+		check_variable = { var = random_terror_uprising_cooldown_until value = global.date compare = less_than_or_equals }
 	}
 }
 

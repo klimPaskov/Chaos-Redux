@@ -5051,11 +5051,7 @@ random_terror_start_pressure_uprising = {
 		limit = {
 			state_population_k > constant:random_terror_value.zero
 			check_variable = { random_terror_state_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
-			NOT = { has_state_flag = random_terror_uprising_recent }
-			OR = {
-				NOT = { has_variable = random_terror_uprising_cooldown_until }
-				check_variable = { var = random_terror_uprising_cooldown_until value = global.date compare = less_than_or_equals }
-			}
+			random_terror_state_uprising_window_open = yes
 		}
 		set_state_flag = random_terror_uprising_recent
 		set_temp_variable = { chaosx_date_days = constant:random_terror_tuning.state_cooldown_days }
@@ -5095,7 +5091,7 @@ random_terror_reconcile_pressure_uprising = {
 			if = {
 				limit = {
 					check_variable = { random_terror_state_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
-					NOT = { has_state_flag = random_terror_uprising_recent }
+					random_terror_state_uprising_window_open = yes
 				}
 				save_event_target_as = random_terror_uprising_state
 				random_terror_start_pressure_uprising = yes
@@ -6193,6 +6189,9 @@ random_terror_finish_uprising_mission = {
 			clr_state_flag = random_terror_uprising_subject_@PREV
 			clr_state_flag = random_terror_uprising_stopped_@PREV
 			clear_variable = random_terror_uprising_goal_@PREV
+			# The rising is over, whatever its result; only the date window
+			# (random_terror_uprising_cooldown_until) still holds the state.
+			clr_state_flag = random_terror_uprising_recent
 		}
 	}
 	clr_country_flag = random_terror_mission_slot_2
@@ -7185,6 +7184,11 @@ random_terror_reset_crisis_cycle = {
 	clear_variable = random_terror_response_capacity
 	clear_variable = random_terror_cycle_incident_count
 	clear_variable = random_terror_spread_ready_date
+	# A closed crisis leaves no rising under way in the country's own states.
+	every_owned_state = {
+		limit = { has_state_flag = random_terror_uprising_recent }
+		clr_state_flag = random_terror_uprising_recent
+	}
 }
 
 random_terror_reset_repeatable_cycle = {

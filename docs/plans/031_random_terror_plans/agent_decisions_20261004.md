@@ -401,3 +401,10 @@ Basis: the lead's defect report (Seek a Sponsor lacked the `has_war_with` exclus
 - It excludes countries at war with the command, the command's parent and cannibal countries.
   The consent event reads the relationship against `FROM`, because there the asked country is `ROOT`; the pending-offer check applies only on the asking side, because the asked country holds that flag while it answers.
 - The requirement tooltip now states every real condition instead of the old Network Authority wording, which no check read.
+
+### R35 One uprising per state per window, not one per game
+
+Basis: the decision matrix row for Call a Coordinated Uprising ("one uprising per target window") and the lead's finding that `random_terror_uprising_recent` was cleared only by mission success or actor cleanup, so a partial, failed or cancelled defence locked the state for good.
+
+- `random_terror_uprising_recent` now means only that a rising is under way; `random_terror_finish_uprising_mission`, which every success, partial, failure and cancellation path calls, clears it, and so does crisis closure for the owner's states.
+- The 28-day date window is the only lasting limit, read through one trigger, `random_terror_state_uprising_window_open`, in the decision's three blocks, the transaction check, the focus host check and the uprising start.
