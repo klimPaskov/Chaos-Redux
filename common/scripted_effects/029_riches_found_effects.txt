@@ -1131,6 +1131,13 @@ riches_found_refresh_mine_contribution = {
 			}
 			clamp_temp_variable = { var = riches_found_occupied_adjust min = constant:riches_found_occupied_output.floor max = constant:riches_found_occupied_output.cap }
 			multiply_variable = { riches_found_control_factor = riches_found_occupied_adjust }
+			# A requisition takes extra output for as long as the occupation lasts.
+			if = {
+				limit = { has_state_flag = riches_found_occupation_output_requisitioned }
+				set_temp_variable = { riches_found_occupied_term = constant:riches_found_value.one }
+				add_to_temp_variable = { riches_found_occupied_term = constant:riches_found_occupation_choice.requisition_output_bonus }
+				multiply_variable = { riches_found_control_factor = riches_found_occupied_term }
+			}
 		}
 		else = { set_variable = { riches_found_control_factor = constant:riches_found_scaling.control_uncontrolled } }
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_control_factor }

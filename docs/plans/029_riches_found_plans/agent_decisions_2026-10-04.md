@@ -374,3 +374,12 @@ Otherwise the decision returns exactly the debits its payment took (the D9 refun
 The amendment branch for an already active and valid contract is unchanged.
 The record is cleared when the decision resolves, on a refund only while the payer still controls the mine (so a new controller's own pending offer is not erased), and by `riches_found_clear_stale_targets` on a control change.
 Agent decision: when two contract decisions are staged at once, the first to land signs and clears the record; a later new-contract decision then finds the contract open and amends it, or refunds when it was an exclusive concession that can no longer open.
+
+D34. Occupation choices move resistance, compliance and output.
+Basis: lead item 3 and spec part 3 ("share revenue to lower resistance"; predatory occupation raises resistance), read together with D28, which already scales occupied output by the state's engine resistance and compliance.
+`add_resistance` and `add_compliance` are STATE-scope effects (`effects_documentation.md`, `add_resistance`, `add_compliance`), and `common/scripted_effects/007_fury_effects.txt` already feeds `add_compliance` a script constant.
+New category `riches_found_occupation_choice`: Share Revenue lowers resistance by 10 and raises compliance by 8, Keep the Administration raises compliance by 10, Requisition Output raises resistance by 10, and Strip Equipment raises resistance by 15; each runs in the mine state when the decision lands, behind the existing payer guard.
+Requisition Output also multiplies the occupied control factor by one plus `requisition_output_bonus` (0.25) after the D28 clamp while `riches_found_occupation_output_requisitioned` holds; `riches_found_clear_occupation_choices` already clears that flag when the occupation ends or passes to another occupier, so the bonus cannot outlive the occupation.
+At the D28 slopes a requisition's +10 resistance costs about 6 percent of occupied output against its 25 percent gain, so requisitioning pays now and sharing pays over time through calmer resistance and higher compliance.
+Each tooltip states the change; no `ai_will_do` block changed.
+How the engine applies the changes to an occupied state's resistance needs the live game.
