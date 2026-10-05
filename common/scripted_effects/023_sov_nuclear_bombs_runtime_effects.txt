@@ -3191,6 +3191,22 @@ sov_nuclear_bombs_reconcile_event5_state = {
 			set_variable = { sov_nuclear_bombs_event5_after_global_ledger_reconciliation = constant:sov_nuclear_bombs_ledger.disputed }
 			if = { limit = { sov_nuclear_bombs_state_is_registered = yes } set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed } }
 		}
+		# A registered depot that left Soviet hands, or went missing, in an
+		# Event 5 transfer opens the Soviet custody board once per crisis.
+		if = {
+			limit = {
+				sov_nuclear_bombs_state_is_registered = yes
+				OR = {
+					check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+					has_state_flag = sov_nuclear_bombs_site_missing
+				}
+				SOV = {
+					sov_nuclear_bombs_event_actor_is_valid = yes
+					NOT = { has_country_flag = sov_nuclear_bombs_collapse_active }
+				}
+			}
+			SOV = { sov_nuclear_bombs_open_collapse_recovery = yes }
+		}
 	}
 }
 

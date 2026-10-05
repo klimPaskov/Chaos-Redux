@@ -348,3 +348,15 @@ The lead's narrow `decision_ai_will_do` attempt and this round's `event_mean_tim
 Evaluate and compare were therefore not run for D4 to D7, R4, R6, R8, R9, R2-1, R2-3, R2-7 or R2-8; the before sources stay frozen in `probability_source_snapshots/ai_surfaces_before_2026-10-04/`, `probability_source_snapshots/ai_surfaces_before_round2_2026-10-04/` and `HEAD` `1cebd5393` for R9.
 The exact errors and the source-level scenario expectations are in `subagent_handoffs/023_ai_surfaces_probability_compare_2026-10-04.md` under "Round 2 additions"; they are not compare evidence.
 Disposition: `blocked` on the MCP probability route (`INTERNAL_ERROR`, no artifacts).
+
+## Round 2, second pass (2026-10-05)
+
+Scope: the lead's second round 2 work list (coercion responses, credibility memory, test outcomes, exposure, foreign reactions, incidents, false warnings, breakaway bargaining, retaliation timing, delivery-loss decline and the AI-weight constants) and the lead's twelve planning decisions for it.
+Before sources for every AI or probability surface touched in this pass are frozen from `HEAD` `a49dc6df5` in `probability_source_snapshots/ai_surfaces_before_round2b_2026-10-05/` (constants, decisions, event effects, event triggers, events and on_actions).
+
+### R2b-0. The Soviet custody board opens after an Event 5 depot transfer
+
+Finding: `sov_nuclear_bombs_open_collapse_recovery` was defined but never called in any commit (`git log -S` finds no caller), so `sov_nuclear_bombs_collapse_active` was never set; the Soviet half of Part 6 (the collapse board, depot selection, recall, rail security, joint custody, the recovery raid, disablement, demolition and "Restore the Ledger"), the `chaosx.nr23.170` review, the collapse news, the collapse posture and both MTTH collapse factors could never occur, while the breakaway half (which reads the holder's own transferred count) still ran.
+Decision: `sov_nuclear_bombs_reconcile_event5_state` ends by opening the board on the valid Soviet actor when the reconciled registered depot holds a transferred device or is marked missing and no collapse crisis is open; the helper itself is unchanged, so the crisis opens once and "Restore the Ledger" still closes it through `sov_nuclear_bombs_finalize_collapse`, after which a later transfer opens a new crisis.
+Basis: Part 6 activation gate (Event 5 enters a state-transfer phase and a registered site is affected) and post-transfer reconciliation; the reconcile helper is the single point every bracketed transfer, release tranche and bounded callback already passes through, so no new scan or pulse is added.
+Disposition: `implemented`; the collapse campaign itself `needs_live_game`.
