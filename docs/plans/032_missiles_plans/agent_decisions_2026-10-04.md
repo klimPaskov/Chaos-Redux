@@ -185,3 +185,12 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, t
 - `missiles_accept_retaliation_response` now saves the current target choice (`missiles_save_target_choice_for_retaliation`: selected enemy and id, objective, target state, and objective lock) before it writes the attacker. When `missiles_operation_preflight_result` is not accepted it clears the pending parent, root, root-country, and generation values and the retaliation operation type, strike profile, payload, and target-state id, and `missiles_restore_target_choice_after_retaliation` restores the saved choice or calls `missiles_clear_target` when there was none. The warning is not resolved, no outcome flag is set, and the accepted branch is unchanged.
 - Agent decision: the saved choice uses persistent country variables cleared at the end of every accept call rather than temporaries, because the preparation chain between save and restore is long and shares temporary names.
 - `.tools/test_event32_retaliation_warning.py` gains `RefusedResponse`.
+
+## Round 2 item 4: chemical agent re-checked at launch
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, test `PAY-04`). Basis: lead decision 3.
+
+- `missiles_commit_operation` runs `missiles_check_chemical_payload_stock` for a chemical operation before committing. A failed check takes the invalidated path: `missiles_abort_operation` (exact reserve refund) and `missiles_cleanup_operation`, with no launch and no payload dispatch. The decision and the delayed retaliation commit (`chaosx.nr32.83`) both reach it, so the AI follows the same path. Other payloads commit exactly as before.
+- Agent decision: the player sees the reason in the category context line through a new preparation-failure value `missiles_preparation_failure.chemical_agent = 11` and the key `missiles_preparation_failure_chemical_agent`, and the launch effect tooltip states that a chemical strike is called off when the stores no longer hold enough agent. Basis: the check is an effect over CBRN temporaries and cannot run inside the launch decision's `available` trigger, so the abort report is the reliable place.
+- Holding chemical agent at preparation stays `accepted and queued` for the CBRN owner: it needs a CBRN refund route that Event 32 must not duplicate.
+- `.tools/test_event32_special_payload.py` gains `ChemicalLaunchCheck`.

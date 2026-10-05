@@ -6032,7 +6032,37 @@ missiles_resolve_operation = {
 }
 
 missiles_commit_operation = {
+	# Chemical agent stays in the CBRN stores until release, so it is proven
+	# again at launch. Agent spent since preparation ends the order through
+	# the invalidated path with its missiles returned, instead of a launch
+	# without its payload.
+	set_temp_variable = { missiles_commit_payload_ready = constant:missiles_program_value.one }
 	if = {
+		limit = {
+			missiles_operation_can_be_committed = yes
+			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals }
+		}
+		missiles_check_chemical_payload_stock = yes
+		if = {
+			limit = { NOT = { check_variable = { var = missiles_chemical_stock_result value = constant:missiles_result.accepted compare = equals } } }
+			set_temp_variable = { missiles_commit_payload_ready = constant:missiles_program_value.zero }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = missiles_commit_payload_ready value = constant:missiles_program_value.zero compare = equals }
+			missiles_operation_receipt_is_active = yes
+			NOT = { has_country_flag = missiles_operation_committed }
+		}
+		set_variable = { missiles_operation_result = constant:missiles_result.invalidated }
+		set_variable = { missiles_operation_state = constant:missiles_operation_state.invalidated }
+		set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.chemical_agent }
+		set_variable = { missiles_last_failed_preparation_id = missiles_active_operation_id }
+		set_country_flag = missiles_preparation_failure_unread
+		missiles_abort_operation = yes
+		missiles_cleanup_operation = yes
+	}
+	else_if = {
 		limit = { missiles_operation_can_be_committed = yes }
 		set_country_flag = missiles_operation_committed
 		set_variable = { missiles_operation_commit_date = global.date }

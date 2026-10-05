@@ -104,5 +104,45 @@ class SpecialPayloadContract(unittest.TestCase):
         self.assertIn(('NOT', [('has_country_flag', 'missiles_operation_active')]), orders)
 
 
+
+class ChemicalLaunchCheck(unittest.TestCase):
+    def test_chemical_agent_is_proven_again_before_commitment(self):
+        commit = EFFECTS['missiles_commit_operation']
+        keys = [key for key, _ in commit]
+        self.assertEqual(commit[0], ('set_temp_variable', [('missiles_commit_payload_ready', 'constant:missiles_program_value.one')]))
+        check = commit[1][1]
+        self.assertEqual(commit[1][0], 'if')
+        self.assertIn(('check_variable', [('var', 'missiles_operation_payload'), ('value', 'constant:missiles_payload.chemical'), ('compare', 'equals')]), value(check, 'limit'))
+        self.assertIn(('missiles_check_chemical_payload_stock', 'yes'), check)
+        # A failed check takes the invalidated path with an exact refund and no launch.
+        refused = commit[2][1]
+        self.assertEqual(commit[2][0], 'if')
+        self.assertIn(('check_variable', [('var', 'missiles_commit_payload_ready'), ('value', 'constant:missiles_program_value.zero'), ('compare', 'equals')]), value(refused, 'limit'))
+        refused_keys = [key for key, _ in refused]
+        self.assertLess(refused_keys.index('missiles_abort_operation'), refused_keys.index('missiles_cleanup_operation'))
+        self.assertIn(('set_variable', [('missiles_last_preparation_failure', 'constant:missiles_preparation_failure.chemical_agent')]), refused)
+        self.assertIn(('set_country_flag', 'missiles_preparation_failure_unread'), refused)
+        self.assertNotIn(('missiles_resolve_operation', 'yes'), nodes(refused))
+        self.assertNotIn(('set_country_flag', 'missiles_operation_committed'), nodes(refused))
+        # Only the chemical check can clear the ready marker, so other payloads commit as before.
+        self.assertEqual(keys[3], 'else_if')
+        launch = commit[3][1]
+        self.assertEqual(value(launch, 'limit'), [('missiles_operation_can_be_committed', 'yes')])
+        self.assertIn(('missiles_resolve_operation', 'yes'), launch)
+        setters = [child for key, child in nodes(commit) if key == 'set_temp_variable' and child[0][0] == 'missiles_commit_payload_ready']
+        self.assertEqual(len(setters), 2)
+
+    def test_chemical_failure_reason_is_localised(self):
+        constants = (ROOT / 'common/script_constants/032_missiles_constants.txt').read_text(encoding='utf-8')
+        block = constants.split('missiles_preparation_failure = {', 1)[1].split('missiles_preparation_cost', 1)[0]
+        self.assertIn('chemical_agent = 11', block)
+        scripted = (ROOT / 'common/scripted_localisation/032_missiles_localisation.txt').read_text(encoding='utf-8')
+        self.assertIn('localization_key = missiles_preparation_failure_chemical_agent', scripted)
+        loc = (ROOT / 'localisation/english/032_missiles_decisions_l_english.yml').read_bytes()
+        self.assertTrue(loc.startswith(bytes([0xEF, 0xBB, 0xBF])))
+        keys = [line.split(':', 1)[0] for line in loc.decode('utf-8-sig').splitlines()]
+        self.assertIn('missiles_preparation_failure_chemical_agent', keys)
+
+
 if __name__ == '__main__':
     unittest.main()

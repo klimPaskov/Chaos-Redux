@@ -592,6 +592,7 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `PAY-01` | Special Warheads adopted with a nuclear stockpile; integrate, select, and set policy | Each order opens its choice event; a newly fitted warhead asks for standing orders |
 | `PAY-02` | Prepare and then abort a nuclear strike | One nuclear weapon leaves the stockpile at preparation and returns on abort |
 | `PAY-03` | Prepare and launch a nuclear strike | The held warhead is consumed once with no second debit |
+| `PAY-04` | Prepare a chemical strike, then spend the chemical agent stock before launch | Launch calls the strike off: the missiles return once, nothing is launched, and the category shows the chemical-stores reason; the AI follows the same path |
 | `DOC-01` | Saturation unlocked | No country adopts it until the doctrine decision is taken |
 | `DOC-02` | Automatic Retaliation unlocked | Posture starts Off; the posture decision is blocked during a warning |
 | `ALLOC-01` | Saturation barrage over sites with capacities 10 and 2 for 10 missiles | The order is accepted with allocations 8 and 2 |
