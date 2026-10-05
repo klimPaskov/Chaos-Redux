@@ -506,9 +506,9 @@ def main() -> int:
 	expected_adapter_ids = {
 		1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19,
 		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48,
-		50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 73, 76, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 131, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 173, 177, 179, 184,
+		50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 73, 76, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 131, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 150, 151, 154, 155, 159, 161, 162, 166, 167, 169, 170, 171, 173, 175, 177, 179, 184,
 	}
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48, 50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 73, 76, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 131, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 173, 177, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 47, 48, 50, 51, 52, 53, 54, 58, 60, 70, 71, 72, 73, 76, 78, 81, 82, 83, 86, 93, 95, 97, 98, 99, 106, 107, 108, 110, 111, 113, 114, 115, 119, 126, 130, 131, 132, 134, 136, 137, 138, 139, 140, 141, 143, 145, 147, 148, 150, 151, 154, 155, 159, 161, 162, 166, 167, 169, 170, 171, 173, 175, 177, 184}
 	require(
 		set(adapter_ids) == expected_adapter_ids,
 		"runtime adapter set changed without updating the accepted Event 006 closure: "
@@ -615,8 +615,8 @@ def main() -> int:
 			attested_anchors[package_id] = int(anchor_match.group(1))
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
-			len(set(attested_groups.values())) == 58,
-			"accepted eighty-two-package closure no longer exposes exactly fifty-eight compatible reservation groups: "
+			len(set(attested_groups.values())) == 64,
+			"accepted ninety-five-package closure no longer exposes exactly sixty-four compatible reservation groups: "
 			+ repr(attested_groups),
 			errors,
 		)
@@ -633,7 +633,7 @@ def main() -> int:
 			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 80
+			len(set(attested_anchors.values())) == 93
 			and attested_anchors.get(43) == attested_anchors.get(44) == 249
 			and attested_groups.get(43) == attested_groups.get(44) == "rg_middle_volga_kazan"
 			and attested_anchors.get(106) == attested_anchors.get(107) == 900

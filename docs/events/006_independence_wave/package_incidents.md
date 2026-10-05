@@ -108,6 +108,28 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Assam (IW-145) | `chaosx.nr6.247` | Settlers on the Char Lands | Keep settlement within the lines; Open the wastelands to settlement |
 | Manipur (IW-147) | `chaosx.nr6.248` | The Women of the Bazaar | Ban the rice exports; Let the rice mills keep exporting |
 | Manipur (IW-147) | `chaosx.nr6.249` | The Hill Porterage | Abolish the porterage duty; Refer it to a commission |
+| Aceh (IW-150) | `chaosx.nr6.250` | Veterans of the Long War | Pension the veterans; Disband the old bands |
+| Aceh (IW-150) | `chaosx.nr6.251` | The Penang Buyers | Sell through the state warehouses; Hold the harvest for other buyers |
+| Minangkabau (IW-151) | `chaosx.nr6.252` | The Merantau | Build schools at home; Tax the remittances |
+| Minangkabau (IW-151) | `chaosx.nr6.253` | The Inheritance Case | Uphold the adat inheritance; Let families choose the law |
+| Bali (IW-155) | `chaosx.nr6.254` | The Royal Cremation | Fund the royal cremation; Hold a modest ceremony |
+| Bali (IW-155) | `chaosx.nr6.255` | The Painters of Ubud | Support the cooperative; Tax the art dealers |
+| Shan federation (IW-159) | `chaosx.nr6.256` | The Poppy Fields | License and tax the poppy; Suppress the poppy trade |
+| Shan federation (IW-159) | `chaosx.nr6.257` | A Disputed Succession | Let the Federal Council decide; Back the senior claimant with troops |
+| Mon State (IW-161) | `chaosx.nr6.258` | The Monastery Lands | Confirm the monasteries' lands; Tax the monastery estates |
+| Mon State (IW-161) | `chaosx.nr6.259` | The Tavoy Tin Mines | Take a state share; Renew the leases |
+| Kachin state (IW-162) | `chaosx.nr6.260` | The Jade Traders | Tax the jade at Mogaung; Keep the jade trade free |
+| Kachin state (IW-162) | `chaosx.nr6.261` | The Mission Schools | Bring the schools under the council; Leave the schools to the missions |
+| Laos (IW-166) | `chaosx.nr6.262` | The Clerks of the Administration | Train Lao officials; Keep the experienced clerks |
+| Laos (IW-166) | `chaosx.nr6.263` | The That Luang Festival | Fund a royal festival; Leave it to the monasteries |
+| East Turkestan (IW-169) | `chaosx.nr6.264` | The Soviet Trade Agreement | Sign the trade agreement; Keep trading with India |
+| East Turkestan (IW-169) | `chaosx.nr6.265` | The Hami Grievances | Restore the Hami lands; Keep the new tax rolls |
+| Inner Mongolia (IW-170) | `chaosx.nr6.266` | The Wool Buyers of Kalgan | Set a fair wool price; Sell through the Kalgan houses |
+| Inner Mongolia (IW-170) | `chaosx.nr6.267` | Envoys from Ulaanbaatar | Receive the envoys; Close the border |
+| Ryukyu (IW-171) | `chaosx.nr6.268` | The Dialect Placards | Abolish the placards; Leave the schools as they are |
+| Ryukyu (IW-171) | `chaosx.nr6.269` | Shuri Castle | Restore Shuri Castle; Leave the work for later |
+| Samoa (IW-175) | `chaosx.nr6.270` | The Titles Court | Let the Fono judge titles; Keep the Land and Titles Court |
+| Samoa (IW-175) | `chaosx.nr6.271` | The Mau Procession | Honour the fallen of 1929; Ban the procession |
 
 ## Files
 

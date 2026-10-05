@@ -804,3 +804,35 @@ Idea pictures (correction to D25 to D29 and the earlier consolidated registry): 
 Validation: the allocator audit passes with 82 attested packages, 58 reservation groups and 83 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists; every Event 006 idea picture now resolves to a defined sprite.
 
 Needs live game: a wave that releases a South Asian row from the Raj (in particular Pashtunistan through its planned-anchor core, and Punjab and Assam as custom carriers under their assemblies), and the decision and incident flow of the Level 2 rows.
+
+## D31. Round 2: Southeast Asia, East Asia and Oceania tranche
+
+Disposition: `implemented` for IW-150 Aceh (ATJ), IW-151 Minangkabau (FUX), IW-154 Bugis state (FXX), IW-155 Bali (BLI), IW-159 Shan federation (GCX), IW-161 Mon State (IAX), IW-162 Kachin state (IBX), IW-166 Laos (LAO), IW-167 Champa (CHM), IW-169 East Turkestan (GMX), IW-170 Inner Mongolia (MEN), IW-171 Ryukyu (OKN) and IW-175 Samoa (SAM); `blocked` for IW-152, IW-153, IW-156, IW-157, IW-158, IW-160, IW-163, IW-164, IW-165, IW-168, IW-172, IW-174, IW-176 and IW-178; `unresolved` for the D29 Comoros admission noted below.
+
+Basis: the lead's round-2 priority-18 item, using the D25 regional framework engine, the D20/D22 leadership rule and the D29 named-institution rule.
+
+Decisions:
+
+- Eleven Level 2 rows and two Level 1 rows (the Bugis state and Champa). Aceh and Mon State are registry Level 3 rows admitted with a Level 2 layer, as Oyo was in D27; their signature modules stay queued.
+- Vanilla rosters: ATJ Sultan Alauddin Muhammad Da'ud Syah II (the last sultan, in exile), BLI the Dewa Agung of Klungkung, LAO King Sisavang Vong, MEN Prince Demchugdongrub and OKN Hiroshi Sho, each checked through the roster checkpoint. CHM and SAM have no vanilla characters, so the game appoints their opening leaders.
+- Named councils for the custom carriers: the Minangkabau Council of the Nagari, the Hadat Council of South Celebes, the Federal Council of Shan Chiefs (the real federal council of 1922), the Provisional Mon Federal Council (the provisional federal council the Mon research names), the Council of the Kachin Duwas and the Provisional Council of East Turkestan. The sourced-officeholder standard stays queued as in D29.
+- Each Level 2 layer is grounded in 1930s conditions: the uleebalang and ulama, the reform madrasahs and the Penang pepper trade in Aceh; adat and the reformers, the Thawalib schools and the Ombilin mines in Minangkabau; the eight kingdoms, the Paruman Agung and the subak in Bali; the sawbwas, the Lashio railway and Bawdwin in the Shan States; Mon schooling and the Moulmein trade; the duwas, the Kachin levies and the jade road; the Luang Prabang court and the south, the Mekong and the Buddhist Institute in Laos; the oasis governors and caravan roads of East Turkestan; banner pastures, the Autonomy Council and the banner cavalry in Inner Mongolia; the cycad years, the Shuri assembly and the emigrant remittances in Ryukyu; and the Mau, the Fono of Faipule and the reparation estates in Samoa. Incidents are `chaosx.nr6.250` to `.271`.
+- East Turkestan keeps its accepted binding to anchor 617, which is Sinkiang's protected capital, so it is chosen only after Urumqi passes to a country with its capital elsewhere.
+- Contacts: ATJ TUR, ENG and SAU; FUX SAU, EGY and ENG; FXX ENG and AST; BLI HOL and GER; GCX SIA, YUN and ENG; IAX SIA and ENG; IBX YUN, ENG and USA; LAO SIA and FRA; CHM CAM and MAL; GMX SOV, TUR and AFG; MEN MON and MAN; OKN USA, BRA and PRU; SAM USA and GER.
+
+Blocked rows:
+
+- IW-152 Riau and IW-158 Pattani: their leadership resolution requires a sourced incumbent or claimant, or authentic material for an actual royal council, and forbids a generated dynasty member or institution. Both sultanates had been abolished (1911 and 1902), and no sourced 1936 claimant or council material is in the working tree.
+- IW-153, IW-157, IW-160, IW-163, IW-168, IW-174 and IW-178: specific community variants without a planner gate.
+- IW-164 Arakan or Rakhine: name and leadership must follow a named community settlement, and its reservation is unresearched.
+- IW-165 Wa and IW-176 Tonga: no planner gate, loader or reservation.
+- IW-156 Moluccan federation: a vanilla route overlay by design.
+- IW-172 Ainu state: restricted to a named Ainu institution with sourced leadership, which the working tree does not have.
+
+Review note (`unresolved`): D29 admitted the Comoros (FAX) under a named council although its leadership resolution is the same sourced-claimant rule that blocks Riau and Pattani here, and its sultanates had also been abolished (1912). The Hadhramaut (CXX) rule is the same, but its sultanates were still reigning in 1936. The lead should decide whether FAX stays admitted under its council or is blocked like Riau and Pattani; the runtime is unchanged until then.
+
+Formables: FORM-36 Maritime Federation has Aceh, the Bugis state and Bali; FORM-37 Mainland Southeast Asian Federation has Mon State, the Shan federation and the Kachin state; FORM-38 Polynesian League State has Hawaii and Samoa. All three stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist); FORM-36 and FORM-37 now meet their member minimum and are queued.
+
+Validation: the allocator audit passes with 95 attested packages, 64 reservation groups and 96 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant, localisation key and picture exists.
+
+Needs live game: a wave that releases a custom carrier in Southeast Asia under its council, a vanilla release such as Ryukyu from Japan or Laos from France, and the decision and incident flow of the Level 2 rows.

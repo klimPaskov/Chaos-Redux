@@ -189,3 +189,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Punjab, Sindh, Balochistan, Pashtunistan, Kashmir, Hyderabad, Mysore, the Madras States, Assam, Manipur and Sikkim can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - Every one of them except Sikkim has a starting problem, its own decisions and two incidents of its own; Punjab and Assam open under their legislative assemblies.
 - Bengal, Khalistan, Travancore, the Dravidian Federation, the Naga state and the Himalayan Confederation remain unavailable.
+
+
+## 2026-10-05: Southeast Asia, East Asia and Oceania packages (D31)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Aceh, Minangkabau, the Bugis state, Bali, the Shan federation, Mon State, the Kachin state, Laos, Champa, East Turkestan, Inner Mongolia, Ryukyu and Samoa can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Every one of them except the Bugis state and Champa has a starting problem, its own decisions and two incidents of its own; the six new custom states open under a named council.
+- Riau, Pattani, the Dayak, Karen, Chin, Hmong, Arakan, Wa, Ainu, Aotearoa Maori, Papuan, West Papuan and Tongan states and the Moluccan federation remain unavailable.

@@ -204,6 +204,38 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-147 | MPU | ENG | The Political Agent at Imphal |
 | IW-148 | SKK | TIB | The Chogyal's family and monasteries in Tibet |
 | IW-148 | SKK | NEP | The Nepali settlers of the Sikkimese hills |
+| IW-150 | ATJ | TUR | Aceh's old appeals to Constantinople for protection |
+| IW-150 | ATJ | ENG | The pepper trade with Penang |
+| IW-150 | ATJ | SAU | The Acehnese pilgrims and scholars in Mecca |
+| IW-151 | FUX | SAU | The Minangkabau scholars of Mecca |
+| IW-151 | FUX | EGY | The Minangkabau students at al-Azhar |
+| IW-151 | FUX | ENG | The Minangkabau settlers of Negeri Sembilan in Malaya |
+| IW-154 | FXX | ENG | The Bugis traders of Singapore and the Malay states |
+| IW-154 | FXX | AST | The Makassan trepang voyages to Arnhem Land |
+| IW-155 | BLI | HOL | The Dutch scholars and officials of the Kirtya library at Singaraja |
+| IW-155 | BLI | GER | Walter Spies and the painters of Ubud |
+| IW-159 | GCX | SIA | The Tai of northern Siam and the Chiang Mai trade |
+| IW-159 | GCX | YUN | The Shan of the Yunnan borderlands |
+| IW-159 | GCX | ENG | The sawbwas' treaties with the Crown |
+| IW-161 | IAX | SIA | The Mon communities of Siam |
+| IW-161 | IAX | ENG | The Moulmein timber and rice firms |
+| IW-162 | IBX | YUN | The Jingpo of the Yunnan borderlands |
+| IW-162 | IBX | ENG | The Kachin companies of the Burma Rifles |
+| IW-162 | IBX | USA | The American Baptist missions of the Kachin hills |
+| IW-166 | LAO | SIA | The Lao of the Khorat plateau |
+| IW-166 | LAO | FRA | The French residents and the Indochina budget |
+| IW-167 | CHM | CAM | The Cham communities of Cambodia |
+| IW-167 | CHM | MAL | The Malay ties of the Cham |
+| IW-169 | GMX | SOV | The Soviet trade agencies and consulates |
+| IW-169 | GMX | TUR | The Turkic exiles of Istanbul |
+| IW-169 | GMX | AFG | The Kashgar caravans to Kabul |
+| IW-170 | MEN | MON | The Mongolian People's Republic across the border |
+| IW-170 | MEN | MAN | The Mongol banners of Hsingan |
+| IW-171 | OKN | USA | The Okinawan emigrants of Hawaii |
+| IW-171 | OKN | BRA | The Okinawan settlers of Sao Paulo |
+| IW-171 | OKN | PRU | The Okinawan community of Lima |
+| IW-175 | SAM | USA | American Samoa and the Pago Pago naval station |
+| IW-175 | SAM | GER | The old German plantations and families of Apia |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.
