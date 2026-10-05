@@ -80,3 +80,19 @@ The occupied transaction array only accumulates forward, so a fee row stuck befo
 No catalog or spreadsheet change is warranted: no public event, evolution or cluster wording changed in this round.
 Famine and migration remains plan-only and is not authorized by this workstream.
 Event 026 stays disabled in the default allowlist behind its own universal cost-registry gate, which belongs to that workstream.
+
+## Round 3 status update (2026-10-05, after the October live playtest commit)
+
+Commit `e1413d2a3` added the 3-5 October live playtest record (`docs/testing/live_qa/20261003_full_playtest/`), and the matching run log is in the user's game log folder.
+Its snapshot base `fa833647e` contains this workstream's commits `cab3acb5b`, `a35f1b277` and `3137c7996`.
+A full 1936 run on that snapshot logs none of the three errors those commits addressed: no Country-only scope lines from the sabotage triggers, no flag-lookup errors for the dormant scientist holder tag, and no runtime recruitment warnings from the startup history effects.
+Priority-1 items 4 (load cleanliness, holder tag and dated scientists) and the sabotage half of item 1 are therefore closed by supplied evidence.
+The same run never entered the test-country harness, so facility placement stays open.
+
+The playtest records one defect that reaches a surface this workstream owns: the Contamination map mode draws no colour in a post-strike world (`bugs.md` B037).
+Its nuclear branch reads `has_dynamic_modifier = { modifier = nuclear_fallout_state }` through `mapmode_state_has_nuclear_contamination` in `common/scripted_triggers/cbw_triggers.txt`.
+`common/scripted_effects/fallout_consolidated_effects.txt` line 16915 applies the state marker through `chaos_meter_apply_nuclear_fallout_to_state`, and line 16916 removes it again in the next statement, so every state hit by the manual aggregate path keeps its intensity and expiry variables but loses the marker the map mode reads.
+Those two lines belong to the Fallout owner, whose commit `c7da5a541` only wrapped the existing removal in a presence check, so the order predates it.
+The repair is theirs; this workstream owns the reading trigger and should confirm the mode colours once the marker survives.
+
+The Event 020 board inspect route was retried once with the minimal call carrying only `windowName`, and returned `Invalid tool arguments` again, as in the two previous rounds. No further attempt was made.
