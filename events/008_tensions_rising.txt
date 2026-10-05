@@ -25,10 +25,10 @@ add_namespace = chaosx.nr8
 ##############################################################################################################
 # CHAOS REDUX - EVENT 008: TENSIONS RISING
 ##############################################################################################################
-# Repeatable global diplomatic-pressure event. Calm firings only add world
-# tension below the full-WT cap; evolved Diplomatic Fever stages can fire at
-# full world tension and add direct chaos, timer pressure, relation shocks,
-# follow-up incidents, AI posture pressure, border clashes, and achievement state.
+# Repeatable global diplomatic-pressure event. Hidden canonical root `.1`
+# applies each shock and opens one coalesced visible report `.16` per pending
+# country batch. Calm firings add world tension below its cap; enabled
+# Diplomatic Fever stages can fire at full tension and add the evolved effects.
 ##############################################################################################################
 
 country_event = {
@@ -37,17 +37,37 @@ country_event = {
 	desc = chaosx.nr8.1.d
 	picture = GFX_report_event_tensions_rising
 
+	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
-		hidden_effect = {
-			apply_tensions_rising_event_effect = yes
-		}
+		apply_tensions_rising_event_effect = yes
 	}
+}
+
+
+country_event = {
+	id = chaosx.nr8.16
+	title = chaosx.nr8.1.t
+	desc = chaosx.nr8.1.d
+	picture = GFX_report_event_tensions_rising
+
+	trigger = { has_country_flag = tensions_rising_report_pending }
+	is_triggered_only = yes
 
 	option = {
 		name = chaosx.nr8.1.a
 		custom_effect_tooltip = chaosx.nr8.1.a.tt
+		hidden_effect = {
+			clear_variable = tensions_rising_report_stage
+			clear_variable = tensions_rising_report_world_tension
+			clear_variable = tensions_rising_report_chaos
+			clr_country_flag = tensions_rising_report_terminal
+			clr_country_flag = tensions_rising_report_baseline_full_world_tension
+			clr_country_flag = tensions_rising_report_pending
+			clr_country_flag = tensions_rising_report_followup_attempted
+			clr_country_flag = tensions_rising_report_headlines_counted
+		}
 	}
 }
 
@@ -57,6 +77,7 @@ country_event = {
 	desc = chaosx.nr8.2.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -77,6 +98,7 @@ country_event = {
 	desc = chaosx.nr8.3.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -97,6 +119,7 @@ country_event = {
 	desc = chaosx.nr8.4.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -117,6 +140,7 @@ country_event = {
 	desc = chaosx.nr8.5.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -137,6 +161,7 @@ country_event = {
 	desc = chaosx.nr8.6.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -157,6 +182,7 @@ country_event = {
 	desc = chaosx.nr8.7.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -177,6 +203,7 @@ country_event = {
 	desc = chaosx.nr8.8.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -197,6 +224,7 @@ country_event = {
 	desc = chaosx.nr8.9.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -217,6 +245,7 @@ country_event = {
 	desc = chaosx.nr8.10.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -237,6 +266,7 @@ country_event = {
 	desc = chaosx.nr8.12.d
 	picture = GFX_report_event_tensions_rising
 
+	trigger = { can_tensions_rising_followup_fire = yes }
 	is_triggered_only = yes
 
 	immediate = {
@@ -295,17 +325,48 @@ country_event = {
 	title = chaosx.nr8.20.t
 	hidden = yes
 	is_triggered_only = yes
+	trigger = { has_country_flag = tensions_rising_thin_wire_callback_pending }
 
 	immediate = {
+		clr_country_flag = tensions_rising_thin_wire_callback_pending
 		if = {
 			limit = {
 				is_ai = no
 				has_country_flag = tensions_rising_thin_wire_watch
 				NOT = { has_country_flag = tensions_rising_thin_wire_broken }
+				NOT = { has_global_flag = world_end }
 				has_war = no
 				is_tensions_rising_world_tension_full = yes
+				has_variable = tensions_rising_thin_wire_expiry_date
 			}
-			set_country_flag = achievement_tensions_thin_wire_ready
+			if = {
+				limit = {
+					check_variable = {
+						var = global.date
+						value = tensions_rising_thin_wire_expiry_date
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = achievement_tensions_thin_wire_ready
+				clr_country_flag = tensions_rising_thin_wire_watch
+				clr_country_flag = tensions_rising_thin_wire_broken
+				clear_variable = tensions_rising_thin_wire_expiry_date
+			}
+			else = {
+				set_country_flag = tensions_rising_thin_wire_callback_pending
+				set_temp_variable = { tensions_rising_thin_wire_step_days = constant:tensions_rising_achievement.thin_wire_step_days }
+				country_event = { id = chaosx.nr8.20 days = tensions_rising_thin_wire_step_days }
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = tensions_rising_thin_wire_watch }
+			clr_country_flag = tensions_rising_thin_wire_watch
+			clr_country_flag = tensions_rising_thin_wire_broken
+			clear_variable = tensions_rising_thin_wire_expiry_date
+		}
+		else_if = {
+			limit = { has_variable = tensions_rising_thin_wire_expiry_date }
+			clear_variable = tensions_rising_thin_wire_expiry_date
 		}
 	}
 }
@@ -317,7 +378,9 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		subtract_from_variable = { global.tensions_rising_active_opinion_modifiers = 2 }
+		subtract_from_variable = {
+			global.tensions_rising_active_opinion_modifiers = constant:tensions_rising_achievement.active_modifier_count_per_direction
+		}
 		clamp_variable = {
 			var = global.tensions_rising_active_opinion_modifiers
 			min = 0

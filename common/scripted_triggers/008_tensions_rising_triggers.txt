@@ -22,14 +22,44 @@ can_tensions_rising_baseline_fire = {
 	NOT = { is_tensions_rising_world_tension_full = yes }
 }
 
-is_tensions_rising_automatic_event_available = {
+is_tensions_rising_evolution_enabled = {
 	OR = {
-		has_global_flag = { flag = chaos_tier value = 1 }
-		has_global_flag = { flag = chaos_tier value = 2 }
-		has_global_flag = { flag = chaos_tier value = 3 }
-		has_global_flag = { flag = chaos_tier value = 4 }
-		has_global_flag = { flag = chaos_tier value = 5 }
-		can_tensions_rising_baseline_fire = yes
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_1 }
+		}
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 2 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_2 }
+		}
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 3 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_3 }
+		}
+		AND = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_4 }
+		}
+	}
+}
+
+is_tensions_rising_automatic_event_available = {
+	AND = {
+		NOT = { has_global_flag = world_end }
+		OR = {
+			is_tensions_rising_evolution_enabled = yes
+			can_tensions_rising_baseline_fire = yes
+		}
+	}
+}
+
+can_tensions_rising_followup_fire = {
+	AND = {
+		NOT = { has_global_flag = world_end }
+		is_tensions_rising_evolution_enabled = yes
 	}
 }
 

@@ -1,21 +1,40 @@
 # Event 008 Catalog Row Note
 
-The workbook `chaos_redux_events_catalog.xlsx` was inspected and updated after implementation.
+Disposition: implemented documentation correction, with workbook wording alignment blocked by the parent's no-workbook-edit boundary.
+The authoritative workbook remains `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
+The [2026-10-05 release audit](../../../plans/008_tensions_rising_plans/subagent_handoffs/event_completion_audit_2026-10-05.md) read it without changing cells or exports, and the parent supplied those exact current facts for this reconciliation.
+The earlier claim that this note proved a workbook update and `Implemented` status is superseded by that direct read-only evidence.
 
-Current row finding:
+Current audit finding:
 
 | Field | Value seen in workbook |
 | --- | --- |
 | ID | 8 |
 | Event Name | Tensions Rising |
-| Details | Value-neutral event-detail text describing world-tension pressure, timer pacing, timed opinion penalties, AI readiness ideas, delayed incidents, achievement tracking, and rare safe border wars. |
+| Details and Evo I-IV | Pre-2026-10-05 localisation wording, pending alignment with the final in-game keys. |
 | Type | Minor Repeatable |
-| Status | Implemented |
+| Status | Needs Testing |
 
-Implementation decision:
+Cluster 3 audit finding:
 
-The source of truth sets the baseline to `+100` world tension with four evolved chaos/world tension stages. The workbook row does not duplicate these numeric packets, so the `10x` world-tension tuning is represented in script constants, option-tooltip localisation, and source docs rather than in catalog cells.
+| Field | Value seen in workbook |
+| --- | --- |
+| Name | Diplomacy |
+| Members | 8,17,36,59 |
+| Member severities | Medium,Medium,High,High |
+| Status | Partially Available |
 
-Spreadsheet action:
+## Pending wording handoff
 
-The workbook row was updated from the final in-game event-detail wording so it uses the delayed-incident terminology and includes the rare safe border-war pressure surface. The `Diplomatic Panic` cluster detail also notes rare safe non-transfer border wars.
+The parent owns the exact pending catalog wording and any later workbook authorization.
+Mirror the final assigned keys from [the localisation handoff](../../../plans/008_tensions_rising_plans/subagent_handoffs/localisation_audit_2026-10-05.md):
+
+- `chaosx.events_log.window.event_details.tensions_rising`.
+- `chaosx.events_log.window.evolution_details.tensions_rising.body.event_detail`.
+- `chaosx.events_log.window.evolution_details.tensions_rising.body.stage_1` through `.stage_4`.
+
+Details fields describe the situation and premise rather than listing timer values, penalties, achievement routes, or mechanical rewards.
+The baseline and four evolved packets are implementation facts recorded in the overview and tuning source, without establishing approval for broader design proposals.
+Cluster wording remains subject to the cluster owner's source and acceptance evidence because the workbook/four-member overview and the directly inspected runtime member branch disagree.
+This reconciliation edited no workbook or CSV and ran no exporter.
+After a separately authorized successful workbook update, its owner must run `python .tools/export_event_catalog_csv.py` from the mod root.
