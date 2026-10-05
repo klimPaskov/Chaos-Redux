@@ -17,6 +17,10 @@
 # must conquer or protect while their objective runs.
 @murder_mystery_objective_ai_conquer = 150
 @murder_mystery_objective_ai_protect = 100
+# AI strategies are permanent; an objective removes its own by adding the same
+# strategy with the negated value when it ends.
+@murder_mystery_objective_ai_conquer_undo = -150
+@murder_mystery_objective_ai_protect_undo = -100
 
 # ---------------------------------------------------------------------------
 # Shared action and mission adapters
@@ -244,7 +248,27 @@ murder_mystery_decision_bind_objective_context = {
 	murder_mystery_decision_bind_movement_objective = yes
 }
 
+# COUNTRY scope: an objective owner. Removes the AI strategy its objective
+# added, once, by adding the same strategy with the negated value.
+murder_mystery_decision_undo_objective_ai_strategy = {
+	if = {
+		limit = { has_variable = murder_mystery_objective_ai_conquer_target }
+		var:murder_mystery_objective_ai_conquer_target = {
+			PREV = { add_ai_strategy = { type = conquer id = PREV value = @murder_mystery_objective_ai_conquer_undo } }
+		}
+		clear_variable = murder_mystery_objective_ai_conquer_target
+	}
+	if = {
+		limit = { has_variable = murder_mystery_objective_ai_protect_target }
+		var:murder_mystery_objective_ai_protect_target = {
+			PREV = { add_ai_strategy = { type = protect id = PREV value = @murder_mystery_objective_ai_protect_undo } }
+		}
+		clear_variable = murder_mystery_objective_ai_protect_target
+	}
+}
+
 murder_mystery_decision_clear_objective_context = {
+	murder_mystery_decision_undo_objective_ai_strategy = yes
 	clr_country_flag = murder_mystery_objective_active
 	clr_country_flag = murder_mystery_phase_mission_active
 	clear_variable = murder_mystery_objective_type
@@ -919,8 +943,12 @@ murder_mystery_decision_bind_movement_objective = {
 				check_variable = { var = murder_mystery_objective_type value = constant:murder_mystery_objective.protect_derivative compare = equals }
 				has_variable = murder_mystery_objective_country
 			}
+			event_target:murder_mystery_objective_actor = { murder_mystery_decision_undo_objective_ai_strategy = yes }
 			var:murder_mystery_objective_country = {
-				event_target:murder_mystery_objective_actor = { add_ai_strategy = { type = protect id = PREV value = @murder_mystery_objective_ai_protect } }
+				event_target:murder_mystery_objective_actor = {
+					add_ai_strategy = { type = protect id = PREV value = @murder_mystery_objective_ai_protect }
+					set_variable = { murder_mystery_objective_ai_protect_target = PREV }
+				}
 			}
 		}
 	}
@@ -938,10 +966,12 @@ murder_mystery_decision_bind_movement_objective = {
 				NOT = { tag = event_target:murder_mystery_objective_actor }
 			}
 		}
+		event_target:murder_mystery_objective_actor = { murder_mystery_decision_undo_objective_ai_strategy = yes }
 		event_target:murder_mystery_terminal_target = {
 			event_target:murder_mystery_objective_actor = {
 				set_variable = { murder_mystery_objective_country = PREV }
 				add_ai_strategy = { type = conquer id = PREV value = @murder_mystery_objective_ai_conquer }
+				set_variable = { murder_mystery_objective_ai_conquer_target = PREV }
 			}
 			capital_scope = {
 				event_target:murder_mystery_objective_actor = { set_variable = { murder_mystery_objective_state = PREV } }

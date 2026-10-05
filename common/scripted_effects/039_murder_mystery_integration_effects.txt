@@ -1732,17 +1732,22 @@ murder_mystery_select_assassin_state_cluster = {
 					has_state_flag = murder_mystery_split_cluster_member
 					is_owned_and_controlled_by = event_target:murder_mystery_original_host
 				}
+				# The size cap is checked inside the body, one neighbour at a
+				# time, so it holds even when the iterator filters its limit
+				# before any neighbour is registered.
 				every_neighbor_state = {
 					limit = {
 						impassable = no
 						is_owned_and_controlled_by = event_target:murder_mystery_original_host
 						is_capital = no
 						NOT = { has_state_flag = murder_mystery_split_cluster_member }
-						check_variable = { var = global.murder_mystery_split_state_entries^num value = murder_mystery_split_state_limit compare = less_than }
 					}
-					set_state_flag = murder_mystery_split_cluster_member
-					save_event_target_as = murder_mystery_current_split_candidate
-					murder_mystery_register_split_state = yes
+					if = {
+						limit = { check_variable = { var = global.murder_mystery_split_state_entries^num value = murder_mystery_split_state_limit compare = less_than } }
+						set_state_flag = murder_mystery_split_cluster_member
+						save_event_target_as = murder_mystery_current_split_candidate
+						murder_mystery_register_split_state = yes
+					}
 				}
 			}
 		}
