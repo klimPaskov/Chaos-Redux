@@ -1,0 +1,106 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SOUTHERN AFRICA AND INDIAN OCEAN PACKAGE LAYERS
+# ============================================================================
+# Level 2 layers on the regional framework engine (agent decision D29): a
+# starting problem, paid projects in
+# common/decisions/006_independence_wave_southern_africa_decisions.txt and cleanup
+# checked by package id. No effect iterates countries or states.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# IW-126 Barotseland (BAR)
+# ---------------------------------------------------------------------------
+
+independence_wave_bar_apply_package_layer = {
+	add_ideas = independence_wave_bar_divided_kuta
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_bar_complete_national_kuta = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_bar_divided_kuta
+	add_ideas = independence_wave_bar_national_kuta
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_bar_kuta_convened
+}
+
+independence_wave_bar_complete_canals = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_bar_floodplain_canals
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_bar_canals_restored
+}
+
+independence_wave_bar_complete_mine_contracts = {
+	independence_wave_regional_framework_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_bar_contracts_regulated
+}
+
+independence_wave_bar_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = BAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_126 } }
+		remove_decision = independence_wave_bar_convene_national_kuta
+		remove_decision = independence_wave_bar_restore_floodplain_canals
+		remove_decision = independence_wave_bar_regulate_mine_contracts
+		remove_ideas = { independence_wave_bar_divided_kuta independence_wave_bar_national_kuta independence_wave_bar_floodplain_canals }
+		clr_country_flag = independence_wave_bar_kuta_convened
+		clr_country_flag = independence_wave_bar_canals_restored
+		clr_country_flag = independence_wave_bar_contracts_regulated
+	}
+}
+
+# ---------------------------------------------------------------------------
+# IW-130 Madagascar restoration (MAD)
+# ---------------------------------------------------------------------------
+
+independence_wave_mad_apply_package_layer = {
+	add_ideas = independence_wave_mad_highlands_and_coast
+	set_country_flag = independence_wave_framework_package_layer_applied
+}
+
+independence_wave_mad_complete_assembly = {
+	independence_wave_regional_framework_reset_deltas = yes
+	remove_ideas = independence_wave_mad_highlands_and_coast
+	add_ideas = independence_wave_mad_malagasy_assembly
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_mad_assembly_convened
+}
+
+independence_wave_mad_complete_tamatave = {
+	independence_wave_regional_framework_reset_deltas = yes
+	add_ideas = independence_wave_mad_tamatave_line
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_mad_tamatave_open
+}
+
+independence_wave_mad_complete_vvs_exiles = {
+	independence_wave_regional_framework_reset_deltas = yes
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_major }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+	independence_wave_decision_apply_country_deltas = yes
+	set_country_flag = independence_wave_mad_vvs_recalled
+}
+
+independence_wave_mad_cleanup_package_layer = {
+	if = {
+		limit = { original_tag = MAD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } }
+		remove_decision = independence_wave_mad_convene_malagasy_assembly
+		remove_decision = independence_wave_mad_open_tamatave_line
+		remove_decision = independence_wave_mad_recall_vvs_exiles
+		remove_ideas = { independence_wave_mad_highlands_and_coast independence_wave_mad_malagasy_assembly independence_wave_mad_tamatave_line }
+		clr_country_flag = independence_wave_mad_assembly_convened
+		clr_country_flag = independence_wave_mad_tamatave_open
+		clr_country_flag = independence_wave_mad_vvs_recalled
+	}
+}

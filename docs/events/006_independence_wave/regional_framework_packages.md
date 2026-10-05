@@ -19,6 +19,7 @@ Level 2 rows add their own layer on top: a starting problem, a decision family a
 - North Africa and Sahara (D26): IW-083 Rif, IW-086 Tripolitania. See `north_africa_packages.md`.
 - West and Central Africa (D27): IW-097 Oyo, IW-099 Kanem-Bornu, IW-106 Aro Confederacy, IW-107 Biafran regional state. See `west_africa_packages.md`.
 - East Africa, Horn and Great Lakes (D28): IW-108 Buganda, IW-110 Rwanda, IW-111 Burundi, IW-113 Harar, IW-114 Afar state, IW-115 Somaliland, IW-119 Tigray. See `east_africa_packages.md`.
+- Southern Africa and Indian Ocean (D29): IW-126 Barotseland, IW-130 Madagascar, IW-131 Comoros, IW-132 Mauritius. See `southern_africa_packages.md`.
 
 ## How it works
 

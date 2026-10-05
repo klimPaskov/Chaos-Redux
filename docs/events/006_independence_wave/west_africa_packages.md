@@ -6,9 +6,9 @@ Agent decision D27 admits four West and Central Africa rows through the regional
 
 | Row | Tag | Anchor | Depth | Leadership | Government routes | Power centres |
 | --- | --- | --- | --- | --- | --- | --- |
-| IW-097 Oyo | DSX (X-tag) | 558 Nigeria | Registry Level 3, admitted with a Level 2 layer | Institutional government of the Oyo Mesi and the city interests; the game appoints its leader | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
-| IW-099 Kanem-Bornu | DUX (X-tag) | 901 Borno | Level 2 | The Shehu's council at Maiduguri; the game appoints its leader | constitutional, traditional, emergency, patron client | traditional authority and assembly |
-| IW-106 Aro Confederacy | EBX (X-tag) | 900 Benue | Level 1 | Confederated council of the Aro towns; the game appoints its leader | constitutional, popular council, traditional, emergency | central government and provinces |
+| IW-097 Oyo | DSX (X-tag) | 558 Nigeria | Registry Level 3, admitted with a Level 2 layer | The Oyo Mesi and Council of Ministers, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
+| IW-099 Kanem-Bornu | DUX (X-tag) | 901 Borno | Level 2 | The Council of the Shehu of Bornu, chaired by the leader the game appoints | constitutional, traditional, emergency, patron client | traditional authority and assembly |
+| IW-106 Aro Confederacy | EBX (X-tag) | 900 Benue | Level 1 | The Confederated Council of the Aro Towns, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency | central government and provinces |
 | IW-107 Biafran regional state | BIA | 900 Benue | Level 1 | Vanilla BIA roster; its democratic government opens under the leader the game appoints | constitutional, popular council, emergency, patron client | labour councils and ministries |
 
 Radical sovereignty is excluded for all four. Every Nigerian row, including Dahomey and Sokoto, shares RG-NIGERIA-COARSE, so a wave releases at most one of them. EBX and BIA share the Benue anchor 900; the shared group keeps them apart within a wave, and once one owns the state the other's anchor is no longer available. BIA is released by `release` from its vanilla core; DSX, DUX and EBX are created as dynamic countries with their registered flags and names.

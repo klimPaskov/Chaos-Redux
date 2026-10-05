@@ -747,3 +747,31 @@ Formables: FORM-27 Great Lakes Federation, FORM-28 East African Federation and F
 Validation: the allocator audit passes with 67 attested packages, 49 reservation groups and 68 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
 
 Needs live game: a wave that releases one Great Lakes and one Horn row, and the decision and incident flow of a Level 2 row.
+
+
+## D29. Round 2: Southern Africa and Indian Ocean tranche, and named institutions for custom carriers
+
+Disposition: `implemented` for IW-126 Barotseland (BAR), IW-130 Madagascar restoration (MAD), IW-131 Comoros (FAX) and IW-132 Mauritius (FBX), and for the named-institution governments of every custom framework carrier; `blocked` for IW-121, IW-122, IW-123, IW-124, IW-125, IW-127, IW-128 and IW-129.
+
+Basis: the lead's round-2 priority-16 item, using the D25 regional framework engine, and the lead's per-tranche rule that a row needs a sourced leader or institution or a vanilla roster, or stays blocked.
+
+Named institutions (correction to D25, D26 and D27): the research resolution asks custom X-tag carriers to govern through a provisional institution with a regionally sourced name. The custom carriers previously opened under an unnamed neutrality government. Each now sets its neutrality party to its institution and makes it the ruling party at setup: the Consultative Council of the Hejaz (CUX, after the 1926 Majlis al-Shura of Mecca), the Council of the Hadhrami Sultanates (CXX), the Central Reform Board of Tripolitania (DHX, the 1919 governing board of the Tripolitanian Republic), the Oyo Mesi and Council of Ministers (DSX), the Council of the Shehu of Bornu (DUX), the Confederated Council of the Aro Towns (EBX), the Council of the Comoro Sultanates (FAX) and the Mauritian Council of Government (FBX, the colony's council from 1886). The chair is still the leader the game appoints, because no rights-cleared portrait of a real officeholder is in the working tree and downloads need the user's approval. The research resolution's preferred standard, sourced officeholders or archival institution material, remains queued for these eight rows.
+
+Decisions:
+
+- Barotseland (Level 2) keeps Litunga Yeta III; its layer covers the divided Kuta, Lewanika's floodplain canals and the mine labour contracts, with incidents The Kuomboka (`chaosx.nr6.226`) and Cattle Sickness on the Plain (`.227`).
+- Madagascar (Level 2): vanilla MAD has no characters, so the game appoints the leader of its opening government (D20 rule). Its layer covers the highland and coastal divide, the Tamatave railway and the recall of the Vy Vato Sakelika exiles, with incidents The Vanilla Planters (`.228`) and The Rova Question (`.229`).
+- The Comoros and Mauritius (Level 1) are custom carriers with the named institutions above.
+- Contacts: BAR ENG, POR and SAF; MAD FRA and ENG; FAX FRA and OMA; FBX ENG, FRA and RAJ.
+
+Blocked rows:
+
+- IW-121 Zulu: its research resolution forbids a generated dynasty member or institution and requires a sourced incumbent, claimant or regency material; the regent Mshiyeni kaDinuzulu has no rights-cleared portrait in the working tree.
+- IW-122 Ndebele, IW-123 Xhosa, IW-124 Basotho, IW-125 Eswatini and IW-127 Herero state: no planner gate, loader or reservation.
+- IW-128 Nama and IW-129 Ovambo: unresearched reservations with no history or names.
+
+Formables: FORM-30 Southern African Confederation and FORM-31 Indian Ocean League State stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist).
+
+Validation: the allocator audit passes with 71 attested packages, 53 reservation groups and 72 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
+
+Needs live game: a wave that releases a custom carrier and shows its named institution as the ruling party, and the Barotseland and Madagascar decision and incident flow.

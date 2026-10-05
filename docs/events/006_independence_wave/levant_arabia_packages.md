@@ -6,8 +6,8 @@ Agent decision D25 admits five Levant and Arabia rows through the regional frame
 
 | Row | Tag | Anchor | Depth | Leadership | Government routes | Power centres |
 | --- | --- | --- | --- | --- | --- | --- |
-| IW-073 Hejaz | CUX (X-tag) | 679 Hejaz | Level 2 | Institutional council; the game appoints its leader | constitutional, traditional, emergency, patron client | traditional authority and assembly |
-| IW-076 Hadhramaut | CXX (X-tag) | 659 | Level 1 | Institutional council; the game appoints its leader | constitutional, traditional, patron client | central government and provinces (Qu'aiti coast, Kathiri interior) |
+| IW-073 Hejaz | CUX (X-tag) | 679 Hejaz | Level 2 | The Consultative Council of the Hejaz, chaired by the leader the game appoints | constitutional, traditional, emergency, patron client | traditional authority and assembly |
+| IW-076 Hadhramaut | CXX (X-tag) | 659 | Level 1 | The Council of the Hadhrami Sultanates, chaired by the leader the game appoints | constitutional, traditional, patron client | central government and provinces (Qu'aiti coast, Kathiri interior) |
 | IW-078 Imamate of Oman | IMO | 1015 Interior Oman (Nizwa) | Level 2 | Vanilla Imam Muhammad bin Abdullah al-Khalili | constitutional, traditional, emergency, patron client | traditional authority and assembly |
 | IW-081 Lebanon | LEB | 553 Lebanon | Level 2 | Vanilla roster led by Abdallah Bayhum | constitutional, popular council, emergency, patron client | domestic cabinet and foreign patron |
 | IW-082 Palestine | PAL | 454 Palestine | Level 2 | Vanilla Ahmed Hilmi Pasha under the democratic party | constitutional, popular council, traditional, emergency, patron client | central government and provinces |

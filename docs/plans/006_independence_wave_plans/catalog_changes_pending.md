@@ -170,3 +170,13 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Buganda, Rwanda, Burundi, Harar, the Afar state, Somaliland and Tigray can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
 - Buganda, Rwanda, Burundi, Harar, Somaliland and Tigray each have a starting problem, their own decisions and two incidents of their own.
 - Bunyoro, Ankole, Zanzibar, Kilwa, the Maasai regional state and the Oromo regional federation remain unavailable.
+
+
+## 2026-10-05: Southern Africa and Indian Ocean packages (D29)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Barotseland, Madagascar, the Comoros and Mauritius can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Barotseland and Madagascar each have a starting problem, their own decisions and two incidents of their own.
+- The Hejaz, Hadhramaut, Tripolitania, Oyo, Kanem-Bornu, the Aro Confederacy, the Comoros and Mauritius open under a named council of their own.
+- The Zulu, Ndebele, Xhosa, Basotho, Eswatini, Herero, Nama and Ovambo states remain unavailable.

@@ -168,6 +168,16 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-115 | SOM | ENG | The protectorate treaties with the Somali sultans |
 | IW-119 | TIG | ITA | The Italian colony of Eritrea and the Tigrinya-speaking highlands across the Mareb |
 | IW-119 | TIG | EGY | The Ethiopian church under the Coptic Patriarch of Alexandria |
+| IW-126 | BAR | ENG | The Lewanika concessions and the Barotseland protectorate treaties |
+| IW-126 | BAR | POR | The Mbunda and Lozi communities across the Angolan border |
+| IW-126 | BAR | SAF | Lozi miners recruited for the Rand |
+| IW-130 | MAD | FRA | The colonial administration and the Malagasy students of Paris |
+| IW-130 | MAD | ENG | The London Missionary Society churches of the highlands |
+| IW-131 | FAX | FRA | The colonial administration of the islands from Madagascar |
+| IW-131 | FAX | OMA | The Arab and Omani merchant families of the islands |
+| IW-132 | FBX | ENG | The Crown colony and its Council of Government |
+| IW-132 | FBX | FRA | The Franco-Mauritian planter families and the French language of the courts |
+| IW-132 | FBX | RAJ | The Indian labour diaspora that forms most of the island's people |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

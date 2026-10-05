@@ -7,7 +7,7 @@ Agent decision D26 admits two North Africa and Sahara rows through the regional 
 | Row | Tag | Anchor | Depth | Leadership | Government routes | Power centres |
 | --- | --- | --- | --- | --- | --- | --- |
 | IW-083 Rif | RIF | 290 Spanish Africa | Level 2 | Vanilla Muhammad ibn Abd el-Krim al-Khattabi, President of the Rif Republic from 1921 to 1926 | constitutional, traditional, emergency, patron client | central government and provinces (the republic and the tribes) |
-| IW-086 Tripolitania | DHX (X-tag) | 448 Tripoli | Level 1 | Institutional council in the tradition of the 1918 Tripolitanian Republic; the game appoints its leader | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
+| IW-086 Tripolitania | DHX (X-tag) | 448 Tripoli | Level 1 | The Central Reform Board of the 1918 Tripolitanian Republic, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
 
 Radical sovereignty is excluded for both. RIF is released from Spain by the vanilla `release` path, because state 290 carries a RIF core. DHX is created as a dynamic country from its reserved tag, with its registered flags and names.
 

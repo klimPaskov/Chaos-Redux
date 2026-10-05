@@ -84,6 +84,10 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Somaliland sultanate federation (IW-115) | `chaosx.nr6.223` | The Dervish Veterans | Honour the Dervish veterans; Keep them out of the council |
 | Tigray (IW-119) | `chaosx.nr6.224` | The Salt Bars of the Plain | Tax the salt caravans; Let the salt pass untaxed |
 | Tigray (IW-119) | `chaosx.nr6.225` | The Clergy of Aksum | Give the clergy a seat; Keep the church outside the council |
+| Barotseland (IW-126) | `chaosx.nr6.226` | The Kuomboka | Fund the royal barge; Hold a smaller crossing |
+| Barotseland (IW-126) | `chaosx.nr6.227` | Cattle Sickness on the Plain | Quarantine the herds; Sell the herds before the ban |
+| Madagascar restoration (IW-130) | `chaosx.nr6.228` | The Vanilla Planters | Set export grades; Let the planters sell freely |
+| Madagascar restoration (IW-130) | `chaosx.nr6.229` | The Rova Question | Restore the Rova; Keep the palace closed |
 
 ## Files
 
