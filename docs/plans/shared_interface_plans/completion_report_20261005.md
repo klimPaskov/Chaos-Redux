@@ -23,6 +23,8 @@ Settings establishes the requesting player before event-owned preflight and supp
 Event owners can use the same documented hook for a more specific failure in their own entry effects.
 The hook checks the regular requester target, human ownership, a two-day request flag and the per-request shown flag.
 It sets the shown flag before sending the report.
+Event Logs Fire Selected shares one request context across its members, with one failure summary for the whole batch.
+Its synchronous dispatch guard is cleared after the loop.
 The native report has six reason descriptions and one acknowledgement with no gameplay effect.
 It does not enter the numbered event pool or the Event Logs history.
 
@@ -121,6 +123,8 @@ The manual timer is expected to reset after a successful event request, so park 
    It should produce exactly one "Event cannot occur" report explaining that no suitable target is available, with no successful firing recorded.
    The failed preflight should leave the parked timer unchanged.
    A second manual request may produce one fresh failure report.
+   With several enabled events whose target checks reject, use Event Logs Fire Selected.
+   The batch should produce one "Some events cannot occur" summary, and a later single-event request should still produce its own ordinary failure report.
    Owner callbacks must also be tested from a target country to confirm that the report returns to the requesting player rather than that target.
 8. Launch Every Banner Rises, scenario 008, at Medium intensity with its ordinary scatter type.
    Run three days and inspect the map for released countries.

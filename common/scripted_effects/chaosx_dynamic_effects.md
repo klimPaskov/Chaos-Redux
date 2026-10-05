@@ -490,7 +490,12 @@ This hook follows the existing caller-set variable convention used by the shared
 An unrecognized numeric value selects the generic dispatch-failed description.
 Select the most specific applicable reason and coordinate additions to the shared catalogue and report with the Settings owner.
 
-Requester lifecycle: the dispatcher saves the requesting player as regular `event_target:chaosx_manual_event_requester` before firing the owner event, clears `chaosx_manual_event_failure_shown`, and sets requester flag `chaosx_manual_event_requested` for `constant:forced_event_feedback_timing.request_window_days` through a temporary day variable.
+Requester lifecycle: `chaosx_begin_manual_event_request = yes` saves the requesting country as regular `event_target:chaosx_manual_event_requester`, clears `chaosx_manual_event_failure_shown` and the previous batch marker, and sets requester flag `chaosx_manual_event_requested` for `constant:forced_event_feedback_timing.request_window_days` through a temporary day variable.
+The COUNTRY begin helper takes no input and has no gameplay or timer effect.
+Single-event dispatch calls it before owner preflight.
+Event Logs Fire Selected calls it once before the loop, sets a timed `chaosx_manual_event_batch_requested` marker and a synchronous `chaosx_manual_event_batch_dispatch` guard, then clears the dispatch guard after the loop.
+Member dispatches retain the same requester and shown flag, so repeated rejected members create one plain batch summary rather than one popup per member.
+The timed batch marker remains available to entry-event callbacks and native report description selection.
 The hook requires that target to exist, remain a human country, carry the request flag, and have no report receipt.
 It never guesses the requester from ROOT, FROM, or the current country.
 Regular targets travel into events fired by the chain and automatically disappear when the chain finishes, avoiding a global pointer shared by multiple players.

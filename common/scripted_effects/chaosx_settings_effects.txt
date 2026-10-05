@@ -4011,11 +4011,9 @@ fire_event_by_temp_id_no_cluster = {
 		limit = {
 			check_variable = { events_log_manual_event_detail_trigger > 0 }
 			NOT = { has_country_flag = event_cluster_member_fire_context }
+			NOT = { has_country_flag = chaosx_manual_event_batch_dispatch }
 		}
-		save_event_target_as = chaosx_manual_event_requester
-		clr_country_flag = chaosx_manual_event_failure_shown
-		set_temp_variable = { manual_event_request_window_days = constant:forced_event_feedback_timing.request_window_days }
-		set_country_flag = { flag = chaosx_manual_event_requested days = manual_event_request_window_days }
+		chaosx_begin_manual_event_request = yes
 	}
 	# Input: temp variable `event_id`
 	set_temp_variable = { event_single_fire_allowed = 1 }

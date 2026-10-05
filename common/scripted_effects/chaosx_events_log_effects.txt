@@ -4596,6 +4596,10 @@ events_log_toggle_header_bulk_enabled = {
 # fire_event_by_temp_id_no_cluster still applies its own per-event readiness
 # gates. Views are rebuilt afterwards so fired counts and weights stay current.
 events_log_fire_all_selected_events = {
+	chaosx_begin_manual_event_request = yes
+	set_temp_variable = { manual_event_request_window_days = constant:forced_event_feedback_timing.request_window_days }
+	set_country_flag = { flag = chaosx_manual_event_batch_requested days = manual_event_request_window_days }
+	set_country_flag = chaosx_manual_event_batch_dispatch
 	for_loop_effect = {
 		start = 0
 		end = global.all_events^num
@@ -4620,6 +4624,7 @@ events_log_fire_all_selected_events = {
 	}
 	set_temp_variable = { event_id = 0 }
 	set_temp_variable = { events_log_fire_candidate_id = 0 }
+	clr_country_flag = chaosx_manual_event_batch_dispatch
 	events_log_refresh_bulk_enable_views = yes
 }
 

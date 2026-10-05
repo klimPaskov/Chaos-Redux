@@ -4,6 +4,14 @@
 # Required caller-set temporary input: chaosx_forced_event_failure_reason,
 # assigned from constant:forced_event_feedback_reason.<reason> before effect=yes.
 # Set the receipt before firing so repeated failures produce only one report.
+chaosx_begin_manual_event_request = {
+	save_event_target_as = chaosx_manual_event_requester
+	clr_country_flag = chaosx_manual_event_failure_shown
+	clr_country_flag = chaosx_manual_event_batch_requested
+	set_temp_variable = { manual_event_request_window_days = constant:forced_event_feedback_timing.request_window_days }
+	set_country_flag = { flag = chaosx_manual_event_requested days = manual_event_request_window_days }
+}
+
 chaosx_report_forced_event_failure = {
 	if = {
 		limit = {

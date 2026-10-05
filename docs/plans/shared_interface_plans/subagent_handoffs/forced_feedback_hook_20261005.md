@@ -105,3 +105,29 @@ If an owner needs concurrent delayed requests for one player, add an owner-carri
 No unapproved simplification was made.
 The approved numeric catalogue replaces the initially requested arbitrary localisation-key input because the required injection syntax was unsupported by the available references.
 Skills used: `chaos-redux-events` and `chaos-redux-subagents`.
+
+## Read-only Fire Selected audit, 2026-10-05
+
+Disposition: final bounded source audit passed after the parent resolved one temporary-variable lifetime defect.
+The audit edited only this note and performed no gameplay edit, MCP retry, commit, or game launch.
+
+Reviewed the feedback effects, Settings dispatcher, Event Logs batch wrapper, native feedback event, English feedback localisation, and appended dynamic helper contract.
+Fire Selected begins the request once, independently stages `manual_event_request_window_days` from the shared timing constant before setting the timed batch marker, sets `chaosx_manual_event_batch_dispatch`, and unconditionally clears that synchronous guard after the loop.
+The original batch wrapper consumed a duration first created inside the begin helper, which could disappear on helper return.
+The parent fixed this by staging the duration in the caller, and the final source no longer depends on that temporary surviving the begin helper.
+
+Member dispatches skip `chaosx_begin_manual_event_request` while the batch dispatch guard is set, preserving the requester and the first failure's shown receipt.
+The feedback event selects its batch title and description ahead of the single-reason descriptions.
+A later eligible single manual dispatch calls begin, clears the old shown receipt and batch marker, rebinds the requester, and establishes a fresh request window.
+The acknowledgement remains inert.
+No path in the inspected wrapper strands the batch dispatch flag, and the bounded files contain no explicit clearing or reassignment of the requester target outside the begin helper.
+Both batch keys are plain text and match the event's references.
+
+An ephemeral actual-source parser and restricted evaluator checked one failed member and three failed members, with conservative cleanup of temporary variables first created inside returning helpers.
+Each case produced exactly one batch report, a two-day batch marker, a cleared synchronous dispatch flag, and the retained requester.
+Both cases then produced one fresh single-reason report after a subsequent single request.
+Member failures were declared fixtures reaching the existing failure hook, not simulated owner gameplay.
+Candidates skipped by the batch eligibility or chaos-level gates do not call the failure hook and are outside this report-count assertion.
+
+Native report-instance retention, delayed chain inheritance, and overlapping asynchronous request generations remain unobserved or unresolved as documented above.
+No successful MCP validation is implied by this source audit.
