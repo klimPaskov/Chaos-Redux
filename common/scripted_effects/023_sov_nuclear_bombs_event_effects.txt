@@ -15,6 +15,8 @@
 @sov_nuclear_bombs_foreign_civilian_intel = 10
 @sov_nuclear_bombs_foreign_airforce_intel = 10
 
+# Swaps the posture spirit to match sov_nuclear_bombs_posture. Called only by
+# sov_nuclear_bombs_refresh_posture.
 sov_nuclear_bombs_set_posture = {
 	remove_ideas = {
 		sov_nuclear_bombs_hidden_arsenal
@@ -52,6 +54,96 @@ sov_nuclear_bombs_set_posture = {
 	else_if = {
 		limit = { check_variable = { var = sov_nuclear_bombs_posture value = constant:sov_nuclear_bombs_posture.broken_chain compare = equals } }
 		add_ideas = sov_nuclear_bombs_broken_chain
+	}
+}
+
+# Country scope (the Soviet actor). The only writer of sov_nuclear_bombs_posture.
+# The posture is derived from current conditions in one fixed precedence:
+#   1. Atomic Moratorium: the moratorium flag is set.
+#   2. Broken Chain: the custody crisis is open, or Integrity fell below
+#      broken_chain_integrity_floor and has not yet recovered to
+#      broken_chain_integrity_restore (sov_nuclear_bombs_chain_broken).
+#   3. Unrestrained Release: Evolution IV is recorded.
+#   4. Retaliatory Command: Evolution III is recorded, or an enemy nuclear
+#      strike on the Union has been confirmed.
+#   5. Coercive Posture: Evolution II is recorded.
+#   6. Demonstrative Deterrence: public knowledge is at least Demonstrated.
+#   7. Hidden Arsenal otherwise.
+# Callers change the inputs (flags, evolutions, Integrity) and then call this.
+# The spirit is swapped only when the posture changes or no posture spirit is
+# present.
+sov_nuclear_bombs_refresh_posture = {
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.broken_chain_integrity_floor compare = less_than } }
+		set_country_flag = sov_nuclear_bombs_chain_broken
+	}
+	else_if = {
+		limit = {
+			has_country_flag = sov_nuclear_bombs_chain_broken
+			check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.broken_chain_integrity_restore compare = greater_than_or_equals }
+		}
+		clr_country_flag = sov_nuclear_bombs_chain_broken
+	}
+	set_temp_variable = { sov_nuclear_bombs_previous_posture = constant:sov_nuclear_bombs_ledger.zero }
+	if = {
+		limit = { has_variable = sov_nuclear_bombs_posture }
+		set_temp_variable = { sov_nuclear_bombs_previous_posture = sov_nuclear_bombs_posture }
+	}
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = sov_nuclear_bombs_collapse_active
+				has_country_flag = sov_nuclear_bombs_chain_broken
+			}
+		}
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.broken_chain }
+	}
+	else_if = {
+		limit = { sov_nuclear_bombs_event_has_evolution_iv = yes }
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.unrestrained }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				sov_nuclear_bombs_event_has_evolution_iii = yes
+				has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+			}
+		}
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
+	}
+	else_if = {
+		limit = { sov_nuclear_bombs_event_has_evolution_ii = yes }
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.coercive }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals } }
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
+	}
+	else = {
+		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.hidden_arsenal }
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { check_variable = { var = sov_nuclear_bombs_posture value = sov_nuclear_bombs_previous_posture compare = equals } }
+				NOT = {
+					OR = {
+						has_idea = sov_nuclear_bombs_hidden_arsenal
+						has_idea = sov_nuclear_bombs_demonstrative_deterrence
+						has_idea = sov_nuclear_bombs_coercive_posture
+						has_idea = sov_nuclear_bombs_retaliatory_posture
+						has_idea = sov_nuclear_bombs_unrestrained_posture
+						has_idea = sov_nuclear_bombs_atomic_moratorium
+						has_idea = sov_nuclear_bombs_broken_chain
+					}
+				}
+			}
+		}
+		sov_nuclear_bombs_set_posture = yes
 	}
 }
 
@@ -472,7 +564,6 @@ sov_nuclear_bombs_initialize_event_state = {
 		set_variable = { sov_nuclear_bombs_target_demand = constant:sov_nuclear_bombs_target_demand.default }
 		set_variable = { sov_nuclear_bombs_credibility = constant:sov_nuclear_bombs_credibility.neutral }
 		set_variable = { sov_nuclear_bombs_back_down_count = constant:sov_nuclear_bombs_ledger.zero }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.hidden_arsenal }
 		set_variable = { sov_nuclear_bombs_custody_doctrine = constant:sov_nuclear_bombs_doctrine.scientific_safety }
 		set_country_flag = sov_nuclear_bombs_custody_doctrine_unselected
 		add_nuclear_bombs = sov_nuclear_bombs_opening_amount
@@ -481,19 +572,7 @@ sov_nuclear_bombs_initialize_event_state = {
 		sov_nuclear_bombs_initialize_opening_sites = yes
 		sov_nuclear_bombs_record_opening_evolutions = yes
 		sov_nuclear_bombs_queue_opening_reactors = yes
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_opening_stage value = constant:sov_nuclear_bombs_evolution.stage_ii compare = greater_than_or_equals } }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.coercive }
-		}
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_opening_stage value = constant:sov_nuclear_bombs_evolution.stage_iii compare = greater_than_or_equals } }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		}
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_opening_stage value = constant:sov_nuclear_bombs_evolution.stage_iv compare = greater_than_or_equals } }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.unrestrained }
-		}
-		sov_nuclear_bombs_set_posture = yes
+		sov_nuclear_bombs_refresh_posture = yes
 		clear_variable = sov_nuclear_bombs_opening_stage
 		clear_variable = sov_nuclear_bombs_opening_amount
 		sov_nuclear_bombs_schedule_reactor_completion_check = yes
@@ -650,26 +729,9 @@ sov_nuclear_bombs_apply_doctrine_reform = {
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.doctrine_reform_readiness }
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.doctrine_reform_integrity }
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
-		if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.used compare = greater_than_or_equals } }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.unrestrained }
-		}
-		else_if = {
-			limit = { sov_nuclear_bombs_event_has_evolution_iii = yes }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		}
-		else_if = {
-			limit = { sov_nuclear_bombs_event_has_evolution_ii = yes }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.coercive }
-		}
-		else_if = {
-			limit = { check_variable = { var = sov_nuclear_bombs_public_knowledge value = constant:sov_nuclear_bombs_public_knowledge.demonstrated compare = greater_than_or_equals } }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-		}
-		else = { set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.hidden_arsenal } }
-		sov_nuclear_bombs_set_posture = yes
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+		sov_nuclear_bombs_refresh_posture = yes
 		clear_variable = sov_nuclear_bombs_pending_doctrine
 		clr_country_flag = sov_nuclear_bombs_doctrine_reform_cancelled
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
@@ -1046,8 +1108,7 @@ sov_nuclear_bombs_record_action_receipt = {
 				set_country_flag = sov_nuclear_bombs_refusal_answered_by_demonstration
 				sov_nuclear_bombs_open_enforcement_window = yes
 			}
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-			sov_nuclear_bombs_set_posture = yes
+			sov_nuclear_bombs_refresh_posture = yes
 			clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 			sov_nuclear_bombs_refresh_world_threat_source = yes
 			news_event = { id = chaosx.news.230 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
@@ -1981,8 +2042,7 @@ sov_nuclear_bombs_prepare_coercion = {
 	if = {
 		limit = { sov_nuclear_bombs_event_has_evolution_ii = yes sov_nuclear_bombs_event_no_active_project = yes }
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.coercive }
-		sov_nuclear_bombs_set_posture = yes
+		sov_nuclear_bombs_refresh_posture = yes
 		set_country_flag = sov_nuclear_bombs_coercion_open
 		sov_nuclear_bombs_clear_dossier_threat_record = yes
 		clr_country_flag = sov_nuclear_bombs_partial_settlement_accepted
@@ -2323,8 +2383,7 @@ sov_nuclear_bombs_resolve_coercion_response = {
 				add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.settlement_integrity }
 				set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_tuning.ultimatum_credibility_gain }
 				sov_nuclear_bombs_change_credibility = yes
-				set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-				sov_nuclear_bombs_set_posture = yes
+				sov_nuclear_bombs_refresh_posture = yes
 			}
 			else = {
 				set_variable = { sov_nuclear_bombs_response_recorded = constant:sov_nuclear_bombs_tuning.response_rejected }
@@ -2887,10 +2946,9 @@ sov_nuclear_bombs_resolve_hotline = {
 		clr_country_flag = sov_nuclear_bombs_hotline_standdown_verified
 		clr_country_flag = sov_nuclear_bombs_standdown_verification_failed
 		clr_country_flag = sov_nuclear_bombs_retaliation_window_mission_active
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		sov_nuclear_bombs_set_posture = yes
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.hotline_integrity }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+		sov_nuclear_bombs_refresh_posture = yes
 		country_event = { id = chaosx.nr23.161 days = constant:sov_nuclear_bombs_duration.verification }
 	}
 	else_if = {
@@ -2942,12 +3000,11 @@ sov_nuclear_bombs_set_atomic_moratorium = {
 	clr_country_flag = sov_nuclear_bombs_moratorium_verified
 	clr_country_flag = sov_nuclear_bombs_moratorium_verification_failed
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
-	sov_nuclear_bombs_set_posture = yes
 	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.moratorium_integrity }
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.moratorium_readiness }
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_refresh_posture = yes
 	country_event = { id = chaosx.nr23.160 days = constant:sov_nuclear_bombs_duration.verification }
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
@@ -3049,6 +3106,7 @@ sov_nuclear_bombs_record_evolution = {
 				country_event = { id = chaosx.nr23.192 days = constant:sov_nuclear_bombs_tuning.evolution_report_delay }
 			}
 		}
+		sov_nuclear_bombs_refresh_posture = yes
 	}
 }
 
@@ -3117,8 +3175,7 @@ sov_nuclear_bombs_open_collapse_recovery = {
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.collapse }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.broken_chain }
-		sov_nuclear_bombs_set_posture = yes
+		sov_nuclear_bombs_refresh_posture = yes
 		news_event = { id = chaosx.news.234 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
 		if = {
 			limit = { NOT = { has_country_flag = sov_nuclear_bombs_breakaway_review_seen } }
@@ -3165,8 +3222,7 @@ sov_nuclear_bombs_finalize_collapse = {
 		}
 		clr_country_flag = sov_nuclear_bombs_collapse_active
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		sov_nuclear_bombs_set_posture = yes
+		sov_nuclear_bombs_refresh_posture = yes
 		set_country_flag = sov_nuclear_bombs_collapse_reconciled
 		set_country_flag = sov_nuclear_bombs_custody_resolution_recorded
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
@@ -3323,6 +3379,7 @@ sov_nuclear_bombs_apply_routine_maintenance = {
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
 		sov_nuclear_bombs_decay_credibility = yes
+		sov_nuclear_bombs_refresh_posture = yes
 		set_country_flag = sov_nuclear_bombs_maintenance_cycle_recorded
 		sov_nuclear_bombs_refresh_world_threat_source = yes
 	}
@@ -3510,8 +3567,6 @@ sov_nuclear_bombs_disperse_reserve = {
 		clr_country_flag = sov_nuclear_bombs_reserve_dispersion_failed
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.disperse_integrity }
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.disperse_readiness }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-		sov_nuclear_bombs_set_posture = yes
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 	}
 	else = {
@@ -3520,6 +3575,7 @@ sov_nuclear_bombs_disperse_reserve = {
 	}
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_refresh_posture = yes
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
@@ -3536,10 +3592,9 @@ sov_nuclear_bombs_delegate_retaliation = {
 	set_country_flag = sov_nuclear_bombs_retaliation_delegated
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.delegate_readiness }
 	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.delegate_integrity }
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-	sov_nuclear_bombs_set_posture = yes
 	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
 	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_refresh_posture = yes
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
@@ -3746,8 +3801,7 @@ sov_nuclear_bombs_prepare_limited_strike = {
 		set_country_flag = sov_nuclear_bombs_strike_preparation_mission_active
 		activate_mission = sov_nuclear_bombs_strike_preparation_mission
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.authorization }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		sov_nuclear_bombs_set_posture = yes
+		sov_nuclear_bombs_refresh_posture = yes
 	}
 }
 
@@ -3767,9 +3821,9 @@ sov_nuclear_bombs_accept_partial_settlement = {
 		set_country_flag = sov_nuclear_bombs_ultimatum_response_recorded
 		set_variable = { sov_nuclear_bombs_response_recorded = constant:sov_nuclear_bombs_tuning.response_accepted }
 		sov_nuclear_bombs_apply_coercion_settlement_terms = yes
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-		sov_nuclear_bombs_set_posture = yes
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.settlement_integrity }
+		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+		sov_nuclear_bombs_refresh_posture = yes
 		if = {
 			limit = { has_country_flag = sov_nuclear_bombs_settlement_terms_applied }
 			set_country_flag = sov_nuclear_bombs_settlement_verification_pending
@@ -3839,13 +3893,12 @@ sov_nuclear_bombs_back_down = {
 		}
 		sov_nuclear_bombs_clear_coercion_dossier = yes
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.demonstrative_deterrence }
-		sov_nuclear_bombs_set_posture = yes
 		set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.back_down_loss }
 		sov_nuclear_bombs_change_credibility = yes
 		add_to_variable = { sov_nuclear_bombs_back_down_count = constant:sov_nuclear_bombs_credibility.back_down_step }
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_credibility.back_down_integrity }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
+		sov_nuclear_bombs_refresh_posture = yes
 		sov_nuclear_bombs_achievement_refresh_receipts = yes
 	}
 	sov_nuclear_bombs_ai_request_phase_review = yes
@@ -3951,8 +4004,7 @@ sov_nuclear_bombs_abort_and_recover = {
 
 sov_nuclear_bombs_limit_retaliation = {
 	set_country_flag = sov_nuclear_bombs_retaliation_limited
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-	sov_nuclear_bombs_set_posture = yes
+	sov_nuclear_bombs_refresh_posture = yes
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.limit_retaliation_readiness }
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
@@ -3976,8 +4028,8 @@ sov_nuclear_bombs_preserve_reserve = {
 		}
 		set_country_flag = sov_nuclear_bombs_reserve_preserved
 		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.reserve_integrity }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.retaliatory }
-		sov_nuclear_bombs_set_posture = yes
+		clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+		sov_nuclear_bombs_refresh_posture = yes
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
 	}
 	else = { set_country_flag = sov_nuclear_bombs_reserve_preservation_failed }
@@ -4088,8 +4140,8 @@ sov_nuclear_bombs_shorten_response_window = {
 sov_nuclear_bombs_suspend_release_orders = {
 	set_country_flag = sov_nuclear_bombs_release_orders_suspended
 	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.suspend_readiness }
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
-	sov_nuclear_bombs_set_posture = yes
+	clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+	sov_nuclear_bombs_refresh_posture = yes
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
@@ -4097,8 +4149,8 @@ sov_nuclear_bombs_seal_reserve = {
 	set_country_flag = sov_nuclear_bombs_reserve_sealed
 	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.seal_integrity }
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.moratorium }
-	set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
-	sov_nuclear_bombs_set_posture = yes
+	clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+	sov_nuclear_bombs_refresh_posture = yes
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
@@ -4121,8 +4173,8 @@ sov_nuclear_bombs_reciprocal_restraint = {
 			clr_country_flag = sov_nuclear_bombs_hotline_standdown_verified
 			clr_country_flag = sov_nuclear_bombs_standdown_verification_failed
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.restraint_integrity }
-			set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.atomic_moratorium }
-			sov_nuclear_bombs_set_posture = yes
+			clamp_variable = { var = sov_nuclear_bombs_integrity min = 0 max = 100 }
+			sov_nuclear_bombs_refresh_posture = yes
 		}
 		else = {
 			clr_country_flag = sov_nuclear_bombs_reciprocal_restraint_pending
@@ -4147,9 +4199,9 @@ sov_nuclear_bombs_reactivate_arsenal = {
 		clr_country_flag = sov_nuclear_bombs_moratorium_verified
 		clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
 		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
-		set_variable = { sov_nuclear_bombs_posture = constant:sov_nuclear_bombs_posture.hidden_arsenal }
-		sov_nuclear_bombs_set_posture = yes
 		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.reactivate_readiness }
+		clamp_variable = { var = sov_nuclear_bombs_readiness min = 0 max = 100 }
+		sov_nuclear_bombs_refresh_posture = yes
 	}
 	sov_nuclear_bombs_refresh_world_threat_source = yes
 	sov_nuclear_bombs_ai_request_phase_review = yes

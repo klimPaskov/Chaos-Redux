@@ -562,3 +562,15 @@ Disposition: `implemented`.
 Finding: R2b-10's basis is Part 2 "If suitable delivery aircraft, fuel, airbases, or range are lost", but the trigger also fired for a Union that had never fielded the force, so Readiness fell from the first cycle past the opening.
 Decision: maintenance records `sov_nuclear_bombs_delivery_route_established` the first time `sov_nuclear_bombs_event_has_delivery_route` holds, and `sov_nuclear_bombs_event_delivery_force_is_missing` requires it. The header note reads "the delivery force is lost: too few bombers, too little fuel or no air base; readiness is falling".
 Disposition: `implemented`; erosion pace `needs_live_game`.
+
+## Round 3 (2026-10-05)
+
+Scope: the lead's round 3 remaining-work list, in priority order.
+
+### R3-1. One derived nuclear posture
+
+Finding: the posture was written in about twenty places with local choices, and the evolution path never wrote it. Coercive, Retaliatory and Unrestrained appeared only through the opening packages, Unrestrained Release could not be reached in an incremental campaign, suspending release orders gave the moratorium spirit without a moratorium, closing a custody crisis always gave Retaliatory, dispersal on a hidden arsenal gave Demonstrative Deterrence, reactivation always gave Hidden Arsenal, and Broken Chain came only from a collapse.
+Decision: `sov_nuclear_bombs_refresh_posture` is the only writer of `sov_nuclear_bombs_posture` and the only caller of `sov_nuclear_bombs_set_posture`. Precedence: Atomic Moratorium (moratorium flag) > Broken Chain (custody crisis open, or `sov_nuclear_bombs_chain_broken`, set below `broken_chain_integrity_floor` 20 and cleared at `broken_chain_integrity_restore` 30) > Unrestrained (Evolution IV) > Retaliatory (Evolution III or a confirmed enemy strike) > Coercive (Evolution II) > Demonstrative (public knowledge Demonstrated or higher) > Hidden Arsenal. Every former posture write calls it after changing its inputs; `sov_nuclear_bombs_record_evolution`, routine maintenance and the confirmed-strike on_action call it too. The spirit is swapped only on a change or when no posture spirit is present.
+Basis: Part 2 nuclear posture and national spirit lifecycle (Coercive from Evolution II, Retaliatory from Evolution III or a confirmed strike, Unrestrained from Evolution IV, Broken Chain below the critical Integrity floor). The restore value of 30 is an agent choice so the spirit does not flicker at the floor; 30 is inside the Part 2 "Fragmented chain" band.
+Side effects accepted: a doctrine reform after use without Evolution IV no longer gives Unrestrained; a settled or withdrawn demand under Evolution II keeps Coercive instead of dropping to Demonstrative. No AI weight changed; no weighted surface reads the posture.
+Disposition: `implemented`; the spirit swap on a live Evolution IV transition `needs_live_game`.

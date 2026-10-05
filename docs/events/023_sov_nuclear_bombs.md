@@ -43,6 +43,22 @@ Each action uses no more than four spendable cost types. Costs are centralized i
 
 All fifteen state-targeted orders use `on_map_mode = map_only`, so each eligible state is chosen on the map while the category is open and state clones never multiply the decision list; the category description says so, and target pools, costs and AI evaluation are unchanged.
 
+### Nuclear posture and its national spirit
+
+The posture variable `sov_nuclear_bombs_posture` and the one visible posture spirit are derived in a single place, `sov_nuclear_bombs_refresh_posture` in `023_sov_nuclear_bombs_event_effects.txt`. No other effect writes the posture; callers change the inputs and call the refresh. The precedence is fixed:
+
+1. Atomic Moratorium while `sov_nuclear_bombs_atomic_moratorium` is set.
+2. Broken Chain while the collapse custody crisis is open (`sov_nuclear_bombs_collapse_active`) or while `sov_nuclear_bombs_chain_broken` holds. That flag is set when Integrity falls below `sov_nuclear_bombs_tuning.broken_chain_integrity_floor` (20) and cleared once Integrity reaches `broken_chain_integrity_restore` (30), so the spirit does not flicker at the floor.
+3. Unrestrained Release once Evolution IV is recorded.
+4. Retaliatory Command once Evolution III is recorded or an enemy nuclear strike on the Union is confirmed (`sov_nuclear_bombs_confirmed_enemy_nuclear_use`).
+5. Coercive Posture once Evolution II is recorded.
+6. Demonstrative Deterrence once public knowledge reaches Demonstrated.
+7. Hidden Arsenal otherwise.
+
+The refresh runs at the opening, after every recorded evolution (opening packages and incremental progression alike), on every routine maintenance cycle, when a confirmed enemy strike is booked, and after each action that changes an input: public demonstration, coercion opening and settlement, back-down, limited-strike preparation, hotline stand-down, suspended release orders, retaliation delegation and limits, reserve preservation and dispersal, the moratorium, its sealing, reciprocal restraint and reactivation, the collapse crisis and its closing, and doctrine reform. The spirit is swapped only when the posture changes or no posture spirit is present.
+
+Consequences: an incremental campaign that reaches Evolution IV shows Unrestrained Release; suspending release orders keeps the current spirit because it is not a moratorium; closing a custody crisis before Evolution III returns Hidden Arsenal or Demonstrative Deterrence, and a crisis opened during a moratorium keeps the moratorium spirit; dispersing a hidden reserve keeps Hidden Arsenal; reactivation returns whichever posture the arsenal has earned. The opening packages give the same posture as before (Hidden for the baseline and Evolution I, Coercive, Retaliatory and Unrestrained for Evolution II, III and IV).
+
 ### AI phase navigation
 
 The Soviet AI moves between task families through `sov_nuclear_bombs_ai_route_existing_phase`, run only by the hidden coalesced receiver `chaosx.nr23.182` with SOV as ROOT.
