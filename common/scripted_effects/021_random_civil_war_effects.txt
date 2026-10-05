@@ -135,10 +135,6 @@ event021_refresh_country_state = {
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.territorial_loss }
 	}
 	if = {
-		limit = { has_country_flag = random_civil_war_settlement_relief_active }
-		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.settlement_relief }
-	}
-	if = {
 		limit = { has_country_flag = random_civil_war_reconstruction_active }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.reconstruction_relief }
 	}
@@ -202,7 +198,10 @@ event021_refresh_country_state = {
 # COUNTRY scope. `random_civil_war_pending_pressure_delta` is an optional
 # normal-variable input. If absent, the helper applies the centralized
 # reconstruction relief. The input is consumed into the persistent modifier so
-# a decision cannot lose its one-shot change on a later bounded refresh.
+# a decision cannot lose its one-shot change on a later bounded refresh. The
+# modifier stays within `modifier_minimum` and `modifier_maximum`, and each due
+# country review moves it back toward zero through
+# `event021_decay_pressure_modifier`, so no action leaves a permanent mark.
 event021_reduce_pressure = {
 	if = {
 		limit = { NOT = { has_variable = random_civil_war_pending_pressure_delta } }
@@ -213,8 +212,42 @@ event021_reduce_pressure = {
 		set_variable = { random_civil_war_pressure_modifier = constant:random_civil_war_value.zero }
 	}
 	add_to_variable = { random_civil_war_pressure_modifier = random_civil_war_pending_pressure_delta }
+	clamp_variable = {
+		var = random_civil_war_pressure_modifier
+		min = constant:random_civil_war_pressure.modifier_minimum
+		max = constant:random_civil_war_pressure.modifier_maximum
+	}
 	clear_variable = random_civil_war_pending_pressure_delta
 	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope, from the due bounded country review only. Moves the lasting
+# pressure modifier one `modifier_decay_per_review` step toward zero, never
+# past it, so relief and strain from earlier actions fade and the pressure
+# band returns to the one its live conditions describe.
+event021_decay_pressure_modifier = {
+	if = {
+		limit = {
+			has_variable = random_civil_war_pressure_modifier
+			check_variable = { var = random_civil_war_pressure_modifier value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		subtract_from_variable = { random_civil_war_pressure_modifier = constant:random_civil_war_pressure.modifier_decay_per_review }
+		clamp_variable = {
+			var = random_civil_war_pressure_modifier
+			min = constant:random_civil_war_value.zero
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = random_civil_war_pressure_modifier
+			check_variable = { var = random_civil_war_pressure_modifier value = constant:random_civil_war_value.zero compare = less_than }
+		}
+		add_to_variable = { random_civil_war_pressure_modifier = constant:random_civil_war_pressure.modifier_decay_per_review }
+		clamp_variable = {
+			var = random_civil_war_pressure_modifier
+			max = constant:random_civil_war_value.zero
+		}
+	}
 }
 
 # COUNTRY scope. Input: normal variable `random_civil_war_pending_authority_delta`.
@@ -2043,6 +2076,7 @@ event021_review_current_country = {
 		add_to_variable = { global.random_civil_war_review_batch_processed = constant:random_civil_war_value.one }
 		if = {
 			limit = { random_civil_war_review_due = yes }
+			event021_decay_pressure_modifier = yes
 			event021_refresh_country_state = yes
 			if = {
 				limit = {
@@ -2238,7 +2272,6 @@ event021_apply_settlement = {
 		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.evolution compare = equals } }
 		set_country_flag = random_civil_war_settlement_evolution
 	}
-	set_country_flag = random_civil_war_settlement_relief_active
 	set_country_flag = random_civil_war_reconstruction_active
 	set_variable = { random_civil_war_reconstruction_until = global.date }
 	set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.reconstruction_days }
@@ -2252,6 +2285,8 @@ event021_apply_settlement = {
 	set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.settlement }
 	event021_add_authority = yes
 	event021_apply_settlement_outcome_authority = yes
+	# The settlement's pressure relief enters the lasting modifier once and
+	# fades through the due reviews; no separate condition repeats it.
 	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.settlement_relief }
 	event021_reduce_pressure = yes
 	event021_update_achievement_state = yes
@@ -2525,7 +2560,6 @@ event021_reconstruction_tick = {
 			}
 			clr_country_flag = random_civil_war_reconstruction_active
 			set_country_flag = random_civil_war_reconstruction_complete
-			clr_country_flag = random_civil_war_settlement_relief_active
 		}
 	}
 	if = {

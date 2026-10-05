@@ -22,7 +22,9 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 
 `event021_refresh_country_state` clamps and republishes pressure and authority bands, derives the current phase, and refreshes the dynamic decision and detail text inputs.
 
-`event021_reduce_pressure` consumes `random_civil_war_pending_pressure_delta` in country scope and adds it to the persistent `random_civil_war_pressure_modifier` before refreshing the bounded pressure value. This keeps decision, mission, settlement, and reconstruction changes intact when the derived live-country inputs are refreshed.
+`event021_reduce_pressure` consumes `random_civil_war_pending_pressure_delta` in country scope and adds it to the lasting `random_civil_war_pressure_modifier`, clamped to `modifier_minimum` and `modifier_maximum` (-30 to 30), before refreshing the bounded pressure value. This keeps decision, mission, settlement, and reconstruction changes intact when the derived live-country inputs are refreshed.
+
+`event021_decay_pressure_modifier` runs only inside the due branch of `event021_review_current_country` and moves the modifier one `modifier_decay_per_review` step (6) toward zero without crossing it, so relief and strain from earlier actions fade and the pressure band returns to the one its live conditions describe. The settlement's relief enters the modifier once; no separate settlement-relief condition repeats it. Example: a settled government whose actions left the modifier at the -30 floor returns to its condition-driven band after five due reviews, and two prevention actions every 180 days can hold an Exposed country about one band lower but cannot keep the modifier at its floor.
 
 `event021_add_authority` consumes `random_civil_war_pending_authority_delta` in country scope and applies exactly that delta, then clamps State Authority and refreshes its band. It never adds a standing condition, so every tooltip constant equals the change it describes, and without a pending delta it changes nothing.
 
