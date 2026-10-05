@@ -2,7 +2,8 @@
 
 This executes selected real effect/trigger bodies with conservative temporary
 call frames. It models only scoped engine facts and native primitives reached
-by these paths. Registry, report, achievement, and live-game behavior remain
+by these paths, including the exact state-to-country achievement recorders.
+Registry, reports, full achievement completion, and live-game behavior remain
 outside the fixture; unsupported reached commands raise SourceContractError.
 """
 from decimal import Decimal, ROUND_HALF_UP
@@ -43,11 +44,13 @@ CONSTANT_GROUPS = {
     "famine_relief_threshold", "famine_relief_timing", "famine_relief_weight",
     "famine_surface_context", "humanitarian_legacy_cost", "humanitarian_population",
     "humanitarian_pressure_source", "humanitarian_runtime", "migration_border_policy",
+    "humanitarian_achievement_value",
 }
 CONSTANT_FILES = (
     "chaos_meter_constants.txt", "chaosx_date_units_constants.txt", "civilian_transfer_constants.txt",
     "famine_core_constants.txt", "famine_mission_constants.txt", "famine_relief_constants.txt",
     "humanitarian_legacy_cost_constants.txt",
+    "humanitarian_achievement_constants.txt",
     "humanitarian_runtime_constants.txt", "migration_core_constants.txt",
 )
 SCOPE_NAMES = {"OWNER": "event_target:__famine_owner__", "CONTROLLER": "event_target:__famine_controller__", "FROM": "event_target:__famine_from__"}
@@ -153,6 +156,7 @@ class FamineRuntime(_PARSER.Event35Runtime):
         return load_constants()
 
     def _value(self, token):
+        if token == "id": return self.current.id
         if token == "event_target:__famine_owner__": return self.current.owner
         if token == "event_target:__famine_controller__": return self.current.controller
         if token == "event_target:__famine_from__":
@@ -162,6 +166,10 @@ class FamineRuntime(_PARSER.Event35Runtime):
         if isinstance(value, str) and token.startswith(("famine_", "humanitarian_", "migration_", "air_", "camp_", "nuclear_", "forced_labor_")):
             return self._variable(token)
         return value
+
+    def _variable(self, token):
+        if token == "id": return self.current.id
+        return super()._variable(token)
 
     def _condition(self, node, scope):
         key, op, value = node.key, node.op, node.value
@@ -329,6 +337,87 @@ def execute_evaluation_slice(runtime, scope):
 class FamineTakeoverRegressions(unittest.TestCase):
     def setUp(self):
         self.runtime = FamineRuntime()
+
+    def test_tracked_achievement_recorders_credit_scoped_country_with_unrelated_root(self):
+        rt = self.runtime
+        cases = (
+            ("blockade_relief", "humanitarian_achievement_blockade_relief_restored"),
+            ("blockade_wasteland", "humanitarian_achievement_blockade_wasteland"),
+            ("blockade_recovery", "humanitarian_achievement_blockade_recovered"),
+            ("extraction_suspended", "humanitarian_achievement_extraction_suspended_before_catastrophic"),
+            ("extraction_recovery", "humanitarian_achievement_extraction_state_recovered"),
+            ("alternative_logistics", "humanitarian_achievement_alternative_logistics_proven"),
+        )
+        for suffix, output in cases:
+            with self.subTest(recorder=suffix):
+                name = "humanitarian_achievement_record_" + suffix
+                rt.effects[name] = read_one(r"common\scripted_effects\humanitarian_achievement_effects.txt", name)
+                actor, ambient = country("BRA"), country("USA")
+                province = state(935, actor)
+                actor.values.update(humanitarian_achievement_blockade_state_id=935,
+                                    humanitarian_achievement_blockade_generation=7,
+                                    humanitarian_achievement_blockade_survivors=100,
+                                    humanitarian_achievement_blockade_survival_target=80,
+                                    humanitarian_achievement_extraction_state_id=935,
+                                    humanitarian_achievement_extraction_generation=7)
+                actor.flags.update({"humanitarian_achievement_extraction_shock_proven",
+                                    "humanitarian_achievement_extraction_suspended_before_catastrophic"})
+                province.values.update(humanitarian_achievement_blockade_generation=7,
+                                       humanitarian_achievement_blockade_earning_country_id=actor.id,
+                                       famine_extraction_generation=7, famine_food_stage=0,
+                                       famine_relief_last_delivery_credit=1,
+                                       famine_relief_corridor_mode=rt.constants["constant:famine_relief_route_mode.sea"])
+                province.flags.update({"humanitarian_achievement_blockade_state",
+                                       "famine_relief_delivery_proven", "famine_extraction_suspended"})
+                wrapper = [Node("event_target:__famine_owner__", "=", [Node(name, "=", "yes", 0)], 0)]
+                # A stale generation must fail even when all other facts hold.
+                province.values["humanitarian_achievement_blockade_generation"] = 6
+                province.values["famine_extraction_generation"] = 6
+                actor.flags.discard(output)
+                rt.run_nodes(wrapper, province, root=ambient)
+                self.assertNotIn(output, actor.flags)
+                province.values["humanitarian_achievement_blockade_generation"] = 7
+                province.values["famine_extraction_generation"] = 7
+                if suffix == "extraction_recovery":
+                    actor.flags.add("humanitarian_achievement_extraction_suspended_before_catastrophic")
+                rt.run_nodes(wrapper, province, root=ambient)
+                self.assertIn(output, actor.flags)
+                self.assertNotIn(output, ambient.flags)
+
+    def test_concealed_mortality_dispatch_requires_positive_loss_and_exact_attempt(self):
+        rt = self.runtime
+        name = "humanitarian_achievement_record_blockade_concealed_mortality"
+        rt.effects[name] = read_one(r"common\scripted_effects\humanitarian_achievement_effects.txt", name)
+
+        def dispatches(nodes):
+            for node in nodes:
+                if isinstance(node.value, list):
+                    limit = _PARSER.first(node.value, "limit", [])
+                    if (node.key == "if" and any(n.key == "has_state_flag" and n.value == "famine_crisis_concealed" for n in limit)
+                            and any(n.key == "check_variable" and _PARSER.first(n.value, "var") == "famine_mortality_result" for n in limit)):
+                        yield node
+                    yield from dispatches(node.value)
+        dispatch = list(dispatches(rt.effects["famine_apply_mortality"].body))
+        self.assertEqual(len(dispatch), 1)
+        owner, controller, ambient = country("BRA"), country("GER"), country("USA")
+        province = state(935, owner, controller)
+        province.flags.update({"famine_crisis_concealed", "humanitarian_achievement_blockade_state"})
+        province.values["humanitarian_achievement_blockade_generation"] = 7
+        flag = "humanitarian_achievement_blockade_concealed_mortality"
+        for actor in (owner, controller):
+            actor.values.update(humanitarian_achievement_blockade_state_id=935,
+                                humanitarian_achievement_blockade_generation=7)
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 0})
+        self.assertNotIn(flag, owner.flags)
+        self.assertNotIn(flag, controller.flags)
+        controller.values["humanitarian_achievement_blockade_generation"] = 6
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 1})
+        self.assertIn(flag, owner.flags)
+        self.assertNotIn(flag, controller.flags)
+        controller.values["humanitarian_achievement_blockade_generation"] = 7
+        rt.run_nodes(dispatch, province, root=ambient, caller_temps={"famine_mortality_result": 1})
+        self.assertIn(flag, controller.flags)
+        self.assertNotIn(flag, ambient.flags)
 
     def test_selector_local_war_and_profile_proof_cross_real_call_frames(self):
         owner = country("MAN", at_war=True, wars_with={"JAP"})

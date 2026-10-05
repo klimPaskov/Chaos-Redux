@@ -1,9 +1,11 @@
 # Review of inherited famine round-3 drafts
 
-Disposition: unresolved source-publication ownership.
+Disposition: implemented, publication reviewed in the director-authorized follow-up.
 Acceptance basis: the last takeover audit's three implementation items, matching spec Parts 2, 5, 7, and 8 and the achievement prompt, under the user's repair authority.
 Implementation evidence: the five pre-existing dirty gameplay files dated 2026-10-05, together with this pass's separately owned output and timer corrections.
-This review does not authorize committing another agent's uncommitted hunks.
+Publication acceptance basis: the director's explicit follow-up assigns all five inherited gameplay drafts and their API documentation to the famine workstream.
+The follow-up reviews their hunks instead of relying on the prior ownership assumption.
+The current status records the publication commit and remaining engine evidence.
 
 ## Food context contracts
 
@@ -27,7 +29,7 @@ Both groups have an unrelieved component score of 28.4 before the shock, reserve
 Food stored in advance can absorb the interruption, and poor stores permit strain as stock runs down.
 These figures are source arithmetic, not a live outcome or a substitute for the evaluator tests.
 
-Permanent documentation still requiring publication with these drafts: the local-war collector row in `famine_core_effects.md`, the two context-helper rows and adapter behavior in `famine_adapter_effects.md`, and the corresponding causal description in `docs/systems/famine_system.md`.
+Permanent documentation is in `famine_core_effects.md`, `famine_adapter_effects.md`, and `docs/systems/famine_system.md`.
 
 ## Historical cause gates
 
@@ -40,7 +42,7 @@ Ceara accepts Brazilian ownership/control with a disaster/resource-shortage sour
 Congo accepts Belgian/French ownership/control with occupation, non-core colonial ownership, local-war evidence, forced labor, or an active camp.
 The changed gates cannot turn peaceful zero-pressure 1936 anchors into active famines.
 
-Permanent documentation still requiring publication with these drafts: the cause-gate API notes and the historical-profile discussion in `famine_core_effects.md` and `docs/systems/famine_system.md`.
+Permanent cause-gate APIs are in `famine_core_triggers.md`, with selector/mapper and system context in `famine_core_effects.md` and `docs/systems/famine_system.md`.
 
 ## Achievement attribution
 
@@ -50,10 +52,12 @@ The mortality owner calls it after a positive applied famine loss in a concealed
 A new blockade generation clears that disqualifier with its other tracked-attempt flags.
 The older similarly named famine condemnation flag is a separate output and cannot replace this achievement flag.
 
-Permanent documentation still requiring publication with these drafts: the concealed-mortality recorder and credited-country contract in `humanitarian_achievement_effects.md`.
+The concealed-mortality recorder and credited-country contract are documented in `humanitarian_achievement_effects.md`.
 
 ## Limits
 
 The independent completion auditor confirms matching selector/mapper gates and exact achievement ID/generation attribution in the current working source.
 Source tests and live acceptance remain distinct.
-No draft is promoted to committed implementation by this review, an old status label, or the existence of an uncommitted file.
+The parent verifies the isolated staged diff and publication commit separately from this review.
+Seven current bounded source tests pass, including cause selection/mapping, context expiry, and stage recovery.
+Native achievement attribution and full daily outcomes remain live checks.

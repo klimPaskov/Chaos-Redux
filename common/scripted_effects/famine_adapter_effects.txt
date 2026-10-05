@@ -696,9 +696,31 @@ famine_adapt_chemical_state = {
 	famine_clear_state_local_food_receipt = yes
 }
 
+# STATE scope, after an accepted outbreak or disaster food request. Each call
+# sets the context date to today plus its constant day count, so a repeated
+# request extends the window instead of stacking pressure. The surface
+# collector applies the matching famine_surface_context pressures while the
+# date has not passed; cleanup clears both dates when the state retires.
+famine_open_outbreak_food_context = {
+	set_temp_variable = { chaosx_date_days = constant:famine_surface_context.outbreak_context_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { famine_outbreak_context_until_date = global.date }
+	add_to_variable = { famine_outbreak_context_until_date = chaosx_date_offset }
+}
+
+famine_open_disaster_food_context = {
+	set_temp_variable = { chaosx_date_days = constant:famine_surface_context.disaster_context_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { famine_disaster_context_until_date = global.date }
+	add_to_variable = { famine_disaster_context_until_date = chaosx_date_offset }
+}
+
 # STATE scope. Black Plague owns the established outbreak and exact loss.
 # Nonhuman/rat provenance is excluded before the famine receipt; outbreak
-# deaths are never treated as live movement.
+# deaths are never treated as live movement. An accepted request also opens
+# the outbreak food context.
 famine_adapt_black_plague_state = {
 	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.zero }
@@ -722,6 +744,10 @@ famine_adapt_black_plague_state = {
 			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
 			famine_request_outbreak_pressure = yes
 			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+			if = {
+				limit = { check_variable = { var = famine_adapter_result value = constant:humanitarian_runtime.one compare = equals } }
+				famine_open_outbreak_food_context = yes
+			}
 		}
 	}
 	famine_clear_state_local_food_receipt = yes
@@ -729,7 +755,8 @@ famine_adapt_black_plague_state = {
 
 # STATE scope. Event 013 owns the resolved disaster and exact civilian loss.
 # This adapter registers a separately proven food consequence only; it does
-# not create evacuation, displacement, or route deaths.
+# not create evacuation, displacement, or route deaths. An accepted request
+# also opens the disaster food context.
 famine_adapt_natural_disaster_state = {
 	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.zero }
@@ -749,6 +776,10 @@ famine_adapt_natural_disaster_state = {
 			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
 			famine_request_disaster_pressure = yes
 			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+			if = {
+				limit = { check_variable = { var = famine_adapter_result value = constant:humanitarian_runtime.one compare = equals } }
+				famine_open_disaster_food_context = yes
+			}
 		}
 	}
 	famine_clear_state_local_food_receipt = yes
@@ -759,7 +790,7 @@ famine_adapt_natural_disaster_state = {
 # evacuations. The caller supplies the complete proof bundle with Acid Rain
 # source and generation identities and the positive temporary
 # acid_rain_humanitarian_amount. Evacuation is disaster pressure here, never a
-# migration cohort.
+# migration cohort. An accepted request also opens the disaster food context.
 famine_adapt_acid_rain_state = {
 	set_temp_variable = { famine_adapter_result = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_adapter_contract_valid = constant:humanitarian_runtime.zero }
@@ -778,6 +809,10 @@ famine_adapt_acid_rain_state = {
 			set_temp_variable = { famine_pressure_request_actor_proven = famine_adapter_actor_proven }
 			famine_request_disaster_pressure = yes
 			set_temp_variable = { famine_adapter_result = famine_pressure_request_result }
+			if = {
+				limit = { check_variable = { var = famine_adapter_result value = constant:humanitarian_runtime.one compare = equals } }
+				famine_open_disaster_food_context = yes
+			}
 		}
 	}
 	famine_clear_state_local_food_receipt = yes

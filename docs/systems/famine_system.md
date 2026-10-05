@@ -126,6 +126,29 @@ The values sit in `famine_hunger_lines_scenario` in `famine_adapter_constants.tx
 A hostile capture of a state queues one food-safety assessment through `famine_enqueue_food_observation_assessment` from the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.
 The ordinary food job then reads the occupation law through `famine_resolve_occupation_profile` and decides whether a real food problem exists; the capture itself adds no famine stage and no deaths.
 
+Every assessed state collects local-war evidence through `famine_resolve_local_war_evidence`.
+War adds 8 transport pressure and 4 unmet-need pressure only where the war reaches that state and its owner and controller are at war.
+That contribution alone scores 5.2 against the supply-strain threshold of 25, so war elsewhere and standard occupation alone do not impose famine.
+
+An accepted Black Plague food request sustains lost farm labor, disrupted transport, vulnerability, and unsafe-water pressure for 30 days.
+An accepted Natural Disaster or Acid Rain food request sustains crop loss, damaged transport, and unmet need for 60 days.
+The two context groups each contribute an unrelieved score of 28.4 before current stores, the food shock, exhaustion, relief, and other causes are applied.
+Prepared stores buffer the interruption, while poor stores permit shortage as they run down.
+Repeated accepted requests extend the corresponding window without stacking another copy of its pressure, and the next assessment drops the contribution when its date expires.
+Retirement clears the dates.
+The duration and component values are centralized in `famine_surface_context`, with no new scan, population debit, or incident popup.
+
+China policy, Ceara, and Congo profiles use identical present-cause gates in selection and mapping.
+All require positive live food pressure and their existing regional ownership or control.
+Henan under CHI or PRC also requires extraction, concealment, forced labor, restricted departure, or occupation conduct.
+Ceara under BRA also requires a disaster/resource-shortage cause, an open disaster food window, restricted departure, or an active camp.
+Congo under BEL or FRA also requires occupation, non-core colonial ownership, local war, forced labor, or an active camp.
+Those causes can occur in domestic states without resistance-based occupation, while peaceful zero-pressure historical anchors stay dormant.
+
+Break the Blockade tracks concealed positive famine mortality against the credited country's exact blockade state and generation.
+State-to-country achievement calls compare that country through nested `PREV`, independent of the effect chain's root.
+A new tracked blockade generation clears the disqualifier, and an unrelated state, stale generation, or zero-loss pulse cannot set it.
+
 The famine evacuation action proves an active famine problem and route request, then crosses narrow migration-owned availability, trapped-obligation, exact-transfer, and mission-finalization seams. Famine decision script does not inspect or mutate migration reception load, preparation state, displacement state, cohort records, mission subjects, deadlines, slot ledgers, or mission flags.
 
 Famine also owns the versioned `famine_to_migration_*` destination-food-safety projection. It publishes only from initialized famine facts and otherwise invalidates the receipt; it never treats an untracked state as implicitly stable. Migration consumes this projection for bounded registered reception states and adjacent destination candidates without reading raw famine variables.

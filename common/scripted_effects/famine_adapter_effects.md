@@ -34,6 +34,22 @@ Neither family sets a flight channel, creates a migration cohort, transfers civi
 | `famine_clear_condemnation_envelope` | Any scope. | Resets every `famine_condemnation_*` proof value and the shared death and contamination inputs. | Called after every obstruction wrapper attempt. |
 | `famine_condemn_concealment` | Exact hidden mortality/food-crisis concealment receipt. | Adds the existing hidden Condemnation source with `famine_condemnation_gain.concealment` and sets `famine_achievement_blockade_concealed_mortality` only after proof. | Called once per state from `famine_record_exact_mortality_condemnation` only after exact famine deaths occur while the crisis is concealed. |
 
+## Accepted outbreak and disaster food contexts
+
+`famine_open_outbreak_food_context` and `famine_open_disaster_food_context` run in the exact STATE after its complete pressure request returns `constant:humanitarian_runtime.one`.
+They have no caller inputs or returned fields and write only their respective durable expiry date.
+They declare `chaosx_date_offset = constant:chaosx_date_units.zero` before converting the constant day duration with `chaosx_convert_days_to_date_offset`.
+The outbreak helper sets `famine_outbreak_context_until_date` to today plus 30 days, and the disaster helper sets `famine_disaster_context_until_date` to today plus 60 days.
+Repeated accepted requests renew the window rather than stacking component amounts.
+Rejected or incomplete requests open no context.
+
+`famine_adapt_black_plague_state` opens the outbreak window after accepted `famine_request_outbreak_pressure`.
+`famine_adapt_natural_disaster_state` and `famine_adapt_acid_rain_state` open the disaster window after accepted `famine_request_disaster_pressure`.
+The collector applies the matching `famine_surface_context` values only while the expiry is later than `global.date`, and retirement clears both dates.
+These helpers grant no reserve stock, migration capacity, route permission, movement, or additional owner deaths.
+The upstream owner retains its existing exact deaths and one-shot source guard.
+They do not prove that an outbreak remains biologically active after the accepted pulse.
+
 ## On-demand food observation
 
 An absent normal input represents the existing model's neutral loss-pressure baseline.

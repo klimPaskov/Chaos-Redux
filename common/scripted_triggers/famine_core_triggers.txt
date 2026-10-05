@@ -219,6 +219,89 @@ famine_historical_profile_candidate_is_valid = {
 }
 
 
+# Cause gates for the three policy and regional profiles (spec Part 5). Profile
+# selection and profile mapping both use them, after the caller has resolved
+# the temporary famine_occupation_profile and, for Congo, the temporary
+# famine_local_war_evidence. Each needs a live food shock, so no profile passes
+# at the 1936 start. The callers check the anchor state.
+
+# Great Famine policy analogue: a Chinese government under a food shock that
+# keeps extracting, conceals the crisis, imposes forced labour, restricts
+# departure, or occupies the state. Any ideology can build this structure.
+famine_china_policy_profile_cause_proven = {
+	hidden_trigger = {
+		OR = {
+			OWNER = { OR = { tag = CHI tag = PRC } }
+			CONTROLLER = { OR = { tag = CHI tag = PRC } }
+		}
+		check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		OR = {
+			has_state_flag = famine_extraction_active
+			has_state_flag = famine_crisis_concealed
+			OWNER = {
+				has_variable = forced_labor_quota
+				check_variable = { var = forced_labor_quota value = constant:famine_food_component.zero compare = greater_than }
+			}
+			OWNER = {
+				has_variable = migration_departure_policy
+				check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = greater_than_or_equals }
+			}
+			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals }
+		}
+	}
+}
+
+# Ceara drought and retirante profile: a Brazilian food shock caused by drought
+# (a disaster or resource-shortage shock, or an open disaster food context),
+# or a shock met by confining drought migrants (restricted departure or a camp
+# in the state).
+famine_ceara_profile_cause_proven = {
+	hidden_trigger = {
+		OR = {
+			OWNER = { tag = BRA }
+			CONTROLLER = { tag = BRA }
+		}
+		check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		OR = {
+			check_variable = { var = famine_last_pressure_source value = constant:humanitarian_pressure_source.natural_disaster compare = equals }
+			check_variable = { var = famine_last_pressure_source value = constant:humanitarian_pressure_source.resource_shortage compare = equals }
+			AND = {
+				has_variable = famine_disaster_context_until_date
+				check_variable = { var = famine_disaster_context_until_date value = global.date compare = greater_than }
+			}
+			OWNER = {
+				has_variable = migration_departure_policy
+				check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = greater_than_or_equals }
+			}
+			genocide_state_has_active_camps = yes
+		}
+	}
+}
+
+# Congo profile: a Belgian or French food shock under colonial extraction (an
+# owner without a core here, forced labour or camps), war reaching the state,
+# or occupation.
+famine_congo_profile_cause_proven = {
+	hidden_trigger = {
+		OR = {
+			OWNER = { OR = { tag = BEL tag = FRA } }
+			CONTROLLER = { OR = { tag = BEL tag = FRA } }
+		}
+		check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		OR = {
+			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals }
+			NOT = { is_core_of = OWNER }
+			check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.one compare = equals }
+			OWNER = {
+				has_variable = forced_labor_quota
+				check_variable = { var = forced_labor_quota value = constant:famine_food_component.zero compare = greater_than }
+			}
+			genocide_state_has_active_camps = yes
+		}
+	}
+}
+
+
 # Public reserve mutation contracts. Each helper requires explicit owner proof;
 # a missing request, actor, source, or route marker fails closed.
 famine_food_reserve_release_request_is_valid = {

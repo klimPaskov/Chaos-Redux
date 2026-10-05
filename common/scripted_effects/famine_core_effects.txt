@@ -207,7 +207,8 @@ famine_clear_historical_profile_context = {
 # Burma through East Bengal (spec Part 5, Bengal activation: war disrupts the
 # Burma routes), so an enemy-held state on the border of either Bengal anchor
 # reaches both anchors. Reads the temporary famine_occupation_profile, so
-# callers resolve the occupation profile first.
+# callers resolve the occupation profile first. The surface collector uses the
+# same evidence for the war food context of every registered state.
 # Output: temporary famine_local_war_evidence (one when proven, else zero).
 famine_resolve_local_war_evidence = {
 	set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.zero }
@@ -280,10 +281,8 @@ famine_select_historical_profile_id = {
 	else_if = {
 		limit = {
 			state = @FAMINE_STATE_HENAN
-			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } }
 			date > 1936.01.01
-			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_china_policy_profile_cause_proven = yes
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_china_policy_famine }
 	}
@@ -392,18 +391,14 @@ famine_select_historical_profile_id = {
 	else_if = {
 		limit = {
 			state = @FAMINE_STATE_CEARA
-			OR = { OWNER = { tag = BRA } CONTROLLER = { tag = BRA } }
-			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_ceara_profile_cause_proven = yes
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_brazil_ceara }
 	}
 	else_if = {
 		limit = {
 			OR = { state = @FAMINE_STATE_CONGO state = @FAMINE_STATE_MIDDLE_CONGO }
-			OR = { OWNER = { tag = BEL } CONTROLLER = { tag = BEL } OWNER = { tag = FRA } CONTROLLER = { tag = FRA } }
-			check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_congo_profile_cause_proven = yes
 		}
 		set_variable = { famine_historical_profile_id = constant:famine_profile_id.hist_congo_interaction }
 	}
@@ -1173,6 +1168,10 @@ famine_collect_surface_context = {
 	set_temp_variable = { famine_occupation_extra_governance = constant:famine_food_component.zero }
 	set_temp_variable = { famine_occupation_context_proven = constant:humanitarian_runtime.zero }
 	famine_resolve_occupation_profile = yes
+	# The war context below needs the war to reach this state, not a war
+	# fought elsewhere; the helper reads the occupation profile resolved above.
+	set_temp_variable = { famine_local_war_evidence = constant:humanitarian_runtime.zero }
+	famine_resolve_local_war_evidence = yes
 	add_to_temp_variable = { famine_external_extraction = famine_occupation_extra_extraction }
 	add_to_temp_variable = { famine_external_vulnerability = famine_occupation_extra_vulnerability }
 	add_to_temp_variable = { famine_external_governance = famine_occupation_extra_governance }
@@ -1281,23 +1280,36 @@ famine_collect_surface_context = {
 		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.forced_labor_vulnerability }
 	}
 
+	# Local war: an occupied state, a front line or siege ring, a harsh
+	# occupation rule, a cut-off island or failed local supply.
 	if = {
 		limit = {
-			check_variable = { var = famine_local_war_context_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = famine_local_war_evidence value = constant:humanitarian_runtime.one compare = equals }
 			OWNER = { has_war = yes }
 			CONTROLLER = { has_war = yes }
 		}
 		add_to_temp_variable = { famine_external_transport = constant:famine_surface_context.war_transport_pressure }
 		add_to_temp_variable = { famine_external_need = constant:famine_surface_context.war_need_pressure }
 	}
+	# An outbreak opened by famine_open_outbreak_food_context lasts until its date.
 	if = {
-		limit = { check_variable = { var = famine_outbreak_context_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		limit = {
+			has_variable = famine_outbreak_context_until_date
+			check_variable = { var = famine_outbreak_context_until_date value = global.date compare = greater_than }
+		}
+		add_to_temp_variable = { famine_external_production = constant:famine_surface_context.outbreak_production_pressure }
+		add_to_temp_variable = { famine_external_transport = constant:famine_surface_context.outbreak_transport_pressure }
 		add_to_temp_variable = { famine_external_vulnerability = constant:famine_surface_context.outbreak_vulnerability }
 		add_to_temp_variable = { famine_external_environment = constant:famine_surface_context.outbreak_environment_pressure }
 	}
+	# A disaster opened by famine_open_disaster_food_context lasts until its date.
 	if = {
-		limit = { check_variable = { var = famine_disaster_context_proven value = constant:humanitarian_runtime.zero compare = greater_than } }
+		limit = {
+			has_variable = famine_disaster_context_until_date
+			check_variable = { var = famine_disaster_context_until_date value = global.date compare = greater_than }
+		}
 		add_to_temp_variable = { famine_external_production = constant:famine_surface_context.disaster_production_pressure }
+		add_to_temp_variable = { famine_external_transport = constant:famine_surface_context.disaster_transport_pressure }
 		add_to_temp_variable = { famine_external_need = constant:famine_surface_context.disaster_need_pressure }
 	}
 	# A scenario food context (the Hunger Lines launch) lasts until its date.
@@ -1350,14 +1362,9 @@ famine_resolve_historical_profile_context = {
 	set_temp_variable = { famine_historical_profile_state_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_historical_profile_context_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_profile_air_cleanliness_proven = constant:humanitarian_runtime.zero }
-	set_temp_variable = { famine_historical_profile_policy_proven = constant:humanitarian_runtime.zero }
 	if = {
 		limit = { OR = { has_global_flag = air_contamination_threshold_25 has_global_flag = air_contamination_threshold_50 has_global_flag = air_contamination_threshold_75 has_global_flag = air_contamination_threshold_100 has_global_flag = fallout_air_contamination_permanent_99 has_variable = air_winter_pressure has_variable = air_winter_exposure } }
 		set_temp_variable = { famine_profile_air_cleanliness_proven = constant:humanitarian_runtime.one }
-	}
-	if = {
-		limit = { check_variable = { var = famine_occupation_profile value = constant:famine_occupation_profile.standard compare = greater_than_or_equals } }
-		set_temp_variable = { famine_historical_profile_policy_proven = constant:humanitarian_runtime.one }
 	}
 	if = {
 		limit = {
@@ -1396,10 +1403,8 @@ famine_resolve_historical_profile_context = {
 		limit = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_china_policy_famine compare = equals }
 			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_HENAN compare = equals }
-			OR = { OWNER = { tag = CHI } CONTROLLER = { tag = CHI } }
 			date > 1936.01.01
-			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_china_policy_profile_cause_proven = yes
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
 	}
@@ -1520,9 +1525,7 @@ famine_resolve_historical_profile_context = {
 		limit = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_brazil_ceara compare = equals }
 			check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_CEARA compare = equals }
-			OR = { OWNER = { tag = BRA } CONTROLLER = { tag = BRA } }
-			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_ceara_profile_cause_proven = yes
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
 	}
@@ -1530,9 +1533,7 @@ famine_resolve_historical_profile_context = {
 		limit = {
 			check_variable = { var = famine_historical_profile_id value = constant:famine_profile_id.hist_congo_interaction compare = equals }
 			OR = { check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_CONGO compare = equals } check_variable = { var = famine_profile_resolver_state_id value = @FAMINE_STATE_MIDDLE_CONGO compare = equals } }
-			OR = { OWNER = { tag = BEL } CONTROLLER = { tag = BEL } OWNER = { tag = FRA } CONTROLLER = { tag = FRA } }
-			check_variable = { var = famine_historical_profile_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
-			check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+			famine_congo_profile_cause_proven = yes
 		}
 		set_temp_variable = { famine_profile_mapping_result = constant:humanitarian_runtime.one }
 	}
@@ -1858,6 +1859,10 @@ famine_submit_survivor_flight_request = {
 
 famine_transition_food_stage = {
 	set_temp_variable = { famine_previous_food_stage = famine_food_stage }
+	# Every committed step starts fresh timers, so the next step up or down
+	# needs its own full candidate or recovery window.
+	clear_variable = famine_food_stage_candidate_since_date
+	clear_variable = famine_food_recovery_since_date
 	if = {
 		limit = {
 			check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.stable compare = greater_than }
@@ -2874,6 +2879,19 @@ famine_apply_mortality = {
 				add_to_variable = { famine_total_deaths = state_civilian_population_loss_applied }
 				set_temp_variable = { famine_mortality_result = state_civilian_population_loss_applied }
 				famine_record_exact_mortality_condemnation = yes
+				# Deaths in a concealed blockade famine disqualify Break the Blockade.
+				if = {
+					limit = {
+						check_variable = { var = famine_mortality_result value = constant:humanitarian_population.zero compare = greater_than }
+						has_state_flag = famine_crisis_concealed
+						has_state_flag = humanitarian_achievement_blockade_state
+					}
+					OWNER = { humanitarian_achievement_record_blockade_concealed_mortality = yes }
+					if = {
+						limit = { NOT = { is_controlled_by = OWNER } }
+						CONTROLLER = { humanitarian_achievement_record_blockade_concealed_mortality = yes }
+					}
+				}
 			}
 			famine_schedule_next_mortality_date = yes
 		}
@@ -3177,6 +3195,8 @@ famine_cleanup_state_registration = {
 	clear_variable = famine_food_exhaustion_need
 	clear_variable = famine_food_stage_candidate_since_date
 	clear_variable = famine_food_recovery_since_date
+	clear_variable = famine_outbreak_context_until_date
+	clear_variable = famine_disaster_context_until_date
 	clear_variable = famine_blockade_island_proven
 	clear_variable = famine_blockade_isolation_proven
 	clear_variable = famine_blockade_maritime_dependence_proven

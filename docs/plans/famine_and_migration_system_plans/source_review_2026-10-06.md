@@ -43,3 +43,31 @@ Header: `HOI4txt`, 102.3 MiB, player USA, democratic, normal difficulty, date `1
 The scoped search for famine, migration cohort, and cannibalism scenario/manual state returns no USA matches.
 This establishes a usable baseline for the named checks, not a current implementation acceptance run.
 No save was modified or placed in Git.
+
+## Director-authorized publication follow-up
+
+The root agent's current inventory exposes `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` with their live schemas.
+The earlier root-inventory gap above describes the preceding pass only.
+No health/version or client-task-negotiation route is exposed, so no helper expansion or native MCP task was submitted.
+
+The bounded `reference_search` query `PREV`, sources `game_doc` and `wiki`, limit 4, returned `OK` with offline Scopes revision `18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49`, section 811-872 and answering line 811.
+It also returned the single-line Scopes entry at line 262 and Effects/Triggers entries at lines 267/262, with exact revision-bound IDs.
+The limit omitted other search matches, so this search is not represented as full installed-document coverage.
+The accompanying general `reference_context` (limit 6, exact state food dates/temp returns/nested PREV question) and `source_lookup` for `famine_open_outbreak_food_context` (one definition, 24 lines, no references) stayed pending and were caller-terminated.
+The follow-up `reference_read` of Scopes 811-872 with that revision and a separate installed-doc search for `global.date` also stayed pending and were caller-terminated.
+Those routes yielded no source artifact or detailed-read result.
+
+Direct sections read in this follow-up: the same installed script-constants schema and concept sections at lines 1-73 and 216-247, installed `set_temp_variable` at 7820-7842, `any_neighbor_state` at 1497-1506, `has_war_with` at 5051-5061, and `is_core_of` at 5390-5400.
+Offline Data structures lines 425-473 and Scopes lines 811-852 were read directly for temporary lifetime and nested PREV.
+Their exact paths and SHA-256 revisions are retained in the table above.
+Installed `common/scripted_effects/SOV_scripted_effects.txt` lines 1674-1687 use `PREV.skill_level` inside a country scope entered from a selected leader, demonstrating immediate-parent attribution independent of chain ROOT.
+Its SHA-256 is the same source revision retained in the table.
+
+All five director-assigned gameplay diffs were reviewed in full, including context tuning schema, selector/mapper call sites, local-war output storage, date retirement, transition clock cleanup, positive-loss mortality dispatch, and every changed achievement PREV comparison.
+Independent review is retained in `subagent_handoffs/round3_publication_audit_20261006.md`.
+The parent's two added source tests execute the six actual state-to-country recorders with an unrelated chain ROOT and stale-generation rejection, and the actual concealment dispatch with zero/positive measured loss and distinct controller matching.
+The fixture supplies the installed engine's built-in `id` from the current scope.
+An initial failed run exposed that missing fixture fact, which was repaired in the fixture without changing gameplay.
+All nine bounded production-source tests then pass.
+The audit handoff's seven-test result and missing-document statements are time-bound observations made before these parent additions.
+Permanent context, cause-gate, and achievement documentation is published with the five gameplay drafts.

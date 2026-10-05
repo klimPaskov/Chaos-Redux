@@ -124,6 +124,7 @@ humanitarian_achievement_record_blockade_start_actor = {
 		clr_country_flag = humanitarian_achievement_blockade_recovery_proven
 		clr_country_flag = humanitarian_achievement_blockade_survival_met
 		clr_country_flag = humanitarian_achievement_blockade_wasteland
+		clr_country_flag = humanitarian_achievement_blockade_concealed_mortality
 		clr_country_flag = humanitarian_achievement_blockade_forced_removal
 		clr_country_flag = humanitarian_achievement_blockade_predatory_requisition
 		clr_country_flag = humanitarian_achievement_blockade_self_route_exploit
@@ -533,8 +534,8 @@ humanitarian_achievement_record_blockade_relief = {
 					check_variable = { var = famine_relief_corridor_mode value = constant:famine_relief_route_mode.sea compare = equals }
 					check_variable = { var = famine_relief_corridor_mode value = constant:famine_relief_route_mode.air compare = equals }
 				}
-				check_variable = { var = id value = ROOT.humanitarian_achievement_blockade_state_id compare = equals }
-				check_variable = { var = humanitarian_achievement_blockade_generation value = ROOT.humanitarian_achievement_blockade_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_blockade_state_id compare = equals }
+				check_variable = { var = humanitarian_achievement_blockade_generation value = PREV.humanitarian_achievement_blockade_generation compare = equals }
 			}
 		}
 		set_temp_variable = { humanitarian_achievement_blockade_state_match = constant:humanitarian_achievement_value.one }
@@ -548,15 +549,37 @@ humanitarian_achievement_record_blockade_relief = {
 	}
 }
 
+# COUNTRY scope entered from the blockade STATE (PREV). Inside the PREV block,
+# PREV is this country again, so every tracked id and generation is read from
+# the country being credited, never from the effect chain's ROOT.
 humanitarian_achievement_record_blockade_wasteland = {
 	if = {
 		limit = {
 			PREV = {
-				check_variable = { var = id value = ROOT.humanitarian_achievement_blockade_state_id compare = equals }
-				check_variable = { var = humanitarian_achievement_blockade_generation value = ROOT.humanitarian_achievement_blockade_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_blockade_state_id compare = equals }
+				check_variable = { var = humanitarian_achievement_blockade_generation value = PREV.humanitarian_achievement_blockade_generation compare = equals }
 			}
 		}
 		set_country_flag = humanitarian_achievement_blockade_wasteland
+	}
+}
+
+# COUNTRY scope entered from a famine STATE (PREV) right after a mortality
+# pulse there applied a positive loss. People dying in the tracked blockade
+# state while its crisis is concealed disqualifies Break the Blockade for this
+# country's current blockade generation.
+humanitarian_achievement_record_blockade_concealed_mortality = {
+	if = {
+		limit = {
+			has_variable = humanitarian_achievement_blockade_state_id
+			PREV = {
+				has_state_flag = famine_crisis_concealed
+				has_state_flag = humanitarian_achievement_blockade_state
+				check_variable = { var = id value = PREV.humanitarian_achievement_blockade_state_id compare = equals }
+				check_variable = { var = humanitarian_achievement_blockade_generation value = PREV.humanitarian_achievement_blockade_generation compare = equals }
+			}
+		}
+		set_country_flag = humanitarian_achievement_blockade_concealed_mortality
 	}
 }
 
@@ -566,8 +589,8 @@ humanitarian_achievement_record_blockade_recovery = {
 			check_variable = { var = id value = PREV.humanitarian_achievement_blockade_earning_country_id compare = equals }
 			PREV = {
 				has_state_flag = humanitarian_achievement_blockade_state
-				check_variable = { var = id value = ROOT.humanitarian_achievement_blockade_state_id compare = equals }
-				check_variable = { var = humanitarian_achievement_blockade_generation value = ROOT.humanitarian_achievement_blockade_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_blockade_state_id compare = equals }
+				check_variable = { var = humanitarian_achievement_blockade_generation value = PREV.humanitarian_achievement_blockade_generation compare = equals }
 			}
 		}
 		set_country_flag = humanitarian_achievement_blockade_recovered
@@ -1542,8 +1565,8 @@ humanitarian_achievement_record_extraction_suspended = {
 			has_country_flag = humanitarian_achievement_extraction_shock_proven
 			PREV = {
 				has_state_flag = famine_extraction_suspended
-				check_variable = { var = famine_extraction_generation value = ROOT.humanitarian_achievement_extraction_generation compare = equals }
-				check_variable = { var = id value = ROOT.humanitarian_achievement_extraction_state_id compare = equals }
+				check_variable = { var = famine_extraction_generation value = PREV.humanitarian_achievement_extraction_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_extraction_state_id compare = equals }
 			}
 		}
 		set_country_flag = humanitarian_achievement_extraction_suspended_before_catastrophic
@@ -1557,8 +1580,8 @@ humanitarian_achievement_record_extraction_recovery = {
 			PREV = {
 				has_state_flag = famine_extraction_suspended
 				check_variable = { var = famine_food_stage value = constant:famine_food_stage.stable compare = equals }
-				check_variable = { var = famine_extraction_generation value = ROOT.humanitarian_achievement_extraction_generation compare = equals }
-				check_variable = { var = id value = ROOT.humanitarian_achievement_extraction_state_id compare = equals }
+				check_variable = { var = famine_extraction_generation value = PREV.humanitarian_achievement_extraction_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_extraction_state_id compare = equals }
 			}
 		}
 		set_country_flag = humanitarian_achievement_extraction_state_recovered
@@ -1570,8 +1593,8 @@ humanitarian_achievement_record_alternative_logistics = {
 		limit = {
 			has_country_flag = humanitarian_achievement_extraction_shock_proven
 			PREV = {
-				check_variable = { var = famine_extraction_generation value = ROOT.humanitarian_achievement_extraction_generation compare = equals }
-				check_variable = { var = id value = ROOT.humanitarian_achievement_extraction_state_id compare = equals }
+				check_variable = { var = famine_extraction_generation value = PREV.humanitarian_achievement_extraction_generation compare = equals }
+				check_variable = { var = id value = PREV.humanitarian_achievement_extraction_state_id compare = equals }
 					OR = {
 						has_state_flag = famine_relief_delivery_proven
 						has_state_flag = famine_relief_access_active

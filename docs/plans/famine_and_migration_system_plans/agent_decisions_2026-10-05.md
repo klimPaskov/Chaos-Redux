@@ -60,3 +60,19 @@ SCN-010 remains Event 014-owned.
 The famine adapter runs only after its successful launch and uses its bounded node registry.
 A launch failure belongs to that owner's preflight and Settings feedback, and the existing `catalog_changes_pending.md` remains the wording handoff.
 Events 118/120/131 and the previously excluded event-specific hooks retain their recorded owner boundaries.
+
+## Director-authorized publication follow-up
+
+Disposition: implemented within the assigned famine workstream, pending the engine evidence recorded in the current status.
+Acceptance basis: the director explicitly assigns the five inherited round-3 gameplay drafts and their API documentation in the follow-up to this pass.
+
+1. Publish the dated outbreak/disaster contexts, local-war collector, and shared China/Ceara/Congo cause gates after reviewing their full inherited diff and production callers.
+   These close the last takeover audit's missing present causes without a new periodic scan or popup chain.
+   Requests must be accepted before a dated context opens, and every profile gate retains a positive live shock requirement.
+   Existing component tables, stage thresholds, and AI weights remain binding.
+2. Publish exact credited-country blockade/extraction checks and the concealed-mortality disqualifier.
+   Ambient ROOT can be the runtime host or a new controller, so each recorder must compare its calling state to the country actually being credited.
+   Positive measured loss, state identity, and generation are required before concealment disqualifies that attempt.
+3. Reconcile every assigned stopped-thread checkpoint hunk and historical handoff with an explicit disposition and current-status pointer.
+   Historical route failures and audit facts remain dated evidence, while resolved source gaps cannot remain the current verdict.
+   This follows the director's ownership clarification and does not change unrelated shared-framework hunks.
