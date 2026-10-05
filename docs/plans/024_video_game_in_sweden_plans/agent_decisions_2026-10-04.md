@@ -484,3 +484,11 @@ Decision:
 Trace (fixture case `test_reality_check_proof_year_completes_on_day_365`, which runs the shared converter as written, and the extended `test_stockholm_loss_is_a_permanent_disqualifier`; every fixture case passes): the end date is the start plus 0.0876 date units (8760 hours), the trigger is false on days 1 and 364 and true on day 365, the watch queues itself through day 364 and stops on day 365, and a return to Doctrine or a lost Stockholm clears the flag and the date.
 Basis: spec part 3 Reality Check, round 4 lead decision 2, installed triggers and script-concept documentation.
 Disposition: `implemented`; the unlock date in a live campaign is needs_live_game.
+
+### R4-3. Timed ideas read their day count through `var:`
+
+Finding: `video_game_in_sweden_refresh_stage_idea` (Validated Wargaming Methods during recovery) and `video_game_in_sweden_add_ordinary_aftermath` (the staff-outcome aftermath) passed a bare temporary variable as `add_timed_idea` `days`. Every vanilla variable precedent uses `days = var:<normal variable>` (`SOV_scripted_effects.txt` line 3527, `events/TAOG_Siam.txt` line 112) and the installed effects documentation shows only integer days. If the aftermath duration were misread, the idea added after closure could become permanent.
+Decision: both sites set the normal country variable `video_game_in_sweden_timed_idea_days` from their `video_game_in_sweden_timing` constant (`validated_methods_days`, `ordinary_aftermath_days`) immediately before the call and pass `days = var:video_game_in_sweden_timed_idea_days`, the same overwrite-before-use form as `video_game_in_sweden_flag_days` in R2-1. This supersedes the R2-1 sentence that kept variable day counts for `add_timed_idea`. `add_dynamic_modifier` sites keep their variable days, because the installed documentation says those "can be variable" and vanilla `resistance_activity.txt` passes a bare variable.
+Trace: fixture case `test_timed_ideas_read_a_normal_variable` finds exactly two Event 24 `add_timed_idea` calls, each with `var:` days set from a timing constant in the same block; every fixture case passes.
+Basis: round 4 lead decision 3, vanilla precedents above.
+Disposition: `implemented`; the idea expiring after 365 days in recovery and 120 days after an ordinary conclusion is needs_live_game.

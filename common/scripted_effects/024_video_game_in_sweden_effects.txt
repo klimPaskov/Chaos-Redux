@@ -492,10 +492,12 @@ video_game_in_sweden_refresh_stage_idea = {
 				compare = equals
 			}
 		}
-		set_temp_variable = { video_game_in_sweden_timed_idea_days = constant:video_game_in_sweden_timing.validated_methods_days }
+		# A timed idea reads its day count from a normal variable, as in
+		# vanilla; the variable is set just before each use.
+		set_variable = { video_game_in_sweden_timed_idea_days = constant:video_game_in_sweden_timing.validated_methods_days }
 		add_timed_idea = {
 			idea = video_game_validated_wargaming_methods
-			days = video_game_in_sweden_timed_idea_days
+			days = var:video_game_in_sweden_timed_idea_days
 		}
 	}
 	# Every stage change also changes the programme package.
@@ -809,10 +811,10 @@ video_game_in_sweden_add_ordinary_aftermath = {
 		}
 	}
 	else = {
-		set_temp_variable = { video_game_in_sweden_aftermath_days = constant:video_game_in_sweden_timing.ordinary_aftermath_days }
+		set_variable = { video_game_in_sweden_timed_idea_days = constant:video_game_in_sweden_timing.ordinary_aftermath_days }
 		add_timed_idea = {
 			idea = video_game_validated_wargaming_methods
-			days = video_game_in_sweden_aftermath_days
+			days = var:video_game_in_sweden_timed_idea_days
 		}
 	}
 }

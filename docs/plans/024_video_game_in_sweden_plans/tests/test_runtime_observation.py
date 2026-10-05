@@ -592,6 +592,26 @@ class ObservationSourceTests(unittest.TestCase):
         self.assertNotIn("video_game_in_sweden_reality_check_reliance_timer", model.flags["SWE"])
         self.assertNotIn(("SWE", "video_game_in_sweden_reality_check_proof_end_date"), model.saved)
 
+    def test_timed_ideas_read_a_normal_variable(self):
+        # R4-3: every Event 24 timed idea passes days = var:<normal variable>
+        # set from a timing constant in the same block, as vanilla does.
+        sites = 0
+        for path, nodes in life.SOURCES.items():
+            if "024_" not in path:
+                continue
+            for block in life.walk(nodes):
+                if not isinstance(block.body, list):
+                    continue
+                for i, n in enumerate(block.body):
+                    if n.key != "add_timed_idea":
+                        continue
+                    sites += 1
+                    days = life.field(n.body, "days")
+                    self.assertTrue(days.startswith("var:"), f"{path}:{n.start}")
+                    setter = [m for m in block.body[:i] if m.key == "set_variable" and m.body[0].key == days[4:]]
+                    self.assertTrue(setter and setter[-1].body[0].body.startswith("constant:video_game_in_sweden_timing."))
+        self.assertEqual(sites, 2)
+
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
         model.targets["video_game_in_sweden_host"] = "SWE"
