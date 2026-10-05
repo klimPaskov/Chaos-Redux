@@ -322,6 +322,8 @@ sov_nuclear_bombs_register_completed_reactor = {
 				}
 				add_to_variable = { sov_nuclear_bombs_reactor_count = constant:sov_nuclear_bombs_ledger.one }
 			}
+			set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.missing_physicist }
+			sov_nuclear_bombs_roll_secrecy_incident = yes
 		}
 	}
 }
@@ -816,6 +818,10 @@ sov_nuclear_bombs_prepare_test_outcome = {
 			add_to_temp_variable = { sov_nuclear_bombs_test_success_weight = constant:sov_nuclear_bombs_tuning.test_evacuation_success_bonus }
 		}
 		if = {
+			limit = { has_country_flag = sov_nuclear_bombs_test_accelerated }
+			add_to_temp_variable = { sov_nuclear_bombs_test_accident_weight = constant:sov_nuclear_bombs_incident.accelerate_accident_bonus }
+		}
+		if = {
 			limit = { check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.low_integrity_threshold compare = less_than } }
 			subtract_from_temp_variable = { sov_nuclear_bombs_test_success_weight = constant:sov_nuclear_bombs_tuning.test_low_integrity_success_penalty }
 			add_to_temp_variable = { sov_nuclear_bombs_test_partial_weight = constant:sov_nuclear_bombs_tuning.test_low_integrity_partial_bonus }
@@ -980,8 +986,42 @@ sov_nuclear_bombs_record_action_receipt = {
 				else = { country_event = { id = chaosx.nr23.102 days = constant:sov_nuclear_bombs_tuning.action_report_delay } }
 			}
 			else = { country_event = { id = chaosx.nr23.101 days = constant:sov_nuclear_bombs_tuning.action_report_delay } }
+			# Observers invited after an overflight turn a detonating secret
+			# test into a controlled demonstration.
+			if = {
+				limit = {
+					has_country_flag = sov_nuclear_bombs_test_observers_invited
+					OR = {
+						has_country_flag = sov_nuclear_bombs_test_success
+						has_country_flag = sov_nuclear_bombs_test_partial_yield
+					}
+				}
+				set_country_flag = sov_nuclear_bombs_public_arsenal_confirmed
+				set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.demonstrated }
+				sov_nuclear_bombs_raise_public_knowledge = yes
+				sov_nuclear_bombs_hook_first_public_test = yes
+				set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.demonstration_gain }
+				sov_nuclear_bombs_change_credibility = yes
+				clr_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
+				sov_nuclear_bombs_refresh_world_threat_source = yes
+				news_event = { id = chaosx.news.230 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+			}
+			# A test accident or a partial yield can send sick workers out of
+			# the zone.
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = sov_nuclear_bombs_test_accident
+						has_country_flag = sov_nuclear_bombs_test_partial_yield
+					}
+				}
+				set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.contaminated_workers }
+				sov_nuclear_bombs_roll_secrecy_incident = yes
+			}
 			clr_country_flag = sov_nuclear_bombs_test_instrumented
 			clr_country_flag = sov_nuclear_bombs_test_concealed
+			clr_country_flag = sov_nuclear_bombs_test_accelerated
+			clr_country_flag = sov_nuclear_bombs_test_observers_invited
 		}
 		else_if = {
 			limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals } }
@@ -1413,6 +1453,232 @@ sov_nuclear_bombs_complete_counterintelligence_sweep = {
 	sov_nuclear_bombs_ai_request_phase_review = yes
 }
 
+# Country scope (the Soviet actor). Rolls one secrecy incident at its own
+# existing seam (Part 3). Input: temporary sov_nuclear_bombs_incident_request,
+# an id from sov_nuclear_bombs_incident. The chance grows with exposure and
+# with lost Command Integrity, and the shared cooldown allows one incident per
+# period whatever its kind.
+sov_nuclear_bombs_roll_secrecy_incident = {
+	if = {
+		limit = {
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_incident_cooldown }
+		}
+		set_temp_variable = { sov_nuclear_bombs_incident_weight = sov_nuclear_bombs_exposure }
+		multiply_temp_variable = { sov_nuclear_bombs_incident_weight = constant:sov_nuclear_bombs_incident_factor.exposure_weight }
+		set_temp_variable = { sov_nuclear_bombs_incident_integrity_gap = constant:sov_nuclear_bombs_tuning.value_max }
+		subtract_from_temp_variable = { sov_nuclear_bombs_incident_integrity_gap = sov_nuclear_bombs_integrity }
+		multiply_temp_variable = { sov_nuclear_bombs_incident_integrity_gap = constant:sov_nuclear_bombs_incident_factor.integrity_weight }
+		add_to_temp_variable = { sov_nuclear_bombs_incident_weight = sov_nuclear_bombs_incident_integrity_gap }
+		add_to_temp_variable = { sov_nuclear_bombs_incident_weight = constant:sov_nuclear_bombs_incident.chance_base }
+		clamp_temp_variable = { var = sov_nuclear_bombs_incident_weight min = constant:sov_nuclear_bombs_incident.chance_base max = constant:sov_nuclear_bombs_incident.chance_maximum }
+		set_temp_variable = { sov_nuclear_bombs_incident_quiet_weight = constant:sov_nuclear_bombs_incident.certainty }
+		subtract_from_temp_variable = { sov_nuclear_bombs_incident_quiet_weight = sov_nuclear_bombs_incident_weight }
+		random_list = {
+			var:sov_nuclear_bombs_incident_weight = { sov_nuclear_bombs_fire_secrecy_incident = yes }
+			var:sov_nuclear_bombs_incident_quiet_weight = { set_country_flag = sov_nuclear_bombs_last_incident_roll_quiet }
+		}
+	}
+}
+
+# Country scope (the Soviet actor). Starts the shared cooldown and sends the
+# requested incident report. A timed flag takes literal days, so the cooldown
+# is injected as an integer.
+sov_nuclear_bombs_fire_secrecy_incident = {
+	clr_country_flag = sov_nuclear_bombs_last_incident_roll_quiet
+	set_temp_variable = { sov_nuclear_bombs_incident_cooldown_days = constant:sov_nuclear_bombs_incident.cooldown_days }
+	hidden_effect = {
+		meta_effect = {
+			text = {
+				set_country_flag = { flag = sov_nuclear_bombs_incident_cooldown days = [COOLDOWN_DAYS] }
+			}
+			COOLDOWN_DAYS = "[?sov_nuclear_bombs_incident_cooldown_days|.0]"
+		}
+	}
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_incident_request value = constant:sov_nuclear_bombs_incident.missing_physicist compare = equals } }
+		country_event = { id = chaosx.nr23.111 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_incident_request value = constant:sov_nuclear_bombs_incident.rail_manifest compare = equals } }
+		country_event = { id = chaosx.nr23.112 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_incident_request value = constant:sov_nuclear_bombs_incident.foreign_aircraft compare = equals } }
+		country_event = { id = chaosx.nr23.113 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_incident_request value = constant:sov_nuclear_bombs_incident.contaminated_workers compare = equals } }
+		country_event = { id = chaosx.nr23.114 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_incident_request value = constant:sov_nuclear_bombs_incident.captured_component compare = equals } }
+		country_event = { id = chaosx.nr23.115 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+}
+
+# Secrecy incident answers (Part 3). Country scope (the Soviet actor). The
+# report event pays any visible cost first; these helpers apply the
+# Readiness, Integrity, exposure and knowledge changes its tooltip describes.
+# Exposure and knowledge change only through sov_nuclear_bombs_add_exposure
+# and sov_nuclear_bombs_raise_public_knowledge, and no device moves.
+sov_nuclear_bombs_clamp_command_values = {
+	clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
+	clamp_variable = { var = sov_nuclear_bombs_integrity min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
+}
+
+sov_nuclear_bombs_incident_recover_physicist = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.recover_physicist_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.recover_physicist_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.defector }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_accuse_hosts = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.accuse_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.accuse_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.defector }
+	sov_nuclear_bombs_add_exposure = yes
+	set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.suspected }
+	sov_nuclear_bombs_raise_public_knowledge = yes
+}
+
+sov_nuclear_bombs_incident_purge_laboratories = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_incident.purge_readiness }
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.purge_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.purge_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.defector }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_accept_foreign_knowledge = {
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.accept_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.defector }
+	sov_nuclear_bombs_add_exposure = yes
+	set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.private }
+	sov_nuclear_bombs_raise_public_knowledge = yes
+}
+
+sov_nuclear_bombs_incident_reroute_convoy = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_incident.reroute_readiness }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.reroute_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_continue_convoy = {
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.continue_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_decoy_shipment = {
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.decoy_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_temporary_site = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.temporary_site_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.temporary_site_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_accelerate_test = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.accelerate_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.accelerate_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_preparation }
+	sov_nuclear_bombs_add_exposure = yes
+	set_country_flag = sov_nuclear_bombs_test_accelerated
+}
+
+sov_nuclear_bombs_incident_invite_observers = {
+	set_country_flag = sov_nuclear_bombs_test_observers_invited
+}
+
+sov_nuclear_bombs_incident_deny_overflight = {
+	set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.suspected }
+	sov_nuclear_bombs_raise_public_knowledge = yes
+}
+
+sov_nuclear_bombs_incident_isolate_workers = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.isolate_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.isolate_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.accident }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_confine_workers = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.confine_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.confine_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.accident }
+	sov_nuclear_bombs_add_exposure = yes
+	set_country_flag = sov_nuclear_bombs_workers_confined
+}
+
+sov_nuclear_bombs_incident_admit_safety_failure = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.admit_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.admit_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.accident }
+	sov_nuclear_bombs_add_exposure = yes
+	set_temp_variable = { sov_nuclear_bombs_knowledge_target = constant:sov_nuclear_bombs_public_knowledge.suspected }
+	sov_nuclear_bombs_raise_public_knowledge = yes
+}
+
+sov_nuclear_bombs_incident_destroy_medical_records = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.destroy_records_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.destroy_records_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.accident }
+	sov_nuclear_bombs_add_exposure = yes
+	set_country_flag = sov_nuclear_bombs_medical_records_destroyed
+}
+
+sov_nuclear_bombs_incident_raid_for_component = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_incident.raid_readiness }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.raid_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
+	sov_nuclear_bombs_add_exposure = yes
+	set_country_flag = sov_nuclear_bombs_component_recovery_ordered
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_collapse_active } }
+		sov_nuclear_bombs_open_collapse_recovery = yes
+	}
+}
+
+sov_nuclear_bombs_incident_negotiate_component = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.negotiate_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.negotiate_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_claim_industrial_material = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.industrial_claim_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_incident.industrial_claim_exposure }
+	set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
+	sov_nuclear_bombs_add_exposure = yes
+}
+
+sov_nuclear_bombs_incident_redesign_device = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_incident.redesign_readiness }
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_incident.redesign_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+}
+
 # SOV country scope, called from on_nuke_drop when the Soviet Union detonates
 # a nuclear weapon outside an Event 23 request, normally through a vanilla
 # nuclear raid. The callback's shared hook has already applied the detonation
@@ -1615,6 +1881,8 @@ sov_nuclear_bombs_prepare_test = {
 		set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.test_preparation }
 		sov_nuclear_bombs_add_exposure = yes
 		set_country_flag = sov_nuclear_bombs_test_prepared
+		set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.foreign_aircraft }
+		sov_nuclear_bombs_roll_secrecy_incident = yes
 		set_country_flag = sov_nuclear_bombs_test_mission_active
 		activate_mission = sov_nuclear_bombs_proof_test_mission
 		# One AI test purpose per attained stage, recorded only once preparation starts.
@@ -1647,10 +1915,26 @@ sov_nuclear_bombs_resolve_test = {
 }
 
 sov_nuclear_bombs_cancel_test = {
+	# A cancellation by order or by an incident ends the test window at once,
+	# so a later test can open its own; the window's own cancellation (an
+	# invalid site or actor) is already ending it.
+	if = {
+		limit = {
+			has_country_flag = sov_nuclear_bombs_test_mission_active
+			sov_nuclear_bombs_event_actor_is_valid = yes
+			sov_nuclear_bombs_event_selected_test_site_is_valid = yes
+		}
+		remove_mission = sov_nuclear_bombs_proof_test_mission
+	}
 	sov_nuclear_bombs_clear_action_context = yes
 	clr_country_flag = sov_nuclear_bombs_test_prepared
 	clr_country_flag = sov_nuclear_bombs_test_mission_active
 	clr_country_flag = sov_nuclear_bombs_public_test_mission_active
+	clr_country_flag = sov_nuclear_bombs_test_instrumented
+	clr_country_flag = sov_nuclear_bombs_test_concealed
+	clr_country_flag = sov_nuclear_bombs_test_accelerated
+	clr_country_flag = sov_nuclear_bombs_test_observers_invited
+	clr_country_flag = sov_nuclear_bombs_wartime_demonstration_prepared
 	clear_variable = sov_nuclear_bombs_pending_action_type
 	sov_nuclear_bombs_clear_selected_state = yes
 	set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
@@ -2778,6 +3062,8 @@ sov_nuclear_bombs_complete_production_mission = {
 			add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.production_complete_readiness }
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.production_complete_integrity }
 			set_country_flag = sov_nuclear_bombs_batch_assembled
+			set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.missing_physicist }
+			sov_nuclear_bombs_roll_secrecy_incident = yes
 		}
 		else = {
 			clear_variable = sov_nuclear_bombs_production_amount

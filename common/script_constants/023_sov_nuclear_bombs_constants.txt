@@ -152,6 +152,7 @@ sov_nuclear_bombs_exposure_source = {
 	accident = 6
 	strike_hold = 7
 	collapse = 8
+	defector = 9
 }
 
 # Which intelligence report the Soviet command receives.
@@ -496,6 +497,114 @@ sov_nuclear_bombs_foreign_duration = {
 
 	research_priority = 365
 	air_defence = 365
+}
+
+# Secrecy incidents (Part 3). Each incident can fire only at its own seam: a
+# missing physicist after a reactor or an assembly batch is finished, a
+# compromised rail manifest when the reserve or recalled devices move,
+# foreign aircraft over a secret test site, contaminated workers after a test
+# accident or partial yield, and a captured component when an Event 5
+# transfer takes a registered depot. The chance in percent is chance_base plus
+# exposure times exposure_weight plus missing Integrity times
+# integrity_weight, up to chance_maximum, and one incident at most fires per
+# cooldown_days.
+sov_nuclear_bombs_incident = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	missing_physicist = 1
+	rail_manifest = 2
+	foreign_aircraft = 3
+	contaminated_workers = 4
+	captured_component = 5
+	cooldown_days = 180
+	chance_base = 4
+	chance_maximum = 45
+	certainty = 100
+	# Readiness, Integrity and exposure changes of the answers; negative
+	# values are losses or reductions.
+	recover_physicist_exposure = -6
+	recover_physicist_integrity = 2
+	accuse_exposure = 8
+	accuse_integrity = 4
+	purge_readiness = -6
+	purge_integrity = -6
+	purge_exposure = -10
+	accept_exposure = 10
+	reroute_readiness = -4
+	reroute_exposure = -4
+	continue_exposure = 10
+	decoy_exposure = -8
+	temporary_site_integrity = -6
+	temporary_site_exposure = -6
+	accelerate_exposure = -6
+	accelerate_integrity = -4
+	accelerate_accident_bonus = 6
+	isolate_integrity = 4
+	isolate_exposure = 3
+	confine_integrity = -8
+	confine_exposure = -6
+	admit_integrity = 6
+	admit_exposure = 6
+	destroy_records_integrity = -4
+	destroy_records_exposure = -10
+	raid_readiness = -3
+	raid_exposure = 4
+	negotiate_integrity = 3
+	negotiate_exposure = -4
+	industrial_claim_integrity = -3
+	industrial_claim_exposure = -8
+	redesign_readiness = -8
+	redesign_integrity = 8
+}
+
+sov_nuclear_bombs_incident_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	exposure_weight = 0.25
+	integrity_weight = 0.20
+}
+
+# AI answers to the secrecy incidents, shaped by the custody doctrine and by
+# low Command Integrity.
+sov_nuclear_bombs_incident_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	recover_base = 40
+	accuse_base = 15
+	purge_base = 20
+	accept_base = 25
+	reroute_base = 30
+	continue_base = 20
+	decoy_base = 25
+	temporary_site_base = 25
+	cancel_base = 20
+	accelerate_base = 25
+	invite_base = 20
+	deny_base = 35
+	isolate_base = 35
+	confine_base = 20
+	admit_base = 25
+	destroy_records_base = 20
+	raid_base = 30
+	negotiate_base = 25
+	industrial_claim_base = 20
+	redesign_base = 25
+	party_factor = 1.50
+	party_purge_factor = 2.00
+	military_factor = 1.50
+	scientific_factor = 1.50
+	dispersed_factor = 1.50
+	low_integrity_factor = 1.50
+	doubted_invite_factor = 1.50
 }
 
 # Credibility memory (Part 4). A hidden score, neutral at 0 and clamped between

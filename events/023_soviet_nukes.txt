@@ -320,6 +320,257 @@ country_event = {
 	}
 }
 
+# Secrecy incidents (Part 3). Each report fires only from its own seam through
+# sov_nuclear_bombs_roll_secrecy_incident, at most once per shared cooldown.
+# Costs use the existing cost helpers; Readiness, Integrity, exposure and
+# knowledge change through the answer helpers in the event effects file.
+country_event = {
+	id = chaosx.nr23.111
+	title = chaosx.nr23.111.t
+	desc = chaosx.nr23.111.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.111.a
+		trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.recover_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.military_factor sov_nuclear_bombs_event_doctrine_is_military = yes }
+		}
+		sov_nuclear_bombs_pay_security_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_recover_physicist_tt
+		hidden_effect = { sov_nuclear_bombs_incident_recover_physicist = yes }
+	}
+	option = {
+		name = chaosx.nr23.111.b
+		trigger = { sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.accuse_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+		}
+		sov_nuclear_bombs_pay_diplomatic_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_accuse_hosts_tt
+		hidden_effect = { sov_nuclear_bombs_incident_accuse_hosts = yes }
+	}
+	option = {
+		name = chaosx.nr23.111.c
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.purge_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_purge_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_purge_laboratories_tt
+		hidden_effect = { sov_nuclear_bombs_incident_purge_laboratories = yes }
+	}
+	option = {
+		name = chaosx.nr23.111.e
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.accept_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.low_integrity_factor sov_nuclear_bombs_event_integrity_is_low = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_accept_foreign_knowledge_tt
+		hidden_effect = { sov_nuclear_bombs_incident_accept_foreign_knowledge = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.112
+	title = chaosx.nr23.112.t
+	desc = chaosx.nr23.112.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.112.a
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.reroute_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_reroute_convoy_tt
+		hidden_effect = { sov_nuclear_bombs_incident_reroute_convoy = yes }
+	}
+	option = {
+		name = chaosx.nr23.112.b
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.continue_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.military_factor sov_nuclear_bombs_event_doctrine_is_military = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_continue_convoy_tt
+		hidden_effect = { sov_nuclear_bombs_incident_continue_convoy = yes }
+	}
+	option = {
+		name = chaosx.nr23.112.c
+		trigger = { sov_nuclear_bombs_can_pay_logistics_cost = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.decoy_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+		}
+		sov_nuclear_bombs_pay_logistics_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_decoy_shipment_tt
+		hidden_effect = { sov_nuclear_bombs_incident_decoy_shipment = yes }
+	}
+	option = {
+		name = chaosx.nr23.112.e
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.temporary_site_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.dispersed_factor sov_nuclear_bombs_event_doctrine_is_dispersed = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_temporary_site_tt
+		hidden_effect = { sov_nuclear_bombs_incident_temporary_site = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.113
+	title = chaosx.nr23.113.t
+	desc = chaosx.nr23.113.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.113.a
+		trigger = { sov_nuclear_bombs_event_secret_test_is_prepared = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.cancel_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.low_integrity_factor sov_nuclear_bombs_event_integrity_is_low = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_cancel_test_tt
+		hidden_effect = { sov_nuclear_bombs_cancel_test = yes }
+	}
+	option = {
+		name = chaosx.nr23.113.b
+		trigger = { sov_nuclear_bombs_event_secret_test_is_prepared = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.accelerate_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.military_factor sov_nuclear_bombs_event_doctrine_is_military = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_accelerate_test_tt
+		hidden_effect = { sov_nuclear_bombs_incident_accelerate_test = yes }
+	}
+	option = {
+		name = chaosx.nr23.113.c
+		trigger = { sov_nuclear_bombs_event_secret_test_is_prepared = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.invite_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.doubted_invite_factor sov_nuclear_bombs_event_credibility_is_doubted = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_invite_observers_tt
+		hidden_effect = { sov_nuclear_bombs_incident_invite_observers = yes }
+	}
+	option = {
+		name = chaosx.nr23.113.e
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.deny_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_deny_overflight_tt
+		hidden_effect = { sov_nuclear_bombs_incident_deny_overflight = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.114
+	title = chaosx.nr23.114.t
+	desc = chaosx.nr23.114.d
+	picture = GFX_report_event_sov_nuclear_accident_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.114.a
+		trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.isolate_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+		}
+		sov_nuclear_bombs_pay_security_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_isolate_workers_tt
+		hidden_effect = { sov_nuclear_bombs_incident_isolate_workers = yes }
+	}
+	option = {
+		name = chaosx.nr23.114.b
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.confine_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.military_factor sov_nuclear_bombs_event_doctrine_is_military = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_confine_workers_tt
+		hidden_effect = { sov_nuclear_bombs_incident_confine_workers = yes }
+	}
+	option = {
+		name = chaosx.nr23.114.c
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.admit_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_admit_safety_failure_tt
+		hidden_effect = { sov_nuclear_bombs_incident_admit_safety_failure = yes }
+	}
+	option = {
+		name = chaosx.nr23.114.e
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.destroy_records_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.low_integrity_factor sov_nuclear_bombs_event_integrity_is_low = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_destroy_medical_records_tt
+		hidden_effect = { sov_nuclear_bombs_incident_destroy_medical_records = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.115
+	title = chaosx.nr23.115.t
+	desc = chaosx.nr23.115.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.115.a
+		trigger = { sov_nuclear_bombs_can_pay_command_cost = yes }
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.raid_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.military_factor sov_nuclear_bombs_event_doctrine_is_military = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.dispersed_factor sov_nuclear_bombs_event_doctrine_is_dispersed = yes }
+		}
+		sov_nuclear_bombs_pay_command_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_raid_for_component_tt
+		hidden_effect = { sov_nuclear_bombs_incident_raid_for_component = yes }
+	}
+	option = {
+		name = chaosx.nr23.115.b
+		trigger = { sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
+		ai_chance = { base = constant:sov_nuclear_bombs_incident_ai.negotiate_base }
+		sov_nuclear_bombs_pay_diplomatic_cost = yes
+		custom_effect_tooltip = sov_nuclear_bombs_incident_negotiate_component_tt
+		hidden_effect = { sov_nuclear_bombs_incident_negotiate_component = yes }
+	}
+	option = {
+		name = chaosx.nr23.115.c
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.industrial_claim_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.party_factor sov_nuclear_bombs_event_doctrine_is_party = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_claim_industrial_material_tt
+		hidden_effect = { sov_nuclear_bombs_incident_claim_industrial_material = yes }
+	}
+	option = {
+		name = chaosx.nr23.115.e
+		ai_chance = {
+			base = constant:sov_nuclear_bombs_incident_ai.redesign_base
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.scientific_factor sov_nuclear_bombs_event_doctrine_is_scientific = yes }
+			modifier = { factor = constant:sov_nuclear_bombs_incident_ai.low_integrity_factor sov_nuclear_bombs_event_integrity_is_low = yes }
+		}
+		custom_effect_tooltip = sov_nuclear_bombs_incident_redesign_device_tt
+		hidden_effect = { sov_nuclear_bombs_incident_redesign_device = yes }
+	}
+}
+
 country_event = {
 	id = chaosx.nr23.120
 	title = chaosx.nr23.120.t

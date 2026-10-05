@@ -2049,3 +2049,36 @@ sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = {
 		any_neighbor_country = { sov_nuclear_bombs_event_country_is_guarantee_candidate = yes }
 	}
 }
+
+# Custody doctrine and command state read by the secrecy-incident AI weights.
+# Country scope (the Soviet actor).
+sov_nuclear_bombs_event_doctrine_is_party = {
+	check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.party compare = equals }
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+}
+
+sov_nuclear_bombs_event_doctrine_is_military = {
+	check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.military compare = equals }
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+}
+
+sov_nuclear_bombs_event_doctrine_is_scientific = {
+	check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals }
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+}
+
+sov_nuclear_bombs_event_doctrine_is_dispersed = {
+	check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.dispersed_commands compare = equals }
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+}
+
+sov_nuclear_bombs_event_integrity_is_low = {
+	check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.low_integrity_threshold compare = less_than }
+}
+
+# The foreign-aircraft incident can still act on the prepared secret test.
+sov_nuclear_bombs_event_secret_test_is_prepared = {
+	has_country_flag = sov_nuclear_bombs_test_prepared
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	check_variable = { var = sov_nuclear_bombs_pending_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+}

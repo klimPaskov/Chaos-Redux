@@ -259,6 +259,8 @@ sov_nuclear_bombs_command_category = {
 						set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_exposure.rail }
 						set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.rail }
 						sov_nuclear_bombs_add_exposure = yes
+						set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.rail_manifest }
+						sov_nuclear_bombs_roll_secrecy_incident = yes
 					}
 				}
 				else = {
@@ -1011,7 +1013,16 @@ sov_nuclear_bombs_command_category = {
 		custom_cost_text = sov_nuclear_bombs_cost_logistics
 		cost = 0
 		days_remove = 0
-		complete_effect = { sov_nuclear_bombs_pay_logistics_cost = yes set_variable = { sov_nuclear_bombs_collapse_operation = constant:sov_nuclear_bombs_tuning.collapse_operation_recall } set_country_flag = sov_nuclear_bombs_rail_corridor_mission_active activate_mission = sov_nuclear_bombs_rail_corridor_security_mission }
+		complete_effect = {
+			sov_nuclear_bombs_pay_logistics_cost = yes
+			set_variable = { sov_nuclear_bombs_collapse_operation = constant:sov_nuclear_bombs_tuning.collapse_operation_recall }
+			set_country_flag = sov_nuclear_bombs_rail_corridor_mission_active
+			activate_mission = sov_nuclear_bombs_rail_corridor_security_mission
+			hidden_effect = {
+				set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.rail_manifest }
+				sov_nuclear_bombs_roll_secrecy_incident = yes
+			}
+		}
 		ai_will_do = { base = 1.10 }
 	}
 

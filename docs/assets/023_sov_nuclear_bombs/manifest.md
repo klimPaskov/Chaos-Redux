@@ -201,6 +201,9 @@ The report and news events added in round 2 reuse existing Event 023 pictures, a
 | Runtime use | Sprite |
 | --- | --- |
 | `chaosx.nr23.107` intelligence report | `GFX_report_event_sov_nuclear_test_report` |
+| `chaosx.nr23.111` missing physicist and `chaosx.nr23.113` foreign aircraft | `GFX_report_event_sov_nuclear_test_report` |
+| `chaosx.nr23.112` rail manifest and `chaosx.nr23.115` lost component | `GFX_report_event_sov_nuclear_breakaway_custody` |
+| `chaosx.nr23.114` contaminated workers | `GFX_report_event_sov_nuclear_accident_report` |
 | `chaosx.news.235` secret test detected | `GFX_news_event_sov_nuclear_public_test` |
 | `chaosx.nr23.190` and `chaosx.nr23.191` major strategic reports | `GFX_report_event_sov_nuclear_test_report` |
 | `chaosx.nr23.192` atomic race report | `GFX_report_event_sov_nuclear_arsenal_opening` |

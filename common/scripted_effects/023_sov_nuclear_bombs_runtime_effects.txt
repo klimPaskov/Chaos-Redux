@@ -3207,6 +3207,22 @@ sov_nuclear_bombs_reconcile_event5_state = {
 			}
 			SOV = { sov_nuclear_bombs_open_collapse_recovery = yes }
 		}
+		# A depot changing hands in the collapse can leave a device component
+		# in foreign or breakaway hands.
+		if = {
+			limit = {
+				sov_nuclear_bombs_state_is_registered = yes
+				OR = {
+					check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+					has_state_flag = sov_nuclear_bombs_site_missing
+				}
+				SOV = { sov_nuclear_bombs_event_actor_is_valid = yes }
+			}
+			SOV = {
+				set_temp_variable = { sov_nuclear_bombs_incident_request = constant:sov_nuclear_bombs_incident.captured_component }
+				sov_nuclear_bombs_roll_secrecy_incident = yes
+			}
+		}
 	}
 }
 

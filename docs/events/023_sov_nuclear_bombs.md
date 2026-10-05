@@ -85,6 +85,15 @@ The fourth header line ends with a security label: secure, watched (25), penetra
 The AI treats a penetrated program, or a Suspected one, as custody duty and sweeps it (×2.00 when penetrated, ×1.50 when Suspected).
 All values are in `sov_nuclear_bombs_exposure`, `sov_nuclear_bombs_exposure_source`, `sov_nuclear_bombs_public_knowledge`, `sov_nuclear_bombs_duration` and `sov_nuclear_bombs_ai`.
 
+### Secrecy incidents
+
+Five secrecy incidents (Part 3) put the hidden phase under outside pressure. Each fires only from its own seam through `sov_nuclear_bombs_roll_secrecy_incident`: a physicist fails to report (`chaosx.nr23.111`) when a reactor or an assembly batch is finished, a rail manifest goes missing (`.112`) when the reserve departs for dispersal or a recall convoy starts, foreign aircraft circle a secret test site (`.113`) when its preparation starts, sick workers leave the zone (`.114`) after a test accident or partial yield, and a device component is lost (`.115`) when an Event 5 transfer takes a registered depot.
+The chance in percent is 4, plus a quarter of the exposure, plus a fifth of the missing Command Integrity, up to 45 (`sov_nuclear_bombs_incident`, `sov_nuclear_bombs_incident_factor`), and the shared timed flag `sov_nuclear_bombs_incident_cooldown` (180 days, meta-effect literal) allows one incident per period.
+Each report offers the four directions of Part 3; costed answers use the existing security, diplomatic, logistics and command cost helpers, and every other change goes through `sov_nuclear_bombs_add_exposure`, `sov_nuclear_bombs_raise_public_knowledge` or a clamped Readiness and Integrity change, with plain-language tooltips and no exposure numbers.
+Accelerating a watched test adds accident weight to its outcome (`sov_nuclear_bombs_test_accelerated`); inviting observers turns a detonating secret test into a public demonstration with its knowledge, credibility, hook and news; a recovery raid for a lost component opens the custody board if it is closed, and no answer moves a device.
+AI answers in `sov_nuclear_bombs_incident_ai` follow the custody doctrine (Party favours purges, denials, confinement and cover stories; Military favours recovery, continuing and acceleration; Scientific Safety favours cancellation, treatment, admission and redesign; Dispersed Commands favours temporary sites and raids) and low Command Integrity.
+Cancelling a test, by order or by an incident, now also removes the running test window and clears the profile flags, so the next test opens its own window.
+
 ### Foreign reactions and arms-race hooks
 
 Foreign governments react to what they know (Part 3 foreign reaction framework, Part 5 Evolution I foreign package).
