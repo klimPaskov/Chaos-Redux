@@ -1415,6 +1415,36 @@ great_depression_add_conference_participant = {
 	}
 }
 
+# COUNTRY scope. Takes this country's seat and its industrial weight off an
+# open conference, keeping the two participant lists aligned. Safe when the
+# country holds no seat.
+great_depression_remove_conference_participant = {
+	if = {
+		limit = {
+			has_variable = global.great_depression_conference_participants^num
+			is_in_array = { array = global.great_depression_conference_participants value = THIS }
+		}
+		set_temp_variable = { great_depression_conference_seat_found = constant:great_depression_api.zero }
+		for_loop_effect = {
+			start = 0
+			end = global.great_depression_conference_participants^num
+			value = great_depression_conference_seat_index
+			var:global.great_depression_conference_participants^great_depression_conference_seat_index = {
+				if = {
+					limit = { tag = PREV }
+					set_temp_variable = { great_depression_conference_seat = great_depression_conference_seat_index }
+					set_temp_variable = { great_depression_conference_seat_found = constant:great_depression_api.one }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = great_depression_conference_seat_found value = constant:great_depression_api.one compare = equals } }
+			remove_from_array = { array = global.great_depression_conference_participants index = great_depression_conference_seat }
+			remove_from_array = { array = global.great_depression_conference_participant_weights index = great_depression_conference_seat }
+		}
+	}
+}
+
 great_depression_emergency_trade_clearing = {
 	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.global_reconstruction }
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
@@ -1550,9 +1580,11 @@ great_depression_remove_global_contribution = {
 	set_variable = { great_depression_global_contribution_count = constant:great_depression_api.zero }
 	clr_country_flag = great_depression_global_contribution_made
 	clr_country_flag = great_depression_global_public_works_complete
-	clr_country_flag = great_depression_international_debt_conference_complete
+	# The debts rescheduled at an International Debt Conference stay
+	# rescheduled, so its flag, which also spares the Debt Overhang scar, stays.
 	clr_country_flag = great_depression_global_recovery_conference_complete
 	clr_country_flag = great_depression_emergency_trade_clearing_complete
+	# Leaving the common fund ends the jobs it paid for.
 	clr_country_flag = great_depression_reconstruction_employment_fund
 	clr_country_flag = great_depression_domestic_market_protected
 	clr_country_flag = great_depression_industrial_demand_coordinated
@@ -1560,6 +1592,7 @@ great_depression_remove_global_contribution = {
 	clr_country_flag = great_depression_supplier_compact_contribution
 	clr_country_flag = great_depression_international_reconstruction_complete
 	clr_country_flag = great_depression_achievement_recovery_of_nations_candidate
+	great_depression_remove_conference_participant = yes
 }
 
 # -----------------------------------------------------------------------------

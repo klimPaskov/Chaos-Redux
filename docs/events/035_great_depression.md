@@ -364,7 +364,11 @@ Each devaluation adds `devaluation_recovery_drag_days` to `global.great_depressi
 
 Withdraw from International Commitments costs the policy-review quote (political power and stability) instead of the reconstruction quote.
 `great_depression_remove_global_contribution` removes the country's row and recorded industrial weight from the global contribution ledger, removes its contribution receipts, and clears its contribution flags.
+It keeps `great_depression_international_debt_conference_complete`, because the debts rescheduled at that conference stay rescheduled and the flag also spares the Debt Overhang scar; it clears `great_depression_reconstruction_employment_fund`, so the fund's demand relief ends with the country's share of the common fund.
+It also takes the country's seat and industrial weight off an open Global Recovery Conference through `great_depression_remove_conference_participant`.
 `great_depression_commitments_withdrawn_global_episode_id` closes every global contribution decision for the rest of that global episode through `great_depression_global_commitments_are_open`, and `great_depression_increment_global_contribution` refuses a withdrawn country.
+The same check is part of the International Reconstruction mission's activation and context, so the mission, whose objective needs a contribution, ends without a penalty instead of timing out.
+The decision tooltip names the ended fund, the conference seat, and the ended mission when they apply.
 The country's civilian commitment is released, it gets light Severity relief at once, and a fiscal-relief window runs for `withdrawal_relief_days`.
 
 Neither action raises the actor's Severity. Values live in `great_depression_currency_action`.
@@ -387,7 +391,7 @@ A new national episode removes the country from both blocs in `great_depression_
 Clearing membership is not ended by global retirement or by recovery, because the payments arrangement keeps a post-crisis purpose until its term runs out.
 
 `great_depression_check_bloc_formation` counts living members and majors after every join; at `formation_member_minimum` (3) members with at least `formation_major_minimum` (1) major, `great_depression_queue_global_news` sends `chaosx.nr35.20` (A Clearing Bloc Forms) or `chaosx.nr35.21` (A Protectionist Bloc Forms) once per global episode, naming the country whose action formed the bloc and the member count, never outside a worldwide episode or while the evolution is switched off.
-Bloc decisions need a new member and room (`great_depression_protectionist_bloc_can_take_member`, `great_depression_clearing_bloc_can_take_pair`).
+Bloc decisions need a new member and room for every newcomer (`great_depression_protectionist_bloc_can_take_member`, `great_depression_clearing_bloc_can_take_pair`): a bloc below `pair_room_limit` (11) members takes two newcomers, and a bloc below `member_cap` takes one when the other country already belongs, so a decision never leaves one of the two countries outside.
 The AI prefers blocs with close allies, does not spend an action renewing a clearing pair that is already in the bloc, and does not raise a protectionist wall during Fragmented Recovery or International Reconstruction.
 
 ## Shared-system adapters and Chaos accounting
