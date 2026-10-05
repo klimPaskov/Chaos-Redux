@@ -357,3 +357,11 @@ Terms signed while the receipt is live count as negotiated even for a partition,
 The government's Offer Emergency Terms AI weight gains `ai_mediated` (x2) while the receipt is live, so AI governments answer mediation, still never from a Cohesive position held without losses. Mediator AI weights are unchanged.
 The receipt expires on its date and `event021_clear_crisis_action_receipts` clears it at crisis cleanup and at any new crisis role.
 Basis: the lead's round 2 assignment, spec part 5 (Mediate a Local Ceasefire), and decision D21. The mediated offer remains `needs_live_game`.
+
+## D30. A government chooses its opening posture
+
+Finding: spec part 9 asks important government options to express a posture (firm command, constitutional response, or cautious containment) with a stated public response and visible consequence, but the opening reports `chaosx.nr21.2` and `chaosx.nr21.3` had one option, and `event021_parent_assign_government_profile` picked the hardliner, negotiator, or consolidator profile from authority and pressure without the player's input, although that profile decides the loyalty-review branch and the government AI's terms and postwar choices.
+Decision: both government opening reports offer three postures while `event021_opening_posture_available` holds (a government side that is human, or an AI with an assigned profile). Holding firm sets the hardliner profile and raises State Authority by 6, appealing to the constitution sets the negotiator profile and lowers pressure by 6, and containing the rising sets the consolidator profile and grants 15 command power. Each tooltip states that consequence and the loyalty-review branch the profile takes, and the values live in `event021_opening_posture`.
+Each posture option has AI chance 100 for its own profile and 0 otherwise, so an AI government keeps the profile it was assigned. An AI government without a profile, such as a same-tag government, and every non-government recipient keep the plain report option.
+The profile helper `event021_clear_government_profile` is shared with `event021_parent_assign_government_profile`. Claimant (`chaosx.nr21.7`) and Event 006 (`chaosx.nr21.8`) reports and the AI strategy files are unchanged.
+Basis: the lead's round 2 assignment and spec part 9. The posture choice in play remains `needs_live_game`.

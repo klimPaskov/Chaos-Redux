@@ -3557,14 +3557,48 @@ event021_parent_record_system_log = {
 	set_temp_variable = { events_log_system_has_secondary_actor = constant:random_civil_war_value.zero }
 }
 
+# COUNTRY scope on a crisis government. Replaces its profile flag with one of
+# the three opening postures. Input: none; each caller sets the flag after.
+event021_clear_government_profile = {
+	clr_country_flag = random_civil_war_consolidator_profile
+	clr_country_flag = random_civil_war_hardliner_profile
+	clr_country_flag = random_civil_war_negotiator_profile
+}
+
+# COUNTRY scope. Opening posture: firm command. Hardliner profile, and loyal
+# units and military courts raise State Authority at once.
+event021_choose_opening_posture_firm = {
+	event021_clear_government_profile = yes
+	set_country_flag = random_civil_war_hardliner_profile
+	set_variable = { random_civil_war_pending_authority_delta = constant:event021_opening_posture.firm_authority_gain }
+	event021_add_authority = yes
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Opening posture: constitutional response. Negotiator
+# profile, and an appeal to the constitution eases internal division.
+event021_choose_opening_posture_constitutional = {
+	event021_clear_government_profile = yes
+	set_country_flag = random_civil_war_negotiator_profile
+	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_opening_posture.constitutional_pressure_relief }
+	event021_reduce_pressure = yes
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Opening posture: cautious containment. Consolidator profile;
+# the option itself grants the command power.
+event021_choose_opening_posture_containment = {
+	event021_clear_government_profile = yes
+	set_country_flag = random_civil_war_consolidator_profile
+	event021_refresh_country_state = yes
+}
+
 # COUNTRY scope. The original host receives the government-side role profile.
 event021_parent_assign_government_profile = {
 	set_country_flag = random_civil_war_government_side
 	clr_country_flag = random_civil_war_opposition_side
 	clr_country_flag = random_civil_war_sponsor_side
-	clr_country_flag = random_civil_war_consolidator_profile
-	clr_country_flag = random_civil_war_hardliner_profile
-	clr_country_flag = random_civil_war_negotiator_profile
+	event021_clear_government_profile = yes
 	if = {
 		limit = { random_civil_war_authority_is_cohesive = yes }
 		set_country_flag = random_civil_war_consolidator_profile

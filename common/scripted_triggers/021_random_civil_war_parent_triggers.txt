@@ -1295,6 +1295,19 @@ event021_settlement_terms_offer_open = {
 	check_variable = { var = global.date value = event021_settlement_terms_last_offer_date compare = less_than_or_equals }
 }
 
+# COUNTRY scope. The opening report offers a government its posture choice:
+# always for a human government, and for an AI government that was assigned a
+# profile, which its AI then keeps.
+event021_opening_posture_available = {
+	has_country_flag = random_civil_war_government_side
+	OR = {
+		is_ai = no
+		has_country_flag = random_civil_war_hardliner_profile
+		has_country_flag = random_civil_war_negotiator_profile
+		has_country_flag = random_civil_war_consolidator_profile
+	}
+}
+
 # COUNTRY scope. Fractured Command is timed when one of the opening actions
 # gave it an end date that has not passed, and permanent when the side holds
 # it without one.

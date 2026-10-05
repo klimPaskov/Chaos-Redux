@@ -28,9 +28,44 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { has_country_flag = random_civil_war_active }
 
+	# A government chooses its opening posture, which sets the government
+	# profile. An AI government keeps the profile it was assigned, and an AI
+	# without one keeps the plain report.
 	option = {
 		name = chaosx.nr21.2.a
-		ai_chance = { base = 100 }
+		trigger = { NOT = { event021_opening_posture_available = yes } }
+		ai_chance = { base = constant:random_civil_war_value.hundred }
+	}
+	option = {
+		name = event021_posture_firm
+		trigger = { event021_opening_posture_available = yes }
+		custom_effect_tooltip = event021_posture_firm_tt
+		hidden_effect = { event021_choose_opening_posture_firm = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_hardliner_profile } }
+		}
+	}
+	option = {
+		name = event021_posture_constitutional
+		trigger = { event021_opening_posture_available = yes }
+		custom_effect_tooltip = event021_posture_constitutional_tt
+		hidden_effect = { event021_choose_opening_posture_constitutional = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_negotiator_profile } }
+		}
+	}
+	option = {
+		name = event021_posture_containment
+		trigger = { event021_opening_posture_available = yes }
+		add_command_power = constant:event021_opening_posture.containment_command_power
+		custom_effect_tooltip = event021_posture_containment_tt
+		hidden_effect = { event021_choose_opening_posture_containment = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_consolidator_profile } }
+		}
 	}
 }
 
@@ -42,9 +77,44 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { has_country_flag = random_civil_war_active }
 
+	# A government chooses its opening posture, which sets the government
+	# profile. An AI government keeps the profile it was assigned, and an AI
+	# without one keeps the plain report.
 	option = {
 		name = chaosx.nr21.3.a
-		ai_chance = { base = 100 }
+		trigger = { NOT = { event021_opening_posture_available = yes } }
+		ai_chance = { base = constant:random_civil_war_value.hundred }
+	}
+	option = {
+		name = event021_posture_firm
+		trigger = { event021_opening_posture_available = yes }
+		custom_effect_tooltip = event021_posture_firm_tt
+		hidden_effect = { event021_choose_opening_posture_firm = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_hardliner_profile } }
+		}
+	}
+	option = {
+		name = event021_posture_constitutional
+		trigger = { event021_opening_posture_available = yes }
+		custom_effect_tooltip = event021_posture_constitutional_tt
+		hidden_effect = { event021_choose_opening_posture_constitutional = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_negotiator_profile } }
+		}
+	}
+	option = {
+		name = event021_posture_containment
+		trigger = { event021_opening_posture_available = yes }
+		add_command_power = constant:event021_opening_posture.containment_command_power
+		custom_effect_tooltip = event021_posture_containment_tt
+		hidden_effect = { event021_choose_opening_posture_containment = yes }
+		ai_chance = {
+			base = constant:random_civil_war_value.hundred
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { has_country_flag = random_civil_war_consolidator_profile } }
+		}
 	}
 }
 
