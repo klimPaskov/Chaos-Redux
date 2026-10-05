@@ -2190,7 +2190,9 @@ sov_nuclear_bombs_apply_coercion_settlement_terms = {
 			limit = { NOT = { has_country_flag = sov_nuclear_bombs_partial_settlement_accepted } check_variable = { var = sov_nuclear_bombs_demand_kind value = constant:sov_nuclear_bombs_demand.soviet_protection compare = equals } }
 			give_guarantee = event_target:sov_nuclear_bombs_coercion_target
 			diplomatic_relation = { country = event_target:sov_nuclear_bombs_coercion_target relation = non_aggression_pact active = yes }
-			event_target:sov_nuclear_bombs_coercion_target = { give_military_access = ROOT }
+			# PREV is the Soviet actor; the coerced government's own answer runs
+			# this helper with that government as ROOT.
+			event_target:sov_nuclear_bombs_coercion_target = { give_military_access = PREV }
 			set_country_flag = sov_nuclear_bombs_settlement_terms_applied
 			set_country_flag = sov_nuclear_bombs_settlement_protection_recorded
 		}
@@ -2830,7 +2832,9 @@ sov_nuclear_bombs_resolve_hotline = {
 				has_country_flag = sov_nuclear_bombs_standdown_offer_accepted
 				NOT = { has_country_flag = sov_nuclear_bombs_standdown_offer_refused }
 				has_country_flag = sov_nuclear_bombs_release_orders_suspended
-				check_variable = { var = sov_nuclear_bombs_standdown_offer_nonce value = ROOT.sov_nuclear_bombs_standdown_nonce compare = equals }
+				# PREV is the Soviet actor: the partner's own answer runs this
+				# helper with the partner as ROOT.
+				check_variable = { var = sov_nuclear_bombs_standdown_offer_nonce value = PREV.sov_nuclear_bombs_standdown_nonce compare = equals }
 			}
 		}
 		if = { limit = { has_country_flag = sov_nuclear_bombs_action_reservation_active } sov_nuclear_bombs_clear_action_context = yes }
@@ -4618,6 +4622,33 @@ sov_nuclear_bombs_breakaway_request_removal_assistance = {
 		random_country = {
 			limit = { sov_nuclear_bombs_event_country_is_removal_partner = yes }
 			country_event = { id = chaosx.nr23.172 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		}
+	}
+}
+
+# Country scope (a breakaway holder), from chaosx.nr23.173 after a major
+# accepted the request. The holder starts the observed dismantlement itself so
+# its depot checks read the holder; if the depot is no longer its to open, or
+# the rail route is gone, the offer lapses and the request closes.
+sov_nuclear_bombs_begin_foreign_removal = {
+	clr_country_flag = sov_nuclear_bombs_breakaway_removal_lapsed
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes }
+		if = {
+			limit = {
+				sov_nuclear_bombs_event_breakaway_holds_selected_depot = yes
+				var:sov_nuclear_bombs_local_custody_state = { sov_nuclear_bombs_event_state_has_removal_route = yes }
+			}
+			set_country_flag = sov_nuclear_bombs_breakaway_foreign_removal
+			var:sov_nuclear_bombs_local_custody_state = { set_state_flag = sov_nuclear_bombs_site_foreign_observers }
+			sov_nuclear_bombs_start_breakaway_dismantlement = yes
+		}
+		if = {
+			limit = { NOT = { has_country_flag = sov_nuclear_bombs_breakaway_dismantlement_mission_active } }
+			clr_country_flag = sov_nuclear_bombs_breakaway_foreign_removal
+			clr_country_flag = sov_nuclear_bombs_breakaway_removal_requested
+			clear_variable = sov_nuclear_bombs_removal_partner
+			set_country_flag = sov_nuclear_bombs_breakaway_removal_lapsed
 		}
 	}
 }

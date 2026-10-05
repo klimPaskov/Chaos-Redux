@@ -1110,7 +1110,8 @@ country_event = {
 
 # Foreign intervention (Part 6). FROM is the breakaway that asked for help. A
 # major that accepts sends technicians and guards for a dismantlement under
-# observation and never takes the devices over.
+# observation and never takes the devices over. The holder's own depot checks
+# read the holder as ROOT, so the holder starts the work in chaosx.nr23.173.
 country_event = {
 	id = chaosx.nr23.172
 	title = chaosx.nr23.172.t
@@ -1120,7 +1121,7 @@ country_event = {
 	trigger = {
 		FROM = {
 			has_country_flag = sov_nuclear_bombs_breakaway_removal_requested
-			sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes
+			has_variable = sov_nuclear_bombs_local_custody_state
 		}
 		NOT = { has_war_with = FROM }
 	}
@@ -1135,10 +1136,7 @@ country_event = {
 		custom_effect_tooltip = sov_nuclear_bombs_removal_accept_tt
 		hidden_effect = {
 			FROM = {
-				set_country_flag = sov_nuclear_bombs_breakaway_foreign_removal
 				set_variable = { sov_nuclear_bombs_removal_partner = ROOT }
-				var:sov_nuclear_bombs_local_custody_state = { set_state_flag = sov_nuclear_bombs_site_foreign_observers }
-				sov_nuclear_bombs_start_breakaway_dismantlement = yes
 				set_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes
 				country_event = { id = chaosx.nr23.173 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
 			}
@@ -1162,22 +1160,33 @@ country_event = {
 	}
 }
 
-# The breakaway learns the answer to its request for removal help.
+# The breakaway learns the answer to its request for removal help. After an
+# acceptance the holder starts the observed dismantlement itself, or the offer
+# lapses when the depot is no longer its to open.
 country_event = {
 	id = chaosx.nr23.173
 	title = chaosx.nr23.173.t
 	desc = {
 		text = chaosx.nr23.173.accepted.d
-		trigger = { has_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes }
+		trigger = { has_country_flag = sov_nuclear_bombs_breakaway_foreign_removal }
+	}
+	desc = {
+		text = chaosx.nr23.173.lapsed.d
+		trigger = { has_country_flag = sov_nuclear_bombs_breakaway_removal_lapsed }
 	}
 	desc = chaosx.nr23.173.declined.d
 	picture = GFX_report_event_sov_nuclear_breakaway_custody
 	is_triggered_only = yes
 
+	immediate = {
+		hidden_effect = { sov_nuclear_bombs_begin_foreign_removal = yes }
+	}
+
 	option = {
 		name = chaosx.nr23.173.a
 		ai_chance = { base = constant:sov_nuclear_bombs_ai.default_choice }
 		clr_country_flag = sov_nuclear_bombs_breakaway_removal_answered_yes
+		clr_country_flag = sov_nuclear_bombs_breakaway_removal_lapsed
 	}
 }
 
