@@ -89,6 +89,7 @@ The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__ho
 Tool exposure does not prove service health or the availability of a standalone viewer.
 For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A context bundle identifies sources but does not establish that their detailed rules have been read.
 When the live `hoi4.source_lookup` schema accepts `view` and `keyPath`, use bounded child structure to locate a nested block and select repeated keys with their zero-based `occurrence`.
+When it accepts `path` and `line`, use it to find the definitions and `keyPath` containing a diagnostic, diff, or editor line, then navigate that block. Returned `suggestions` are near-miss names to verify, not matches. Pass a search result's `matchLine` as `startLine` to `hoi4.reference_read` to land on the answering line.
 Continue structure pages with `nextChildOffset` as `childOffset`, retaining the same query settings and `expectedRevision`.
 Use `includeReferences = false` for a focused event or scripted-helper definition read; enable references when investigating consumers.
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.

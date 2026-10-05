@@ -15,6 +15,8 @@ The mod containing the MCP working directory is the writable source root. The in
 - state: the per-user `hoi4-agent-tools` state directory
 - artifacts and cache: the per-user `hoi4-agent-tools` workspace-data directory
 
+Installed `dlc/` and `integrated_dlc/` folders are read-only layers between the base game and the mod, ordered by DLC ID; result paths name each by its folder. An installed folder does not show that a playset enables that DLC, so content that depends on it still needs its `has_dlc` check. The mod's `replace_path` entries in `descriptor.mod` apply to analysis as the game applies them.
+
 The registration contains no credentials. Keep HTTP bearer tokens in environment variables, never in tracked config.
 
 The Codex registration allows 120 seconds for startup and 600 seconds per tool call.
@@ -50,6 +52,9 @@ Check the connected tool list and live schemas before using any route. Domain-sp
 When supported by the live schema, use `source_lookup` with `view = structure` and a bounded `keyPath` to inspect one nested source block.
 Repeated keys require their zero-based `occurrence`; structural continuation uses `nextChildOffset` as `childOffset` with the same query settings and `expectedRevision`.
 Use definition-only event and scripted-helper reads when consumers are not needed.
+When the live schema accepts `path` and `line` instead of `symbol`, `source_lookup` returns the indexed definitions containing that line, innermost first, and a `keyPath` from the innermost definition; use it to cite or navigate from a diagnostic, diff, or editor position.
+A lookup that finds no definition may return `suggestions`, which are near-miss identifiers to verify rather than matches.
+Search results carry `matchLine`; pass it as `startLine` to `reference_read` to land on the answering line inside a long section, including a single wiki table entry.
 
 When exposed, `hoi4.script_validate` checks an effect or trigger body under a declared scope using installed native-command documentation.
 Supply external scope bindings only when their types are known.
