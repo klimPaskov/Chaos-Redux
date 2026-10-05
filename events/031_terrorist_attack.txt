@@ -7,6 +7,8 @@ add_namespace = chaosx.news
 @rt_event_actor_merge_refusal_weight = 40
 @rt_event_ai_high_factor = 2
 @rt_event_ai_low_factor = 0.5
+@rt_event_emphasis_weight = 25
+@rt_event_emphasis_coercion_weight = 15
 
 ###############################################################################################################
 # CHAOS REDUX - EVENT 031 RANDOM TERROR
@@ -51,6 +53,9 @@ country_event = {
 	}
 }
 
+# Incident report: names the struck state, the incident family and any
+# measured civilian loss.  The opening report of a crisis asks for the first
+# emphasis (Part 1 Assessment); later reports of the same crisis only inform.
 country_event = {
 	id = chaosx.nr31.2
 	title = chaosx.nr31.2.t
@@ -60,7 +65,66 @@ country_event = {
 	trigger = { has_country_flag = random_terror_affected_country }
 
 	option = {
+		name = chaosx.nr31.2.protection
+		trigger = { NOT = { has_country_flag = random_terror_emphasis_chosen } }
+		ai_chance = {
+			base = @rt_event_emphasis_weight
+			modifier = {
+				factor = @rt_event_ai_high_factor
+				has_variable = random_terror_last_report_state
+				var:random_terror_last_report_state = {
+					OR = {
+						is_capital = yes
+						has_state_flag = random_terror_transport_disrupted
+						has_state_flag = random_terror_port_disrupted
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = random_terror_emphasis_protection_tt
+		hidden_effect = { random_terror_choose_emphasis_protection = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.2.intelligence
+		trigger = { NOT = { has_country_flag = random_terror_emphasis_chosen } }
+		ai_chance = {
+			base = @rt_event_emphasis_weight
+			modifier = { factor = @rt_event_ai_high_factor has_global_flag = random_terror_evolution_2_unlocked }
+			modifier = { factor = @rt_event_ai_high_factor check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high } }
+		}
+		custom_effect_tooltip = random_terror_emphasis_intelligence_tt
+		hidden_effect = { random_terror_choose_emphasis_intelligence = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.2.victims
+		trigger = { NOT = { has_country_flag = random_terror_emphasis_chosen } }
+		ai_chance = {
+			base = @rt_event_emphasis_weight
+			modifier = { factor = @rt_event_ai_high_factor check_variable = { random_terror_last_report_loss > constant:random_terror_value.zero } }
+			modifier = { factor = @rt_event_ai_high_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.medium } }
+		}
+		custom_effect_tooltip = random_terror_emphasis_victims_tt
+		hidden_effect = { random_terror_choose_emphasis_victims = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.2.coercion
+		trigger = { NOT = { has_country_flag = random_terror_emphasis_chosen } }
+		ai_chance = {
+			base = @rt_event_emphasis_coercion_weight
+			modifier = { factor = @rt_event_ai_high_factor has_war = yes }
+			modifier = { factor = @rt_event_ai_high_factor check_variable = { random_terror_pressure > constant:random_terror_value.high } }
+			modifier = { factor = @rt_event_ai_low_factor has_government = democratic }
+		}
+		custom_effect_tooltip = random_terror_emphasis_coercion_tt
+		hidden_effect = { random_terror_choose_emphasis_coercion = yes }
+	}
+
+	option = {
 		name = chaosx.nr31.2.a
+		trigger = { has_country_flag = random_terror_emphasis_chosen }
 		ai_chance = { base = 100 }
 	}
 }

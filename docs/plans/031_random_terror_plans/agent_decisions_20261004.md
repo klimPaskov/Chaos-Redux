@@ -349,7 +349,7 @@ Before this change no state was ever marked recovering unless relief or a retake
 - Defects fixed on the way: Support Victims also set a permanent copy of its 60-day commitment flag, and Public Accounting and the response-cell AI read a failed-raid country flag that is only ever set on states; they now read `random_terror_failed_raid_memory`.
 - Restore Services keeps the one-row rule on the priority recovering state.
 
-### R31 Per-crisis and per-target guards replace once-per-game locks
+### R31 Per-crisis and per-target guards replace once-per-game locks (`d58858f2a`)
 
 Basis: the matrix cleanup column (Establish Response Cell "remove after final recovery", Negotiate Surrender "one settlement per actor", Expose and Quiet Leverage "evidence consumed or archived" and "closes on exposure or sponsor change", Absorb "transactional", Contest "clear contest state after result", Foreign Fighters "bounded intake, cooldown, no free loop", Join "leave or split only through valid route"), and the wiki rule that `fire_only_once` on a targeted decision locks each target for the rest of the game, which reused carrier tags and repeated crises turn into permanent locks.
 
@@ -361,3 +361,16 @@ Basis: the matrix cleanup column (Establish Response Cell "remove after final re
 - Absorb, Contest and Join keep one transaction in flight per target and remember a refusal or challenge per target with `<flag>_@<tag>` records, cleared in both directions when either command retires.
 - Recruit Foreign Fighters sets its flag for `foreign_fighters_cooldown_days` (180) through a `meta_effect` literal instead of permanently.
 - Terminal Counteroffensive and Accelerate the Revelation keep `fire_only_once`, because the terminal stage happens once per world.
+
+### R32 The incident report names its state, family and losses, and asks for a first emphasis
+
+Basis: Part 1 Opening shock ("one visible attack report tied to an exact state" that "establishes civilian harm, state damage, the apparent incident family, and the government's immediate choices"), Part 1 Assessment (protection, intelligence, victim support or rapid coercion, changing the available actions and the first operation without locking a doctrine), and Part 11's demand for exact state and incident context.
+
+- The report text follows the nine family groups of the picture selector plus its fallback, so text and art never disagree; the measured loss is the exact population loss already applied by the incident, and no number is shown when none was measured.
+- The four emphases each last 90 days, add a timed country modifier reusing the matching government decision icon (vanilla also uses decision sprites for dynamic modifiers, for example `yellow_river_blown`), and set a timed flag read by the matching decision family.
+  Each also has an immediate bounded effect on the reported state or on Response Legitimacy, with every value in the new `random_terror_emphasis` constants.
+- The hooks were chosen where the existing action already exists, so no new decision is added: Protective Cordons reuse the transport-protection odds for attacks on crowds and routes, Intelligence Priority opens Intelligence Sweep before a response cell and lifts the first raid by one band, Relief First keeps Support Victims beside a response cell and lets it weaken active cells, and Rapid Crackdown deepens Security Surge.
+- Later reports of the same crisis keep the single acknowledgement option.
+- Community rejection keeps the fallback picture but gets its own report text, because the fallback text describes the network claiming a district.
+- Each `random_terror_choose_emphasis_*` effect sets its own `random_terror_emphasis_duration` temp variable before using it; the shared begin helper only sets `random_terror_emphasis_chosen`, so no temp output crosses a scripted-effect return.
+- Route evidence: `hoi4.probability_inspect` with the `event_option_ai_chance` adapter returned "Invalid tool arguments" both with `candidatePool = ["chaosx.nr31.2"]` and with no other argument, and `hoi4.event_inspect` returned the same error for narrow `lint` and `trace` queries on `chaosx.nr31.9` and `chaosx.nr31.97`; the new option weights are reviewed in source only.

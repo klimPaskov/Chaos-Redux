@@ -37,6 +37,24 @@ Each affected government holds at most one pending hidden pulse (`chaosx.nr31.96
 `random_terror_schedule_country_pulse` reads `random_terror_incident_pulse_days` in the country's scope, which follows the Part 2 bands of its most severe owned state (about 60-90 days Active, 30-60 Entrenched, 15-35 Armed Insurgency or worse), is delayed by successful protection missions and accelerated by failed operations, high Terror Pressure and high Network Reach, then receives a random 0.8-1.2 spread and the band clamp.
 The pulse applies one incident through `random_terror_apply_incident` to a valid active state that is off cooldown, postpones itself when no state is eligible, reschedules only while the crisis stays active, stops while Event 31 is disabled in the Event Logs settings, and never touches repeatable weight, minor-event pacing or the Event Logs history.
 
+### Incident report and first emphasis
+
+Every incident stores its state (`random_terror_last_report_state`), family (`random_terror_last_report_incident_type`) and measured civilian loss (`random_terror_last_report_loss`, the exact population loss applied by `random_terror_apply_exact_state_loss`) on the struck state's controller before the report `chaosx.nr31.2` fires.
+The report title names the state, `GetRandomTerrorIncidentReportDesc` describes the family in the same nine groups and fallback as `GetRandomTerrorIncidentReportPicture`, so text and picture always agree (community rejection keeps the fallback picture with its own text), and `GetRandomTerrorIncidentReportLoss` adds the confirmed death toll only when one was measured.
+
+The opening report of a crisis offers the four first emphases of Part 1 Assessment; later reports of the same crisis keep one acknowledgement, and `random_terror_emphasis_chosen` resets when the crisis closes.
+Each emphasis lasts `random_terror_emphasis.days`, adds a timed country modifier from `031_random_terror_dynamic_modifiers.txt` with its decision family's icon, and sets a timed flag read by that family:
+
+| Emphasis | Immediate | While it lasts |
+| --- | --- | --- |
+| Protective Cordons (`random_terror_emphasis_protection`) | local pressure in the reported state falls by `protected_pressure_reduction` | attacks on crowds, rail and ports anywhere in the country strike the guards at the transport-protection odds; war support up, conscription down |
+| Intelligence Priority (`random_terror_emphasis_intelligence`) | none | Intelligence Sweep opens without a response cell, and the first Targeted Raid draws one outcome band higher (`random_terror_emphasis_first_raid`); civilian intelligence up, political power gain down |
+| Relief First (`random_terror_emphasis_victims`) | Response Legitimacy rises by `response_legitimacy_gain` | Support Victims stays open beside a response cell and also removes `state_activity_loss` where it lands; stability up, construction speed down |
+| Rapid Crackdown (`random_terror_emphasis_coercion`) | activity in the reported state falls by `state_activity_loss`, Response Legitimacy drops by `coercion_legitimacy_loss` | each Security Surge removes a further `state_activity_loss`; war support up, stability down |
+
+No emphasis closes any response, so the choice steers the opening without locking a doctrine.
+The AI weighs protection up for a capital or disrupted transport state, intelligence up after Evolution II or with high legitimacy, relief up after measured deaths or with middling legitimacy, and coercion up at war or under high pressure and down for democracies.
+
 Later evolutions add Network Reach, International Unity, territorial-control values, actor authority, external supply, strategic victories, and hidden apocalyptic readiness without changing the identity-neutral baseline targeting rules.
 
 Religion, ethnicity, nationality, refugee status, and ordinary ideology never increase baseline target or recruitment weight.

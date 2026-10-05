@@ -587,6 +587,9 @@ random_terror_apply_exact_state_loss = {
 random_terror_apply_incident = {
 	random_terror_initialize_global_state = yes
 	random_terror_initialize_state_state = yes
+	# The incident report names this state and any measured civilian loss.
+	set_temp_variable = { random_terror_report_state_id = THIS }
+	set_temp_variable = { random_terror_report_loss = constant:random_terror_value.zero }
 	if = {
 		limit = { has_global_flag = random_terror_evolution_2_unlocked }
 		set_state_flag = random_terror_transnational_link_active
@@ -693,6 +696,25 @@ random_terror_apply_incident = {
 		random_list = {
 			random_terror_draw_transport_foiled = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
 			random_terror_draw_transport_breached = { }
+		}
+	}
+	# Protective cordons (first emphasis) guard crowds and routes across the
+	# country: at the same odds an attack on them strikes the guards instead.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { random_terror_incident_type = constant:random_terror_incident.civilian_attack }
+				check_variable = { random_terror_incident_type = constant:random_terror_incident.transport_disruption }
+				check_variable = { random_terror_incident_type = constant:random_terror_incident.port_convoy_attack }
+			}
+			NOT = { random_terror_state_transport_protected = yes }
+			CONTROLLER = { has_country_flag = random_terror_emphasis_protection }
+		}
+		set_temp_variable = { random_terror_draw_cordon_foiled = constant:random_terror_runtime_weight.transport_protection_foiled }
+		set_temp_variable = { random_terror_draw_cordon_breached = constant:random_terror_runtime_weight.transport_protection_breached }
+		random_list = {
+			random_terror_draw_cordon_foiled = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
+			random_terror_draw_cordon_breached = { }
 		}
 	}
 	if = {
@@ -851,6 +873,7 @@ random_terror_apply_incident = {
 			}
 		}
 		random_terror_apply_exact_state_loss = yes
+		set_temp_variable = { random_terror_report_loss = state_civilian_population_loss_applied }
 	}
 	add_to_variable = { random_terror_state_pressure = random_terror_incident_pressure_delta }
 	clamp_variable = {
@@ -874,6 +897,8 @@ random_terror_apply_incident = {
 		random_terror_schedule_recovery_check = yes
 		add_to_variable = { random_terror_cycle_incident_count = constant:random_terror_value.one }
 		set_variable = { random_terror_last_report_incident_type = random_terror_incident_type }
+		set_variable = { random_terror_last_report_state = random_terror_report_state_id }
+		set_variable = { random_terror_last_report_loss = random_terror_report_loss }
 		set_temp_variable = { random_terror_pending_pressure_delta = random_terror_incident_pressure_delta }
 		random_terror_apply_pressure = yes
 		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_loss }
@@ -994,6 +1019,81 @@ random_terror_run_country_pulse = {
 		}
 		# A pulse with no eligible site is postponed rather than redirected.
 		random_terror_schedule_country_pulse = yes
+	}
+}
+
+# COUNTRY scope: the government choosing its first emphasis in the opening
+# incident report of a crisis (chaosx.nr31.2).  Each choice lasts
+# random_terror_emphasis.days, adds its timed country modifier and a timed
+# flag read by the matching decision family, and acts at once on the
+# reported state (random_terror_last_report_state).  Nothing locks a doctrine:
+# every response stays available, and the emphasis simply ends.  Each
+# choose effect owns its random_terror_emphasis_duration temp variable.
+random_terror_emphasis_begin = {
+	set_country_flag = random_terror_emphasis_chosen
+}
+
+random_terror_choose_emphasis_protection = {
+	set_temp_variable = { random_terror_emphasis_duration = constant:random_terror_emphasis.days }
+	random_terror_emphasis_begin = yes
+	add_dynamic_modifier = { modifier = random_terror_emphasis_protection days = random_terror_emphasis_duration }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_emphasis_protection days = [EMPHASIS_DAYS] } }
+		EMPHASIS_DAYS = "[?random_terror_emphasis_duration|.0]"
+	}
+	if = {
+		limit = { has_variable = random_terror_last_report_state }
+		var:random_terror_last_report_state = {
+			subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
+			clamp_variable = { var = random_terror_state_pressure min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+			random_terror_update_state_stage = yes
+		}
+	}
+}
+
+random_terror_choose_emphasis_intelligence = {
+	set_temp_variable = { random_terror_emphasis_duration = constant:random_terror_emphasis.days }
+	random_terror_emphasis_begin = yes
+	add_dynamic_modifier = { modifier = random_terror_emphasis_intelligence days = random_terror_emphasis_duration }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = random_terror_emphasis_intelligence days = [EMPHASIS_DAYS] }
+			set_country_flag = { flag = random_terror_emphasis_first_raid days = [EMPHASIS_DAYS] }
+		}
+		EMPHASIS_DAYS = "[?random_terror_emphasis_duration|.0]"
+	}
+}
+
+random_terror_choose_emphasis_victims = {
+	set_temp_variable = { random_terror_emphasis_duration = constant:random_terror_emphasis.days }
+	random_terror_emphasis_begin = yes
+	add_dynamic_modifier = { modifier = random_terror_emphasis_victims days = random_terror_emphasis_duration }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_emphasis_victims days = [EMPHASIS_DAYS] } }
+		EMPHASIS_DAYS = "[?random_terror_emphasis_duration|.0]"
+	}
+	set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_gain }
+	random_terror_apply_legitimacy = yes
+}
+
+random_terror_choose_emphasis_coercion = {
+	set_temp_variable = { random_terror_emphasis_duration = constant:random_terror_emphasis.days }
+	random_terror_emphasis_begin = yes
+	add_dynamic_modifier = { modifier = random_terror_emphasis_coercion days = random_terror_emphasis_duration }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_emphasis_coercion days = [EMPHASIS_DAYS] } }
+		EMPHASIS_DAYS = "[?random_terror_emphasis_duration|.0]"
+	}
+	set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_emphasis.coercion_legitimacy_loss }
+	multiply_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_value.negative_one }
+	random_terror_apply_legitimacy = yes
+	if = {
+		limit = { has_variable = random_terror_last_report_state }
+		var:random_terror_last_report_state = {
+			set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_loss }
+			multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.negative_one }
+			random_terror_add_state_activity = yes
+		}
 	}
 }
 
@@ -3381,8 +3481,14 @@ random_terror_decision_support_victims = {
 			random_terror_achievement_record_victim_support = yes
 			random_terror_initialize_state_state = yes
 			subtract_from_variable = { random_terror_state_pressure = constant:random_terror_tuning.protected_pressure_reduction }
+			# Relief First (first emphasis) also starves active cells of support.
 			if = {
-				limit = { has_state_flag = random_terror_state_recovery }
+				limit = {
+					OR = {
+						has_state_flag = random_terror_state_recovery
+						ROOT = { has_country_flag = random_terror_emphasis_victims }
+					}
+				}
 				subtract_from_variable = { random_terror_state_activity = constant:random_terror_tuning.state_activity_loss }
 			}
 			clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -3404,6 +3510,18 @@ random_terror_decision_intelligence_sweep = {
 
 random_terror_decision_security_surge = {
 	random_terror_response_reduce_target = yes
+	# Rapid Crackdown (first emphasis): the surge hits the cell harder.
+	if = {
+		limit = {
+			has_country_flag = random_terror_emphasis_coercion
+			has_event_target = random_terror_action_state
+		}
+		event_target:random_terror_action_state = {
+			set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_loss }
+			multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.negative_one }
+			random_terror_add_state_activity = yes
+		}
+	}
 	random_terror_response_raise_legitimacy = yes
 	set_country_flag = random_terror_security_surge_active
 	random_terror_response_action_lock = yes
@@ -4726,6 +4844,19 @@ random_terror_resolve_targeted_raid_outcome = {
 					}
 				}
 				set_temp_variable = { random_terror_raid_band = constant:random_terror_intensity.low }
+			}
+			# Intelligence Priority (first emphasis): the first raid of the period
+			# draws on better information, one band up.
+			if = {
+				limit = { ROOT = { has_country_flag = random_terror_emphasis_first_raid } }
+				if = {
+					limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.low } }
+					set_temp_variable = { random_terror_raid_band = constant:random_terror_intensity.medium }
+				}
+				else = {
+					set_temp_variable = { random_terror_raid_band = constant:random_terror_intensity.high }
+				}
+				ROOT = { clr_country_flag = random_terror_emphasis_first_raid }
 			}
 			set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success }
 			if = {
@@ -6700,6 +6831,7 @@ random_terror_close_country_recovery = {
 random_terror_reset_crisis_cycle = {
 	clr_country_flag = random_terror_reconstruction_available
 	clr_country_flag = random_terror_affected_country
+	clr_country_flag = random_terror_emphasis_chosen
 	clr_country_flag = random_terror_response_cell_active
 	clr_country_flag = random_terror_response_action_recorded
 	clr_country_flag = random_terror_services_restored

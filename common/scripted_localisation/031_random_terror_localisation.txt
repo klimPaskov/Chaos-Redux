@@ -88,6 +88,107 @@ defined_text = {
 	text = { localization_key = GFX_report_event_031_random_terror_armed_enclave_captured_town }
 }
 
+# COUNTRY scope: the incident report text (chaosx.nr31.2), grouped exactly as
+# GetRandomTerrorIncidentReportPicture groups the families, so text and
+# picture always agree.
+defined_text = {
+	name = GetRandomTerrorIncidentReportDesc
+	text = {
+		trigger = { check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.transport_disruption } }
+		localization_key = random_terror_incident_report_transport
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.civilian_attack }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.copycat }
+			}
+		}
+		localization_key = random_terror_incident_report_crowd
+	}
+	text = {
+		trigger = { check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.relief_strain } }
+		localization_key = random_terror_incident_report_relief
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.depot_sabotage }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.arms_theft }
+			}
+		}
+		localization_key = random_terror_incident_report_depot
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.intelligence_breakthrough }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.joint_operation }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.sponsor_evidence }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.sponsor_exposure }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.failed_raid }
+			}
+		}
+		localization_key = random_terror_incident_report_documents
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.smuggling_corridor }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.training_area }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.port_convoy_attack }
+			}
+		}
+		localization_key = random_terror_incident_report_corridor
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.defection }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.military_defection }
+			}
+		}
+		localization_key = random_terror_incident_report_defection
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.rival_organization }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.cannibal_clash }
+			}
+		}
+		localization_key = random_terror_incident_report_rivals
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.official_assassination_attempt }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.hostage_crisis }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.security_site_attack }
+				check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.capital_infiltration }
+			}
+		}
+		localization_key = random_terror_incident_report_public_building
+	}
+	# Community rejection keeps the fallback picture but has its own text.
+	text = {
+		trigger = { check_variable = { random_terror_last_report_incident_type = constant:random_terror_incident.community_rejection } }
+		localization_key = random_terror_incident_report_rejection
+	}
+	text = { localization_key = random_terror_incident_report_claim }
+}
+
+# COUNTRY scope: the measured civilian loss line of the incident report, or
+# nothing when no death has been confirmed.
+defined_text = {
+	name = GetRandomTerrorIncidentReportLoss
+	text = {
+		trigger = { check_variable = { random_terror_last_report_loss > constant:random_terror_value.zero } }
+		localization_key = random_terror_incident_report_loss
+	}
+	text = { localization_key = random_terror_incident_report_no_loss }
+}
+
 # COUNTRY scope: Terror Pressure band (Part 1 ranges).
 defined_text = {
 	name = GetRandomTerrorPressureBand
