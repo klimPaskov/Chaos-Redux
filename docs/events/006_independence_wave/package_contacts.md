@@ -152,6 +152,22 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-106 | EBX | FRA | The Aro trading posts of the Cameroon border |
 | IW-107 | BIA | ENG | The colonial Eastern Provinces administration |
 | IW-107 | BIA | SPR | The labour contracts on the cocoa farms of Fernando Po |
+| IW-108 | UGA | ENG | The 1900 Uganda Agreement with the Kabaka's government |
+| IW-108 | UGA | RAJ | The Indian merchant and ginnery community of Kampala |
+| IW-110 | RWA | BEL | The Belgian mandate administration and its missions |
+| IW-110 | RWA | ENG | Seasonal labour migration to Buganda and Tanganyika |
+| IW-111 | BRD | BEL | The Belgian mandate administration and its missions |
+| IW-111 | BRD | ENG | Labour migration and trade across the Tanganyika border |
+| IW-113 | HAR | ENG | The caravan trade to Zeila and Berbera in British Somaliland |
+| IW-113 | HAR | ITA | The Italian East Africa administration and its Dire Dawa railway |
+| IW-113 | HAR | EGY | The Egyptian occupation of Harar from 1875 to 1885 |
+| IW-114 | AFA | ITA | The 1936 accommodation between the Sultan of Aussa and Italy |
+| IW-114 | AFA | FRA | The caravan trade to Djibouti in French Somaliland |
+| IW-115 | SOM | ITA | Somali clans across the border in Italian Somaliland |
+| IW-115 | SOM | YEM | The livestock trade across the Gulf of Aden |
+| IW-115 | SOM | ENG | The protectorate treaties with the Somali sultans |
+| IW-119 | TIG | ITA | The Italian colony of Eritrea and the Tigrinya-speaking highlands across the Mareb |
+| IW-119 | TIG | EGY | The Ethiopian church under the Coptic Patriarch of Alexandria |
 
 The bases are relationships on record for the 1918 to 1939 period: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade.
 A package admitted later adds its own row to the registry in the same change.

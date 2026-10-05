@@ -161,3 +161,12 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Oyo, Kanem-Bornu, the Aro Confederacy and the Biafran regional state can now appear in Independence Waves, Join conversions and Every Banner Rises launches; a wave releases at most one Nigerian country.
 - Oyo and Kanem-Bornu each have a starting problem, their own decisions and two incidents of their own.
 - Fante, the Benin Kingdom, the Hausa Federation, Luba and Lunda remain unavailable.
+
+
+## 2026-10-05: East Africa, Horn and Great Lakes packages (D28)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Buganda, Rwanda, Burundi, Harar, the Afar state, Somaliland and Tigray can now appear in Independence Waves, Join conversions and Every Banner Rises launches.
+- Buganda, Rwanda, Burundi, Harar, Somaliland and Tigray each have a starting problem, their own decisions and two incidents of their own.
+- Bunyoro, Ankole, Zanzibar, Kilwa, the Maasai regional state and the Oromo regional federation remain unavailable.

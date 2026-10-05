@@ -72,6 +72,18 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 | Oyo (IW-097) | `chaosx.nr6.211` | The Cocoa Buyers | Back the farmers' hold-up; Sell through the buying pool |
 | Kanem-Bornu (IW-099) | `chaosx.nr6.212` | The Scholars of Kukawa | Fund the Kukawa schools; Open state schools in Maiduguri |
 | Kanem-Bornu (IW-099) | `chaosx.nr6.213` | Salt from Bilma | Let the caravans pass free; Tax the caravans at the lake |
+| Buganda (IW-108) | `chaosx.nr6.214` | The Bataka Petition | Hear the clan heads; Uphold the estate titles |
+| Buganda (IW-108) | `chaosx.nr6.215` | The Cotton Ginneries | Set a minimum price for the growers; Leave the price to the ginners |
+| Rwanda (IW-110) | `chaosx.nr6.216` | The Coffee Quotas | End the compulsory quotas; Keep the quotas for export |
+| Rwanda (IW-110) | `chaosx.nr6.217` | Hunger in the Hills | Open the royal granaries; Ask the missions to distribute grain |
+| Burundi (IW-111) | `chaosx.nr6.218` | The Festival of the Sorghum | Hold the festival at court; Keep the ceremony modest |
+| Burundi (IW-111) | `chaosx.nr6.219` | Recruiters from the Mines | Allow the recruiters; Ban the recruiters |
+| Harar (IW-113) | `chaosx.nr6.220` | The Coffee of the Harar Hills | Found a coffee board; Leave the trade to the merchants |
+| Harar (IW-113) | `chaosx.nr6.221` | The Shrines of the City | Protect every shrine and church alike; Restore the shrines first |
+| Somaliland sultanate federation (IW-115) | `chaosx.nr6.222` | The Livestock Ships to Aden | Tax the livestock exports; Let the herders trade free |
+| Somaliland sultanate federation (IW-115) | `chaosx.nr6.223` | The Dervish Veterans | Honour the Dervish veterans; Keep them out of the council |
+| Tigray (IW-119) | `chaosx.nr6.224` | The Salt Bars of the Plain | Tax the salt caravans; Let the salt pass untaxed |
+| Tigray (IW-119) | `chaosx.nr6.225` | The Clergy of Aksum | Give the clergy a seat; Keep the church outside the council |
 
 ## Files
 

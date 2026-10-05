@@ -725,3 +725,25 @@ Formables: FORM-24 West African Federation and FORM-25 Sahel Confederation stay 
 Validation: the allocator audit passes with 60 attested packages, 47 reservation groups and 61 adapters (expected sets, the closure text and the shared-anchor exception updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
 
 Needs live game: a wave that releases one Nigerian framework row from Britain through the dynamic-country path, and the Oyo and Bornu decision and incident flow.
+
+
+## D28. Round 2: East Africa, Horn and Great Lakes tranche
+
+Disposition: `implemented` for IW-108 Buganda (UGA), IW-110 Rwanda (RWA), IW-111 Burundi (BRD), IW-113 Harar (HAR), IW-114 Afar state (AFA), IW-115 Somaliland sultanate federation (SOM) and IW-119 Tigray (TIG); `blocked` for IW-109, IW-112, IW-116, IW-117, IW-118 and IW-120.
+
+Basis: the lead's round-2 priority-15 item, using the D25 regional framework engine.
+
+Decisions:
+
+- All seven are vanilla tags released from their vanilla cores, so no release branch is needed. Rwanda keeps Mwami Mutara III Rudahigwa, Burundi Mwami Mwambutsa IV and the Afar state Sultan Mohamed Yayyo of Aussa. Vanilla UGA, HAR, SOM and TIG have no country-leader characters, so the game appoints the leader of their opening government (the D20 and D22 rule).
+- Six Level 2 layers, each with a starting problem, three paid projects and two incidents (`chaosx.nr6.214` to `.225`), grounded in the row's history: the Lukiiko and the 1900 mailo land titles in Buganda; the redrawn chiefdoms, the ubuhake cattle contracts and Lake Kivu in Rwanda; the Bezi and Batare princely houses and Lake Tanganyika in Burundi; the walled city, its merchants and the Zeila road in Harar; rival sultans, Berbera and the grazing wells in Somaliland; the princely houses, the church lands of Aksum and the highland passes in Tigray. The Afar state is Level 1. The full description is in `docs/events/006_independence_wave/east_africa_packages.md`.
+- Texts that touch community questions (the Rwandan court and chiefdoms, the shrines of Harar, the Dervish veterans) describe institutions and choices, never a community as the problem.
+- Contacts: UGA ENG and RAJ; RWA BEL and ENG; BRD BEL and ENG; HAR ENG, ITA and EGY; AFA ITA and FRA; SOM ITA, YEM and ENG; TIG ITA and EGY.
+
+Blocked rows: IW-109 Bunyoro, IW-112 Ankole, IW-116 Zanzibar, IW-117 Kilwa restoration and IW-120 Oromo regional federation have no planner gate, loader or reservation (each needs a distinct map state or a named community package); IW-118 Maasai is an unresearched reservation with no history or names.
+
+Formables: FORM-27 Great Lakes Federation, FORM-28 East African Federation and FORM-29 Horn League State stay closed (no carrier tag, member contract, consent rule, territory proof or flag, and not in the commit allowlist). FORM-27 now has three admitted candidate members (UGA, RWA, BRD) and FORM-29 four (HAR, AFA, SOM, TIG), so their carrier contracts are the natural next formable work.
+
+Validation: the allocator audit passes with 67 attested packages, 49 reservation groups and 68 adapters (expected sets and counts updated); brace balance is 0 on every touched file; every referenced trigger, effect, constant and localisation key exists.
+
+Needs live game: a wave that releases one Great Lakes and one Horn row, and the decision and incident flow of a Level 2 row.
