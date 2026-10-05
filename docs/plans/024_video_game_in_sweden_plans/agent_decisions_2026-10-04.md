@@ -492,3 +492,15 @@ Decision: both sites set the normal country variable `video_game_in_sweden_timed
 Trace: fixture case `test_timed_ideas_read_a_normal_variable` finds exactly two Event 24 `add_timed_idea` calls, each with `var:` days set from a timing constant in the same block; every fixture case passes.
 Basis: round 4 lead decision 3, vanilla precedents above.
 Disposition: `implemented`; the idea expiring after 365 days in recovery and 120 days after an ordinary conclusion is needs_live_game.
+
+### R4-4. A licence partner whose reply was dropped is released
+
+Finding: `video_game_in_sweden_dispatch_foreign_response` raises the response count and sends `chaosx.nr24.40` to the partner one day later. That event's trigger requires the partner to exist, not to have capitulated and not to be at war with Sweden, so the engine drops it if any of these breaks inside the window. Only the `.40` options, the dispatch fallback and programme closure cleared the global target `video_game_in_sweden_foreign_partner`, and `video_game_foreign_licenses` is visible only while that target is absent, so the licence row disappeared for the rest of Evolution II.
+Decision:
+- The dispatch fallback's cleanup is now the shared helper `video_game_in_sweden_release_foreign_partner` (clear the partner's `video_game_in_sweden_foreign_response_pending` flag and the global target), with unchanged behaviour.
+- The new `video_game_in_sweden_release_unreachable_foreign_partner` runs in the existing 30-day maintenance and calls that helper when the target is set and the partner no longer exists, has capitulated or is at war with the host, the same conditions under which `.40` is dropped. A partner that can still answer, including one with an unanswered `.40`, is never touched.
+- The spent response count is not refunded, so the three-response cap of spec part 2 can never be exceeded; the released partner keeps `video_game_in_sweden_foreign_response_seen` and is not drawn again. No new periodic hook or world iteration is added (CLAUDE.md 1.8).
+Residual risk: a human foreign partner with an open `.40` popup who then goes to war with Sweden is released, and if Sweden licenses a new partner before that popup is answered, the late answer's resolve helper clears the new partner's target; the row then becomes available again on its own. This needs a multiplayer foreign partner and is left as is.
+Trace (fixture case `test_unreachable_licence_partner_is_released_by_maintenance`, every fixture case passes): a valid pending partner keeps its flag and the target; a vanished, capitulated or warring partner loses both; the response count stays at its spent value; maintenance contains the call.
+Basis: spec part 2 foreign response pool, round 4 lead decision 4.
+Disposition: `implemented`; the dropped reply itself is needs_live_game.

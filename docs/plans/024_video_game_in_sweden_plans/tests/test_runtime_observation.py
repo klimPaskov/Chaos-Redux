@@ -612,6 +612,27 @@ class ObservationSourceTests(unittest.TestCase):
                     self.assertTrue(setter and setter[-1].body[0].body.startswith("constant:video_game_in_sweden_timing."))
         self.assertEqual(sites, 2)
 
+    def test_unreachable_licence_partner_is_released_by_maintenance(self):
+        # R4-4: chaosx.nr24.40 is dropped when its partner is gone, has
+        # capitulated or is at war with Sweden; maintenance then frees the row.
+        maintenance = life.APIS["video_game_in_sweden_maintenance"]
+        self.assertTrue(any(n.key == "video_game_in_sweden_release_unreachable_foreign_partner"
+                            for n in life.walk(maintenance.body)))
+        for exists, capitulated, at_war, released in ((True, False, False, False), (False, False, False, True),
+                                                      (True, True, False, True), (True, False, True, True)):
+            model = self.model()
+            model.targets.update({"video_game_in_sweden_host": "SWE", "video_game_in_sweden_foreign_partner": "GER"})
+            model.flags["GER"] = {"video_game_in_sweden_foreign_response_pending", "video_game_in_sweden_foreign_response_seen"}
+            model.saved[("SWE", "video_game_in_sweden_foreign_response_count")] = Decimal(2)
+            model.facts.update({("GER", "exists", "yes"): exists, ("GER", "has_capitulated", "yes"): capitulated,
+                                ("GER", "has_war_with", "event_target:video_game_in_sweden_host"): at_war})
+            model.call("video_game_in_sweden_release_unreachable_foreign_partner")
+            self.assertEqual("video_game_in_sweden_foreign_partner" in model.targets, not released)
+            self.assertEqual("video_game_in_sweden_foreign_response_pending" in model.flags["GER"], not released)
+            # The spent response is not refunded and a seen partner is not drawn again.
+            self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_response_count")], Decimal(2))
+            self.assertIn("video_game_in_sweden_foreign_response_seen", model.flags["GER"])
+
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
         model.targets["video_game_in_sweden_host"] = "SWE"

@@ -3739,16 +3739,40 @@ video_game_in_sweden_dispatch_foreign_response = {
 		}
 	}
 	else = {
-		if = {
-			limit = { has_event_target = video_game_in_sweden_foreign_partner }
-			event_target:video_game_in_sweden_foreign_partner = {
-				clr_country_flag = video_game_in_sweden_foreign_response_pending
+		video_game_in_sweden_release_foreign_partner = yes
+	}
+}
+
+# ANY scope. Clears the partner's pending reply and the partner pointer, which
+# makes the Foreign Licenses row available again while responses remain.
+video_game_in_sweden_release_foreign_partner = {
+	if = {
+		limit = { has_event_target = video_game_in_sweden_foreign_partner }
+		event_target:video_game_in_sweden_foreign_partner = {
+			clr_country_flag = video_game_in_sweden_foreign_response_pending
+		}
+		clear_global_event_target = video_game_in_sweden_foreign_partner
+	}
+}
+
+# COUNTRY scope (host), from maintenance. The reply event `chaosx.nr24.40` is
+# dropped when its partner no longer exists, has capitulated or is at war with
+# Sweden before it opens, and nothing else would then release the partner. Such
+# a partner is released; one that can still answer is never touched. A
+# response already sent stays counted, so the response cap holds.
+video_game_in_sweden_release_unreachable_foreign_partner = {
+	if = {
+		limit = {
+			has_event_target = video_game_in_sweden_foreign_partner
+			NOT = {
+				event_target:video_game_in_sweden_foreign_partner = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					NOT = { has_war_with = event_target:video_game_in_sweden_host }
+				}
 			}
 		}
-		if = {
-			limit = { has_event_target = video_game_in_sweden_foreign_partner }
-			clear_global_event_target = video_game_in_sweden_foreign_partner
-		}
+		video_game_in_sweden_release_foreign_partner = yes
 	}
 }
 
@@ -4193,6 +4217,7 @@ video_game_in_sweden_maintenance = {
 			}
 		}
 		video_game_in_sweden_check_ridicule_embarrassment = yes
+		video_game_in_sweden_release_unreachable_foreign_partner = yes
 		if = {
 			limit = {
 				has_country_flag = video_game_in_sweden_reality_audit_active
