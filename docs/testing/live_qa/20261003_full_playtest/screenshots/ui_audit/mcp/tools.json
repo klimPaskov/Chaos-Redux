@@ -1,0 +1,444 @@
+{
+  "description": "Read-only excerpt of the initialized 3.8.1 tools/list response. Unrelated tool/output schemas omitted.",
+  "exposedToolNames": [
+    "hoi4.focus_inspect",
+    "hoi4.focus_render",
+    "hoi4.focus_raster",
+    "hoi4.focus_rewrite",
+    "hoi4.gui_inspect",
+    "hoi4.gui_render",
+    "hoi4.gui_rewrite",
+    "hoi4.map_inspect",
+    "hoi4.map_render",
+    "hoi4.map_rewrite",
+    "hoi4.reference_search",
+    "hoi4.reference_read",
+    "hoi4.reference_context",
+    "hoi4.source_lookup",
+    "hoi4.script_validate",
+    "hoi4.event_inspect",
+    "hoi4.event_render",
+    "hoi4.event_compare",
+    "hoi4.impact_inspect",
+    "hoi4.decision_inspect",
+    "hoi4.mechanic_test",
+    "hoi4.package_check",
+    "hoi4.scenario_test",
+    "hoi4.tech_inspect",
+    "hoi4.tech_render",
+    "hoi4.tech_compare",
+    "hoi4.probability_inspect",
+    "hoi4.probability_evaluate",
+    "hoi4.probability_sweep",
+    "hoi4.probability_simulate",
+    "hoi4.probability_sequence",
+    "hoi4.probability_compare",
+    "hoi4.probability_render",
+    "hoi4.job_inspect",
+    "hoi4.job_cancel"
+  ],
+  "inputSchemas": {
+    "hoi4.gui_inspect": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "windowName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "scenario": {
+          "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+        },
+        "relatedScenarios": {
+          "maxItems": 32,
+          "type": "array",
+          "items": {
+            "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+          }
+        },
+        "generatedScenarios": {
+          "description": "GUI generated-scenario options."
+        }
+      },
+      "additionalProperties": false
+    },
+    "hoi4.gui_render": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "windowName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "scenario": {
+          "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+        },
+        "states": {
+          "maxItems": 14,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "hover",
+              "selected",
+              "locked",
+              "disabled",
+              "warning",
+              "active",
+              "completed",
+              "empty-list",
+              "full-list",
+              "minimum-value",
+              "maximum-value",
+              "long-text",
+              "missing-localisation"
+            ]
+          }
+        },
+        "resolutions": {
+          "minItems": 1,
+          "maxItems": 16,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 320,
+                "maximum": 16384
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 16384
+              },
+              "uiScale": {
+                "description": "In-game UI scale for this resolution. Use 1 at 1920x1080; do not use it to enlarge an artifact.",
+                "type": "number",
+                "minimum": 0.25,
+                "maximum": 4
+              }
+            },
+            "required": [
+              "width",
+              "height"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "relatedScenarios": {
+          "maxItems": 32,
+          "type": "array",
+          "items": {
+            "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+          }
+        },
+        "generatedScenarios": {
+          "description": "GUI generated-scenario options."
+        },
+        "comparisonScenario": {
+          "description": "GUI preview scenario; optional date and controls {stateId: controllerTag}."
+        },
+        "sourceBaseline": {
+          "description": "Previous mod-owned .gui source for a matched source comparison using the requested scenario.",
+          "type": "object",
+          "properties": {
+            "relativePath": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "source": {
+              "type": "string",
+              "maxLength": 33554432
+            }
+          },
+          "required": [
+            "relativePath",
+            "source"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "windowName",
+        "scenario"
+      ],
+      "additionalProperties": false
+    },
+    "hoi4.reference_search": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "query": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160
+        },
+        "sources": {
+          "minItems": 1,
+          "maxItems": 3,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "game_doc",
+              "wiki",
+              "script_doc"
+            ]
+          }
+        },
+        "limit": {
+          "default": 6,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "additionalProperties": false
+    },
+    "hoi4.reference_read": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "game_doc",
+            "wiki",
+            "script_doc"
+          ]
+        },
+        "startLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "startColumn": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxLines": {
+          "default": 40,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 80
+        }
+      },
+      "required": [
+        "id",
+        "revision"
+      ],
+      "additionalProperties": false
+    },
+    "hoi4.reference_context": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "surface": {
+          "type": "string",
+          "enum": [
+            "general",
+            "event",
+            "decision",
+            "idea",
+            "focus",
+            "technology",
+            "gui",
+            "map",
+            "localisation",
+            "ai"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 160
+        },
+        "limit": {
+          "default": 16,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 24
+        }
+      },
+      "required": [
+        "surface"
+      ],
+      "additionalProperties": false
+    },
+    "hoi4.source_lookup": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "default": "current",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$"
+        },
+        "includeReferences": {
+          "default": true,
+          "type": "boolean"
+        },
+        "maxDefinitions": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "maxReferences": {
+          "default": 10,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "maxLines": {
+          "default": 30,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 80
+        },
+        "keyPath": {
+          "maxItems": 24,
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1024
+                  },
+                  "occurrence": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000
+                  }
+                },
+                "required": [
+                  "key"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "index": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000
+                  }
+                },
+                "required": [
+                  "index"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "view": {
+          "default": "source",
+          "type": "string",
+          "enum": [
+            "source",
+            "structure"
+          ]
+        },
+        "maxChildren": {
+          "default": 20,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 40
+        },
+        "childOffset": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "fromLine": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "fromColumn": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "expectedRevision": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

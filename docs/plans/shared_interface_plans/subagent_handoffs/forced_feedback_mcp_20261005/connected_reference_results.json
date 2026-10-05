@@ -1,0 +1,114 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+        }
+      ],
+      "structuredContent": {
+        "status": "ok",
+        "code": "OK",
+        "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+        "filesScanned": [],
+        "proposedFiles": [],
+        "changedFiles": [],
+        "diagnostics": [],
+        "artifacts": [],
+        "validation": {
+          "passed": true,
+          "checks": []
+        },
+        "blockers": [],
+        "data": {
+          "id": "1f4546bec1afc40d54e3560aed92b5add03afd3efe6fc0b5aee7a58a323baf61",
+          "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+          "source": "game_doc",
+          "title": "effects documentation",
+          "heading": "country_event",
+          "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+          "startLine": 2943,
+          "endLine": 2967,
+          "excerpt": "## country_event * Supported Scopes: COUNTRY",
+          "authority": "Installed game documentation",
+          "sectionStartLine": 2943,
+          "sectionEndLine": 2967,
+          "startColumn": 1,
+          "text": "## country_event\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none\n\n```\nFires a country event.\nExample:\ncountry_event = {\n\tid = germany.75 # The event to fire.\n\t# Optional Fields:\n\thours = 12 # The number of hours to wait before firing the event.\n\tdays = 5 # The number of days to wait before firing the event.\n\tmonths = 1 # The number of months to wait before firing the event, where a month is treated as 30 days.\n\t# Note:  hours, days, and months can all be used and will simply be added together.\n\trandom_hours = 18 # A random amount of hours to be added to the delay before firing, from 0 up to but not including random_hours.\n\trandom_days = 2 # A random amount of days to be added to the delay before firing, from 0 up to but one hour less than random_days.\n\t# Note:  random_hours and random_days can both be used and will simply be added together.\n\trandom = 6 # Equivalent to random_hours; preserverd for backwards compatibility.\n\trandom = { chance = 50 ... } # Specify a set of child effects to execute as part of this effect, with a percentage chance of randomly happening or not (as a group, not individually).\n\ttooltip = germany.75.t # Manually specify which tooltip to use for this effect.\n}\n\n```\n",
+          "nextLine": null,
+          "nextColumn": null
+        }
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+        }
+      ],
+      "structuredContent": {
+        "status": "ok",
+        "code": "OK",
+        "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+        "filesScanned": [],
+        "proposedFiles": [],
+        "changedFiles": [],
+        "diagnostics": [],
+        "artifacts": [],
+        "validation": {
+          "passed": true,
+          "checks": []
+        },
+        "blockers": [],
+        "data": {
+          "id": "0cf822e7a14ffa87db1496f17fc62e32702d4df813922c50fbe288c58385cbc2",
+          "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+          "source": "wiki",
+          "title": "Data structures",
+          "heading": "Regular event targets",
+          "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+          "startLine": 303,
+          "endLine": 328,
+          "excerpt": "### Regular event targets <a id=\"Regular_event_targets\"></a> Regular event targets can be declared using `save_event_target_as = my_event_target` as an effect. The difference between regular and global event targets is in when they get cleared. While global event targets are used forever and can onl",
+          "authority": "Offline Paradox Wiki snapshot",
+          "sectionStartLine": 303,
+          "sectionEndLine": 328,
+          "startColumn": 1,
+          "text": "### Regular event targets <a id=\"Regular_event_targets\"></a>\n\nRegular event targets can be declared using `save_event_target_as = my_event_target` as an effect. The difference between regular and global event targets is in when they get cleared. While global event targets are used forever and can only be cleared manually, regular event targets only last as long as the effect block does (carrying over into events fired within as well), clearing automatically afterwards, and there is no way to clear them manually.\n\nFor example, this in an effect block will save a random owned and controlled state as the event target `target_state` and then fire the event mod_event.0 in 10 days:\n\n```text\nrandom_owned_controlled_state = {\n    save_event_target_as = target_state\n}\ncountry_event = { id = mod_event.0 days = 10 }\n```\n\nAssuming no other events, this event target will only exist within this effect block and the event mod_event.0 (Where it can be used in its corresponding trigger or effect blocks). If the event mod_event.0 fires another event within a corresponding effect block, this event target will exist in that event as well, meaning that this carries over to the entire mod_event.0-starting event chain. For example, the generic event generic.23 (`[From.GetNameDefCap]` Demands Control of `[demanded_prov_target.GetName]`) uses this with demanded_prov_target as the event target. In order to make ROOT demand the state 123 from TAG using this, this effect block will be used:\n\n```text\n123 = {\n    save_event_target_as = demanded_prov_target\n}\nTAG = {\n    country_event = generic.23\n}\n```\n\nEvent targets can be used in *most* effect blocks, they are called event targets only because they carry over to events. However, there are a few effect blocks, such as scripted diplomatic actions, where event targets are impossible to set.\n",
+          "nextLine": null,
+          "nextColumn": null
+        }
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.reference_search`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "MCP error -32602: Input validation error: Invalid arguments for tool hoi4.event_inspect: Invalid discriminator value. Expected 'event' | 'namespace' | 'file' | 'source' | 'node' | 'manifest' at selector.kind"
+        }
+      ],
+      "isError": true
+    }
+  }
+]

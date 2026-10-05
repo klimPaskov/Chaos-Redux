@@ -1,0 +1,24 @@
+# Shared country-scope failure report for a Settings manual-event request.
+# The dispatch chain owns the regular chaosx_manual_event_requester target.
+# The requester owns the request window and the per-request report receipt.
+# Required caller-set temporary input: chaosx_forced_event_failure_reason,
+# assigned from constant:forced_event_feedback_reason.<reason> before effect=yes.
+# Set the receipt before firing so repeated failures produce only one report.
+chaosx_report_forced_event_failure = {
+	if = {
+		limit = {
+			has_event_target = chaosx_manual_event_requester
+			event_target:chaosx_manual_event_requester = {
+				exists = yes
+				is_ai = no
+				has_country_flag = chaosx_manual_event_requested
+				NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+			}
+		}
+		event_target:chaosx_manual_event_requester = {
+			set_variable = { chaosx_manual_event_failure_reason = chaosx_forced_event_failure_reason }
+			set_country_flag = chaosx_manual_event_failure_shown
+			country_event = { id = chaosx_forced_event_feedback.1 }
+		}
+	}
+}

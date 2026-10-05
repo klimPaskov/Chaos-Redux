@@ -4006,6 +4006,17 @@ fire_event_by_temp_id = {
 
 fire_event_by_temp_id_no_cluster = {
 	set_temp_variable = { efh_prefire_ready = 0 }
+	# Bind the requesting player before an owner performs its target checks.
+	if = {
+		limit = {
+			check_variable = { events_log_manual_event_detail_trigger > 0 }
+			NOT = { has_country_flag = event_cluster_member_fire_context }
+		}
+		save_event_target_as = chaosx_manual_event_requester
+		clr_country_flag = chaosx_manual_event_failure_shown
+		set_temp_variable = { manual_event_request_window_days = constant:forced_event_feedback_timing.request_window_days }
+		set_country_flag = { flag = chaosx_manual_event_requested days = manual_event_request_window_days }
+	}
 	# Input: temp variable `event_id`
 	set_temp_variable = { event_single_fire_allowed = 1 }
 	set_temp_variable = { event_fire_dispatched = 0 }
@@ -4528,6 +4539,15 @@ fire_event_by_temp_id_no_cluster = {
 
 			update_last_fired_event_display = yes
 		}
+	}
+	if = {
+		limit = {
+			check_variable = { events_log_manual_event_detail_trigger > 0 }
+			NOT = { has_country_flag = event_cluster_member_fire_context }
+			NOT = { check_variable = { event_fire_dispatched > 0 } }
+		}
+		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_target }
+		chaosx_report_forced_event_failure = yes
 	}
 }
 

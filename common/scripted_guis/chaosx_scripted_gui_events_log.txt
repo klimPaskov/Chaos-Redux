@@ -360,8 +360,10 @@ scripted_gui = {
 							compare = greater_than
 						}
 					}
-					capital_scope = {
-						ROOT = { goto_state = PREV }
+					var:global.events_log_view_actor_entries^events_log_history_index = {
+						capital_scope = {
+							ROOT = { goto_state = PREV }
+						}
 					}
 				}
 			}
@@ -490,12 +492,12 @@ scripted_gui = {
 
 		dynamic_lists = {
 			events_log_history_dynamic_list = {
-				array = global.events_log_view_actor_entries
-				value = events_log_actor
+				# A history row exists independently of its optional country pointer.
+				array = global.events_log_view_event_id_entries
+				value = events_log_history_event_id
 				index = events_log_history_index
-				change_scope = yes
-				entry_container = "events_log_history_entry_generic"
-				country_scope_entry_container = "events_log_history_entry_country"
+				change_scope = no
+				entry_container = "events_log_history_entry_country"
 			}
 		}
 
@@ -1467,6 +1469,7 @@ scripted_gui = {
 			}
 			events_log_event_detail_open_diplomacy_button_visible = {
 				AND = {
+					var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index = { exists = yes }
 					check_variable = {
 						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
 						value = 0
@@ -1481,6 +1484,7 @@ scripted_gui = {
 			}
 			events_log_event_detail_open_diplomacy_button_click_enabled = {
 				AND = {
+					var:global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index = { exists = yes }
 					check_variable = {
 						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
 						value = 0
@@ -1540,34 +1544,6 @@ scripted_gui = {
 			}
 			events_log_event_detail_rival_member_next_button_click_enabled = {
 				check_variable = { global.independence_wave_rival_bloc_member_country_entries^num > 1 }
-			}
-			events_log_event_detail_actor_flag_visible = {
-				AND = {
-					check_variable = {
-						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
-						value = 0
-						compare = greater_than
-					}
-					check_variable = {
-						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
-						value = 0
-						compare = greater_than
-					}
-				}
-			}
-			events_log_event_detail_actor_flag_frame_visible = {
-				AND = {
-					check_variable = {
-						var = global.events_log_open_event_detail_has_actor_entries^events_log_open_event_detail_index
-						value = 0
-						compare = greater_than
-					}
-					check_variable = {
-						var = global.events_log_open_event_detail_fired_entries^events_log_open_event_detail_index
-						value = 0
-						compare = greater_than
-					}
-				}
 			}
 				events_log_event_detail_entry_meta_tertiary_visible = {
 				OR = {
@@ -1679,12 +1655,6 @@ scripted_gui = {
 				index = events_log_event_detail_world_end_index
 				change_scope = no
 				entry_container = "events_log_event_detail_world_end_entry"
-			}
-		}
-
-		properties = {
-			events_log_event_detail_actor_flag = {
-				image = "[?global.events_log_open_event_detail_actor_entries^events_log_open_event_detail_index.GetFlag]"
 			}
 		}
 

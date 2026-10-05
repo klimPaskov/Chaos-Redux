@@ -1,0 +1,52 @@
+﻿# Repo Explorer Handoff
+
+## Scope read
+- Parent task: Diagnose why the Civilian Deaths, Contamination, and Terror Activity scripted map modes appear uncolored after Fallout.
+- Constraints: Read-only source research; no gameplay writes, game launch, shared GUI audit, map rewrite, or additional MCP retries after the parent requested finalization.
+- Skills and docs read: `AGENTS.md`, `.agents/skills/chaos-redux-state-ledgers/SKILL.md`, and the MCP handoff section of `.agents/skills/chaos-redux-subagents/SKILL.md`.
+- Repository source revision: `cbb4441ad4c78485bbec40ce8215a9aefe72e168`. The requested source files were clean in the working tree when checked.
+
+## Primary findings
+- Civilian Deaths has a real visibility defect: its state top layer assigns `thickness` at ratios and severity thresholds but omits parent `thickness = yes`, so the chosen thickness values are ignored. The Fallout producer writes per-state death totals, updates the global maximum, and explicitly refreshes this map mode; the projection data path itself is present in source.
+- Contamination's main color layer is a state border with a background alpha of 0.08. It raises alpha only when its local chemical, disease, nuclear-record, or plague checks increment the type count. Fallout instead fixes global air contamination at 99% and applies the per-state `air_contamination_global_state` modifier to every state. The map mode never tests that modifier, so states with only the global airborne projection retain the near-transparent background. Struck states can still be colored by their live per-state nuclear intensity/expiry record.
+- Terror Activity is intentionally empty before Event 31 creates a state incident. New state records initialize activity and stage to zero/clear, and the map mode requires stage greater than clear. Fallout does not start Event 31 or seed its state activity.
+- These scripted map modes color map borders. The installed-game documentation describes the color callback as choosing border colors; `type = state` does not produce a filled-state choropleth. Do not switch layer type to terrain as a visual workaround.
+
+## Relevant files
+| Path | Why it matters | Evidence |
+| --- | --- | --- |
+| `common/map_modes/chaosx_state_map_modes.txt` | Defines `deaths_state_map_mode` and `contaminated_states_map_mode`. Deaths top is lines 14-112; contamination top and bottom are lines 114-303. The contamination bottom sets background alpha at line 214, local type checks at lines 232-274, and raises alpha only when the type count is positive at lines 277-292. | Source SHA-256: `21221564EDFCE9A3C58EF8827540B2E2B65B1CFBABF9EDEFC4D30CD4200BB2E9`. |
+| `common/scripted_triggers/cbw_triggers.txt` | State gates are `mapmode_state_has_chemical_contamination` lines 257-259, disease lines 261-278, nuclear lines 280-298, tracked contamination lines 300-310, and civilian-death history lines 312-315. None of the contamination gates checks `air_contamination_global_state`. | Source SHA-256: `C8F3720E297F2D09A05E4F044C4FE388C13E1860F89D232CC07F5EE96C208B43`. |
+| `common/scripted_effects/chaos_meter_effects.txt` | `chaos_meter_record_state_civilian_deaths_from_deaths_change` adds deaths, raises `global.chaos_state_civilian_deaths_map_max`, and calls `force_update_map_mode` at lines 2872-2893. Fallout locks atmospheric contamination through `air_contamination_apply_state_modifier` at lines 5124-5185; when contamination is at least the spread threshold, lines 5170-5177 add `air_contamination_global_state` to every state. | Current repository revision above. |
+| `common/scripted_effects/fallout_consolidated_effects.txt` | Fallout's per-state aggregate applies local nuclear fallout at line 17117 and removes the dynamic `nuclear_fallout_state` modifier at line 17118 while retaining the record. It records the state death total and map maximum at lines 17140-17154 and refreshes the death mode at line 17295. Permanent air contamination sets global air to 99% and calls the state-modifier projection at lines 41262-41282. | Current repository revision above. |
+| `common/map_modes/031_random_terror_map_mode.txt` | `random_terror_state_map_mode` gates its state border on stage greater than clear at lines 15-23; the mode is daily-updated at lines 86-88. | Source SHA-256: `CE386D8807DC4E20577A8C6F80F971009633FE3EA5A2CC61AFFE32C00A9130FF`. |
+| `common/scripted_effects/031_random_terror_effects.txt` and `common/scripted_triggers/031_random_terror_triggers.txt` | State initialization sets activity zero and stage clear at effects lines 155-168. Incident activity is added and stage refreshed at effects lines 543-553 and 932-993. Eligible incident sites require positive state population, an absent/expired cooldown, and no lost-local-control flag at trigger lines 77-84. | Current repository revision above. |
+| `events/031_terrorist_attack.txt`, `common/scripted_effects/chaosx_settings_effects.txt`, and `common/scripted_effects/031_random_terror_effects.txt` | The normal event scheduler calls `random_terror_prepare_dispatch` for event id 31 at settings effects lines 4340-4354. The dispatch guard and armed flags are at terror effects lines 5066-5078. Hidden root `chaosx.nr31.1` requires `random_terror_dispatch_armed` and calls `random_terror_run_global_wave` at event lines 31-60. The wave selects eligible states and calls `random_terror_apply_incident` at terror effects lines 1844-1850. | Current repository revision above. |
+
+## Existing patterns
+- The state-ledger skill says to use state-local projections, `type = state`, the documented `FROM` scope, centralized colors, and daily refresh where needed (`chaos-redux-state-ledgers/SKILL.md:70-78`). Both requested map-mode files follow the accepted `FROM` state pattern.
+- The vanilla scripted map-mode documentation states that layers render borders, that the callback scope is the player and `FROM` is the state for a state layer, and that thickness output is used only when the parent layer enables thickness (`common/map_modes/documentation.md:14-59,72-74`). It also documents daily update versus forced refresh at lines 94-96.
+- Kaiserreich's `common/map_modes/cores_claims.txt:4-37` is an approved state-layer precedent that evaluates state data and sets color variables inside `FROM`; the shared nested-`FROM` shape is therefore not the likely defect. Its SHA-256 is `333E7D6FDE2F321282448B660B74FCAD0487D30B4C4DA397F0B1D40010195B5E`.
+- Targeted local wiki searches for `scripted_map_modes` and “scripted map mode(s)” returned no section in `paradox_wiki/`. The installed vanilla documentation was used directly. The installed documentation SHA-256 is `FE0A32E55F8F409DF104C9F386F607767D795193046E1DE509FAC75A46EC6392`.
+
+## Likely edit order for the parent
+1. In `common/map_modes/chaosx_state_map_modes.txt`, add `thickness = yes` to the top layer of `deaths_state_map_mode` so its existing base/high/extreme thickness values take effect.
+2. In the Contamination bottom state layer, add an explicit global-air contribution keyed to `air_contamination_global_state`. Keep it distinct from local `chem_state_contamination`, disease, and local nuclear fallout. Increment the existing type count and provide visible color/alpha from `state_map_modes_constants.txt`; keep the new condition reachable when other contamination presentations are active.
+3. Make no Terror Activity projection change for Fallout. Its blank state layer before an Event 31 incident is expected.
+
+## Validation checks
+- For Deaths after Fallout, confirm a targeted state has `chaos_state_civilian_deaths_total > 0` and the global map maximum is positive; then verify its state border gets the mode color and the configured thickness is visible.
+- For Contamination, compare a struck state with an unexpired local nuclear record, a state carrying only `air_contamination_global_state`, and a state with neither. This checks the global-air color, local-record color, and transparent background branch independently.
+- For Terror Activity, use the normal Event 31 scheduling path rather than directly firing hidden `chaosx.nr31.1`: ensure its prefire guard passes, the normal dispatcher arms `random_terror_dispatch_armed`, at least one eligible state is selected, and that state's activity becomes positive and stage rises above clear before judging the map mode. Fallout alone is not Event 31 activation.
+- The checked-in map renderer schema supports static layers such as state, owner, controller, and terrain only; it does not evaluate scripted map-mode color code. Parent review and user live-game validation are needed for the visual result.
+
+## Risks and blockers
+- The proposed two source changes are bounded presentation fixes; no producer rewrite is indicated by this source review.
+- A filled-state expectation cannot be met by the documented scripted map-mode border-color callback. Clarify the intended visual if the complaint means no filled area instead of no colored borders.
+- MCP routes are exposed in tool metadata, but the connected service did not return any results, source revisions, or artifact URIs. `hoi4.reference_context` for map and `hoi4.map_inspect` with overview/query were terminated after about 93 seconds pending; a second map context call also timed out after about 93 seconds. Bounded `hoi4.map_inspect` (`lookupOnly`, state 1/province 1), `hoi4.map_render` (static state layer, state 1), and `hoi4.reference_search` calls were terminated after about 93 seconds pending. Narrow `hoi4.source_lookup` for `deaths_state_map_mode` was terminated after about 62 seconds pending. The available tool list exposes no HOI4 server health/version route, so service health remains unverified. No MCP result is claimed.
+- The requested affected campaign state id or save was not available, so the source review cannot confirm which state's runtime projection values were present.
+
+## Recommended next action
+Apply the two accepted bounded presentation fixes, then validate a Fallout-only state for death and global-air color, and validate Terror Activity only after the normal Event 31 path has created a positive state activity/stage. Review only the exact diff before applying; retain the pre-change file versions so the two hunks can be restored without reverting other agents' work. The map MCP renderer cannot serve as a scripted-mode dry run, and no connected MCP result is available for post-change comparison.
+
+

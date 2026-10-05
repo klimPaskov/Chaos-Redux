@@ -2,7 +2,7 @@
 # CHAOS REDUX - STATE CRISIS MAP MODES
 # ============================================================================
 # Scripted map modes for state-level crisis visualization.
-# - contaminated_states_map_mode shows chemical, disease, and nuclear hazards.
+# - contaminated_states_map_mode shows local hazards and polluted atmosphere.
 # - deaths_state_map_mode shows cumulative civilian deaths by state.
 # - famine_state_map_mode shows the five dynamic food-security stages and proof-bearing blockade/relief context.
 # - migration_state_map_mode shows displacement origins, trapped populations, reception, resettlement, and return.
@@ -14,6 +14,7 @@ scripted_map_modes = {
 	deaths_state_map_mode = {
 		top = {
 			type = state
+			thickness = yes
 			color = {
 				FROM = {
 					mapmode_state_has_civilian_death_history = yes
@@ -206,12 +207,14 @@ scripted_map_modes = {
 
 		bottom = {
 			type = state
+			thickness = yes
 			color = {
 				FROM = {
 					set_temp_variable = { red = constant:state_map_modes_contamination.background_red }
 					set_temp_variable = { green = constant:state_map_modes_contamination.background_green }
 					set_temp_variable = { blue = constant:state_map_modes_contamination.background_blue }
 					set_temp_variable = { alpha = constant:state_map_modes_contamination.background_alpha }
+					set_temp_variable = { thickness = constant:state_map_modes_air.border_thickness }
 					set_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_none }
 
 					if = {
@@ -229,6 +232,13 @@ scripted_map_modes = {
 						set_temp_variable = { green = constant:state_map_modes_contamination.channel_minimum }
 						set_temp_variable = { blue = constant:state_map_modes_contamination.channel_minimum }
 
+						if = {
+							limit = { has_dynamic_modifier = air_contamination_global_state }
+							add_to_temp_variable = { red = constant:state_map_modes_air.red }
+							add_to_temp_variable = { green = constant:state_map_modes_air.green }
+							add_to_temp_variable = { blue = constant:state_map_modes_air.blue }
+							add_to_temp_variable = { mapmode_contamination_type_count = constant:state_map_modes_contamination.type_count_increment }
+						}
 						if = {
 							limit = { mapmode_state_has_chemical_contamination = yes }
 							add_to_temp_variable = { red = constant:state_map_modes_contamination.chemical_red }

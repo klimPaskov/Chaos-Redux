@@ -476,3 +476,45 @@ The Event014 owner API [Larder logistics](../../docs/events/014_cannibalism/lard
 The Event014 owner API [Network ledger dossier records](../../docs/events/014_cannibalism/gui_data_contract.md) documents the STATE/COUNTRY subject records (`cannibalism_ui_*`), their writers in reports, route screening and the six counteraction missions, caller-set temporary inputs, certainty rules, cleanup on node and actor retirement, and the row and dossier getters.
 
 The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_effects.md) and [live epoch bindings](012_africa_gods_epoch_binding_effects.md) document exact host/consent proof, initial grant and revocation, current-due wake handling and bounded repair, native loss cleanup, historical report preservation, caller inputs, defaults, side effects, and boolean-helper usage.
+
+## chaosx_report_forced_event_failure
+
+Purpose: send one plain-text country report to the player who requested an event through Settings when the owning event cannot apply.
+Source: `chaosx_forced_event_feedback_effects.txt`, with the native report in `events/chaosx_forced_event_feedback.txt` and the shared catalogue in `common/script_constants/chaosx_forced_event_feedback_constants.txt`.
+
+Scope: COUNTRY, including a target country handling a request made by another country.
+Input: caller-set temporary `chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.<key>`, choosing `no_country`, `no_state`, `no_target`, `already_active`, `unavailable`, or `dispatch_failed`.
+Set that input in the calling effect block immediately before `chaosx_report_forced_event_failure = yes`.
+The helper reads the input without changing it.
+This hook follows the existing caller-set variable convention used by the shared helpers.
+An unrecognized numeric value selects the generic dispatch-failed description.
+Select the most specific applicable reason and coordinate additions to the shared catalogue and report with the Settings owner.
+
+Requester lifecycle: the dispatcher saves the requesting player as regular `event_target:chaosx_manual_event_requester` before firing the owner event, clears `chaosx_manual_event_failure_shown`, and sets requester flag `chaosx_manual_event_requested` for `constant:forced_event_feedback_timing.request_window_days` through a temporary day variable.
+The hook requires that target to exist, remain a human country, carry the request flag, and have no report receipt.
+It never guesses the requester from ROOT, FROM, or the current country.
+Regular targets travel into events fired by the chain and automatically disappear when the chain finishes, avoiding a global pointer shared by multiple players.
+Owner callbacks must stay in that originating chain and inside the request window.
+
+Outputs and side effects: writes normal requester variable `chaosx_manual_event_failure_reason`, sets `chaosx_manual_event_failure_shown` before dispatch, and immediately fires `chaosx_forced_event_feedback.1` for the requester.
+It changes no owner gameplay, request flag, global state, or event-log entry.
+Natural firing, missing or expired request context, an AI requester, or a repeated failure in the same request produces no report.
+The first reported failure wins until the dispatcher begins another request.
+The report's acknowledgement performs no cleanup so dismissing it cannot reset the receipt of a later request.
+The dispatcher owns receipt reset and may clear the reason variable before a subsequent request.
+
+Native conditional `desc` blocks choose a reason localisation key instead of re-reading a mutable country variable through scripted localisation on each text evaluation.
+Multiple outstanding reports still require live confirmation that the engine retains the selected description for each event instance.
+The two-day country guard is not a unique asynchronous request identifier, so overlapping delayed requests from the same player require a future owner-managed generation token.
+
+Example inside an owner event's country-scope failure branch:
+
+```txt
+set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_country }
+chaosx_report_forced_event_failure = yes
+```
+
+The dispatcher must establish the target and flags before this call.
+Settings supplies the request context, and its dispatcher or an owner event calls the hook from an actual failure branch.
+No icon or additional visual asset is required for this native text report.
+Detailed reference evidence and integration limits are recorded in `docs/plans/shared_interface_plans/subagent_handoffs/forced_feedback_hook_20261005.md`.
