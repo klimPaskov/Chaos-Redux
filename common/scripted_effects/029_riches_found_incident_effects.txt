@@ -328,17 +328,34 @@ riches_found_calculate_foreign_interest_score = {
 	clamp_temp_variable = { var = riches_found_foreign_candidate_score min = constant:riches_found_foreign_interest.minimum max = constant:riches_found_ai_weight.maximum }
 }
 
-# STATE scope. This is called by a deliberate contract action, not by the
-# recurring pulse. It scores every plausible ordinary actor once and stores
-# the highest-scoring valid partner. The persistent contract still records one
-# partner only.
+# STATE scope. This is called at discovery and by deliberate actions, never by
+# the recurring pulse. It scores every plausible ordinary actor once and keeps
+# the best constant:riches_found_partner_list.size of them, ranked by interest,
+# in riches_found_foreign_candidates. The offer goes to the top candidate
+# unless the controller has courted another listed one
+# (riches_found_partner_chosen), which is kept while it stays on the list.
+# Hostile, warring, excluded and capitulated actors are never listed. The
+# persistent contract still records one partner only.
 riches_found_prepare_scored_foreign_partner = {
+	set_temp_variable = { riches_found_partner_choice_held = constant:riches_found_value.zero }
+	if = {
+		limit = {
+			has_state_flag = riches_found_partner_chosen
+			has_variable = riches_found_foreign_target
+		}
+		set_temp_variable = { riches_found_partner_choice_held = constant:riches_found_value.one }
+		set_temp_variable = { riches_found_kept_partner = riches_found_foreign_target }
+	}
 	clear_variable = riches_found_foreign_target
 	clear_variable = riches_found_foreign_offer_controller
+	clear_variable = riches_found_foreign_interest_score
 	clr_state_flag = riches_found_foreign_target_available
+	clr_state_flag = riches_found_partner_chosen
+	clear_array = riches_found_foreign_candidates
+	clear_array = riches_found_partner_pool
+	clear_array = riches_found_partner_pool_scores
 	save_event_target_as = riches_found_interest_mine
 	CONTROLLER = { save_event_target_as = riches_found_interest_controller }
-	set_temp_variable = { riches_found_best_foreign_score = constant:riches_found_value.zero }
 	every_country = {
 		limit = {
 			exists = yes
@@ -367,21 +384,93 @@ riches_found_prepare_scored_foreign_partner = {
 		}
 		riches_found_calculate_foreign_interest_score = yes
 		if = {
-			limit = { check_variable = { var = riches_found_foreign_candidate_score value = riches_found_best_foreign_score compare = greater_than } }
-			set_temp_variable = { riches_found_best_foreign_score = riches_found_foreign_candidate_score }
-			save_event_target_as = riches_found_contract_partner_target
+			limit = { check_variable = { riches_found_foreign_candidate_score > constant:riches_found_value.zero } }
+			event_target:riches_found_interest_mine = {
+				add_to_array = { array = riches_found_partner_pool value = PREV }
+				add_to_array = { array = riches_found_partner_pool_scores value = riches_found_foreign_candidate_score }
+			}
 		}
 	}
+	# Rank the pool: move the most interested actor into the list until the
+	# list is full or the pool is empty.
+	set_temp_variable = { riches_found_partner_picks = constant:riches_found_value.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = { riches_found_partner_picks < constant:riches_found_partner_list.size }
+			check_variable = { riches_found_partner_pool_scores^num > constant:riches_found_value.zero }
+		}
+		find_highest_in_array = {
+			array = riches_found_partner_pool_scores
+			value = riches_found_partner_pick_score
+			index = riches_found_partner_pick_index
+		}
+		set_temp_variable = { riches_found_partner_pick = riches_found_partner_pool^riches_found_partner_pick_index }
+		add_to_array = { array = riches_found_foreign_candidates value = riches_found_partner_pick }
+		if = {
+			limit = { check_variable = { riches_found_partner_picks = constant:riches_found_value.zero } }
+			set_variable = { riches_found_foreign_interest_score = riches_found_partner_pick_score }
+		}
+		remove_from_array = { array = riches_found_partner_pool index = riches_found_partner_pick_index }
+		remove_from_array = { array = riches_found_partner_pool_scores index = riches_found_partner_pick_index }
+		add_to_temp_variable = { riches_found_partner_picks = constant:riches_found_value.one }
+	}
+	clear_array = riches_found_partner_pool
+	clear_array = riches_found_partner_pool_scores
+	if = {
+		limit = { check_variable = { riches_found_foreign_candidates^num > constant:riches_found_value.zero } }
+		set_variable = { riches_found_foreign_target = riches_found_foreign_candidates^0 }
+		if = {
+			limit = {
+				check_variable = { riches_found_partner_choice_held = constant:riches_found_value.one }
+				is_in_array = { array = riches_found_foreign_candidates value = riches_found_kept_partner }
+			}
+			set_variable = { riches_found_foreign_target = riches_found_kept_partner }
+			set_state_flag = riches_found_partner_chosen
+		}
+		set_variable = { riches_found_foreign_offer_controller = event_target:riches_found_interest_controller }
+		set_state_flag = riches_found_foreign_target_available
+	}
+}
+
+# STATE scope. The controller stops courting a chosen partner (it closed the
+# mine view or moved to another mine): the offer returns to the most
+# interested listed actor.
+riches_found_clear_partner_choice = {
+	if = {
+		limit = { has_state_flag = riches_found_partner_chosen }
+		clr_state_flag = riches_found_partner_chosen
+		if = {
+			limit = { check_variable = { riches_found_foreign_candidates^num > constant:riches_found_value.zero } }
+			set_variable = { riches_found_foreign_target = riches_found_foreign_candidates^0 }
+		}
+	}
+}
+
+# STATE scope, ROOT the controller, called by the controller pulse. When the
+# current offer's partner is gone, at war or hostile, the offer passes to the
+# next listed actor that can still partner the controller, and a courted
+# partner that fell away is dropped. Only the stored list is read.
+riches_found_review_foreign_offer = {
 	if = {
 		limit = {
-			check_variable = { riches_found_best_foreign_score > constant:riches_found_value.zero }
-			has_event_target = riches_found_contract_partner_target
-			event_target:riches_found_contract_partner_target = { exists = yes }
+			has_state_flag = riches_found_foreign_target_available
+			NOT = { has_state_flag = riches_found_contract_active }
+			NOT = { riches_found_foreign_target_is_valid = yes }
+			check_variable = { riches_found_foreign_candidates^num > constant:riches_found_value.zero }
 		}
-		set_variable = { riches_found_foreign_target = event_target:riches_found_contract_partner_target }
-		set_variable = { riches_found_foreign_offer_controller = event_target:riches_found_interest_controller }
-		set_variable = { riches_found_foreign_interest_score = riches_found_best_foreign_score }
-		set_state_flag = riches_found_foreign_target_available
+		clr_state_flag = riches_found_partner_chosen
+		set_temp_variable = { riches_found_partner_fallback_found = constant:riches_found_value.zero }
+		for_each_scope_loop = {
+			array = riches_found_foreign_candidates
+			if = {
+				limit = {
+					check_variable = { riches_found_partner_fallback_found = constant:riches_found_value.zero }
+					riches_found_country_can_partner_root = yes
+				}
+				PREV = { set_variable = { riches_found_foreign_target = PREV } }
+				set_temp_variable = { riches_found_partner_fallback_found = constant:riches_found_value.one }
+			}
+		}
 	}
 }
 

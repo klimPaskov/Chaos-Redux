@@ -590,6 +590,30 @@ riches_found_pending_contract_can_sign = {
 	}
 }
 
+# COUNTRY scope (a listed foreign actor), ROOT the mine's controller. The actor
+# can still partner the controller: it exists, is not excluded or capitulated,
+# is not at war with the controller and does not hold it below the
+# hostile-opinion threshold.
+riches_found_country_can_partner_root = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { riches_found_country_is_excluded_actor = yes }
+	has_capitulated = no
+	NOT = { has_war_with = ROOT }
+	NOT = { has_opinion = { target = ROOT value < @riches_found_hostile_opinion } }
+}
+
+# STATE scope. The controller can court another listed actor for this mine:
+# the mine is open in its foreign concession layer, no contract runs, and an
+# offer is on the table.
+riches_found_partner_choice_is_open = {
+	riches_found_mine_is_active = yes
+	has_state_flag = riches_found_phase_foreign
+	riches_found_contract_can_open = yes
+	NOT = { has_state_flag = riches_found_contract_pending_review }
+	has_state_flag = riches_found_foreign_target_available
+}
+
 # STATE scope. Contract audit, disclosure, publication, buyout, and
 # nationalization belong to the foreign concession layer. A security or
 # emergency overlay, an evolution crisis or an occupation replaces them until

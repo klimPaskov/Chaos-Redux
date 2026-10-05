@@ -82,7 +82,7 @@ The same refresh shows exactly one decision layer per mine, in this order:
 8. The Resource Curse (`riches_found_layer_curse`).
 9. The milestone layer (`riches_found_phase_claims`, `_rush`, `_rush_services`, `_development`, `_revenue` or `_foreign`).
 
-Repair is offered in every layer except an unanswered Gilded Sovereignty, whose authority holds the works; the mine selector and the return-to-list action are navigation and are not counted below.
+Repair is offered in every layer except an unanswered Gilded Sovereignty, whose authority holds the works; the mine selector, the return-to-list action and the Court a Partner rows are navigation and are not counted below.
 Missions are not counted.
 The largest set any combination of flags can show in each layer, with the exclusions that keep it there:
 
@@ -126,6 +126,11 @@ It is spent once, on the first bill it meets while the owner holds the mine: Rep
 Audits, disclosure, publication, contract exits and the independent revenue authority belong to the foreign concession layer.
 
 Foreign participation is represented by one state-owned contract record with one partner, review clock, renewal state, and term flags.
+Interested governments form a bounded ranked list on the mine.
+`riches_found_prepare_scored_foreign_partner` runs only at discovery and after deliberate actions (through `riches_found_refresh_selected_foreign_offer`), scores every plausible actor once and keeps the `riches_found_partner_list.size` (4) most interested in `riches_found_foreign_candidates`; at war, hostile (below -25 opinion), excluded and capitulated actors are never listed.
+The offer (`riches_found_foreign_target`) goes to the most interested actor, which is what the AI always keeps.
+A human controller may court any other listed actor through the country-targeted Court a Partner decision (`decision_riches_found_choose_partner`, `target_array = riches_found_partner_candidates`, copied from the selected mine by `riches_found_refresh_partner_display`); the courted partner (`riches_found_partner_chosen`) then receives every offer and is named in the offer tooltips.
+The courtship ends when the controller signs a contract, closes the mine view or moves to another mine (`riches_found_clear_partner_choice`), when control changes (`riches_found_clear_stale_targets`), or when the courted government drops off the rebuilt list; the controller pulse (`riches_found_review_foreign_offer`) moves an offer whose partner went to war, turned hostile or vanished to the next valid listed actor without scanning the world.
 Compatible limited-concession, offtake, and infrastructure-access terms use the existing partner record, while exclusive concessions block amendments.
 The parent corrected `riches_found_begin_contract` to require exclusive request 1 and the stored exclusive contract type, and corrected limited-contract amendment refresh to run through the current `CONTROLLER`.
 These source repairs and their validation limits are recorded in `docs/plans/029_riches_found_plans/subagent_handoffs/2026_10_03_parent_contract_repairs.md`.

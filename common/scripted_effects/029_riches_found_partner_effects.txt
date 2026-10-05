@@ -173,12 +173,23 @@ riches_found_refresh_aggrieved_sponsor = {
 }
 
 # COUNTRY scope. Stores the selected mine's current or offered partner on the
-# controller so decision tooltips can name it. No scoring runs here.
+# controller so decision tooltips can name it, and copies the mine's ranked
+# list of interested actors into riches_found_partner_candidates, the target
+# list of Court a Partner. No scoring runs here.
 riches_found_refresh_partner_display = {
 	clear_variable = riches_found_selected_foreign_partner
+	clear_array = riches_found_partner_candidates
 	if = {
 		limit = { riches_found_country_has_selected_mine = yes }
 		var:riches_found_selected_mine = {
+			if = {
+				limit = { riches_found_partner_choice_is_open = yes }
+				for_each_loop = {
+					array = riches_found_foreign_candidates
+					value = riches_found_partner_copy
+					PREV = { add_to_array = { array = riches_found_partner_candidates value = riches_found_partner_copy } }
+				}
+			}
 			if = {
 				limit = {
 					has_variable = riches_found_contract_partner

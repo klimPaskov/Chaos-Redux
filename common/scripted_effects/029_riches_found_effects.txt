@@ -1523,6 +1523,8 @@ riches_found_clear_stale_targets = {
 	clear_variable = riches_found_foreign_offer_controller
 	clear_variable = riches_found_foreign_interest_score
 	clr_state_flag = riches_found_foreign_target_available
+	clr_state_flag = riches_found_partner_chosen
+	clear_array = riches_found_foreign_candidates
 	clear_variable = riches_found_selected_foreign_target
 	clear_variable = riches_found_contract_target
 	clear_variable = riches_found_pending_contract_partner
@@ -1618,6 +1620,7 @@ riches_found_begin_contract = {
 			check_variable = { var = riches_found_foreign_target value = event_target:riches_found_contract_partner_target compare = equals }
 		}
 		set_variable = { riches_found_contract_partner = event_target:riches_found_contract_partner_target }
+		clr_state_flag = riches_found_partner_chosen
 		riches_found_record_contract_partner_share = yes
 		if = {
 			limit = { has_variable = riches_found_input_contract_type }

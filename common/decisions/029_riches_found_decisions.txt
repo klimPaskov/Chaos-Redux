@@ -9199,6 +9199,47 @@ decision_riches_found_account_predatory_prosperity = {
 # Multiple mines are managed through one selected state. The selector is
 # intentionally in the same ordinary category so it cannot create a second
 # category or a parallel scripted-GUI surface.
+# Navigation: one row per other interested actor on the selected mine's ranked
+# list (riches_found_partner_candidates, copied by
+# riches_found_refresh_partner_display). Courting one makes it the partner
+# the mine's concession offers go to; the AI keeps the most interested actor.
+decision_riches_found_choose_partner = {
+	icon = GFX_decision_riches_found_concession_auction
+	target_array = riches_found_partner_candidates
+	target_root_trigger = {
+		is_ai = no
+		riches_found_country_has_selected_mine = yes
+	}
+	target_trigger = {
+		FROM = { riches_found_country_can_partner_root = yes }
+	}
+	visible = {
+		is_ai = no
+		riches_found_country_has_selected_mine = yes
+		var:riches_found_selected_mine = {
+			riches_found_partner_choice_is_open = yes
+			NOT = { check_variable = { var = riches_found_foreign_target value = FROM compare = equals } }
+		}
+	}
+	available = {
+		riches_found_country_has_selected_mine = yes
+		var:riches_found_selected_mine = { riches_found_partner_choice_is_open = yes }
+	}
+	fire_only_once = no
+	complete_effect = {
+		custom_effect_tooltip = decision_riches_found_choose_partner_tt
+		FROM = { save_event_target_as = riches_found_courted_partner }
+		var:riches_found_selected_mine = {
+			set_variable = { riches_found_foreign_target = event_target:riches_found_courted_partner }
+			set_state_flag = riches_found_partner_chosen
+		}
+		riches_found_refresh_partner_display = yes
+	}
+	ai_will_do = {
+		base = constant:riches_found_value.zero
+	}
+}
+
 decision_riches_found_select_mine = {
 	icon = GFX_decision_riches_found_survey
 	state_target = any_controlled_state
@@ -9231,9 +9272,18 @@ decision_riches_found_select_mine = {
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_select_mine_tt
 		clr_country_flag = riches_found_selection_closed
+		# Moving to another mine stops courting the last mine's chosen partner.
+		if = {
+			limit = {
+				riches_found_country_has_selected_mine = yes
+				check_variable = { var = riches_found_selected_mine value = FROM compare = not_equals }
+			}
+			var:riches_found_selected_mine = { riches_found_clear_partner_choice = yes }
+		}
 		set_variable = { riches_found_selected_mine = FROM }
 		FROM = { set_state_flag = riches_found_selected_target }
 		riches_found_reconcile_controller = yes
+		riches_found_refresh_partner_display = yes
 	}
 	ai_will_do = {
 		base = constant:riches_found_value.zero
@@ -9249,7 +9299,10 @@ decision_riches_found_return_to_mine_list = {
 	}
 	available = { riches_found_country_has_selected_mine = yes }
 	complete_effect = {
+		# Closing the mine view stops courting its chosen partner.
+		var:riches_found_selected_mine = { riches_found_clear_partner_choice = yes }
 		clear_variable = riches_found_selected_mine
+		clear_array = riches_found_partner_candidates
 		set_country_flag = riches_found_selection_closed
 		for_each_scope_loop = {
 			array = global.riches_found_registered_mines
