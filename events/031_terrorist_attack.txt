@@ -9,6 +9,8 @@ add_namespace = chaosx.news
 @rt_event_ai_low_factor = 0.5
 @rt_event_emphasis_weight = 25
 @rt_event_emphasis_coercion_weight = 15
+@rt_event_haven_accept_weight = 50
+@rt_event_haven_refuse_weight = 50
 
 ###############################################################################################################
 # CHAOS REDUX - EVENT 031 RANDOM TERROR
@@ -538,6 +540,42 @@ country_event = {
 
 	immediate = {
 		random_terror_finalize_false_revelation = yes
+	}
+}
+
+# Safe-haven demand (Part 4 Evolution II Foreign-power choices): a
+# government whose crisis this host's territory or support fed asks it to
+# shut the network down.  ROOT = the host, FROM = the demanding government.
+country_event = {
+	id = chaosx.nr31.45
+	title = chaosx.nr31.45.t
+	desc = chaosx.nr31.45.d
+	picture = GFX_report_event_031_random_terror_international_network_gathering
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_terror_haven_demand_received }
+
+	option = {
+		name = chaosx.nr31.45.a
+		ai_chance = {
+			base = @rt_event_haven_accept_weight
+			modifier = { factor = 0 has_war_with = FROM }
+			modifier = { factor = @rt_event_ai_high_factor is_in_faction_with = FROM }
+			modifier = { factor = @rt_event_ai_high_factor has_opinion = { target = FROM value > 25 } }
+			modifier = { factor = @rt_event_ai_low_factor has_opinion = { target = FROM value < -25 } }
+			modifier = { factor = @rt_event_ai_low_factor has_country_flag = random_terror_sponsor_support_committed }
+		}
+		custom_effect_tooltip = random_terror_haven_demand_accept_tt
+		hidden_effect = { random_terror_accept_haven_demand = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.45.b
+		ai_chance = {
+			base = @rt_event_haven_refuse_weight
+			modifier = { factor = @rt_event_ai_high_factor has_war_with = FROM }
+		}
+		custom_effect_tooltip = random_terror_haven_demand_refuse_tt
+		hidden_effect = { random_terror_refuse_haven_demand = yes }
 	}
 }
 

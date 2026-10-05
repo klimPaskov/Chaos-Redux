@@ -703,6 +703,56 @@ random_terror_government_response_category = {
 		}
 	}
 
+	# Press the Safe-Haven Host (Part 4 Evolution II Foreign-power choices).
+	# One lane at a time: hidden while a sponsor evidence case is open, so the
+	# network phase stays within its six visible actions.
+	random_terror_press_safe_haven = {
+		icon = GFX_decision_random_terror_government_foreign_intervention
+		target_array = global.random_terror_safe_haven_hosts
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_haven_demand_pending }
+			NOT = { any_owned_state = { has_state_flag = random_terror_sponsor_evidence_recorded } }
+			FROM = { random_terror_country_is_pressable_haven = yes }
+		}
+		available = {
+			hidden_trigger = { random_terror_can_afford_press_safe_haven = yes }
+			custom_trigger_tooltip = {
+				tooltip = random_terror_press_safe_haven_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_haven_demand_pending }
+				FROM = { random_terror_country_is_pressable_haven = yes }
+			}
+		}
+		target_root_trigger = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_haven_demand_pending }
+		}
+		target_trigger = {
+			FROM = { random_terror_country_is_pressable_haven = yes }
+		}
+		custom_cost_trigger = {
+			random_terror_can_afford_press_safe_haven = yes
+		}
+		custom_cost_text = random_terror_press_safe_haven_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_press_safe_haven_effect_tt
+			add_political_power = constant:random_terror_safe_haven.political_power_spend
+			FROM = { save_event_target_as = random_terror_haven_host }
+			random_terror_commit_haven_demand = yes
+			random_terror_response_action_lock = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { is_neighbor_of = ROOT } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { global.random_terror_network_reach > constant:random_terror_value.high } }
+			modifier = { factor = @rt_ai_never FROM = { has_war_with = ROOT } }
+		}
+	}
+
 	random_terror_request_allied_intelligence = {
 		icon = GFX_decision_random_terror_government_allied_intelligence
 		state_target = any_controlled_state

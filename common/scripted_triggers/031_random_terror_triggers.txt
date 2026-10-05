@@ -869,6 +869,23 @@ random_terror_can_start_pressure_uprising = {
 	}
 }
 
+# COUNTRY scope, ROOT = a government.  A safe-haven host that ROOT can press:
+# a live non-actor host whose territory or support fed ROOT's crisis
+# (random_terror_haven_link_<host> on ROOT) and that ROOT has not pressed
+# within random_terror_safe_haven.memory_days.
+random_terror_country_is_pressable_haven = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_country_flag = random_terror_safe_haven
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = random_terror_haven_demand_received }
+	ROOT = {
+		has_country_flag = random_terror_haven_link_@PREV
+		NOT = { has_country_flag = random_terror_haven_pressed_@PREV }
+	}
+}
+
 # STATE scope.  A pressured active crisis state that can rise in the opening
 # uprising wave of the False Revelation.
 random_terror_state_can_rise_in_revelation = {
@@ -961,6 +978,10 @@ random_terror_can_afford_disrupt_support = {
 	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.disrupt_convoys } }
 	NOT = { command_power < constant:random_terror_cost.disrupt_command_power }
 	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
+}
+
+random_terror_can_afford_press_safe_haven = {
+	NOT = { has_political_power < constant:random_terror_safe_haven.political_power }
 }
 
 random_terror_can_afford_request_allied_intelligence = {

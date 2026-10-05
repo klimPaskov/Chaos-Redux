@@ -85,6 +85,17 @@ A distant attack strikes one state of a non-neighbouring country with no active 
 It passes `random_terror_incident_trace_only` to the incident, so the state keeps only `trace_activity` (10), a Dormant trace, unless the attack itself recorded a reason for a cell to stay.
 Its single `random_country` selection runs only after the rare roll succeeds, which matches one ordinary wave-target selection rather than a periodic scan.
 
+### Safe havens and foreign-power choices
+
+A host whose territory feeds the network carries the Terrorist Safe Haven marker (`random_terror_mark_safe_haven`): the source government of a cross-border spread, a country that agrees to sponsor an actor (`random_terror_link_sponsor_haven`), and an actor that supports a foreign cell.
+The marker is the dynamic modifier `random_terror_safe_haven` (stability and political power penalties), adds `random_terror_safe_haven.reach_gain` to Network Reach while it lasts, and lists the host in `global.random_terror_safe_haven_hosts`.
+It clears (`random_terror_clear_safe_haven`, which also returns the reach) when the host's crisis closes, when it accepts a demand, when its sponsorship is exposed, when an actor host is retired, and at defeat.
+
+The government a host fed (`random_terror_haven_link_<host>`: the receiving government of a cross-border spread, or the parent government of a sponsored actor) can use Press the Safe-Haven Host in the network phase against a live non-actor host it has not pressed in the last `memory_days`, for `political_power` political power.
+The decision is hidden while a sponsor evidence case is open, so the network phase keeps its six-action ceiling, and it reads only the haven list as its target array.
+The host answers through `chaosx.nr31.45`: accepting costs it stability, lowers the activity of its own active crisis states by `accept_activity_reduction`, lowers Network Reach by `accept_reach_reduction` and clears its marker, while the demanding government gains Response Legitimacy and the opinion modifier `random_terror_safe_haven_cooperation`; refusing keeps the marker, draws public Condemnation (`refuse_condemnation_gain`) and gives the demanding government `random_terror_safe_haven_refusal`.
+The host's AI never accepts at war with the demanding government, accepts more readily inside the same faction or with good relations, and less readily with bad relations or while it sponsors an actor.
+
 Later evolutions add Network Reach, International Unity, territorial-control values, actor authority, external supply, strategic victories, and hidden apocalyptic readiness without changing the identity-neutral baseline targeting rules.
 
 Religion, ethnicity, nationality, refugee status, and ordinary ideology never increase baseline target or recruitment weight.
@@ -395,7 +406,7 @@ Two super-event pictures live under `gfx/super_events/031_random_terror/`, are r
 ## Validation surfaces
 
 Event 31 is registered as repeatable and enabled by default in the Event Logs settings through `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`.
-Every design decision taken during the takeover (D1-D13 and R1-R41) is recorded with its basis, its implementation commit and its live-game limits in `docs/plans/031_random_terror_plans/agent_decisions_20261004.md`.
+Every design decision taken during the takeover (D1-D13 and R1-R42) is recorded with its basis, its implementation commit and its live-game limits in `docs/plans/031_random_terror_plans/agent_decisions_20261004.md`.
 
 The visual inventory is recorded row by row in `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md`, and every portrait identity has a recruitment or selection consumer (D11).
 Actor operations raise, move or remove real formations (D9), every mission has a reachable progress producer and outcome (D5), carrier reuse and scenario capacity follow one availability predicate (D1, D2), and a contained crisis recovers and closes (R30).
@@ -403,9 +414,7 @@ Actor operations raise, move or remove real formations (D9), every mission has a
 Source checks in round 2 covered brace balance with comments stripped, localisation keys for every new decision, tooltip, option, modifier and scripted text, script-constant categories with schemas, and UTF-8 with BOM for the localisation file.
 The probability route (`hoi4.probability_inspect`) returned "Invalid tool arguments" for narrow decision and event-option queries, so the AI and random weights added in round 2 (first-emphasis options, spread odds, the cannibal-clash draw and the raid capacity bonus) are reviewed in source only.
 
-Open design item: Evolution II safe havens and the foreign-power choices toward a safe-haven host or public sponsor (Part 4) are not implemented yet; Evolution II currently changes the event through Network Reach, cross-border spread, distant attacks and the existing intelligence, intervention and sponsor-exposure decisions.
-
-Still to be seen in a live game: cross-border spread and distant attacks on the map, the command-capital `on_state_control_changed` refresh and the live values of the three final-strength modifiers, the opening uprising wave's civil wars and missions, inherited technology and the fourth research slot, and the cannibal rivalry AI strategies.
+Still to be seen in a live game: cross-border spread, distant attacks and safe-haven demands on the map, the command-capital `on_state_control_changed` refresh and the live values of the three final-strength modifiers, the opening uprising wave's civil wars and missions, inherited technology and the fourth research slot, and the cannibal rivalry AI strategies.
 
 Detected daily control changes disqualify only the changed country, preserving unrelated player countries' eligibility.
 Same-day round trips and swaps between already-human countries remain unresolved because the daily country marker does not identify individual clients.

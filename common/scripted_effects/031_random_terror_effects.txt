@@ -1250,6 +1250,13 @@ random_terror_open_spread_hotspot = {
 		set_variable = { random_terror_last_report_spread_reason = random_terror_spread_reason_code }
 		set_variable = { random_terror_last_report_origin = random_terror_spread_origin_state }
 	}
+	# Cross-border spread makes the source country a safe haven (Part 4
+	# Evolution II) that the receiving government can press.
+	if = {
+		limit = { NOT = { is_controlled_by = ROOT } }
+		ROOT = { random_terror_mark_safe_haven = yes }
+		CONTROLLER = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
 }
 
 # COUNTRY scope, ROOT = THIS = the government whose pulse launches it.  A
@@ -5624,6 +5631,7 @@ random_terror_resolve_sponsor_exposure = {
 		random_terror_add_public_sponsor_condemnation = yes
 		clr_country_flag = random_terror_sponsor_contact_pending
 		set_country_flag = random_terror_sponsor_exposed_by_event31
+		random_terror_clear_safe_haven = yes
 	}
 	random_terror_achievement_record_sponsor_neutralized = yes
 	random_terror_check_for_defeat = yes
@@ -5817,6 +5825,7 @@ random_terror_commit_sponsor_request = {
 random_terror_accept_sponsor_request = {
 	set_country_flag = random_terror_sponsor_request_accepted
 	clr_country_flag = random_terror_sponsor_request_refused
+	random_terror_link_sponsor_haven = yes
 	add_to_variable = { random_terror_external_supply = constant:random_terror_tuning.actor_supply_corridor_gain }
 	add_to_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
 	random_terror_clamp_actor_values = yes
@@ -5845,6 +5854,8 @@ random_terror_resolve_foreign_cell_support = {
 	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	clamp_variable = { var = global.random_terror_international_unity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 	set_country_flag = random_terror_foreign_cell_support_resolved
+	# The command's territory now shelters a foreign cell.
+	random_terror_mark_safe_haven = yes
 }
 
 random_terror_commit_actor_absorption = {
@@ -7524,6 +7535,164 @@ random_terror_add_cannibal_clash_condemnation = {
 	random_terror_add_condemnation_source = yes
 }
 
+# -----------------------------------------------------------------------------
+# Safe havens and foreign-power choices (Part 4 Evolution II)
+# -----------------------------------------------------------------------------
+# A host becomes a safe haven when its territory feeds the network: the
+# source government of a cross-border spread, a country that agrees to
+# sponsor an actor, and an actor that supports a foreign cell.  The marker is
+# a visible dynamic modifier and adds Network Reach while it lasts.  Hosts
+# are listed in global.random_terror_safe_haven_hosts, the target array of
+# Press the Safe-Haven Host, so no check scans the world.  The marker clears
+# when the host's crisis closes, when it accepts a demand, when its
+# sponsorship is exposed, when an actor host is retired, and at defeat.
+
+# COUNTRY scope: a host whose territory feeds spread or foreign-cell support.
+random_terror_mark_safe_haven = {
+	if = {
+		limit = { NOT = { has_country_flag = random_terror_safe_haven } }
+		set_country_flag = random_terror_safe_haven
+		add_dynamic_modifier = { modifier = random_terror_safe_haven }
+		add_to_array = { array = global.random_terror_safe_haven_hosts value = THIS }
+		add_to_variable = { global.random_terror_network_reach = constant:random_terror_safe_haven.reach_gain }
+		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	}
+}
+
+# COUNTRY scope: a host that no longer shelters the network.
+random_terror_clear_safe_haven = {
+	if = {
+		limit = { has_country_flag = random_terror_safe_haven }
+		clr_country_flag = random_terror_safe_haven
+		remove_dynamic_modifier = { modifier = random_terror_safe_haven }
+		remove_from_array = { array = global.random_terror_safe_haven_hosts value = THIS }
+		subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_safe_haven.reach_gain }
+		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	}
+}
+
+# COUNTRY scope: the sponsor of an actor, inside random_terror_accept_sponsor_request
+# where THIS is the actor and ROOT the sponsor.  The sponsor becomes a safe
+# haven, and the government the actor rose against can press it.
+random_terror_link_sponsor_haven = {
+	ROOT = { random_terror_mark_safe_haven = yes }
+	if = {
+		limit = {
+			original_tag = JHX
+			has_event_target = random_terror_parent_jhx
+		}
+		event_target:random_terror_parent_jhx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JIX
+			has_event_target = random_terror_parent_jix
+		}
+		event_target:random_terror_parent_jix = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JKX
+			has_event_target = random_terror_parent_jkx
+		}
+		event_target:random_terror_parent_jkx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JLX
+			has_event_target = random_terror_parent_jlx
+		}
+		event_target:random_terror_parent_jlx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JMX
+			has_event_target = random_terror_parent_jmx
+		}
+		event_target:random_terror_parent_jmx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JNX
+			has_event_target = random_terror_parent_jnx
+		}
+		event_target:random_terror_parent_jnx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JOX
+			has_event_target = random_terror_parent_jox
+		}
+		event_target:random_terror_parent_jox = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+	if = {
+		limit = {
+			original_tag = JPX
+			has_event_target = random_terror_parent_jpx
+		}
+		event_target:random_terror_parent_jpx = { set_country_flag = random_terror_haven_link_@ROOT }
+	}
+}
+
+# COUNTRY scope: the government pressing a host, ROOT of Press the Safe-Haven
+# Host, with FROM = the host (the decision target) also saved as event target
+# random_terror_haven_host.  Sends the host the demand (chaosx.nr31.45) and
+# remembers the host for memory_days (random_terror_haven_pressed_<host>).
+random_terror_commit_haven_demand = {
+	set_country_flag = random_terror_haven_demand_pending
+	set_temp_variable = { random_terror_haven_memory_duration = constant:random_terror_safe_haven.memory_days }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_haven_pressed_@FROM days = [MEMORY_DAYS] } }
+		MEMORY_DAYS = "[?random_terror_haven_memory_duration|.0]"
+	}
+	event_target:random_terror_haven_host = {
+		set_country_flag = random_terror_haven_demand_received
+		country_event = { id = chaosx.nr31.45 }
+	}
+}
+
+# COUNTRY scope: the host accepting a demand (chaosx.nr31.45, ROOT = host,
+# FROM = the demanding government).  It cracks down on the cells it shelters:
+# its own active crisis states lose activity, Network Reach falls, and the
+# marker clears.  The demanding government gains Response Legitimacy.
+random_terror_accept_haven_demand = {
+	clr_country_flag = random_terror_haven_demand_received
+	add_stability = constant:random_terror_safe_haven.accept_host_stability
+	every_controlled_state = {
+		limit = { random_terror_state_is_active_crisis = yes }
+		set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_safe_haven.accept_activity_reduction }
+		multiply_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_value.negative_one }
+		random_terror_add_state_activity = yes
+	}
+	subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_safe_haven.accept_reach_reduction }
+	clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+	random_terror_clear_safe_haven = yes
+	FROM = {
+		clr_country_flag = random_terror_haven_demand_pending
+		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_gain }
+		random_terror_apply_legitimacy = yes
+		add_opinion_modifier = { target = PREV modifier = random_terror_safe_haven_cooperation }
+	}
+}
+
+# COUNTRY scope: the host refusing a demand.  It keeps the marker, draws
+# public Condemnation for sheltering the network, and the demanding
+# government's opinion of it falls.
+random_terror_refuse_haven_demand = {
+	clr_country_flag = random_terror_haven_demand_received
+	set_temp_variable = { random_terror_condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { random_terror_condemnation_base_gain = constant:random_terror_safe_haven.refuse_condemnation_gain }
+	set_temp_variable = { random_terror_condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { random_terror_condemnation_severity_type = constant:condemnation_severity.minor }
+	set_temp_variable = { random_terror_condemnation_civilian_deaths = constant:random_terror_value.zero }
+	set_temp_variable = { random_terror_condemnation_context_type = constant:condemnation_context.observer_report }
+	random_terror_add_condemnation_source = yes
+	FROM = {
+		clr_country_flag = random_terror_haven_demand_pending
+		add_opinion_modifier = { target = PREV modifier = random_terror_safe_haven_refusal }
+	}
+}
+
 random_terror_emit_super_event = {
 	set_temp_variable = { random_terror_super_event_id = constant:random_terror_identity.reveal_super_event_id }
 	set_temp_variable = { random_terror_super_event_duration_days = constant:random_terror_tuning.super_event_duration_days }
@@ -7682,6 +7851,8 @@ random_terror_reset_crisis_cycle = {
 	clr_country_flag = random_terror_reconstruction_available
 	clr_country_flag = random_terror_affected_country
 	remove_from_array = { array = global.random_terror_affected_countries value = THIS }
+	random_terror_clear_safe_haven = yes
+	clr_country_flag = random_terror_haven_demand_pending
 	clr_country_flag = random_terror_emphasis_chosen
 	clr_country_flag = random_terror_response_cell_active
 	clr_country_flag = random_terror_response_action_recorded
@@ -7806,6 +7977,7 @@ random_terror_resolve_defeat = {
 		clear_variable = global.random_terror_ruin_score
 		every_country = {
 			random_terror_clear_country_commitments = yes
+			random_terror_clear_safe_haven = yes
 			if = {
 				limit = { random_terror_is_actor = yes }
 				random_terror_cleanup_actor = yes
@@ -8062,6 +8234,7 @@ random_terror_clear_actor_runtime = {
 	remove_dynamic_modifier = { modifier = random_terror_entity_presence }
 	remove_dynamic_modifier = { modifier = random_terror_entity_revolt }
 	remove_dynamic_modifier = { modifier = random_terror_entity_ruin }
+	random_terror_clear_safe_haven = yes
 	clr_country_flag = random_terror_advanced_research_slot
 	clr_country_flag = random_terror_terminal_check_pending
 	clear_variable = random_terror_presence_attack

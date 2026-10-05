@@ -467,4 +467,16 @@ Basis: Part 13 Event registration and status (add the event to the reworked defa
 
 - After R32-R40 landed, one line, `check_variable = { event_id = constant:random_terror_identity.event_id }`, joined `event_log_event_is_reworked_default_enabled`, committed as its own hunk of the shared settings trigger file.
 - The workbook Status change from `To Be Reworked` to `Needs Testing` is queued in `catalog_changes_pending.md`, because the workbook belongs to its owner.
-- Safe havens and foreign-power choices toward a host (Part 4 Evolution II) were the one queued item still open when the event was enabled; the overview records it.
+- Safe havens and foreign-power choices toward a host (Part 4 Evolution II) were the one queued item still open when the event was enabled, and R42 completed them in the same round.
+
+### R42 Safe havens and a demand on the host
+
+Basis: Part 4 Evolution II Safe havens ("the host receives political and military consequences"), Foreign-power choices ("demand action from a safe-haven host", "sanction a public sponsor") and Escalation proof ("maintain a safe haven"), within the network-phase action budget of the decision matrix.
+
+- Three hosts count as safe havens, matching the spec's causes: an uncontrolled border region (the source government of a cross-border spread), government complicity (a sponsor that accepted an actor's request) and a territorial actor (a command that supports a foreign cell).
+- The marker is a visible dynamic modifier that raises Network Reach by 5 while it lasts and returns it when it clears, matching "defeated safe havens" lowering reach; hosts live in a global array, which also serves as the decision's target array, so nothing scans the world.
+- Only governments the host actually fed can press it, as Part 4's AI change asks ("prioritize corridors and safe havens that materially support their active cells"); actors cannot be pressed, because they are fought through the territorial decisions.
+- The demand is hidden while a sponsor evidence case is open, keeping the network phase at no more than six visible actions; the sponsor then goes through Expose the Sponsor or Pressure the Sponsor in Private first.
+- Refusal uses the shared Condemnation helper at minor public severity with an observer-report context and a 12-month opinion penalty; acceptance gives the demanding government Response Legitimacy and a 12-month opinion bonus.
+- Covert manipulation and its blowback (Part 4) stay with the existing Pressure the Sponsor in Private decision; no new covert action was added.
+- Route evidence: the consent weights follow the existing consent events' structure; the probability route stayed blocked as recorded under R32, so they are reviewed in source only.
