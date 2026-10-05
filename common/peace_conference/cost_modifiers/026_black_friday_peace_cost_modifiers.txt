@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 BLACK FRIDAY PEACE CONFERENCE COST MODIFIERS
+# ============================================================================
+# While a Black Friday sale is active, taking states and puppeting countries in
+# a peace conference cost the sale share of their current peace score price.
+# The installed documentation
+# (common/peace_conference/cost_modifiers/_documentation.md) multiplies every
+# active cost modifier together, so the sale multiplies the price that the
+# other modifiers already produced. The deprecated annex_cost_factor and
+# puppet_cost_factor modifiers are not used.
+# Each multiplier equals that sale's payment ratio
+# (black_friday_event.baseline_payment_ratio and evolution_payment_ratio over
+# ratio_basis in common/script_constants/026_black_friday_constants.txt); the
+# enable trigger reads the active ratio from global.black_friday_discount_ratio.
+# ============================================================================
+
+@BLACK_FRIDAY_PEACE_BASELINE_MULTIPLIER = 0.5
+@BLACK_FRIDAY_PEACE_EVOLUTION_I_MULTIPLIER = 0.25
+
+peace_action_modifiers = {
+
+	black_friday_peace_sale = {
+		category = events_or_focuses
+		peace_action_type = { take_states puppet }
+
+		enable = {
+			has_global_flag = black_friday_active
+			check_variable = { global.black_friday_discount_ratio = constant:black_friday_event.baseline_payment_ratio }
+		}
+
+		cost_multiplier = @BLACK_FRIDAY_PEACE_BASELINE_MULTIPLIER
+	}
+
+	black_friday_peace_sale_evolution_i = {
+		category = events_or_focuses
+		peace_action_type = { take_states puppet }
+
+		enable = {
+			has_global_flag = black_friday_active
+			check_variable = { global.black_friday_discount_ratio = constant:black_friday_event.evolution_payment_ratio }
+		}
+
+		cost_multiplier = @BLACK_FRIDAY_PEACE_EVOLUTION_I_MULTIPLIER
+	}
+}

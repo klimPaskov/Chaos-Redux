@@ -865,12 +865,20 @@ black_friday_retract_achievement_transaction = {
 	}
 }
 
+# Every country that received the sale is cleared, including one that ceased
+# to exist during the sale day, so a later release cannot inherit the discount.
 black_friday_clear_active_status = {
-	every_country = {
+	every_possible_country = {
+		limit = {
+			OR = {
+				has_country_flag = black_friday_native_sale_stored
+				has_idea = black_friday_sale
+				has_idea = black_friday_sale_evolution_i
+			}
+		}
 		remove_ideas = black_friday_sale
 		remove_ideas = black_friday_sale_evolution_i
-		remove_dynamic_modifier = { modifier = black_friday_native_sale }
-		remove_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
+		black_friday_native_sale_remove = yes
 	}
 }
 
@@ -2350,17 +2358,13 @@ black_friday_pay_communism_emergency_intervention = {
 	}
 }
 
+# Country scope. Shows the sale idea and applies the native sale modifier while
+# a sale is active, and removes both otherwise. The native contributions are
+# recomputed from the country's current ordinary factors on every call
+# (common/scripted_effects/026_black_friday_native_sale_effects.txt).
 black_friday_refresh_active_cost_modifier = {
 	remove_ideas = black_friday_sale
 	remove_ideas = black_friday_sale_evolution_i
-	if = {
-		limit = { has_dynamic_modifier = black_friday_native_sale }
-		remove_dynamic_modifier = { modifier = black_friday_native_sale }
-	}
-	if = {
-		limit = { has_dynamic_modifier = black_friday_native_sale_evolution_i }
-		remove_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
-	}
 	if = {
 		limit = {
 			black_friday_is_active = yes
@@ -2374,12 +2378,14 @@ black_friday_refresh_active_cost_modifier = {
 				}
 			}
 			add_ideas = black_friday_sale_evolution_i
-			add_dynamic_modifier = { modifier = black_friday_native_sale_evolution_i }
 		}
 		else = {
 			add_ideas = black_friday_sale
-			add_dynamic_modifier = { modifier = black_friday_native_sale }
 		}
+		black_friday_native_sale_apply = yes
+	}
+	else = {
+		black_friday_native_sale_remove = yes
 	}
 }
 

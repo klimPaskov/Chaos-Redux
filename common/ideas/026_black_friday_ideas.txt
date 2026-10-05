@@ -1,20 +1,14 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 026 BLACK FRIDAY IDEAS
 # ============================================================================
-# The active-sale ideas expose documented native country cost fields.
-# Composition and payment acceptance remain tracked in the cost registry.
+# The two sale ideas are the visible status marker of an active sale. They
+# carry no cost modifiers: the native discounts live in the black_friday_native_sale
+# dynamic modifier (common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt),
+# whose per-country values multiply each country's current price. Peace
+# conference demands are discounted by
+# common/peace_conference/cost_modifiers/026_black_friday_peace_cost_modifiers.txt.
 # Script-owned payments use the shared source and transaction APIs.
-# Unit-leader recruitment and promotion factors live here, at country scope,
-# as in vanilla army_spirits.txt and SOV.txt, so commanders recruited during
-# the sale are discounted. military_leader_cost_factor is left out because it
-# overlaps the army and navy leader factors and would discount a recruit twice.
-# Ongoing trade-deal factory upkeep (trade_cost_for_target_factor and
-# overlord_trade_cost_factor) is passive upkeep, not a purchase, and is not
-# discounted by the sale.
 # ============================================================================
-
-@BLACK_FRIDAY_BASE_FACTOR = -0.5
-@BLACK_FRIDAY_EVOLUTION_I_FACTOR = -0.75
 
 ideas = {
 	country = {
@@ -23,55 +17,7 @@ ideas = {
 			allowed = { always = no }
 			removal_cost = -1
 			modifier = {
-				political_advisor_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				high_command_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				army_chief_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				navy_chief_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_chief_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				theorist_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				economy_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				mobilization_laws_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				trade_laws_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				army_advisor_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				navy_advisor_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_advisor_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				command_abilities_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				land_doctrine_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				naval_doctrine_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_doctrine_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				special_forces_doctrine_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				academy_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_force_academy_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_force_command_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_force_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				aircraft_manufacturer_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				army_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				country_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				division_command_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				hidden_ideas_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				industrial_concern_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				materiel_manufacturer_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				naval_academy_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				naval_command_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				naval_manufacturer_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				navy_spirit_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				tank_manufacturer_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				air_spirit_category_type_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				army_spirit_category_type_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				navy_spirit_category_type_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				unit_leader_as_advisor_cp_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				army_leader_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				navy_leader_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				promote_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				embargo_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				grant_medal_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				annex_subject_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				annex_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				puppet_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				license_anti_tank_eq_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				license_artillery_eq_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				license_infantry_eq_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
-				license_light_tank_eq_cost_factor = @BLACK_FRIDAY_BASE_FACTOR
+				custom_modifier_tooltip = black_friday_sale_native_tt
 			}
 		}
 		black_friday_sale_evolution_i = {
@@ -79,55 +25,7 @@ ideas = {
 			allowed = { always = no }
 			removal_cost = -1
 			modifier = {
-				political_advisor_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				high_command_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				army_chief_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				navy_chief_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_chief_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				theorist_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				economy_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				mobilization_laws_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				trade_laws_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				army_advisor_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				navy_advisor_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_advisor_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				command_abilities_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				land_doctrine_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				naval_doctrine_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_doctrine_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				special_forces_doctrine_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				academy_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_force_academy_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_force_command_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_force_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				aircraft_manufacturer_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				army_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				country_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				division_command_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				hidden_ideas_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				industrial_concern_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				materiel_manufacturer_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				naval_academy_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				naval_command_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				naval_manufacturer_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				navy_spirit_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				tank_manufacturer_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				air_spirit_category_type_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				army_spirit_category_type_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				navy_spirit_category_type_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				unit_leader_as_advisor_cp_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				army_leader_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				navy_leader_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				promote_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				embargo_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				grant_medal_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				annex_subject_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				annex_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				puppet_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				license_anti_tank_eq_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				license_artillery_eq_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				license_infantry_eq_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
-				license_light_tank_eq_cost_factor = @BLACK_FRIDAY_EVOLUTION_I_FACTOR
+				custom_modifier_tooltip = black_friday_sale_native_tt
 			}
 		}
 		chaosx_cxt_extension_event026_black_friday = {
