@@ -313,7 +313,8 @@ riches_found_mine_needs_emergency_response = {
 }
 
 # STATE scope. Security overlay: armed claimants, a wage dispute, crime, a
-# raid crisis, an enemy holding ground beside the district, or private forces
+# raid crisis, an enemy holding ground beside the district while no Army
+# Cordon holds the mine, a mine about to fall to the enemy, or private forces
 # beyond government control.
 riches_found_mine_needs_security_response = {
 	OR = {
@@ -321,9 +322,28 @@ riches_found_mine_needs_security_response = {
 		has_state_flag = riches_found_wage_dispute
 		has_state_flag = riches_found_crime_crisis
 		has_state_flag = riches_found_raid_crisis
-		has_state_flag = riches_found_front_line
+		AND = {
+			has_state_flag = riches_found_front_line
+			NOT = { riches_found_army_cordon_holds = yes }
+		}
+		has_state_flag = riches_found_mine_about_to_fall
 		riches_found_private_forces_need_response = yes
 	}
+}
+
+# STATE scope. An Army Cordon holds the mine: it was raised and the
+# controller's supplied troops still stand in the district.
+riches_found_army_cordon_holds = {
+	has_state_flag = riches_found_army_cordon
+	riches_found_state_has_supplied_force = yes
+}
+
+# STATE scope. The controller can still deny its own mine to the enemy: the
+# mine is working and has not already been wrecked by either side.
+riches_found_mine_can_be_denied_by_controller = {
+	riches_found_mine_is_active = yes
+	NOT = { has_state_flag = riches_found_mine_damaged }
+	NOT = { has_state_flag = riches_found_owner_denial }
 }
 
 # STATE scope. Private guards or an armed enclave that answer to no one: the
@@ -945,6 +965,8 @@ riches_found_occupation_mine_can_be_stripped = {
 riches_found_occupation_mine_can_be_denied = {
 	riches_found_occupation_mine_can_reopen = yes
 	NOT = { has_state_flag = riches_found_occupation_stripped }
+	# A mine its owner already wrecked before the fall cannot be denied twice.
+	NOT = { has_state_flag = riches_found_owner_denial }
 }
 
 riches_found_mission_is_active = {

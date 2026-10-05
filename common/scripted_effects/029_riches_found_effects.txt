@@ -830,13 +830,15 @@ riches_found_reconcile_mine_phase = {
 }
 
 # STATE scope. Marks a mine whose district borders a state held by an enemy
-# of its controller (riches_found_front_line) and, for an occupied mine, an
-# occupier that is about to lose it (riches_found_retreat_imminent): its war
-# is being lost or it keeps no supplied force in the district. Only the
+# of its controller (riches_found_front_line) and a controller that is about
+# to lose it: its war is being lost or it keeps no supplied force in the
+# district. For an occupier that is riches_found_retreat_imminent; for the
+# owner holding its own mine it is riches_found_mine_about_to_fall. Only the
 # mine's own neighbouring states are read.
 riches_found_refresh_mine_threat_position = {
 	clr_state_flag = riches_found_front_line
 	clr_state_flag = riches_found_retreat_imminent
+	clr_state_flag = riches_found_mine_about_to_fall
 	if = {
 		limit = { CONTROLLER = { exists = yes has_war = yes } }
 		CONTROLLER = { save_event_target_as = riches_found_threat_controller }
@@ -845,13 +847,16 @@ riches_found_refresh_mine_threat_position = {
 			set_state_flag = riches_found_front_line
 			if = {
 				limit = {
-					riches_found_mine_is_occupied = yes
 					OR = {
 						CONTROLLER = { check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress } }
 						NOT = { riches_found_state_has_supplied_force = yes }
 					}
 				}
-				set_state_flag = riches_found_retreat_imminent
+				if = {
+					limit = { riches_found_mine_is_occupied = yes }
+					set_state_flag = riches_found_retreat_imminent
+				}
+				else = { set_state_flag = riches_found_mine_about_to_fall }
 			}
 		}
 	}
@@ -2437,6 +2442,7 @@ riches_found_clear_closure_state = {
 riches_found_clear_collapse_state = {
 	clr_state_flag = riches_found_mine_collapsed
 	clr_state_flag = riches_found_mine_damaged
+	clr_state_flag = riches_found_owner_denial
 	clr_state_flag = riches_found_collapse_harm_recorded
 	clear_variable = riches_found_collapse_date
 	clear_variable = riches_found_collapse_recovery_date
@@ -2721,6 +2727,7 @@ riches_found_complete_shaft_restoration = {
 		}
 	}
 	clr_state_flag = riches_found_mine_damaged
+	clr_state_flag = riches_found_owner_denial
 	clr_state_flag = riches_found_route_damaged
 	clr_state_flag = riches_found_severe_collapse
 	clr_state_flag = riches_found_collapse_warning

@@ -4145,6 +4145,7 @@ decision_riches_found_pay_train = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_shipment_threat
+			NOT = { has_state_flag = riches_found_mine_about_to_fall }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_mission_protect_pay_train_subject }
 		}
@@ -4158,6 +4159,7 @@ decision_riches_found_pay_train = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_shipment_threat
+			NOT = { has_state_flag = riches_found_mine_about_to_fall }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_mission_protect_pay_train_subject }
 		}
@@ -4175,6 +4177,7 @@ decision_riches_found_pay_train = {
 			riches_found_state_is_active_selected_or_only_mine = yes
 			has_state_flag = riches_found_phase_security
 			has_state_flag = riches_found_shipment_threat
+			NOT = { has_state_flag = riches_found_mine_about_to_fall }
 			riches_found_state_has_supplied_force = yes
 			NOT = { has_state_flag = riches_found_mission_protect_pay_train_subject }
 		}
@@ -5907,6 +5910,108 @@ decision_riches_found_occupation_strip_equipment = {
 			modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
 			modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_low compare = less_than } } }
 						modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_retreat_imminent } }
+	}
+}
+
+# The owner's denial before the fall (spec part 2: "deny the mine to the
+# enemy"; part 5, Expected loss). It takes the slot of Escort the Pay Train in
+# the security layer and cannot stack with an occupier's later denial.
+decision_riches_found_deny_mine = {
+	icon = GFX_decision_riches_found_permanent_seal
+	state_target = any_controlled_state
+	on_map_mode = map_and_decisions_view
+	visible = {
+		FROM = {
+			is_controlled_by = ROOT
+			has_state_flag = riches_found_mine_state
+			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_security
+			has_state_flag = riches_found_mine_about_to_fall
+			riches_found_mine_can_be_denied_by_controller = yes
+		}
+	}
+	available = {
+		hidden_trigger = { riches_found_can_afford_occupation_deny_mine = yes }
+		FROM = {
+			is_controlled_by = ROOT
+			has_state_flag = riches_found_mine_state
+			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_security
+			has_state_flag = riches_found_mine_about_to_fall
+			riches_found_mine_can_be_denied_by_controller = yes
+		}
+	}
+	target_root_trigger = {
+		any_controlled_state = {
+			has_state_flag = riches_found_mine_state
+		}
+	}
+	target_trigger = {
+		FROM = {
+			is_controlled_by = ROOT
+			has_state_flag = riches_found_mine_state
+			riches_found_state_is_active_selected_or_only_mine = yes
+			has_state_flag = riches_found_phase_security
+			has_state_flag = riches_found_mine_about_to_fall
+			riches_found_mine_can_be_denied_by_controller = yes
+		}
+	}
+	custom_cost_trigger = {
+		riches_found_can_afford_occupation_deny_mine = yes
+	}
+	custom_cost_text = riches_found_cost_occupation_deny_mine
+	ai_hint_pp_cost = @RICHES_FOUND_AI_HINT_PP_HEAVY
+	days_remove = constant:riches_found_decision_duration.admin
+	fire_only_once = no
+	complete_effect = {
+		custom_effect_tooltip = decision_riches_found_deny_mine_tt
+		add_political_power = constant:riches_found_decision_cost.pp_heavy_negative
+		add_command_power = constant:riches_found_decision_cost.command_standard_negative
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:riches_found_decision_cost.infantry_standard_negative }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
+	}
+	remove_effect = {
+		# The wrecking crews finish only while this country still holds the
+		# registered, nonterminal mine; otherwise every cost is returned.
+		if = {
+			limit = {
+				FROM = {
+					riches_found_mine_still_valid_for_payer = yes
+				}
+			}
+			FROM = {
+				set_state_flag = riches_found_owner_denial
+				set_state_flag = riches_found_owner_denial_history
+				set_state_flag = riches_found_mine_damaged
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_25 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.negative_20 }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_10 }
+				if = {
+					limit = { riches_found_mine_can_begin_temporary_closure = yes }
+					riches_found_begin_temporary_closure = yes
+				}
+			}
+			riches_found_reconcile_controller = yes
+			riches_found_refresh_mine_state = yes
+		}
+		else = {
+			add_political_power = constant:riches_found_decision_cost.pp_heavy
+			add_command_power = constant:riches_found_decision_cost.command_standard
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:riches_found_decision_cost.infantry_standard }
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
+		}
+	}
+	# Expected loss: a controller losing its war denies the mine; one that
+	# still keeps troops in the district prefers to hold it.
+	ai_will_do = {
+		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.policy_favored_factor FROM = { riches_found_policy_profile_militarized = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.policy_favored_factor FROM = { riches_found_policy_profile_state = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.policy_disfavored_factor FROM = { riches_found_policy_profile_public = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.urgent_factor check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress } }
+		modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { riches_found_state_has_supplied_force = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.high_factor FROM = { has_state_flag = riches_found_multiple_mine_priority } }
+		modifier = { factor = constant:riches_found_decision_ai.low_factor has_government = democratic }
 	}
 }
 
