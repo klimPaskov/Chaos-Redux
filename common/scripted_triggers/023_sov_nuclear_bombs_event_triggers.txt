@@ -2236,3 +2236,13 @@ sov_nuclear_bombs_event_breakaway_talks_site_is_imminent = {
 	has_event_target = sov_nuclear_bombs_custody_talks_site
 	event_target:sov_nuclear_bombs_custody_talks_site = { sov_nuclear_bombs_event_state_breakaway_operationalization_is_imminent = yes }
 }
+
+# Country scope (the Soviet actor). Past the opening, the arsenal has no
+# delivery route: too few deployed strategic bombers, too little fuel, or no
+# air base.
+sov_nuclear_bombs_event_delivery_force_is_missing = {
+	has_variable = sov_nuclear_bombs_phase
+	NOT = { sov_nuclear_bombs_event_phase_opening = yes }
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+	NOT = { sov_nuclear_bombs_event_has_delivery_route = yes }
+}

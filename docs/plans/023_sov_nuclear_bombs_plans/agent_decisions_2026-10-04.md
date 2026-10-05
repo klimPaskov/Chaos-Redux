@@ -496,3 +496,11 @@ Decision (lead round 2 decision 5): the mission reads `days_mission_timeout = va
 R2-6's window-shortening sub-item is now `implemented`; Part 5's accepted exchange ladder records the change.
 Basis: Part 5 retaliation timing and exchange stages, the lead's round 2 decision 5 (variable timeout and `add_days_mission_timeout`, installed `effects_documentation.md` line 1051).
 Disposition: `implemented`; negative `add_days_mission_timeout` and the live window lengths `needs_live_game`.
+
+### R2b-10. Readiness wears down without a delivery force
+
+Finding: routine maintenance checked only stockpile against reactor capacity, missing devices and disputes, so a Union that lost every strategic bomber, its fuel or its air bases kept full Readiness indefinitely (Part 2: Readiness declines over time when delivery is lost, with a clear tooltip and no free replacement).
+Decision: `sov_nuclear_bombs_apply_routine_maintenance` (the existing 30-day cycle) adds `delivery_loss_readiness` (-3) while `sov_nuclear_bombs_event_delivery_force_is_missing` holds (a phase past the opening, a chosen custody doctrine and no `sov_nuclear_bombs_event_has_delivery_route`, the D2 preflight), only while Readiness is above `delivery_loss_readiness_floor` (10) and clamped at that floor; it sets `sov_nuclear_bombs_delivery_force_missing` for the cycle. No aircraft or equipment is granted and nothing else in maintenance changes (the regular +1 or over-capacity change still applies first, so the net loss is 2 per cycle under normal capacity).
+The category header's readiness line adds "(no bombers, fuel or air base to deliver the weapons; readiness is falling)" while the condition holds, read live through `GetSovietNuclearBombsDeliveryStatus`.
+Basis: Part 2 delivery-force loss, D2, and the lead's round 2 decision 4.
+Disposition: `implemented`; live erosion pace `needs_live_game`.

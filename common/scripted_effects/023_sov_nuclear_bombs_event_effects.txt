@@ -3267,6 +3267,18 @@ sov_nuclear_bombs_apply_routine_maintenance = {
 			limit = { check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.disputed compare = equals } }
 			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_tuning.maintenance_disputed_integrity_loss }
 		}
+		# A lost delivery force (bombers, fuel or air bases) wears Readiness
+		# down to the floor; nothing replaces the aircraft.
+		if = {
+			limit = { sov_nuclear_bombs_event_delivery_force_is_missing = yes }
+			set_country_flag = sov_nuclear_bombs_delivery_force_missing
+			if = {
+				limit = { check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.delivery_loss_readiness_floor compare = greater_than } }
+				add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_tuning.delivery_loss_readiness }
+				clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.delivery_loss_readiness_floor }
+			}
+		}
+		else = { clr_country_flag = sov_nuclear_bombs_delivery_force_missing }
 		clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
 		clamp_variable = { var = sov_nuclear_bombs_integrity min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
 		sov_nuclear_bombs_decay_credibility = yes

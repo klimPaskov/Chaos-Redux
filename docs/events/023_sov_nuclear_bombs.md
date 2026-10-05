@@ -128,6 +128,10 @@ Every government that refuses, settles or outlasts a demand gets the timed flag 
 The Soviet AI prefers the private signal while public knowledge is below Demonstrated (×1.40) and halves the public ultimatum until a signal has been sent; the ultimatum falls ×0.40 when credibility is Doubted and ×0.70 after the first and again after the second back-down; back-down rises ×2.50 only when credibility is Doubted; the wartime demonstration rises ×1.50 after a refusal and ×1.50 when Doubted; and the limited strike rises ×1.50 after a refusal.
 All values are in `sov_nuclear_bombs_ai`, `sov_nuclear_bombs_credibility` and `sov_nuclear_bombs_duration`.
 
+### Lost delivery force
+
+Past the opening, each 30-day maintenance cycle without a delivery route (`sov_nuclear_bombs_event_delivery_force_is_missing`: no more deployed strategic bombers than the floor, too little fuel, or no air base) lowers Arsenal Readiness by 3, down to 10 (`delivery_loss_readiness`, `delivery_loss_readiness_floor`), and grants nothing in return; the header's readiness line says in plain words that bombers, fuel or an air base are missing while that holds. Strike and test actions already show the route requirement in their tooltips.
+
 ### Retaliation timing
 
 The retaliation window mission reads its length from `sov_nuclear_bombs_retaliation_window_days`, set before every activation (Part 5 retaliation timing): a hotline keeps 30 days, an authorized response waits 10 days with intact command, 14 days while a launch warning is unconfirmed, and 21 days when Command Integrity is low, Moscow is lost or a custody collapse disputes authority (`sov_nuclear_bombs_duration`).
