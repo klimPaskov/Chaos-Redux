@@ -71,6 +71,16 @@ That plan must define:
 
 If no safe AI path exists, the family remains excluded even if a human could use it through console or manual template editing.
 
+## Accepted presentation disposition, 5 October 2026
+
+Disposition: the original per-landing-popup allocation below is superseded by the owner decision in `docs/plans/042_equipment_from_heavens_plans/agent_decisions_2026-10-05.md`, accepted under the user's G6 authority to repair weak design.
+The canonical entry is hidden `.1`, discovery is `.2`, and one final summary `.13`/`.16` or halted recovery `.17` replaces the interruption from individual landing reports.
+Three-to-seven physical recovery visits, cargo quantities, accident odds and state burdens remain implemented.
+Discovery selects among crate, vehicle, aircraft, atomic and sealed-cargo artwork from the actual manifest; summaries use the depot image.
+The old report definitions remain dormant compatibility surfaces.
+The Borrowed Nightmare exact combat-loss criterion remains unresolved, and no gameplay proxy has been promoted into accepted design.
+Live and required MCP acceptance gates remain open.
+
 ## Delivery report presentation
 
 The event uses report-event art and ordinary popup surfaces. The physical scene should dominate each image.

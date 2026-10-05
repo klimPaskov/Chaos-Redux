@@ -1,0 +1,2415 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS CONVENTIONAL REGISTRY
+# ============================================================================
+# Curated conventional family registry for Equipment from Heavens. Every row
+# resolves to a complete usable item under the active DLC configuration:
+# designer families create one neutral complete variant on the recipient and
+# grant it by variant name, while non-designer configurations use complete
+# legacy tokens. Bare chassis and empty airframes are never granted.
+#
+# Interface (COUNTRY scope, recipient):
+# - equipment_from_heavens_load_family_profile
+#   input temp efh_profile_family, efh_active_stage
+#   output temp efh_profile_min_stage, efh_profile_max_tier, efh_profile_group,
+#   efh_profile_qclass, efh_profile_designer, efh_profile_mismatch
+# - equipment_from_heavens_resolve_current_tier
+#   input temp efh_profile_family, output temp efh_current_tier
+# - equipment_from_heavens_resolve_family_token
+#   input temp efh_profile_family, efh_grant_tier; output country variables
+#   efh_grant_token, efh_grant_name_token, efh_grant_family and temp
+#   efh_grant_designer; designer rows also ensure the neutral variant exists.
+# Tier 4 airframes, jets, and rocket interceptors are outside the registry
+# because their engine and module validity is not proven across every DLC
+# configuration; the highest safe tier per family is listed in each profile.
+# ============================================================================
+
+equipment_from_heavens_load_family_profile = {
+	set_temp_variable = { efh_profile_min_stage = constant:equipment_from_heavens_stage.baseline }
+	set_temp_variable = { efh_profile_max_tier = 1 }
+	set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.infantry }
+	set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.infantry }
+	set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.none }
+	set_temp_variable = { efh_profile_mismatch = 0 }
+	if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.infantry } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.infantry }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.infantry }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.support } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 1 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.infantry }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.support }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.artillery } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.guns }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.artillery }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_tank } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.guns }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_tank }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_air } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.guns }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_air }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.rocket_artillery } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 2 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.guns }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.rocket }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		# Advanced rocket artillery belongs to Evolution I.
+		if = {
+			limit = { check_variable = { efh_active_stage < constant:equipment_from_heavens_stage.evolution_i } }
+			set_temp_variable = { efh_profile_max_tier = 1 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.motorized } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 1 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.logistics }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.motorized }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.mechanized } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_mechanized } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 2 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.trains } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.logistics }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.trains }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.convoys } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 1 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.logistics }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.convoys }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.armored_cars } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 2 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.light_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.medium_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tank_destroyers } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_artillery } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_anti_air } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 2 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+			set_temp_variable = { efh_profile_max_tier = 1 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.modern_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 2 }
+		set_temp_variable = { efh_profile_max_tier = 1 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.super_heavy_tanks } }
+		set_temp_variable = { efh_profile_min_stage = 2 }
+		set_temp_variable = { efh_profile_max_tier = 1 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.tank }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.fighters } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.close_air_support } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tactical_bombers } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.strategic_bombers } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.naval_bombers } }
+		set_temp_variable = { efh_profile_min_stage = 0 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_fighters } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 3 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 0 }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.plane }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.transport_planes } }
+		set_temp_variable = { efh_profile_min_stage = 1 }
+		set_temp_variable = { efh_profile_max_tier = 2 }
+		set_temp_variable = { efh_profile_group = constant:equipment_from_heavens_group.air }
+		set_temp_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+		set_temp_variable = { efh_profile_mismatch = 1 }
+	}
+}
+
+# The recipient's research only labels which tier is "current" for a family.
+# It never changes quantity or removes a family.
+equipment_from_heavens_resolve_current_tier = {
+	set_temp_variable = { efh_current_tier = 1 }
+	if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.infantry } }
+		if = {
+			limit = { has_tech = advanced_infantry_weapons }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = improved_infantry_weapons }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.artillery } }
+		if = {
+			limit = { has_tech = artillery4 }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = artillery1 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_tank } }
+		if = {
+			limit = { has_tech = antitank5 }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = antitank2 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_air } }
+		if = {
+			limit = { has_tech = antiair5 }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = antiair2 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.rocket_artillery } }
+		if = {
+			limit = { has_tech = rocket_artillery4 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.mechanized } }
+		if = {
+			limit = { has_tech = mechanised_infantry3 }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = mechanised_infantry2 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_mechanized } }
+		if = {
+			limit = { has_tech = amphibious_mechanized_infantry_2 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.trains } }
+		if = {
+			limit = { has_tech = armored_train }
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = { has_tech = wartime_train }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.armored_cars } }
+		if = {
+			limit = { has_tech = armored_car3 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.light_tanks } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_light_tank
+					has_tech = advanced_light_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_light_tank
+					has_tech = improved_light_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.medium_tanks } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_medium_tank
+					has_tech = advanced_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_medium_tank
+					has_tech = improved_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_tanks } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_heavy_tank
+					has_tech = advanced_heavy_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_heavy_tank
+					has_tech = improved_heavy_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tank_destroyers } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_medium_tank
+					has_tech = advanced_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_medium_tank
+					has_tech = improved_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_artillery } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_medium_tank
+					has_tech = advanced_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_medium_tank
+					has_tech = improved_medium_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_anti_air } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = advanced_light_tank
+					has_tech = advanced_light_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = improved_light_tank
+					has_tech = improved_light_tank_chassis
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_tanks } }
+		if = {
+			limit = { has_tech = amphibious_tank_2 }
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.fighters } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = fighter3
+					has_tech = advanced_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = fighter2
+					has_tech = improved_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.close_air_support } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = CAS3
+					has_tech = advanced_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = CAS2
+					has_tech = improved_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tactical_bombers } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = tactical_bomber3
+					has_tech = advanced_medium_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = tactical_bomber2
+					has_tech = improved_medium_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.strategic_bombers } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = strategic_bomber3
+					has_tech = advanced_large_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = strategic_bomber2
+					has_tech = improved_large_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.naval_bombers } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = naval_bomber3
+					has_tech = advanced_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = naval_bomber2
+					has_tech = improved_small_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_fighters } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = heavy_fighter3
+					has_tech = advanced_medium_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 3 }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_tech = heavy_fighter2
+					has_tech = improved_medium_airframe
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.transport_planes } }
+		if = {
+			limit = {
+				OR = {
+					has_tech = improved_transport_plane
+					has_tech = bba_improved_transport_plane
+				}
+			}
+			set_temp_variable = { efh_current_tier = 2 }
+		}
+	}
+}
+
+equipment_from_heavens_resolve_family_token = {
+	set_variable = { efh_grant_family = efh_profile_family }
+	set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.none }
+	clear_variable = efh_grant_token
+	if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.infantry } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_infantry }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:infantry_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:infantry_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:infantry_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.support } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_support }
+		set_variable = { efh_grant_token = token:support_equipment_1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.artillery } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_artillery }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:artillery_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:artillery_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:artillery_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_tank } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_anti_tank }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:anti_tank_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:anti_tank_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:anti_tank_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.anti_air } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_anti_air }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:anti_air_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:anti_air_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:anti_air_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.rocket_artillery } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_rocket_artillery }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:rocket_artillery_equipment_1 } }
+		else = { set_variable = { efh_grant_token = token:rocket_artillery_equipment_2 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.motorized } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_motorized }
+		set_variable = { efh_grant_token = token:motorized_equipment_1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.mechanized } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_mechanized }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:mechanized_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:mechanized_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:mechanized_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_mechanized } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_amphibious_mechanized }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:amphibious_mechanized_equipment_1 } }
+		else = { set_variable = { efh_grant_token = token:amphibious_mechanized_equipment_2 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.trains } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_trains }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:train_equipment_1 } }
+		else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:train_equipment_2 } }
+		else = { set_variable = { efh_grant_token = token:train_equipment_3 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.convoys } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_convoys }
+		set_variable = { efh_grant_token = token:convoy_1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.armored_cars } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_armored_cars }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:armored_car_equipment_1 } }
+		else = { set_variable = { efh_grant_token = token:armored_car_equipment_2 } }
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.light_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_light_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:light_tank_chassis_1 }
+				equipment_from_heavens_ensure_variant_f13_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:light_tank_chassis_2 }
+				equipment_from_heavens_ensure_variant_f13_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:light_tank_chassis_3 }
+				equipment_from_heavens_ensure_variant_f13_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:light_tank_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:light_tank_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:light_tank_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.medium_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_medium_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:medium_tank_chassis_1 }
+				equipment_from_heavens_ensure_variant_f14_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:medium_tank_chassis_2 }
+				equipment_from_heavens_ensure_variant_f14_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:medium_tank_chassis_3 }
+				equipment_from_heavens_ensure_variant_f14_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:medium_tank_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:medium_tank_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:medium_tank_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_heavy_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:heavy_tank_chassis_1 }
+				equipment_from_heavens_ensure_variant_f15_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:heavy_tank_chassis_2 }
+				equipment_from_heavens_ensure_variant_f15_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:heavy_tank_chassis_3 }
+				equipment_from_heavens_ensure_variant_f15_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:heavy_tank_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:heavy_tank_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:heavy_tank_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tank_destroyers } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_tank_destroyers }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:medium_tank_destroyer_chassis_1 }
+				equipment_from_heavens_ensure_variant_f16_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:medium_tank_destroyer_chassis_2 }
+				equipment_from_heavens_ensure_variant_f16_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:medium_tank_destroyer_chassis_3 }
+				equipment_from_heavens_ensure_variant_f16_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:medium_tank_destroyer_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:medium_tank_destroyer_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:medium_tank_destroyer_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_artillery } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_self_propelled_artillery }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:medium_tank_artillery_chassis_1 }
+				equipment_from_heavens_ensure_variant_f17_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:medium_tank_artillery_chassis_2 }
+				equipment_from_heavens_ensure_variant_f17_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:medium_tank_artillery_chassis_3 }
+				equipment_from_heavens_ensure_variant_f17_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:medium_tank_artillery_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:medium_tank_artillery_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:medium_tank_artillery_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.self_propelled_anti_air } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_self_propelled_anti_air }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:light_tank_aa_chassis_1 }
+				equipment_from_heavens_ensure_variant_f18_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:light_tank_aa_chassis_2 }
+				equipment_from_heavens_ensure_variant_f18_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:light_tank_aa_chassis_3 }
+				equipment_from_heavens_ensure_variant_f18_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:light_tank_aa_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:light_tank_aa_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:light_tank_aa_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.amphibious_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_amphibious_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			set_variable = { efh_grant_token = token:amphibious_tank_chassis_1 }
+			equipment_from_heavens_ensure_variant_f19_t1 = yes
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:amphibious_tank_equipment_1 } }
+			else = { set_variable = { efh_grant_token = token:amphibious_tank_equipment_2 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.modern_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_modern_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			set_variable = { efh_grant_token = token:modern_tank_chassis_1 }
+			equipment_from_heavens_ensure_variant_f20_t1 = yes
+		}
+		else = {
+			set_variable = { efh_grant_token = token:modern_tank_equipment_1 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.super_heavy_tanks } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_super_heavy_tanks }
+		if = {
+			limit = { has_dlc = "No Step Back" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.tank }
+			set_variable = { efh_grant_token = token:super_heavy_tank_chassis_1 }
+			equipment_from_heavens_ensure_variant_f21_t1 = yes
+		}
+		else = {
+			set_variable = { efh_grant_token = token:super_heavy_tank_equipment_1 }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.fighters } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_fighters }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:small_plane_airframe_1 }
+				equipment_from_heavens_ensure_variant_f22_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:small_plane_airframe_2 }
+				equipment_from_heavens_ensure_variant_f22_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:small_plane_airframe_3 }
+				equipment_from_heavens_ensure_variant_f22_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:fighter_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:fighter_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:fighter_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.close_air_support } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_close_air_support }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:small_plane_cas_airframe_1 }
+				equipment_from_heavens_ensure_variant_f23_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:small_plane_cas_airframe_2 }
+				equipment_from_heavens_ensure_variant_f23_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:small_plane_cas_airframe_3 }
+				equipment_from_heavens_ensure_variant_f23_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:CAS_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:CAS_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:CAS_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.tactical_bombers } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_tactical_bombers }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:medium_plane_airframe_1 }
+				equipment_from_heavens_ensure_variant_f24_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:medium_plane_airframe_2 }
+				equipment_from_heavens_ensure_variant_f24_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:medium_plane_airframe_3 }
+				equipment_from_heavens_ensure_variant_f24_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:tac_bomber_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:tac_bomber_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:tac_bomber_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.strategic_bombers } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_strategic_bombers }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:large_plane_airframe_1 }
+				equipment_from_heavens_ensure_variant_f25_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:large_plane_airframe_2 }
+				equipment_from_heavens_ensure_variant_f25_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:large_plane_airframe_3 }
+				equipment_from_heavens_ensure_variant_f25_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:strat_bomber_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:strat_bomber_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:strat_bomber_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.naval_bombers } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_naval_bombers }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:small_plane_naval_bomber_airframe_1 }
+				equipment_from_heavens_ensure_variant_f26_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:small_plane_naval_bomber_airframe_2 }
+				equipment_from_heavens_ensure_variant_f26_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:small_plane_naval_bomber_airframe_3 }
+				equipment_from_heavens_ensure_variant_f26_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:nav_bomber_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:nav_bomber_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:nav_bomber_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.heavy_fighters } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_heavy_fighters }
+		if = {
+			limit = { has_dlc = "By Blood Alone" }
+			set_temp_variable = { efh_grant_designer = constant:equipment_from_heavens_designer.plane }
+			if = {
+				limit = { check_variable = { efh_grant_tier < 2 } }
+				set_variable = { efh_grant_token = token:medium_plane_fighter_airframe_1 }
+				equipment_from_heavens_ensure_variant_f27_t1 = yes
+			}
+			else_if = {
+				limit = { check_variable = { efh_grant_tier < 3 } }
+				set_variable = { efh_grant_token = token:medium_plane_fighter_airframe_2 }
+				equipment_from_heavens_ensure_variant_f27_t2 = yes
+			}
+			else = {
+				set_variable = { efh_grant_token = token:medium_plane_fighter_airframe_3 }
+				equipment_from_heavens_ensure_variant_f27_t3 = yes
+			}
+		}
+		else = {
+			if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:heavy_fighter_equipment_1 } }
+			else_if = { limit = { check_variable = { efh_grant_tier < 3 } } set_variable = { efh_grant_token = token:heavy_fighter_equipment_2 } }
+			else = { set_variable = { efh_grant_token = token:heavy_fighter_equipment_3 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_family = constant:equipment_from_heavens_family.transport_planes } }
+		set_variable = { efh_grant_name_token = token:efh_family_name_transport_planes }
+		if = { limit = { check_variable = { efh_grant_tier < 2 } } set_variable = { efh_grant_token = token:transport_plane_equipment_1 } }
+		else = { set_variable = { efh_grant_token = token:transport_plane_equipment_2 } }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Neutral complete variants. Each helper is idempotent per recipient and
+# creates the variant even when the recipient has not researched the chassis
+# or airframe. Creating a variant grants no production access: production
+# still requires the ordinary chassis or airframe research.
+# ---------------------------------------------------------------------------
+
+equipment_from_heavens_ensure_variant_f13_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f13_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Light Tank"
+			type = light_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_small_cannon
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f13_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f13_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f13_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Light Tank"
+			type = light_tank_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_small_cannon_2
+				suspension_type_slot = tank_christie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f13_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f13_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f13_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Light Tank"
+			type = light_tank_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_small_cannon_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f13_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f14_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f14_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Tank"
+			type = medium_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_two_man_tank_turret
+				main_armament_slot = tank_medium_cannon
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f14_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f14_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f14_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Tank"
+			type = medium_tank_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_three_man_tank_turret
+				main_armament_slot = tank_medium_cannon
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f14_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f14_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f14_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Tank"
+			type = medium_tank_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_three_man_tank_turret
+				main_armament_slot = tank_medium_cannon_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f14_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f15_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f15_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Tank"
+			type = heavy_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_heavy_three_man_tank_turret
+				main_armament_slot = tank_medium_cannon
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f15_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f15_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f15_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Tank"
+			type = heavy_tank_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_heavy_three_man_tank_turret
+				main_armament_slot = tank_heavy_cannon
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f15_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f15_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f15_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Tank"
+			type = heavy_tank_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_heavy_three_man_tank_turret
+				main_armament_slot = tank_heavy_cannon_2
+				suspension_type_slot = tank_interleaved_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f15_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f16_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f16_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Tank Destroyer"
+			type = medium_tank_destroyer_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_high_velocity_cannon_2
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f16_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f16_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f16_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Tank Destroyer"
+			type = medium_tank_destroyer_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_high_velocity_cannon_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f16_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f16_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f16_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Tank Destroyer"
+			type = medium_tank_destroyer_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_high_velocity_cannon_3
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f16_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f17_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f17_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Assault Howitzer"
+			type = medium_tank_artillery_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_medium_howitzer
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f17_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f17_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f17_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Assault Howitzer"
+			type = medium_tank_artillery_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_medium_howitzer
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f17_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f17_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f17_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Assault Howitzer"
+			type = medium_tank_artillery_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_medium_fixed_superstructure_turret
+				main_armament_slot = tank_medium_howitzer_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f17_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f18_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f18_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Flak Carrier"
+			type = light_tank_aa_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_anti_air_cannon
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f18_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f18_t2 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f18_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Flak Carrier"
+			type = light_tank_aa_chassis_2
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_anti_air_cannon_2
+				suspension_type_slot = tank_christie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f18_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f18_t3 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f18_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Flak Carrier"
+			type = light_tank_aa_chassis_3
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_anti_air_cannon_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f18_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f19_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f19_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Amphibious Tank"
+			type = amphibious_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_light_two_man_tank_turret
+				main_armament_slot = tank_small_cannon
+				suspension_type_slot = tank_bogie_suspension
+				armor_type_slot = tank_riveted_armor
+				engine_type_slot = tank_gasoline_engine
+				special_type_slot_1 = tank_radio_1
+			}
+		}
+		set_country_flag = efh_variant_f19_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f20_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f20_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Battle Tank"
+			type = modern_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_modern_tank_turret
+				main_armament_slot = tank_heavy_cannon_2
+				suspension_type_slot = tank_torsion_bar_suspension
+				armor_type_slot = tank_welded_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_3
+				special_type_slot_2 = stabilizer
+			}
+		}
+		set_country_flag = efh_variant_f20_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f21_t1 = {
+	if = {
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = efh_variant_f21_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Siege Tank"
+			type = super_heavy_tank_chassis_1
+			allow_without_tech = yes
+			modules = {
+				turret_type_slot = tank_super_heavy_three_man_tank_turret
+				main_armament_slot = tank_super_heavy_cannon
+				suspension_type_slot = tank_interleaved_suspension
+				armor_type_slot = tank_cast_armor
+				engine_type_slot = tank_diesel_engine
+				special_type_slot_1 = tank_radio_2
+			}
+		}
+		set_country_flag = efh_variant_f21_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f22_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f22_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Fighter"
+			type = small_plane_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = light_mg_4x
+				engine_type_slot = engine_1_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f22_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f22_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f22_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Fighter"
+			type = small_plane_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = heavy_mg_4x
+				engine_type_slot = engine_2_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f22_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f22_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f22_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Fighter"
+			type = small_plane_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = heavy_mg_4x
+				fixed_auxiliary_weapon_slot_1 = aircraft_cannon_1_2x
+				engine_type_slot = engine_3_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f22_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f23_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f23_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Ground Attack Plane"
+			type = small_plane_cas_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = bomb_locks
+				fixed_auxiliary_weapon_slot_1 = light_mg_2x
+				engine_type_slot = engine_1_1x
+				special_type_slot_1 = dive_brakes_small
+			}
+		}
+		set_country_flag = efh_variant_f23_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f23_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f23_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Ground Attack Plane"
+			type = small_plane_cas_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = bomb_locks
+				fixed_auxiliary_weapon_slot_1 = heavy_mg_2x
+				engine_type_slot = engine_2_1x
+				special_type_slot_1 = dive_brakes_small
+			}
+		}
+		set_country_flag = efh_variant_f23_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f23_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f23_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Ground Attack Plane"
+			type = small_plane_cas_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = bomb_locks
+				fixed_auxiliary_weapon_slot_1 = heavy_mg_2x
+				engine_type_slot = engine_3_1x
+				special_type_slot_1 = dive_brakes_small
+			}
+		}
+		set_country_flag = efh_variant_f23_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f24_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f24_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Bomber"
+			type = medium_plane_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = medium_bomb_bay
+				engine_type_slot = engine_1_2x
+				special_type_slot_1 = lmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f24_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f24_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f24_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Bomber"
+			type = medium_plane_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = medium_bomb_bay
+				fixed_auxiliary_weapon_slot_1 = medium_bomb_bay
+				engine_type_slot = engine_2_2x
+				special_type_slot_1 = lmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f24_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f24_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f24_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Medium Bomber"
+			type = medium_plane_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = medium_bomb_bay
+				fixed_auxiliary_weapon_slot_1 = medium_bomb_bay
+				engine_type_slot = engine_3_2x
+				special_type_slot_1 = lmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f24_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f25_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f25_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Bomber"
+			type = large_plane_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = large_bomb_bay
+				engine_type_slot = engine_1_4x
+				special_type_slot_1 = hmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f25_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f25_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f25_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Bomber"
+			type = large_plane_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = large_bomb_bay
+				fixed_auxiliary_weapon_slot_1 = large_bomb_bay
+				engine_type_slot = engine_2_4x
+				special_type_slot_1 = hmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f25_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f25_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f25_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Bomber"
+			type = large_plane_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = large_bomb_bay
+				fixed_auxiliary_weapon_slot_1 = large_bomb_bay
+				engine_type_slot = engine_3_4x
+				special_type_slot_1 = hmg_defense_turret_2x
+			}
+		}
+		set_country_flag = efh_variant_f25_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f26_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f26_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Torpedo Bomber"
+			type = small_plane_naval_bomber_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = torpedo_mounting
+				engine_type_slot = engine_1_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f26_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f26_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f26_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Torpedo Bomber"
+			type = small_plane_naval_bomber_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = torpedo_mounting
+				engine_type_slot = engine_2_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f26_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f26_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f26_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Torpedo Bomber"
+			type = small_plane_naval_bomber_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = torpedo_mounting_2
+				engine_type_slot = engine_3_1x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f26_t3_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f27_t1 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f27_t1_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Fighter"
+			type = medium_plane_fighter_airframe_1
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = heavy_mg_4x
+				engine_type_slot = engine_1_2x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f27_t1_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f27_t2 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f27_t2_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Fighter"
+			type = medium_plane_fighter_airframe_2
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = heavy_mg_4x
+				fixed_auxiliary_weapon_slot_1 = aircraft_cannon_1_2x
+				engine_type_slot = engine_2_2x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f27_t2_created
+	}
+}
+
+equipment_from_heavens_ensure_variant_f27_t3 = {
+	if = {
+		limit = { has_dlc = "By Blood Alone" NOT = { has_country_flag = efh_variant_f27_t3_created } }
+		create_equipment_variant = {
+			name = "Unmarked Heavy Fighter"
+			type = medium_plane_fighter_airframe_3
+			allow_without_tech = yes
+			modules = {
+				fixed_main_weapon_slot = heavy_mg_4x
+				fixed_auxiliary_weapon_slot_1 = aircraft_cannon_1_2x
+				engine_type_slot = engine_3_2x
+				special_type_slot_1 = empty
+			}
+		}
+		set_country_flag = efh_variant_f27_t3_created
+	}
+}
+
+# COUNTRY scope. Input temp efh_profile_qclass and variable efh_manifest_magnitude.
+# Output temp efh_band_min and efh_band_max in thousands of units, which keeps
+# every intermediate value far below the engine variable ceiling.
+equipment_from_heavens_load_quantity_band = {
+	set_temp_variable = { efh_band_min = 0 }
+	set_temp_variable = { efh_band_max = 0 }
+	if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.infantry }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.infantry_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.infantry_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.infantry }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.infantry_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.infantry_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.infantry }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.infantry_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.infantry_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.support }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.support_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.support_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.support }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.support_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.support_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.support }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.support_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.support_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.artillery }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.artillery_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.artillery_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.artillery }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.artillery_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.artillery_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.artillery }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.artillery_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.artillery_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_tank }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_tank_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_tank_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_tank }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_tank_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_tank_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_tank }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_tank_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_tank_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_air }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_air_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_air_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_air }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_air_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_air_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.anti_air }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.anti_air_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.anti_air_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.rocket }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.rocket_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.rocket_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.rocket }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.rocket_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.rocket_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.rocket }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.rocket_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.rocket_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.motorized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.motorized_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.motorized_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.motorized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.motorized_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.motorized_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.motorized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.motorized_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.motorized_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.mechanized_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.mechanized_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.mechanized_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.mechanized_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.mechanized }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.mechanized_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.mechanized_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.tanks_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.tanks_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.tanks_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.tanks_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.tanks }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.tanks_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.tanks_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.aircraft_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.aircraft_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.aircraft_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.aircraft_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.aircraft }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.aircraft_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.aircraft_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.trains }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.trains_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.trains_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.trains }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.trains_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.trains_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.trains }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.trains_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.trains_impossible_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.convoys }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.convoys_enormous_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.convoys_enormous_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.convoys }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.convoys_colossal_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.convoys_colossal_max }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_profile_qclass = constant:equipment_from_heavens_quantity_class.convoys }
+			check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible }
+		}
+		set_temp_variable = { efh_band_min = constant:equipment_from_heavens_band.convoys_impossible_min }
+		set_temp_variable = { efh_band_max = constant:equipment_from_heavens_band.convoys_impossible_max }
+	}
+	divide_temp_variable = { efh_band_min = 1000 }
+	divide_temp_variable = { efh_band_max = 1000 }
+}
+
+# COUNTRY scope. Input variables efh_grant_family and efh_grant_token and temp
+# efh_grant_amount. Grants the neutral variant by its literal name and reports
+# temp efh_stock_before and efh_stock_after for the verification step. The
+# variant name is a literal string so the lookup never depends on the
+# player's localisation language.
+equipment_from_heavens_add_designer_stock = {
+	set_temp_variable = { efh_stock_before = 0 }
+	set_temp_variable = { efh_stock_after = 0 }
+	if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.light_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Light Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.medium_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Medium Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.heavy_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Heavy Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.tank_destroyers } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Tank Destroyer"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.self_propelled_artillery } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Assault Howitzer"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.self_propelled_anti_air } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Flak Carrier"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.amphibious_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Amphibious Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.modern_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Battle Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.super_heavy_tanks } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Siege Tank"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.fighters } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Fighter"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.close_air_support } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Ground Attack Plane"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.tactical_bombers } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Medium Bomber"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.strategic_bombers } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Heavy Bomber"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.naval_bombers } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Torpedo Bomber"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_grant_family = constant:equipment_from_heavens_family.heavy_fighters } }
+		meta_effect = {
+			text = {
+				set_temp_variable = { efh_stock_before = num_equipment@[TOKEN] }
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_grant_amount
+					variant_name = "Unmarked Heavy Fighter"
+				}
+				set_temp_variable = { efh_stock_after = num_equipment@[TOKEN] }
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+}

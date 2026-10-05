@@ -1,0 +1,1617 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS SCRIPTED EFFECTS
+# ============================================================================
+# One delivery transaction per firing. The dispatcher saves one uniformly
+# random ordinary recipient, the canonical chaosx.nr42.1 event opens the
+# delivery, builds one persisted manifest, applies the stockpile grant once,
+# and schedules three to seven landing reports. Reports read the saved
+# manifest and never grant equipment, record Event 42 history, advance pacing,
+# or reduce repeatable weight.
+#
+# Persistent recipient state (cleared when the chain closes):
+# - flag efh_chain_active, variables efh_delivery_sequence, efh_manifest_*
+# - arrays efh_manifest_family_entries, _tier_, _role_, _amount_,
+#   efh_manifest_special_entries, efh_manifest_special_amount_entries,
+#   efh_report_state_entries, efh_report_theme_entries, efh_report_day_entries
+# Compact global history (kept): global.efh_history_* arrays.
+#
+# Scope contract: every helper below runs in the recipient COUNTRY scope
+# unless its comment says otherwise.
+# ============================================================================
+
+# Label mirrored from equipment_from_heavens_ai.assessment_days because timed
+# flag durations reject both constants and variables.
+@EFH_AI_ASSESSMENT_DAYS = 365
+
+# Mirrored from equipment_from_heavens_accident.infrastructure_damage because
+# damage_building rejects script constants.
+@EFH_ACCIDENT_INFRASTRUCTURE_DAMAGE = 1
+
+# ---------------------------------------------------------------------------
+# Dispatcher preparation
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope (dispatching country). Draws one recipient uniformly from the
+# complete eligible set. Output: event target efh_prefire_recipient and temp
+# efh_prefire_ready. Nothing is granted here.
+equipment_from_heavens_prepare_random_event_fire = {
+	set_temp_variable = { efh_prefire_ready = 0 }
+	set_temp_variable = { efh_dispatch_manual = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = force_trigger_mode_enabled
+				check_variable = { events_log_manual_event_detail_trigger > 0 }
+			}
+		}
+		set_temp_variable = { efh_dispatch_manual = 1 }
+	}
+	clear_temp_array = efh_recipient_pool
+	every_country = {
+		limit = { equipment_from_heavens_country_is_valid_recipient = yes }
+		add_to_temp_array = { efh_recipient_pool = THIS }
+	}
+	if = {
+		limit = { check_variable = { efh_recipient_pool^num > 0 } }
+		random_scope_in_array = {
+			array = efh_recipient_pool
+			save_event_target_as = efh_prefire_recipient
+			set_variable = { efh_pending_manual = efh_dispatch_manual }
+			set_country_flag = efh_prefire_pending
+		}
+	}
+	clear_temp_array = efh_recipient_pool
+	if = {
+		limit = { has_event_target = efh_prefire_recipient }
+		set_temp_variable = { efh_prefire_ready = 1 }
+	}
+}
+
+# COUNTRY scope (recipient). Called from the shared history recorder so the
+# delivery can bind its compact record to the exact Event Log sequence.
+equipment_from_heavens_bind_history_sequence = {
+	if = {
+		limit = { has_variable = global.events_log_history_sequence }
+		set_variable = { efh_pending_history_sequence = global.events_log_history_sequence }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Delivery transaction
+# ---------------------------------------------------------------------------
+
+# Opens the delivery. Called once from chaosx.nr42.1 immediate.
+equipment_from_heavens_open_delivery = {
+	clr_country_flag = efh_prefire_pending
+	if = {
+		limit = { NOT = { has_variable = global.efh_delivery_sequence } }
+		set_variable = { global.efh_delivery_sequence = 0 }
+	}
+	add_to_variable = { global.efh_delivery_sequence = 1 }
+	set_variable = { efh_delivery_sequence = global.efh_delivery_sequence }
+	set_variable = { efh_delivery_date = global.date }
+	set_variable = { global.efh_last_delivery_date = global.date }
+	set_country_flag = efh_chain_active
+	set_variable = { efh_manifest_manual = 0 }
+	if = {
+		limit = { has_variable = efh_pending_manual }
+		set_variable = { efh_manifest_manual = efh_pending_manual }
+		clear_variable = efh_pending_manual
+	}
+
+	equipment_from_heavens_resolve_active_stage = yes
+	set_variable = { efh_manifest_stage = efh_active_stage }
+	equipment_from_heavens_roll_magnitude = yes
+	equipment_from_heavens_roll_group = yes
+	set_temp_variable = { efh_signature_end = constant:equipment_from_heavens_signature.last }
+	add_to_temp_variable = { efh_signature_end = 1 }
+	set_variable_to_random = {
+		var = efh_manifest_signature
+		min = constant:equipment_from_heavens_signature.first
+		max = efh_signature_end
+		integer = yes
+	}
+	equipment_from_heavens_compute_manifest_scale = yes
+	equipment_from_heavens_build_manifest = yes
+	equipment_from_heavens_grant_manifest = yes
+
+	set_variable = { efh_manifest_nuclear_amount = 0 }
+	if = {
+		limit = { check_variable = { efh_manifest_stage > constant:equipment_from_heavens_stage.evolution_i } }
+		equipment_from_heavens_roll_nuclear_cache = yes
+	}
+	if = {
+		limit = { check_variable = { efh_manifest_stage > constant:equipment_from_heavens_stage.evolution_ii } }
+		equipment_from_heavens_roll_special_slots = yes
+	}
+	else = {
+		clear_array = efh_manifest_special_entries
+		clear_array = efh_manifest_special_amount_entries
+	}
+
+	equipment_from_heavens_plan_reports = yes
+	equipment_from_heavens_record_history = yes
+	equipment_from_heavens_record_stage_demonstration = yes
+	equipment_from_heavens_apply_first_skyfall_chaos = yes
+	equipment_from_heavens_achievement_snapshot_tiny_arsenal = yes
+	if = {
+		limit = { is_ai = yes }
+		equipment_from_heavens_ai_assessment = yes
+	}
+	equipment_from_heavens_prepare_popup_lines = yes
+}
+
+# ANY scope. Output temp efh_active_stage from the ordered evolution records
+# and the current enable toggles.
+equipment_from_heavens_resolve_active_stage = {
+	set_temp_variable = { efh_active_stage = constant:equipment_from_heavens_stage.baseline }
+	if = {
+		limit = { equipment_from_heavens_stage_iii_active = yes }
+		set_temp_variable = { efh_active_stage = constant:equipment_from_heavens_stage.evolution_iii }
+	}
+	else_if = {
+		limit = { equipment_from_heavens_stage_ii_active = yes }
+		set_temp_variable = { efh_active_stage = constant:equipment_from_heavens_stage.evolution_ii }
+	}
+	else_if = {
+		limit = { equipment_from_heavens_stage_i_active = yes }
+		set_temp_variable = { efh_active_stage = constant:equipment_from_heavens_stage.evolution_i }
+	}
+}
+
+equipment_from_heavens_roll_magnitude = {
+	set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous }
+	if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.baseline } }
+		random_list = {
+			constant:equipment_from_heavens_magnitude_weight.baseline_enormous = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous } }
+			constant:equipment_from_heavens_magnitude_weight.baseline_colossal = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			constant:equipment_from_heavens_magnitude_weight.baseline_impossible = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_i } }
+		random_list = {
+			constant:equipment_from_heavens_magnitude_weight.evolution_i_enormous = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_i_colossal = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_i_impossible = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_ii } }
+		random_list = {
+			constant:equipment_from_heavens_magnitude_weight.evolution_ii_enormous = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_ii_colossal = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_ii_impossible = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		}
+	}
+	else = {
+		random_list = {
+			constant:equipment_from_heavens_magnitude_weight.evolution_iii_enormous = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.enormous } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_iii_colossal = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			constant:equipment_from_heavens_magnitude_weight.evolution_iii_impossible = { set_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		}
+	}
+}
+
+equipment_from_heavens_roll_group = {
+	random_list = {
+		constant:equipment_from_heavens_group_weight.infantry = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.infantry } }
+		constant:equipment_from_heavens_group_weight.guns = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.guns } }
+		constant:equipment_from_heavens_group_weight.armor = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.armor } }
+		constant:equipment_from_heavens_group_weight.air = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.air } }
+		constant:equipment_from_heavens_group_weight.logistics = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.logistics } }
+		constant:equipment_from_heavens_group_weight.foreign_warehouse = { set_variable = { efh_manifest_group = constant:equipment_from_heavens_group.foreign_warehouse } }
+	}
+}
+
+# Global scale only: evolution stage, active major wars, and the Chaos tier.
+# Nothing about the recipient enters this factor.
+equipment_from_heavens_compute_manifest_scale = {
+	set_temp_variable = { efh_stage_scale = constant:equipment_from_heavens_scale.stage_baseline }
+	if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_i } }
+		set_temp_variable = { efh_stage_scale = constant:equipment_from_heavens_scale.stage_evolution_i }
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_ii } }
+		set_temp_variable = { efh_stage_scale = constant:equipment_from_heavens_scale.stage_evolution_ii }
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_iii } }
+		set_temp_variable = { efh_stage_scale = constant:equipment_from_heavens_scale.stage_evolution_iii }
+	}
+	set_temp_variable = { efh_major_war_count = 0 }
+	every_country = {
+		limit = {
+			is_major = yes
+			has_war = yes
+		}
+		add_to_temp_variable = { efh_major_war_count = 1 }
+	}
+	set_temp_variable = { efh_global_bonus = efh_major_war_count }
+	multiply_temp_variable = { efh_global_bonus = constant:equipment_from_heavens_scale.major_war_bonus_each }
+	clamp_temp_variable = {
+		var = efh_global_bonus
+		min = 0
+		max = constant:equipment_from_heavens_scale.major_war_bonus_cap
+	}
+	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
+	get_current_chaos_tier_value = yes
+	set_temp_variable = { efh_tier_bonus = current_chaos_tier_value }
+	multiply_temp_variable = { efh_tier_bonus = constant:equipment_from_heavens_scale.chaos_tier_bonus_each }
+	add_to_temp_variable = { efh_global_bonus = efh_tier_bonus }
+	add_to_temp_variable = { efh_global_bonus = 1 }
+	set_variable = { efh_manifest_scale = efh_stage_scale }
+	multiply_variable = { efh_manifest_scale = efh_global_bonus }
+}
+
+# ---------------------------------------------------------------------------
+# Manifest construction
+# ---------------------------------------------------------------------------
+
+# Builds the family list: one anchor, one to three strategically awkward
+# families, and supporting families up to the stage count. No recipient state
+# is read; only the active stage and the active DLC route decide which
+# families exist.
+equipment_from_heavens_build_manifest = {
+	clear_array = efh_manifest_family_entries
+	clear_array = efh_manifest_tier_entries
+	clear_array = efh_manifest_role_entries
+	clear_array = efh_manifest_amount_entries
+	clear_array = efh_manifest_designer_entries
+	set_variable = { efh_manifest_reroll_count = 0 }
+	set_temp_variable = { efh_active_stage = efh_manifest_stage }
+
+	clear_temp_array = efh_pool_anchor
+	clear_temp_array = efh_pool_mismatch
+	clear_temp_array = efh_pool_support
+	set_temp_variable = { efh_family_loop_end = constant:equipment_from_heavens_family.last }
+	add_to_temp_variable = { efh_family_loop_end = 1 }
+	for_loop_effect = {
+		start = constant:equipment_from_heavens_family.first
+		end = efh_family_loop_end
+		value = efh_family_candidate
+		set_temp_variable = { efh_profile_family = efh_family_candidate }
+		equipment_from_heavens_load_family_profile = yes
+		if = {
+			limit = { NOT = { check_variable = { efh_profile_min_stage > efh_manifest_stage } } }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { efh_profile_group = efh_manifest_group }
+						AND = {
+							check_variable = { efh_manifest_group = constant:equipment_from_heavens_group.foreign_warehouse }
+							check_variable = { efh_profile_mismatch = 0 }
+						}
+					}
+				}
+				add_to_temp_array = { efh_pool_anchor = efh_family_candidate }
+			}
+			if = {
+				limit = { check_variable = { efh_profile_mismatch = 1 } }
+				add_to_temp_array = { efh_pool_mismatch = efh_family_candidate }
+			}
+			else = {
+				add_to_temp_array = { efh_pool_support = efh_family_candidate }
+			}
+		}
+	}
+
+	# Family counts for the active stage.
+	set_temp_variable = { efh_count_min = constant:equipment_from_heavens_family_count.baseline_min }
+	set_temp_variable = { efh_count_max = constant:equipment_from_heavens_family_count.baseline_max }
+	set_temp_variable = { efh_mismatch_min = constant:equipment_from_heavens_family_count.baseline_mismatch_min }
+	set_temp_variable = { efh_mismatch_max = constant:equipment_from_heavens_family_count.baseline_mismatch_max }
+	if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_i } }
+		set_temp_variable = { efh_count_min = constant:equipment_from_heavens_family_count.evolution_i_min }
+		set_temp_variable = { efh_count_max = constant:equipment_from_heavens_family_count.evolution_i_max }
+		set_temp_variable = { efh_mismatch_min = constant:equipment_from_heavens_family_count.evolution_i_mismatch_min }
+		set_temp_variable = { efh_mismatch_max = constant:equipment_from_heavens_family_count.evolution_i_mismatch_max }
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_ii } }
+		set_temp_variable = { efh_count_min = constant:equipment_from_heavens_family_count.evolution_ii_min }
+		set_temp_variable = { efh_count_max = constant:equipment_from_heavens_family_count.evolution_ii_max }
+		set_temp_variable = { efh_mismatch_min = constant:equipment_from_heavens_family_count.evolution_ii_mismatch_min }
+		set_temp_variable = { efh_mismatch_max = constant:equipment_from_heavens_family_count.evolution_ii_mismatch_max }
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_iii } }
+		set_temp_variable = { efh_count_min = constant:equipment_from_heavens_family_count.evolution_iii_min }
+		set_temp_variable = { efh_count_max = constant:equipment_from_heavens_family_count.evolution_iii_max }
+		set_temp_variable = { efh_mismatch_min = constant:equipment_from_heavens_family_count.evolution_iii_mismatch_min }
+		set_temp_variable = { efh_mismatch_max = constant:equipment_from_heavens_family_count.evolution_iii_mismatch_max }
+	}
+	add_to_temp_variable = { efh_count_max = 1 }
+	add_to_temp_variable = { efh_mismatch_max = 1 }
+	set_temp_variable_to_random = { var = efh_family_target min = efh_count_min max = efh_count_max integer = yes }
+	set_temp_variable_to_random = { var = efh_mismatch_target min = efh_mismatch_min max = efh_mismatch_max integer = yes }
+
+	# Anchor.
+	set_temp_variable = { efh_random_bound = efh_pool_anchor^num }
+	set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+	set_temp_variable = { efh_profile_family = efh_pool_anchor^efh_pick_index }
+	set_temp_variable = { efh_add_role = constant:equipment_from_heavens_role.anchor }
+	equipment_from_heavens_add_manifest_family = yes
+	remove_from_temp_array = { array = efh_pool_mismatch value = efh_profile_family }
+	remove_from_temp_array = { array = efh_pool_support value = efh_profile_family }
+
+	# Strategically awkward families, drawn uniformly from the fixed pool.
+	set_temp_variable = { efh_mismatch_added = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { efh_mismatch_added < efh_mismatch_target }
+			check_variable = { efh_pool_mismatch^num > 0 }
+		}
+		set_temp_variable = { efh_random_bound = efh_pool_mismatch^num }
+		set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+		set_temp_variable = { efh_profile_family = efh_pool_mismatch^efh_pick_index }
+		remove_from_temp_array = { array = efh_pool_mismatch index = efh_pick_index }
+		set_temp_variable = { efh_add_role = constant:equipment_from_heavens_role.mismatch }
+		equipment_from_heavens_add_manifest_family = yes
+		add_to_temp_variable = { efh_mismatch_added = 1 }
+	}
+
+	# Supporting families up to the stage count. If the ordinary pool runs dry
+	# the remaining awkward families fill the slots, so the count never shrinks.
+	while_loop_effect = {
+		limit = {
+			check_variable = { efh_manifest_family_entries^num < efh_family_target }
+			OR = {
+				check_variable = { efh_pool_support^num > 0 }
+				check_variable = { efh_pool_mismatch^num > 0 }
+			}
+		}
+		if = {
+			limit = { check_variable = { efh_pool_support^num > 0 } }
+			set_temp_variable = { efh_random_bound = efh_pool_support^num }
+			set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+			set_temp_variable = { efh_profile_family = efh_pool_support^efh_pick_index }
+			remove_from_temp_array = { array = efh_pool_support index = efh_pick_index }
+		}
+		else = {
+			set_temp_variable = { efh_random_bound = efh_pool_mismatch^num }
+			set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+			set_temp_variable = { efh_profile_family = efh_pool_mismatch^efh_pick_index }
+			remove_from_temp_array = { array = efh_pool_mismatch index = efh_pick_index }
+		}
+		set_temp_variable = { efh_add_role = constant:equipment_from_heavens_role.support }
+		equipment_from_heavens_add_manifest_family = yes
+	}
+	clear_temp_array = efh_pool_anchor
+	clear_temp_array = efh_pool_mismatch
+	clear_temp_array = efh_pool_support
+}
+
+# Input temp efh_profile_family and efh_add_role. Appends one manifest row.
+equipment_from_heavens_add_manifest_family = {
+	equipment_from_heavens_compute_family_entry = yes
+	add_to_array = { array = efh_manifest_family_entries value = efh_profile_family }
+	add_to_array = { array = efh_manifest_tier_entries value = efh_entry_tier }
+	add_to_array = { array = efh_manifest_role_entries value = efh_add_role }
+	add_to_array = { array = efh_manifest_amount_entries value = efh_entry_amount }
+	add_to_array = { array = efh_manifest_designer_entries value = efh_profile_designer }
+	if = {
+		limit = { check_variable = { efh_profile_group = constant:equipment_from_heavens_group.armor } }
+		set_country_flag = efh_manifest_has_armor
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_group = constant:equipment_from_heavens_group.air } }
+		set_country_flag = efh_manifest_has_air
+	}
+	else_if = {
+		limit = { check_variable = { efh_profile_group = constant:equipment_from_heavens_group.logistics } }
+		set_country_flag = efh_manifest_has_logistics
+	}
+	else = {
+		set_country_flag = efh_manifest_has_infantry
+	}
+}
+
+# Input temp efh_profile_family and efh_add_role. Output temp efh_entry_tier
+# and efh_entry_amount. The recipient's research only labels the current tier.
+equipment_from_heavens_compute_family_entry = {
+	set_temp_variable = { efh_active_stage = efh_manifest_stage }
+	equipment_from_heavens_load_family_profile = yes
+	equipment_from_heavens_resolve_current_tier = yes
+	if = {
+		limit = { check_variable = { efh_current_tier > efh_profile_max_tier } }
+		set_temp_variable = { efh_current_tier = efh_profile_max_tier }
+	}
+	set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.current }
+	if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.baseline } }
+		random_list = {
+			constant:equipment_from_heavens_tech_weight.baseline_current = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.current } }
+			constant:equipment_from_heavens_tech_weight.baseline_ahead = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.ahead } }
+			constant:equipment_from_heavens_tech_weight.baseline_foreign = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.foreign } }
+			constant:equipment_from_heavens_tech_weight.baseline_highest = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.highest } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_i } }
+		random_list = {
+			constant:equipment_from_heavens_tech_weight.evolution_i_current = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.current } }
+			constant:equipment_from_heavens_tech_weight.evolution_i_ahead = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.ahead } }
+			constant:equipment_from_heavens_tech_weight.evolution_i_foreign = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.foreign } }
+			constant:equipment_from_heavens_tech_weight.evolution_i_highest = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.highest } }
+		}
+	}
+	else = {
+		random_list = {
+			constant:equipment_from_heavens_tech_weight.evolution_ii_current = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.current } }
+			constant:equipment_from_heavens_tech_weight.evolution_ii_ahead = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.ahead } }
+			constant:equipment_from_heavens_tech_weight.evolution_ii_foreign = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.foreign } }
+			constant:equipment_from_heavens_tech_weight.evolution_ii_highest = { set_temp_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.highest } }
+		}
+	}
+	set_temp_variable = { efh_entry_tier = efh_current_tier }
+	if = {
+		limit = { check_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.ahead } }
+		add_to_temp_variable = { efh_entry_tier = 1 }
+		# From Evolution I "ahead" can mean one or two generations.
+		if = {
+			limit = { check_variable = { efh_manifest_stage > constant:equipment_from_heavens_stage.baseline } }
+			random_list = {
+				50 = { }
+				50 = { add_to_temp_variable = { efh_entry_tier = 1 } }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.foreign } }
+		set_temp_variable = { efh_foreign_max = efh_profile_max_tier }
+		add_to_temp_variable = { efh_foreign_max = 1 }
+		set_temp_variable_to_random = { var = efh_entry_tier min = 1 max = efh_foreign_max integer = yes }
+	}
+	else_if = {
+		limit = { check_variable = { efh_tech_role = constant:equipment_from_heavens_tech_role.highest } }
+		set_temp_variable = { efh_entry_tier = efh_profile_max_tier }
+	}
+	clamp_temp_variable = { var = efh_entry_tier min = 1 max = efh_profile_max_tier }
+
+	# Quantity, computed in thousands of units.
+	equipment_from_heavens_load_quantity_band = yes
+	set_temp_variable_to_random = { var = efh_amount_k min = efh_band_min max = efh_band_max }
+	set_temp_variable = { efh_role_share = constant:equipment_from_heavens_scale.anchor_share }
+	if = {
+		limit = {
+			check_variable = { efh_add_role = constant:equipment_from_heavens_role.anchor }
+			check_variable = { efh_manifest_group = constant:equipment_from_heavens_group.foreign_warehouse }
+		}
+		set_temp_variable = { efh_role_share = constant:equipment_from_heavens_scale.warehouse_anchor_share }
+	}
+	else_if = {
+		limit = { check_variable = { efh_add_role = constant:equipment_from_heavens_role.support } }
+		set_temp_variable_to_random = {
+			var = efh_role_share
+			min = constant:equipment_from_heavens_scale.support_share_min
+			max = constant:equipment_from_heavens_scale.support_share_max
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_add_role = constant:equipment_from_heavens_role.mismatch } }
+		set_temp_variable_to_random = {
+			var = efh_role_share
+			min = constant:equipment_from_heavens_scale.mismatch_share_min
+			max = constant:equipment_from_heavens_scale.mismatch_share_max
+		}
+	}
+	multiply_temp_variable = { efh_amount_k = efh_role_share }
+	multiply_temp_variable = { efh_amount_k = efh_manifest_scale }
+	# The top of the largest band is also the hard ceiling for one family.
+	clamp_temp_variable = { var = efh_amount_k min = 0.01 max = 2000 }
+	equipment_from_heavens_round_amount_k = yes
+	set_temp_variable = { efh_entry_amount = efh_amount_k }
+	multiply_temp_variable = { efh_entry_amount = 1000 }
+	round_temp_variable = efh_entry_amount
+}
+
+# Rounds temp efh_amount_k (thousands) to a clean unit size.
+equipment_from_heavens_round_amount_k = {
+	if = {
+		limit = { check_variable = { efh_amount_k > 9.999 } }
+		round_temp_variable = efh_amount_k
+	}
+	else_if = {
+		limit = { check_variable = { efh_amount_k > 0.999 } }
+		multiply_temp_variable = { efh_amount_k = 10 }
+		round_temp_variable = efh_amount_k
+		divide_temp_variable = { efh_amount_k = 10 }
+	}
+	else = {
+		multiply_temp_variable = { efh_amount_k = 100 }
+		round_temp_variable = efh_amount_k
+		divide_temp_variable = { efh_amount_k = 100 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# The single stockpile transaction
+# ---------------------------------------------------------------------------
+
+equipment_from_heavens_grant_manifest = {
+	set_temp_variable = { efh_grant_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { efh_grant_index < efh_manifest_family_entries^num } }
+		set_temp_variable = { efh_profile_family = efh_manifest_family_entries^efh_grant_index }
+		set_temp_variable = { efh_grant_tier = efh_manifest_tier_entries^efh_grant_index }
+		set_temp_variable = { efh_grant_amount = efh_manifest_amount_entries^efh_grant_index }
+		equipment_from_heavens_resolve_family_token = yes
+		if = {
+			limit = { check_variable = { efh_grant_designer > constant:equipment_from_heavens_designer.none } }
+			equipment_from_heavens_grant_designer_row = yes
+		}
+		else = {
+			equipment_from_heavens_grant_token_row = yes
+		}
+		add_to_temp_variable = { efh_grant_index = 1 }
+	}
+}
+
+# Complete non-designer token grant.
+equipment_from_heavens_grant_token_row = {
+	meta_effect = {
+		text = {
+			add_equipment_to_stockpile = {
+				type = [TOKEN]
+				amount = efh_grant_amount
+			}
+		}
+		TOKEN = "[?efh_grant_token.GetTokenKey]"
+	}
+}
+
+# Complete neutral designer variant grant, verified by stockpile delta. A
+# technically failed variant rerolls the row into an unused complete family of
+# the same stage and role instead of shrinking the package.
+equipment_from_heavens_grant_designer_row = {
+	equipment_from_heavens_add_designer_stock = yes
+	set_temp_variable = { efh_stock_delta = efh_stock_after }
+	subtract_from_temp_variable = { efh_stock_delta = efh_stock_before }
+	set_temp_variable = { efh_stock_required = efh_grant_amount }
+	multiply_temp_variable = { efh_stock_required = constant:equipment_from_heavens_scale.verification_minimum_ratio }
+	if = {
+		limit = { check_variable = { efh_stock_delta < efh_stock_required } }
+		equipment_from_heavens_reroll_failed_row = yes
+	}
+}
+
+# Replaces manifest row efh_grant_index with an unused non-designer family.
+equipment_from_heavens_reroll_failed_row = {
+	add_to_variable = { efh_manifest_reroll_count = 1 }
+	set_temp_variable = { efh_add_role = efh_manifest_role_entries^efh_grant_index }
+	clear_temp_array = efh_pool_reroll
+	set_temp_variable = { efh_family_loop_end = constant:equipment_from_heavens_family.last }
+	add_to_temp_variable = { efh_family_loop_end = 1 }
+	for_loop_effect = {
+		start = constant:equipment_from_heavens_family.first
+		end = efh_family_loop_end
+		value = efh_family_candidate
+		set_temp_variable = { efh_profile_family = efh_family_candidate }
+		set_temp_variable = { efh_active_stage = efh_manifest_stage }
+		equipment_from_heavens_load_family_profile = yes
+		if = {
+			limit = {
+				NOT = { check_variable = { efh_profile_min_stage > efh_manifest_stage } }
+				check_variable = { efh_profile_designer = constant:equipment_from_heavens_designer.none }
+				NOT = { is_in_array = { array = efh_manifest_family_entries value = efh_family_candidate } }
+			}
+			add_to_temp_array = { efh_pool_reroll = efh_family_candidate }
+		}
+	}
+	if = {
+		limit = { check_variable = { efh_pool_reroll^num > 0 } }
+		set_temp_variable = { efh_random_bound = efh_pool_reroll^num }
+		set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+		set_temp_variable = { efh_profile_family = efh_pool_reroll^efh_pick_index }
+		equipment_from_heavens_compute_family_entry = yes
+		set_variable = { efh_manifest_family_entries^efh_grant_index = efh_profile_family }
+		set_variable = { efh_manifest_tier_entries^efh_grant_index = efh_entry_tier }
+		set_variable = { efh_manifest_amount_entries^efh_grant_index = efh_entry_amount }
+		set_variable = { efh_manifest_designer_entries^efh_grant_index = constant:equipment_from_heavens_designer.none }
+		set_temp_variable = { efh_grant_tier = efh_entry_tier }
+		set_temp_variable = { efh_grant_amount = efh_entry_amount }
+		equipment_from_heavens_resolve_family_token = yes
+		equipment_from_heavens_grant_token_row = yes
+	}
+	clear_temp_array = efh_pool_reroll
+}
+
+# Evolution II nuclear cache. The chance reads current Chaos only; the
+# recipient's nuclear status changes the guarded Chaos milestone, never the
+# chance or the quantity.
+equipment_from_heavens_roll_nuclear_cache = {
+	set_temp_variable = { efh_nuclear_chance = constant:equipment_from_heavens_nuclear.chance_band_i }
+	if = {
+		limit = { check_variable = { var = global.chaos_meter_value value = constant:equipment_from_heavens_nuclear.band_iv_chaos compare = greater_than_or_equals } }
+		set_temp_variable = { efh_nuclear_chance = constant:equipment_from_heavens_nuclear.chance_band_iv }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaos_meter_value value = constant:equipment_from_heavens_nuclear.band_iii_chaos compare = greater_than_or_equals } }
+		set_temp_variable = { efh_nuclear_chance = constant:equipment_from_heavens_nuclear.chance_band_iii }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaos_meter_value value = constant:equipment_from_heavens_nuclear.band_ii_chaos compare = greater_than_or_equals } }
+		set_temp_variable = { efh_nuclear_chance = constant:equipment_from_heavens_nuclear.chance_band_ii }
+	}
+	clamp_temp_variable = { var = efh_nuclear_chance min = 0 max = constant:equipment_from_heavens_nuclear.chance_cap }
+	set_temp_variable_to_random = { var = efh_nuclear_roll min = 0 max = 100 integer = yes }
+	if = {
+		limit = { check_variable = { efh_nuclear_roll < efh_nuclear_chance } }
+		set_temp_variable = { efh_nuclear_min = constant:equipment_from_heavens_nuclear.enormous_min }
+		set_temp_variable = { efh_nuclear_max = constant:equipment_from_heavens_nuclear.enormous_max }
+		if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			set_temp_variable = { efh_nuclear_min = constant:equipment_from_heavens_nuclear.colossal_min }
+			set_temp_variable = { efh_nuclear_max = constant:equipment_from_heavens_nuclear.colossal_max }
+		}
+		else_if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+			set_temp_variable = { efh_nuclear_min = constant:equipment_from_heavens_nuclear.impossible_min }
+			set_temp_variable = { efh_nuclear_max = constant:equipment_from_heavens_nuclear.impossible_max }
+		}
+		add_to_temp_variable = { efh_nuclear_max = 1 }
+		set_temp_variable_to_random = { var = efh_nuclear_amount min = efh_nuclear_min max = efh_nuclear_max integer = yes }
+		divide_temp_variable = { efh_nuclear_amount = constant:equipment_from_heavens_nuclear.rounding_unit }
+		round_temp_variable = efh_nuclear_amount
+		multiply_temp_variable = { efh_nuclear_amount = constant:equipment_from_heavens_nuclear.rounding_unit }
+		clamp_temp_variable = { var = efh_nuclear_amount min = efh_nuclear_min max = constant:equipment_from_heavens_nuclear.impossible_max }
+
+		# Snapshot before the grant.
+		set_variable = { efh_nuclear_prior_stock = num_of_nukes }
+		set_temp_variable = { efh_nuclear_prior_access = 0 }
+		if = {
+			limit = { equipment_from_heavens_has_nuclear_production_access = yes }
+			set_temp_variable = { efh_nuclear_prior_access = 1 }
+		}
+		set_variable = { efh_manifest_nuclear_amount = efh_nuclear_amount }
+		meta_effect = {
+			text = { add_nuclear_bombs = [AMOUNT] }
+			AMOUNT = "[?efh_manifest_nuclear_amount|0]"
+		}
+		equipment_from_heavens_achievement_snapshot_nuclear_lottery = yes
+		# Guarded proliferation milestone: the first cache that turns a country
+		# without bombs into a nuclear actor. Actual use is left entirely to the
+		# shared nuclear consequence pipeline.
+		if = {
+			limit = {
+				NOT = { has_global_flag = efh_chaos_first_nuclear_actor }
+				check_variable = { efh_nuclear_prior_stock < 1 }
+			}
+			set_global_flag = efh_chaos_first_nuclear_actor
+			if = {
+				limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+				set_temp_variable = { chaos_change = constant:equipment_from_heavens_chaos.first_new_nuclear_actor }
+				if = {
+					limit = { check_variable = { efh_nuclear_prior_access > 0 } }
+					set_temp_variable = { chaos_change = constant:equipment_from_heavens_chaos.first_nuclear_actor_with_access }
+				}
+				set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.equipment_from_heavens_proliferation }
+				set_temp_variable = { chaos_history_reason_custom = 1 }
+				add_chaos_meter_value = yes
+			}
+		}
+	}
+}
+
+# Guarded +2 source for the first public skyfall. Every later ordinary repeat
+# delivery adds no direct Event 42 Chaos.
+equipment_from_heavens_apply_first_skyfall_chaos = {
+	if = {
+		limit = { NOT = { has_global_flag = efh_chaos_first_skyfall } }
+		set_global_flag = efh_chaos_first_skyfall
+		if = {
+			limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+			set_temp_variable = { chaos_change = constant:equipment_from_heavens_chaos.first_skyfall }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.equipment_from_heavens_skyfall }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			add_chaos_meter_value = yes
+		}
+	}
+}
+
+# Marks that a delivery demonstrated the current stage, which shortens the
+# pacing delay of the next evolution.
+equipment_from_heavens_record_stage_demonstration = {
+	if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.baseline } }
+		set_global_flag = efh_stage_baseline_demonstrated
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_i } }
+		set_global_flag = efh_stage_i_demonstrated
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_stage = constant:equipment_from_heavens_stage.evolution_ii } }
+		set_global_flag = efh_stage_ii_demonstrated
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Landing reports
+# ---------------------------------------------------------------------------
+
+# Plans three to seven reports across saved owned and controlled states and
+# schedules one hidden dispatcher per report. Report count reads magnitude and
+# stage only, never how many states the recipient owns.
+equipment_from_heavens_plan_reports = {
+	clear_array = efh_report_state_entries
+	clear_array = efh_report_theme_entries
+	clear_array = efh_report_day_entries
+	set_variable = { efh_report_next_index = 0 }
+
+	set_temp_variable = { efh_report_min = constant:equipment_from_heavens_report.enormous_min }
+	set_temp_variable = { efh_report_max = constant:equipment_from_heavens_report.enormous_max }
+	if = {
+		limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+		set_temp_variable = { efh_report_min = constant:equipment_from_heavens_report.colossal_min }
+		set_temp_variable = { efh_report_max = constant:equipment_from_heavens_report.colossal_max }
+	}
+	else_if = {
+		limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		set_temp_variable = { efh_report_min = constant:equipment_from_heavens_report.impossible_min }
+		set_temp_variable = { efh_report_max = constant:equipment_from_heavens_report.impossible_max }
+	}
+	add_to_temp_variable = { efh_report_max = 1 }
+	set_temp_variable_to_random = { var = efh_report_count min = efh_report_min max = efh_report_max integer = yes }
+	if = {
+		limit = { check_variable = { efh_manifest_stage > constant:equipment_from_heavens_stage.evolution_i } }
+		add_to_temp_variable = { efh_report_count = constant:equipment_from_heavens_report.evolution_ii_bonus }
+	}
+	clamp_temp_variable = {
+		var = efh_report_count
+		min = constant:equipment_from_heavens_report.minimum_count
+		max = constant:equipment_from_heavens_report.maximum_count
+	}
+
+	# Middle-theme pool. Advanced cargo appears only when the manifest carries
+	# evolved, nuclear, or special cargo.
+	clear_temp_array = efh_theme_pool
+	add_to_temp_array = { efh_theme_pool = constant:equipment_from_heavens_report_theme.cargo_recovery }
+	add_to_temp_array = { efh_theme_pool = constant:equipment_from_heavens_report_theme.depot_congestion }
+	add_to_temp_array = { efh_theme_pool = constant:equipment_from_heavens_report_theme.provenance_anomaly }
+	add_to_temp_array = { efh_theme_pool = constant:equipment_from_heavens_report_theme.civilian_disruption }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { efh_manifest_stage > constant:equipment_from_heavens_stage.baseline }
+				equipment_from_heavens_manifest_has_nuclear = yes
+				equipment_from_heavens_manifest_has_special = yes
+			}
+		}
+		add_to_temp_array = { efh_theme_pool = constant:equipment_from_heavens_report_theme.advanced_cargo }
+	}
+	set_temp_variable = { efh_middle_count = efh_report_count }
+	subtract_from_temp_variable = { efh_middle_count = 2 }
+
+	add_to_array = { array = efh_report_theme_entries value = constant:equipment_from_heavens_report_theme.first_discovery }
+	while_loop_effect = {
+		limit = {
+			check_variable = { efh_middle_count > 0 }
+			check_variable = { efh_theme_pool^num > 0 }
+		}
+		set_temp_variable = { efh_random_bound = efh_theme_pool^num }
+		set_temp_variable_to_random = { var = efh_pick_index min = 0 max = efh_random_bound integer = yes }
+		add_to_array = { array = efh_report_theme_entries value = efh_theme_pool^efh_pick_index }
+		remove_from_temp_array = { array = efh_theme_pool index = efh_pick_index }
+		subtract_from_temp_variable = { efh_middle_count = 1 }
+	}
+	# Hazardous evolved cargo can cause one rare, visible recovery accident.
+	if = {
+		limit = {
+			OR = {
+				equipment_from_heavens_manifest_has_nuclear = yes
+				equipment_from_heavens_manifest_has_special = yes
+			}
+		}
+		set_temp_variable_to_random = { var = efh_accident_roll min = 0 max = 100 integer = yes }
+		if = {
+			limit = { check_variable = { efh_accident_roll < constant:equipment_from_heavens_report.accident_chance } }
+			add_to_array = { array = efh_report_theme_entries value = constant:equipment_from_heavens_report_theme.recovery_accident }
+		}
+	}
+	add_to_array = { array = efh_report_theme_entries value = constant:equipment_from_heavens_report_theme.final_reconciliation }
+	clear_temp_array = efh_theme_pool
+
+	# Landing states: prefer states not yet used; revisit states only when the
+	# recipient has fewer valid states than reports.
+	set_temp_variable = { efh_state_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { efh_state_index < efh_report_theme_entries^num } }
+		if = {
+			limit = {
+				any_owned_state = {
+					equipment_from_heavens_state_is_valid_landing = yes
+					NOT = { is_in_array = { array = PREV.efh_report_state_entries value = THIS } }
+				}
+			}
+			random_owned_state = {
+				limit = {
+					equipment_from_heavens_state_is_valid_landing = yes
+					NOT = { is_in_array = { array = PREV.efh_report_state_entries value = THIS } }
+				}
+				PREV = { add_to_array = { array = efh_report_state_entries value = PREV } }
+			}
+		}
+		else = {
+			random_owned_state = {
+				limit = { equipment_from_heavens_state_is_valid_landing = yes }
+				PREV = { add_to_array = { array = efh_report_state_entries value = PREV } }
+			}
+		}
+		add_to_temp_variable = { efh_state_index = 1 }
+	}
+	if = {
+		limit = { check_variable = { efh_report_state_entries^num > 0 } }
+		set_variable = { efh_first_landing_state = efh_report_state_entries^0 }
+		var:efh_first_landing_state = { save_event_target_as = efh_first_landing_state }
+	}
+
+	# Ascending delivery days across the first two weeks.
+	set_temp_variable = { efh_day_step_max = constant:equipment_from_heavens_report.step_day_max }
+	add_to_temp_variable = { efh_day_step_max = 1 }
+	set_temp_variable = { efh_day_first_max = constant:equipment_from_heavens_report.first_day_max }
+	add_to_temp_variable = { efh_day_first_max = 1 }
+	set_temp_variable_to_random = {
+		var = efh_report_day
+		min = constant:equipment_from_heavens_report.first_day_min
+		max = efh_day_first_max
+		integer = yes
+	}
+	set_temp_variable = { efh_day_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { efh_day_index < efh_report_theme_entries^num } }
+		if = {
+			limit = { check_variable = { efh_day_index > 0 } }
+			set_temp_variable_to_random = {
+				var = efh_day_step
+				min = constant:equipment_from_heavens_report.step_day_min
+				max = efh_day_step_max
+				integer = yes
+			}
+			add_to_temp_variable = { efh_report_day = efh_day_step }
+		}
+		clamp_temp_variable = { var = efh_report_day min = 1 max = constant:equipment_from_heavens_report.last_day }
+		add_to_array = { array = efh_report_day_entries value = efh_report_day }
+		country_event = { id = chaosx.nr42.9 days = efh_report_day }
+		add_to_temp_variable = { efh_day_index = 1 }
+	}
+	set_variable = { efh_report_total = efh_report_theme_entries^num }
+	country_event = { id = chaosx.nr42.19 days = constant:equipment_from_heavens_report.safety_close_days }
+}
+
+# Hidden report dispatcher body (chaosx.nr42.9). Pops the next saved report,
+# applies its bounded local effect, and fires the matching visible report.
+equipment_from_heavens_dispatch_next_report = {
+	if = {
+		limit = {
+			has_country_flag = efh_chain_active
+			check_variable = { efh_report_next_index < efh_report_theme_entries^num }
+		}
+		set_variable = { efh_report_theme = efh_report_theme_entries^efh_report_next_index }
+		set_temp_variable = { efh_report_state_found = 0 }
+		if = {
+			limit = { check_variable = { efh_report_next_index < efh_report_state_entries^num } }
+			set_variable = { efh_report_current_state = efh_report_state_entries^efh_report_next_index }
+			var:efh_report_current_state = {
+				if = {
+					limit = { is_owned_and_controlled_by = PREV }
+					save_event_target_as = efh_report_state
+					set_temp_variable = { efh_report_state_found = 1 }
+				}
+			}
+		}
+		# A state lost since the delivery is replaced by another valid state
+		# of the recipient for presentation only.
+		if = {
+			limit = { check_variable = { efh_report_state_found < 1 } }
+			random_owned_state = {
+				limit = { equipment_from_heavens_state_is_valid_landing = yes }
+				save_event_target_as = efh_report_state
+				set_temp_variable = { efh_report_state_found = 1 }
+			}
+		}
+		add_to_variable = { efh_report_next_index = 1 }
+		if = {
+			limit = { check_variable = { efh_report_state_found > 0 } }
+			event_target:efh_report_state = { equipment_from_heavens_apply_landing_zone = yes }
+			if = {
+				limit = { check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.recovery_accident } }
+				equipment_from_heavens_apply_recovery_accident = yes
+			}
+			equipment_from_heavens_fire_visible_report = yes
+		}
+		else = {
+			equipment_from_heavens_close_chain_if_done = yes
+		}
+	}
+}
+
+equipment_from_heavens_fire_visible_report = {
+	if = {
+		limit = {
+			check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.recovery_accident }
+		}
+		country_event = { id = chaosx.nr42.16 }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.depot_congestion }
+				check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.civilian_disruption }
+				check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.final_reconciliation }
+			}
+		}
+		country_event = { id = chaosx.nr42.13 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.advanced_cargo }
+			equipment_from_heavens_manifest_has_special = yes
+		}
+		country_event = { id = chaosx.nr42.15 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.advanced_cargo }
+			equipment_from_heavens_manifest_has_nuclear = yes
+		}
+		country_event = { id = chaosx.nr42.14 }
+	}
+	else_if = {
+		limit = {
+			NOT = { check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.provenance_anomaly } }
+			check_variable = { efh_manifest_group = constant:equipment_from_heavens_group.air }
+		}
+		country_event = { id = chaosx.nr42.12 }
+	}
+	else_if = {
+		limit = {
+			NOT = { check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.provenance_anomaly } }
+			OR = {
+				check_variable = { efh_manifest_group = constant:equipment_from_heavens_group.armor }
+				check_variable = { efh_report_theme = constant:equipment_from_heavens_report_theme.advanced_cargo }
+			}
+		}
+		country_event = { id = chaosx.nr42.11 }
+	}
+	else = {
+		country_event = { id = chaosx.nr42.10 }
+	}
+}
+
+# STATE scope. Merges one temporary landing-zone burden into the state. The
+# stronger of the existing and incoming burden wins; values never stack past
+# the cap. Logistics cargo adds a small relief term.
+equipment_from_heavens_apply_landing_zone = {
+	if = {
+		limit = {
+			has_variable = efh_zone_until
+			check_variable = { efh_zone_until < global.date }
+		}
+		set_variable = { efh_zone_burden = 0 }
+		set_variable = { efh_zone_relief = 0 }
+	}
+	if = {
+		limit = { NOT = { has_variable = efh_zone_burden } }
+		set_variable = { efh_zone_burden = 0 }
+		set_variable = { efh_zone_relief = 0 }
+	}
+	set_temp_variable = { efh_new_burden = constant:equipment_from_heavens_landing_zone.burden_enormous }
+	set_temp_variable = { efh_new_days = constant:equipment_from_heavens_landing_duration.enormous_days }
+	if = {
+		limit = { check_variable = { ROOT.efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+		set_temp_variable = { efh_new_burden = constant:equipment_from_heavens_landing_zone.burden_colossal }
+		set_temp_variable = { efh_new_days = constant:equipment_from_heavens_landing_duration.colossal_days }
+	}
+	else_if = {
+		limit = { check_variable = { ROOT.efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		set_temp_variable = { efh_new_burden = constant:equipment_from_heavens_landing_zone.burden_impossible }
+		set_temp_variable = { efh_new_days = constant:equipment_from_heavens_landing_duration.impossible_days }
+	}
+	# Physical themes weigh more; provenance and final reconciliation weigh
+	# nothing extra.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { ROOT.efh_report_theme = constant:equipment_from_heavens_report_theme.depot_congestion }
+				check_variable = { ROOT.efh_report_theme = constant:equipment_from_heavens_report_theme.recovery_accident }
+				check_variable = { ROOT.efh_report_theme = constant:equipment_from_heavens_report_theme.civilian_disruption }
+			}
+		}
+		add_to_temp_variable = { efh_new_burden = constant:equipment_from_heavens_landing_zone.burden_theme_bonus }
+		add_to_temp_variable = { efh_new_days = constant:equipment_from_heavens_landing_duration.theme_bonus_days }
+	}
+	if = {
+		limit = { check_variable = { efh_new_burden > efh_zone_burden } }
+		set_variable = { efh_zone_burden = efh_new_burden }
+	}
+	clamp_variable = { var = efh_zone_burden min = 0 max = constant:equipment_from_heavens_landing_zone.burden_cap }
+	if = {
+		limit = {
+			ROOT = { equipment_from_heavens_manifest_has_logistics = yes }
+			OR = {
+				check_variable = { ROOT.efh_report_theme = constant:equipment_from_heavens_report_theme.cargo_recovery }
+				check_variable = { ROOT.efh_report_theme = constant:equipment_from_heavens_report_theme.depot_congestion }
+			}
+		}
+		add_to_variable = { efh_zone_relief = constant:equipment_from_heavens_landing_zone.relief_logistics }
+		clamp_variable = { var = efh_zone_relief min = 0 max = constant:equipment_from_heavens_landing_zone.relief_cap }
+	}
+	set_variable = { efh_zone_supply = efh_zone_burden }
+	multiply_variable = { efh_zone_supply = constant:equipment_from_heavens_landing_zone.supply_per_burden }
+	set_temp_variable = { efh_zone_relief_supply = efh_zone_relief }
+	multiply_temp_variable = { efh_zone_relief_supply = constant:equipment_from_heavens_landing_zone.supply_per_relief }
+	add_to_variable = { efh_zone_supply = efh_zone_relief_supply }
+	set_variable = { efh_zone_construction = efh_zone_burden }
+	multiply_variable = { efh_zone_construction = constant:equipment_from_heavens_landing_zone.construction_per_burden }
+	set_variable = { efh_zone_repair = efh_zone_burden }
+	multiply_variable = { efh_zone_repair = constant:equipment_from_heavens_landing_zone.repair_per_burden }
+	set_variable = { efh_zone_until = global.date }
+	add_to_variable = { efh_zone_until = efh_new_days }
+	set_variable = { efh_zone_days = efh_new_days }
+	if = {
+		limit = { has_dynamic_modifier = { modifier = equipment_from_heavens_landing_zone } }
+		remove_dynamic_modifier = { modifier = equipment_from_heavens_landing_zone }
+	}
+	meta_effect = {
+		text = {
+			add_dynamic_modifier = {
+				modifier = equipment_from_heavens_landing_zone
+				days = [DAYS]
+			}
+		}
+		DAYS = "[?efh_zone_days|0]"
+	}
+}
+
+# Rare visible accident: a small, bounded share of the anchor family is lost
+# and the landing state's infrastructure takes one level of damage.
+equipment_from_heavens_apply_recovery_accident = {
+	set_temp_variable = { efh_profile_family = efh_manifest_family_entries^0 }
+	set_temp_variable = { efh_grant_tier = efh_manifest_tier_entries^0 }
+	set_temp_variable = { efh_accident_loss = efh_manifest_amount_entries^0 }
+	multiply_temp_variable = { efh_accident_loss = constant:equipment_from_heavens_accident.loss_ratio }
+	round_temp_variable = efh_accident_loss
+	set_variable = { efh_accident_loss_amount = efh_accident_loss }
+	if = {
+		limit = { check_variable = { efh_accident_loss > 0 } }
+		multiply_temp_variable = { efh_accident_loss = -1 }
+		equipment_from_heavens_resolve_family_token = yes
+		meta_effect = {
+			text = {
+				add_equipment_to_stockpile = {
+					type = [TOKEN]
+					amount = efh_accident_loss
+				}
+			}
+			TOKEN = "[?efh_grant_token.GetTokenKey]"
+		}
+	}
+	event_target:efh_report_state = {
+		damage_building = {
+			type = infrastructure
+			damage = @EFH_ACCIDENT_INFRASTRUCTURE_DAMAGE
+		}
+	}
+}
+
+# Closes the chain after the final report and removes all temporary state.
+# The compact global history is kept.
+equipment_from_heavens_close_chain_if_done = {
+	if = {
+		limit = {
+			has_country_flag = efh_chain_active
+			NOT = { check_variable = { efh_report_next_index < efh_report_theme_entries^num } }
+		}
+		equipment_from_heavens_cleanup_chain = yes
+	}
+}
+
+equipment_from_heavens_cleanup_chain = {
+	clr_country_flag = efh_chain_active
+	clr_country_flag = efh_prefire_pending
+	clr_country_flag = efh_manifest_has_armor
+	clr_country_flag = efh_manifest_has_air
+	clr_country_flag = efh_manifest_has_logistics
+	clr_country_flag = efh_manifest_has_infantry
+	clr_country_flag = efh_special_isolation_receipt_intact
+	clear_array = efh_manifest_family_entries
+	clear_array = efh_manifest_tier_entries
+	clear_array = efh_manifest_role_entries
+	clear_array = efh_manifest_amount_entries
+	clear_array = efh_manifest_designer_entries
+	clear_array = efh_manifest_special_entries
+	clear_array = efh_manifest_special_amount_entries
+	clear_array = efh_report_state_entries
+	clear_array = efh_report_theme_entries
+	clear_array = efh_report_day_entries
+	clear_variable = efh_report_next_index
+	clear_variable = efh_report_total
+	clear_variable = efh_report_theme
+	clear_variable = efh_first_landing_state
+	clear_variable = efh_report_current_state
+	clear_variable = efh_manifest_stage
+	clear_variable = efh_manifest_magnitude
+	clear_variable = efh_manifest_group
+	clear_variable = efh_manifest_signature
+	clear_variable = efh_manifest_scale
+	clear_variable = efh_manifest_nuclear_amount
+	clear_variable = efh_manifest_reroll_count
+	clear_variable = efh_manifest_manual
+	clear_variable = efh_accident_loss_amount
+	clear_variable = efh_grant_token
+	clear_variable = efh_grant_name_token
+	clear_variable = efh_grant_family
+	clear_variable = efh_special_token
+	clear_variable = efh_special_name_token
+	clear_variable = efh_pending_history_sequence
+	clear_variable = efh_nuclear_prior_stock
+	equipment_from_heavens_clear_popup_lines = yes
+}
+
+# ---------------------------------------------------------------------------
+# History
+# ---------------------------------------------------------------------------
+
+# Records one compact history row per delivery, keyed by the Event Log
+# sequence bound in the shared history recorder.
+equipment_from_heavens_record_history = {
+	set_temp_variable = { efh_history_sequence = 0 }
+	if = {
+		limit = { has_variable = efh_pending_history_sequence }
+		set_temp_variable = { efh_history_sequence = efh_pending_history_sequence }
+	}
+	add_to_array = { array = global.efh_history_sequence_entries value = efh_history_sequence }
+	add_to_array = { array = global.efh_history_delivery_entries value = efh_delivery_sequence }
+	add_to_array = { array = global.efh_history_recipient_entries value = THIS }
+	add_to_array = { array = global.efh_history_stage_entries value = efh_manifest_stage }
+	add_to_array = { array = global.efh_history_magnitude_entries value = efh_manifest_magnitude }
+	add_to_array = { array = global.efh_history_group_entries value = efh_manifest_group }
+	add_to_array = { array = global.efh_history_family_count_entries value = efh_manifest_family_entries^num }
+	add_to_array = { array = global.efh_history_nuclear_entries value = efh_manifest_nuclear_amount }
+	add_to_array = { array = global.efh_history_special_count_entries value = efh_manifest_special_entries^num }
+	add_to_array = { array = global.efh_history_report_count_entries value = efh_report_theme_entries^num }
+	clear_variable = efh_pending_history_sequence
+}
+
+# COUNTRY scope (Event Details viewer). Resolves the selected Event 42 history
+# row into display variables. Leaves the loaded flag clear when no row matches.
+equipment_from_heavens_load_open_history_payload = {
+	clr_country_flag = efh_history_payload_loaded
+	set_temp_variable = { efh_history_target_sequence = 0 }
+	if = {
+		limit = {
+			check_variable = { var = events_log_history_selected_event_id value = constant:equipment_from_heavens_event.id compare = equals }
+			check_variable = { events_log_history_selected_sequence > 0 }
+		}
+		set_temp_variable = { efh_history_target_sequence = events_log_history_selected_sequence }
+	}
+	if = {
+		limit = { check_variable = { efh_history_target_sequence > 0 } }
+		set_temp_variable = { efh_history_scan = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = { efh_history_scan < global.efh_history_sequence_entries^num }
+				NOT = { has_country_flag = efh_history_payload_loaded }
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.efh_history_sequence_entries^efh_history_scan
+						value = efh_history_target_sequence
+						compare = equals
+					}
+				}
+				set_variable = { efh_history_detail_recipient = global.efh_history_recipient_entries^efh_history_scan }
+				set_variable = { efh_history_detail_stage = global.efh_history_stage_entries^efh_history_scan }
+				set_variable = { efh_history_detail_magnitude = global.efh_history_magnitude_entries^efh_history_scan }
+				set_variable = { efh_history_detail_group = global.efh_history_group_entries^efh_history_scan }
+				set_variable = { efh_history_detail_family_count = global.efh_history_family_count_entries^efh_history_scan }
+				set_variable = { efh_history_detail_nuclear = global.efh_history_nuclear_entries^efh_history_scan }
+				set_variable = { efh_history_detail_special_count = global.efh_history_special_count_entries^efh_history_scan }
+				set_variable = { efh_history_detail_report_count = global.efh_history_report_count_entries^efh_history_scan }
+				set_country_flag = efh_history_payload_loaded
+			}
+			add_to_temp_variable = { efh_history_scan = 1 }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Popup manifest lines
+# ---------------------------------------------------------------------------
+
+# Copies manifest rows into plain indexed variables for tooltip text:
+# efh_line_<N>_name (localisation token), efh_line_<N>_amount, efh_line_<N>_tier,
+# and efh_special_line_<N>_name. Unused indexes stay cleared.
+equipment_from_heavens_prepare_popup_lines = {
+	equipment_from_heavens_clear_popup_lines = yes
+	set_variable = { efh_line_count = efh_manifest_family_entries^num }
+	set_temp_variable = { efh_line_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { efh_line_index < efh_manifest_family_entries^num } }
+		set_temp_variable = { efh_profile_family = efh_manifest_family_entries^efh_line_index }
+		set_temp_variable = { efh_grant_tier = efh_manifest_tier_entries^efh_line_index }
+		set_temp_variable = { efh_line_amount = efh_manifest_amount_entries^efh_line_index }
+		equipment_from_heavens_resolve_family_token = yes
+		meta_effect = {
+			text = {
+				set_variable = { efh_line_[N]_name = efh_grant_name_token }
+				set_variable = { efh_line_[N]_amount = efh_line_amount }
+				set_variable = { efh_line_[N]_tier = efh_grant_tier }
+			}
+			N = "[?efh_line_index|0]"
+		}
+		add_to_temp_variable = { efh_line_index = 1 }
+	}
+	set_variable = { efh_special_line_count = efh_manifest_special_entries^num }
+	set_temp_variable = { efh_special_line_index = 0 }
+	while_loop_effect = {
+		limit = { check_variable = { efh_special_line_index < efh_manifest_special_entries^num } }
+		set_temp_variable = { efh_special_family = efh_manifest_special_entries^efh_special_line_index }
+		set_temp_variable = { efh_line_amount = efh_manifest_special_amount_entries^efh_special_line_index }
+		equipment_from_heavens_load_special_row = yes
+		meta_effect = {
+			text = {
+				set_variable = { efh_special_line_[N]_name = efh_special_name_token }
+				set_variable = { efh_special_line_[N]_amount = efh_line_amount }
+			}
+			N = "[?efh_special_line_index|0]"
+		}
+		add_to_temp_variable = { efh_special_line_index = 1 }
+	}
+}
+
+equipment_from_heavens_clear_popup_lines = {
+	clear_variable = efh_line_count
+	clear_variable = efh_special_line_count
+	for_loop_effect = {
+		start = 0
+		end = 14
+		value = efh_clear_index
+		meta_effect = {
+			text = {
+				clear_variable = efh_line_[N]_name
+				clear_variable = efh_line_[N]_amount
+				clear_variable = efh_line_[N]_tier
+			}
+			N = "[?efh_clear_index|0]"
+		}
+	}
+	for_loop_effect = {
+		start = 0
+		end = 3
+		value = efh_clear_index
+		meta_effect = {
+			text = {
+				clear_variable = efh_special_line_[N]_name
+				clear_variable = efh_special_line_[N]_amount
+			}
+			N = "[?efh_clear_index|0]"
+		}
+	}
+}
+
+
+# ---------------------------------------------------------------------------
+# Option tooltips
+# ---------------------------------------------------------------------------
+
+# Main popup manifest. Every line is a custom tooltip so the option itself
+# applies nothing; the grant already happened in the hidden immediate block.
+equipment_from_heavens_show_manifest_tooltips = {
+	if = {
+		limit = { check_variable = { efh_line_count > 0 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_0_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 1 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_1_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 2 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_2_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 3 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_3_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 4 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_4_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 5 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_5_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 6 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_6_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 7 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_7_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 8 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_8_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 9 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_9_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 10 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_10_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 11 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_11_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 12 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_12_tt
+	}
+	if = {
+		limit = { check_variable = { efh_line_count > 13 } }
+		custom_effect_tooltip = chaosx.nr42.1.line_13_tt
+	}
+	if = {
+		limit = { check_variable = { efh_manifest_nuclear_amount > 0 } }
+		custom_effect_tooltip = chaosx.nr42.1.nuclear_tt
+	}
+	if = {
+		limit = { check_variable = { efh_special_line_count > 0 } }
+		custom_effect_tooltip = chaosx.nr42.1.special_0_tt
+	}
+	if = {
+		limit = { check_variable = { efh_special_line_count > 1 } }
+		custom_effect_tooltip = chaosx.nr42.1.special_1_tt
+	}
+	if = {
+		limit = { check_variable = { efh_special_line_count > 2 } }
+		custom_effect_tooltip = chaosx.nr42.1.special_2_tt
+	}
+	custom_effect_tooltip = chaosx.nr42.1.reports_tt
+	custom_effect_tooltip = chaosx.nr42.1.no_crews_tt
+}
+
+# Report option. States the local landing-zone condition that the hidden
+# dispatcher already applied.
+equipment_from_heavens_show_report_tooltip = {
+	if = {
+		limit = { has_event_target = efh_report_state }
+		custom_effect_tooltip = chaosx.nr42.report.zone_tt
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { efh_report_next_index < efh_report_theme_entries^num } }
+		}
+		custom_effect_tooltip = chaosx.nr42.report.final_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution pacing (global host daily pulse)
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope (global host). Ordered progression: only the first
+# unrecorded stage can be pending. A stage that is disabled or below its
+# Chaos tier clears its pending timer and blocks the later stages.
+equipment_from_heavens_evolution_pulse = {
+	if = {
+		limit = { equipment_from_heavens_event_is_enabled = yes }
+		if = {
+			limit = { NOT = { equipment_from_heavens_evolution_i_recorded = yes } }
+			set_temp_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_i_stage }
+			set_temp_variable = { efh_pace_tier = constant:equipment_from_heavens_event.evolution_i_tier }
+			set_temp_variable = { efh_pace_threshold = constant:equipment_from_heavens_event.evolution_i_chaos }
+			set_temp_variable = { efh_pace_prior_demonstrated = 0 }
+			if = {
+				limit = { has_global_flag = efh_stage_baseline_demonstrated }
+				set_temp_variable = { efh_pace_prior_demonstrated = 1 }
+			}
+			equipment_from_heavens_pace_stage = yes
+		}
+		else_if = {
+			limit = {
+				equipment_from_heavens_stage_i_active = yes
+				NOT = { equipment_from_heavens_evolution_ii_recorded = yes }
+			}
+			set_temp_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_ii_stage }
+			set_temp_variable = { efh_pace_tier = constant:equipment_from_heavens_event.evolution_ii_tier }
+			set_temp_variable = { efh_pace_threshold = constant:equipment_from_heavens_event.evolution_ii_chaos }
+			set_temp_variable = { efh_pace_prior_demonstrated = 0 }
+			if = {
+				limit = { has_global_flag = efh_stage_i_demonstrated }
+				set_temp_variable = { efh_pace_prior_demonstrated = 1 }
+			}
+			equipment_from_heavens_pace_stage = yes
+		}
+		else_if = {
+			limit = {
+				equipment_from_heavens_stage_ii_active = yes
+				NOT = { equipment_from_heavens_evolution_iii_recorded = yes }
+			}
+			set_temp_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_iii_stage }
+			set_temp_variable = { efh_pace_tier = constant:equipment_from_heavens_event.evolution_iii_tier }
+			set_temp_variable = { efh_pace_threshold = constant:equipment_from_heavens_event.evolution_iii_chaos }
+			set_temp_variable = { efh_pace_prior_demonstrated = 0 }
+			if = {
+				limit = { has_global_flag = efh_stage_ii_demonstrated }
+				set_temp_variable = { efh_pace_prior_demonstrated = 1 }
+			}
+			equipment_from_heavens_pace_stage = yes
+		}
+		else = {
+			clear_variable = global.efh_evolution_due_date
+			clear_variable = global.efh_evolution_pending_stage
+		}
+	}
+}
+
+# Input temps efh_pace_stage, efh_pace_tier, efh_pace_threshold,
+# efh_pace_prior_demonstrated.
+equipment_from_heavens_pace_stage = {
+	set_temp_variable = { events_log_evolution_event_id = constant:equipment_from_heavens_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:equipment_from_heavens_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = efh_pace_stage }
+	set_temp_variable = { events_log_evolution_tier = efh_pace_tier }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = global.efh_evolution_pending_stage }
+					NOT = { check_variable = { global.efh_evolution_pending_stage = efh_pace_stage } }
+				}
+			}
+			equipment_from_heavens_compute_evolution_delay = yes
+			set_variable = { global.efh_evolution_pending_stage = efh_pace_stage }
+			set_variable = { global.efh_evolution_due_date = global.date }
+			add_to_variable = { global.efh_evolution_due_date = efh_evolution_delay }
+		}
+		else_if = {
+			limit = { check_variable = { var = global.date value = global.efh_evolution_due_date compare = greater_than_or_equals } }
+			equipment_from_heavens_record_evolution = yes
+		}
+	}
+	else = {
+		clear_variable = global.efh_evolution_pending_stage
+		clear_variable = global.efh_evolution_due_date
+	}
+}
+
+# Output temp efh_evolution_delay in days.
+equipment_from_heavens_compute_evolution_delay = {
+	set_temp_variable = { efh_evolution_delay = constant:equipment_from_heavens_evolution_pacing.base_days }
+	set_temp_variable = { efh_spread_max = constant:equipment_from_heavens_evolution_pacing.random_spread_days }
+	add_to_temp_variable = { efh_spread_max = 1 }
+	set_temp_variable = { efh_spread_min = constant:equipment_from_heavens_evolution_pacing.random_spread_days }
+	multiply_temp_variable = { efh_spread_min = -1 }
+	set_temp_variable_to_random = { var = efh_spread min = efh_spread_min max = efh_spread_max integer = yes }
+	add_to_temp_variable = { efh_evolution_delay = efh_spread }
+	# Chaos above the threshold shortens the wait.
+	set_temp_variable = { efh_chaos_excess = global.chaos_meter_value }
+	subtract_from_temp_variable = { efh_chaos_excess = efh_pace_threshold }
+	clamp_temp_variable = { var = efh_chaos_excess min = 0 }
+	divide_temp_variable = { efh_chaos_excess = constant:equipment_from_heavens_evolution_pacing.chaos_step }
+	round_temp_variable = efh_chaos_excess
+	multiply_temp_variable = { efh_chaos_excess = constant:equipment_from_heavens_evolution_pacing.chaos_step_reduction_days }
+	subtract_from_temp_variable = { efh_evolution_delay = efh_chaos_excess }
+	# A recent delivery shortens the wait.
+	if = {
+		limit = { has_variable = global.efh_last_delivery_date }
+		set_temp_variable = { efh_since_delivery = global.date }
+		subtract_from_temp_variable = { efh_since_delivery = global.efh_last_delivery_date }
+		if = {
+			limit = { check_variable = { efh_since_delivery < constant:equipment_from_heavens_evolution_pacing.recent_delivery_window_days } }
+			subtract_from_temp_variable = { efh_evolution_delay = constant:equipment_from_heavens_evolution_pacing.recent_delivery_reduction_days }
+		}
+	}
+	# Wider major war shortens the wait within a cap.
+	set_temp_variable = { efh_pace_war_count = 0 }
+	every_country = {
+		limit = {
+			is_major = yes
+			has_war = yes
+		}
+		add_to_temp_variable = { efh_pace_war_count = 1 }
+	}
+	multiply_temp_variable = { efh_pace_war_count = constant:equipment_from_heavens_evolution_pacing.major_war_reduction_days }
+	clamp_temp_variable = { var = efh_pace_war_count min = 0 max = constant:equipment_from_heavens_evolution_pacing.major_war_reduction_cap_days }
+	subtract_from_temp_variable = { efh_evolution_delay = efh_pace_war_count }
+	if = {
+		limit = { check_variable = { efh_pace_prior_demonstrated > 0 } }
+		subtract_from_temp_variable = { efh_evolution_delay = constant:equipment_from_heavens_evolution_pacing.prior_stage_demonstrated_reduction_days }
+	}
+	clamp_temp_variable = { var = efh_evolution_delay min = constant:equipment_from_heavens_evolution_pacing.minimum_days }
+	round_temp_variable = efh_evolution_delay
+}
+
+# Records one actorless evolution entry and unlocks future manifests. No
+# Chaos changes here.
+equipment_from_heavens_record_evolution = {
+	set_temp_variable = { events_log_evolution_event_id = constant:equipment_from_heavens_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:equipment_from_heavens_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = efh_pace_stage }
+	set_temp_variable = { events_log_evolution_tier = efh_pace_tier }
+	if = {
+		limit = { is_current_evolution_enabled = yes }
+		if = {
+			limit = { check_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_i_stage } }
+			set_global_flag = efh_evolution_i_recorded
+		}
+		else_if = {
+			limit = { check_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_ii_stage } }
+			set_global_flag = efh_evolution_ii_recorded
+		}
+		else_if = {
+			limit = { check_variable = { efh_pace_stage = constant:equipment_from_heavens_event.evolution_iii_stage } }
+			set_global_flag = efh_evolution_iii_recorded
+		}
+		set_variable = { global.efh_evolution_recorded_date = global.date }
+		record_events_log_evolution_entry = yes
+	}
+	clear_variable = global.efh_evolution_pending_stage
+	clear_variable = global.efh_evolution_due_date
+}
+
+# ---------------------------------------------------------------------------
+# Bounded AI post-delivery assessment
+# ---------------------------------------------------------------------------
+
+# Classifies the delivery once and enables timed ordinary AI strategy plans.
+# It grants no manpower, fuel, bases, supply, doctrine, research, commanders,
+# or divisions and never changes the package.
+equipment_from_heavens_ai_assessment = {
+	set_variable = { efh_ai_unusable_count = 0 }
+	set_variable = { efh_ai_reserve_count = 0 }
+	if = {
+		limit = {
+			equipment_from_heavens_manifest_has_armor = yes
+			equipment_from_heavens_ai_has_fuel_margin = yes
+			equipment_from_heavens_ai_has_manpower_margin = yes
+		}
+		set_country_flag = { flag = efh_ai_armor_windfall days = @EFH_AI_ASSESSMENT_DAYS }
+	}
+	else_if = {
+		limit = { equipment_from_heavens_manifest_has_armor = yes }
+		add_to_variable = { efh_ai_reserve_count = 1 }
+	}
+	if = {
+		limit = {
+			equipment_from_heavens_manifest_has_air = yes
+			equipment_from_heavens_ai_has_air_bases = yes
+			equipment_from_heavens_ai_has_fuel_margin = yes
+		}
+		set_country_flag = { flag = efh_ai_air_windfall days = @EFH_AI_ASSESSMENT_DAYS }
+	}
+	else_if = {
+		limit = { equipment_from_heavens_manifest_has_air = yes }
+		add_to_variable = { efh_ai_unusable_count = 1 }
+	}
+	if = {
+		limit = {
+			equipment_from_heavens_manifest_has_infantry = yes
+			equipment_from_heavens_ai_has_manpower_margin = yes
+		}
+		set_country_flag = { flag = efh_ai_infantry_windfall days = @EFH_AI_ASSESSMENT_DAYS }
+	}
+	if = {
+		limit = { equipment_from_heavens_manifest_has_logistics = yes }
+		set_country_flag = { flag = efh_ai_logistics_windfall days = @EFH_AI_ASSESSMENT_DAYS }
+		if = {
+			limit = { NOT = { equipment_from_heavens_ai_has_naval_bases = yes } }
+			add_to_variable = { efh_ai_reserve_count = 1 }
+		}
+	}
+	if = {
+		limit = { equipment_from_heavens_manifest_has_special = yes }
+		set_country_flag = { flag = efh_ai_special_windfall days = @EFH_AI_ASSESSMENT_DAYS }
+	}
+}

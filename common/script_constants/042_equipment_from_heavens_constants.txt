@@ -1,0 +1,646 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS SCRIPT CONSTANTS
+# ============================================================================
+# Identity, evolution, magnitude, family, quantity, technology-level,
+# landing-report, nuclear, special-equipment, AI, Chaos, and achievement tuning
+# for Equipment from Heavens. Every weighted roll and quantity band in the
+# Event 42 effects reads these tables, so balance changes happen here.
+# Recipient size, economy, manpower, army, fuel, supply, geography, ideology,
+# war state, and need never appear in any table below.
+# ============================================================================
+
+equipment_from_heavens_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 42
+	evolution_type = 42
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_i_tier = 1
+	evolution_ii_tier = 2
+	evolution_iii_tier = 3
+	evolution_i_chaos = 200
+	evolution_ii_chaos = 400
+	evolution_iii_chaos = 600
+	history_version = 1
+}
+
+equipment_from_heavens_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	hundred = 100
+}
+
+# Active manifest stage. Baseline is zero; each evolution raises the stage by
+# one and the higher stage always contains every lower-stage family.
+equipment_from_heavens_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = 0
+	evolution_i = 1
+	evolution_ii = 2
+	evolution_iii = 3
+}
+
+# Evolution pacing. Each stage becomes eligible at its Chaos threshold, then
+# resolves after a delay drawn around the base. Higher Chaos, recent Event 42
+# deliveries, and many active major wars shorten the delay within the floor.
+equipment_from_heavens_evolution_pacing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_days = 90
+	random_spread_days = 30
+	minimum_days = 45
+	chaos_step = 100
+	chaos_step_reduction_days = 5
+	recent_delivery_reduction_days = 15
+	recent_delivery_window_days = 180
+	major_war_reduction_days = 3
+	major_war_reduction_cap_days = 15
+	prior_stage_demonstrated_reduction_days = 10
+}
+
+equipment_from_heavens_magnitude = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	enormous = 1
+	colossal = 2
+	impossible = 3
+}
+
+# Magnitude weights per active stage. Later stages never make smaller
+# packages more common.
+equipment_from_heavens_magnitude_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline_enormous = 60
+	baseline_colossal = 30
+	baseline_impossible = 10
+	evolution_i_enormous = 50
+	evolution_i_colossal = 35
+	evolution_i_impossible = 15
+	evolution_ii_enormous = 40
+	evolution_ii_colossal = 40
+	evolution_ii_impossible = 20
+	evolution_iii_enormous = 35
+	evolution_iii_colossal = 40
+	evolution_iii_impossible = 25
+}
+
+# Stable family identifiers. They are persisted in every manifest and in the
+# compact delivery history, so existing values must never be renumbered.
+equipment_from_heavens_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	infantry = 1
+	support = 2
+	artillery = 3
+	anti_tank = 4
+	anti_air = 5
+	rocket_artillery = 6
+	motorized = 7
+	mechanized = 8
+	amphibious_mechanized = 9
+	trains = 10
+	convoys = 11
+	armored_cars = 12
+	light_tanks = 13
+	medium_tanks = 14
+	heavy_tanks = 15
+	tank_destroyers = 16
+	self_propelled_artillery = 17
+	self_propelled_anti_air = 18
+	amphibious_tanks = 19
+	modern_tanks = 20
+	super_heavy_tanks = 21
+	fighters = 22
+	close_air_support = 23
+	tactical_bombers = 24
+	strategic_bombers = 25
+	naval_bombers = 26
+	heavy_fighters = 27
+	transport_planes = 28
+	first = 1
+	last = 28
+}
+
+# Composition groups used by the anchor archetype roll.
+equipment_from_heavens_group = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry = 1
+	guns = 2
+	armor = 3
+	air = 4
+	logistics = 5
+	foreign_warehouse = 6
+}
+
+equipment_from_heavens_group_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry = 1
+	guns = 1
+	armor = 1
+	air = 1
+	logistics = 1
+	foreign_warehouse = 1
+}
+
+# Quantity classes map families to the accepted quantity bands.
+equipment_from_heavens_quantity_class = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry = 1
+	support = 2
+	artillery = 3
+	anti_tank = 4
+	anti_air = 5
+	rocket = 6
+	motorized = 7
+	mechanized = 8
+	tanks = 9
+	aircraft = 10
+	trains = 11
+	convoys = 12
+}
+
+# Designer route recorded for each grant. Designer rows create one neutral
+# complete variant on the recipient before the grant; legacy rows use complete
+# non-designer tokens.
+equipment_from_heavens_designer = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	tank = 1
+	plane = 2
+}
+
+equipment_from_heavens_role = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	anchor = 1
+	support = 2
+	mismatch = 3
+	special = 4
+}
+
+# Package quantity bands per class and magnitude. Values are whole units and
+# the rolled amount is later rounded to a clean value.
+equipment_from_heavens_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_enormous_min = 150000
+	infantry_enormous_max = 500000
+	infantry_colossal_min = 500000
+	infantry_colossal_max = 1000000
+	infantry_impossible_min = 1000000
+	infantry_impossible_max = 2000000
+	support_enormous_min = 15000
+	support_enormous_max = 50000
+	support_colossal_min = 50000
+	support_colossal_max = 100000
+	support_impossible_min = 100000
+	support_impossible_max = 250000
+	artillery_enormous_min = 8000
+	artillery_enormous_max = 30000
+	artillery_colossal_min = 30000
+	artillery_colossal_max = 60000
+	artillery_impossible_min = 60000
+	artillery_impossible_max = 150000
+	anti_tank_enormous_min = 5000
+	anti_tank_enormous_max = 20000
+	anti_tank_colossal_min = 20000
+	anti_tank_colossal_max = 45000
+	anti_tank_impossible_min = 45000
+	anti_tank_impossible_max = 100000
+	anti_air_enormous_min = 5000
+	anti_air_enormous_max = 20000
+	anti_air_colossal_min = 20000
+	anti_air_colossal_max = 45000
+	anti_air_impossible_min = 45000
+	anti_air_impossible_max = 100000
+	rocket_enormous_min = 4000
+	rocket_enormous_max = 15000
+	rocket_colossal_min = 15000
+	rocket_colossal_max = 35000
+	rocket_impossible_min = 35000
+	rocket_impossible_max = 80000
+	motorized_enormous_min = 25000
+	motorized_enormous_max = 80000
+	motorized_colossal_min = 80000
+	motorized_colossal_max = 200000
+	motorized_impossible_min = 200000
+	motorized_impossible_max = 450000
+	mechanized_enormous_min = 10000
+	mechanized_enormous_max = 35000
+	mechanized_colossal_min = 35000
+	mechanized_colossal_max = 90000
+	mechanized_impossible_min = 90000
+	mechanized_impossible_max = 200000
+	tanks_enormous_min = 2500
+	tanks_enormous_max = 10000
+	tanks_colossal_min = 10000
+	tanks_colossal_max = 25000
+	tanks_impossible_min = 25000
+	tanks_impossible_max = 60000
+	aircraft_enormous_min = 1500
+	aircraft_enormous_max = 6000
+	aircraft_colossal_min = 6000
+	aircraft_colossal_max = 15000
+	aircraft_impossible_min = 15000
+	aircraft_impossible_max = 35000
+	trains_enormous_min = 250
+	trains_enormous_max = 1000
+	trains_colossal_min = 1000
+	trains_colossal_max = 3000
+	trains_impossible_min = 3000
+	trains_impossible_max = 8000
+	convoys_enormous_min = 750
+	convoys_enormous_max = 3000
+	convoys_colossal_min = 3000
+	convoys_colossal_max = 8000
+	convoys_impossible_min = 8000
+	convoys_impossible_max = 20000
+}
+
+# Role and global scale factors. The anchor carries the full band while
+# supporting and mismatched families receive a rolled share, which keeps the
+# anchor at roughly half to two thirds of package value.
+equipment_from_heavens_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	anchor_share = 1.00
+	warehouse_anchor_share = 0.65
+	support_share_min = 0.30
+	support_share_max = 0.55
+	mismatch_share_min = 0.25
+	mismatch_share_max = 0.45
+	stage_baseline = 1.00
+	stage_evolution_i = 1.15
+	stage_evolution_ii = 1.25
+	stage_evolution_iii = 1.35
+	major_war_bonus_each = 0.05
+	major_war_bonus_cap = 0.20
+	chaos_tier_bonus_each = 0.03
+	verification_minimum_ratio = 0.50
+}
+
+equipment_from_heavens_rounding = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	large_threshold = 10000
+	large_unit = 1000
+	medium_threshold = 1000
+	medium_unit = 100
+	small_unit = 10
+}
+
+# Family counts per active stage, including the anchor and mismatches.
+equipment_from_heavens_family_count = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline_min = 4
+	baseline_max = 8
+	baseline_mismatch_min = 1
+	baseline_mismatch_max = 2
+	evolution_i_min = 7
+	evolution_i_max = 12
+	evolution_i_mismatch_min = 1
+	evolution_i_mismatch_max = 3
+	evolution_ii_min = 8
+	evolution_ii_max = 14
+	evolution_ii_mismatch_min = 1
+	evolution_ii_mismatch_max = 3
+	evolution_iii_min = 8
+	evolution_iii_max = 14
+	evolution_iii_mismatch_min = 1
+	evolution_iii_mismatch_max = 3
+}
+
+# Technology-level roles. The recipient's research only identifies the
+# relative "current" tier for a family; it never changes quantity or removes
+# a family.
+equipment_from_heavens_tech_role = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	current = 1
+	ahead = 2
+	foreign = 3
+	highest = 4
+}
+
+equipment_from_heavens_tech_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline_current = 55
+	baseline_ahead = 30
+	baseline_foreign = 10
+	baseline_highest = 5
+	evolution_i_current = 20
+	evolution_i_ahead = 45
+	evolution_i_foreign = 10
+	evolution_i_highest = 25
+	evolution_ii_current = 10
+	evolution_ii_ahead = 30
+	evolution_ii_foreign = 10
+	evolution_ii_highest = 50
+}
+
+# Landing reports. Counts rise with magnitude and once more from Evolution II.
+equipment_from_heavens_report = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_count = 3
+	maximum_count = 7
+	enormous_min = 3
+	enormous_max = 4
+	colossal_min = 4
+	colossal_max = 6
+	impossible_min = 5
+	impossible_max = 7
+	evolution_ii_bonus = 1
+	first_day_min = 1
+	first_day_max = 3
+	step_day_min = 1
+	step_day_max = 3
+	last_day = 14
+	safety_close_days = 44
+	accident_chance = 12
+}
+
+# Report themes. First discovery opens every chain and final reconciliation
+# closes it; the middle themes are drawn without replacement.
+equipment_from_heavens_report_theme = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first_discovery = 1
+	cargo_recovery = 2
+	depot_congestion = 3
+	provenance_anomaly = 4
+	civilian_disruption = 5
+	advanced_cargo = 6
+	final_reconciliation = 7
+	recovery_accident = 8
+}
+
+# Temporary landing-zone burden and relief. Values merge by maximum within
+# one state and never stack beyond the cap.
+equipment_from_heavens_landing_zone = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	burden_enormous = 1.0
+	burden_colossal = 1.5
+	burden_impossible = 2.0
+	burden_theme_bonus = 0.5
+	burden_cap = 3.0
+	supply_per_burden = -0.5
+	construction_per_burden = -0.08
+	repair_per_burden = -0.10
+	relief_logistics = 1.0
+	relief_cap = 1.5
+	supply_per_relief = 0.5
+}
+
+equipment_from_heavens_landing_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	enormous_days = 30
+	colossal_days = 45
+	impossible_days = 60
+	theme_bonus_days = 15
+}
+
+equipment_from_heavens_accident = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	loss_ratio = 0.01
+	infrastructure_damage = 1
+}
+
+# Provenance signatures. One is chosen per firing and every report of that
+# firing reads the same signature.
+equipment_from_heavens_signature = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first = 1
+	last = 11
+}
+
+# Evolution II nuclear cache chance by current Chaos, in whole percent.
+equipment_from_heavens_nuclear = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	band_ii_chaos = 600
+	band_iii_chaos = 800
+	band_iv_chaos = 1000
+	chance_band_i = 25
+	chance_band_ii = 35
+	chance_band_iii = 45
+	chance_band_iv = 55
+	chance_cap = 55
+	enormous_min = 25
+	enormous_max = 75
+	colossal_min = 75
+	colossal_max = 150
+	impossible_min = 150
+	impossible_max = 250
+	rounding_unit = 5
+}
+
+# Evolution III special-slot count weights. The count is clamped to the
+# number of distinct families currently allowlisted.
+equipment_from_heavens_special_count_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 40
+	one = 40
+	two = 15
+	three = 5
+}
+
+# Special-family identifiers for the Evolution III safety registry. Only
+# fieldable families whose battalion can be unlocked without production access
+# or owner lifecycle state are listed. The registry audit and every excluded
+# row are documented in docs/events/042_equipment_from_heavens/systems/
+# special_equipment_registry.md.
+equipment_from_heavens_special = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	clone_cohorts = 1
+	autonomous_robots = 2
+	portal_raiders = 3
+	paleogenetic_creatures = 4
+	xenobiological_organisms = 5
+	temporal_guards = 6
+	coal_golems = 7
+	first = 1
+	last = 7
+	template_battalions = 6
+	owner_event_brilliant_scientist = 16
+	owner_event_soviet_collapse = 5
+}
+
+# Battalion-equivalent quantities for fieldable special families. Clone
+# cohorts use a separate band because every stockpiled cohort also feeds the
+# shared clone reserve at ten weekly manpower, so the spec starting band is
+# reduced to keep the reserve finite and depleting as cohorts are fielded.
+equipment_from_heavens_special_quantity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	battalions_enormous_min = 10
+	battalions_enormous_max = 40
+	battalions_colossal_min = 40
+	battalions_colossal_max = 100
+	battalions_impossible_min = 100
+	battalions_impossible_max = 250
+	clone_enormous_min = 50
+	clone_enormous_max = 150
+	clone_colossal_min = 150
+	clone_colossal_max = 300
+	clone_impossible_min = 300
+	clone_impossible_max = 500
+	clone_rifles_per_cohort = 90
+	robot_equipment_per_battalion = 50
+	portal_equipment_per_battalion = 10
+	paleogenetic_equipment_per_battalion = 55
+	xenobiological_equipment_per_battalion = 50
+	temporal_equipment_per_battalion = 45
+	golem_equipment_per_battalion = 70
+}
+
+# Guarded event-owned Chaos sources. Evolution activation and ordinary repeat
+# deliveries have no entry here because they add nothing.
+equipment_from_heavens_chaos = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first_skyfall = 2
+	first_new_nuclear_actor = 10
+	first_nuclear_actor_with_access = 5
+	first_arsenal_escape = 5
+	first_arsenal_escape_mass_casualty = 10
+}
+
+# Bounded AI post-delivery assessment.
+equipment_from_heavens_ai = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	assessment_days = 365
+	minimum_manpower = 20000
+	minimum_fuel_ratio_percent = 25
+	production_reduction = -30
+	armor_role_bonus = 20
+	air_role_bonus = 20
+	special_template_cap = 3
+}
+
+equipment_from_heavens_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tiny_factory_limit = 10
+	tiny_division_growth = 50
+	tiny_pulse_days = 30
+	nightmare_pulse_days = 14
+	tiny_growth_window_days = 365
+	tiny_victory_window_days = 1095
+}

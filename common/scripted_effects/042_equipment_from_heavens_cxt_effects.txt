@@ -1,0 +1,38 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers Equipment from Heavens with the shared CXT extension bus. The
+# fixture grants only the seven hidden fielding receipts and their neutral
+# templates so the test country can inspect every Evolution III consumer. It
+# never fires Event 42, grants a delivery package, records history, or changes
+# an evolution.
+# ============================================================================
+
+# COUNTRY scope. Registers this package's `_apply` effect with the existing CXT
+# dynamic extension dispatcher. The token is the hidden carrier id.
+equipment_from_heavens_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event042_equipment_from_heavens
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Idempotent CXT fixture.
+chaosx_cxt_extension_event042_equipment_from_heavens_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = equipment_from_heavens_cxt_fixture_initialized }
+		}
+		set_temp_variable = { efh_cxt_loop_end = constant:equipment_from_heavens_special.last }
+		add_to_temp_variable = { efh_cxt_loop_end = 1 }
+		for_loop_effect = {
+			start = constant:equipment_from_heavens_special.first
+			end = efh_cxt_loop_end
+			value = efh_special_family
+			equipment_from_heavens_apply_special_receipt = yes
+		}
+		set_country_flag = equipment_from_heavens_cxt_fixture_initialized
+	}
+}

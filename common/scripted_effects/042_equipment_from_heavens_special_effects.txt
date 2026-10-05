@@ -1,0 +1,388 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS SPECIAL REGISTRY EFFECTS
+# ============================================================================
+# Evolution III safety registry. Every allowlisted row names an existing
+# Chaos Redux equipment token, its real battalion consumer, the hidden
+# Event 42 fielding receipt, the neutral template, the owner event used for
+# isolation and Borrowed Nightmare, and the quantity basis.
+#
+# Receipts never call owner APIs, never grant owner technologies, and never
+# set owner host, project, facility, contact, derivative, evolution,
+# world-threat, super-event, or terminal flags. Production stays behind each
+# owner's equipment unlock and can_be_produced gates, which the receipt does
+# not touch. Excluded families (alien laser weapons, Event 012 strange
+# formations and elephants, and every weapon payload) have no row here.
+#
+# Interface (COUNTRY scope, recipient):
+# - equipment_from_heavens_load_special_row
+#   input temp efh_special_family; output variables efh_special_token,
+#   efh_special_name_token and temps efh_special_owner_event,
+#   efh_special_per_battalion, efh_special_is_clone
+# - equipment_from_heavens_apply_special_receipt
+#   input temp efh_special_family; idempotent tech and template receipt
+# ============================================================================
+
+equipment_from_heavens_load_special_row = {
+	set_temp_variable = { efh_special_owner_event = constant:equipment_from_heavens_special.owner_event_brilliant_scientist }
+	set_temp_variable = { efh_special_per_battalion = 1 }
+	set_temp_variable = { efh_special_is_clone = 0 }
+	if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.clone_cohorts } }
+		set_variable = { efh_special_token = token:clone_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_clone_cohorts }
+		set_temp_variable = { efh_special_is_clone = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.autonomous_robots } }
+		set_variable = { efh_special_token = token:autonomous_robot_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_autonomous_robots }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.robot_equipment_per_battalion }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.portal_raiders } }
+		set_variable = { efh_special_token = token:teleportation_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_portal_raiders }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.portal_equipment_per_battalion }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.paleogenetic_creatures } }
+		set_variable = { efh_special_token = token:paleogenetic_creature_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_paleogenetic_creatures }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.paleogenetic_equipment_per_battalion }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.xenobiological_organisms } }
+		set_variable = { efh_special_token = token:xenobiological_assault_organism_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_xenobiological_organisms }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.xenobiological_equipment_per_battalion }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.temporal_guards } }
+		set_variable = { efh_special_token = token:temporal_guard_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_temporal_guards }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.temporal_equipment_per_battalion }
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.coal_golems } }
+		set_variable = { efh_special_token = token:coal_golem_equipment_1 }
+		set_variable = { efh_special_name_token = token:efh_special_name_coal_golems }
+		set_temp_variable = { efh_special_owner_event = constant:equipment_from_heavens_special.owner_event_soviet_collapse }
+		set_temp_variable = { efh_special_per_battalion = constant:equipment_from_heavens_special_quantity.golem_equipment_per_battalion }
+	}
+}
+
+# COUNTRY scope. Rolls the special quantity from the battalion or cohort band.
+# Input temp efh_special_family after equipment_from_heavens_load_special_row.
+# Output temp efh_special_amount.
+equipment_from_heavens_roll_special_amount = {
+	set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.battalions_enormous_min }
+	set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.battalions_enormous_max }
+	if = {
+		limit = { check_variable = { efh_special_is_clone = 1 } }
+		set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.clone_enormous_min }
+		set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.clone_enormous_max }
+		if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.clone_colossal_min }
+			set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.clone_colossal_max }
+		}
+		else_if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+			set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.clone_impossible_min }
+			set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.clone_impossible_max }
+		}
+	}
+	else = {
+		if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.battalions_colossal_min }
+			set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.battalions_colossal_max }
+		}
+		else_if = {
+			limit = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+			set_temp_variable = { efh_special_band_min = constant:equipment_from_heavens_special_quantity.battalions_impossible_min }
+			set_temp_variable = { efh_special_band_max = constant:equipment_from_heavens_special_quantity.battalions_impossible_max }
+		}
+	}
+	add_to_temp_variable = { efh_special_band_max = 1 }
+	set_temp_variable_to_random = {
+		var = efh_special_battalions
+		min = efh_special_band_min
+		max = efh_special_band_max
+		integer = yes
+	}
+	set_temp_variable = { efh_special_amount = efh_special_battalions }
+	multiply_temp_variable = { efh_special_amount = efh_special_per_battalion }
+}
+
+# COUNTRY scope. Idempotent compatibility receipt. It unlocks only the
+# battalion consumer and adds one editable neutral template. It never grants
+# equipment research, owner technologies, or owner state.
+equipment_from_heavens_apply_special_receipt = {
+	if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.clone_cohorts } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_clone_fielding_tech } }
+			set_technology = { equipment_from_heavens_clone_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Cohort Brigade" } }
+			division_template = {
+				name = "Unmarked Cohort Brigade"
+				regiments = {
+					clone_infantry = { x = 0 y = 0 }
+					clone_infantry = { x = 0 y = 1 }
+					clone_infantry = { x = 0 y = 2 }
+					clone_infantry = { x = 1 y = 0 }
+					clone_infantry = { x = 1 y = 1 }
+					clone_infantry = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.autonomous_robots } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_robot_fielding_tech } }
+			set_technology = { equipment_from_heavens_robot_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Machine Column" } }
+			division_template = {
+				name = "Unmarked Machine Column"
+				regiments = {
+					autonomous_robot = { x = 0 y = 0 }
+					autonomous_robot = { x = 0 y = 1 }
+					autonomous_robot = { x = 0 y = 2 }
+					autonomous_robot = { x = 1 y = 0 }
+					autonomous_robot = { x = 1 y = 1 }
+					autonomous_robot = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.portal_raiders } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_portal_fielding_tech } }
+			set_technology = { equipment_from_heavens_portal_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Gate Company" } }
+			division_template = {
+				name = "Unmarked Gate Company"
+				regiments = {
+					portal_raider = { x = 0 y = 0 }
+					portal_raider = { x = 0 y = 1 }
+					portal_raider = { x = 0 y = 2 }
+					portal_raider = { x = 1 y = 0 }
+					portal_raider = { x = 1 y = 1 }
+					portal_raider = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.paleogenetic_creatures } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_paleogenetic_fielding_tech } }
+			set_technology = { equipment_from_heavens_paleogenetic_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Beast Column" } }
+			division_template = {
+				name = "Unmarked Beast Column"
+				regiments = {
+					paleogenetic_creature = { x = 0 y = 0 }
+					paleogenetic_creature = { x = 0 y = 1 }
+					paleogenetic_creature = { x = 1 y = 0 }
+					paleogenetic_creature = { x = 1 y = 1 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.xenobiological_organisms } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_xenobiological_fielding_tech } }
+			set_technology = { equipment_from_heavens_xenobiological_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Organism Column" } }
+			division_template = {
+				name = "Unmarked Organism Column"
+				regiments = {
+					xenobiological_assault_organism = { x = 0 y = 0 }
+					xenobiological_assault_organism = { x = 0 y = 1 }
+					xenobiological_assault_organism = { x = 0 y = 2 }
+					xenobiological_assault_organism = { x = 1 y = 0 }
+					xenobiological_assault_organism = { x = 1 y = 1 }
+					xenobiological_assault_organism = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.temporal_guards } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_temporal_fielding_tech } }
+			set_technology = { equipment_from_heavens_temporal_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Guard Detachment" } }
+			division_template = {
+				name = "Unmarked Guard Detachment"
+				regiments = {
+					temporal_guard = { x = 0 y = 0 }
+					temporal_guard = { x = 0 y = 1 }
+					temporal_guard = { x = 0 y = 2 }
+					temporal_guard = { x = 1 y = 0 }
+					temporal_guard = { x = 1 y = 1 }
+					temporal_guard = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { efh_special_family = constant:equipment_from_heavens_special.coal_golems } }
+		if = {
+			limit = { NOT = { has_tech = equipment_from_heavens_golem_fielding_tech } }
+			set_technology = { equipment_from_heavens_golem_fielding_tech = 1 popup = no }
+		}
+		if = {
+			limit = { NOT = { has_template = "Unmarked Stoneworks Brigade" } }
+			division_template = {
+				name = "Unmarked Stoneworks Brigade"
+				regiments = {
+					coal_golem = { x = 0 y = 0 }
+					coal_golem = { x = 0 y = 1 }
+					coal_golem = { x = 0 y = 2 }
+					coal_golem = { x = 1 y = 0 }
+					coal_golem = { x = 1 y = 1 }
+					coal_golem = { x = 1 y = 2 }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Rolls, grants, and records the Evolution III special slots
+# after the conventional and nuclear manifest are complete. Distinct families
+# are drawn without replacement; the count is clamped to the allowlist size.
+equipment_from_heavens_roll_special_slots = {
+	clear_array = efh_manifest_special_entries
+	clear_array = efh_manifest_special_amount_entries
+	set_temp_variable = { efh_special_slot_count = 0 }
+	random_list = {
+		constant:equipment_from_heavens_special_count_weight.zero = { set_temp_variable = { efh_special_slot_count = 0 } }
+		constant:equipment_from_heavens_special_count_weight.one = { set_temp_variable = { efh_special_slot_count = 1 } }
+		constant:equipment_from_heavens_special_count_weight.two = { set_temp_variable = { efh_special_slot_count = 2 } }
+		constant:equipment_from_heavens_special_count_weight.three = { set_temp_variable = { efh_special_slot_count = 3 } }
+	}
+	clear_temp_array = efh_special_pool
+	# for_loop_effect excludes its end value.
+	set_temp_variable = { efh_special_loop_end = constant:equipment_from_heavens_special.last }
+	add_to_temp_variable = { efh_special_loop_end = 1 }
+	for_loop_effect = {
+		start = constant:equipment_from_heavens_special.first
+		end = efh_special_loop_end
+		value = efh_special_candidate
+		add_to_temp_array = { efh_special_pool = efh_special_candidate }
+	}
+	if = {
+		limit = { check_variable = { efh_special_slot_count > efh_special_pool^num } }
+		set_temp_variable = { efh_special_slot_count = efh_special_pool^num }
+	}
+	while_loop_effect = {
+		limit = {
+			check_variable = { efh_manifest_special_entries^num < efh_special_slot_count }
+			check_variable = { efh_special_pool^num > 0 }
+		}
+		set_temp_variable = { efh_random_bound = efh_special_pool^num }
+		set_temp_variable_to_random = {
+			var = efh_special_pick_index
+			min = 0
+			max = efh_random_bound
+			integer = yes
+		}
+		set_temp_variable = { efh_special_family = efh_special_pool^efh_special_pick_index }
+		remove_from_temp_array = { array = efh_special_pool index = efh_special_pick_index }
+		set_temp_variable = { efh_special_owner_event = 0 }
+		set_temp_variable = { efh_special_per_battalion = 0 }
+		set_temp_variable = { efh_special_is_clone = 0 }
+		equipment_from_heavens_load_special_row = yes
+		set_temp_variable = { efh_special_amount = 0 }
+		equipment_from_heavens_roll_special_amount = yes
+		equipment_from_heavens_grant_special_family = yes
+	}
+}
+
+# COUNTRY scope. Physical grant, receipt, isolation snapshot, and records for
+# one special family. Inputs from equipment_from_heavens_load_special_row and
+# equipment_from_heavens_roll_special_amount.
+equipment_from_heavens_grant_special_family = {
+	# Isolation snapshot: the owner event's fired state is read before and
+	# after the receipt. The receipt never writes owner state, so a changed
+	# value would indicate an external owner firing in the same tick.
+	set_temp_variable = { efh_special_owner_fired_before = 0 }
+	if = {
+		limit = { is_in_array = { global.fired_events = efh_special_owner_event } }
+		set_temp_variable = { efh_special_owner_fired_before = 1 }
+	}
+	meta_effect = {
+		text = {
+			add_equipment_to_stockpile = {
+				type = [TOKEN]
+				amount = efh_special_amount
+			}
+		}
+		TOKEN = "[?efh_special_token.GetTokenKey]"
+	}
+	if = {
+		limit = { check_variable = { efh_special_is_clone = 1 } }
+		# Each cohort battalion also needs rifles. They are part of the same
+		# skyfall so the cohorts are not a stockpile the recipient can never
+		# field for lack of ordinary equipment.
+		set_temp_variable = { efh_special_rifles = efh_special_amount }
+		multiply_temp_variable = { efh_special_rifles = constant:equipment_from_heavens_special_quantity.clone_rifles_per_cohort }
+		add_equipment_to_stockpile = {
+			type = infantry_equipment_1
+			amount = efh_special_rifles
+		}
+	}
+	equipment_from_heavens_apply_special_receipt = yes
+	add_to_array = { array = efh_manifest_special_entries value = efh_special_family }
+	add_to_array = { array = efh_manifest_special_amount_entries value = efh_special_amount }
+	set_variable = { efh_special_last_owner_event = efh_special_owner_event }
+	set_temp_variable = { efh_special_owner_fired_after = 0 }
+	if = {
+		limit = { is_in_array = { global.fired_events = efh_special_owner_event } }
+		set_temp_variable = { efh_special_owner_fired_after = 1 }
+	}
+	if = {
+		limit = { check_variable = { efh_special_owner_fired_before = efh_special_owner_fired_after } }
+		set_country_flag = efh_special_isolation_receipt_intact
+	}
+	add_to_array = { array = global.efh_special_receipt_country_entries value = THIS }
+	add_to_array = { array = global.efh_special_receipt_family_entries value = efh_special_family }
+	add_to_array = { array = global.efh_special_receipt_owner_fired_entries value = efh_special_owner_fired_before }
+	# Borrowed Nightmare snapshot uses the first special family of the delivery.
+	if = {
+		limit = { check_variable = { efh_manifest_special_entries^num = 1 } }
+		equipment_from_heavens_achievement_snapshot_borrowed_nightmare = yes
+	}
+	# Guarded +5 source for the first owner-event capability made fieldable
+	# outside its owner. Every allowlisted family is a battalion consumer, so
+	# the mass-casualty variant has no current Event 42 consumer.
+	if = {
+		limit = { NOT = { has_global_flag = efh_chaos_first_arsenal_escape } }
+		set_global_flag = efh_chaos_first_arsenal_escape
+		if = {
+			limit = { NOT = { has_global_flag = settings_chaos_meter_disabled } }
+			set_temp_variable = { chaos_change = constant:equipment_from_heavens_chaos.first_arsenal_escape }
+			set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.equipment_from_heavens_arsenal_escape }
+			set_temp_variable = { chaos_history_reason_custom = 1 }
+			add_chaos_meter_value = yes
+		}
+	}
+}

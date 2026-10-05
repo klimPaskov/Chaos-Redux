@@ -1,0 +1,257 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS ACHIEVEMENT EFFECTS
+# ============================================================================
+# Receipt snapshots, bounded pulses, and completion receipts for the three
+# Event 42 achievements. Each route keeps separate active, completed, and
+# failed state on the recipient, so a later delivery never overwrites an open
+# challenge. Manual or force-triggered deliveries, AI-controlled recipients,
+# and tag switches away from the recipient never qualify.
+#
+# Routes:
+# - 042_equipment_from_heavens_tiny_arsenal_state
+# - 042_equipment_from_heavens_nuclear_lottery
+# - 042_equipment_from_heavens_borrowed_nightmare
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Tiny Arsenal State
+# ---------------------------------------------------------------------------
+
+equipment_from_heavens_achievement_snapshot_tiny_arsenal = {
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { efh_manifest_manual < 1 }
+			check_variable = { num_of_factories < constant:equipment_from_heavens_achievement.tiny_factory_limit }
+			NOT = { has_country_flag = efh_ach_tiny_active }
+			NOT = { has_country_flag = efh_ach_tiny_complete }
+		}
+		set_country_flag = efh_ach_tiny_active
+		clr_country_flag = efh_ach_tiny_growth_met
+		set_variable = { efh_ach_tiny_start_date = global.date }
+		set_variable = { efh_ach_tiny_divisions = num_divisions }
+		capital_scope = {
+			PREV = { set_variable = { efh_ach_tiny_capital = PREV } }
+		}
+		country_event = { id = chaosx.nr42.30 days = 30 }
+	}
+}
+
+equipment_from_heavens_achievement_fail_tiny_arsenal = {
+	clr_country_flag = efh_ach_tiny_active
+	clr_country_flag = efh_ach_tiny_growth_met
+	clear_variable = efh_ach_tiny_start_date
+	clear_variable = efh_ach_tiny_divisions
+	clear_variable = efh_ach_tiny_capital
+}
+
+# Hidden pulse body (chaosx.nr42.30), every thirty days while the route is
+# open. Measures division growth inside the first year and closes the route
+# once its windows expire.
+equipment_from_heavens_achievement_tiny_pulse = {
+	if = {
+		limit = {
+			has_country_flag = efh_ach_tiny_active
+			NOT = { has_country_flag = efh_ach_tiny_complete }
+		}
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = efh_ach_tiny_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { efh_ach_elapsed = chaosx_date_days }
+		set_temp_variable = { efh_ach_division_target = efh_ach_tiny_divisions }
+		add_to_temp_variable = { efh_ach_division_target = constant:equipment_from_heavens_achievement.tiny_division_growth }
+		if = {
+			limit = { is_ai = yes }
+			equipment_from_heavens_achievement_fail_tiny_arsenal = yes
+		}
+		else_if = {
+			limit = {
+				NOT = { has_country_flag = efh_ach_tiny_growth_met }
+				check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_growth_window_days }
+			}
+			equipment_from_heavens_achievement_fail_tiny_arsenal = yes
+		}
+		else_if = {
+			limit = { check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_victory_window_days } }
+			equipment_from_heavens_achievement_fail_tiny_arsenal = yes
+		}
+		else = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = efh_ach_tiny_growth_met }
+					check_variable = { var = num_divisions value = efh_ach_division_target compare = greater_than_or_equals }
+					var:efh_ach_tiny_capital = { is_controlled_by = PREV }
+				}
+				set_country_flag = efh_ach_tiny_growth_met
+			}
+			country_event = { id = chaosx.nr42.30 days = 30 }
+		}
+	}
+}
+
+# COUNTRY scope (tracked recipient). Called from the capitulation and
+# conditional-surrender hooks with the defeated country saved as the regular
+# event target efh_ach_defeated_country.
+equipment_from_heavens_achievement_try_complete_tiny_arsenal = {
+	if = {
+		limit = {
+			is_ai = no
+			has_country_flag = efh_ach_tiny_active
+			has_country_flag = efh_ach_tiny_growth_met
+			NOT = { has_country_flag = efh_ach_tiny_complete }
+			var:efh_ach_tiny_capital = { is_controlled_by = PREV }
+		}
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = efh_ach_tiny_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { efh_ach_elapsed = chaosx_date_days }
+		if = {
+			limit = { NOT = { check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_victory_window_days } } }
+			set_country_flag = efh_ach_tiny_complete
+			clr_country_flag = efh_ach_tiny_active
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Nuclear Lottery
+# ---------------------------------------------------------------------------
+
+# Called right after the Evolution II cache grant. Requires no bombs and no
+# ordinary production access before the delivery.
+equipment_from_heavens_achievement_snapshot_nuclear_lottery = {
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { efh_manifest_manual < 1 }
+			check_variable = { efh_nuclear_prior_stock < 1 }
+			check_variable = { efh_nuclear_prior_access < 1 }
+			check_variable = { efh_manifest_nuclear_amount > 0 }
+			NOT = { has_country_flag = efh_ach_nuclear_active }
+			NOT = { has_country_flag = efh_ach_nuclear_complete }
+		}
+		set_country_flag = efh_ach_nuclear_active
+		set_variable = { efh_ach_nuclear_delivery = efh_delivery_sequence }
+	}
+}
+
+# COUNTRY scope (launcher in on_nuke_drop). A strike completes the route only
+# while the country still lacks ordinary nuclear production access, so the
+# consumed weapon came from the received stockpile.
+equipment_from_heavens_achievement_on_nuke_drop = {
+	if = {
+		limit = { has_country_flag = efh_ach_nuclear_active }
+		if = {
+			limit = {
+				is_ai = no
+				NOT = { equipment_from_heavens_has_nuclear_production_access = yes }
+			}
+			set_country_flag = efh_ach_nuclear_complete
+			clr_country_flag = efh_ach_nuclear_active
+		}
+		else = {
+			clr_country_flag = efh_ach_nuclear_active
+			clear_variable = efh_ach_nuclear_delivery
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Borrowed Nightmare
+# ---------------------------------------------------------------------------
+
+# Called for the first special family of an Evolution III delivery while the
+# owner event has not fired in the campaign.
+equipment_from_heavens_achievement_snapshot_borrowed_nightmare = {
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { efh_manifest_manual < 1 }
+			check_variable = { efh_special_owner_fired_before < 1 }
+			NOT = { has_country_flag = efh_ach_nightmare_active }
+			NOT = { has_country_flag = efh_ach_nightmare_complete }
+		}
+		set_country_flag = efh_ach_nightmare_active
+		set_variable = { efh_ach_nightmare_family = efh_special_family }
+		set_variable = { efh_ach_nightmare_owner = efh_special_owner_event }
+		set_variable = { efh_ach_nightmare_token = efh_special_token }
+		set_variable = { efh_ach_nightmare_start_date = global.date }
+		clear_variable = efh_ach_nightmare_baseline
+		country_event = { id = chaosx.nr42.31 days = 14 }
+	}
+}
+
+equipment_from_heavens_achievement_fail_borrowed_nightmare = {
+	clr_country_flag = efh_ach_nightmare_active
+	clear_variable = efh_ach_nightmare_family
+	clear_variable = efh_ach_nightmare_owner
+	clear_variable = efh_ach_nightmare_token
+	clear_variable = efh_ach_nightmare_start_date
+	clear_variable = efh_ach_nightmare_baseline
+}
+
+# Hidden pulse body (chaosx.nr42.31), every fourteen days while open. The
+# route completes when the exact family is fielded in divisions during a war
+# and its combined stockpile and fielded count falls below the level recorded
+# when that war use began, which proves material use in combat rather than
+# passive ownership. The route fails if the owner event fires first.
+equipment_from_heavens_achievement_nightmare_pulse = {
+	if = {
+		limit = {
+			has_country_flag = efh_ach_nightmare_active
+			NOT = { has_country_flag = efh_ach_nightmare_complete }
+		}
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = efh_ach_nightmare_start_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		set_temp_variable = { efh_ach_elapsed = chaosx_date_days }
+		if = {
+			limit = {
+				OR = {
+					is_ai = yes
+					is_in_array = { global.fired_events = efh_ach_nightmare_owner }
+					check_variable = { efh_ach_elapsed > constant:equipment_from_heavens_achievement.tiny_victory_window_days }
+				}
+			}
+			equipment_from_heavens_achievement_fail_borrowed_nightmare = yes
+		}
+		else = {
+			meta_effect = {
+				text = {
+					set_temp_variable = { efh_ach_fielded = num_equipment_in_armies@[TOKEN] }
+					set_temp_variable = { efh_ach_total = num_equipment@[TOKEN] }
+				}
+				TOKEN = "[?efh_ach_nightmare_token.GetTokenKey]"
+			}
+			add_to_temp_variable = { efh_ach_total = efh_ach_fielded }
+			if = {
+				limit = {
+					has_war = yes
+					check_variable = { efh_ach_fielded > 0 }
+				}
+				if = {
+					limit = {
+						has_variable = efh_ach_nightmare_baseline
+						check_variable = { efh_ach_total < efh_ach_nightmare_baseline }
+					}
+					set_country_flag = efh_ach_nightmare_complete
+					clr_country_flag = efh_ach_nightmare_active
+				}
+				else_if = {
+					limit = { NOT = { has_variable = efh_ach_nightmare_baseline } }
+					set_variable = { efh_ach_nightmare_baseline = efh_ach_total }
+				}
+			}
+			else = {
+				clear_variable = efh_ach_nightmare_baseline
+			}
+			if = {
+				limit = { has_country_flag = efh_ach_nightmare_active }
+				country_event = { id = chaosx.nr42.31 days = 14 }
+			}
+		}
+	}
+}

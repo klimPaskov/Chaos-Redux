@@ -1,0 +1,248 @@
+add_namespace = chaosx.nr42
+
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS
+# ============================================================================
+# chaosx.nr42.1 is the canonical entry and the only delivery transaction. The
+# shared dispatcher prepares one uniformly random ordinary recipient before
+# this event fires. The hidden immediate block builds the manifest, applies
+# the stockpile grant once, and schedules the landing reports.
+#
+# chaosx.nr42.9 is a hidden per-report dispatcher. chaosx.nr42.10 through .16
+# are the visible landing reports, one per report image. None of them grants
+# equipment, records Event 42 history, advances pacing, or changes weight.
+# chaosx.nr42.19 closes a stale chain. chaosx.nr42.30 and .31 are hidden
+# achievement pulses.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Delivery
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr42.1
+	title = chaosx.nr42.1.t
+	desc = {
+		text = chaosx.nr42.1.desc.impossible
+		trigger = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+	}
+	desc = {
+		text = chaosx.nr42.1.desc.colossal
+		trigger = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+	}
+	desc = {
+		text = chaosx.nr42.1.desc.enormous
+		trigger = {
+			NOT = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.colossal } }
+			NOT = { check_variable = { efh_manifest_magnitude = constant:equipment_from_heavens_magnitude.impossible } }
+		}
+	}
+	picture = GFX_report_event_equipment_from_heavens_crate_fields
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			AND = {
+				has_event_target = efh_prefire_recipient
+				event_target:efh_prefire_recipient = { tag = ROOT }
+				has_country_flag = efh_prefire_pending
+				any_owned_state = { equipment_from_heavens_state_is_valid_landing = yes }
+			}
+			AND = {
+				NOT = { has_event_target = efh_prefire_recipient }
+				equipment_from_heavens_country_is_valid_recipient = yes
+			}
+		}
+	}
+
+	immediate = {
+		hidden_effect = {
+			equipment_from_heavens_open_delivery = yes
+		}
+	}
+
+	option = {
+		name = chaosx.nr42.1.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr42.1.magnitude_tt
+		equipment_from_heavens_show_manifest_tooltips = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Landing reports
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr42.9
+	title = chaosx.nr42.9.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		equipment_from_heavens_dispatch_next_report = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.10
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_crate_fields
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.11
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_vehicle_descent
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.12
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_aircraft_field
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.13
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_overwhelmed_depot
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.14
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_atomic_cache
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.15
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_chaos_cargo
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.16
+	title = chaosx.nr42.report.t
+	desc = chaosx.nr42.report.d
+	picture = GFX_report_event_equipment_from_heavens_overwhelmed_depot
+	is_triggered_only = yes
+	trigger = { has_country_flag = efh_chain_active }
+
+	option = {
+		name = chaosx.nr42.report.a
+		ai_chance = { base = 1 }
+		equipment_from_heavens_show_report_tooltip = yes
+		custom_effect_tooltip = chaosx.nr42.16.loss_tt
+		hidden_effect = { equipment_from_heavens_close_chain_if_done = yes }
+	}
+}
+
+# Closes a chain whose final report never resolved. Only a chain at least
+# forty-four days old is touched, so a newer delivery is never cleared.
+country_event = {
+	id = chaosx.nr42.19
+	title = chaosx.nr42.9.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = efh_chain_active
+				has_variable = efh_delivery_date
+			}
+			set_temp_variable = { efh_chain_age = global.date }
+			subtract_from_temp_variable = { efh_chain_age = efh_delivery_date }
+			if = {
+				limit = { check_variable = { var = efh_chain_age value = constant:equipment_from_heavens_report.safety_close_days compare = greater_than_or_equals } }
+				equipment_from_heavens_cleanup_chain = yes
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Achievement pulses
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr42.30
+	title = chaosx.nr42.9.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		equipment_from_heavens_achievement_tiny_pulse = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr42.31
+	title = chaosx.nr42.9.t
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		equipment_from_heavens_achievement_nightmare_pulse = yes
+	}
+}

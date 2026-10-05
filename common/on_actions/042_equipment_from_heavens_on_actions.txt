@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 042 EQUIPMENT FROM HEAVENS ACHIEVEMENT HOOKS
+# ============================================================================
+# Exact transaction-boundary hooks only. They record achievement receipts for
+# countries already holding an open Event 42 route. Nuclear consequences stay
+# with the shared nuclear, fallout, Deaths, and Chaos handlers.
+# ============================================================================
+
+on_actions = {
+	# ROOT launched the weapon and FROM is the struck state.
+	on_nuke_drop = {
+		effect = {
+			if = {
+				limit = { ROOT = { has_country_flag = efh_ach_nuclear_active } }
+				ROOT = { equipment_from_heavens_achievement_on_nuke_drop = yes }
+			}
+		}
+	}
+
+	# ROOT is the capitulated country and FROM is the winner.
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { is_major = yes }
+					FROM = { has_country_flag = efh_ach_tiny_growth_met }
+				}
+				FROM = { equipment_from_heavens_achievement_try_complete_tiny_arsenal = yes }
+			}
+		}
+	}
+
+	# ROOT sent the conditional surrender and FROM accepted it.
+	on_peace_proposal = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { is_major = yes }
+					FROM = { has_country_flag = efh_ach_tiny_growth_met }
+				}
+				FROM = { equipment_from_heavens_achievement_try_complete_tiny_arsenal = yes }
+			}
+		}
+	}
+}
