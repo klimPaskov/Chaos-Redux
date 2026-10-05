@@ -1,3 +1,4 @@
+# Event 004: sudden declarations, one response per participant, and failed launches.
 add_namespace = chaosx.nr4
 
 @RANDOM_WAR_STAFF_BLAMED_DAYS = 180
@@ -30,7 +31,17 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		set_temp_variable = { random_war_declaration_fired_count = 0 }
+		set_temp_variable = { random_war_failure_reported = 0 }
 		random_war_fire_current_context = yes
+		if = {
+			limit = {
+				is_ai = no
+				check_variable = { random_war_declaration_fired_count < 1 }
+				check_variable = { random_war_failure_reported < 1 }
+			}
+			country_event = { id = chaosx.nr4.4 }
+		}
 	}
 }
 
@@ -68,6 +79,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr4.3.a
+		add_political_power = constant:random_war_option_effect.target_defence_power_cost
 		add_war_support = constant:random_war_option_effect.target_war_support
 		add_timed_idea = {
 			idea = random_war_hold_the_line
@@ -78,7 +90,6 @@ country_event = {
 
 	option = {
 		name = chaosx.nr4.3.b
-		add_manpower = constant:random_war_option_effect.target_manpower
 		add_stability = constant:random_war_option_effect.target_mobilization_stability_cost
 		add_timed_idea = {
 			idea = random_war_reserve_mobilization
@@ -86,4 +97,14 @@ country_event = {
 		}
 		ai_chance = { base = 30 }
 	}
+}
+
+country_event = {
+	id = chaosx.nr4.4
+	title = chaosx.nr4.4.t
+	desc = chaosx.nr4.4.d
+	picture = GFX_report_event_random_war
+	is_triggered_only = yes
+
+	option = { name = chaosx.nr4.4.a }
 }

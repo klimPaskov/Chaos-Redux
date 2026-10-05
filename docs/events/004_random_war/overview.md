@@ -14,7 +14,11 @@ The root event remains `chaosx.nr4.1`. It is hidden and delegates to `random_war
 4. Event accounting records Event ID 4.
 5. `random_war_fire_current_context` consumes the prepared context.
 6. The first prepared pair is applied. In War Contagion stages, later declarations continue from the previous target and the last declaration closes back toward the original aggressor.
-7. Aggressor and target report events fire for each declaration, then one observer news popup summarizes the full declaration set for relevant observers.
+7. Each participant receives one report after the declarations finish.
+A country attacked during the chain receives the defensive response, even if it also declared war.
+One observer news popup summarizes the declaration set and its distinct participants.
+8. The prepared pair is consumed and cleared, so another Random War in the same Wars cluster selects fresh participants.
+9. A forced launch without a legal pair reports why no declaration occurred.
 
 ## Eligibility
 
@@ -58,6 +62,24 @@ Event-log evolution rows and Random War event-detail preview rows display the st
 - `chaosx.nr4.2`: aggressor report, with options to stand by the order or blame the general staff.
 - `chaosx.nr4.3`: target report, with options to hold the line or mobilize reserves.
 - `chaosx.news.104`: observer news report for humans, relevant majors, neighbors, and compatible special-country cases.
+- `chaosx.nr4.4`: unsuccessful manual launch report.
+
+An observer receives one news popup per invocation.
+A participant receives at most one response report and that news popup, for a maximum of two popups per invocation.
+Separate Random War invocations remain separate incidents and respect the existing participant cooldowns.
+
+## Emergency Responses
+
+The aggressor can support the offensive for 5 command power and 3 percentage points of war support, or dismiss responsible officers at a cost of 2 percentage points of stability.
+Dismissal excludes that country from being selected as an aggressor for 180 days.
+
+A defender can organize field defenses for 25 political power and receive 3 percentage points of war support.
+For 45 days, supply and transport support give 10% defense on core territory, 5% organization recovery, and 25% faster entrenchment.
+Alternatively, calling up reserves costs 2 percentage points of stability and gives 25% faster mobilization, 5% more recruitable population relative to the country's existing recruitment pool, and 10% faster training for 45 days.
+Reserve mobilization draws manpower from the country's population and recruitment rules.
+It grants no flat manpower, weekly manpower, or additional conscription percentage.
+All response modifiers are tuned once through file-local constants in the event's ideas file, because static idea modifiers reject `constant:` tokens.
+Costs and durations retain their existing global script constant groups.
 
 ## Variables, Flags, And Constants
 
@@ -89,6 +111,13 @@ Cooldown flags:
 - `random_war_recent_target`
 - `random_war_staff_blamed`
 - `random_war_chain_member`
+
+The short-lived `random_war_response_pending` and `random_war_defender_response_pending` flags collect participants during a synchronous declaration chain.
+The response pass consumes both flags immediately after scheduling the single report for that participant.
+
+The country-owned `random_war_prepared_context` flag and four profile variables preserve a prepared pair's stage, tier, declaration target, and special-country chance across synchronous helper returns.
+Regular event targets retain the pair and chain pointers.
+The profile flag, special-pair flag, and variables are consumed after firing so subsequent invocations prepare another pair.
 
 Timed ideas:
 
@@ -147,5 +176,5 @@ If a dedicated news image is added later, use:
 
 - Add richer interactions between Random War and the existing Wars cluster members when their accepted rows share a batch.
 - Add regional weighting for neighbors, claims, cores, and hostile relations.
-- Add temporary target-side defensive ideas if the event needs stronger country-specific aftermath.
+- Extend emergency responses through concrete supply or recruitment choices when a longer crisis warrants them.
 - Add cluster-specific detail text for why a Random War firing picked its countries.

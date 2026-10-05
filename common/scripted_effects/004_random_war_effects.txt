@@ -148,7 +148,7 @@ random_war_set_declaration_profile = {
 	}
 	else_if = {
 		limit = { check_variable = { random_war_stage = constant:random_war_stage.world_collapse } }
-		set_variable_to_random = {
+		set_temp_variable_to_random = {
 			var = random_war_declaration_target_count
 			min = constant:random_war_stage_declarations.world_collapse_min
 			max = constant:random_war_stage_declarations.world_collapse_max
@@ -314,7 +314,7 @@ random_war_select_pair = {
 
 	if = {
 		limit = { check_variable = { random_war_special_chance > 0 } }
-		set_variable_to_random = {
+		set_temp_variable_to_random = {
 			var = random_war_special_roll
 			min = constant:random_war_roll.minimum
 			max = constant:random_war_roll.maximum
@@ -391,7 +391,7 @@ random_war_select_chain_next_pair = {
 		limit = { has_event_target = random_war_chain_next_aggressor }
 		if = {
 			limit = { check_variable = { random_war_special_chance > 0 } }
-			set_variable_to_random = {
+			set_temp_variable_to_random = {
 				var = random_war_special_roll
 				min = constant:random_war_roll.minimum
 				max = constant:random_war_roll.maximum
@@ -582,6 +582,33 @@ random_war_log_stage_if_needed = {
 }
 
 random_war_setup_context = {
+	# The cluster preparer can return through several helper frames before the
+	# dispatcher runs. Preserve its profile on this country alongside the regular
+	# event targets, rather than relying on temporary outputs surviving each frame.
+	if = {
+		limit = {
+			has_country_flag = random_war_prepared_context
+			has_event_target = random_war_aggressor
+			has_event_target = random_war_target
+		}
+		set_temp_variable = { random_war_stage = random_war_prepared_stage }
+		set_temp_variable = { current_chaos_tier_value = random_war_prepared_chaos_tier }
+		set_temp_variable = { random_war_declaration_target_count = random_war_prepared_declarations }
+		set_temp_variable = { random_war_special_chance = random_war_prepared_special_chance }
+		set_temp_variable = { random_war_context_ready = 1 }
+		set_temp_variable = { random_war_first_pair_ready = 1 }
+		set_temp_variable = { random_war_pair_selected = 1 }
+		set_temp_variable = { random_war_pair_special_involved = 0 }
+		set_temp_variable = { random_war_chain_active = 0 }
+		if = {
+			limit = { has_country_flag = random_war_prepared_special_pair }
+			set_temp_variable = { random_war_pair_special_involved = 1 }
+		}
+		if = {
+			limit = { check_variable = { random_war_stage > constant:random_war_stage.baseline } }
+			set_temp_variable = { random_war_chain_active = 1 }
+		}
+	}
 	if = {
 		limit = {
 			OR = {
@@ -595,6 +622,14 @@ random_war_setup_context = {
 		}
 		set_temp_variable = { random_war_context_ready = 0 }
 		set_temp_variable = { random_war_first_pair_ready = 0 }
+		# Preinitialize helper outputs in this caller so they survive return.
+		set_temp_variable = { random_war_stage = 0 }
+		set_temp_variable = { current_chaos_tier_value = 0 }
+		set_temp_variable = { random_war_declaration_target_count = 0 }
+		set_temp_variable = { random_war_special_chance = 0 }
+		set_temp_variable = { random_war_pair_selected = 0 }
+		set_temp_variable = { random_war_pair_special_involved = 0 }
+		set_temp_variable = { random_war_chain_active = 0 }
 		random_war_determine_stage = yes
 		random_war_set_declaration_profile = yes
 		random_war_select_pair = yes
@@ -614,6 +649,28 @@ random_war_setup_context = {
 			event_target:random_war_aggressor = { save_event_target_as = event_cluster_actor }
 			random_war_prepare_chain_context = yes
 			random_war_log_stage_if_needed = yes
+			set_country_flag = random_war_prepared_context
+			set_variable = { random_war_prepared_stage = random_war_stage }
+			set_variable = { random_war_prepared_chaos_tier = current_chaos_tier_value }
+			set_variable = { random_war_prepared_declarations = random_war_declaration_target_count }
+			set_variable = { random_war_prepared_special_chance = random_war_special_chance }
+			clr_country_flag = random_war_prepared_special_pair
+			if = {
+				limit = { check_variable = { random_war_pair_special_involved > 0 } }
+				set_country_flag = random_war_prepared_special_pair
+			}
+		}
+		else = {
+			# Settings asks the owner to prepare targets before dispatching the root.
+			if = {
+				limit = {
+					is_ai = no
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+				}
+				country_event = { id = chaosx.nr4.4 }
+				set_temp_variable = { random_war_failure_reported = 1 }
+				set_country_flag = chaosx_manual_event_failure_shown
+			}
 		}
 	}
 }
@@ -660,7 +717,11 @@ random_war_apply_current_pair = {
 				type = annex_everything
 				target = event_target:random_war_target
 			}
-			country_event = { id = chaosx.nr4.2 hours = 1 }
+			if = {
+				limit = { NOT = { has_country_flag = random_war_response_pending } }
+				add_to_temp_variable = { random_war_participant_count = 1 }
+			}
+			set_country_flag = random_war_response_pending
 		}
 		event_target:random_war_target = {
 			if = {
@@ -696,7 +757,12 @@ random_war_apply_current_pair = {
 				days = @RANDOM_WAR_TARGET_COOLDOWN_DAYS
 			}
 			set_variable = { global.random_war_last_target = THIS.id }
-			country_event = { id = chaosx.nr4.3 hours = 1 }
+			if = {
+				limit = { NOT = { has_country_flag = random_war_response_pending } }
+				add_to_temp_variable = { random_war_participant_count = 1 }
+			}
+			set_country_flag = random_war_response_pending
+			set_country_flag = random_war_defender_response_pending
 		}
 		set_temp_variable = { random_war_pair_applied = 1 }
 		add_to_temp_variable = { random_war_declaration_fired_count = 1 }
@@ -730,6 +796,22 @@ random_war_apply_current_pair = {
 }
 
 random_war_fire_current_context = {
+	set_temp_variable = { random_war_failure_reported = 0 }
+	set_temp_variable = { random_war_declaration_fired_count = 0 }
+	set_temp_variable = { random_war_participant_count = 0 }
+	if = {
+		limit = { check_variable = { random_war_context_ready < 1 } }
+		set_temp_variable = { random_war_stage = 0 }
+		set_temp_variable = { current_chaos_tier_value = 0 }
+		set_temp_variable = { random_war_declaration_target_count = 0 }
+		set_temp_variable = { random_war_special_chance = 0 }
+		set_temp_variable = { random_war_pair_selected = 0 }
+		set_temp_variable = { random_war_pair_special_involved = 0 }
+		set_temp_variable = { random_war_chain_active = 0 }
+		set_temp_variable = { random_war_first_pair_ready = 0 }
+		set_temp_variable = { random_war_context_ready = 0 }
+	}
+	set_temp_variable = { random_war_pair_applied = 0 }
 	random_war_setup_context = yes
 	if = {
 		limit = {
@@ -805,16 +887,18 @@ random_war_fire_current_context = {
 		set_variable = { global.random_war_last_declaration_count = random_war_declaration_fired_count }
 		set_variable = { global.random_war_last_special_involved = random_war_special_involved }
 		set_variable = { global.random_war_news_declaration_count = random_war_declaration_fired_count }
-		set_variable = { global.random_war_news_country_count = random_war_declaration_fired_count }
-		if = {
-			limit = {
-				check_variable = {
-					var = random_war_declaration_fired_count
-					value = 1
-					compare = equals
-				}
+		set_variable = { global.random_war_news_country_count = random_war_participant_count }
+		# Deliver once per participant after the complete chain. A country attacked
+		# and then declaring war receives the defensive choice, never two reports.
+		every_country = {
+			limit = { has_country_flag = random_war_response_pending }
+			if = {
+				limit = { has_country_flag = random_war_defender_response_pending }
+				country_event = { id = chaosx.nr4.3 hours = 1 }
 			}
-			set_variable = { global.random_war_news_country_count = 2 }
+			else = { country_event = { id = chaosx.nr4.2 hours = 1 } }
+			clr_country_flag = random_war_response_pending
+			clr_country_flag = random_war_defender_response_pending
 		}
 		if = {
 			limit = {
@@ -830,4 +914,25 @@ random_war_fire_current_context = {
 			}
 		}
 	}
+	# A Wars cluster can invoke this repeatable event again within the same chain.
+	# Its next slot must select fresh targets rather than reuse this spent pair.
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { events_log_manual_event_detail_trigger > 0 }
+			check_variable = { random_war_declaration_fired_count < 1 }
+			check_variable = { random_war_failure_reported < 1 }
+		}
+		country_event = { id = chaosx.nr4.4 }
+		set_temp_variable = { random_war_failure_reported = 1 }
+		set_country_flag = chaosx_manual_event_failure_shown
+	}
+	set_temp_variable = { random_war_context_ready = 0 }
+	set_temp_variable = { random_war_first_pair_ready = 0 }
+	clr_country_flag = random_war_prepared_context
+	clr_country_flag = random_war_prepared_special_pair
+	clear_variable = random_war_prepared_stage
+	clear_variable = random_war_prepared_chaos_tier
+	clear_variable = random_war_prepared_declarations
+	clear_variable = random_war_prepared_special_chance
 }
