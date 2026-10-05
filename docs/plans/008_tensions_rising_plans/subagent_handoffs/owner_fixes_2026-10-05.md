@@ -109,3 +109,9 @@ The parent updated the shared `localisation/english/chaosx_achievements_l_englis
 Current bounded event inspect/render requests returned partial artifacts, not complete lifecycle evidence: the trace has one blocking event-chain diagnostic and truncates its inline source list; the reachability manifest is incomplete, has zero retained branches, and omits most of the graph. Focused `source_lookup` resolved `.1`, `.16`, and `.20`, and `script_validate` remained partial. The probability comparison handoff contains no current-tranche numerical result. Shared GUI render remains blocked. Asset provenance/review gaps and the Cluster 3 workbook/runtime disagreement remain open. No workbook/export, shared-UI edit, cluster redesign, new asset generation, focus/decision creation, or live-game validation was performed.
 
 Skills used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-scripted-gui`, and `chaos-redux-mtth`. No skills were created or changed. No commit was made; parent owns the commit.
+
+## Final parent balance supersession
+
+The hashes and requested-packet/report conclusions above describe the pre-balance checkpoint committed as e99130b84519be8026068502e594507b3979f73d.
+The later accepted 2/3/5/8/12 cadence/distribution/actual-meter correction is implemented and documented in `../balance_evidence_2026-10-06/owner_balance_decisions.md` (relative navigation from this handoff uses `../balance_evidence_2026-10-06/`).
+Its source-model hashes and results supersede the old final-source hash claims; they do not prove engine execution.

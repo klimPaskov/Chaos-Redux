@@ -23,3 +23,13 @@ The parent authorized narrow code and wording rewrites for actual Event 008 defe
 The catalog remains `Needs Testing`. Workbook wording is recorded separately in `catalog_changes_pending.md`; no spreadsheet or CSV file was edited. The runtime Cluster 3 mismatch remains unresolved: the workbook describes four-member Diplomacy, while shared runtime registration still uses Diplomatic Panic with two Low-severity members. Implementation evidence does not establish acceptance of a cluster change.
 
 The source specification, Event Log and Details framework, shared GUI, shared Settings system, focus trees, decisions, and achievement definitions were not redesigned. The source-level corrections do not claim HOI4 MCP event or probability completion, a shared GUI render, provenance recovery for missing asset records, or live-game acceptance.
+
+## Accepted balance corrections, 2026-10-06
+
+The parent reviewed the supplied 1 January capture showing 99 percent WT, the baseline 100-threat source, native global-threat documentation, and vanilla Rhineland at five threat.
+Under G4/G6 it accepted a 2/3/5/8/12 ladder, dynamic bounded source distribution, and thirty-day automatic-entry cadence.
+Every effective manual or automatic shock refreshes that flag; only automatic selection is blocked by it.
+The report now shows actual WT and overall Chaos differences, with a negative branch and one decimal, and a flag preserves its first meaningful stage at the ceilings.
+This supersedes requested-packet snapshot claims in the earlier handoffs while retaining their history.
+The accepted rationale, before/after hashes, local references, immutable baseline, source-model results, and failed domain calls are in `balance_evidence_2026-10-06/`.
+No numerical probability or native execution acceptance is claimed.

@@ -184,3 +184,16 @@ These retained proposals have unresolved current acceptance and do not authorize
 - Add pair-specific named follow-up incidents only if the event-log UI later supports short-lived relation-pair references cleanly.
 - Consider adding a generic relation-pair helper if other event families need the same timed diplomatic-shock pattern.
 - Add further Diplomacy members only through the authoritative cluster membership catalogue after their event-system eligibility, localisation, Event Log detail, and cooldown behavior are complete.
+
+## Accepted balance and actual-result reporting
+
+The requested WT ladder is 2/3/5/8/12 rather than the former 100/100/200/500/1000.
+The minimum source slice stays 0.1; a dynamically derived recipient cap and equal split keep total requested threat bounded.
+Every effective shock starts or renews a thirty-day global recent-alarm flag, which blocks automatic entry only.
+Manual forces bypass the gate and retain their immediate coalesced report.
+Main reports accumulate the observed WT meter difference and overall observed Chaos difference, including clipping and the shared tracker.
+Negative Chaos uses a decrease branch; one decimal displays fractional results.
+A first-effectful flag preserves the first meaningful stage even if both meter deltas are zero while pulse/opinion/posture effects apply.
+See the accepted owner decisions and source-model/auditor evidence under `docs/plans/008_tensions_rising_plans/balance_evidence_2026-10-06/`.
+The source model passes 168 distribution cases plus report and Chaos examples; it does not execute the native engine.
+The final Event inspect and script-validation attempts returned Transport closed, and full probability/dependency binding remains unresolved.

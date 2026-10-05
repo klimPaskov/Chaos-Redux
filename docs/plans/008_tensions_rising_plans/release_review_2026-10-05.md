@@ -71,3 +71,15 @@ The event remains incomplete for release until these evidence and integration ga
 
 Skills used: events, subagents, decisions/missions, event assets, scripted GUI, MTTH, and shared Git commit.
 No skill was created or updated.
+
+## Final balance tranche
+
+The source repair also corrects the baseline hundred-point WT packet visible as 99 percent WT in the supplied fresh-USA capture.
+The accepted ladder is 2/3/5/8/12, with one automatic shock at most every thirty days; manual forces bypass the gate but refresh the recent-alarm flag.
+Dynamic recipient count and slice derive from the one tuning table, and the report accumulates actual WT/Chaos meter changes rather than requested values.
+One decimal and the negative-Chaos branch preserve clipped/fractional results.
+The first-effectful stage is flag-backed so meaningful pulse/relations/posture at the meter ceilings do not change its earlier caption.
+The parent reran 168 source-derived distribution cases and the report/Chaos examples successfully; native eligibility, selection, threat application, and tracker behavior remain modeled boundaries.
+Final narrow `hoi4.event_inspect` and `hoi4.script_validate` returned Transport closed; the auditor records unbound before dependencies and its one comparison attempt.
+Exact additional live checks are in `balance_evidence_2026-10-06/owner_balance_decisions.md`.
+Release sign-off remains incomplete.

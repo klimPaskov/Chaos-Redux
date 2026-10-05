@@ -1,0 +1,132 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 008 TENSIONS RISING TRIGGERS
+# ============================================================================
+# Gates and candidate checks for the Tensions Rising event. The event remains a
+# repeatable global pressure incident; these triggers prevent invalid actors,
+# terminal states, and baseline full-WT firings.
+# ============================================================================
+
+is_tensions_rising_world_tension_full = {
+	threat > constant:tensions_rising_gate.full_world_tension
+}
+
+is_tensions_rising_world_at_peace = {
+	NOT = {
+		any_country = {
+			has_war = yes
+		}
+	}
+}
+
+can_tensions_rising_baseline_fire = {
+	NOT = { is_tensions_rising_world_tension_full = yes }
+}
+
+is_tensions_rising_evolution_enabled = {
+	OR = {
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 1 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_1 }
+		}
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 2 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_2 }
+		}
+		AND = {
+			has_global_flag = { flag = chaos_tier value = 3 }
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_3 }
+		}
+		AND = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			NOT = { has_global_flag = events_log_disabled_evolution_8_8_4 }
+		}
+	}
+}
+
+is_tensions_rising_automatic_event_available = {
+	AND = {
+		NOT = { has_global_flag = tensions_rising_recent_shock }
+		NOT = { has_global_flag = world_end }
+		OR = {
+			is_tensions_rising_evolution_enabled = yes
+			can_tensions_rising_baseline_fire = yes
+		}
+	}
+}
+
+can_tensions_rising_followup_fire = {
+	AND = {
+		NOT = { has_global_flag = world_end }
+		is_tensions_rising_evolution_enabled = yes
+	}
+}
+
+is_tensions_rising_valid_diplomatic_country = {
+	exists = yes
+	is_subject = no
+	NOT = { has_capitulated = yes }
+	NOT = { is_special_chaos_country = yes }
+}
+
+is_tensions_rising_world_tension_source_country = {
+	exists = yes
+	NOT = { is_special_chaos_country = yes }
+}
+
+is_tensions_rising_priority_relation_actor = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	OR = {
+		is_major = yes
+		is_faction_leader = yes
+	}
+}
+
+is_tensions_rising_relation_target_for_prev = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_subject_of = PREV }
+	OR = {
+		check_variable = { tensions_rising_stage > constant:tensions_rising_event_log.stage_2 }
+		NOT = { is_in_faction_with = PREV }
+	}
+}
+
+is_tensions_rising_ai_posture_candidate = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	is_ai = yes
+	OR = {
+		is_major = yes
+		is_faction_leader = yes
+		has_war = yes
+	}
+}
+
+is_tensions_rising_border_war_actor = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	has_war = no
+	has_civil_war = no
+	has_border_war = no
+	num_divisions > constant:tensions_rising_incident_border_war.minimum_divisions
+	NOT = { has_country_flag = tensions_rising_recent_border_war_actor }
+	any_other_country = {
+		is_tensions_rising_border_war_target_for_prev = yes
+		is_neighbor_of = PREV
+	}
+}
+
+is_tensions_rising_border_war_target_for_prev = {
+	is_tensions_rising_valid_diplomatic_country = yes
+	has_war = no
+	has_civil_war = no
+	has_border_war = no
+	num_divisions > constant:tensions_rising_incident_border_war.minimum_divisions
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	NOT = { is_subject_of = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = { has_country_flag = tensions_rising_recent_border_war_actor }
+}

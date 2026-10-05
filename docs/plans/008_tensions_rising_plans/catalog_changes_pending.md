@@ -15,3 +15,12 @@ The catalog row should remain `Needs Testing`. Update the Event Details and evol
 **Evolution IV — Extended Alert** (`chaosx.events_log.window.evolution_details.tensions_rising.title.stage_4`; `...body.stage_4`): “Troops remain on alert along the frontier as commanders delay leave. Fresh accusations deepen distrust, and exhausted patrols risk turning a confrontation into a clash.”
 
 The selected wording is sourced from `localisation/english/008_world_tension_rises_l_english.yml`. A workbook editor must update its Event Details and evolution-detail fields together and then run `python .tools/export_event_catalog_csv.py` from the mod root. The event-category row remains `Needs Testing`; its cluster assignment and cluster-detail wording require the cluster owner to reconcile the workbook's Cluster 3 Diplomacy record with the current shared runtime definition.
+
+## Accepted balance/report wording follow-up
+
+Any catalog effect fields must reflect the 2/3/5/8/12 requested WT ladder and thirty-day automatic-entry cadence.
+Manual forces bypass the gate but refresh the recent-alarm flag.
+Popup values are actual WT/Chaos meter differences, shown to one decimal, rather than uncapped requested packets.
+The negative aggregate effect says: `World tension increases by [?tensions_rising_display_world_tension|1]. Chaos decreases by [?tensions_rising_display_chaos|1].`
+The in-world Event Details and evolution prose above remains unchanged.
+Workbook/export editing is still excluded; keep `Needs Testing` until native and probability acceptance is available.

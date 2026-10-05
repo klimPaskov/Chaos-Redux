@@ -1,0 +1,1627 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 008 TENSIONS RISING EFFECTS
+# ============================================================================
+# Main implementation for Event 8: staged world-tension/chaos packets, capped
+# timer pressure, timed diplomatic shocks, delayed incidents, AI posture hooks,
+# achievement tracking, and event-log evolution entries.
+# ============================================================================
+
+# These caps equal each packet divided by the minimum world-tension slice.
+@TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS = 1000
+@TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS = 2000
+@TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS = 5000
+@TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS = 10000
+@TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS = 120
+@TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS = 150
+@TENSIONS_RISING_AI_POSTURE_STAGE_1_DAYS = 45
+@TENSIONS_RISING_AI_POSTURE_STAGE_2_DAYS = 75
+@TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS = 100
+@TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS = 140
+@TENSIONS_RISING_THIN_WIRE_FLAG_DAYS = 181
+@TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS = 150
+@TENSIONS_RISING_BORDER_WAR_STAGE_3_COOLDOWN_DAYS = 90
+@TENSIONS_RISING_BORDER_WAR_STAGE_4_COOLDOWN_DAYS = 60
+@TENSIONS_RISING_BORDER_WAR_COMBAT_WIDTH = 80
+@TENSIONS_RISING_BORDER_WAR_MINIMUM_DURATION_DAYS = 14
+@TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES = 4
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS = 45
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS = 60
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS = 75
+@TENSIONS_RISING_TIMER_PULSE_STAGE_1_CAP_DAYS = 105
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS = 75
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS = 98
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS = 120
+@TENSIONS_RISING_TIMER_PULSE_STAGE_2_CAP_DAYS = 165
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS = 120
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS = 150
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS = 180
+@TENSIONS_RISING_TIMER_PULSE_STAGE_3_CAP_DAYS = 240
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS = 180
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS = 210
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS = 240
+@TENSIONS_RISING_TIMER_PULSE_STAGE_4_CAP_DAYS = 315
+
+tensions_rising_prepare_random_event_fire = {
+	if = {
+		limit = {
+			has_variable = automatic_event_firing_context
+			check_variable = { automatic_event_firing_context > 0 }
+			NOT = { is_tensions_rising_automatic_event_available = yes }
+		}
+		set_temp_variable = { event_single_fire_allowed = 0 }
+	}
+}
+
+get_tensions_rising_stage = {
+	set_temp_variable = { tensions_rising_stage = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 }
+	}
+	else_if = {
+		limit = {
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_stage > 0 } }
+		set_temp_variable = { events_log_evolution_event_id = constant:tensions_rising_event_log.event_id }
+		set_temp_variable = { events_log_evolution_type = constant:tensions_rising_event_log.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = tensions_rising_stage }
+		set_temp_variable = { events_log_evolution_tier = tensions_rising_stage }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			set_temp_variable = { tensions_rising_stage = 0 }
+		}
+	}
+}
+
+# A no-effect first firing may share a pending report with a later effective
+# shock. Keep its explanation until the first packet is actually applied.
+capture_tensions_rising_first_effectful_report_stage = {
+	if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_report_world_tension
+				value = 0
+				compare = equals
+			}
+			check_variable = {
+				var = tensions_rising_report_chaos
+				value = 0
+				compare = equals
+			}
+		}
+		set_variable = { tensions_rising_report_stage = tensions_rising_stage }
+		clr_country_flag = tensions_rising_report_terminal
+		clr_country_flag = tensions_rising_report_baseline_full_world_tension
+	}
+}
+
+apply_tensions_rising_event_effect = {
+	set_temp_variable = { tensions_rising_stage = 0 }
+	get_tensions_rising_stage = yes
+	set_temp_variable = { tensions_rising_new_report_batch = 0 }
+	if = {
+		limit = { NOT = { has_country_flag = tensions_rising_report_pending } }
+		set_temp_variable = { tensions_rising_new_report_batch = 1 }
+		clear_variable = tensions_rising_report_stage
+		clear_variable = tensions_rising_report_world_tension
+		clear_variable = tensions_rising_report_chaos
+		set_variable = { tensions_rising_report_world_tension = 0 }
+		set_variable = { tensions_rising_report_chaos = 0 }
+		clr_country_flag = tensions_rising_report_terminal
+		clr_country_flag = tensions_rising_report_baseline_full_world_tension
+		clr_country_flag = tensions_rising_report_followup_attempted
+		clr_country_flag = tensions_rising_report_headlines_counted
+		set_country_flag = tensions_rising_report_pending
+	}
+	if = {
+		limit = { has_global_flag = world_end }
+		set_temp_variable = { tensions_rising_stage = 0 }
+		if = {
+			limit = { check_variable = { tensions_rising_new_report_batch > 0 } }
+			set_variable = { tensions_rising_report_stage = tensions_rising_stage }
+			set_country_flag = tensions_rising_report_terminal
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 }
+			is_tensions_rising_world_tension_full = yes
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_new_report_batch > 0 } }
+			set_variable = { tensions_rising_report_stage = tensions_rising_stage }
+			set_country_flag = tensions_rising_report_baseline_full_world_tension
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 } }
+		capture_tensions_rising_first_effectful_report_stage = yes
+		set_temp_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.baseline }
+		add_to_variable = { tensions_rising_report_world_tension = tensions_rising_world_tension_packet }
+		apply_tensions_rising_distributed_world_tension = yes
+		tensions_rising_sync_world_tension_tracker = yes
+	}
+	else = {
+		capture_tensions_rising_first_effectful_report_stage = yes
+		record_tensions_rising_evolution_if_needed = yes
+		apply_tensions_rising_stage_world_tension = yes
+		apply_tensions_rising_stage_chaos = yes
+		apply_tensions_rising_timer_pulse = yes
+		select_tensions_rising_relation_pairs = yes
+		apply_tensions_rising_ai_posture = yes
+		if = {
+			limit = { NOT = { has_country_flag = tensions_rising_report_followup_attempted } }
+			set_country_flag = tensions_rising_report_followup_attempted
+			schedule_tensions_rising_followup = yes
+		}
+		update_tensions_rising_achievement_tracking = yes
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_new_report_batch > 0 } }
+		country_event = { id = chaosx.nr8.16 }
+	}
+}
+
+apply_tensions_rising_distributed_world_tension = {
+	set_temp_variable = { tensions_rising_world_tension_country_count = 0 }
+	every_country = {
+		limit = { is_tensions_rising_world_tension_source_country = yes }
+		add_to_temp_variable = { tensions_rising_world_tension_country_count = 1 }
+	}
+
+	if = {
+		limit = { check_variable = { tensions_rising_world_tension_country_count > 0 } }
+		if = {
+			limit = {
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_4 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_1000_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_3 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_500_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_2 }
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_200_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.baseline }
+					check_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_1 }
+				}
+				check_variable = { tensions_rising_world_tension_country_count > @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS }
+			}
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				random_select_amount = @TENSIONS_RISING_WORLD_TENSION_100_MAX_RECIPIENTS
+				add_named_threat = {
+					threat = constant:tensions_rising_world_tension_gain.minimum_country_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+		else = {
+			set_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_packet }
+			divide_temp_variable = { tensions_rising_world_tension_slice = tensions_rising_world_tension_country_count }
+			every_country = {
+				limit = { is_tensions_rising_world_tension_source_country = yes }
+				add_named_threat = {
+					threat = tensions_rising_world_tension_slice
+					name = tensions_rising_global_panic_threat
+				}
+			}
+		}
+	}
+}
+
+tensions_rising_sync_world_tension_tracker = {
+	chaos_meter_update_world_tension = yes
+}
+
+apply_tensions_rising_stage_world_tension = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_4 }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_3 }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_2 }
+	}
+	else = {
+		set_temp_variable = { tensions_rising_world_tension_packet = constant:tensions_rising_world_tension_gain.stage_1 }
+	}
+	add_to_variable = { tensions_rising_report_world_tension = tensions_rising_world_tension_packet }
+	apply_tensions_rising_distributed_world_tension = yes
+	tensions_rising_sync_world_tension_tracker = yes
+}
+
+apply_tensions_rising_stage_chaos = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { chaos_change = constant:tensions_rising_chaos_gain.stage_4 }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { chaos_change = constant:tensions_rising_chaos_gain.stage_3 }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { chaos_change = constant:tensions_rising_chaos_gain.stage_2 }
+	}
+	else = {
+		set_temp_variable = { chaos_change = constant:tensions_rising_chaos_gain.stage_1 }
+	}
+	add_to_variable = { tensions_rising_report_chaos = chaos_change }
+	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.tensions_rising }
+	set_temp_variable = { chaos_history_reason_custom = 1 }
+	add_chaos_meter_value = yes
+}
+
+record_tensions_rising_evolution_if_needed = {
+	set_temp_variable = { events_log_evolution_event_id = constant:tensions_rising_event_log.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:tensions_rising_event_log.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = tensions_rising_stage }
+	set_temp_variable = { events_log_evolution_tier = tensions_rising_stage }
+	if = {
+		limit = {
+			is_current_evolution_enabled = yes
+			OR = {
+				AND = {
+					check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
+					NOT = { has_global_flag = tensions_rising_stage_1_recorded }
+				}
+				AND = {
+					check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 }
+					NOT = { has_global_flag = tensions_rising_stage_2_recorded }
+				}
+				AND = {
+					check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 }
+					NOT = { has_global_flag = tensions_rising_stage_3_recorded }
+				}
+				AND = {
+					check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
+					NOT = { has_global_flag = tensions_rising_stage_4_recorded }
+				}
+			}
+		}
+		record_events_log_evolution_entry = yes
+		if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+			set_global_flag = tensions_rising_stage_4_recorded
+		}
+		else_if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+			set_global_flag = tensions_rising_stage_3_recorded
+		}
+		else_if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+			set_global_flag = tensions_rising_stage_2_recorded
+		}
+		else = {
+			set_global_flag = tensions_rising_stage_1_recorded
+		}
+	}
+}
+
+apply_tensions_rising_timer_pulse = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { tensions_rising_pulse_strength = constant:tensions_rising_timer_pulse.stage_4_strength }
+		set_temp_variable_to_random = {
+			var = tensions_rising_pulse_days
+			min = constant:tensions_rising_timer_pulse.stage_4_min_days
+			max = constant:tensions_rising_timer_pulse.stage_4_max_days
+			integer = yes
+		}
+		set_temp_variable = { tensions_rising_pulse_extension_days = constant:tensions_rising_timer_pulse.stage_4_extension_days }
+		set_temp_variable = { tensions_rising_pulse_cap_days = constant:tensions_rising_timer_pulse.stage_4_cap_days }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { tensions_rising_pulse_strength = constant:tensions_rising_timer_pulse.stage_3_strength }
+		set_temp_variable_to_random = {
+			var = tensions_rising_pulse_days
+			min = constant:tensions_rising_timer_pulse.stage_3_min_days
+			max = constant:tensions_rising_timer_pulse.stage_3_max_days
+			integer = yes
+		}
+		set_temp_variable = { tensions_rising_pulse_extension_days = constant:tensions_rising_timer_pulse.stage_3_extension_days }
+		set_temp_variable = { tensions_rising_pulse_cap_days = constant:tensions_rising_timer_pulse.stage_3_cap_days }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { tensions_rising_pulse_strength = constant:tensions_rising_timer_pulse.stage_2_strength }
+		set_temp_variable_to_random = {
+			var = tensions_rising_pulse_days
+			min = constant:tensions_rising_timer_pulse.stage_2_min_days
+			max = constant:tensions_rising_timer_pulse.stage_2_max_days
+			integer = yes
+		}
+		set_temp_variable = { tensions_rising_pulse_extension_days = constant:tensions_rising_timer_pulse.stage_2_extension_days }
+		set_temp_variable = { tensions_rising_pulse_cap_days = constant:tensions_rising_timer_pulse.stage_2_cap_days }
+	}
+	else = {
+		set_temp_variable = { tensions_rising_pulse_strength = constant:tensions_rising_timer_pulse.stage_1_strength }
+		set_temp_variable_to_random = {
+			var = tensions_rising_pulse_days
+			min = constant:tensions_rising_timer_pulse.stage_1_min_days
+			max = constant:tensions_rising_timer_pulse.stage_1_max_days
+			integer = yes
+		}
+		set_temp_variable = { tensions_rising_pulse_extension_days = constant:tensions_rising_timer_pulse.stage_1_extension_days }
+		set_temp_variable = { tensions_rising_pulse_cap_days = constant:tensions_rising_timer_pulse.stage_1_cap_days }
+	}
+
+	tensions_rising_migrate_timer_pulse_deadline = yes
+	if = {
+		limit = {
+			NOT = { has_variable = global.tensions_rising_timer_pulse_expiry_date }
+		}
+		clr_global_flag = tensions_rising_timer_pulse_active
+		clear_variable = global.tensions_rising_timer_pulse_strength
+		clear_variable = global.tensions_rising_timer_pulse_days
+		clear_variable = global.tensions_rising_timer_pulse_expiry_date
+		tensions_rising_begin_timer_pulse = yes
+	}
+	else_if = {
+		limit = {
+			has_variable = global.tensions_rising_timer_pulse_expiry_date
+			check_variable = {
+				var = global.date
+				value = global.tensions_rising_timer_pulse_expiry_date
+				compare = greater_than_or_equals
+			}
+		}
+		clr_global_flag = tensions_rising_timer_pulse_active
+		clear_variable = global.tensions_rising_timer_pulse_strength
+		clear_variable = global.tensions_rising_timer_pulse_days
+		clear_variable = global.tensions_rising_timer_pulse_expiry_date
+		tensions_rising_begin_timer_pulse = yes
+	}
+	else_if = {
+		limit = { NOT = { has_variable = global.tensions_rising_timer_pulse_strength } }
+		clr_global_flag = tensions_rising_timer_pulse_active
+		clear_variable = global.tensions_rising_timer_pulse_days
+		clear_variable = global.tensions_rising_timer_pulse_expiry_date
+		tensions_rising_begin_timer_pulse = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_pulse_strength
+				value = global.tensions_rising_timer_pulse_strength
+				compare = greater_than
+			}
+		}
+		tensions_rising_begin_timer_pulse = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_pulse_strength
+				value = global.tensions_rising_timer_pulse_strength
+				compare = equals
+			}
+		}
+		tensions_rising_update_timer_pulse_remaining_days = yes
+		add_to_variable = { global.tensions_rising_timer_pulse_days = tensions_rising_pulse_extension_days }
+		clamp_variable = {
+			var = global.tensions_rising_timer_pulse_days
+			min = 0
+			max = tensions_rising_pulse_cap_days
+		}
+		tensions_rising_set_timer_pulse_deadline = yes
+		refresh_tensions_rising_timer_pulse_active_flag = yes
+	}
+}
+
+# Starts or replaces a pulse using its configured duration and exact expiry date.
+tensions_rising_begin_timer_pulse = {
+	set_variable = { global.tensions_rising_timer_pulse_strength = tensions_rising_pulse_strength }
+	set_variable = { global.tensions_rising_timer_pulse_days = tensions_rising_pulse_days }
+	tensions_rising_set_timer_pulse_deadline = yes
+	refresh_tensions_rising_timer_pulse_active_flag = yes
+}
+
+# Rebuilds a pulse deadline when active state predates the exact expiry variable.
+tensions_rising_migrate_timer_pulse_deadline = {
+	if = {
+		limit = {
+			has_global_flag = tensions_rising_timer_pulse_active
+			NOT = { has_variable = global.tensions_rising_timer_pulse_expiry_date }
+			has_variable = global.tensions_rising_timer_pulse_days
+		}
+		tensions_rising_set_timer_pulse_deadline = yes
+	}
+}
+
+# Converts the exact remaining-day budget into a campaign-date expiry.
+tensions_rising_set_timer_pulse_deadline = {
+	set_temp_variable = { chaosx_date_days = global.tensions_rising_timer_pulse_days }
+	set_temp_variable = { chaosx_date_offset = 0 }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { global.tensions_rising_timer_pulse_expiry_date = global.date }
+	add_to_variable = { global.tensions_rising_timer_pulse_expiry_date = chaosx_date_offset }
+}
+
+# Reads exact remaining time before a same-stage extension.
+tensions_rising_update_timer_pulse_remaining_days = {
+	set_temp_variable = { chaosx_date_offset = global.tensions_rising_timer_pulse_expiry_date }
+	subtract_from_temp_variable = { chaosx_date_offset = global.date }
+	set_temp_variable = { chaosx_date_days = 0 }
+	chaosx_convert_date_offset_to_days = yes
+	set_variable = { global.tensions_rising_timer_pulse_days = chaosx_date_days }
+}
+
+refresh_tensions_rising_timer_pulse_active_flag = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		refresh_tensions_rising_timer_pulse_stage_4_flag = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		refresh_tensions_rising_timer_pulse_stage_3_flag = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		refresh_tensions_rising_timer_pulse_stage_2_flag = yes
+	}
+	else = {
+		refresh_tensions_rising_timer_pulse_stage_1_flag = yes
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_4_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_4 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_4_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_3_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_3 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_3_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_2_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_2 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_2_MIN_DAYS }
+	}
+}
+
+refresh_tensions_rising_timer_pulse_stage_1_flag = {
+	if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_CAP_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MAX_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.tensions_rising_timer_pulse_days value = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS compare = greater_than } }
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MID_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_timer_pulse_active value = constant:tensions_rising_event_log.stage_1 days = @TENSIONS_RISING_TIMER_PULSE_STAGE_1_MIN_DAYS }
+	}
+}
+
+apply_tensions_rising_timer_pressure_to_next_timer = {
+	tensions_rising_migrate_timer_pulse_deadline = yes
+	set_temp_variable = { tensions_rising_active_timer_pressure = 0 }
+	if = {
+		limit = {
+			has_variable = global.tensions_rising_timer_pulse_expiry_date
+			check_variable = {
+				var = global.date
+				value = global.tensions_rising_timer_pulse_expiry_date
+				compare = less_than
+			}
+		}
+		if = {
+			limit = { has_variable = global.tensions_rising_timer_pulse_strength }
+			set_temp_variable = { tensions_rising_active_timer_pressure = global.tensions_rising_timer_pulse_strength }
+		}
+	}
+	else = {
+		clr_global_flag = tensions_rising_timer_pulse_active
+		clear_variable = global.tensions_rising_timer_pulse_strength
+		clear_variable = global.tensions_rising_timer_pulse_days
+		clear_variable = global.tensions_rising_timer_pulse_expiry_date
+	}
+
+	if = {
+		limit = { check_variable = { tensions_rising_active_timer_pressure > 0 } }
+		subtract_from_variable = { event_timer_days = tensions_rising_active_timer_pressure }
+	}
+}
+
+select_tensions_rising_relation_pairs = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_variable_to_random = {
+			var = tensions_rising_relation_pairs_remaining
+			min = constant:tensions_rising_relation_pairs.stage_4_min
+			max = constant:tensions_rising_relation_pairs.stage_4_max
+			integer = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_variable_to_random = {
+			var = tensions_rising_relation_pairs_remaining
+			min = constant:tensions_rising_relation_pairs.stage_3_min
+			max = constant:tensions_rising_relation_pairs.stage_3_max
+			integer = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_variable_to_random = {
+			var = tensions_rising_relation_pairs_remaining
+			min = constant:tensions_rising_relation_pairs.stage_2_min
+			max = constant:tensions_rising_relation_pairs.stage_2_max
+			integer = yes
+		}
+	}
+	else = {
+		set_variable_to_random = {
+			var = tensions_rising_relation_pairs_remaining
+			min = constant:tensions_rising_relation_pairs.stage_1_min
+			max = constant:tensions_rising_relation_pairs.stage_1_max
+			integer = yes
+		}
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_relation_pairs_remaining > 0 } }
+		apply_tensions_rising_relation_pair = yes
+		subtract_from_variable = { tensions_rising_relation_pairs_remaining = 1 }
+	}
+}
+
+apply_tensions_rising_relation_pair = {
+	set_temp_variable = { tensions_rising_relation_actor_found = 0 }
+	set_temp_variable = { tensions_rising_relation_target_found = 0 }
+
+	random_country = {
+		limit = {
+			is_tensions_rising_priority_relation_actor = yes
+			NOT = { has_country_flag = tensions_rising_recent_relation_actor }
+		}
+		save_event_target_as = tensions_rising_first_actor
+		ROOT = { set_temp_variable = { tensions_rising_relation_actor_found = 1 } }
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_relation_actor_found < 1 } }
+		random_country = {
+			limit = {
+				is_tensions_rising_valid_diplomatic_country = yes
+				NOT = { has_country_flag = tensions_rising_recent_relation_actor }
+			}
+			save_event_target_as = tensions_rising_first_actor
+			ROOT = { set_temp_variable = { tensions_rising_relation_actor_found = 1 } }
+		}
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_relation_actor_found < 1 } }
+		random_country = {
+			limit = { is_tensions_rising_valid_diplomatic_country = yes }
+			save_event_target_as = tensions_rising_first_actor
+			ROOT = { set_temp_variable = { tensions_rising_relation_actor_found = 1 } }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { tensions_rising_relation_actor_found > 0 } }
+		event_target:tensions_rising_first_actor = {
+			random_country = {
+				limit = {
+					is_tensions_rising_relation_target_for_prev = yes
+					is_neighbor_of = PREV
+					NOT = { has_country_flag = tensions_rising_recent_relation_actor }
+				}
+				save_event_target_as = tensions_rising_second_actor
+				ROOT = { set_temp_variable = { tensions_rising_relation_target_found = 1 } }
+			}
+			if = {
+				limit = { ROOT = { check_variable = { tensions_rising_relation_target_found < 1 } } }
+				random_country = {
+					limit = {
+						is_tensions_rising_relation_target_for_prev = yes
+						OR = {
+							is_major = yes
+							is_faction_leader = yes
+						}
+						NOT = { has_country_flag = tensions_rising_recent_relation_actor }
+					}
+					save_event_target_as = tensions_rising_second_actor
+					ROOT = { set_temp_variable = { tensions_rising_relation_target_found = 1 } }
+				}
+			}
+			if = {
+				limit = { ROOT = { check_variable = { tensions_rising_relation_target_found < 1 } } }
+				random_country = {
+					limit = {
+						is_tensions_rising_relation_target_for_prev = yes
+						NOT = { has_country_flag = tensions_rising_recent_relation_actor }
+					}
+					save_event_target_as = tensions_rising_second_actor
+					ROOT = { set_temp_variable = { tensions_rising_relation_target_found = 1 } }
+				}
+			}
+			if = {
+				limit = { ROOT = { check_variable = { tensions_rising_relation_target_found < 1 } } }
+				random_country = {
+					limit = { is_tensions_rising_relation_target_for_prev = yes }
+					save_event_target_as = tensions_rising_second_actor
+					ROOT = { set_temp_variable = { tensions_rising_relation_target_found = 1 } }
+				}
+			}
+		}
+	}
+
+	if = {
+		limit = { check_variable = { tensions_rising_relation_target_found > 0 } }
+		apply_tensions_rising_relation_modifier_to_targets = yes
+		add_to_variable = { global.tensions_rising_relation_pair_count = 1 }
+		set_global_flag = { flag = tensions_rising_recent_relation_damage days = @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS }
+	}
+}
+
+# The active opinion ledger counts each directed stage modifier once per partner.
+apply_tensions_rising_relation_modifier_to_targets = {
+	set_temp_variable = { tensions_rising_new_active_opinion_modifier_count = 0 }
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { tensions_rising_opinion_modifier_days = constant:tensions_rising_opinion_duration_days.stage_4 }
+		apply_tensions_rising_permanent_alert_to_first_actor = yes
+		apply_tensions_rising_permanent_alert_to_second_actor = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { tensions_rising_opinion_modifier_days = constant:tensions_rising_opinion_duration_days.stage_3 }
+		apply_tensions_rising_border_alarm_to_first_actor = yes
+		apply_tensions_rising_border_alarm_to_second_actor = yes
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { tensions_rising_opinion_modifier_days = constant:tensions_rising_opinion_duration_days.stage_2 }
+		apply_tensions_rising_mobilization_suspicion_to_first_actor = yes
+		apply_tensions_rising_mobilization_suspicion_to_second_actor = yes
+	}
+	else = {
+		set_temp_variable = { tensions_rising_opinion_modifier_days = constant:tensions_rising_opinion_duration_days.stage_1 }
+		apply_tensions_rising_leaked_cables_to_first_actor = yes
+		apply_tensions_rising_leaked_cables_to_second_actor = yes
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_new_active_opinion_modifier_count > 0 } }
+		add_to_variable = { global.tensions_rising_active_opinion_modifiers = tensions_rising_new_active_opinion_modifier_count }
+		update_tensions_rising_blackout_achievement_tracking = yes
+	}
+}
+
+mark_tensions_rising_relation_actor = {
+	set_country_flag = { flag = tensions_rising_recent_relation_actor days = @TENSIONS_RISING_RECENT_RELATION_COUNTRY_DAYS }
+	mark_tensions_rising_one_denial_actor = yes
+}
+
+mark_tensions_rising_one_denial_actor = {
+	set_country_flag = { flag = tensions_rising_one_denial_eligible days = @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS }
+}
+
+apply_tensions_rising_permanent_alert_to_first_actor = {
+	event_target:tensions_rising_second_actor = {
+		event_target:tensions_rising_first_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_permanent_alert_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_second_actor modifier = tensions_rising_permanent_alert }
+				set_country_flag = { flag = tensions_rising_active_permanent_alert_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_permanent_alert_to_second_actor = {
+	event_target:tensions_rising_first_actor = {
+		event_target:tensions_rising_second_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_permanent_alert_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_first_actor modifier = tensions_rising_permanent_alert }
+				set_country_flag = { flag = tensions_rising_active_permanent_alert_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_border_alarm_to_first_actor = {
+	event_target:tensions_rising_second_actor = {
+		event_target:tensions_rising_first_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_border_alarm_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_second_actor modifier = tensions_rising_border_alarm }
+				set_country_flag = { flag = tensions_rising_active_border_alarm_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_border_alarm_to_second_actor = {
+	event_target:tensions_rising_first_actor = {
+		event_target:tensions_rising_second_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_border_alarm_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_first_actor modifier = tensions_rising_border_alarm }
+				set_country_flag = { flag = tensions_rising_active_border_alarm_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_mobilization_suspicion_to_first_actor = {
+	event_target:tensions_rising_second_actor = {
+		event_target:tensions_rising_first_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_mobilization_suspicion_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_second_actor modifier = tensions_rising_mobilization_suspicion }
+				set_country_flag = { flag = tensions_rising_active_mobilization_suspicion_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_mobilization_suspicion_to_second_actor = {
+	event_target:tensions_rising_first_actor = {
+		event_target:tensions_rising_second_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_mobilization_suspicion_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_first_actor modifier = tensions_rising_mobilization_suspicion }
+				set_country_flag = { flag = tensions_rising_active_mobilization_suspicion_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_leaked_cables_to_first_actor = {
+	event_target:tensions_rising_second_actor = {
+		event_target:tensions_rising_first_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_leaked_cables_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_second_actor modifier = tensions_rising_leaked_cables }
+				set_country_flag = { flag = tensions_rising_active_leaked_cables_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_leaked_cables_to_second_actor = {
+	event_target:tensions_rising_first_actor = {
+		event_target:tensions_rising_second_actor = {
+			if = {
+				limit = { NOT = { has_country_flag = tensions_rising_active_leaked_cables_with_@PREV } }
+				add_opinion_modifier = { target = event_target:tensions_rising_first_actor modifier = tensions_rising_leaked_cables }
+				set_country_flag = { flag = tensions_rising_active_leaked_cables_with_@PREV days = tensions_rising_opinion_modifier_days }
+				add_to_temp_variable = { tensions_rising_new_active_opinion_modifier_count = constant:tensions_rising_achievement.active_modifier_count_per_direction }
+				ROOT = { country_event = { id = chaosx.nr8.21 days = tensions_rising_opinion_modifier_days } }
+			}
+			mark_tensions_rising_relation_actor = yes
+		}
+	}
+}
+
+apply_tensions_rising_ai_posture = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { tensions_rising_ai_posture_remaining = constant:tensions_rising_ai_posture.stage_4_country_count }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { tensions_rising_ai_posture_remaining = constant:tensions_rising_ai_posture.stage_3_country_count }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { tensions_rising_ai_posture_remaining = constant:tensions_rising_ai_posture.stage_2_country_count }
+	}
+	else = {
+		set_temp_variable = { tensions_rising_ai_posture_remaining = constant:tensions_rising_ai_posture.stage_1_country_count }
+	}
+
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_ai_posture_remaining > 0 } }
+		if = {
+			limit = {
+				any_country = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+			}
+			random_country = {
+				limit = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+				apply_tensions_rising_ai_posture_to_country = yes
+			}
+			subtract_from_temp_variable = { tensions_rising_ai_posture_remaining = 1 }
+		}
+		else = {
+			set_temp_variable = { tensions_rising_ai_posture_remaining = 0 }
+		}
+	}
+}
+
+apply_tensions_rising_ai_posture_to_country = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_4_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_3_DAYS }
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_2_DAYS }
+	}
+	else = {
+		set_country_flag = { flag = tensions_rising_ai_posture_recent days = @TENSIONS_RISING_AI_POSTURE_STAGE_1_DAYS }
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		add_timed_idea = {
+			idea = tensions_rising_permanent_alert
+			days = constant:tensions_rising_ai_posture.stage_4_days
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		add_timed_idea = {
+			idea = tensions_rising_general_staff_fever
+			days = constant:tensions_rising_ai_posture.stage_3_days
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		add_timed_idea = {
+			idea = tensions_rising_alarmist_rearmament
+			days = constant:tensions_rising_ai_posture.stage_2_days
+		}
+	}
+	else = {
+		add_timed_idea = {
+			idea = tensions_rising_cautious_alignment
+			days = constant:tensions_rising_ai_posture.stage_1_days
+		}
+	}
+}
+
+schedule_tensions_rising_followup = {
+	set_temp_variable = { tensions_rising_followup_id = 0 }
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_temp_variable = { tensions_rising_followup_chance = constant:tensions_rising_followup.stage_4_chance }
+		set_variable_to_random = {
+			var = tensions_rising_followup_delay
+			min = constant:tensions_rising_followup.stage_4_delay_min
+			max = constant:tensions_rising_followup.stage_4_delay_max
+			integer = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_3 } }
+		set_temp_variable = { tensions_rising_followup_chance = constant:tensions_rising_followup.stage_3_chance }
+		set_variable_to_random = {
+			var = tensions_rising_followup_delay
+			min = constant:tensions_rising_followup.stage_3_delay_min
+			max = constant:tensions_rising_followup.stage_3_delay_max
+			integer = yes
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		set_temp_variable = { tensions_rising_followup_chance = constant:tensions_rising_followup.stage_2_chance }
+		set_variable_to_random = {
+			var = tensions_rising_followup_delay
+			min = constant:tensions_rising_followup.stage_2_delay_min
+			max = constant:tensions_rising_followup.stage_2_delay_max
+			integer = yes
+		}
+	}
+	else = {
+		set_temp_variable = { tensions_rising_followup_chance = constant:tensions_rising_followup.stage_1_chance }
+		set_variable_to_random = {
+			var = tensions_rising_followup_delay
+			min = constant:tensions_rising_followup.stage_1_delay_min
+			max = constant:tensions_rising_followup.stage_1_delay_max
+			integer = yes
+		}
+	}
+
+	set_variable_to_random = {
+		var = tensions_rising_followup_roll
+		min = 1
+		max = 100
+		integer = yes
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_followup_roll
+				value = tensions_rising_followup_chance
+				compare = less_than_or_equals
+			}
+		}
+		select_tensions_rising_followup_event = yes
+		schedule_selected_tensions_rising_followup = yes
+	}
+}
+
+schedule_selected_tensions_rising_followup = {
+	if = {
+		limit = { check_variable = { tensions_rising_followup_id = 12 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.12 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 10 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.10 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 9 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.9 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 8 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.8 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 7 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.7 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 6 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.6 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 5 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.5 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 4 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.4 days = tensions_rising_followup_delay }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_followup_id = 3 } }
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.3 days = tensions_rising_followup_delay }
+		}
+	}
+	else = {
+		hidden_effect = {
+			country_event = { id = chaosx.nr8.2 days = tensions_rising_followup_delay }
+		}
+	}
+}
+
+select_tensions_rising_followup_event = {
+	if = {
+		limit = {
+			check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 }
+			NOT = { has_global_flag = tensions_rising_last_normal_briefing_seen }
+		}
+		set_temp_variable = { tensions_rising_followup_id = 12 }
+		set_global_flag = tensions_rising_last_normal_briefing_seen
+	}
+	else_if = {
+		limit = {
+			check_variable = { tensions_rising_stage > constant:tensions_rising_event_log.stage_1 }
+			has_global_flag = tensions_rising_recent_relation_damage
+		}
+		random_list = {
+			25 = { set_temp_variable = { tensions_rising_followup_id = 10 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 9 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 8 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 6 } }
+		}
+	}
+	else_if = {
+		limit = { is_tensions_rising_world_tension_full = yes }
+		random_list = {
+			25 = { set_temp_variable = { tensions_rising_followup_id = 4 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 8 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 9 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 10 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 } }
+		random_list = {
+			45 = { set_temp_variable = { tensions_rising_followup_id = 2 } }
+			35 = { set_temp_variable = { tensions_rising_followup_id = 3 } }
+			20 = { set_temp_variable = { tensions_rising_followup_id = 4 } }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_2 } }
+		random_list = {
+			30 = { set_temp_variable = { tensions_rising_followup_id = 5 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 6 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 10 } }
+			20 = { set_temp_variable = { tensions_rising_followup_id = 7 } }
+		}
+	}
+	else = {
+		random_list = {
+			25 = { set_temp_variable = { tensions_rising_followup_id = 8 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 9 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 7 } }
+			25 = { set_temp_variable = { tensions_rising_followup_id = 10 } }
+		}
+	}
+}
+
+prepare_tensions_rising_incident_effect = {
+	set_temp_variable = { tensions_rising_stage = 0 }
+	get_tensions_rising_stage = yes
+	if = {
+		limit = { check_variable = { tensions_rising_stage < constant:tensions_rising_event_log.stage_1 } }
+		set_temp_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_1 }
+	}
+}
+
+apply_tensions_rising_incident_common_effect = {
+	set_temp_variable = { tensions_rising_stage = 0 }
+	prepare_tensions_rising_incident_effect = yes
+	apply_tensions_rising_incident_world_tension = yes
+	apply_tensions_rising_incident_chaos = yes
+	apply_tensions_rising_incident_relation_pairs = yes
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+apply_tensions_rising_incident_world_tension = {
+	if = {
+		limit = { check_variable = { tensions_rising_incident_world_tension_packet > 0 } }
+		set_temp_variable = { tensions_rising_world_tension_packet = tensions_rising_incident_world_tension_packet }
+		apply_tensions_rising_distributed_world_tension = yes
+		tensions_rising_sync_world_tension_tracker = yes
+	}
+}
+
+apply_tensions_rising_incident_chaos = {
+	if = {
+		limit = { check_variable = { tensions_rising_incident_chaos_change > 0 } }
+		set_temp_variable = { chaos_change = tensions_rising_incident_chaos_change }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.tensions_rising }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+}
+
+apply_tensions_rising_incident_relation_pairs = {
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_incident_relation_pairs_remaining > 0 } }
+		apply_tensions_rising_relation_pair = yes
+		subtract_from_temp_variable = { tensions_rising_incident_relation_pairs_remaining = 1 }
+	}
+}
+
+apply_tensions_rising_incident_ai_posture = {
+	while_loop_effect = {
+		limit = { check_variable = { tensions_rising_incident_ai_posture_remaining > 0 } }
+		if = {
+			limit = {
+				any_country = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+			}
+			random_country = {
+				limit = {
+					is_tensions_rising_ai_posture_candidate = yes
+					NOT = { has_country_flag = tensions_rising_ai_posture_recent }
+				}
+				apply_tensions_rising_ai_posture_to_country = yes
+			}
+			subtract_from_temp_variable = { tensions_rising_incident_ai_posture_remaining = 1 }
+		}
+		else = {
+			set_temp_variable = { tensions_rising_incident_ai_posture_remaining = 0 }
+		}
+	}
+}
+
+apply_tensions_rising_incident_telegram = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.telegram }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.telegram }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.telegram }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_embassy = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.embassy }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.embassy }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.embassy }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.embassy }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_calm_map = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.calm_map }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.calm_map }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.calm_map }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_insurance = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.insurance }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.insurance }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.insurance }
+	apply_tensions_rising_incident_common_effect = yes
+	if = {
+		limit = {
+			is_ai = no
+			has_war = no
+			has_equipment = { convoy_1 > constant:tensions_rising_achievement.insurance_convoy_threshold }
+		}
+		set_country_flag = achievement_tensions_insurance_market_ready
+	}
+}
+
+apply_tensions_rising_incident_rumour = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.rumour }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.rumour }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.rumour }
+	apply_tensions_rising_incident_common_effect = yes
+}
+
+apply_tensions_rising_incident_staff_cars = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.staff_cars }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.staff_cars }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.staff_cars }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.staff_cars }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_fleets = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.fleets }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.fleets }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.fleets }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.fleets }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+}
+
+apply_tensions_rising_incident_border_lamps = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.border_lamps }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.border_lamps }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.border_lamps }
+	apply_tensions_rising_incident_common_effect = yes
+	try_tensions_rising_incident_border_war = yes
+}
+
+apply_tensions_rising_incident_denial = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.denial }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.denial }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.denial }
+	apply_tensions_rising_incident_common_effect = yes
+	try_tensions_rising_incident_border_war = yes
+}
+
+apply_tensions_rising_incident_last_briefing = {
+	set_temp_variable = { tensions_rising_incident_world_tension_packet = constant:tensions_rising_incident_world_tension.last_briefing }
+	set_temp_variable = { tensions_rising_incident_chaos_change = constant:tensions_rising_incident_chaos.last_briefing }
+	set_temp_variable = { tensions_rising_incident_relation_pairs_remaining = constant:tensions_rising_incident_relation_pairs.last_briefing }
+	set_temp_variable = { tensions_rising_incident_ai_posture_remaining = constant:tensions_rising_incident_ai_posture.last_briefing }
+	apply_tensions_rising_incident_common_effect = yes
+	apply_tensions_rising_incident_ai_posture = yes
+	try_tensions_rising_last_briefing_border_war = yes
+}
+
+try_tensions_rising_last_briefing_border_war = {
+	set_temp_variable = { tensions_rising_border_war_stage_3_chance = constant:tensions_rising_incident_border_war.last_briefing_stage_3_chance }
+	set_temp_variable = { tensions_rising_border_war_stage_4_chance = constant:tensions_rising_incident_border_war.last_briefing_stage_4_chance }
+	run_tensions_rising_incident_border_war_roll = yes
+}
+
+try_tensions_rising_incident_border_war = {
+	set_temp_variable = { tensions_rising_border_war_stage_3_chance = constant:tensions_rising_incident_border_war.stage_3_chance }
+	set_temp_variable = { tensions_rising_border_war_stage_4_chance = constant:tensions_rising_incident_border_war.stage_4_chance }
+	run_tensions_rising_incident_border_war_roll = yes
+}
+
+run_tensions_rising_incident_border_war_roll = {
+	if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_stage
+				value = constant:tensions_rising_incident_border_war.min_stage
+				compare = greater_than_or_equals
+			}
+			NOT = { has_global_flag = tensions_rising_recent_border_war_incident }
+			any_country = { is_tensions_rising_border_war_actor = yes }
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+			set_temp_variable = { tensions_rising_border_war_chance = tensions_rising_border_war_stage_4_chance }
+		}
+		else = {
+			set_temp_variable = { tensions_rising_border_war_chance = tensions_rising_border_war_stage_3_chance }
+		}
+		set_temp_variable_to_random = {
+			var = tensions_rising_border_war_roll
+			min = 1
+			max = 100
+			integer = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = tensions_rising_border_war_roll
+					value = tensions_rising_border_war_chance
+					compare = less_than_or_equals
+				}
+			}
+			set_temp_variable = { tensions_rising_border_actor_found = 0 }
+			set_temp_variable = { tensions_rising_border_target_found = 0 }
+			select_tensions_rising_border_war_pair = yes
+			try_start_tensions_rising_border_war_from_pair = yes
+		}
+	}
+}
+
+select_tensions_rising_border_war_pair = {
+	set_temp_variable = { tensions_rising_border_actor_found = 0 }
+	set_temp_variable = { tensions_rising_border_target_found = 0 }
+	random_country = {
+		limit = { is_tensions_rising_border_war_actor = yes }
+		save_event_target_as = tensions_rising_border_attacker
+		ROOT = { set_temp_variable = { tensions_rising_border_actor_found = 1 } }
+	}
+	if = {
+		limit = { check_variable = { tensions_rising_border_actor_found > 0 } }
+		event_target:tensions_rising_border_attacker = {
+			random_country = {
+				limit = {
+					is_tensions_rising_border_war_target_for_prev = yes
+					is_neighbor_of = PREV
+				}
+				save_event_target_as = tensions_rising_border_defender
+				ROOT = { set_temp_variable = { tensions_rising_border_target_found = 1 } }
+			}
+		}
+	}
+}
+
+try_start_tensions_rising_border_war_from_pair = {
+	if = {
+		limit = { check_variable = { tensions_rising_border_target_found > 0 } }
+		set_temp_variable = { tensions_rising_border_attacker_state_found = 0 }
+		set_temp_variable = { tensions_rising_border_defender_state_found = 0 }
+		event_target:tensions_rising_border_attacker = {
+			random_owned_controlled_state = {
+				limit = {
+					impassable = no
+					NOT = { has_border_war = yes }
+					any_neighbor_state = {
+						impassable = no
+						NOT = { has_border_war = yes }
+						is_owned_and_controlled_by = event_target:tensions_rising_border_defender
+					}
+				}
+				set_variable = { ROOT.tensions_rising_border_attacker_state = id }
+				ROOT = { set_temp_variable = { tensions_rising_border_attacker_state_found = 1 } }
+			}
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_border_attacker_state_found > 0 } }
+			event_target:tensions_rising_border_defender = {
+				random_owned_controlled_state = {
+					limit = {
+						impassable = no
+						NOT = { has_border_war = yes }
+						any_neighbor_state = { state = var:ROOT.tensions_rising_border_attacker_state }
+					}
+					set_variable = { ROOT.tensions_rising_border_defender_state = id }
+					ROOT = { set_temp_variable = { tensions_rising_border_defender_state_found = 1 } }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { tensions_rising_border_defender_state_found > 0 } }
+			start_border_war = {
+				change_state_after_war = no
+				combat_width = @TENSIONS_RISING_BORDER_WAR_COMBAT_WIDTH
+				minimum_duration_in_days = @TENSIONS_RISING_BORDER_WAR_MINIMUM_DURATION_DAYS
+				attacker = {
+					state = var:tensions_rising_border_attacker_state
+					num_provinces = @TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES
+					on_win = chaosx.nr8.13
+					on_lose = chaosx.nr8.14
+					on_cancel = chaosx.nr8.15
+				}
+				defender = {
+					state = var:tensions_rising_border_defender_state
+					num_provinces = @TENSIONS_RISING_BORDER_WAR_NUM_PROVINCES
+					on_win = chaosx.nr8.13
+					on_lose = chaosx.nr8.14
+					on_cancel = chaosx.nr8.15
+				}
+			}
+			record_tensions_rising_border_war_started = yes
+		}
+		clear_variable = tensions_rising_border_attacker_state
+		clear_variable = tensions_rising_border_defender_state
+	}
+}
+
+record_tensions_rising_border_war_started = {
+	if = {
+		limit = { check_variable = { tensions_rising_stage = constant:tensions_rising_event_log.stage_4 } }
+		set_global_flag = { flag = tensions_rising_recent_border_war_incident days = @TENSIONS_RISING_BORDER_WAR_STAGE_4_COOLDOWN_DAYS }
+	}
+	else = {
+		set_global_flag = { flag = tensions_rising_recent_border_war_incident days = @TENSIONS_RISING_BORDER_WAR_STAGE_3_COOLDOWN_DAYS }
+	}
+	event_target:tensions_rising_border_attacker = {
+		set_country_flag = { flag = tensions_rising_recent_border_war_actor days = @TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS }
+		save_event_target_as = tensions_rising_first_actor
+	}
+	event_target:tensions_rising_border_defender = {
+		set_country_flag = { flag = tensions_rising_recent_border_war_actor days = @TENSIONS_RISING_RECENT_BORDER_WAR_ACTOR_DAYS }
+		save_event_target_as = tensions_rising_second_actor
+	}
+	apply_tensions_rising_relation_modifier_to_targets = yes
+	add_to_variable = { global.tensions_rising_relation_pair_count = 1 }
+	set_global_flag = { flag = tensions_rising_recent_relation_damage days = @TENSIONS_RISING_RELATION_FOLLOWUP_WINDOW_DAYS }
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+apply_tensions_rising_border_war_win_effect = {
+	add_political_power = constant:tensions_rising_border_war_result.winner_political_power
+	add_war_support = constant:tensions_rising_border_war_result.winner_war_support
+}
+
+apply_tensions_rising_border_war_loss_effect = {
+	add_political_power = constant:tensions_rising_border_war_result.loser_political_power
+	add_stability = constant:tensions_rising_border_war_result.loser_stability
+}
+
+apply_tensions_rising_border_war_cancel_effect = {
+	add_stability = constant:tensions_rising_border_war_result.cancelled_stability
+}
+
+update_tensions_rising_achievement_tracking = {
+	if = {
+		limit = {
+			check_variable = {
+				var = tensions_rising_report_stage
+				value = constant:tensions_rising_event_log.stage_1
+				compare = greater_than
+			}
+			is_tensions_rising_world_at_peace = yes
+			NOT = { has_country_flag = tensions_rising_report_headlines_counted }
+			NOT = { has_global_flag = achievement_tensions_only_headlines_ready }
+			NOT = { has_global_flag = tensions_rising_only_headlines_broken }
+		}
+		set_country_flag = tensions_rising_report_headlines_counted
+		set_global_flag = tensions_rising_only_headlines_tracking
+		add_to_variable = { global.tensions_rising_only_headlines_count = 1 }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.tensions_rising_only_headlines_count
+					value = constant:tensions_rising_achievement.only_headlines_required
+					compare = greater_than_or_equals
+				}
+			}
+			set_global_flag = achievement_tensions_only_headlines_ready
+		}
+	}
+
+	if = {
+		limit = {
+			is_ai = no
+			check_variable = { tensions_rising_stage > constant:tensions_rising_event_log.stage_2 }
+			is_tensions_rising_world_tension_full = yes
+			has_war = no
+			NOT = { has_country_flag = achievement_tensions_thin_wire_ready }
+			NOT = { has_country_flag = tensions_rising_thin_wire_watch }
+		}
+		set_country_flag = { flag = tensions_rising_thin_wire_watch days = @TENSIONS_RISING_THIN_WIRE_FLAG_DAYS }
+		clr_country_flag = tensions_rising_thin_wire_broken
+		set_temp_variable = { chaosx_date_days = constant:tensions_rising_achievement.thin_wire_watch_days }
+		set_temp_variable = { chaosx_date_offset = 0 }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { tensions_rising_thin_wire_expiry_date = global.date }
+		add_to_variable = { tensions_rising_thin_wire_expiry_date = chaosx_date_offset }
+		if = {
+			limit = { NOT = { has_country_flag = tensions_rising_thin_wire_callback_pending } }
+			set_country_flag = tensions_rising_thin_wire_callback_pending
+			set_temp_variable = { tensions_rising_thin_wire_step_days = constant:tensions_rising_achievement.thin_wire_step_days }
+			country_event = { id = chaosx.nr8.20 days = tensions_rising_thin_wire_step_days }
+		}
+	}
+
+	update_tensions_rising_blackout_achievement_tracking = yes
+}
+
+update_tensions_rising_blackout_achievement_tracking = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.tensions_rising_active_opinion_modifiers
+				value = constant:tensions_rising_achievement.blackout_active_modifier_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_global_flag = achievement_tensions_blackout_ready
+	}
+}
+
+tensions_rising_on_war_relation_added = {
+	if = {
+		limit = { ROOT = { has_country_flag = tensions_rising_thin_wire_watch } }
+		ROOT = {
+			clr_country_flag = tensions_rising_thin_wire_watch
+			clr_country_flag = tensions_rising_thin_wire_broken
+			clear_variable = tensions_rising_thin_wire_expiry_date
+		}
+	}
+	if = {
+		limit = { FROM = { has_country_flag = tensions_rising_thin_wire_watch } }
+		FROM = {
+			clr_country_flag = tensions_rising_thin_wire_watch
+			clr_country_flag = tensions_rising_thin_wire_broken
+			clear_variable = tensions_rising_thin_wire_expiry_date
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = tensions_rising_only_headlines_tracking
+			NOT = { has_global_flag = achievement_tensions_only_headlines_ready }
+		}
+		set_global_flag = tensions_rising_only_headlines_broken
+	}
+	if = {
+		limit = {
+			has_global_flag = tensions_rising_recent_relation_damage
+			NOT = { has_global_flag = achievement_tensions_one_denial_ready }
+			OR = {
+				ROOT = { has_country_flag = tensions_rising_one_denial_eligible }
+				FROM = { has_country_flag = tensions_rising_one_denial_eligible }
+			}
+		}
+		set_global_flag = achievement_tensions_one_denial_ready
+	}
+}
