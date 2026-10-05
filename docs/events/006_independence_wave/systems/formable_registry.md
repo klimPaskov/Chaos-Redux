@@ -294,7 +294,9 @@ The complete category crosswalk is `docs/plans/006_independence_wave_plans/subag
 
 The grouped scripted GUI is presentation-only and uses `context_type = decision_category`; the shared player and AI formation gates remain the gameplay authority. Pending founding invitations take precedence over selected/profile and post-formation projections, keeping overlays mutually exclusive in live helper state.
 
-FORM-07 and FORM-48 are visible in the grouped architecture but remain readiness-controlled and fail closed under their identity, package, member, and integration gates. FORM-08 intentionally shows only states 84 and 82 with required summary count three while `independence_wave_formable_state_puzzle_form08_territory` remains false; no third state is fabricated.
+FORM-07 and FORM-48 are visible in the grouped architecture but remain readiness-controlled and fail closed under their identity, package, member, and integration gates. FORM-08 is a two-member family (D23): it shows states 84 and 82 with required summary count two, and `independence_wave_formable_state_puzzle_form08_territory` requires both.
+
+Custom X-tag carriers are released with `create_dynamic_country`, so the released country has a dynamic tag and a literal tag scope never reaches it. Every custom-carrier piece (GZX, AFX, AGX, AJX, ARX, ASX, AXX, BBX, BAX, CJX and HBX) therefore finds its carrier by `original_tag` in the bounded `global.independence_wave_active_countries` registry; vanilla-tag pieces keep their literal tag (D34).
 
 The current read-only GUI inspection is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f38780e05ee78efa5d9a7408288d4052bbf8b00f4901651df1412c86034a231/29c916409a6e614d0b7a161658e670d296fa1b53e75d14a06fd1b810c652c56f/gui-inspect.fdf2c34d03def14e.json` at shared revision `fdf2c34d03def14e0624f6dd33e6f1ac84e4167c618d8cf12ab6fcb4cd51666d`.
 

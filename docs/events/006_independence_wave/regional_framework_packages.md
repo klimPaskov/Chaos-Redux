@@ -15,11 +15,11 @@ Level 2 rows add their own layer on top: a starting problem, a decision family a
 
 ## Admitted rows
 
-- Levant and Arabia (D25): IW-073 Hejaz, IW-076 Hadhramaut, IW-078 Imamate of Oman, IW-081 Lebanon, IW-082 Palestine. See `levant_arabia_packages.md`.
+- Levant and Arabia (D25): IW-073 Hejaz, IW-078 Imamate of Oman, IW-081 Lebanon, IW-082 Palestine. IW-076 Hadhramaut keeps its engine block but fails closed (D34). See `levant_arabia_packages.md`.
 - North Africa and Sahara (D26): IW-083 Rif, IW-086 Tripolitania. See `north_africa_packages.md`.
 - West and Central Africa (D27): IW-097 Oyo, IW-099 Kanem-Bornu, IW-106 Aro Confederacy, IW-107 Biafran regional state. See `west_africa_packages.md`.
 - East Africa, Horn and Great Lakes (D28): IW-108 Buganda, IW-110 Rwanda, IW-111 Burundi, IW-113 Harar, IW-114 Afar state, IW-115 Somaliland, IW-119 Tigray. See `east_africa_packages.md`.
-- Southern Africa and Indian Ocean (D29): IW-126 Barotseland, IW-130 Madagascar, IW-131 Comoros, IW-132 Mauritius. See `southern_africa_packages.md`.
+- Southern Africa and Indian Ocean (D29): IW-126 Barotseland, IW-130 Madagascar, IW-132 Mauritius. IW-131 Comoros keeps its engine block but fails closed (D34). See `southern_africa_packages.md`.
 - South Asia and Himalaya (D30): IW-134 Punjab, IW-136 Sindh, IW-137 Balochistan, IW-138 Pashtunistan, IW-139 Kashmir, IW-140 Hyderabad, IW-141 Mysore, IW-143 Madras States, IW-145 Assam, IW-147 Manipur, IW-148 Sikkim. See `south_asia_packages.md`.
 - Southeast Asia, East Asia and Oceania (D31): IW-150 Aceh, IW-151 Minangkabau, IW-154 Bugis state, IW-155 Bali, IW-159 Shan federation, IW-161 Mon State, IW-162 Kachin state, IW-166 Laos, IW-167 Champa, IW-169 East Turkestan, IW-170 Inner Mongolia, IW-171 Ryukyu, IW-175 Samoa. See `east_asia_oceania_packages.md`.
 - Americas (D32): IW-180 Quebec, IW-182 Newfoundland, IW-185 Texas, IW-192 Yucatan, IW-200 Guarani state, IW-203 Patagonian state. See `americas_packages.md`.

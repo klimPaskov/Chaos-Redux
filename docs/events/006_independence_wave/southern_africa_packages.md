@@ -1,6 +1,6 @@
 # Event 006 Southern Africa and Indian Ocean packages
 
-Agent decision D29 admits four Southern Africa and Indian Ocean rows through the regional framework engine (`regional_framework_packages.md`). The remaining rows stay blocked for the reasons below.
+Agent decision D29 admitted four Southern Africa and Indian Ocean rows through the regional framework engine (`regional_framework_packages.md`); agent decision D34 later blocked IW-131 Comoros, so three are admitted. The remaining rows stay blocked for the reasons below.
 
 ## Admitted rows
 
@@ -8,10 +8,9 @@ Agent decision D29 admits four Southern Africa and Indian Ocean rows through the
 | --- | --- | --- | --- | --- | --- | --- |
 | IW-126 Barotseland | BAR | 981 | Level 2 | Vanilla roster: Litunga Yeta III, Litunga of Barotseland from 1916 to 1945. | constitutional, traditional, patron client | traditional authority and assembly |
 | IW-130 Madagascar restoration | MAD | 543 | Level 2 | Vanilla MAD has no characters; the game appoints the leader of its opening government. | constitutional, popular council, traditional, emergency, patron client | central government and provinces |
-| IW-131 Comoros | FAX (X-tag) | 708 | Level 1 | Institutional government: the Council of the Comoro Sultanates, chaired by the leader the game appoints. | constitutional, traditional, patron client | central government and provinces |
 | IW-132 Mauritius | FBX (X-tag) | 707 | Level 1 | Institutional government: the Council of Government, chaired by the leader the game appoints. | constitutional, popular council, emergency, patron client | labour councils and ministries |
 
-Radical sovereignty is excluded for all four. Barotseland and Madagascar are vanilla tags released from their vanilla cores; Barotseland keeps its vanilla Litunga, and the game appoints the leader of Madagascar's opening government because vanilla MAD has no characters. The Comoros and Mauritius are created as dynamic countries from their reserved tags and open under a named institution (the Council of the Comoro Sultanates and the Mauritian Council of Government) chaired by the leader the game appoints. Barotseland shares RG-SOUTHERN-AFRICA-COARSE with the other southern rows.
+Radical sovereignty is excluded for all three. Barotseland and Madagascar are vanilla tags released from their vanilla cores; Barotseland keeps its vanilla Litunga, and the game appoints the leader of Madagascar's opening government because vanilla MAD has no characters. Mauritius is created as a dynamic country from its reserved tag and opens under the Mauritian Council of Government, chaired by the leader the game appoints. Barotseland shares RG-SOUTHERN-AFRICA-COARSE with the other southern rows.
 
 ## Level 2 layers
 
@@ -33,6 +32,7 @@ Radical sovereignty is excluded for all four. Barotseland and Madagascar are van
 
 ## Blocked rows
 
+- IW-131 Comoros (FAX): admitted at D29 under a Council of the Comoro Sultanates, but its research row requires a sourced real incumbent or claimant, or the archival record of an actual royal council, and forbids a generated institution. The island sultanates were abolished in 1912, no sourced claimant is in the working tree, and the council was not an actual institution, so the row is blocked as Riau and Pattani are (agent decision D34). Its adapter, setup engine, loader and contacts stay wired; the content attestation leaves it out, so every planner, Join and SCN-008 path fails closed.
 - IW-121 Zulu (EQX): the research resolution requires a sourced incumbent or claimant, or authentic archival material for the regency or royal council, and forbids a generated dynasty member or institution. The 1936 regent Mshiyeni kaDinuzulu has no rights-cleared portrait in the working tree, and downloading one needs the user's approval.
 - IW-122 Ndebele (ERX), IW-123 Xhosa (ESX), IW-124 Basotho (HZX), IW-125 Eswatini (EUX) and IW-127 Herero state (EWX): no planner gate, loader or reservation; each needs a distinct map state or a named community package.
 - IW-128 Nama state (EXX) and IW-129 Ovambo state (EYX): unresearched reservations with no history or names, and no planner gate.
@@ -49,4 +49,4 @@ The rows reuse their registered or vanilla flags, names and leader portraits, sh
 
 - Five-node focus groups for Barotseland and Madagascar.
 - A sourced Zulu regency package once a rights-cleared portrait of Mshiyeni kaDinuzulu exists.
-- An FORM-31 contract for Madagascar, the Comoros and Mauritius.
+- An FORM-31 contract for Madagascar and Mauritius, and for the Comoros once a sourced claimant re-admits it.

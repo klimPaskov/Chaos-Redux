@@ -217,3 +217,11 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 - Venice, Circassia, Chechnya and Dagestan each have a starting problem, their own decisions and two incidents of their own; the six new custom states open under a named assembly or council.
 - Khuzestan completes the membership of the Council of Communities formable.
 - Cornwall, the Faroe Islands, Slavonia, Ingria, Chuvashia, Mordovia, the Nenets and Evenk states, the Far Eastern Republic, Luristan, Bakhtiari, Lazistan, Pontus and Cilicia remain unavailable.
+
+
+## 2026-10-05: Round-2 review corrections (D34)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- The Hadhramaut and the Comoros no longer appear in Independence Waves, Join conversions or Every Banner Rises launches. Both return once a sourced ruler or the record of an actual royal council is available.
+- The Danubian Confederation, the Balkan Federation, the Council of Communities and the other unions that include a newly created state can now count that state's capital toward their formation.
