@@ -73,9 +73,13 @@ video_game_in_sweden_can_pay_expand_access = {
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.expand_access_army_experience }
 }
 
+# The levy variables always exist once a programme starts; their guard stays
+# out of the requirement list, which shows only the two resource thresholds.
 video_game_in_sweden_can_pay_rules_revision = {
-	has_variable = video_game_in_sweden_rules_revision_army_experience
-	has_variable = video_game_in_sweden_rules_revision_command_power
+	hidden_trigger = {
+		has_variable = video_game_in_sweden_rules_revision_army_experience
+		has_variable = video_game_in_sweden_rules_revision_command_power
+	}
 	NOT = { has_army_experience < video_game_in_sweden_rules_revision_army_experience }
 	NOT = { command_power < video_game_in_sweden_rules_revision_command_power }
 }

@@ -377,3 +377,14 @@ Fixture: `test_opponent_capitulation_is_recorded_before_an_annexing_peace` shows
 All 18 fixture cases pass.
 Basis: spec part 4 According to Plan ("win or force peace before the reassessment"), round 3 lead item.
 Disposition: `implemented`; the engine's callback order during a capitulation and peace conference is needs_live_game.
+
+### R3-3. Requirement lists hide the payment and mission helper internals
+
+Finding: Restrict Use listed `video_game_in_sweden_can_pay_restriction` in `available`, which expands into the always-true quote helper `video_game_in_sweden_quote_restriction` (an OR with `NOT has_variable` on the fee factor, `set_temp_variable` and clamp lines); Rules Revision's `video_game_in_sweden_can_pay_rules_revision` showed two `has_variable` lines naming raw variables; and six rows (rules revision, field validation, targeted follow-up, red team, officer league, Trust the Model) listed the four `has_active_mission` lines of `video_game_in_sweden_no_active_mission`.
+Decision:
+- Restrict Use's payment check is a `hidden_trigger`: the quote limits every charge to the reserve at hand, so the check always passes, and the cost row already shows the quoted charges (the decisions skill allows `hidden_trigger` when the cost row explains the payment).
+- The two `has_variable` guards in `video_game_in_sweden_can_pay_rules_revision` sit in a `hidden_trigger` inside the scripted trigger, so the requirement list and the cost check show only the army experience and command power thresholds.
+- Each visible `video_game_in_sweden_no_active_mission` line in an `available` block is one `custom_trigger_tooltip` with the new key `video_game_no_other_mission_tt` ("No other campaign cabinet mission is running") around the hidden check; the checks in `visible` blocks are unchanged.
+Which rows can be taken does not change, because every hidden check is still evaluated, and the simple resource `can_pay_*` lines stay visible (round 2 lead decision 6).
+Basis: CLAUDE.md player-visible requirement rule, chaos-redux-decisions-missions trigger clarity, R2-3 precedent.
+Disposition: `implemented`; the rendered tooltips are needs_live_game.
