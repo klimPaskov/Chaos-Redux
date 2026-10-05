@@ -111,11 +111,20 @@ has_independence_wave_foreign_direct_stake = {
 	}
 }
 
-# Recorded relationship: a patron channel with the target, an earlier
-# recognition of it, Independence Network duty, an alliance with the target,
-# or an alliance with the target's former host.
+# Registered stakeholder: the actor is one of the researched contacts that the
+# target's package registered at setup.
+has_independence_wave_foreign_package_contact = {
+	event_target:independence_wave_foreign_target = {
+		is_in_array = { array = independence_wave_package_contact_entries value = PREV }
+	}
+}
+
+# Recorded relationship: a registered package contact, a patron channel with
+# the target, an earlier recognition of it, Independence Network duty, an
+# alliance with the target, or an alliance with the target's former host.
 has_independence_wave_foreign_recorded_relationship = {
 	OR = {
+		has_independence_wave_foreign_package_contact = yes
 		event_target:independence_wave_foreign_target = {
 			is_in_array = { array = independence_wave_patron_country_entries value = PREV }
 		}
@@ -133,8 +142,8 @@ has_independence_wave_foreign_recorded_relationship = {
 }
 
 # Strategic fit: military access between the two, a border with the former
-# host without a border with the target, a great power's reach on the same
-# continent, or a shared Event 006 region for an earlier-wave state.
+# host without a border with the target, or a shared Event 006 region for an
+# earlier-wave state. Great-power status alone is not a fact.
 has_independence_wave_foreign_strategic_fit = {
 	OR = {
 		has_military_access_to = event_target:independence_wave_foreign_target
@@ -143,10 +152,6 @@ has_independence_wave_foreign_strategic_fit = {
 			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
 			is_neighbor_of = event_target:independence_wave_foreign_target_host
 			NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
-		}
-		AND = {
-			is_major = yes
-			is_on_same_continent_as = event_target:independence_wave_foreign_target
 		}
 		AND = {
 			is_independence_wave_active_country = yes
@@ -458,14 +463,11 @@ has_independence_wave_petition_political_fit = {
 	}
 }
 
+# Military access in either direction. Great-power status alone is not a fact.
 has_independence_wave_petition_strategic_fit = {
 	OR = {
 		has_military_access_to = event_target:independence_wave_petition_host
 		event_target:independence_wave_petition_host = { has_military_access_to = PREV }
-		AND = {
-			is_major = yes
-			is_on_same_continent_as = event_target:independence_wave_petition_host
-		}
 	}
 }
 

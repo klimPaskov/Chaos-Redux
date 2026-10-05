@@ -1,0 +1,275 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACKAGE CONTACT REGISTRY
+# ============================================================================
+# Overview:
+# - Every admitted Event 006 package registers two or three researched foreign
+#   contacts when its origin commits. Each contact carries a short recorded
+#   basis in the comment beside it and in
+#   docs/events/006_independence_wave/package_contacts.md.
+# - The contacts are a bounded actor source for the foreign reaction queue and
+#   count as the recorded-relationship family of the foreign score. A contact
+#   that is the country's own former host is excluded by the actor check.
+# - `independence_wave_clear_package_contacts` runs in the generation reset and
+#   at origin end.
+# No effect scans the world.
+# ============================================================================
+
+# COUNTRY scope: the released country. PREV: the contact country.
+independence_wave_add_prev_as_package_contact = {
+	if = {
+		limit = { NOT = { is_in_array = { array = independence_wave_package_contact_entries value = PREV } } }
+		add_to_array = { array = independence_wave_package_contact_entries value = PREV }
+	}
+}
+
+# COUNTRY scope: the released country.
+independence_wave_clear_package_contacts = {
+	clear_array = independence_wave_package_contact_entries
+}
+
+# COUNTRY scope: the released country during origin commit. Reads
+# `independence_wave_package_id`. Inside each contact block PREV is the
+# released country, and inside its nested PREV block PREV is the contact.
+independence_wave_register_package_contacts = {
+	clear_array = independence_wave_package_contact_entries
+	if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
+		# IW-001 SCO
+		IRE = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Gaelic revival and Irish Sea ties
+		NOR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # North Sea fisheries and the Shetland to Bergen route
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Auld Alliance tradition
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_002 } }
+		# IW-002 WLS
+		IRE = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Celtic revival and Irish Sea shipping
+		ARG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Welsh settlement of Chubut in Patagonia
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Celtic congresses with Brittany
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_004 } }
+		# IW-004 BRI
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Channel trade and Celtic congresses with Wales and Cornwall
+		IRE = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Breton nationalist links to Irish republicans
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Breton nationalist contacts in Germany during the 1930s
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_006 } }
+		# IW-006 AFX
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Walloon francophone and rattachist ties
+		LUX = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the shared Ardennes industry and railways
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_007 } }
+		# IW-007 AGX
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # East Frisia across the Ems
+		DEN = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the North Frisians of Schleswig
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_008 } }
+		# IW-008 RHI
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # French backing of the 1923 Rhenish Republic
+		BEL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Belgian occupation zone until 1929
+		HOL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Rhine shipping through Rotterdam
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_009 } }
+		# IW-009 BAY
+		AUS = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Catholic Alpine and Wittelsbach to Habsburg ties
+		ITA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Brenner frontier and Italian contacts with Bavarian monarchists
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # French support for Bavarian separatists after 1918
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_010 } }
+		# IW-010 AJX
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Saar customs union with France until 1935
+		LUX = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Saar, Lorraine and Luxembourg steel basin
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_012 } }
+		# IW-012 ICE
+		NOR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Norse kinship and shared fisheries
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Icelandic fish exports to British ports
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_013 } }
+		# IW-013 NAV
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Northern Basque Country across the Pyrenees
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Bilbao iron ore trade with British mills
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_014 } }
+		# IW-014 CAT
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Northern Catalonia in Roussillon
+		SOV = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Soviet consulate and supply ties of 1936 Barcelona
+		MEX = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Mexican support for the Republic and its exiles
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_015 } }
+		# IW-015 GLC
+		POR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Galician and Portuguese language kinship
+		ARG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Galician community of Buenos Aires
+		CUB = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Galician societies of Havana
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_017 } }
+		# IW-017 COR
+		ITA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Italian claims and language links
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the memory of the Anglo-Corsican Kingdom and Mediterranean trade
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_018 } }
+		# IW-018 ARX
+		SPR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Catalan heritage of Alghero and the old Aragonese crown
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Corsica across the Strait of Bonifacio
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_019 } }
+		# IW-019 ASX
+		USA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Sicilian-American emigrant families
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Malta and British commerce in Sicily
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_023 } }
+		# IW-023 TRA
+		HUN = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Hungarian minority and its claims
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Transylvanian Saxon communities
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_024 } }
+		# IW-024 AXX
+		YUG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Serbian Banat across the border
+		HUN = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Hungarian heritage of the Banat
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Danube Swabian settlers
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_026 } }
+		# IW-026 MAC
+		BUL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Bulgarian claims and IMRO networks
+		GRE = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Greek Macedonia across the border
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_027 } }
+		# IW-027 BAX
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Muslim minority of Western Thrace under the Lausanne treaty
+		BUL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Bulgarian claim to an Aegean outlet
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_028 } }
+		# IW-028 BBX
+		ALB = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Northern Epirus and the Cham Albanians
+		ITA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Italian protectorate over Albania
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_029 } }
+		# IW-029 BOS
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Ottoman heritage and Bosniak emigration to Turkey
+		AUS = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Habsburg administration of 1878 to 1918
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_030 } }
+		# IW-030 MNT
+		ITA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Queen Elena of Italy, born a Montenegrin princess, and Italian support for the Greens
+		ALB = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # northern Albanian highland ties
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_031 } }
+		# IW-031 KOS
+		ALB = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Albanian kin across the border
+		ITA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Italian sponsorship of Albanian causes
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Albanian and Turkish emigration from Kosovo to Turkey
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_033 } }
+		# IW-033 KAR
+		SOV = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Karelian kin in Soviet Karelia
+		SWE = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Nordic volunteers and Swedish relief for Karelia
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_038 } }
+		# IW-038 RUT
+		HUN = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Hungarian minority and claim
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Polish interest in a common border with Hungary
+		ROM = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Romanian Maramures across the Tisza
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 } }
+		# IW-039 DON
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # German support for the Don Republic in 1918
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # British aid to the Don in the Civil War
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Cossack emigres in France
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_040 } }
+		# IW-040 KUB
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Promethean support for Cossack emigres
+		GER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Kuban Cossack emigrants in Germany
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_041 } }
+		# IW-041 CRI
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Crimean Tatar kin and emigrants
+		ROM = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Tatar communities of Dobruja
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Promethean support for Crimean Tatar emigres
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_043 } }
+		# IW-043 CHU
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Idel-Ural emigres in Turkey
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Promethean circle around Ayaz Ishaki in Warsaw
+		JAP = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Volga Tatar communities in Japan and Manchuria
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_044 } }
+		# IW-044 TAT
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Idel-Ural emigres in Turkey
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Promethean circle around Ayaz Ishaki in Warsaw
+		JAP = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Volga Tatar communities in Japan and Manchuria
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_045 } }
+		# IW-045 BSK
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Zeki Velidi Togan and the Bashkir emigres in Turkey
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Promethean movement
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 } }
+		# IW-058 ASY
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Assyrian Levies under British command
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Assyrian resettlement on the Khabur in French Syria
+		USA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Assyrian-American community
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_070 } }
+		# IW-070 ARM
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Armenian diaspora and the Cilician mandate
+		USA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Armenian-American community
+		PER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Armenian communities of Iran
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_071 } }
+		# IW-071 GEO
+		FRA = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Georgian government in exile at Leuville
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Promethean support
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Batumi and the Laz frontier
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_072 } }
+		# IW-072 AZR
+		TUR = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Turkic kinship and the Ottoman alliance of 1918
+		PER = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Iranian Azerbaijan
+		POL = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Promethean support
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 } }
+		# IW-173 HAW
+		JAP = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the Japanese community of Hawaii
+		ENG = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # the treaties of the Hawaiian Kingdom with Britain
+	}
+	else_if = {
+		limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 } }
+		# IW-184 HBX
+		MEX = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # former Mexican Alta California and its Mexican communities
+		JAP = { PREV = { independence_wave_add_prev_as_package_contact = yes } } # Japanese-Californian farmers
+	}
+}

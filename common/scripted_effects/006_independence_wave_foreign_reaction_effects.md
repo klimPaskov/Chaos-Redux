@@ -13,7 +13,7 @@ Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 
 - Scope: any country. Called only by `independence_wave_host_response_finish_plan` before it clears host and opening receipts.
 - Guards: report barrier raised, committed plan, report plan id equals the current plan, no Join conversion for the plan, aligned plan arrays, not already built for this plan.
-- Steps: freezes the committed Event 006 cohort in report row order (temporary array `independence_wave_foreign_cohort_targets`); gathers candidates from each target's neighbors, patron entries, recognition receipt entries, the allies of its living former host, and `global.independence_wave_active_countries`; scores every actor/target pair; reserves one receipt for each actor whose best score is at least 6; schedules `.64` one day apart and `.72` on every target at the queue deadline.
+- Steps: freezes the committed Event 006 cohort in report row order (temporary array `independence_wave_foreign_cohort_targets`); gathers candidates from each target's registered package contacts (first), neighbors, patron entries, recognition receipt entries, the allies of its living former host, and `global.independence_wave_active_countries`; scores every actor/target pair; reserves one receipt for each actor whose best score is at least 6; schedules `.64` one day apart and `.72` on every target at the queue deadline.
 - Outputs: `global.independence_wave_foreign_reaction_plan_id`, `global.independence_wave_foreign_reaction_actors`, `global.independence_wave_foreign_reactions_remaining`, global flag `independence_wave_foreign_reaction_queue_pending` (only when at least one receipt exists), `global.independence_wave_foreign_reaction_built_plan_id`.
 - Side effects: the global flag keeps the report/reset barrier raised until the queue closes.
 
@@ -30,7 +30,7 @@ Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 ### `independence_wave_foreign_reaction_score_pair`
 
 - Scope: the actor, with the event targets loaded.
-- Outputs: temporary `independence_wave_foreign_score` (direct stake 4, recorded relationship 3, strategic fit 2, political fit 1, conflict -3, floor 0) and `independence_wave_foreign_tier_result` (earlier wave, great power, regional, neighbor).
+- Outputs: temporary `independence_wave_foreign_score` (direct stake 4, recorded relationship 3, strategic fit 2, political fit 1, conflict -3, floor 0) and `independence_wave_foreign_tier_result` (earlier wave; great power only with a recorded relationship, which includes a registered package contact; regional for a package contact, strategic fit or no shared frontier; neighbor).
 - No side effects.
 
 ### `independence_wave_foreign_reaction_record_reasons` / `independence_wave_foreign_reaction_clear_reasons`

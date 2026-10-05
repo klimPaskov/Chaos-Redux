@@ -6,9 +6,11 @@
 #   cohort after every country opening and host response has resolved. The
 #   final host-response callback calls the builder before it clears its own
 #   plan receipts, so the report/reset barrier passes to this queue.
-# - Actor sources: each target's neighbors, its recorded patrons and earlier
-#   recognizers, the allies of its living former host, and the active Event
-#   006 countries of earlier waves. No world scan and no periodic hook.
+# - Actor sources: each target's registered package contacts, its neighbors,
+#   its recorded patrons and earlier recognizers, the allies of its living
+#   former host, and the active Event 006 countries of earlier waves. Contacts
+#   are gathered first so the actor cap never drops them. No world scan and no
+#   periodic hook.
 # - Score every actor/target pair with the accepted 4/3/2/1 families, one -3
 #   conflict penalty and a floor of 0, keep each actor's highest target with
 #   ties going to the first committed report row, and reserve one actor-wave
@@ -92,6 +94,10 @@ independence_wave_foreign_reaction_build_queue = {
 		while_loop_effect = {
 			limit = { check_variable = { var = independence_wave_foreign_index value = independence_wave_foreign_cohort_targets^num compare = less_than } }
 			var:independence_wave_foreign_cohort_targets^independence_wave_foreign_index = {
+				for_each_scope_loop = {
+					array = independence_wave_package_contact_entries
+					independence_wave_foreign_reaction_add_candidate = yes
+				}
 				every_neighbor_country = { independence_wave_foreign_reaction_add_candidate = yes }
 				for_each_scope_loop = {
 					array = independence_wave_patron_country_entries
@@ -276,19 +282,24 @@ independence_wave_foreign_reaction_score_pair = {
 		limit = { check_variable = { var = independence_wave_foreign_score value = constant:independence_wave_foreign_interest.floor compare = less_than } }
 		set_temp_variable = { independence_wave_foreign_score = constant:independence_wave_foreign_interest.floor }
 	}
-	# Profile priority: earlier-wave country, great power, regional
-	# stakeholder, then local neighbor.
+	# Profile priority: earlier-wave country, great power with an actual
+	# contact, registered regional stakeholder, then local neighbor. Major
+	# status alone supplies neither a contact nor the great-power profile.
 	if = {
 		limit = { is_independence_wave_active_country = yes }
 		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.earlier_wave }
 	}
 	else_if = {
-		limit = { is_major = yes }
+		limit = {
+			is_major = yes
+			has_independence_wave_foreign_recorded_relationship = yes
+		}
 		set_temp_variable = { independence_wave_foreign_tier_result = constant:independence_wave_foreign_tier.great_power }
 	}
 	else_if = {
 		limit = {
 			OR = {
+				has_independence_wave_foreign_package_contact = yes
 				check_variable = { independence_wave_foreign_strategic_hit = constant:independence_wave_plan.loop_increment }
 				NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
 			}
@@ -348,6 +359,10 @@ independence_wave_foreign_reaction_record_reasons = {
 		set_country_flag = independence_wave_foreign_fact_alliance
 	}
 	if = {
+		limit = { has_independence_wave_foreign_package_contact = yes }
+		set_country_flag = independence_wave_foreign_fact_contact
+	}
+	if = {
 		limit = {
 			check_variable = { independence_wave_foreign_target_has_host = constant:independence_wave_plan.loop_increment }
 			is_ally_with = event_target:independence_wave_foreign_target_host
@@ -374,13 +389,6 @@ independence_wave_foreign_reaction_record_reasons = {
 			NOT = { is_neighbor_of = event_target:independence_wave_foreign_target }
 		}
 		set_country_flag = independence_wave_foreign_fact_balance
-	}
-	if = {
-		limit = {
-			is_major = yes
-			is_on_same_continent_as = event_target:independence_wave_foreign_target
-		}
-		set_country_flag = independence_wave_foreign_fact_reach
 	}
 	if = {
 		limit = {
@@ -423,7 +431,7 @@ independence_wave_foreign_reaction_clear_reasons = {
 	clr_country_flag = independence_wave_foreign_fact_host_ally
 	clr_country_flag = independence_wave_foreign_fact_access
 	clr_country_flag = independence_wave_foreign_fact_balance
-	clr_country_flag = independence_wave_foreign_fact_reach
+	clr_country_flag = independence_wave_foreign_fact_contact
 	clr_country_flag = independence_wave_foreign_fact_region
 	clr_country_flag = independence_wave_foreign_fact_ideology
 	clr_country_flag = independence_wave_foreign_fact_war_burden

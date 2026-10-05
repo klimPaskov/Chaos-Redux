@@ -10,7 +10,7 @@ Acceptance basis: the accepted contract `docs/specs/006_independence_wave_specs/
 
 1. The public report `chaosx.nr6.2` raises the report/reset barrier, the country openings resolve, and every former host answers through the host response (`host_response.md`).
 2. The final host-response callback, `independence_wave_host_response_finish_plan`, calls `independence_wave_foreign_reaction_build_queue` before it clears its own receipts.
-3. The builder freezes the committed Event 006 cohort in report row order and collects candidate governments only from bounded sources: each target's neighbors, its recorded patrons and the governments that already recognized it, the allies of its living former host (faction members, overlord and subjects), and the active Event 006 countries of earlier waves.
+3. The builder freezes the committed Event 006 cohort in report row order and collects candidate governments only from bounded sources: each target's registered package contacts (`package_contacts.md`), gathered first so the actor cap never drops them, then its neighbors, its recorded patrons and the governments that already recognized it, the allies of its living former host (faction members, overlord and subjects), and the active Event 006 countries of earlier waves.
 4. A candidate must be living and sovereign, must not belong to the cohort, and must not be a host answering this wave through its own host response. A pair is invalid when the candidate is the target, its former host, or at war with it.
 5. Each pair is scored once per interest family: direct stake 4, recorded relationship 3, strategic fit 2, political fit 1, and one conflict penalty of -3, with a floor of 0.
 6. Each actor keeps its highest-scoring target; an equal score keeps the earlier report row. An actor at 6 or more receives one receipt for this wave.
@@ -26,16 +26,16 @@ No daily, weekly or monthly hook and no world scan is used. The opening of the q
 | Family | Points | Facts |
 | --- | --- | --- |
 | Direct stake | 4 | Shared frontier; a claim on a state the target owns; an existing guarantee of the target |
-| Recorded relationship | 3 | Patron channel with the target; an earlier recognition of it; Independence Network membership; an alliance with the target; an alliance with its former host |
-| Strategic fit | 2 | Military access in either direction; a border with the former host but not with the target; a great power on the target's continent; an earlier-wave state in the same Event 006 region |
+| Recorded relationship | 3 | A registered package contact of the target; a patron channel with the target; an earlier recognition of it; Independence Network membership; an alliance with the target; an alliance with its former host |
+| Strategic fit | 2 | Military access in either direction; a border with the former host but not with the target; an earlier-wave state in the same Event 006 region |
 | Political fit | 1 | Both governments in the same ideology group |
 | Conflict | -3 | The actor is at war; or it has already recognized and guaranteed the target |
 
-Major status alone adds nothing: a great power must first enter the pool through a neighbor, patron, recognition, alliance or earlier-wave source.
+Major status alone adds nothing: a great power must first enter the pool through a package contact, neighbor, patron, recognition, alliance or earlier-wave source, and its continental reach is not a scoring fact.
 
 ## Profiles and stances
 
-The profile follows the contract's priority: an active Event 006 country uses the earlier-wave profile, then a great power, then a regional stakeholder (strategic fit, or no shared frontier), then a local neighbor.
+The profile follows the contract's priority: an active Event 006 country uses the earlier-wave profile, then a great power with an actual contact (a recorded relationship, which includes a registered package contact), then a regional stakeholder (a registered package contact, strategic fit, or no shared frontier), then a local neighbor. A great power without a contact takes the profile its other facts give it.
 
 | Event | Stance | Cost | Result |
 | --- | --- | --- | --- |
@@ -109,7 +109,7 @@ Dynamic reason, host and cost text lives in `common/scripted_localisation/006_in
 A remnant former host that chose legal continuity (`.62` first option) or a regional charter (`.62` second option) may ask one foreign government to guarantee what is left of its territory.
 
 1. The remnant host response consumes `independence_wave_host_response_outside_guarantee_opportunity_open` through `independence_wave_remnant_petition_open_window`.
-2. If the host has not petitioned before in its current identity, the host's neighbors, then its allies, are ranked with the same 4/3/2/1 families against the host: frontier, alliance, access or a great power's continental reach, shared ideology, and the -3 penalty for war or a claim on the host's land. The first highest-scoring government at 6 or more becomes the named recipient.
+2. If the host has not petitioned before in its current identity, the host's neighbors, then its allies, are ranked with the same 4/3/2/1 families against the host: frontier, alliance, access, shared ideology, and the -3 penalty for war or a claim on the host's land. The first highest-scoring government at 6 or more becomes the named recipient.
 3. With a recipient, a 30-day window opens the decision "Petition [recipient] for a Guarantee" in the category "A Foreign Guarantee". The host pays the standard diplomatic cost. The AI takes it only under a real threat: war, or a neighbor holding or justifying a war goal against it.
 4. The recipient answers in `.69` (13 days, declining by default) or, as AI, through the hidden router: it guarantees at peace when allied with the host or sharing its outlook and when it can pay the standard cost, has more than ten divisions and can reach the host.
 5. Acceptance creates the real engine guarantee, and only then does the host grant the recipient military access, its promised concession. Declining or an invalid petition creates no protection. `.70` tells the host the result.

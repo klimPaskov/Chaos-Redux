@@ -437,3 +437,26 @@ Decisions:
 Validation: brace balance 0 on all touched files; every milestone effect, constant and localisation key referenced is defined once.
 
 Needs live game: each news firing once, the history rows and their detail text in the Event Logs.
+
+
+## D18. Round 2: package contacts as a foreign-reaction source, and no score from major status
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-7 item and the accepted foreign reactions contract (candidate and score sections: verified package contacts and registered regional stakeholders are an actor source, and major status alone supplies neither a contact nor score).
+
+Decisions:
+
+- Registry: `common/scripted_effects/006_independence_wave_package_contact_effects.txt` gives each of the 37 attested packages two or three researched contacts (92 rows), each with a one-line basis in the source comment and in `docs/events/006_independence_wave/package_contacts.md`. Bases are recorded 1918-1939 relationships: cross-border kin, emigrant and exile communities, the Promethean movement sponsored from Warsaw, interwar occupation or sponsorship, and long-standing trade. Examples: RUT with HUN, POL and ROM (its host CZE is excluded as an actor); CAT with FRA, SOV and MEX; NAV with FRA and ENG; GLC with POR, ARG and CUB; the Caucasus packages with TUR, FRA, POL or PER.
+- Registration: `independence_wave_register_package_contacts` runs in `independence_wave_commit_prepared_country_origin`, so only a fully validated origin registers; it clears and rebuilds the bounded country array `independence_wave_package_contact_entries`. The generation reset and origin end clear it.
+- Builder: each cohort target's contacts are the first actor source, before neighbors, patrons, recognizers, host allies and earlier-wave countries, so the actor cap never drops a researched contact. Candidate validity (living, sovereign, not the target or its host, not in the cohort) is unchanged.
+- Score: a registered contact is a recorded-relationship fact (three points), shown in the event reason as "Our ties with its people are older than its new government, through kin, exiles or trade." The strategic-fit fact "a great power on the target's continent" is removed from both the foreign builder and the remnant petition ranking, and its reason line is retired. Military access, the host-border balance and a shared Event 006 region remain.
+- Profiles: the great-power profile now needs `is_major` and a recorded relationship (which includes a package contact); a registered contact also qualifies an actor for the regional-stakeholder profile. A great power without a contact takes the profile its other facts give it.
+
+CAT walk-through (one wave with IW-014): origin commit registers FRA, SOV and MEX on CAT. The builder's contact loop adds FRA first (living, sovereign, not SPR, not in the cohort). FRA scores direct stake 4 (shared Pyrenean frontier) plus recorded relationship 3 (contact) plus political fit 1 when both are democratic, 7 or 8, above the cutoff of 6, and as a major with a contact it receives the great-power profile `.67`. Without the contact FRA would score 5 and stay in the public report only; before this change it reached 7 through the continental-reach fact, which is the major-status score the contract forbids. SOV and MEX enter the pool through the same source but stay below the cutoff (3, or 4 with shared ideology).
+
+Remnant petition: without the continental fact, a recipient needs a frontier or alliance plus access, or a frontier and an alliance together, to reach 6. The petition remains reachable for a neighbouring ally, which is its usual recipient.
+
+Not attempted: the contract's probability baseline and comparison for the changed deterministic score (scores are deterministic ranks, not action probabilities; the probability route returned INTERNAL_ERROR earlier this round).
+
+Needs live game: a CAT or RUT wave in which the contact governments appear among the foreign reactions with the contact reason line.
