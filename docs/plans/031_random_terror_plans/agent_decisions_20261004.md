@@ -483,9 +483,9 @@ Basis: Part 4 Evolution II Safe havens ("the host receives political and militar
 
 ## Round 2 review fixes
 
-A source review of R32-R42 after the round found three defects in the committed work; each is `implemented` in the commit that records this section, and live-game behaviour remains with the user.
+A source review of R32-R42 after the round found three defects in the committed work; each is `implemented` in the commit named beside R43, and live-game behaviour remains with the user.
 
-### R43 One waiting report, caller-owned loss storage and no permanent uprising lock
+### R43 One waiting report, caller-owned loss storage and no permanent uprising lock (`64149ef8c`)
 
 - Report coalescing (R33 follow-up): a pulse that applies an incident and then opens a spread hotspot queued two `chaosx.nr31.2` reports for the next day, and both read the latest `random_terror_last_report_*` values, so the player saw the spread report twice and could pick two first emphases.
   A government now has at most one report waiting (`random_terror_report_queued`, cleared in the report's `immediate` and by `random_terror_reset_crisis_cycle` in case the closing crisis drops the queued report), and that report tells the latest incident, which for a spread names the new state and its origin.

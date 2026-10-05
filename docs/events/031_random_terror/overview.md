@@ -407,7 +407,7 @@ Two super-event pictures live under `gfx/super_events/031_random_terror/`, are r
 ## Validation surfaces
 
 Event 31 is registered as repeatable and enabled by default in the Event Logs settings through `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`.
-Every design decision taken during the takeover (D1-D13 and R1-R42) is recorded with its basis, its implementation commit and its live-game limits in `docs/plans/031_random_terror_plans/agent_decisions_20261004.md`.
+Every design decision taken during the takeover (D1-D13 and R1-R43) is recorded with its basis, its implementation commit and its live-game limits in `docs/plans/031_random_terror_plans/agent_decisions_20261004.md`.
 
 The visual inventory is recorded row by row in `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md`, and every portrait identity has a recruitment or selection consumer (D11).
 Actor operations raise, move or remove real formations (D9), every mission has a reachable progress producer and outcome (D5), carrier reuse and scenario capacity follow one availability predicate (D1, D2), and a contained crisis recovers and closes (R30).
