@@ -1675,6 +1675,98 @@ asteroid_incoming_register_fragment_site = {
 	}
 }
 
+# ANY SCOPE. Called once after the fragment planner has settled the applied
+# fragment slots. Saves the first fragment centre on each struck continent, in
+# strike order, as global event target asteroid_incoming_fragment_continent_<n>_state
+# and the number of distinct continents in
+# global.asteroid_incoming_fragment_continent_count, so the impact news and the
+# super-event name each continent once. Only applied slots are read; with no
+# applied fragments the count stays zero.
+asteroid_incoming_record_fragment_continents = {
+	set_variable = { global.asteroid_incoming_fragment_continent_count = constant:asteroid_incoming_runtime.zero }
+	clear_global_event_target = asteroid_incoming_fragment_continent_1_state
+	clear_global_event_target = asteroid_incoming_fragment_continent_2_state
+	clear_global_event_target = asteroid_incoming_fragment_continent_3_state
+	clear_global_event_target = asteroid_incoming_fragment_continent_4_state
+	clear_global_event_target = asteroid_incoming_fragment_continent_5_state
+	clear_global_event_target = asteroid_incoming_fragment_continent_6_state
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_1_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_one compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_1_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_2_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_two compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_2_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_3_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_three compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_3_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_4_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_four compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_4_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_5_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_five compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_5_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_fragment_6_state
+			check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_six compare = greater_than_or_equals }
+		}
+		event_target:asteroid_incoming_fragment_6_state = { asteroid_incoming_add_fragment_continent = yes }
+	}
+}
+
+# STATE SCOPE, one applied fragment centre. It becomes the next continent
+# entry unless an earlier entry already lies on the same continent.
+asteroid_incoming_add_fragment_continent = {
+	if = {
+		limit = { NOT = { asteroid_incoming_state_shares_recorded_fragment_continent = yes } }
+		add_to_variable = { global.asteroid_incoming_fragment_continent_count = constant:asteroid_incoming_runtime.one }
+		if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_one compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_1_state
+		}
+		else_if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_two compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_2_state
+		}
+		else_if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_three compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_3_state
+		}
+		else_if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_four compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_4_state
+		}
+		else_if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_five compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_5_state
+		}
+		else_if = {
+			limit = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_six compare = equals } }
+			save_global_event_target_as = asteroid_incoming_fragment_continent_6_state
+		}
+	}
+}
+
 # STATE SCOPE. Refreshes the persistent controller pointer for a registered
 # mineral site. Country ideas are rebuilt by the parent-owned registry refresh;
 # keeping the site pointer here avoids dynamic-modifier duplicates and makes

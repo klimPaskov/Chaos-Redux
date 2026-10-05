@@ -92,51 +92,123 @@ defined_text = {
 	text = { localization_key = asteroid_incoming.target.not_capital }
 }
 
+# ----------------------------------------------------------------------------
+# Impact and fragment reports (chaosx.nr28.5 and chaosx.nr28.7)
+# ----------------------------------------------------------------------------
+# COUNTRY SCOPE, the report's recipient. The reports are short plain-text
+# prose for light parchment: these getters return no colour codes. The worst
+# state is bound by asteroid_incoming_bind_report_worst_state in the report's
+# immediate block, and every count is the country's impact receipt.
+
+# Opening sentence: the worst-hit state, described by the country's strongest
+# damage profile.
 defined_text = {
-	name = GetAsteroidIncomingReportWorstState
+	name = GetAsteroidIncomingReportOpening
 	text = {
 		trigger = {
 			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_center compare = equals }
 		}
-		localization_key = asteroid_incoming.report.worst_state.value
+		localization_key = asteroid_incoming.report.opening.main_center
 	}
 	text = {
-		localization_key = asteroid_incoming.value.na
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.main_ring_one
+	}
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.fragment_center
+	}
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.main_ring_two
+	}
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.fragment_ring_one
+	}
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_three compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.main_ring_three
+	}
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_report_worst_state
+			check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_ring_two compare = equals }
+		}
+		localization_key = asteroid_incoming.report.opening.fragment_ring_two
+	}
+	text = {
+		localization_key = asteroid_incoming.report.opening.unnamed
 	}
 }
 
+# Civilian deaths and the number of damaged states, without zero counts.
 defined_text = {
-	name = GetAsteroidIncomingWorstDamageProfile
+	name = GetAsteroidIncomingReportToll
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.main_center
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_actual_deaths value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			check_variable = { var = asteroid_incoming_country_affected_state_count value = constant:asteroid_incoming_runtime.one compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.toll.deaths_states
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.fragment_center
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_actual_deaths value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.toll.deaths_one_state
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.main_ring_one
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_affected_state_count value = constant:asteroid_incoming_runtime.one compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.toll.no_deaths_states
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.fragment_ring_one
+		localization_key = asteroid_incoming.report.toll.no_deaths_one_state
+	}
+}
+
+# Destroyed transport and industrial building levels, omitted when none.
+defined_text = {
+	name = GetAsteroidIncomingReportDamage
+	text = {
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_logistics_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			check_variable = { var = asteroid_incoming_country_industry_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.damage.both
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.main_ring_two
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_logistics_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.damage.logistics
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.fragment_ring_two compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.fragment_ring_two
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_industry_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.damage.industry
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_worst_profile value = constant:asteroid_incoming_profile.main_ring_three compare = equals } }
-		localization_key = asteroid_incoming.damage_profile.main_ring_three
-	}
-	text = {
-		localization_key = asteroid_incoming.damage_profile.none
+		localization_key = asteroid_incoming.report.no_clause
 	}
 }
 
@@ -314,36 +386,206 @@ defined_text = {
 	}
 }
 
+# Impact report: only when the government moved, or could not move, because
+# its capital was the impact centre.
 defined_text = {
-	name = GetAsteroidIncomingCapitalRelocationClause
+	name = GetAsteroidIncomingReportCapitalClause
 	text = {
 		trigger = { has_country_flag = asteroid_incoming_capital_stayed_at_crater }
-		localization_key = asteroid_incoming.report.capital_stayed
+		localization_key = asteroid_incoming.report.capital.stayed
 	}
 	text = {
-		trigger = { check_variable = { var = asteroid_incoming_country_capital_relocated_count value = 0 compare = greater_than } }
-		localization_key = asteroid_incoming.report.capital_relocated
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_capital_relocated_count value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			has_event_target = asteroid_incoming_relocated_capital_state
+		}
+		localization_key = asteroid_incoming.report.capital.moved_named
 	}
 	text = {
-		localization_key = asteroid_incoming.report.capital_unchanged
+		trigger = {
+			check_variable = { var = asteroid_incoming_country_capital_relocated_count value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+		}
+		localization_key = asteroid_incoming.report.capital.moved
+	}
+	text = {
+		localization_key = asteroid_incoming.report.no_clause
 	}
 }
 
-# Impact report line for the original target's transport losses.
+# Impact report: the original target's destroyed and dispersed transport.
+# Other countries, and a target that lost nothing, receive no clause.
 defined_text = {
 	name = GetAsteroidIncomingTransportLossClause
 	text = {
 		trigger = {
 			has_country_flag = asteroid_incoming_transport_losses_recorded
 			has_country_flag = asteroid_incoming_mobile_reserve_preserved
+			OR = {
+				check_variable = { var = asteroid_incoming_transport_preserved_trains value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+				check_variable = { var = asteroid_incoming_transport_preserved_trucks value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+				check_variable = { var = asteroid_incoming_transport_preserved_fuel value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			}
 		}
-		localization_key = asteroid_incoming.report.transport_loss_dispersed
+		localization_key = asteroid_incoming.report.transport.dispersed
 	}
 	text = {
-		trigger = { has_country_flag = asteroid_incoming_transport_losses_recorded }
-		localization_key = asteroid_incoming.report.transport_loss
+		trigger = {
+			has_country_flag = asteroid_incoming_transport_losses_recorded
+			OR = {
+				check_variable = { var = asteroid_incoming_transport_lost_trains value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+				check_variable = { var = asteroid_incoming_transport_lost_trucks value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+				check_variable = { var = asteroid_incoming_transport_lost_fuel value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			}
+		}
+		localization_key = asteroid_incoming.report.transport.lost
 	}
-	text = { localization_key = asteroid_incoming.report.no_transport_loss }
+	text = {
+		localization_key = asteroid_incoming.report.no_clause
+	}
+}
+
+# Closing sentence: the country's current recovery phase and the most useful
+# Asteroid Recovery order open to it now. The phase checks are the decisions'
+# own visibility triggers, so the named order is one the country can see.
+defined_text = {
+	name = GetAsteroidIncomingReportNextStep
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			has_country_flag = asteroid_incoming_recovery_project_pending
+		}
+		localization_key = asteroid_incoming.report.next.emergency_busy
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_mobile_hospitals = yes
+				has_state_flag = asteroid_incoming_rescue_burden_active
+			}
+		}
+		localization_key = asteroid_incoming.report.next.hospitals_overflowing
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			check_variable = { var = asteroid_incoming_country_logistics_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+		}
+		localization_key = asteroid_incoming.report.next.rail
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_debris_clearing = yes }
+		}
+		localization_key = asteroid_incoming.report.next.debris
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes }
+		}
+		localization_key = asteroid_incoming.report.next.hospitals
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+		}
+		localization_key = asteroid_incoming.report.next.rail
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_emergency_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_filters = yes }
+		}
+		localization_key = asteroid_incoming.report.next.filters
+	}
+	text = {
+		trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes }
+		localization_key = asteroid_incoming.report.next.emergency_covered
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
+			has_country_flag = asteroid_incoming_recovery_project_pending
+		}
+		localization_key = asteroid_incoming.report.next.reconstruction_busy
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_supply_spine = yes }
+		}
+		localization_key = asteroid_incoming.report.next.supply_spine
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_outer_industry = yes }
+		}
+		localization_key = asteroid_incoming.report.next.outer_industry
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
+			any_controlled_state = { asteroid_incoming_state_is_open_for_worker_rehousing = yes }
+		}
+		localization_key = asteroid_incoming.report.next.rehousing
+	}
+	text = {
+		trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes }
+		localization_key = asteroid_incoming.report.next.reconstruction_covered
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_dust_recovery_surface = yes
+			NOT = { has_country_flag = asteroid_incoming_factories_hardened }
+		}
+		localization_key = asteroid_incoming.report.next.harden
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_dust_recovery_surface = yes
+			NOT = { has_country_flag = asteroid_incoming_transport_protected }
+		}
+		localization_key = asteroid_incoming.report.next.transport
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_dust_recovery_surface = yes
+			NOT = { has_country_flag = asteroid_incoming_observation_network }
+		}
+		localization_key = asteroid_incoming.report.next.observation
+	}
+	text = {
+		trigger = { asteroid_incoming_country_has_dust_recovery_surface = yes }
+		localization_key = asteroid_incoming.report.next.dust_covered
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_crater_recovery_surface = yes
+			any_controlled_state = {
+				asteroid_incoming_crater_action_state_is_valid = yes
+				NOT = { asteroid_incoming_crater_perimeter_is_held = yes }
+			}
+		}
+		localization_key = asteroid_incoming.report.next.crater
+	}
+	text = {
+		trigger = {
+			any_owned_state = {
+				has_state_flag = asteroid_incoming_affected_state
+				NOT = { has_state_flag = asteroid_incoming_main_crater }
+				NOT = { is_controlled_by = PREV }
+			}
+		}
+		localization_key = asteroid_incoming.report.next.occupied
+	}
+	text = {
+		localization_key = asteroid_incoming.report.next.none
+	}
 }
 
 # Event Details impact line for a struck capital. Empty when the impact centre
@@ -369,27 +611,45 @@ defined_text = {
 defined_text = {
 	name = GetAsteroidIncomingSuperEventFragmentClause
 	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_six compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.super_event.fragments.6
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_five compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.super_event.fragments.5
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_four compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.super_event.fragments.4
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_three compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.super_event.fragments.3
-	}
-	text = {
 		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_two compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.super_event.fragments.2
+		localization_key = asteroid_incoming.super_event.fragments
 	}
 	text = {
 		localization_key = asteroid_incoming.super_event.no_fragments
+	}
+}
+
+# Each struck continent once, in strike order, from the continent entries saved
+# by asteroid_incoming_record_fragment_continents. Plain names, so both the
+# parchment news and the super-event can use it.
+defined_text = {
+	name = GetAsteroidIncomingFragmentContinents
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_six compare = greater_than_or_equals } }
+		localization_key = asteroid_incoming.fragment_continents.6
+	}
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_five compare = equals } }
+		localization_key = asteroid_incoming.fragment_continents.5
+	}
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_four compare = equals } }
+		localization_key = asteroid_incoming.fragment_continents.4
+	}
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_three compare = equals } }
+		localization_key = asteroid_incoming.fragment_continents.3
+	}
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_two compare = equals } }
+		localization_key = asteroid_incoming.fragment_continents.2
+	}
+	text = {
+		trigger = { check_variable = { var = global.asteroid_incoming_fragment_continent_count value = constant:asteroid_incoming_runtime.fragment_slot_one compare = equals } }
+		localization_key = asteroid_incoming.fragment_continents.1
+	}
+	text = {
+		localization_key = asteroid_incoming.fragment_continents.none
 	}
 }
 
@@ -401,29 +661,13 @@ defined_text = {
 	}
 }
 
-# Parchment news uses plain counts; the shared super-event keeps its existing
-# coloured fragment clause on its dark consumer. Selection guards are identical.
+# Parchment news uses a plain count; the shared super-event keeps its coloured
+# count on its dark consumer. Selection guards are identical.
 defined_text = {
 	name = GetAsteroidIncomingNewsFragmentClause
 	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_six compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.news.fragments.6
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_five compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.news.fragments.5
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_four compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.news.fragments.4
-	}
-	text = {
-		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_three compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.news.fragments.3
-	}
-	text = {
 		trigger = { check_variable = { var = global.asteroid_incoming_fragment_site_count value = constant:asteroid_incoming_runtime.fragment_slot_two compare = greater_than_or_equals } }
-		localization_key = asteroid_incoming.news.fragments.2
+		localization_key = asteroid_incoming.news.fragments
 	}
 	text = { localization_key = asteroid_incoming.super_event.no_fragments }
 }

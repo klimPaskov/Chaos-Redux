@@ -419,3 +419,30 @@ Checked in source: FROM stays the decision target inside `any_controlled_state` 
 Cleanup: the unread temporary `asteroid_incoming_force_remove_mineral_modifier` was removed from `asteroid_incoming_cleanup_transaction`, and the overview now says the national dust modifier is removed only when the country has neither a protection tier nor observation-network membership.
 Cross-owner gap, not edited: the untracked Event 042 file `common/on_actions/042_equipment_from_heavens_on_actions.txt` adds an `on_nuke_drop` consumer that does not skip `asteroid_incoming_visual_strike_state`, so an asteroid visual launched by a human controller holding `efh_ach_nuclear_active` would be treated as that country's nuclear strike. That file belongs to unfinished Event 042 work and needs the same `FROM = { NOT = { has_state_flag = asteroid_incoming_visual_strike_state } }` guard when its owner finishes it.
 MCP: `hoi4_event_inspect` returned "Invalid tool arguments" for `lint` with a string selector and for `trace` with an object selector; review is source-only.
+
+## Round 3 lead items (2026-10-05)
+
+### Plain transport-loss lines on the impact report
+
+Decision: the two transport-loss keys returned by `GetAsteroidIncomingTransportLossClause` lose their `§Y` codes, so the original target's parchment impact report carries no coloured numbers.
+Basis: the routed parchment defect and the chaos-redux-events rule that parchment descriptions use plain text, including text returned by scripted localisation.
+Commit: 3e21eec34.
+
+### The impact and fragment reports are short dynamic prose
+
+Decision: `chaosx.nr28.5.d` and `chaosx.nr28.7.d` are rewritten from pipe-separated stat sheets into a few plain sentences built by scripted getters.
+The opening names the worst-hit state and describes it by the country's strongest damage profile, one sentence per profile (main centre, three main rings, fragment centre, two fragment rings) and a generic sentence when no state is bound.
+The second sentence gives the civilian deaths and the number of damaged states, with separate wording for no confirmed deaths and for a single damaged state, so no zero count prints.
+Destroyed roads, railways, ports and supply hubs and destroyed factories, dockyards and refineries follow only when their level counts are above zero; strategic levels are left out to keep the report short.
+The main-impact report adds the capital sentence only when the government moved (naming the new capital from the existing `asteroid_incoming_relocated_capital_state` target) or could not move, and the transport sentence only for the original target and only when something was lost or saved.
+Both reports end with the current recovery phase and the most useful Asteroid Recovery order open now. The getter uses the decisions' own surface triggers (`asteroid_incoming_country_has_emergency_recovery_surface`, `..._reconstruction_...`, `..._dust_...`, `..._crater_...`) and the per-action `asteroid_incoming_state_is_open_for_*` triggers, so it never names an order the country cannot see. Emergency work prefers Deploy Mobile Hospitals where a rescue burden is active, then Open an Emergency Rail Corridor when transport levels were lost, then Clear Unstable Debris; a pending project, an occupied damaged state and an empty phase each get their own sentence. Decision names are pulled in with `$key$` references so they cannot drift from the decision titles.
+The "state-months" rescue-burden figure, raw level counts, the zero capital-relocation line, the dust and protection labels and the pipes are gone; dust and protection remain in the Asteroid Recovery header.
+The unused getters `GetAsteroidIncomingReportWorstState`, `GetAsteroidIncomingWorstDamageProfile` and `GetAsteroidIncomingCapitalRelocationClause` and their keys were removed.
+Basis: Part 8 Country reports (specific and restrained, state names, rail loss, hospital pressure and displaced people; avoid one generic paragraph, map-table framing and raw hidden variables) and the Affected-country report role (worst state, total deaths, damaged states, capital relocation when relevant, the opening recovery problem).
+
+### Each struck continent is named once
+
+Decision: right after `asteroid_incoming_choose_fragment_sites`, the resolver calls `asteroid_incoming_record_fragment_continents`, which walks the applied fragment slots in strike order and saves the first centre on each continent as the global event target `asteroid_incoming_fragment_continent_<n>_state`, counting them in `global.asteroid_incoming_fragment_continent_count`.
+The comparison uses `is_on_same_continent_as = event_target:...` in state scope, the form the fragment planner already uses for its second site.
+`GetAsteroidIncomingFragmentContinents` lists the saved continents, and the impact news and the super-event fragment clause each became one key that prints the fragment count and that list, instead of five keys that repeated one continent per fragment.
+Basis: Part 8 Fragment summary ("actual fragment count and broad regions") and the super-event direction ("mention fragments when active without listing every site"); `triggers_documentation.md` documents `is_on_same_continent_as` for state scope with any target.
