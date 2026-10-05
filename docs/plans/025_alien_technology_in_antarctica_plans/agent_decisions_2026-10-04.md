@@ -653,3 +653,26 @@ Decision:
 - Level 1 uses three of spec 007's five answers, deny, compensate and admit a limited operation, as the round 2 acceptance requires; offering inspection and counter-accusing are not added. Compensation and admission remove the existing sabotage suspicion opinion and replace it with a goodwill or milder modifier, so the answer has a lasting effect.
 - Level 2 uses the seizure demand: returning people, records and the fragment together, so prisoner exchange and fragment return are one answer. Arbitration, reinforcement as a Level 2 answer and a bilateral response are not separate options; reinforcement already exists as a clash response.
 - Only public steps (an accusation, a refused demand) add world tension, each through a small named threat. The seized fragment returns through the new ledger API `chaosx_alien_recovery_ledger_return_fragment`, which moves only the recorded slot and only while the seizer still holds it.
+
+## D42. Evolution V outcome idea pictures
+
+Disposition: `implemented`.
+
+Basis: spec 014's rule against undisclosed copied icons and the round 2 remaining-work list (D10 had recorded the outcome art as not produced).
+
+Decision: Contained, Independent Adaptation, Integrated, Reliance and Autonomous Network each have their own 64x64 picture in the existing Event 025 idea family, so no two Event 025 ideas share a picture. Hashes and sources are in the visual asset audit.
+
+## D43. Decision and category icon family
+
+Disposition: `implemented`; appearance in the decision list is `needs_live_game`.
+
+Basis: asset inventory row `025_action_icons`, spec 010's decision icon section, spec 014's cross-type reuse rule and the round 2 remaining-work list.
+
+Decision:
+
+- Twenty 32x32 action-family icons cover all 89 Event 025 decisions and missions: board, expedition, route and gateway, aerial survey, logistics and depot, radio, crew, outpost, survey, recovery, rival operation, countermeasure, cooperation, safety and withdrawal, the signal, survivor, militarisation and wreck responses, the Evolution V policies, and analysis. The board control, the expedition commitment, aerial survey and radio get their own pictures beyond the listed families, because no listed family's subject reads as those actions.
+- Families follow what the action does rather than which category lists it: the demilitarised corridor uses cooperation, rescuing a rival crew uses safety, armed retrieval uses militarisation, emergency passage uses route, the mobile traverse camp uses expedition and containing recovered systems uses the Evolution V policy picture.
+- Spec 010's individual subjects are grouped by family, as spec 010 allows for closely related variants: the five signal responses, the six rival operations and the five Evolution V policies each share one picture.
+- Every category has its own 52x40 icon in the existing glacial-ice category style: evolution, outpost, cooperation, rival operations (`GFX_decision_category_025_antarctic_countermeasure`), safety and analysis join the expedition icon. The board's action icons keep only their board consumers.
+- The Open the Expedition Board control (D33) uses the board family icon instead of the expedition category icon.
+- The evolution category picture still shares the expedition category picture; the asset inventory requires one category picture, so this is not changed.
