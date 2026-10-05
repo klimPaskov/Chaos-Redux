@@ -4962,15 +4962,57 @@ natural_disaster_prepare_severity_profile = {
 }
 
 natural_disaster_damage_selected_building = {
-	meta_effect = {
-		text = {
-			damage_building = {
-				type = [BUILDING_TYPE]
-				damage = [BUILDING_DAMAGE]
+	# Damage only a building the state has: damage_building logs an error for a missing one.
+	# Naval bases and supply hubs are province buildings, the rest are state buildings.
+	set_temp_variable = { natural_disaster_building_present_above = constant:natural_disaster_damage.building_present_above }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_damage_building = token:naval_base }
+				check_variable = { natural_disaster_damage_building = token:supply_node }
 			}
 		}
-		BUILDING_TYPE = "[?natural_disaster_damage_building.GetTokenKey]"
-		BUILDING_DAMAGE = "[?natural_disaster_building_damage|2]"
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						any_province_building_level = {
+							province = { all_provinces = yes }
+							building = [BUILDING_TYPE]
+							level > [PRESENT_ABOVE]
+						}
+					}
+					damage_building = {
+						type = [BUILDING_TYPE]
+						damage = [BUILDING_DAMAGE]
+					}
+				}
+			}
+			BUILDING_TYPE = "[?natural_disaster_damage_building.GetTokenKey]"
+			BUILDING_DAMAGE = "[?natural_disaster_building_damage|2]"
+			PRESENT_ABOVE = "[?natural_disaster_building_present_above|0]"
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				if = {
+					limit = {
+						non_damaged_building_level = {
+							building = [BUILDING_TYPE]
+							level > [PRESENT_ABOVE]
+						}
+					}
+					damage_building = {
+						type = [BUILDING_TYPE]
+						damage = [BUILDING_DAMAGE]
+					}
+				}
+			}
+			BUILDING_TYPE = "[?natural_disaster_damage_building.GetTokenKey]"
+			BUILDING_DAMAGE = "[?natural_disaster_building_damage|2]"
+			PRESENT_ABOVE = "[?natural_disaster_building_present_above|0]"
+		}
 	}
 }
 
