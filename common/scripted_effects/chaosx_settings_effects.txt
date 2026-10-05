@@ -4020,6 +4020,20 @@ fire_event_by_temp_id_no_cluster = {
 	set_temp_variable = { event_fire_dispatched = 0 }
 
 	if = {
+		limit = {
+			check_variable = { event_id = 2 }
+			check_variable = { events_log_manual_event_detail_trigger > 0 }
+		}
+		set_temp_variable = { zombie_outbreak_prefire_ready = 0 }
+		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_state }
+		prepare_zombie_outbreak_initial_spawn = yes
+		if = {
+			limit = { check_variable = { zombie_outbreak_prefire_ready < 1 } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			chaosx_report_forced_event_failure = yes
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = 4 } }
 		# Own Random War's temporary outputs across its preparation helper.
 		set_temp_variable = { random_war_context_ready = 0 }
@@ -4403,6 +4417,15 @@ fire_event_by_temp_id_no_cluster = {
 			if = {
 				limit = { check_variable = { event_fire_record_id = 4 } }
 				random_war_fire_current_context = yes
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_fire_record_id = 2 }
+					check_variable = { events_log_manual_event_detail_trigger > 0 }
+					check_variable = { zombie_outbreak_prefire_ready > 0 }
+					has_event_target = zombie_initial_outbreak_host
+				}
+				event_target:zombie_initial_outbreak_host = { country_event = { id = chaosx.nr2.1 } }
 			}
 			else_if = {
 				limit = {

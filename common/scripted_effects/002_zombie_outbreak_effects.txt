@@ -1,5 +1,78 @@
 @ZOMBIE_EVACUATION_RETRY_COOLDOWN_DAYS = 21
 
+# Count a successful outbreak site and queue the shared news report once per campaign.
+# Scope: a country event after `outbreak_state` is selected; `outbreak_state` must be zombie-controlled.
+# Input: `global.zombie_outbreak_news_site_count`, initialized by chaosx.nr2.1.
+# Output: the global site count advances for a valid target; the first valid call queues chaosx.news.3.
+# Side effects: sets `zombie_outbreak_world_news_queued` and schedules one news event after three days.
+queue_zombie_outbreak_world_news = {
+	if = {
+		limit = {
+			has_event_target = outbreak_state
+			event_target:outbreak_state = { is_zombie_controlled_state = yes }
+		}
+		add_to_variable = { global.zombie_outbreak_news_site_count = 1 }
+		if = {
+			limit = { NOT = { has_global_flag = zombie_outbreak_world_news_queued } }
+			set_global_flag = zombie_outbreak_world_news_queued
+			news_event = { id = chaosx.news.3 days = 3 }
+		}
+	}
+}
+
+# Prepares a Settings-forced initial outbreak on a valid populated state.
+# Scope: the player country that requested the event; the state and host persist through the event chain.
+# Outputs: zombie_initial_outbreak_host, zombie_initial_outbreak_state, zombie_outbreak_prefire_ready, and a readable failure reason.
+prepare_zombie_outbreak_initial_spawn = {
+	set_temp_variable = { zombie_outbreak_prefire_ready = 0 }
+	set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_state }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = has_zombie_outbreak
+				ZZZ = { num_of_controlled_states > 0 }
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					num_of_controlled_states > 0
+				}
+				any_country = {
+					exists = yes
+					has_country_flag = weaponized_zombie_outbreak_country
+					num_of_controlled_states > 0
+				}
+			}
+		}
+		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.already_active }
+	}
+	else_if = {
+		limit = { has_global_flag = zombie_system_disabled }
+		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.unavailable }
+	}
+	else = {
+		random_country = {
+			limit = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				any_owned_state = {
+					is_island_state = no
+					state_population_k > constant:zombie_outbreak.initial_state_population_threshold_k
+					is_controlled_by = PREV
+				}
+			}
+			save_event_target_as = zombie_initial_outbreak_host
+			random_owned_state = {
+				limit = {
+					is_island_state = no
+					state_population_k > constant:zombie_outbreak.initial_state_population_threshold_k
+					is_controlled_by = PREV
+				}
+				save_event_target_as = zombie_initial_outbreak_state
+				set_temp_variable = { zombie_outbreak_prefire_ready = 1 }
+			}
+		}
+	}
+}
+
 # Calculate total zombie strength for threat checks shared across decisions and on_actions.
 calculate_total_zombie_strength = {
 	set_temp_variable = { total_zombie_divisions = 0 }
@@ -1202,31 +1275,38 @@ evaluate_zombie_postwar_order_eligibility = {
 }
 
 activate_zombie_postwar_order = {
-	set_global_flag = zombie_postwar_order_active
+	if = {
+		limit = { NOT = { has_global_flag = zombie_postwar_order_active } }
+		set_global_flag = zombie_postwar_order_active
 
-	every_country = {
-		limit = {
-			exists = yes
-			uses_normal_civilian_systems = yes
-			NOT = { is_zombie_outbreak_country = yes }
-			NOT = { has_country_flag = weaponized_zombie_outbreak_country }
-		}
+		every_country = {
+			limit = {
+				exists = yes
+				uses_normal_civilian_systems = yes
+				NOT = { is_zombie_outbreak_country = yes }
+				NOT = { has_country_flag = weaponized_zombie_outbreak_country }
+			}
 
-		if = {
-			limit = { NOT = { has_idea = zombie_postwar_global_vigilance } }
-			add_ideas = zombie_postwar_global_vigilance
-		}
+			if = {
+				limit = { NOT = { has_idea = zombie_postwar_global_vigilance } }
+				add_ideas = zombie_postwar_global_vigilance
+			}
 
-		if = {
-			limit = { NOT = { is_in_tech_sharing_group = zombie_postwar_research_compact } }
-			add_to_tech_sharing_group = zombie_postwar_research_compact
-		}
+			if = {
+				limit = { NOT = { is_in_tech_sharing_group = zombie_postwar_research_compact } }
+				add_to_tech_sharing_group = zombie_postwar_research_compact
+			}
 
-		if = {
-			limit = { has_country_flag = was_ever_at_war_with_zombies }
-			country_event = {
-				id = chaosx.nr2.12
-				days = constant:zombie_postwar.memorial_initial_delay_days
+			if = {
+				limit = {
+					has_country_flag = was_ever_at_war_with_zombies
+					NOT = { has_country_flag = zombie_postwar_compact_event_queued }
+				}
+				set_country_flag = zombie_postwar_compact_event_queued
+				country_event = {
+					id = chaosx.nr2.12
+					days = constant:zombie_postwar.memorial_initial_delay_days
+				}
 			}
 		}
 	}
@@ -1934,41 +2014,44 @@ disable_zombie_outbreak_system = {
 }
 
 on_zombie_threat_defeated = {
-	set_global_flag = zombie_threat_defeated
-	set_global_flag = {
-		flag = super_event_visible
-		days = 30
-		value = 5
-	}
-	set_variable = { global.current_super_event_audio_id = 5 }
-	every_country = {
-		limit = { is_ai = no }
-		play_current_super_event_audio = yes
-	}
-
-	set_temp_variable = { chaos_change = constant:zombie_threat.defeat_chaos_reduction }
-	multiply_temp_variable = { chaos_change = -1 }
-	set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.zombies_defeated }
-	set_temp_variable = { chaos_history_reason_custom = 1 }
-	add_chaos_meter_value = yes
-
-	capture_zombie_campaign_memorial_totals = yes
-	evaluate_zombie_postwar_order_eligibility = yes
-
 	if = {
-		limit = {
-			check_variable = {
-				var = zombie_postwar_order_should_activate
-				value = 1
-				compare = greater_than_or_equals
-			}
+		limit = { NOT = { has_global_flag = zombie_threat_defeated } }
+		set_global_flag = zombie_threat_defeated
+		set_global_flag = {
+			flag = super_event_visible
+			days = 30
+			value = 5
 		}
-		activate_zombie_postwar_order = yes
-	}
+		set_variable = { global.current_super_event_audio_id = 5 }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
 
-	if = {
-		limit = { has_global_flag = anti_zombie_league_formed }
-		dismantle_anti_zombie_league = yes
+		set_temp_variable = { chaos_change = constant:zombie_threat.defeat_chaos_reduction }
+		multiply_temp_variable = { chaos_change = -1 }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.zombies_defeated }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+
+		capture_zombie_campaign_memorial_totals = yes
+		evaluate_zombie_postwar_order_eligibility = yes
+
+		if = {
+			limit = {
+				check_variable = {
+					var = zombie_postwar_order_should_activate
+					value = 1
+					compare = greater_than_or_equals
+				}
+			}
+			activate_zombie_postwar_order = yes
+		}
+
+		if = {
+			limit = { has_global_flag = anti_zombie_league_formed }
+			dismantle_anti_zombie_league = yes
+		}
 	}
 }
 

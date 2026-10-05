@@ -5137,3 +5137,54 @@ black_friday_withdraw_political_power_purchase = {
 	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
 	black_friday_remove_committed_achievement_family = yes
 }
+
+# COUNTRY scope (payer). Caller initializes receipt_credited and
+# receipt_sale_sequence temps to zero before calling, then persists the
+# credited output as an owner flag and its sequence as an owner normal variable.
+# The receipt records an actual committed-count increase, including the first
+# purchase after a family generation reset. It never infers credit from price.
+# No payment is made here. Existing credit eligibility and legacy APIs persist.
+black_friday_credit_political_power_purchase_with_receipt = {
+	set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.political_power }
+	set_temp_variable = { black_friday_political_power_receipt_before_count = constant:universal_cost_framework.zero }
+	if = {
+		limit = {
+			check_variable = { black_friday_achievement_family_generation_@var:black_friday_purchase_family_id = global.black_friday_sale_sequence }
+		}
+		set_temp_variable = { black_friday_political_power_receipt_before_count = black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id }
+	}
+	black_friday_credit_political_power_purchase = yes
+	if = {
+		limit = {
+			has_variable = black_friday_achievement_indexed_sale_sequence
+			check_variable = { global.black_friday_sale_sequence > constant:universal_cost_framework.zero }
+			check_variable = { black_friday_achievement_indexed_sale_sequence = global.black_friday_sale_sequence }
+			check_variable = { black_friday_achievement_family_generation_@var:black_friday_purchase_family_id = global.black_friday_sale_sequence }
+			check_variable = { black_friday_achievement_family_committed_count_@var:black_friday_purchase_family_id > black_friday_political_power_receipt_before_count }
+		}
+		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = global.black_friday_sale_sequence }
+	}
+}
+
+# COUNTRY scope (payer). Caller loads its own flag into receipt_credited and
+# its saved normal variable into receipt_sale_sequence before each refund.
+# Withdraws at most one credit from that same retained sale index. Consumes
+# both temps on every call. Caller clears its persistent receipt after refund
+# or successful completion. Closed-sale history and awards are not rewritten.
+black_friday_withdraw_political_power_purchase_with_receipt = {
+	if = {
+		limit = {
+			check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+			check_variable = { black_friday_political_power_receipt_sale_sequence > constant:universal_cost_framework.zero }
+			has_variable = black_friday_achievement_indexed_sale_sequence
+			check_variable = { black_friday_political_power_receipt_sale_sequence = global.black_friday_sale_sequence }
+			check_variable = { black_friday_political_power_receipt_sale_sequence = black_friday_achievement_indexed_sale_sequence }
+		}
+		black_friday_withdraw_political_power_purchase = yes
+	}
+	set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+}

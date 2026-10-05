@@ -32,25 +32,65 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = {
+					has_event_target = chaosx_manual_event_requester
+					NOT = { zombie_initial_outbreak_selection_is_current = yes }
+				}
+				set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_state }
+				chaosx_report_forced_event_failure = yes
+			}
+			if = {
+				limit = {
 					NOT = { has_global_flag = has_zombie_outbreak }
 					NOT = { has_global_flag = zombie_system_disabled }
-				}
-				random_state = {
-					limit = { is_island_state = no state_population_k > 1000 NOT = { is_controlled_by = ZZZ } } # At least 1 million
-					save_event_target_as = zombie_state
-					save_global_event_target_as = outbreak_state
-					transfer_state_to = ZZZ # Sets ZZZ owner of the state
-					add_core_of = ZZZ
-					ZZZ = {
-						set_country_flag = chaos_unit_family_parent_actor
-						set_major = yes
-						load_oob = "ZZZ_1936" # Get Brainzz Horde template
-						apply_standard_zombie_recruitment_profile = yes
+					OR = {
+						zombie_initial_outbreak_selection_is_current = yes
+						NOT = { has_event_target = chaosx_manual_event_requester }
 					}
-					create_unit = {
-						division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
-						count = 20
-						owner = ZZZ
+				}
+				set_variable = { global.zombie_outbreak_news_site_count = 0 }
+				clr_global_flag = zombie_outbreak_world_news_queued
+				if = {
+					limit = { zombie_initial_outbreak_selection_is_current = yes }
+					event_target:zombie_initial_outbreak_state = {
+						save_event_target_as = zombie_state
+						save_global_event_target_as = outbreak_state
+						transfer_state_to = ZZZ
+						add_core_of = ZZZ
+						ZZZ = {
+							set_country_flag = chaos_unit_family_parent_actor
+							set_major = yes
+							load_oob = "ZZZ_1936"
+							apply_standard_zombie_recruitment_profile = yes
+						}
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+							count = 20
+							owner = ZZZ
+						}
+					}
+				}
+				else = {
+					random_state = {
+						limit = {
+							is_island_state = no
+							state_population_k > constant:zombie_outbreak.initial_state_population_threshold_k
+							NOT = { is_controlled_by = ZZZ }
+						}
+						save_event_target_as = zombie_state
+						save_global_event_target_as = outbreak_state
+						transfer_state_to = ZZZ
+						add_core_of = ZZZ
+						ZZZ = {
+							set_country_flag = chaos_unit_family_parent_actor
+							set_major = yes
+							load_oob = "ZZZ_1936"
+							apply_standard_zombie_recruitment_profile = yes
+						}
+						create_unit = {
+							division = "name = \"Brainzz Horde\" division_template = \"Brainzz Horde\" start_experience_factor = 0.1"
+							count = 20
+							owner = ZZZ
+						}
 					}
 				}
 
@@ -405,7 +445,7 @@ country_event = {
 					limit = { has_event_target = outbreak_state }
 					spawn_selected_dynamic_zombie_outbreak = yes
 					apply_dynamic_zombie_outbreak_cooldowns = yes
-					news_event = { id = chaosx.news.3 days = 3 }
+					queue_zombie_outbreak_world_news = yes
 				}
 			}
 		}
@@ -918,18 +958,33 @@ country_event = {
 	picture = GFX_report_event_generic_research_lab
 
 	is_triggered_only = yes
+	trigger = {
+		has_global_flag = zombie_postwar_order_active
+		has_country_flag = was_ever_at_war_with_zombies
+		has_country_flag = zombie_postwar_compact_event_queued
+		NOT = { has_country_flag = zombie_postwar_compact_event_open }
+		NOT = { has_country_flag = zombie_postwar_compact_acknowledged }
+	}
+
+	immediate = {
+		set_country_flag = zombie_postwar_compact_event_open
+	}
 
 	option = {
 		name = chaosx.nr2.12.a
+		set_country_flag = zombie_postwar_compact_acknowledged
+		clr_country_flag = zombie_postwar_compact_event_open
 
 		if = {
 			limit = {
 				has_global_flag = zombie_postwar_order_active
 				has_country_flag = was_ever_at_war_with_zombies
+				NOT = { has_country_flag = zombie_postwar_first_memorial_queued }
 			}
+			set_country_flag = zombie_postwar_first_memorial_queued
 			country_event = {
 				id = chaosx.nr2.13
-				days = constant:zombie_postwar.memorial_repeat_days
+				days = constant:zombie_postwar.first_anniversary_delay_days
 			}
 		}
 	}
@@ -946,22 +1001,23 @@ country_event = {
 	trigger = {
 		has_global_flag = zombie_postwar_order_active
 		has_country_flag = was_ever_at_war_with_zombies
+		has_country_flag = zombie_postwar_first_memorial_queued
+		NOT = { has_country_flag = zombie_postwar_first_memorial_open }
+		NOT = { has_country_flag = zombie_postwar_first_memorial_complete }
+	}
+
+	immediate = {
+		set_country_flag = zombie_postwar_first_memorial_open
 	}
 
 	option = {
 		name = chaosx.nr2.13.a
-		add_political_power = constant:zombie_postwar.memorial_pp_reward
-
 		if = {
-			limit = {
-				has_global_flag = zombie_postwar_order_active
-				has_country_flag = was_ever_at_war_with_zombies
-			}
-			country_event = {
-				id = chaosx.nr2.13
-				days = constant:zombie_postwar.memorial_repeat_days
-			}
+			limit = { NOT = { has_country_flag = zombie_postwar_first_memorial_complete } }
+			add_political_power = constant:zombie_postwar.memorial_pp_reward
+			set_country_flag = zombie_postwar_first_memorial_complete
 		}
+		clr_country_flag = zombie_postwar_first_memorial_open
 	}
 }
 

@@ -1,0 +1,1126 @@
+--- a/common/decisions/002_zombie_outbreak_decisions.txt
++++ b/common/decisions/002_zombie_outbreak_decisions.txt
+@@ -50,7 +50,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_infected_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -61,13 +70,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_infected_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_standard }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -115,7 +134,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_rabid_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -126,13 +154,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_rabid_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_rabid }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -180,7 +218,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_parasitic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -191,13 +238,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_parasitic }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -245,7 +302,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_mutant_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -256,13 +322,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_mutant_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_mutant }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -310,7 +386,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_undead_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -321,13 +406,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_undead_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_undead }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -375,7 +470,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_necrotic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -386,13 +490,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_necrotic }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -440,7 +554,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_demonic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -451,13 +574,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_demonic_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_demonic }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
+ 		}
+ 	}
+ 
+@@ -511,7 +644,16 @@
+ 		ai_will_do = { factor = 1 }
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
++					set_variable = { develop_weaponized_zombie_wendigo_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+ 			}
+ 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+@@ -522,13 +664,23 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = weaponized_zombie_counterstrain_paid_pp
+ 				clear_variable = weaponized_zombie_counterstrain_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence }
++				if = {
++					limit = { has_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
++				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
+ 			}
+ 		}
+ 		remove_effect = {
+ 			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_wendigo }
+ 			apply_weaponized_zombie_counterstrain_research = yes
+ 			clear_variable = weaponized_zombie_counterstrain_paid_pp
++			clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
++			clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
+ 		}
+ 	}
+ }
+@@ -648,7 +800,18 @@
+ 		}
+ 
+ 		complete_effect = {
+-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
++			hidden_effect = {
++				clr_country_flag = find_cure_tier_0_sale_credit
++				clear_variable = find_cure_tier_0_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = find_cure_tier_0_sale_credit
++					set_variable = { find_cure_tier_0_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
++			}
+ 			set_variable = { zombie_cure_tier_0_paid_pp = global.black_friday_price_pp_20 }
+ 			add_timed_idea = {
+ 				idea = searching_for_cure
+@@ -658,6 +821,8 @@
+ 
+ 		remove_effect = {
+ 			clear_variable = zombie_cure_tier_0_paid_pp
++			clr_country_flag = find_cure_tier_0_sale_credit
++			clear_variable = find_cure_tier_0_sale_sequence
+ 			# Calculate dynamic cure research value before applying
+ 			calculate_cure_research_value = yes
+ 
+@@ -704,7 +869,15 @@
+ 				remove_ideas = searching_for_cure
+ 				add_political_power = zombie_cure_tier_0_paid_pp
+ 				clear_variable = zombie_cure_tier_0_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_0_sale_sequence }
++				if = {
++					limit = { has_country_flag = find_cure_tier_0_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = find_cure_tier_0_sale_credit
++				clear_variable = find_cure_tier_0_sale_sequence
+ 			}
+ 		}
+ 	}
+@@ -819,7 +992,18 @@
+ 		}
+ 
+ 		complete_effect = {
+-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
++			hidden_effect = {
++				clr_country_flag = find_cure_tier_1_sale_credit
++				clear_variable = find_cure_tier_1_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = find_cure_tier_1_sale_credit
++					set_variable = { find_cure_tier_1_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
++			}
+ 			set_variable = { zombie_cure_tier_1_paid_pp = global.black_friday_price_pp_30 }
+ 			add_timed_idea = {
+ 				idea = searching_for_cure_tier_1
+@@ -829,6 +1013,8 @@
+ 
+ 		remove_effect = {
+ 			clear_variable = zombie_cure_tier_1_paid_pp
++			clr_country_flag = find_cure_tier_1_sale_credit
++			clear_variable = find_cure_tier_1_sale_sequence
+ 			# Calculate dynamic cure research value before applying
+ 			calculate_cure_research_value = yes
+ 
+@@ -874,7 +1060,15 @@
+ 			remove_ideas = searching_for_cure_tier_1
+ 			add_political_power = zombie_cure_tier_1_paid_pp
+ 			clear_variable = zombie_cure_tier_1_paid_pp
+-			black_friday_withdraw_political_power_purchase = yes
++			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_1_sale_sequence }
++			if = {
++				limit = { has_country_flag = find_cure_tier_1_sale_credit }
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++			}
++			black_friday_withdraw_political_power_purchase_with_receipt = yes
++			clr_country_flag = find_cure_tier_1_sale_credit
++			clear_variable = find_cure_tier_1_sale_sequence
+ 		}
+ 	}
+ }
+@@ -1002,7 +1196,18 @@
+ 	}
+ 
+ 	complete_effect = {
+-		hidden_effect = { black_friday_credit_political_power_purchase = yes }
++		hidden_effect = {
++			clr_country_flag = find_cure_tier_2_sale_credit
++			clear_variable = find_cure_tier_2_sale_sequence
++			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++			black_friday_credit_political_power_purchase_with_receipt = yes
++			if = {
++				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++				set_country_flag = find_cure_tier_2_sale_credit
++				set_variable = { find_cure_tier_2_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++			}
++		}
+ 		set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
+ 		add_timed_idea = {
+ 			idea = searching_for_cure_tier_2
+@@ -1011,6 +1216,8 @@
+ 	}
+ 	remove_effect = {
+ 		clear_variable = zombie_cure_tier_2_paid_pp
++		clr_country_flag = find_cure_tier_2_sale_credit
++		clear_variable = find_cure_tier_2_sale_sequence
+ 		# Calculate dynamic cure research value before applying
+ 		calculate_cure_research_value = yes
+ 
+@@ -1056,7 +1263,15 @@
+ 		remove_ideas = searching_for_cure_tier_2
+ 		add_political_power = zombie_cure_tier_2_paid_pp
+ 		clear_variable = zombie_cure_tier_2_paid_pp
+-		black_friday_withdraw_political_power_purchase = yes
++		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_2_sale_sequence }
++		if = {
++			limit = { has_country_flag = find_cure_tier_2_sale_credit }
++			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++		}
++		black_friday_withdraw_political_power_purchase_with_receipt = yes
++		clr_country_flag = find_cure_tier_2_sale_credit
++		clear_variable = find_cure_tier_2_sale_sequence
+ 	}
+ }
+ }
+@@ -1212,7 +1427,18 @@
+ 	}
+ 
+ 	complete_effect = {
+-		hidden_effect = { black_friday_credit_political_power_purchase = yes }
++		hidden_effect = {
++			clr_country_flag = find_cure_tier_3_sale_credit
++			clear_variable = find_cure_tier_3_sale_sequence
++			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++			black_friday_credit_political_power_purchase_with_receipt = yes
++			if = {
++				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++				set_country_flag = find_cure_tier_3_sale_credit
++				set_variable = { find_cure_tier_3_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++			}
++		}
+ 		set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
+ 		add_timed_idea = {
+ 			idea = searching_for_cure_tier_3
+@@ -1221,6 +1447,8 @@
+ 	}
+ 	remove_effect = {
+ 		clear_variable = zombie_cure_tier_3_paid_pp
++		clr_country_flag = find_cure_tier_3_sale_credit
++		clear_variable = find_cure_tier_3_sale_sequence
+ 		# Calculate dynamic cure research value before applying
+ 		calculate_cure_research_value = yes
+ 
+@@ -1266,7 +1494,15 @@
+ 		remove_ideas = searching_for_cure_tier_3
+ 		add_political_power = zombie_cure_tier_3_paid_pp
+ 		clear_variable = zombie_cure_tier_3_paid_pp
+-		black_friday_withdraw_political_power_purchase = yes
++		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_3_sale_sequence }
++		if = {
++			limit = { has_country_flag = find_cure_tier_3_sale_credit }
++			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++		}
++		black_friday_withdraw_political_power_purchase_with_receipt = yes
++		clr_country_flag = find_cure_tier_3_sale_credit
++		clear_variable = find_cure_tier_3_sale_sequence
+ 	}
+ }
+ }
+@@ -1715,7 +1951,16 @@
+ 		cost = global.black_friday_price_zombie_prevention_hygiene_pp_cost
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = enforce_hygiene_measures_sale_credit
++				clear_variable = enforce_hygiene_measures_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = enforce_hygiene_measures_sale_credit
++					set_variable = { enforce_hygiene_measures_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_hygiene_paid_pp = global.black_friday_price_zombie_prevention_hygiene_pp_cost }
+ 			}
+ 		}
+@@ -1725,7 +1970,15 @@
+ 			hidden_effect = {
+ 				add_political_power = zombie_prevention_hygiene_paid_pp
+ 				clear_variable = zombie_prevention_hygiene_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = enforce_hygiene_measures_sale_sequence }
++				if = {
++					limit = { has_country_flag = enforce_hygiene_measures_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = enforce_hygiene_measures_sale_credit
++				clear_variable = enforce_hygiene_measures_sale_sequence
+ 			}
+ 		}
+ 
+@@ -1857,6 +2110,8 @@
+ 		remove_effect = {
+ 			apply_shared_hygiene_measures = yes
+ 			clear_variable = zombie_prevention_hygiene_paid_pp
++			clr_country_flag = enforce_hygiene_measures_sale_credit
++			clear_variable = enforce_hygiene_measures_sale_sequence
+ 		}
+ 	}
+ 
+@@ -1878,7 +2133,16 @@
+ 		cost = global.black_friday_price_zombie_prevention_migration_pp_cost
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = restrict_migration_sale_credit
++				clear_variable = restrict_migration_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = restrict_migration_sale_credit
++					set_variable = { restrict_migration_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_migration_paid_pp = global.black_friday_price_zombie_prevention_migration_pp_cost }
+ 			}
+ 		}
+@@ -1888,7 +2152,15 @@
+ 			hidden_effect = {
+ 				add_political_power = zombie_prevention_migration_paid_pp
+ 				clear_variable = zombie_prevention_migration_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = restrict_migration_sale_sequence }
++				if = {
++					limit = { has_country_flag = restrict_migration_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = restrict_migration_sale_credit
++				clear_variable = restrict_migration_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2028,6 +2300,8 @@
+ 		remove_effect = {
+ 			apply_shared_migration_restrictions = yes
+ 			clear_variable = zombie_prevention_migration_paid_pp
++			clr_country_flag = restrict_migration_sale_credit
++			clear_variable = restrict_migration_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2049,7 +2323,16 @@
+ 		cost = global.black_friday_price_zombie_prevention_quarantine_pp_cost
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = quarantine_protocols_sale_credit
++				clear_variable = quarantine_protocols_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = quarantine_protocols_sale_credit
++					set_variable = { quarantine_protocols_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_quarantine_paid_pp = global.black_friday_price_zombie_prevention_quarantine_pp_cost }
+ 			}
+ 		}
+@@ -2059,7 +2342,15 @@
+ 			hidden_effect = {
+ 				add_political_power = zombie_prevention_quarantine_paid_pp
+ 				clear_variable = zombie_prevention_quarantine_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = quarantine_protocols_sale_sequence }
++				if = {
++					limit = { has_country_flag = quarantine_protocols_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = quarantine_protocols_sale_credit
++				clear_variable = quarantine_protocols_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2214,6 +2505,8 @@
+ 		remove_effect = {
+ 			apply_shared_quarantine_protocols = yes
+ 			clear_variable = zombie_prevention_quarantine_paid_pp
++			clr_country_flag = quarantine_protocols_sale_credit
++			clear_variable = quarantine_protocols_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2235,7 +2528,16 @@
+ 		cost = global.black_friday_price_zombie_prevention_border_closure_pp_cost
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = close_borders_completely_sale_credit
++				clear_variable = close_borders_completely_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = close_borders_completely_sale_credit
++					set_variable = { close_borders_completely_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_borders_paid_pp = global.black_friday_price_zombie_prevention_border_closure_pp_cost }
+ 			}
+ 		}
+@@ -2245,7 +2547,15 @@
+ 			hidden_effect = {
+ 				add_political_power = zombie_prevention_borders_paid_pp
+ 				clear_variable = zombie_prevention_borders_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = close_borders_completely_sale_sequence }
++				if = {
++					limit = { has_country_flag = close_borders_completely_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = close_borders_completely_sale_credit
++				clear_variable = close_borders_completely_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2410,6 +2720,8 @@
+ 		remove_effect = {
+ 			apply_shared_closed_borders = yes
+ 			clear_variable = zombie_prevention_borders_paid_pp
++			clr_country_flag = close_borders_completely_sale_credit
++			clear_variable = close_borders_completely_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2435,7 +2747,16 @@
+ 		cost = global.black_friday_price_zombie_prevention_martial_law_pp_cost
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = extreme_martial_law_sale_credit
++				clear_variable = extreme_martial_law_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = extreme_martial_law_sale_credit
++					set_variable = { extreme_martial_law_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_martial_law_paid_pp = global.black_friday_price_zombie_prevention_martial_law_pp_cost }
+ 			}
+ 		}
+@@ -2445,7 +2766,15 @@
+ 			hidden_effect = {
+ 				add_political_power = zombie_prevention_martial_law_paid_pp
+ 				clear_variable = zombie_prevention_martial_law_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = extreme_martial_law_sale_sequence }
++				if = {
++					limit = { has_country_flag = extreme_martial_law_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = extreme_martial_law_sale_credit
++				clear_variable = extreme_martial_law_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2603,6 +2932,8 @@
+ 		remove_effect = {
+ 			apply_shared_extreme_martial_law = yes
+ 			clear_variable = zombie_prevention_martial_law_paid_pp
++			clr_country_flag = extreme_martial_law_sale_credit
++			clear_variable = extreme_martial_law_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2628,7 +2959,16 @@
+ 		cost = global.black_friday_price_pp_10
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = revoke_hygiene_measures_sale_credit
++				clear_variable = revoke_hygiene_measures_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = revoke_hygiene_measures_sale_credit
++					set_variable = { revoke_hygiene_measures_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_revoke_hygiene_paid_pp = global.black_friday_price_pp_10 }
+ 			}
+ 		}
+@@ -2640,7 +2980,15 @@
+ 				remove_ideas = outbreak_prevention_hygiene_measures
+ 				add_political_power = zombie_prevention_revoke_hygiene_paid_pp
+ 				clear_variable = zombie_prevention_revoke_hygiene_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_hygiene_measures_sale_sequence }
++				if = {
++					limit = { has_country_flag = revoke_hygiene_measures_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = revoke_hygiene_measures_sale_credit
++				clear_variable = revoke_hygiene_measures_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2709,6 +3057,8 @@
+ 		remove_effect = {
+ 			revoke_shared_hygiene_measures = yes
+ 			clear_variable = zombie_prevention_revoke_hygiene_paid_pp
++			clr_country_flag = revoke_hygiene_measures_sale_credit
++			clear_variable = revoke_hygiene_measures_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2734,7 +3084,16 @@
+ 		cost = global.black_friday_price_pp_10
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = revoke_migration_restrictions_sale_credit
++				clear_variable = revoke_migration_restrictions_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = revoke_migration_restrictions_sale_credit
++					set_variable = { revoke_migration_restrictions_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_revoke_migration_paid_pp = global.black_friday_price_pp_10 }
+ 			}
+ 		}
+@@ -2746,7 +3105,15 @@
+ 				remove_ideas = outbreak_prevention_migration_restricted
+ 				add_political_power = zombie_prevention_revoke_migration_paid_pp
+ 				clear_variable = zombie_prevention_revoke_migration_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_migration_restrictions_sale_sequence }
++				if = {
++					limit = { has_country_flag = revoke_migration_restrictions_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = revoke_migration_restrictions_sale_credit
++				clear_variable = revoke_migration_restrictions_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2765,6 +3132,8 @@
+ 		remove_effect = {
+ 			revoke_shared_migration_restrictions = yes
+ 			clear_variable = zombie_prevention_revoke_migration_paid_pp
++			clr_country_flag = revoke_migration_restrictions_sale_credit
++			clear_variable = revoke_migration_restrictions_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2790,7 +3159,16 @@
+ 		cost = global.black_friday_price_pp_10
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = revoke_quarantine_protocols_sale_credit
++				clear_variable = revoke_quarantine_protocols_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = revoke_quarantine_protocols_sale_credit
++					set_variable = { revoke_quarantine_protocols_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_revoke_quarantine_paid_pp = global.black_friday_price_pp_10 }
+ 			}
+ 		}
+@@ -2802,7 +3180,15 @@
+ 				remove_ideas = outbreak_prevention_quarantine_protocols
+ 				add_political_power = zombie_prevention_revoke_quarantine_paid_pp
+ 				clear_variable = zombie_prevention_revoke_quarantine_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_quarantine_protocols_sale_sequence }
++				if = {
++					limit = { has_country_flag = revoke_quarantine_protocols_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = revoke_quarantine_protocols_sale_credit
++				clear_variable = revoke_quarantine_protocols_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2821,6 +3207,8 @@
+ 		remove_effect = {
+ 			revoke_shared_quarantine_protocols = yes
+ 			clear_variable = zombie_prevention_revoke_quarantine_paid_pp
++			clr_country_flag = revoke_quarantine_protocols_sale_credit
++			clear_variable = revoke_quarantine_protocols_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2846,7 +3234,16 @@
+ 		cost = global.black_friday_price_pp_10
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = reopen_borders_sale_credit
++				clear_variable = reopen_borders_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = reopen_borders_sale_credit
++					set_variable = { reopen_borders_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_revoke_borders_paid_pp = global.black_friday_price_pp_10 }
+ 			}
+ 		}
+@@ -2858,7 +3255,15 @@
+ 				remove_ideas = outbreak_prevention_borders_closed
+ 				add_political_power = zombie_prevention_revoke_borders_paid_pp
+ 				clear_variable = zombie_prevention_revoke_borders_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = reopen_borders_sale_sequence }
++				if = {
++					limit = { has_country_flag = reopen_borders_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = reopen_borders_sale_credit
++				clear_variable = reopen_borders_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2881,6 +3286,8 @@
+ 		remove_effect = {
+ 			reopen_shared_borders = yes
+ 			clear_variable = zombie_prevention_revoke_borders_paid_pp
++			clr_country_flag = reopen_borders_sale_credit
++			clear_variable = reopen_borders_sale_sequence
+ 		}
+ 	}
+ 
+@@ -2906,7 +3313,16 @@
+ 		cost = global.black_friday_price_pp_20
+ 		complete_effect = {
+ 			hidden_effect = {
+-				black_friday_credit_political_power_purchase = yes
++				clr_country_flag = revoke_extreme_martial_law_sale_credit
++				clear_variable = revoke_extreme_martial_law_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = revoke_extreme_martial_law_sale_credit
++					set_variable = { revoke_extreme_martial_law_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
+ 				set_variable = { zombie_prevention_revoke_martial_law_paid_pp = global.black_friday_price_pp_20 }
+ 			}
+ 		}
+@@ -2918,7 +3334,15 @@
+ 				remove_ideas = outbreak_prevention_extreme_martial_law
+ 				add_political_power = zombie_prevention_revoke_martial_law_paid_pp
+ 				clear_variable = zombie_prevention_revoke_martial_law_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_extreme_martial_law_sale_sequence }
++				if = {
++					limit = { has_country_flag = revoke_extreme_martial_law_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = revoke_extreme_martial_law_sale_credit
++				clear_variable = revoke_extreme_martial_law_sale_sequence
+ 			}
+ 		}
+ 
+@@ -2945,6 +3369,8 @@
+ 		remove_effect = {
+ 			revoke_shared_extreme_martial_law = yes
+ 			clear_variable = zombie_prevention_revoke_martial_law_paid_pp
++			clr_country_flag = revoke_extreme_martial_law_sale_credit
++			clear_variable = revoke_extreme_martial_law_sale_sequence
+ 		}
+ 	}
+ }
+@@ -3054,7 +3480,18 @@
+ 		}
+ 
+ 		complete_effect = {
+-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
++			hidden_effect = {
++				clr_country_flag = form_anti_zombie_league_sale_credit
++				clear_variable = form_anti_zombie_league_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = form_anti_zombie_league_sale_credit
++					set_variable = { form_anti_zombie_league_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
++			}
+ 			set_country_flag = azl_formation_in_progress
+ 			set_variable = { anti_zombie_league_paid_pp = global.black_friday_price_anti_zombie_league_formation_pp_cost }
+ 		}
+@@ -3062,13 +3499,25 @@
+ 		remove_effect = {
+ 			establish_anti_zombie_league = yes
+ 			clear_variable = anti_zombie_league_paid_pp
++			clr_country_flag = form_anti_zombie_league_sale_credit
++			clear_variable = form_anti_zombie_league_sale_sequence
+ 		}
+ 
+ 		cancel_effect = {
+ 			clr_country_flag = azl_formation_in_progress
+ 			add_political_power = anti_zombie_league_paid_pp
+ 			clear_variable = anti_zombie_league_paid_pp
+-			hidden_effect = { black_friday_withdraw_political_power_purchase = yes }
++			hidden_effect = {
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = form_anti_zombie_league_sale_sequence }
++				if = {
++					limit = { has_country_flag = form_anti_zombie_league_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = form_anti_zombie_league_sale_credit
++				clear_variable = form_anti_zombie_league_sale_sequence
++			}
+ 		}
+ 	}
+ 
+@@ -3308,7 +3757,18 @@
+ 		}
+ 
+ 		complete_effect = {
+-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
++			hidden_effect = {
++				clr_country_flag = invest_in_league_research_sale_credit
++				clear_variable = invest_in_league_research_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = invest_in_league_research_sale_credit
++					set_variable = { invest_in_league_research_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
++			}
+ 			add_timed_idea = {
+ 				idea = azl_investment_penalty
+ 				days = 30
+@@ -3330,7 +3790,15 @@
+ 				remove_ideas = azl_investment_penalty
+ 				add_political_power = anti_zombie_league_investment_paid_pp
+ 				clear_variable = anti_zombie_league_investment_paid_pp
+-				black_friday_withdraw_political_power_purchase = yes
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = invest_in_league_research_sale_sequence }
++				if = {
++					limit = { has_country_flag = invest_in_league_research_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = invest_in_league_research_sale_credit
++				clear_variable = invest_in_league_research_sale_sequence
+ 			}
+ 		}
+ 
+@@ -3364,12 +3832,22 @@
+ 						set_global_flag = azl_investment_maxed
+ 					}
+ 					clear_variable = anti_zombie_league_investment_paid_pp
++					clr_country_flag = invest_in_league_research_sale_credit
++					clear_variable = invest_in_league_research_sale_sequence
+ 
+ 				}
+ 				else = {
+ 					remove_ideas = azl_investment_penalty
+ 					add_political_power = anti_zombie_league_investment_paid_pp
+-					black_friday_withdraw_political_power_purchase = yes
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++					set_temp_variable = { black_friday_political_power_receipt_sale_sequence = invest_in_league_research_sale_sequence }
++					if = {
++						limit = { has_country_flag = invest_in_league_research_sale_credit }
++						set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++					}
++					black_friday_withdraw_political_power_purchase_with_receipt = yes
++					clr_country_flag = invest_in_league_research_sale_credit
++					clear_variable = invest_in_league_research_sale_sequence
+ 					clear_variable = anti_zombie_league_investment_paid_pp
+ 				}
+ 			}
+@@ -3414,7 +3892,18 @@
+ 		}
+ 
+ 		complete_effect = {
+-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
++			hidden_effect = {
++				clr_country_flag = disband_anti_zombie_league_sale_credit
++				clear_variable = disband_anti_zombie_league_sale_sequence
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
++				black_friday_credit_political_power_purchase_with_receipt = yes
++				if = {
++					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
++					set_country_flag = disband_anti_zombie_league_sale_credit
++					set_variable = { disband_anti_zombie_league_sale_sequence = black_friday_political_power_receipt_sale_sequence }
++				}
++			}
+ 			set_country_flag = azl_disbanding_league
+ 			set_variable = { anti_zombie_league_disband_paid_pp = global.black_friday_price_pp_10 }
+ 		}
+@@ -3422,6 +3911,8 @@
+ 		remove_effect = {
+ 			dismantle_anti_zombie_league = yes
+ 			clear_variable = anti_zombie_league_disband_paid_pp
++			clr_country_flag = disband_anti_zombie_league_sale_credit
++			clear_variable = disband_anti_zombie_league_sale_sequence
+ 		}
+ 
+ 		cancel_trigger = {
+@@ -3439,7 +3930,17 @@
+ 			clr_country_flag = azl_disbanding_league
+ 			add_political_power = anti_zombie_league_disband_paid_pp
+ 			clear_variable = anti_zombie_league_disband_paid_pp
+-			hidden_effect = { black_friday_withdraw_political_power_purchase = yes }
++			hidden_effect = {
++				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
++				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = disband_anti_zombie_league_sale_sequence }
++				if = {
++					limit = { has_country_flag = disband_anti_zombie_league_sale_credit }
++					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
++				}
++				black_friday_withdraw_political_power_purchase_with_receipt = yes
++				clr_country_flag = disband_anti_zombie_league_sale_credit
++				clear_variable = disband_anti_zombie_league_sale_sequence
++			}
+ 		}
+ 	}
+ }

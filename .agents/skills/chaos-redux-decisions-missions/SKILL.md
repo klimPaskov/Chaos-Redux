@@ -241,6 +241,21 @@ Check agreement just below, exactly at, and just above the quoted cost.
 
 When accepted design requires emergency resolution to remain available while every other recovery is unaffordable, do not gate it on full nominal reserves. Bound each actual fee by its nominal fee and the nonnegative current reserve, show the actual quote with matching texticons, and recompute all fees together before any debit, then charge that coherent quote once. Avoid hidden partial payments and threshold fee-waiver cliffs. For variable-fee emergency actions, use an `ai_hint_pp_cost` matching the actual quote only if that input form is verified as supported, otherwise omit the fixed nominal hint so a zero quote remains available to AI at zero political power. Never assume `ai_hint_pp_cost` accepts dynamic values. Verify exact numeric reader tokens in installed dynamic-variable documentation rather than assuming a display or stat name: `has_political_power`, `has_stability`, and `has_war_support` are documented readers, while raw `war_support` is not a documented built-in reader. This does not forbid a custom normal variable named `war_support`. Make final resolution and cleanup idempotent with a closed-state guard, and require queued work and late timed callbacks to match the active context before invoking cleanup. Preserve earned finite aftermath until its intended expiry and retain achievement receipts when removing active-crisis state.
 
+### Refundable native political-power credit receipts
+
+For refundable native political-power decisions using the sale price table, read the [receipt API contract](../../../common/scripted_effects/026_black_friday_simple_cost_api.md#refundable-native-political-power-decisions) and its [production helpers](../../../common/scripted_effects/026_black_friday_effects.txt).
+Keep the exact paid quote in an owner normal variable for currency refunds; achievement credit is a separate receipt and must never be inferred from the price or sale activity.
+
+Clear the previous owner receipt before crediting, initialize both `black_friday_political_power_receipt_credited` and `black_friday_political_power_receipt_sale_sequence` temps to zero in the caller chain, then invoke `black_friday_credit_political_power_purchase_with_receipt` once after payment.
+Persist a positive credited output as an owner country flag and its sale sequence as an owner normal variable, with separate pairs for decisions whose timers can overlap.
+
+On cancellation, load that flag and saved sequence into the receipt temps and call `black_friday_withdraw_political_power_purchase_with_receipt`; it withdraws only when the positive receipt sequence matches both the global sale sequence and the payer's retained achievement index.
+Refund the recorded paid quote once and clear the persistent receipt pair and paid marker, so repeated cancellation cannot refund currency or withdraw another purchase's credit.
+Successful completion clears the receipt and paid marker without withdrawing earned credit.
+Do not invent a historical credit ledger, reverse an older sale through a newer index, or revoke an awarded achievement.
+
+Verify same-sale refunds, purchases made outside a sale, older-sale refunds after a newer purchase, excluded credit eligibility, repeated cancellation, and successful completion through the actual helper chain.
+
 For upfront payments, draw each spendable cost once in the native or custom cost row. Remove duplicated amounts, debit prose, and affordability prose from the ordinary decision tooltip when the cost row already shows them. Retain tooltip text for meaningful ongoing consequences, duration, risk, cleanup, and non-consumed requirements.
 
 Requirements are separate from costs. A requirement such as `Depot control` can use concise literal text because it is not a spendable value. When a decision has many non-cost requirements, show a short summary such as `Requirements met` or `§RRequirements not met§!` and place the precise requirement list in a concise tooltip. Do not use this pattern to conceal extra spendable costs.

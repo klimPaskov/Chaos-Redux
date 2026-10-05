@@ -97,9 +97,11 @@ The outbreak namespace currently uses these IDs:
 - `chaosx.nr2.7`: Anti-Zombie League formation invitation
 - `chaosx.nr2.8`: zombie apocalypse world-end branch
 - `chaosx.nr2.10`: emergency island refugee convoy request
+- `chaosx.nr2.14`: departure from the Anti-Zombie League after the zombie front moves away
+- `chaosx.nr2.15`: renewed invitation when a new front threatens League territory
 - `chaosx.nr2.12`: postwar survivor compact announcement
-- `chaosx.nr2.13`: annual Day of the Buried memorial
-- `chaosx.news.3`: news follow-up for dynamic rear outbreaks
+- `chaosx.nr2.13`: first-anniversary Day of the Buried memorial
+- `chaosx.news.3`: once-per-campaign world report counting newly occupied outbreak states
 
 `chaosx.nr2.10` is a zombie subevent in the same chain.
 
@@ -281,7 +283,7 @@ When a rear outbreak fires:
 8. The dynamic country keeps using the single fixed zombie leader copied from `ZZZ`, and its portrait is synced to the current evolution tier without generating a fresh leader.
 9. `ZZZ` also has a one-entry fallback name pool in `common/names/ZZZ_names.txt`, so if the engine does try to auto-generate a temporary zombie character during setup, that name resolves cleanly as `Zombie Horde`.
 10. The source country gets a timed local cooldown and the whole world gets a 7 day global cooldown before another dynamic outbreak can fire.
-11. `chaosx.news.3` fires as public narrative fallout.
+11. Each successfully occupied outbreak state contributes to the shared news count. The first caller queues one `chaosx.news.3` report three days later. Later callers update the count without queuing duplicate reports during that campaign.
 
 #### Dynamic zombie template recruitment
 
@@ -662,11 +664,11 @@ When that happens:
 - `zombie_postwar_order_active` is set
 - all normal non-zombie countries gain `zombie_postwar_global_vigilance`
 - those same countries join the `zombie_postwar_research_compact` tech-sharing group for engineering, construction, electronics, and biowarfare work
-- every country marked with `was_ever_at_war_with_zombies` receives `chaosx.nr2.12`
+- each country marked with `was_ever_at_war_with_zombies` receives `chaosx.nr2.12` once
 
-`chaosx.nr2.12` announces the survivor compact and shows the recorded zombie-war dead.
+`chaosx.nr2.12` announces the survivor compact and shows the campaign's zombie-war dead.
 
-`chaosx.nr2.13` is the annual remembrance event. It repeats every `365` days for countries that were ever at war with zombies and grants `10` political power each year.
+Acknowledging the compact schedules one `chaosx.nr2.13` memorial for the first anniversary, `365` days later. It grants `10` political power once to each country that took part in the zombie war. The defeat hook, country queue flag, and memorial completion flag prevent later defeat callbacks and duplicate callbacks from reopening the same chain; the memorial does not repeat in later years.
 
 ### 9. Public world-end branch: `chaosx.nr2.8`
 
@@ -908,7 +910,7 @@ Controls:
 Controls:
 
 - postwar-order activation thresholds
-- memorial timing and annual political-power reward
+- first-anniversary memorial timing and one-time political-power reward
 - the permanent outbreak-risk slowdown from the survivor-vigilance idea
 
 ### `anti_zombie_league`
@@ -974,6 +976,8 @@ Audio assets:
   - sound definition: `chaosx_super_event_zombies_defeat_track`
 
 Audio source, license, duration, and conversion notes are recorded in `docs/super_events/super_event_audio_packages.md`.
+
+The initial outbreak uses Shakespeare's “The graves stood tenantless” lines from *Hamlet*, Act 1, Scene 1. Folger's digital text identifies the speaker as Horatio: [Folger Digital Text](https://www.folgerdigitaltexts.org/Ham/). The button “They're coming to get you!” quotes Johnny in *Night of the Living Dead* (1968). The source handoff records the U.S. public-domain evidence and jurisdiction limit: [TCM quote reference](https://www.tcm.com/articles/148239/quote-it-night-of-the-living-dead-quotes-from-night-of-the-living-dead).
 - `GFX_news_zombie_outbreak`
 - `GFX_report_event_generic_research_lab`
 - `GFX_report_event_generic_sign_treaty2`

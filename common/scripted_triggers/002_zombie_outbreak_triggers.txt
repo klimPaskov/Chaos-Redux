@@ -261,6 +261,66 @@ is_at_war_with_any_zombie_country = {
 	}
 }
 
+is_at_war_with_any_zombie_or_weaponized_country = {
+	OR = {
+		is_at_war_with_any_zombie_country = yes
+		any_country = {
+			is_weaponized_zombie_outbreak_country = yes
+			has_war_with = ROOT
+		}
+	}
+}
+
+# Counterstrain research remains relevant for either the standard outbreak or a living weaponized profile.
+is_zombie_counterstrain_system_active = {
+	OR = {
+		has_global_flag = has_zombie_outbreak
+		any_country = {
+			is_live_weaponized_zombie_profile_country = yes
+		}
+	}
+}
+
+# A League contribution must fit in the remaining investment cap before it can resolve.
+anti_zombie_league_investment_can_fit = {
+	NOT = { has_global_flag = azl_investment_maxed }
+	set_temp_variable = { azl_remaining_investment_capacity = constant:anti_zombie_league.max_investment }
+	subtract_from_temp_variable = { azl_remaining_investment_capacity = global.azl_global_investment }
+	OR = {
+		AND = {
+			is_major = yes
+			check_variable = {
+				var = azl_remaining_investment_capacity
+				value = constant:anti_zombie_league.investment_major
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			NOT = { is_major = yes }
+			check_variable = {
+				var = azl_remaining_investment_capacity
+				value = constant:anti_zombie_league.investment_minor
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+zombie_initial_outbreak_selection_is_current = {
+	has_event_target = zombie_initial_outbreak_host
+	has_event_target = zombie_initial_outbreak_state
+	event_target:zombie_initial_outbreak_host = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+	}
+	event_target:zombie_initial_outbreak_state = {
+		is_island_state = no
+		state_population_k > constant:zombie_outbreak.initial_state_population_threshold_k
+		is_owned_by = event_target:zombie_initial_outbreak_host
+		is_controlled_by = event_target:zombie_initial_outbreak_host
+	}
+}
+
 zombie_threat_confined_to_americas = {
 	OR = {
 		any_country = {
