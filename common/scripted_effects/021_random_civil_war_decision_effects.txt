@@ -62,9 +62,16 @@ event021_decision_defend_capital = {
 	event021_refresh_country_state = yes
 }
 
+# COUNTRY scope. Inside a crisis the review is used once per crisis; outside
+# one it is a prevention action that returns after the prevention cooldown.
 event021_decision_review_loyalty = {
 	set_country_flag = event021_loyalty_review_complete
-	set_country_flag = event021_loyalty_action_used
+	if = {
+		limit = { event021_country_can_prevent_fracture = yes }
+		set_temp_variable = { event021_decision_flag_days = constant:event021_action_tuning.prevention_cooldown_days }
+		set_country_flag = { flag = event021_prevention_loyalty_recent days = event021_decision_flag_days }
+	}
+	else = { set_country_flag = event021_loyalty_action_used }
 	if = {
 		limit = { has_country_flag = random_civil_war_hardliner_profile }
 		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.hardliner_pressure_cost }
@@ -481,9 +488,15 @@ event021_decision_complete_coalition_governance = {
 	event021_refresh_country_state = yes
 }
 
+# COUNTRY scope. Inside a crisis or its aftermath the action is used once per
+# crisis; outside one it returns after the prevention cooldown.
 event021_decision_protect_communications = {
-	set_country_flag = event021_prevention_communications_used
-	set_country_flag = random_civil_war_prevention_action_taken
+	if = {
+		limit = { event021_country_can_prevent_fracture = yes }
+		set_temp_variable = { event021_decision_flag_days = constant:event021_action_tuning.prevention_cooldown_days }
+		set_country_flag = { flag = event021_prevention_communications_recent days = event021_decision_flag_days }
+	}
+	else = { set_country_flag = event021_prevention_communications_used }
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.prevention_pressure_relief }
 	event021_reduce_pressure = yes
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.prevention_authority_gain }
@@ -493,7 +506,6 @@ event021_decision_protect_communications = {
 
 event021_decision_review_regional_administration = {
 	set_country_flag = event021_prevention_administration_used
-	set_country_flag = random_civil_war_prevention_action_taken
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.prevention_pressure_relief }
 	event021_reduce_pressure = yes
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.prevention_authority_gain }
@@ -669,28 +681,36 @@ event021_clear_mission_offer_lapses = {
 	clr_country_flag = event021_settlement_terms_offer_lapsed
 }
 
+# COUNTRY scope. Clears the once-per-crisis action receipts of the crisis
+# roles. Crisis cleanup and every new crisis role call it, so a side starts
+# each crisis with all of its actions; the timed prevention cooldowns are not
+# crisis receipts and are left to expire.
+event021_clear_crisis_action_receipts = {
+	clr_country_flag = event021_arsenal_action_used
+	clr_country_flag = event021_capital_action_used
+	clr_country_flag = event021_loyalty_action_used
+	clr_country_flag = event021_depot_action_used
+	clr_country_flag = event021_settlement_action_used
+	clr_country_flag = event021_reconstruction_action_used
+	clr_country_flag = event021_integration_action_used
+	clr_country_flag = event021_priority_front_action_used
+	clr_country_flag = event021_sponsor_disengagement_used
+	clr_country_flag = event021_disarmament_action_used
+	clr_country_flag = event021_coalition_action_used
+	clr_country_flag = event021_prevention_communications_used
+}
+
 event021_cleanup_decision_state = {
 	clr_country_flag = event021_hold_capital_mission_active
 	event021_clear_mission_offer_lapses = yes
 	clear_variable = event021_hold_capital_mission_target_state
 	clr_country_flag = event021_secure_rail_mission_active
 	clr_country_flag = event021_settlement_terms_mission_active
-	clr_country_flag = event021_arsenal_action_used
-	clr_country_flag = event021_capital_action_used
-	clr_country_flag = event021_loyalty_action_used
-	clr_country_flag = event021_depot_action_used
+	event021_clear_crisis_action_receipts = yes
 	clr_country_flag = event021_relief_action_used
-	clr_country_flag = event021_settlement_action_used
-	clr_country_flag = event021_reconstruction_action_used
-	clr_country_flag = event021_integration_action_used
-	clr_country_flag = event021_priority_front_action_used
 	clear_variable = random_civil_war_priority_front_state
 	clear_variable = random_civil_war_priority_front_state_id
 	clr_country_flag = event021_neighbor_action_used
-	clr_country_flag = event021_sponsor_disengagement_used
-	clr_country_flag = event021_disarmament_action_used
-	clr_country_flag = event021_coalition_action_used
-	clr_country_flag = event021_prevention_communications_used
 	clr_country_flag = event021_prevention_administration_used
 	clr_country_flag = event021_border_monitoring_active
 	clr_country_flag = event021_mediation_active
@@ -717,7 +737,6 @@ event021_cleanup_decision_state = {
 	clr_country_flag = random_civil_war_civilian_relief_active
 	clr_country_flag = random_civil_war_civilian_relief_available
 	clr_country_flag = random_civil_war_neighbor_armed_support
-	clr_country_flag = random_civil_war_prevention_action_taken
 	clear_variable = event021_mediation_until
 	clear_variable = random_civil_war_front_integration_progress
 }

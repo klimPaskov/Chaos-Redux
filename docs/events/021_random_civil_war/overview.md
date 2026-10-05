@@ -203,7 +203,8 @@ Settlement, reconstruction, and Global Fracture prevention actions appear only i
 
 The decision package therefore exposes three to five phase-appropriate actions and never gives one action more than four resource types of cost.
 
-Multi-front countries can rotate the registered priority-front state, while reconstruction repairs the selected rail-spine infrastructure and prevention reuses the communications, loyalty, and regional-administration actions.
+Multi-front countries can rotate the registered priority-front state, while reconstruction repairs the selected rail-spine infrastructure.
+Global Fracture prevention reuses Review Command Loyalty and Protect State Communications. Outside a crisis each returns after its own prevention cooldown while the country stays exposed; inside a crisis each is used once per crisis, and a country that enters a new crisis role starts with every crisis action available, whatever it did in prevention.
 
 The three mission families are Hold the Capital, Secure the Rail Spine, and Hold the Settlement Terms.
 

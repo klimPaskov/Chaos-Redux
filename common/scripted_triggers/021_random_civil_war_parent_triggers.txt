@@ -1248,6 +1248,45 @@ event021_country_can_prevent_fracture = {
 	}
 }
 
+# COUNTRY scope. Review Command Loyalty is a once-per-crisis action for an
+# opening or front-management side, and a prevention action on its own timed
+# cooldown while Global Fracture prevention is open.
+event021_review_loyalty_offered = {
+	OR = {
+		AND = {
+			OR = {
+				event021_country_can_manage_opening = yes
+				event021_country_can_manage_fronts = yes
+			}
+			NOT = { has_country_flag = event021_loyalty_action_used }
+		}
+		AND = {
+			event021_country_can_prevent_fracture = yes
+			NOT = { has_country_flag = event021_prevention_loyalty_recent }
+		}
+	}
+}
+
+# COUNTRY scope. Protect State Communications is a once-per-crisis action in
+# the Evolution I management, settlement, and reconstruction phases, and a
+# prevention action on its own timed cooldown outside a crisis.
+event021_protect_communications_offered = {
+	OR = {
+		AND = {
+			OR = {
+				event021_country_can_manage_reconstruction = yes
+				event021_country_can_manage_settlement = yes
+				event021_country_can_use_evolution_i_prevention = yes
+			}
+			NOT = { has_country_flag = event021_prevention_communications_used }
+		}
+		AND = {
+			event021_country_can_prevent_fracture = yes
+			NOT = { has_country_flag = event021_prevention_communications_recent }
+		}
+	}
+}
+
 event021_country_can_manage_multifront = {
 	event021_country_can_manage_crisis = yes
 	has_country_flag = random_civil_war_multifront_active

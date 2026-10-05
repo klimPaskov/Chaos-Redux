@@ -268,3 +268,13 @@ Costs, the settlement selector, and the player-side protection in `event021_sett
 MCP: one narrow `hoi4.probability_inspect` baseline for this decision returned `INTERNAL_ERROR`, and the single same-scenario `hoi4.probability_compare` was rejected with "Invalid tool arguments"; neither was retried, so the table above is a source trace, not engine evidence.
 Basis: the lead's round 2 assignment and the probability matrix rows SET-01, SET-03, SET-04, and SET-05.
 The war duration and the AI timing of offers remain `needs_live_game`.
+
+## D22. Prevention actions run on their own cooldown and never consume crisis actions
+
+Finding: in Global Fracture prevention (`event021_country_can_prevent_fracture`, no live crisis) Review Command Loyalty and Protect State Communications wrote the crisis one-shot flags `event021_loyalty_action_used` and `event021_prevention_communications_used`, which only crisis cleanup cleared.
+A country that used either action while Stable or Exposed never saw it in its own later civil war, and each prevention action was usable once per game; `random_civil_war_prevention_action_taken` was written and never read.
+Decision: both effects branch on `event021_country_can_prevent_fracture` before any other change. Prevention use sets the timed flags `event021_prevention_loyalty_recent` and `event021_prevention_communications_recent` for `constant:event021_action_tuning.prevention_cooldown_days` (180), copied into the temporary `event021_decision_flag_days` first because timed flags cannot take `days = constant:`; crisis use keeps the once-per-crisis flags.
+Visibility and availability read `event021_review_loyalty_offered` and `event021_protect_communications_offered` (parent triggers), which pair each phase with its own flag, so the prevention surface still shows at most these two actions, each returning after its cooldown while the band conditions hold.
+`event021_clear_crisis_action_receipts` clears every once-per-crisis action flag; crisis cleanup, `event021_commit_opening_evolution_provenance`, and `event021_inherit_crisis_opening_evolution_provenance` call it, so a new crisis role starts with all of its actions. The timed prevention cooldowns are not crisis receipts and are left to expire.
+The dead `random_civil_war_prevention_action_taken` flag is removed. Costs, effects, and AI weights are unchanged; Review Regional Administration stays out of prevention as `b9dbb2039` decided.
+Basis: the lead's round 2 assignment and the crosswalk's two-action prevention surface.

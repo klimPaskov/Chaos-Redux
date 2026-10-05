@@ -99,17 +99,13 @@ event021_civil_war_crisis_category = {
 	event021_review_loyalty = {
 		icon = GFX_decision_event021_loyalty_review
 		ai_hint_pp_cost = @event021_ai_pp_high
-		visible = {
-			OR = {
-				event021_country_can_manage_opening = yes
-				event021_country_can_manage_fronts = yes
-				event021_country_can_prevent_fracture = yes
-			}
-			NOT = { has_country_flag = event021_loyalty_action_used }
-		}
+		# A crisis side may review loyalty once per crisis. Outside a crisis the
+		# review is a prevention action on its own cooldown, so using it then
+		# never hides it from a later civil war.
+		visible = { event021_review_loyalty_offered = yes }
 		available = {
 			hidden_trigger = {
-				NOT = { has_country_flag = event021_loyalty_action_used }
+				event021_review_loyalty_offered = yes
 				NOT = { command_power < constant:event021_action_cost.loyalty_command_power_gate }
 				NOT = { has_army_experience < constant:event021_action_cost.loyalty_army_xp_gate }
 				NOT = { has_political_power < constant:event021_action_cost.loyalty_political_power_gate }
@@ -728,18 +724,12 @@ event021_civil_war_crisis_category = {
 
 	event021_protect_communications = {
 		icon = GFX_decision_event021_secure_arsenals
-		visible = {
-			OR = {
-				event021_country_can_prevent_fracture = yes
-				event021_country_can_manage_reconstruction = yes
-				event021_country_can_manage_settlement = yes
-				event021_country_can_use_evolution_i_prevention = yes
-			}
-			NOT = { has_country_flag = event021_prevention_communications_used }
-		}
+		# Once per crisis inside a war or its aftermath; outside a crisis it is
+		# a prevention action on its own cooldown.
+		visible = { event021_protect_communications_offered = yes }
 		available = {
 			hidden_trigger = {
-				NOT = { has_country_flag = event021_prevention_communications_used }
+				event021_protect_communications_offered = yes
 				NOT = { command_power < constant:event021_action_cost.prevention_command_power_gate }
 				NOT = { has_equipment = { train_equipment < constant:event021_action_cost.prevention_trains_gate } }
 			}
