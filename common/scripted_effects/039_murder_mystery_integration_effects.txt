@@ -1790,6 +1790,14 @@ murder_mystery_create_assassin_state_candidate = {
 			}
 			set_research_slots = constant:murder_mystery_assassin.initial_research_slots
 			set_stability = constant:murder_mystery_assassin_setup.initial_stability
+			# The state is named after the government it broke away from; the
+			# stored country keeps the name after that government falls.
+			if = {
+				limit = { has_event_target = murder_mystery_original_host }
+				event_target:murder_mystery_original_host = {
+					event_target:murder_mystery_assassin_state_candidate = { set_variable = { murder_mystery_origin_government = PREV } }
+				}
+			}
 			set_war_support = constant:murder_mystery_assassin_setup.initial_war_support
 			set_politics = { ruling_party = neutrality elections_allowed = no }
 			create_country_leader = {
@@ -1975,23 +1983,15 @@ murder_mystery_start_derivative_creation = {
 				save_global_event_target_as = murder_mystery_derivative_anchor_state
 			}
 		}
+		# A revolt needs a free carrier from the derivative pool; with every
+		# carrier taken nothing moves and no country is created.
+		murder_mystery_select_derivative_carrier = yes
 		if = {
-			limit = { has_event_target = murder_mystery_derivative_anchor_state }
-			create_dynamic_country = {
-				original_tag = AXT
-				save_global_event_target_as = murder_mystery_derivative_country_candidate
-				set_country_flag = murder_mystery_derivative_carrier_validated
-				set_country_flag = murder_mystery_derivative_country
-				set_country_flag = murder_mystery_cell_administration_open
-				set_country_flag = murder_mystery_nonterminal_play_enabled
-				murder_mystery_initialize_country_runtime = yes
-				set_variable = { murder_mystery_case_progress = constant:murder_mystery_value.twenty }
-				set_variable = { murder_mystery_network_reach = constant:murder_mystery_value.forty }
-				set_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.fifty }
-				add_ideas = murder_mystery_foreign_derivative_administration
-				add_manpower = constant:murder_mystery_assassin.derivative_manpower
-				add_equipment_to_stockpile = { type = assassin_operations_kit_1 amount = constant:murder_mystery_assassin.derivative_operations_kits }
+			limit = {
+				has_event_target = murder_mystery_derivative_anchor_state
+				check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.none compare = greater_than }
 			}
+			murder_mystery_create_derivative_carrier = yes
 			# The revolt follows the central state's route.
 			if = {
 				limit = { event_target:murder_mystery_assassin_state = { has_country_flag = murder_mystery_hidden_hand_route } }

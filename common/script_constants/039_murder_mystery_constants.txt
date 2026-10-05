@@ -527,7 +527,7 @@ murder_mystery_registry = {
 	maximum_target_rows = 256
 	maximum_immunity_rows = 256
 	maximum_cell_rows = 28
-	maximum_derivative_rows = 12
+	maximum_derivative_rows = 6
 	maximum_split_state_rows = 35
 	maximum_terminal_rows = 64
 	maximum_terminal_sector_rows = 3
@@ -596,7 +596,9 @@ murder_mystery_derivative = {
 		data = int
 	}
 
-	maximum_active = 12
+	# Never more than the carrier pool (murder_mystery_derivative_carrier), so
+	# no two living derivatives share a tag.
+	maximum_active = 6
 	minimum_stage = 1
 	maximum_stage = 5
 	minimum_parent_states = 3
@@ -608,6 +610,24 @@ murder_mystery_derivative = {
 	status_active = 1
 	status_immunity = 2
 	status_retired = 3
+}
+
+# The derivative carrier pool: each living derivative uses its own tag, and a
+# tag returns to the pool only when its country no longer exists.
+murder_mystery_derivative_carrier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	axt = 1
+	axu = 2
+	axv = 3
+	axw = 4
+	axy = 5
+	axz = 6
+	pool_size = 6
 }
 
 murder_mystery_terminal = {

@@ -1642,6 +1642,84 @@ murder_mystery_clear_assassin_state_context = {
 # Bounded derivative registry and setup transaction
 # ---------------------------------------------------------------------------
 
+# Any scope. Output: temp murder_mystery_derivative_carrier_choice, the first
+# carrier of the derivative pool that no living country uses, or none when
+# every carrier is taken. A carrier stays taken until its country is gone.
+murder_mystery_select_derivative_carrier = {
+	set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.none }
+	if = {
+		limit = { NOT = { any_country = { original_tag = AXT } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axt }
+	}
+	else_if = {
+		limit = { NOT = { any_country = { original_tag = AXU } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axu }
+	}
+	else_if = {
+		limit = { NOT = { any_country = { original_tag = AXV } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axv }
+	}
+	else_if = {
+		limit = { NOT = { any_country = { original_tag = AXW } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axw }
+	}
+	else_if = {
+		limit = { NOT = { any_country = { original_tag = AXY } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axy }
+	}
+	else_if = {
+		limit = { NOT = { any_country = { original_tag = AXZ } } }
+		set_temp_variable = { murder_mystery_derivative_carrier_choice = constant:murder_mystery_derivative_carrier.axz }
+	}
+}
+
+# Any scope. Input: temp murder_mystery_derivative_carrier_choice. Creates the
+# derivative on that carrier and saves it as
+# murder_mystery_derivative_country_candidate.
+murder_mystery_create_derivative_carrier = {
+	if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axt compare = equals } }
+		create_dynamic_country = { original_tag = AXT murder_mystery_initialize_derivative_carrier = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axu compare = equals } }
+		create_dynamic_country = { original_tag = AXU murder_mystery_initialize_derivative_carrier = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axv compare = equals } }
+		create_dynamic_country = { original_tag = AXV murder_mystery_initialize_derivative_carrier = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axw compare = equals } }
+		create_dynamic_country = { original_tag = AXW murder_mystery_initialize_derivative_carrier = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axy compare = equals } }
+		create_dynamic_country = { original_tag = AXY murder_mystery_initialize_derivative_carrier = yes }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_derivative_carrier_choice value = constant:murder_mystery_derivative_carrier.axz compare = equals } }
+		create_dynamic_country = { original_tag = AXZ murder_mystery_initialize_derivative_carrier = yes }
+	}
+}
+
+# COUNTRY scope: a new derivative carrier. The starting runtime, spirit and
+# stockpile shared by revolts and cell territories.
+murder_mystery_initialize_derivative_carrier = {
+	save_global_event_target_as = murder_mystery_derivative_country_candidate
+	set_country_flag = murder_mystery_derivative_carrier_validated
+	set_country_flag = murder_mystery_derivative_country
+	set_country_flag = murder_mystery_cell_administration_open
+	set_country_flag = murder_mystery_nonterminal_play_enabled
+	murder_mystery_initialize_country_runtime = yes
+	set_variable = { murder_mystery_case_progress = constant:murder_mystery_value.twenty }
+	set_variable = { murder_mystery_network_reach = constant:murder_mystery_value.forty }
+	set_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.fifty }
+	add_ideas = murder_mystery_foreign_derivative_administration
+	add_manpower = constant:murder_mystery_assassin.derivative_manpower
+	add_equipment_to_stockpile = { type = assassin_operations_kit_1 amount = constant:murder_mystery_assassin.derivative_operations_kits }
+}
+
 murder_mystery_begin_derivative_transaction = {
 	clr_global_flag = murder_mystery_derivative_transaction_rejected
 	clr_global_flag = murder_mystery_derivative_prepared

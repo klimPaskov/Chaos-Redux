@@ -5,6 +5,8 @@
 # - Office names for scheduled incident reports, read from the country's
 #   murder_mystery_last_incident_role variable.
 # - Names of the institutional bodies that replace a murdered ruler.
+# - Country names of the Assassin State (from the government it broke away
+#   from) and of each derivative (from the government it rose against).
 # ============================================================================
 
 defined_text = {
@@ -45,4 +47,33 @@ defined_text = {
 		trigger = { always = yes }
 		localization_key = murder_mystery_incident_role_unknown
 	}
+}
+
+defined_text = {
+	name = GetMurderMysteryAssassinStateName
+	text = {
+		trigger = { has_variable = murder_mystery_origin_government }
+		localization_key = MURDER_MYSTERY_ASSASSIN_STATE_NAME
+	}
+	text = { localization_key = MURDER_MYSTERY_ASSASSIN_STATE_NAME_PLAIN }
+}
+
+defined_text = {
+	name = GetMurderMysteryAssassinStateNameDef
+	text = {
+		trigger = { has_variable = murder_mystery_origin_government }
+		localization_key = MURDER_MYSTERY_ASSASSIN_STATE_NAME_DEF
+	}
+	text = { localization_key = MURDER_MYSTERY_ASSASSIN_STATE_NAME_PLAIN_DEF }
+}
+
+# The derivative's origin word: the adjective of the government it rose
+# against, or "Free" for a derivative without one.
+defined_text = {
+	name = GetMurderMysteryDerivativeOrigin
+	text = {
+		trigger = { has_variable = murder_mystery_derivative_parent_government }
+		localization_key = MURDER_MYSTERY_DERIVATIVE_ORIGIN
+	}
+	text = { localization_key = MURDER_MYSTERY_DERIVATIVE_ORIGIN_FREE }
 }

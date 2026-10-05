@@ -294,3 +294,13 @@ Basis: Part 8 (Support a Threatened Partner, Reinforce a Derivative, the derivat
 - "Several derivatives supported" means a second derivative reinforced within 180 days.
 - The priority choice is three decisions sharing one variable, mutually exclusive by visibility, each swapping one spirit and changing subject autonomy through `add_autonomy_ratio`; "more central support" for obedience is the neighbour reinforcement rate everywhere plus a higher central AI weight to reinforce it. The decisions are paid by the derivative itself (local administration family), since the choice is its own.
 - New icons reuse existing Event 039 decision textures under new sprite names (`GFX_decision_039_murder_mystery_priority_*`); Support and Reinforce consume their already registered sprites.
+
+## D28. Movement countries carry host-derived names and distinct carriers
+
+Disposition: implemented (round 2); the names and flags need live confirmation on the political screen and the map.
+Basis: Part 6 (names derived from the host or region) and Part 5 (each derivative tied to its parent, no duplicate cosmetic identities), with the lead's round-2 decision 5 (the existing pool tags and the Event 014 scripted-name precedent; no new tags).
+
+- The Assassin State stores its host country as a variable at creation and is "The [host adjective] Brotherhood" (adjective "Brotherhood"), through scripted localisation like Event 014's CBA names. A country variable keeps resolving to that tag's name after the host is annexed; a dynamic host whose slot is later reused by another dynamic country would follow the new country's name, an accepted edge case since dynamic hosts are rare and the event host gate prefers established governments.
+- Derivatives draw the first carrier no living country uses from AXT, AXU, AXV, AXW, AXY and AXZ (AXX belongs to Event 006). The check is a one-time `any_country` test of six tags at creation, not a recurring scan. The concurrent cap drops from 12 to 6 (and the unused registry row ceiling to match) so the pool can never run out while the registry still has room; the evolution and achievement thresholds (3 and 4 derivatives) stay reachable.
+- Each derivative is "The [parent adjective] [carrier name]", for example "The Polish River Cell", keeping each carrier's distinct flag and flavour while tying the name to the government it rose against or, for a cell territory, the government it replaced.
+- The shared carrier setup moved into `murder_mystery_initialize_derivative_carrier`, so revolts and cell territories start from identical runtime, spirit, manpower and kits.

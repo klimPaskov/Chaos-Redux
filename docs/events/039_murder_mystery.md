@@ -173,6 +173,14 @@ A revolt takes a non-capital anchor state plus `cluster_extra_states` neighbouri
 The new country becomes a subject of the central state, follows its route, receives its starting forces, declares war on the government it rose against, and announces itself with news `chaosx.news.4404`; the source cell row leaves the cell registry because the derivative registry now owns it.
 If any postcondition fails, every moved state returns to its government and the empty carrier is retired.
 
+### Movement names
+
+The Assassin State stores the government it broke away from (`murder_mystery_origin_government`) when it is created and is named from it through `GetMurderMysteryAssassinStateName`, for example "The German Brotherhood"; the stored country keeps the name after that government falls, and "The Assassin State" is only the fallback when no host was recorded.
+Each derivative uses its own carrier tag from the pool AXT, AXU, AXV, AXW, AXY and AXZ (`murder_mystery_select_derivative_carrier`, shared by revolts and cell territories), so no two living derivatives share a tag, flag or name.
+A carrier returns to the pool only when no living country uses it; with every carrier taken, a revolt or cell territory is not created and nothing moves.
+`murder_mystery_derivative.maximum_active` equals the pool size (6).
+A derivative's name combines the government it rose against with its carrier's name (`GetMurderMysteryDerivativeOrigin`), for example "The French Border Cell"; a derivative without a recorded parent is "Free".
+
 ## Country outcomes
 
 `common/on_actions/039_murder_mystery_on_actions.txt` handles `on_capitulation` and `on_annex` only for countries with an Event 039 actor flag while the runtime is active.
