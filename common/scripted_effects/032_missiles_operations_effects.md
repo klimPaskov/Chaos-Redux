@@ -127,6 +127,8 @@ Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolutio
 
 `missiles_state_has_registered_site` includes `missiles_site_suspended`, so a site under its repair programme is still struck, captured, inherited, split, and cleaned up like any registered site.
 `missiles_record_incoming_operation_site_damage` writes the repair flags and `missiles_site_repair_due_date` only when no `missiles_site_repair_mission` is active, and `missiles_country_can_start_survey` waits for that mission, so damage elsewhere never postpones or cancels a running repair.
+A transferred site leaves its former owner's programme unsuspended: `missiles_handle_site_control_changed`, `missiles_finalize_civil_war_split_child`, `missiles_finalize_planned_inheritance`, and both receipts in `missiles_cleanup_removed_country` clear `missiles_site_suspended` while marking the site compromised and isolated, so `missiles_site_can_be_suspended` lets the new controller repair it; `missiles_finalize_civil_war_split_parent` keeps the parent's own suspended site under its running programme.
+The former owner's repair and recovery missions cancel through `NOT = { missiles_repair_target_is_valid = yes }` and `NOT = { missiles_recovery_target_is_valid = yes }` once the state is lost; `missiles_cancel_site_repair_project` releases a suspended site only while `ROOT` still controls it, then clears its own flags, due date, and pointer, and `missiles_cancel_site_recovery_project` clears only its own flag, due date, and pointer.
 
 ## Rogue site pointer and isolation
 

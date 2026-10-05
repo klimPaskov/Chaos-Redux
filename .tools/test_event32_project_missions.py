@@ -195,6 +195,42 @@ class ProjectMissionContract(unittest.TestCase):
         survey_gate = list(descendants(TRIGGERS['missiles_country_can_start_survey']))
         self.assertIn(('has_active_mission', 'missiles_site_repair_mission'), survey_gate)
 
+    def test_a_transferred_site_is_released_for_its_new_controller(self):
+        released = ('clr_state_flag', 'missiles_site_suspended')
+        for helper, expected in (('missiles_finalize_civil_war_split_child', 1), ('missiles_finalize_planned_inheritance', 1),
+                                 ('missiles_cleanup_removed_country', 2)):
+            with self.subTest(helper=helper):
+                body = list(descendants(EFFECTS[helper]))
+                self.assertEqual(sum(1 for node in body if node == released), expected)
+                # The transferred site stays compromised and isolated until repaired.
+                self.assertIn(('set_state_flag', 'missiles_site_isolated'), body)
+                self.assertIn(('set_state_flag', 'missiles_site_compromised'), body)
+        # The parent keeps its own sites and their running repair programme.
+        self.assertNotIn(released, list(descendants(EFFECTS['missiles_finalize_civil_war_split_parent'])))
+        suspend = TRIGGERS['missiles_site_can_be_suspended']
+        self.assertIn(('NOT', [('has_state_flag', 'missiles_site_suspended')]), suspend)
+        self.assertIn(('has_state_flag', 'missiles_site_isolated'), value(suspend, 'OR'))
+
+    def test_a_former_owner_programme_ends_without_touching_the_lost_state(self):
+        repair = MISSIONS['missiles_site_repair_mission']
+        recovery = MISSIONS['missiles_site_recovery_mission']
+        self.assertIn(('NOT', [('missiles_repair_target_is_valid', 'yes')]), value(value(repair, 'cancel_trigger'), 'OR'))
+        self.assertIn(('NOT', [('missiles_recovery_target_is_valid', 'yes')]), value(value(recovery, 'cancel_trigger'), 'OR'))
+        self.assertIn(('is_controlled_by', 'ROOT'), value(TRIGGERS['missiles_repair_target_is_valid'], 'var:missiles_repair_site_state'))
+        self.assertIn(('is_controlled_by', 'ROOT'), value(TRIGGERS['missiles_recovery_target_is_valid'], 'var:missiles_recovery_site_state'))
+        cancel = EFFECTS['missiles_cancel_site_repair_project']
+        release = value(cancel, 'if')
+        self.assertIn(('var:missiles_repair_site_state', [('is_controlled_by', 'ROOT')]), value(release, 'limit'))
+        for cleared in (('clr_country_flag', 'missiles_site_repair_active'), ('clear_variable', 'missiles_site_repair_due_date'),
+                        ('clear_variable', 'missiles_repair_site_state')):
+            self.assertIn(cleared, cancel)
+        recovery_cancel = EFFECTS['missiles_cancel_site_recovery_project']
+        self.assertEqual(recovery_cancel, [
+            ('clr_country_flag', 'missiles_site_recovery_active'),
+            ('clear_variable', 'missiles_site_recovery_due_date'),
+            ('clear_variable', 'missiles_recovery_site_state'),
+        ])
+
 
 if __name__ == '__main__':
     unittest.main()

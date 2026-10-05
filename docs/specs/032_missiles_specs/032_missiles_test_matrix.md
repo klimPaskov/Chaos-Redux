@@ -582,6 +582,7 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `MISSION-04` | Rogue crisis; send loyal forces and station two divisions in the rogue state | Recovery completes after 14 days, the incident closes, and the program leaves the rogue phase |
 | `MISSION-05` | Active warning; verify it | Verification resolves after 3 days to verified or false warning |
 | `MISSION-06` | Sever the network, then restore command control and readiness | Restoration completes after 60 days in peace or war and posture returns to Supervised |
+| `MISSION-07` | Suspend a damaged site for repair, then lose that state in a civil-war split | The new side can suspend and repair the site; the former owner's repair programme ends without changing the new side's site |
 | `CAP-01` | Capture an enemy launch site | Four resolution actions show for that state only; each one ends the incident phase once no capture remains |
 | `CAP-02` | Integrate a captured site with held missiles | Held missiles join Operational Reserve exactly once |
 | `CAP-03` | Lose a captured site back before resolving it | The former captor leaves the incident phase |

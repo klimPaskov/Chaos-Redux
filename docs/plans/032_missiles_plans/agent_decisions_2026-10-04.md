@@ -194,3 +194,12 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, t
 - Agent decision: the player sees the reason in the category context line through a new preparation-failure value `missiles_preparation_failure.chemical_agent = 11` and the key `missiles_preparation_failure_chemical_agent`, and the launch effect tooltip states that a chemical strike is called off when the stores no longer hold enough agent. Basis: the check is an effect over CBRN temporaries and cannot run inside the launch decision's `available` trigger, so the abort report is the reliable place.
 - Holding chemical agent at preparation stays `accepted and queued` for the CBRN owner: it needs a CBRN refund route that Event 32 must not duplicate.
 - `.tools/test_event32_special_payload.py` gains `ChemicalLaunchCheck`.
+
+## Round 2 item 5: suspended sites that change hands
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, test `MISSION-07`). Basis: the round-1 recorded limit ("a suspended site transferred by planned inheritance or a civil-war split is released inactive"), now resolved, and lead decision 4.
+
+- `missiles_finalize_civil_war_split_child` and `missiles_finalize_planned_inheritance` clear `missiles_site_suspended` on the transferred site, which stays compromised and isolated, so the new controller can suspend and repair it. The capture handler already did this.
+- Agent decision: the same clear is applied to both controller receipts in `missiles_cleanup_removed_country`, the annexation counterpart of the same transfer; `missiles_finalize_civil_war_split_parent` is left unchanged because the parent keeps its own sites and a suspended one stays under its running repair programme.
+- The former owner's programme ends through its own cleanup: the repair and recovery missions already cancel once their target state is no longer controlled, and `missiles_cancel_site_repair_project` now releases a suspended site only while the country still controls it, so a late cancellation never clears the new owner's suspension; its flags, due date, and pointer are always cleared. The recovery cancellation already touched only its own fields.
+- `.tools/test_event32_project_missions.py` gains two tests for the transfer and the former owner's cleanup.

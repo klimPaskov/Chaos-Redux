@@ -3530,8 +3530,13 @@ missiles_cancel_secondary_site_project = {
 }
 
 missiles_cancel_site_repair_project = {
+	# The programme releases only a site this country still controls; a state
+	# lost to another controller keeps whatever that controller set on it.
 	if = {
-		limit = { has_variable = missiles_repair_site_state }
+		limit = {
+			has_variable = missiles_repair_site_state
+			var:missiles_repair_site_state = { is_controlled_by = ROOT }
+		}
 		var:missiles_repair_site_state = { missiles_release_suspended_site = yes }
 	}
 	clr_country_flag = missiles_site_repair_active
@@ -6286,6 +6291,9 @@ missiles_finalize_planned_inheritance = {
 		clr_state_flag = missiles_site_active
 		clr_state_flag = missiles_site_hardened
 		clr_state_flag = missiles_site_rogue
+		# The new controller can suspend and repair the site; the former
+		# owner's repair programme ends through its own cleanup.
+		clr_state_flag = missiles_site_suspended
 		set_variable = { missiles_site_owner_id = event_target:missiles_inheritance_recipient.id }
 		set_variable = { missiles_site_controller_id = event_target:missiles_inheritance_recipient.id }
 		set_variable = { missiles_site_inheritance_date = global.date }
@@ -6775,6 +6783,9 @@ missiles_finalize_civil_war_split_child = {
 			clr_state_flag = missiles_site_active
 			clr_state_flag = missiles_site_hardened
 			clr_state_flag = missiles_site_rogue
+			# The new controller can suspend and repair the site; the former
+			# owner's repair programme ends through its own cleanup.
+			clr_state_flag = missiles_site_suspended
 			set_variable = { missiles_site_owner_id = ROOT.id }
 			set_variable = { missiles_site_controller_id = ROOT.id }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
@@ -6981,6 +6992,9 @@ missiles_cleanup_removed_country = {
 					clr_state_flag = missiles_site_active
 					clr_state_flag = missiles_site_hardened
 					clr_state_flag = missiles_site_rogue
+					# The new controller can suspend and repair the site; the former
+					# owner's repair programme ends through its own cleanup.
+					clr_state_flag = missiles_site_suspended
 					set_variable = { missiles_site_owner_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_controller_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_annex_receipt_date = global.date }
@@ -7011,6 +7025,9 @@ missiles_cleanup_removed_country = {
 					clr_state_flag = missiles_site_active
 					clr_state_flag = missiles_site_hardened
 					clr_state_flag = missiles_site_rogue
+					# The new controller can suspend and repair the site; the former
+					# owner's repair programme ends through its own cleanup.
+					clr_state_flag = missiles_site_suspended
 					set_variable = { missiles_site_owner_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_controller_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_annex_receipt_date = global.date }
