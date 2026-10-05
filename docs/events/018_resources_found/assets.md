@@ -1,6 +1,9 @@
 # Event 018 asset and presentation record
 
-This document is the durable runtime inventory for Event 018. Runtime files remain in engine-facing folders, and the former temporary `docs/assets/018_resources_found/` evidence workspace is absent from the current checkout. Permanent production and audit evidence belongs under `docs/plans/018_resources_found_plans/`, `docs/plans/018_resources_found_plans/subagent_handoffs/`, and `docs/super_events/018_resources_found/`.
+This document is the durable runtime inventory for Event 018.
+Runtime files remain in engine-facing folders.
+The current `docs/assets/018_resources_found/` workspace contains a bounded `models_3d` reconstruction tranche, rather than every historical asset source package.
+Permanent production and audit evidence belongs under `docs/plans/018_resources_found_plans/`, `docs/plans/018_resources_found_plans/subagent_handoffs/`, and `docs/super_events/018_resources_found/`.
 
 No runtime definition points into `docs/assets/`. The separate durable portrait-source archive convention is not used by the wholly fictional Oth-Kesh identity.
 
@@ -52,4 +55,9 @@ The exact source, licence, checksum, attribution, selector, and trigger evidence
 
 ## Temporary-workspace disposition
 
-The event-scoped `docs/assets/018_resources_found/` folder and both known cave-monster evidence roots are absent from the current checkout. Their durable runtime inventory, licensing conclusions, sprite mappings, review findings, and exceptions are preserved in this document, `docs/plans/018_resources_found_plans/cave_monster_current_package_manifest.md`, and the permanent handoffs named above. The missing source image, Blender checkpoints, selected exports, reimport artifacts, and job metadata remain a production and reproducibility blocker, while current engine-facing runtime files remain present.
+The current event-scoped workspace retains the cave-monster reconstruction tranche under `models_3d` while its evidence gates remain open.
+Its presence supersedes the former assertion that the entire workspace was absent.
+Historical source-image, Blender-checkpoint, export, reimport, and job-metadata claims require verification against the current reconstruction manifest.
+Runtime model files, texture references, animations, and sounds are present, but this release review does not establish their live visual or auditory acceptance.
+The current GUI repair has a separate reference and handoff under `docs/plans/018_resources_found_plans/visual_reference_2026-10-05/` and `subagent_handoffs/gui_audit_2026-10-05.md`.
+Its required current-source MCP renders timed out, so the earlier GUI render statement above remains historical evidence rather than proof of the repaired layout.

@@ -36,11 +36,28 @@ The `Selected Resource Field` category owns a compact scripted GUI. It displays 
 - Workforce Safety records training, engineering, evacuation, and labor protection.
 - Foreign Pressure records material demand, contracts, claims, smuggling, and strategic competition.
 
-Subsurface Disturbance is hidden until Evolution II evidence reveals it. Breach Pressure is hidden until the Evolution III public crisis. Every value tooltip explains the actions that raise or lower it. Previous and next controls cycle valid owned fields. Human selection changes only presentation and the chosen player project. AI field evaluation uses the underlying owned-field set and stable scheduler targets.
+The header shows Developed Yield, Excavation Depth, and Workforce Safety as its three core values.
+A fourth slot shows Foreign Pressure during ordinary work, Subsurface Disturbance after its reveal, or Breach Pressure when a breach has been revealed.
+Breach takes priority over Disturbance, and suspended fields return to Foreign Pressure.
+The same priority applies to closed-field history.
+Every value tooltip explains the actions that raise or lower it.
+Previous and next controls cycle valid owned fields.
+Human selection changes only presentation and the chosen player project.
+AI field evaluation uses the underlying owned-field set and stable scheduler targets.
 
 Five field identities have real source-frame animation packages and registered static fallbacks: ordinary seal, unsafe workings, revealed disturbance, public breach, and sealing operation. Suspended uses a static identity. Exact closure stores the six reversed ledgers and a bounded `last closed field` pointer, removes the state from active selection, and opens a separate history view with the Closed sprite. The parent category remains visible through that history record even when the seal removed the country's last active field. The History control never moves the gameplay selection onto that state, so a closed record cannot receive projects, cycle among active fields, or become eligible for discovery again. The category includes an animation toggle that swaps every animated active identity to its fallback.
 
-Every priced decision displays its exact rounded payment, required available civilian and military factory capacity, and either its computed project duration or its immediate-execution status before selection. A shared ledger stores 13 cost profiles and 16 duration rows. The same calculator rebuilds those rows and rechecks the selected row immediately before payment. Political power, command power, army experience, manpower, infantry equipment, support equipment, anti-tank equipment, trucks, trains, convoys, and fuel all use the displayed rounded values. Changes to national scale, war status, the selected field, excavation, breach, disturbance, safety, infrastructure band, or contract validity hide priced actions until the appropriate category's visible refresh control rebuilds the ledger. Discovery, enrichment, cave setup, cave-war registration, foreign-actor selection, and field cycling also initialize or refresh it directly so AI countries do not depend on a player click.
+Each project uses at most four spendable resource types from its engineering, security, diplomatic, or supply profile.
+The native cost row shows at most three amounts, and its tooltip lists every charge, any non-debited factory-capacity requirement, and the project duration.
+Eleven project profiles use thirteen preview slots and sixteen duration slots.
+The same calculator supplies the preview, affordability predicate, and payment, and the project rechecks that its inputs still match before paying.
+National scale, war, field risk, safety, infrastructure, and contracts retain their cost and duration effects.
+Changes to those inputs hide priced actions until the existing refresh control rebuilds their quotes.
+Discovery, enrichment, cave setup, foreign-actor selection, and field cycling also refresh quotes without requiring an AI click.
+
+Human manual preparation with no suitable field produces `chaosx.nr18.90` instead of an unexplained failure.
+The discovery report explains the four ownership choices without promising immediate roads, machinery, or workers.
+The [2026-10-05 review](../../plans/018_resources_found_plans/agent_decisions_2026-10-05.md) records the cost profiles, four-value presentation, source checks, and blocked production renders.
 
 The selected-field decision list uses five field-persistent workboard pages: Administration, Development, Infrastructure, Safety, and Operations. Each page exposes at most six player-facing actions including the page control. Casualty response replaces routine extraction controls on the Operations page, and suspension replaces them with reactivation. The page variable is presentation-only: AI countries bypass every page gate and continue to evaluate the complete valid project pool.
 

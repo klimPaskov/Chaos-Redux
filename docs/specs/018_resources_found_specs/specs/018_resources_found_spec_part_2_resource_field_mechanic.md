@@ -8,7 +8,10 @@ All names in this file are working labels for design structure. They are not fin
 
 The resource field should feel like a living state project rather than a passive modifier. The owner chooses how quickly to develop it, who receives access, what infrastructure is built, how workers are protected, how the field is defended, and when extraction has gone too far.
 
-The system should stay compact. The player needs one decision category with a small field overview and a controlled set of current actions. A large separate custom window is unnecessary. The preferred presentation is a decision category with a scripted GUI header that shows the selected field, its resource composition, four baseline values, one status image or seal, and buttons to cycle between the owner’s active fields.
+The system should stay compact.
+The player needs one decision category with a small field overview and a controlled set of current actions.
+A large separate custom window is unnecessary.
+The presentation is a decision category with a scripted GUI header showing the selected field, its resource composition, three core values and one contextual value, one status image or seal, and controls to cycle between active fields.
 
 Human players should see only decisions relevant to the selected field. AI countries should evaluate all valid fields directly without depending on the human selection interface.
 
@@ -70,7 +73,14 @@ The field stores:
 - accumulated field deaths
 - accumulated exploitation score
 
-Not every value needs a permanent space in the visible header. The four baseline values are always shown. Disturbance becomes visible only when Evolution II makes it meaningful. Breach Pressure becomes visible in Evolution III.
+Developed Yield, Excavation Depth and Workforce Safety remain visible as the three core values.
+The fourth slot shows Foreign Pressure, revealed Subsurface Disturbance, or revealed Breach Pressure.
+Breach takes priority over Disturbance, and suspended fields use Foreign Pressure.
+Closed-field history uses the same priority.
+All six values remain in gameplay even when their numbers are outside the current header.
+
+Acceptance basis: the parent selected this compact presentation within the user's 2026-10-05 G4-G6 release-quality authority.
+Implementation and validation limits are recorded in `docs/plans/018_resources_found_plans/agent_decisions_2026-10-05.md` and the matching GUI handoff.
 
 ### Country and contract references
 
