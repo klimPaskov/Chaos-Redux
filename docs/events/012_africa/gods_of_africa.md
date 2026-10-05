@@ -174,7 +174,13 @@ Standing diplomacy is applied once: Favored governments gain a strong positive m
 ### Proclamation news
 
 When the Gods of Africa activate, the activation owner sends the major news event `chaosx.nr12.617` ("Africa Proclaims the Gods of Africa") once per campaign (`gods_of_africa_proclamation_news_sent`), with the generated black-and-white press image `GFX_news_event_012_africa_gods_proclaimed`.
-The global-credibility super-event is not shipped: its audio is blocked (see agent decision L17 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`).
+
+### Global-credibility super-event
+
+The global-credibility super-event marks the first moment foreign powers accept that Africa's demands reach every continent.
+Its presentation is prepared on slot 118 (`africa_world_super_event.gods_global_credibility_slot`): the title "THE WORLD TAKES AFRICA AT ITS WORD", the quote from Psalm 68:31 in the King James Version (the founding text of Ethiopianist Pan-Africanism), the remark "Never send to know for whom the bell tolls." (John Donne, Meditation XVII), a description in `chaosx_super_event.118.d`, and the generated painted image `GFX_super_event_012_africa_gods_global_credibility`. The research and image record is `docs/super_events/012_africa/gods_global_credibility_research.md`.
+`gods_of_africa_emit_global_credibility_super_event` holds the trigger contract of agent decision L17: once per campaign, while the Gods are active and the host is valid, when Strength first reaches the global band, or at activation if Strength already does.
+The super-event does not fire yet, because its music is blocked on the user's permission to download one licensed track (agent decisions L17, L31 and L37). The sound definition for audio id 118 and the two call sites are the single remaining step, listed in `docs/plans/012_africa_plans/012_africa_gods_super_event_audio_candidate_2026-10-05.md`.
 
 ### Achievements
 

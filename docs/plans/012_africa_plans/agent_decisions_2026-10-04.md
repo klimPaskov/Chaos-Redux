@@ -522,3 +522,18 @@ Decisions:
 - Registering `fighter_equipment_1` as a token was rejected: it would only hide the warning and leave the aircraft demands dead under By Blood Alone. No new synchronized token is needed, and the shared `chaosx_tokens.txt` is not touched.
 - The Strength technology component read only `fighter3`, a tech in `air_techs_folder`, which vanilla `common/technology_tags` makes unavailable with By Blood Alone. It now reads `fighter3` or the By Blood Alone equivalent `advanced_small_airframe` (both start in 1944), so the fighter bonus can be earned in either setup.
 - The Gods guide and the contribution helper notes say that the aircraft family uses the light-airframe fighter type. Player text already says "aircraft" and "fighters" and names no model, so localisation is unchanged.
+
+## L37. The Gods super-event's text, image, slot and emitter are prepared so that only the track remains
+
+Disposition: text, image, slot and emitter `implemented`; audio and the firing call `blocked` (exact missing input: the user's permission to download one licensed track, as in L17 and L31).
+
+Basis: acceptance rows DOC-09 and DOC-10, decisions L5, L17 and L31, the super-event skill (localisation format, quote and remark research, slot wiring, image handoff), the asset skill's super-event image rules (457x328 scene, generated documentary or painted art for a fictional moment), and the lead's round 3 instruction that the title, quote, remark, image, slot and trigger work does not need the download and that the sound registration and the firing call are not shipped.
+
+Decisions:
+
+- Slot 118 and audio id 118 are reserved in `africa_world_super_event` after a collision scan of every super-event getter, slot constant and `sound/*.asset` id (slots 106, 107 and 110 are also unused in the getters, but Event 031's constants record 106 to 113 as claimed, so the first clearly free number was taken).
+- Title "THE WORLD TAKES AFRICA AT ITS WORD". Quote: Psalm 68:31 in the King James Version, the founding text of Ethiopianist Pan-Africanism, verified against two current transcriptions and the Internet Archive copy of Project Gutenberg eBook #10. Remark: "Never send to know for whom the bell tolls.", a fragment of John Donne's Meditation XVII, verified against the 1923 Cambridge text quoted by Wikipedia and the archived Gutenberg eBook #23772. The description keeps the source of the misfortunes unresolved and lists no mechanic. The full record is `docs/super_events/012_africa/gods_global_credibility_research.md`.
+- The image is a generated painted scene in the style of the four Event 012 super-events: a council court receiving foreign delegations, with one restrained impossible sign (a still storm column with motionless rain). It is converted to the same one-level 32-bit BGRA DDS as those four, registered as `GFX_super_event_012_africa_gods_global_credibility`, and returned by the slot 118 row of `GetSuperEventImage`.
+- Slot 118 rows were added to the five shared super-event getters with minimal edits.
+- `gods_of_africa_emit_global_credibility_super_event` holds the L17 contract (Gods active and host valid through `gods_of_africa_active_host_is_valid`, Strength band global or higher, once per campaign through `gods_of_africa_global_credibility_super_event_emitted`) and calls the shared Event 012 presenter. It has no caller yet.
+- Not shipped: the sound definition and volume wrappers for audio id 118 and the two call sites. `012_africa_gods_super_event_audio_candidate_2026-10-05.md` lists them as the single remaining step after the user allows the download and the track is archived. No silent, duplicate or synthesized cue is used, and nothing was downloaded.

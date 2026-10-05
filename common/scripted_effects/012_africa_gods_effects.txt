@@ -4761,6 +4761,31 @@ africa_gods_of_africa_commit_activation = {
 	}
 }
 
+# COUNTRY scope on the Event 012 host (ROOT must be the host). The Gods of
+# Africa global-credibility super-event (agent decisions L17 and L37) fires once
+# per campaign while the Gods are active and the host is valid, when Strength
+# first reaches the global band, or at activation if Strength already does.
+# Slot 118 carries its title, quote, remark, description and image. It is not
+# called yet: its two call sites (the end of gods_of_africa_refresh_strength,
+# after the band is written, and the activation report in
+# africa_gods_of_africa_commit_activation) and the sound definition for audio id
+# 118 are added together once the licensed track is archived, so the
+# super-event never plays without its own music.
+gods_of_africa_emit_global_credibility_super_event = {
+	if = {
+		limit = {
+			gods_of_africa_active_host_is_valid = yes
+			NOT = { has_global_flag = gods_of_africa_global_credibility_super_event_emitted }
+			has_variable = gods_of_africa_strength_band
+			check_variable = { gods_of_africa_strength_band > constant:gods_of_africa_band.continental }
+		}
+		set_global_flag = gods_of_africa_global_credibility_super_event_emitted
+		set_variable = { africa_world_super_event_slot = constant:africa_world_super_event.gods_global_credibility_slot }
+		set_variable = { africa_world_super_event_audio = constant:africa_world_super_event.gods_global_credibility_audio }
+		africa_world_emit_super_event = yes
+	}
+}
+
 africa_gods_of_africa_owner_tick = {
 	if = {
 		limit = { gods_of_africa_owner_wake_is_due = yes }

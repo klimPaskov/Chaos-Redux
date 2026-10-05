@@ -51,6 +51,14 @@ It is ceremonial and processional, but it is a European orientalist picture of A
 - Samuel Coleridge-Taylor's *African Suite* and *Toussaint L'Ouverture*: the compositions are public domain, but no openly licensed recording was found (IMSLP lists none).
 - Commons drum recordings such as *Village Drums of Freedom – Black Africa (djembe mix)*: generic percussion loops, which the prompt rejects.
 
-## Wiring once a track is archived (one change)
+## Already in place (agent decision L37)
 
-Raw sound and six settings-volume wrappers in `sound/chaosx_sound.asset`, a unique audio ID and super-event slot in `common/script_constants/012_africa_world_order_constants.txt`, the image sprite, sourced quote, title, description and button keys under `chaosx_super_event.<slot>`, the one-time trigger in `common/scripted_effects/012_africa_gods_effects.txt` (when Strength first enters the Global band, or at activation if it already qualifies, through the existing `africa_world_emit_super_event` pattern), settings-aware playback, the `music/chaosx_music_track_list.html` row, the Gods guide, and `catalog_changes_pending.md`.
+The parts that do not need the track are wired: slot 118 and audio id 118 in `africa_world_super_event` (`common/script_constants/012_africa_world_order_constants.txt`), the title, sourced quote, remark and description under `chaosx_super_event.118` (`localisation/english/012_africa_super_events_l_english.yml`), the generated image `GFX_super_event_012_africa_gods_global_credibility` (`interface/012_africa_event_pictures.gfx`), the slot 118 rows of the five shared super-event getters, and the emitter `gods_of_africa_emit_global_credibility_super_event` (`common/scripted_effects/012_africa_gods_effects.txt`) with the L17 trigger contract.
+The text and image research is recorded in `docs/super_events/012_africa/gods_global_credibility_research.md`.
+
+## The single remaining step once the user allows the download
+
+1. Download and archive the approved track, run the checks above, and cut the 115-second excerpt to `sound/012_africa/super_event_118_gods_of_africa.wav`; record the source and derivative facts in `docs/super_events/012_africa/gods_global_credibility_research.md`.
+2. Repeat the collision scan for audio id 118, then add the raw sound and the six settings-volume wrappers `chaosx_super_event_118_sound_<volume>` to `sound/chaosx_sound.asset`, following the Event 012 ids 58 to 61.
+3. Call `gods_of_africa_emit_global_credibility_super_event = yes` at the end of `gods_of_africa_refresh_strength` (after `gods_of_africa_strength_band` is written) and after the activation report in `africa_gods_of_africa_commit_activation`, which together give "when Strength first reaches the global band, or at activation if it already does".
+4. Add the `music/chaosx_music_track_list.html` row and the quote to `docs/super_events/super_event_quote_sources.md`, update the Gods guide's super-event section, and change the super-event line in `catalog_changes_pending.md` to an addition.

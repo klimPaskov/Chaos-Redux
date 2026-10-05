@@ -9,6 +9,7 @@ Research recommendations, source selections, and processed files do not by thems
 | 006 Independence Wave | [`006_independence_wave/research.md`](006_independence_wave/research.md) |
 | 010 Death | [`010_death/`](010_death/) |
 | 011 Secret Alliance | [`011_secret_alliance/research.md`](011_secret_alliance/research.md) |
+| 012 Africa Is One | Gods of Africa global-credibility [text and image record](012_africa/gods_global_credibility_research.md); the four world-order roles are recorded under `docs/plans/012_africa_plans/` |
 | 013 Natural Disasters | [`013_natural_disasters/`](013_natural_disasters/) |
 | 014 Cannibalism | [`014_cannibalism/audio_research.md`](014_cannibalism/audio_research.md) |
 | 015 Utopia Manifesto | [`015_utopia_manifesto/`](015_utopia_manifesto/) |

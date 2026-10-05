@@ -27,7 +27,7 @@ Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item
 | --- | --- | --- |
 | Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Achievement rows or notes for Event 012, using the names and descriptions in `localisation/english/012_africa_achievements_l_english.yml` (`africa_gods_*_NAME`, `_DESC`) | `implemented`; add the rows. |
 | Gods activation news event | Event 012 notes: "Africa Proclaims the Gods of Africa" (`chaosx.nr12.617.t`) | `implemented`; add the note. |
-| Gods global-credibility super-event | Super-event slot for Event 012 | `blocked` on audio (agent decision L17): no unique licensed track is archived in the repository. Add nothing until it ships. |
+| Gods global-credibility super-event | Super-event slot for Event 012 | `blocked` on audio (agent decisions L17 and L37): the text and image are ready on slot 118 ("THE WORLD TAKES AFRICA AT ITS WORD", `chaosx_super_event.118.t`), but no licensed track is archived and the super-event does not fire. Add nothing until it ships. |
 
 ## Gods of Africa diplomatic demands (agent decision L25)
 
