@@ -217,7 +217,8 @@ Relief and armed support are separate decisions and separate scripted effects.
 
 Settlement terms include government victory, opposition victory, independence, autonomy, coalition, partition, merger, and evolution outcomes.
 
-The settlement selector is bounded by the surviving actors, front goals, State Authority, and the available legal route. Partition and a hardliner government's non-negotiated military victory are classified as harsh failed settlements, so their recurrence cost is preserved.
+The settlement selector is bounded by the surviving actors, front goals, State Authority, and the available legal route. Partition is classified as a harsh failed settlement, so its recurrence cost is preserved.
+A government that wins on the battlefield chooses its postwar direction in The Fighting Stops: amnesty and reintegration, trials and institutional reform, a harsh security settlement, or continued emergency rule. Each changes State Authority at once and adds its own aftermath idea, and only the security settlement and emergency rule count as harsh, failed settlements. AI governments follow their profile: hardliners impose a security settlement, consolidators reform, and negotiators offer amnesty. Every other settlement family takes its own aftermath idea: Recognized Border after independence, Foreign Patronage when the obligation is sponsor repayment, Autonomy Compact, Power-Sharing Council for a coalition or merger, and Armistice Line after partition. An opposition victory or a negotiated multi-front settlement keeps Unsettled Settlement. Each aftermath idea lasts until the settlement's obligation is resolved.
 
 Settlement obligations are recorded before temporary war state is removed.
 
@@ -320,7 +321,7 @@ Decision sprites are `decision_021_secure_arsenals`, `decision_021_capital_defen
 
 Mission sprites are `decision_021_hold_capital_mission`, `decision_021_secure_rail_junctions_mission`, and `mission_021_settlement_terms`.
 
-Idea sprites are `idea_021_fractured_command`, `idea_021_war_torn_administration`, and `idea_021_unsettled_settlement`; the temporary secured-depot idea deliberately reuses the fractured-command picture family.
+Idea sprites are `idea_021_fractured_command`, `idea_021_war_torn_administration`, and `idea_021_unsettled_settlement`. The temporary secured-depot idea and the five strange-incident practices reuse the fractured-command picture, Unease in the Ranks reuses the war-torn administration picture, and every settlement aftermath idea reuses the Unsettled Settlement picture, so no near-identical new icons are added.
 
 The six achievement triplets are `hold_the_center`, `no_state_left_behind`, `a_flag_of_our_own`, `war_within_a_war`, `the_terms_hold`, and `fractals_of_sovereignty`, each with normal, grey, and not-eligible sprites.
 

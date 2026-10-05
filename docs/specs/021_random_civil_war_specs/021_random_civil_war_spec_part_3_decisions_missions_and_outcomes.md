@@ -509,6 +509,16 @@ Acceptance basis: the event and decision text that promise a settlement can stop
 - Offer Emergency Terms is unavailable while a package-owned Event 006 independence front fights beside the crisis, because the close paths cannot settle it, and while any opposing side is controlled by a player, so no player is annexed or partitioned without consent.
 - The signed settlement creates the usual front-bound obligation and its terms-hold date, and the settlement phase stays open until that obligation is fulfilled or breached.
 
+### Accepted postwar direction and settlement aftermath
+
+Acceptance basis: the Government military victory section above, the Postwar settlement memory section below, the part 10 requirement that every settlement type change the aftermath, and agent decision D25 in `docs/plans/021_random_civil_war_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority takeover grant.
+
+- After a government victory on the battlefield, The Fighting Stops offers four postwar directions: reintegration and amnesty, trials and institutional reform, a harsh security settlement, and continued emergency rule. Regional autonomy and negotiated local administration are reached through signed terms (the autonomy compact and coalition settlements) rather than as victory directions.
+- Each direction changes State Authority at once and applies its own aftermath idea until the settlement's obligation is resolved. Only the harsh security settlement and continued emergency rule are harsh, failed settlements for recurrence and achievements.
+- AI governments choose by profile: a hardliner imposes the security settlement, a consolidator reforms, and a negotiator offers amnesty. A direction left unanswered when reconstruction ends takes the same profile default.
+- Recognized independence, a sponsor-dependent settlement, autonomy, coalition or merger, and partition each apply their own aftermath idea. An opposition victory and a negotiated multi-front settlement keep Unsettled Settlement. Every aftermath idea reuses the Unsettled Settlement picture.
+- Signed terms keep their single option. The settlement selector, the obligation selector, and the achievement predicates are unchanged, and achievement receipts are recorded once the direction is chosen.
+
 ## Postwar settlement memory
 
 The winning or surviving country receives `Unsettled Settlement`.

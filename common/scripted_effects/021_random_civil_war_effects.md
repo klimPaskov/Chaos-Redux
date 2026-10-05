@@ -75,6 +75,8 @@ It removes the disappearing country's own memberships and rebinds surviving host
 Scope rebinding is not proof that the engine transferred actual wars.
 
 `event021_apply_settlement` records terms and starts finite reconstruction. After reconstruction and settlement obligations are complete, `event021_prepare_recurrence` scores the durable outcome and schedules a bounded post-cooldown review window; `event021_reconstruction_tick` applies the interim recovery changes.
+`event021_apply_settlement_aftermath` gives the settled country the aftermath idea of its settlement family, and `event021_clear_settlement_aftermath` removes every aftermath idea. A battlefield government victory instead waits for one of `event021_postwar_direction_amnesty`, `_reform`, `_harsh`, or `_emergency`, called from The Fighting Stops, each of which adds its idea, changes State Authority, and records the deferred achievement receipts through `event021_finish_postwar_direction`. Only the harsh and emergency directions set the harsh and failed settlement flags. `event021_resolve_pending_postwar_direction` applies the profile default when the direction is still pending at the end of reconstruction.
+`event021_prepare_recurrence` adds `tolerate_recurrence_pressure` for a tolerated strange incident and `terms_upheld_recurrence_relief` for a settlement upheld through Hold the Settlement Terms.
 
 `event021_update_achievement_state` writes achievement receipts only when normal-campaign eligibility remains true.
 

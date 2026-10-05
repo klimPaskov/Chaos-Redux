@@ -1897,6 +1897,155 @@ event021_apply_settlement = {
 	event021_update_achievement_state = yes
 }
 
+# COUNTRY scope. Removes every settlement aftermath idea, including the
+# generic Unsettled Settlement.
+event021_clear_settlement_aftermath = {
+	if = { limit = { has_idea = event021_unsettled_settlement } remove_ideas = event021_unsettled_settlement }
+	if = { limit = { has_idea = event021_aftermath_amnesty } remove_ideas = event021_aftermath_amnesty }
+	if = { limit = { has_idea = event021_aftermath_reform } remove_ideas = event021_aftermath_reform }
+	if = { limit = { has_idea = event021_aftermath_security_regime } remove_ideas = event021_aftermath_security_regime }
+	if = { limit = { has_idea = event021_aftermath_emergency_rule } remove_ideas = event021_aftermath_emergency_rule }
+	if = { limit = { has_idea = event021_aftermath_autonomy_compact } remove_ideas = event021_aftermath_autonomy_compact }
+	if = { limit = { has_idea = event021_aftermath_power_sharing } remove_ideas = event021_aftermath_power_sharing }
+	if = { limit = { has_idea = event021_aftermath_armistice_line } remove_ideas = event021_aftermath_armistice_line }
+	if = { limit = { has_idea = event021_aftermath_foreign_patronage } remove_ideas = event021_aftermath_foreign_patronage }
+	if = { limit = { has_idea = event021_aftermath_recognized_border } remove_ideas = event021_aftermath_recognized_border }
+}
+
+# COUNTRY scope on the settled country, after the settlement type and its
+# obligation are selected. Each settlement family gets its own aftermath idea,
+# following the obligation selector's order: recognized independence, then a
+# sponsor-dependent settlement, then autonomy, coalition or merger, and
+# partition. A battlefield government victory waits for its postwar direction,
+# and an opposition victory or negotiated multi-front settlement keeps
+# Unsettled Settlement.
+event021_apply_settlement_aftermath = {
+	event021_clear_settlement_aftermath = yes
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.independence compare = equals }
+					check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.recognition compare = equals }
+				}
+			}
+			add_ideas = event021_aftermath_recognized_border
+		}
+		else_if = {
+			limit = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.sponsor_repayment compare = equals } }
+			add_ideas = event021_aftermath_foreign_patronage
+		}
+		else_if = {
+			limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.autonomy compare = equals } }
+			add_ideas = event021_aftermath_autonomy_compact
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.coalition compare = equals }
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.merger compare = equals }
+				}
+			}
+			add_ideas = event021_aftermath_power_sharing
+		}
+		else_if = {
+			limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals } }
+			add_ideas = event021_aftermath_armistice_line
+		}
+		else = { add_ideas = event021_unsettled_settlement }
+	}
+}
+
+# COUNTRY scope. Shared tail of every postwar direction: the direction is no
+# longer pending, its aftermath idea replaces any other, and the achievement
+# receipts deferred at settlement are recorded now.
+event021_finish_postwar_direction = {
+	clr_country_flag = random_civil_war_postwar_direction_pending
+	event021_parent_record_achievement_receipts = yes
+	event021_update_achievement_state = yes
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Postwar direction: reintegration and amnesty.
+event021_postwar_direction_amnesty = {
+	if = {
+		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+		event021_clear_settlement_aftermath = yes
+		add_ideas = event021_aftermath_amnesty
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_postwar_direction.amnesty_authority_gain }
+		event021_add_authority = yes
+		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_postwar_direction.amnesty_pressure_relief }
+		event021_reduce_pressure = yes
+		event021_finish_postwar_direction = yes
+	}
+}
+
+# COUNTRY scope. Postwar direction: trials and institutional reform. The
+# option pays the political power.
+event021_postwar_direction_reform = {
+	if = {
+		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+		event021_clear_settlement_aftermath = yes
+		add_ideas = event021_aftermath_reform
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_postwar_direction.reform_authority_gain }
+		event021_add_authority = yes
+		event021_finish_postwar_direction = yes
+	}
+}
+
+# COUNTRY scope. Postwar direction: harsh security settlement. It is a harsh,
+# failed settlement for achievements and recurrence.
+event021_postwar_direction_harsh = {
+	if = {
+		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+		event021_clear_settlement_aftermath = yes
+		add_ideas = event021_aftermath_security_regime
+		set_country_flag = random_civil_war_harsh_settlement
+		set_country_flag = random_civil_war_failed_settlement
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_postwar_direction.harsh_authority_gain }
+		event021_add_authority = yes
+		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_postwar_direction.harsh_pressure_relief }
+		event021_reduce_pressure = yes
+		event021_finish_postwar_direction = yes
+	}
+}
+
+# COUNTRY scope. Postwar direction: continued emergency rule. It is a harsh,
+# failed settlement for achievements and recurrence.
+event021_postwar_direction_emergency = {
+	if = {
+		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+		event021_clear_settlement_aftermath = yes
+		add_ideas = event021_aftermath_emergency_rule
+		set_country_flag = random_civil_war_harsh_settlement
+		set_country_flag = random_civil_war_failed_settlement
+		set_variable = { random_civil_war_pending_authority_delta = constant:event021_postwar_direction.emergency_authority_gain }
+		event021_add_authority = yes
+		event021_finish_postwar_direction = yes
+	}
+}
+
+# COUNTRY scope. A postwar direction still pending when reconstruction ends
+# (The Fighting Stops never answered) takes the government's profile default:
+# a hardliner imposes a security settlement, a consolidator reforms, and any
+# other government offers amnesty.
+event021_resolve_pending_postwar_direction = {
+	if = {
+		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+		if = {
+			limit = { has_country_flag = random_civil_war_hardliner_profile }
+			event021_postwar_direction_harsh = yes
+		}
+		else_if = {
+			limit = { has_country_flag = random_civil_war_consolidator_profile }
+			add_political_power = constant:event021_postwar_direction.reform_political_power_cost
+			event021_postwar_direction_reform = yes
+		}
+		else = { event021_postwar_direction_amnesty = yes }
+	}
+}
+
 # COUNTRY scope. Computes a recurrence score from unresolved pressure,
 # post-war memory, settlement quality, and persistent network flags. High-risk
 # countries receive one finite recurrence window and a due review date. Review

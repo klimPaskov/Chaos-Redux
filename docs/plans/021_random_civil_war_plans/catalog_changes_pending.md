@@ -54,4 +54,4 @@ Arms routes, sponsors, and displaced administrations are carrying the crisis acr
 ## Unchanged fields
 
 Evo III, Type (Minor Repeatable), Chaos level (1), Cluster ID (1), and Status (Needs Testing) are unchanged.
-Agent decisions D13 to D15 change no catalog field. Signed terms now settle the war at once, and the settlement phase lasts for the whole obligation, but the Details Settlement and Reconstruction sections above still match `event021_event_log_detail_settlement` and `event021_event_log_detail_reconstruction` word for word.
+Agent decisions D13 to D15, D21 to D23, and D25 change no catalog field. Signed terms now settle the war at once, and the settlement phase lasts for the whole obligation, but the Details Settlement and Reconstruction sections above still match `event021_event_log_detail_settlement` and `event021_event_log_detail_reconstruction` word for word.

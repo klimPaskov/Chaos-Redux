@@ -128,19 +128,87 @@ country_event = {
 country_event = {
 	id = chaosx.nr21.9
 	title = chaosx.nr21.9.t
-	desc = chaosx.nr21.9.d
+	desc = {
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		text = chaosx.nr21.9.d_victory
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
+		text = chaosx.nr21.9.d
+	}
 	picture = GFX_report_event_021_random_civil_war_opening
 	is_triggered_only = yes
 	trigger = { has_country_flag = random_civil_war_settlement_recorded }
 	# The settlement phase stays open until the obligation is fulfilled or
 	# breached; event021_parent_review_settlement_obligation closes it.
+	# Signed terms and every other settlement keep the single option. A
+	# government that won on the battlefield chooses a postwar direction, and
+	# an AI government takes the direction of its profile.
 	option = {
 		name = chaosx.nr21.9.a
+		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
 		custom_effect_tooltip = chaosx.nr21.9.a.tt
 		hidden_effect = {
 			set_country_flag = random_civil_war_reconstruction_phase
 			event021_parent_reconstruction_tick = yes
 		}
+	}
+	option = {
+		name = chaosx.nr21.9.amnesty
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		custom_effect_tooltip = chaosx.nr21.9.amnesty.tt
+		hidden_effect = {
+			event021_postwar_direction_amnesty = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_consolidator_profile }
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.reform
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		add_political_power = constant:event021_postwar_direction.reform_political_power_cost
+		custom_effect_tooltip = chaosx.nr21.9.reform.tt
+		hidden_effect = {
+			event021_postwar_direction_reform = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_negotiator_profile }
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.harsh
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		custom_effect_tooltip = chaosx.nr21.9.harsh.tt
+		hidden_effect = {
+			event021_postwar_direction_harsh = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = {
+			base = constant:random_civil_war_value.one
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_negotiator_profile }
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_consolidator_profile }
+		}
+	}
+	option = {
+		name = chaosx.nr21.9.emergency
+		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		custom_effect_tooltip = chaosx.nr21.9.emergency.tt
+		hidden_effect = {
+			event021_postwar_direction_emergency = yes
+			set_country_flag = random_civil_war_reconstruction_phase
+			event021_parent_reconstruction_tick = yes
+		}
+		ai_chance = { base = constant:random_civil_war_value.zero }
 	}
 }
 

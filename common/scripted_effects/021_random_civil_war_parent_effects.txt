@@ -6691,6 +6691,14 @@ event021_parent_review_settlement_obligation = {
 			}
 		}
 	}
+	# The aftermath idea lasts until the obligation is fulfilled or breached.
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_settlement_recorded
+			NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+		}
+		event021_clear_settlement_aftermath = yes
+	}
 	# The settlement phase, its obligation actions, and the terms mission last
 	# until the obligation is fulfilled or breached, not until Event 9 closes.
 	if = {
@@ -6860,18 +6868,20 @@ event021_parent_apply_settlement = {
 		}
 		else = { set_country_flag = random_civil_war_capital_lost }
 		if = {
-			limit = {
-				OR = {
-					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals }
-					AND = {
-						check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.government_victory compare = equals }
-						has_country_flag = random_civil_war_hardliner_profile
-						NOT = { has_country_flag = event021_settlement_talks_open }
-					}
-				}
-			}
+			limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals } }
 			set_country_flag = random_civil_war_harsh_settlement
 			set_country_flag = random_civil_war_failed_settlement
+		}
+		# A government that won on the battlefield chooses its postwar direction
+		# in The Fighting Stops; only a harsh security settlement or continued
+		# emergency rule is classified as a harsh, failed settlement.
+		clr_country_flag = random_civil_war_postwar_direction_pending
+		if = {
+			limit = {
+				check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.government_victory compare = equals }
+				NOT = { has_country_flag = event021_settlement_talks_open }
+			}
+			set_country_flag = random_civil_war_postwar_direction_pending
 		}
 		if = {
 			limit = {
@@ -6917,10 +6927,7 @@ event021_parent_apply_settlement = {
 			}
 			set_country_flag = random_civil_war_government_victory
 		}
-		if = {
-			limit = { has_country_flag = random_civil_war_settlement_negotiated }
-			add_ideas = event021_unsettled_settlement
-		}
+		event021_apply_settlement_aftermath = yes
 		set_variable = { random_civil_war_parent_log_payload = constant:random_civil_war_log.settlement }
 		event021_parent_record_system_log = yes
 		if = {
@@ -6928,7 +6935,13 @@ event021_parent_apply_settlement = {
 			set_variable = { random_civil_war_parent_log_payload = constant:random_civil_war_log.evolution_iii }
 			event021_parent_record_system_log = yes
 		}
-		event021_parent_record_achievement_receipts = yes
+		# A pending postwar direction records the achievement receipts once it
+		# is chosen, so a harsh choice is known before they are judged.
+		if = {
+			limit = { has_country_flag = random_civil_war_postwar_direction_pending }
+			clr_country_flag = random_civil_war_opening_states_reintegrated
+		}
+		else = { event021_parent_record_achievement_receipts = yes }
 		event021_update_achievement_state = yes
 		country_event = { id = chaosx.nr21.9 }
 	}
@@ -8639,6 +8652,7 @@ event021_parent_reconstruction_tick = {
 		}
 		set_country_flag = random_civil_war_admin_restored
 		set_country_flag = random_civil_war_reconstruction_resolved
+		event021_resolve_pending_postwar_direction = yes
 		event021_prepare_recurrence = yes
 		event021_parent_review_settlement_obligation = yes
 		event021_parent_record_achievement_receipts = yes
@@ -8823,7 +8837,8 @@ event021_parent_cleanup_crisis = {
 		remove_mission = event021_upholding_the_settlement_mission
 		if = { limit = { has_idea = event021_fractured_command } remove_ideas = event021_fractured_command }
 		if = { limit = { has_idea = event021_war_torn_administration } remove_ideas = event021_war_torn_administration }
-		if = { limit = { has_idea = event021_unsettled_settlement } remove_ideas = event021_unsettled_settlement }
+		event021_clear_settlement_aftermath = yes
+		clr_country_flag = random_civil_war_postwar_direction_pending
 		if = { limit = { has_idea = event021_secured_front_depot } remove_ideas = event021_secured_front_depot }
 		if = { limit = { has_country_flag = random_civil_war_reconstruction_complete } clr_country_flag = random_civil_war_reconstruction_phase }
 		if = {
