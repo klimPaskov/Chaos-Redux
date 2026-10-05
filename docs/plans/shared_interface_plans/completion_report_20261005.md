@@ -59,7 +59,7 @@ Its live release outcome remains unresolved.
 - `localisation/english/chaosx_chaos_meter_l_english.yml`
 - `localisation/english/chaosx_map_modes_l_english.yml`
 
-The shared GUI localisation changes are limited to `chaosx.help.body.overview`, `chaosx.help.body.controls`, the Settings and Event Details trigger tooltips, `chaosx.events_log.window.history.empty`, the Event Details actor tooltip and the Map label.
+The shared GUI localisation changes are limited to `chaosx.help.body.overview`, `chaosx.help.body.controls`, `chaosx.help.body.chaos_meter`, the Settings and Event Details trigger tooltips, `chaosx.events_log.window.history.empty`, the Event Details actor tooltip and the Map label.
 Concurrent Fury, White Peace, Equipment from the Heavens and other owner edits are excluded from the repair commit.
 
 ## Meaningful checks
