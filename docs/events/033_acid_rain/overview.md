@@ -77,6 +77,7 @@ A forecast arrives once per severe cell or superstorm episode and names the most
 An impact report follows the first positive pulse of each episode in the country's territory, with the named state's evacuation status and the days left in the episode.
 The departure report gives the length of the exposure that ended, the states still carrying aftermath and their highest tier, and becomes a temporary respite while a warning still covers the country.
 The dissipation report lists duration, worldwide deaths, states reached, Air Contamination added, severe cells, superstorms and unresolved aftermath.
+The world notices for concentrating rain, severe storm cells, a dividing front, the forming global layer and Global Acid Rain reach every player once per change, whichever country hosts the rain.
 
 ## Dashboard
 
