@@ -93,7 +93,8 @@ Reopening counts once per state and episode.
 Lasting Capacity and reconstruction construction use distinct one-shot receipts that treatment changes cannot clear.
 Physical transitions retain the center episode, while matching registered terminal cleanup clears the live episode and project fields.
 The immutable authorization serial and last spent IDs remain compact state history.
-The separate inherited liability, secured-value salvage, and corridor consumers are still missing and are not supplied by this project repair.
+The inherited-liability consumer is implemented in `035_great_depression_inherited_liability_effects.txt` and is documented in its companion Markdown file.
+Secured-value salvage and exact corridor outcomes remain blocked on missing Event 034 producer facts, as recorded in D4 of `docs/plans/035_great_depression_plans/agent_decisions_2026-10-04.md`.
 
 The exact regional companion is documented in [035_great_depression_region_effects.md](035_great_depression_region_effects.md).
 State cleanup checks the registered state's current episode against the closing receiver before removing physical/project flags.
@@ -103,3 +104,27 @@ No recurring whole-world scan is introduced.
 Source models and named before/after fixtures are in `docs/plans/035_great_depression_plans/subagent_handoffs/`.
 Current domain MCP timeouts prevent native transaction, lifecycle, and probability-comparison certification.
 The full Event 35 goal remains incomplete while mapped acceptance or upstream-source dependencies are unresolved.
+
+## Report-chain helpers
+
+`great_depression_initialize_report_chain` runs in COUNTRY scope after a new national episode is allocated.
+It reads the caller type and frozen source-country pointer and writes the regular `great_depression_report_chain_episode` value.
+Financial descendants inherit that value, worldwide conversions use the unique global episode value, and other national starts use their own episode value.
+It creates no temporary output, changes no Severity, and initializes the per-country spread announcement guard.
+
+`great_depression_queue_exposed_partner_report` runs in the source country with `great_depression_exposure_target` bound to the receiver.
+It stores a targeted numeric episode value on the receiver to prevent repeats from the same spreading chain, then appends a bounded pending origin and relationship.
+`great_depression_open_exposed_partner_report` freezes the first origin, relationship and number of other origins in regular receiver variables, then consumes the pending batch immediately.
+The close helper clears only the pending arrays and flag, leaving the report's display values and episode-targeted history intact.
+These helpers have no public temporary outputs.
+
+`great_depression_reset_clearing_bloc_announcement_if_small` may run in any scope.
+It reads the global clearing member count and formation threshold and clears the global formation-announced flag only when the group falls below formation size.
+Membership exits and expiry pruning call it, while global retirement preserves surviving clearing agreements and their announcement guard.
+It grants no economic benefit and returns no temporary output.
+
+`great_depression_prepare_action_tooltip_values` runs in COUNTRY scope and publishes 37 regular, display-only `great_depression_tt_*` fields on that country.
+All values come from the existing constants, including the compound freight relief calculation, and no gameplay calculation consumes the cache.
+`great_depression_refresh_costs` initializes the cache before the first hover, and decision callbacks refresh it before emitting their tooltips.
+The constant-display localisation reads the acting ROOT country, while unrelated callback-local temporary values remain unscoped.
+The helper has no public temporary output and must not be called on a state.

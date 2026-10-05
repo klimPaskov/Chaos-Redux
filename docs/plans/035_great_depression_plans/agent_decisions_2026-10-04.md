@@ -263,7 +263,8 @@ Disposition: implemented.
 
 ## D15. Evolution reports, exposed-partner report and first-spread news (round 2, item 3)
 
-Disposition: implemented.
+Disposition: implemented for activation reports and actor selection.
+The exposure queue and conversion-news policy are superseded by D31 and D35 in `agent_decisions_2026-10-05.md`.
 
 - Basis: spec part 5 "Event and news presentation" and spec part 10 "Financial Contagion text direction" (origin report, exposed-country report), and the lead's decisions 3 and 4 for this round.
 - `chaosx.nr35.12` (Financial Contagion) and `chaosx.nr35.13` (Social Collapse) are queued only from the mid-crisis activation branches of `great_depression_try_evolution_activation`, once per episode through `great_depression_contagion_report_episode_id` and `great_depression_social_report_episode_id`. An episode that opens with an evolution active keeps its opening report. Those branches require the evolution to be enabled, so a disabled evolution queues nothing.
@@ -273,6 +274,10 @@ Disposition: implemented.
 - Agent decision: the first-spread news `chaosx.nr35.15` is sent from the converted country's own opening report option in place of `chaosx.news.40`, so `FROM` is the newly struck country, as with `chaosx.news.40`. The source records the episode in `great_depression_first_spread_news_episode_id`; a deepened crisis never counts as a first spread, and later conversions from the same episode keep `chaosx.news.40`. Only full new depressions count, which is what "first full secondary depression" means.
 - New option weights: `great_depression_event_option_weight.contagion_report`, `social_collapse_report`, `exposure_report` and `world_news`.
 - needs_live_game: the four new popups' scripted names (`[?great_depression_contagion_report_partner.GetName]`, `[?great_depression_exposure_report_origin.GetName]`, `[?FROM.great_depression_first_spread_origin.GetName]`) follow the variable-scope pattern already used across the mod, and their display is not verified in game.
+
+Current exposure presentation uses the shared report-chain episode and summarizes simultaneous origins, without repeating the report for descendants.
+Current conversion presentation sends one first-secondary world news per financial chain and suppresses ordinary national news for routine conversions.
+The earlier mechanics described above are retained as superseded decision history rather than current implementation evidence.
 
 ## D16. Recovery legacy costs, later-episode effects, safeguard and hollow flag (round 2, item 4)
 

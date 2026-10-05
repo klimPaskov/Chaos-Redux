@@ -10,6 +10,7 @@ on_actions = {
 		effect = {
 			random_country = {
 				limit = { exists = yes }
+				set_temp_variable = { chaosx_test_country_extension_registration_added = constant:great_depression_api.zero }
 				great_depression_register_cxt_test_content = yes
 			}
 		}
@@ -19,10 +20,11 @@ on_actions = {
 		effect = {
 			if = {
 				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { chaosx_test_country_extension_registration_added = constant:great_depression_api.zero }
 				great_depression_register_cxt_test_content = yes
 				if = {
 					limit = { check_variable = { var = chaosx_test_country_extension_registration_added value = constant:great_depression_api.zero compare = greater_than } }
-					chaosx_test_country_sync_registered_content = yes
+					set_country_flag = chaosx_test_country_registered_sync_pending
 				}
 			}
 		}

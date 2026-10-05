@@ -313,13 +313,13 @@ It freezes the partner count and the partner at the highest exposure stage when 
 An episode that opens with the evolution already active is covered by its opening report instead.
 
 When a partner first joins the origin's material exposure set, `great_depression_queue_exposed_partner_report` queues `chaosx.nr35.14` for that partner.
-The targeted receipt `great_depression_exposure_report_from_<source tag>` holds the source episode id, so one source episode reports to a partner once.
-The partner keeps a short queue of origins and relationships capped at the contagion source cap, so two origins reaching it in the same week each get a report.
+The targeted value `great_depression_exposure_report_chain_<chain episode>` holds the unique spreading-chain episode, so the same chain reports to a partner once across its descendants.
+The partner keeps a pending batch of origins and relationships capped at the contagion source cap, and origins reaching it before delivery are summarized in one report.
 The report names the origin and the relationship (shared border, alliance, faction, overlord and subject, emergency agreement, or supply contract), describes the local bank and trade pressure, and points to the exposed-economy responses without treating the partner as being in a depression.
 
 The first contagion conversion that opens a full depression from one source episode is marked by `great_depression_mark_first_contagion_spread`.
-The source keeps the episode id in `great_depression_first_spread_news_episode_id`, and the converted country's opening report sends the world news `chaosx.nr35.15` in place of the ordinary `chaosx.news.40`, naming the newly struck country and the origin.
-Later conversions from the same episode keep the ordinary news, and a deepened crisis never counts as a first spread.
+The source and converted descendants carry `great_depression_spread_news_sent`, and the converted country's opening report immediate sends `chaosx.nr35.15` once for the chain, naming the newly struck country and the origin.
+Later conversions from the same chain use country reports and history without ordinary national news, and a deepened crisis never counts as a first spread.
 
 ## The Second Great Depression
 
@@ -510,3 +510,26 @@ The rejected-firing report reuses `GFX_report_event_great_depression`, registere
 Source tests in `.tools/test_event035_reports.py` cover 28 worldwide conversions, a branching financial chain, deepening replay, repeat national episodes, and exposure aggregation.
 They record native event scheduling and do not emulate the game's delayed delivery or rendering.
 Future review should preserve these limits when another cross-country entry is added.
+
+## Conference supplier quotes
+
+The Event 034 supplier adapter prepares the same scaled material quote used by other reconstruction participants, including suppliers without an at-risk contract.
+The conference refreshes its registered at-risk suppliers' quotes when it opens.
+The join action spends political power, fuel, and convoys, commits civilian capacity, and takes one conference seat.
+Exact quoted reserves satisfy the availability check.
+The Event 034 owner's late-entry hook remains required for a newly viable boom country with no earlier Event 035 quote or contract.
+
+## Compact category and test-package upkeep
+
+The national category shows Severity and direction, the recovery phase and doctrine, and the selected center in three lines.
+Hovering the active depression spirit explains the chief pressures and next threshold.
+The mission rows retain their named objectives and timers.
+The source text budget is reviewed, while native wrapping and hover placement remain live checks.
+The CXT daily fallback registers an unseen Event 035 package and marks it pending for Apply Registered Systems, without applying content by itself.
+The source execution suite checks nested registration output storage, one-time registration, inert daily replay, and player-triggered application.
+
+The asset audit's absent `icon_manifest.json` reference is reconciled to the existing `docs/assets/035_great_depression/manifest.md`.
+The existing decoded runtime inventory contains 80 DDS entries with zero decode errors.
+All twelve additional spirit icons retain their source/processed PNGs, registered 60x68 RGBA DDS files, and source-specific review sheet.
+Their producer records `gptimage MCP`; this pass reuses the files and does not certify equivalence to a current native ImageGen call.
+The local asset docs remain under the repository's ignored asset-workspace policy, with these durable facts recorded here.
