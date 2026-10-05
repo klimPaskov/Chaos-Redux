@@ -65,6 +65,10 @@ A scratch model of these formulas with the current constants (recorded in `docs/
 - Reactivated Leningrad, Bengal, Henan, Greece and Ethiopia profiles reach famine; Spain and the Soviet memory profile under a live shock reach acute shortage; the Irish memory profile reaches supply strain.
 - A relief delivery lifts the state at least one stage, and sustained relief holds a reactivated profile at acute shortage.
 
+A historical-window crisis profile (Henan 1942, Bengal 1943, Vietnam and Java 1944, Greece 1941, Leningrad, the Dutch Hunger Winter and early-1940s Spain) reactivates only inside its date window, under its historical owner or controller, and when the war reaches the state itself or a food shock is recorded.
+`famine_resolve_local_war_evidence` requires the state's controller to be at war and the state to be occupied, to border a state held by an enemy of its controller, to be under a harsher-than-standard occupation rule, to be a cut-off island, or to have lost local supply.
+A country fighting far from Bengal, Leningrad or Spain therefore does not starve those regions, which keeps Part 5's rule that a crisis does not fire once the campaign has removed its causes.
+
 Trapped-population need is population-scaled as `clamp((trapped people / live state population) * 100, 0, 100)`. It enters need and vulnerability only through the explicit migration adapter.
 
 ## Mortality and Deaths ownership
