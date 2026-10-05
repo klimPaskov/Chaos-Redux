@@ -50,6 +50,29 @@ defined_text = {
 	}
 }
 
+# Warfare help page Condemnation paragraph. The scale reads the clamp bounds of
+# condemnation_total, the concealment ceiling reads the shared response-price
+# multiplier at its highest score (base + maximum score / divisor), and the
+# inspection figures read the same duration and consumer-goods band that
+# GetCondemnationAcceptInternationalInspectionsTooltip quotes.
+defined_text = {
+	name = GetCBRNHelpCondemnationSummary
+	text = {
+		trigger = {
+			set_temp_variable = { cbrn_help_condemnation_scale_minimum = constant:condemnation_decay.minimum_total }
+			set_temp_variable = { cbrn_help_condemnation_scale_maximum = constant:condemnation_threshold.total_cap }
+			set_temp_variable = { cbrn_help_concealment_price_ceiling = constant:condemnation_cost.cost_multiplier_score_maximum }
+			divide_temp_variable = { cbrn_help_concealment_price_ceiling = constant:condemnation_cost.cost_multiplier_score_divisor }
+			add_to_temp_variable = { cbrn_help_concealment_price_ceiling = constant:condemnation_cost.cost_multiplier_base }
+			set_temp_variable = { cbrn_help_inspection_days = constant:condemnation_duration_days.inspection }
+			set_temp_variable = { cbrn_help_inspection_consumer_goods_minimum = constant:condemnation_cost.inspection_consumer_goods_minimum }
+			set_temp_variable = { cbrn_help_inspection_consumer_goods_maximum = constant:condemnation_cost.inspection_consumer_goods_maximum }
+			always = yes
+		}
+		localization_key = cbrn_help_condemnation_summary
+	}
+}
+
 defined_text = {
 	name = GetCBRNMaskTrainingStatus
 	text = {

@@ -102,3 +102,4 @@ The Event 020 board inspect route was retried once with the minimal call carryin
 Contamination map mode (B037, this workstream's part): implemented on the consumer side, see `agent_decisions_2026-10-04.md` section 14.
 The Fallout marker removal turned out to be accepted Fallout design (spec 68 line 69), so the routing note above is superseded: the Fallout owner has nothing to change, and the nuclear branch now also reads the live intensity and expiry record that the sweep keeps.
 The colours remain a live-game check in a post-sweep save.
+Warfare help page figures (priority 3 item 9): implemented, see section 15. The blocking churn was line endings only, so the edit did not entangle another diff.
