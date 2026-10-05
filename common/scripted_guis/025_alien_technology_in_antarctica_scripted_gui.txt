@@ -72,6 +72,7 @@ scripted_gui = {
 				nr25_rival_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_rival = yes }
 				nr25_rival_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_rival = yes }
 				nr25_rival_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_rival = yes }
+				nr25_rivals_next_click = { chaosx_nr25_next_rival_page = yes }
 
 				# Action clicks only stage the slot. The parent-owned execution helper
 				# remains the sole authority for costs, requirements, and effects.
@@ -187,6 +188,18 @@ scripted_gui = {
 					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
 					has_country_flag = chaosx_nr25_rival_slot_3_visible
 				}
+			# The next-rivals control appears only when the roster holds more
+			# valid rivals than the column shows.
+			nr25_rivals_next_visible = {
+				has_global_flag = chaosx_nr25_active
+				NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+				NOT = { has_country_flag = chaosx_nr25_terminal }
+				check_variable = { var = chaosx_nr25_rival_candidate_count value = constant:chaosx_nr25_board.rival_cards compare = greater_than }
+			}
+			nr25_rivals_next_click_enabled = {
+				NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				check_variable = { var = chaosx_nr25_rival_candidate_count value = constant:chaosx_nr25_board.rival_cards compare = greater_than }
+			}
 			nr25_rival_1_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_1_selected }
 			nr25_rival_2_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_2_selected }
 			nr25_rival_3_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_3_selected }

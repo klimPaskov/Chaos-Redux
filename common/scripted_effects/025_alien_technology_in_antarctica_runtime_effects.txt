@@ -125,8 +125,30 @@ chaosx_nr25_pay_chartered_entry = {
 # resolution. This helper never scans the world. Inside the registry loop PREV
 # is the participant being prepared, so registering an AI entrant from another
 # country's event never writes that event country's cards.
+# The viewer's chaosx_nr25_rival_page_offset skips that many valid rivals
+# before the first card, so the next-rivals control pages through a roster
+# larger than the column. A selected rival stays selected while its card is
+# on another page.
 chaosx_nr25_prepare_rival_cards = {
 	set_temp_variable = { chaosx_nr25_previous_rival_target_id = chaosx_nr25_rival_target_id }
+	set_temp_variable = { chaosx_nr25_rival_seen = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_candidate_count = constant:chaosx_nr25_value.zero }
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = { chaosx_nr25_rival_card_candidate_valid = yes }
+			PREV = { add_to_variable = { chaosx_nr25_rival_candidate_count = constant:chaosx_nr25_value.one } }
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = chaosx_nr25_rival_page_offset }
+				check_variable = { var = chaosx_nr25_rival_page_offset value = chaosx_nr25_rival_candidate_count compare = greater_than_or_equals }
+			}
+		}
+		set_variable = { chaosx_nr25_rival_page_offset = constant:chaosx_nr25_value.zero }
+	}
 	set_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_nr25_rival_slot_1_id = constant:chaosx_nr25_value.zero }
 	set_variable = { chaosx_nr25_rival_slot_2_id = constant:chaosx_nr25_value.zero }
@@ -144,9 +166,18 @@ chaosx_nr25_prepare_rival_cards = {
 	for_each_scope_loop = {
 		array = global.chaosx_nr25_participants
 		if = {
+			limit = { chaosx_nr25_rival_card_candidate_valid = yes }
+			add_to_temp_variable = { chaosx_nr25_rival_seen = constant:chaosx_nr25_value.one }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+				PREV = { set_country_flag = chaosx_nr25_rival_target_selected }
+			}
+		}
+		if = {
 			limit = {
 				chaosx_nr25_rival_card_candidate_valid = yes
-				check_variable = { var = PREV.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_value.three compare = less_than }
+				check_variable = { var = chaosx_nr25_rival_seen value = PREV.chaosx_nr25_rival_page_offset compare = greater_than }
+				check_variable = { var = PREV.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_board.rival_cards compare = less_than }
 			}
 			PREV = { add_to_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.one } }
 			if = {
@@ -1460,6 +1491,17 @@ chaosx_nr25_select_board_rival = {
 		set_country_flag = chaosx_nr25_rival_slot_3_selected
 		set_country_flag = chaosx_nr25_rival_target_selected
 	}
+}
+
+# COUNTRY scope (the viewer). Shows the next page of rival cards; the card
+# builder wraps back to the first page after the last rival.
+chaosx_nr25_next_rival_page = {
+	if = {
+		limit = { NOT = { has_variable = chaosx_nr25_rival_page_offset } }
+		set_variable = { chaosx_nr25_rival_page_offset = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_nr25_rival_page_offset = constant:chaosx_nr25_board.rival_cards }
+	chaosx_nr25_prepare_rival_cards = yes
 }
 
 # COUNTRY scope. The pulse is the only recurring Event 025 effect. It handles

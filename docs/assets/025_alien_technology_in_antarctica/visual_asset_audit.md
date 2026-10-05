@@ -183,6 +183,21 @@ The static fallbacks now carry the animated sprites' base names (`GFX_025_expedi
 `hoi4.gui_render` scenario `nr25_overlays_all_animated_20261004b` at 1920x1080, UI scale 1, with explicit visibility for the five animated overlays, no selected sector and the resolved panel hidden, at animation time 0.75 s (frame 003), returned `GUI_RENDERED` (SVG SHA-256 `b5c81a4180ec36d120f83fdeb43f3236d20c9c21fe18f5f33d0d3e93ae192f52`): the hub pulse, footprint trail and figure, shards, border tendrils and warships sit on their intended map features beneath the emblems and labels, and the new control sits left of refresh in the header.
 Only the overlap of all five overlays was rendered; real campaigns show one overlay per active evolution, and the animation itself (timing and loop seams) is verified only through the review GIFs, not in game.
 
+## Rival paging control (2026-10-05)
+
+The rival column keeps its three cards and gains `nr25_rivals_next` (`GFX_025_expedition_control_next_rivals`, a 128x32 four-state strip in the control family, double-chevron glyph, native ImageGen alpha with no background removal) at board position x 952, y 432.
+It sits in the free strip right of the cards: the card click regions end at x 939, so the 32x32 control does not overlap any card, and its lower edge lines up with the third card.
+It is shown only while the viewer's last card build counted more than three valid rivals (`chaosx_nr25_rival_candidate_count` above `chaosx_nr25_board.rival_cards`).
+
+| Pass | Scenario | Resolutions | Artifact | Finding |
+| --- | --- | --- | --- | --- |
+| Inspect, before | `nr25_rival_paging_before_20261005` | generated default | `gui-inspect` SHA-256 `ba8c0559515e9dbaf0bbb66141d3c9bf7474790f533a7ecb34d1827043faf49f`, revision `c7cc4c60a37ff2ec` | 138 elements, no skipped sources. |
+| Render, before | `nr25_rival_paging_before_20261005` | 1920x1080, UI 1 | full SVG `f9fb893a470ad5b585607f1d46420da723255783c8031a8e3c61348576f5c063`, source revision `9e2a0521` | Three cards, no way to reach a fourth or fifth rival. |
+| Render, after | `nr25_rival_paging_after_20261005` (normal, hover, disabled) | 1920x1080, 1600x900, 1366x768, UI 1 | full PNG `25f3f40e5a4d8ff62af87f2628f3d55e22682876998d1623ec6806f1b2240112`, click regions `5d045c10b9af016a685accfc66efbbc2b53cab712f77b507748de407ca405fd1`, resolution matrix `cb9e58f8abf378227dbaff1bba9793ea29c5f9cd1b5bb3480baa7e4e77a0bd7a`, state matrix `a9e15151ddb1d100e38501848cff84a726e9a778164df6dbdc50f0ed4d61ab2c`, source revision `5c994b7b` | Control drawn right of the third card inside the rival panel; its click region is separate from the three card regions; the whole board stays inside every viewport. |
+| Render, after (off-page selection) | `nr25_rival_paging_after_1366_20261005` (hover) | 1366x768, UI 1 | full SVG `b98d525d328fbbbe7bca46507b4f93ded1c6f5dccaed318b77125ff0d0774cca`, source revision `4d29ef75` | Selected-target row names a rival whose card is on another page while three other rivals are shown. |
+
+The render fixtures supply the card names, card text and the selected-target name as localisation values, because live country scopes and scripted localisation do not resolve offline; the selected-target row prints `[?chaosx_nr25_rival_target_id.GetName]` in game. The paging itself (offset skip, wrap to the first page, kept selection) is source-reviewed and `needs_live_game`.
+
 ## Remaining limits
 
 Neither complete asset wiring nor overall Event 025 acceptance is established.
