@@ -3,7 +3,7 @@
 This is a conservative source regression, not HOI4, probability, save, or
 per-division supply evidence. Delayed events are recorded, never delivered.
 """
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 import importlib.util
 from pathlib import Path
 import unittest
@@ -18,6 +18,13 @@ spec.loader.exec_module(life)
 runtime = life.parse(life.REPO / "common/scripted_effects/024_video_game_in_sweden_runtime_effects.txt")
 life.APIS.update({n.key: n for n in runtime})
 life.CONSTANTS["video_game_in_sweden_timing.runtime_watch_days"] = Decimal(1)
+# The shared day-to-date converter and its unit constants run as written.
+dynamic = life.parse(life.REPO / "common/scripted_effects/chaosx_dynamic_effects.txt")
+life.APIS.update({n.key: n for n in dynamic if n.key == "chaosx_convert_days_to_date_offset"})
+for group in life.parse(life.REPO / "common/script_constants/chaosx_date_units_constants.txt"):
+    for item in group.body:
+        if item.key != "schema" and isinstance(item.body, str):
+            life.CONSTANTS[group.key + "." + item.key] = Decimal(item.body)
 
 
 class ObserverModel(life.FrameModel):
@@ -66,6 +73,7 @@ class ObserverModel(life.FrameModel):
                          "clear_global_event_target", "remove_mission", "remove_decision", "remove_ideas",
                          "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier",
                          "clear_array", "force_update_dynamic_modifier", "clamp_temp_variable", "clear_variable",
+                         "round_temp_variable",
                          "random_enemy_country", "any_enemy_country", "save_global_event_target_as"):
                 name = f"__native_{n.path}_{n.start}_{n.key}"
                 self.native_nodes[name] = n
@@ -141,6 +149,9 @@ class ObserverModel(life.FrameModel):
             if n.key == "clear_variable":
                 self.saved.pop((self.actor, n.body), None)
                 return True
+            if n.key == "round_temp_variable":
+                self.temp[n.body] = self.temp[n.body].to_integral_value(rounding=ROUND_HALF_UP)
+                return True
             if n.key == "save_global_event_target_as":
                 self.targets[n.body] = self.actor
                 return True
@@ -211,9 +222,11 @@ class ObservationSourceTests(unittest.TestCase):
             model.flags["SWE"].update({"video_game_in_sweden_reality_check_stockholm_held",
                                       "video_game_in_sweden_trust_model_stockholm_continuous",
                                       "video_game_in_sweden_reality_check_reliance_timer"})
+            model.saved[("SWE", "video_game_in_sweden_reality_check_proof_end_date")] = Decimal(1)
             if full_report:
                 model.flags["SWE"].add("video_game_in_sweden_reality_audit_full_success")
             model.call("video_game_in_sweden_record_control_loss")
+            self.assertNotIn(("SWE", "video_game_in_sweden_reality_check_proof_end_date"), model.saved)
             self.assertEqual("video_game_in_sweden_reality_check_disqualified" in model.flags["SWE"], full_report)
             self.assertIn("video_game_in_sweden_cabinet_found_wanting", model.flags["SWE"])
             self.assertIn("video_game_in_sweden_according_to_plan_disqualified", model.flags["SWE"])
@@ -535,6 +548,49 @@ class ObservationSourceTests(unittest.TestCase):
         model = self.dispatch("SWE", model=model)
         self.assertNotIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
         self.assertTrue(self.open_cabinet(model))
+
+    # Reality Check proof year (R4-2). Stored dates count one hour as 0.00001.
+    @staticmethod
+    def days(n):
+        return Decimal(n) * 24 / Decimal(100000)
+
+    def test_reality_check_proof_year_completes_on_day_365(self):
+        start = Decimal("1940.5")
+        model = self.model()
+        # The programme has closed after the full report; only the watch runs.
+        model.flags["SWE"] = {"video_game_in_sweden_host_selected", "video_game_in_sweden_reality_audit_full_success",
+                              "video_game_in_sweden_reality_audit_started", "video_game_in_sweden_evolution_iii_recorded",
+                              "video_game_in_sweden_achievement_eligible", "video_game_in_sweden_normal_campaign"}
+        model.native_predicates["video_game_in_sweden_is_current_host"] = False
+        model.saved[("SWE", "simulation_reliance")] = Decimal(40)
+        model.facts.update({"global.date": start, ("SWE", "is_ai", "no"): True, ("SWE", "original_tag", "SWE"): True})
+        model.call("video_game_in_sweden_observe_runtime")
+        self.assertIn("video_game_in_sweden_reality_check_reliance_timer", model.flags["SWE"])
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_reality_check_proof_end_date")], start + self.days(365))
+        self.assertEqual(model.scheduled, [("chaosx.nr24.91", Decimal(1))])
+        for day, complete in ((1, False), (364, False), (365, True)):
+            model.flags["SWE"].discard("video_game_in_sweden_runtime_watch_pending")
+            model.scheduled.clear()
+            model.facts["global.date"] = start + self.days(day)
+            model.call("video_game_in_sweden_observe_runtime")
+            # The stored end date never moves while the year runs.
+            self.assertEqual(model.saved[("SWE", "video_game_in_sweden_reality_check_proof_end_date")], start + self.days(365))
+            self.assertEqual(model.call("video_game_in_sweden_reality_check_is_complete"), complete)
+            # The daily watch continues until the year is complete.
+            self.assertEqual(model.scheduled, [] if complete else [("chaosx.nr24.91", Decimal(1))])
+        # A return to Doctrine before the end clears the timer and its date.
+        model = self.model()
+        model.flags["SWE"] |= {"video_game_in_sweden_reality_audit_full_success"}
+        model.native_predicates["video_game_in_sweden_is_current_host"] = False
+        model.saved[("SWE", "simulation_reliance")] = Decimal(40)
+        model.facts["global.date"] = start
+        model.call("video_game_in_sweden_update_achievement_tracking")
+        model.saved[("SWE", "simulation_reliance")] = Decimal(80)
+        model.facts["global.date"] = start + self.days(200)
+        model.call("video_game_in_sweden_update_achievement_tracking")
+        self.assertIn("video_game_in_sweden_reality_check_disqualified", model.flags["SWE"])
+        self.assertNotIn("video_game_in_sweden_reality_check_reliance_timer", model.flags["SWE"])
+        self.assertNotIn(("SWE", "video_game_in_sweden_reality_check_proof_end_date"), model.saved)
 
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()

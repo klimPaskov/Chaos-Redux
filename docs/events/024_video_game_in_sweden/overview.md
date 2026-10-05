@@ -502,7 +502,7 @@ A bounded sweep across Chaos, stability, surrender progress, and army experience
 
 ## Achievements and persistence
 
-`024_video_game_in_sweden_reality_check` requires Evolution III, a full reality audit, the 365-day validated-methods timer, Stockholm held, low Reliance, valid host status, and no disqualifier.
+`024_video_game_in_sweden_reality_check` requires Evolution III, a full reality audit, a completed 365-day low-Reliance proof year, Stockholm held, low Reliance, valid host status, and no disqualifier.
 
 `024_video_game_in_sweden_according_to_plan` requires Evolution III, Trust Model, a meaningful favorable war result, mandatory reassessment, the stored opponent and victory state, Stockholm held, valid host status, and no disqualifier.
 
@@ -527,6 +527,8 @@ Source regressions cover this contract, while native callback delivery and save 
 Both achievements have complete, grey, and not-eligible DDS states registered in `interface/chaosx_achievements.gfx`.
 
 Reality Check accepts its low-Reliance proof on day 365 and rejects either loss of Stockholm ownership or control.
+The proof year is a stored date, not a flag age: `video_game_in_sweden_start_reality_check_proof` sets `video_game_in_sweden_reality_check_reliance_timer` and stores `video_game_in_sweden_reality_check_proof_end_date` as `global.date` plus `achievement_reliance_days` converted by `chaosx_convert_days_to_date_offset`, because a `has_country_flag` age check takes only a whole number of days.
+The completion trigger and the daily watch compare `global.date` with that end date, so the year completes on day 365 and not on day 364, and `video_game_in_sweden_clear_reality_check_proof` clears the flag and the date together wherever the year ends.
 Closed receipts and finite ordinary aftermath survive late queued maintenance and repeated cleanup calls.
 Commander cleanup follows the stored commander target as well as the host's current officers, including a commander transferred away from the host.
 

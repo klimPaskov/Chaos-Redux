@@ -1297,11 +1297,12 @@ video_game_in_sweden_reality_check_is_complete = {
 		value = constant:video_game_in_sweden_reliance.doctrine_min
 		compare = less_than
 	}
-	NOT = {
-		has_country_flag = {
-			flag = video_game_in_sweden_reality_check_reliance_timer
-			days < constant:video_game_in_sweden_event.achievement_reliance_days
-		}
+	# The proof year is complete once the date reaches its stored end.
+	has_variable = video_game_in_sweden_reality_check_proof_end_date
+	check_variable = {
+		var = global.date
+		value = video_game_in_sweden_reality_check_proof_end_date
+		compare = greater_than_or_equals
 	}
 }
 

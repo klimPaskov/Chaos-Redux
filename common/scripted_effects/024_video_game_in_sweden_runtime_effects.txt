@@ -145,9 +145,16 @@ video_game_in_sweden_observe_runtime = {
 				AND = {
 					has_country_flag = video_game_in_sweden_reality_audit_full_success
 					NOT = { has_country_flag = video_game_in_sweden_reality_check_disqualified }
+					# The watch runs until the proof year ends; on its last day
+					# the date reaches the stored end and the watch stops.
 					OR = {
 						NOT = { has_country_flag = video_game_in_sweden_reality_check_reliance_timer }
-						has_country_flag = { flag = video_game_in_sweden_reality_check_reliance_timer days < constant:video_game_in_sweden_event.achievement_reliance_days }
+						NOT = { has_variable = video_game_in_sweden_reality_check_proof_end_date }
+						check_variable = {
+							var = global.date
+							value = video_game_in_sweden_reality_check_proof_end_date
+							compare = less_than
+						}
 					}
 				}
 			}
@@ -260,7 +267,7 @@ video_game_in_sweden_record_control_loss = {
 		}
 		set_country_flag = video_game_in_sweden_cabinet_found_wanting
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
-		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
+		video_game_in_sweden_clear_reality_check_proof = yes
 		clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
 		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
 		set_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.crisis_memory_days }
@@ -349,7 +356,7 @@ video_game_in_sweden_record_actor_loss = {
 			set_country_flag = video_game_in_sweden_reality_check_disqualified
 		}
 		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
-		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
+		video_game_in_sweden_clear_reality_check_proof = yes
 		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
 		video_game_in_sweden_close_program = yes
 	}

@@ -3957,7 +3957,7 @@ video_game_in_sweden_update_achievement_tracking = {
 			}
 		}
 		set_country_flag = video_game_in_sweden_reality_check_disqualified
-		clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
+		video_game_in_sweden_clear_reality_check_proof = yes
 		clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
 	}
 	else_if = {
@@ -3974,9 +3974,12 @@ video_game_in_sweden_update_achievement_tracking = {
 					value = constant:video_game_in_sweden_reliance.doctrine_min
 					compare = less_than
 				}
-				NOT = { has_country_flag = video_game_in_sweden_reality_check_reliance_timer }
+				OR = {
+					NOT = { has_country_flag = video_game_in_sweden_reality_check_reliance_timer }
+					NOT = { has_variable = video_game_in_sweden_reality_check_proof_end_date }
+				}
 			}
-			set_country_flag = video_game_in_sweden_reality_check_reliance_timer
+			video_game_in_sweden_start_reality_check_proof = yes
 		}
 		else_if = {
 			limit = {
@@ -3987,9 +3990,27 @@ video_game_in_sweden_update_achievement_tracking = {
 				}
 			}
 			set_country_flag = video_game_in_sweden_reality_check_disqualified
-			clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
+			video_game_in_sweden_clear_reality_check_proof = yes
 		}
 	}
+}
+
+# COUNTRY scope. Starts the Reality Check proof year: the low-Reliance timer
+# flag and the date on which the year is complete. A date is stored because a
+# flag-age check takes only a whole number of days, not a script constant.
+video_game_in_sweden_start_reality_check_proof = {
+	set_country_flag = video_game_in_sweden_reality_check_reliance_timer
+	set_temp_variable = { chaosx_date_days = constant:video_game_in_sweden_event.achievement_reliance_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { video_game_in_sweden_reality_check_proof_end_date = global.date }
+	add_to_variable = { video_game_in_sweden_reality_check_proof_end_date = chaosx_date_offset }
+}
+
+# COUNTRY scope. Ends a running Reality Check proof year.
+video_game_in_sweden_clear_reality_check_proof = {
+	clr_country_flag = video_game_in_sweden_reality_check_reliance_timer
+	clear_variable = video_game_in_sweden_reality_check_proof_end_date
 }
 
 # COUNTRY scope. Adds one maintenance interval, multiplied by the MTTH pace,
