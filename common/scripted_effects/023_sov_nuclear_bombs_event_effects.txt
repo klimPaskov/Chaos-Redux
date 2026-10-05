@@ -883,6 +883,31 @@ sov_nuclear_bombs_record_action_receipt = {
 				clr_country_flag = sov_nuclear_bombs_test_accident_no_yield_recorded
 			}
 		}
+			# Readiness follows the result and the test profile (Part 3): an
+			# instrumented success teaches more than a concealed one, a partial
+			# yield a little, and a failure sets the arsenal back. An accident
+			# keeps its own Integrity handling.
+			set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_ledger.zero }
+			if = {
+				limit = { has_country_flag = sov_nuclear_bombs_test_success }
+				if = {
+					limit = { has_country_flag = sov_nuclear_bombs_test_instrumented }
+					set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.test_success_instrumented_readiness }
+				}
+				else = { set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.test_success_concealed_readiness } }
+			}
+			else_if = {
+				limit = { has_country_flag = sov_nuclear_bombs_test_partial_yield }
+				set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.test_partial_readiness }
+			}
+			else_if = {
+				limit = { has_country_flag = sov_nuclear_bombs_test_failure }
+				set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.test_failure_readiness }
+			}
+			if = {
+				limit = { NOT = { has_country_flag = sov_nuclear_bombs_test_accident } }
+				sov_nuclear_bombs_apply_test_readiness = yes
+			}
 			# Once the arsenal is public, every Soviet test is watched, so a
 			# failure or an accident damages credibility.
 			if = {
@@ -923,6 +948,8 @@ sov_nuclear_bombs_record_action_receipt = {
 			set_country_flag = sov_nuclear_bombs_demonstration_confirmed
 			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_credibility.demonstration_gain }
 			sov_nuclear_bombs_change_credibility = yes
+			set_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.demonstration_readiness }
+			sov_nuclear_bombs_apply_test_readiness = yes
 			# A demonstration after a refusal backs the demand: the Union may
 			# renew it, and gets a fresh window to enforce or withdraw it.
 			if = {
@@ -1035,6 +1062,40 @@ sov_nuclear_bombs_record_action_receipt = {
 		if = { limit = { has_variable = sov_nuclear_bombs_action_state } var:sov_nuclear_bombs_action_state = { set_variable = { PREV.sov_nuclear_bombs_last_target_state = THIS.id } } }
 	}
 	sov_nuclear_bombs_achievement_refresh_receipts = yes
+}
+
+# Country scope (the Soviet actor). Applies one test or demonstration's
+# Readiness change. Input: temporary sov_nuclear_bombs_test_readiness_delta.
+# Tests and demonstrations are counted per attained evolution stage; past
+# test_purpose_count a gain is divided by test_repeat_divisor, because a
+# repeat teaches the engineers less. Losses are never divided. The applied
+# change, after the clamp, is kept for the report.
+sov_nuclear_bombs_apply_test_readiness = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = sov_nuclear_bombs_stage_test_stage }
+				NOT = { check_variable = { var = sov_nuclear_bombs_stage_test_stage value = sov_nuclear_bombs_evolution_stage compare = equals } }
+			}
+		}
+		set_variable = { sov_nuclear_bombs_stage_test_stage = sov_nuclear_bombs_evolution_stage }
+		set_variable = { sov_nuclear_bombs_stage_test_uses = constant:sov_nuclear_bombs_ledger.zero }
+	}
+	add_to_variable = { sov_nuclear_bombs_stage_test_uses = constant:sov_nuclear_bombs_ledger.one }
+	clr_country_flag = sov_nuclear_bombs_last_test_repeated
+	if = {
+		limit = {
+			check_variable = { var = sov_nuclear_bombs_test_readiness_delta value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+			check_variable = { var = sov_nuclear_bombs_stage_test_uses value = constant:sov_nuclear_bombs_tuning.test_purpose_count compare = greater_than }
+		}
+		divide_temp_variable = { sov_nuclear_bombs_test_readiness_delta = constant:sov_nuclear_bombs_tuning.test_repeat_divisor }
+		set_country_flag = sov_nuclear_bombs_last_test_repeated
+	}
+	set_temp_variable = { sov_nuclear_bombs_readiness_before_test = sov_nuclear_bombs_readiness }
+	add_to_variable = { sov_nuclear_bombs_readiness = sov_nuclear_bombs_test_readiness_delta }
+	clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_tuning.value_min max = constant:sov_nuclear_bombs_tuning.value_max }
+	set_variable = { sov_nuclear_bombs_last_test_readiness_change = sov_nuclear_bombs_readiness }
+	subtract_from_variable = { sov_nuclear_bombs_last_test_readiness_change = sov_nuclear_bombs_readiness_before_test }
 }
 
 # SOV country scope, called from on_nuke_drop when the Soviet Union detonates
