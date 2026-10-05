@@ -558,3 +558,14 @@ Blocked inspection: the foreign pool calls `riches_found_resolve_inspection_dema
 The report names the outcome through two new report texts (`riches_found_report_text.inspection_exposed` 2031 and `inspection_blocked` 2032, keys `riches_found.report.inspection_exposed` and `riches_found.report.inspection_blocked`): the incident sets the temporary `riches_found_incident_report_text`, which `riches_found_reset_incident_deltas` clears for every pool and `riches_found_finish_incident` uses in place of the incident id.
 No literal numbers; the deaths are removed once through the existing harm transaction; the shared condemnation files are only called.
 Live-game checks: the entombment loss and atrocity in the Deaths and Condemnation windows after a seal over trapped crews, and the inspection report text for each outcome.
+
+### Round 3 commit index
+
+| Decision | Lead item | Commit |
+| --- | --- | --- |
+| D45 (decision AI family weights, one project at a time) | L1 | `9d08308ce` |
+| D46 (revenue incidents after the revenue milestone) | L2 | `2a32c4882` |
+| D47 (forced entombment and blocked inspection) | L3 | `da6efab21` |
+
+No catalog column changes: the workbook row's Details, evolution texts, type, chaos level, cluster and status are unaffected by this round.
+Open for the orchestrator: the live-game checks listed under D45 and D47, and the same-scenario probability comparison, which stays blocked by the probability route ("Invalid tool arguments" on 2026-10-05).
