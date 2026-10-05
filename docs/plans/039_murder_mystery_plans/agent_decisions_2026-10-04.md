@@ -324,3 +324,17 @@ Basis: the round-1 review findings and the revolt-cluster fix already recorded u
 - The Assassin State split checks its size cap inside the `every_neighbor_state` body before each registration, as the revolt cluster already does, so one expansion round can never take more than `murder_mystery_split_state_limit` states and the original government keeps its remnant.
 - Objective AI strategies (`conquer` for Dismantle the Command Network and Force a Capitulation, `protect` for Protect the Derivative) record their target on the objective owner and are removed exactly once by adding the same strategy with the negated value (`@murder_mystery_objective_ai_*_undo`) when the objective context is cleared, which every success, partial result, failure, cancellation and cleanup does; a new binding first removes any strategy still recorded.
 - The `murder_mystery_action_cost` category was already removed when the cost families replaced it (commit `d4b41da92`); this pass removes the remaining dead tuning that nothing reads: 21 superseded per-action values in `murder_mystery_action_tuning`, the stale registry ceilings (`maximum_derivative_rows`, `maximum_terminal_rows` = 64 against the live 128, `maximum_terminal_sector_rows`), three unused World of Anarchy readiness values and the carrier `pool_size` mirror. A repository scan confirms none of them is referenced.
+
+## D31. The institutional successor portrait is a people-free emblem
+
+Disposition: implemented (round 2); the portrait needs live confirmation on the political screen.
+Basis: the lead's round-2 decision 6 and Part 18, which treats any placeholder portrait as a hard blocker.
+`GFX_portrait_039_emergency_council` read the vanilla `leader_unknown.dds`.
+The portrait stands for a generic Emergency Council or Acting Cabinet, named only from the country's adjective, and shows no person and no real institution's insignia, so it is classified as a fictional, people-free emblem; Part 3's grounded mode is for real individuals and real institutions' actual insignia.
+It was generated with native ImageGen (an empty council chair at a cabinet table with a blank-sealed folder, no text, faces, insignia or religious imagery), processed with the roster's cover fit to 156x210, converted with the skill's `convert_to_dds.py`, and wired to the unchanged sprite name. The prompt, source, processed PNG, hashes and review are in the local portrait manifest (`docs/assets/039_murder_mystery/portraits/manifest.md`; `docs/assets/` is not tracked by git).
+
+## D32. Vanilla unit sounds are the final Event 039 unit audio
+
+Disposition: accepted; closes the round-1 unit-audio blocker.
+Basis: the lead's round-2 decision 7.
+The five Event 039 units already play fitting vanilla infantry, machine-gun and armoured-car sounds bound to their real actions (the 2026-09-28 model handoff). New audio would need a download that only the user can authorize, and the bound vanilla sounds already match the units' weapons and vehicles, so they are accepted as final rather than recorded as a pending gap.

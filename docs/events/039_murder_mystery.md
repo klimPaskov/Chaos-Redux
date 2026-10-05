@@ -28,7 +28,7 @@ The replacement takes office before the victim is retired, through `murder_myste
 
 1. A curated native successor row applies first. The only row is Britain: a murdered `ENG_stanley_baldwin` is succeeded by `ENG_neville_chamberlain`, attached to the country with `set_nationality` when it does not already hold him (character recruitment is history-only, and a 1936 start recruits him only in the 1939 history block) and then promoted in the ruling democratic party, with his vanilla portrait.
 2. Otherwise an institutional body named from the country's adjective takes office in the ruling party's ideology: the "Emergency Council" after the opening murder, the "Acting Cabinet" after a foreign murder.
-   It carries a marker trait (`murder_mystery_emergency_council` or `murder_mystery_acting_cabinet`) with a small stability penalty and uses `GFX_portrait_039_emergency_council`, an institutional portrait that shows no individual.
+   It carries a marker trait (`murder_mystery_emergency_council` or `murder_mystery_acting_cabinet`) with a small stability penalty and uses `GFX_portrait_039_emergency_council` (`gfx/leaders/039_murder_mystery/leader_039_emergency_council.dds`), a people-free institutional emblem of an empty council chair and a sealed folder.
 
 The transaction verifies through the anchor helper that the replacement, not the victim, is the sitting ruler before it retires the victim.
 No invented individual is created for a real government; the generated individual portrait previously used for every host is no longer referenced.
@@ -420,7 +420,8 @@ The asset audit remains governed by the full per-asset review and consumer cross
 The mission family count is not proof of complete objective coverage.
 Every Part 8 mission family has an objective, and the witness transfer, support shipment, recruitment and local government objectives bind named states, a recorded shipment, a cell row and an incident count.
 The agency operation, movement and terminal objectives need live confirmation of their binding, timers and outcomes.
-Route rewards, country viability, native technology and focus evidence, probability comparisons, both Meshy model packages and actions, licensed audio, workbook reconciliation, and the full Part 18 matrix remain separate completion gates.
+Route rewards, country viability, native technology and focus evidence, probability comparisons, both Meshy model packages and actions, workbook reconciliation, and the full Part 18 matrix remain separate completion gates.
+The five units use the vanilla infantry, machine-gun and armoured-car sounds bound to their actions as final audio (agent decision D32).
 No runtime or persistence claim in this document substitutes for observed game state.
 
 ## Further development
