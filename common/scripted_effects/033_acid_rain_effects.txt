@@ -1398,6 +1398,18 @@ acid_rain_record_country_active_exposure = {
 		set_variable = { acid_rain_touch_responsibility_generation = global.acid_rain_generation_id }
 	}
 	save_event_target_as = acid_rain_report_state
+	# Arrival report facts: the front over the state, or the global layer at
+	# the Standard intensity its pulses use.
+	set_temp_variable = { acid_rain_arrival_report_front = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_arrival_report_intensity = constant:acid_rain_intensity.standard }
+	if = {
+		limit = {
+			NOT = { has_global_flag = acid_rain_global_layer_active }
+			has_variable = acid_rain_target_front_id
+		}
+		set_temp_variable = { acid_rain_arrival_report_front = acid_rain_target_front_id }
+		set_temp_variable = { acid_rain_arrival_report_intensity = global.acid_rain_front_intensity_entries^acid_rain_target_front_id }
+	}
 	CONTROLLER = {
 		acid_rain_register_country_on_control_transfer = yes
 		set_temp_variable = { acid_rain_arrival_report_ready_day = constant:acid_rain_runtime.zero }
@@ -1420,6 +1432,7 @@ acid_rain_record_country_active_exposure = {
 					}
 				}
 				set_variable = { acid_rain_last_arrival_report_day = global.date }
+				acid_rain_store_arrival_report_facts = yes
 				country_event = { id = chaosx.nr33.101 }
 			}
 		}
@@ -1541,6 +1554,7 @@ acid_rain_update_casualty_report = {
 				limit = { check_variable = { var = global.date value = acid_rain_casualty_report_ready_day compare = greater_than_or_equals } }
 				set_variable = { acid_rain_last_casualty_threshold = acid_rain_casualty_candidate }
 				set_variable = { acid_rain_last_casualty_report_day = global.date }
+				acid_rain_store_casualty_report_facts = yes
 				country_event = { id = chaosx.nr33.105 }
 			}
 		}
@@ -1573,6 +1587,7 @@ acid_rain_try_preparation_report = {
 			if = {
 				limit = { check_variable = { var = global.date value = acid_rain_preparation_report_ready_day compare = greater_than_or_equals } }
 				set_variable = { acid_rain_last_preparation_report_day = global.date }
+				acid_rain_store_report_strongest_component = yes
 				country_event = { id = chaosx.nr33.106 }
 			}
 		}
@@ -1746,6 +1761,86 @@ acid_rain_store_report_weakest_component = {
 		limit = { check_variable = { var = acid_rain_transport_tier value = acid_rain_weakest_component_tier compare = less_than } }
 		set_variable = { acid_rain_report_weakest_component = constant:acid_rain_project.component_transport }
 		set_temp_variable = { acid_rain_weakest_component_tier = acid_rain_transport_tier }
+	}
+}
+
+# COUNTRY SCOPE. Stores the highest-tier Preparedness component for the
+# preparation report. Components are checked in Preparedness weight order and
+# replaced only by a strictly higher tier, so a tie names the heavier one.
+acid_rain_store_report_strongest_component = {
+	set_variable = { acid_rain_report_strongest_component = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_strongest_component_tier = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_shelter_tier value = acid_rain_strongest_component_tier compare = greater_than } }
+		set_variable = { acid_rain_report_strongest_component = constant:acid_rain_project.component_shelter }
+		set_temp_variable = { acid_rain_strongest_component_tier = acid_rain_shelter_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_water_tier value = acid_rain_strongest_component_tier compare = greater_than } }
+		set_variable = { acid_rain_report_strongest_component = constant:acid_rain_project.component_water }
+		set_temp_variable = { acid_rain_strongest_component_tier = acid_rain_water_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_medical_tier value = acid_rain_strongest_component_tier compare = greater_than } }
+		set_variable = { acid_rain_report_strongest_component = constant:acid_rain_project.component_medical }
+		set_temp_variable = { acid_rain_strongest_component_tier = acid_rain_medical_tier }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_transport_tier value = acid_rain_strongest_component_tier compare = greater_than } }
+		set_variable = { acid_rain_report_strongest_component = constant:acid_rain_project.component_transport }
+		set_temp_variable = { acid_rain_strongest_component_tier = acid_rain_transport_tier }
+	}
+}
+
+# COUNTRY SCOPE. Stores the arrival report facts just before the report is
+# sent. Inputs: temporary acid_rain_arrival_report_front (0 under the global
+# layer) and acid_rain_arrival_report_intensity. The urgent measures listed are
+# the national operations that are not already running or recovering; their
+# cost is checked by the decision itself.
+acid_rain_store_arrival_report_facts = {
+	set_variable = { acid_rain_report_arrival_front = acid_rain_arrival_report_front }
+	set_variable = { acid_rain_report_arrival_intensity = acid_rain_arrival_report_intensity }
+	set_variable = { acid_rain_report_urgent_ready_count = constant:acid_rain_runtime.zero }
+	clr_country_flag = acid_rain_report_shelter_ready
+	clr_country_flag = acid_rain_report_water_ready
+	clr_country_flag = acid_rain_report_medical_ready
+	clr_country_flag = acid_rain_report_transport_ready
+	if = {
+		limit = { acid_rain_shelter_operation_available = yes }
+		set_country_flag = acid_rain_report_shelter_ready
+		add_to_variable = { acid_rain_report_urgent_ready_count = constant:acid_rain_runtime.loop_increment }
+	}
+	if = {
+		limit = { acid_rain_water_operation_available = yes }
+		set_country_flag = acid_rain_report_water_ready
+		add_to_variable = { acid_rain_report_urgent_ready_count = constant:acid_rain_runtime.loop_increment }
+	}
+	if = {
+		limit = { acid_rain_medical_operation_available = yes }
+		set_country_flag = acid_rain_report_medical_ready
+		add_to_variable = { acid_rain_report_urgent_ready_count = constant:acid_rain_runtime.loop_increment }
+	}
+	if = {
+		limit = { acid_rain_transport_operation_available = yes }
+		set_country_flag = acid_rain_report_transport_ready
+		add_to_variable = { acid_rain_report_urgent_ready_count = constant:acid_rain_runtime.loop_increment }
+	}
+}
+
+# COUNTRY SCOPE. Stores the casualty report facts just before the report is
+# sent: the weakest Preparedness component and the exposed states the country
+# controls but does not own, so the report never blames preparation alone
+# when occupied territory carries part of the losses. The count reads the
+# exposure each state already published for its controller.
+acid_rain_store_casualty_report_facts = {
+	acid_rain_store_report_weakest_component = yes
+	set_variable = { acid_rain_report_occupied_exposed_count = constant:acid_rain_runtime.zero }
+	every_controlled_state = {
+		limit = {
+			has_state_flag = acid_rain_published_exposure
+			NOT = { is_owned_by = PREV }
+		}
+		add_to_variable = { PREV.acid_rain_report_occupied_exposed_count = constant:acid_rain_runtime.loop_increment }
 	}
 }
 

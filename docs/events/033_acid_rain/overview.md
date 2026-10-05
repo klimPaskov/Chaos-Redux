@@ -73,7 +73,9 @@ Cleanup is safe to call repeatedly after dissipation, interruption, host transfe
 
 Each report reads facts stored on the recipient country, or globally for the final summary, just before it is sent.
 An advance warning arrives once per front visit that reaches the country's controlled states, including a return to the same region; it names the destination region, the days until arrival, the controlled states there, National Preparedness and the weakest protection.
+The arrival report names the front over the state, or the global layer, with its intensity band, and lists the national urgent measures that are not already running or recovering.
 A forecast arrives once per severe cell or superstorm episode and names the most populous of the country's forecast states and their count.
+The casualty report names the weakest protection and, when there are any, the exposed states the country holds but does not own; the preparation report names the strongest protection, ties going to the heavier component.
 An impact report follows the first positive pulse of each episode in the country's territory, with the named state's evacuation status and the days left in the episode.
 The departure report gives the length of the exposure that ended, the states still carrying aftermath and their highest tier, and becomes a temporary respite while a warning still covers the country.
 The dissipation report lists duration, worldwide deaths, states reached, Air Contamination added, severe cells, superstorms and unresolved aftermath.
