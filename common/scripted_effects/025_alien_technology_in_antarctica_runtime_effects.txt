@@ -873,6 +873,10 @@ chaosx_nr25_rate_gateway_state = {
 # on every phase change and on each participant pulse.
 chaosx_nr25_refresh_gateway_bands = {
 	save_event_target_as = chaosx_nr25_gw_actor
+	# The rating outputs exist before the nested rating effect writes them,
+	# so their values survive its return.
+	set_temp_variable = { chaosx_nr25_gw_rating = constant:chaosx_nr25_gateway_band.closed }
+	set_temp_variable = { chaosx_nr25_gw_best_controller = constant:chaosx_nr25_gateway_band.none }
 	set_temp_variable = { chaosx_nr25_gw_best = constant:chaosx_nr25_gateway_band.closed }
 	set_temp_variable = { chaosx_nr25_gw_state = constant:chaosx_nr25_gateway_state.south_atlantic_fuego }
 	chaosx_nr25_rate_gateway_state = yes
@@ -1128,6 +1132,7 @@ chaosx_nr25_refresh_ai_progress_floor = {
 					check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
 				}
 			}
+			set_temp_variable = { chaosx_nr25_gw_best = constant:chaosx_nr25_gateway_band.closed }
 			chaosx_nr25_read_best_gateway_band = yes
 			if = {
 				limit = { check_variable = { var = chaosx_nr25_gw_best value = constant:chaosx_nr25_gateway_band.direct compare = equals } }
@@ -2490,6 +2495,7 @@ chaosx_nr25_execute_action = {
 		}
 		# The band is read fresh at the moment of sailing.
 		chaosx_nr25_refresh_gateway_bands = yes
+		set_temp_variable = { chaosx_nr25_gw_band = constant:chaosx_nr25_gateway_band.closed }
 		chaosx_nr25_read_action_gateway_band = yes
 		chaosx_nr25_pay_gateway_band = yes
 		set_variable = { chaosx_nr25_route_band = chaosx_nr25_gw_band }
