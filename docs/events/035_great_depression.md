@@ -218,7 +218,7 @@ The actions that can leave a scar write an episode receipt when they are taken: 
 
 The first match in that order is earned, and a newly earned scar replaces any older one, so scars never stack.
 The recovery report's option shows the scar the episode left.
-The five scar spirits alias installed vanilla national-spirit art through Event 35 sprite names.
+The five scar spirits use their own Event 35 national-spirit art (see Presentation and asset wiring).
 
 ### Lasting district outcomes
 
@@ -254,7 +254,7 @@ When an episode that went through Social Collapse closes, `great_depression_appl
 A new aftermath replaces the previous one, and an episode that earned none keeps the old one.
 In later episodes `great_depression_apply_political_aftermath_pressure` shifts hidden social stress by the `aftermath_*` keys of `great_depression_hidden_component`: Corporate Rescue Order and Labor Scar raise it, and the other four lower it.
 The recovery report's option shows the aftermath the episode left.
-The seven spirits alias installed vanilla national-spirit art through Event 35 sprite names in `interface/035_great_depression.gfx`, so bespoke art can replace the texture paths without renaming anything.
+The seven spirits use their own Event 35 national-spirit art, registered under their sprite names in `interface/035_great_depression.gfx`.
 
 ## Bounded incident pools
 
@@ -426,11 +426,26 @@ Event 34's Long Fall remains owned by Event 34 but shares the Event 35 asset pac
 
 `interface/chaosx_pictures.gfx`, `interface/035_great_depression.gfx`, and `interface/chaosx_super_events.gfx` register the six scene images, category picture, and super-event image.
 
-The complete 60-file icon inventory with source, processed, DDS, dimensions, alpha bounds, checksums, and runtime paths is stored in `docs/assets/035_great_depression/icon_manifest.json`. Together with six event/news images, the decision-category picture, and the super-event image, the Event 35 visual package contains 68 runtime DDS files.
+Together with six event/news images, the decision-category picture, and the super-event image, the Event 35 visual package contains 80 runtime DDS files: the original 68 plus the twelve national-spirit icons below.
 
-The Emergency Government spirit, the six political aftermath spirits, and the five country recovery scars use Event 35 sprite names that alias installed vanilla national-spirit textures, so they add no Event 35 DDS file; bespoke art can replace their texture paths without renaming the sprites. The two lasting district modifiers reuse the reopened and hollowed center icons.
+The Emergency Government spirit, the six political aftermath spirits, and the five country recovery scars have their own Event 35 art under `gfx/interface/ideas/035_great_depression/`, 60x68 with a two-pixel transparent guard, and keep their sprite names:
 
-The regular icon families are eight decision/category icons under `gfx/interface/decisions/035_great_depression/`, eight mission icons in the same folder, three evolution icons in the same folder, twelve condition and legacy icons under `gfx/interface/ideas/035_great_depression/`, and eight state-status icons under `gfx/interface/state_modifiers/035_great_depression/`.
+- `idea_035_great_depression_emergency_government.dds`: decree with red wax seal held down by a steel helmet, brass desk stamp.
+- `idea_035_great_depression_aftermath_social_compact.dds`: worker and employer handshake over a signed agreement and pen.
+- `idea_035_great_depression_aftermath_emergency_rule.dds`: stack of stamped permits under a rubber stamp with a commissioner armband.
+- `idea_035_great_depression_aftermath_planning_settlement.dds`: factory under a plain red banner with a cogwheel and a planning ledger.
+- `idea_035_great_depression_aftermath_corporate_rescue_order.dds`: green company safe bound by a sealed government ribbon, bonds and gold on top.
+- `idea_035_great_depression_aftermath_regional_autonomy.dds`: provincial town hall with three plain pennants on a regional map fragment.
+- `idea_035_great_depression_aftermath_labor_scar.dds`: broken blank picket sign, trampled cap and police truncheon on cobblestones.
+- `idea_035_great_depression_scar_debt_overhang.dds`: loan ledger and bonds chained with a padlock and iron ball, spilled coins.
+- `idea_035_great_depression_scar_foreign_credit_dependence.dds`: balance scale where one foreign coin and a top hat outweigh export crates and grain.
+- `idea_035_great_depression_scar_emergency_controls.dds`: padlocked iron factory gate with a stamped permit and ration coupons.
+- `idea_035_great_depression_scar_labor_bitterness.dds`: three grim workers with folded arms before a cold factory chimney.
+- `idea_035_great_depression_scar_policy_fatigue.dds`: sagging pile of crossed-out programmes, spilled ink, snapped pen and a slumped homburg.
+
+Each was generated as an original painted icon with a genuinely transparent background through the gptimage route of the user's ChatGPT image model (native alpha passed on every source, so no background removal was used), fitted with Lanczos resampling, converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, and validated as one-level BGRA DDS with exact alpha round trips. The prompts, sources, processed PNGs, review sheet, DDS validation and reference scan are in the local `docs/assets/035_great_depression/` workspace (`source_png/ideas_round2/`, `processed_png/ideas_round2/`, `audit/idea_round2/`). The two lasting district modifiers reuse the reopened and hollowed center icons.
+
+The regular icon families are eight decision/category icons under `gfx/interface/decisions/035_great_depression/`, eight mission icons in the same folder, three evolution icons in the same folder, twenty-four condition, legacy, emergency-government, aftermath and scar icons under `gfx/interface/ideas/035_great_depression/`, and eight state-status icons under `gfx/interface/state_modifiers/035_great_depression/`.
 
 The idea or national-spirit textures use the installed 60x68 `national_spirit_ideas_grid` canvas, and the three evolution textures are consumed by the existing event-log evolution-detail image bridge.
 
