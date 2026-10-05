@@ -14,6 +14,8 @@ add_namespace = chaosx.news
 @rt_event_ai_never = 0
 @rt_event_haven_friendly_opinion = 25
 @rt_event_haven_hostile_opinion = -25
+@rt_event_surrender_accept_weight = 100
+@rt_event_surrender_refuse_weight = 0
 
 ###############################################################################################################
 # CHAOS REDUX - EVENT 031 RANDOM TERROR
@@ -596,6 +598,40 @@ country_event = {
 		}
 		custom_effect_tooltip = random_terror_haven_demand_refuse_tt
 		hidden_effect = { random_terror_refuse_haven_demand = yes }
+	}
+}
+
+# Surrender terms (Part 3 Negotiate Local Surrender, Part 5 Negotiated
+# surrender): a government offers terms to a human-run command.  ROOT = the
+# command, FROM = the offering government.  An AI-run command accepts without
+# this event.  Refusing is the first option, so an unanswered offer is
+# refused when the event times out.
+country_event = {
+	id = chaosx.nr31.46
+	title = chaosx.nr31.46.t
+	desc = chaosx.nr31.46.d
+	picture = GFX_report_event_031_random_terror_defecting_soldiers_insurgency
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = random_terror_surrender_terms_pending
+		random_terror_is_actor = yes
+	}
+
+	option = {
+		name = chaosx.nr31.46.a
+		ai_chance = { base = @rt_event_surrender_refuse_weight }
+		custom_effect_tooltip = random_terror_surrender_terms_refuse_tt
+		hidden_effect = { random_terror_actor_refuse_surrender_terms = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.46.b
+		ai_chance = { base = @rt_event_surrender_accept_weight }
+		custom_effect_tooltip = random_terror_surrender_terms_accept_tt
+		hidden_effect = {
+			FROM = { save_event_target_as = random_terror_surrender_government }
+			random_terror_actor_accept_surrender_terms = yes
+		}
 	}
 }
 

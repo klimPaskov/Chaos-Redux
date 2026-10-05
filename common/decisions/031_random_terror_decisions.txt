@@ -1582,11 +1582,7 @@ random_terror_government_response_category = {
 					has_state_flag = random_terror_enclave_isolated
 					has_state_flag = random_terror_surrender_window
 				}
-				owner = {
-					random_terror_is_actor = yes
-					NOT = { has_country_flag = random_terror_final_actor }
-					NOT = { has_country_flag = random_terror_negotiated_surrender }
-				}
+				owner = { random_terror_actor_open_to_surrender_terms = yes }
 			}
 		}
 		available = {
@@ -1594,18 +1590,17 @@ random_terror_government_response_category = {
 			custom_trigger_tooltip = {
 				tooltip = random_terror_negotiate_surrender_requirements_tt
 				random_terror_can_government_response = yes
-				NOT = { has_country_flag = random_terror_surrender_negotiations_active }
 				FROM = {
 					state_population_k > constant:random_terror_value.zero
 					has_state_flag = random_terror_state_lost_local_control
 					OR = { is_claimed_by = ROOT is_core_of = ROOT }
 					OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
-					owner = {
-						random_terror_is_actor = yes
-						NOT = { has_country_flag = random_terror_final_actor }
-						NOT = { has_country_flag = random_terror_negotiated_surrender }
-					}
+					owner = { random_terror_actor_open_to_surrender_terms = yes }
 				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = random_terror_negotiate_surrender_offer_open_tt
+				FROM = { owner = { random_terror_actor_can_receive_surrender_offer = yes } }
 			}
 		}
 		target_root_trigger = {
@@ -1614,7 +1609,7 @@ random_terror_government_response_category = {
 				has_state_flag = random_terror_state_lost_local_control
 				OR = { is_claimed_by = ROOT is_core_of = ROOT }
 				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
-				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } NOT = { has_country_flag = random_terror_negotiated_surrender } }
+				owner = { random_terror_actor_open_to_surrender_terms = yes }
 			}
 		}
 		target_trigger = {
@@ -1624,7 +1619,7 @@ random_terror_government_response_category = {
 				has_state_flag = random_terror_state_lost_local_control
 				OR = { is_claimed_by = ROOT is_core_of = ROOT }
 				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
-				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } NOT = { has_country_flag = random_terror_negotiated_surrender } }
+				owner = { random_terror_actor_open_to_surrender_terms = yes }
 			}
 		}
 		custom_cost_trigger = {
@@ -1632,7 +1627,9 @@ random_terror_government_response_category = {
 		}
 		custom_cost_text = random_terror_negotiate_surrender_cost
 		# One settlement per armed command: random_terror_negotiated_surrender
-		# stays on the command until its runtime is cleared.
+		# stays on the command until its runtime is cleared, and each command
+		# weighs one offer at a time, so other commands in the same crisis can
+		# still be offered terms.
 		complete_effect = {
 			custom_effect_tooltip = random_terror_negotiate_surrender_effect_tt
 			add_command_power = constant:random_terror_cost.surrender_command_power_spend
@@ -1640,9 +1637,7 @@ random_terror_government_response_category = {
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:random_terror_cost.intelligence_support_equipment_spend }
 			FROM = { save_event_target_as = random_terror_action_state }
 			save_event_target_as = random_terror_surrender_government
-			random_terror_decision_negotiate_surrender = yes
-			random_terror_begin_surrender_negotiation = yes
-			FROM = { owner = { random_terror_actor_surrender = yes } }
+			hidden_effect = { random_terror_decision_negotiate_surrender = yes }
 		}
 		ai_will_do = {
 			base = @rt_ai_medium

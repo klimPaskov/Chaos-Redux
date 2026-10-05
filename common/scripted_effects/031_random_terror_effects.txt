@@ -4077,10 +4077,13 @@ random_terror_decision_prepare_retake = {
 	random_terror_response_action_lock = yes
 }
 
+# COUNTRY scope: the government offering terms; event targets
+# random_terror_action_state (the negotiated state) and
+# random_terror_surrender_government (ROOT).  Legitimacy is earned only when
+# the command accepts, so a refusal leaves it unchanged.
 random_terror_decision_negotiate_surrender = {
-	random_terror_response_raise_legitimacy = yes
-	set_country_flag = random_terror_surrender_negotiations_active
 	random_terror_response_action_lock = yes
+	random_terror_begin_surrender_negotiation = yes
 }
 
 random_terror_decision_request_intervention = {
@@ -5747,8 +5750,13 @@ random_terror_commit_state_retake = {
 	set_country_flag = random_terror_state_retake_committed
 }
 
+# COUNTRY scope: the government.  Marks the negotiated state, then lets the
+# holding command answer: an AI-run command accepts at once, a human-run one
+# receives chaosx.nr31.46 (ROOT = command, FROM = this government) and is
+# marked as weighing terms for at most random_terror_surrender.answer_days.
+# The decision gate (random_terror_actor_open_to_surrender_terms) has
+# already checked the command's weakness and route.
 random_terror_begin_surrender_negotiation = {
-	set_country_flag = random_terror_surrender_negotiation_open
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
@@ -5757,15 +5765,70 @@ random_terror_begin_surrender_negotiation = {
 				if = {
 					limit = { random_terror_is_actor = yes }
 					if = {
-						limit = {
-							check_variable = { random_terror_network_authority < constant:random_terror_tuning.surrender_authority_threshold }
-							check_variable = { random_terror_external_supply < constant:random_terror_tuning.surrender_supply_threshold }
+						limit = { is_ai = yes }
+						random_terror_actor_accept_surrender_terms = yes
+					}
+					else = {
+						set_temp_variable = { random_terror_surrender_answer_duration = constant:random_terror_surrender.answer_days }
+						meta_effect = {
+							text = { set_country_flag = { flag = random_terror_surrender_terms_pending days = [ANSWER_DAYS] } }
+							ANSWER_DAYS = "[?random_terror_surrender_answer_duration|.0]"
 						}
-						set_country_flag = random_terror_surrender_terms_ready
+						country_event = { id = chaosx.nr31.46 }
 					}
 				}
 			}
 		}
+	}
+}
+
+# COUNTRY scope: a command accepting terms; needs event target
+# random_terror_surrender_government.  The negotiated state is the owned state
+# carrying random_terror_surrender_negotiation_active, saved before the
+# command disarms (actor cleanup clears that flag and returns the state).
+# The command disarms through random_terror_actor_surrender, the hardliners
+# who reject the settlement stay there as a cell at
+# random_terror_surrender.hardliner_activity, and the government earns the
+# legitimacy of a settlement.
+random_terror_actor_accept_surrender_terms = {
+	clr_country_flag = random_terror_surrender_terms_pending
+	random_owned_state = {
+		limit = { has_state_flag = random_terror_surrender_negotiation_active }
+		save_event_target_as = random_terror_surrender_state
+	}
+	random_terror_actor_surrender = yes
+	if = {
+		limit = { has_event_target = random_terror_surrender_state }
+		event_target:random_terror_surrender_state = {
+			random_terror_initialize_state_state = yes
+			clr_state_flag = random_terror_surrender_negotiation_active
+			set_variable = { random_terror_state_activity = constant:random_terror_surrender.hardliner_activity }
+			random_terror_update_state_stage = yes
+		}
+	}
+	if = {
+		limit = {
+			has_event_target = random_terror_surrender_government
+			event_target:random_terror_surrender_government = { exists = yes }
+		}
+		event_target:random_terror_surrender_government = { random_terror_response_raise_legitimacy = yes }
+	}
+}
+
+# COUNTRY scope: a human-run command refusing terms (chaosx.nr31.46).  The
+# negotiated state loses its talks marker, the offering government keeps its
+# Response Legitimacy, and no new terms reach this command for
+# random_terror_surrender.refusal_days.
+random_terror_actor_refuse_surrender_terms = {
+	clr_country_flag = random_terror_surrender_terms_pending
+	every_owned_state = {
+		limit = { has_state_flag = random_terror_surrender_negotiation_active }
+		clr_state_flag = random_terror_surrender_negotiation_active
+	}
+	set_temp_variable = { random_terror_surrender_refusal_duration = constant:random_terror_surrender.refusal_days }
+	meta_effect = {
+		text = { set_country_flag = { flag = random_terror_surrender_terms_refused days = [REFUSAL_DAYS] } }
+		REFUSAL_DAYS = "[?random_terror_surrender_refusal_duration|.0]"
 	}
 }
 
@@ -7839,7 +7902,6 @@ random_terror_clear_country_commitments = {
 	clr_country_flag = random_terror_allied_intelligence_request_pending
 	clr_country_flag = random_terror_allied_intelligence_received
 	clr_country_flag = random_terror_allied_intelligence_refused
-	clr_country_flag = random_terror_surrender_negotiations_active
 	clr_country_flag = random_terror_terminal_counteroffensive_recorded
 	clr_country_flag = random_terror_action_recent
 }
@@ -8252,6 +8314,9 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_ideological_mobilization_recorded
 	clr_country_flag = random_terror_negotiated_surrender
 	clr_country_flag = random_terror_disarmament_terms_active
+	clr_country_flag = random_terror_surrender_terms_pending
+	clr_country_flag = random_terror_surrender_terms_refused
+	clr_country_flag = random_terror_actor_atrocity_condemnation_recorded
 	# Per-target transaction records between this command and every other
 	# live command, in both directions, so a reused carrier starts clean.
 	every_country = {

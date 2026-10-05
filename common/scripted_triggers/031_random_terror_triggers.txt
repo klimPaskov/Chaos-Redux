@@ -1073,6 +1073,30 @@ random_terror_can_afford_negotiate_surrender = {
 	NOT = { has_equipment = { support_equipment < constant:random_terror_cost.intelligence_support_equipment } }
 }
 
+# COUNTRY scope: a territorial command.  Part 3 Negotiate Local Surrender:
+# terms go only to a materially weakened command, below both surrender
+# thresholds, that has not ruled by force, committed an atrocity or taken the
+# False Revelation route, and that has not already settled.
+random_terror_actor_open_to_surrender_terms = {
+	random_terror_is_actor = yes
+	NOT = { has_country_flag = random_terror_final_actor }
+	NOT = { has_country_flag = random_terror_negotiated_surrender }
+	check_variable = { random_terror_network_authority < constant:random_terror_tuning.surrender_authority_threshold }
+	check_variable = { random_terror_external_supply < constant:random_terror_tuning.surrender_supply_threshold }
+	NOT = { has_country_flag = random_terror_focus_forced_rule }
+	NOT = { has_country_flag = random_terror_actor_atrocity_condemnation_recorded }
+	NOT = { has_country_flag = random_terror_route_false_revelation }
+	NOT = { has_country_flag = random_terror_focus_route_false_revelation }
+}
+
+# COUNTRY scope: a territorial command.  One offer at a time per command: none
+# may be waiting for its answer, and a refusal closes talks for
+# random_terror_surrender.refusal_days.
+random_terror_actor_can_receive_surrender_offer = {
+	NOT = { has_country_flag = random_terror_surrender_terms_pending }
+	NOT = { has_country_flag = random_terror_surrender_terms_refused }
+}
+
 random_terror_can_afford_request_intervention = {
 	NOT = { command_power < constant:random_terror_cost.intervention_command_power }
 	NOT = { has_equipment = { convoy_1 < constant:random_terror_cost.relief_convoys } }
