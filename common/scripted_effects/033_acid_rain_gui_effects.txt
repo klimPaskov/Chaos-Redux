@@ -310,6 +310,7 @@ acid_rain_gui_refresh_read_only = {
 		acid_rain_gui_project_front_2 = yes
 		acid_rain_gui_project_front_3 = yes
 	}
+	acid_rain_gui_project_region_facts = yes
 
 	set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_gui_superstorm_2_visible = constant:acid_rain_runtime.zero }
@@ -444,6 +445,123 @@ acid_rain_gui_refresh_national_strip = {
 	add_to_variable = { acid_rain_gui_component_2_frame = constant:acid_rain_runtime.one }
 	add_to_variable = { acid_rain_gui_component_3_frame = constant:acid_rain_runtime.one }
 	add_to_variable = { acid_rain_gui_component_4_frame = constant:acid_rain_runtime.one }
+}
+
+# ANY SCOPE. Region tooltip facts (Part 6 state footprint summary), copied
+# from stored counters into presentation arrays indexed by region id: the
+# states reached, never reached and in the rain's path, and the weather over
+# the region. For a front over the region it adds the states under rain now,
+# the states first reached on this visit, the visit quota and the states in
+# the front's severe cells; for a front on its way, the days until it
+# arrives. It never scans a state.
+acid_rain_gui_project_region_facts = {
+	clear_array = global.acid_rain_gui_region_eligible_entries
+	clear_array = global.acid_rain_gui_region_touched_entries
+	clear_array = global.acid_rain_gui_region_untouched_entries
+	clear_array = global.acid_rain_gui_region_status_entries
+	clear_array = global.acid_rain_gui_region_front_entries
+	clear_array = global.acid_rain_gui_region_active_entries
+	clear_array = global.acid_rain_gui_region_visit_entries
+	clear_array = global.acid_rain_gui_region_quota_entries
+	clear_array = global.acid_rain_gui_region_severe_entries
+	clear_array = global.acid_rain_gui_region_days_entries
+	resize_array = { array = global.acid_rain_gui_region_eligible_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_touched_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_untouched_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_status_entries value = constant:acid_rain_gui_region_status.none size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_front_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_active_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_visit_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_quota_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_severe_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	resize_array = { array = global.acid_rain_gui_region_days_entries value = constant:acid_rain_runtime.zero size = constant:acid_rain_runtime.region_loop_end }
+	for_loop_effect = {
+		start = constant:acid_rain_region.first
+		end = constant:acid_rain_runtime.region_loop_end
+		value = acid_rain_gui_region_index
+		set_variable = { global.acid_rain_gui_region_eligible_entries^acid_rain_gui_region_index = global.acid_rain_region_valid_entries^acid_rain_gui_region_index }
+		set_variable = { global.acid_rain_gui_region_touched_entries^acid_rain_gui_region_index = global.acid_rain_region_touched_entries^acid_rain_gui_region_index }
+		set_temp_variable = { acid_rain_gui_region_untouched = global.acid_rain_region_valid_entries^acid_rain_gui_region_index }
+		subtract_from_temp_variable = { acid_rain_gui_region_untouched = global.acid_rain_region_touched_entries^acid_rain_gui_region_index }
+		clamp_temp_variable = { var = acid_rain_gui_region_untouched min = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_untouched_entries^acid_rain_gui_region_index = acid_rain_gui_region_untouched }
+		if = {
+			limit = { check_variable = { global.acid_rain_gui_global_layer_active > constant:acid_rain_runtime.zero } }
+			set_variable = { global.acid_rain_gui_region_status_entries^acid_rain_gui_region_index = constant:acid_rain_gui_region_status.global }
+		}
+	}
+	# The front cards use the same gate, so the tooltips never describe a
+	# retained front record during global rain or aftercare.
+	if = {
+		limit = {
+			has_global_flag = acid_rain_runtime_active
+			check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global_warning compare = less_than_or_equals }
+			check_variable = { global.acid_rain_gui_global_layer_active = constant:acid_rain_runtime.zero }
+		}
+		for_loop_effect = {
+			start = constant:acid_rain_runtime.one
+			end = constant:acid_rain_runtime.front_loop_end
+			value = acid_rain_gui_region_front
+			set_temp_variable = { acid_rain_gui_region_front_state = global.acid_rain_front_state_entries^acid_rain_gui_region_front }
+			set_temp_variable = { acid_rain_gui_region_id = global.acid_rain_front_region_entries^acid_rain_gui_region_front }
+			# Over a region: active, or retiring while it still covers it.
+			if = {
+				limit = {
+					check_variable = { acid_rain_gui_region_id > constant:acid_rain_runtime.zero }
+					OR = {
+						check_variable = { var = acid_rain_gui_region_front_state value = constant:acid_rain_front_state.active compare = equals }
+						check_variable = { var = acid_rain_gui_region_front_state value = constant:acid_rain_front_state.retiring compare = equals }
+					}
+				}
+				set_variable = { global.acid_rain_gui_region_status_entries^acid_rain_gui_region_id = constant:acid_rain_gui_region_status.over }
+				set_variable = { global.acid_rain_gui_region_front_entries^acid_rain_gui_region_id = acid_rain_gui_region_front }
+				set_variable = { global.acid_rain_gui_region_active_entries^acid_rain_gui_region_id = global.acid_rain_front_active_state_count_entries^acid_rain_gui_region_front }
+				set_variable = { global.acid_rain_gui_region_visit_entries^acid_rain_gui_region_id = global.acid_rain_front_visited_entries^acid_rain_gui_region_front }
+				set_variable = { global.acid_rain_gui_region_quota_entries^acid_rain_gui_region_id = global.acid_rain_front_target_goal_entries^acid_rain_gui_region_front }
+				set_temp_variable = { acid_rain_gui_region_severe = constant:acid_rain_runtime.zero }
+				set_temp_variable = { acid_rain_gui_region_severe_loop_end = constant:acid_rain_event.max_severe_cells }
+				add_to_temp_variable = { acid_rain_gui_region_severe_loop_end = constant:acid_rain_runtime.loop_increment }
+				for_loop_effect = {
+					start = constant:acid_rain_runtime.one
+					end = acid_rain_gui_region_severe_loop_end
+					value = acid_rain_gui_region_severe_index
+					if = {
+						limit = {
+							check_variable = { var = global.acid_rain_severe_cell_front_entries^acid_rain_gui_region_severe_index value = acid_rain_gui_region_front compare = equals }
+							check_variable = { var = global.acid_rain_severe_cell_end_entries^acid_rain_gui_region_severe_index value = global.date compare = greater_than }
+						}
+						add_to_temp_variable = { acid_rain_gui_region_severe = global.acid_rain_severe_cell_target_count_entries^acid_rain_gui_region_severe_index }
+					}
+				}
+				set_variable = { global.acid_rain_gui_region_severe_entries^acid_rain_gui_region_id = acid_rain_gui_region_severe }
+			}
+			# On its way: a new front before arrival, or a retiring front's
+			# announced destination. A front over the region takes precedence.
+			set_temp_variable = { acid_rain_gui_region_arrival_region = constant:acid_rain_runtime.zero }
+			if = {
+				limit = { check_variable = { var = acid_rain_gui_region_front_state value = constant:acid_rain_front_state.warning compare = equals } }
+				set_temp_variable = { acid_rain_gui_region_arrival_region = acid_rain_gui_region_id }
+				set_temp_variable = { chaosx_date_offset = global.acid_rain_front_next_warning_day_entries^acid_rain_gui_region_front }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_gui_region_front_state value = constant:acid_rain_front_state.retiring compare = equals } }
+				set_temp_variable = { acid_rain_gui_region_arrival_region = global.acid_rain_front_next_region_entries^acid_rain_gui_region_front }
+				set_temp_variable = { chaosx_date_offset = global.acid_rain_front_move_day_entries^acid_rain_gui_region_front }
+			}
+			if = {
+				limit = {
+					check_variable = { acid_rain_gui_region_arrival_region > constant:acid_rain_runtime.zero }
+					check_variable = { var = global.acid_rain_gui_region_status_entries^acid_rain_gui_region_arrival_region value = constant:acid_rain_gui_region_status.none compare = equals }
+				}
+				subtract_from_temp_variable = { chaosx_date_offset = global.date }
+				set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+				chaosx_convert_date_offset_to_days = yes
+				set_variable = { global.acid_rain_gui_region_status_entries^acid_rain_gui_region_arrival_region = constant:acid_rain_gui_region_status.approaching }
+				set_variable = { global.acid_rain_gui_region_front_entries^acid_rain_gui_region_arrival_region = acid_rain_gui_region_front }
+				set_variable = { global.acid_rain_gui_region_days_entries^acid_rain_gui_region_arrival_region = chaosx_date_days }
+			}
+		}
+	}
 }
 
 acid_rain_gui_project_front_1 = {

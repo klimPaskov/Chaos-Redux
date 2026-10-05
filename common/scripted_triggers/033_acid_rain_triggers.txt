@@ -2102,3 +2102,51 @@ acid_rain_achievement_no_severe_ruins = {
 	check_variable = { global.acid_rain_total_damage < constant:acid_rain_achievement.no_severe_ruins_damage_cap }
 	NOT = { has_global_flag = acid_rain_severe_damage_recorded }
 }
+
+# ---------------------------------------------------------------------------
+# World map tooltips
+# ---------------------------------------------------------------------------
+
+# ANY SCOPE, scripted localisation only. Input: temporary acid_rain_gui_tt_region.
+# Copies the region facts the read-only refresh stored into temporary
+# variables for the region tooltip text; always true.
+acid_rain_gui_load_region_tooltip = {
+	set_temp_variable = { acid_rain_gui_tt_eligible = global.acid_rain_gui_region_eligible_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_touched = global.acid_rain_gui_region_touched_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_untouched = global.acid_rain_gui_region_untouched_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_status = global.acid_rain_gui_region_status_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_front = global.acid_rain_gui_region_front_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_active = global.acid_rain_gui_region_active_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_visit = global.acid_rain_gui_region_visit_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_quota = global.acid_rain_gui_region_quota_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_severe = global.acid_rain_gui_region_severe_entries^acid_rain_gui_tt_region }
+	set_temp_variable = { acid_rain_gui_tt_days = global.acid_rain_gui_region_days_entries^acid_rain_gui_tt_region }
+}
+
+# COUNTRY SCOPE, scripted localisation only. Copies the country's four
+# Preparedness component tiers and their points toward the 0-100 total into
+# temporary variables for the Preparedness tooltip; always true.
+acid_rain_gui_load_preparedness_tooltip = {
+	set_temp_variable = { acid_rain_gui_tt_shelter_tier = acid_rain_shelter_tier }
+	set_temp_variable = { acid_rain_gui_tt_water_tier = acid_rain_water_tier }
+	set_temp_variable = { acid_rain_gui_tt_medical_tier = acid_rain_medical_tier }
+	set_temp_variable = { acid_rain_gui_tt_transport_tier = acid_rain_transport_tier }
+	clamp_temp_variable = { var = acid_rain_gui_tt_shelter_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_temp_variable = { var = acid_rain_gui_tt_water_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_temp_variable = { var = acid_rain_gui_tt_medical_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	clamp_temp_variable = { var = acid_rain_gui_tt_transport_tier min = constant:acid_rain_runtime.zero max = constant:acid_rain_project.max_tier }
+	set_temp_variable = { acid_rain_gui_tt_shelter_points = acid_rain_gui_tt_shelter_tier }
+	set_temp_variable = { acid_rain_gui_tt_water_points = acid_rain_gui_tt_water_tier }
+	set_temp_variable = { acid_rain_gui_tt_medical_points = acid_rain_gui_tt_medical_tier }
+	set_temp_variable = { acid_rain_gui_tt_transport_points = acid_rain_gui_tt_transport_tier }
+	multiply_temp_variable = { acid_rain_gui_tt_shelter_points = constant:acid_rain_preparedness.shelter_gain }
+	multiply_temp_variable = { acid_rain_gui_tt_water_points = constant:acid_rain_preparedness.water_gain }
+	multiply_temp_variable = { acid_rain_gui_tt_medical_points = constant:acid_rain_preparedness.medical_gain }
+	multiply_temp_variable = { acid_rain_gui_tt_transport_points = constant:acid_rain_preparedness.transport_gain }
+	set_temp_variable = { acid_rain_gui_tt_shelter_max = constant:acid_rain_preparedness.shelter_weight }
+	set_temp_variable = { acid_rain_gui_tt_water_max = constant:acid_rain_preparedness.water_weight }
+	set_temp_variable = { acid_rain_gui_tt_medical_max = constant:acid_rain_preparedness.medical_weight }
+	set_temp_variable = { acid_rain_gui_tt_transport_max = constant:acid_rain_preparedness.transport_weight }
+	set_temp_variable = { acid_rain_gui_tt_max_tier = constant:acid_rain_project.max_tier }
+	set_temp_variable = { acid_rain_gui_tt_preparedness_max = constant:acid_rain_preparedness.maximum }
+}

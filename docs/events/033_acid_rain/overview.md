@@ -86,6 +86,8 @@ When Acid Rain forms, it also opens once for every player whose territory is alr
 While a map is open, the host's three-day worker refreshes the shared world view and each viewer's own national strip.
 It shows the base map with seven region overlays, visited, ordinary and warning veils, three front markers with warning and severe variants, one severe-storm marker per listed superstorm at the region of its seed state, and the global rain layer.
 Every animated marker and the global layer have a still partner that the motion toggle selects.
+Hovering a region row shows the states reached, not yet reached and in the rain's path there, and the weather over it: the front over the region with its states under rain now, the states first reached on this visit out of the visit's quota and the states in its severe cells, a front on its way with the days until it arrives, or the global layer.
+The Preparedness tooltip lists each component's tier and its points toward the total, and the category status line names exposure, a storm forecast or a warning with the country's counts.
 The footer holds Refresh, Back (returning to the decision category or Event Details, whichever opened the map), Details (opening the Event 33 page in Event Details), and the motion toggle.
 Opening or refreshing the map runs a read-only projection that cannot advance fronts, add contamination, apply losses, spend resources, or complete work.
 
