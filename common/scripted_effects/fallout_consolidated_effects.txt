@@ -22798,7 +22798,7 @@ fallout_event_908_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_908_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_adaptation_rite_result_success days = fallout_event_908_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_adaptation_rite_result_partial days = fallout_event_908_modifier_days } }
 	else = { add_stability = constant:fallout_event_908_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_adaptation_rite_result_failed days = fallout_event_908_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_908_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_908_delta_supply }
 	var:fallout_event_908_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_908_delta_shelter }
@@ -22817,7 +22817,7 @@ fallout_event_908_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_908_result_partial }
 		else = { set_state_flag = fallout_event_908_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_908_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_908_apply_failure_deaths = yes }
 	set_variable = { fallout_event_908_compact_legitimacy_delta = constant:fallout_event_908_threshold.result_rite_legitimacy_failure }
 	set_variable = { fallout_event_908_rite_cause_memory_delta = constant:fallout_event_908_threshold.result_rite_cause_memory_failure }
@@ -23040,7 +23040,7 @@ fallout_event_908_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_908_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_adaptation_rite_callback_failed days = fallout_event_908_modifier_days } fallout_event_908_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_908_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_908_callback_supply_delta }
 	var:fallout_event_908_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_908_callback_shelter_delta }
@@ -23070,7 +23070,7 @@ fallout_event_908_apply_callback_effects = {
 	set_temp_variable = { fallout_event_908_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_908_record_history = yes
 	set_temp_variable = { fallout_event_908_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_908_callback_disease_delta
 	clear_variable = fallout_event_908_callback_shelter_delta
 	clear_variable = fallout_event_908_callback_exposure_delta
@@ -27595,7 +27595,7 @@ fallout_event_726_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_726_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_result_success days = fallout_event_726_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_result_partial days = fallout_event_726_modifier_days } }
 	else = { add_stability = constant:fallout_event_726_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_result_failed days = fallout_event_726_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_726_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_726_delta_supply }
 	var:fallout_event_726_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_726_delta_shelter }
@@ -27614,7 +27614,7 @@ fallout_event_726_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_726_result_partial }
 		else = { set_state_flag = fallout_event_726_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_726_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_726_apply_failure_deaths = yes }
 	set_variable = { fallout_event_726_public_health_delta = constant:fallout_event_726_threshold.result_public_health_failure }
 	set_variable = { fallout_event_726_cause_memory_delta = constant:fallout_event_726_threshold.result_cause_memory_failure }
@@ -27833,7 +27833,7 @@ fallout_event_726_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_726_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_726_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_callback_settled days = fallout_event_726_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_726_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_callback_partial days = fallout_event_726_modifier_days } }
 	else = { add_stability = constant:fallout_event_726_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_border_inspection_crisis_callback_failed days = fallout_event_726_modifier_days } fallout_event_726_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_726_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_726_callback_supply_delta }
 	var:fallout_event_726_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_726_callback_shelter_delta }
@@ -27863,7 +27863,7 @@ fallout_event_726_apply_callback_effects = {
 	set_temp_variable = { fallout_event_726_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_726_record_history = yes
 	set_temp_variable = { fallout_event_726_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_726_callback_disease_delta
 	clear_variable = fallout_event_726_callback_shelter_delta
 	clear_variable = fallout_event_726_callback_exposure_delta
@@ -30783,7 +30783,7 @@ fallout_event_768_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_768_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_captains_articles_result_success days = fallout_event_768_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_captains_articles_result_partial days = fallout_event_768_modifier_days } }
 	else = { add_stability = constant:fallout_event_768_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_captains_articles_result_failed days = fallout_event_768_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_768_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_768_delta_supply }
 	var:fallout_event_768_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_768_delta_shelter }
@@ -30802,7 +30802,7 @@ fallout_event_768_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_768_result_partial }
 		else = { set_state_flag = fallout_event_768_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_768_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_768_apply_failure_deaths = yes }
 	set_variable = { fallout_event_768_port_legitimacy_delta = constant:fallout_event_768_threshold.result_port_legitimacy_failure }
 	set_variable = { fallout_event_768_cause_memory_delta = constant:fallout_event_768_threshold.result_cause_memory_failure }
@@ -31021,7 +31021,7 @@ fallout_event_768_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_768_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_768_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_captains_articles_callback_settled days = fallout_event_768_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_768_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_captains_articles_callback_partial days = fallout_event_768_modifier_days } }
 	else = { add_stability = constant:fallout_event_768_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_captains_articles_callback_failed days = fallout_event_768_modifier_days } fallout_event_768_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_768_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_768_callback_supply_delta }
 	var:fallout_event_768_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_768_callback_shelter_delta }
@@ -31051,7 +31051,7 @@ fallout_event_768_apply_callback_effects = {
 	set_temp_variable = { fallout_event_768_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_768_record_history = yes
 	set_temp_variable = { fallout_event_768_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_768_callback_disease_delta
 	clear_variable = fallout_event_768_callback_shelter_delta
 	clear_variable = fallout_event_768_callback_exposure_delta
@@ -33070,7 +33070,7 @@ fallout_event_915_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_915_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_children_of_two_settlements_result_success days = fallout_event_915_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_children_of_two_settlements_result_partial days = fallout_event_915_modifier_days } }
 	else = { add_stability = constant:fallout_event_915_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_children_of_two_settlements_result_failed days = fallout_event_915_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_915_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_915_delta_supply }
 	var:fallout_event_915_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_915_delta_shelter }
@@ -33089,7 +33089,7 @@ fallout_event_915_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_915_result_partial }
 		else = { set_state_flag = fallout_event_915_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_915_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_915_apply_failure_deaths = yes }
 	set_variable = { fallout_event_915_compact_legitimacy_delta = constant:fallout_event_915_threshold.result_youth_legitimacy_failure }
 	set_variable = { fallout_event_915_generation_cause_memory_delta = constant:fallout_event_915_threshold.result_generation_cause_memory_failure }
@@ -33312,7 +33312,7 @@ fallout_event_915_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_915_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_children_of_two_settlements_callback_failed days = fallout_event_915_modifier_days } fallout_event_915_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_915_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_915_callback_supply_delta }
 	var:fallout_event_915_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_915_callback_shelter_delta }
@@ -33342,7 +33342,7 @@ fallout_event_915_apply_callback_effects = {
 	set_temp_variable = { fallout_event_915_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_915_record_history = yes
 	set_temp_variable = { fallout_event_915_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_915_callback_disease_delta
 	clear_variable = fallout_event_915_callback_shelter_delta
 	clear_variable = fallout_event_915_callback_exposure_delta
@@ -34023,7 +34023,7 @@ fallout_event_719_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_719_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_clean_certificate_result_success days = fallout_event_719_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_clean_certificate_result_partial days = fallout_event_719_modifier_days } }
 	else = { add_stability = constant:fallout_event_719_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_clean_certificate_result_failed days = fallout_event_719_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_719_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_719_delta_supply }
 	var:fallout_event_719_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_719_delta_shelter }
@@ -34042,7 +34042,7 @@ fallout_event_719_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_719_result_partial }
 		else = { set_state_flag = fallout_event_719_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_719_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_719_apply_failure_deaths = yes }
 	set_variable = { fallout_event_719_public_health_delta = constant:fallout_event_719_threshold.result_public_health_failure }
 	set_variable = { fallout_event_719_cause_memory_delta = constant:fallout_event_719_threshold.result_cause_memory_failure }
@@ -34260,7 +34260,7 @@ fallout_event_719_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_719_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_719_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_clean_certificate_callback_settled days = fallout_event_719_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_719_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_clean_certificate_callback_partial days = fallout_event_719_modifier_days } }
 	else = { add_stability = constant:fallout_event_719_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_clean_certificate_callback_failed days = fallout_event_719_modifier_days } fallout_event_719_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_719_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_719_callback_supply_delta }
 	var:fallout_event_719_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_719_callback_shelter_delta }
@@ -34290,7 +34290,7 @@ fallout_event_719_apply_callback_effects = {
 	set_temp_variable = { fallout_event_719_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_719_record_history = yes
 	set_temp_variable = { fallout_event_719_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_719_callback_disease_delta
 	clear_variable = fallout_event_719_callback_shelter_delta
 	clear_variable = fallout_event_719_callback_exposure_delta
@@ -35052,7 +35052,7 @@ fallout_event_880_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_880_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_clinic_or_council_result_success days = fallout_event_880_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_clinic_or_council_result_partial days = fallout_event_880_modifier_days } }
 	else = { add_stability = constant:fallout_event_880_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_clinic_or_council_result_failed days = fallout_event_880_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_880_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_880_delta_supply }
 	var:fallout_event_880_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_880_delta_shelter }
@@ -35071,7 +35071,7 @@ fallout_event_880_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_880_result_partial }
 		else = { set_state_flag = fallout_event_880_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_880_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_880_apply_failure_deaths = yes }
 	set_variable = { fallout_event_880_compact_legitimacy_delta = constant:fallout_event_880_threshold.result_clinic_legitimacy_failure }
 	set_variable = { fallout_event_880_clinic_cause_memory_delta = constant:fallout_event_880_threshold.result_clinic_cause_memory_failure }
@@ -35294,7 +35294,7 @@ fallout_event_880_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_880_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_clinic_or_council_callback_failed days = fallout_event_880_modifier_days } fallout_event_880_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_880_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_880_callback_supply_delta }
 	var:fallout_event_880_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_880_callback_shelter_delta }
@@ -35324,7 +35324,7 @@ fallout_event_880_apply_callback_effects = {
 	set_temp_variable = { fallout_event_880_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_880_record_history = yes
 	set_temp_variable = { fallout_event_880_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_880_callback_disease_delta
 	clear_variable = fallout_event_880_callback_shelter_delta
 	clear_variable = fallout_event_880_callback_exposure_delta
@@ -36087,7 +36087,7 @@ fallout_event_922_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_922_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_cohorts_first_ballot_result_success days = fallout_event_922_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_cohorts_first_ballot_result_partial days = fallout_event_922_modifier_days } }
 	else = { add_stability = constant:fallout_event_922_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_cohorts_first_ballot_result_failed days = fallout_event_922_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_922_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_922_delta_supply }
 	var:fallout_event_922_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_922_delta_shelter }
@@ -36106,7 +36106,7 @@ fallout_event_922_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_922_result_partial }
 		else = { set_state_flag = fallout_event_922_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_922_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_922_apply_failure_deaths = yes }
 	set_variable = { fallout_event_922_compact_legitimacy_delta = constant:fallout_event_922_threshold.result_ballot_legitimacy_failure }
 	set_variable = { fallout_event_922_cohort_cause_memory_delta = constant:fallout_event_922_threshold.result_cohort_cause_memory_failure }
@@ -36329,7 +36329,7 @@ fallout_event_922_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_922_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_cohorts_first_ballot_callback_failed days = fallout_event_922_modifier_days } fallout_event_922_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_922_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_922_callback_supply_delta }
 	var:fallout_event_922_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_922_callback_shelter_delta }
@@ -36359,7 +36359,7 @@ fallout_event_922_apply_callback_effects = {
 	set_temp_variable = { fallout_event_922_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_922_record_history = yes
 	set_temp_variable = { fallout_event_922_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_922_callback_disease_delta
 	clear_variable = fallout_event_922_callback_shelter_delta
 	clear_variable = fallout_event_922_callback_exposure_delta
@@ -39543,7 +39543,7 @@ fallout_event_705_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_705_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_doctors_coup_result_success days = fallout_event_705_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_doctors_coup_result_partial days = fallout_event_705_modifier_days } }
 	else = { add_stability = constant:fallout_event_705_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_doctors_coup_result_failed days = fallout_event_705_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_705_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_705_delta_supply }
 	var:fallout_event_705_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_705_delta_shelter }
@@ -39562,7 +39562,7 @@ fallout_event_705_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_705_result_partial }
 		else = { set_state_flag = fallout_event_705_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_705_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_705_apply_failure_deaths = yes }
 	set_variable = { fallout_event_705_public_health_delta = constant:fallout_event_705_threshold.result_public_health_failure }
 	set_variable = { fallout_event_705_cause_memory_delta = constant:fallout_event_705_threshold.result_cause_memory_failure }
@@ -39782,7 +39782,7 @@ fallout_event_705_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_705_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_705_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_doctors_coup_callback_settled days = fallout_event_705_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_705_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_doctors_coup_callback_partial days = fallout_event_705_modifier_days } }
 	else = { add_stability = constant:fallout_event_705_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_doctors_coup_callback_failed days = fallout_event_705_modifier_days } fallout_event_705_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_705_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_705_callback_supply_delta }
 	var:fallout_event_705_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_705_callback_shelter_delta }
@@ -39812,7 +39812,7 @@ fallout_event_705_apply_callback_effects = {
 	set_temp_variable = { fallout_event_705_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_705_record_history = yes
 	set_temp_variable = { fallout_event_705_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_705_callback_disease_delta
 	clear_variable = fallout_event_705_callback_shelter_delta
 	clear_variable = fallout_event_705_callback_exposure_delta
@@ -49025,7 +49025,7 @@ fallout_event_796_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_796_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_engineer_franchise_result_success days = fallout_event_796_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_engineer_franchise_result_partial days = fallout_event_796_modifier_days } }
 	else = { add_stability = constant:fallout_event_796_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_engineer_franchise_result_failed days = fallout_event_796_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_796_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_796_delta_supply }
 	var:fallout_event_796_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_796_delta_shelter }
@@ -49044,7 +49044,7 @@ fallout_event_796_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_796_result_partial }
 		else = { set_state_flag = fallout_event_796_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_796_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_796_apply_failure_deaths = yes }
 	set_variable = { fallout_event_796_engineering_legitimacy_delta = constant:fallout_event_796_threshold.result_engineering_legitimacy_failure }
 	set_variable = { fallout_event_796_grid_memory_delta = constant:fallout_event_796_threshold.result_grid_memory_failure }
@@ -49286,7 +49286,7 @@ fallout_event_796_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_796_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_796_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_engineer_franchise_callback_settled days = fallout_event_796_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_796_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_engineer_franchise_callback_partial days = fallout_event_796_modifier_days } }
 	else = { add_stability = constant:fallout_event_796_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_engineer_franchise_callback_failed days = fallout_event_796_modifier_days } fallout_event_796_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_796_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_796_callback_supply_delta }
 	var:fallout_event_796_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_796_callback_shelter_delta }
@@ -49316,7 +49316,7 @@ fallout_event_796_apply_callback_effects = {
 	set_temp_variable = { fallout_event_796_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_796_record_history = yes
 	set_temp_variable = { fallout_event_796_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_796_callback_disease_delta
 	clear_variable = fallout_event_796_callback_shelter_delta
 	clear_variable = fallout_event_796_callback_exposure_delta
@@ -64464,7 +64464,7 @@ fallout_event_831_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_831_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_failed_calculation_result_success days = fallout_event_831_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_failed_calculation_result_partial days = fallout_event_831_modifier_days } }
 	else = { add_stability = constant:fallout_event_831_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_failed_calculation_result_failed days = fallout_event_831_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_831_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_831_delta_supply }
 	var:fallout_event_831_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_831_delta_shelter }
@@ -64483,7 +64483,7 @@ fallout_event_831_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_831_result_partial }
 		else = { set_state_flag = fallout_event_831_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_831_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_831_apply_failure_deaths = yes }
 	set_variable = { fallout_event_831_calculation_legitimacy_delta = constant:fallout_event_831_threshold.result_calculation_legitimacy_failure }
 	set_variable = { fallout_event_831_technical_memory_delta = constant:fallout_event_831_threshold.result_technical_memory_failure }
@@ -64725,7 +64725,7 @@ fallout_event_831_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_831_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_831_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_failed_calculation_callback_settled days = fallout_event_831_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_831_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_failed_calculation_callback_partial days = fallout_event_831_modifier_days } }
 	else = { add_stability = constant:fallout_event_831_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_failed_calculation_callback_failed days = fallout_event_831_modifier_days } fallout_event_831_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_831_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_831_callback_supply_delta }
 	var:fallout_event_831_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_831_callback_shelter_delta }
@@ -64755,7 +64755,7 @@ fallout_event_831_apply_callback_effects = {
 	set_temp_variable = { fallout_event_831_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_831_record_history = yes
 	set_temp_variable = { fallout_event_831_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_831_callback_disease_delta
 	clear_variable = fallout_event_831_callback_shelter_delta
 	clear_variable = fallout_event_831_callback_exposure_delta
@@ -65431,7 +65431,7 @@ fallout_event_691_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_691_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_false_positive_result_success days = fallout_event_691_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_false_positive_result_partial days = fallout_event_691_modifier_days } }
 	else = { add_stability = constant:fallout_event_691_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_false_positive_result_failed days = fallout_event_691_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_691_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_691_delta_supply }
 	var:fallout_event_691_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_691_delta_shelter }
@@ -65450,7 +65450,7 @@ fallout_event_691_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_691_result_partial }
 		else = { set_state_flag = fallout_event_691_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_691_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_691_apply_failure_deaths = yes }
 	set_variable = { fallout_event_691_public_health_delta = constant:fallout_event_691_threshold.result_public_health_failure }
 	set_variable = { fallout_event_691_cause_memory_delta = constant:fallout_event_691_threshold.result_cause_memory_failure }
@@ -65638,7 +65638,7 @@ fallout_event_691_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_691_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_691_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_false_positive_callback_settled days = fallout_event_691_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_691_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_false_positive_callback_partial days = fallout_event_691_modifier_days } }
 	else = { add_stability = constant:fallout_event_691_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_false_positive_callback_failed days = fallout_event_691_modifier_days } fallout_event_691_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_691_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_691_callback_supply_delta }
 	var:fallout_event_691_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_691_callback_shelter_delta }
@@ -65668,7 +65668,7 @@ fallout_event_691_apply_callback_effects = {
 	set_temp_variable = { fallout_event_691_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_691_record_history = yes
 	set_temp_variable = { fallout_event_691_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_691_callback_disease_delta
 	clear_variable = fallout_event_691_callback_shelter_delta
 	clear_variable = fallout_event_691_callback_exposure_delta
@@ -67121,7 +67121,7 @@ fallout_event_894_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_894_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_fertility_question_result_success days = fallout_event_894_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_fertility_question_result_partial days = fallout_event_894_modifier_days } }
 	else = { add_stability = constant:fallout_event_894_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_fertility_question_result_failed days = fallout_event_894_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_894_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_894_delta_supply }
 	var:fallout_event_894_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_894_delta_shelter }
@@ -67140,7 +67140,7 @@ fallout_event_894_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_894_result_partial }
 		else = { set_state_flag = fallout_event_894_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_894_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_894_apply_failure_deaths = yes }
 	set_variable = { fallout_event_894_compact_legitimacy_delta = constant:fallout_event_894_threshold.result_family_legitimacy_failure }
 	set_variable = { fallout_event_894_demographic_cause_memory_delta = constant:fallout_event_894_threshold.result_demographic_cause_memory_failure }
@@ -67363,7 +67363,7 @@ fallout_event_894_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_894_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_fertility_question_callback_failed days = fallout_event_894_modifier_days } fallout_event_894_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_894_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_894_callback_supply_delta }
 	var:fallout_event_894_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_894_callback_shelter_delta }
@@ -67393,7 +67393,7 @@ fallout_event_894_apply_callback_effects = {
 	set_temp_variable = { fallout_event_894_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_894_record_history = yes
 	set_temp_variable = { fallout_event_894_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_894_callback_disease_delta
 	clear_variable = fallout_event_894_callback_shelter_delta
 	clear_variable = fallout_event_894_callback_exposure_delta
@@ -70896,7 +70896,7 @@ fallout_event_852_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_852_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_first_regional_standard_result_success days = fallout_event_852_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_first_regional_standard_result_partial days = fallout_event_852_modifier_days } }
 	else = { add_stability = constant:fallout_event_852_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_first_regional_standard_result_failed days = fallout_event_852_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_852_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_852_delta_supply }
 	var:fallout_event_852_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_852_delta_shelter }
@@ -70915,7 +70915,7 @@ fallout_event_852_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_852_result_partial }
 		else = { set_state_flag = fallout_event_852_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_852_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_852_apply_failure_deaths = yes }
 	set_variable = { fallout_event_852_open_access_delta = constant:fallout_event_852_threshold.result_open_access_failure }
 	set_variable = { fallout_event_852_standard_memory_delta = constant:fallout_event_852_threshold.result_standard_memory_failure }
@@ -71157,7 +71157,7 @@ fallout_event_852_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_852_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_852_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_first_regional_standard_callback_settled days = fallout_event_852_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_852_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_first_regional_standard_callback_partial days = fallout_event_852_modifier_days } }
 	else = { add_stability = constant:fallout_event_852_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_first_regional_standard_callback_failed days = fallout_event_852_modifier_days } fallout_event_852_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_852_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_852_callback_supply_delta }
 	var:fallout_event_852_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_852_callback_shelter_delta }
@@ -71187,7 +71187,7 @@ fallout_event_852_apply_callback_effects = {
 	set_temp_variable = { fallout_event_852_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_852_record_history = yes
 	set_temp_variable = { fallout_event_852_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_852_callback_disease_delta
 	clear_variable = fallout_event_852_callback_shelter_delta
 	clear_variable = fallout_event_852_callback_exposure_delta
@@ -75351,7 +75351,7 @@ fallout_event_775_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_775_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_ghost_convoy_result_success days = fallout_event_775_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_ghost_convoy_result_partial days = fallout_event_775_modifier_days } }
 	else = { add_stability = constant:fallout_event_775_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_ghost_convoy_result_failed days = fallout_event_775_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_775_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_775_delta_supply }
 	var:fallout_event_775_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_775_delta_shelter }
@@ -75370,7 +75370,7 @@ fallout_event_775_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_775_result_partial }
 		else = { set_state_flag = fallout_event_775_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_775_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_775_apply_failure_deaths = yes }
 	set_variable = { fallout_event_775_port_legitimacy_delta = constant:fallout_event_775_threshold.result_port_legitimacy_failure }
 	set_variable = { fallout_event_775_cause_memory_delta = constant:fallout_event_775_threshold.result_cause_memory_failure }
@@ -75589,7 +75589,7 @@ fallout_event_775_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_775_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_775_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_ghost_convoy_callback_settled days = fallout_event_775_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_775_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_ghost_convoy_callback_partial days = fallout_event_775_modifier_days } }
 	else = { add_stability = constant:fallout_event_775_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_ghost_convoy_callback_failed days = fallout_event_775_modifier_days } fallout_event_775_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_775_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_775_callback_supply_delta }
 	var:fallout_event_775_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_775_callback_shelter_delta }
@@ -75619,7 +75619,7 @@ fallout_event_775_apply_callback_effects = {
 	set_temp_variable = { fallout_event_775_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_775_record_history = yes
 	set_temp_variable = { fallout_event_775_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_775_callback_disease_delta
 	clear_variable = fallout_event_775_callback_shelter_delta
 	clear_variable = fallout_event_775_callback_exposure_delta
@@ -77572,7 +77572,7 @@ fallout_event_824_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_824_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_grid_vote_result_success days = fallout_event_824_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_grid_vote_result_partial days = fallout_event_824_modifier_days } }
 	else = { add_stability = constant:fallout_event_824_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_grid_vote_result_failed days = fallout_event_824_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_824_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_824_delta_supply }
 	var:fallout_event_824_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_824_delta_shelter }
@@ -77591,7 +77591,7 @@ fallout_event_824_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_824_result_partial }
 		else = { set_state_flag = fallout_event_824_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_824_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_824_apply_failure_deaths = yes }
 	set_variable = { fallout_event_824_grid_legitimacy_delta = constant:fallout_event_824_threshold.result_grid_legitimacy_failure }
 	set_variable = { fallout_event_824_grid_memory_delta = constant:fallout_event_824_threshold.result_grid_memory_failure }
@@ -77833,7 +77833,7 @@ fallout_event_824_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_824_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_824_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_grid_vote_callback_settled days = fallout_event_824_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_824_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_grid_vote_callback_partial days = fallout_event_824_modifier_days } }
 	else = { add_stability = constant:fallout_event_824_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_grid_vote_callback_failed days = fallout_event_824_modifier_days } fallout_event_824_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_824_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_824_callback_supply_delta }
 	var:fallout_event_824_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_824_callback_shelter_delta }
@@ -77863,7 +77863,7 @@ fallout_event_824_apply_callback_effects = {
 	set_temp_variable = { fallout_event_824_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_824_record_history = yes
 	set_temp_variable = { fallout_event_824_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_824_callback_disease_delta
 	clear_variable = fallout_event_824_callback_shelter_delta
 	clear_variable = fallout_event_824_callback_exposure_delta
@@ -78620,7 +78620,7 @@ fallout_event_782_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_782_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_harbor_without_city_result_success days = fallout_event_782_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_harbor_without_city_result_partial days = fallout_event_782_modifier_days } }
 	else = { add_stability = constant:fallout_event_782_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_harbor_without_city_result_failed days = fallout_event_782_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_782_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_782_delta_supply }
 	var:fallout_event_782_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_782_delta_shelter }
@@ -78639,7 +78639,7 @@ fallout_event_782_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_782_result_partial }
 		else = { set_state_flag = fallout_event_782_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_782_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_782_apply_failure_deaths = yes }
 	set_variable = { fallout_event_782_authority_delta = constant:fallout_event_782_threshold.result_authority_failure }
 	set_variable = { fallout_event_782_cause_memory_delta = constant:fallout_event_782_threshold.result_cause_memory_failure }
@@ -78858,7 +78858,7 @@ fallout_event_782_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_782_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_782_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_harbor_without_city_callback_settled days = fallout_event_782_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_782_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_harbor_without_city_callback_partial days = fallout_event_782_modifier_days } }
 	else = { add_stability = constant:fallout_event_782_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_harbor_without_city_callback_failed days = fallout_event_782_modifier_days } fallout_event_782_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_782_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_782_callback_supply_delta }
 	var:fallout_event_782_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_782_callback_shelter_delta }
@@ -78888,7 +78888,7 @@ fallout_event_782_apply_callback_effects = {
 	set_temp_variable = { fallout_event_782_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_782_record_history = yes
 	set_temp_variable = { fallout_event_782_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_782_callback_disease_delta
 	clear_variable = fallout_event_782_callback_shelter_delta
 	clear_variable = fallout_event_782_callback_exposure_delta
@@ -82455,7 +82455,7 @@ fallout_event_838_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_838_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_result_success days = fallout_event_838_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_result_partial days = fallout_event_838_modifier_days } }
 	else = { add_stability = constant:fallout_event_838_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_result_failed days = fallout_event_838_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_838_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_838_delta_supply }
 	var:fallout_event_838_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_838_delta_shelter }
@@ -82474,7 +82474,7 @@ fallout_event_838_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_838_result_partial }
 		else = { set_state_flag = fallout_event_838_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_838_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_838_apply_failure_deaths = yes }
 	set_variable = { fallout_event_838_citizenship_legitimacy_delta = constant:fallout_event_838_threshold.result_citizenship_legitimacy_failure }
 	set_variable = { fallout_event_838_citizenship_memory_delta = constant:fallout_event_838_threshold.result_citizenship_memory_failure }
@@ -82716,7 +82716,7 @@ fallout_event_838_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_838_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_838_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_callback_settled days = fallout_event_838_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_838_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_callback_partial days = fallout_event_838_modifier_days } }
 	else = { add_stability = constant:fallout_event_838_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_laboratory_citizenship_callback_failed days = fallout_event_838_modifier_days } fallout_event_838_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_838_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_838_callback_supply_delta }
 	var:fallout_event_838_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_838_callback_shelter_delta }
@@ -82746,7 +82746,7 @@ fallout_event_838_apply_callback_effects = {
 	set_temp_variable = { fallout_event_838_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_838_record_history = yes
 	set_temp_variable = { fallout_event_838_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_838_callback_disease_delta
 	clear_variable = fallout_event_838_callback_shelter_delta
 	clear_variable = fallout_event_838_callback_exposure_delta
@@ -84468,7 +84468,7 @@ fallout_event_803_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_803_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_load_shedding_result_success days = fallout_event_803_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_load_shedding_result_partial days = fallout_event_803_modifier_days } }
 	else = { add_stability = constant:fallout_event_803_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_load_shedding_result_failed days = fallout_event_803_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_803_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_803_delta_supply }
 	var:fallout_event_803_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_803_delta_shelter }
@@ -84487,7 +84487,7 @@ fallout_event_803_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_803_result_partial }
 		else = { set_state_flag = fallout_event_803_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_803_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_803_apply_failure_deaths = yes }
 	set_variable = { fallout_event_803_load_legitimacy_delta = constant:fallout_event_803_threshold.result_load_legitimacy_failure }
 	set_variable = { fallout_event_803_grid_memory_delta = constant:fallout_event_803_threshold.result_grid_memory_failure }
@@ -84704,7 +84704,7 @@ fallout_event_803_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_803_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_803_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_load_shedding_callback_settled days = fallout_event_803_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_803_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_load_shedding_callback_partial days = fallout_event_803_modifier_days } }
 	else = { add_stability = constant:fallout_event_803_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_load_shedding_callback_failed days = fallout_event_803_modifier_days } fallout_event_803_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_803_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_803_callback_supply_delta }
 	var:fallout_event_803_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_803_callback_shelter_delta }
@@ -84734,7 +84734,7 @@ fallout_event_803_apply_callback_effects = {
 	set_temp_variable = { fallout_event_803_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_803_record_history = yes
 	set_temp_variable = { fallout_event_803_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_803_callback_disease_delta
 	clear_variable = fallout_event_803_callback_shelter_delta
 	clear_variable = fallout_event_803_callback_exposure_delta
@@ -85488,7 +85488,7 @@ fallout_event_845_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_845_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_machine_suggests_result_success days = fallout_event_845_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_machine_suggests_result_partial days = fallout_event_845_modifier_days } }
 	else = { add_stability = constant:fallout_event_845_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_machine_suggests_result_failed days = fallout_event_845_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_845_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_845_delta_supply }
 	var:fallout_event_845_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_845_delta_shelter }
@@ -85507,7 +85507,7 @@ fallout_event_845_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_845_result_partial }
 		else = { set_state_flag = fallout_event_845_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_845_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_845_apply_failure_deaths = yes }
 	set_variable = { fallout_event_845_machine_influence_delta = constant:fallout_event_845_threshold.result_machine_influence_failure }
 	set_variable = { fallout_event_845_machine_protocol_memory_delta = constant:fallout_event_845_threshold.result_machine_protocol_memory_failure }
@@ -85749,7 +85749,7 @@ fallout_event_845_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_845_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_845_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_machine_suggests_callback_settled days = fallout_event_845_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_845_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_machine_suggests_callback_partial days = fallout_event_845_modifier_days } }
 	else = { add_stability = constant:fallout_event_845_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_machine_suggests_callback_failed days = fallout_event_845_modifier_days } fallout_event_845_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_845_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_845_callback_supply_delta }
 	var:fallout_event_845_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_845_callback_shelter_delta }
@@ -85779,7 +85779,7 @@ fallout_event_845_apply_callback_effects = {
 	set_temp_variable = { fallout_event_845_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_845_record_history = yes
 	set_temp_variable = { fallout_event_845_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_845_callback_disease_delta
 	clear_variable = fallout_event_845_callback_shelter_delta
 	clear_variable = fallout_event_845_callback_exposure_delta
@@ -90768,7 +90768,7 @@ fallout_event_887_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_887_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_mixed_settlement_result_success days = fallout_event_887_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_mixed_settlement_result_partial days = fallout_event_887_modifier_days } }
 	else = { add_stability = constant:fallout_event_887_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_mixed_settlement_result_failed days = fallout_event_887_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_887_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_887_delta_supply }
 	var:fallout_event_887_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_887_delta_shelter }
@@ -90787,7 +90787,7 @@ fallout_event_887_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_887_result_partial }
 		else = { set_state_flag = fallout_event_887_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_887_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_887_apply_failure_deaths = yes }
 	set_variable = { fallout_event_887_compact_legitimacy_delta = constant:fallout_event_887_threshold.result_settlement_legitimacy_failure }
 	set_variable = { fallout_event_887_settlement_cause_memory_delta = constant:fallout_event_887_threshold.result_settlement_cause_memory_failure }
@@ -91010,7 +91010,7 @@ fallout_event_887_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_887_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_mixed_settlement_callback_failed days = fallout_event_887_modifier_days } fallout_event_887_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_887_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_887_callback_supply_delta }
 	var:fallout_event_887_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_887_callback_shelter_delta }
@@ -91040,7 +91040,7 @@ fallout_event_887_apply_callback_effects = {
 	set_temp_variable = { fallout_event_887_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_887_record_history = yes
 	set_temp_variable = { fallout_event_887_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_887_callback_disease_delta
 	clear_variable = fallout_event_887_callback_shelter_delta
 	clear_variable = fallout_event_887_callback_exposure_delta
@@ -92954,7 +92954,7 @@ fallout_event_761_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_761_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_result_success days = fallout_event_761_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_result_partial days = fallout_event_761_modifier_days } }
 	else = { add_stability = constant:fallout_event_761_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_result_failed days = fallout_event_761_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_761_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_761_delta_supply }
 	var:fallout_event_761_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_761_delta_shelter }
@@ -92973,7 +92973,7 @@ fallout_event_761_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_761_result_partial }
 		else = { set_state_flag = fallout_event_761_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_761_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_761_apply_failure_deaths = yes }
 	set_variable = { fallout_event_761_compact_legitimacy_delta = constant:fallout_event_761_threshold.result_civic_legitimacy_failure }
 	set_variable = { fallout_event_761_cause_memory_delta = constant:fallout_event_761_threshold.result_cause_memory_failure }
@@ -93192,7 +93192,7 @@ fallout_event_761_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_761_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_761_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_callback_settled days = fallout_event_761_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_761_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_callback_partial days = fallout_event_761_modifier_days } }
 	else = { add_stability = constant:fallout_event_761_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_mutant_envoy_gate_callback_failed days = fallout_event_761_modifier_days } fallout_event_761_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_761_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_761_callback_supply_delta }
 	var:fallout_event_761_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_761_callback_shelter_delta }
@@ -93222,7 +93222,7 @@ fallout_event_761_apply_callback_effects = {
 	set_temp_variable = { fallout_event_761_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_761_record_history = yes
 	set_temp_variable = { fallout_event_761_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_761_callback_disease_delta
 	clear_variable = fallout_event_761_callback_shelter_delta
 	clear_variable = fallout_event_761_callback_exposure_delta
@@ -93978,7 +93978,7 @@ fallout_event_873_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_873_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_name_we_choose_result_success days = fallout_event_873_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_name_we_choose_result_partial days = fallout_event_873_modifier_days } }
 	else = { add_stability = constant:fallout_event_873_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_name_we_choose_result_failed days = fallout_event_873_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_873_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_873_delta_supply }
 	var:fallout_event_873_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_873_delta_shelter }
@@ -93997,7 +93997,7 @@ fallout_event_873_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_873_result_partial }
 		else = { set_state_flag = fallout_event_873_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_873_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_873_apply_failure_deaths = yes }
 	set_variable = { fallout_event_873_compact_legitimacy_delta = constant:fallout_event_873_threshold.result_civic_legitimacy_failure }
 	set_variable = { fallout_event_873_cause_memory_delta = constant:fallout_event_873_threshold.result_cause_memory_failure }
@@ -94216,7 +94216,7 @@ fallout_event_873_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_873_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_873_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_name_we_choose_callback_settled days = fallout_event_873_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_873_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_name_we_choose_callback_partial days = fallout_event_873_modifier_days } }
 	else = { add_stability = constant:fallout_event_873_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_name_we_choose_callback_failed days = fallout_event_873_modifier_days } fallout_event_873_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_873_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_873_callback_supply_delta }
 	var:fallout_event_873_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_873_callback_shelter_delta }
@@ -94246,7 +94246,7 @@ fallout_event_873_apply_callback_effects = {
 	set_temp_variable = { fallout_event_873_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_873_record_history = yes
 	set_temp_variable = { fallout_event_873_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_873_callback_disease_delta
 	clear_variable = fallout_event_873_callback_shelter_delta
 	clear_variable = fallout_event_873_callback_exposure_delta
@@ -99756,7 +99756,7 @@ fallout_event_901_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_901_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_old_doctor_trial_result_success days = fallout_event_901_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_old_doctor_trial_result_partial days = fallout_event_901_modifier_days } }
 	else = { add_stability = constant:fallout_event_901_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_old_doctor_trial_result_failed days = fallout_event_901_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_901_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_901_delta_supply }
 	var:fallout_event_901_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_901_delta_shelter }
@@ -99775,7 +99775,7 @@ fallout_event_901_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_901_result_partial }
 		else = { set_state_flag = fallout_event_901_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_901_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_901_apply_failure_deaths = yes }
 	set_variable = { fallout_event_901_compact_legitimacy_delta = constant:fallout_event_901_threshold.result_trial_legitimacy_failure }
 	set_variable = { fallout_event_901_trial_cause_memory_delta = constant:fallout_event_901_threshold.result_trial_cause_memory_failure }
@@ -99998,7 +99998,7 @@ fallout_event_901_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_901_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_old_doctor_trial_callback_failed days = fallout_event_901_modifier_days } fallout_event_901_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_901_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_901_callback_supply_delta }
 	var:fallout_event_901_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_901_callback_shelter_delta }
@@ -100028,7 +100028,7 @@ fallout_event_901_apply_callback_effects = {
 	set_temp_variable = { fallout_event_901_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_901_record_history = yes
 	set_temp_variable = { fallout_event_901_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_901_callback_disease_delta
 	clear_variable = fallout_event_901_callback_shelter_delta
 	clear_variable = fallout_event_901_callback_exposure_delta
@@ -102987,7 +102987,7 @@ fallout_event_817_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_817_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_patent_after_end_result_success days = fallout_event_817_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_patent_after_end_result_partial days = fallout_event_817_modifier_days } }
 	else = { add_stability = constant:fallout_event_817_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_patent_after_end_result_failed days = fallout_event_817_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_817_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_817_delta_supply }
 	var:fallout_event_817_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_817_delta_shelter }
@@ -103006,7 +103006,7 @@ fallout_event_817_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_817_result_partial }
 		else = { set_state_flag = fallout_event_817_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_817_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_817_apply_failure_deaths = yes }
 	set_variable = { fallout_event_817_patent_legitimacy_delta = constant:fallout_event_817_threshold.result_patent_legitimacy_failure }
 	set_variable = { fallout_event_817_patent_memory_delta = constant:fallout_event_817_threshold.result_patent_memory_failure }
@@ -103248,7 +103248,7 @@ fallout_event_817_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_817_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_817_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_patent_after_end_callback_settled days = fallout_event_817_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_817_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_patent_after_end_callback_partial days = fallout_event_817_modifier_days } }
 	else = { add_stability = constant:fallout_event_817_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_patent_after_end_callback_failed days = fallout_event_817_modifier_days } fallout_event_817_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_817_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_817_callback_supply_delta }
 	var:fallout_event_817_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_817_callback_shelter_delta }
@@ -103278,7 +103278,7 @@ fallout_event_817_apply_callback_effects = {
 	set_temp_variable = { fallout_event_817_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_817_record_history = yes
 	set_temp_variable = { fallout_event_817_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_817_callback_disease_delta
 	clear_variable = fallout_event_817_callback_shelter_delta
 	clear_variable = fallout_event_817_callback_exposure_delta
@@ -103955,7 +103955,7 @@ fallout_event_698_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_698_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_permit_market_result_success days = fallout_event_698_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_permit_market_result_partial days = fallout_event_698_modifier_days } }
 	else = { add_stability = constant:fallout_event_698_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_permit_market_result_failed days = fallout_event_698_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_698_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_698_delta_supply }
 	var:fallout_event_698_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_698_delta_shelter }
@@ -103974,7 +103974,7 @@ fallout_event_698_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_698_result_partial }
 		else = { set_state_flag = fallout_event_698_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_698_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_698_apply_failure_deaths = yes }
 	set_variable = { fallout_event_698_public_health_delta = constant:fallout_event_698_threshold.result_public_health_failure }
 	set_variable = { fallout_event_698_cause_memory_delta = constant:fallout_event_698_threshold.result_cause_memory_failure }
@@ -104162,7 +104162,7 @@ fallout_event_698_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_698_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_698_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_permit_market_callback_settled days = fallout_event_698_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_698_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_permit_market_callback_partial days = fallout_event_698_modifier_days } }
 	else = { add_stability = constant:fallout_event_698_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_permit_market_callback_failed days = fallout_event_698_modifier_days } fallout_event_698_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_698_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_698_callback_supply_delta }
 	var:fallout_event_698_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_698_callback_shelter_delta }
@@ -104192,7 +104192,7 @@ fallout_event_698_apply_callback_effects = {
 	set_temp_variable = { fallout_event_698_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_698_record_history = yes
 	set_temp_variable = { fallout_event_698_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_698_callback_disease_delta
 	clear_variable = fallout_event_698_callback_shelter_delta
 	clear_variable = fallout_event_698_callback_exposure_delta
@@ -104942,7 +104942,7 @@ fallout_event_789_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_789_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_pirate_amnesty_result_success days = fallout_event_789_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_pirate_amnesty_result_partial days = fallout_event_789_modifier_days } }
 	else = { add_stability = constant:fallout_event_789_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_pirate_amnesty_result_failed days = fallout_event_789_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_789_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_789_delta_supply }
 	var:fallout_event_789_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_789_delta_shelter }
@@ -104961,7 +104961,7 @@ fallout_event_789_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_789_result_partial }
 		else = { set_state_flag = fallout_event_789_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_789_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_789_apply_failure_deaths = yes }
 	set_variable = { fallout_event_789_crew_legitimacy_delta = constant:fallout_event_789_threshold.result_crew_legitimacy_failure }
 	set_variable = { fallout_event_789_raid_memory_delta = constant:fallout_event_789_threshold.result_raid_memory_failure }
@@ -105180,7 +105180,7 @@ fallout_event_789_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_789_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_789_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_pirate_amnesty_callback_settled days = fallout_event_789_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_789_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_pirate_amnesty_callback_partial days = fallout_event_789_modifier_days } }
 	else = { add_stability = constant:fallout_event_789_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_pirate_amnesty_callback_failed days = fallout_event_789_modifier_days } fallout_event_789_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_789_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_789_callback_supply_delta }
 	var:fallout_event_789_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_789_callback_shelter_delta }
@@ -105210,7 +105210,7 @@ fallout_event_789_apply_callback_effects = {
 	set_temp_variable = { fallout_event_789_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_789_record_history = yes
 	set_temp_variable = { fallout_event_789_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_789_callback_disease_delta
 	clear_variable = fallout_event_789_callback_shelter_delta
 	clear_variable = fallout_event_789_callback_exposure_delta
@@ -105962,7 +105962,7 @@ fallout_event_866_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_866_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_power_citizenship_result_success days = fallout_event_866_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_power_citizenship_result_partial days = fallout_event_866_modifier_days } }
 	else = { add_stability = constant:fallout_event_866_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_power_citizenship_result_failed days = fallout_event_866_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_866_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_866_delta_supply }
 	var:fallout_event_866_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_866_delta_shelter }
@@ -105981,7 +105981,7 @@ fallout_event_866_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_866_result_partial }
 		else = { set_state_flag = fallout_event_866_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_866_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_866_apply_failure_deaths = yes }
 	set_variable = { fallout_event_866_public_service_access_delta = constant:fallout_event_866_threshold.result_public_service_access_failure }
 	set_variable = { fallout_event_866_identity_memory_delta = constant:fallout_event_866_threshold.result_identity_memory_failure }
@@ -106223,7 +106223,7 @@ fallout_event_866_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_866_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_866_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_power_citizenship_callback_settled days = fallout_event_866_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_866_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_power_citizenship_callback_partial days = fallout_event_866_modifier_days } }
 	else = { add_stability = constant:fallout_event_866_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_power_citizenship_callback_failed days = fallout_event_866_modifier_days } fallout_event_866_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_866_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_866_callback_supply_delta }
 	var:fallout_event_866_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_866_callback_shelter_delta }
@@ -106253,7 +106253,7 @@ fallout_event_866_apply_callback_effects = {
 	set_temp_variable = { fallout_event_866_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_866_record_history = yes
 	set_temp_variable = { fallout_event_866_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_866_callback_disease_delta
 	clear_variable = fallout_event_866_callback_shelter_delta
 	clear_variable = fallout_event_866_callback_exposure_delta
@@ -107016,7 +107016,7 @@ fallout_event_929_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_929_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_quarantine_ultimatum_result_success days = fallout_event_929_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_quarantine_ultimatum_result_partial days = fallout_event_929_modifier_days } }
 	else = { add_stability = constant:fallout_event_929_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_quarantine_ultimatum_result_failed days = fallout_event_929_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_929_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_929_delta_supply }
 	var:fallout_event_929_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_929_delta_shelter }
@@ -107035,7 +107035,7 @@ fallout_event_929_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_929_result_partial }
 		else = { set_state_flag = fallout_event_929_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_929_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_929_apply_failure_deaths = yes }
 	set_variable = { fallout_event_929_compact_legitimacy_delta = constant:fallout_event_929_threshold.result_border_legitimacy_failure }
 	set_variable = { fallout_event_929_quarantine_cause_memory_delta = constant:fallout_event_929_threshold.result_quarantine_cause_memory_failure }
@@ -107258,7 +107258,7 @@ fallout_event_929_apply_callback_effects = {
 
 
 	else = { add_stability = constant:fallout_event_929_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_quarantine_ultimatum_callback_failed days = fallout_event_929_modifier_days } fallout_event_929_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_929_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_929_callback_supply_delta }
 	var:fallout_event_929_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_929_callback_shelter_delta }
@@ -107288,7 +107288,7 @@ fallout_event_929_apply_callback_effects = {
 	set_temp_variable = { fallout_event_929_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_929_record_history = yes
 	set_temp_variable = { fallout_event_929_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_929_callback_disease_delta
 	clear_variable = fallout_event_929_callback_shelter_delta
 	clear_variable = fallout_event_929_callback_exposure_delta
@@ -111699,7 +111699,7 @@ fallout_event_810_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_810_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_reactor_shift_result_success days = fallout_event_810_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_reactor_shift_result_partial days = fallout_event_810_modifier_days } }
 	else = { add_stability = constant:fallout_event_810_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_reactor_shift_result_failed days = fallout_event_810_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_810_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_810_delta_supply }
 	var:fallout_event_810_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_810_delta_shelter }
@@ -111718,7 +111718,7 @@ fallout_event_810_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_810_result_partial }
 		else = { set_state_flag = fallout_event_810_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_810_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_810_apply_failure_deaths = yes }
 	set_variable = { fallout_event_810_safety_legitimacy_delta = constant:fallout_event_810_threshold.result_safety_legitimacy_failure }
 	set_variable = { fallout_event_810_safety_memory_delta = constant:fallout_event_810_threshold.result_safety_memory_failure }
@@ -111935,7 +111935,7 @@ fallout_event_810_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_810_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_810_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_reactor_shift_callback_settled days = fallout_event_810_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_810_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_reactor_shift_callback_partial days = fallout_event_810_modifier_days } }
 	else = { add_stability = constant:fallout_event_810_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_reactor_shift_callback_failed days = fallout_event_810_modifier_days } fallout_event_810_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_810_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_810_callback_supply_delta }
 	var:fallout_event_810_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_810_callback_shelter_delta }
@@ -111965,7 +111965,7 @@ fallout_event_810_apply_callback_effects = {
 	set_temp_variable = { fallout_event_810_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_810_record_history = yes
 	set_temp_variable = { fallout_event_810_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_810_callback_disease_delta
 	clear_variable = fallout_event_810_callback_shelter_delta
 	clear_variable = fallout_event_810_callback_exposure_delta
@@ -114168,7 +114168,7 @@ fallout_event_754_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_754_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_regional_health_compact_result_success days = fallout_event_754_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_regional_health_compact_result_partial days = fallout_event_754_modifier_days } }
 	else = { add_stability = constant:fallout_event_754_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_regional_health_compact_result_failed days = fallout_event_754_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_754_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_754_delta_supply }
 	var:fallout_event_754_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_754_delta_shelter }
@@ -114187,7 +114187,7 @@ fallout_event_754_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_754_result_partial }
 		else = { set_state_flag = fallout_event_754_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_754_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_754_apply_failure_deaths = yes }
 	set_variable = { fallout_event_754_compact_legitimacy_delta = constant:fallout_event_754_threshold.result_compact_legitimacy_failure }
 	set_variable = { fallout_event_754_cause_memory_delta = constant:fallout_event_754_threshold.result_cause_memory_failure }
@@ -114406,7 +114406,7 @@ fallout_event_754_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_754_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_754_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_regional_health_compact_callback_settled days = fallout_event_754_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_754_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_regional_health_compact_callback_partial days = fallout_event_754_modifier_days } }
 	else = { add_stability = constant:fallout_event_754_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_regional_health_compact_callback_failed days = fallout_event_754_modifier_days } fallout_event_754_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_754_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_754_callback_supply_delta }
 	var:fallout_event_754_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_754_callback_shelter_delta }
@@ -114436,7 +114436,7 @@ fallout_event_754_apply_callback_effects = {
 	set_temp_variable = { fallout_event_754_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_754_record_history = yes
 	set_temp_variable = { fallout_event_754_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_754_callback_disease_delta
 	clear_variable = fallout_event_754_callback_shelter_delta
 	clear_variable = fallout_event_754_callback_exposure_delta
@@ -115188,7 +115188,7 @@ fallout_event_859_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_859_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_repair_charter_result_success days = fallout_event_859_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_repair_charter_result_partial days = fallout_event_859_modifier_days } }
 	else = { add_stability = constant:fallout_event_859_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_repair_charter_result_failed days = fallout_event_859_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_859_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_859_delta_supply }
 	var:fallout_event_859_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_859_delta_shelter }
@@ -115207,7 +115207,7 @@ fallout_event_859_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_859_result_partial }
 		else = { set_state_flag = fallout_event_859_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_859_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_859_apply_failure_deaths = yes }
 	set_variable = { fallout_event_859_open_crew_access_delta = constant:fallout_event_859_threshold.result_open_crew_access_failure }
 	set_variable = { fallout_event_859_charter_memory_delta = constant:fallout_event_859_threshold.result_charter_memory_failure }
@@ -115449,7 +115449,7 @@ fallout_event_859_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_859_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_859_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_repair_charter_callback_settled days = fallout_event_859_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_859_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_repair_charter_callback_partial days = fallout_event_859_modifier_days } }
 	else = { add_stability = constant:fallout_event_859_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_repair_charter_callback_failed days = fallout_event_859_modifier_days } fallout_event_859_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_859_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_859_callback_supply_delta }
 	var:fallout_event_859_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_859_callback_shelter_delta }
@@ -115479,7 +115479,7 @@ fallout_event_859_apply_callback_effects = {
 	set_temp_variable = { fallout_event_859_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_859_record_history = yes
 	set_temp_variable = { fallout_event_859_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_859_callback_disease_delta
 	clear_variable = fallout_event_859_callback_shelter_delta
 	clear_variable = fallout_event_859_callback_exposure_delta
@@ -116155,7 +116155,7 @@ fallout_event_712_apply_result_effects = {
 	if = { limit = { check_variable = { var = fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_712_modifier.result_success_stability add_dynamic_modifier = { modifier = fallout_returning_disease_result_success days = fallout_event_712_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_returning_disease_result_partial days = fallout_event_712_modifier_days } }
 	else = { add_stability = constant:fallout_event_712_modifier.result_failed_stability add_dynamic_modifier = { modifier = fallout_returning_disease_result_failed days = fallout_event_712_modifier_days } }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_712_delta_supply }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_712_delta_supply }
 	var:fallout_event_712_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_712_delta_shelter }
@@ -116174,7 +116174,7 @@ fallout_event_712_apply_result_effects = {
 		else_if = { limit = { check_variable = { var = ROOT.fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } set_state_flag = fallout_event_712_result_partial }
 		else = { set_state_flag = fallout_event_712_result_failure }
 	}
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	if = { limit = { check_variable = { var = fallout_event_712_result_outcome value = constant:fallout_event_outcome_type.failure compare = equals } } fallout_event_712_apply_failure_deaths = yes }
 	set_variable = { fallout_event_712_public_health_delta = constant:fallout_event_712_threshold.result_public_health_failure }
 	set_variable = { fallout_event_712_cause_memory_delta = constant:fallout_event_712_threshold.result_cause_memory_failure }
@@ -116392,7 +116392,7 @@ fallout_event_712_apply_callback_effects = {
 	if = { limit = { check_variable = { var = fallout_event_712_callback_outcome value = constant:fallout_event_outcome_type.success compare = equals } } add_stability = constant:fallout_event_712_modifier.callback_success_stability add_dynamic_modifier = { modifier = fallout_returning_disease_callback_settled days = fallout_event_712_modifier_days } }
 	else_if = { limit = { check_variable = { var = fallout_event_712_callback_outcome value = constant:fallout_event_outcome_type.partial compare = equals } } add_dynamic_modifier = { modifier = fallout_returning_disease_callback_partial days = fallout_event_712_modifier_days } }
 	else = { add_stability = constant:fallout_event_712_modifier.callback_failed_stability add_dynamic_modifier = { modifier = fallout_returning_disease_callback_failed days = fallout_event_712_modifier_days } fallout_event_712_apply_callback_failure_deaths = yes }
-	set_variable = { fallout_state_supply_access_delta = fallout_event_712_callback_supply_delta }
+	set_temp_variable = { fallout_state_supply_access_delta = fallout_event_712_callback_supply_delta }
 	var:fallout_event_712_target_state_id = {
 		fallout_state_apply_supply_access_delta = yes
 		add_to_variable = { air_winter_shelter_capacity = ROOT.fallout_event_712_callback_shelter_delta }
@@ -116422,7 +116422,7 @@ fallout_event_712_apply_callback_effects = {
 	set_temp_variable = { fallout_event_712_history_stage = constant:fallout_event_runtime.two }
 	fallout_event_712_record_history = yes
 	set_temp_variable = { fallout_event_712_history_stage = 0 }
-	clear_variable = fallout_state_supply_access_delta
+	set_temp_variable = { fallout_state_supply_access_delta = 0 }
 	clear_variable = fallout_event_712_callback_disease_delta
 	clear_variable = fallout_event_712_callback_shelter_delta
 	clear_variable = fallout_event_712_callback_exposure_delta
