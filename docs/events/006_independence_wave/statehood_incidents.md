@@ -76,6 +76,7 @@ All values live in `common/script_constants/006_independence_wave_statehood_inci
 Every incident has a free answer. Costly answers spend 35 political power, the light diplomatic cost (command power and convoys or trains) or the light security cost (command power, infantry and support equipment). Arms sent to a League member in `.165` and `.179` arrive in that member's stockpile.
 Options trade the five Statehood values against the former-host relation, League Cohesion, Common Cause, Patron Capture, Shared Reserve, Member Confidence and Network Standing. Three options add real resources: 1500 manpower from registered refugees, 600 manpower from defecting guards, and 10 army experience from recalled officers.
 `ai_chance` uses the `independence_wave_decision_ai` bases and doubles the answer that fits the country's route, war or host threat.
+The AI also reads the world milestones (`milestones.md`): after the first host annexation it doubles the security answers (`.156`, `.159`, `.160`, `.181`), after the first rescue the arms answers (`.165`, `.179`), after the first broad recognition the paid recognition answers (`.155`, `.157`), after the first peaceful treaty the conciliatory host answers (`.153`, `.156`, `.172`), after the first radical bloc the collective war motion (`.166`), and after the first union the shared union answers (`.168`, `.169`).
 
 ## Pacing safety
 

@@ -1,0 +1,278 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 WORLD MILESTONES
+# ============================================================================
+# Overview:
+# - Ten once-per-campaign milestones of the independence wave, each fired from
+#   the transaction that proves it: the state refresh (broad recognition and a
+#   one-state country becoming a major), the host settlement outcome (first
+#   peaceful treaty), on_annex (first country reabsorbed by its former host),
+#   the formable commit (first regional union), the DM-44 rescue (first rescue
+#   by collective action), the League value refresh (first cross-regional
+#   League), DM-58 and DM-59 (first coordinated radical bloc) and the wave
+#   commit (ten and twenty-five surviving countries).
+# - Each milestone sets a permanent global flag, records an Event 006 history
+#   row and sends a major news event. AI that reacts to a milestone reads its
+#   global flag.
+# No effect scans the world. The survivor count walks only the bounded Event
+# 006 active-country registry.
+# ============================================================================
+
+# COUNTRY scope: the milestone actor. Inputs: temporary
+# `independence_wave_milestone_payload_input`, and optionally
+# `independence_wave_milestone_secondary_input` (a country id) with
+# `independence_wave_milestone_has_secondary_input` set to one.
+independence_wave_milestone_record_history = {
+	set_temp_variable = { events_log_system_event_id = constant:independence_wave_event.id }
+	set_temp_variable = { events_log_system_event_type = constant:event_system_event_type.repeatable }
+	set_temp_variable = { events_log_system_payload = independence_wave_milestone_payload_input }
+	set_temp_variable = { events_log_system_actor = THIS.id }
+	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_milestone.one }
+	set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_milestone.zero }
+	if = {
+		limit = { check_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.one } }
+		set_temp_variable = { events_log_system_secondary_actor = independence_wave_milestone_secondary_input }
+		set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_milestone.one }
+	}
+	record_events_log_system_history_entry = yes
+	refresh_events_log_system_history_views = yes
+	set_temp_variable = { events_log_system_event_id = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_event_type = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_payload = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_actor = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_has_actor = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_secondary_actor = constant:independence_wave_milestone.zero }
+	set_temp_variable = { events_log_system_has_secondary_actor = constant:independence_wave_milestone.zero }
+}
+
+# ---------------------------------------------------------------------------
+# Country-state milestones, called from the achievement state refresh
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope: the refreshed active Event 006 country.
+independence_wave_milestone_refresh_country = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			NOT = { has_global_flag = independence_wave_milestone_broad_recognition }
+			has_independence_wave_treaty_backed_recognition = yes
+		}
+		set_global_flag = independence_wave_milestone_broad_recognition
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.broad_recognition_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.190 days = independence_wave_milestone_news_delay }
+	}
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			NOT = { has_global_flag = independence_wave_milestone_one_state_major }
+			has_country_flag = independence_wave_anchor_opening
+			is_major = yes
+			NOT = { has_country_flag = independence_wave_formable_active }
+		}
+		set_global_flag = independence_wave_milestone_one_state_major
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.one_state_major_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.199 days = independence_wave_milestone_news_delay }
+	}
+}
+
+# COUNTRY scope: the released country whose host outcome was just set.
+independence_wave_milestone_record_peaceful_treaty = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			NOT = { has_global_flag = independence_wave_milestone_peaceful_treaty }
+			check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.recognized_separation }
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
+		}
+		set_global_flag = independence_wave_milestone_peaceful_treaty
+		var:independence_wave_former_host = {
+			set_variable = { global.independence_wave_milestone_treaty_host = THIS }
+			set_temp_variable = { independence_wave_milestone_secondary_input = THIS.id }
+		}
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.peaceful_treaty_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.one }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.191 days = independence_wave_milestone_news_delay }
+	}
+}
+
+# COUNTRY scope: the annexed active Event 006 country (FROM in on_annex), while
+# its flags are still present. Input: event target
+# `independence_wave_achievement_annexer`, saved by the on_annex handler. The
+# milestone fires only when the annexer is the country's own former host.
+independence_wave_milestone_record_host_annexation = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = independence_wave_milestone_host_annexation }
+			has_country_flag = independence_wave_active_origin
+			has_event_target = independence_wave_achievement_annexer
+			has_independence_wave_living_former_host = yes
+			var:independence_wave_former_host = { tag = event_target:independence_wave_achievement_annexer }
+		}
+		set_global_flag = independence_wave_milestone_host_annexation
+		set_variable = { global.independence_wave_milestone_annexed_country = THIS }
+		set_temp_variable = { independence_wave_milestone_secondary_input = THIS.id }
+		event_target:independence_wave_achievement_annexer = {
+			set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.host_annexation_payload }
+			set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.one }
+			independence_wave_milestone_record_history = yes
+			set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+			news_event = { id = chaosx.nr6.192 days = independence_wave_milestone_news_delay }
+		}
+	}
+}
+
+# COUNTRY scope: the country that has just completed a regional union.
+independence_wave_milestone_record_regional_formable = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = independence_wave_milestone_regional_formable }
+			has_country_flag = independence_wave_formable_active
+		}
+		set_global_flag = independence_wave_milestone_regional_formable
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.regional_formable_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.193 days = independence_wave_milestone_news_delay }
+	}
+}
+
+# COUNTRY scope: the rescuing League member. Input: event target
+# `independence_wave_rescue_member`, already validated by the rescue proof.
+independence_wave_milestone_record_collective_rescue = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = independence_wave_milestone_collective_rescue }
+			has_event_target = independence_wave_rescue_member
+			event_target:independence_wave_rescue_member = { is_independence_wave_active_country = yes }
+		}
+		set_global_flag = independence_wave_milestone_collective_rescue
+		set_variable = { global.independence_wave_milestone_rescued_country = event_target:independence_wave_rescue_member }
+		event_target:independence_wave_rescue_member = { set_temp_variable = { independence_wave_milestone_secondary_input = THIS.id } }
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.collective_rescue_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.one }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.194 days = independence_wave_milestone_news_delay }
+	}
+}
+
+# ANY scope. Called with the League values refresh. The current League leader
+# carries the news, or any active member when no leader is recorded.
+independence_wave_milestone_refresh_league = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = independence_wave_milestone_cross_regional_league }
+			OR = {
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+				check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+			}
+			check_variable = { var = global.independence_wave_league_region_count value = constant:independence_wave_milestone.cross_regional_regions compare = greater_than_or_equals }
+		}
+		set_temp_variable = { independence_wave_milestone_sent = constant:independence_wave_milestone.zero }
+		if = {
+			limit = {
+				has_variable = global.independence_wave_league_leader
+				var:global.independence_wave_league_leader = {
+					exists = yes
+					has_country_flag = independence_wave_league_member
+				}
+			}
+			set_global_flag = independence_wave_milestone_cross_regional_league
+			set_temp_variable = { independence_wave_milestone_sent = constant:independence_wave_milestone.one }
+			var:global.independence_wave_league_leader = { independence_wave_milestone_publish_cross_regional_league = yes }
+		}
+		if = {
+			limit = { check_variable = { independence_wave_milestone_sent = constant:independence_wave_milestone.zero } }
+			random_scope_in_array = {
+				array = global.independence_wave_league_member_country_entries
+				limit = { is_independence_wave_active_country = yes }
+				set_global_flag = independence_wave_milestone_cross_regional_league
+				independence_wave_milestone_publish_cross_regional_league = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope: the League member that carries the cross-regional news.
+independence_wave_milestone_publish_cross_regional_league = {
+	set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.cross_regional_league_payload }
+	set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+	independence_wave_milestone_record_history = yes
+	set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+	news_event = { id = chaosx.nr6.195 days = independence_wave_milestone_news_delay }
+}
+
+# COUNTRY scope: the country that completed DM-58 coordinated reclamation
+# fronts or the DM-59 radical charter.
+independence_wave_milestone_record_radical_bloc = {
+	if = {
+		limit = { NOT = { has_global_flag = independence_wave_milestone_radical_bloc } }
+		set_global_flag = independence_wave_milestone_radical_bloc
+		set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.radical_bloc_payload }
+		set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+		independence_wave_milestone_record_history = yes
+		set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+		news_event = { id = chaosx.nr6.196 days = independence_wave_milestone_news_delay }
+	}
+}
+
+# ANY scope. Called after a wave's origins are committed. Counts the live
+# Event 006 countries in the active registry. When one wave crosses both
+# thresholds, only the twenty-five news is sent and the ten milestone is
+# recorded as passed.
+independence_wave_milestone_refresh_survivors = {
+	if = {
+		limit = { NOT = { has_global_flag = independence_wave_milestone_twenty_five_survivors } }
+		set_temp_variable = { independence_wave_milestone_survivor_count = constant:independence_wave_milestone.zero }
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
+			if = {
+				limit = { is_independence_wave_active_country = yes }
+				add_to_temp_variable = { independence_wave_milestone_survivor_count = constant:independence_wave_milestone.one }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = independence_wave_milestone_survivor_count value = constant:independence_wave_milestone.twenty_five_survivors compare = greater_than_or_equals } }
+			set_global_flag = independence_wave_milestone_ten_survivors
+			set_global_flag = independence_wave_milestone_twenty_five_survivors
+			set_variable = { global.independence_wave_milestone_survivor_count = independence_wave_milestone_survivor_count }
+			random_scope_in_array = {
+				array = global.independence_wave_active_countries
+				limit = { is_independence_wave_active_country = yes }
+				set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.twenty_five_survivors_payload }
+				set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+				independence_wave_milestone_record_history = yes
+				set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+				news_event = { id = chaosx.nr6.198 days = independence_wave_milestone_news_delay }
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { has_global_flag = independence_wave_milestone_ten_survivors }
+				check_variable = { var = independence_wave_milestone_survivor_count value = constant:independence_wave_milestone.ten_survivors compare = greater_than_or_equals }
+			}
+			set_global_flag = independence_wave_milestone_ten_survivors
+			set_variable = { global.independence_wave_milestone_survivor_count = independence_wave_milestone_survivor_count }
+			random_scope_in_array = {
+				array = global.independence_wave_active_countries
+				limit = { is_independence_wave_active_country = yes }
+				set_temp_variable = { independence_wave_milestone_payload_input = constant:independence_wave_milestone.ten_survivors_payload }
+				set_temp_variable = { independence_wave_milestone_has_secondary_input = constant:independence_wave_milestone.zero }
+				independence_wave_milestone_record_history = yes
+				set_temp_variable = { independence_wave_milestone_news_delay = constant:independence_wave_milestone.news_delay_days }
+				news_event = { id = chaosx.nr6.197 days = independence_wave_milestone_news_delay }
+			}
+		}
+	}
+}

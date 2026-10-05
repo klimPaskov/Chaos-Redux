@@ -80,3 +80,10 @@ New country events `chaosx.nr6.101` to `.142`, two for each of Scotland, Wales, 
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
 
 New country events `chaosx.nr6.151` to `.181` and the hidden pulse `chaosx.nr6.150`. Every released country now meets recurring incidents about every three to five months for as long as it survives: founding troubles (currency, clerks, railway junctions, refugees), recognition (envoys, conditional recognition, a failed vote), security (militias, defecting guards, officers), government (the constituent assembly, emergency rule, provincial councils, foreign-backed ministers), League business (arms requests, a motion for collective war, a rights charter) and union-building (flags, congress seats, a single command). Each evolution adds two or three incidents of its own. Titles are listed in `docs/events/006_independence_wave/statehood_incidents.md`.
+
+
+## 2026-10-05: World milestones (D17)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+Ten one-time world news events (`chaosx.nr6.190` to `.199`) now mark the independence wave's turning points: the first new state received abroad as a full state, the first peaceful separation treaty, the first new state retaken by its former host, the first union of new states, the first rescue of a member by the League, the first League spanning three regions, the first radical bloc, ten and then twenty-five new states standing at once, and a one-province state becoming a great power. Each also appears in the Event Logs history. Titles are listed in `docs/events/006_independence_wave/milestones.md`.

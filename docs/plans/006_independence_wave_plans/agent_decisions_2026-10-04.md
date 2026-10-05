@@ -417,3 +417,23 @@ Validation: brace balance 0 on the four new script files; every scripted effect,
 MCP: `hoi4.probability_inspect` (`event_option_ai_chance`, source `events/006_independence_wave_statehood_incident_events.txt`, candidate `chaosx.nr6.163`) returned `INTERNAL_ERROR`; not retried. `hoi4.event_inspect` (trace, `chaosx.nr6.165`, downstream, depth 1, helpers off) returned `EVENT_INSPECTED_PARTIAL` with 0 blocking diagnostics at revision `b64cae37af8b30b3de242281669ac26c9677f1190578cdbdd91f7831c9967795`.
 
 Needs live game: a released country receiving its first incident about 60 days after its founding posture and later incidents every few months; a re-released tag not receiving a pulse from its earlier generation.
+
+
+## D17. Round 2: rare world milestone news
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-6 item and Part 2 (Rare milestone events).
+
+Decisions:
+
+- Ten milestones, each a permanent global flag, an Event 006 history row through `record_events_log_system_history_entry` (payloads 40 to 49, after the existing 1-4, 23, 24 and 30-35) and a `major = yes` news event `chaosx.nr6.190` to `.199`. The first League congress news (`.35`) and the danger milestone (super-event 24) stay as they are, so "first league congress convened" is not duplicated.
+- Each fires from the transaction that proves it, never from a scan: broad recognition and the one-state major from the state refresh (through the achievement refresh, which the refresh already calls); the peaceful treaty from `independence_wave_set_host_outcome` (recognized separation, living host, not at war); the host annexation from the existing `on_annex` achievement handler (annexer is the country's own former host); the regional formable from the shared formable commit and the FORM-05 proclamation; the collective rescue from the DM-44 rescue proof; the cross-regional League from the League value refresh; the radical bloc from DM-58 and DM-59; the survivor counts from the wave commit.
+- Thresholds: "broad recognition" is treaty-backed recognition (60), the band at which several governments maintain relations; "cross-regional" is a formal, durable or reformed League with members from three regions, a lower bar than the four-region, ten-member achievement, because the milestone marks the first such League rather than a two-year proof; the survivor count counts registry entries that are still active origins. When one wave crosses both survivor thresholds, only the twenty-five news is sent.
+- Milestones feed AI: the statehood incident `ai_chance` blocks read six of the flags (security after the first host annexation, arms after the first rescue, paid recognition after the first broad recognition, conciliation after the first peaceful treaty, collective war after the first radical bloc, union answers after the first union). Achievement proofs are unchanged; the milestone calls sit in the same transactions as the matching achievement writers.
+- History detail: ten payload branches were added to the Event 006 block of the shared `chaosx_scripted_localisation_events_log.txt` with one minimal insertion before the Event 006 fallback.
+- Pictures: registered vanilla news pictures and the Event 006 league congress picture; no new art.
+
+Validation: brace balance 0 on all touched files; every milestone effect, constant and localisation key referenced is defined once.
+
+Needs live game: each news firing once, the history rows and their detail text in the Event Logs.
