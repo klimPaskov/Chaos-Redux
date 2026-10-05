@@ -500,3 +500,22 @@ Probability evidence: a narrow `hoi4_probability_inspect` (adapter `decision_ai_
 
 Recorded, not changed: the duplicate wartime factor the probability route flagged on Drive Deeper (`urgent_factor` and `high_factor` both on `has_war = yes`, together eight times the base in war) is a template line shared by six other decisions (`decision_riches_found_offtake`, `decision_riches_found_quarantine`, `decision_riches_found_workforce_replacement`, `decision_riches_found_permanent_seal`, `decision_riches_found_demons_controlled_exploitation`, `decision_riches_found_account_predatory_prosperity`); all seven belong to the next probability pass.
 Live-game checks added by D43: a route-less front mine with troops keeps its milestone decisions, and an occupier with troops in a route-less district keeps Retain the Administration and Replace the Concession.
+
+## Round 3 lead list
+
+Disposition: accepted and queued by the round 3 lead under the full-authority grant; each item is implemented by the round 3 engineer, and live-game behaviour remains with the orchestrator.
+Routed defects: every item in `records/cx/inbox/029.txt` is committed (`6ee17482a`, `75490fe32`), and the live-load `var:PREV.riches_found_recorded_controller` token in `has_opinion` was replaced by the scope switch in `af042ab24` (D18); live-QA bug B039 ("Selected Resource Field") belongs to Event 018, whose localisation (`018_resources_found_system_l_english.yml`) owns that window, so it is not an Event 029 item.
+The probability route was retried once on 2026-10-05 (`hoi4_probability_inspect`, adapter `decision_ai_will_do`, candidate `decision_riches_found_mine_police`, source path `common/decisions/029_riches_found_decisions.txt`) and returned `INTERNAL_ERROR` with no artifacts.
+
+L1. Decision AI follows spec part 5 instead of one pasted template.
+Finding: 91 of the 97 decisions carry the same four lines (`is_major` x2, `has_war = yes` x4, multiple mines x2, Local Order below `order_low` x0.5) and 100 decision and mission weights carry the wartime x4, six of them stack a second wartime factor (x8), Permanent Seal multiplies war by 4 and 0.5, and Housing halves and doubles on the same low-order test.
+So every mine action, dividends included, is four times likelier in any war, the order responses spec part 5 lists for low Local Order (camp administration, mine police, truce, pay protection, army cordon, private guards, temporary closure) are halved exactly when they are needed, a stable democracy at peace can take the demonic agreement at ordinary weight, and the AI may start several physical projects on one mine at once.
+Decision: remove the template lines and give each decision family factors from spec part 5 (War-state behavior, Capacity and scale, AI response to low values, AI evolution behavior), all from `riches_found_decision_ai` constants; the AI starts one physical project per mine at a time.
+
+L2. Revenue-legitimacy incidents continue after the revenue milestone.
+Finding: D20 made `riches_found_phase` a stored milestone that ends at `foreign_concessions`, but the incident review still runs the corruption pool only at `revenue_settlement` or under the Resource Curse, so a mine past its first settlement draws no ordinary incident unless it has a partner, a foreign neighbour, a security or collapse crisis or an evolution.
+Decision: the corruption pool runs from the revenue milestone onward, at reduced weight for a settled public mine (spec part 2, Mature settlement: "lower incident frequency").
+
+L3. Forced entombment and blocked inspection reach Deaths and Condemnation.
+Basis: spec part 3 (Evacuate the Workforce "reduces later civilian deaths"), spec part 5 (Deaths and Condemnation integration) and the acceptance criteria Condemnation list.
+Decision: sealing a mine permanently during a severe collapse or supernatural crisis without a completed workforce evacuation entombs the trapped shift (exact population loss through the existing harm transaction with the `mine_violence` reason, a public atrocity source, order and legitimacy loss, and a Last Shift disqualifier); a foreign inspection demand on a mine holding hidden abuses either exposes them (public, state or disclosed administrations) or is blocked by the controller (other policies), which records one public coverup source per mine.
