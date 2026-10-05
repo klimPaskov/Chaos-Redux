@@ -20,7 +20,8 @@ add_namespace = chaosx.nr39
 # - chaosx.nr39.90 is the hidden movement pulse and chaosx.nr39.64 absorbs a
 #   capitulated movement country into its winner.
 # - chaosx.nr39.65 lets the central state choose the successor administration
-#   of a government it defeated during World of Anarchy.
+#   of a government it defeated during World of Anarchy; chaosx.nr39.60 and
+#   chaosx.nr39.66 present the movement's victory and its command promise.
 # ============================================================================
 
 country_event = {
@@ -469,23 +470,41 @@ country_event = {
 	}
 }
 
+# World of Anarchy victory, shown to the central state. The command promise
+# follows.
 country_event = {
 	id = chaosx.nr39.60
 	title = chaosx.nr39.60.t
 	desc = chaosx.nr39.60.d
-	picture = GFX_report_event_039_murder_mystery_final_capture_success
+	picture = GFX_report_event_039_murder_mystery_murder_cult_revealed
 	is_triggered_only = yes
-	trigger = { has_global_flag = murder_mystery_terminal_victory_recorded }
+	trigger = {
+		has_global_flag = murder_mystery_terminal_victory_recorded
+		has_country_flag = murder_mystery_assassin_state
+	}
 	option = {
 		name = chaosx.nr39.60.a
 		ai_chance = { base = 100 }
+		custom_effect_tooltip = murder_mystery_terminal_victory_promise_tt
+		hidden_effect = { country_event = { id = chaosx.nr39.66 } }
 	}
 }
 
+# The movement's defeat. Only a large movement (Evolution IV or V and enough
+# countries held or administered, recorded in
+# murder_mystery_defeat_aftermath_major) shows the defeat super-event, the
+# world news and the postwar compact; a smaller defeat is a plain report.
 country_event = {
 	id = chaosx.nr39.61
 	title = chaosx.nr39.61.t
-	desc = chaosx.nr39.61.d
+	desc = {
+		text = chaosx.nr39.61.d
+		trigger = { has_global_flag = murder_mystery_defeat_aftermath_major }
+	}
+	desc = {
+		text = chaosx.nr39.61.d_local
+		trigger = { NOT = { has_global_flag = murder_mystery_defeat_aftermath_major } }
+	}
 	picture = GFX_report_event_039_murder_mystery_assassin_state_defeat
 	is_triggered_only = yes
 	trigger = {
@@ -495,14 +514,26 @@ country_event = {
 		}
 	}
 	immediate = {
-		set_temp_variable = { murder_mystery_super_event_slot = constant:murder_mystery_super_event.brotherhood_defeat_slot }
-		set_temp_variable = { murder_mystery_super_event_audio = constant:murder_mystery_super_event.brotherhood_defeat_audio }
-		murder_mystery_show_super_event = yes
-		news_event = { id = chaosx.news.4405 }
+		if = {
+			limit = { has_global_flag = murder_mystery_defeat_aftermath_major }
+			set_temp_variable = { murder_mystery_super_event_slot = constant:murder_mystery_super_event.brotherhood_defeat_slot }
+			set_temp_variable = { murder_mystery_super_event_audio = constant:murder_mystery_super_event.brotherhood_defeat_audio }
+			murder_mystery_show_super_event = yes
+			news_event = { id = chaosx.news.4405 }
+		}
 	}
 	option = {
 		name = chaosx.nr39.61.a
 		ai_chance = { base = 100 }
+		if = {
+			limit = {
+				has_global_flag = murder_mystery_defeat_aftermath_major
+				NOT = { has_idea = murder_mystery_terminal_defeat_postwar_protection_compact }
+				NOT = { has_country_flag = murder_mystery_assassin_state }
+				NOT = { has_country_flag = murder_mystery_derivative_country }
+			}
+			add_ideas = murder_mystery_terminal_defeat_postwar_protection_compact
+		}
 		country_event = { id = chaosx.nr39.62 days = 1 }
 	}
 }
@@ -633,6 +664,103 @@ country_event = {
 			set_temp_variable = { murder_mystery_terminal_outcome_input = constant:murder_mystery_terminal.administration_staged_integration }
 			event_target:murder_mystery_terminal_choice = { murder_mystery_dismantle_terminal_target = yes }
 		}
+	}
+}
+
+# The command promise after a World of Anarchy victory. Each promise leaves a
+# lasting national spirit, changes Brotherhood Cohesion (the route's own
+# promise strengthens it, the mixed settlement strains it a little, the
+# others strain it badly) and sets how much autonomy the subjects keep.
+country_event = {
+	id = chaosx.nr39.66
+	title = chaosx.nr39.66.t
+	desc = chaosx.nr39.66.d
+	picture = GFX_super_event_039_murder_mystery_world_of_anarchy
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = murder_mystery_movement_victorious
+		has_country_flag = murder_mystery_assassin_state
+		NOT = { has_country_flag = murder_mystery_command_promise_made }
+	}
+	option = {
+		name = chaosx.nr39.66.a
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+				NOT = { has_country_flag = murder_mystery_necessary_mask_route }
+			}
+		}
+		set_country_flag = murder_mystery_command_promise_hidden_command
+		add_ideas = murder_mystery_promise_hidden_command
+		custom_effect_tooltip = murder_mystery_command_promise_tighten_tt
+		hidden_effect = { murder_mystery_tighten_subject_administrations = yes }
+		hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.zero } }
+		if = {
+			limit = {
+				NOT = { has_country_flag = murder_mystery_cells_without_masters_route }
+				NOT = { has_country_flag = murder_mystery_necessary_mask_route }
+			}
+			hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.one } }
+			custom_effect_tooltip = murder_mystery_command_promise_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_command_promise_off_route_tt }
+		hidden_effect = { murder_mystery_record_command_promise = yes }
+	}
+	option = {
+		name = chaosx.nr39.66.b
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				has_country_flag = murder_mystery_cells_without_masters_route
+			}
+		}
+		set_country_flag = murder_mystery_command_promise_dissolved_councils
+		add_ideas = murder_mystery_promise_dissolved_councils
+		custom_effect_tooltip = murder_mystery_command_promise_dissolve_tt
+		hidden_effect = { murder_mystery_dissolve_subject_administrations = yes }
+		hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.zero } }
+		if = {
+			limit = { has_country_flag = murder_mystery_cells_without_masters_route }
+			hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.one } }
+			custom_effect_tooltip = murder_mystery_command_promise_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_command_promise_off_route_tt }
+		hidden_effect = { murder_mystery_record_command_promise = yes }
+	}
+	option = {
+		name = chaosx.nr39.66.c
+		ai_chance = {
+			base = @murder_mystery_off_route_choice_weight
+			modifier = {
+				add = @murder_mystery_route_choice_weight
+				has_country_flag = murder_mystery_necessary_mask_route
+			}
+		}
+		set_country_flag = murder_mystery_command_promise_mask_stays
+		add_ideas = murder_mystery_promise_mask_stays
+		custom_effect_tooltip = murder_mystery_command_promise_mask_tt
+		hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.zero } }
+		if = {
+			limit = { has_country_flag = murder_mystery_necessary_mask_route }
+			hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.one } }
+			custom_effect_tooltip = murder_mystery_command_promise_route_tt
+		}
+		else = { custom_effect_tooltip = murder_mystery_command_promise_off_route_tt }
+		hidden_effect = { murder_mystery_record_command_promise = yes }
+	}
+	option = {
+		name = chaosx.nr39.66.e
+		ai_chance = { base = @murder_mystery_off_route_choice_weight }
+		set_country_flag = murder_mystery_command_promise_mixed_settlement
+		add_ideas = murder_mystery_promise_mixed_settlement
+		custom_effect_tooltip = murder_mystery_command_promise_loosen_tt
+		hidden_effect = { murder_mystery_loosen_subject_administrations = yes }
+		hidden_effect = { set_temp_variable = { murder_mystery_command_promise_route = constant:murder_mystery_value.two } }
+		custom_effect_tooltip = murder_mystery_command_promise_mixed_tt
+		hidden_effect = { murder_mystery_record_command_promise = yes }
 	}
 }
 

@@ -2189,20 +2189,115 @@ murder_mystery_activate_world_end = {
 	}
 }
 
+# Any scope. The movement wins World of Anarchy: the campaign war ends, but
+# the world end and the movement runtime stay, because the movement now
+# governs what it conquered. The central state receives the victory report
+# and then its command promise; the administration and Cohesion decisions
+# remain open.
 murder_mystery_resolve_terminal_victory = {
 	if = {
-		limit = { murder_mystery_terminal_victory_is_ready = yes }
+		limit = {
+			murder_mystery_terminal_victory_is_ready = yes
+			NOT = { has_global_flag = murder_mystery_terminal_victory_recorded }
+		}
 		murder_mystery_achievement_record_terminal_victory = yes
 		set_global_flag = murder_mystery_terminal_victory_recorded
+		set_global_flag = murder_mystery_movement_victorious
 		clr_global_flag = murder_mystery_terminal_war_active
-		clr_global_flag = world_end
-		clr_global_flag = world_end_murder_mystery
-		set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.resolved }
-		set_temp_variable = { murder_mystery_mapped_chaos_delta = constant:murder_mystery_chaos.brotherhood_defeat }
-		set_temp_variable = { murder_mystery_mapped_chaos_reason = constant:chaos_meter_history_reason.special.murder_mystery_defeat }
+		clr_global_flag = murder_mystery_terminal_registry_victory_ready
+		set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.movement_rule }
+		set_temp_variable = { murder_mystery_mapped_chaos_delta = constant:murder_mystery_chaos.world_of_anarchy_victory }
+		set_temp_variable = { murder_mystery_mapped_chaos_reason = constant:chaos_meter_history_reason.special.murder_mystery_world_end }
 		murder_mystery_apply_mapped_chaos = yes
-		murder_mystery_finalize_runtime = yes
-		country_event = { id = chaosx.nr39.60 days = 1 }
+		for_each_scope_loop = {
+			array = global.murder_mystery_terminal_country_entries
+			clr_country_flag = murder_mystery_terminal_target_at_war
+			murder_mystery_clear_white_peace_protection = yes
+		}
+		if = {
+			limit = {
+				has_event_target = murder_mystery_assassin_state
+				event_target:murder_mystery_assassin_state = { exists = yes }
+			}
+			event_target:murder_mystery_assassin_state = { country_event = { id = chaosx.nr39.60 days = 1 } }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# After a World of Anarchy victory: the command promise and administration
+# ---------------------------------------------------------------------------
+# add_autonomy_ratio reads a literal, so its steps are file constants.
+@MURDER_MYSTERY_AUTONOMY_TIGHTEN = -0.15
+@MURDER_MYSTERY_AUTONOMY_LOOSEN = 0.15
+@MURDER_MYSTERY_AUTONOMY_DISSOLVE = 0.4
+
+# COUNTRY scope: the central state. Every subject loses autonomy.
+murder_mystery_tighten_subject_administrations = {
+	every_subject_country = {
+		add_autonomy_ratio = { value = @MURDER_MYSTERY_AUTONOMY_TIGHTEN localization = murder_mystery_autonomy_tightened }
+	}
+}
+
+# COUNTRY scope: the central state. Every subject gains autonomy.
+murder_mystery_loosen_subject_administrations = {
+	every_subject_country = {
+		add_autonomy_ratio = { value = @MURDER_MYSTERY_AUTONOMY_LOOSEN localization = murder_mystery_autonomy_loosened }
+	}
+}
+
+# COUNTRY scope: the central state. Every subject gains wide autonomy.
+murder_mystery_dissolve_subject_administrations = {
+	every_subject_country = {
+		add_autonomy_ratio = { value = @MURDER_MYSTERY_AUTONOMY_DISSOLVE localization = murder_mystery_autonomy_dissolved }
+	}
+}
+
+# COUNTRY scope: the central state. Input: temp murder_mystery_command_promise_route,
+# one when the chosen promise is the one the central route made, two for the
+# mixed settlement, zero when it breaks with the route. Records the promise
+# and changes Cohesion.
+murder_mystery_record_command_promise = {
+	set_country_flag = murder_mystery_command_promise_made
+	set_global_flag = murder_mystery_command_promise_made
+	set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_command_promise.off_route_cohesion }
+	if = {
+		limit = { check_variable = { var = murder_mystery_command_promise_route value = constant:murder_mystery_value.one compare = equals } }
+		set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_command_promise.route_cohesion }
+	}
+	else_if = {
+		limit = { check_variable = { var = murder_mystery_command_promise_route value = constant:murder_mystery_value.two compare = equals } }
+		set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_command_promise.mixed_cohesion }
+	}
+	murder_mystery_adjust_brotherhood_cohesion = yes
+	clear_variable = murder_mystery_brotherhood_cohesion_delta
+}
+
+# Any scope. Records whether the defeated movement was large enough for the
+# defeat aftermath: Evolution IV or V and at least minimum_countries held or
+# administered (the center, every derivative ever raised and every
+# government the campaign settled).
+murder_mystery_record_defeat_aftermath_scale = {
+	set_variable = { global.murder_mystery_movement_scale = constant:murder_mystery_value.zero }
+	if = {
+		limit = { has_global_flag = murder_mystery_territorial_state_ever_created }
+		add_to_variable = { global.murder_mystery_movement_scale = constant:murder_mystery_value.one }
+	}
+	if = {
+		limit = { has_variable = global.murder_mystery_derivatives_ever_created }
+		add_to_variable = { global.murder_mystery_movement_scale = global.murder_mystery_derivatives_ever_created }
+	}
+	if = {
+		limit = { has_variable = global.murder_mystery_terminal_target_completed_count }
+		add_to_variable = { global.murder_mystery_movement_scale = global.murder_mystery_terminal_target_completed_count }
+	}
+	clr_global_flag = murder_mystery_defeat_aftermath_major
+	if = {
+		limit = {
+			check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iv compare = greater_than_or_equals }
+			check_variable = { var = global.murder_mystery_movement_scale value = constant:murder_mystery_defeat_aftermath.minimum_countries compare = greater_than_or_equals }
+		}
+		set_global_flag = murder_mystery_defeat_aftermath_major
 	}
 }
 
@@ -2215,6 +2310,7 @@ murder_mystery_resolve_terminal_defeat = {
 		clr_global_flag = world_end
 		clr_global_flag = world_end_murder_mystery
 		set_variable = { global.murder_mystery_lifecycle = constant:murder_mystery_lifecycle.resolved }
+		murder_mystery_record_defeat_aftermath_scale = yes
 		if = {
 			limit = {
 				has_event_target = murder_mystery_case_owner

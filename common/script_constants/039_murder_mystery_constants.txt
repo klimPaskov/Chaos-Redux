@@ -98,6 +98,8 @@ murder_mystery_lifecycle = {
 	world_collapse_readiness = 7
 	terminal_war = 8
 	resolved = 9
+	# The movement won World of Anarchy and governs what it conquered.
+	movement_rule = 10
 }
 
 murder_mystery_phase = {
@@ -678,6 +680,38 @@ murder_mystery_terminal_float = {
 	command_spine_war_support = -0.05
 }
 
+# The command promise after a World of Anarchy victory and the administration
+# that follows it.
+murder_mystery_command_promise = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Brotherhood Cohesion when the promise matches the central route, when it
+	# is the mixed settlement, and when it breaks with the route.
+	route_cohesion = 10
+	mixed_cohesion = -3
+	off_route_cohesion = -10
+	# Tighten the Administrations and Return Authority to the Cells.
+	tighten_cohesion = -5
+	loosen_cohesion = 5
+	administration_cooldown_days = 90
+}
+
+# The defeat aftermath super-event and postwar compact appear only after a
+# large movement: Evolution IV or V and at least this many countries held or
+# administered (the center, every derivative ever raised and every
+# government it settled).
+murder_mystery_defeat_aftermath = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_countries = 4
+}
+
 murder_mystery_world_end = {
 	schema = {
 		any_key = yes
@@ -715,6 +749,7 @@ murder_mystery_chaos = {
 	network_reversal = 1
 	assassin_state_reveal = 3
 	world_of_anarchy = 8
+	world_of_anarchy_victory = 4
 	brotherhood_defeat = -6
 	derivative_revolt = 2
 }

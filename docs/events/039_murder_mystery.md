@@ -288,6 +288,28 @@ Break the Command Spine needs the current campaign target at war with the centra
 Reconstitute the Campaign Council appears while Cohesion is below `council_cohesion_ceiling`, restores `council_cohesion_repair` Cohesion and adds Campaign Council Reconstituting for `council_vulnerability_days`.
 Synchronize the Uprisings opens the home front the first time; afterwards it raises up to `uprising_wave_size` revolts from ready insurrection cells in the selected sector through the existing derivative path and continues that sector's war wave.
 
+## World of Anarchy victory and defeat
+
+Resolve the Leaderless World runs `murder_mystery_resolve_terminal_victory` once: it records the Every Chair Empty receipt, ends the campaign war (`murder_mystery_terminal_war_active` is cleared, so waves, objectives and the administration queue stop), removes the White Peace protection the campaign gave its targets, sets `murder_mystery_movement_victorious` and lifecycle `movement_rule`, and applies `murder_mystery_chaos.world_of_anarchy_victory` with the World of Anarchy history reason.
+`world_end_murder_mystery`, `world_end` and the movement runtime stay set, because the movement now governs what it conquered; normal event firing stays frozen under the shared world-end contract.
+The central state receives the victory report `chaosx.nr39.60` (The Last Chair Empties, report picture `murder_cult_revealed`) and then the command promise `chaosx.nr39.66`:
+
+| Promise | Route | Lasting effect |
+| --- | --- | --- |
+| The Hidden Command | The Hidden Hand | Idea The Hidden Command; every subject loses autonomy |
+| The Councils Dissolved | Cells Without Masters | Idea The Councils Dissolved; every subject gains wide autonomy |
+| The Mask Stays On | The Necessary Mask | Idea The Mask Stays On (strong industry, a stability crisis) |
+| Mixed settlement | any | Idea The Mixed Settlement; every subject gains some autonomy |
+
+The route's own promise adds `murder_mystery_command_promise.route_cohesion` Brotherhood Cohesion, the mixed settlement `mixed_cohesion` and a broken promise `off_route_cohesion`; the AI keeps its route's promise.
+The World Without Leaders category stays open after victory with Tighten the Administrations, Return Authority to the Cells (both on `administration_cooldown_days`) and Reconstitute the Campaign Council, so Cohesion and subject autonomy remain in play.
+After victory the pulse no longer seeds cells in, schedules incidents against, or raises revolts from countries on the movement's side.
+
+Every movement defeat records its scale first (`murder_mystery_record_defeat_aftermath_scale`): the center, every derivative ever raised and every government the campaign settled.
+`chaosx.nr39.61` shows the brotherhood-defeat super-event, the world news and the Postwar Protection Compact for the government that owns the case only when the movement reached Evolution IV or V and held or administered at least `murder_mystery_defeat_aftermath.minimum_countries` countries; a smaller defeat is a plain report with its own text.
+A movement that had won World of Anarchy and is later destroyed clears the world end when it ends.
+Government-side terminal defeat still reports through `chaosx.nr39.61` and `chaosx.nr39.62`.
+
 ## Achievements
 
 The eight achievements are registered in the Event 039 section of `common/achievements/chaos_redux_achievements.txt`.

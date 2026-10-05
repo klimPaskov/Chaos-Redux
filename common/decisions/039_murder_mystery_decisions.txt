@@ -3627,6 +3627,109 @@ murder_mystery_world_without_leaders_category = {
 		cancel_effect = { hidden_effect = { murder_mystery_decision_clear_objective_context = yes } }
 	}
 
+	# After a World of Anarchy victory: governing the conquered world.
+	murder_mystery_tighten_administrations = {
+		name = murder_mystery_tighten_administrations
+		desc = murder_mystery_tighten_administrations_desc
+		icon = GFX_decision_039_murder_mystery_tighten_administrations
+		visible = {
+			murder_mystery_world_category_visible = yes
+			has_global_flag = murder_mystery_movement_victorious
+			has_country_flag = murder_mystery_assassin_state
+			has_country_flag = murder_mystery_command_promise_made
+		}
+		available = {
+			murder_mystery_action_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_has_subject_administrations_tt
+				any_subject_country = { exists = yes }
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		custom_cost_text = murder_mystery_cost_terminal_settlement
+		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
+		days_re_enable = constant:murder_mystery_command_promise.administration_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_tighten_administrations_tt
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
+				murder_mystery_pay_action_cost = yes
+				murder_mystery_clear_action_cost_receipt = yes
+				murder_mystery_tighten_subject_administrations = yes
+				set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_command_promise.tighten_cohesion }
+				murder_mystery_adjust_brotherhood_cohesion = yes
+				clear_variable = murder_mystery_brotherhood_cohesion_delta
+				murder_mystery_start_action_cooldown = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.standard
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				OR = {
+					has_country_flag = murder_mystery_command_promise_hidden_command
+					has_country_flag = murder_mystery_command_promise_mask_stays
+				}
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+			}
+		}
+	}
+
+	murder_mystery_return_authority_to_cells = {
+		name = murder_mystery_return_authority_to_cells
+		desc = murder_mystery_return_authority_to_cells_desc
+		icon = GFX_decision_039_murder_mystery_return_authority_to_cells
+		visible = {
+			murder_mystery_world_category_visible = yes
+			has_global_flag = murder_mystery_movement_victorious
+			has_country_flag = murder_mystery_assassin_state
+			has_country_flag = murder_mystery_command_promise_made
+		}
+		available = {
+			murder_mystery_action_is_available = yes
+			custom_trigger_tooltip = {
+				tooltip = murder_mystery_has_subject_administrations_tt
+				any_subject_country = { exists = yes }
+			}
+			hidden_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		}
+		custom_cost_trigger = { murder_mystery_can_pay_cost_terminal_settlement = yes }
+		custom_cost_text = murder_mystery_cost_terminal_settlement
+		ai_hint_pp_cost = @murder_mystery_ai_hint_terminal_settlement
+		days_re_enable = constant:murder_mystery_command_promise.administration_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = murder_mystery_return_authority_to_cells_tt
+			hidden_effect = {
+				set_variable = { murder_mystery_pending_cost_profile = constant:murder_mystery_cost_profile.terminal_settlement }
+				murder_mystery_pay_action_cost = yes
+				murder_mystery_clear_action_cost_receipt = yes
+				murder_mystery_loosen_subject_administrations = yes
+				set_variable = { murder_mystery_brotherhood_cohesion_delta = constant:murder_mystery_command_promise.loosen_cohesion }
+				murder_mystery_adjust_brotherhood_cohesion = yes
+				clear_variable = murder_mystery_brotherhood_cohesion_delta
+				murder_mystery_start_action_cooldown = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:murder_mystery_ai.standard
+			modifier = {
+				factor = constant:murder_mystery_ai.high
+				OR = {
+					has_country_flag = murder_mystery_command_promise_dissolved_councils
+					has_country_flag = murder_mystery_command_promise_mixed_settlement
+				}
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.urgent
+				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+			}
+		}
+	}
+
 	murder_mystery_resolve_world_without_leaders_victory = {
 		name = murder_mystery_resolve_world_without_leaders_victory
 		desc = murder_mystery_resolve_world_without_leaders_victory_desc

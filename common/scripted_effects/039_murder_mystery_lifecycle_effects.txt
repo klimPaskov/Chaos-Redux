@@ -2026,6 +2026,14 @@ murder_mystery_end_movement = {
 		set_temp_variable = { murder_mystery_mapped_chaos_delta = constant:murder_mystery_defeat_chaos.movement_ended }
 		set_temp_variable = { murder_mystery_mapped_chaos_reason = constant:chaos_meter_history_reason.special.murder_mystery_defeat }
 		murder_mystery_apply_mapped_chaos = yes
+		# A movement that had won World of Anarchy loses the world it ruled.
+		if = {
+			limit = { has_global_flag = world_end_murder_mystery }
+			clr_global_flag = world_end_murder_mystery
+			clr_global_flag = world_end
+		}
+		clr_global_flag = murder_mystery_movement_victorious
+		murder_mystery_record_defeat_aftermath_scale = yes
 		if = {
 			limit = { has_global_flag = murder_mystery_territorial_state_ever_created }
 			country_event = { id = chaosx.nr39.61 days = constant:murder_mystery_identity.presentation_delay_days }
