@@ -93,6 +93,10 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-072 | AZR | TUR | Turkic kinship and the Ottoman alliance of 1918 |
 | IW-072 | AZR | PER | Iranian Azerbaijan |
 | IW-072 | AZR | POL | Promethean support |
+| IW-093 | DOX | FRA | Akan kin of the Abron and Anyi across the Ivory Coast border |
+| IW-093 | DOX | USA | Gold Coast students and Pan-African circles in America |
+| IW-098 | SOK | FRA | Hausa and Fulani kin in French Niger, once part of the Caliphate |
+| IW-098 | SOK | SAU | The pilgrimage road from Sokoto to Mecca |
 | IW-173 | HAW | JAP | The Japanese community of Hawaii |
 | IW-173 | HAW | ENG | The treaties of the Hawaiian Kingdom with Britain |
 | IW-184 | HBX | MEX | Former Mexican Alta California and its Mexican communities |

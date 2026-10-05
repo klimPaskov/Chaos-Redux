@@ -1,0 +1,39 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-098 SOKOTO SUCCESSION
+# ============================================================================
+# A Sokoto released before 17 June 1938 is led by Sultan Hasan dan Mu'azu
+# Ahmadu. Its own hidden check (chaosx.nr006.9810) runs every two weeks until
+# the cutover date and then announces the succession of Siddiq Abubakar III
+# (chaosx.nr006.9811). No world hook is used.
+# ============================================================================
+
+add_namespace = chaosx.nr006
+
+country_event = {
+	id = chaosx.nr006.9810
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = { independence_wave_iw098_run_succession_check = yes }
+}
+
+country_event = {
+	id = chaosx.nr006.9811
+	title = chaosx.nr006.9811.t
+	desc = chaosx.nr006.9811.d
+	picture = GFX_report_event_generic_funeral
+	is_triggered_only = yes
+	trigger = {
+		is_independence_wave_iw098_country = yes
+		has_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+	}
+
+	immediate = {
+		hidden_effect = { independence_wave_iw098_hand_over_sultanate = yes }
+	}
+
+	option = {
+		name = chaosx.nr006.9811.a
+		custom_effect_tooltip = chaosx.nr006.9811.a.tt
+	}
+}

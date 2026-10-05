@@ -87,3 +87,11 @@ New country events `chaosx.nr6.151` to `.181` and the hidden pulse `chaosx.nr6.1
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
 
 Ten one-time world news events (`chaosx.nr6.190` to `.199`) now mark the independence wave's turning points: the first new state received abroad as a full state, the first peaceful separation treaty, the first new state retaken by its former host, the first union of new states, the first rescue of a member by the League, the first League spanning three regions, the first radical bloc, ten and then twenty-five new states standing at once, and a one-province state becoming a great power. Each also appears in the Event Logs history. Titles are listed in `docs/events/006_independence_wave/milestones.md`.
+
+
+## 2026-10-05: Asante and Sokoto packages (D19)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- IW-093 Asante (DOX) and IW-098 Sokoto (SOK) can now appear in high-chaos Independence Waves, Join conversions and Every Banner Rises launches. They are the first Event 006 countries in West Africa.
+- Asante is led by the Asantehene Prempeh II. Sokoto is led by Sultan Hasan dan Mu'azu until June 1938, when the new event "A New Sultan in Sokoto" (`chaosx.nr006.9811`) installs Siddiq Abubakar III.

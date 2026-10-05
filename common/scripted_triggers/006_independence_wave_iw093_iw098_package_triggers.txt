@@ -1,22 +1,21 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE TRIGGERS
 # ============================================================================
-# Fixed tag/origin/anchor proofs and package-local admission gates for the
-# Asante and Sokoto adapters. These predicates do not grant content readiness.
-# the explicit runtime attestation flags remain unset until their owning
-# country packages pass the complete audit.
+# Fixed tag/origin/anchor proofs and package-local gates for the Asante and
+# Sokoto packages. Setup and final validation run in the carrier's scope while
+# ROOT is the launching country, so every carrier comparison reads PREV from
+# inside the state or host scope it enters.
 # ============================================================================
 
-# Planner-side gates. The legacy content-ready flag is retained deliberately:
-# an exact tag alone must never make either dormant package selectable.
+# Planner-side gates. Both packages are admitted (D19), so the exact dormant
+# tag is the planner proof, as for the other admitted signature packages; the
+# static content attestation remains the execution-side admission authority.
 is_independence_wave_iw093_candidate_preflight = {
 	is_independence_wave_exact_package_iw_093_tag_available = yes
-	is_independence_wave_candidate_tag_available = yes
 }
 
 is_independence_wave_iw098_candidate_preflight = {
 	is_independence_wave_exact_package_iw_098_tag_available = yes
-	is_independence_wave_candidate_tag_available = yes
 }
 
 # Execution-side fixed-origin proofs. The shared executor supplies the
@@ -57,7 +56,7 @@ has_independence_wave_iw093_fixed_anchor_ownership_proof = {
 	has_event_target = independence_wave_setup_anchor_state
 	event_target:independence_wave_setup_anchor_state = {
 		state = 274
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 	}
 }
 
@@ -65,7 +64,7 @@ has_independence_wave_iw098_fixed_anchor_ownership_proof = {
 	has_event_target = independence_wave_setup_anchor_state
 	event_target:independence_wave_setup_anchor_state = {
 		state = 902
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 	}
 }
 
@@ -283,8 +282,8 @@ is_independence_wave_iw093_negotiation_host = {
 		is_independence_wave_iw093_country = yes
 		has_country_flag = independence_wave_iw093_host_negotiation_pending
 		has_independence_wave_living_former_host = yes
-		NOT = { has_war_with = ROOT }
-		var:independence_wave_former_host = { tag = ROOT }
+		NOT = { has_war_with = PREV }
+		var:independence_wave_former_host = { tag = PREV.PREV }
 	}
 }
 
@@ -298,8 +297,8 @@ is_independence_wave_iw098_negotiation_host = {
 		is_independence_wave_iw098_country = yes
 		has_country_flag = independence_wave_iw098_host_negotiation_pending
 		has_independence_wave_living_former_host = yes
-		NOT = { has_war_with = ROOT }
-		var:independence_wave_former_host = { tag = ROOT }
+		NOT = { has_war_with = PREV }
+		var:independence_wave_former_host = { tag = PREV.PREV }
 	}
 }
 
@@ -308,10 +307,10 @@ has_valid_independence_wave_iw093_former_host_counterparty = {
 	has_independence_wave_living_former_host = yes
 	var:independence_wave_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 		is_subject = no
 		has_capitulated = no
-		NOT = { has_war_with = ROOT }
+		NOT = { has_war_with = PREV }
 		any_owned_state = { is_capital = yes }
 	}
 }
@@ -321,10 +320,10 @@ has_valid_independence_wave_iw098_former_host_counterparty = {
 	has_independence_wave_living_former_host = yes
 	var:independence_wave_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 		is_subject = no
 		has_capitulated = no
-		NOT = { has_war_with = ROOT }
+		NOT = { has_war_with = PREV }
 		any_owned_state = { is_capital = yes }
 	}
 }
@@ -343,7 +342,7 @@ can_ratify_independence_wave_iw093_post_crisis_settlement = {
 		NOT = { has_independence_wave_living_former_host = yes }
 		AND = {
 			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
 		}
 	}
 }
@@ -362,7 +361,7 @@ can_ratify_independence_wave_iw098_post_crisis_settlement = {
 		NOT = { has_independence_wave_living_former_host = yes }
 		AND = {
 			has_independence_wave_living_former_host = yes
-			var:independence_wave_former_host = { NOT = { has_war_with = ROOT } }
+			var:independence_wave_former_host = { NOT = { has_war_with = PREV } }
 		}
 	}
 }
@@ -388,22 +387,22 @@ can_prepare_independence_wave_form25_from_iw098 = {
 	check_variable = { var = iw098_frontier_security value = constant:independence_wave_iw098.form25_security_threshold compare = greater_than_or_equals }
 }
 
-# These flags are external admission receipts. No file in this tranche sets
-# them. A future country package may set one only after all required gameplay
-# and runtime surfaces, including its visual/content audit, are complete.
+# Both packages are admitted (agent decision D19, 2026-10-05). The static
+# content attestation in 006_independence_wave_package_dispatch_triggers.txt is
+# the admission proof, so the package-local proof only binds the carrier tag.
 has_independence_wave_iw093_runtime_content_attestation = {
-	has_country_flag = independence_wave_iw093_runtime_content_attested
+	original_tag = DOX
 }
 
 has_independence_wave_iw098_runtime_content_attestation = {
-	has_country_flag = independence_wave_iw098_runtime_content_attested
+	original_tag = SOK
 }
 
 has_independence_wave_iw093_kumasi_capital_proof = {
 	has_event_target = independence_wave_setup_anchor_state
 	event_target:independence_wave_setup_anchor_state = {
 		state = 274
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 		is_capital = yes
 	}
 }
@@ -412,7 +411,7 @@ has_independence_wave_iw093_host_capital_survival_proof = {
 	has_event_target = independence_wave_setup_former_host
 	event_target:independence_wave_setup_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 		any_owned_state = {
 			is_capital = yes
 		}
@@ -423,7 +422,7 @@ has_independence_wave_iw098_host_capital_survival_proof = {
 	has_event_target = independence_wave_setup_former_host
 	event_target:independence_wave_setup_former_host = {
 		exists = yes
-		NOT = { tag = ROOT }
+		NOT = { tag = PREV }
 		any_owned_state = {
 			is_capital = yes
 		}
@@ -434,7 +433,7 @@ has_independence_wave_iw098_sokoto_anchor_proof = {
 	has_event_target = independence_wave_setup_anchor_state
 	event_target:independence_wave_setup_anchor_state = {
 		state = 902
-		is_owned_and_controlled_by = ROOT
+		is_owned_and_controlled_by = PREV
 		is_capital = yes
 	}
 }
@@ -485,18 +484,39 @@ has_independence_wave_iw098_command_roster = {
 	SOK_bello_rabah = { is_corps_commander = yes }
 }
 
+# Sultan Hasan dan Mu'azu Ahmadu rules before 17 June 1938 and the vanilla
+# Siddiq Abubakar III from that date.
 has_independence_wave_iw098_date_appropriate_leadership = {
 	has_independence_wave_iw098_date_appropriate_role_attestation = yes
-	# The pre-cutover Hasan character is not yet sourced or authored. Omitting
-	# that branch keeps every date before 17 June 1938 fail-closed even if a
-	# stale external role flag exists.
-	is_independence_wave_iw098_post_cutover = yes
-	has_country_flag = independence_wave_iw098_post_cutover_sultan_selected
-	has_character = SOK_siddiq_abubakar
-	has_country_leader = {
-		ruling_only = yes
-		character = SOK_siddiq_abubakar
+	OR = {
+		AND = {
+			is_independence_wave_iw098_pre_cutover = yes
+			has_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+			has_character = SOK_independence_wave_hasan_dan_muazu
+			has_country_leader = {
+				ruling_only = yes
+				character = SOK_independence_wave_hasan_dan_muazu
+			}
+		}
+		AND = {
+			is_independence_wave_iw098_post_cutover = yes
+			has_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+			has_character = SOK_siddiq_abubakar
+			has_country_leader = {
+				ruling_only = yes
+				character = SOK_siddiq_abubakar
+			}
+		}
 	}
+}
+
+# Country scope: the handover check may act for the live generation on or
+# after its due date.
+can_run_independence_wave_iw098_succession_check = {
+	is_independence_wave_iw098_country = yes
+	has_country_flag = independence_wave_iw098_succession_check_queued
+	has_variable = independence_wave_iw098_succession_due_date
+	check_variable = { var = global.date value = independence_wave_iw098_succession_due_date compare = greater_than_or_equals }
 }
 
 # Event 012 owns its focus tree and lifecycle flags. IW-098 is safe only when

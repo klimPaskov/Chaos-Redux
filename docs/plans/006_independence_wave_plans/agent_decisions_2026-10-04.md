@@ -460,3 +460,38 @@ Remnant petition: without the continental fact, a recipient needs a frontier or 
 Not attempted: the contract's probability baseline and comparison for the changed deterministic score (scores are deterministic ranks, not action probabilities; the probability route returned INTERNAL_ERROR earlier this round).
 
 Needs live game: a CAT or RUT wave in which the contact governments appear among the foreign reactions with the contact reason line.
+
+
+## D19. Round 2: admission of IW-093 Asante (DOX) and IW-098 Sokoto (SOK)
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-8 item, decision 5 (every admission includes the ROOT-to-PREV fix) and the round-1 admission standard (a photo of the correct 1936-role person within about ten years, the parent as rights reviewer, no generated face of a real person).
+
+Setup defects found and fixed (each one failed every release):
+
+- ROOT read for the carrier: the fixed anchor ownership proofs, the Kumasi capital proof, the Sokoto anchor proof and both host capital survival proofs compared the anchor or host with ROOT, the launching country during the executor passes. They now read PREV. The host-negotiation, counterparty and settlement triggers also read PREV (or PREV.PREV inside the host's own event), which keeps their meaning in the events and decisions that use them.
+- `has_independence_wave_iw093_runtime_content_attestation` and `_iw098_` required package flags that no file ever set. They now bind only the carrier tag; the static content attestation is the admission proof, as for every other admitted package.
+- The planner gate also required the legacy `independence_wave_package_content_ready` flag, which is never set; it now proves the exact dormant tag, like CHU and ASY.
+- The DOX history sets no government, so Prempeh II could not be the ruling leader when the leadership proof ran. Both packages now form their neutrality government before promoting the leader.
+- Cleanup retired Prempeh II, the DOX commanders and the SOK commanders, all recruited only by startup history, so a second release of either tag failed setup (the D11 NAV defect). Cleanup keeps them.
+
+Sokoto leadership: before 17 June 1938 the new `SOK_independence_wave_hasan_dan_muazu` (startup history roster, despotism) is promoted and attested; from that date the vanilla `SOK_siddiq_abubakar` is. A Sokoto released before the cutover runs its own hidden check (`chaosx.nr006.9810`, every 14 days, guarded by a due date through `chaosx_convert_days_to_date_offset`) and on the cutover fires `chaosx.nr006.9811` "A New Sultan in Sokoto": Hasan dies, Siddiq succeeds and takes the government if Hasan led it, and the receipts move to the post-cutover branch.
+
+Portraits:
+
+- Hasan dan Mu'azu: source placeholder from the archived June 1934 London Zoological Gardens group photograph (Commons, Public Domain Mark), cropped to his head and shoulders with the event-assets crop tool (manual crop 624,300,1007,815 around the Commons face annotation) and converted with its DDS converter. As rights reviewer the parent accepts the 1934 date, because Abdullahi Bayero, named in the same caption as Emir of Kano, became Emir only in 1926 and Hasan became Sultan in 1931, which rules out the 1924 date of a later press caption; a UK photograph of unknown authorship from 1934 left copyright at the end of 2004. Evidence and the completed provenance contract are in the local, git-ignored `docs/assets/portraits/006_independence_wave/round2_source_placeholders/`. No ImageGen, repaint or RunPod was used. Route gap: `chaosx_portrait_creator` could not be spawned in this run.
+- Prempeh II and Muhammadu Dikko keep the user-supplied HOI4-style finals installed on 2026-08-21, which is the intended final state for grounded subjects.
+- Kwame Frimpong, Kwaku Ntim and Bello Rabah are fictional officers; their portraits depict no real person, so the no-real-person rule does not apply. They remain for the new armies of the two packages.
+
+Flags: DOX keeps the Asante tricolour with the Golden Stool shared with Event 012's DOX carrier (commit `da5fd37da`), with identical ideology and route variants and medium and small sizes; no route-specific flag is added. SOK keeps the vanilla Sokoto ideology flags of its vanilla carrier. The Event 006 flag audit passes (102 complete families).
+
+Formables: FORM-24 (West African Federation) and FORM-25 (Sahel Confederation) are recorded as fail-closed. Setup registers each family profile for discovery and the package readiness triggers track progress, but neither family has a carrier tag, member roster, territory proof, consent rule or flag, and neither is in the shared commit allowlist. Opening them belongs to the formable item.
+
+Admission: IDs 93 and 98 are in the content attestation and the Join probe order; their execution and SCN-008 preflights, ranked-list entries, planner and reservation publishers and AI strategy profiles already existed. Both are signature-depth packages and stay high-chaos only. Foreign contacts: DOX registers FRA and USA, SOK registers FRA and SAU.
+
+Walk-through (DOX, then SOK): the loaders publish region `west_central_africa`, depth `signature` and archetype `agrarian_regional`, matching the prepared-scope proofs; the executor sets the anchor (274 or 902) as capital before setup; the leader is promoted after the government is formed; the anchor, capital and host proofs read the released country; both commanders exist with corps-commander roles from startup history; values, the opening idea, the focus framework with signature and formable flags and the mapped force (p93 `river_jungle` 64, p98 `mounted_mobile` 70) are written before the setup receipt; final validation reads the same receipts.
+
+Validation: the allocator audit passes with 39 attested packages, 34 reservation groups, 41 adapters and IW-177 and IW-179 as the only adapter-only rows (its expected sets were updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on all touched files.
+
+Needs live game: a high-chaos wave or SCN-008 launch that releases DOX or SOK; Hasan leading a pre-1938 Sokoto and the June 1938 succession event.

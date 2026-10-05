@@ -508,7 +508,7 @@ def main() -> int:
 		23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 58, 70,
 		71, 72, 93, 98, 173, 177, 179, 184,
 	}
-	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 58, 70, 71, 72, 173, 184}
+	expected_attested_ids = {1, 2, 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 23, 24, 26, 27, 28, 29, 30, 31, 33, 38, 39, 40, 41, 43, 44, 45, 58, 70, 71, 72, 93, 98, 173, 184}
 	require(
 		set(adapter_ids) == expected_adapter_ids,
 		"runtime adapter set changed without updating the accepted Event 006 closure: "
@@ -615,8 +615,8 @@ def main() -> int:
 			attested_anchors[package_id] = int(anchor_match.group(1))
 	if len(attested_groups) == len(expected_attested_ids):
 		require(
-			len(set(attested_groups.values())) == 32,
-			"accepted thirty-seven-package closure no longer exposes exactly thirty-two compatible reservation groups: "
+			len(set(attested_groups.values())) == 34,
+			"accepted thirty-nine-package closure no longer exposes exactly thirty-four compatible reservation groups: "
 			+ repr(attested_groups),
 			errors,
 		)
@@ -633,7 +633,7 @@ def main() -> int:
 			errors,
 		)
 		require(
-			len(set(attested_anchors.values())) == 36
+			len(set(attested_anchors.values())) == 38
 			and attested_anchors.get(43) == attested_anchors.get(44) == 249
 			and attested_groups.get(43) == attested_groups.get(44) == "rg_middle_volga_kazan",
 			"attested package anchors must be pairwise unique except the CHU/TAT Kazan anchor 249, "

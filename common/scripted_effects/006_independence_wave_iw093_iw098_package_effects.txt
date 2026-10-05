@@ -1,13 +1,12 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 IW-093 / IW-098 PACKAGE EFFECTS
 # ============================================================================
-# Fail-closed adapters for Asante (`DOX`) and Sokoto (`SOK`). This file owns
-# fixed package proofs, package-local values, focus-framework configuration,
-# capital/succession validation hooks, central dispatch entries, and cleanup.
-# Decision, focus, command-roster, and starting-force content is present, but
-# identity, flag, formable, and final presentation audits must provide the
-# external runtime
-# attestation flags before either setup path can return `selected`.
+# Package setup, final validation and cleanup for Asante (`DOX`) and Sokoto
+# (`SOK`), admitted on 2026-10-05 (agent decision D19). This file owns fixed
+# package proofs, package-local values, focus-framework configuration, the
+# date-aware Sokoto succession, central dispatch entries and cleanup. Setup
+# runs in the carrier's scope; the startup rosters are recruited in history and
+# are never retired by cleanup, so a later release of the tag finds them again.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
@@ -93,10 +92,13 @@ independence_wave_dispatch_iw093_iw098_package_cleanup = {
 # Leadership, baseline laws, politics, and date-aware succession
 # ---------------------------------------------------------------------------
 
+# The dormant DOX history sets no government, so the neutrality government is
+# formed before Prempeh II is promoted to lead it.
 independence_wave_prepare_iw093_leadership = {
 	if = {
 		limit = { is_independence_wave_iw093_prepared_scope = yes }
 		independence_wave_apply_roster_checkpoint = yes
+		independence_wave_initialize_iw093_politics = yes
 	}
 	if = {
 		limit = {
@@ -113,7 +115,42 @@ independence_wave_prepare_iw093_leadership = {
 	}
 }
 
+# Before 17 June 1938 Sultan Hasan dan Mu'azu Ahmadu leads the country; from
+# that date the vanilla Siddiq Abubakar III does. Both are recruited in startup
+# history.
 independence_wave_prepare_iw098_date_appropriate_leadership = {
+	if = {
+		limit = {
+			is_independence_wave_iw098_prepared_scope = yes
+			is_independence_wave_iw098_event012_state_safe = yes
+			is_independence_wave_iw098_pre_cutover = yes
+		}
+		independence_wave_apply_roster_checkpoint = yes
+		independence_wave_initialize_iw098_politics = yes
+		clr_country_flag = independence_wave_iw098_post_cutover_role_attested
+		if = {
+			limit = {
+				has_character = SOK_independence_wave_hasan_dan_muazu
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = SOK_independence_wave_hasan_dan_muazu
+					}
+				}
+			}
+			promote_character = { character = SOK_independence_wave_hasan_dan_muazu ideology = despotism }
+		}
+		if = {
+			limit = {
+				has_character = SOK_independence_wave_hasan_dan_muazu
+				has_country_leader = {
+					ruling_only = yes
+					character = SOK_independence_wave_hasan_dan_muazu
+				}
+			}
+			set_country_flag = independence_wave_iw098_pre_cutover_role_attested
+		}
+	}
 	if = {
 		limit = {
 			is_independence_wave_iw098_prepared_scope = yes
@@ -121,6 +158,8 @@ independence_wave_prepare_iw098_date_appropriate_leadership = {
 			is_independence_wave_iw098_post_cutover = yes
 		}
 		independence_wave_apply_roster_checkpoint = yes
+		independence_wave_initialize_iw098_politics = yes
+		clr_country_flag = independence_wave_iw098_pre_cutover_role_attested
 		if = {
 			limit = {
 				has_character = SOK_siddiq_abubakar
@@ -440,6 +479,74 @@ independence_wave_iw098_select_sultan_by_date = {
 	}
 }
 
+# COUNTRY scope: SOK. Queues the next succession check. The due date sits one
+# margin day before the event, so a check left over from an earlier release of
+# the tag arrives before the current due date and does nothing.
+independence_wave_iw098_queue_succession_check = {
+	set_country_flag = independence_wave_iw098_succession_check_queued
+	set_temp_variable = { independence_wave_iw098_succession_delay = constant:independence_wave_iw098.succession_check_days }
+	set_temp_variable = { chaosx_date_days = independence_wave_iw098_succession_delay }
+	subtract_from_temp_variable = { chaosx_date_days = constant:independence_wave_iw098.succession_margin_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { independence_wave_iw098_succession_due_date = global.date }
+	add_to_variable = { independence_wave_iw098_succession_due_date = chaosx_date_offset }
+	country_event = { id = chaosx.nr006.9810 days = independence_wave_iw098_succession_delay }
+}
+
+# COUNTRY scope: SOK, from the hidden check chaosx.nr006.9810. Before the cutover
+# it queues the next check; from the cutover it announces the succession once.
+independence_wave_iw098_run_succession_check = {
+	if = {
+		limit = { can_run_independence_wave_iw098_succession_check = yes }
+		clr_country_flag = independence_wave_iw098_succession_check_queued
+		if = {
+			limit = { is_independence_wave_iw098_post_cutover = yes }
+			clear_variable = independence_wave_iw098_succession_due_date
+			if = {
+				limit = { has_country_flag = independence_wave_iw098_pre_cutover_sultan_selected }
+				country_event = { id = chaosx.nr006.9811 }
+			}
+		}
+		else = { independence_wave_iw098_queue_succession_check = yes }
+	}
+}
+
+# COUNTRY scope: SOK, in chaosx.nr006.9811. Sultan Hasan dies in June 1938 and the
+# Sardauna Siddiq Abubakar succeeds him. Siddiq takes the government only when
+# Hasan still led it; the date receipts move to the post-cutover branch.
+independence_wave_iw098_hand_over_sultanate = {
+	if = {
+		limit = {
+			has_character = SOK_siddiq_abubakar
+			has_character = SOK_independence_wave_hasan_dan_muazu
+			has_country_leader = {
+				ruling_only = yes
+				character = SOK_independence_wave_hasan_dan_muazu
+			}
+		}
+		promote_character = { character = SOK_siddiq_abubakar ideology = despotism }
+	}
+	if = {
+		limit = { has_character = SOK_independence_wave_hasan_dan_muazu }
+		retire_character = SOK_independence_wave_hasan_dan_muazu
+	}
+	clr_country_flag = independence_wave_iw098_pre_cutover_sultan_selected
+	clr_country_flag = independence_wave_iw098_pre_cutover_role_attested
+	set_country_flag = independence_wave_iw098_post_cutover_sultan_selected
+	set_country_flag = independence_wave_iw098_sultan_selection_complete
+	if = {
+		limit = {
+			has_character = SOK_siddiq_abubakar
+			has_country_leader = {
+				ruling_only = yes
+				character = SOK_siddiq_abubakar
+			}
+		}
+		set_country_flag = independence_wave_iw098_post_cutover_role_attested
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Package-local visible values
 # ---------------------------------------------------------------------------
@@ -702,6 +809,10 @@ independence_wave_setup_iw098_sokoto = {
 				set_country_flag = independence_wave_package_setup_complete
 				set_variable = { independence_wave_iw098_setup_result = constant:independence_wave_iw098.one }
 				set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_iw098.one }
+				if = {
+					limit = { is_independence_wave_iw098_pre_cutover = yes }
+					independence_wave_iw098_queue_succession_check = yes
+				}
 			}
 		}
 	}
@@ -824,18 +935,8 @@ independence_wave_cleanup_iw093_asante = {
 	clr_country_flag = independence_wave_iw093_route_politics_receipt
 		clr_country_flag = independence_wave_iw093_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw093_form24_preparation_complete
-		if = {
-			limit = { has_character = DOX_prempeh_ii }
-			retire_character = DOX_prempeh_ii
-		}
-		if = {
-			limit = { has_character = DOX_kwame_frimpong }
-			retire_character = DOX_kwame_frimpong
-		}
-		if = {
-			limit = { has_character = DOX_kwaku_ntim }
-			retire_character = DOX_kwaku_ntim
-		}
+		# Prempeh II and the two commanders belong to DOX's startup roster and
+		# stay with the tag, so a later release finds them again.
 		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
@@ -890,14 +991,10 @@ independence_wave_cleanup_iw098_sokoto = {
 	clr_country_flag = independence_wave_iw098_route_politics_receipt
 		clr_country_flag = independence_wave_iw098_terminal_sovereignty_locked
 		clr_country_flag = independence_wave_iw098_form25_preparation_complete
-		if = {
-			limit = { has_character = SOK_muhammad_dikko }
-			retire_character = SOK_muhammad_dikko
-		}
-		if = {
-			limit = { has_character = SOK_bello_rabah }
-			retire_character = SOK_bello_rabah
-		}
+		# Hasan, Dikko and Bello belong to SOK's startup roster and stay with
+		# the tag. Only the 1938 succession retires Hasan.
+		clr_country_flag = independence_wave_iw098_succession_check_queued
+		clear_variable = independence_wave_iw098_succession_due_date
 		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
