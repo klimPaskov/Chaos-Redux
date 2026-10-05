@@ -638,20 +638,8 @@ riches_found_refresh_mine_capabilities = {
 		set_state_flag = riches_found_account_material_payment_possible
 	}
 	else = { clr_state_flag = riches_found_account_material_payment_possible }
-	# AI planning facts. A controller with two or more mines spreads its effort
-	# across them; a mine without a route needs one, and one whose route has
-	# working capacity can carry processed output.
-	if = {
-		limit = {
-			CONTROLLER = {
-				exists = yes
-				has_variable = riches_found_controller_mine_count
-				check_variable = { var = riches_found_controller_mine_count value = constant:riches_found_threshold.aggregate_second_mine compare = greater_than_or_equals }
-			}
-		}
-		set_state_flag = riches_found_multiple_mine_priority
-	}
-	else = { clr_state_flag = riches_found_multiple_mine_priority }
+	# AI planning facts. A mine without a route needs one, and one whose route
+	# has working capacity can carry processed output.
 	if = {
 		limit = { NOT = { riches_found_state_has_transport_route = yes } }
 		set_state_flag = riches_found_transport_need
@@ -1525,6 +1513,9 @@ riches_found_run_controller_pulse = {
 riches_found_clear_stale_targets = {
 	clr_state_flag = riches_found_deep_project_active
 	clear_variable = riches_found_deep_project_controller
+	clr_state_flag = riches_found_works_project_active
+	clear_variable = riches_found_works_project_controller
+	clear_variable = riches_found_works_project_count
 	riches_found_clear_account_payment_receipt = yes
 	riches_found_clear_account_resolution_receipt = yes
 	clear_variable = riches_found_foreign_target

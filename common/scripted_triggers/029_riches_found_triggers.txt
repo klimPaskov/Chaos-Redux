@@ -794,6 +794,105 @@ riches_found_policy_profile_predatory = {
 	}
 }
 
+# ---------------------------------------------------------------------------
+# Decision AI situation facts (spec part 5: war state, capacity, low values
+# and evolution behaviour). Decision ai_will_do blocks read these; ROOT is the
+# deciding controller and FROM the mine state.
+# ---------------------------------------------------------------------------
+
+# STATE scope, ROOT the deciding controller. The war has reached the mine:
+# an enemy holds ground beside the district, or the controller is about to
+# lose it. The flags come from the last mine refresh; the neighbour check
+# sees a front that opened since.
+riches_found_ai_front_near_mine = {
+	OR = {
+		has_state_flag = riches_found_front_line
+		has_state_flag = riches_found_mine_about_to_fall
+		has_state_flag = riches_found_retreat_imminent
+		any_neighbor_state = { CONTROLLER = { has_war_with = ROOT } }
+	}
+}
+
+# STATE scope. An order response already works at the mine: police, guards,
+# armed workers, a holding cordon, a closure, a claim-war settlement or a
+# protected pay train. The AI keeps one primary response instead of
+# stacking security layers.
+riches_found_ai_order_response_in_place = {
+	OR = {
+		has_state_flag = riches_found_mine_police
+		has_state_flag = riches_found_private_guards
+		has_state_flag = riches_found_armed_workers
+		riches_found_army_cordon_holds = yes
+		has_state_flag = riches_found_mine_temporary_closure
+		has_state_flag = riches_found_mission_break_claim_war_subject
+		has_state_flag = riches_found_mission_protect_pay_train_subject
+	}
+}
+
+# STATE scope. Local Order is below the low band and no order response is
+# working yet, so the AI weighs one primary response.
+riches_found_ai_needs_order_response = {
+	check_variable = { var = riches_found_local_order value = constant:riches_found_decision_threshold.order_low compare = less_than }
+	NOT = { riches_found_ai_order_response_in_place = yes }
+}
+
+# STATE scope. A physical works project or a deep excavation is under way at
+# the mine; the AI starts one physical project at a time.
+riches_found_mine_has_running_project = {
+	OR = {
+		has_state_flag = riches_found_works_project_active
+		has_state_flag = riches_found_deep_project_active
+	}
+}
+
+# STATE scope. The current controller's treasury depends on this mine.
+riches_found_ai_treasury_depends = {
+	has_state_flag = riches_found_treasury_depends_on_mine
+	check_variable = { var = riches_found_receipt_dependence_controller value = CONTROLLER compare = equals }
+}
+
+# STATE scope. A lesser containment step has been tried before the mine is
+# sealed for good: a closure, a partial or deep-section seal, a quarantine,
+# an evacuation or outside help. An exhausted deposit has nothing left to
+# contain.
+riches_found_ai_lesser_containment_tried = {
+	OR = {
+		has_state_flag = riches_found_deposit_exhausted
+		has_state_flag = riches_found_closure_history
+		has_state_flag = riches_found_depths_sealed
+		has_state_flag = riches_found_mine_partial_seal
+		has_state_flag = riches_found_district_quarantined
+		has_state_flag = riches_found_workforce_evacuated
+		has_state_flag = riches_found_demons_district_evacuated
+		riches_found_demons_assistance_taken = yes
+	}
+}
+
+# COUNTRY scope. A stable democracy at peace, which should almost never
+# strike a supernatural bargain.
+riches_found_ai_stable_democracy_at_peace = {
+	has_government = democratic
+	has_war = no
+	has_stability > constant:riches_found_achievement_threshold.account_stability_floor
+}
+
+# COUNTRY scope. A government desperate enough to weigh a bargain: stability
+# below the floor, a war being lost, or a civil war.
+riches_found_ai_is_desperate = {
+	OR = {
+		has_stability < constant:riches_found_achievement_threshold.account_stability_floor
+		has_civil_war = yes
+		check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress }
+	}
+}
+
+# COUNTRY scope. A poor or infrastructure-limited minor: not a major and short
+# of civilian industry.
+riches_found_ai_is_weak_minor = {
+	is_major = no
+	num_of_civilian_factories < constant:riches_found_foreign_interest_threshold.weak_factory_count
+}
+
 # STATE scope. Policy-specific foreign-phase menus keep each route between
 # three and five visible actions while preserving distinct contract profiles.
 riches_found_policy_allows_concession_auction = {

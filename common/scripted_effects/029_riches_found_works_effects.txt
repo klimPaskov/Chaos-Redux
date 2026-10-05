@@ -4,7 +4,8 @@
 # STATE scope throughout; THIS is the mine state. Completed transport projects
 # build real map buildings, and destructive raids and collapses damage them.
 # The game repairs damaged buildings through ordinary construction; the mine's
-# own damage is repaired through Repair and Restore the Shaft.
+# own damage is repaired through Repair and Restore the Shaft. A works-project
+# marker records projects under construction so the AI builds one at a time.
 # Building effects follow the vanilla add_building_construction and
 # damage_building precedents. Their level, damage and repair-speed fields do
 # not read script constants, so those values are file-scoped constants.
@@ -134,6 +135,45 @@ riches_found_damage_collapsed_works = {
 			type = infrastructure
 			damage = @riches_found_collapse_infrastructure_damage
 			repair_speed_modifier = @riches_found_damage_repair_speed
+		}
+	}
+}
+
+# STATE scope, ROOT the paying controller. A physical works project (Rail
+# Spur, Port Route, Processing Works, Worker Housing, Shaft Reinforcement,
+# Sanitation or Repair) has been paid for. The count lets the AI start one
+# physical project at a time; a count left by an earlier controller is
+# replaced.
+riches_found_mark_works_project = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = riches_found_works_project_controller }
+				NOT = { check_variable = { var = riches_found_works_project_controller value = ROOT compare = equals } }
+			}
+		}
+		set_variable = { riches_found_works_project_count = constant:riches_found_value.zero }
+		set_variable = { riches_found_works_project_controller = ROOT }
+	}
+	add_to_variable = { riches_found_works_project_count = constant:riches_found_value.one }
+	set_state_flag = riches_found_works_project_active
+}
+
+# STATE scope, ROOT the paying controller. One of that controller's works
+# projects has landed or been refunded; the marker clears with the last one.
+# Control changes clear the marker through riches_found_clear_stale_targets.
+riches_found_clear_works_project = {
+	if = {
+		limit = {
+			has_variable = riches_found_works_project_controller
+			check_variable = { var = riches_found_works_project_controller value = ROOT compare = equals }
+		}
+		subtract_from_variable = { riches_found_works_project_count = constant:riches_found_value.one }
+		if = {
+			limit = { check_variable = { var = riches_found_works_project_count value = constant:riches_found_value.zero compare = less_than_or_equals } }
+			clr_state_flag = riches_found_works_project_active
+			clear_variable = riches_found_works_project_controller
+			clear_variable = riches_found_works_project_count
 		}
 	}
 }
