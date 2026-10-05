@@ -351,3 +351,14 @@ Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_w
 
 Evidence: `common/decisions/016_mengele_native_prototype_selection_decisions.txt`, `common/scripted_triggers/016_mengele_native_selection_decision_triggers.txt`, `docs/events/016_brilliant_scientist/systems/native_prototype_ownership.md`.
 Needs live game: AI selection timing against its native research choice.
+
+## D28. Round 2 review touch-ups
+
+Disposition: implemented under the full-authority mandate during the round 2 re-run review of D22 to D27.
+
+- The adopt order reads its cost and duration as `cost = var:brilliant_scientist_xeno_control_review_cost` and `days_remove = var:brilliant_scientist_xeno_control_review_days`, matching every vanilla variable decision cost (`AST.txt` `cost = var:AST_call_on_fascists_cost`) and the `INS.txt` duration precedent that D22 cites.
+- The adopt order's requirement tooltip names its real conditions (no other project stage or incident response underway, one free civilian factory) instead of a vague readiness phrase.
+- The fourteen incident recovery descriptions and the Singularity dismantle guard no longer speak of repairing or dismantling a "project ledger"; they say the project is restored or dismantled and the incident stays on its record.
+
+Evidence: `common/decisions/016_brilliant_scientist_directorate_project_board.txt`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`.
+Needs live game: the variable cost and duration readout on the adopt row (unchanged from D22).
