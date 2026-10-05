@@ -559,7 +559,22 @@ state_event = {
 state_event = {
 	id = chaosx.nr29.111
 	title = chaosx.nr29.111.t
-	desc = chaosx.nr29.111.d
+	desc = {
+		text = chaosx.nr29.111.d.revoked
+		trigger = { check_variable = { riches_found_report_text = constant:riches_found_report_text.gilded_revoke_succeeded } }
+	}
+	desc = {
+		text = chaosx.nr29.111.d.closed
+		trigger = { check_variable = { riches_found_report_text = constant:riches_found_report_text.gilded_revoke_closed } }
+	}
+	desc = {
+		text = chaosx.nr29.111.d.resisted
+		trigger = { check_variable = { riches_found_report_text = constant:riches_found_report_text.gilded_revoke_resisted } }
+	}
+	desc = {
+		text = chaosx.nr29.111.d
+		trigger = { NOT = { has_variable = riches_found_report_text } }
+	}
 	picture = GFX_report_event_riches_found_gilded_sovereignty
 	is_triggered_only = yes
 	trigger = {
@@ -573,6 +588,53 @@ state_event = {
 		name = chaosx.nr29.111.a
 		custom_effect_tooltip = riches_found.report_acknowledged
 		riches_found_complete_report = yes
+	}
+}
+
+# A district authority that outlived a change of controller offers the new
+# controller continuity in exchange for recognition. Queued once per change by
+# riches_found_handle_gilded_transfer; a later change replaces the offer.
+state_event = {
+	id = chaosx.nr29.113
+	title = chaosx.nr29.113.t
+	desc = {
+		text = chaosx.nr29.113.d.occupier
+		trigger = { riches_found_mine_is_occupied = yes }
+	}
+	desc = {
+		text = chaosx.nr29.113.d
+		trigger = { NOT = { riches_found_mine_is_occupied = yes } }
+	}
+	picture = GFX_report_event_riches_found_gilded_sovereignty
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_gilded_offer_pending
+		riches_found_gilded_authority_holds_district = yes
+		CONTROLLER = { exists = yes }
+		check_variable = { var = riches_found_gilded_offer_controller value = CONTROLLER compare = equals }
+	}
+	option = {
+		name = chaosx.nr29.113.a
+		custom_effect_tooltip = chaosx.nr29.113.a.tt
+		riches_found_gilded_recognize_continuity = yes
+		ai_chance = {
+			base = constant:riches_found_gilded.ai_recognize_base
+			modifier = { factor = constant:riches_found_gilded.ai_profile_factor riches_found_policy_profile_concession = yes }
+			modifier = { factor = constant:riches_found_gilded.ai_profile_factor riches_found_policy_profile_predatory = yes }
+			modifier = { factor = constant:riches_found_gilded.ai_profile_factor CONTROLLER = { has_war = yes } }
+		}
+	}
+	option = {
+		name = chaosx.nr29.113.b
+		custom_effect_tooltip = chaosx.nr29.113.b.tt
+		riches_found_gilded_confront_authority = yes
+		ai_chance = {
+			base = constant:riches_found_gilded.ai_confront_base
+			modifier = { factor = constant:riches_found_gilded.ai_profile_factor riches_found_policy_profile_state = yes }
+			modifier = { factor = constant:riches_found_gilded.ai_profile_factor riches_found_policy_profile_militarized = yes }
+			modifier = { factor = constant:riches_found_gilded.ai_force_factor riches_found_state_has_supplied_force = yes }
+		}
 	}
 }
 

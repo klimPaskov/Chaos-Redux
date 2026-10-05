@@ -65,6 +65,9 @@ riches_found_report_text = {
 	concession_infrastructure = 2004
 	collapse_neglect = 2011
 	collapse_account_default = 2012
+	gilded_revoke_succeeded = 2021
+	gilded_revoke_closed = 2022
+	gilded_revoke_resisted = 2023
 }
 
 # Candidate-pool identifiers are stored on the mine so Event 029 report text,
@@ -1478,4 +1481,44 @@ riches_found_revenue_route = {
 riches_found_partner_list = {
 	schema = { any_key = yes data = int }
 	size = 4
+}
+
+# The Gilded Sovereignty answers and the authority's behaviour on transfer.
+# Revoke the Charter rolls success against failure (weights scaled by a
+# supplied force and by guards past the private-security gate); a failure
+# either shuts the works or brings armed claimants and outside backing.
+# Shared and governing districts cost their controller through the
+# riches_found_country_mine_authority modifier, per district.
+riches_found_gilded = {
+	schema = { any_key = yes data = fixed_point }
+	revoke_success_weight = 60
+	revoke_failure_weight = 40
+	revoke_force_success_factor = 1.5
+	revoke_autonomy_failure_factor = 2
+	revoke_closure_weight = 50
+	revoke_resistance_weight = 50
+	revoke_development_loss = -12
+	revoke_closure_autonomy = 10
+	revoke_resistance_autonomy = 15
+	revoke_resistance_foreign_claim = 15
+	revoke_retry_days = 365
+	buy_back_autonomy_ceiling = 80
+	buy_back_civilian_factories = 20
+	buy_back_political_power = 150
+	board_captured_capture = 15
+	board_captured_autonomy = 5
+	board_captured_legitimacy = 3
+	shared_political_power = -0.10
+	governing_stability = -0.02
+	governing_opinion_gain = -0.15
+	governing_law_cost = 0.15
+	continuity_order = 5
+	confront_autonomy = 10
+	confront_order = -8
+	occupier_autonomy = 15
+	transfer_offer_delay_days = 1
+	ai_recognize_base = 50
+	ai_confront_base = 50
+	ai_profile_factor = 2
+	ai_force_factor = 2
 }

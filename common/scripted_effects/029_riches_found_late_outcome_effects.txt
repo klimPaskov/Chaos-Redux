@@ -170,3 +170,178 @@ riches_found_record_successful_reform = {
 	clear_variable = riches_found_private_dominance_since
 	clr_state_flag = riches_found_private_dominance_prolonged
 }
+
+# ---------------------------------------------------------------------------
+# The Gilded Sovereignty: answers, lasting terms and transfer
+# ---------------------------------------------------------------------------
+
+# STATE scope, ROOT the controller that paid for Revoke the Charter. The
+# revocation is a confrontation: a supplied force makes success likelier and
+# guards past the private-security gate make failure likelier
+# (riches_found_gilded weights). Success restores sovereignty at a cost in
+# development; failure leaves the authority unanswered and either shuts the
+# works or brings armed claimants and outside backing, and the charter cannot
+# be challenged again for revoke_retry_days.
+riches_found_gilded_resolve_revocation = {
+	random_list = {
+		constant:riches_found_gilded.revoke_success_weight = {
+			modifier = { factor = constant:riches_found_gilded.revoke_force_success_factor riches_found_state_has_supplied_force = yes }
+			set_state_flag = riches_found_gilded_charter_revoked
+			add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_action_delta.negative_12 }
+			add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_8 }
+			add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_8 }
+			add_to_variable = { riches_found_mine_development = constant:riches_found_gilded.revoke_development_loss }
+			riches_found_record_achievement_gilded_reform = yes
+			set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.gilded_revoke_succeeded }
+		}
+		constant:riches_found_gilded.revoke_failure_weight = {
+			modifier = { factor = constant:riches_found_gilded.revoke_autonomy_failure_factor check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_threshold.private_security_gate compare = greater_than_or_equals } }
+			set_temp_variable = { riches_found_gilded_retry_days = constant:riches_found_gilded.revoke_retry_days }
+			set_state_flag = { flag = riches_found_gilded_revoke_cooldown days = riches_found_gilded_retry_days }
+			random_list = {
+				constant:riches_found_gilded.revoke_closure_weight = {
+					modifier = { factor = constant:riches_found_value.zero NOT = { riches_found_mine_can_begin_temporary_closure = yes } }
+					add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_gilded.revoke_closure_autonomy }
+					riches_found_begin_temporary_closure = yes
+					set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.gilded_revoke_closed }
+				}
+				constant:riches_found_gilded.revoke_resistance_weight = {
+					add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_gilded.revoke_resistance_autonomy }
+					add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_gilded.revoke_resistance_foreign_claim }
+					set_state_flag = riches_found_armed_claimants
+					set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.gilded_revoke_resisted }
+				}
+			}
+		}
+	}
+	riches_found_clamp_mine_values = yes
+	set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.gilded_sovereignty }
+	riches_found_queue_report = yes
+}
+
+# STATE scope, ROOT the controller that paid for Recognize the Board. A board
+# run by the guards or the owners (riches_found_gilded_board_would_be_captured)
+# entrenches them; otherwise the board represents workers and residents.
+riches_found_gilded_seat_board = {
+	set_state_flag = riches_found_gilded_board_recognized
+	if = {
+		limit = { riches_found_gilded_board_would_be_captured = yes }
+		set_state_flag = riches_found_gilded_board_captured
+		add_to_variable = { riches_found_illicit_capture = constant:riches_found_gilded.board_captured_capture }
+		add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_gilded.board_captured_autonomy }
+		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_gilded.board_captured_legitimacy }
+	}
+	else = {
+		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.positive_15 }
+		add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_5 }
+	}
+	riches_found_record_achievement_gilded_reform = yes
+}
+
+# COUNTRY scope, from riches_found_rebuild_controller_aggregate. Counts the
+# nonterminal registered mines this country controls whose authority is
+# shared or governs as an enclave, and keeps one country modifier
+# (riches_found_country_mine_authority) whose terms scale with those counts:
+# political power for shared districts, and stability, opinion gain and law
+# costs for governing enclaves. Only the bounded mine registry is read.
+riches_found_refresh_authority_terms = {
+	save_event_target_as = riches_found_terms_controller
+	set_temp_variable = { riches_found_shared_district_count = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_governing_district_count = constant:riches_found_value.zero }
+	if = {
+		limit = { has_variable = global.riches_found_registered_mines^num }
+		for_each_scope_loop = {
+			array = global.riches_found_registered_mines
+			if = {
+				limit = {
+					riches_found_mine_is_registered = yes
+					is_controlled_by = event_target:riches_found_terms_controller
+					NOT = { riches_found_mine_is_terminal = yes }
+				}
+				if = { limit = { has_state_flag = riches_found_gilded_sovereignty_shared } add_to_temp_variable = { riches_found_shared_district_count = constant:riches_found_value.one } }
+				if = { limit = { has_state_flag = riches_found_gilded_governing_enclave } add_to_temp_variable = { riches_found_governing_district_count = constant:riches_found_value.one } }
+			}
+		}
+	}
+	set_variable = { riches_found_authority_political_power = riches_found_shared_district_count }
+	multiply_variable = { riches_found_authority_political_power = constant:riches_found_gilded.shared_political_power }
+	set_variable = { riches_found_authority_stability = riches_found_governing_district_count }
+	multiply_variable = { riches_found_authority_stability = constant:riches_found_gilded.governing_stability }
+	set_variable = { riches_found_authority_opinion_gain = riches_found_governing_district_count }
+	multiply_variable = { riches_found_authority_opinion_gain = constant:riches_found_gilded.governing_opinion_gain }
+	set_variable = { riches_found_authority_law_cost = riches_found_governing_district_count }
+	multiply_variable = { riches_found_authority_law_cost = constant:riches_found_gilded.governing_law_cost }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { riches_found_shared_district_count > constant:riches_found_value.zero }
+				check_variable = { riches_found_governing_district_count > constant:riches_found_value.zero }
+			}
+		}
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = riches_found_country_mine_authority } } }
+			add_dynamic_modifier = { modifier = riches_found_country_mine_authority }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = { modifier = riches_found_country_mine_authority } }
+		remove_dynamic_modifier = { modifier = riches_found_country_mine_authority }
+	}
+}
+
+# STATE scope, from riches_found_handle_state_control_change after a real
+# transfer. An authority that was never answered or that governs as an enclave
+# outlives the transfer: an occupier's arrival hardens its guards at once, and
+# the new controller is offered continuity in exchange for recognition
+# (chaosx.nr29.113), once per change of controller.
+riches_found_handle_gilded_transfer = {
+	clr_state_flag = riches_found_gilded_offer_pending
+	clear_variable = riches_found_gilded_offer_controller
+	if = {
+		limit = {
+			riches_found_gilded_authority_holds_district = yes
+			NOT = { riches_found_mine_is_terminal = yes }
+			CONTROLLER = { exists = yes }
+		}
+		if = {
+			limit = { riches_found_mine_is_occupied = yes }
+			add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_gilded.occupier_autonomy }
+			riches_found_clamp_mine_values = yes
+		}
+		set_variable = { riches_found_gilded_offer_controller = CONTROLLER }
+		set_state_flag = riches_found_gilded_offer_pending
+		set_temp_variable = { riches_found_gilded_offer_delay_days = constant:riches_found_gilded.transfer_offer_delay_days }
+		state_event = { id = chaosx.nr29.113 days = riches_found_gilded_offer_delay_days trigger_for = controller }
+	}
+}
+
+# STATE scope. The new controller recognizes the authority: it keeps governing
+# the district as an enclave, the works keep running and order holds, and the
+# controller carries the enclave's terms through riches_found_country_mine_authority.
+riches_found_gilded_recognize_continuity = {
+	clr_state_flag = riches_found_gilded_offer_pending
+	clear_variable = riches_found_gilded_offer_controller
+	set_state_flag = riches_found_gilded_governing_enclave
+	set_state_flag = riches_found_gilded_continuity_recognized
+	add_to_variable = { riches_found_local_order = constant:riches_found_gilded.continuity_order }
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
+}
+
+# STATE scope. The new controller refuses the authority: its guards stiffen,
+# order slips, and an enclave loses its standing, so the authority must be
+# answered again once the controller can reach the district's decisions.
+riches_found_gilded_confront_authority = {
+	clr_state_flag = riches_found_gilded_offer_pending
+	clear_variable = riches_found_gilded_offer_controller
+	clr_state_flag = riches_found_gilded_governing_enclave
+	add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_gilded.confront_autonomy }
+	add_to_variable = { riches_found_local_order = constant:riches_found_gilded.confront_order }
+	riches_found_clamp_mine_values = yes
+	riches_found_refresh_mine_presentation = yes
+	riches_found_refresh_mine_contribution = yes
+	if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { riches_found_refresh_controller_aggregate = yes } }
+}

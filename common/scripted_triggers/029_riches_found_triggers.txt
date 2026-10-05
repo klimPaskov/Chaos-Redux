@@ -360,6 +360,43 @@ riches_found_gilded_is_open = {
 	NOT = { has_state_flag = riches_found_gilded_governing_enclave }
 }
 
+# STATE scope. The district authority still holds the district: it was never
+# answered or it governs as an enclave. It outlives a change of controller.
+riches_found_gilded_authority_holds_district = {
+	has_state_flag = riches_found_gilded_sovereignty
+	OR = {
+		riches_found_gilded_is_open = yes
+		has_state_flag = riches_found_gilded_governing_enclave
+	}
+}
+
+# STATE scope. The district authority can still be bargained with: it does not
+# govern as an enclave and its guards stay below the buy-back ceiling.
+riches_found_gilded_authority_negotiable = {
+	NOT = { has_state_flag = riches_found_gilded_governing_enclave }
+	check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_gilded.buy_back_autonomy_ceiling compare = less_than }
+}
+
+# COUNTRY scope. The treasury can carry a buy-back: enough civilian industry or
+# enough political power in hand.
+riches_found_country_can_fund_buy_back = {
+	OR = {
+		num_of_civilian_factories > constant:riches_found_gilded.buy_back_civilian_factories
+		has_political_power > constant:riches_found_gilded.buy_back_political_power
+	}
+}
+
+# STATE scope. A recognized board would be run by the guards or the owners:
+# private-security autonomy at its gate, private dominance of the works, or an
+# exclusive concession.
+riches_found_gilded_board_would_be_captured = {
+	OR = {
+		check_variable = { var = riches_found_private_security_autonomy value = constant:riches_found_threshold.private_security_gate compare = greater_than_or_equals }
+		has_state_flag = riches_found_curse_private_dominance
+		has_state_flag = riches_found_exclusive_contract
+	}
+}
+
 # STATE scope. Armed claimants or striking workers that a truce can address.
 riches_found_mine_has_negotiable_dispute = {
 	OR = {

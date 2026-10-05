@@ -1428,6 +1428,7 @@ riches_found_rebuild_controller_aggregate = {
 		clr_country_flag = riches_found_controller_aggregate_active
 		if = { limit = { has_dynamic_modifier = { modifier = riches_found_controller_aggregate } } remove_dynamic_modifier = { modifier = riches_found_controller_aggregate } }
 	}
+	riches_found_refresh_authority_terms = yes
 	riches_found_refresh_controller_receipt_dependence = yes
 	riches_found_refresh_controller_achievement_window = yes
 	riches_found_refresh_partner_display = yes
@@ -2878,6 +2879,15 @@ riches_found_handle_state_control_change = {
 		if = { limit = { CONTROLLER = { exists = yes } } set_variable = { riches_found_recorded_controller = CONTROLLER } }
 		else = { clear_variable = riches_found_recorded_controller }
 		riches_found_handle_occupation_change = yes
+		# A district authority outlives the transfer and bargains with the
+		# new controller.
+		if = {
+			limit = {
+				has_event_target = riches_found_old_controller
+				has_event_target = riches_found_new_controller
+			}
+			riches_found_handle_gilded_transfer = yes
+		}
 		riches_found_review_contract = yes
 		riches_found_refresh_mine_presentation = yes
 		riches_found_refresh_mine_contribution = yes

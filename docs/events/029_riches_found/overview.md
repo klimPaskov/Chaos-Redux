@@ -186,6 +186,19 @@ The active mine pulse can enter an enabled evolution after its state gates and M
 
 The Resource Curse layers dependence, patronage, concession capture, illicit revenue, reform, and sovereign-control pressure over the ordinary mine lifecycle. The Gilded Sovereignty is a late Resource Curse outcome, not a fourth evolution row.
 
+### The Gilded Sovereignty answers
+
+Each answer has its own outcome and constraint (`riches_found_gilded` constants, helpers in `common/scripted_effects/029_riches_found_late_outcome_effects.txt`).
+- Revoke the Charter rolls success (weight 60, times 1.5 with a supplied force) against failure (weight 40, times 2 when private-security autonomy is at its gate) in `riches_found_gilded_resolve_revocation`. Success voids the charter and costs 12 Mine Development; failure leaves the authority unanswered, either shuts the works through `riches_found_begin_temporary_closure` or raises armed claimants, guard autonomy and foreign claim pressure, and blocks another attempt for 365 days (`riches_found_gilded_revoke_cooldown`). The Gilded report event `chaosx.nr29.111` describes the outcome.
+- Buy Back the District needs a negotiable authority (`riches_found_gilded_authority_negotiable`: no governing enclave, guard autonomy below 80) and a treasury that can carry it (`riches_found_country_can_fund_buy_back`: more than 20 civilian factories or 150 political power).
+- Share Sovereignty costs the controller 0.10 political power a day per shared district through the country modifier `riches_found_country_mine_authority`, and the shared district can no longer be closed through Temporary Closure or given an exclusive concession.
+- Recognize the Board seats a captured board when the guards or owners run the district (`riches_found_gilded_board_would_be_captured`: autonomy at its gate, private dominance or an exclusive concession), which raises illicit capture and guard autonomy, and a representative board otherwise, which raises Revenue Legitimacy and Local Order (`riches_found_gilded_seat_board`).
+- Let the Board Govern costs 2 percent stability and 15 percent opinion gain per governing district and makes law changes 15 percent dearer through the same country modifier, which `riches_found_refresh_authority_terms` rebuilds with every controller aggregate.
+- Seize the Enclave keeps its harm, Chaos Meter and condemnation consequences.
+
+An authority that was never answered or that governs as an enclave outlives a change of controller (`riches_found_handle_gilded_transfer`): an occupier's arrival raises guard autonomy by 15, and the new controller receives `chaosx.nr29.113`, which offers continuity for recognition (the board governs as an enclave and order rises) or confrontation (guard autonomy rises, order falls and an enclave loses its standing, so the authority must be answered again).
+The No Man Owns the Mountain hooks are unchanged: a successful revocation, a buy-back, shared sovereignty and a recognized board still record the reform, and a governing enclave or a seizure still disqualifies it.
+
 Gold Disease is a fictional compulsive administrative and social crisis. It uses Event 029-specific pressure, movement, sanitation, quarantine, administration, and containment state and never invokes the biological outbreak, disease, or plague systems.
 
 Demons Beneath the Mine uses an Event 029-specific supernatural-force record, deep-excavation pressure, bargains, evacuation, scientific, religious, engineering, sealing, and containment routes. It does not reuse Event 018 underground actors, Oth-Kesh, or any existing terminal entity. The Bottomless Account is a late Demons Beneath the Mine outcome, not a fifth evolution row.
