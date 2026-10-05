@@ -26,7 +26,7 @@ SourceContractError = _PARSER.SourceContractError
 EFFECT_FILES = (
     r"common\scripted_effects\famine_core_effects.txt",
     r"common\scripted_effects\famine_adapter_effects.txt",
-    r"common\scripted_effects\chaosx_dynamic_effects.txt",
+    r"common\scripted_effects\famine_relief_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\famine_core_triggers.txt",
@@ -39,12 +39,15 @@ CONSTANT_GROUPS = {
     "famine_food_stage", "famine_food_timing", "famine_food_weight",
     "famine_mission_contract", "famine_occupation_profile", "famine_profile_context",
     "famine_profile_id", "famine_profile_mode", "famine_profile_state_id",
+    "famine_relief_result", "famine_relief_route_mode", "famine_relief_runtime",
+    "famine_relief_threshold", "famine_relief_timing", "famine_relief_weight",
     "famine_surface_context", "humanitarian_legacy_cost", "humanitarian_population",
     "humanitarian_pressure_source", "humanitarian_runtime", "migration_border_policy",
 }
 CONSTANT_FILES = (
     "chaos_meter_constants.txt", "chaosx_date_units_constants.txt", "civilian_transfer_constants.txt",
-    "famine_core_constants.txt", "famine_mission_constants.txt", "humanitarian_legacy_cost_constants.txt",
+    "famine_core_constants.txt", "famine_mission_constants.txt", "famine_relief_constants.txt",
+    "humanitarian_legacy_cost_constants.txt",
     "humanitarian_runtime_constants.txt", "migration_core_constants.txt",
 )
 SCOPE_NAMES = {"OWNER": "event_target:__famine_owner__", "CONTROLLER": "event_target:__famine_controller__", "FROM": "event_target:__famine_from__"}
@@ -133,7 +136,7 @@ class FamineRuntime(_PARSER.Event35Runtime):
     def __init__(self):
         self.helper_returns, self.from_scope = [], None
         saved = (_PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES, _PARSER.read_definitions)
-        _PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES = EFFECT_FILES[:2], TRIGGER_FILES
+        _PARSER.EFFECT_FILES, _PARSER.TRIGGER_FILES = EFFECT_FILES, TRIGGER_FILES
         _PARSER.read_definitions = lambda path: read_parseable_definitions(str(path))
         try:
             super().__init__()
@@ -172,6 +175,7 @@ class FamineRuntime(_PARSER.Event35Runtime):
             return self.calendar_date < right if op == "<" else self.calendar_date > right if op == ">" else self.calendar_date == right
         if key == "scope_exists": return True
         if key == "state": return scope.kind == "state" and scope.id == self._value(value)
+        if key == "has_event_target": return value in self.targets
         if key == "tag":
             target = self._value(value)
             tag = target.values.get("tag") if isinstance(target, ScopeType) else target
@@ -495,6 +499,46 @@ class FamineTakeoverRegressions(unittest.TestCase):
         refunded = dict(owner.resources)
         rt.run_nodes(receipt_branch, owner, root=owner, from_scope=target)
         self.assertEqual(owner.resources, refunded)
+
+    def test_relief_delivery_copies_transfer_outputs_across_scopes(self):
+        rt = self.runtime
+        contract = rt.effects["famine_relief_deliver_contract"].body
+        owner_gate = next(n for n in contract if n.key == "if")
+        delivery_gate = next(n for n in owner_gate.value if n.key == "if")
+        delivery_body = [n for n in delivery_gate.value if n.key != "limit"]
+        donor_copy = next(n for n in delivery_body if n.key == "event_target:famine_relief_delivery_donor_state")
+        recipient_gate = next(n for n in delivery_body[delivery_body.index(donor_copy) + 1:] if n.key == "if")
+        publication = []
+        for node in recipient_gate.value:
+            if node.key == "limit":
+                publication.append(node)
+            else:
+                publication.append(node)
+                if node.key == "set_variable" and _PARSER.first(node.value, "famine_relief_corridor_proof_date") is not None:
+                    break
+        recipient_copy = Node(recipient_gate.key, recipient_gate.op, publication, recipient_gate.line)
+        donor_country, recipient_country = country("BEL"), country("CHI")
+        donor, recipient = state(295, donor_country), state(607, recipient_country)
+        for province, stock in ((donor, 1000), (recipient, 200)):
+            province.values.update(famine_food_reserve_amount=Decimal(stock), infrastructure_level=5)
+            province.flags.add("famine_food_reserve_initialized")
+        recipient.values["famine_relief_contract_amount"] = Decimal(250)
+        recipient.values["famine_relief_route_mode"] = rt.constants["constant:famine_relief_route_mode.land"]
+        rt.targets.update({"famine_relief_delivery_donor_state": donor, "famine_relief_delivery_donor_country": donor_country,
+                           "famine_relief_selection_recipient": recipient, "famine_food_reserve_destination": recipient})
+        outputs = {"famine_relief_delivery_result": Decimal(0), "famine_relief_delivery_debit": Decimal(0),
+                   "famine_relief_delivery_credit": Decimal(0), "famine_food_reserve_transfer_result": Decimal(0),
+                   "famine_food_reserve_transfer_source_debit_output": Decimal(0),
+                   "famine_food_reserve_transfer_destination_credit_output": Decimal(0)}
+        frame = rt.run_nodes([donor_copy, recipient_copy], recipient, caller_temps=outputs)
+        self.assertEqual(frame["famine_relief_delivery_result"], rt.constants["constant:civilian_transfer_route_result.valid"])
+        self.assertEqual(frame["famine_relief_delivery_debit"], Decimal(250))
+        self.assertEqual(frame["famine_relief_delivery_credit"], Decimal(250))
+        self.assertEqual(donor.values["famine_food_reserve_amount"] + recipient.values["famine_food_reserve_amount"], Decimal(1200))
+        for name in ("famine_relief_delivery_result", "famine_relief_delivery_debit", "famine_relief_delivery_credit"):
+            self.assertNotIn(name, donor.values)
+        self.assertEqual(recipient.values["famine_relief_last_delivery_debit"], Decimal(250))
+        self.assertEqual(recipient.values["famine_relief_last_delivery_credit"], Decimal(250))
 
     def test_stage_clock_reversals_and_recovery_step_reset(self):
         rt = self.runtime

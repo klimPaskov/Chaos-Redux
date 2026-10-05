@@ -461,10 +461,13 @@ famine_relief_deliver_contract = {
 					set_temp_variable = { famine_food_reserve_transfer_request_proven = constant:famine_relief_runtime.one }
 					set_temp_variable = { famine_food_reserve_transfer_route_proven = constant:famine_relief_runtime.one }
 					set_temp_variable = { famine_food_reserve_transfer_actor_proven = constant:famine_relief_runtime.one }
-			famine_transfer_reserves = yes
-					set_variable = { famine_relief_delivery_result = famine_food_reserve_transfer_result }
-					set_variable = { famine_relief_delivery_debit = famine_food_reserve_transfer_source_debit_output }
-					set_variable = { famine_relief_delivery_credit = famine_food_reserve_transfer_destination_credit_output }
+					set_temp_variable = { famine_food_reserve_transfer_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { famine_food_reserve_transfer_source_debit_output = constant:famine_food_reserve.zero }
+					set_temp_variable = { famine_food_reserve_transfer_destination_credit_output = constant:famine_food_reserve.zero }
+					famine_transfer_reserves = yes
+					set_temp_variable = { famine_relief_delivery_result = famine_food_reserve_transfer_result }
+					set_temp_variable = { famine_relief_delivery_debit = famine_food_reserve_transfer_source_debit_output }
+					set_temp_variable = { famine_relief_delivery_credit = famine_food_reserve_transfer_destination_credit_output }
 				}
 			}
 			if = {
@@ -487,8 +490,8 @@ famine_relief_deliver_contract = {
 						}
 				}
 				}
-				set_variable = { famine_relief_last_delivery_debit = event_target:famine_relief_delivery_donor_state.famine_relief_delivery_debit }
-				set_variable = { famine_relief_last_delivery_credit = event_target:famine_relief_delivery_donor_state.famine_relief_delivery_credit }
+				set_variable = { famine_relief_last_delivery_debit = famine_relief_delivery_debit }
+				set_variable = { famine_relief_last_delivery_credit = famine_relief_delivery_credit }
 				set_variable = { famine_relief_corridor_donor_state = event_target:famine_relief_delivery_donor_state }
 				set_variable = { famine_relief_corridor_donor_country = event_target:famine_relief_delivery_donor_country }
 				set_variable = { famine_relief_corridor_mode = famine_relief_route_mode }

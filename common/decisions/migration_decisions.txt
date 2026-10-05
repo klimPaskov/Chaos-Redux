@@ -56,6 +56,7 @@ migration_decision_category = {
 				set_temp_variable = { humanitarian_achievement_corridor_origin_state_id_request = id }
 				set_temp_variable = { humanitarian_achievement_corridor_front_state_id_request = humanitarian_corridor_front_state_id }
 				set_temp_variable = { humanitarian_achievement_corridor_counterpart_country_id_request = humanitarian_corridor_counterpart_country_id }
+				set_temp_variable = { humanitarian_corridor_finalize_result = constant:humanitarian_corridor_result.invalid }
 				humanitarian_corridor_finalize = yes
 				if = {
 					limit = { check_variable = { var = humanitarian_corridor_finalize_result value = constant:humanitarian_corridor_result.valid compare = equals } }
@@ -885,6 +886,15 @@ migration_decision_category = {
 							}
 							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 							humanitarian_corridor_execute_evacuation = yes
 							if = {
 								limit = {
@@ -933,6 +943,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -940,6 +951,17 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 						migration_decision_execute_new_origin_organized_evacuation = yes
 						if = {
 							limit = {
@@ -1118,6 +1140,15 @@ migration_decision_category = {
 							}
 							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 							humanitarian_corridor_execute_evacuation = yes
 							if = {
 								limit = {
@@ -1170,6 +1201,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -1177,6 +1209,17 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 						migration_decision_execute_new_origin_organized_evacuation = yes
 						if = {
 							limit = {
@@ -1708,6 +1751,12 @@ migration_decision_category = {
 					set_temp_variable = { migration_cohort_id_to_move = migration_current_cohort_id }
 					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
 				}
+				set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+				set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+				set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+				set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+				set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 				ROOT = { migration_resolve_cohort_origin = yes }
 				FROM = {
 					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.one }
@@ -1721,6 +1770,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -1728,9 +1778,19 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_decision_history_preflight_result = constant:civilian_transfer_route_result.invalid }
 						migration_decision_preflight_destination_history = yes
 						if = {
 							limit = { check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+							set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 							migration_decision_execute_hosted_transfer = yes
 						}
 					}
@@ -1748,6 +1808,7 @@ migration_decision_category = {
 							limit = { check_variable = { var = migration_decision_atomic_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
 							set_temp_variable = { migration_decision_reception_receipt_cohort_id_request = migration_cohort_id_to_move }
 							set_temp_variable = { migration_decision_reception_receipt_generation_request = migration_projection_last_generation }
+							set_temp_variable = { migration_decision_reception_receipt_result = constant:civilian_transfer_route_result.invalid }
 							migration_decision_record_medical_reception_receipt = yes
 							if = {
 								limit = { check_variable = { var = migration_decision_reception_receipt_result value = constant:civilian_transfer_route_result.valid compare = equals } }
@@ -1941,6 +2002,12 @@ migration_decision_category = {
 					migration_select_foreign_transit_destination = yes
 					set_temp_variable = { migration_destination_selection_history_required = constant:migration_destination_selection_runtime.zero }
 				}
+				set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+				set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+				set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+				set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+				set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 				ROOT = { migration_resolve_cohort_origin = yes }
 				event_target:civilian_transfer_origin = {
 					if = {
@@ -1949,6 +2016,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -1956,9 +2024,19 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_transit }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_decision_history_preflight_result = constant:civilian_transfer_route_result.invalid }
 						migration_decision_preflight_destination_history = yes
 						if = {
 							limit = { check_variable = { var = migration_decision_history_preflight_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+							set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 							migration_decision_execute_hosted_transfer = yes
 						}
 					}
@@ -2092,6 +2170,12 @@ migration_decision_category = {
 					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
 				}
 				ROOT = {
+					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 					migration_resolve_cohort_origin = yes
 					set_temp_variable = { migration_forced_return_result = constant:civilian_transfer_route_result.invalid }
 					if = {
@@ -2120,6 +2204,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_exact_return_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
@@ -2127,6 +2212,15 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_forced_return }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 						migration_decision_execute_hosted_transfer = yes
 						# The population primitive already registered these route deaths. The
 						# exact-transfer adapter adds only the Condemnation source.
@@ -2155,6 +2249,7 @@ migration_decision_category = {
 						}
 						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
+						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
 						migration_record_state_return_projection = yes
 					}
 				}
@@ -2424,6 +2519,12 @@ migration_decision_category = {
 					migration_select_third_country_resettlement_destination = yes
 				}
 				ROOT = {
+					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 					migration_resolve_cohort_origin = yes
 				}
 				event_target:civilian_transfer_origin = {
@@ -2432,6 +2533,7 @@ migration_decision_category = {
 					set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 					migration_decision_prove_route_contract = yes
 					set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -2439,6 +2541,15 @@ migration_decision_category = {
 					set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_resettlement }
 					set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 					if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+					set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+					set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 					migration_decision_execute_hosted_transfer = yes
 				}
 				event_target:civilian_transfer_route_destination = {
@@ -2450,6 +2561,7 @@ migration_decision_category = {
 						}
 						set_temp_variable = { migration_state_resettlement_projection_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { migration_state_resettlement_people = civilian_transfer_survivor_credit }
+						set_temp_variable = { migration_state_resettlement_projection_result = constant:civilian_transfer_route_result.invalid }
 						migration_record_state_resettlement_projection = yes
 						if = {
 							limit = { check_variable = { var = migration_state_resettlement_projection_result value = constant:civilian_transfer_route_result.valid compare = equals } }
@@ -2569,6 +2681,12 @@ migration_decision_category = {
 					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
 				}
 				ROOT = {
+					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 					migration_resolve_cohort_origin = yes
 					if = {
 						limit = {
@@ -2630,6 +2748,7 @@ migration_decision_category = {
 							set_variable = { migration_destination_reception_proven = constant:humanitarian_runtime.one }
 						}
 					}
+					set_temp_variable = { migration_return_result = constant:humanitarian_runtime.zero }
 					migration_evaluate_voluntary_return = yes
 				}
 				event_target:civilian_transfer_origin = {
@@ -2639,6 +2758,7 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						migration_decision_prove_exact_return_route_contract = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
@@ -2646,6 +2766,15 @@ migration_decision_category = {
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 						if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 						migration_decision_execute_hosted_transfer = yes
 						if = {
 							limit = {
@@ -2674,6 +2803,7 @@ migration_decision_category = {
 						}
 						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
+						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
 						migration_record_state_return_projection = yes
 						OWNER = {
 							set_temp_variable = { humanitarian_achievement_resolution_cohort_id = migration_cohort_id_to_move }
@@ -2820,6 +2950,12 @@ migration_decision_category = {
 					set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
 				}
 				ROOT = {
+					set_temp_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_destination_resolution_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { migration_cohort_resolution_count = constant:humanitarian_runtime.zero }
+					set_temp_variable = { migration_cohort_resolved_amount = constant:humanitarian_population.zero }
+					set_temp_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.unknown }
+					set_temp_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.none }
 					migration_resolve_cohort_origin = yes
 					set_temp_variable = { migration_forced_return_result = constant:civilian_transfer_route_result.invalid }
 					if = {
@@ -2868,6 +3004,7 @@ migration_decision_category = {
 					set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 					migration_decision_prove_exact_return_route_contract = yes
 					set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 					set_temp_variable = { civilian_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
@@ -2875,6 +3012,15 @@ migration_decision_category = {
 					set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_forced_return }
 					set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
 					if = { limit = { check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = greater_than } } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+					set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+					set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+					set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+					set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 					migration_decision_execute_hosted_transfer = yes
 					# Route deaths are already recorded by the population primitive. The
 					# exact-transfer adapter adds only the Condemnation source.
@@ -2904,6 +3050,7 @@ migration_decision_category = {
 						}
 						set_temp_variable = { migration_state_return_projection_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { migration_state_return_people = civilian_transfer_survivor_credit }
+						set_temp_variable = { migration_state_return_projection_result = constant:civilian_transfer_route_result.invalid }
 						migration_record_state_return_projection = yes
 						clear_variable = migration_destination_food_safe_proven
 						clear_variable = migration_destination_reception_proven

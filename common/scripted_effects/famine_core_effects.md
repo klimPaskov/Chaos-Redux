@@ -49,6 +49,11 @@ It floors the accepted amount to whole reserve units, preserves unused stores, a
 The release decision declares its consumed/result/relief outputs before the wrapper call and returns its paid political power, support equipment, and fuel only when the measured stock debit is zero.
 That refund sits inside the exact paid-work branch, after consuming its payment marker, so a repeated callback cannot refund again.
 
+The relief delivery wrapper declares the reserve transfer's result, source debit, and destination credit before calling `famine_transfer_reserves`.
+The corridor relief wrapper declares `famine_relief_delivery_result` before calling that delivery owner.
+Measured food delivery therefore remains available through both nested return boundaries, with population and Deaths accounting untouched.
+Delivery copies stay temporary throughout the donor-to-recipient scope change, and the recipient's durable last-delivery amounts read those unscoped returns rather than unrelated donor variables.
+
 Example, after initializing owner facts and collecting current context:
 
 ```text

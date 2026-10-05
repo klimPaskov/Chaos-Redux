@@ -16,6 +16,10 @@ Acceptance basis: the user's authority to repair weak famine design and finish t
    Two declarations at each of its transaction and rollback entries cover those consumers without rewriting shared transfer logic.
    The migration-owned custody, return, resettlement, and forced-transfer callers also declare the origin resolver's consumed scalar outputs.
    Two equivalent Camp-owner call sites remain a routed external finding, with no edits to that owner's files.
+   A final adversarial review found that the two decision files themselves also consume owner-helper and forwarded physical-transfer outputs without declaring storage.
+   The affected callbacks declare the exact returned fields before their calls, preserving successful movement/arrival/mission evidence and measured-zero refund checks without changing payments, routes, or AI weights.
+   Relief delivery also mixed temporary return fields with normal donor variables.
+   Its donor copies and recipient publication read the same temporary measured amounts, with both delivery and corridor callers declaring the returns they consume.
 2. Clear the opposite stage clock when food conditions reverse direction.
    An escalation attempt must not continue a recovery clock, and a recovery attempt must not keep an old escalation clock.
    Each qualifying interval must be continuous, as required by the existing hysteresis design.

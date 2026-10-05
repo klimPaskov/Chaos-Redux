@@ -491,6 +491,7 @@ famine_decision_category = {
 				if = {
 					limit = { check_variable = { var = famine_emergency_imports_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
 					FROM = {
+						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
 						famine_relief_deliver_contract = yes
 						if = {
 							limit = {
@@ -850,6 +851,7 @@ famine_decision_category = {
 				if = {
 					limit = { check_variable = { var = famine_escorted_relief_convoy_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
 					FROM = {
+						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
 						famine_relief_deliver_contract = yes
 						if = {
 							limit = {
@@ -1104,6 +1106,7 @@ famine_decision_category = {
 				if = {
 					limit = { check_variable = { var = famine_emergency_airlift_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
 					FROM = {
+						set_temp_variable = { famine_relief_delivery_result = constant:famine_relief_result.invalid }
 						famine_relief_deliver_contract = yes
 						if = {
 							limit = {
@@ -1431,6 +1434,15 @@ famine_decision_category = {
 							}
 							set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 							set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+							set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+							set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+							set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+							set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 							humanitarian_corridor_execute_evacuation = yes
 							if = {
 								limit = {
@@ -1482,13 +1494,26 @@ famine_decision_category = {
 						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.zero }
 						famine_decision_prove_evacuation_route = yes
 						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
 						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.one }
 						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
 						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.zero }
 						migration_decision_stage_trapped_obligation = yes
+						set_temp_variable = { migration_cohort_record_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { migration_cohort_id_result = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_decision_atomic_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+						set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+						set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_survivor_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_route_deaths = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_conservation_ledger = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_projection_result = constant:migration_core_reconciliation.transfer_projection_invalid }
 						migration_decision_execute_new_origin_organized_evacuation = yes
 						if = {
 							limit = {
@@ -1517,6 +1542,7 @@ famine_decision_category = {
 								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
 								check_variable = { var = civilian_transfer_projection_result value = constant:civilian_transfer_route_result.valid compare = equals }
 							}
+							set_temp_variable = { migration_decision_evacuation_finalize_result = constant:humanitarian_runtime.zero }
 							migration_decision_finalize_organized_evacuation = yes
 							if = {
 								limit = { check_variable = { var = migration_decision_evacuation_finalize_result value = constant:humanitarian_runtime.one compare = equals } }
@@ -1661,6 +1687,7 @@ famine_decision_category = {
 				FROM = {
 					famine_initialize_state = yes
 					save_event_target_as = famine_food_reserve_destination
+					set_temp_variable = { famine_requisition_donor_result = constant:humanitarian_runtime.zero }
 					famine_select_safe_food_reserve_donor = yes
 					if = {
 						limit = {
@@ -1673,6 +1700,8 @@ famine_decision_category = {
 							set_temp_variable = { famine_food_reserve_transfer_request_proven = constant:humanitarian_runtime.one }
 							set_temp_variable = { famine_food_reserve_transfer_route_proven = constant:humanitarian_runtime.one }
 							set_temp_variable = { famine_food_reserve_transfer_actor_proven = constant:humanitarian_runtime.one }
+							set_temp_variable = { famine_food_reserve_transfer_result = constant:civilian_transfer_route_result.invalid }
+							set_temp_variable = { famine_food_reserve_transfer_destination_credit_output = constant:famine_food_reserve.zero }
 							famine_requisition_reserves = yes
 							if = {
 								limit = {
