@@ -234,3 +234,13 @@ Basis: the lead's round-2 decision 1 and routed load defect B033, where `recruit
 The curated Britain row attaches `ENG_neville_chamberlain` with `set_nationality = PREV` when the country does not already hold him, then promotes him and keeps the ruling-only verification before the victim is retired.
 This mirrors the Assassin State setup, which attaches its predefined commanders the same way, and Kaiserreich's `CHN_recruit_character_effect`; vanilla recruits Chamberlain only in its 1939 history block, so he is unrecruited when Baldwin is murdered in a 1936 start.
 No Event 039 file calls `recruit_character`.
+
+## D23. The Assassin focus tree is loaded explicitly
+
+Disposition: implemented (round 2); the tree's appearance on the committed state and on a territorial heir needs live confirmation.
+Basis: the lead's round-2 decision 2 and Event 005's dynamic packages, which call `load_focus_tree` on their created countries.
+The tree's `country` block reads `murder_mystery_assassin_state_active`, which the commit sets only after `create_dynamic_country` has already chosen a tree, so the 83-focus tree was unreachable.
+`murder_mystery_commit_assassin_state_transaction` now calls `load_focus_tree = { tree = murder_mystery_assassin_focus_tree keep_completed = no }` on the validated state inside its postcondition branch, so a rolled-back candidate never gets it.
+`murder_mystery_install_territorial_heir` loads the same tree on the heir unless the heir already has it (`has_focus_tree`), so an heir that was already on the tree keeps its finished focuses and any other heir starts it fresh.
+The `country` block stays as a fallback; focus rewards, route shortcuts and the Evolution V shortcut read country flags and variables that both paths set before or independently of the load.
+MCP evidence: `hoi4.focus_inspect` of `murder_mystery_assassin_focus_tree` reports 83 focuses, zero tree diagnostics and zero connector crossings; the only blocking diagnostic in the result is a vanilla file (`TSR_lingguang_incident_joint_branch.txt`).

@@ -142,6 +142,9 @@ No government decision escalates the movement against its own country.
 Derivatives also receive two research slots, neutrality politics without elections, stability and war support from `murder_mystery_starting_forces_float`, political power, and the Cells Under Arms idea.
 Shadow Companies, Silent Guards, Master Assassins and Mechanized Assassins stay locked until their technologies are researched or granted by focus.
 
+The committed Assassin State loads `murder_mystery_assassin_focus_tree` explicitly in `murder_mystery_commit_assassin_state_transaction`, because `create_dynamic_country` picks a tree before the commit sets the flags that the tree's `country` block reads; a rolled-back candidate is annexed before the commit and never receives the tree.
+The `country` block stays as a fallback for the same validated countries.
+
 ### Assassin technology line
 
 The seven technologies in `common/technologies/039_murder_mystery_assassin_technologies.txt` form one branch at the bottom of the infantry folder, rooted in the `murder_mystery_clandestine_combat_training_tree` gridbox of `interface/countrytechtreeview.gui` (pixel origin 140, 1730, below the special forces branch).
@@ -190,7 +193,7 @@ The classification runs once:
 
 1. If a territorial state ever existed and the territorial inheritance has not been used, the best active derivative becomes the new center.
    Ranking is owned states, then industry (capped), then Cohesion, over the bounded derivative registry.
-   The heir takes the central flags and pointer, suffers a Cohesion and Reach loss, and the other derivatives rebind to it when its Cohesion reaches `rebind_cohesion`; otherwise they detach as autonomous countries.
+   The heir takes the central flags and pointer, loads the Assassin focus tree (an heir already on that tree keeps its finished focuses, any other heir starts it fresh), suffers a Cohesion and Reach loss, and the other derivatives rebind to it when its Cohesion reaches `rebind_cohesion`; otherwise they detach as autonomous countries.
    Report: `chaosx.nr39.24`.
 2. Otherwise, if a cell at stage 3 or higher survives, the network continues underground with no leader change, centered on its most mature cell.
    Report: `chaosx.nr39.25`.

@@ -1321,6 +1321,12 @@ murder_mystery_install_territorial_heir = {
 	set_country_flag = murder_mystery_brotherhood_operations_open
 	set_country_flag = murder_mystery_investigation_country
 	set_variable = { murder_mystery_investigation_phase = constant:murder_mystery_phase.final_operation }
+	# An heir already on the movement tree keeps its finished focuses; any other
+	# heir starts the tree fresh.
+	if = {
+		limit = { NOT = { has_focus_tree = murder_mystery_assassin_focus_tree } }
+		load_focus_tree = { tree = murder_mystery_assassin_focus_tree keep_completed = no }
+	}
 	save_global_event_target_as = murder_mystery_assassin_state
 	set_global_flag = murder_mystery_assassin_state_exists
 	set_global_flag = murder_mystery_central_or_heir_validated
