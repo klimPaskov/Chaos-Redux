@@ -394,3 +394,11 @@ The combined share is clamped to `maximum_fraction` (1.00), and the modifier is 
 Joining the network refreshes the modifier at once; the decision tooltip states the value; `ai_will_do` is unchanged.
 Basis: Part 6 says the observation network "improves weather warning, contributes a bounded amount to global dust decay, and reduces the country's warning delay for linked disasters"; the air-weather share is the supported national form of the weather-warning benefit.
 The linked-disaster warning clause has nothing to act on: Event 028 calls its Event 013 secondary disasters only inside the impact transaction (`asteroid_incoming_apply_state_profile`), before any country can join the network, so no later linked disaster exists whose warning could be improved.
+
+### Rival crater actions target the crater-site array
+
+Decision: Reconnoitre a Crater Site, Disrupt Extraction Routes and Prepare a Crater Offensive use `state_target = yes` with `target_array = global.asteroid_incoming_mineral_site_states` instead of `state_target = any`.
+That existing global array already is the persistent crater-site array: the impact transaction adds the main crater when it registers it, the fragment planner adds every applied fragment centre, and neither `asteroid_incoming_initialize_transaction`, `asteroid_incoming_cleanup_transaction`, `asteroid_incoming_fail_closed_transaction` nor `asteroid_incoming_cleanup_finished_transaction` clears it, so it survives save and load like any global array; a comment in the cleanup now records that contract.
+A second array with the same members was not added.
+`visible` and `target_trigger` are unchanged.
+Basis: the wiki Decision modding section (`state_target = any` checks every state in the game daily, and explicit targets need `state_target = yes` or `any`, lines 578-584) and the vanilla precedent `common/decisions/AUS.txt:942-944` (`state_target = yes` with a state `target_array`) and `CHI_decisions.txt:7929` (a `global.` target array).

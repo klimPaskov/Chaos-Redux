@@ -896,9 +896,13 @@ asteroid_incoming_recovery_category = {
 	}
 
 	# ----------------------------- Rival site actions -----------------------
+	# Rival actions read only the crater-site array: the main crater and every
+	# applied fragment centre, registered at impact and never cleared, so the
+	# daily target check visits at most seven states instead of the whole map.
 	decision_asteroid_incoming_reconnoiter_crater_site = {
 		icon = GFX_decision_028_rival_reconnaissance
-		state_target = any
+		state_target = yes
+		target_array = global.asteroid_incoming_mineral_site_states
 		on_map_mode = map_and_decisions_view
 		visible = {
 			has_war = yes
@@ -984,7 +988,8 @@ asteroid_incoming_recovery_category = {
 
 	decision_asteroid_incoming_disrupt_extraction_routes = {
 		icon = GFX_decision_028_rival_disruption
-		state_target = any
+		state_target = yes
+		target_array = global.asteroid_incoming_mineral_site_states
 		on_map_mode = map_and_decisions_view
 		visible = { has_war = yes has_global_flag = asteroid_incoming_minerals_active asteroid_incoming_country_has_crater_recovery_surface = yes FROM = { AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_route_disruption_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
 		available = {
@@ -1062,7 +1067,8 @@ asteroid_incoming_recovery_category = {
 
 	decision_asteroid_incoming_prepare_crater_offensive = {
 		icon = GFX_decision_028_rival_offensive
-		state_target = any
+		state_target = yes
+		target_array = global.asteroid_incoming_mineral_site_states
 		on_map_mode = map_and_decisions_view
 		visible = { has_war = yes has_global_flag = asteroid_incoming_minerals_active asteroid_incoming_country_has_crater_recovery_surface = yes FROM = { AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_offensive_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
 		available = {
