@@ -1371,33 +1371,6 @@ gods_of_africa_select_demand_family = {
 		limit = { has_variable = gods_of_africa_need_largest_family }
 		set_variable = { gods_of_africa_family_candidate = gods_of_africa_need_largest_family }
 	}
-	# Continuing support (decision L28): from Evolution II, a fuel or rifle
-	# shortage during Africa's war becomes an instalment agreement when the
-	# participant holds the whole amount above its operating floor.
-	else_if = {
-		limit = {
-			has_global_flag = africa_evolution_ii_logged
-			has_war = yes
-			has_event_target = gods_of_africa_demand_participant
-			OR = {
-				AND = {
-					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
-					set_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.fuel_per_instalment }
-					multiply_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.count }
-					add_to_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_value.capacity_floor_fuel }
-					event_target:gods_of_africa_demand_participant = { NOT = { has_fuel < gods_of_africa_instalment_total } }
-				}
-				AND = {
-					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
-					set_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.equipment_per_instalment }
-					multiply_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.count }
-					add_to_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_value.capacity_floor_equipment }
-					event_target:gods_of_africa_demand_participant = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_instalment_total } } }
-				}
-			}
-		}
-		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.continuing_support }
-	}
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero } }
 		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.emergency_relief }
@@ -1499,6 +1472,40 @@ gods_of_africa_select_demand_family = {
 		}
 		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.military_access }
 	}
+	# Continuing support (decisions L28 and L38): from Evolution II, while
+	# Africa is at war, a demand for rifles or fuel, however the ladder above
+	# reached it (Africa's priority, Measure the Needs or the fixed order),
+	# becomes an instalment agreement in that material when the participant is
+	# at peace and holds every instalment above its operating floor. A
+	# participant fighting its own war keeps the eased one-off demand (L23).
+	clear_variable = gods_of_africa_candidate_instalment_material
+	if = {
+		limit = {
+			has_global_flag = africa_evolution_ii_logged
+			has_war = yes
+			has_variable = gods_of_africa_family_candidate
+			has_event_target = gods_of_africa_demand_participant
+			event_target:gods_of_africa_demand_participant = { has_war = no }
+			OR = {
+				AND = {
+					check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.fuel }
+					set_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.fuel_per_instalment }
+					multiply_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.count }
+					add_to_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_value.capacity_floor_fuel }
+					event_target:gods_of_africa_demand_participant = { NOT = { has_fuel < gods_of_africa_instalment_total } }
+				}
+				AND = {
+					check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.land_equipment }
+					set_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.equipment_per_instalment }
+					multiply_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.count }
+					add_to_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_value.capacity_floor_equipment }
+					event_target:gods_of_africa_demand_participant = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_instalment_total } } }
+				}
+			}
+		}
+		set_variable = { gods_of_africa_candidate_instalment_material = gods_of_africa_family_candidate }
+		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.continuing_support }
+	}
 	# The enemy an end-of-support demand names is chosen here, while the
 	# participant is still the demand target.
 	if = {
@@ -1522,21 +1529,13 @@ gods_of_africa_select_demand_family = {
 	if = { limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.military_access } } set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_transaction.concession_pp_amount } }
 	if = { limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.non_aggression } } set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_transaction.concession_pp_amount } }
 	if = { limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.guarantee_africa } } set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_transaction.concession_pp_amount } }
-	# Continuing support: fuel when Africa lacks fuel, otherwise rifles.
-	clear_variable = gods_of_africa_candidate_instalment_material
+	# Continuing support: every instalment of the material the conversion above
+	# named.
 	if = {
 		limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.continuing_support } }
-		set_variable = { gods_of_africa_candidate_instalment_material = constant:gods_of_africa_demand_family.land_equipment }
 		set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_instalments.equipment_per_instalment }
 		if = {
-			limit = {
-				check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
-				set_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.fuel_per_instalment }
-				multiply_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_instalments.count }
-				add_to_temp_variable = { gods_of_africa_instalment_total = constant:gods_of_africa_value.capacity_floor_fuel }
-				event_target:gods_of_africa_demand_participant = { NOT = { has_fuel < gods_of_africa_instalment_total } }
-			}
-			set_variable = { gods_of_africa_candidate_instalment_material = constant:gods_of_africa_demand_family.fuel }
+			limit = { check_variable = { gods_of_africa_candidate_instalment_material = constant:gods_of_africa_demand_family.fuel } }
 			set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_instalments.fuel_per_instalment }
 		}
 		multiply_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_instalments.count }
@@ -3856,15 +3855,17 @@ gods_of_africa_refuse_demand = {
 			set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_increase }
 			gods_of_africa_apply_wrath = yes
 		}
+		# The answer is captured first, so the punishment family reads this
+		# refusal and its material (decision L38).
+		set_temp_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.refusal }
+		set_temp_variable = { gods_of_africa_report_amount = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_report_balance = gods_of_africa_demand_remaining }
+		gods_of_africa_capture_response_report = yes
 		# Evaluate before recording the refusal so the first refusal safety cap
 		# sees a true zero-history refusal count.
 		gods_of_africa_evaluate_punishment = yes
 		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.refusal }
 		gods_of_africa_record_history = yes
-		set_temp_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.refusal }
-		set_temp_variable = { gods_of_africa_report_amount = constant:gods_of_africa_value.zero }
-		set_temp_variable = { gods_of_africa_report_balance = gods_of_africa_demand_remaining }
-		gods_of_africa_capture_response_report = yes
 		if = {
 			limit = { NOT = { has_country_flag = gods_of_africa_punishment_memory_applied } }
 			set_country_flag = gods_of_africa_punishment_memory_applied
@@ -4025,13 +4026,15 @@ gods_of_africa_fail_demand = {
 			set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_increase }
 			gods_of_africa_apply_wrath = yes
 		}
-		gods_of_africa_evaluate_punishment = yes
-		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.failure }
-		gods_of_africa_record_history = yes
+		# The answer is captured first, so the punishment family reads this
+		# failure and its material (decision L38).
 		set_temp_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.failure }
 		set_temp_variable = { gods_of_africa_report_amount = constant:gods_of_africa_value.zero }
 		set_temp_variable = { gods_of_africa_report_balance = gods_of_africa_demand_remaining }
 		gods_of_africa_capture_response_report = yes
+		gods_of_africa_evaluate_punishment = yes
+		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.failure }
+		gods_of_africa_record_history = yes
 		if = {
 			limit = { NOT = { has_country_flag = gods_of_africa_punishment_memory_applied } }
 			set_country_flag = gods_of_africa_punishment_memory_applied

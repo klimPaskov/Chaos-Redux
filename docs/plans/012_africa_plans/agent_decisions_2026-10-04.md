@@ -537,3 +537,26 @@ Decisions:
 - Slot 118 rows were added to the five shared super-event getters with minimal edits.
 - `gods_of_africa_emit_global_credibility_super_event` holds the L17 contract (Gods active and host valid through `gods_of_africa_active_host_is_valid`, Strength band global or higher, once per campaign through `gods_of_africa_global_credibility_super_event_emitted`) and calls the shared Event 012 presenter. It has no caller yet.
 - Not shipped: the sound definition and volume wrappers for audio id 118 and the two call sites. `012_africa_gods_super_event_audio_candidate_2026-10-05.md` lists them as the single remaining step after the user allows the download and the track is archived. No silent, duplicate or synthesized cue is used, and nothing was downloaded.
+
+## L38. Round 2 third review: continuing support is reachable, punishments read the answer they punish, and an empty military strike says so
+
+Disposition: `implemented` (the native results named in L23 to L34 stay `needs_live_game`; the normalized probability audit stays `blocked`).
+
+Basis: a third skeptical review of the round 2 commits (`71f827c1e`, `7f39e00f7`, `2757c1548`, `0df42bcc7`, `db77f0038`, `deb074b03`, `4d7d9f676`, `4e256b85f`, `9f4f3f5b0`, `a392c1548`, `ba5b3f0a4`, `5ce3f0187`) and the review fixes `51d256208` against L23 to L34, the full spec's "Lend-lease and continuing support" and "Punishment family selection" sections, acceptance row DEM-04, and decision L28's intent that continuing support is a real wartime demand.
+
+Decisions:
+
+- Continuing support could practically never be selected. L28 placed it in the selector after Africa's priority and after Measure the Needs' largest shortfall. The priority starts as land equipment, so whenever Africa lacked rifles the priority branch asked for a one-off rifle shipment, and Measure the Needs (an Evolution I node the AI takes early) sets `gods_of_africa_need_largest_family` whenever rifles or fuel are short, so after it the instalment branch was never reached.
+  The instalment agreement is now a form of the rifle or fuel demand rather than a separate rung: at the end of `gods_of_africa_select_demand_family`, from Evolution II while Africa is at war, a `land_equipment` or `fuel` candidate (from the priority, Measure the Needs or the fixed order) becomes `continuing_support` in that material when the participant holds every instalment above its operating floor.
+  A participant at war itself keeps the eased one-off demand of L23: a binding three-month agreement on a country whose stocks a war is draining would turn wartime consumption into broken agreements.
+  The material therefore always matches the need the selector chose, so the priority and the Measure the Needs ranking are honoured.
+- `gods_of_africa_refuse_demand` and `gods_of_africa_fail_demand` evaluated the punishment before capturing the answer, so `gods_of_africa_last_answer_withheld_material` and the stockpile family's "the refused material is the one lost" read the previous answer: a refused rifle demand after an earlier compliance was not treated as withheld material, and an old fuel refusal could make a later recognition refusal destroy fuel. Both now capture the answer first; the breach handling still runs before the capture, and the refusal and failure counts are still recorded after the evaluation, so the first-failure cap is unchanged.
+- A military-losses punishment against a government with too little in its stockpiles reported "Our army lost 0 infantry equipment and 0 support equipment". It now reports `gods_of_africa_punishment_military_empty`, as the stockpile family already did, and the ordinary line says the losses came from the army's stockpiles, which is what the effect removes.
+
+Review findings kept as they are:
+
+- The ultimatum notice and mission promise disaster without the Strength qualifier; the refusal tooltip carries it (L33), and the notice is Africa's own threat.
+- `white_peace` in Africa's scope with `tag = PREV` (L34), `create_wargoal` per claimed state (L34) and the `constant:` reads in `ai_will_do` (L34) are unchanged.
+- Defiance still evaluates its punishment without capturing a response, because defiance has no response report; its family reads the latest recorded answer.
+
+MCP route evidence (2026-10-05): `hoi4_probability_inspect` with `adapter = decision_ai_will_do` and a two-decision `candidatePool` (`gods_of_africa_sign_support_agreement`, `gods_of_africa_comply_demand`) returned "Invalid tool arguments", as in L24 and L34; it was not retried.

@@ -506,7 +506,17 @@ defined_text = {
 		localization_key = gods_of_africa_punishment_stockpile_equipment
 	}
 	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.stockpile } } localization_key = gods_of_africa_punishment_stockpile_empty }
-	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.military } } localization_key = gods_of_africa_punishment_military }
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.military }
+			OR = {
+				check_variable = { gods_of_africa_punishment_report_loss > constant:gods_of_africa_value.zero }
+				check_variable = { gods_of_africa_punishment_report_support_loss > constant:gods_of_africa_value.zero }
+			}
+		}
+		localization_key = gods_of_africa_punishment_military
+	}
+	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.military } } localization_key = gods_of_africa_punishment_military_empty }
 	text = { trigger = { check_variable = { gods_of_africa_last_punishment_family = constant:gods_of_africa_punishment_family.diplomatic } } localization_key = gods_of_africa_punishment_diplomatic }
 	text = {
 		trigger = {
