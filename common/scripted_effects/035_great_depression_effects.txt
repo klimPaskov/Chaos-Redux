@@ -1640,6 +1640,12 @@ great_depression_select_independent_target = {
 			country_event = { id = chaosx.nr35.9 }
 		}
 	}
+	else = {
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr35.22 }
+		}
+	}
 	clear_temp_array = great_depression_independent_target_pool
 }
 
@@ -2619,22 +2625,50 @@ great_depression_queue_social_collapse_activation_report = {
 	}
 }
 
-# COUNTRY source scope. Called once when event_target:great_depression_exposure_target
-# first joins this source's material exposure set. The exposed country keeps a
-# short queue of origins and relationships, so two origins reaching it in the
-# same week each get their own report. One targeted receipt per source country
-# holds the source episode id, so a source episode reports to a partner once.
+# COUNTRY scope. A new national episode starts a report chain. A financial
+# conversion inherits the source chain, including when several generations
+# spread during the same episode. The source scope was frozen at API entry.
+great_depression_initialize_report_chain = {
+	set_variable = { great_depression_report_chain_episode = great_depression_active_episode_id }
+	clr_country_flag = great_depression_spread_news_sent
+	clr_country_flag = great_depression_first_spread_news_pending
+	if = {
+		limit = {
+			check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.financial_contagion_conversion compare = equals }
+			has_variable = great_depression_call_source_country_scope
+		}
+		var:great_depression_call_source_country_scope = {
+			if = {
+				limit = { has_variable = great_depression_report_chain_episode }
+				PREV = { set_variable = { great_depression_report_chain_episode = PREV.great_depression_report_chain_episode } }
+			}
+			else = {
+				PREV = { set_variable = { great_depression_report_chain_episode = PREV.great_depression_active_episode_id } }
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.worldwide_depression_conversion compare = equals } }
+		set_variable = { great_depression_report_chain_episode = global.great_depression_global_episode_id }
+	}
+}
+
+# COUNTRY source scope. A recipient hears about a spreading chain once. Several
+# independent origins reaching it before delivery are summarized in one report.
+# A targeted episode value survives cleanup so a continuing foreign chain
+# cannot send the same report after the recipient recovers. No growing scan.
 great_depression_queue_exposed_partner_report = {
 	event_target:great_depression_exposure_target = {
+		set_temp_variable = { great_depression_report_chain_key = PREV.great_depression_report_chain_episode }
 		if = {
 			limit = {
-				NOT = { check_variable = { var = great_depression_exposure_report_from_@PREV value = PREV.great_depression_active_episode_id compare = equals } }
+				NOT = { has_variable = great_depression_exposure_report_chain_@var:great_depression_report_chain_key }
 				OR = {
 					NOT = { has_variable = great_depression_exposure_report_origins^num }
 					check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_event.contagion_source_cap compare = less_than }
 				}
 			}
-			set_variable = { great_depression_exposure_report_from_@PREV = PREV.great_depression_active_episode_id }
+			set_variable = { great_depression_exposure_report_chain_@var:great_depression_report_chain_key = great_depression_report_chain_key }
 			add_to_array = { array = great_depression_exposure_report_origins value = PREV }
 			add_to_array = { array = great_depression_exposure_report_relationships value = PREV.great_depression_exposure_relationship_type }
 			if = {
@@ -2646,57 +2680,40 @@ great_depression_queue_exposed_partner_report = {
 	}
 }
 
-# COUNTRY scope, the exposed country. Present the oldest queued origin.
+# COUNTRY receiver. Freeze the first origin and the number of other affected
+# markets, then consume the batch at delivery rather than queuing more popups.
 great_depression_open_exposed_partner_report = {
-	if = {
-		limit = {
-			has_variable = great_depression_exposure_report_origins^num
-			check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_api.zero compare = greater_than }
-		}
-		set_variable = { great_depression_exposure_report_origin = great_depression_exposure_report_origins^0 }
-		set_variable = { great_depression_exposure_report_relationship = great_depression_exposure_report_relationships^0 }
-	}
+	set_variable = { great_depression_exposure_report_origin = great_depression_exposure_report_origins^0 }
+	set_variable = { great_depression_exposure_report_relationship = great_depression_exposure_report_relationships^0 }
+	set_variable = { great_depression_exposure_report_other_count = great_depression_exposure_report_origins^num }
+	subtract_from_variable = { great_depression_exposure_report_other_count = constant:great_depression_api.one }
+	great_depression_close_exposed_partner_report = yes
 }
 
-# COUNTRY scope, the exposed country. Consume the presented origin and queue
-# the next one, if any.
 great_depression_close_exposed_partner_report = {
 	clr_country_flag = great_depression_exposure_report_queued
-	if = {
-		limit = {
-			has_variable = great_depression_exposure_report_origins^num
-			check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_api.zero compare = greater_than }
-		}
-		remove_from_array = { array = great_depression_exposure_report_origins index = 0 }
-		remove_from_array = { array = great_depression_exposure_report_relationships index = 0 }
-	}
-	if = {
-		limit = {
-			has_variable = great_depression_exposure_report_origins^num
-			check_variable = { var = great_depression_exposure_report_origins^num value = constant:great_depression_api.zero compare = greater_than }
-		}
-		set_country_flag = great_depression_exposure_report_queued
-		country_event = { id = chaosx.nr35.14 days = 1 }
-	}
+	clear_array = great_depression_exposure_report_origins
+	clear_array = great_depression_exposure_report_relationships
 }
 
-# COUNTRY receiving scope after an accepted contagion conversion, with PREV as
-# the source. The first conversion that opens a full depression from one source
-# episode takes the world news slot in place of the ordinary national news, and
-# later conversions from the same episode keep the ordinary news.
+# COUNTRY receiving scope after an accepted conversion, PREV is the source.
+# One announcement covers the whole spreading chain. Worldwide conversions
+# already have the global announcement, and routine national news is suppressed.
 great_depression_mark_first_contagion_spread = {
 	if = {
-		limit = {
-			check_variable = { var = great_depression_call_started value = constant:great_depression_api.one compare = equals }
-			PREV = {
-				has_variable = great_depression_active_episode_id
-				NOT = { check_variable = { var = great_depression_first_spread_news_episode_id value = great_depression_active_episode_id compare = equals } }
-			}
-		}
-		PREV = { set_variable = { great_depression_first_spread_news_episode_id = great_depression_active_episode_id } }
-		set_variable = { great_depression_first_spread_origin = PREV }
+		limit = { check_variable = { var = great_depression_call_started value = constant:great_depression_api.one compare = equals } }
 		clr_country_flag = great_depression_news_pending
-		set_country_flag = great_depression_first_spread_news_pending
+		if = {
+			limit = {
+				NOT = { has_global_flag = great_depression_worldwide_episode_active }
+				PREV = { NOT = { has_country_flag = great_depression_spread_news_sent } }
+			}
+			PREV = { set_country_flag = great_depression_spread_news_sent }
+			set_variable = { great_depression_first_spread_origin = PREV }
+			set_country_flag = great_depression_first_spread_news_pending
+		}
+		# Every descendant carries the guard, including branches that spread later.
+		set_country_flag = great_depression_spread_news_sent
 	}
 }
 
@@ -2928,17 +2945,25 @@ great_depression_queue_external_surfaces = {
 	}
 	if = {
 		limit = {
+			NOT = { check_variable = { var = great_depression_opening_report_episode value = great_depression_active_episode_id compare = equals } }
 			OR = {
 				check_variable = { var = great_depression_call_report_policy value = constant:great_depression_report_policy.queue compare = equals }
 				check_variable = { var = great_depression_call_report_policy value = constant:great_depression_report_policy.force compare = equals }
 			}
 		}
+		set_variable = { great_depression_opening_report_episode = great_depression_active_episode_id }
 		set_country_flag = great_depression_report_pending
 		set_variable = { great_depression_call_report_queued = constant:great_depression_api.one }
 		country_event = { id = chaosx.nr35.2 days = 1 }
 	}
 	if = {
 		limit = {
+			check_variable = { var = great_depression_call_started value = constant:great_depression_api.one compare = equals }
+			NOT = { has_global_flag = great_depression_worldwide_episode_active }
+			OR = {
+				check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.independent_event_35 compare = equals }
+				check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.industrial_boom_collapse compare = equals }
+			}
 			OR = {
 				check_variable = { var = great_depression_call_news_policy value = constant:great_depression_news_policy.queue compare = equals }
 				check_variable = { var = great_depression_call_news_policy value = constant:great_depression_news_policy.force compare = equals }
@@ -3545,6 +3570,7 @@ great_depression_initialize_new_crisis = {
 		# A new episode uses its own proved floor. Deepening keeps the old floor.
 		set_variable = { great_depression_evolution_floor = great_depression_call_evolution_floor }
 		great_depression_reset_episode_policy_state = yes
+		great_depression_initialize_report_chain = yes
 		set_variable = { great_depression_active = constant:great_depression_api.one }
 		set_country_flag = great_depression_active
 		set_variable = { great_depression_episode_peak_severity = constant:great_depression_api.zero }

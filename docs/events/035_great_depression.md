@@ -494,3 +494,19 @@ Future depth can add more doctrine-specific event prose, more regional center de
 Any future expansion should preserve the fail-closed caller proofs, aligned bounded registries, one-shot consequence receipts, owner adapters, and the separation between national crisis severity and lighter global pressure.
 
 No dedicated scripted GUI is required by the current package; if one is introduced later, it must remain Event 35-owned and use the mandatory event UI worker and MCP visual workflow.
+
+## Report and news pacing
+
+The opening report is sent once per national episode.
+Deepening changes the crisis category and history without repeating the opening report.
+An independent or Event 34 inherited start outside a worldwide depression sends one national news.
+A financial contagion chain sends one world news when its first secondary depression begins, and descendants share that announcement guard.
+Worldwide conversions send local reports and leave world coverage to the one global onset news, the super-event, and the separate guarded world-stage outcomes.
+An exposed country receives one report per spreading chain, with simultaneous independent origins summarized together.
+Delivery consumes the pending batch immediately, so closing a report does not schedule another popup.
+A rejected human firing receives `chaosx.nr35.22`, explaining why no viable independent country can begin a fresh depression.
+
+The rejected-firing report reuses `GFX_report_event_great_depression`, registered in `interface/chaosx_pictures.gfx`, and needs no new artwork.
+Source tests in `.tools/test_event035_reports.py` cover 28 worldwide conversions, a branching financial chain, deepening replay, repeat national episodes, and exposure aggregation.
+They record native event scheduling and do not emulate the game's delayed delivery or rendering.
+Future review should preserve these limits when another cross-country entry is added.

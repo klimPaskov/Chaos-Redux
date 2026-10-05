@@ -35,3 +35,11 @@ The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only edi
 
 - For any event listing kept outside the main row, Event 35 gained the world news `chaosx.nr35.20` (A Clearing Bloc Forms) and `chaosx.nr35.21` (A Protectionist Bloc Forms), each sent once per worldwide depression when its bloc reaches three members including a major power.
 - No change to the Event Details or evolution detail texts.
+
+## 6 October report pacing and rejected firing
+
+Disposition: accepted and queued for the catalog owner because this workstream may not edit the workbook or exports.
+`chaosx.nr35.22` is a local explanation when Event 035 cannot begin in any valid country.
+Routine conversions use country reports, and one secondary-depression news covers a financial contagion chain.
+The local exposure report summarizes simultaneous independent origins and does not repeat for descendants of the same chain.
+The Event Details premise and the three evolution titles are unchanged.

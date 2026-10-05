@@ -26,20 +26,27 @@ country_event = {
 
 	is_triggered_only = yes
 
+	trigger = { has_country_flag = great_depression_report_pending }
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = great_depression_first_spread_news_pending NOT = { has_global_flag = great_depression_worldwide_episode_active } }
+				news_event = { id = chaosx.nr35.15 days = 2 }
+			}
+			else_if = {
+				limit = { has_country_flag = great_depression_news_pending NOT = { has_global_flag = great_depression_worldwide_episode_active } }
+				news_event = { id = chaosx.news.40 days = 2 }
+			}
+			clr_country_flag = great_depression_first_spread_news_pending
+			clr_country_flag = great_depression_news_pending
+			clr_country_flag = great_depression_report_pending
+		}
+	}
+
 	option = {
 		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
 		name = chaosx.nr35.2.a
-		if = {
-			limit = { has_country_flag = great_depression_first_spread_news_pending }
-			news_event = { id = chaosx.nr35.15 days = 2 }
-			clr_country_flag = great_depression_first_spread_news_pending
-		}
-		else_if = {
-			limit = { has_country_flag = great_depression_news_pending }
-			news_event = { id = chaosx.news.40 days = 2 }
-		}
-		clr_country_flag = great_depression_news_pending
-		clr_country_flag = great_depression_report_pending
 		show_ideas_tooltip = great_depression_active
 	}
 }
@@ -195,6 +202,13 @@ country_event = {
 			great_depression_prepare_independent_call = yes
 			great_depression_start_or_deepen = yes
 		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = great_depression_active }
+				FROM = { is_ai = no }
+			}
+			FROM = { country_event = { id = chaosx.nr35.22 } }
+		}
 		clr_country_flag = great_depression_cluster_target_pending
 	}
 }
@@ -286,8 +300,8 @@ country_event = {
 }
 
 # Exposed-partner report. A source queues it once per source episode when this
-# country's exposure to that source becomes material. It names the origin and
-# the relationship and never treats this country as being in a depression.
+# country's exposure becomes material. It summarizes simultaneous origins and
+# never treats this country as being in a depression.
 country_event = {
 	id = chaosx.nr35.14
 	title = chaosx.nr35.14.t
@@ -309,13 +323,12 @@ country_event = {
 	option = {
 		name = chaosx.nr35.14.a
 		ai_chance = { base = constant:great_depression_event_option_weight.exposure_report }
-		hidden_effect = { great_depression_close_exposed_partner_report = yes }
 	}
 }
 
 # World news for the first full depression that one origin episode spreads to
-# another country. The converted country's own report sends it in place of the
-# ordinary national news, so FROM is the newly struck country.
+# another country. Descendants share the announcement guard. The converted
+# country's report sends it in place of ordinary news, so FROM is newly struck.
 news_event = {
 	id = chaosx.nr35.15
 	title = chaosx.nr35.15.t
@@ -430,5 +443,19 @@ news_event = {
 	option = {
 		name = chaosx.nr35.21.a
 		ai_chance = { base = constant:great_depression_event_option_weight.world_news }
+	}
+}
+
+# The entry selector or rejected receiver sends this only to its human sender.
+# It creates no crisis, world news, history entry or economic payment.
+country_event = {
+	id = chaosx.nr35.22
+	title = chaosx.nr35.22.t
+	desc = chaosx.nr35.22.d
+	picture = GFX_report_event_great_depression
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr35.22.a
+		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
 	}
 }
