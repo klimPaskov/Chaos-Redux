@@ -353,3 +353,15 @@ How the pictures and icon read in game needs the live game.
 | D29 (Rail Spur railway) | `9a7a5b6ce` |
 | D30 (Gold Fever arrival report) | `456599d5d` |
 | D31 (profile discovery reports, Reopen icon) | `1acd2d5cb` |
+
+## Round 2, second tranche
+
+Disposition: implemented by the round 2 implementing agent under the full-authority grant, following the lead's round 2 remaining-work list; source review only, and live-game behaviour remains with the orchestrator.
+
+D32. Drive Deeper stays open to a mature mine (supersedes the D20 line "Drive Deeper belongs to the development milestone").
+Basis: spec part 3 offers Drive Deeper with "Mature development, working transport, and an open mine", not only during the development milestone, and `riches_found_reconcile_mine_phase` moves a mine with a route, reinforced shafts and one settlement work to the revenue milestone, after which Drive Deeper was never visible again.
+Drive Deeper now reads `riches_found_drive_deeper_is_layer_action`: the development and revenue layers, and the foreign concession layer while no concession is strained and the standing force the policy raises already stands (`riches_found_standing_force_not_offered`), so in that layer it takes the standing force's slot.
+Its other gates (operating mine, route, Mine Development above `development_high`, Local Order above `order_floor`, no deep project running, Deep Excavation below the maximum) and its `ai_will_do` block are unchanged.
+Layer counts: revenue rises to five and Repair; the two foreign cases that would have reached seven (a concession economy with no contract after an audit, and a state-extraction contract opened by Trade Access whose auction and offtake extensions are both open) stay at five and Repair because Drive Deeper replaces the standing force, and Trade Access for Infrastructure needs development below the same `development_high` line, so the two never show together.
+Source trace: a mine at the revenue milestone with a route, development above 65 and order above 45 sees Drive Deeper; each completion adds `positive_15` Deep Excavation and nothing lowers it except Seal the Depths, so four completions reach the Evolution III gate of 60 (`riches_found_evolution.demons_beneath_mine_deep_excavation`) and three pass the exposure gate of 40, without the evolved opening of a new discovery.
+Extraction Pressure (+20 a project) still pushes a mine into the emergency layer at the severe band, which hides Drive Deeper until it cools, and an active Resource Curse or Gold Disease layer hides it as before.

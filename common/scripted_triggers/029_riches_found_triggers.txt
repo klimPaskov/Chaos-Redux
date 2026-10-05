@@ -727,6 +727,42 @@ riches_found_private_guards_is_phase_action = {
 	}
 }
 
+# STATE scope. The standing force the mine's policy raises is not on offer:
+# either it already stands at the mine or the policy offers it no slot here.
+riches_found_standing_force_not_offered = {
+	NOT = {
+		AND = {
+			riches_found_mine_police_is_phase_action = yes
+			has_state_flag = riches_found_camp_administration
+			NOT = { has_state_flag = riches_found_mine_police }
+		}
+	}
+	NOT = {
+		AND = {
+			riches_found_private_guards_is_phase_action = yes
+			NOT = { has_state_flag = riches_found_private_guards }
+		}
+	}
+}
+
+# STATE scope. Drive Deeper belongs to a mature mine rather than to one
+# milestone: it is offered in the development and revenue layers, and in the
+# foreign concession layer while no concession is strained. There it takes the
+# slot of the standing force, so it appears once the mine police or private
+# guards the policy raises stand at the mine. Every layer stays within six
+# primary decisions (docs/events/029_riches_found/overview.md).
+riches_found_drive_deeper_is_layer_action = {
+	OR = {
+		has_state_flag = riches_found_phase_development
+		has_state_flag = riches_found_phase_revenue
+		AND = {
+			has_state_flag = riches_found_phase_foreign
+			NOT = { riches_found_contract_under_strain = yes }
+			riches_found_standing_force_not_offered = yes
+		}
+	}
+}
+
 # COUNTRY scope. A controller may run up to the shared slot cap, but never the
 # same mission type on two mines at once. Cost triggers use these predicates so
 # a rejected mission start cannot consume resources.
