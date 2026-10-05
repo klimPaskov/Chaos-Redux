@@ -15350,32 +15350,17 @@ fallout_event_candidate_row_is_current = {
 	}
 	check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index > constant:fallout_event_pressure_source_type.none }
 	check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index < constant:fallout_event_pressure_source_type.upper_bound }
+	# The pressure source type only chooses which pressure the score reads
+	# (agent decision R4). A row may also carry a mechanic pressure with its
+	# source and the Air Winter phase of its target; each value must be in range.
 	OR = {
-		AND = {
-			check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index = constant:fallout_event_pressure_source_type.event_owned }
-			check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index < constant:fallout_survival_resource.upper_bound }
-			NOT = { check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index < constant:fallout_survival_resource.none } }
-			check_variable = { fallout_event_candidate_air_winter_phase_entries^fallout_event_candidate_validation_index = constant:fallout_event_air_winter_phase.phase_zero }
-			OR = {
-				check_variable = { fallout_event_candidate_mechanic_pressure_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
-				check_variable = { fallout_event_candidate_mechanic_pressure_source_entries^fallout_event_candidate_validation_index > constant:fallout_event_runtime.zero }
-			}
-		}
-		AND = {
-			check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index = constant:fallout_event_pressure_source_type.survival_resource }
-			check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index > constant:fallout_survival_resource.none }
-			check_variable = { fallout_event_candidate_mechanic_pressure_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
-			check_variable = { fallout_event_candidate_mechanic_pressure_source_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
-			check_variable = { fallout_event_candidate_air_winter_phase_entries^fallout_event_candidate_validation_index = constant:fallout_event_air_winter_phase.phase_zero }
-		}
-		AND = {
-			check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index = constant:fallout_event_pressure_source_type.air_winter }
-			check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index < constant:fallout_survival_resource.upper_bound }
-			NOT = { check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index < constant:fallout_survival_resource.none } }
-			check_variable = { fallout_event_candidate_mechanic_pressure_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
-			check_variable = { fallout_event_candidate_mechanic_pressure_source_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
-			NOT = { check_variable = { fallout_event_candidate_air_winter_phase_entries^fallout_event_candidate_validation_index < constant:fallout_event_air_winter_phase.phase_zero } }
-		}
+		check_variable = { fallout_event_candidate_mechanic_pressure_entries^fallout_event_candidate_validation_index = constant:fallout_event_runtime.zero }
+		check_variable = { fallout_event_candidate_mechanic_pressure_source_entries^fallout_event_candidate_validation_index > constant:fallout_event_runtime.zero }
+	}
+	NOT = { check_variable = { fallout_event_candidate_air_winter_phase_entries^fallout_event_candidate_validation_index < constant:fallout_event_air_winter_phase.phase_zero } }
+	OR = {
+		NOT = { check_variable = { fallout_event_candidate_pressure_source_type_entries^fallout_event_candidate_validation_index = constant:fallout_event_pressure_source_type.survival_resource } }
+		check_variable = { fallout_event_candidate_resource_index_entries^fallout_event_candidate_validation_index > constant:fallout_survival_resource.none }
 	}
 	NOT = { check_variable = { fallout_event_candidate_player_relevance_entries^fallout_event_candidate_validation_index < constant:fallout_event_runtime.zero } }
 	check_variable = { fallout_event_candidate_player_relevance_entries^fallout_event_candidate_validation_index < constant:fallout_event_runtime.score_input_upper_bound }
