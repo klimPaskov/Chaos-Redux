@@ -177,3 +177,11 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, t
 - `missiles_apply_natural_disaster_site_damage` (STATE, ROOT is the controller) holds the former adapter body with every `event_target:missiles_disaster_controller` block replaced by `ROOT`, so the reserve settlement, allocation settlement, network counts, custody, incident id, repair request, phase refresh, and achievements land on the controller. A wreck settles once through `missiles_scuttle_site_from_current_controller`; a lesser hit leaves a damaged site that the site-damage incident phase offers for suspension and repair. The helper calls no evolution code.
 - `.tools/test_event32_state_scope.py` gains `NaturalDisasterBridge`; `.tools/test_event32_ordinary_preparation.py` now checks the settlement in the receiver-side helper.
 - HOI4 MCP: `hoi4.event_inspect` (`lint`, selector `chaosx.nr32.9`, given once as a string and once as an object) returned `Invalid tool arguments` both times; the selector format in its docs was not reachable, so it was not retried and the receiver is source-reviewed only.
+
+## Round 2 item 3: refused retaliation orders
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, test `WARN-03`). Basis: the round-1 recorded limit and the lead's acceptance.
+
+- `missiles_accept_retaliation_response` now saves the current target choice (`missiles_save_target_choice_for_retaliation`: selected enemy and id, objective, target state, and objective lock) before it writes the attacker. When `missiles_operation_preflight_result` is not accepted it clears the pending parent, root, root-country, and generation values and the retaliation operation type, strike profile, payload, and target-state id, and `missiles_restore_target_choice_after_retaliation` restores the saved choice or calls `missiles_clear_target` when there was none. The warning is not resolved, no outcome flag is set, and the accepted branch is unchanged.
+- Agent decision: the saved choice uses persistent country variables cleared at the end of every accept call rather than temporaries, because the preparation chain between save and restore is long and shares temporary names.
+- `.tools/test_event32_retaliation_warning.py` gains `RefusedResponse`.

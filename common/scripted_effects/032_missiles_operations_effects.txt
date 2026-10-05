@@ -5866,6 +5866,9 @@ missiles_restore_retaliation_network = {
 missiles_accept_retaliation_response = {
 	if = {
 		limit = { missiles_retaliation_response_can_be_accepted = yes }
+		# The current target choice is kept so that a refused order leaves it
+		# exactly as it was.
+		missiles_save_target_choice_for_retaliation = yes
 		set_variable = { missiles_selected_target = missiles_warning_actor }
 		var:missiles_warning_actor = { ROOT = { set_variable = { missiles_selected_target_country_id = PREV.id } } }
 		set_country_flag = missiles_target_selected
@@ -5887,7 +5890,69 @@ missiles_accept_retaliation_response = {
 			# Outcome of the last warning, cleared when the next one opens.
 			set_country_flag = missiles_retaliation_response_accepted
 		}
+		else = {
+			# A refused order (for example, the attacker is out of reach) changes
+			# nothing: the warning stays open with its other options, no outcome
+			# is recorded, and the next ordinary strike starts a fresh lineage.
+			clear_variable = missiles_pending_parent_incident_id
+			clear_variable = missiles_pending_root_incident_id
+			clear_variable = missiles_pending_root_country
+			clear_variable = missiles_pending_retaliation_generation
+			if = {
+				limit = { NOT = { has_country_flag = missiles_operation_active } }
+				clear_variable = missiles_operation_type
+				clear_variable = missiles_operation_strike_profile
+				clear_variable = missiles_operation_payload
+				clear_variable = missiles_operation_target_state_id
+			}
+			missiles_restore_target_choice_after_retaliation = yes
+		}
+		missiles_clear_saved_retaliation_target_choice = yes
 	}
+}
+
+# COUNTRY scope. Saves the target choice that a retaliation order overwrites:
+# the selected enemy and the objective and target state it implies.
+missiles_save_target_choice_for_retaliation = {
+	missiles_clear_saved_retaliation_target_choice = yes
+	if = {
+		limit = { has_country_flag = missiles_target_selected has_variable = missiles_selected_target has_variable = missiles_selected_target_country_id }
+		set_variable = { missiles_retaliation_saved_target = missiles_selected_target }
+		set_variable = { missiles_retaliation_saved_target_id = missiles_selected_target_country_id }
+	}
+	if = { limit = { has_variable = missiles_operation_target_profile } set_variable = { missiles_retaliation_saved_target_profile = missiles_operation_target_profile } }
+	if = { limit = { has_variable = missiles_operation_target_state } set_variable = { missiles_retaliation_saved_target_state = missiles_operation_target_state } }
+	if = { limit = { has_country_flag = missiles_operation_target_profile_locked } set_country_flag = missiles_retaliation_saved_profile_locked }
+}
+
+# COUNTRY scope. After a refused retaliation order, the earlier target choice
+# returns, or the selection is cleared when there was none.
+missiles_restore_target_choice_after_retaliation = {
+	if = {
+		limit = { has_variable = missiles_retaliation_saved_target }
+		set_variable = { missiles_selected_target = missiles_retaliation_saved_target }
+		set_variable = { missiles_selected_target_country_id = missiles_retaliation_saved_target_id }
+		set_country_flag = missiles_target_selected
+		if = { limit = { has_variable = missiles_retaliation_saved_target_profile } set_variable = { missiles_operation_target_profile = missiles_retaliation_saved_target_profile } }
+		else = { clear_variable = missiles_operation_target_profile }
+		if = { limit = { has_variable = missiles_retaliation_saved_target_state } set_variable = { missiles_operation_target_state = missiles_retaliation_saved_target_state } }
+		else = { clear_variable = missiles_operation_target_state }
+		if = { limit = { has_country_flag = missiles_retaliation_saved_profile_locked } set_country_flag = missiles_operation_target_profile_locked }
+		else = { clr_country_flag = missiles_operation_target_profile_locked }
+	}
+	else = {
+		missiles_clear_target = yes
+		clr_country_flag = missiles_operation_target_profile_locked
+	}
+	missiles_refresh_operation_cost_preview = yes
+}
+
+missiles_clear_saved_retaliation_target_choice = {
+	clear_variable = missiles_retaliation_saved_target
+	clear_variable = missiles_retaliation_saved_target_id
+	clear_variable = missiles_retaliation_saved_target_profile
+	clear_variable = missiles_retaliation_saved_target_state
+	clr_country_flag = missiles_retaliation_saved_profile_locked
 }
 
 missiles_close_root_incident = {

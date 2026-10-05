@@ -113,5 +113,37 @@ class PerWarningState(unittest.TestCase):
         self.assertIn(('NOT', [('has_country_flag', 'missiles_warning_delayed')]), delay['trigger'])
 
 
+class RefusedResponse(unittest.TestCase):
+    def test_refused_order_restores_target_and_clears_lineage(self):
+        route = dict(EFFECTS['missiles_accept_retaliation_response'])['if']
+        keys = [key for key, _ in route]
+        # The target choice is saved before the attacker overwrites it.
+        self.assertLess(keys.index('missiles_save_target_choice_for_retaliation'), keys.index('set_variable'))
+        self.assertLess(keys.index('missiles_save_target_choice_for_retaliation'), keys.index('missiles_prepare_operation'))
+        self.assertEqual(route[-1], ('missiles_clear_saved_retaliation_target_choice', 'yes'))
+        refused = dict(route)['else']
+        refused_nodes = nodes(refused)
+        for pending in ('missiles_pending_parent_incident_id', 'missiles_pending_root_incident_id',
+                        'missiles_pending_root_country', 'missiles_pending_retaliation_generation'):
+            self.assertIn(('clear_variable', pending), refused)
+        for operation in ('missiles_operation_type', 'missiles_operation_strike_profile', 'missiles_operation_payload'):
+            self.assertIn(('clear_variable', operation), refused_nodes)
+        self.assertIn(('missiles_restore_target_choice_after_retaliation', 'yes'), refused)
+        # No outcome is recorded and the warning is not resolved by a refusal.
+        self.assertFalse(any(key == 'set_country_flag' and child in OUTCOME_FLAGS for key, child in refused_nodes))
+        self.assertNotIn(RESOLVE, refused_nodes)
+        self.assertNotIn(('country_event', [('id', 'chaosx.nr32.83'), ('days', 'missiles_operation_preparation_days')]), refused_nodes)
+
+    def test_restore_returns_the_saved_choice_or_clears_it(self):
+        restore = EFFECTS['missiles_restore_target_choice_after_retaliation']
+        saved = dict(restore)['if']
+        self.assertEqual(dict(saved)['limit'], [('has_variable', 'missiles_retaliation_saved_target')])
+        self.assertIn(('set_variable', [('missiles_selected_target', 'missiles_retaliation_saved_target')]), saved)
+        self.assertIn(('set_country_flag', 'missiles_target_selected'), saved)
+        self.assertIn(('missiles_clear_target', 'yes'), dict(restore)['else'])
+        save = nodes(EFFECTS['missiles_save_target_choice_for_retaliation'])
+        self.assertIn(('set_variable', [('missiles_retaliation_saved_target', 'missiles_selected_target')]), save)
+
+
 if __name__ == '__main__':
     unittest.main()

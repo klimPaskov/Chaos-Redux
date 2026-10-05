@@ -601,6 +601,7 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `EVO-PACE-03` | Disable a pending track | Its pending job clears and it never records an unlock |
 | `WARN-01` | Two warnings in a row under Automatic posture, the first proven false | Each warning can be delayed once; the second is answered automatically when its short window closes |
 | `WARN-02` | Verified warning; take Accept the Current Response | A retaliation against the warning's attacker enters preparation and the warning closes |
+| `WARN-03` | Human selected an enemy and objective; a warning arrives from an attacker out of reach; take Accept the Current Response | The order is refused, the warning stays open with its other options, the earlier enemy and objective are still selected, and the next ordinary strike records no retaliation lineage |
 | `ROGUE-SITE-01` | Rogue crisis at one of two sites; open the rogue decisions | Isolate and Scuttle the Rogue Site are offered only on the rogue site; isolating or scuttling the other site through any route leaves the crisis open |
 | `ROGUE-SITE-02` | Rogue crisis; a strike damages another site, then the crisis times out | The damage incident keeps its site and stays open after the rogue crisis closes |
 | `ROGUE-SITE-03` | Isolate the rogue site while a strike is being prepared there | The order is cancelled and its missiles return once; the crisis closes; the site can then be suspended and after 45 days returns to service |
