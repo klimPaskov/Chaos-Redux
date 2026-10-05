@@ -420,7 +420,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 
 | Owner | Positive native costs | Custom cost declarations | Disposition |
 | --- | ---: | ---: | --- |
-| 006 Independence Wave | 6 | 714 | owner adoption pending (the 2026-10-05 rescan adds `006_independence_wave_foreign_reaction_decisions.txt:30`) |
+| 006 Independence Wave | 6 | 838 | owner adoption pending (the 2026-10-05 rescans add `006_independence_wave_foreign_reaction_decisions.txt:30` and 124 declarations in the americas, east_africa, east_asia_oceania, levant_arabia, north_africa, south_asia, southern_africa, and west_africa package files, which pay through the shared `can_pay_independence_wave_*_cost` triggers and `independence_wave_decision_pay_*` effects and follow the 006 helper conversion; lines in `owner_adoption_requests.md`) |
 | 012 Africa | 154 | 34 | owner adoption pending; RSA abnormal-settlement recovery requested |
 | 014 Cannibalism | 0 | 94 | owner adoption pending |
 | 016 Brilliant Scientist | 307 | 111 | owner adoption pending |
@@ -526,6 +526,12 @@ Each purchase reads one `global.black_friday_price_*` entry in its trigger, paym
 | BF-EVO-052 | `events/077_send_eq.txt` | `chaosx.nr77.2.c` Planes | The whole airframe stockpile | not_a_purchase_cost | Transfer to the chosen minor (D11) | None |
 | BF-EVO-053 | `events/077_send_eq.txt` | `chaosx.nr77.2.e` Tanks and Mechanized Equipment | The whole armored car, mechanized, and tank chassis stockpile | not_a_purchase_cost | Transfer to the chosen minor (D11) | None |
 | BF-EVO-054 | `events/077_send_eq.txt` | `chaosx.nr77.2.f` Advanced Military Equipment | The whole modern, super-heavy, and amphibious tank chassis and railway gun stockpile | not_a_purchase_cost | Transfer to the chosen minor (D11); the event has no `.d` option, since `chaosx.nr77.2.d` is its description | None |
+
+### Options found after the adoption scan, 2026-10-05
+
+| Surface ID | Owner file | Option or action | Ordinary effect | Status | Price source or reason | Primary achievement family |
+| --- | --- | --- | --- | --- | --- | --- |
+| BF-EVO-055 | `events/biowarfare_events.txt:324` (CBRN owner) | `biowarfare.4.a` Tragic | 1% War Support | not_a_purchase_cost | Consequence: the event reports that the country's biowarfare scientist was captured and executed, and the only option takes the War Support loss and retires him; nothing is bought | None |
 
 ## Part 8 acceptance status
 

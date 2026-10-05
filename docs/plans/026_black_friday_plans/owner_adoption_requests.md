@@ -19,18 +19,21 @@ Line numbers come from a decision-depth scan of the working tree at HEAD `280df0
 
 ### 006 Independence Wave
 
-Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 714.
+Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 838.
 
 | File | Native positive cost lines | Dynamic native cost lines | Custom cost trigger lines |
 | --- | --- | --- | --- |
+| `common/decisions/006_independence_wave_americas_decisions.txt` | - | - | 23, 51, 78, 108, 136, 163, 192, 220, 247, 278, 306, 334 |
 | `common/decisions/006_independence_wave_balkan_decisions.txt` | - | - | 71, 88, 104, 121, 137, 153, 169, 184, 199, 214, 227, 293, 317, 345, 374, 390, 406, 422, 437, 452, 467, 480, 560, 577, 593, 610, 626, 642, 658, 673, 688, 703, 716, 792, 809, 837, 866, 882, 898, 914, 929, 944, 959, 972, 1048, 1065, 1081, 1098, 1114, 1130, 1146, 1161, 1176, 1191, 1204, 1273, 1293, 1312, 1357, 1390, 1406, 1422, 1437, 1452, 1467, 1535, 1552, 1580, 1609, 1625, 1641, 1657, 1672, 1687, 1702, 1715, 1766, 1783, 1799, 1816, 1845, 1861, 1877, 1892, 1907, 1920 |
 | `common/decisions/006_independence_wave_bashkiria_mari_decisions.txt` | - | - | 74, 115, 158, 216, 286, 330, 373, 417, 470, 528, 630, 672, 716, 775, 846, 891, 935, 980, 1034, 1093 |
 | `common/decisions/006_independence_wave_decisions.txt` | - | - | 39, 102, 147, 220, 277, 327, 356, 392, 451, 497, 559, 625, 710, 804, 875, 922, 974, 1145, 1186, 1230, 1261, 1310, 1364, 1413, 1472, 1522, 1571, 1619, 1664, 1738, 1778, 1840, 1906, 1969, 2015, 2109, 2169, 2210, 2264, 2317, 2374, 2419, 2460, 2543, 2666, 2793, 2842, 2908, 2994, 3055, 3086, 3121, 3180, 3203, 3226, 3249, 3272, 3313, 3396, 3451, 3534, 3594, 3676, 3733, 3822, 3864, 3904, 3951, 3985, 4037, 4100, 4229, 4376, 4417, 4458, 4499, 4544, 4591, 4631, 4671, 4720 |
 | `common/decisions/006_independence_wave_don_decisions.txt` | - | - | 116, 152, 181, 197, 216, 234 |
+| `common/decisions/006_independence_wave_east_africa_decisions.txt` | - | - | 23, 51, 79, 108, 136, 165, 194, 222, 250, 279, 307, 334, 364, 391, 419, 448, 476, 503 |
+| `common/decisions/006_independence_wave_east_asia_oceania_decisions.txt` | - | - | 23, 51, 79, 108, 136, 164, 193, 221, 249, 278, 305, 333, 362, 390, 417, 446, 473, 503, 532, 559, 587, 617, 644, 671, 702, 730, 757, 788, 816, 843, 872, 900, 927 |
 | `common/decisions/006_independence_wave_far_eastern_decisions.txt` | - | - | 84, 128, 174, 235, 314, 361, 407, 454, 516, 576 |
+| `common/decisions/006_independence_wave_foreign_reaction_decisions.txt` | - | - | 30 |
 | `common/decisions/006_independence_wave_form01_02_04_decisions.txt` | - | - | 36, 94, 145, 206, 234, 256, 271, 286, 316, 332, 348, 363, 378, 408, 424, 440, 455, 470 |
 | `common/decisions/006_independence_wave_form03_decisions.txt` | - | - | 34, 81, 121, 157, 187, 220, 257, 296, 339, 372, 408, 450, 492, 522, 569, 629, 654, 684, 714, 742, 774, 804 |
-| `common/decisions/006_independence_wave_foreign_reaction_decisions.txt` | - | - | 30 |
 | `common/decisions/006_independence_wave_form05_decisions.txt` | - | - | 39, 81, 111, 144, 177, 209, 242, 275, 313, 375, 415, 457, 497, 530 |
 | `common/decisions/006_independence_wave_form48_decisions.txt` | - | - | 29, 76, 112, 147, 228, 282, 337 |
 | `common/decisions/006_independence_wave_formable_decisions.txt` | - | - | 33, 57, 81, 117, 173, 200, 224, 250, 281, 313 |
@@ -39,16 +42,23 @@ Positive native costs: 6; dynamic native costs: 0; custom cost declarations: 714
 | `common/decisions/006_independence_wave_iw043_iw058_decisions.txt` | - | - | 30, 105, 143, 178, 218, 260, 359, 435, 515, 623, 702, 791, 885, 957, 1031, 1139, 1230, 1290, 1316, 1342, 1368, 1399, 1469, 1555, 1650, 1735, 1835, 1921, 2001, 2076, 2158, 2184, 2206, 2223, 2240, 2263, 2297, 2458 |
 | `common/decisions/006_independence_wave_iw093_iw098_decisions.txt` | 102, 160, 219, 699, 754, 810 | - | 30, 235, 310, 361, 415, 504, 575, 629, 879, 931, 986, 1077, 1149 |
 | `common/decisions/006_independence_wave_karelia_crimea_decisions.txt` | - | - | 61, 87, 124, 160, 187, 223, 249, 286, 313, 335, 357, 379, 400, 422, 444, 466, 487, 509, 527, 545 |
+| `common/decisions/006_independence_wave_levant_arabia_decisions.txt` | - | - | 29, 57, 85, 118, 148, 178, 207, 241, 270, 299, 328, 362, 390, 417 |
 | `common/decisions/006_independence_wave_mediterranean_decisions.txt` | - | - | 43, 65, 85, 102, 117, 132, 146, 160, 193, 210, 227, 243, 258, 273, 287, 301, 334, 351, 368, 384, 400, 415, 430, 444, 458, 472 |
 | `common/decisions/006_independence_wave_minor_overlay_decisions_registry.txt` | - | - | 60, 83, 109, 142, 175, 209, 249, 273, 302, 363, 390, 424, 448, 477, 538, 565, 599, 623, 652, 713, 740, 773, 797, 821, 876, 906, 923, 940, 975, 1003, 1020, 1037, 1069, 1088, 1105, 1122, 1154, 1173, 1190, 1207, 1239, 1267, 1279, 1291, 1317, 1332, 1344, 1356, 1382, 1397, 1409, 1421, 1447, 1462, 1474, 1486, 1512 |
+| `common/decisions/006_independence_wave_north_africa_decisions.txt` | - | - | 23, 51, 79, 108 |
 | `common/decisions/006_independence_wave_pacific_decisions.txt` | - | - | 49, 71, 94, 117, 140, 157, 200, 222, 243, 266, 308, 324, 340, 356, 372, 388, 404, 424, 466, 483, 500, 516, 532, 548 |
 | `common/decisions/006_independence_wave_rhineland_bavaria_saar_decisions.txt` | - | - | 63, 87, 108, 130, 152, 167, 182, 196, 210, 222, 239, 268, 283, 359, 375, 390, 405, 421, 436, 451, 465, 479, 491, 511, 534, 549, 628, 651, 673, 695, 718, 733, 748, 762, 777, 789, 809, 828, 868 |
 | `common/decisions/006_independence_wave_scotland_wales_decisions.txt` | - | - | 21, 44, 66, 89, 111, 127, 143, 158, 173, 188, 210, 253, 270, 287, 303, 319, 335, 351, 366, 388 |
 | `common/decisions/006_independence_wave_shared_decisions.txt` | - | - | 27, 72, 116, 161, 206, 265, 310, 369, 397, 423, 450 |
 | `common/decisions/006_independence_wave_siberian_decisions.txt` | - | - | 93, 137, 183, 244, 318, 365, 411, 458, 514, 575, 689, 731, 775, 834, 905, 950, 994, 1039, 1093, 1152, 1265, 1307, 1351, 1410, 1481, 1526, 1570, 1615, 1669, 1728, 1841, 1883, 1927, 1986, 2057, 2102, 2146, 2191, 2245, 2304, 2369, 2386, 2403, 2420, 2437, 2454, 2471, 2488, 2504, 2521, 2607, 2624, 2641, 2658, 2675, 2692, 2709, 2726, 2754, 2800, 2906, 2952, 3000, 3063, 3157, 3202, 3246, 3291, 3345, 3408, 3520, 3562, 3606, 3665, 3736, 3781, 3825, 3870, 3924, 3983 |
+| `common/decisions/006_independence_wave_south_asia_decisions.txt` | - | - | 23, 51, 78, 109, 137, 164, 193, 220, 249, 278, 306, 335, 366, 393, 421, 451, 479, 508, 537, 564, 592, 621, 648, 675, 704, 732, 760, 789, 816, 844 |
+| `common/decisions/006_independence_wave_southern_africa_decisions.txt` | - | - | 23, 51, 78, 107, 134, 162 |
 | `common/decisions/006_independence_wave_transcaucasus_decisions.txt` | - | - | 53, 70, 86, 103, 133, 150, 166, 184, 214, 230, 247, 264, 282, 300, 318, 337, 349, 361, 373 |
 | `common/decisions/006_independence_wave_wallonia_frisia_decisions.txt` | - | - | 74, 111, 150, 194, 226, 242, 258, 274, 298, 378, 410, 441, 472, 508, 550, 566, 582, 619 |
+| `common/decisions/006_independence_wave_west_africa_decisions.txt` | - | - | 23, 50, 78, 108, 138, 166, 193 |
 | `common/decisions/006_independence_wave_western_decisions.txt` | - | - | 70, 94, 118, 141, 165, 191, 217, 233, 249, 265, 280, 295, 308, 331, 420, 437, 453, 470, 486, 503, 520, 536, 552, 568, 581, 651, 694, 733, 770, 805, 850 |
+
+The 2026-10-05 rescan at HEAD `db960b6d4` adds 124 custom cost declarations in 8 package files committed after the adoption scan: `006_independence_wave_americas_decisions.txt`, `006_independence_wave_east_africa_decisions.txt`, `006_independence_wave_east_asia_oceania_decisions.txt`, `006_independence_wave_levant_arabia_decisions.txt`, `006_independence_wave_north_africa_decisions.txt`, `006_independence_wave_south_asia_decisions.txt`, `006_independence_wave_southern_africa_decisions.txt`, `006_independence_wave_west_africa_decisions.txt`. Every one of them pays through the shared `can_pay_independence_wave_administration_standard_cost`, `can_pay_independence_wave_diplomatic_standard_cost`, `can_pay_independence_wave_security_standard_cost`, and `can_pay_independence_wave_strategic_cost` triggers (`common/scripted_triggers/006_independence_wave_decision_triggers.txt:342`, `:356`, `:379`, `:493`) and the matching `independence_wave_decision_pay_*` effects (`common/scripted_effects/006_independence_wave_decision_effects.txt:135`, `:205`, `:234`, `:356`), so they take the sale price as soon as the 006 owner converts those shared helpers. Their disposition is `owner adoption pending`.
 
 ### 012 Africa
 
