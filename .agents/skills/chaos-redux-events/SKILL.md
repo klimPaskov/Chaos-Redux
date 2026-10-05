@@ -900,6 +900,8 @@ Do not leave a runtime asset only in a temporary folder. While the event is acti
 
 ## Final event checklist
 
+After editing report or news text, run `python .tools/report_colour_audit.py` and resolve every colour-bearing parchment key, including scripted localisation output.
+
 Before closing an event task, verify:
 
 1. Event script is updated.
