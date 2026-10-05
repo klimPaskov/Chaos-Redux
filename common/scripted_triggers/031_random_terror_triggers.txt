@@ -347,6 +347,117 @@ random_terror_country_can_receive_pulse = {
 	random_terror_country_has_active_state = yes
 }
 
+# STATE scope.  A reason recorded in the state that lets its cell move on
+# (Part 2 Cross-state spread): damaged rail or port links, a smuggling route,
+# a copycat wave, a training area, or survivors scattered by a raid or surge.
+random_terror_state_has_recorded_spread_reason = {
+	OR = {
+		has_state_flag = random_terror_survivors_displaced
+		has_state_flag = random_terror_transport_disrupted
+		has_state_flag = random_terror_port_disrupted
+		has_state_flag = random_terror_smuggling_corridor_recorded
+		has_state_flag = random_terror_copycat_recorded
+		has_state_flag = random_terror_training_area_recorded
+	}
+}
+
+# STATE scope.  The state borders territory held by an Event 31 actor.
+random_terror_state_borders_actor_territory = {
+	any_neighbor_state = {
+		CONTROLLER = { random_terror_is_actor = yes }
+	}
+}
+
+# STATE scope.  A crisis state that can send its cell into a neighbouring
+# state: Entrenched or worse with any reason, including bordering actor
+# territory; Active with a recorded reason; or any state with remaining
+# activity whose survivors were scattered.
+random_terror_state_is_spread_source = {
+	OR = {
+		AND = {
+			OR = {
+				has_state_flag = random_terror_state_entrenched
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+			}
+			OR = {
+				random_terror_state_has_recorded_spread_reason = yes
+				random_terror_state_borders_actor_territory = yes
+			}
+		}
+		AND = {
+			has_state_flag = random_terror_state_active
+			random_terror_state_has_recorded_spread_reason = yes
+		}
+		AND = {
+			has_state_flag = random_terror_survivors_displaced
+			check_variable = { random_terror_state_activity > constant:random_terror_value.zero }
+		}
+	}
+}
+
+# STATE scope, ROOT = the spreading government.  A Clear or Dormant state it
+# controls that a cell can reach.
+random_terror_state_is_domestic_spread_target = {
+	is_controlled_by = ROOT
+	random_terror_state_is_eligible_incident_site = yes
+	NOT = { random_terror_state_is_active_crisis = yes }
+}
+
+# STATE scope, ROOT = the spreading government.  After Evolution II, a Clear
+# or Dormant state held by another government that ordinary waves could
+# target, which then receives its own opening report and crisis.
+random_terror_state_is_foreign_spread_target = {
+	has_global_flag = random_terror_evolution_2_unlocked
+	NOT = { is_controlled_by = ROOT }
+	random_terror_state_is_eligible_incident_site = yes
+	NOT = { random_terror_state_is_active_crisis = yes }
+	CONTROLLER = {
+		NOT = { tag = ROOT }
+		random_terror_country_is_eligible_wave_target = yes
+	}
+}
+
+# STATE scope, ROOT = the spreading government.
+random_terror_state_is_spread_target = {
+	OR = {
+		random_terror_state_is_domestic_spread_target = yes
+		random_terror_state_is_foreign_spread_target = yes
+	}
+}
+
+# COUNTRY scope: a government whose spread window is open.  The window is a
+# stored date (random_terror_spread_ready_date) set when its last new hotspot
+# opened, and Temporary Movement Restrictions hold every cell in place.
+random_terror_country_spread_window_open = {
+	NOT = { has_country_flag = random_terror_movement_restrictions_active }
+	OR = {
+		NOT = { has_variable = random_terror_spread_ready_date }
+		check_variable = { var = random_terror_spread_ready_date value = global.date compare = less_than_or_equals }
+	}
+}
+
+# Any scope.  A distant demonstration attack is possible: Evolution II, high
+# Network Reach, and the global distant-attack window is open.
+random_terror_distant_attack_possible = {
+	has_global_flag = random_terror_evolution_2_unlocked
+	check_variable = { global.random_terror_network_reach > constant:random_terror_value.high }
+	OR = {
+		NOT = { has_variable = global.random_terror_distant_ready_date }
+		check_variable = { var = global.random_terror_distant_ready_date value = global.date compare = less_than_or_equals }
+	}
+}
+
+# COUNTRY scope, ROOT = the government whose pulse launches the attack.  A
+# distant country with no active cell that ordinary waves could target.
+random_terror_country_is_distant_attack_target = {
+	NOT = { tag = ROOT }
+	NOT = { is_neighbor_of = ROOT }
+	random_terror_country_is_normal_target = yes
+	NOT = { random_terror_country_has_active_state = yes }
+	random_terror_country_is_eligible_wave_target = yes
+}
+
 random_terror_can_actor_action = {
 	random_terror_is_actor = yes
 	NOT = { has_global_flag = random_terror_terminal_active }

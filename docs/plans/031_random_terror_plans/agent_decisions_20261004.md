@@ -362,7 +362,7 @@ Basis: the matrix cleanup column (Establish Response Cell "remove after final re
 - Recruit Foreign Fighters sets its flag for `foreign_fighters_cooldown_days` (180) through a `meta_effect` literal instead of permanently.
 - Terminal Counteroffensive and Accelerate the Revelation keep `fire_only_once`, because the terminal stage happens once per world.
 
-### R32 The incident report names its state, family and losses, and asks for a first emphasis
+### R32 The incident report names its state, family and losses, and asks for a first emphasis (`8f232f358`)
 
 Basis: Part 1 Opening shock ("one visible attack report tied to an exact state" that "establishes civilian harm, state damage, the apparent incident family, and the government's immediate choices"), Part 1 Assessment (protection, intelligence, victim support or rapid coercion, changing the available actions and the first operation without locking a doctrine), and Part 11's demand for exact state and incident context.
 
@@ -374,3 +374,21 @@ Basis: Part 1 Opening shock ("one visible attack report tied to an exact state" 
 - Community rejection keeps the fallback picture but gets its own report text, because the fallback text describes the network claiming a district.
 - Each `random_terror_choose_emphasis_*` effect sets its own `random_terror_emphasis_duration` temp variable before using it; the shared begin helper only sets `random_terror_emphasis_chosen`, so no temp output crosses a scripted-effect return.
 - Route evidence: `hoi4.probability_inspect` with the `event_option_ai_chance` adapter returned "Invalid tool arguments" both with `candidatePool = ["chaosx.nr31.2"]` and with no other argument, and `hoi4.event_inspect` returned the same error for narrow `lint` and `trace` queries on `chaosx.nr31.9` and `chaosx.nr31.97`; the new option weights are reviewed in source only.
+
+### R33 Cells spread between states and across borders, survivors scatter, and distant attacks leave traces
+
+Basis: Part 2 Cross-state spread ("Spread requires a reason", the `90`-day anchor, "one new hotspot at a time") and Cross-border spread (common only after Evolution II, the receiving country gets its own opening report, no transfer of the source government's decisions or costs), Part 2 acceptance cases 6 and 7, Part 4 Evolution I Survivor displacement and Evolution II Network Reach and Distant demonstration attacks, and validation case V03 Cross-state spread.
+
+- Spread runs inside the existing event-owned country pulse, not a new on_action or world scan, and opens at most one new hotspot per government per window (90 days, 60 at high Network Reach), stored as a date through `chaosx_convert_days_to_date_offset`.
+- Every new hotspot goes through `random_terror_apply_incident`, so stage, report, hotspot count, recovery check and pulse need no second path, and containment and corridor missions can now fail on a real new hotspot.
+- Sources: Entrenched or worse with any reason, Active with a recorded reason, or any state with remaining activity whose survivors were scattered.
+  The third case extends the lead's wording so that a raid that knocks a cell down to Dormant can still scatter its survivors, which Part 4 describes as the point of displacement.
+  Bordering actor territory counts only for Entrenched or worse sources, because it is geography rather than a recorded incident.
+- The copycat and training-area markers were set but never read; they now count as spread reasons and clear when the state returns to Clear, so an old marker cannot revive a cleared state's spread.
+- Odds are one `random_list` of constant weights (35 open against 65 hold); scattered survivors double the open weight, Evolution I multiplies it by 1.25, and containment, transport protection and Security Surge each halve it, while Movement Restrictions block spread and distant attacks.
+- Domestic and foreign targets are weighed 70 to 30 when both exist, so cross-border spread is possible after Evolution II without becoming the usual result.
+- Survivor displacement follows the lead's acceptance (partial or costly raid, Security Surge without an intelligence breakthrough) rather than Part 2 acceptance case 7's failed raid, because a failed raid leaves the cell in place; a defection channel or allied intelligence on the state prevents it.
+- A distant attack is rarer and costlier than local spread, as Part 4 requires: it needs Evolution II, Network Reach above the high gate and a 120-day global window, has weight 8, costs 5 Network Reach, and leaves only a Dormant trace unless the attack itself records a reason for a cell to stay.
+  Its single `random_country` selection runs only after the roll succeeds, the same cost as one wave-target selection.
+- The report names the origin state and the strongest reason, and the government category shows whether a cell can move, which keeps the player able to understand each change.
+- Route evidence: the probability route stayed blocked as recorded under R32, so the new spread weights are reviewed in source only.

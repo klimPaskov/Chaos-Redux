@@ -189,6 +189,99 @@ defined_text = {
 	text = { localization_key = random_terror_incident_report_no_loss }
 }
 
+# COUNTRY scope: why the reported hotspot opened, when a cell moved into it
+# from a neighbouring state or a distant network struck it
+# (random_terror_last_report_spread_reason), or nothing for an ordinary
+# incident.
+defined_text = {
+	name = GetRandomTerrorIncidentReportOrigin
+	text = {
+		trigger = { check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.distant } }
+		localization_key = random_terror_incident_report_origin_distant
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.survivors }
+		}
+		localization_key = random_terror_incident_report_origin_survivors
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.corridor }
+		}
+		localization_key = random_terror_incident_report_origin_corridor
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.transport }
+		}
+		localization_key = random_terror_incident_report_origin_transport
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.port }
+		}
+		localization_key = random_terror_incident_report_origin_port
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.training }
+		}
+		localization_key = random_terror_incident_report_origin_training
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.copycat }
+		}
+		localization_key = random_terror_incident_report_origin_copycat
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_last_report_origin
+			check_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.actor }
+		}
+		localization_key = random_terror_incident_report_origin_actor
+	}
+	text = { localization_key = random_terror_incident_report_no_origin }
+}
+
+# COUNTRY scope: whether a cell of this government can move into a
+# neighbouring state at its next incident pulse.
+defined_text = {
+	name = GetRandomTerrorSpreadStatus
+	text = {
+		trigger = { has_country_flag = random_terror_movement_restrictions_active }
+		localization_key = random_terror_spread_status_restricted
+	}
+	text = {
+		trigger = {
+			has_variable = random_terror_spread_ready_date
+			check_variable = { var = random_terror_spread_ready_date value = global.date compare = greater_than }
+		}
+		localization_key = random_terror_spread_status_window
+	}
+	text = {
+		trigger = {
+			any_controlled_state = {
+				has_state_flag = random_terror_survivors_displaced
+				random_terror_state_is_spread_source = yes
+			}
+		}
+		localization_key = random_terror_spread_status_survivors
+	}
+	text = {
+		trigger = { any_controlled_state = { random_terror_state_is_spread_source = yes } }
+		localization_key = random_terror_spread_status_open
+	}
+	text = { localization_key = random_terror_spread_status_none }
+}
+
 # COUNTRY scope: Terror Pressure band (Part 1 ranges).
 defined_text = {
 	name = GetRandomTerrorPressureBand

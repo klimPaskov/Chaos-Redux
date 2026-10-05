@@ -55,6 +55,36 @@ Each emphasis lasts `random_terror_emphasis.days`, adds a timed country modifier
 No emphasis closes any response, so the choice steers the opening without locking a doctrine.
 The AI weighs protection up for a capital or disrupted transport state, intelligence up after Evolution II or with high legitimacy, relief up after measured deaths or with middling legitimacy, and coercion up at war or under high pressure and down for democracies.
 
+### Spread, survivor displacement and distant attacks
+
+Spread runs inside the same pulse (`random_terror_try_spread`, called by `random_terror_run_country_pulse` after the pulse incident), so there is no world scan, no new on_action, and no change to repeatable weight or minor-event pacing.
+A government opens at most one new hotspot per spread window: `random_terror_spread_ready_date` is a stored date set through `chaosx_convert_days_to_date_offset` for `random_terror_spread.window_days` (90), or `high_reach_window_days` (60) while Network Reach is above `random_terror_value.high`, and it resets when the crisis closes.
+
+A spread source (`random_terror_state_is_spread_source`) is a controlled crisis state with a reason for its cell to move:
+
+- Entrenched or worse, with any recorded reason or bordering territory held by an Event 31 actor (`random_terror_state_borders_actor_territory`);
+- Active, with a recorded reason (`random_terror_state_has_recorded_spread_reason`): damaged rail (`random_terror_transport_disrupted`) or port links (`random_terror_port_disrupted`), a smuggling route, a copycat wave, a training area, or scattered survivors;
+- any state with remaining activity whose survivors were scattered.
+
+The target is one neighbouring Clear or Dormant state that is an eligible incident site: one the government controls (`random_terror_state_is_domestic_spread_target`), or after Evolution II a state held by another government that ordinary waves could target (`random_terror_state_is_foreign_spread_target`, through `random_terror_country_is_eligible_wave_target`).
+When both kinds exist, `domestic_weight` (70) and `foreign_weight` (30) choose between them.
+The target receives an ordinary `random_terror_apply_incident`, so its stage, report, hotspot count, recovery check and pulse all follow; a foreign government gets its own opening report, first emphasis and crisis, and none of the source government's decisions or costs.
+The containment and corridor missions therefore fail on a real new hotspot, because spread raises the owner's `random_terror_hotspot_count`.
+
+The roll is one `random_list` of constant weights: `open_weight` (35) against `hold_weight` (65).
+Scattered survivors double the open weight, Evolution I multiplies it by 1.25, and an active Contain the Attack Wave, an active Protect the Transport Network and an active Security Surge each halve it.
+Temporary Movement Restrictions block spread and distant attacks while they last.
+The incident report adds the origin through `GetRandomTerrorIncidentReportOrigin`, naming the source state and its strongest reason (`random_terror_last_report_spread_reason`, `random_terror_last_report_origin`), and the government category shows the current spread status through `GetRandomTerrorSpreadStatus`.
+
+Survivor displacement (Part 4 Evolution I): a partial or costly Targeted Raid, or a Security Surge without an intelligence breakthrough, sets the timed `random_terror_survivors_displaced` state flag for `survivors_days` (120) through `random_terror_mark_survivors_displaced`.
+A clean raid, an open defection channel (`random_terror_defection_channel_open`) or allied intelligence on the state (`random_terror_joint_intelligence_received`) leaves no displaced survivors.
+The flag clears when the survivors open a new hotspot or when the state returns to Clear, which also clears the copycat and training-area markers.
+
+Distant demonstration attacks (Part 4 Evolution II): after Evolution II, with Network Reach above `random_terror_value.high` and the global window `global.random_terror_distant_ready_date` open, the roll adds `distant_weight` (8).
+A distant attack strikes one state of a non-neighbouring country with no active cell (`random_terror_country_is_distant_attack_target`), costs `distant_reach_cost` (5) Network Reach and closes the global window for `distant_window_days` (120).
+It passes `random_terror_incident_trace_only` to the incident, so the state keeps only `trace_activity` (10), a Dormant trace, unless the attack itself recorded a reason for a cell to stay.
+Its single `random_country` selection runs only after the rare roll succeeds, which matches one ordinary wave-target selection rather than a periodic scan.
+
 Later evolutions add Network Reach, International Unity, territorial-control values, actor authority, external supply, strategic victories, and hidden apocalyptic readiness without changing the identity-neutral baseline targeting rules.
 
 Religion, ethnicity, nationality, refugee status, and ordinary ideology never increase baseline target or recruitment weight.

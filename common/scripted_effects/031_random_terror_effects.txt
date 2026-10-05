@@ -369,6 +369,14 @@ random_terror_update_state_stage = {
 		}
 		clr_state_flag = random_terror_state_recovery
 	}
+	# A Clear state has no cell left to carry a copycat wave, a training area
+	# or scattered survivors into its neighbours.
+	if = {
+		limit = { check_variable = { random_terror_state_stage = constant:random_terror_state_stage.clear } }
+		clr_state_flag = random_terror_copycat_recorded
+		clr_state_flag = random_terror_training_area_recorded
+		clr_state_flag = random_terror_survivors_displaced
+	}
 	random_terror_refresh_state_modifier = yes
 	# A stage change can move the most severe crisis of the owner or controller.
 	if = {
@@ -887,7 +895,18 @@ random_terror_apply_incident = {
 	if = {
 		limit = { check_variable = { random_terror_state_activity < constant:random_terror_tuning.state_activity_opening } }
 		set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_opening }
+		# A distant demonstration attack (caller-owned temp input
+		# random_terror_incident_trace_only = 1) leaves only Dormant traces
+		# unless the attack itself recorded a reason for a cell to stay.
+		if = {
+			limit = {
+				check_variable = { random_terror_incident_trace_only = constant:random_terror_value.one }
+				NOT = { random_terror_state_has_recorded_spread_reason = yes }
+			}
+			set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_spread.trace_activity }
+		}
 		subtract_from_temp_variable = { random_terror_pending_activity_delta = random_terror_state_activity }
+		clamp_temp_variable = { var = random_terror_pending_activity_delta min = constant:random_terror_value.zero }
 	}
 	random_terror_add_state_activity = yes
 	set_variable = { random_terror_last_incident_type = random_terror_incident_type }
@@ -899,6 +918,9 @@ random_terror_apply_incident = {
 		set_variable = { random_terror_last_report_incident_type = random_terror_incident_type }
 		set_variable = { random_terror_last_report_state = random_terror_report_state_id }
 		set_variable = { random_terror_last_report_loss = random_terror_report_loss }
+		# A spread or distant attack records its origin after this returns.
+		set_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.none }
+		clear_variable = random_terror_last_report_origin
 		set_temp_variable = { random_terror_pending_pressure_delta = random_terror_incident_pressure_delta }
 		random_terror_apply_pressure = yes
 		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_loss }
@@ -1017,8 +1039,261 @@ random_terror_run_country_pulse = {
 			}
 			random_terror_apply_incident = yes
 		}
+		# The same pulse may let a cell move into one neighbouring state.
+		random_terror_try_spread = yes
 		# A pulse with no eligible site is postponed rather than redirected.
 		random_terror_schedule_country_pulse = yes
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Cross-state spread, survivor displacement, cross-border spread and distant
+# demonstration attacks (Part 2 Cross-state spread and Cross-border spread,
+# Part 4 Evolution I survivor displacement and Evolution II distant attacks).
+# Everything runs inside the event-owned country pulse (chaosx.nr31.96), so
+# there is no periodic world scan and no change to repeatable weight or
+# minor-event pacing.  A government opens at most one new hotspot per spread
+# window; every new hotspot goes through random_terror_apply_incident, so the
+# stage, report, hotspot count, recovery check and pulse all follow.
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope, ROOT = THIS = the government whose pulse is running.  Rolls
+# one random_list: open a hotspot next to a spread source, launch a distant
+# demonstration attack (Evolution II, high Network Reach, global window
+# open), or hold.  Active containment or transport-protection missions and
+# a Security Surge halve the odds; Temporary Movement Restrictions block it.
+random_terror_try_spread = {
+	if = {
+		limit = {
+			random_terror_country_spread_window_open = yes
+			OR = {
+				any_controlled_state = {
+					random_terror_state_is_spread_source = yes
+					any_neighbor_state = { random_terror_state_is_spread_target = yes }
+				}
+				random_terror_distant_attack_possible = yes
+			}
+		}
+		set_temp_variable = { random_terror_draw_spread_open = constant:random_terror_value.zero }
+		set_temp_variable = { random_terror_draw_spread_distant = constant:random_terror_value.zero }
+		set_temp_variable = { random_terror_draw_spread_hold = constant:random_terror_spread.hold_weight }
+		if = {
+			limit = {
+				any_controlled_state = {
+					random_terror_state_is_spread_source = yes
+					any_neighbor_state = { random_terror_state_is_spread_target = yes }
+				}
+			}
+			set_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.open_weight }
+			# Scattered survivors are already on the move.
+			if = {
+				limit = {
+					any_controlled_state = {
+						has_state_flag = random_terror_survivors_displaced
+						random_terror_state_is_spread_source = yes
+						any_neighbor_state = { random_terror_state_is_spread_target = yes }
+					}
+				}
+				multiply_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.survivors_factor }
+			}
+			if = {
+				limit = { has_global_flag = random_terror_evolution_1_unlocked }
+				multiply_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.organized_factor }
+			}
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_containment }
+				multiply_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.mission_factor }
+			}
+			if = {
+				limit = { has_country_flag = random_terror_mission_active_transport }
+				multiply_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.mission_factor }
+			}
+			if = {
+				limit = { has_country_flag = random_terror_security_surge_active }
+				multiply_temp_variable = { random_terror_draw_spread_open = constant:random_terror_spread.surge_factor }
+			}
+			round_temp_variable = random_terror_draw_spread_open
+		}
+		if = {
+			limit = { random_terror_distant_attack_possible = yes }
+			set_temp_variable = { random_terror_draw_spread_distant = constant:random_terror_spread.distant_weight }
+		}
+		random_list = {
+			random_terror_draw_spread_open = { random_terror_spread_to_neighbor = yes }
+			random_terror_draw_spread_distant = { random_terror_launch_distant_attack = yes }
+			random_terror_draw_spread_hold = { }
+		}
+	}
+}
+
+# COUNTRY scope, ROOT = THIS = the spreading government.  Picks one source,
+# scattered survivors first, then one neighbouring Clear or Dormant target:
+# its own state, or after Evolution II a state of another government.  The
+# target receives an ordinary incident, and its report names the source
+# state and the reason the cell moved.
+random_terror_spread_to_neighbor = {
+	set_temp_variable = { random_terror_spread_source_found = constant:random_terror_value.zero }
+	if = {
+		limit = {
+			any_controlled_state = {
+				has_state_flag = random_terror_survivors_displaced
+				random_terror_state_is_spread_source = yes
+				any_neighbor_state = { random_terror_state_is_spread_target = yes }
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				has_state_flag = random_terror_survivors_displaced
+				random_terror_state_is_spread_source = yes
+				any_neighbor_state = { random_terror_state_is_spread_target = yes }
+			}
+			save_event_target_as = random_terror_spread_source
+			set_temp_variable = { random_terror_spread_source_found = constant:random_terror_value.one }
+		}
+	}
+	else = {
+		random_controlled_state = {
+			limit = {
+				random_terror_state_is_spread_source = yes
+				any_neighbor_state = { random_terror_state_is_spread_target = yes }
+			}
+			save_event_target_as = random_terror_spread_source
+			set_temp_variable = { random_terror_spread_source_found = constant:random_terror_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_terror_spread_source_found = constant:random_terror_value.one } }
+		event_target:random_terror_spread_source = {
+			set_temp_variable = { random_terror_spread_origin_state = THIS }
+			# The report names the strongest reason the cell moved.
+			set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.actor }
+			if = {
+				limit = { has_state_flag = random_terror_copycat_recorded }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.copycat }
+			}
+			if = {
+				limit = { has_state_flag = random_terror_training_area_recorded }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.training }
+			}
+			if = {
+				limit = { has_state_flag = random_terror_port_disrupted }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.port }
+			}
+			if = {
+				limit = { has_state_flag = random_terror_transport_disrupted }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.transport }
+			}
+			if = {
+				limit = { has_state_flag = random_terror_smuggling_corridor_recorded }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.corridor }
+			}
+			if = {
+				limit = { has_state_flag = random_terror_survivors_displaced }
+				set_temp_variable = { random_terror_spread_reason_code = constant:random_terror_spread_reason.survivors }
+			}
+			set_temp_variable = { random_terror_draw_spread_domestic = constant:random_terror_value.zero }
+			set_temp_variable = { random_terror_draw_spread_foreign = constant:random_terror_value.zero }
+			if = {
+				limit = { any_neighbor_state = { random_terror_state_is_domestic_spread_target = yes } }
+				set_temp_variable = { random_terror_draw_spread_domestic = constant:random_terror_spread.domestic_weight }
+			}
+			if = {
+				limit = { any_neighbor_state = { random_terror_state_is_foreign_spread_target = yes } }
+				set_temp_variable = { random_terror_draw_spread_foreign = constant:random_terror_spread.foreign_weight }
+			}
+			random_list = {
+				random_terror_draw_spread_domestic = {
+					random_neighbor_state = {
+						limit = { random_terror_state_is_domestic_spread_target = yes }
+						random_terror_open_spread_hotspot = yes
+					}
+				}
+				random_terror_draw_spread_foreign = {
+					random_neighbor_state = {
+						limit = { random_terror_state_is_foreign_spread_target = yes }
+						random_terror_open_spread_hotspot = yes
+					}
+				}
+			}
+			# The scattered survivors have found a new base.
+			clr_state_flag = random_terror_survivors_displaced
+		}
+		random_terror_mark_spread_window = yes
+	}
+}
+
+# STATE scope: the new hotspot.  Inputs (caller-owned temps):
+# random_terror_spread_origin_state and random_terror_spread_reason_code.
+# Applies an ordinary incident, then records the origin for its report.
+random_terror_open_spread_hotspot = {
+	random_terror_apply_incident = yes
+	CONTROLLER = {
+		set_variable = { random_terror_last_report_spread_reason = random_terror_spread_reason_code }
+		set_variable = { random_terror_last_report_origin = random_terror_spread_origin_state }
+	}
+}
+
+# COUNTRY scope, ROOT = THIS = the government whose pulse launches it.  A
+# distant demonstration attack (Part 4 Evolution II) on a country with no
+# active cell.  It costs Network Reach, closes a global window, and leaves
+# only Dormant traces unless the attack itself records a reason for the cell
+# to stay (random_terror_incident_trace_only in random_terror_apply_incident).
+# Its single country selection runs only after the rare roll succeeds.
+random_terror_launch_distant_attack = {
+	set_temp_variable = { random_terror_distant_applied = constant:random_terror_value.zero }
+	random_country = {
+		limit = { random_terror_country_is_distant_attack_target = yes }
+		random_owned_controlled_state = {
+			limit = {
+				random_terror_state_is_eligible_incident_site = yes
+				NOT = { random_terror_state_is_active_crisis = yes }
+			}
+			set_temp_variable = { random_terror_incident_trace_only = constant:random_terror_value.one }
+			random_terror_apply_incident = yes
+			set_temp_variable = { random_terror_incident_trace_only = constant:random_terror_value.zero }
+			CONTROLLER = {
+				set_variable = { random_terror_last_report_spread_reason = constant:random_terror_spread_reason.distant }
+				clear_variable = random_terror_last_report_origin
+			}
+			set_temp_variable = { random_terror_distant_applied = constant:random_terror_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_terror_distant_applied = constant:random_terror_value.one } }
+		subtract_from_variable = { global.random_terror_network_reach = constant:random_terror_spread.distant_reach_cost }
+		clamp_variable = { var = global.random_terror_network_reach min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+		set_temp_variable = { chaosx_date_days = constant:random_terror_spread.distant_window_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { global.random_terror_distant_ready_date = global.date }
+		add_to_variable = { global.random_terror_distant_ready_date = chaosx_date_offset }
+		random_terror_mark_spread_window = yes
+	}
+}
+
+# COUNTRY scope: a government that has just opened a new hotspot.  Closes its
+# spread window for window_days, or high_reach_window_days at high Network
+# Reach.
+random_terror_mark_spread_window = {
+	set_temp_variable = { chaosx_date_days = constant:random_terror_spread.window_days }
+	if = {
+		limit = { check_variable = { global.random_terror_network_reach > constant:random_terror_value.high } }
+		set_temp_variable = { chaosx_date_days = constant:random_terror_spread.high_reach_window_days }
+	}
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	set_variable = { random_terror_spread_ready_date = global.date }
+	add_to_variable = { random_terror_spread_ready_date = chaosx_date_offset }
+}
+
+# STATE scope: a cell that a partial or costly raid, or a Security Surge
+# without an intelligence breakthrough, has scattered.  Its survivors can
+# carry it into a neighbouring state for survivors_days.
+random_terror_mark_survivors_displaced = {
+	set_temp_variable = { random_terror_survivors_duration = constant:random_terror_spread.survivors_days }
+	meta_effect = {
+		text = { set_state_flag = { flag = random_terror_survivors_displaced days = [SURVIVOR_DAYS] } }
+		SURVIVOR_DAYS = "[?random_terror_survivors_duration|.0]"
 	}
 }
 
@@ -3522,6 +3797,25 @@ random_terror_decision_security_surge = {
 			random_terror_add_state_activity = yes
 		}
 	}
+	# A surge without an intelligence breakthrough scatters the cell instead
+	# of catching it, unless a defection channel or allied intelligence
+	# keeps track of the survivors.
+	if = {
+		limit = {
+			has_event_target = random_terror_action_state
+			NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+			NOT = { has_country_flag = random_terror_defection_channel_open }
+		}
+		event_target:random_terror_action_state = {
+			if = {
+				limit = {
+					NOT = { has_state_flag = random_terror_joint_intelligence_received }
+					check_variable = { random_terror_state_activity > constant:random_terror_value.zero }
+				}
+				random_terror_mark_survivors_displaced = yes
+			}
+		}
+	}
 	random_terror_response_raise_legitimacy = yes
 	set_country_flag = random_terror_security_surge_active
 	random_terror_response_action_lock = yes
@@ -4977,6 +5271,20 @@ random_terror_resolve_targeted_raid_outcome = {
 					random_terror_add_public_government_abuse_condemnation = yes
 					random_terror_achievement_record_abusive_failure = yes
 				}
+			}
+			# Survivor displacement (Part 4 Evolution I): a partial or costly
+			# raid scatters the cell's survivors unless a defection channel or
+			# allied intelligence keeps track of them.
+			if = {
+				limit = {
+					OR = {
+						check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success }
+						check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success }
+					}
+					NOT = { has_state_flag = random_terror_joint_intelligence_received }
+					ROOT = { NOT = { has_country_flag = random_terror_defection_channel_open } }
+				}
+				random_terror_mark_survivors_displaced = yes
 			}
 			clamp_variable = { var = random_terror_state_activity min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
 			clamp_variable = { var = random_terror_state_pressure min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
@@ -6882,6 +7190,7 @@ random_terror_reset_crisis_cycle = {
 	clear_variable = random_terror_response_legitimacy
 	clear_variable = random_terror_response_capacity
 	clear_variable = random_terror_cycle_incident_count
+	clear_variable = random_terror_spread_ready_date
 }
 
 random_terror_reset_repeatable_cycle = {
