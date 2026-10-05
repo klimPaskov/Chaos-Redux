@@ -286,3 +286,18 @@ Decision:
 - The eight `cannibal_*_short` keys whose full name fits the 160 px box are removed, so the designer falls back to the full name: Scavenger Warband, Feast Guard, Feast Cohort, Bone Guard, Bone Riders, Island Reavers, Siege Eaters and Network Cadre.
 - `cannibal_march_predation_column_short` reads "Predation Column", the only name that needs shortening.
 - The `abbreviation` fields in `common/units/014_cannibalism_irregular_infantry.txt` stay as the three-letter counter codes.
+
+## R3-2. Event 014 tooltips use plain current wording
+
+Disposition: `implemented` (localisation only; no gameplay, tuning or AI change).
+
+Basis: spec part 12 (Localisation and secrecy), which forbids semicolons and em dashes in final prose, the workstream rule against implementation wording in player text, and lead round 3 decision D-R3-5, which keeps "ledger" where it is the network's in-world voice.
+
+Decision:
+
+- No Event 014 localisation value contains a semicolon, em dash or en dash. The Raise the First Anchors tooltip and the hidden-hoard seizure tooltip split their clauses into sentences.
+- The Emergency Reinforcement Draft tooltip names what is removed and shows the manpower share from `cannibalism_warlord_decision.recruitment_manpower_factor`, the constant `cannibalism_execute_warlord_recruitment_transaction` multiplies by. The Frenzy and Command Integrity line names Survive the First Encirclement, the focus that sets `cannibalism_warlord_survival_order_open`.
+- Summon the Warlords states what its two flags change in `cannibalism_unified_refresh_command_profile`: Absorb an Autonomous Warlord gains `cannibalism_unified_profile.authority_small` more Unified Authority and costs `cannibalism_unified_profile.cost_reduction_small` Command Power, shown with the signed and coloured variable formats from `paradox_wiki/Localisation - Hearts of Iron 4 Wiki.md` Formatting variables (lines 184-215; vanilla precedents `|+=%` and `|-0` in `localisation/english`).
+- The Preserve the Pack description and the Drill the Original Pack tooltip describe `cannibalism_wendigo_focus_preserve_pack_contract` as a template locked to paid musters. The Drill tooltip also shows its `cannibalism_wendigo_focus.pack_capacity_small` capacity gain, matching Feed the Anchor Guardians.
+- The Island Reavers description says the unit lands and fights as marines (`marines = yes`, `category_marines`).
+- "Unified Authority" is capitalised in the hoard review lines and the seizure mission outcomes.
