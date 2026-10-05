@@ -288,6 +288,21 @@ riches_found_mine_is_legitimacy_crisis = {
 	check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_crisis compare = less_than }
 }
 
+# STATE scope. A mature settlement: the Public Settlement mission succeeded,
+# or Local Order and Revenue Legitimacy are high while Extraction Pressure
+# stays below the warning band. Revenue incidents still happen there, less
+# often.
+riches_found_mine_settlement_is_mature = {
+	OR = {
+		has_state_flag = riches_found_mission_public_settlement_success
+		AND = {
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
+			NOT = { riches_found_mine_is_high_pressure = yes }
+		}
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Decision layers
 # ---------------------------------------------------------------------------
