@@ -89,3 +89,5 @@ No additional `.dds` file, asset manifest entry, or `.gfx` definition is needed.
 - Add a bounded source-history sublist if individual receipts become necessary for campaign analysis.
 - Add regional source attribution only after the runtime stores regional contribution ledgers rather than reconstructing them from current state.
 - Add a compact trend indicator sprite if a reviewed final asset improves readability without reducing the statistics area.
+
+Player-facing text calls the list "Contamination Sources". Script identifiers and this document keep the word ledger; the window does not use it.
