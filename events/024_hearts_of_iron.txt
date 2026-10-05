@@ -429,8 +429,10 @@ country_event = {
 		}
 	}
 
-	# Each family has a correcting response and a dismissing one. The penalty of
-	# each was priced when the incident was drawn; dismissing costs more.
+	# Each family has a correcting response and a dismissing one, and the
+	# counterplan, bootleg and party families a third. The penalty of each was
+	# priced when the incident was drawn; dismissing costs more, and a third
+	# answer pays one of those two prices.
 	option = {
 		name = chaosx.nr24.30.terrain_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_terrain compare = equals } }
@@ -614,6 +616,31 @@ country_event = {
 			video_game_in_sweden_adjust_incident_reliance = yes
 		}
 	}
+	# Sponsoring one committee's account buys political capital at the full price.
+	option = {
+		name = chaosx.nr24.30.party_c
+		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_party compare = equals } }
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = constant:video_game_in_sweden_ai_factor.incident_sponsor_authoritarian
+				OR = {
+					has_government = fascism
+					has_government = communism
+				}
+			}
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_sponsor_democratic has_government = democratic }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_party_supply has_country_flag = video_game_in_sweden_supply_crisis }
+		}
+		add_political_power = constant:video_game_in_sweden_award.incident_party_sponsor_political_power
+		custom_effect_tooltip = video_game_incident_party_sponsor_tt
+		hidden_effect = {
+			set_country_flag = video_game_in_sweden_party_appropriation
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_party_sponsor_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
+	}
 	option = {
 		name = chaosx.nr24.30.casualties_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_casualties compare = equals } }
@@ -660,6 +687,24 @@ country_event = {
 			video_game_in_sweden_adjust_incident_reliance = yes
 		}
 	}
+	# Revising the rules counts as a revision of the referee's book.
+	option = {
+		name = chaosx.nr24.30.counterplan_c
+		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		ai_chance = {
+			base = 1
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_revise_officer video_game_in_sweden_has_officer_competition = yes }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_revise_validated video_game_in_sweden_has_validation_evidence = yes }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.decision_reliance_threshold_crisis video_game_in_sweden_ai_avoids_reliance_gain = yes }
+		}
+		custom_effect_tooltip = video_game_incident_counterplan_revise_tt
+		hidden_effect = {
+			video_game_in_sweden_record_rules_revision = yes
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_revise }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = video_game_in_sweden_mm_revise_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
+	}
 	option = {
 		name = chaosx.nr24.30.bootleg_a
 		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
@@ -680,6 +725,34 @@ country_event = {
 		hidden_effect = {
 			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
 			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_bootleg_dismiss_gain }
+			video_game_in_sweden_adjust_incident_reliance = yes
+		}
+	}
+	# Tolerating the copies draws foreign interest and foreign correspondence.
+	option = {
+		name = chaosx.nr24.30.bootleg_c
+		trigger = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_bootleg compare = equals } }
+		ai_chance = {
+			base = 1
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_tolerate_commercial has_country_flag = video_game_in_sweden_commercial_route }
+			modifier = { factor = constant:video_game_in_sweden_ai_factor.incident_tolerate_war has_war = yes }
+		}
+		custom_effect_tooltip = video_game_incident_bootleg_tolerate_tt
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { video_game_in_sweden_licence_days < constant:video_game_in_sweden_timing.bootleg_interest_days } }
+				set_variable = { video_game_in_sweden_licence_days = constant:video_game_in_sweden_timing.bootleg_interest_days }
+			}
+			if = {
+				limit = { NOT = { has_country_flag = video_game_in_sweden_diplomacy_active } }
+				set_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.foreign_diplomacy_incident_days }
+				set_country_flag = {
+					flag = video_game_in_sweden_diplomacy_active
+					days = var:video_game_in_sweden_flag_days
+				}
+			}
+			set_temp_variable = { video_game_in_sweden_incident_response = constant:video_game_in_sweden_value.incident_dismiss }
+			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_award.incident_bootleg_tolerate_gain }
 			video_game_in_sweden_adjust_incident_reliance = yes
 		}
 	}

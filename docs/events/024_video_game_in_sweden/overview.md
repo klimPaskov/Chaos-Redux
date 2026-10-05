@@ -377,6 +377,11 @@ Admitting the error halves the penalty and its duration, and dismissing it pays 
 | Party | Stability and political power gain |
 
 Admitting answers also lower Reliance and may file a review, protect shifts, separate play from policy or close the licence office, while dismissing answers raise Reliance and make that family more common.
+Three families have a third answer, each paying one of the two prices set when the incident was drawn, so no cost appears after the choice:
+- The unexpected counterplan can be written into the referee's book: it counts as a rules revision (one more planning entry in the programme package and a larger levy for the next revision), raises Reliance by the rules-revision gain priced at the draw (9, or 3 with field evidence, halved under an auxiliary doctrine), pays the admission price, and is not remembered as an accepted mismatch.
+- The foreign bootleg can be tolerated: Reliance +3, the licence trade goodwill (+15% trade opinion) for at least 60 days, and a foreign correspondence that makes diplomatic mismatch reports possible for 90 days, at the dismissal price.
+- Political appropriation can be sponsored: +30 political power and Reliance +8, the other committees press their claims more often, at the dismissal price.
+The AI revises the rules more often with officer competition (1.5) and less with field evidence (0.6), tolerates the bootleg on the commercial route (1.5) and rarely at war (0.4), and sponsors a committee as a fascist or communist government (2) and rarely as a democracy (0.4).
 
 When an evolution becomes disabled, the handler cancels the active mission, removes temporary route ideas and modifiers, clears transient targets, and returns to the last permitted phase or baseline.
 Every such step back caps Reliance at Habit (49) through `video_game_in_sweden_cap_reliance` and rebuilds the stage idea and programme package, so a Trust the Model surge or a Worldview craze lands in the conclusion band of the earlier stage.

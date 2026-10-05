@@ -1452,22 +1452,38 @@ video_game_in_sweden_do_expand_access = {
 
 video_game_in_sweden_do_rules_revision = {
 	video_game_in_sweden_pay_rules_revision = yes
-	set_country_flag = video_game_in_sweden_rules_revision_complete
-	add_to_variable = { video_game_in_sweden_rules_revision_count = constant:video_game_in_sweden_value.one }
-	# Field evidence keeps a revision honest. An auxiliary doctrine halves the
-	# Reliance it adds because sessions are debriefed against field reports.
+	set_temp_variable = { video_game_in_sweden_rules_gain = constant:video_game_in_sweden_value.zero }
+	video_game_in_sweden_compute_rules_revision_gain = yes
+	video_game_in_sweden_record_rules_revision = yes
+	set_temp_variable = { video_game_in_sweden_reliance_delta = video_game_in_sweden_rules_gain }
+	video_game_in_sweden_change_reliance = yes
+}
+
+# COUNTRY scope. Reliance one rules revision adds. Field evidence keeps a
+# revision honest, and an auxiliary doctrine halves the gain because sessions
+# are debriefed against field reports. Output: caller-owned temp
+# video_game_in_sweden_rules_gain.
+video_game_in_sweden_compute_rules_revision_gain = {
 	if = {
 		limit = { video_game_in_sweden_has_validation_evidence = yes }
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_validated_gain }
+		set_temp_variable = { video_game_in_sweden_rules_gain = constant:video_game_in_sweden_reliance.rules_revision_validated_gain }
 	}
 	else = {
-		set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.rules_revision_gain }
+		set_temp_variable = { video_game_in_sweden_rules_gain = constant:video_game_in_sweden_reliance.rules_revision_gain }
 	}
 	if = {
 		limit = { has_country_flag = video_game_in_sweden_formal_auxiliary_doctrine }
-		divide_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_value.two }
+		divide_temp_variable = { video_game_in_sweden_rules_gain = constant:video_game_in_sweden_value.two }
 	}
-	video_game_in_sweden_change_reliance = yes
+}
+
+# COUNTRY scope. Files one revision of the referee's book: one more planning
+# entry in the programme package (refreshed by the caller's Reliance change)
+# and a larger staff levy for the next revision. Shared by the decision and
+# the counterplan report.
+video_game_in_sweden_record_rules_revision = {
+	set_country_flag = video_game_in_sweden_rules_revision_complete
+	add_to_variable = { video_game_in_sweden_rules_revision_count = constant:video_game_in_sweden_value.one }
 	add_to_variable = { video_game_in_sweden_rules_revision_army_experience = constant:video_game_in_sweden_cost.rules_revision_army_experience_increment }
 	add_to_variable = { video_game_in_sweden_rules_revision_command_power = constant:video_game_in_sweden_cost.rules_revision_command_power_increment }
 }
@@ -2943,8 +2959,9 @@ video_game_in_sweden_mark_incident = {
 }
 
 # COUNTRY scope. Resolves the incident on the table. Inputs: caller-owned
-# temps video_game_in_sweden_incident_response (incident_admit or
-# incident_dismiss) and video_game_in_sweden_reliance_delta.
+# temps video_game_in_sweden_incident_response (incident_admit,
+# incident_dismiss or incident_revise) and video_game_in_sweden_reliance_delta.
+# Only an admission is remembered as an accepted mismatch.
 video_game_in_sweden_adjust_incident_reliance = {
 	if = {
 		limit = { check_variable = { var = video_game_in_sweden_incident_response value = constant:video_game_in_sweden_value.incident_admit compare = equals } }
@@ -3457,6 +3474,14 @@ video_game_in_sweden_prepare_incident_severity = {
 	set_variable = { video_game_in_sweden_mm_dismiss_1 = video_game_in_sweden_incident_price_1 }
 	set_variable = { video_game_in_sweden_mm_dismiss_2 = video_game_in_sweden_incident_price_2 }
 	set_variable = { video_game_in_sweden_mm_dismiss_days = video_game_in_sweden_incident_price_days }
+	# The counterplan's rules revision is priced with the incident, so its
+	# report states the Reliance the revision will add.
+	if = {
+		limit = { check_variable = { var = video_game_in_sweden_current_incident value = constant:video_game_in_sweden_value.incident_counterplan compare = equals } }
+		set_temp_variable = { video_game_in_sweden_rules_gain = constant:video_game_in_sweden_value.zero }
+		video_game_in_sweden_compute_rules_revision_gain = yes
+		set_variable = { video_game_in_sweden_mm_revise_gain = video_game_in_sweden_rules_gain }
+	}
 }
 
 # COUNTRY scope. Inputs: temps video_game_in_sweden_incident_severity,
@@ -3481,7 +3506,8 @@ video_game_in_sweden_price_incident_response = {
 }
 
 # COUNTRY scope. Applies the priced penalty of the chosen response as the
-# timed Cabinet Mismatch modifier, replacing any earlier mismatch.
+# timed Cabinet Mismatch modifier, replacing any earlier mismatch. A rules
+# revision pays the admission price, every other answer the dismissal price.
 # Input: caller-owned temp video_game_in_sweden_incident_response.
 video_game_in_sweden_apply_incident_penalty = {
 	set_variable = { video_game_in_sweden_mm_attack = constant:video_game_in_sweden_value.zero }
@@ -3500,7 +3526,12 @@ video_game_in_sweden_apply_incident_penalty = {
 	set_variable = { video_game_in_sweden_mm_recruitable = constant:video_game_in_sweden_value.zero }
 	set_variable = { video_game_in_sweden_mm_efficiency = constant:video_game_in_sweden_value.zero }
 	if = {
-		limit = { check_variable = { var = video_game_in_sweden_incident_response value = constant:video_game_in_sweden_value.incident_admit compare = equals } }
+		limit = {
+			OR = {
+				check_variable = { var = video_game_in_sweden_incident_response value = constant:video_game_in_sweden_value.incident_admit compare = equals }
+				check_variable = { var = video_game_in_sweden_incident_response value = constant:video_game_in_sweden_value.incident_revise compare = equals }
+			}
+		}
 		set_temp_variable = { video_game_in_sweden_incident_price_1 = video_game_in_sweden_mm_admit_1 }
 		set_temp_variable = { video_game_in_sweden_incident_price_2 = video_game_in_sweden_mm_admit_2 }
 		set_temp_variable = { video_game_in_sweden_incident_price_days = video_game_in_sweden_mm_admit_days }
