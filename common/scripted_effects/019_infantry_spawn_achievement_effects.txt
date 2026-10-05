@@ -1313,23 +1313,23 @@ infantry_spawn_achievement_set_current_combat_trial_costs = {
 	set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = constant:infantry_spawn_achievement_value.zero }
 	if = {
 		limit = { check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_one_battalion_wonder compare = equals } }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = constant:infantry_spawn_achievement_combat_trial_cost.one_battalion_army_experience }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = constant:infantry_spawn_achievement_combat_trial_cost.one_battalion_command_power }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_one_battalion_army_experience }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_one_battalion_command_power }
 	}
 	if = {
 		limit = { check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_combined_arms_accident compare = equals } }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = constant:infantry_spawn_achievement_combat_trial_cost.combined_arms_army_experience }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = constant:infantry_spawn_achievement_combat_trial_cost.combined_arms_command_power }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_combined_arms_army_experience }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_combined_arms_command_power }
 	}
 	if = {
 		limit = { check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_borrowed_future compare = equals } }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = constant:infantry_spawn_achievement_combat_trial_cost.borrowed_future_army_experience }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = constant:infantry_spawn_achievement_combat_trial_cost.borrowed_future_command_power }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_borrowed_future_army_experience }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_borrowed_future_command_power }
 	}
 	if = {
 		limit = { check_variable = { var = infantry_spawn_achievement_current_combat_trial_type value = constant:infantry_spawn_achievement_combat_trial.type_barracks_of_babel compare = equals } }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = constant:infantry_spawn_achievement_combat_trial_cost.barracks_of_babel_army_experience }
-		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = constant:infantry_spawn_achievement_combat_trial_cost.barracks_of_babel_command_power }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_army_experience_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_barracks_of_babel_army_experience }
+		set_temp_variable = { infantry_spawn_achievement_current_combat_trial_command_power_cost = global.black_friday_price_infantry_spawn_achievement_combat_trial_cost_barracks_of_babel_command_power }
 	}
 }
 
@@ -1743,6 +1743,9 @@ infantry_spawn_achievement_start_combat_trial_from_target_state = {
 								var:infantry_spawn_achievement_combat_trial_defender_state = { has_border_war = yes }
 							}
 							infantry_spawn_achievement_debit_current_combat_trial_costs = yes
+							set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+							set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+							black_friday_credit_sale_purchase = yes
 							set_country_flag = infantry_spawn_achievement_combat_trial_started
 							activate_mission = infantry_spawn_achievement_combat_trial_mission
 						}

@@ -7214,6 +7214,16 @@ infantry_spawn_incident_pay_army_experience = {
 	army_experience = infantry_spawn_incident_negative_cost
 }
 
+# COUNTRY scope. Credits one Black Friday purchase after a paid incident choice
+# has charged its sale price (agent decision D32). Input: temp
+# black_friday_purchase_family_id, the choice's primary paid resource. Choices
+# run only after their price is affordable, so a deferred choice that cannot
+# pay yet credits nothing. Does nothing outside a valid natural sale.
+infantry_spawn_credit_incident_purchase = {
+	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
+	black_friday_credit_sale_purchase = yes
+}
+
 infantry_spawn_finish_lot_incident = {
 	infantry_spawn_incident_clamp_lot_and_country = yes
 	clr_country_flag = infantry_spawn_incident_pending
@@ -7350,8 +7360,10 @@ infantry_spawn_incident_barracks_provisional_committee = {
 }
 
 infantry_spawn_incident_ammunition_divert_production = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.infantry_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_infantry_equipment_cost }
 	infantry_spawn_incident_pay_infantry_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	set_temp_variable = { infantry_spawn_incident_debt_amount = constant:infantry_spawn_incident.debt_relief_medium }
 	infantry_spawn_incident_settle_lot_debt = yes
 	if = {
@@ -7398,8 +7410,10 @@ infantry_spawn_incident_motor_pool_territorial = {
 }
 
 infantry_spawn_incident_motor_pool_rebuild = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.motorized_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost }
 	infantry_spawn_incident_pay_motorized_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	if = {
 		limit = { infantry_spawn_incident_lot_index_is_valid = yes }
 		set_variable = { infantry_spawn_lot_supply_entries^infantry_spawn_incident_lot_index = constant:infantry_spawn_supply_burden.ordinary }
@@ -7442,8 +7456,10 @@ infantry_spawn_incident_village_enforce_transfer = {
 }
 
 infantry_spawn_incident_village_supply_bargain = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.support_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_support_equipment_cost }
 	infantry_spawn_incident_pay_support_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	if = {
 		limit = { infantry_spawn_incident_lot_index_is_valid = yes }
 		subtract_from_variable = { infantry_spawn_lot_supply_entries^infantry_spawn_incident_lot_index = 1 }
@@ -7582,10 +7598,12 @@ infantry_spawn_incident_colors_territorial = {
 }
 
 infantry_spawn_incident_tanks_engineers = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.support_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_support_equipment_cost }
 	infantry_spawn_incident_pay_support_equipment = yes
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.army_experience_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_army_experience_cost }
 	infantry_spawn_incident_pay_army_experience = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	set_temp_variable = { infantry_spawn_incident_debt_amount = constant:infantry_spawn_incident.debt_relief_small }
 	infantry_spawn_incident_settle_lot_debt = yes
 	if = {
@@ -7623,10 +7641,12 @@ infantry_spawn_incident_tanks_dismantle = {
 }
 
 infantry_spawn_incident_rotorcraft_maintain = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.support_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_support_equipment_cost }
 	infantry_spawn_incident_pay_support_equipment = yes
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.motorized_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost }
 	infantry_spawn_incident_pay_motorized_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	set_temp_variable = { infantry_spawn_incident_debt_amount = constant:infantry_spawn_incident.debt_relief_small }
 	infantry_spawn_incident_settle_lot_debt = yes
 	if = {
@@ -7661,8 +7681,10 @@ infantry_spawn_incident_rotorcraft_field = {
 }
 
 infantry_spawn_incident_radios_standardize = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.support_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_support_equipment_cost }
 	infantry_spawn_incident_pay_support_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	set_temp_variable = { infantry_spawn_incident_debt_amount = constant:infantry_spawn_incident.debt_relief_small }
 	infantry_spawn_incident_settle_lot_debt = yes
 	if = {
@@ -7707,8 +7729,10 @@ infantry_spawn_incident_cavalry_keep_horses = {
 }
 
 infantry_spawn_incident_cavalry_force_trucks = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.motorized_equipment_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost }
 	infantry_spawn_incident_pay_motorized_equipment = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	infantry_spawn_credit_incident_purchase = yes
 	if = {
 		limit = { infantry_spawn_incident_lot_index_is_valid = yes }
 		set_country_flag = infantry_spawn_incident_motor_standardization_affinity
@@ -7741,8 +7765,10 @@ infantry_spawn_incident_armored_cars_recon = {
 }
 
 infantry_spawn_incident_armored_cars_retrain = {
-	set_temp_variable = { infantry_spawn_incident_resource_cost = constant:infantry_spawn_incident.army_experience_cost }
+	set_temp_variable = { infantry_spawn_incident_resource_cost = global.black_friday_price_infantry_spawn_incident_army_experience_cost }
 	infantry_spawn_incident_pay_army_experience = yes
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.army_experience }
+	infantry_spawn_credit_incident_purchase = yes
 	set_temp_variable = { infantry_spawn_incident_debt_amount = constant:infantry_spawn_incident.debt_gain_small }
 	infantry_spawn_incident_add_lot_debt = yes
 	if = {
@@ -7810,21 +7836,21 @@ infantry_spawn_deferred_incident_choice_check_affordability = {
 	if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.ammunition_divert_production }
-			NOT = { check_variable = { var = num_equipment@infantry_equipment value = constant:infantry_spawn_incident.infantry_equipment_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = num_equipment@infantry_equipment value = global.black_friday_price_infantry_spawn_incident_infantry_equipment_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
 	else_if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.motor_pool_rebuild }
-			NOT = { check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = num_equipment@motorized_equipment value = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
 	else_if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.village_supply_bargain }
-			NOT = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_incident_support_equipment_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
@@ -7832,8 +7858,8 @@ infantry_spawn_deferred_incident_choice_check_affordability = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.tanks_engineers }
 			OR = {
-				NOT = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
-				NOT = { check_variable = { var = army_experience value = constant:infantry_spawn_incident.army_experience_cost compare = greater_than_or_equals } }
+				NOT = { check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_incident_support_equipment_cost compare = greater_than_or_equals } }
+				NOT = { check_variable = { var = army_experience value = global.black_friday_price_infantry_spawn_incident_army_experience_cost compare = greater_than_or_equals } }
 			}
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
@@ -7842,8 +7868,8 @@ infantry_spawn_deferred_incident_choice_check_affordability = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.rotorcraft_maintain }
 			OR = {
-				NOT = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
-				NOT = { check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals } }
+				NOT = { check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_incident_support_equipment_cost compare = greater_than_or_equals } }
+				NOT = { check_variable = { var = num_equipment@motorized_equipment value = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost compare = greater_than_or_equals } }
 			}
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
@@ -7851,21 +7877,21 @@ infantry_spawn_deferred_incident_choice_check_affordability = {
 	else_if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.radios_standardize }
-			NOT = { check_variable = { var = num_equipment@support_equipment value = constant:infantry_spawn_incident.support_equipment_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = num_equipment@support_equipment value = global.black_friday_price_infantry_spawn_incident_support_equipment_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
 	else_if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.cavalry_force_trucks }
-			NOT = { check_variable = { var = num_equipment@motorized_equipment value = constant:infantry_spawn_incident.motorized_equipment_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = num_equipment@motorized_equipment value = global.black_friday_price_infantry_spawn_incident_motorized_equipment_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
 	else_if = {
 		limit = {
 			check_variable = { infantry_spawn_deferred_incident_choice = constant:infantry_spawn_deferred_incident_choice.armored_cars_retrain }
-			NOT = { check_variable = { var = army_experience value = constant:infantry_spawn_incident.army_experience_cost compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = army_experience value = global.black_friday_price_infantry_spawn_incident_army_experience_cost compare = greater_than_or_equals } }
 		}
 		set_temp_variable = { infantry_spawn_deferred_incident_choice_affordable = constant:infantry_spawn_deferred_replay_marker.unset }
 	}
