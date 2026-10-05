@@ -54,7 +54,7 @@ Captured biological-facility recovery raids use the consolidated Medical and Bio
 
 The AI templates use the same three sections and real standing equipment bills as the player. Defensive profiles prioritize protection and medical coverage, contaminated theaters prioritize the protection section, outbreak response prioritizes the medical section, and offensive native raids retain their own exact payload, policy, target, formation, and success gates.
 
-Removed HQ sections and the eighteen obsolete agent-specific chemical tank companies are absent from active AI templates. Light, medium, and heavy armored delivery roles remain the supported chassis variants.
+Removed HQ sections are absent from active AI templates. Armored chemical delivery uses only the light, medium, and heavy armored delivery roles; there are no agent-specific chemical tank companies.
 
 ## Assets and wiring
 
