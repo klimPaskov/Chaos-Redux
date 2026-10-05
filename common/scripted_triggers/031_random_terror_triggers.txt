@@ -869,6 +869,16 @@ random_terror_can_start_pressure_uprising = {
 	}
 }
 
+# STATE scope.  A pressured active crisis state that can rise in the opening
+# uprising wave of the False Revelation.
+random_terror_state_can_rise_in_revelation = {
+	state_population_k > constant:random_terror_value.zero
+	random_terror_state_is_active_crisis = yes
+	NOT = { has_state_flag = random_terror_state_lost_local_control }
+	check_variable = { random_terror_state_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+	random_terror_state_uprising_window_open = yes
+}
+
 # STATE scope.  No uprising is under way in the state
 # (random_terror_uprising_recent, cleared when its mission ends or the crisis
 # closes) and its one-uprising window (random_terror_uprising_cooldown_until,

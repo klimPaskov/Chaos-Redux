@@ -1,0 +1,22 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR TERMINAL ON ACTIONS
+# ============================================================================
+# Part 8 Global counterplay: losing or retaking the final command capital
+# (state flag random_terror_terminal_command_capital) changes Presence of the
+# Entity at once.  The callback exits on one global flag outside the terminal
+# phase, reads only the changed state and never iterates countries.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = random_terror_terminal_active
+					FROM.FROM = { has_state_flag = random_terror_terminal_command_capital }
+				}
+				random_terror_refresh_terminal_strength = yes
+			}
+		}
+	}
+}

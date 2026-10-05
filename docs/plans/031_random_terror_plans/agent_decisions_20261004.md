@@ -426,3 +426,17 @@ Basis: Part 3 (Establish Joint Response Cell creates coordination capacity; inte
 - Security Reform adds 2 lasting capacity and a clean containment adds 1, capped at 4 in all; closure resets the crisis capacity to that lasting value instead of clearing it.
 - The header and the response cell, Security Reform, Intelligence Sweep and Targeted Raid tooltips state the values.
 - Route evidence: the raid weight change is probability-bearing; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.
+
+### R38 Objective-based final strengths and the opening uprising wave (amends D12)
+
+Basis: Part 8 Final state ideas ("should change as the final campaign advances or loses key objectives" and "should not give unlimited power at full strength regardless of world state"), Extreme abilities, Uprising system ("a country with zero pressure and no active cell cannot receive a full rebel army"), Phase 1 and Global counterplay, and the accepted improvement-review item "Objective-based world-end power".
+D12 settled only the size of the government action budget; it is amended, not replaced: the single Terminal Counteroffensive row stays, and the final strengths and the uprising wave are added beside it.
+
+- The three static spirits became variable-driven dynamic modifiers on the final command, recomputed by one event-owned hidden terminal check every 30 days, so values scale smoothly instead of jumping between idea tiers.
+  The spirits stay defined for the jihadist Seal the Final Command and Deny the False Revelation focuses, and the terminal transition removes them so no strength is counted twice.
+- Presence of the Entity reads the command capital (40 of 100 points), surviving commands holding their capitals and International Unity; losing the command capital lowers it at once through an `on_state_control_changed` callback that exits on the terminal flag.
+- World in Revolt reads governments above Terror Pressure 70 through a new bounded list of affected governments (`global.random_terror_affected_countries`) and surviving commands; Supply Through Ruin reads controlled ports, states with infrastructure above 3, and External Supply.
+- Floors (20, 15, 15) and the cap (100) live in constants; at full strength the modifiers exceed the old flat spirits, and at the floor they are a small fraction of them.
+- The Ambiguous Light now adds 10 points to each strength instead of re-adding the flat spirits, and Seal the Final Command adds 10 to Presence.
+- The uprising wave runs at the world-end transition only for governments with Terror Pressure above the uprising gate and a pressured active state, and gives them the existing Stop the Coordinated Uprising mission where a slot is free.
+- Route evidence: the strength weights are not AI or random weights; no probability route was needed.

@@ -916,7 +916,7 @@ random_terror_apply_incident = {
 	set_variable = { random_terror_last_incident_type = random_terror_incident_type }
 	CONTROLLER = {
 		random_terror_initialize_country_state = yes
-		set_country_flag = random_terror_affected_country
+		random_terror_mark_affected_country = yes
 		random_terror_schedule_recovery_check = yes
 		add_to_variable = { random_terror_cycle_incident_count = constant:random_terror_value.one }
 		set_variable = { random_terror_last_report_incident_type = random_terror_incident_type }
@@ -2282,7 +2282,7 @@ random_terror_scenario_seed_country = {
 	}
 	set_country_flag = random_terror_scenario_target
 	set_country_flag = random_terror_target_reserved
-	set_country_flag = random_terror_affected_country
+	random_terror_mark_affected_country = yes
 	random_terror_schedule_recovery_check = yes
 	set_country_flag = random_terror_response_cell_active
 	set_country_flag = random_terror_government_opposition_recorded
@@ -6814,13 +6814,21 @@ random_terror_mark_final_actor = {
 		random_terror_mass_defection
 		random_terror_failed_rule
 	}
+	# The final strengths follow the world state through the dynamic
+	# modifiers of random_terror_apply_terminal_strength, which the revelation
+	# applies once the terminal phase is open; a flat Presence of the Entity
+	# carried from Seal the Final Command gives way to them.
 	if = {
-		limit = { NOT = { has_idea = random_terror_presence_of_the_entity } }
-		add_ideas = random_terror_presence_of_the_entity
+		limit = { has_idea = random_terror_presence_of_the_entity }
+		remove_ideas = random_terror_presence_of_the_entity
 	}
-	add_ideas = {
-		random_terror_world_in_revolt
-		random_terror_supply_through_ruin
+	if = {
+		limit = { has_idea = random_terror_world_in_revolt }
+		remove_ideas = random_terror_world_in_revolt
+	}
+	if = {
+		limit = { has_idea = random_terror_supply_through_ruin }
+		remove_ideas = random_terror_supply_through_ruin
 	}
 	set_country_flag = random_terror_later_religious_opposition_registry
 	random_terror_add_public_forced_rule_condemnation = yes
@@ -6934,6 +6942,8 @@ random_terror_begin_false_revelation = {
 				event_target:random_terror_final_capital = { set_state_flag = random_terror_terminal_command_capital }
 			}
 			set_global_flag = random_terror_terminal_active
+			random_terror_refresh_terminal_strength = yes
+			event_target:random_terror_final_actor = { random_terror_schedule_terminal_check = yes }
 			event_target:random_terror_final_actor = { random_terror_assign_actor_cosmetic_tag = yes }
 			set_global_flag = random_terror_false_revelation_pending
 			set_global_flag = random_terror_false_revelation_enabled
@@ -6990,6 +7000,16 @@ random_terror_finalize_false_revelation = {
 				random_terror_join_final_command = yes
 			}
 		}
+		# Phase 1: the synchronized uprising wave, only in governments with
+		# real groundwork (Part 8 Uprising system).
+		if = {
+			limit = { check_variable = { global.random_terror_affected_countries^num > constant:random_terror_value.zero } }
+			for_each_scope_loop = {
+				array = global.random_terror_affected_countries
+				random_terror_revelation_uprising = yes
+			}
+		}
+		random_terror_refresh_terminal_strength = yes
 		set_global_flag = random_terror_world_end_ready
 		refresh_world_threat_state = yes
 	}
@@ -7016,6 +7036,298 @@ random_terror_join_final_command = {
 			}
 		}
 		event_target:random_terror_final_actor = { add_to_faction = PREV }
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Objective-based world-end power (Part 8 Final state ideas, Extreme abilities,
+# Uprising system, Phase 1 and Global counterplay)
+# -----------------------------------------------------------------------------
+# The final command's three strengths are dynamic modifiers whose values follow
+# the world state.  random_terror_refresh_terminal_strength recomputes one
+# 0-100 score for each, held between its floor and score_cap in the
+# random_terror_terminal_strength constants:
+#   Presence of the Entity  command capital held, surviving commands holding
+#                           their own capitals, International Unity
+#   World in Revolt         governments above the high-pressure gate (read
+#                           from global.random_terror_affected_countries,
+#                           never a world scan) and surviving commands
+#   Supply Through Ruin     controlled ports and developed states, External
+#                           Supply
+# The hidden terminal check chaosx.nr31.98 refreshes the scores every
+# check_days, the command-capital on_action refreshes them at once when the
+# capital changes hands, and the Terminal Counteroffensive refreshes them
+# after it strikes.  Scores are kept as globals for the tooltips.
+
+# COUNTRY scope: marks a government as affected by Event 31 and lists it in
+# global.random_terror_affected_countries, the bounded set read by the
+# terminal strength check and the revelation uprising wave.
+random_terror_mark_affected_country = {
+	set_country_flag = random_terror_affected_country
+	if = {
+		limit = {
+			NOT = {
+				is_in_array = {
+					array = global.random_terror_affected_countries
+					value = THIS
+				}
+			}
+		}
+		add_to_array = { array = global.random_terror_affected_countries value = THIS }
+	}
+}
+
+# COUNTRY scope: one Event 31 carrier tag.  A live command other than the
+# final command counts as a surviving network, and as a command capital while
+# it still controls its own capital.  Outputs (caller-owned temps):
+# random_terror_terminal_networks and random_terror_terminal_capitals.
+random_terror_count_terminal_command = {
+	if = {
+		limit = {
+			random_terror_is_actor = yes
+			NOT = { has_country_flag = random_terror_final_actor }
+			NOT = { has_capitulated = yes }
+			num_of_controlled_states > constant:random_terror_value.zero
+		}
+		add_to_temp_variable = { random_terror_terminal_networks = constant:random_terror_value.one }
+		if = {
+			limit = { capital_scope = { is_controlled_by = PREV } }
+			add_to_temp_variable = { random_terror_terminal_capitals = constant:random_terror_value.one }
+		}
+	}
+}
+
+# Any scope.  Recomputes the three final strengths and refreshes the final
+# command's modifiers.  Does nothing outside the terminal phase.
+random_terror_refresh_terminal_strength = {
+	if = {
+		limit = {
+			has_global_flag = random_terror_terminal_active
+			has_event_target = random_terror_final_actor
+			event_target:random_terror_final_actor = { random_terror_is_actor = yes }
+		}
+		random_terror_initialize_global_state = yes
+		# Surviving commands and their capitals, read from the fixed carrier tags.
+		set_temp_variable = { random_terror_terminal_networks = constant:random_terror_value.zero }
+		set_temp_variable = { random_terror_terminal_capitals = constant:random_terror_value.zero }
+		if = { limit = { JHX = { exists = yes } } JHX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JIX = { exists = yes } } JIX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JKX = { exists = yes } } JKX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JLX = { exists = yes } } JLX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JMX = { exists = yes } } JMX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JNX = { exists = yes } } JNX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JOX = { exists = yes } } JOX = { random_terror_count_terminal_command = yes } }
+		if = { limit = { JPX = { exists = yes } } JPX = { random_terror_count_terminal_command = yes } }
+		# Governments above the high-pressure gate, from the affected list only.
+		set_temp_variable = { random_terror_terminal_pressured = constant:random_terror_value.zero }
+		if = {
+			limit = { check_variable = { global.random_terror_affected_countries^num > constant:random_terror_value.zero } }
+			for_each_scope_loop = {
+				array = global.random_terror_affected_countries
+				if = {
+					limit = {
+						exists = yes
+						has_country_flag = random_terror_affected_country
+						NOT = { has_country_flag = random_terror_actor }
+						check_variable = { random_terror_pressure > constant:random_terror_terminal_strength.high_pressure_gate }
+					}
+					add_to_temp_variable = { random_terror_terminal_pressured = constant:random_terror_value.one }
+				}
+			}
+		}
+		set_variable = { global.random_terror_terminal_pressured_count = random_terror_terminal_pressured }
+		set_variable = { global.random_terror_terminal_network_count = random_terror_terminal_networks }
+		set_variable = { global.random_terror_terminal_capital_held = constant:random_terror_value.zero }
+		if = {
+			limit = {
+				has_event_target = random_terror_final_capital
+				event_target:random_terror_final_capital = {
+					has_state_flag = random_terror_terminal_command_capital
+					CONTROLLER = { has_country_flag = random_terror_final_actor }
+				}
+			}
+			set_variable = { global.random_terror_terminal_capital_held = constant:random_terror_value.one }
+		}
+		event_target:random_terror_final_actor = {
+			# Presence of the Entity.
+			set_temp_variable = { random_terror_terminal_score = global.random_terror_terminal_capital_held }
+			multiply_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.capital_points }
+			set_temp_variable = { random_terror_terminal_part = random_terror_terminal_capitals }
+			multiply_temp_variable = { random_terror_terminal_part = constant:random_terror_terminal_strength.command_capital_points }
+			clamp_temp_variable = { var = random_terror_terminal_part min = constant:random_terror_value.zero max = constant:random_terror_terminal_strength.command_capital_cap }
+			add_to_temp_variable = { random_terror_terminal_score = random_terror_terminal_part }
+			set_temp_variable = { random_terror_terminal_part = global.random_terror_international_unity }
+			multiply_temp_variable = { random_terror_terminal_part = constant:random_terror_terminal_strength.unity_factor }
+			add_to_temp_variable = { random_terror_terminal_score = random_terror_terminal_part }
+			if = {
+				limit = { has_country_flag = random_terror_focus_final_command_sealed }
+				add_to_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.sealed_command_points }
+			}
+			if = {
+				limit = { has_country_flag = random_terror_focus_terminal_overlay }
+				add_to_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.focus_overlay_points }
+			}
+			clamp_temp_variable = { var = random_terror_terminal_score min = constant:random_terror_terminal_strength.presence_floor max = constant:random_terror_terminal_strength.score_cap }
+			round_temp_variable = random_terror_terminal_score
+			set_variable = { global.random_terror_presence_score = random_terror_terminal_score }
+			# World in Revolt.
+			set_temp_variable = { random_terror_terminal_score = random_terror_terminal_pressured }
+			multiply_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.pressured_country_points }
+			clamp_temp_variable = { var = random_terror_terminal_score min = constant:random_terror_value.zero max = constant:random_terror_terminal_strength.pressured_country_cap }
+			set_temp_variable = { random_terror_terminal_part = random_terror_terminal_networks }
+			multiply_temp_variable = { random_terror_terminal_part = constant:random_terror_terminal_strength.network_points }
+			clamp_temp_variable = { var = random_terror_terminal_part min = constant:random_terror_value.zero max = constant:random_terror_terminal_strength.network_cap }
+			add_to_temp_variable = { random_terror_terminal_score = random_terror_terminal_part }
+			if = {
+				limit = { has_country_flag = random_terror_focus_terminal_overlay }
+				add_to_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.focus_overlay_points }
+			}
+			clamp_temp_variable = { var = random_terror_terminal_score min = constant:random_terror_terminal_strength.revolt_floor max = constant:random_terror_terminal_strength.score_cap }
+			round_temp_variable = random_terror_terminal_score
+			set_variable = { global.random_terror_revolt_score = random_terror_terminal_score }
+			# Supply Through Ruin.
+			set_temp_variable = { random_terror_terminal_ports = constant:random_terror_value.zero }
+			set_temp_variable = { random_terror_terminal_developed = constant:random_terror_value.zero }
+			every_controlled_state = {
+				if = {
+					limit = { naval_base > constant:random_terror_value.zero }
+					add_to_temp_variable = { random_terror_terminal_ports = constant:random_terror_value.one }
+				}
+				if = {
+					limit = { infrastructure > constant:random_terror_terminal_strength.developed_infrastructure }
+					add_to_temp_variable = { random_terror_terminal_developed = constant:random_terror_value.one }
+				}
+			}
+			set_variable = { global.random_terror_terminal_port_count = random_terror_terminal_ports }
+			set_variable = { global.random_terror_terminal_developed_count = random_terror_terminal_developed }
+			set_temp_variable = { random_terror_terminal_score = random_terror_terminal_ports }
+			multiply_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.port_points }
+			clamp_temp_variable = { var = random_terror_terminal_score min = constant:random_terror_value.zero max = constant:random_terror_terminal_strength.port_cap }
+			set_temp_variable = { random_terror_terminal_part = random_terror_terminal_developed }
+			multiply_temp_variable = { random_terror_terminal_part = constant:random_terror_terminal_strength.developed_points }
+			clamp_temp_variable = { var = random_terror_terminal_part min = constant:random_terror_value.zero max = constant:random_terror_terminal_strength.developed_cap }
+			add_to_temp_variable = { random_terror_terminal_score = random_terror_terminal_part }
+			set_temp_variable = { random_terror_terminal_part = random_terror_external_supply }
+			multiply_temp_variable = { random_terror_terminal_part = constant:random_terror_terminal_strength.supply_factor }
+			add_to_temp_variable = { random_terror_terminal_score = random_terror_terminal_part }
+			if = {
+				limit = { has_country_flag = random_terror_focus_terminal_overlay }
+				add_to_temp_variable = { random_terror_terminal_score = constant:random_terror_terminal_strength.focus_overlay_points }
+			}
+			clamp_temp_variable = { var = random_terror_terminal_score min = constant:random_terror_terminal_strength.ruin_floor max = constant:random_terror_terminal_strength.score_cap }
+			round_temp_variable = random_terror_terminal_score
+			set_variable = { global.random_terror_ruin_score = random_terror_terminal_score }
+			random_terror_apply_terminal_strength = yes
+		}
+	}
+}
+
+# COUNTRY scope: the final command.  Turns the three global scores into the
+# variables read by its dynamic modifiers (score / score_cap x the full value
+# in constants) and makes sure the modifiers are present and current.
+random_terror_apply_terminal_strength = {
+	set_temp_variable = { random_terror_terminal_ratio = global.random_terror_presence_score }
+	divide_temp_variable = { random_terror_terminal_ratio = constant:random_terror_terminal_strength.score_cap }
+	set_variable = { random_terror_presence_attack = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_presence_attack = constant:random_terror_terminal_strength.presence_attack_full }
+	set_variable = { random_terror_presence_defence = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_presence_defence = constant:random_terror_terminal_strength.presence_defence_full }
+	set_variable = { random_terror_presence_org = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_presence_org = constant:random_terror_terminal_strength.presence_org_full }
+	set_variable = { random_terror_presence_reinforce = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_presence_reinforce = constant:random_terror_terminal_strength.presence_reinforce_full }
+	set_temp_variable = { random_terror_terminal_ratio = global.random_terror_revolt_score }
+	divide_temp_variable = { random_terror_terminal_ratio = constant:random_terror_terminal_strength.score_cap }
+	set_variable = { random_terror_revolt_attack = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_revolt_attack = constant:random_terror_terminal_strength.revolt_attack_full }
+	set_variable = { random_terror_revolt_war_support = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_revolt_war_support = constant:random_terror_terminal_strength.revolt_war_support_full }
+	set_variable = { random_terror_revolt_political_power = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_revolt_political_power = constant:random_terror_terminal_strength.revolt_political_power_full }
+	set_variable = { random_terror_revolt_conscription = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_revolt_conscription = constant:random_terror_terminal_strength.revolt_conscription_full }
+	set_temp_variable = { random_terror_terminal_ratio = global.random_terror_ruin_score }
+	divide_temp_variable = { random_terror_terminal_ratio = constant:random_terror_terminal_strength.score_cap }
+	set_variable = { random_terror_ruin_supply_consumption = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_ruin_supply_consumption = constant:random_terror_terminal_strength.ruin_supply_consumption_full }
+	set_variable = { random_terror_ruin_out_of_supply = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_ruin_out_of_supply = constant:random_terror_terminal_strength.ruin_out_of_supply_full }
+	set_variable = { random_terror_ruin_construction = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_ruin_construction = constant:random_terror_terminal_strength.ruin_construction_full }
+	set_variable = { random_terror_ruin_factory_output = random_terror_terminal_ratio }
+	multiply_variable = { random_terror_ruin_factory_output = constant:random_terror_terminal_strength.ruin_factory_output_full }
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = random_terror_entity_presence } } }
+		add_dynamic_modifier = { modifier = random_terror_entity_presence }
+	}
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = random_terror_entity_revolt } } }
+		add_dynamic_modifier = { modifier = random_terror_entity_revolt }
+	}
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = random_terror_entity_ruin } } }
+		add_dynamic_modifier = { modifier = random_terror_entity_ruin }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# COUNTRY scope: the final command.  Keeps one pending hidden terminal check
+# (chaosx.nr31.98) for as long as the terminal phase lasts.
+random_terror_schedule_terminal_check = {
+	if = {
+		limit = {
+			has_global_flag = random_terror_terminal_active
+			has_country_flag = random_terror_final_actor
+			NOT = { has_country_flag = random_terror_terminal_check_pending }
+		}
+		set_temp_variable = { random_terror_terminal_check_delay = constant:random_terror_terminal_strength.check_days }
+		set_temp_variable = { random_terror_terminal_check_guard = random_terror_terminal_check_delay }
+		add_to_temp_variable = { random_terror_terminal_check_guard = constant:random_terror_tuning.pulse_flag_buffer_days }
+		meta_effect = {
+			text = { set_country_flag = { flag = random_terror_terminal_check_pending days = [GUARD_DAYS] } }
+			GUARD_DAYS = "[?random_terror_terminal_check_guard|.0]"
+		}
+		country_event = { id = chaosx.nr31.98 days = random_terror_terminal_check_delay }
+	}
+}
+
+# COUNTRY scope: the hidden terminal check.
+random_terror_run_terminal_check = {
+	clr_country_flag = random_terror_terminal_check_pending
+	random_terror_refresh_terminal_strength = yes
+	random_terror_schedule_terminal_check = yes
+}
+
+# COUNTRY scope: a government in the opening uprising wave of the False
+# Revelation (Part 8 Uprising system and Phase 1).  Only a government with
+# Terror Pressure above the uprising gate and a pressured active state it
+# controls rises; that state receives the ordinary pressure uprising and, when
+# the government has a free emergency slot, the Stop the Coordinated Uprising
+# mission.  A country with no pressure or no active cell receives nothing.
+random_terror_revelation_uprising = {
+	if = {
+		limit = {
+			exists = yes
+			NOT = { has_country_flag = random_terror_actor }
+			has_country_flag = random_terror_affected_country
+			check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+			any_controlled_state = { random_terror_state_can_rise_in_revelation = yes }
+		}
+		random_controlled_state = {
+			limit = { random_terror_state_can_rise_in_revelation = yes }
+			save_event_target_as = random_terror_uprising_state
+			if = {
+				limit = {
+					PREV = {
+						NOT = { has_country_flag = random_terror_mission_slot_2 }
+						random_terror_can_hold_response_mission = yes
+					}
+				}
+				save_event_target_as = random_terror_mission_subject
+				PREV = { random_terror_begin_uprising_mission = yes }
+			}
+			random_terror_start_pressure_uprising = yes
+		}
 	}
 }
 
@@ -7176,6 +7488,7 @@ random_terror_close_country_recovery = {
 random_terror_reset_crisis_cycle = {
 	clr_country_flag = random_terror_reconstruction_available
 	clr_country_flag = random_terror_affected_country
+	remove_from_array = { array = global.random_terror_affected_countries value = THIS }
 	clr_country_flag = random_terror_emphasis_chosen
 	clr_country_flag = random_terror_response_cell_active
 	clr_country_flag = random_terror_response_action_recorded
@@ -7295,6 +7608,9 @@ random_terror_resolve_defeat = {
 		set_global_flag = random_terror_defeat_resolved
 		clr_global_flag = random_terror_terminal_active
 		clr_global_flag = random_terror_global_jihad_active
+		clear_variable = global.random_terror_presence_score
+		clear_variable = global.random_terror_revolt_score
+		clear_variable = global.random_terror_ruin_score
 		every_country = {
 			random_terror_clear_country_commitments = yes
 			if = {
@@ -7550,6 +7866,22 @@ random_terror_clear_actor_runtime = {
 	}
 	remove_dynamic_modifier = { modifier = random_terror_mobilized_cadres }
 	remove_dynamic_modifier = { modifier = random_terror_synchronized_offensive }
+	remove_dynamic_modifier = { modifier = random_terror_entity_presence }
+	remove_dynamic_modifier = { modifier = random_terror_entity_revolt }
+	remove_dynamic_modifier = { modifier = random_terror_entity_ruin }
+	clr_country_flag = random_terror_terminal_check_pending
+	clear_variable = random_terror_presence_attack
+	clear_variable = random_terror_presence_defence
+	clear_variable = random_terror_presence_org
+	clear_variable = random_terror_presence_reinforce
+	clear_variable = random_terror_revolt_attack
+	clear_variable = random_terror_revolt_war_support
+	clear_variable = random_terror_revolt_political_power
+	clear_variable = random_terror_revolt_conscription
+	clear_variable = random_terror_ruin_supply_consumption
+	clear_variable = random_terror_ruin_out_of_supply
+	clear_variable = random_terror_ruin_construction
+	clear_variable = random_terror_ruin_factory_output
 	every_country = {
 		limit = { has_country_flag = random_terror_parent_of_@PREV }
 		clr_country_flag = random_terror_parent_of_@PREV
@@ -7796,6 +8128,8 @@ random_terror_terminal_counteroffensive = {
 			}
 			random_terror_check_for_defeat = yes
 		}
+		# The blow shows at once in the final strengths.
+		random_terror_refresh_terminal_strength = yes
 	}
 }
 

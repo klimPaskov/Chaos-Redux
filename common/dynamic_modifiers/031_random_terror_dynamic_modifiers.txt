@@ -8,8 +8,9 @@
 # construction, while the severe output, recruitment and movement penalties
 # arrive with Armed Insurgency and Lost Local Control.  Values live in the
 # random_terror_state_modifier script constants.  Timed country modifiers
-# granted by actor focuses and the four first-emphasis modifiers of a
-# government follow at the end of the file.
+# granted by actor focuses, the four first-emphasis modifiers of a
+# government and the three scaling strengths of the final command follow at
+# the end of the file.
 # ============================================================================
 
 random_terror_state_dormant = {
@@ -106,4 +107,32 @@ random_terror_emphasis_coercion = {
 	icon = GFX_decision_random_terror_government_rapid_security_deployment
 	war_support_factor = constant:random_terror_emphasis.coercion_war_support
 	stability_factor = constant:random_terror_emphasis.coercion_stability
+}
+
+# The final command's three strengths (Part 8 Final state ideas).  Values are
+# variables on the final command written by random_terror_apply_terminal_strength
+# from the world state (random_terror_refresh_terminal_strength); they reuse
+# the matching national spirit art.
+random_terror_entity_presence = {
+	icon = GFX_idea_random_terror_presence_of_the_entity
+	army_attack_factor = random_terror_presence_attack
+	army_defence_factor = random_terror_presence_defence
+	army_org_factor = random_terror_presence_org
+	land_reinforce_rate = random_terror_presence_reinforce
+}
+
+random_terror_entity_revolt = {
+	icon = GFX_idea_random_terror_world_in_revolt
+	army_attack_factor = random_terror_revolt_attack
+	war_support_factor = random_terror_revolt_war_support
+	political_power_factor = random_terror_revolt_political_power
+	conscription_factor = random_terror_revolt_conscription
+}
+
+random_terror_entity_ruin = {
+	icon = GFX_idea_random_terror_supply_through_ruin
+	supply_consumption_factor = random_terror_ruin_supply_consumption
+	out_of_supply_factor = random_terror_ruin_out_of_supply
+	production_speed_buildings_factor = random_terror_ruin_construction
+	industrial_capacity_factory = random_terror_ruin_factory_output
 }

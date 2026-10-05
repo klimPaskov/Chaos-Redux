@@ -946,6 +946,62 @@ random_terror_capacity = {
 	lasting_cap = 4
 }
 
+# Objective-based world-end power (Part 8 Final state ideas, Global
+# counterplay).  Each final strength is a 0-100 score held between its floor
+# and score_cap; a modifier value is score / score_cap x its *_full value.
+#   Presence of the Entity: capital_points while the command capital is held,
+#     command_capital_points per surviving command holding its own capital (up
+#     to command_capital_cap), International Unity x unity_factor.
+#   World in Revolt: pressured_country_points per government above
+#     high_pressure_gate (up to pressured_country_cap), network_points per
+#     surviving command (up to network_cap).
+#   Supply Through Ruin: port_points per controlled port (up to port_cap),
+#     developed_points per controlled state with infrastructure above
+#     developed_infrastructure (up to developed_cap), External Supply x
+#     supply_factor.
+# Seal the Final Command adds sealed_command_points to Presence, and The
+# Ambiguous Light adds focus_overlay_points to all three.
+random_terror_terminal_strength = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	check_days = 30
+	score_cap = 100
+	presence_floor = 20
+	revolt_floor = 15
+	ruin_floor = 15
+	capital_points = 40
+	command_capital_points = 10
+	command_capital_cap = 20
+	unity_factor = 0.3
+	sealed_command_points = 10
+	focus_overlay_points = 10
+	high_pressure_gate = 70
+	pressured_country_points = 12
+	pressured_country_cap = 60
+	network_points = 8
+	network_cap = 24
+	developed_infrastructure = 3
+	port_points = 8
+	port_cap = 32
+	developed_points = 3
+	developed_cap = 30
+	supply_factor = 0.3
+	presence_attack_full = 0.30
+	presence_defence_full = 0.30
+	presence_org_full = 0.25
+	presence_reinforce_full = 0.15
+	revolt_attack_full = 0.20
+	revolt_war_support_full = 0.15
+	revolt_political_power_full = 0.15
+	revolt_conscription_full = 0.10
+	ruin_supply_consumption_full = -0.30
+	ruin_out_of_supply_full = -0.30
+	ruin_construction_full = 0.15
+	ruin_factory_output_full = 0.15
+}
+
 # Report codes for why a new hotspot opened (random_terror_last_report_spread_reason).
 random_terror_spread_reason = {
 	schema = {

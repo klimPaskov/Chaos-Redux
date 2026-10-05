@@ -121,6 +121,25 @@ Ordinary JMX is a human Final Jihad command with ordinary ideas and three resear
 Its symbolic Final Command Council precedes the entity, which is recruited without a leadership role and promoted only through the gated transaction.
 The terminal marker supplies five slots and records the host's prior count for exact cleanup restoration.
 The counteroffensive commits denial from its three-contribution quorum and terminal losses, allowing the objective to be established before the final-defeat predicate requires it.
+
+### Objective-based final strengths
+
+The final command's three strengths are the dynamic modifiers `random_terror_entity_presence`, `random_terror_entity_revolt` and `random_terror_entity_ruin`, which reuse the matching spirit art and read variables that `random_terror_apply_terminal_strength` writes.
+`random_terror_refresh_terminal_strength` recomputes one 0-100 score for each from the world state, between its floor and `score_cap` in the `random_terror_terminal_strength` constants, and keeps the scores as globals for the tooltips:
+
+| Strength | Raised by | Full value at 100 |
+| --- | --- | --- |
+| Presence of the Entity | command capital held (`capital_points`), each surviving command holding its own capital (`command_capital_points`, up to `command_capital_cap`), International Unity x `unity_factor`, Seal the Final Command | attack and defence 30%, organization 25%, reinforcement 15% |
+| World in Revolt | each government above `high_pressure_gate` Terror Pressure (`pressured_country_points`, up to `pressured_country_cap`), each surviving command (`network_points`, up to `network_cap`) | attack 20%, war support 15%, political power 15%, conscription 10% |
+| Supply Through Ruin | each controlled port (`port_points`, up to `port_cap`), each controlled state above `developed_infrastructure` infrastructure (`developed_points`, up to `developed_cap`), External Supply x `supply_factor` | supply consumption -30%, out-of-supply penalty -30%, construction 15%, factory output 15% |
+
+The Ambiguous Light adds `focus_overlay_points` to all three, and the floors (`presence_floor`, `revolt_floor`, `ruin_floor`) keep a minimum the coalition cannot remove.
+Surviving commands are read from the eight fixed carrier tags and pressured governments from `global.random_terror_affected_countries`, which `random_terror_mark_affected_country` fills and `random_terror_reset_crisis_cycle` empties, so no check scans the world.
+The scores refresh when the revelation opens, at every hidden terminal check (`chaosx.nr31.98`, every `check_days`, rescheduled only while the terminal phase lasts), after each Terminal Counteroffensive, after The Ambiguous Light, and at once when the command capital changes hands (`common/on_actions/031_random_terror_terminal_on_actions.txt`, which exits on `random_terror_terminal_active` and reads only the changed state).
+The final command's False Revelation category text (`GetRandomTerrorFalseRevelationStatus`) and the Terminal Counteroffensive tooltip show the three scores and what lowers each; actor runtime cleanup removes the modifiers and their variables, and defeat clears the global scores.
+
+When the revelation becomes the world-end state (`random_terror_finalize_false_revelation`), the opening uprising wave runs `random_terror_revelation_uprising` over the affected list: only a government with Terror Pressure above `minimum_pressure_for_uprising` and a controlled active state whose own pressure passes the same gate and whose uprising window is open (`random_terror_state_can_rise_in_revelation`) rises, through the ordinary `random_terror_start_pressure_uprising`, and receives Stop the Coordinated Uprising when its emergency slot is free.
+A country with no pressure or no active cell receives nothing.
 Member consent, merger accounting, faction handling and the full aftermath retain open validation and implementation findings.
 
 ## Decisions, missions, and exact states
@@ -235,8 +254,8 @@ The crisis focuses choose failure forms through the same slots.
 Leadership Split (Rival Warlords), Compromised Network and Doctrinal Schism call `random_terror_set_command_failure_form`, which replaces any other command failure and takes the chosen one over from the overlay, and the overlay adds a command failure only while the actor shows none (`random_terror_has_command_failure_form`).
 Local Revolt and Mass Defection call `random_terror_add_legitimacy_failure`: the first legitimacy failure shows as itself, and a second, different one merges both into Failed Rule.
 Negotiated Enclave ends the command failures, Local Revolt and Failed Rule the actor holds, and Return from the Crisis ends every failure form it holds, including the overlay's economy failures (`random_terror_focus_end_failure_forms`).
-The terminal transition (`random_terror_mark_final_actor`) removes every slot and failure form, International Mandate included, before the three terminal spirits.
-Ambiguous Light adds only the terminal spirits the final command does not hold yet and raises one final formation (`random_terror_focus_reward_ambiguous_light`).
+The terminal transition (`random_terror_mark_final_actor`) removes every slot and failure form, International Mandate included, and any flat Presence of the Entity, World in Revolt or Supply Through Ruin spirit, because the final command carries those strengths as scaling dynamic modifiers instead.
+Ambiguous Light adds `focus_overlay_points` to each final strength and raises one final formation (`random_terror_focus_reward_ambiguous_light`).
 
 `common/ai_strategy/031_random_terror_ai_strategy.txt` steers live actors only.
 At war, an actor weights units and force concentration toward its own parent, which carries `random_terror_parent_of_<actor tag>` from the moment the actor forms until its runtime is cleared, and pulls units away from fronts against non-neighbouring enemies.

@@ -251,6 +251,31 @@ defined_text = {
 	text = { localization_key = random_terror_incident_report_no_origin }
 }
 
+# COUNTRY scope: the False Revelation category text.  The final command sees
+# its three strengths and what lowers them; a candidate sees the claim.
+defined_text = {
+	name = GetRandomTerrorFalseRevelationStatus
+	text = {
+		trigger = {
+			has_country_flag = random_terror_final_actor
+			has_global_flag = random_terror_terminal_active
+			has_variable = global.random_terror_presence_score
+		}
+		localization_key = random_terror_false_revelation_status_final
+	}
+	text = { localization_key = random_terror_false_revelation_status_candidate }
+}
+
+# Any scope: whether the final command still holds its command capital.
+defined_text = {
+	name = GetRandomTerrorCommandCapitalStatus
+	text = {
+		trigger = { check_variable = { global.random_terror_terminal_capital_held = constant:random_terror_value.one } }
+		localization_key = random_terror_command_capital_held
+	}
+	text = { localization_key = random_terror_command_capital_lost }
+}
+
 # COUNTRY scope: whether a cell of this government can move into a
 # neighbouring state at its next incident pulse.
 defined_text = {
