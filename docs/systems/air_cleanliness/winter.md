@@ -245,7 +245,7 @@ Proof files are:
 - `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_LIFECYCLE_PROOF.md`
 - `docs/plans/air_cleanliness_fallout_plans/AIR_CLEANLINESS_TREATY_INSPECTION_PROOF.md`
 
-Regional snow, frost, cold rain, ash, dead vegetation, frozen water, phase-material dim light, and thaw are wired. The full-screen grade and static accessibility setting remain unpromoted because their UI and selection surfaces are not proven.
+Regional snow, frost, cold rain, ash, dead vegetation, frozen water, phase-material dim light, and thaw are wired. The Miscellaneous panel of the shared Chaos settings window has a Static Winter Map checkbox (agent decision A22). It sets `air_winter_static_climate_map`, and `air_winter_visual_weather_is_shown` then stops the primary and secondary weather particle slots in each state's next monthly update, while the ground, dead vegetation, and frozen-water or thaw slots keep showing each state's phase. The full-screen grade remains unpromoted because its UI and selection surfaces are not proven.
 
 ## Visual assets and sprite registry
 
@@ -336,7 +336,7 @@ Incomplete and not claimed:
 - The wider treaty catalogue remains incomplete. Forecast precision beyond the Shared Sampling Grid and the broader manually reviewed treaty event families are not implemented.
 - Island-refugee policy and migration memories feed the survivor's first survival account (see "Air Winter memory in the Fallout survivor start"), but not post-Fallout focuses, successor identity, or migration allocation. Those consumers remain part of the incomplete Fallout country packages and rewrite.
 - Additional local Air Winter pressure from active ordinary land combat and an additional winter multiplier on recent strategic-bombing pressure or deaths. Chaos already routes strategic-bombing deaths separately. General air operations use the documented country-scoped aggregate, while exact regional confinement remains unavailable through runtime dynamic modifiers.
-- Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
+- Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade also remains unwired, and the Static Winter Map checkbox has no MCP render evidence because the GUI inspect and render routes rejected every call.
 - Runtime proof for the Phase 1 delayed callback, timed-modifier display and expiry, multiplayer popup presentation, and save recovery remains unobserved.
 - The Fallout request coordinator and formula-neutral transition ledgers exist, but the full rewrite, government change, successor allocation, player continuation, and migration are not complete.
 - The blackout skeleton exists, while exact input blocking and literal lobby-host authority remain engine blockers.
@@ -347,7 +347,7 @@ Incomplete and not claimed:
 ## Future plans and extension suggestions
 
 1. Preserve the normal-map runtime observation checklist and do not report its visual items as tested.
-2. Promote the full-screen grade or static accessibility setting only after its interface parent, click behavior, selection rule, and performance contract are proven.
+2. Promote the full-screen grade only after its interface parent, click behavior, selection rule, and performance contract are proven, and consider reduced tint intensity and a colorblind-friendly mapmode palette as further settings beside the Static Winter Map checkbox.
 3. Use event memory from the Air Winter pilot as an input to the Fallout cause-memory and successor schedulers.
 4. Connect evacuation reception states and refugee pressure to post-rewrite migration without adding another world iterator.
 5. Continue Air Winter event depth through manually reviewed tranches, with a depth audit and accepted addendum before each expansion.

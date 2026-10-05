@@ -9158,6 +9158,19 @@ air_winter_visual_create_thaw_flood = {
 	set_state_flag = air_winter_visual_hydrology_present
 }
 
+# Supported scope: any. The shared Chaos settings window calls this from the
+# Miscellaneous panel (agent decision A22). A static climate map keeps the
+# phase ground, dead vegetation, and frozen water or thaw, which mark each
+# state's Air Winter pressure, and removes the animated weather particles.
+# Each state applies the change in its next monthly Air Winter update.
+air_winter_toggle_static_climate_map = {
+	if = {
+		limit = { has_global_flag = air_winter_static_climate_map }
+		clr_global_flag = air_winter_static_climate_map
+	}
+	else = { set_global_flag = air_winter_static_climate_map }
+}
+
 # Supported scope: STATE. Called exactly once at the end of the existing
 # monthly state update. A slot is re-issued only when its change key differs
 # from the visual it already shows, so a stable phase issues no create_entity
@@ -9200,7 +9213,10 @@ air_winter_refresh_regional_visuals = {
 		air_winter_visual_select_weather = yes
 
 		if = {
-			limit = { check_variable = { air_winter_visual_primary_weather_kind > constant:air_winter_visual_weather_kind.none } }
+			limit = {
+				check_variable = { air_winter_visual_primary_weather_kind > constant:air_winter_visual_weather_kind.none }
+				air_winter_visual_weather_is_shown = yes
+			}
 			if = {
 				limit = {
 					OR = {
@@ -9222,7 +9238,10 @@ air_winter_refresh_regional_visuals = {
 		}
 
 		if = {
-			limit = { check_variable = { air_winter_visual_secondary_weather_kind > constant:air_winter_visual_weather_kind.none } }
+			limit = {
+				check_variable = { air_winter_visual_secondary_weather_kind > constant:air_winter_visual_weather_kind.none }
+				air_winter_visual_weather_is_shown = yes
+			}
 			if = {
 				limit = {
 					OR = {
