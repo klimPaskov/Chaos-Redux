@@ -204,3 +204,13 @@ Disposition: implemented (static review; the in-game survival values and the clo
 - Island-refugee rescue, quarantine, and exclusion outcomes change Recognition, Cohesion, Medicine, Filters, and Food; the Desert City water route changes Clean water and, after casualties, Cohesion; the dead-city salvage changes Scrap, Recognition after an altered return, and Cohesion after casualties. Within each chain the better outcome takes precedence when a government ran the chain more than once.
 - Every value is in `fallout_air_winter_memory`. Each applied memory has a closure tooltip in `chaosx.fallout.82`.
 - Not covered: island-refugee and migration memories still do not shape post-Fallout focuses, successor identity, or migration allocation, and the Phase 1 regional, tunnel-school, and Phase 3 infrastructure memories do not reach the survivor start. Those are accepted and queued (reason: round budget).
+
+## A21. Seven Fallout survivor achievements
+
+Disposition: implemented for seven of the ten baseline spec 06 hooks (static review; unlocking is `needs_live_game`, and the icons need parent or user visual review). The other three are accepted and queued. Acceptance basis: round 2 lead item "Fallout achievements (10 accepted in baseline spec 06)" under the user's grant of design authority. The exact unlock conditions, thresholds, and icon subjects are agent decisions; `docs/systems/air_cleanliness/fallout_achievements.md` lists them.
+
+- Implemented: Keep the Lights On (Technate), Bread for the Black Sky (Food Compact), The Old Flag Still Flies (Continuity), Crown of Ruins (Warlord), No More Ground Zero (any), The Last Seed (any), After the Final Silence (Final Silence cause). Each reads existing route receipts: generic survivor focuses, Frontier Pact membership, the office institutions, survival resources, Fallout state grades, pre-Fallout capital and cause memory, and the A20 seed memories.
+- Accepted and queued: No Empty Bunks (reason: no shelter riot or population growth mechanic in the Fallout), New Species Order (reason: no mutant late-game route), The Sea Roads Open (reason: no cross-region port compact; the Frontier Pact only reaches same-region neighbours). Wiring them without those routes would reward nothing the player can do.
+- Ids use the `chaosx_fallout_` prefix of the existing New Zealand achievements rather than the spec working ids, and sprites and localisation follow the same Fallout files.
+- Icons: seven native-transparency ImageGen medallions processed into audited 64x64 triplets; workspace `docs/assets/air_cleanliness_fallout/achievements/`.
+

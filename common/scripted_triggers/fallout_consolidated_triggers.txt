@@ -37657,3 +37657,187 @@ fallout_treaty_reconstruction_answer_is_open = {
 		NOT = { has_war_with = ROOT }
 	}
 }
+
+# ============================================================================
+# Fallout survivor achievements (agent decision A21)
+# ============================================================================
+# Seven of the ten baseline spec 06 achievement hooks. Each completion trigger
+# fails closed unless the country is a current, independent, human Fallout
+# survivor of this generation with a loaded survival account. Collection
+# counts are inclusive, so `value > N` means at least N states or members.
+# Collection values reject script-constant tokens; these file-scoped values
+# mirror fallout_achievement.pact_members, dead_city_states and
+# stabilized_states.
+
+@FALLOUT_ACHIEVEMENT_DEAD_CITY_STATES = 3
+@FALLOUT_ACHIEVEMENT_STABILIZED_STATES = 4
+@FALLOUT_ACHIEVEMENT_PACT_MEMBERS = 3
+
+# Supported scope: COUNTRY
+fallout_achievement_survivor_is_current = {
+	is_ai = no
+	has_global_flag = fallout_active
+	NOT = { has_global_flag = fallout_transition_active }
+	fallout_event_registry_country_row_is_current = yes
+	is_subject = no
+	has_capitulated = no
+	has_variable = fallout_government_archetype
+	has_variable = fallout_survival_cohesion_current
+	check_variable = { var = fallout_survival_current_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+}
+
+# Supported scope: COUNTRY. A Technate that reopened its power grid, made its
+# grid engineer an institution, and never lost a reactor in the Air Winter.
+fallout_achievement_keep_the_lights_on_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.technate compare = equals }
+	has_country_flag = fallout_generic_power_grid_reopened
+	OR = {
+		has_idea = fallout_institution_engineer_civic
+		has_idea = fallout_institution_engineer_command
+	}
+	check_variable = { var = fallout_survival_current_entries^6 value = constant:fallout_achievement.lights_power compare = greater_than_or_equals }
+	NOT = {
+		any_owned_state = {
+			OR = {
+				has_state_flag = air_winter_memory_reactor_scram_failed
+				has_state_flag = air_winter_memory_reactor_reduced_output_failed
+				has_state_flag = air_winter_memory_reactor_plant_council_failed
+			}
+		}
+	}
+}
+
+# Supported scope: COUNTRY. A Food Compact that leads a Frontier Pact of at
+# least three survivor governments while its stores and people hold.
+fallout_achievement_bread_for_the_black_sky_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.food_compact compare = equals }
+	has_country_flag = fallout_generic_frontier_pact_active
+	is_faction_leader = yes
+	collection_size = {
+		input = {
+			input = game:scope
+			operators = {
+				faction_members
+				limit = { has_country_flag = fallout_generic_joined_frontier_pact }
+			}
+		}
+		value > @FALLOUT_ACHIEVEMENT_PACT_MEMBERS
+	}
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_achievement.bread_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_achievement.bread_cohesion compare = greater_than_or_equals }
+}
+
+# Supported scope: COUNTRY. A Continuity Government that rules from its own
+# pre-Fallout capital, has restored its charter, and reached its tenth year.
+fallout_achievement_the_old_flag_still_flies_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.continuity_government compare = equals }
+	OR = {
+		has_country_flag = fallout_generic_charter_published
+		has_country_flag = fallout_usa_lakes_charter_complete
+	}
+	OR = {
+		has_country_flag = fallout_generic_year_ten_order_reached
+		has_country_flag = fallout_usa_reconstruction_drive_complete
+	}
+	capital_scope = {
+		has_state_flag = fallout_pretransition_capital
+		has_variable = fallout_pretransition_capital_country
+		check_variable = { var = fallout_pretransition_capital_country value = ROOT compare = equals }
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
+# Supported scope: COUNTRY. A Warlord Command that took its heartland by force
+# and holds at least three dead-city or worse states.
+fallout_achievement_crown_of_ruins_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.warlord_command compare = equals }
+	has_country_flag = fallout_generic_heartland_reclamation
+	OR = {
+		fallout_generic_heartland_campaign_resolved = yes
+		has_country_flag = fallout_generic_year_ten_order_reached
+	}
+	collection_size = {
+		input = {
+			input = game:scope
+			operators = {
+				owned_states
+				limit = {
+					is_controlled_by = OWNER
+					has_variable = fallout_state_grade
+					check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.dead_city compare = greater_than_or_equals }
+				}
+			}
+		}
+		value > @FALLOUT_ACHIEVEMENT_DEAD_CITY_STATES
+	}
+}
+
+# Supported scope: COUNTRY. Any survivor that has restored or integrated at
+# least four dead-city states it owns and controls.
+fallout_achievement_no_more_ground_zero_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	collection_size = {
+		input = {
+			input = game:scope
+			operators = {
+				owned_states
+				limit = {
+					is_controlled_by = OWNER
+					has_variable = fallout_state_grade
+					check_variable = { var = fallout_state_grade value = constant:fallout_state_grade.dead_city compare = greater_than_or_equals }
+					OR = {
+						has_state_flag = fallout_generic_corridor_restored
+						has_state_flag = fallout_generic_reclaimed_state_integrated
+					}
+				}
+			}
+		}
+		value > @FALLOUT_ACHIEVEMENT_STABILIZED_STATES
+	}
+}
+
+# Supported scope: COUNTRY. Any survivor that carried a saved seed vault or
+# the treaty seed archive into the Fallout, still holds the vault, and has
+# grown its stores into a full granary.
+fallout_achievement_last_seed_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	OR = {
+		has_country_flag = fallout_air_winter_seed_vaults_memory_applied
+		has_country_flag = fallout_treaty_seed_archive_memory_applied
+	}
+	any_owned_state = {
+		is_controlled_by = ROOT
+		OR = {
+			has_state_flag = air_winter_memory_seed_vaults_flourished
+			has_state_flag = air_winter_greenhouse_refuge
+		}
+	}
+	check_variable = { var = fallout_survival_current_entries^1 value = constant:fallout_achievement.last_seed_food compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_achievement.last_seed_cohesion compare = greater_than_or_equals }
+}
+
+# Supported scope: COUNTRY. A survivor of the Final Silence that is neither a
+# religious refuge nor a mutant polity, still holding together ten years on.
+fallout_achievement_after_final_silence_is_complete = {
+	fallout_achievement_survivor_is_current = yes
+	OR = {
+		AND = {
+			has_variable = global.fallout_cause_memory_source
+			check_variable = { var = global.fallout_cause_memory_source value = constant:fallout_request_source.final_silence compare = equals }
+		}
+		AND = {
+			has_variable = global.fallout_pretransition_request_source
+			check_variable = { var = global.fallout_pretransition_request_source value = constant:fallout_request_source.final_silence compare = equals }
+		}
+	}
+	NOT = { check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.religious_refuge compare = equals } }
+	NOT = { check_variable = { var = fallout_government_archetype value = constant:fallout_government_archetype.mutant_polity compare = equals } }
+	has_variable = global.fallout_generic_year_ten_open_day
+	check_variable = { var = global.num_days value = global.fallout_generic_year_ten_open_day compare = greater_than_or_equals }
+	check_variable = { var = fallout_survival_cohesion_current value = constant:fallout_achievement.final_silence_cohesion compare = greater_than_or_equals }
+}

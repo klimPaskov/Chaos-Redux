@@ -12,5 +12,6 @@ This directory documents shared air contamination, atmospheric recovery, natural
 - [`fallout_generic_focus_tree.md`](fallout_generic_focus_tree.md) documents the generic fallout-survivor focus tree that consumes the shared atmospheric state.
 - [`fallout_offices.md`](fallout_offices.md) documents the first public office each survivor appoints in the Ash week and the arcs that turn it into an institution.
 - [`fallout_memory_chains.md`](fallout_memory_chains.md) documents the opening chains for the country memories that the major-power survivors receive.
+- [`fallout_achievements.md`](fallout_achievements.md) documents the Fallout survivor achievements and the routes they reward.
 
 Chemical and biological delivery mechanics belong in `../cbrn_warfare/`. Chaos gains and death accounting belong in `../chaos_meter/`.
