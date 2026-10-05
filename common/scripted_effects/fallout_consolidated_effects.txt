@@ -2793,6 +2793,180 @@ fallout_treaty_apply_survivor_memory = {
 	}
 }
 
+# Supported scope: COUNTRY, a Fallout registry country inside its orientation
+# step (agent decision A20). Carries the Air Winter chains this government
+# lived through into its first survival account, once per Fallout generation:
+# seed-ledger trials on the states it now holds, the island-refugee policy it
+# chose, the Desert City water route it ran, and the dead-city salvage it
+# ordered. Each memory that applies sets a flag the closure report reads.
+fallout_air_winter_apply_survivor_memory = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = fallout_air_winter_memory_generation
+					value = global.fallout_transition_generation
+					compare = equals
+				}
+			}
+			check_variable = {
+				var = fallout_survival_current_entries^num
+				value = constant:fallout_survival_resource.upper_bound
+				compare = equals
+			}
+		}
+		set_variable = { fallout_air_winter_memory_generation = global.fallout_transition_generation }
+		fallout_air_winter_clear_survivor_memory_flags = yes
+
+		# Seed-ledger trials on the states this government now holds.
+		if = {
+			limit = { any_owned_state = { has_state_flag = air_winter_memory_seed_vaults_flourished } }
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.seed_vault_food }
+			set_country_flag = fallout_air_winter_seed_vaults_memory_applied
+		}
+		else_if = {
+			limit = { any_owned_state = { has_state_flag = air_winter_memory_seed_vaults_failed } }
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.seed_failure_food }
+			set_country_flag = fallout_air_winter_seed_failure_memory_applied
+		}
+		if = {
+			limit = { any_owned_state = { has_state_flag = air_winter_memory_breeding_stock_survived } }
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.breeding_stock_food }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.breeding_stock_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
+			set_country_flag = fallout_air_winter_breeding_stock_memory_applied
+		}
+		else_if = {
+			limit = { any_owned_state = { has_state_flag = air_winter_memory_breeding_stock_failed } }
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.breeding_failure_food }
+			set_country_flag = fallout_air_winter_breeding_failure_memory_applied
+		}
+		if = {
+			limit = { any_owned_state = { has_state_flag = air_winter_memory_herd_slaughter_depleted } }
+			subtract_from_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.herd_depletion_food }
+			set_country_flag = fallout_air_winter_herd_depletion_memory_applied
+		}
+
+		# Island refugees this government received, one memory per policy.
+		if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_rescue_registered }
+			add_to_variable = { fallout_survival_current_entries^9 = constant:fallout_air_winter_memory.island_rescue_recognition }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.island_rescue_cohesion }
+			fallout_survival_apply_cohesion_delta = yes
+			set_country_flag = fallout_air_winter_island_rescue_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_rescue_overwhelmed }
+			subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_air_winter_memory.island_overwhelmed_medicine }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.island_overwhelmed_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
+			set_country_flag = fallout_air_winter_island_overwhelmed_memory_applied
+		}
+		if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_quarantine_completed }
+			add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_air_winter_memory.island_quarantine_medicine }
+			add_to_variable = { fallout_survival_current_entries^7 = constant:fallout_air_winter_memory.island_quarantine_filters }
+			set_country_flag = fallout_air_winter_island_quarantine_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_quarantine_failed }
+			subtract_from_variable = { fallout_survival_current_entries^3 = constant:fallout_air_winter_memory.island_quarantine_failure_medicine }
+			set_country_flag = fallout_air_winter_island_quarantine_failure_memory_applied
+		}
+		if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_exclusion_held }
+			add_to_variable = { fallout_survival_current_entries^1 = constant:fallout_air_winter_memory.island_exclusion_food }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_air_winter_memory.island_exclusion_recognition }
+			set_country_flag = fallout_air_winter_island_exclusion_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_island_refugee_exclusion_broke }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_air_winter_memory.island_exclusion_broke_recognition }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.island_exclusion_broke_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
+			set_country_flag = fallout_air_winter_island_exclusion_broke_memory_applied
+		}
+
+		# The Desert City water route.
+		if = {
+			limit = { has_country_flag = air_winter_memory_desert_city_success }
+			add_to_variable = { fallout_survival_current_entries^2 = constant:fallout_air_winter_memory.desert_success_water }
+			set_country_flag = fallout_air_winter_desert_success_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_desert_city_partial }
+			add_to_variable = { fallout_survival_current_entries^2 = constant:fallout_air_winter_memory.desert_partial_water }
+			set_country_flag = fallout_air_winter_desert_partial_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_desert_city_failure }
+			subtract_from_variable = { fallout_survival_current_entries^2 = constant:fallout_air_winter_memory.desert_failure_water }
+			set_country_flag = fallout_air_winter_desert_failure_memory_applied
+		}
+		if = {
+			limit = { has_country_flag = air_winter_memory_desert_city_casualties }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.desert_casualties_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
+			set_country_flag = fallout_air_winter_desert_casualties_memory_applied
+		}
+
+		# The dead-city salvage.
+		if = {
+			limit = { has_country_flag = air_winter_memory_dead_city_salvage_success }
+			add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_air_winter_memory.dead_city_success_scrap }
+			set_country_flag = fallout_air_winter_dead_city_success_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_dead_city_salvage_partial }
+			add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_air_winter_memory.dead_city_partial_scrap }
+			set_country_flag = fallout_air_winter_dead_city_partial_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_dead_city_salvage_altered_return }
+			add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_air_winter_memory.dead_city_altered_scrap }
+			subtract_from_variable = { fallout_survival_current_entries^9 = constant:fallout_air_winter_memory.dead_city_altered_recognition }
+			set_country_flag = fallout_air_winter_dead_city_altered_memory_applied
+		}
+		else_if = {
+			limit = { has_country_flag = air_winter_memory_dead_city_salvage_disaster }
+			subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_air_winter_memory.dead_city_disaster_scrap }
+			set_country_flag = fallout_air_winter_dead_city_disaster_memory_applied
+		}
+		if = {
+			limit = { has_country_flag = air_winter_memory_dead_city_salvage_casualties }
+			set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.dead_city_casualties_cohesion }
+			fallout_orientation_apply_cohesion_loss = yes
+			set_country_flag = fallout_air_winter_dead_city_casualties_memory_applied
+		}
+		set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.zero }
+		fallout_orientation_clamp_resources = yes
+	}
+}
+
+# Supported scope: COUNTRY. Clears the closure flags of an earlier generation.
+fallout_air_winter_clear_survivor_memory_flags = {
+	clr_country_flag = fallout_air_winter_seed_vaults_memory_applied
+	clr_country_flag = fallout_air_winter_seed_failure_memory_applied
+	clr_country_flag = fallout_air_winter_breeding_stock_memory_applied
+	clr_country_flag = fallout_air_winter_breeding_failure_memory_applied
+	clr_country_flag = fallout_air_winter_herd_depletion_memory_applied
+	clr_country_flag = fallout_air_winter_island_rescue_memory_applied
+	clr_country_flag = fallout_air_winter_island_overwhelmed_memory_applied
+	clr_country_flag = fallout_air_winter_island_quarantine_memory_applied
+	clr_country_flag = fallout_air_winter_island_quarantine_failure_memory_applied
+	clr_country_flag = fallout_air_winter_island_exclusion_memory_applied
+	clr_country_flag = fallout_air_winter_island_exclusion_broke_memory_applied
+	clr_country_flag = fallout_air_winter_desert_success_memory_applied
+	clr_country_flag = fallout_air_winter_desert_partial_memory_applied
+	clr_country_flag = fallout_air_winter_desert_failure_memory_applied
+	clr_country_flag = fallout_air_winter_desert_casualties_memory_applied
+	clr_country_flag = fallout_air_winter_dead_city_success_memory_applied
+	clr_country_flag = fallout_air_winter_dead_city_partial_memory_applied
+	clr_country_flag = fallout_air_winter_dead_city_altered_memory_applied
+	clr_country_flag = fallout_air_winter_dead_city_disaster_memory_applied
+	clr_country_flag = fallout_air_winter_dead_city_casualties_memory_applied
+}
+
 # ============================================================================
 # Consolidated source: common/scripted_effects/air_cleanliness_winter_effects.txt
 # ============================================================================
@@ -64011,6 +64185,7 @@ fallout_orientation_advance_country = {
 		fallout_orientation_install_resource_package = yes
 		fallout_office_install_candidate_package = yes
 		fallout_treaty_apply_survivor_memory = yes
+		fallout_air_winter_apply_survivor_memory = yes
 
 		# Every request input exists before any helper writes it, so the
 		# helper writes survive their scripted-effect boundaries.

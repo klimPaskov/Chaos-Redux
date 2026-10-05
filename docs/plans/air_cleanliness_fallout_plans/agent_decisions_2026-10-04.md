@@ -194,3 +194,13 @@ Disposition: implemented (static review; pledges, ballots, betrayal timing, refu
 - Event ids `chaosx_air_treaty.16` to `.23`; withdrawn-report descriptions for operation ids 5 (pooled decontamination) and 6 (relief vote); operation id 7 names the filter convoy in the betrayal report. Constants: `air_cleanliness_treaty_joint_action`, `air_cleanliness_treaty_joint_action_value`, `air_cleanliness_treaty_joint_action_ai`. Opinion modifiers live in `common/opinion_modifiers/air_cleanliness_treaty_joint_action_opinion_modifiers.txt`.
 - Art: vanilla decision icons and report pictures; no new asset is needed.
 - AI: decision and event option weights are in `air_cleanliness_treaty_joint_action_ai`. `hoi4_probability_inspect` still returns "Invalid tool arguments", so no probability audit evidence exists for these weights. `hoi4_decision_inspect` on the pooled decontamination decision returned a partial repository-wide analysis (100 unresolved definitions elsewhere in the tree) and no decision-specific blocker.
+
+## A20. Air Winter chain outcomes reach the Fallout survivor start
+
+Disposition: implemented (static review; the in-game survival values and the closure report lines are `needs_live_game`). Acceptance basis: round 2 lead item "Carry Air Winter outcomes into the Fallout survivor start" under the user's grant of design authority. The magnitudes and the order of precedence are agent decisions.
+
+- `fallout_air_winter_apply_survivor_memory` runs once per generation in the Ash-week orientation step, right after `fallout_treaty_apply_survivor_memory`, and only once the survivor's survival account is loaded.
+- Seed-ledger trials are read from state flags on the states the survivor owns after the rewrite (flourished vaults, failed vaults, surviving or lost breeding stock, depleted herds) and change Food, plus Cohesion for surviving breeding stock.
+- Island-refugee rescue, quarantine, and exclusion outcomes change Recognition, Cohesion, Medicine, Filters, and Food; the Desert City water route changes Clean water and, after casualties, Cohesion; the dead-city salvage changes Scrap, Recognition after an altered return, and Cohesion after casualties. Within each chain the better outcome takes precedence when a government ran the chain more than once.
+- Every value is in `fallout_air_winter_memory`. Each applied memory has a closure tooltip in `chaosx.fallout.82`.
+- Not covered: island-refugee and migration memories still do not shape post-Fallout focuses, successor identity, or migration allocation, and the Phase 1 regional, tunnel-school, and Phase 3 infrastructure memories do not reach the survivor start. Those are accepted and queued (reason: round budget).

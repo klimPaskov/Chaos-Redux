@@ -190,6 +190,25 @@ Delayed events retain their originating state target through the event chain. Th
 
 This pilot is not the Fallout living-world scheduler. It does not count toward a claim that the 660-event Fallout release floor is complete. The event-target and scheduler proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_EVENT_SCHEDULER_PROOF.md`. The Phase 1 regional return transaction proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_1_REGIONAL_RETURN_EVENT_PROOF.md`. The seasonal marker and annual receipt proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_SEASONAL_RECURRENCE_PROOF.md`. The island source registry and balanced-population proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_2_ISLAND_REFUGEE_SOURCE_AND_POPULATION_PROOF.md`. The exact Desert City subtype, owner-bound water transaction, nine delayed results, and dynamic-picture proof are in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_2_DESERT_CITY_EVENT_PROOF.md`. The seed-ledger transaction proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_2_SEED_LEDGER_EVENT_PROOF.md`. The mountain-capital route, industry, Deaths, and ownership proof is in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_2_TUNNEL_SCHOOL_EVENT_PROOF.md`. The coal-or-heavy-industry identity, furnace transaction, shutdown modifiers, repairable damage, and proof boundary are in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_3_HEAVY_INDUSTRY_EVENT_PROOF.md`. The ruined major-city identity, deterministic salvage transaction, control-loss cleanup, and dedicated asset proof are in `docs/plans/air_cleanliness_fallout_plans/AIR_WINTER_PHASE_5_DEAD_CITY_SALVAGE_EVENT_PROOF.md`.
 
+## Air Winter memory in the Fallout survivor start
+
+`fallout_air_winter_apply_survivor_memory` runs once per Fallout generation inside each registry country's Ash-week orientation step, right after the treaty memory (agent decision A20). It reads the outcome memories of four Air Winter chains and changes the survivor's first survival account and Cohesion by the magnitudes in `fallout_air_winter_memory`:
+
+| Chain | Memory read | Survivor start |
+| --- | --- | --- |
+| Seed ledger (state flags on states the survivor now owns) | seed vaults flourished, else seed vaults failed | Food +6, else Food -2 |
+| | breeding stock survived, else breeding stock failed | Food +4 and Cohesion +1, else Food -2 |
+| | herds slaughtered and depleted | Food -3 |
+| Island refugees (receiver country flags) | rescue registered, else rescue overwhelmed | Recognition +4 and Cohesion +2, else Medicine -2 and Cohesion -3 |
+| | quarantine completed, else quarantine failed | Medicine +3 and Filters +2, else Medicine -3 |
+| | exclusion held, else exclusion broke | Food +3 and Recognition -3, else Recognition -4 and Cohesion -3 |
+| Desert City water route (country flags) | success, else partial, else failure | Clean water +6, else +3, else -4 |
+| | casualties | Cohesion -2 |
+| Dead-city salvage (country flags) | success, else partial, else altered return, else disaster | Scrap +6, else +3, else Scrap +4 and Recognition -3, else Scrap -2 |
+| | casualties | Cohesion -2 |
+
+Each memory that applies sets a `fallout_air_winter_<memory>_memory_applied` flag, and the orientation closure report `chaosx.fallout.82` lists it beside the treaty memories. The values are clamped to the survival range. The seed ledger is read from the states the survivor holds after the rewrite, so a successor that inherits a flourishing seed vault inherits its stock; the country memories are read from the surviving government itself.
+
 ## Map modes and normal-map proof
 
 One registered Air Winter mapmode exposes information through four viewer-specific monitoring levels:
@@ -315,8 +334,7 @@ Implemented in the Air Winter tranche:
 Incomplete and not claimed:
 
 - The wider treaty catalogue remains incomplete. Forecast precision beyond the Shared Sampling Grid and the broader manually reviewed treaty event families are not implemented.
-- Seed-ledger outcomes do not change post-Fallout food recovery. That consumer depends on the approval-gated Fallout numerical contract and remains unimplemented.
-- Island-refugee policy and migration memories do not yet feed post-Fallout focuses, successor identity, or migration allocation. Those consumers remain part of the incomplete Fallout country packages and rewrite.
+- Island-refugee policy and migration memories feed the survivor's first survival account (see "Air Winter memory in the Fallout survivor start"), but not post-Fallout focuses, successor identity, or migration allocation. Those consumers remain part of the incomplete Fallout country packages and rewrite.
 - Additional local Air Winter pressure from active ordinary land combat and an additional winter multiplier on recent strategic-bombing pressure or deaths. Chaos already routes strategic-bombing deaths separately. General air operations use the documented country-scoped aggregate, while exact regional confinement remains unavailable through runtime dynamic modifiers.
 - Runtime proof for regional ordinary-map placement, layering, animation, save reconstruction, multiplayer behavior, and performance. The full-screen grade and static accessibility setting also remain unwired.
 - Runtime proof for the Phase 1 delayed callback, timed-modifier display and expiry, multiplayer popup presentation, and save recovery remains unobserved.
