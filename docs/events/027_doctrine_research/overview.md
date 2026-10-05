@@ -21,6 +21,12 @@ The source design package is `docs/specs/027_doctrine_research_specs/`. Agent de
 
 Shared wiring lives in `chaosx_settings_effects.txt` (direct dispatch arm), `chaosx_events_log_effects.txt` (History binder and evolution previews), `chaosx_scripted_localisation_events_log.txt` and `chaosx_scripted_localisation_settings.txt` (cluster, evolution, and History selectors), `event_cluster_constants.txt` and `chaosx_event_cluster_effects.txt` (cluster 9), `chaos_redux_achievements.txt`, and `chaosx_on_actions_chaos_meter.txt` (daily evolution pulse and tag-switch reconcile).
 
+## Participation
+
+A country takes part while it is live (it exists and has not capitulated, or it is a government in exile), has a doctrine system, and has at least one valid doctrine action (`doctrine_research_country_has_valid_action`). Ordinary countries, subjects, governments in exile, and human special countries such as The Revolution (REV) or the cannibal warlords take part through the normal doctrine graph. An actual nonhuman country, as classified by the shared `is_actual_nonhuman_country` trigger (zombie outbreaks, Black Plague rats, Death, wendigo cannibals, nonhuman Infantry Spawn derivatives, and the other listed families), has no doctrine system and receives no batch and no fabricated doctrine (`doctrine_research_country_has_doctrine_system`). A Kruger sovereignty keeps its doctrine graph even when its population is no longer human.
+
+The same trigger gates the firing scan, the event's availability check, the wake, lifecycle reconcile, AI resolution, and the human pages. A country that becomes nonhuman while it still holds a batch closes that batch through the ordinary no-action path: an AI completes it without spending its choices, and a human sees the `.11` closure page. No compensation is granted.
+
 ## Firing
 
 1. The shared dispatcher `fire_event_by_temp_id_no_cluster` calls `doctrine_research_fire_global_batch` directly for Event 027. The root event `chaosx.nr27.1` remains the console bridge to the same transaction and marks its campaign as a forced setup for achievements.

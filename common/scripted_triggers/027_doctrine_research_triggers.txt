@@ -1654,10 +1654,25 @@ doctrine_research_chaos_warfare_has_valid_action = {
 	}
 }
 
+# A country has a doctrine system unless the shared classifier marks it as an
+# actual nonhuman country (zombie outbreaks, Black Plague rats, Death, wendigo
+# cannibals, nonhuman Infantry Spawn derivatives, and the other families listed
+# in is_actual_nonhuman_country). Those countries have no normal or custom
+# doctrine graph, and Event 027 never builds one for them. A Kruger
+# sovereignty keeps its doctrine graph even when its population is no longer
+# human, so it still takes part through that graph.
+doctrine_research_country_has_doctrine_system = {
+	OR = {
+		NOT = { is_actual_nonhuman_country = yes }
+		brilliant_scientist_is_kruger_sovereign_country = yes
+	}
+}
+
 doctrine_research_country_has_valid_action = {
 	AND = {
 		has_global_flag = doctrine_research_adapter_registry_initialized
 		doctrine_research_country_is_live = yes
+		doctrine_research_country_has_doctrine_system = yes
 		OR = {
 			doctrine_research_army_has_valid_action = yes
 			doctrine_research_navy_has_valid_action = yes
