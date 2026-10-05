@@ -394,75 +394,36 @@ Two super-event pictures live under `gfx/super_events/031_random_terror/`, are r
 
 ## Validation surfaces
 
-The current visual inventory contains 444 runtime files and is recorded row by row in `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md`.
+Event 31 is registered as repeatable and enabled by default in the Event Logs settings through `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`.
+Every design decision taken during the takeover (D1-D13 and R1-R41) is recorded with its basis, its implementation commit and its live-game limits in `docs/plans/031_random_terror_plans/agent_decisions_20261004.md`.
 
-The complete event remains incomplete.
+The visual inventory is recorded row by row in `docs/plans/031_random_terror_plans/031_random_terror_visual_asset_inventory.md`, and every portrait identity has a recruitment or selection consumer (D11).
+Actor operations raise, move or remove real formations (D9), every mission has a reachable progress producer and outcome (D5), carrier reuse and scenario capacity follow one availability predicate (D1, D2), and a contained crisis recovers and closes (R30).
 
-Nine portrait identities have history recruitment and reachable role consumers, including the gated entity and human Final Command Council.
-Thirty-six additional identities have roleless definitions and a durable source archive, with recruitment, selection and recycling still open.
-Original per-image prompt records and two current source-to-DDS equality records remain missing.
-The capital-defense mission icon uses the reviewed native-alpha edit, with its inherited background-removal procedural gap resolved.
-The full achievement audit retains player-identity observation limits, and numerical probability comparison and final subsystem audits remain unresolved.
+Source checks in round 2 covered brace balance with comments stripped, localisation keys for every new decision, tooltip, option, modifier and scripted text, script-constant categories with schemas, and UTF-8 with BOM for the localisation file.
+The probability route (`hoi4.probability_inspect`) returned "Invalid tool arguments" for narrow decision and event-option queries, so the AI and random weights added in round 2 (first-emphasis options, spread odds, the cannibal-clash draw and the raid capacity bonus) are reviewed in source only.
 
-The bounded multi-country wave repair is implemented in commit `b10e6a30292a51d09104aa1c120ab9843be6db25`, with source and acceptance evidence in `docs/plans/031_random_terror_plans/subagent_handoffs/031_multi_country_wave_scope_repair_20261003.md`.
-Candidate-state controller checks use the candidate's PREV scope, owned-and-controlled draws use intrinsic state eligibility, and action targets retain their explicit ROOT contract.
-The mapped callers initialize temporary outputs and pool storage, and automatic reservations follow successful incident application.
-The one-firing pacing path, raw ticket curve, provider definitions, cap, attempt counts and two-day reservation remain unchanged.
-The named wave baseline and comparison handoffs preserve the unchanged 17-case fixture, with 600-second failures and no numerical artifact.
-The narrower shared-curve comparison is still unreturned in the handoff, so normalized probabilities, complete provider pools and native execution remain unresolved.
-The newer mission audit in `docs/plans/031_random_terror_plans/subagent_handoffs/031_mission_owner_and_progress_contract_20261003.md` identifies cross-country consumption and cleanup of all eight generic mission subjects, owner-local recovery performing global cleanup, and shared-slot activation of the wrong mission family.
-Five success predicates lack an independently reachable progress producer, while the hostage slot blocks its only current progress action and its accepted partial outcome is missing.
-Mission receiver isolation is implemented in `38fd9b9da337f647f91a804628a24d3216075cb6`, with receiver-keyed subjects, family locks, guarded callbacks and exact-state descriptions.
-Restoration reserves its slot before invoking its helper, recovery waits for active missions to resolve, and only successful timed restoration records completed civil authority for the achievement check.
-The independent source review found no receiver-isolation defect, while the same-fixture numerical comparison remains blocked by archived-source recognition.
-Mission progress and outcome implementation remains incomplete.
-Foreign-owned controlled targets, external retake targets and controller-owned hostage/uprising missions remain part of the accepted design.
-The decision audit also retains split actor-control values, incomplete click-time affordability and exact-balance handling, missing cost companions, excessive target-row fan-out and actor operations that record receipts without performing the promised unit changes.
-The carrier audit identifies undeployed-carrier false-negative gates, occupied-tag reuse, stage-blind capacity counting, Maximum/map preflight gaps, weak geography constraints and unresolved force/research sources.
-The mapped accepted contracts remain implementation work under the user's instruction to complete the accepted specs and visual audit.
-Audit suggestions and proposed regression fixtures remain recommendations until the parent reviews them, and no gameplay simplification is approved.
-Carrier, force, technology, economy, exact-cost, AI and full terminal-atomicity coverage remain open.
+Open design item: Evolution II safe havens and the foreign-power choices toward a safe-haven host or public sponsor (Part 4) are not implemented yet; Evolution II currently changes the event through Network Reach, cross-border spread, distant attacks and the existing intelligence, intervention and sponsor-exposure decisions.
+
+Still to be seen in a live game: cross-border spread and distant attacks on the map, the command-capital `on_state_control_changed` refresh and the live values of the three final-strength modifiers, the opening uprising wave's civil wars and missions, inherited technology and the fourth research slot, and the cannibal rivalry AI strategies.
 
 Detected daily control changes disqualify only the changed country, preserving unrelated player countries' eligibility.
-
 Same-day round trips and swaps between already-human countries remain unresolved because the daily country marker does not identify individual clients.
 
 The Event 31 CXT daily hook registers newly discovered content and marks it pending for manual application.
 
-The compact scenario-list label is `#016`, while the stable Global Jihad catalog identifier is SCN-016.
-The existing adjacent `#018` scenario label and SCN-018 identifier are preserved.
+The compact scenario-list label is `#016`, while the stable Global Jihad catalog identifier is SCN-016; the adjacent `#018` scenario label and SCN-018 identifier are preserved.
 
 Capital-dependent achievement tracking stores each government's exact original state and separately records the capital at Maximum scenario confirmation.
-
 Retaking and restoration proof requires a matching country-owned identity, current control is checked at completion, and repeated loss cannot extend the recovery deadline.
+The achievement active-state count credits the government owning the counted states, including when the global wave's event root is a different country.
+`random_terror_apply_exact_state_loss` records the measured applied loss rather than the requested loss, and the major-loss threshold stays above 400 people.
 
-The source repair and validation limits are recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_achievement_capital_identity_repair_20261003.md`.
-
-The workbook mirrors Event 31 localisation and contains Global Jihad as SCN-016, with Event 31 classified as `To Be Reworked` and Global Jihad as `Needs Testing`.
-
+The workbook mirrors Event 31 localisation and contains Global Jihad as SCN-016; the Events-sheet status change for Event 31 from `To Be Reworked` to `Needs Testing` is queued in `docs/plans/031_random_terror_plans/catalog_changes_pending.md`.
 No Internal Fracture cluster is registered by this implementation.
 
-The achievement active-state count credits the government owning the counted states, including when the global wave's event root is a different country.
-
-The exact repair and its validation limits are recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_achievement_count_scope_repair_20261003.md`.
-
-Measured casualty receipts are implemented in commit `bbb2ba6f90ec75462cb94f7274122c52df4abcb3` under the accepted civilian-loss and achievement contracts.
-`random_terror_apply_exact_state_loss` initializes both helper outputs, reads measured applied loss for the major-loss receipt and records that same measured amount rather than the requested loss.
-The strict major-loss threshold remains greater than 400 people, with the 0/300/400/450 boundary model and full validation limits recorded in `docs/plans/031_random_terror_plans/subagent_handoffs/031_measured_casualty_receipt_repair_20261003.md`.
-The current checkpoint lists eleven bounded repair commits and keeps full Event 31 validation open.
-
-The historical HOI4 focus route resolves one 114-focus tree with 114 titles, zero connector crossings and zero same-row spacing violations.
-Its structural render is 8,752 by 3,136.
-The post-fix decoded-icon raster route timed out after 180 seconds, so the earlier decoded raster remains icon evidence and does not prove post-fix topology.
-
-The event inspector accepts the Event 31 root and returns a partial artifact without an Event 31-specific blocker.
-
-The installed event renderer accepted an exact namespace selector but expanded into a full-workspace render and did not complete after more than six minutes, so namespace-scoped renderer evidence remains an exact tool-route blocker rather than being replaced by source-only proof.
-
-The historical mandatory GUI inspector and renderer completed for `chaosx_scenarios_window` with Event 31 selected, Random Pattern and Maximum at 1920x1080 and UI scale 1.
-The inspector reported no missing fields.
-Shared-window overlap and alignment findings remain open.
-Current narrowed event/reference requests and terminal-role probability comparisons timed out after 600 seconds, with exact limitations in the MCP ledger and specialist handoffs.
+The focus tree has 114 focuses with titles, no connector crossings and no same-row spacing violations in the last structural render.
+The scenario window GUI inspector reported no missing fields for `chaosx_scenarios_window` with Event 31 selected, and its shared-window overlap and alignment findings remain open for the window's owner.
 
 ## Future extensions
 

@@ -375,7 +375,7 @@ Basis: Part 1 Opening shock ("one visible attack report tied to an exact state" 
 - Each `random_terror_choose_emphasis_*` effect sets its own `random_terror_emphasis_duration` temp variable before using it; the shared begin helper only sets `random_terror_emphasis_chosen`, so no temp output crosses a scripted-effect return.
 - Route evidence: `hoi4.probability_inspect` with the `event_option_ai_chance` adapter returned "Invalid tool arguments" both with `candidatePool = ["chaosx.nr31.2"]` and with no other argument, and `hoi4.event_inspect` returned the same error for narrow `lint` and `trace` queries on `chaosx.nr31.9` and `chaosx.nr31.97`; the new option weights are reviewed in source only.
 
-### R33 Cells spread between states and across borders, survivors scatter, and distant attacks leave traces
+### R33 Cells spread between states and across borders, survivors scatter, and distant attacks leave traces (`cf90a5eb5`)
 
 Basis: Part 2 Cross-state spread ("Spread requires a reason", the `90`-day anchor, "one new hotspot at a time") and Cross-border spread (common only after Evolution II, the receiving country gets its own opening report, no transfer of the source government's decisions or costs), Part 2 acceptance cases 6 and 7, Part 4 Evolution I Survivor displacement and Evolution II Network Reach and Distant demonstration attacks, and validation case V03 Cross-state spread.
 
@@ -393,7 +393,7 @@ Basis: Part 2 Cross-state spread ("Spread requires a reason", the `90`-day ancho
 - The report names the origin state and the strongest reason, and the government category shows whether a cell can move, which keeps the player able to understand each change.
 - Route evidence: the probability route stayed blocked as recorded under R32, so the new spread weights are reviewed in source only.
 
-### R34 One sponsor check for every sponsorship path
+### R34 One sponsor check for every sponsorship path (`67ce8c957`)
 
 Basis: the lead's defect report (Seek a Sponsor lacked the `has_war_with` exclusion its focus counterpart had, so a parent at war with its own insurgents could pay to supply them) and Part 10's rule that Event 14 cannibal countries are never Event 31 sponsors or partners.
 
@@ -402,21 +402,21 @@ Basis: the lead's defect report (Seek a Sponsor lacked the `has_war_with` exclus
   The consent event reads the relationship against `FROM`, because there the asked country is `ROOT`; the pending-offer check applies only on the asking side, because the asked country holds that flag while it answers.
 - The requirement tooltip now states every real condition instead of the old Network Authority wording, which no check read.
 
-### R35 One uprising per state per window, not one per game
+### R35 One uprising per state per window, not one per game (`964404bc3`)
 
 Basis: the decision matrix row for Call a Coordinated Uprising ("one uprising per target window") and the lead's finding that `random_terror_uprising_recent` was cleared only by mission success or actor cleanup, so a partial, failed or cancelled defence locked the state for good.
 
 - `random_terror_uprising_recent` now means only that a rising is under way; `random_terror_finish_uprising_mission`, which every success, partial, failure and cancellation path calls, clears it, and so does crisis closure for the owner's states.
 - The 28-day date window is the only lasting limit, read through one trigger, `random_terror_state_uprising_window_open`, in the decision's three blocks, the transaction check, the focus host check and the uprising start.
 
-### R36 Live actors join the shared special-country classifier
+### R36 Live actors join the shared special-country classifier (`a382b251b`)
 
 Basis: Part 10 Special-country classifiers (one generic actor marker in the shared special-country trigger).
 
 - One OR entry, `random_terror_is_actor = yes`, was added to `is_special_chaos_country` with a minimal edit; it covers live commands only, because the trigger requires the actor flag without the cleanup flag.
 - Actors stay out of `is_actual_nonhuman_country`, and governments with Terror Pressure are not classified.
 
-### R37 Response Capacity improves raids and sweeps, and part of it lasts
+### R37 Response Capacity improves raids and sweeps, and part of it lasts (`ecb82cf3c`)
 
 Basis: Part 3 (Establish Joint Response Cell creates coordination capacity; intelligence-led responses depend on capacity) and Part 1 (clean containment gives a limited long-term counterterror capacity); the lead found the value written but never read, and cleared by the same closure Security Reform causes.
 
@@ -427,7 +427,7 @@ Basis: Part 3 (Establish Joint Response Cell creates coordination capacity; inte
 - The header and the response cell, Security Reform, Intelligence Sweep and Targeted Raid tooltips state the values.
 - Route evidence: the raid weight change is probability-bearing; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.
 
-### R38 Objective-based final strengths and the opening uprising wave (amends D12)
+### R38 Objective-based final strengths and the opening uprising wave (amends D12) (`941f429b4`)
 
 Basis: Part 8 Final state ideas ("should change as the final campaign advances or loses key objectives" and "should not give unlimited power at full strength regardless of world state"), Extreme abilities, Uprising system ("a country with zero pressure and no active cell cannot receive a full rebel army"), Phase 1 and Global counterplay, and the accepted improvement-review item "Objective-based world-end power".
 D12 settled only the size of the government action budget; it is amended, not replaced: the single Terminal Counteroffensive row stays, and the final strengths and the uprising wave are added beside it.
@@ -441,7 +441,7 @@ D12 settled only the size of the government action budget; it is amended, not re
 - The uprising wave runs at the world-end transition only for governments with Terror Pressure above the uprising gate and a pressured active state, and gives them the existing Stop the Coordinated Uprising mission where a slot is free.
 - Route evidence: the strength weights are not AI or random weights; no probability route was needed.
 
-### R39 Event 14 cannibals become a real rival
+### R39 Event 14 cannibals become a real rival (`e677b2cbc`)
 
 Basis: Part 10 (the Event 14 interaction is mandatory; cannibals are never sponsors or partners) and the accepted improvement-review item "Cannibal rivalry as a full interaction".
 
@@ -451,7 +451,7 @@ Basis: Part 10 (the Event 14 interaction is mandatory; cannibals are never spons
 - No cooperation path needed a code change beyond R34: every Event 31 faction, merger and join path adds only live actors.
 - Route evidence: the incident draw change moves weight between two families; the probability route stayed blocked as recorded under R32, so it is reviewed in source only.
 
-### R40 Actors inherit their parent's technology and advanced commands reach four research slots
+### R40 Actors inherit their parent's technology and advanced commands reach four research slots (`5aa91a109`)
 
 Basis: Part 5 Starting research and technology and the technology table of the country package matrix (a bounded set of compatible technology from the parent and donors; transnational and jihadist actors reach four research slots).
 
@@ -460,3 +460,11 @@ Basis: Part 5 Starting research and technology and the technology table of the c
 - A reused carrier can keep a branch from its earlier life; the inheritance never adds the other branch, so it never holds both.
 - The final command formed by annexing the dominant command copies that command's technology before the annexation, because the annexed tag no longer exists afterwards.
 - The fourth slot is granted once through `set_research_slots` to the constant, not added, so repeated decisions and focus completions cannot stack it.
+
+### R41 Event 31 is enabled by default
+
+Basis: Part 13 Event registration and status (add the event to the reworked default-enable list in the change that delivers the complete playable event) and the lead's queue, which placed this after the spread and sponsor fixes.
+
+- After R32-R40 landed, one line, `check_variable = { event_id = constant:random_terror_identity.event_id }`, joined `event_log_event_is_reworked_default_enabled`, committed as its own hunk of the shared settings trigger file.
+- The workbook Status change from `To Be Reworked` to `Needs Testing` is queued in `catalog_changes_pending.md`, because the workbook belongs to its owner.
+- Safe havens and foreign-power choices toward a host (Part 4 Evolution II) were the one queued item still open when the event was enabled; the overview records it.
