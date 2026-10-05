@@ -147,6 +147,21 @@ Each consequence has its own report (`chaosx.nr25.321` to `.325`), and the pulse
 The responses read the signal: following the carrier wave adds survey evidence that grows with intensity and raises the signal by 2; broadcasting raises it by 8 and is then either answered by a strong pulse (25% plus half the intensity) or clears the first unexplored sector other than the hidden core from the expedition's charts (`chaosx.nr25.327`); jamming lowers the signal by 6, costs the jammer 6 Logistics Readiness, and for 60 days halves the signal response gains of the rival selected on the board (or otherwise the rival with the most progress), which learns who did it when its intelligence reaches the attribution threshold (`chaosx.nr25.326`).
 AI tendencies follow spec 009: scientific expeditions listen remotely, more so on a strong signal; aggressive ones follow the wave; any unshielded camp shields once the signal is strong; jamming rises when a rival is in its final recovery, most for an aggressive expedition; weak logistics avoid following and broadcasting into a strong signal, and nobody broadcasts into a violent one.
 
+### Something Survived (Evolution II)
+
+When Evolution II activates, `chaosx_nr25_pick_survivor_profile` chooses one hidden profile for the whole race, `global.chaosx_nr25_survivor_profile`: an evasive biological survivor, an autonomous repair machine, a wounded or fragmented crew presence, or a distributed maintenance swarm.
+The profile only weights which evidence appears (`chaosx_nr25_survivor_weight` in `025_alien_technology_in_antarctica_survivor_constants.txt`); no report or tooltip names it.
+
+Each expedition with a camp on the ice rolls a survivor incident on its own pulse through the MTTH entry `chaosx_nr25_survivor_incident_chance` (10%, plus 4 at Exposure Risk 50 or more, capped at 30%).
+The seven incidents follow spec 004's visible evidence: tracks, opened compartments, a missing field party (one crew and the Antarctic expedition deaths band), cut and rearranged cables, fragments moved between survey visits, a camp damaged by night, and answers on the radio (which also raise Active Signal intensity while it is in force); each has its own ambiguous report, `chaosx.nr25.331` to `.337`.
+Incidents stop for every expedition once the survivor is contained, and none of them can block recovery.
+
+The stances are exclusive.
+Avoid Contact makes incidents rarer (×0.6), removes the missing-party draw and costs 1 progress per pulse once surveying begins; Guard Every Movement halves incident damage, prevents deaths and costs 1 readiness per pulse; Offer a Controlled Path makes incidents rarer (×0.7) but can lead the trace straight back (25%); Attempt Capture draws incidents closer (×1.5) and is one roll at 25% plus half the expedition's Intelligence, plus 15 when already guarding, at most 75%.
+A capture sets `chaosx_nr25_survivor_captured`, the Event 036 reaction marker `chaosx_nr25_event036_survivor_contained` and `global.chaosx_nr25_survivor_captor`, gives progress, intelligence and Scientific Capacity, and gives the captor `chaosx_nr25_survivor_specimen`, which adds an extra point of Dependence relief under containment in the Evolution V aftermath (`chaosx.nr25.338`); a failed attempt costs a crew and readiness (`.339`).
+Turn It Toward a Rival strikes the board-selected rival (or the rival with the most progress): its outpost loses 15 security, or its readiness 10 without an outpost, halved when it guards; the rival identifies the actor on its own intelligence or on a 40% chance and then gains the sabotage suspicion opinion while the actor's Exposure Risk rises (`.340` and `.341`).
+AI tendencies follow spec 009: weak expeditions avoid contact, militarised and desperate ones guard, desperate ones attempt capture (more once guarded), scientific ones offer a path, and trailing or aggressive ones turn the trace on a rival in final recovery; nobody re-orders the stance it already holds.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

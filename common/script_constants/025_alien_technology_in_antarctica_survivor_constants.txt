@@ -1,0 +1,150 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 SOMETHING SURVIVED (EVOLUTION II)
+# ============================================================================
+# Overview:
+# - One hidden survivor profile is chosen for the whole race when Evolution II
+#   activates. The profile only weights which visible evidence appears; no
+#   player-facing text names it.
+# - Survivor incidents strike expeditions with a camp on the ice. The chance
+#   per pulse is the MTTH entry chaosx_nr25_survivor_incident_chance; the
+#   expedition's current stance changes how often incidents come and how hard
+#   they land.
+# - Chances are percentages. Losses are positive amounts; the survivor effects
+#   subtract them. Nothing here runs while Evolution II is disabled.
+# ============================================================================
+
+# Hidden survivor profiles. Never shown to the player.
+chaosx_nr25_survivor_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	biological = 1
+	repair_machine = 2
+	crew_presence = 3
+	swarm = 4
+	count = 4
+}
+
+# Visible evidence kinds, in the order of the draw.
+chaosx_nr25_survivor_incident = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	tracks = 1
+	compartments = 2
+	missing = 3
+	cables = 4
+	fragments = 5
+	outpost = 6
+	radio = 7
+}
+
+# Draw weights of each evidence kind by hidden profile.
+chaosx_nr25_survivor_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# An evasive biological survivor leaves tracks and takes people.
+	biological_tracks = 3
+	biological_compartments = 1
+	biological_missing = 3
+	biological_cables = 1
+	biological_fragments = 1
+	biological_outpost = 2
+	biological_radio = 0
+	# An autonomous repair machine opens, cuts and carries.
+	repair_machine_tracks = 1
+	repair_machine_compartments = 3
+	repair_machine_missing = 0
+	repair_machine_cables = 3
+	repair_machine_fragments = 2
+	repair_machine_outpost = 1
+	repair_machine_radio = 2
+	# A wounded or fragmented crew presence answers on the radio.
+	crew_presence_tracks = 2
+	crew_presence_compartments = 2
+	crew_presence_missing = 2
+	crew_presence_cables = 0
+	crew_presence_fragments = 1
+	crew_presence_outpost = 1
+	crew_presence_radio = 3
+	# A distributed maintenance swarm moves material and strips camps.
+	swarm_tracks = 1
+	swarm_compartments = 1
+	swarm_missing = 1
+	swarm_cables = 2
+	swarm_fragments = 3
+	swarm_outpost = 3
+	swarm_radio = 1
+}
+
+chaosx_nr25_survivor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Incident chance per pulse, in percent, and its stance factors.
+	base_chance = 10
+	exposure_threshold = 50
+	exposure_add = 4
+	max_chance = 30
+	avoid_factor = 0.6
+	path_factor = 0.7
+	capture_factor = 1.5
+	# A guarded expedition takes half the damage and loses no one.
+	guard_severity = 0.5
+	# Stance upkeep per pulse: escorts tie up the camp, and routing around the
+	# trace slows the search once surveying has begun.
+	guard_readiness_upkeep = 1
+	avoid_progress_drag = 1
+	percent = 100
+
+	# Incident consequences.
+	tracks_exposure = 3
+	tracks_intelligence = 3
+	compartments_evidence = 3
+	compartments_exposure = 4
+	missing_crew = 1
+	missing_readiness = 5
+	cables_readiness = 8
+	fragments_evidence = 6
+	outpost_security = 12
+	outpost_readiness = 6
+	radio_intelligence = 5
+	radio_exposure = 5
+	# Radio answers stir the Active Signal when it is in force.
+	radio_signal = 2
+
+	# Capture attempt: base chance plus half the expedition's Intelligence,
+	# plus escorts already guarding the field teams, capped.
+	capture_base_chance = 25
+	capture_intelligence_factor = 0.5
+	capture_guard_bonus = 15
+	capture_max_chance = 75
+	capture_progress = 10
+	capture_intelligence = 10
+	capture_capacity = 1
+	capture_exposure = 8
+	capture_failure_readiness = 6
+	capture_failure_crew = 1
+	# Holding the contained survivor speeds containment in the aftermath.
+	specimen_containment_relief = 1
+
+	# Offering a controlled path can lead the trace back to the camp.
+	path_backfire_chance = 25
+
+	# Turning the trace toward a rival.
+	turn_outpost_security = 15
+	turn_readiness = 10
+	turn_attribution_chance = 40
+	turn_attribution_exposure = 6
+}

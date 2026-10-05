@@ -582,3 +582,19 @@ Decision:
 - AI tendencies extend D28: scientific listening rises on a strong signal until the camp listens remotely; following gains weight on a strong signal unless logistics are weak and loses it while jammed; any unshielded camp shields on a strong signal; jamming rises when a rival is in final recovery, most for an aggressive expedition, and falls for a weak one; weak logistics avoid broadcasting into a strong signal and nobody broadcasts into a violent one.
 - The band appears in the five response tooltips and in the board's Exposure Risk tooltip; whether a tooltip on a click-through board element shows in game is `needs_live_game`, so the decision tooltips carry the same line.
 - The Evolution I body text and the pending catalog cell `D26` describe the pulses.
+
+## D37. Something Survived: hidden profile, survivor incidents and real stances
+
+Disposition: `implemented`; incident frequencies and AI behaviour are `needs_live_game`; the MCP probability baseline and compare stay blocked as recorded in D31.
+
+Basis: spec 004 Evolution II (hidden campaign profile, visible evidence, stances, prepared access, personnel loss, capture outcome), spec 009 Something Survived and the round 2 remaining-work list.
+
+Decision:
+
+- One global profile (`global.chaosx_nr25_survivor_profile`: biological, repair machine, crew presence, swarm) is drawn once when Evolution II activates; the per-country entry-order assignment, its flag and the flat crew drain per pulse are retired.
+- Incidents roll per expedition pulse on the ice through `chaosx_nr25_survivor_incident_chance`; the seven spec evidence kinds are weighted by profile, with the missing-party draw removed while avoiding contact and moved fragments only while survey evidence exists. Deaths use the hazard band and the Antarctic expedition deaths reason. Reports `.331` to `.337` describe only what was seen. A contained survivor ends incidents for everyone.
+- Stances are exclusive flags. Avoiding contact trades a per-pulse progress drag in the survey phases for rarer, bloodless incidents; guarding halves incident damage and prevents deaths for a per-pulse readiness upkeep and improves a later capture; offering a path makes incidents rarer but can draw one at once; attempting capture is a real roll with a failure cost. The capture stance raises incident frequency until the next stance order.
+- Spec 004's capture outcome is carried by a durable global capture flag, the Event 036 reaction marker `chaosx_nr25_event036_survivor_contained` with the captor stored globally, progress, intelligence and Scientific Capacity, the special report `.338`, and a stronger Evolution V containment route: the captor's containment relief gains `chaosx_nr25_survivor.specimen_containment_relief`. The unique fragment category is not modelled as a separate custody ledger kind; the ledger stays unchanged.
+- Turning the trace toward a rival is a targeted covert disruption with attribution: the board-selected or leading rival loses outpost security or readiness, identifies the actor on its own intelligence or on a 40% chance, and then gains the sabotage suspicion opinion while the actor's exposure rises. The rival picker `chaosx_nr25_pick_rival_target` is shared with jamming.
+- Stance and response names follow spec 004: Avoid Contact, Guard Every Movement, Attempt Capture, Offer a Controlled Path, Turn It Toward a Rival. Tooltips state the numbers from the survivor constants.
+- The Evolution II body text and the pending catalog cell `E26` describe the incidents and stances.

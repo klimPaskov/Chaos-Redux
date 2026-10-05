@@ -1,0 +1,414 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 SOMETHING SURVIVED (EVOLUTION II)
+# ============================================================================
+# Overview:
+# - chaosx_nr25_pick_survivor_profile chooses one hidden profile for the whole
+#   race when Evolution II activates (global.chaosx_nr25_survivor_profile).
+#   The profile only weights which evidence appears; no text names it.
+# - chaosx_nr25_survivor_pulse is called by each expedition's own pulse while
+#   the evolution is in force. An expedition with a camp on the ice rolls a
+#   survivor incident through the MTTH entry
+#   chaosx_nr25_survivor_incident_chance; the incident kind is drawn from the
+#   profile's weights. Incidents stop for everyone once the survivor is
+#   contained.
+# - Stances are exclusive: avoiding contact makes incidents rarer and keeps
+#   people out of reach, guarding every movement halves the damage and keeps
+#   everyone alive, attempting capture draws the survivor closer, and offering
+#   a controlled path draws it away but can lead it back to the camp.
+# - Capture is a single attempt per order with a real chance of failure; a
+#   success contains the survivor for the whole race, records the Event 036
+#   reaction marker and gives the captor a specimen that speeds containment
+#   in the Evolution V aftermath.
+# - Turning the trace toward a rival strikes the rival selected on the board
+#   (or the leading rival): its outpost or its readiness. The rival may trace
+#   it back to the actor.
+# - Only the expedition's own country, the global race values and the stored
+#   participant registry are read. Nothing scans the world, and nothing runs
+#   while the evolution is disabled. The survivor never blocks recovery.
+# ============================================================================
+
+# GLOBAL value set from any scope. Chooses the hidden survivor profile once.
+chaosx_nr25_pick_survivor_profile = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.chaosx_nr25_survivor_profile }
+				check_variable = { var = global.chaosx_nr25_survivor_profile value = constant:chaosx_nr25_survivor_profile.none compare = equals }
+			}
+		}
+		set_temp_variable_to_random = chaosx_nr25_profile_roll
+		multiply_temp_variable = { chaosx_nr25_profile_roll = constant:chaosx_nr25_survivor_profile.count }
+		set_variable = { global.chaosx_nr25_survivor_profile = constant:chaosx_nr25_survivor_profile.swarm }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_profile_roll value = constant:chaosx_nr25_value.one compare = less_than } }
+			set_variable = { global.chaosx_nr25_survivor_profile = constant:chaosx_nr25_survivor_profile.biological }
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_profile_roll value = constant:chaosx_nr25_value.two compare = less_than } }
+			set_variable = { global.chaosx_nr25_survivor_profile = constant:chaosx_nr25_survivor_profile.repair_machine }
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_profile_roll value = constant:chaosx_nr25_value.three compare = less_than } }
+			set_variable = { global.chaosx_nr25_survivor_profile = constant:chaosx_nr25_survivor_profile.crew_presence }
+		}
+	}
+}
+
+# COUNTRY scope. Sets one survivor stance and clears the others. The caller
+# sets the stance flag itself after this call.
+chaosx_nr25_clear_survivor_stance = {
+	clr_country_flag = chaosx_nr25_survivor_avoid_route
+	clr_country_flag = chaosx_nr25_survivor_guard_route
+	clr_country_flag = chaosx_nr25_survivor_capture_route
+	clr_country_flag = chaosx_nr25_survivor_path_route
+}
+
+# COUNTRY scope (the expedition, from its pulse while Evolution II is in force).
+chaosx_nr25_survivor_pulse = {
+	if = {
+		limit = { NOT = { has_variable = global.chaosx_nr25_survivor_profile } }
+		chaosx_nr25_pick_survivor_profile = yes
+	}
+	# Stance upkeep for an expedition on the ice.
+	if = {
+		limit = { chaosx_nr25_survivor_incident_possible = yes }
+		if = {
+			limit = { has_country_flag = chaosx_nr25_survivor_guard_route }
+			subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_survivor.guard_readiness_upkeep }
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_survivor_avoid_route
+				OR = {
+					check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+					check_variable = { var = chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+				}
+			}
+			subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_survivor.avoid_progress_drag }
+		}
+	}
+	if = {
+		limit = { chaosx_nr25_survivor_incident_possible = yes }
+		set_temp_variable = { chaosx_nr25_survivor_chance = mtth:chaosx_nr25_survivor_incident_chance }
+		clamp_temp_variable = {
+			var = chaosx_nr25_survivor_chance
+			min = constant:chaosx_nr25_value.zero
+			max = constant:chaosx_nr25_survivor.max_chance
+		}
+		set_temp_variable_to_random = chaosx_nr25_survivor_roll
+		multiply_temp_variable = { chaosx_nr25_survivor_roll = constant:chaosx_nr25_survivor.percent }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_survivor_roll value = chaosx_nr25_survivor_chance compare = less_than } }
+			chaosx_nr25_apply_survivor_incident = yes
+		}
+	}
+}
+
+# COUNTRY scope. Draws one visible evidence kind from the hidden profile's
+# weights and applies it to this expedition. Avoiding contact removes the
+# missing-personnel draw; fragments can be moved only while the expedition
+# holds survey evidence; a guarded expedition takes half the damage and loses
+# no one.
+chaosx_nr25_apply_survivor_incident = {
+	set_temp_variable = { chaosx_nr25_sw_tracks = constant:chaosx_nr25_survivor_weight.swarm_tracks }
+	set_temp_variable = { chaosx_nr25_sw_compartments = constant:chaosx_nr25_survivor_weight.swarm_compartments }
+	set_temp_variable = { chaosx_nr25_sw_missing = constant:chaosx_nr25_survivor_weight.swarm_missing }
+	set_temp_variable = { chaosx_nr25_sw_cables = constant:chaosx_nr25_survivor_weight.swarm_cables }
+	set_temp_variable = { chaosx_nr25_sw_fragments = constant:chaosx_nr25_survivor_weight.swarm_fragments }
+	set_temp_variable = { chaosx_nr25_sw_outpost = constant:chaosx_nr25_survivor_weight.swarm_outpost }
+	set_temp_variable = { chaosx_nr25_sw_radio = constant:chaosx_nr25_survivor_weight.swarm_radio }
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_survivor_profile value = constant:chaosx_nr25_survivor_profile.biological compare = equals } }
+		set_temp_variable = { chaosx_nr25_sw_tracks = constant:chaosx_nr25_survivor_weight.biological_tracks }
+		set_temp_variable = { chaosx_nr25_sw_compartments = constant:chaosx_nr25_survivor_weight.biological_compartments }
+		set_temp_variable = { chaosx_nr25_sw_missing = constant:chaosx_nr25_survivor_weight.biological_missing }
+		set_temp_variable = { chaosx_nr25_sw_cables = constant:chaosx_nr25_survivor_weight.biological_cables }
+		set_temp_variable = { chaosx_nr25_sw_fragments = constant:chaosx_nr25_survivor_weight.biological_fragments }
+		set_temp_variable = { chaosx_nr25_sw_outpost = constant:chaosx_nr25_survivor_weight.biological_outpost }
+		set_temp_variable = { chaosx_nr25_sw_radio = constant:chaosx_nr25_survivor_weight.biological_radio }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaosx_nr25_survivor_profile value = constant:chaosx_nr25_survivor_profile.repair_machine compare = equals } }
+		set_temp_variable = { chaosx_nr25_sw_tracks = constant:chaosx_nr25_survivor_weight.repair_machine_tracks }
+		set_temp_variable = { chaosx_nr25_sw_compartments = constant:chaosx_nr25_survivor_weight.repair_machine_compartments }
+		set_temp_variable = { chaosx_nr25_sw_missing = constant:chaosx_nr25_survivor_weight.repair_machine_missing }
+		set_temp_variable = { chaosx_nr25_sw_cables = constant:chaosx_nr25_survivor_weight.repair_machine_cables }
+		set_temp_variable = { chaosx_nr25_sw_fragments = constant:chaosx_nr25_survivor_weight.repair_machine_fragments }
+		set_temp_variable = { chaosx_nr25_sw_outpost = constant:chaosx_nr25_survivor_weight.repair_machine_outpost }
+		set_temp_variable = { chaosx_nr25_sw_radio = constant:chaosx_nr25_survivor_weight.repair_machine_radio }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaosx_nr25_survivor_profile value = constant:chaosx_nr25_survivor_profile.crew_presence compare = equals } }
+		set_temp_variable = { chaosx_nr25_sw_tracks = constant:chaosx_nr25_survivor_weight.crew_presence_tracks }
+		set_temp_variable = { chaosx_nr25_sw_compartments = constant:chaosx_nr25_survivor_weight.crew_presence_compartments }
+		set_temp_variable = { chaosx_nr25_sw_missing = constant:chaosx_nr25_survivor_weight.crew_presence_missing }
+		set_temp_variable = { chaosx_nr25_sw_cables = constant:chaosx_nr25_survivor_weight.crew_presence_cables }
+		set_temp_variable = { chaosx_nr25_sw_fragments = constant:chaosx_nr25_survivor_weight.crew_presence_fragments }
+		set_temp_variable = { chaosx_nr25_sw_outpost = constant:chaosx_nr25_survivor_weight.crew_presence_outpost }
+		set_temp_variable = { chaosx_nr25_sw_radio = constant:chaosx_nr25_survivor_weight.crew_presence_radio }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_nr25_survivor_avoid_route }
+		set_temp_variable = { chaosx_nr25_sw_missing = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = { NOT = { check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than } } }
+		set_temp_variable = { chaosx_nr25_sw_fragments = constant:chaosx_nr25_value.zero }
+	}
+	set_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_tracks }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_compartments }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_missing }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_cables }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_fragments }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_outpost }
+	add_to_temp_variable = { chaosx_nr25_sw_total = chaosx_nr25_sw_radio }
+	set_temp_variable_to_random = chaosx_nr25_sw_pick
+	multiply_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_total }
+
+	set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.none }
+	if = { limit = { check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_tracks compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.tracks } }
+	subtract_from_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_tracks }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_compartments compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.compartments } }
+	subtract_from_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_compartments }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_missing compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.missing } }
+	subtract_from_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_missing }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_cables compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.cables } }
+	subtract_from_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_cables }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_fragments compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.fragments } }
+	subtract_from_temp_variable = { chaosx_nr25_sw_pick = chaosx_nr25_sw_fragments }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } check_variable = { var = chaosx_nr25_sw_pick value = chaosx_nr25_sw_outpost compare = less_than } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.outpost } }
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.none compare = equals } } set_temp_variable = { chaosx_nr25_survivor_kind = constant:chaosx_nr25_survivor_incident.radio } }
+	set_variable = { chaosx_nr25_last_survivor_incident = chaosx_nr25_survivor_kind }
+
+	clr_country_flag = chaosx_nr25_last_survivor_guarded
+	set_temp_variable = { chaosx_nr25_survivor_severity = constant:chaosx_nr25_value.one }
+	if = {
+		limit = { has_country_flag = chaosx_nr25_survivor_guard_route }
+		set_temp_variable = { chaosx_nr25_survivor_severity = constant:chaosx_nr25_survivor.guard_severity }
+		set_country_flag = chaosx_nr25_last_survivor_guarded
+	}
+	set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_survivor_exposure_gain = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_survivor_intelligence_gain = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_survivor_security_loss = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_survivor_crew_loss = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.tracks compare = equals } }
+		set_variable = { chaosx_nr25_survivor_exposure_gain = constant:chaosx_nr25_survivor.tracks_exposure }
+		set_variable = { chaosx_nr25_survivor_intelligence_gain = constant:chaosx_nr25_survivor.tracks_intelligence }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.compartments compare = equals } }
+		set_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_survivor.compartments_evidence }
+		set_variable = { chaosx_nr25_survivor_exposure_gain = constant:chaosx_nr25_survivor.compartments_exposure }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.missing compare = equals } }
+		set_variable = { chaosx_nr25_survivor_crew_loss = constant:chaosx_nr25_survivor.missing_crew }
+		set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_survivor.missing_readiness }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.cables compare = equals } }
+		set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_survivor.cables_readiness }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.fragments compare = equals } }
+		set_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_value.zero }
+		subtract_from_variable = { chaosx_nr25_survivor_evidence_change = constant:chaosx_nr25_survivor.fragments_evidence }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.outpost compare = equals } }
+		if = {
+			limit = { has_country_flag = chaosx_nr25_outpost_established }
+			set_variable = { chaosx_nr25_survivor_security_loss = constant:chaosx_nr25_survivor.outpost_security }
+		}
+		else = { set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_survivor.outpost_readiness } }
+	}
+	else = {
+		set_variable = { chaosx_nr25_survivor_intelligence_gain = constant:chaosx_nr25_survivor.radio_intelligence }
+		set_variable = { chaosx_nr25_survivor_exposure_gain = constant:chaosx_nr25_survivor.radio_exposure }
+		if = {
+			limit = {
+				chaosx_nr25_active_signal_evolution_in_force = yes
+				has_variable = global.chaosx_nr25_signal_intensity
+			}
+			add_to_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_survivor.radio_signal }
+			chaosx_nr25_clamp_signal_intensity = yes
+		}
+	}
+	# Guards halve the losses; the gains stay as they are.
+	multiply_variable = { chaosx_nr25_survivor_readiness_loss = chaosx_nr25_survivor_severity }
+	multiply_variable = { chaosx_nr25_survivor_security_loss = chaosx_nr25_survivor_severity }
+	multiply_variable = { chaosx_nr25_survivor_exposure_gain = chaosx_nr25_survivor_severity }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_evidence_change value = constant:chaosx_nr25_value.zero compare = less_than } }
+		multiply_variable = { chaosx_nr25_survivor_evidence_change = chaosx_nr25_survivor_severity }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_nr25_last_survivor_guarded }
+		set_variable = { chaosx_nr25_survivor_crew_loss = constant:chaosx_nr25_value.zero }
+	}
+	subtract_from_variable = { chaosx_nr25_logistics_readiness = chaosx_nr25_survivor_readiness_loss }
+	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_survivor_evidence_change }
+	add_to_variable = { chaosx_nr25_exposure_risk = chaosx_nr25_survivor_exposure_gain }
+	add_to_variable = { chaosx_nr25_intelligence = chaosx_nr25_survivor_intelligence_gain }
+	subtract_from_variable = { chaosx_nr25_outpost_security = chaosx_nr25_survivor_security_loss }
+	subtract_from_variable = { chaosx_nr25_crew = chaosx_nr25_survivor_crew_loss }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survivor_crew_loss value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.hazard }
+		chaosx_nr25_record_casualties = yes
+	}
+	chaosx_nr25_clamp_values = yes
+	if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.tracks compare = equals } } country_event = { id = chaosx.nr25.331 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.compartments compare = equals } } country_event = { id = chaosx.nr25.332 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.missing compare = equals } } country_event = { id = chaosx.nr25.333 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.cables compare = equals } } country_event = { id = chaosx.nr25.334 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.fragments compare = equals } } country_event = { id = chaosx.nr25.335 days = 1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_survivor_kind value = constant:chaosx_nr25_survivor_incident.outpost compare = equals } } country_event = { id = chaosx.nr25.336 days = 1 } }
+	else = { country_event = { id = chaosx.nr25.337 days = 1 } }
+}
+
+# COUNTRY scope. Avoid Contact: route around the trace. Lower exposure;
+# incidents come less often and never take people, but surveys go slower.
+chaosx_nr25_survivor_response_avoid = {
+	chaosx_nr25_clear_survivor_stance = yes
+	subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_avoid_reduction }
+	set_country_flag = chaosx_nr25_survivor_avoid_route
+}
+
+# COUNTRY scope. Guard Every Movement: escorts for every field team. Readiness
+# now and a small upkeep each pulse; incidents do half the damage and kill no
+# one; a later capture attempt is likelier to succeed.
+chaosx_nr25_survivor_response_guard = {
+	chaosx_nr25_clear_survivor_stance = yes
+	add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.ten }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_guard }
+	set_country_flag = chaosx_nr25_survivor_guard_route
+}
+
+# COUNTRY scope. Attempt Capture: one attempt per order. The chance rises with
+# Intelligence and with escorts already guarding the teams. A success contains
+# the survivor for the whole race; a failure costs a crew and readiness.
+chaosx_nr25_survivor_response_capture = {
+	set_temp_variable = { chaosx_nr25_capture_chance = chaosx_nr25_intelligence }
+	multiply_temp_variable = { chaosx_nr25_capture_chance = constant:chaosx_nr25_survivor.capture_intelligence_factor }
+	add_to_temp_variable = { chaosx_nr25_capture_chance = constant:chaosx_nr25_survivor.capture_base_chance }
+	if = {
+		limit = { has_country_flag = chaosx_nr25_survivor_guard_route }
+		add_to_temp_variable = { chaosx_nr25_capture_chance = constant:chaosx_nr25_survivor.capture_guard_bonus }
+	}
+	clamp_temp_variable = {
+		var = chaosx_nr25_capture_chance
+		min = constant:chaosx_nr25_value.zero
+		max = constant:chaosx_nr25_survivor.capture_max_chance
+	}
+	chaosx_nr25_clear_survivor_stance = yes
+	set_country_flag = chaosx_nr25_survivor_capture_route
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_capture }
+	set_temp_variable_to_random = chaosx_nr25_capture_roll
+	multiply_temp_variable = { chaosx_nr25_capture_roll = constant:chaosx_nr25_survivor.percent }
+	if = {
+		limit = {
+			NOT = { has_global_flag = chaosx_nr25_survivor_captured }
+			check_variable = { var = chaosx_nr25_capture_roll value = chaosx_nr25_capture_chance compare = less_than }
+		}
+		set_global_flag = chaosx_nr25_survivor_captured
+		# Durable reaction marker for Event 036's spacecraft.
+		set_global_flag = chaosx_nr25_event036_survivor_contained
+		set_variable = { global.chaosx_nr25_survivor_captor = ROOT }
+		set_country_flag = chaosx_nr25_survivor_specimen
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_survivor.capture_progress }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_survivor.capture_intelligence }
+		add_to_variable = { chaosx_nr25_scientific_capacity = constant:chaosx_nr25_survivor.capture_capacity }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_survivor.capture_exposure }
+		chaosx_nr25_clear_survivor_stance = yes
+		country_event = { id = chaosx.nr25.338 days = 1 }
+	}
+	else = {
+		subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_survivor.capture_failure_readiness }
+		subtract_from_variable = { chaosx_nr25_crew = constant:chaosx_nr25_survivor.capture_failure_crew }
+		set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_casualty.hazard }
+		chaosx_nr25_record_casualties = yes
+		country_event = { id = chaosx.nr25.339 days = 1 }
+	}
+}
+
+# COUNTRY scope. Offer a Controlled Path: a lure line away from the camp.
+# Wreck access and progress; incidents come less often, but the path can lead
+# the trace straight back to the camp.
+chaosx_nr25_survivor_response_path = {
+	chaosx_nr25_clear_survivor_stance = yes
+	add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.eight }
+	add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.six }
+	add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_path }
+	set_country_flag = chaosx_nr25_survivor_path_route
+	set_temp_variable_to_random = chaosx_nr25_path_roll
+	multiply_temp_variable = { chaosx_nr25_path_roll = constant:chaosx_nr25_survivor.percent }
+	if = {
+		limit = {
+			chaosx_nr25_survivor_incident_possible = yes
+			check_variable = { var = chaosx_nr25_path_roll value = constant:chaosx_nr25_survivor.path_backfire_chance compare = less_than }
+		}
+		chaosx_nr25_apply_survivor_incident = yes
+	}
+}
+
+# COUNTRY scope. Turn It Toward a Rival: drive the trace at the rival selected
+# on the board, or otherwise the rival with the most progress. Its outpost
+# loses security, or its readiness falls if it has none. The rival traces it
+# back to us when its intelligence is good enough, and otherwise on a fixed
+# chance; a traced diversion costs us opinion and exposure.
+chaosx_nr25_survivor_response_turn = {
+	add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.eight }
+	set_temp_variable = { chaosx_nr25_rival_picked = constant:chaosx_nr25_value.zero }
+	chaosx_nr25_pick_rival_target = yes
+	clr_country_flag = chaosx_nr25_survivor_turn_traced
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_rival_picked value = constant:chaosx_nr25_value.one compare = equals } }
+		set_variable = { chaosx_nr25_last_turn_target = event_target:chaosx_nr25_picked_rival }
+		set_temp_variable_to_random = chaosx_nr25_turn_roll
+		multiply_temp_variable = { chaosx_nr25_turn_roll = constant:chaosx_nr25_survivor.percent }
+		event_target:chaosx_nr25_picked_rival = {
+			set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_value.zero }
+			set_variable = { chaosx_nr25_survivor_security_loss = constant:chaosx_nr25_value.zero }
+			if = {
+				limit = { has_country_flag = chaosx_nr25_outpost_established }
+				set_variable = { chaosx_nr25_survivor_security_loss = constant:chaosx_nr25_survivor.turn_outpost_security }
+			}
+			else = { set_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_survivor.turn_readiness } }
+			if = {
+				limit = { has_country_flag = chaosx_nr25_survivor_guard_route }
+				multiply_variable = { chaosx_nr25_survivor_readiness_loss = constant:chaosx_nr25_survivor.guard_severity }
+				multiply_variable = { chaosx_nr25_survivor_security_loss = constant:chaosx_nr25_survivor.guard_severity }
+			}
+			subtract_from_variable = { chaosx_nr25_logistics_readiness = chaosx_nr25_survivor_readiness_loss }
+			subtract_from_variable = { chaosx_nr25_outpost_security = chaosx_nr25_survivor_security_loss }
+			chaosx_nr25_clamp_values = yes
+			clr_country_flag = chaosx_nr25_survivor_turner_identified
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_report.sabotage_attribution_intelligence compare = greater_than_or_equals }
+						check_variable = { var = chaosx_nr25_turn_roll value = constant:chaosx_nr25_survivor.turn_attribution_chance compare = less_than }
+					}
+				}
+				set_country_flag = chaosx_nr25_survivor_turner_identified
+				set_variable = { chaosx_nr25_survivor_turner_id = ROOT.id }
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
+				ROOT = { set_country_flag = chaosx_nr25_survivor_turn_traced }
+			}
+			country_event = { id = chaosx.nr25.340 days = 1 }
+		}
+		if = {
+			limit = { has_country_flag = chaosx_nr25_survivor_turn_traced }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_survivor.turn_attribution_exposure }
+		}
+		else = {
+			subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_turn_reduction }
+		}
+		country_event = { id = chaosx.nr25.341 days = 1 }
+	}
+	set_country_flag = chaosx_nr25_survivor_turn_route
+}

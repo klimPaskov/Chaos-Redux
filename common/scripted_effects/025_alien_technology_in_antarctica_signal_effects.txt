@@ -285,46 +285,12 @@ chaosx_nr25_signal_response_jam = {
 	subtract_from_variable = { global.chaosx_nr25_signal_intensity = constant:chaosx_nr25_signal.jam_drop }
 	chaosx_nr25_clamp_signal_intensity = yes
 	set_country_flag = chaosx_nr25_signal_jam_route
-	set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_nr25_rival_picked = constant:chaosx_nr25_value.zero }
+	chaosx_nr25_pick_rival_target = yes
 	if = {
-		limit = {
-			is_ai = no
-			has_country_flag = chaosx_nr25_rival_target_selected
-		}
-		chaosx_nr25_resolve_rival_target_id = yes
-		if = {
-			limit = {
-				has_variable = chaosx_nr25_rival_target
-				has_event_target = chaosx_nr25_rival_target_scope
-				event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
-			}
-			event_target:chaosx_nr25_rival_target_scope = { save_event_target_as = chaosx_nr25_jam_target }
-			set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.one }
-		}
-	}
-	if = {
-		limit = { check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.zero compare = equals } }
-		set_temp_variable = { chaosx_nr25_jam_best = constant:chaosx_nr25_value.zero }
-		for_each_scope_loop = {
-			array = global.chaosx_nr25_participants
-			if = {
-				limit = {
-					chaosx_nr25_rival_card_candidate_valid = yes
-					OR = {
-						check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.zero compare = equals }
-						check_variable = { var = chaosx_nr25_progress value = chaosx_nr25_jam_best compare = greater_than }
-					}
-				}
-				set_temp_variable = { chaosx_nr25_jam_best = chaosx_nr25_progress }
-				set_temp_variable = { chaosx_nr25_jam_found = constant:chaosx_nr25_value.one }
-				save_event_target_as = chaosx_nr25_jam_target
-			}
-		}
-	}
-	if = {
-		limit = { check_variable = { var = chaosx_nr25_jam_found value = constant:chaosx_nr25_value.one compare = equals } }
-		set_variable = { chaosx_nr25_last_jam_target = event_target:chaosx_nr25_jam_target }
-		event_target:chaosx_nr25_jam_target = {
+		limit = { check_variable = { var = chaosx_nr25_rival_picked value = constant:chaosx_nr25_value.one compare = equals } }
+		set_variable = { chaosx_nr25_last_jam_target = event_target:chaosx_nr25_picked_rival }
+		event_target:chaosx_nr25_picked_rival = {
 			set_temp_variable = { chaosx_nr25_pulse_flag_days = constant:chaosx_nr25_signal.jam_days }
 			set_country_flag = { flag = chaosx_nr25_signal_jammed days = chaosx_nr25_pulse_flag_days value = 1 }
 			clr_country_flag = chaosx_nr25_jammer_identified

@@ -141,3 +141,32 @@ chaosx_nr25_strong_pulse_chance = {
 		check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals }
 	}
 }
+
+# Chance, in percent, that a survivor incident reaches an expedition on the
+# ice this pulse. Avoiding contact or offering a controlled path makes
+# incidents rarer; attempting capture draws the survivor closer; high
+# Exposure Risk draws it too. Zero while Evolution II is not in force.
+chaosx_nr25_survivor_incident_chance = {
+	base = constant:chaosx_nr25_survivor.base_chance
+	modifier = {
+		add = constant:chaosx_nr25_survivor.exposure_add
+		check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_survivor.exposure_threshold compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_survivor.avoid_factor
+		has_country_flag = chaosx_nr25_survivor_avoid_route
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_survivor.path_factor
+		has_country_flag = chaosx_nr25_survivor_path_route
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_survivor.capture_factor
+		has_country_flag = chaosx_nr25_survivor_capture_route
+	}
+	# Applied last, so no earlier addition survives it.
+	modifier = {
+		factor = 0
+		NOT = { chaosx_nr25_something_survived_evolution_in_force = yes }
+	}
+}

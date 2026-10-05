@@ -104,6 +104,7 @@ chaosx_nr25_evolution_category = {
 			base = 6
 			modifier = { add = constant:chaosx_nr25_ai.tendency_strong chaosx_nr25_ai_weak = yes }
 			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_risk_averse = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor has_country_flag = chaosx_nr25_survivor_avoid_route }
 		}
 	}
 	chaosx_nr25_survivor_guard = {
@@ -116,12 +117,14 @@ chaosx_nr25_evolution_category = {
 		ai_will_do = {
 			base = 6
 			modifier = { add = constant:chaosx_nr25_ai.tendency_clear chaosx_nr25_ai_militarised = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_desperate = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor has_country_flag = chaosx_nr25_survivor_guard_route }
 			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no }
 		}
 	}
 	chaosx_nr25_survivor_capture = {
 		icon = GFX_decision_generic_military
-		visible = { chaosx_nr25_race_response_on_ice_visible = yes has_global_flag = chaosx_nr25_evolution_something_survived chaosx_nr25_something_survived_evolution_in_force = yes }
+		visible = { chaosx_nr25_race_response_on_ice_visible = yes has_global_flag = chaosx_nr25_evolution_something_survived chaosx_nr25_something_survived_evolution_in_force = yes chaosx_nr25_survivor_capture_open = yes }
 		available = { chaosx_nr25_evolution_something_survived_action_available = yes has_manpower > constant:chaosx_nr25_cost.manpower_survivor_required }
 		custom_cost_trigger = { has_manpower > constant:chaosx_nr25_cost.manpower_survivor_required }
 		custom_cost_text = chaosx_nr25_survivor_capture_cost
@@ -131,6 +134,7 @@ chaosx_nr25_evolution_category = {
 			modifier = { add = constant:chaosx_nr25_ai.tendency_strong chaosx_nr25_ai_desperate = yes }
 			modifier = { add = constant:chaosx_nr25_ai.tendency_mild chaosx_nr25_ai_militarised = yes }
 			modifier = { add = 12 check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_light has_country_flag = chaosx_nr25_survivor_guard_route }
 			modifier = { factor = constant:chaosx_nr25_ai.strongly_against_factor chaosx_nr25_ai_weak = yes }
 			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no }
 		}
@@ -145,6 +149,7 @@ chaosx_nr25_evolution_category = {
 		ai_will_do = {
 			base = 6
 			modifier = { add = constant:chaosx_nr25_ai.tendency_clear chaosx_nr25_ai_scientific = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor has_country_flag = chaosx_nr25_survivor_path_route }
 			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no }
 		}
 	}
@@ -157,8 +162,10 @@ chaosx_nr25_evolution_category = {
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_turn_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.turn } chaosx_nr25_execute_evolution_action = yes } }
 		ai_will_do = {
 			base = 6
-			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_scientific = yes }
-			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_risk_averse = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_light NOT = { chaosx_nr25_ai_leading = yes } }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_mild chaosx_nr25_ai_rival_near_final = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_aggressive = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.strongly_against_factor chaosx_nr25_ai_risk_averse = yes }
 			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no }
 		}
 	}
