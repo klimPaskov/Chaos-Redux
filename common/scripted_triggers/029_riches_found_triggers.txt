@@ -555,6 +555,24 @@ riches_found_contract_or_foreign_target_is_valid = {
 	}
 }
 
+# STATE scope, ROOT the controller that paid for a contract decision. The
+# partner offered when the decision was taken (riches_found_pending_contract_partner)
+# can still sign: it exists, is not excluded or capitulated, is not at war with
+# the payer, does not hold the payer below the hostile-opinion threshold, and
+# the mine can open a contract.
+riches_found_pending_contract_can_sign = {
+	riches_found_contract_can_open = yes
+	has_variable = riches_found_pending_contract_partner
+	check_variable = { var = riches_found_pending_contract_partner value = ROOT compare = not_equals }
+	var:riches_found_pending_contract_partner = {
+		exists = yes
+		NOT = { riches_found_country_is_excluded_actor = yes }
+		has_capitulated = no
+		NOT = { has_war_with = ROOT }
+		NOT = { has_opinion = { target = ROOT value < @riches_found_hostile_opinion } }
+	}
+}
+
 # STATE scope. Contract audit, disclosure, publication, buyout, and
 # nationalization belong to the foreign concession layer. A security or
 # emergency overlay, an evolution crisis or an occupation replaces them until

@@ -1491,6 +1491,7 @@ riches_found_clear_stale_targets = {
 	clr_state_flag = riches_found_foreign_target_available
 	clear_variable = riches_found_selected_foreign_target
 	clear_variable = riches_found_contract_target
+	clear_variable = riches_found_pending_contract_partner
 	clear_variable = riches_found_mission_target
 	clear_variable = riches_found_claim_target
 	clr_state_flag = riches_found_evolution_i_pending
@@ -1506,6 +1507,31 @@ riches_found_clear_stale_targets = {
 # helper and never scan every country.
 riches_found_prepare_foreign_partner = {
 	riches_found_prepare_scored_foreign_partner = yes
+}
+
+# STATE scope. Called when a contract decision is taken: records the partner
+# the decision offered, so the terms are signed with that partner and not with
+# a later offer.
+riches_found_record_pending_contract_partner = {
+	if = {
+		limit = { riches_found_foreign_target_is_valid = yes }
+		set_variable = { riches_found_pending_contract_partner = riches_found_foreign_target }
+	}
+	else = { clear_variable = riches_found_pending_contract_partner }
+}
+
+# STATE scope, ROOT the controller that paid. Inputs: temporary
+# riches_found_input_contract_type and optional temporary
+# riches_found_contract_exclusive_request. Signs the contract with the partner
+# recorded when the decision was taken; the caller has already checked
+# riches_found_pending_contract_can_sign, so no new partner is scored here.
+riches_found_sign_pending_contract = {
+	var:riches_found_pending_contract_partner = { save_event_target_as = riches_found_contract_partner_target }
+	set_variable = { riches_found_foreign_target = riches_found_pending_contract_partner }
+	set_variable = { riches_found_foreign_offer_controller = ROOT }
+	set_state_flag = riches_found_foreign_target_available
+	clear_variable = riches_found_pending_contract_partner
+	riches_found_begin_contract = yes
 }
 
 # STATE scope. Closes the current contract while retaining an audit flag and

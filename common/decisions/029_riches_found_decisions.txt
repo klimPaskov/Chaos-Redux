@@ -2692,14 +2692,23 @@ decision_riches_found_concession_auction = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_concession_auction_tt
+		FROM = { riches_found_record_pending_contract_partner = yes }
 		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_light_negative
 	}
 	remove_effect = {
+		# The terms land only while this country still holds the registered,
+		# nonterminal mine and either extend a running contract or sign with
+		# the partner offered when the decision was taken; otherwise every cost
+		# is returned and the mine is left as it was.
 		if = {
 			limit = {
 				FROM = {
 					riches_found_mine_still_valid_for_payer = yes
+					OR = {
+						riches_found_contract_is_active_and_valid = yes
+						riches_found_pending_contract_can_sign = yes
+					}
 				}
 			}
 
@@ -2718,9 +2727,9 @@ decision_riches_found_concession_auction = {
 					add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_action_delta.negative_4 }
 					add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_4 }
 					set_temp_variable = { riches_found_input_contract_type = constant:riches_found_contract_type.limited_concession }
-					riches_found_prepare_foreign_partner = yes
-					if = { limit = { has_event_target = riches_found_contract_partner_target } riches_found_begin_contract = yes }
+					riches_found_sign_pending_contract = yes
 				}
+				clear_variable = riches_found_pending_contract_partner
 				set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 				set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.concession_limited }
 				riches_found_queue_report = yes
@@ -2730,6 +2739,12 @@ decision_riches_found_concession_auction = {
 
 		}
 		else = {
+			FROM = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					clear_variable = riches_found_pending_contract_partner
+				}
+			}
 			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_manpower = constant:riches_found_decision_cost.manpower_light
 		}
@@ -2802,15 +2817,21 @@ decision_riches_found_exclusive_concession = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_exclusive_concession_tt
+		FROM = { riches_found_record_pending_contract_partner = yes }
 		add_political_power = constant:riches_found_decision_cost.pp_heavy_negative
 		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 	}
 	remove_effect = {
+		# The concession lands only while this country still holds the
+		# registered, nonterminal mine and the partner offered when the decision
+		# was taken can still sign; otherwise every cost is returned and the
+		# mine is left as it was.
 		if = {
 			limit = {
 				FROM = {
 					riches_found_mine_still_valid_for_payer = yes
+					riches_found_pending_contract_can_sign = yes
 				}
 			}
 
@@ -2823,8 +2844,7 @@ decision_riches_found_exclusive_concession = {
 				add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_10 }
 				set_temp_variable = { riches_found_input_contract_type = constant:riches_found_contract_type.exclusive_concession }
 				set_temp_variable = { riches_found_contract_exclusive_request = constant:riches_found_value.one }
-				riches_found_prepare_foreign_partner = yes
-				if = { limit = { has_event_target = riches_found_contract_partner_target } riches_found_begin_contract = yes }
+				riches_found_sign_pending_contract = yes
 				set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 				set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.concession_exclusive }
 				riches_found_queue_report = yes
@@ -2834,6 +2854,12 @@ decision_riches_found_exclusive_concession = {
 
 		}
 		else = {
+			FROM = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					clear_variable = riches_found_pending_contract_partner
+				}
+			}
 			add_political_power = constant:riches_found_decision_cost.pp_heavy
 			add_manpower = constant:riches_found_decision_cost.manpower_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
@@ -2917,15 +2943,24 @@ decision_riches_found_offtake = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_offtake_tt
+		FROM = { riches_found_record_pending_contract_partner = yes }
 		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_fuel = constant:riches_found_decision_cost.fuel_standard_negative
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_standard_negative }
 	}
 	remove_effect = {
+		# The terms land only while this country still holds the registered,
+		# nonterminal mine and either extend a running contract or sign with
+		# the partner offered when the decision was taken; otherwise every cost
+		# is returned and the mine is left as it was.
 		if = {
 			limit = {
 				FROM = {
 					riches_found_mine_still_valid_for_payer = yes
+					OR = {
+						riches_found_contract_is_active_and_valid = yes
+						riches_found_pending_contract_can_sign = yes
+					}
 				}
 			}
 
@@ -2944,9 +2979,9 @@ decision_riches_found_offtake = {
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_foreign_claim_pressure = constant:riches_found_action_delta.positive_4 }
 					set_temp_variable = { riches_found_input_contract_type = constant:riches_found_contract_type.offtake }
-					riches_found_prepare_foreign_partner = yes
-					if = { limit = { has_event_target = riches_found_contract_partner_target } riches_found_begin_contract = yes }
+					riches_found_sign_pending_contract = yes
 				}
+				clear_variable = riches_found_pending_contract_partner
 				set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 				set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.concession_offtake }
 				riches_found_queue_report = yes
@@ -2956,6 +2991,12 @@ decision_riches_found_offtake = {
 
 		}
 		else = {
+			FROM = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					clear_variable = riches_found_pending_contract_partner
+				}
+			}
 			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_fuel = constant:riches_found_decision_cost.fuel_standard
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_standard }
@@ -3038,16 +3079,25 @@ decision_riches_found_trade_access_infrastructure = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_trade_access_infrastructure_tt
+		FROM = { riches_found_record_pending_contract_partner = yes }
 		add_political_power = constant:riches_found_decision_cost.pp_standard_negative
 		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard_negative }
 		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard_negative }
 		add_equipment_to_stockpile = { type = convoy_1 amount = constant:riches_found_decision_cost.convoy_light_negative }
 	}
 	remove_effect = {
+		# The terms land only while this country still holds the registered,
+		# nonterminal mine and either extend a running contract or sign with
+		# the partner offered when the decision was taken; otherwise every cost
+		# is returned and the mine is left as it was.
 		if = {
 			limit = {
 				FROM = {
 					riches_found_mine_still_valid_for_payer = yes
+					OR = {
+						riches_found_contract_is_active_and_valid = yes
+						riches_found_pending_contract_can_sign = yes
+					}
 				}
 			}
 
@@ -3068,9 +3118,9 @@ decision_riches_found_trade_access_infrastructure = {
 					add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_4 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_5 }
 					set_temp_variable = { riches_found_input_contract_type = constant:riches_found_contract_type.infrastructure_access }
-					riches_found_prepare_foreign_partner = yes
-					if = { limit = { has_event_target = riches_found_contract_partner_target } riches_found_begin_contract = yes }
+					riches_found_sign_pending_contract = yes
 				}
+				clear_variable = riches_found_pending_contract_partner
 				set_temp_variable = { riches_found_report_input_kind = constant:riches_found_report.concession }
 				set_temp_variable = { riches_found_report_input_text = constant:riches_found_report_text.concession_infrastructure }
 				riches_found_queue_report = yes
@@ -3080,6 +3130,12 @@ decision_riches_found_trade_access_infrastructure = {
 
 		}
 		else = {
+			FROM = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					clear_variable = riches_found_pending_contract_partner
+				}
+			}
 			add_political_power = constant:riches_found_decision_cost.pp_standard
 			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_standard }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:riches_found_decision_cost.motorized_standard }
