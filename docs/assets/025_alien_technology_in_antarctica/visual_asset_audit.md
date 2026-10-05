@@ -198,6 +198,20 @@ It is shown only while the viewer's last card build counted more than three vali
 
 The render fixtures supply the card names, card text and the selected-target name as localisation values, because live country scopes and scripted localisation do not resolve offline; the selected-target row prints `[?chaosx_nr25_rival_target_id.GetName]` in game. The paging itself (offset skip, wrap to the first page, kept selection) is source-reviewed and `needs_live_game`.
 
+## Evolution V outcome idea pictures (2026-10-05)
+
+The five institutional outcome ideas no longer reuse the analysis, survey, fragment and dependence pictures.
+Each has its own 64x64 opaque painted picture in the existing Event 025 idea family (dark vignette, brass, frost and teal light), generated with the session's image tool from a reference sheet of the five existing ideas (`source_png/ideas/idea_family_reference.png`), resized once with Lanczos to 64x64 and converted with the skill's DDS converter; each DDS decodes to its processed PNG with zero pixel difference.
+No two Event 025 ideas now share a picture.
+
+| Sprite | Consumer | Source (SHA-256) | DDS (SHA-256) |
+| --- | --- | --- | --- |
+| `GFX_idea_025_outcome_contained` | `chaosx_nr25_outcome_contained` (Contained) | `source_png/ideas/idea_outcome_contained_source.png` (`73c4840f6e19eee2dbd696b26d10ababab79d4c373a2fcf142a8f595a4f88844`) | `gfx/interface/ideas/025_alien_technology_in_antarctica/idea_outcome_contained.dds` (`9776526d464f2b00416aeb349487737a54543308f24a05bebe485ab8f4912157`) |
+| `GFX_idea_025_outcome_independent` | `chaosx_nr25_outcome_independent` (Independent Adaptation) | `source_png/ideas/idea_outcome_independent_source.png` (`e98bc87feff168b3996bfc3232443729a053a7e6fd399e2f789051f40c500660`) | `gfx/interface/ideas/025_alien_technology_in_antarctica/idea_outcome_independent.dds` (`f6eafb45ca15fad43628e68124bc957a769e5e54b2e720f0881ab0fdc8f8b008`) |
+| `GFX_idea_025_outcome_integrated` | `chaosx_nr25_outcome_integrated` (Integrated) | `source_png/ideas/idea_outcome_integrated_source.png` (`c5ca914b3325b40a98a8826f6e85449e3392f0cfd2c526c84b2f223bb6d4c3ed`) | `gfx/interface/ideas/025_alien_technology_in_antarctica/idea_outcome_integrated.dds` (`64926502c99cdb3de841ddd4f027ff752b76dcba4c359f3454e84b932aac6b47`) |
+| `GFX_idea_025_outcome_reliance` | `chaosx_nr25_outcome_reliance` (Reliance) | `source_png/ideas/idea_outcome_reliance_source.png` (`39e06a7fd08bf1d94750f2046b22a9582103fce46dfcffbf13c17bbbb974ac1b`) | `gfx/interface/ideas/025_alien_technology_in_antarctica/idea_outcome_reliance.dds` (`4e11ebf66d43cab750c3fa42f80804793f2c77f9b7390a8e65240302e4d98a58`) |
+| `GFX_idea_025_outcome_autonomous` | `chaosx_nr25_outcome_autonomous` (Autonomous Network) | `source_png/ideas/idea_outcome_autonomous_source.png` (`366459997c331b47fb26b801ab1003a9f8e1255cbda58134160dd571d373372b`) | `gfx/interface/ideas/025_alien_technology_in_antarctica/idea_outcome_autonomous.dds` (`ccf6d1ee75def71e3790523faab1150ce88d3d9a819e3fa803c8b72d1cf06822`) |
+
 ## Remaining limits
 
 Neither complete asset wiring nor overall Event 025 acceptance is established.
