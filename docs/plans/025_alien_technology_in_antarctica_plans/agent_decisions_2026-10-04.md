@@ -612,3 +612,18 @@ Decision:
 - Seizure requires a standing camp that is compromised or below 30 security. It moves survey evidence (at most what the target holds) and one fragment slot through the new ledger effect `chaosx_alien_recovery_ledger_seize_fragment`, documented in the ledger markdown; the core never moves this way.
 - The clash report offers protest (public record through a named threat, and a 120-day targeted flag that halves AI armed actions against the protester), negotiation (an immediate corridor offer to the attacker) and reinforcement (outpost security, readiness, a security zone, more militarisation), each with AI chances. No option declares war.
 - Spec 004's ultimatum or war-goal route after repeated high-severity incidents is not added; declaration stays with ordinary diplomacy.
+
+## D39. The Wreck Is Breaking Apart: one shared wreck, site decay and the hull break
+
+Disposition: `implemented`; decay pacing is `needs_live_game`.
+
+Basis: spec 004 Evolution IV (Wreck Integrity, fragment decay, primary winner continuity) and the round 2 remaining-work list.
+
+Decision:
+
+- Wreck Integrity is `global.chaosx_nr25_wreck_integrity`, seeded at activation (100, or the existing opening value 60). The per-country variable, its clamp, its registration seed and the never-read `chaosx_nr25_fragment_field_active` and `chaosx_nr25_wreck_critical` flags are retired. Decay is once per pulse period for the whole race, suspended by the global `chaosx_nr25_wreck_held` timed flag after a stabilisation; strong signal pulses, armed clashes, seizures, cutting and failed final attempts damage it through `chaosx_nr25_damage_wreck`.
+- Stabilisation raises integrity only up to 80, below the original hull, and the success threshold reads the global value.
+- Site decay uses the ledger's slot flags as a bounded extension: a random unowned slot other than the hidden core sector becomes destroyed (existing flag) or buried (new flag, rejected by the acquisition gate), every expedition's sector state becomes lost (the buried strip frame), and those that had surveyed it get a report. Owned fragments are never lost this way, so fragments already recovered keep their value.
+- Contaminated cutting halves the cut's progress, adds exposure, still grants custody and marks the holder `chaosx_nr25_holds_contaminated_fragment`; the reduced value is in the race, not in a separate ledger kind.
+- At zero integrity the hull breaks once with a report to every expedition still racing; final recovery reads nothing from integrity, so the command core stays the winning objective.
+- The broad hull label shows in the board's Exposure Risk tooltip and the stabilise and cut tooltips.

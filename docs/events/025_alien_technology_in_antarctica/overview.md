@@ -175,6 +175,19 @@ Seizure needs the target's camp to stand while compromised or below 30 security;
 The armed-incident report `.165` now offers a public protest (world tension, and AI armed actions against the protester are halved for 120 days), a corridor offer to the attacker, or reinforcement of the camp; none declares war.
 AI tendencies follow spec 009: risk-averse and weak expeditions seek corridors, more once the ice is armed or against a known attacker, and aggressive ones refuse them; armed actions avoid compact partners and protesters.
 
+### The Wreck Is Breaking Apart (Evolution IV)
+
+Wreck Integrity is one global value, `global.chaosx_nr25_wreck_integrity`, in `025_alien_technology_in_antarctica_wreck_effects.txt` with its tuning in `025_alien_technology_in_antarctica_wreck_constants.txt`.
+It starts at 100 when the evolution activates and at 60 when the race opens with it.
+The first expedition pulse of each pulse period removes 2 unless a stabilisation is holding; a strong signal pulse removes 2, a blockade or interception 3, a seizure 5, cutting a fragment 4 and a failed final attempt 5.
+A successful stabilisation objective (integrity 50 or more) adds 20 and a partial one 10, never above 80, and holds the hull against decay for 90 days.
+The board's Exposure Risk tooltip shows the hull as intact (75+), strained (50+), breaking (20+), shattered, or broken.
+
+Below 50, each pulse period has a 15% chance (30% below 20, 45% after the hull breaks) to lose one random unrecovered fragment site other than the hidden core sector: 40% of losses destroy it (`chaosx_alien_recovery_fragment_<N>_destroyed`) and the rest bury it (`chaosx_alien_recovery_fragment_<N>_buried`, which the ledger's acquisition gate now also rejects).
+Every expedition's charts mark the sector lost, so its board frame shows the buried strip frame, and expeditions that had surveyed it receive `chaosx.nr25.344`; a survey cycling through the sectors no longer overwrites a lost one.
+Cutting below 30 integrity has a 50% chance to bring out a contaminated fragment: it still enters custody, but brings half the progress and extra exposure (`.346`).
+At zero the hull breaks (`chaosx_nr25_hull_broken`, report `.345` to every expedition still in the race); the command core remains the winning objective and nothing in the final recovery reads integrity.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

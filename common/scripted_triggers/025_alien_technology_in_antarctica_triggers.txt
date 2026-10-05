@@ -152,7 +152,10 @@ chaosx_alien_recovery_ledger_fragment_input_is_valid = {
 		check_variable = { var = chaosx_alien_recovery_fragment_role value = constant:chaosx_nr25_value.six compare = equals }
 	}
 	meta_trigger = {
-		text = { NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_destroyed } }
+		text = {
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_destroyed }
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_buried }
+		}
 		SLOT = "[?chaosx_alien_recovery_fragment_id|.0]"
 	}
 }
@@ -1426,7 +1429,8 @@ chaosx_nr25_ai_militarised = {
 }
 
 chaosx_nr25_ai_wreck_failing = {
-	check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_ai.failing_wreck_integrity compare = less_than }
+	has_variable = global.chaosx_nr25_wreck_integrity
+	check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_ai.failing_wreck_integrity compare = less_than }
 }
 
 # Country scope (the acting country, FROM the candidate target). The target

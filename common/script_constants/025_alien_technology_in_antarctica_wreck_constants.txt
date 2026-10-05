@@ -1,0 +1,59 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 THE WRECK IS BREAKING APART (EVOLUTION IV)
+# ============================================================================
+# Overview:
+# - Tuning for the global Wreck Integrity (0 to full_integrity), the damage
+#   that lowers it, the stabilisation that raises it up to a cap below its
+#   original condition, fragment-site loss, contaminated cutting and the hull
+#   labels on the board.
+# - Chances are percentages. Nothing here runs while Evolution IV is
+#   disabled, and nothing here can remove the primary recovery objective.
+# ============================================================================
+
+chaosx_nr25_wreck = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	full_integrity = 100
+	# Stabilisation never restores the hull beyond this.
+	stabilize_cap = 80
+	stabilize_success_gain = 20
+	stabilize_partial_gain = 10
+	# A stabilised hull holds against the slow decay for this long.
+	held_days = 90
+	# Decay once per pulse period while the hull is not held.
+	pulse_decay = 2
+
+	# Damage from other causes.
+	strong_pulse_damage = 2
+	clash_damage = 3
+	seizure_damage = 5
+	cut_damage = 4
+	failed_final_damage = 5
+
+	# Hull labels: intact at or above, strained, breaking, shattered.
+	label_intact = 75
+	label_strained = 50
+	label_breaking = 20
+
+	# Fragment sites start to be lost below field_threshold, faster below
+	# critical_threshold and after the hull breaks. One check per pulse period.
+	field_threshold = 50
+	critical_threshold = 20
+	site_loss_chance = 15
+	site_loss_critical_chance = 30
+	site_loss_broken_chance = 45
+	# Share of lost sites that are destroyed rather than buried.
+	destroyed_share = 40
+	percent = 100
+
+	# Cutting below this integrity can bring out a contaminated fragment.
+	contaminated_threshold = 30
+	contaminated_chance = 50
+	cut_progress = 12
+	# A contaminated piece brings this share of the cutting progress.
+	contaminated_progress_factor = 0.5
+	contaminated_exposure = 6
+}

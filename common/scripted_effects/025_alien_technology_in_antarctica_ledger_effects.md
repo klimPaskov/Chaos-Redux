@@ -31,6 +31,7 @@ Field codes come from `chaosx_nr25_alien_field` and match `chaosx_custom_technol
 The initial Event 025 resolver initializes the latter once; its initialization receipt survives destruction and abandonment.
 Six persistent `chaosx_alien_recovery_fragment_owner_<1..6>` targets are authoritative fragment owners.
 Each slot also has an assigned flag, a bounded role, and a permanent destroyed flag when retired through destruction.
+Evolution IV can also retire an unowned slot: the wreck effects set the same permanent destroyed flag, or a permanent buried flag (`chaosx_alien_recovery_fragment_<N>_buried`), and the acquisition gate rejects both. Neither ever applies to an owned slot or to the hidden core sector.
 
 | Effect | Scope and inputs | Outputs and side effects |
 | --- | --- | --- |

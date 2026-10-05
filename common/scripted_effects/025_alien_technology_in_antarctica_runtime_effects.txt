@@ -32,7 +32,6 @@ chaosx_nr25_register_participant = {
 		set_variable = { chaosx_nr25_outpost_emphasis = constant:chaosx_nr25_outpost_emphasis.none }
 		set_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.zero }
-		set_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.max }
 		set_variable = { chaosx_nr25_fragment_count = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_casualties = constant:chaosx_nr25_value.zero }
 		set_variable = { chaosx_nr25_route_collapses = constant:chaosx_nr25_value.zero }
@@ -623,7 +622,6 @@ chaosx_nr25_clamp_values = {
 	clamp_variable = { var = chaosx_nr25_survey_evidence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 	clamp_variable = { var = chaosx_nr25_wreck_access min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 	clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
-	clamp_variable = { var = chaosx_nr25_wreck_integrity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
 }
 
 # COUNTRY scope. Applies or reverses one public outpost emphasis. The
@@ -813,6 +811,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.one compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_ice_shelf_state = chaosx_nr25_sector_result }
 	}
@@ -821,6 +820,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.two compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_mountain_shadow_state = chaosx_nr25_sector_result }
 	}
@@ -829,6 +829,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.three compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_signal_basin_state = chaosx_nr25_sector_result }
 	}
@@ -837,6 +838,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.four compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_coastal_fracture_state = chaosx_nr25_sector_result }
 	}
@@ -845,6 +847,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.five compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_magnetic_silence_state = chaosx_nr25_sector_result }
 	}
@@ -853,6 +856,7 @@ chaosx_nr25_mark_survey_sector = {
 			check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.six compare = equals }
 			NOT = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.confirmed compare = equals } }
 			NOT = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.probable compare = equals } }
+			NOT = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.lost compare = equals } }
 		}
 		set_variable = { chaosx_nr25_sector_false_map_state = chaosx_nr25_sector_result }
 	}
@@ -1641,9 +1645,9 @@ chaosx_nr25_run_bounded_pulse = {
 			if = {
 				limit = { chaosx_nr25_wreck_breaking_apart_evolution_in_force = yes }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_pulse }
-				if = { limit = { NOT = { has_country_flag = chaosx_nr25_wreck_stabilized } } subtract_from_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_cost.wreck_integrity_pulse } }
-				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_fragment_field_active }
-				if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.twenty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_wreck_critical }
+				# Global Wreck Integrity, site loss and the hull break
+				# (025_alien_technology_in_antarctica_wreck_effects.txt).
+				chaosx_nr25_wreck_pulse = yes
 			}
 		}
 		# Race-time Dependence. After the race the holder watch owns it.
@@ -2242,24 +2246,31 @@ chaosx_nr25_complete_phase_mission = {
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } }
 			if = {
-				limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals } }
+				limit = {
+					has_variable = global.chaosx_nr25_wreck_integrity
+					check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_wreck.label_strained compare = greater_than_or_equals }
+				}
 				set_country_flag = chaosx_nr25_stabilize_wreck_mission_success
 				set_country_flag = chaosx_nr25_wreck_stabilized
-				add_to_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.twenty }
+				set_temp_variable = { chaosx_nr25_wreck_gain = constant:chaosx_nr25_wreck.stabilize_success_gain }
+				chaosx_nr25_stabilize_wreck_integrity = yes
 				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_success_progress }
 				subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_stabilize_reduction }
 			}
 			else_if = {
-				limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.zero compare = greater_than } }
+				limit = {
+					has_variable = global.chaosx_nr25_wreck_integrity
+					check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.zero compare = greater_than }
+				}
 				set_country_flag = chaosx_nr25_stabilize_wreck_mission_partial
 				set_country_flag = chaosx_nr25_wreck_stabilized
-				add_to_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.ten }
+				set_temp_variable = { chaosx_nr25_wreck_gain = constant:chaosx_nr25_wreck.stabilize_partial_gain }
+				chaosx_nr25_stabilize_wreck_integrity = yes
 				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_partial_progress }
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_partial_exposure }
 			}
 			else = {
 				set_country_flag = chaosx_nr25_stabilize_wreck_mission_failed
-				set_country_flag = chaosx_nr25_fragment_field_active
 				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure }
 			}
 		}
@@ -2330,7 +2341,7 @@ chaosx_nr25_fail_phase_mission = {
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.triangulate_crash_zone compare = equals } } set_country_flag = chaosx_nr25_triangulate_mission_failed set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.compromised } }
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals } } set_country_flag = chaosx_nr25_supply_route_mission_failed add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_failure_readiness } add_to_variable = { chaosx_nr25_route_collapses = constant:chaosx_nr25_value.one } set_country_flag = chaosx_nr25_convoy_incident }
 		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.confirm_primary_site compare = equals } } set_country_flag = chaosx_nr25_confirm_site_mission_failed add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_failure_progress } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure } }
-		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } } set_country_flag = chaosx_nr25_stabilize_wreck_mission_failed set_country_flag = chaosx_nr25_fragment_field_active add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure } }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } } set_country_flag = chaosx_nr25_stabilize_wreck_mission_failed add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure } }
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
 			set_country_flag = chaosx_nr25_contain_systems_mission_failed
@@ -2415,6 +2426,9 @@ chaosx_nr25_fail_final_mission = {
 		clr_country_flag = chaosx_nr25_final_mission_active
 		clr_country_flag = chaosx_nr25_final_mission_ready
 		set_country_flag = chaosx_nr25_final_mission_failed
+		# A failed extraction tears at the hull.
+		set_temp_variable = { chaosx_nr25_wreck_damage = constant:chaosx_nr25_wreck.failed_final_damage }
+		chaosx_nr25_damage_wreck = yes
 		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.final_mission_failure_progress_loss }
 		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.final_mission_failure_readiness_loss }
 		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.final_mission_failure_exposure }
@@ -3186,6 +3200,22 @@ chaosx_nr25_apply_militarisation_target = {
 			subtract_from_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.rescue_drop }
 		}
 		chaosx_nr25_change_militarisation = yes
+		# Armed clashes near the site shake the hull; a seizure most of all.
+		set_temp_variable = { chaosx_nr25_wreck_damage = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals }
+					check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals }
+				}
+			}
+			set_temp_variable = { chaosx_nr25_wreck_damage = constant:chaosx_nr25_wreck.clash_damage }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
+			set_temp_variable = { chaosx_nr25_wreck_damage = constant:chaosx_nr25_wreck.seizure_damage }
+		}
+		chaosx_nr25_damage_wreck = yes
 		# The camp that fell gives up survey evidence and one fragment.
 		if = {
 			limit = {
@@ -3370,21 +3400,8 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.cut compare = equals } }
 		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
-		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.twelve }
-		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_cut }
-		chaosx_nr25_mark_survey_sector = yes
-		set_temp_variable = { chaosx_alien_recovery_fragment_id = chaosx_nr25_current_sector }
-		set_temp_variable = { chaosx_alien_recovery_fragment_role = chaosx_nr25_fragment_role }
 		set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
-		chaosx_alien_recovery_ledger_assign_fragment = yes
-		if = {
-			limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
-			set_country_flag = chaosx_nr25_fragment_recovered
-			chaosx_nr25_record_fragment_role = yes
-			chaosx_nr25_report_fragment_recovered = yes
-			chaosx_nr25_confirm_current_sector = yes
-		}
-		set_country_flag = chaosx_nr25_wreck_cut_route
+		chaosx_nr25_wreck_response_cut = yes
 	}
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.map compare = equals } }
@@ -3772,6 +3789,7 @@ chaosx_nr25_activate_evolution_wreck_breaking_apart = {
 		set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
 		clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
 		clear_global_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+		chaosx_nr25_seed_wreck_integrity = yes
 		set_country_flag = chaosx_nr25_evolution_wreck_breaking_apart_holder
 		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.wreck_breaking_apart }
 		chaosx_nr25_record_evolution_milestone = yes

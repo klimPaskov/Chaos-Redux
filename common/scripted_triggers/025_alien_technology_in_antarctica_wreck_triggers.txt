@@ -1,0 +1,40 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 THE WRECK IS BREAKING APART (EVOLUTION IV) TRIGGERS
+# ============================================================================
+# Overview:
+# - Hull label bands on the global Wreck Integrity and the fragment-site loss
+#   gate. Only the global race values and the six ledger slots are read.
+# ============================================================================
+
+# Global. The hull is still intact.
+chaosx_nr25_hull_intact = {
+	has_variable = global.chaosx_nr25_wreck_integrity
+	check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_wreck.label_intact compare = greater_than_or_equals }
+}
+
+# Global. The hull is at least strained, not yet breaking.
+chaosx_nr25_hull_strained = {
+	has_variable = global.chaosx_nr25_wreck_integrity
+	check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_wreck.label_strained compare = greater_than_or_equals }
+}
+
+# Global. The hull is breaking but not yet shattered.
+chaosx_nr25_hull_breaking = {
+	has_variable = global.chaosx_nr25_wreck_integrity
+	check_variable = { var = global.chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_wreck.label_breaking compare = greater_than_or_equals }
+}
+
+# Any scope. The fragment site in the temporary chaosx_nr25_site_index can be
+# lost: it is not the hidden core sector, nobody holds it, and it is not
+# already destroyed or buried.
+chaosx_nr25_fragment_site_can_be_lost = {
+	NOT = { check_variable = { var = global.chaosx_nr25_primary_sector value = chaosx_nr25_site_index compare = equals } }
+	meta_trigger = {
+		text = {
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned }
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_destroyed }
+			NOT = { has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_buried }
+		}
+		SLOT = "[?chaosx_nr25_site_index|.0]"
+	}
+}
