@@ -504,3 +504,20 @@ Residual risk: a human foreign partner with an open `.40` popup who then goes to
 Trace (fixture case `test_unreachable_licence_partner_is_released_by_maintenance`, every fixture case passes): a valid pending partner keeps its flag and the target; a vanished, capitulated or warring partner loses both; the response count stays at its spent value; maintenance contains the call.
 Basis: spec part 2 foreign response pool, round 4 lead decision 4.
 Disposition: `implemented`; the dropped reply itself is needs_live_game.
+
+### R4-5. AI route matrix probability pass remains blocked
+
+Evidence this round: the round 4 lead's one narrow `hoi4.probability_inspect` call (adapter `decision_ai_will_do`, source `common/decisions/024_video_game_in_sweden_decisions.txt`, candidate `video_game_conclude_trial`, no `refresh`) returned INTERNAL_ERROR, as in every earlier round. Per the once-per-round rule the implementer did not call it again.
+Round 4 changed no weighted surface: R4-1 to R4-4 touch achievement eligibility, the proof-year date, timed-idea durations and partner release, and no `ai_will_do`, `ai_chance`, `random_list`, MTTH or strategy value.
+Decision: no numeric probability acceptance is claimed. The pending scenario lists stay as recorded: the D23 scenarios (P24-O1 to O4, C1 to C7, F1 to F5), the R2-8 list and the R3-8 list. Once an inline inspect no longer returns INTERNAL_ERROR, the auditor runs the baseline and comparison on those scenarios with the documented scenario schema, and owner patches follow only for orderings that contradict spec part 3, each followed by a compare.
+Disposition: `blocked` (missing input: a working `hoi4.probability_*` route).
+
+### R4-6. Review of round 4
+
+Review scope: the four round 4 commits, read against the shared dispatcher (`fire_event_by_temp_id_no_cluster`, `fire_event_by_id`, `force_trigger_selected_event`, the Event Log and cluster manual paths), the installed effects and triggers documentation, and the vanilla precedents named above. All 23 fixture cases pass.
+Findings confirmed without change:
+- Every route that opens the cabinet goes through `video_game_in_sweden_prepare_random_event_fire` and then `chaosx.nr24.1`, which no other file fires, and the dispatcher adds Event 24 to `global.fired_events` in the same chain, so the ordinary-dispatch clear in R4-1 cannot remove a mark from an opened cabinet.
+- In every dispatch context the requester is `ROOT`: the event settings and Event Log run in the player's scope, `force_trigger_selected_event` sets `temp_bypass_checks` on that country, and the automatic timer runs in the country's own daily scope.
+- `video_game_in_sweden_value.zero` and `chaosx_date_units.zero` exist in integer-schema categories; `achievement_reliance_days` (365) converts to exactly 8760 hours.
+Outside this round's scope: the older lifetime audit case `test_ticket_forwarded_scalar_and_load` in `tests/lifetime/actual_source_lifetime_audit.py` reports `[0, 2, 2]` instead of `[0, 4, 2]` for its frozen before-baseline of the pre-fire ticket helper, which none of the round 4 commits touch; it is not part of the runtime-observation fixture and is left for the next round's lead to triage.
+Disposition: `implemented`.
