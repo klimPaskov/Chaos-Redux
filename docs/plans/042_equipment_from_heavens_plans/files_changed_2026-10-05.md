@@ -1,6 +1,7 @@
 # Event 042 change ownership
 
 First source-repair commit: `09958b40d78e2544b69dcc2aa5f307577e189797`.
+Manual-guard follow-up commit: `2e1115177a1a29ce2c4cf02035afbf9e5a501125`.
 The follow-up changes only manual-delivery guards, their source tests, eligibility wording and documentation.
 Shared integration hunks owned by other agents remain uncommitted; only one caller-initialization line in `chaosx_settings_effects.txt` belongs to the first commit.
 
@@ -78,3 +79,5 @@ Shared integration hunks owned by other agents remain uncommitted; only one call
 - `docs/plans/042_equipment_from_heavens_plans/release_review_2026-10-05.md`
 - `docs/plans/042_equipment_from_heavens_plans/subagent_handoffs/completion_2026-10-05.md`
 - `docs/plans/042_equipment_from_heavens_plans/files_changed_2026-10-05.md`
+
+A documentation-only correction clarifies that an AI recipient can acknowledge its discovery before the orchestrator switches tags. Complete popup acceptance uses the direct fresh-USA fixture.

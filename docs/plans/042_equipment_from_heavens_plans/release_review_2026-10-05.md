@@ -59,7 +59,7 @@ No additional fallback or gameplay simplification is introduced; report consolid
 
 ## Orchestrator live cases
 
-1. From `qa_001_fresh_head`, fire 042 from Settings; note its actual Event Log recipient. Switch to that recipient for presentation checks. Expect one discovery and one final summary, one stockpile grant and one history/pacing entry. USA receives no world-news popup when another country receives the cargo.
+1. From `qa_001_fresh_head`, fire 042 from Settings; note its actual Event Log recipient and inspect that country's stockpile. Expect one grant and one history/pacing entry. USA receives no world-news popup when another country receives the cargo. An AI recipient can acknowledge discovery before a later tag switch, so use case 2 for the complete player-popup check; a later switch is suitable for stockpile and remaining-recovery checks.
 2. On a separate fresh-USA branch, run `event chaosx.nr42.1 USA`. Hover the discovery option, confirm actual stock matches its quantities, acknowledge it, and run 45 days. Expect exactly two Event 042 popups, no duplicate grant, readable text and matching art, and final cleanup. Direct/manual delivery must not qualify for achievements.
 3. In a disposable branch mark every existing country `efh_chain_active` through console evaluation, then force 042 from Settings. Expect one No Clear Landing Ground report, no equipment and no claimed successful firing. This is an artificial empty-pool fixture.
 4. Start a USA delivery, acknowledge it, save between recovery visits and reload that test save. Continue 45 days. Expect the same saved manifest, one final summary, preserved state burdens and no duplicate grant.
