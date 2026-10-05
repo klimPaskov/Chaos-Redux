@@ -461,7 +461,7 @@ Basis: Part 5 Starting research and technology and the technology table of the c
 - The final command formed by annexing the dominant command copies that command's technology before the annexation, because the annexed tag no longer exists afterwards.
 - The fourth slot is granted once through `set_research_slots` to the constant, not added, so repeated decisions and focus completions cannot stack it.
 
-### R41 Event 31 is enabled by default
+### R41 Event 31 is enabled by default (`dc04f4113`)
 
 Basis: Part 13 Event registration and status (add the event to the reworked default-enable list in the change that delivers the complete playable event) and the lead's queue, which placed this after the spread and sponsor fixes.
 
@@ -469,7 +469,7 @@ Basis: Part 13 Event registration and status (add the event to the reworked defa
 - The workbook Status change from `To Be Reworked` to `Needs Testing` is queued in `catalog_changes_pending.md`, because the workbook belongs to its owner.
 - Safe havens and foreign-power choices toward a host (Part 4 Evolution II) were the one queued item still open when the event was enabled, and R42 completed them in the same round.
 
-### R42 Safe havens and a demand on the host
+### R42 Safe havens and a demand on the host (`6aaa6285b`)
 
 Basis: Part 4 Evolution II Safe havens ("the host receives political and military consequences"), Foreign-power choices ("demand action from a safe-haven host", "sanction a public sponsor") and Escalation proof ("maintain a safe haven"), within the network-phase action budget of the decision matrix.
 
