@@ -586,6 +586,8 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `CAP-01` | Capture an enemy launch site | Four resolution actions show for that state only; each one ends the incident phase once no capture remains |
 | `CAP-02` | Integrate a captured site with held missiles | Held missiles join Operational Reserve exactly once |
 | `CAP-03` | Lose a captured site back before resolving it | The former captor leaves the incident phase |
+| `CAP-04` | Occupy an enemy launch site in war | The former owner loses the site and its readied missiles at once, the occupier opens a site-capture incident naming the former owner, and no scope error is logged |
+| `CAP-05` | Release a country whose territory holds another program's launch site | The released country takes the site as a captured site and the site's last holder, not the releasing overlord, loses it |
 | `PHASE-01` | Programme at war with readiness below 50 | Replenish, readiness, guidance, and code actions are visible in the operations view |
 | `PHASE-02` | War starts or peace is made | Both participants switch between maintenance and operations views immediately |
 | `AFTER-01` | Own neutral accident, unconfirmed | Compensate, deny, accelerate, and recalibrate appear; deny closes the incident with a disputed record |

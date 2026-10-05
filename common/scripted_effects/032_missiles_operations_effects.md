@@ -93,6 +93,10 @@ A suspended site carries `missiles_site_suspended`, which `missiles_site_can_lau
 ## Captured-site resolution
 
 `missiles_handle_site_control_changed` marks a captured site with `missiles_site_captured`, credits its surviving reserve to the new controller's `missiles_captured_reserve_held`, sets `missiles_captured_site_unresolved`, and selects the decision focus with `missiles_select_next_captured_site`.
+The handler runs in STATE scope with ROOT as the new controller and never reads FROM, which can resolve to the state inside that block.
+Its caller binds the former controller as the regular event target `missiles_capture_former_controller`: `on_state_control_changed` saves the on_action's own FROM before entering `FROM.FROM`, and `missiles_reconcile_released_country_sites` saves each site's stored `missiles_site_current_controller`, because the release on_action's FROM is the releasing overlord rather than the site's last holder.
+The handler requires that target to exist as a country other than ROOT and uses it for every former-controller read and write; the target clears when the callback chain ends.
+Every write of `missiles_site_controller_id` stores the same country in `missiles_site_current_controller`, and every reset clears it, so the release pass always has the site's last holder.
 The four STATE-scope resolutions are `missiles_guard_captured_site`, `missiles_study_captured_site`, `missiles_integrate_captured_site`, and `missiles_scuttle_captured_site`; each is gated by `missiles_site_awaits_capture_resolution` so a state resolves once.
 Guard and study set `missiles_site_capture_resolved` and keep the site isolated and inactive with its weapons still held; integration clears the capture and moves `missiles_site_captured_reserve` into Operational Reserve once; scuttling reuses `missiles_scuttle_site`, which debits the held receipt once and retires the state.
 Every route ends in `missiles_finish_captured_site_resolution`, which refocuses the next awaiting state, clears `missiles_captured_site_unresolved` when none remains, and closes the current incident only when it is the site-capture incident.

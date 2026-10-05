@@ -142,3 +142,8 @@ This record remains partial/blocked until the recorded MCP, probability, native-
 - Source tests: all 12 `.tools/test_event32_*.py` modules pass; `test_event32_captured_sites` now runs 16 tests (establishment-phase suspension offer, compromised-only AI isolation of a retaliation site, and the removed-country rogue count) and `test_event32_retaliation_warning` runs 8 (a target state or objective chosen against another enemy is cleared before a retaliation and restored after a refusal).
 - `hoi4.probability_inspect` (`decision_ai_will_do`, candidate `missiles_isolate_retaliation_site`, source path, no refresh) returned `INTERNAL_ERROR`; not retried.
 - Needs live game: `ROGUE-SITE-05`, `ROGUE-SITE-06`, and `WARN-04`, in addition to the round-2 cases above.
+
+## Round 3 (2026-10-05)
+
+- Item 1 (inbox 032 L1): `test_event32_state_scope` runs 13 tests; the new `SiteCaptureFormerController` pins that `missiles_handle_site_control_changed` holds no FROM token, evaluates `exists` only in country scopes, and that `on_state_control_changed` and the release pass bind `missiles_capture_former_controller` before the call. All 12 `.tools/test_event32_*.py` modules pass.
+- Needs live game: `CAP-04` and `CAP-05`.

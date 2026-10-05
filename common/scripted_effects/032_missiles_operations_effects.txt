@@ -1570,6 +1570,7 @@ missiles_finish_site_repair = {
 	clr_state_flag = missiles_site_isolated
 	set_state_flag = missiles_site_active
 	set_variable = { missiles_site_controller_id = ROOT.id }
+	set_variable = { missiles_site_current_controller = ROOT }
 	set_variable = { missiles_site_last_repair_complete = constant:missiles_program_value.one }
 	missiles_refresh_site_flags = yes
 }
@@ -1611,6 +1612,7 @@ missiles_repair_site = {
 		clr_state_flag = missiles_site_rogue
 		set_variable = { missiles_site_owner_id = ROOT.id }
 		set_variable = { missiles_site_controller_id = ROOT.id }
+		set_variable = { missiles_site_current_controller = ROOT }
 		set_variable = { missiles_site_last_repair_complete = constant:missiles_program_value.one }
 		ROOT = { set_variable = { missiles_repair_action_complete = constant:missiles_program_value.one } }
 		missiles_refresh_site_flags = yes
@@ -1703,6 +1705,7 @@ missiles_recover_rogue_site = {
 		set_state_flag = missiles_site_active
 		set_variable = { missiles_site_owner_id = ROOT.id }
 		set_variable = { missiles_site_controller_id = ROOT.id }
+		set_variable = { missiles_site_current_controller = ROOT }
 		missiles_refresh_site_flags = yes
 	}
 }
@@ -2069,6 +2072,7 @@ missiles_scuttle_site = {
 	set_variable = { missiles_site_operation_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_owner_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_controller_id = constant:missiles_event.zero }
+	clear_variable = missiles_site_current_controller
 	remove_from_array = { array = ROOT.missiles_launch_site_states value = THIS }
 	ROOT = {
 		set_variable = { missiles_achievement_removed_site_id = PREV.id }
@@ -2151,6 +2155,7 @@ missiles_scuttle_site_from_current_controller = {
 	set_variable = { missiles_site_operation_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_owner_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_controller_id = constant:missiles_event.zero }
+	clear_variable = missiles_site_current_controller
 	# The controller's network, captured-site marker, and rogue closure refresh
 	# with ROOT bound to the controller once the site record is retired.
 	if = {
@@ -2169,6 +2174,7 @@ missiles_cleanup_site = {
 	set_variable = { missiles_site_capacity_loss = constant:missiles_site_capacity.minimum }
 	set_variable = { missiles_site_owner_id = constant:missiles_event.zero }
 	set_variable = { missiles_site_controller_id = constant:missiles_event.zero }
+	clear_variable = missiles_site_current_controller
 	remove_from_array = { array = ROOT.missiles_launch_site_states value = THIS }
 	ROOT = { missiles_recalculate_network = yes missiles_rebalance_site_custody = yes }
 }
@@ -6319,6 +6325,7 @@ missiles_finalize_planned_inheritance = {
 		clr_state_flag = missiles_site_suspended
 		set_variable = { missiles_site_owner_id = event_target:missiles_inheritance_recipient.id }
 		set_variable = { missiles_site_controller_id = event_target:missiles_inheritance_recipient.id }
+		set_variable = { missiles_site_current_controller = event_target:missiles_inheritance_recipient }
 		set_variable = { missiles_site_inheritance_date = global.date }
 		event_target:missiles_inheritance_recipient = {
 			missiles_initialize_capture_shell = yes
@@ -6399,16 +6406,24 @@ missiles_initialize_capture_shell = {
 }
 
 missiles_handle_site_control_changed = {
-	# STATE scope from on_state_control_changed. ROOT is the new controller and
-	# FROM is the former controller. The state receipt makes repeated callbacks
-	# for the same controller idempotent.
+	# STATE scope. ROOT is the new controller. The caller binds the former
+	# controller as the regular event target missiles_capture_former_controller
+	# before entering the state: on_state_control_changed saves its own FROM,
+	# and the release pass saves the site's stored missiles_site_current_controller.
+	# FROM is never read here, because inside the state block it can resolve to
+	# the state rather than the old controller. The state receipt makes repeated
+	# callbacks for the same controller idempotent.
 	if = {
 		limit = {
 			missiles_state_has_registered_site = yes
 			NOT = { has_state_flag = missiles_site_planned_inheritance }
 			NOT = { has_state_flag = missiles_site_civil_war_split_pending }
 			ROOT = { exists = yes }
-			FROM = { exists = yes }
+			has_event_target = missiles_capture_former_controller
+			event_target:missiles_capture_former_controller = {
+				exists = yes
+				NOT = { tag = ROOT }
+			}
 			OR = {
 				NOT = { has_variable = missiles_site_controller_id }
 				NOT = { check_variable = { var = missiles_site_controller_id value = ROOT.id compare = equals } }
@@ -6419,21 +6434,23 @@ missiles_handle_site_control_changed = {
 		set_variable = { missiles_site_capture_receipt_id = global.missiles_site_capture_sequence }
 		set_variable = { missiles_site_capture_date = global.date }
 		save_event_target_as = missiles_empty_silos_control_state
-		set_variable = { missiles_site_former_controller = FROM }
+		set_variable = { missiles_site_former_controller = event_target:missiles_capture_former_controller }
 		set_variable = { missiles_site_current_controller = ROOT }
-		set_variable = { missiles_site_former_controller_id = FROM.id }
+		set_variable = { missiles_site_former_controller_id = event_target:missiles_capture_former_controller.id }
 		set_variable = { missiles_site_controller_id = ROOT.id }
 		missiles_transfer_captured_reserve = yes
-		if = {
-			limit = { check_variable = { var = missiles_captured_reserve_amount value = FROM.missiles_operational_reserve compare = greater_than } }
-			set_temp_variable = { missiles_captured_reserve_amount = FROM.missiles_operational_reserve }
+		event_target:missiles_capture_former_controller = {
+			if = {
+				limit = { check_variable = { var = missiles_captured_reserve_amount value = missiles_operational_reserve compare = greater_than } }
+				set_temp_variable = { missiles_captured_reserve_amount = missiles_operational_reserve }
+			}
 		}
 		# The missiles readied at a captured reserving site are lost to the
 		# former controller once; the rest of its order returns to reserve.
 		save_event_target_as = missiles_lost_allocation_site
 		set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
-		FROM = { missiles_settle_lost_site_allocation = yes }
-		FROM = {
+		event_target:missiles_capture_former_controller = { missiles_settle_lost_site_allocation = yes }
+		event_target:missiles_capture_former_controller = {
 			if = {
 				limit = { check_variable = { var = missiles_captured_reserve_amount value = constant:missiles_program_value.zero compare = greater_than } }
 				subtract_from_variable = { missiles_operational_reserve = missiles_captured_reserve_amount }
@@ -6458,7 +6475,7 @@ missiles_handle_site_control_changed = {
 		clr_state_flag = missiles_site_rogue
 		clr_state_flag = missiles_site_suspended
 		clr_state_flag = missiles_site_capture_resolved
-		FROM = {
+		event_target:missiles_capture_former_controller = {
 			for_each_scope_loop = {
 				array = chaosx_032_empty_silos_tracking_attackers
 				if = {
@@ -6519,7 +6536,7 @@ missiles_handle_site_control_changed = {
 			set_variable = { missiles_last_incident_id = missiles_current_incident_id }
 			set_variable = { missiles_last_incident_type = constant:missiles_incident_type.site_capture }
 			set_variable = { missiles_last_incident_date = global.date }
-			set_variable = { missiles_last_incident_actor_id = FROM.id }
+			set_variable = { missiles_last_incident_actor_id = event_target:missiles_capture_former_controller.id }
 			set_variable = { missiles_last_incident_target_state_id = PREV.id }
 			set_variable = { missiles_last_incident_closed = constant:missiles_program_value.zero }
 			set_country_flag = missiles_incident_history
@@ -6535,17 +6552,21 @@ missiles_handle_site_control_changed = {
 missiles_reconcile_released_country_sites = {
 	# COUNTRY scope from on_release_as_free/on_release_as_puppet. The exact state
 	# callback is primary; this bounded controlled-state pass repairs only sites
-	# present in the released country package.
+	# present in the released country package. The on_action's FROM is the
+	# releasing overlord, not necessarily the site's last holder, so each site
+	# binds its own stored controller before the handler runs.
 	every_controlled_state = {
 		limit = {
 			missiles_state_has_registered_site = yes
 			NOT = { has_state_flag = missiles_site_planned_inheritance }
 			NOT = { has_state_flag = missiles_site_civil_war_split_pending }
+			has_variable = missiles_site_current_controller
 			OR = {
 				NOT = { has_variable = missiles_site_controller_id }
 				NOT = { check_variable = { var = missiles_site_controller_id value = ROOT.id compare = equals } }
 			}
 		}
+		var:missiles_site_current_controller = { save_event_target_as = missiles_capture_former_controller }
 		missiles_handle_site_control_changed = yes
 	}
 }
@@ -6634,6 +6655,7 @@ missiles_integrate_captured_site = {
 		set_state_flag = missiles_site_active
 		set_variable = { missiles_site_owner_id = ROOT.id }
 		set_variable = { missiles_site_controller_id = ROOT.id }
+		set_variable = { missiles_site_current_controller = ROOT }
 		set_variable = { missiles_site_integration_date = global.date }
 		missiles_refresh_site_flags = yes
 		ROOT = {
@@ -6811,6 +6833,7 @@ missiles_finalize_civil_war_split_child = {
 			clr_state_flag = missiles_site_suspended
 			set_variable = { missiles_site_owner_id = ROOT.id }
 			set_variable = { missiles_site_controller_id = ROOT.id }
+			set_variable = { missiles_site_current_controller = ROOT }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
 			clr_state_flag = missiles_site_civil_war_split_pending
@@ -6898,6 +6921,7 @@ missiles_finalize_civil_war_split_parent = {
 			clr_state_flag = missiles_site_rogue
 			set_variable = { missiles_site_owner_id = ROOT.id }
 			set_variable = { missiles_site_controller_id = ROOT.id }
+			set_variable = { missiles_site_current_controller = ROOT }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
 			clr_state_flag = missiles_site_civil_war_split_pending
@@ -7020,6 +7044,7 @@ missiles_cleanup_removed_country = {
 					clr_state_flag = missiles_site_suspended
 					set_variable = { missiles_site_owner_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_controller_id = event_target:missiles_annex_site_controller.id }
+					set_variable = { missiles_site_current_controller = event_target:missiles_annex_site_controller }
 					set_variable = { missiles_site_annex_receipt_date = global.date }
 					event_target:missiles_annex_site_controller = {
 						missiles_initialize_capture_shell = yes
@@ -7053,6 +7078,7 @@ missiles_cleanup_removed_country = {
 					clr_state_flag = missiles_site_suspended
 					set_variable = { missiles_site_owner_id = event_target:missiles_annex_site_controller.id }
 					set_variable = { missiles_site_controller_id = event_target:missiles_annex_site_controller.id }
+					set_variable = { missiles_site_current_controller = event_target:missiles_annex_site_controller }
 					set_variable = { missiles_site_annex_receipt_date = global.date }
 					event_target:missiles_annex_site_controller = {
 						missiles_initialize_capture_shell = yes

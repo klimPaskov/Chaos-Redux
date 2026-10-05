@@ -215,3 +215,13 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`, t
 - A country removed during an open rogue crisis left `global.missiles_rogue_active_incidents` counted forever; removed-country cleanup now releases it and clears the rogue site pointer and id.
 - Reviewed without change: rogue-only resolution and pointer separation, the Event 13 one-line bridge and receiver `chaosx.nr32.9` (severity ordering, controller ROOT, single settlement), the refused-order cleanup, the chemical re-check placement, and the transfer-time suspension clearing.
 - HOI4 MCP: `hoi4.probability_inspect` (`decision_ai_will_do`, candidate `missiles_isolate_retaliation_site`, source path, no refresh) returned `INTERNAL_ERROR`; the AI weight change is source-reviewed only and was not retried.
+
+## Round 3 item 1: former controller bound before the site capture handler (inbox 032 L1)
+
+Disposition: `implemented` (source evidence; live capture behaviour `needs_live_game`, tests `CAP-04` and `CAP-05`). Basis: lead round-3 decision 1 and the routed live-load defect L1 (`exists` evaluated on FROM resolving to a State in `missiles_handle_site_control_changed`).
+
+- `missiles_handle_site_control_changed` no longer reads FROM. Its limit requires `has_event_target = missiles_capture_former_controller` and that target to exist as a country other than ROOT, and every former-controller read and write (the stored former controller and id, the reserve cap, the lost allocation, the network debit and receiver event `chaosx.nr32.7`, the Empty the Silos tracking loop, and the incident actor id) goes through that target.
+- `on_state_control_changed` saves its own FROM as the target before entering `FROM.FROM`; `missiles_reconcile_released_country_sites` saves each site's stored `missiles_site_current_controller` and skips a site without one.
+- Agent decision: the target is a regular event target, so it clears when the callback chain ends; the release pass rebinds it for every state before each call, so no state reads another state's holder.
+- Agent decision: every write of `missiles_site_controller_id` (registration, repair, rogue recovery, integration, inheritance, civil-war split, annexation receipts) now stores the same country in `missiles_site_current_controller`, and every reset clears it. Basis: the variable was previously written only by the capture handler, so the release pass named in the acceptance would have skipped every site that had never been captured.
+- `.tools/test_event32_state_scope.py` gains `SiteCaptureFormerController` (no FROM token in the handler, `exists` only in country scopes, both callers bind the target before the call, and every controller-id write keeps the stored controller in step).

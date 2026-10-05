@@ -187,5 +187,70 @@ class NaturalDisasterBridge(unittest.TestCase):
         ])
 
 
+FORMER = 'missiles_capture_former_controller'
+ON_ACTIONS = dict(parse((ROOT / 'common/on_actions/032_missiles_on_actions.txt').read_text(encoding='utf-8-sig')))
+
+
+def tokens(body):
+    for key, child in body:
+        yield key
+        if isinstance(child, list):
+            yield from tokens(child)
+        elif child is not None:
+            yield child
+
+
+class SiteCaptureFormerController(unittest.TestCase):
+    """The capture handler runs in STATE scope, where FROM can be the state."""
+
+    def test_handler_reads_only_the_bound_former_controller(self):
+        handler = OPERATIONS['missiles_handle_site_control_changed']
+        self.assertFalse([token for token in tokens(handler) if 'FROM' in token])
+        limit = value(value(handler, 'if'), 'limit')
+        self.assertIn(('has_event_target', FORMER), limit)
+        self.assertIn((f'event_target:{FORMER}', [('exists', 'yes'), ('NOT', [('tag', 'ROOT')])]), limit)
+        # exists is evaluated only inside country scopes.
+        def state_exists(body, scope):
+            for key, child in body:
+                if key == 'exists' and scope == 'state':
+                    yield key
+                if isinstance(child, list):
+                    inner = 'country' if key in ('ROOT', f'event_target:{FORMER}') else scope
+                    yield from state_exists(child, inner)
+        self.assertEqual(list(state_exists(handler, 'state')), [])
+        writes = [child for key, child in descendants(handler) if key == 'set_variable']
+        self.assertIn([('missiles_last_incident_actor_id', f'event_target:{FORMER}.id')], writes)
+        self.assertIn([('missiles_site_former_controller_id', f'event_target:{FORMER}.id')], writes)
+
+    def test_state_control_callback_binds_its_own_from_before_entering_the_state(self):
+        guarded = value(value(ON_ACTIONS['on_actions'], 'on_state_control_changed'), 'effect')
+        body = value(guarded, 'if')
+        keys = [key for key, _ in body]
+        self.assertLess(keys.index('FROM'), keys.index('FROM.FROM'))
+        self.assertEqual(value(body, 'FROM'), [('save_event_target_as', FORMER)])
+        self.assertEqual(value(body, 'FROM.FROM'), [('missiles_handle_site_control_changed', 'yes')])
+
+    def test_release_pass_binds_each_site_stored_controller(self):
+        loop = value(OPERATIONS['missiles_reconcile_released_country_sites'], 'every_controlled_state')
+        self.assertIn(('has_variable', 'missiles_site_current_controller'), value(loop, 'limit'))
+        keys = [key for key, _ in loop]
+        self.assertLess(keys.index('var:missiles_site_current_controller'), keys.index('missiles_handle_site_control_changed'))
+        self.assertEqual(value(loop, 'var:missiles_site_current_controller'), [('save_event_target_as', FORMER)])
+
+    def test_every_controller_id_write_keeps_the_stored_controller_in_step(self):
+        for effects in (CORE, OPERATIONS):
+            for name, body in effects.items():
+                if not isinstance(body, list):
+                    continue
+                flat = list(descendants(body))
+                ids = [child for key, child in flat if key == 'set_variable' and isinstance(child, list) and child[0][0] == 'missiles_site_controller_id']
+                if not ids:
+                    continue
+                stored = [child for key, child in flat if key == 'set_variable' and isinstance(child, list) and child[0][0] == 'missiles_site_current_controller']
+                cleared = [child for key, child in flat if key == 'clear_variable' and child == 'missiles_site_current_controller']
+                with self.subTest(helper=name):
+                    self.assertEqual(len(ids), len(stored) + len(cleared))
+
+
 if __name__ == '__main__':
     unittest.main()
