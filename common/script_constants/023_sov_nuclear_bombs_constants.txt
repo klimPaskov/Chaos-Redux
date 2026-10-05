@@ -607,6 +607,47 @@ sov_nuclear_bombs_incident_ai = {
 	doubted_invite_factor = 1.50
 }
 
+# False warnings and ambiguous detection (Part 5). From Evolution III, at war
+# with a nuclear major and at or above minimum_chaos, each routine maintenance
+# cycle has a chance percent of a possible enemy launch report. Its warning
+# window lasts between window_minimum_days and window_maximum_days and blocks
+# another warning. Negative values are losses.
+sov_nuclear_bombs_false_warning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_chaos = 900
+	chance = 5
+	certainty = 100
+	window_minimum_days = 7
+	window_maximum_days = 21
+	wait_integrity = 2
+	disperse_readiness = 6
+	disperse_integrity = -2
+	prepare_readiness = 4
+	prepare_integrity = -3
+	act_integrity = -4
+}
+
+sov_nuclear_bombs_false_warning_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	wait_base = 70
+	disperse_base = 12
+	contact_base = 10
+	prepare_base = 8
+	act_base = 1
+	# Only a damaged command acts on a warning, and only where the Evolution IV
+	# first-use gate already holds.
+	damaged_command_act = 40
+	damaged_command_wait = 0.30
+}
+
 # Credibility memory (Part 4). A hidden score, neutral at 0 and clamped between
 # minimum and maximum. It reads as three bands: Doubted below doubted_ceiling,
 # Credible above credible_floor, Uncertain between them. Each routine

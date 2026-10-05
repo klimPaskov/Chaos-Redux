@@ -2646,20 +2646,123 @@ sov_nuclear_bombs_record_settlement_violation = {
 	}
 }
 
+# The suspected actor of an open launch warning is contacted first; otherwise
+# one nuclear major outside the Soviet faction.
 sov_nuclear_bombs_select_standdown_partner = {
 	clear_global_event_target = sov_nuclear_bombs_standdown_partner
-	random_country = {
+	if = {
 		limit = {
-			exists = yes
-			is_major = yes
-			NOT = { tag = SOV }
-			NOT = { has_capitulated = yes }
-			has_tech = nukes
-			num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
-			NOT = { is_in_faction_with = SOV }
+			has_country_flag = sov_nuclear_bombs_false_warning_window
+			has_event_target = sov_nuclear_bombs_warning_suspect
+			event_target:sov_nuclear_bombs_warning_suspect = { sov_nuclear_bombs_event_country_is_standdown_partner = yes }
 		}
-		save_global_event_target_as = sov_nuclear_bombs_standdown_partner
+		event_target:sov_nuclear_bombs_warning_suspect = { save_global_event_target_as = sov_nuclear_bombs_standdown_partner }
 	}
+	else = {
+		random_country = {
+			limit = { sov_nuclear_bombs_event_country_is_standdown_partner = yes }
+			save_global_event_target_as = sov_nuclear_bombs_standdown_partner
+		}
+	}
+}
+
+# Country scope (the Soviet actor), from the partner's answer to a stand-down
+# offer. The hotline window ends without its own effects first, so its cancel
+# check cannot undo the recorded answer.
+sov_nuclear_bombs_answer_hotline = {
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active }
+		remove_mission = sov_nuclear_bombs_retaliation_window_mission
+	}
+	sov_nuclear_bombs_resolve_hotline = yes
+}
+
+# False warnings and ambiguous detection (Part 5). Country scope (the Soviet
+# actor), from the existing 30-day maintenance interval. A small constant
+# chance raises one possible enemy launch report; the warning window blocks
+# another until it ends. Nothing here authorizes or releases a weapon.
+sov_nuclear_bombs_roll_false_warning = {
+	if = {
+		limit = { sov_nuclear_bombs_event_can_raise_false_warning = yes }
+		set_temp_variable = { sov_nuclear_bombs_warning_weight = constant:sov_nuclear_bombs_false_warning.chance }
+		set_temp_variable = { sov_nuclear_bombs_warning_quiet_weight = constant:sov_nuclear_bombs_false_warning.certainty }
+		subtract_from_temp_variable = { sov_nuclear_bombs_warning_quiet_weight = sov_nuclear_bombs_warning_weight }
+		random_list = {
+			var:sov_nuclear_bombs_warning_weight = { sov_nuclear_bombs_raise_false_warning = yes }
+			var:sov_nuclear_bombs_warning_quiet_weight = { set_country_flag = sov_nuclear_bombs_last_warning_roll_quiet }
+		}
+	}
+}
+
+# The window length is drawn between the constant bounds and injected into
+# the timed flag as an integer; it is also kept for the response window.
+sov_nuclear_bombs_raise_false_warning = {
+	clr_country_flag = sov_nuclear_bombs_last_warning_roll_quiet
+	clear_global_event_target = sov_nuclear_bombs_warning_suspect
+	random_enemy_country = {
+		limit = { sov_nuclear_bombs_event_country_is_nuclear_major_enemy = yes }
+		save_global_event_target_as = sov_nuclear_bombs_warning_suspect
+	}
+	set_temp_variable_to_random = sov_nuclear_bombs_warning_days
+	set_temp_variable = { sov_nuclear_bombs_warning_span = constant:sov_nuclear_bombs_false_warning.window_maximum_days }
+	subtract_from_temp_variable = { sov_nuclear_bombs_warning_span = constant:sov_nuclear_bombs_false_warning.window_minimum_days }
+	multiply_temp_variable = { sov_nuclear_bombs_warning_days = sov_nuclear_bombs_warning_span }
+	add_to_temp_variable = { sov_nuclear_bombs_warning_days = constant:sov_nuclear_bombs_false_warning.window_minimum_days }
+	clamp_temp_variable = { var = sov_nuclear_bombs_warning_days min = constant:sov_nuclear_bombs_false_warning.window_minimum_days max = constant:sov_nuclear_bombs_false_warning.window_maximum_days }
+	set_variable = { sov_nuclear_bombs_warning_window_days = sov_nuclear_bombs_warning_days }
+	hidden_effect = {
+		meta_effect = {
+			text = {
+				set_country_flag = { flag = sov_nuclear_bombs_false_warning_window days = [WARNING_DAYS] }
+			}
+			WARNING_DAYS = "[?sov_nuclear_bombs_warning_days|.0]"
+		}
+	}
+	set_country_flag = sov_nuclear_bombs_false_warning_recorded
+	country_event = { id = chaosx.nr23.141 days = constant:sov_nuclear_bombs_duration.timer_floor }
+}
+
+# Answers to a launch warning. Country scope (the Soviet actor).
+sov_nuclear_bombs_warning_wait_for_confirmation = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_false_warning.wait_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_country_flag = sov_nuclear_bombs_warning_confirmation_awaited
+}
+
+sov_nuclear_bombs_warning_disperse = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_false_warning.disperse_readiness }
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_false_warning.disperse_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_country_flag = sov_nuclear_bombs_warning_dispersal_ordered
+}
+
+# Retaliation duty without authorization or release, held for the warning
+# window, and at least a Nuclear Confrontation.
+sov_nuclear_bombs_warning_prepare_response = {
+	add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_false_warning.prepare_readiness }
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_false_warning.prepare_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_temp_variable = { sov_nuclear_bombs_warning_days = sov_nuclear_bombs_warning_window_days }
+	meta_effect = {
+		text = {
+			set_country_flag = { flag = sov_nuclear_bombs_warning_response_prepared days = [WARNING_DAYS] }
+		}
+		WARNING_DAYS = "[?sov_nuclear_bombs_warning_days|.0]"
+	}
+	set_temp_variable = { sov_nuclear_bombs_requested_exchange_stage = constant:sov_nuclear_bombs_tuning.exchange_confrontation_stage }
+	sov_nuclear_bombs_advance_exchange_stage = yes
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+
+# Acting on the warning only moves the command to the retaliation board under
+# the existing Evolution IV first-use chain; target marking, preparation,
+# certification and final authorization still decide any release.
+sov_nuclear_bombs_warning_act_now = {
+	add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_false_warning.act_integrity }
+	sov_nuclear_bombs_clamp_command_values = yes
+	set_country_flag = sov_nuclear_bombs_warning_first_use_ordered
+	set_temp_variable = { sov_nuclear_bombs_requested_phase = constant:sov_nuclear_bombs_phase.retaliation }
+	sov_nuclear_bombs_apply_event_phase_request = yes
 }
 
 sov_nuclear_bombs_offer_standdown_to_partner = {

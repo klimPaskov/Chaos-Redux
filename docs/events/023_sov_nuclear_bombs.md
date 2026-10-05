@@ -128,6 +128,14 @@ Every government that refuses, settles or outlasts a demand gets the timed flag 
 The Soviet AI prefers the private signal while public knowledge is below Demonstrated (×1.40) and halves the public ultimatum until a signal has been sent; the ultimatum falls ×0.40 when credibility is Doubted and ×0.70 after the first and again after the second back-down; back-down rises ×2.50 only when credibility is Doubted; the wartime demonstration rises ×1.50 after a refusal and ×1.50 when Doubted; and the limited strike rises ×1.50 after a refusal.
 All values are in `sov_nuclear_bombs_ai`, `sov_nuclear_bombs_credibility` and `sov_nuclear_bombs_duration`.
 
+### False warnings
+
+From Evolution III, while the Union is at war with a nuclear major and Chaos is at least 900, each existing 30-day maintenance cycle rolls a 5% chance (`sov_nuclear_bombs_false_warning`) of a possible enemy launch with no confirmed detonation (`chaosx.nr23.141`), naming one enemy nuclear major as the suspected actor.
+The warning window lasts 7 to 21 days (drawn between the constants and injected into the timed flag `sov_nuclear_bombs_false_warning_window`) and blocks another warning.
+The answers are to wait for confirmation (the default), disperse and raise readiness (logistics cost), contact the suspected actor through the existing emergency hotline (diplomatic cost, when a hotline can open), prepare a response (retaliation duty for the window and at least a Nuclear Confrontation, with no authorization or release), and, only under the staged Evolution IV first-use gate with verified enemy launch preparation, act on the warning, which moves the command to the retaliation board and never releases anything by itself.
+The AI waits about two times in three, prefers dispersal and contact to preparation, and acts only when its command is damaged (low Integrity or Moscow lost) and the first-use gate already holds (`sov_nuclear_bombs_false_warning_ai`).
+A hotline window now runs its full time instead of being cancelled the next day for lack of a strike target, and the partner's answer to a stand-down offer ends the window through `sov_nuclear_bombs_answer_hotline` before the hotline resolves, so the window's cancel check cannot undo the answer.
+
 ### Evolution II and Evolution IV use
 
 An Evolution II limited strike against a nonnuclear minor or breakaway goes through the coercion dossier, strike preparation, technical certification and a separate final authorization.

@@ -1807,6 +1807,13 @@ sov_nuclear_bombs_event_ai_has_retaliation_duty = {
 			NOT = { has_country_flag = sov_nuclear_bombs_retaliation_limited }
 			NOT = { has_country_flag = sov_nuclear_bombs_release_orders_suspended }
 		}
+		# A response prepared against a launch warning holds the board for
+		# the warning window without authorizing anything.
+		AND = {
+			sov_nuclear_bombs_event_has_evolution_iii = yes
+			has_country_flag = sov_nuclear_bombs_warning_response_prepared
+			NOT = { has_country_flag = sov_nuclear_bombs_release_orders_suspended }
+		}
 	}
 }
 
@@ -2081,4 +2088,65 @@ sov_nuclear_bombs_event_secret_test_is_prepared = {
 	has_country_flag = sov_nuclear_bombs_test_prepared
 	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
 	check_variable = { var = sov_nuclear_bombs_pending_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+}
+
+# False warnings (Part 5). Country scope: an enemy of the Union that is a
+# nuclear-capable major.
+sov_nuclear_bombs_event_country_is_nuclear_major_enemy = {
+	is_major = yes
+	has_war_with = SOV
+	has_tech = atomic_research
+	has_tech = nukes
+	NOT = { has_capitulated = yes }
+}
+
+# Country scope (the Soviet actor). A warning can be raised: Evolution III, at
+# war with a nuclear major, Chaos high enough, no moratorium and no warning
+# window already open.
+sov_nuclear_bombs_event_can_raise_false_warning = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	sov_nuclear_bombs_event_has_evolution_iii = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+	NOT = { has_country_flag = sov_nuclear_bombs_false_warning_window }
+	check_variable = { var = global.chaos_meter_value value = constant:sov_nuclear_bombs_false_warning.minimum_chaos compare = greater_than_or_equals }
+	any_enemy_country = { sov_nuclear_bombs_event_country_is_nuclear_major_enemy = yes }
+}
+
+# Country scope (the Soviet actor). The command is damaged: Integrity is low or
+# Moscow is lost.
+sov_nuclear_bombs_event_command_is_damaged = {
+	OR = {
+		sov_nuclear_bombs_event_integrity_is_low = yes
+		has_country_flag = sov_nuclear_bombs_home_capital_lost
+	}
+}
+
+# Country scope (the Soviet actor). Acting on a warning is offered only where
+# the staged Evolution IV first-use gate holds and enemy launch preparation
+# has been verified; it opens the existing authorization chain only.
+sov_nuclear_bombs_event_can_act_on_warning = {
+	has_country_flag = sov_nuclear_bombs_false_warning_window
+	has_country_flag = sov_nuclear_bombs_enemy_launch_preparation_verified
+	sov_nuclear_bombs_event_prospective_first_use_gate = yes
+}
+
+# Country scope (the Soviet actor). The suspected actor can be reached by the
+# existing emergency hotline.
+sov_nuclear_bombs_event_can_contact_warning_suspect = {
+	has_event_target = sov_nuclear_bombs_warning_suspect
+	event_target:sov_nuclear_bombs_warning_suspect = { sov_nuclear_bombs_event_country_is_standdown_partner = yes }
+	sov_nuclear_bombs_event_no_active_project = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_hotline_open }
+	NOT = { has_country_flag = sov_nuclear_bombs_retaliation_window_mission_active }
+}
+
+# Country scope: a nuclear major the Union can open a hotline with.
+sov_nuclear_bombs_event_country_is_standdown_partner = {
+	exists = yes
+	is_major = yes
+	NOT = { tag = SOV }
+	NOT = { has_capitulated = yes }
+	has_tech = nukes
+	num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
+	NOT = { is_in_faction_with = SOV }
 }
