@@ -363,3 +363,18 @@ Disposition: implemented under the full-authority mandate during the round 2 re-
 
 Evidence: `common/decisions/016_brilliant_scientist_directorate_project_board.txt`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `common/scripted_effects/016_alien_infantry_api_effects.txt`, `common/scripted_effects/016_dhrondan_focus_effects.txt`, `localisation/english/016_dhrondan_focus_l_english.yml`, `docs/events/016_brilliant_scientist/systems/016_dhrondan_focus_tree.md`.
 Needs live game: the variable cost and duration readout on the adopt row (unchanged from D22).
+
+## D29. Round 2 skeptical review corrections
+
+Disposition: implemented under the full-authority mandate during the skeptical review of the round 2 commits (05bf6bfb5, 1c93a891e, e995ef8c8, d0ceff0b2, e0af8603d, 2a2ca9ac5, dd10a3f3e).
+
+- The Kruger State control event `chaosx.brilliant_scientist_krg.30` wraps its doctrine helper in `hidden_effect`, so its four options showed no doctrine result. Each option now shows that doctrine's effect line (`brilliant_scientist_xeno_control_effect_<doctrine>`), the same text the adopt order shows.
+- The Rocketry countermeasure line claimed static anti-air damage "against rockets and jets"; `static_anti_air_damage_factor` is general static anti-air damage, and the line now says so.
+- The Temporal countermeasure line coloured the holder's benefit red and used the internal "bounded temporal intervention" wording; it now shows the extra debt in green and names the actions that pay it (temporal guard batches and temporal rescues, the two callers of `brilliant_scientist_commit_bounded_temporal_action`).
+- Replace Decree with Prediction printed a literal infrastructure level; it now reads `dhrondan_decision_reward.infrastructure_levels`.
+- The researched control doctrine description named a fixed three-month duration; the adopt order already shows the live duration, so the description now says only that the method takes longer.
+- Train Human Signal Teams grants the Signal Company with `popup = no`, matching the Support Company grant beside it.
+
+Probability evidence: one narrow `hoi4.probability_inspect` call (`decision_ai_will_do`, the review and adopt doctrine decisions, source the project board file) returned `INTERNAL_ERROR` again and was not retried. One `hoi4.decision_inspect` call on `brilliant_scientist_adopt_xeno_control_doctrine` recognised `cost = var:brilliant_scientist_xeno_control_review_cost` as an engine Political Power cost and scored the chemical-at-war scenario at the preferred weight, with the stability, Robotics stage, and civilian-factory inputs unresolved; no AI weight changed in this pass.
+
+Evidence: `events/016_brilliant_scientist_kruger_state_events.txt`, `localisation/english/016_brilliant_scientist_foreign_l_english.yml`, `localisation/english/016_dhrondan_focus_l_english.yml`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `common/scripted_effects/016_dhrondan_focus_effects.txt`.
