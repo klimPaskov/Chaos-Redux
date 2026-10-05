@@ -1141,6 +1141,38 @@ murder_mystery_derivative_reinforcement_is_cheap = {
 	}
 }
 
+# COUNTRY scope: a derivative. The AI's preferred priority toward the central
+# state. The three situations are exclusive and cover every case, so an AI
+# derivative only changes its priority when its situation changes.
+# surrender_progress takes a literal: a derivative this close to surrender asks
+# the central state for obedience.
+@murder_mystery_priority_obedience_surrender = 0.1
+
+# Close to surrender or with its own Cohesion failing, it needs the center.
+murder_mystery_derivative_prefers_obedience = {
+	OR = {
+		AND = {
+			has_war = yes
+			surrender_progress > @murder_mystery_priority_obedience_surrender
+		}
+		check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
+	}
+}
+
+# At war and standing beside the center, it fights its own campaign.
+murder_mystery_derivative_prefers_local_campaign = {
+	NOT = { murder_mystery_derivative_prefers_obedience = yes }
+	has_war = yes
+	has_event_target = murder_mystery_assassin_state
+	is_neighbor_of = event_target:murder_mystery_assassin_state
+}
+
+# Otherwise, at peace or cut off from the center, it governs itself.
+murder_mystery_derivative_prefers_autonomy = {
+	NOT = { murder_mystery_derivative_prefers_obedience = yes }
+	NOT = { murder_mystery_derivative_prefers_local_campaign = yes }
+}
+
 # COUNTRY scope: the central state; FROM is the derivative. The stockpile
 # holds the shipment and the cell supply family once, or twice for a distant
 # derivative.

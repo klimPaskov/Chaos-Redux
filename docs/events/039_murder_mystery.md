@@ -290,6 +290,9 @@ Each derivative chooses one priority in Cell Administration (Answer to the Cente
 | Autonomy | Governing Ourselves: faster autonomy gain, defence, dig-in | Autonomy rises |
 | Local campaign | Local Campaign: attack, breakthrough, a stability cost | The central state loses `local_campaign_cohesion` Cohesion |
 
+An AI derivative wants exactly one priority at a time (`murder_mystery_derivative_prefers_*` in `039_murder_mystery_runtime_triggers.txt`): obedience when it is close to surrender or its own Cohesion is below 40, its own campaign when it is at war beside the central state, and self-government otherwise.
+Because the three situations never overlap, it changes priority only when its situation changes, not every time the cooldown ends.
+
 ## Connections to other systems
 
 Event 039 reads these owners' state without editing their files:
@@ -364,6 +367,8 @@ The central state receives the victory report `chaosx.nr39.60` (The Last Chair E
 
 The route's own promise adds `murder_mystery_command_promise.route_cohesion` Brotherhood Cohesion, the mixed settlement `mixed_cohesion` and a broken promise `off_route_cohesion`; the AI keeps its route's promise.
 The World Without Leaders category stays open after victory with Tighten the Administrations, Return Authority to the Cells (both on `administration_cooldown_days`) and Reconstitute the Campaign Council, so Cohesion and subject autonomy remain in play.
+The AI tightens only after a promise of central rule (the hidden command or the mask), only above 50 Cohesion and only while a subject is past the middle of its autonomy level; it returns authority below the minimum Cohesion, or after a promise of self-rule while a puppet is still below that mark, and never pushes a subject beyond puppet autonomy.
+The two decisions therefore never alternate.
 After victory the pulse no longer seeds cells in, schedules incidents against, or raises revolts from countries on the movement's side.
 
 Every movement defeat records its scale first (`murder_mystery_record_defeat_aftermath_scale`): the center, every derivative ever raised and every government the campaign settled.

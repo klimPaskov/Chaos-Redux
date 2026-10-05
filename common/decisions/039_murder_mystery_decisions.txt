@@ -24,8 +24,9 @@
 @murder_mystery_ai_hint_brotherhood_council = 30
 @murder_mystery_ai_hint_local_administration = 25
 @murder_mystery_ai_hint_terminal_settlement = 60
-# A derivative this close to surrender asks the central state for obedience.
-@murder_mystery_priority_obedience_surrender = 0.1
+# After victory the AI tightens a subject above this autonomy progress, and on
+# a loosening promise returns authority to a puppet below it.
+@murder_mystery_administration_ai_autonomy_ratio = 0.5
 # The AI never detains suspects below this stability.
 @murder_mystery_detention_ai_stability = 0.5
 
@@ -3145,15 +3146,14 @@ murder_mystery_cell_administration_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.low
+			base = constant:murder_mystery_ai.high
 			modifier = {
 				factor = constant:murder_mystery_ai.urgent
 				has_war = yes
-				surrender_progress > @murder_mystery_priority_obedience_surrender
 			}
 			modifier = {
-				factor = constant:murder_mystery_ai.high
-				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.forty compare = less_than }
+				factor = constant:murder_mystery_ai.blocked
+				NOT = { murder_mystery_derivative_prefers_obedience = yes }
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
@@ -3188,11 +3188,10 @@ murder_mystery_cell_administration_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.low
+			base = constant:murder_mystery_ai.high
 			modifier = {
-				factor = constant:murder_mystery_ai.urgent
-				has_event_target = murder_mystery_assassin_state
-				NOT = { is_neighbor_of = event_target:murder_mystery_assassin_state }
+				factor = constant:murder_mystery_ai.blocked
+				NOT = { murder_mystery_derivative_prefers_autonomy = yes }
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
@@ -3227,12 +3226,10 @@ murder_mystery_cell_administration_category = {
 			}
 		}
 		ai_will_do = {
-			base = constant:murder_mystery_ai.low
+			base = constant:murder_mystery_ai.high
 			modifier = {
-				factor = constant:murder_mystery_ai.urgent
-				has_war = yes
-				NOT = { surrender_progress > @murder_mystery_priority_obedience_surrender }
-				is_neighbor_of = event_target:murder_mystery_assassin_state
+				factor = constant:murder_mystery_ai.blocked
+				NOT = { murder_mystery_derivative_prefers_local_campaign = yes }
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
@@ -3967,18 +3964,31 @@ murder_mystery_world_without_leaders_category = {
 				murder_mystery_start_action_cooldown = yes
 			}
 		}
+		# The AI tightens only on a promise of central rule, only while Cohesion
+		# can absorb the cost and only while a subject has autonomy to lose, so it
+		# never alternates with Return Authority to the Cells.
 		ai_will_do = {
-			base = constant:murder_mystery_ai.standard
+			base = constant:murder_mystery_ai.high
 			modifier = {
-				factor = constant:murder_mystery_ai.high
-				OR = {
-					has_country_flag = murder_mystery_command_promise_hidden_command
-					has_country_flag = murder_mystery_command_promise_mask_stays
+				factor = constant:murder_mystery_ai.blocked
+				NOT = {
+					OR = {
+						has_country_flag = murder_mystery_command_promise_hidden_command
+						has_country_flag = murder_mystery_command_promise_mask_stays
+					}
 				}
 			}
 			modifier = {
 				factor = constant:murder_mystery_ai.blocked
-				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+				NOT = { check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.fifty compare = greater_than } }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				NOT = {
+					any_subject_country = {
+						compare_autonomy_progress_ratio > @murder_mystery_administration_ai_autonomy_ratio
+					}
+				}
 			}
 		}
 	}
@@ -4018,18 +4028,33 @@ murder_mystery_world_without_leaders_category = {
 				murder_mystery_start_action_cooldown = yes
 			}
 		}
+		# The AI returns authority to repair failing Cohesion, or on a promise of
+		# self-rule while a puppet is still held tightly; it stops once every
+		# puppet has passed the autonomy mark the tightening aims below, so it
+		# never loosens its subjects out of the movement's rule.
 		ai_will_do = {
-			base = constant:murder_mystery_ai.standard
-			modifier = {
-				factor = constant:murder_mystery_ai.high
-				OR = {
-					has_country_flag = murder_mystery_command_promise_dissolved_councils
-					has_country_flag = murder_mystery_command_promise_mixed_settlement
-				}
-			}
+			base = constant:murder_mystery_ai.high
 			modifier = {
 				factor = constant:murder_mystery_ai.urgent
 				check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+			}
+			modifier = {
+				factor = constant:murder_mystery_ai.blocked
+				NOT = {
+					OR = {
+						check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = less_than }
+						AND = {
+							OR = {
+								has_country_flag = murder_mystery_command_promise_dissolved_councils
+								has_country_flag = murder_mystery_command_promise_mixed_settlement
+							}
+							any_subject_country = {
+								NOT = { compare_autonomy_state > autonomy_puppet }
+								NOT = { compare_autonomy_progress_ratio > @murder_mystery_administration_ai_autonomy_ratio }
+							}
+						}
+					}
+				}
 			}
 		}
 	}
