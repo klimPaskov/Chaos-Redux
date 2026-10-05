@@ -1361,6 +1361,74 @@ asteroid_incoming_play_next_fragment_visual = {
 	}
 }
 
+# STATE SCOPE, inside asteroid_incoming_apply_state_profile, once per struck
+# state. Every army in the state, whatever its country, loses the share of its
+# own strength and organisation set by the state's strongest profile
+# (asteroid_incoming_unit_damage); ships are struck too in the main centre and
+# the catastrophic ring. The values are ratios, so no profile removes a unit
+# outright. damage_units is documented in effects_documentation.md and takes
+# variables in its damage fields, as cbrn_consequence_effects.txt does.
+asteroid_incoming_damage_units_in_state = {
+	set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.fragment_ring_two_strength }
+	set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.fragment_ring_two_organisation }
+	if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.main_center_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.main_center_organisation }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.main_ring_one_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.main_ring_one_organisation }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.main_ring_two_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.main_ring_two_organisation }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_three compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.main_ring_three_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.main_ring_three_organisation }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.fragment_center_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.fragment_center_organisation }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
+		set_temp_variable = { asteroid_incoming_unit_strength_damage = constant:asteroid_incoming_unit_damage.fragment_ring_one_strength }
+		set_temp_variable = { asteroid_incoming_unit_organisation_damage = constant:asteroid_incoming_unit_damage.fragment_ring_one_organisation }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_center compare = equals }
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals }
+			}
+		}
+		damage_units = {
+			state = THIS
+			org_damage = asteroid_incoming_unit_organisation_damage
+			str_damage = asteroid_incoming_unit_strength_damage
+			ratio = yes
+			army = yes
+			navy = yes
+		}
+	}
+	else = {
+		damage_units = {
+			state = THIS
+			org_damage = asteroid_incoming_unit_organisation_damage
+			str_damage = asteroid_incoming_unit_strength_damage
+			ratio = yes
+			army = yes
+			navy = no
+		}
+	}
+}
+
 asteroid_incoming_apply_state_profile = {
 	if = {
 		limit = { asteroid_incoming_state_is_resolvable_transaction = yes }
@@ -1496,6 +1564,7 @@ asteroid_incoming_apply_state_profile = {
 			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
 			add_to_variable = { global.asteroid_incoming_dust_fragment_points = constant:asteroid_incoming_dust.fragment_center_point }
 		}
+		asteroid_incoming_damage_units_in_state = yes
 		asteroid_incoming_initialize_state_rescue_burden = yes
 		asteroid_incoming_register_local_emergency = yes
 		asteroid_incoming_register_state_recovery_costs = yes

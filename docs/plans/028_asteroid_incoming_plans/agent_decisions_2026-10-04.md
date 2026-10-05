@@ -149,6 +149,7 @@ Basis: Part 10 Achievement 1 lists only the threshold, the enabled and eligible 
 ## Nuclear separation (F18)
 
 Decision: `launch_nuke` stays the accepted impact map visual, and its native unit and building effects are part of the impact.
+Superseded in part: unit damage in the footprint is now owned by "Units in the footprint take location-based damage" (round 3 lead items); the visual's own province damage still applies on top.
 Before each call the struck state receives the timed flag `asteroid_incoming_visual_strike_state` for `asteroid_incoming_runtime.visual_strike_marker_days` (seven days), and the global `asteroid_incoming_visual_strike_active` flag is kept around the call.
 Every mod `on_nuke_drop` consumer that reacts to a nuclear strike skips a state carrying the marker: the Chaos Meter nuclear-use entry, the humanitarian corridor, migration evacuation reports and famine and migration pressure, the Event 016 Kruger achievement, and Event 023's delivery confirmation.
 Basis: Part 3 makes the map visual the only nuclear-adjacent surface; a state-scoped marker still works when the callback does not fire synchronously inside `launch_nuke`.
@@ -446,3 +447,13 @@ Decision: right after `asteroid_incoming_choose_fragment_sites`, the resolver ca
 The comparison uses `is_on_same_continent_as = event_target:...` in state scope, the form the fragment planner already uses for its second site.
 `GetAsteroidIncomingFragmentContinents` lists the saved continents, and the impact news and the super-event fragment clause each became one key that prints the fragment count and that list, instead of five keys that repeated one continent per fragment.
 Basis: Part 8 Fragment summary ("actual fragment count and broad regions") and the super-event direction ("mention fragments when active without listing every site"); `triggers_documentation.md` documents `is_on_same_continent_as` for state scope with any target.
+
+### Units in the footprint take location-based damage
+
+Decision: this replaces the unit half of the F18 decision. `launch_nuke` stays the map visual, but its native damage reaches only one province of the main centre and of each fragment centre, which left armies in the rest of the crater state and in every ring untouched.
+`asteroid_incoming_apply_state_profile` now calls `asteroid_incoming_damage_units_in_state` once per processed state, after the profile's modifiers and before the rescue burden, local emergency, prices, country aggregation and reports. It applies one `damage_units` call with `state = THIS`, `ratio = yes`, `army = yes`, and `navy = yes` only for the main centre and the catastrophic ring, and no country limit, so every army standing in the state is struck whoever owns it.
+Strength and organisation shares come from the new `asteroid_incoming_unit_damage` constants category: main centre 0.75/0.95, catastrophic ring 0.45/0.75, major ring 0.25/0.50, outer ring 0.08/0.25, fragment centre 0.35/0.65, heavy fragment ring 0.20/0.40, light fragment ring 0.05/0.20. Each value falls ring by ring, each fragment profile is lighter than the main profile it resembles, and none removes a unit outright, so an army caught in the crater survives broken and disorganised rather than deleted.
+The damage fields take temporary variables set from those constants, the form `cbrn_consequence_effects.txt` already uses in its own `damage_units` calls, so no `meta_effect` is needed.
+The step runs only inside the impact branch of `chaosx.nr28.4` (through `asteroid_incoming_process_footprint`), behind `asteroid_incoming_state_is_resolvable_transaction`, so a miss or a fail-closed trajectory never reaches it and no state is struck twice.
+Basis: Part 3 Units in affected states (units suffer through supported location-based mechanics; the main crater must not leave units operating normally; no deletion of all units regardless of location) and the `damage_units` section of `effects_documentation.md` (location fields `province`, `state`, `region`, optional `limit`, `org_damage`, `str_damage`, `ratio`, `army`, `navy`).
+Needs live game: the visible strength and organisation loss of armies and fleets in each ring.
