@@ -46,6 +46,7 @@ Acid Rain registers humanitarian pressure through `famine_adapt_acid_rain_state`
 Evacuation counts as disaster pressure, not as a migration cohort.
 
 The dedicated Acid Rain Air source records actual lifetime contamination additions.
+Formation requests 75 bp, and every seven days of the regional and global phases the rain requests Air from the weather on the map: 4, 8, 12 or 16 bp for an active world share below 2, 5 and 10 percent or above, 4 to 16 bp for the average intensity band of the open fronts (Standard under the global layer), 4 bp for two or more fronts, 10 bp for the global layer, and 3 bp per active severe cell or superstorm up to 9 bp, clamped to 8 to 45 bp; a week without acute rain requests nothing.
 Every request is clamped against the request itself, the unused share of the 1,500 bp event allowance, and the remaining distance below the 5,000 bp global contamination ceiling.
 Dissipation ends the weather runtime but does not erase contamination already added to the shared Air ledger.
 

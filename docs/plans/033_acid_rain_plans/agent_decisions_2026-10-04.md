@@ -257,3 +257,15 @@ The cue reuses the base game's one-shot thunder samples (`weather_thunder_01` to
 `acid_rain_play_severe_forecast_cue` runs in the same once-per-episode branch that sends the forecast report, for severe cells and superstorms alike, so a human controller hears one cue per forecast episode and later states of the same episode, AI countries and other players hear nothing.
 The suffix is chosen with the shared `GetSuperEventAudioVolumeToken`, the same mapping the super-event audio uses, and the x0 setting plays nothing; volumes run from 0.33 to 2.00, 1.00 at the default x1.5.
 Listening to the cue is a live-game check.
+
+### D30. The weekly Air request reads the active world share
+
+Disposition: implemented (commit "Request Acid Rain Air from the weather on the map in every acute phase"); promoted into Part 11.
+Gate 9 says weekly requests use "stored coverage", while Part 11 gives an "Active world share" table; the more specific Part 11 table is taken, and the share is the states under acute rain now, not the states the rain has ever reached.
+The request moved out of the regional branch of the host worker into `acid_rain_try_weekly_air_request`, which runs in the regional and global phases and never while dissipation is pending or after closure, so the global layer's own adder takes effect.
+The active states are the ordinary front targets plus the states of active severe cells that lie outside them (a cell can outlast the front that formed it), or every valid state while the global layer is active; they are divided by the valid states and mapped exactly to 4, 8, 12 and 16 bp below 2, below 5, below 10 and at or above 10 percent.
+Intensity takes the average of the open fronts (active or retiring, the same set `acid_rain_front_is_open` uses), or the Standard band that the global pulses use; when only a severe cell whose front has moved on is raining, the lowest band applies.
+Two or more open fronts add 4 bp, the global layer 10 bp, and each active severe cell or superstorm 3 bp up to 9 bp; the total is clamped to 8 to 45 bp before the unchanged 1500 and 5000 bp caps in `acid_rain_apply_air_request`, and a week with no state under acute rain requests zero.
+The next due day advances one week from the previous due day rather than from the worker tick that applied it, so the three-day worker averages seven days; if the advanced day is still not after today (no request for over a week, as in a save made before this cadence), the cadence restarts from today instead of replaying missed weeks on consecutive ticks.
+All values are `acid_rain_air` constants, with the new `active_share_percent_scale` and `split_min_fronts`.
+`.tools/validation/validate_033_acid_rain.py` passes.

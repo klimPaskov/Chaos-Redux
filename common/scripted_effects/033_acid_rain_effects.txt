@@ -3571,6 +3571,173 @@ acid_rain_apply_air_request = {
 	}
 }
 
+# ANY SCOPE. Weekly Air request from the acute weather on the map (Part 11).
+# It runs in the regional and global phases, never while dissipation is
+# pending, and is built from stored state only:
+# - active world share: ordinary front targets plus active severe-cell states
+#   outside them, or every valid state while the global layer is active,
+#   divided by the valid states, in four bands
+# - the average intensity band of the open fronts, or the global-layer band
+# - a split adder for two or more open fronts and an adder for the global layer
+# - a capped adder per active severe cell or superstorm
+# A week without acute weather requests zero. Otherwise the request is clamped
+# to the weekly range before acid_rain_apply_air_request applies the hard caps.
+# The next due day advances one week from the previous due day, so the
+# three-day worker keeps a seven-day average.
+acid_rain_try_weekly_air_request = {
+	if = {
+		limit = {
+			NOT = { has_global_flag = acid_rain_dissipation_pending }
+			OR = {
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.regional compare = equals }
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals }
+			}
+			check_variable = { var = global.date value = global.acid_rain_air_week_start_day compare = greater_than_or_equals }
+			check_variable = { var = global.acid_rain_total_valid_states value = constant:acid_rain_runtime.zero compare = greater_than }
+		}
+		set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_air_active_states = constant:acid_rain_runtime.zero }
+		if = {
+			limit = { has_global_flag = acid_rain_global_layer_active }
+			set_temp_variable = { acid_rain_air_active_states = global.acid_rain_total_valid_states }
+		}
+		else = {
+			set_temp_variable = { acid_rain_air_active_states = global.acid_rain_ordinary_target_states^num }
+			# A severe cell can outlast the front that formed it.
+			for_each_scope_loop = {
+				array = global.acid_rain_severe_target_states
+				if = {
+					limit = {
+						NOT = { has_state_flag = acid_rain_front_target }
+						has_variable = acid_rain_severe_cell_id
+						check_variable = { var = global.acid_rain_severe_cell_active_entries^acid_rain_severe_cell_id value = constant:acid_rain_runtime.one compare = equals }
+					}
+					add_to_temp_variable = { acid_rain_air_active_states = constant:acid_rain_runtime.loop_increment }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_air_active_states value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { acid_rain_air_active_share = acid_rain_air_active_states }
+			multiply_temp_variable = { acid_rain_air_active_share = constant:acid_rain_air.active_share_percent_scale }
+			divide_temp_variable = { acid_rain_air_active_share = global.acid_rain_total_valid_states }
+			if = {
+				limit = { check_variable = { var = acid_rain_air_active_share value = constant:acid_rain_air.active_share_low compare = less_than } }
+				set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_low }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_air_active_share value = constant:acid_rain_air.active_share_medium compare = less_than } }
+				set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_medium }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_air_active_share value = constant:acid_rain_air.active_share_high compare = less_than } }
+				set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_high }
+			}
+			else = { set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_extreme } }
+			# Average intensity of the open fronts; the global layer pulses at
+			# the Standard intensity used by acid_rain_pulse_global_states.
+			set_temp_variable = { acid_rain_air_open_fronts = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_air_average_intensity = constant:acid_rain_runtime.zero }
+			for_loop_effect = {
+				start = constant:acid_rain_runtime.one
+				end = constant:acid_rain_runtime.front_loop_end
+				value = acid_rain_air_front_index
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = global.acid_rain_front_state_entries^acid_rain_air_front_index value = constant:acid_rain_front_state.active compare = equals }
+							check_variable = { var = global.acid_rain_front_state_entries^acid_rain_air_front_index value = constant:acid_rain_front_state.retiring compare = equals }
+						}
+					}
+					add_to_temp_variable = { acid_rain_air_open_fronts = constant:acid_rain_runtime.loop_increment }
+					add_to_temp_variable = { acid_rain_air_average_intensity = global.acid_rain_front_intensity_entries^acid_rain_air_front_index }
+				}
+			}
+			if = {
+				limit = { has_global_flag = acid_rain_global_layer_active }
+				set_temp_variable = { acid_rain_air_average_intensity = constant:acid_rain_intensity.standard }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_air_open_fronts value = constant:acid_rain_runtime.zero compare = greater_than } }
+				divide_temp_variable = { acid_rain_air_average_intensity = acid_rain_air_open_fronts }
+			}
+			else = {
+				# Only a severe cell whose front has moved on is raining; with
+				# no open front to average, the lowest band applies.
+				set_temp_variable = { acid_rain_air_average_intensity = constant:acid_rain_intensity.weak }
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_air_average_intensity value = constant:acid_rain_intensity.extreme compare = greater_than_or_equals } }
+				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.intensity_gain_extreme }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_air_average_intensity value = constant:acid_rain_intensity.strong compare = greater_than_or_equals } }
+				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.intensity_gain_strong }
+			}
+			else_if = {
+				limit = { check_variable = { var = acid_rain_air_average_intensity value = constant:acid_rain_intensity.standard compare = greater_than_or_equals } }
+				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.intensity_gain_standard }
+			}
+			else = { add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.intensity_gain_weak } }
+			if = {
+				limit = { check_variable = { var = acid_rain_air_open_fronts value = constant:acid_rain_air.split_min_fronts compare = greater_than_or_equals } }
+				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.split_gain }
+			}
+			if = {
+				limit = { has_global_flag = acid_rain_global_layer_active }
+				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.global_gain }
+			}
+			# Active severe cells and active superstorms add to one capped term.
+			set_temp_variable = { acid_rain_air_storm_count = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_event.max_severe_cells }
+			add_to_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_runtime.loop_increment }
+			for_loop_effect = {
+				start = constant:acid_rain_runtime.one
+				end = acid_rain_air_storm_loop_end
+				value = acid_rain_air_severe_cell_index
+				if = {
+					limit = { check_variable = { var = global.acid_rain_severe_cell_active_entries^acid_rain_air_severe_cell_index value = constant:acid_rain_runtime.one compare = equals } }
+					add_to_temp_variable = { acid_rain_air_storm_count = constant:acid_rain_runtime.loop_increment }
+				}
+			}
+			set_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_event.max_superstorms }
+			add_to_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_runtime.loop_increment }
+			for_loop_effect = {
+				start = constant:acid_rain_runtime.one
+				end = acid_rain_air_storm_loop_end
+				value = acid_rain_air_superstorm_index
+				if = {
+					limit = { check_variable = { var = global.acid_rain_superstorm_active_entries^acid_rain_air_superstorm_index value = constant:acid_rain_runtime.one compare = equals } }
+					add_to_temp_variable = { acid_rain_air_storm_count = constant:acid_rain_runtime.loop_increment }
+				}
+			}
+			set_temp_variable = { acid_rain_air_storm_gain = acid_rain_air_storm_count }
+			multiply_temp_variable = { acid_rain_air_storm_gain = constant:acid_rain_air.severe_gain }
+			clamp_temp_variable = { var = acid_rain_air_storm_gain min = constant:acid_rain_runtime.zero max = constant:acid_rain_air.severe_gain_cap }
+			add_to_temp_variable = { acid_rain_air_requested_bp = acid_rain_air_storm_gain }
+			clamp_temp_variable = { var = acid_rain_air_requested_bp min = constant:acid_rain_air.weekly_min_bp max = constant:acid_rain_air.weekly_max_bp }
+		}
+		set_variable = { global.acid_rain_air_week_request_bp = acid_rain_air_requested_bp }
+		if = {
+			limit = { check_variable = { var = acid_rain_air_requested_bp value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { acid_rain_air_request_is_formation = constant:acid_rain_runtime.zero }
+			acid_rain_apply_air_request = yes
+		}
+		set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.contamination_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		add_to_variable = { global.acid_rain_air_week_start_day = chaosx_date_offset }
+		# A due day still not after today means no request ran for over a week,
+		# as in a save made before this cadence; the cadence restarts from
+		# today instead of replaying the missed weeks on consecutive ticks.
+		if = {
+			limit = { check_variable = { var = global.acid_rain_air_week_start_day value = global.date compare = less_than_or_equals } }
+			set_variable = { global.acid_rain_air_week_start_day = global.date }
+			add_to_variable = { global.acid_rain_air_week_start_day = chaosx_date_offset }
+		}
+	}
+}
+
 # END_EVENT033_MORTALITY_AND_AIR
 
 # ---------------------------------------------------------------------------
@@ -5222,91 +5389,7 @@ acid_rain_host_worker = {
 			acid_rain_process_severe_cells = yes
 			acid_rain_try_severe_evolution = yes
 			acid_rain_try_multiple_fronts = yes
-			if = {
-			limit = {
-				check_variable = {
-					var = global.date
-					value = global.acid_rain_air_week_start_day
-					compare = greater_than_or_equals
-				}
-				check_variable = {
-					var = global.acid_rain_total_valid_states
-					value = constant:acid_rain_runtime.zero
-					compare = greater_than
-				}
-			}
-			set_temp_variable = { acid_rain_air_active_share = global.acid_rain_total_touched_states }
-			multiply_temp_variable = { acid_rain_air_active_share = constant:acid_rain_runtime.preparedness_precision }
-			divide_temp_variable = { acid_rain_air_active_share = global.acid_rain_total_valid_states }
-			set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_low }
-			if = {
-				limit = { check_variable = { var = acid_rain_air_active_share value = constant:acid_rain_air.active_share_medium compare = greater_than_or_equals } }
-				set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_medium }
-			}
-			if = {
-				limit = { check_variable = { var = acid_rain_air_active_share value = constant:acid_rain_air.active_share_high compare = greater_than_or_equals } }
-				set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.active_share_gain_high }
-			}
-			if = {
-				limit = { check_variable = { var = global.acid_rain_active_front_count value = constant:acid_rain_runtime.two compare = greater_than_or_equals } }
-				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.split_gain }
-			}
-			if = {
-				limit = { has_global_flag = acid_rain_global_layer_active }
-				add_to_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.global_gain }
-			}
-			set_temp_variable = { acid_rain_active_severe_cell_count = constant:acid_rain_runtime.zero }
-			set_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_event.max_severe_cells }
-			add_to_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_runtime.loop_increment }
-			for_loop_effect = {
-				start = constant:acid_rain_runtime.one
-				end = acid_rain_severe_cell_loop_end
-				value = acid_rain_air_severe_cell_index
-				if = {
-					limit = { check_variable = { var = global.acid_rain_severe_cell_active_entries^acid_rain_air_severe_cell_index value = constant:acid_rain_runtime.one compare = equals } }
-					add_to_temp_variable = { acid_rain_active_severe_cell_count = constant:acid_rain_runtime.loop_increment }
-				}
-			}
-			if = {
-				limit = { check_variable = { var = acid_rain_active_severe_cell_count value = constant:acid_rain_runtime.zero compare = greater_than } }
-				set_temp_variable = { acid_rain_severe_air_gain = acid_rain_active_severe_cell_count }
-				multiply_temp_variable = { acid_rain_severe_air_gain = constant:acid_rain_air.severe_gain }
-				clamp_temp_variable = { var = acid_rain_severe_air_gain min = constant:acid_rain_runtime.zero max = constant:acid_rain_air.severe_gain_cap }
-				add_to_temp_variable = { acid_rain_air_requested_bp = acid_rain_severe_air_gain }
-			}
-			set_temp_variable = { acid_rain_front_intensity_gain = constant:acid_rain_air.intensity_gain_weak }
-			for_loop_effect = {
-				start = constant:acid_rain_runtime.one
-				end = constant:acid_rain_runtime.front_loop_end
-				value = acid_rain_air_front_index
-				if = {
-					limit = { check_variable = { var = global.acid_rain_front_state_entries^acid_rain_air_front_index value = constant:acid_rain_front_state.active compare = equals } }
-					if = {
-						limit = { check_variable = { var = global.acid_rain_front_intensity_entries^acid_rain_air_front_index value = constant:acid_rain_intensity.extreme compare = greater_than_or_equals } }
-						set_temp_variable = { acid_rain_front_intensity_gain = constant:acid_rain_air.intensity_gain_extreme }
-					}
-					else_if = {
-						limit = { check_variable = { var = global.acid_rain_front_intensity_entries^acid_rain_air_front_index value = constant:acid_rain_intensity.strong compare = greater_than_or_equals } }
-						if = { limit = { check_variable = { var = acid_rain_front_intensity_gain value = constant:acid_rain_air.intensity_gain_strong compare = less_than } } set_temp_variable = { acid_rain_front_intensity_gain = constant:acid_rain_air.intensity_gain_strong } }
-					}
-					else_if = {
-						limit = { check_variable = { var = global.acid_rain_front_intensity_entries^acid_rain_air_front_index value = constant:acid_rain_intensity.standard compare = greater_than_or_equals } }
-						if = { limit = { check_variable = { var = acid_rain_front_intensity_gain value = constant:acid_rain_air.intensity_gain_standard compare = less_than } } set_temp_variable = { acid_rain_front_intensity_gain = constant:acid_rain_air.intensity_gain_standard } }
-					}
-				}
-			}
-			add_to_temp_variable = { acid_rain_air_requested_bp = acid_rain_front_intensity_gain }
-			clamp_temp_variable = { var = acid_rain_air_requested_bp min = constant:acid_rain_air.weekly_min_bp max = constant:acid_rain_air.weekly_max_bp }
-			set_variable = { global.acid_rain_air_week_request_bp = acid_rain_air_requested_bp }
-			set_temp_variable = { acid_rain_air_request_is_formation = constant:acid_rain_runtime.zero }
-			acid_rain_apply_air_request = yes
-			set_variable = { global.acid_rain_air_week_start_day = global.date }
-			set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.contamination_days }
-			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-			chaosx_convert_days_to_date_offset = yes
-			add_to_variable = { global.acid_rain_air_week_start_day = chaosx_date_offset }
-		}
-		acid_rain_try_global_evolution = yes
+			acid_rain_try_global_evolution = yes
 	}
 	if = {
 		limit = {
@@ -5331,6 +5414,7 @@ acid_rain_host_worker = {
 		acid_rain_pulse_global_states = yes
 		acid_rain_try_extra_superstorm = yes
 	}
+	acid_rain_try_weekly_air_request = yes
 	acid_rain_refresh_active_consequences = yes
 	for_each_scope_loop = {
 		array = global.acid_rain_participant_countries
