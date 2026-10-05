@@ -424,3 +424,19 @@ Disposition: `blocked` (exact missing input: the user's permission to download o
 Basis: acceptance rows DOC-09 and DOC-10, decisions L5 and L17, the super-event skill's unique-track rule, and the lead's round 2 instruction that web research is allowed but a download is not.
 
 Decision: web research without any download identified John Bartmann's *Iyanetha* (CC0 1.0, Free Music Archive, 2:45, not instrumental, unused by any super-event) as the proposed track, with the United States Marine Band's public-domain *Aida* Grand March as the alternative. The record, the checks required at archive time and the wiring list are in `012_africa_gods_super_event_audio_candidate_2026-10-05.md`. Nothing is wired until the user permits the download and the track is archived; no silent, duplicate or synthesized cue is shipped.
+
+## L32. Round 2 retry: the implemented items are re-verified and punishment strikes vary their states
+
+Disposition: `implemented` (the native results of `random_controlled_state`, `random_owned_controlled_state` and temporary-array exclusion on live countries are `needs_live_game`).
+
+Basis: the round 2 retry ("Try again"), which re-issued the same nine-item list after L23 to L31 had already landed (`71f827c1e`, `7f39e00f7`, `2757c1548`, `db77f0038`, `4e256b85f`, `9f4f3f5b0`, `a392c1548`, `ba5b3f0a4`, `5ce3f0187`, with the requirement-flag names in `0df42bcc7`).
+The retry re-read every one of those diffs against its acceptance list and the installed documentation (`effects_documentation.md` for `diplomatic_relation`, `give_guarantee`, `give_military_access`, `recall_volunteers_from`, `white_peace`, `transfer_state_to`, `damage_building`, `add_resistance`, `for_loop_effect`; `triggers_documentation.md` for `has_volunteers_amount_from`, `gives_military_access_to`, `has_guaranteed`, `has_non_aggression_pact_with`, `free_building_slots`, `is_in_array`; `dynamic_variables_documentation.md` for `num_of_factories`, `surrender_progress`, `fuel_k`, `max_fuel_k`, `num_equipment_in_armies_k`, `num_target_equipment_in_armies_k`) and the vanilla `take_claimed_state` pattern in `common/national_focus/afghanistan.txt`.
+A mechanical pass over the Event 012 Gods files found balanced braces, no `<=` or `>=`, every `constant:` reference defined, every scripted effect and trigger defined, every referenced localisation key and scripted-localisation name present, and BOM-encoded localisation.
+No defect was found in the nine items.
+
+Decision: the state-targeting punishment families and the catastrophe's population waves walked the country's states in the game's state order, so every Crisis and Ultimatum punishment, and every catastrophe, fell on the same first states.
+`gods_of_africa_strike_punishment_states` and `gods_of_africa_apply_population_wave` now draw each strike or wave from a different eligible state at random, bounded by the same tier budget and `catastrophe_wave_states`, with a temporary exclusion array (the `bio_doomsday_collect_target_states` precedent) and named loop break variables so no helper's loop can stop them.
+The eligibility rules are unchanged: occupied territory for unrest, never Africa's own cores for the other families, and owned and controlled states for the waves.
+
+MCP route evidence (2026-10-05): `hoi4_decision_inspect` with `mode = inspect` for `gods_of_africa_final_ultimatum_mission` returned "Invalid tool arguments", and `mode = inventory` returned only a repository-wide 6.4 MB inventory (`DECISION_ANALYZED_PARTIAL`, revision `d7ce660b`), so neither gives narrow decision evidence; neither was retried.
+The probability audit stays `blocked` as recorded in L24.

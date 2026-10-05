@@ -3676,16 +3676,16 @@ gods_of_africa_apply_population_wave = {
 		set_variable = { gods_of_africa_punishment_report_population_loss = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_population_wave_states = constant:gods_of_africa_value.zero }
 		# One wave per state, in up to gods_of_africa_punishment_scope.
-		# catastrophe_wave_states states, each with the protected population floor
-		# and its own Deaths entry (decision L26).
-		every_owned_state = {
-			limit = { is_controlled_by = event_target:gods_of_africa_population_wave_participant }
-			if = {
-				limit = {
-					event_target:gods_of_africa_population_wave_participant = {
-						check_variable = { gods_of_africa_population_wave_states < constant:gods_of_africa_punishment_scope.catastrophe_wave_states }
-					}
-				}
+		# catastrophe_wave_states different states drawn at random, each with the
+		# protected population floor and its own Deaths entry (decision L26).
+		clear_temp_array = gods_of_africa_population_wave_struck_states
+		for_loop_effect = {
+			end = constant:gods_of_africa_punishment_scope.catastrophe_wave_states
+			value = gods_of_africa_population_wave_index
+			break = gods_of_africa_population_wave_break
+			random_owned_controlled_state = {
+				limit = { NOT = { is_in_array = { gods_of_africa_population_wave_struck_states = THIS } } }
+				add_to_temp_array = { gods_of_africa_population_wave_struck_states = THIS }
 				set_temp_variable = { state_civilian_population_loss_requested = constant:gods_of_africa_transaction.catastrophe_population_loss }
 				set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:gods_of_africa_transaction.catastrophe_minimum_population_remaining }
 				set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.natural_disaster }

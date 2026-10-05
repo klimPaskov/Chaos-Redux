@@ -207,6 +207,8 @@ gods_of_africa_strike_punishment_state = {
 # COUNTRY scope on a participant. Strikes up to the tier's state budget:
 # occupied territory for unrest, and states that are not African cores of the
 # host for every other family, so Africa never wrecks its own future land.
+# Each strike draws a different state at random, so repeated punishments do
+# not keep falling on the same places in the game's state order.
 gods_of_africa_strike_punishment_states = {
 	set_variable = { gods_of_africa_punishment_report_state_count = constant:gods_of_africa_value.zero }
 	set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.pressure_states }
@@ -217,29 +219,29 @@ gods_of_africa_strike_punishment_states = {
 		limit = { gods_of_africa_ai_is_collapsing_target = yes }
 		set_temp_variable = { gods_of_africa_punishment_state_budget = constant:gods_of_africa_punishment_scope.collapsing_target_states }
 	}
-	if = {
-		limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
-		every_controlled_state = {
-			limit = { NOT = { is_owned_by = event_target:gods_of_africa_punishment_participant } }
-			if = {
+	clear_temp_array = gods_of_africa_punishment_struck_states
+	for_loop_effect = {
+		end = gods_of_africa_punishment_state_budget
+		value = gods_of_africa_punishment_strike_index
+		break = gods_of_africa_punishment_strike_break
+		if = {
+			limit = { check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest } }
+			random_controlled_state = {
 				limit = {
-					event_target:gods_of_africa_punishment_participant = {
-						check_variable = { gods_of_africa_punishment_report_state_count < gods_of_africa_punishment_state_budget }
-					}
+					NOT = { is_owned_by = event_target:gods_of_africa_punishment_participant }
+					NOT = { is_in_array = { gods_of_africa_punishment_struck_states = THIS } }
 				}
+				add_to_temp_array = { gods_of_africa_punishment_struck_states = THIS }
 				gods_of_africa_strike_punishment_state = yes
 			}
 		}
-	}
-	else = {
-		every_controlled_state = {
-			limit = { NOT = { is_core_of = event_target:africa_host } }
-			if = {
+		else = {
+			random_controlled_state = {
 				limit = {
-					event_target:gods_of_africa_punishment_participant = {
-						check_variable = { gods_of_africa_punishment_report_state_count < gods_of_africa_punishment_state_budget }
-					}
+					NOT = { is_core_of = event_target:africa_host }
+					NOT = { is_in_array = { gods_of_africa_punishment_struck_states = THIS } }
 				}
+				add_to_temp_array = { gods_of_africa_punishment_struck_states = THIS }
 				gods_of_africa_strike_punishment_state = yes
 			}
 		}
