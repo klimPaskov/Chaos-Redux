@@ -410,6 +410,9 @@ alien_infantry_spawn_landing_cohort = {
 	set_variable = { alien_infantry_landing_spawn_succeeded = constant:alien_infantry_landing.zero }
 	set_temp_variable = { alien_infantry_landing_direct_debit = constant:alien_infantry_landing.zero }
 	set_temp_variable = { alien_infantry_landing_initial_force_mode = constant:alien_infantry_landing.zero }
+	# Weapons actually paid by a settled reservation, read by the DHR landing
+	# callback; zero means the full reserve was paid.
+	set_temp_variable = { alien_infantry_landing_settled_amount = constant:alien_infantry_landing.zero }
 	if = {
 		limit = { has_country_flag = alien_infantry_event19_deferred_mode }
 		clr_country_flag = alien_infantry_event19_deferred_debit_committed
@@ -556,6 +559,10 @@ alien_infantry_spawn_landing_cohort = {
 				if = {
 					limit = { has_variable = alien_infantry_landing_universal_transaction_id }
 					black_friday_settle_alien_infantry_landing_transaction = yes
+				}
+				if = {
+					limit = { has_variable = alien_infantry_landing_reserved_amount }
+					set_temp_variable = { alien_infantry_landing_settled_amount = alien_infantry_landing_reserved_amount }
 				}
 				clear_variable = alien_infantry_landing_reserved_amount
 			}

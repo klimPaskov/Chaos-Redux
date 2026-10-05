@@ -314,13 +314,21 @@ dhrondan_focus_award_achievement_hook = {
 
 # COUNTRY scope on DHR. Called by dhrondan_record_successful_landing after every
 # successful landing while var:dhrondan_landing_state_id names the landed state.
+# The underwritten landing returns the weapons it actually cost: temp
+# alien_infantry_landing_settled_amount from a settled reservation, otherwise
+# the full reserve.
 dhrondan_apply_landing_dividends = {
 	if = {
 		limit = { tag = DHR }
 		if = {
 			limit = { has_country_flag = dhrondan_convention_landing_underwritten }
 			clr_country_flag = dhrondan_convention_landing_underwritten
-			add_equipment_to_stockpile = { type = alien_laser_weapon_equipment_1 amount = constant:alien_infantry_landing.reserve_equipment }
+			set_temp_variable = { dhrondan_underwritten_lasers = constant:alien_infantry_landing.reserve_equipment }
+			if = {
+				limit = { check_variable = { alien_infantry_landing_settled_amount > constant:alien_infantry_landing.zero } }
+				set_temp_variable = { dhrondan_underwritten_lasers = alien_infantry_landing_settled_amount }
+			}
+			add_equipment_to_stockpile = { type = alien_laser_weapon_equipment_1 amount = dhrondan_underwritten_lasers }
 		}
 		if = {
 			limit = {

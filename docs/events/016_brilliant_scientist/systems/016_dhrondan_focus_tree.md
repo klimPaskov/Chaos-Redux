@@ -77,7 +77,7 @@ Recovery and descent changes run in `dhrondan_adjust_landing_cooldown` and `dhro
 
 | Focus | Regime or lane | Mechanic | Reader |
 | --- | --- | --- | --- |
-| Convene the Two-World Throne | Shared | The next successful paid landing returns its 2,000 lasers | `dhrondan_convention_landing_underwritten`, landing dividends (consumed once) |
+| Convene the Two-World Throne | Shared | The next successful paid landing returns the lasers it actually cost (the settled reservation amount, otherwise 2,000) | `dhrondan_convention_landing_underwritten`, landing dividends (consumed once), `alien_infantry_landing_settled_amount` |
 | Restore the Ninth Diadem | Imperial | Land forts on the border provinces of every owned landing state, and on each later landing state while Vael IX rules | `dhrondan_ninth_diadem_restored`, landing dividends |
 | Bind the Landing Lords | Imperial | Each successful landing returns 500 lasers as a tithe | `dhrondan_landing_lords_bound`, landing dividends |
 | Codify Imperial Service | Imperial | Integration orders may proceed during war | `dhrondan_imperial_service_codified`, `dhrondan_integration_war_rule_is_met` |
