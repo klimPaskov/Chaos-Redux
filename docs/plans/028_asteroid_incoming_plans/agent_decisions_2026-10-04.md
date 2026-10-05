@@ -378,3 +378,11 @@ The late strike happens on the watchdog's date rather than failing closed, becau
 A board or confirmation whose chooser is annexed closes at once from `on_annex`, and the watchdog closes any other board whose chooser no longer exists; both use the existing `asteroid_incoming_close_unavailable_board`, which writes the fail-closed history outcome and picks no new chooser or coordinate.
 Basis: Part 2 freezes the locked coordinates, Part 10 requires the impact to resolve two days after the lock, and the spec allows no reroll.
 Needs live game: that a queued country event is dropped for an annexed country, and the watchdog path.
+
+### Part 8 fields in Event Details, the history row and the preparedness event
+
+Decision: the lock saves the chooser as the global event target `asteroid_incoming_impact_chooser`, which no cleanup path clears, and the impact Event Details view adds "Trajectory chosen by", the original target state's continent, and the current dust stage next to the current score.
+The impact history row adds the fragment-site count and the opening dust stage; `global.asteroid_incoming_fragment_site_count` is the applied count, because the fragment planner resets it to zero when fewer than the minimum centres apply.
+`chaosx.nr28.3.d` says whether the locked state is the target country's current capital, reading the country's `capital` against the locked state, and says nothing once the lock pointers are cleared.
+The miss and fail-closed views are unchanged, and the preparedness clause carries no colour codes.
+Basis: Part 8 lists the chooser, locked state and region, current Dust Load and stage for the impact Details view, the actual fragment count and opening dust stage for the history row, and the capital status for the target emergency.

@@ -604,6 +604,9 @@ asteroid_incoming_accept_selected_target = {
 			add_to_variable = { global.asteroid_incoming_expected_impact_date = chaosx_date_offset }
 			set_global_flag = asteroid_incoming_target_locked
 			clr_global_flag = asteroid_incoming_board_ready
+			# Event Details names the chooser after the transaction pointers are
+			# cleared, so this record is never cleared by cleanup.
+			event_target:asteroid_incoming_chooser = { save_global_event_target_as = asteroid_incoming_impact_chooser }
 			set_variable = { global.asteroid_incoming_preparedness = 0 }
 			if = {
 				limit = { NOT = { has_global_flag = asteroid_incoming_lock_news_sent } }

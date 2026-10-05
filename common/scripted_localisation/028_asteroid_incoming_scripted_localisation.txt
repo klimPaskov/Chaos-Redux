@@ -71,6 +71,27 @@ defined_text = {
 	text = { localization_key = asteroid_incoming.target.not_capital }
 }
 
+# Preparedness event: whether the locked state is the target country's current
+# capital. Empty once the lock pointers are cleared after the impact.
+defined_text = {
+	name = GetAsteroidIncomingLockedCapitalClause
+	text = {
+		trigger = {
+			has_event_target = asteroid_incoming_locked_state
+			has_event_target = asteroid_incoming_locked_country
+			event_target:asteroid_incoming_locked_country = {
+				check_variable = { var = capital value = event_target:asteroid_incoming_locked_state compare = equals }
+			}
+		}
+		localization_key = asteroid_incoming.target.locked_capital
+	}
+	text = {
+		trigger = { has_event_target = asteroid_incoming_locked_state }
+		localization_key = asteroid_incoming.target.locked_not_capital
+	}
+	text = { localization_key = asteroid_incoming.target.not_capital }
+}
+
 defined_text = {
 	name = GetAsteroidIncomingReportWorstState
 	text = {
