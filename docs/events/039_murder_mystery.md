@@ -157,20 +157,22 @@ The `country` block stays as a fallback for the same validated countries.
 
 ### Assassin technology line
 
-The seven technologies in `common/technologies/039_murder_mystery_assassin_technologies.txt` form one branch at the bottom of the infantry folder, rooted in the `murder_mystery_clandestine_combat_training_tree` gridbox of `interface/countrytechtreeview.gui` (pixel origin 140, 1730, below the special forces branch).
+The seven technologies in `common/technologies/039_murder_mystery_assassin_technologies.txt` form one branch at the bottom of the infantry folder, rooted in the `murder_mystery_clandestine_combat_training_tree` gridbox of `interface/countrytechtreeview.gui` (pixel origin 140, 1730, its own lane below the special forces branch).
+The folder runs its years left to right, so a technology's `y` position is its year column and `x` its row; each technology's `start_year` is the year of the column it sits in, so the line reads against the folder's year labels and research ahead of that year pays the usual penalty.
+The second row sits two rows below the first, the vanilla spacing for parallel lines, so the 72-pixel items never touch.
 `allow_branch` on the root hides the whole branch from every country that is not an Assassin State or derivative, and each technology's `allow` limits research to the same countries.
 
-| Technology | Row, column | Reached from | Extra research gate | Unlocks |
-| --- | --- | --- | --- | --- |
-| Clandestine Combat Training | 0, 2 | root | none | Assassin Cadres, operations kits |
-| Compartmented Logistics | 0, 4 | Clandestine Combat Training | none | cadre supply and defence |
-| Urban and Rough-Terrain Infiltration | 0, 6 | Compartmented Logistics | none | Saboteur Cells |
-| Shadow Operations Doctrine | 0, 8 | Urban and Rough-Terrain Infiltration | none | Shadow Companies |
-| Protected Command Doctrine | 1, 8 | Urban and Rough-Terrain Infiltration | none | Silent Guard |
-| Mechanized Infiltration | 0, 10 | Shadow Operations Doctrine | the pragmatic route's `murder_mystery_conventional_support_unlocked` | Mechanized Assassins |
-| Master Cadre Command | 1, 10 | Protected Command Doctrine, also requires Shadow Operations Doctrine | Evolution V committed | Master Assassins |
+| Technology | Row, column | Year | Reached from | Extra research gate | Unlocks |
+| --- | --- | --- | --- | --- | --- |
+| Clandestine Combat Training | 0, 2 | 1936 | root | none | Assassin Cadres, operations kits |
+| Compartmented Logistics | 0, 4 | 1938 | Clandestine Combat Training | none | cadre supply and defence |
+| Urban and Rough-Terrain Infiltration | 0, 6 | 1939 | Compartmented Logistics | none | Saboteur Cells |
+| Shadow Operations Doctrine | 0, 8 | 1940 | Urban and Rough-Terrain Infiltration | none | Shadow Companies |
+| Protected Command Doctrine | 2, 8 | 1940 | Urban and Rough-Terrain Infiltration | none | Silent Guard |
+| Mechanized Infiltration | 0, 10 | 1941 | Shadow Operations Doctrine | the pragmatic route's `murder_mystery_conventional_support_unlocked` | Mechanized Assassins |
+| Master Cadre Command | 2, 10 | 1941 | Protected Command Doctrine, also requires Shadow Operations Doctrine | Evolution V committed | Master Assassins |
 
-Movement countries weight the line at 3, doubled at war, and focuses still grant the same technologies through `set_technology`.
+Movement countries weight the line at 3, doubled at war, and focuses still grant the same technologies through `set_technology`; the Assassin State's starting package grants the first three and a derivative's the first, so only the later steps are researched against their year.
 Technology icons are the existing `GFX_murder_mystery_<technology>_medium` sprites.
 Each new country adds conquer and antagonize AI strategies against the government it split from.
 `common/ai_strategy/039_murder_mystery_ai_strategy.txt` keeps active movement countries building an army of roughly one third cadres and two thirds infantry, and `common/ai_templates/039_murder_mystery_ai_templates.txt` gives them an Assassin cadre target template; every other country has zero upgrade priority for that role.
