@@ -143,3 +143,26 @@ Disposition: `implemented` (source evidence; live behaviour `needs_live_game`). 
 - Player text: "incident root", "command ledger", "bounded participant group", and "precision ledger" are replaced by plain wording.
 - The previous pass's uncommitted warning work was adopted after review; its flag-interpreter test was replaced by static source checks in `.tools/test_event32_retaliation_warning.py`, and `.tools/test_event32_evolution_gates.py` pins the watch.
 - HOI4 MCP: see the round-1 review entry in `032_missiles_test_results.md` for the routes attempted in this pass.
+
+## Round 2 lead decisions
+
+Made by the lead under the user's full-authority grant and recorded here as each item landed.
+
+1. The stopped thread's uncommitted rogue-site and isolation work (six Event 32 files written between 02:09 and 02:12 on 5 October) is finished and adopted rather than discarded. Basis: it repairs a real exploit (isolating or scuttling any launchable site ended a rogue crisis) and a dead end (an isolated site could never return to service), and follows spec part 4's rogue resolution.
+2. The Event 13 bridge is one guarded line at the end of Event 13's state-scope building-damage helper, and every controller-side mutation runs under the controller's ROOT through a hidden immediate country event.
+3. Chemical warheads stay checked at preparation and debited at launch; holding chemical agent stays `accepted and queued` for the CBRN owner, and Event 32 re-checks the agent at launch instead.
+4. Events 5 and 6 need no new edits; the uncalled planned-inheritance helpers stay, and only their suspended-site handling is fixed.
+5. Previously rejected options stay rejected and previously accepted limits stay accepted (see the round-1 entries).
+6. The catalog change stays staged in `catalog_changes_pending.md`, and the probability checks remain a recorded blocker (`hoi4.probability_inspect` returned `INTERNAL_ERROR` again for `missiles_scuttle_rogue_site`; not retried).
+
+## Round 2 item 1: rogue-site resolution and isolation
+
+Disposition: `implemented` (source evidence; live behaviour `needs_live_game`). Basis: lead decision 1.
+
+- Adopted after review: rogue isolation and scuttling target only the rogue crisis site (`missiles_site_is_rogue_incident_site`, matched by the id recorded when the crisis opened) through `state_target = yes` and `target_array = missiles_launch_site_states`; `missiles_isolate_site`, `missiles_scuttle_site`, and the strike or disaster adapter `missiles_scuttle_site_from_current_controller` close the crisis only for that site; isolation settles a reserving order in refund mode once, stops re-hardening, and the isolated site can be suspended and repaired back into service; the regional-seizure timeout isolates the seized site and leaves it compromised; the AI scuttle weight favours destruction only for a site holding a special warhead.
+- Finished in this round: the missing `missiles_rogue_site_target_tt` (and `missiles_retaliation_site_target_tt`) are localised; the suspension requirement, effect, and isolation texts name isolated sites; `missiles_isolate_retaliation_site` now targets `missiles_launch_site_states` with the same tooltip pattern; the source test reads the captured-reserve block by its limit instead of the first `if`.
+- Agent decision: instead of temporarily repointing `missiles_incident_site` (the stopped pass's `missiles_point_incident_at_rogue_site`, removed), the rogue crisis never writes the general incident pointer. The candidate site is selected straight into `missiles_rogue_site_state`, and every rogue path (family weights, open, launch, custody payload, timeout, recovery, the two rogue triggers, and the rogue-resolution achievement inputs) reads that pointer. Basis: lead acceptance allows either using the rogue pointer directly or restoring the previous one; the direct pointer cannot leak and needs no restore bookkeeping.
+- Agent decision: `missiles_close_rogue_incident` no longer clears `missiles_incident_site`, and it closes the general incident record (`missiles_last_incident_closed`, `missiles_incident_active`, `missiles_active_incident_id`) only while the rogue incident is the current one. Basis: the same cross-incident defect as the pointer overwrite; a damage, disaster, or capture incident opened during the crisis must stay open with its own site.
+- Agent decision: the Command Breakdown scenario seed selects actors, sets the family, and opens the crisis only when a crisis can open, so a crisis that is already open keeps its own actors and family; a breakdown candidate that opens no crisis is cleared.
+- Evidence: `.tools/test_event32_captured_sites.py` gains `RogueSiteResolution` (registry targeting, crisis-site trigger, closure only for the rogue site, no general-pointer writes, current-incident-only closure, isolated-site repair path, single refund, localisation keys); all 12 `.tools/test_event32_*.py` modules pass.
+- HOI4 MCP: not re-attempted for the AI weight change on `missiles_scuttle_rogue_site` (lead decision 6); the change is source-reviewed only.

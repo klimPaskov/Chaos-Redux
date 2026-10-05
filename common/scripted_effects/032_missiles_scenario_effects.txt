@@ -485,8 +485,8 @@ missiles_scenario_seed_command_breakdown = {
 		missiles_calculate_command_pressure = yes
 		missiles_select_rogue_incident_site = yes
 		if = {
-			limit = { has_variable = missiles_incident_site }
-			var:missiles_incident_site = {
+			limit = { has_variable = missiles_rogue_site_state }
+			var:missiles_rogue_site_state = {
 				set_state_flag = missiles_site_compromised
 				set_state_flag = missiles_site_damaged
 				clr_state_flag = missiles_site_active
@@ -501,12 +501,18 @@ missiles_scenario_seed_command_breakdown = {
 						check_variable = { var = global.missiles_rogue_active_incidents value = global.missiles_scenario_incident_cap compare = less_than }
 					}
 				}
-				missiles_select_rogue_foreign_actor = yes
-				missiles_select_rogue_defection_recipient = yes
-				missiles_select_rogue_launch_target = yes
-				set_variable = { missiles_rogue_incident_family = constant:missiles_rogue_incident_family.unauthorized_preparation }
-				if = { limit = { missiles_can_open_rogue_incident = yes } missiles_open_rogue_incident = yes }
+				# A crisis that is already open keeps its own actors and family.
+				if = {
+					limit = { missiles_can_open_rogue_incident = yes }
+					missiles_select_rogue_foreign_actor = yes
+					missiles_select_rogue_defection_recipient = yes
+					missiles_select_rogue_launch_target = yes
+					set_variable = { missiles_rogue_incident_family = constant:missiles_rogue_incident_family.unauthorized_preparation }
+					missiles_open_rogue_incident = yes
+				}
 			}
+			# A breakdown candidate that did not open a crisis is not kept.
+			if = { limit = { NOT = { has_country_flag = missiles_rogue_command_active } } clear_variable = missiles_rogue_site_state }
 		}
 		set_global_flag = missiles_scenario_command_seeded
 		missiles_assign_ai_profile = yes

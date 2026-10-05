@@ -118,6 +118,15 @@ Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolutio
 `missiles_state_has_registered_site` includes `missiles_site_suspended`, so a site under its repair programme is still struck, captured, inherited, split, and cleaned up like any registered site.
 `missiles_record_incoming_operation_site_damage` writes the repair flags and `missiles_site_repair_due_date` only when no `missiles_site_repair_mission` is active, and `missiles_country_can_start_survey` waits for that mission, so damage elsewhere never postpones or cancels a running repair.
 
+## Rogue site pointer and isolation
+
+`missiles_select_rogue_incident_site` writes the candidate into `missiles_rogue_site_state` (never `missiles_incident_site`) and leaves an open crisis's pointer alone; a candidate that opens no crisis is cleared by the firing evaluation and the Command Breakdown scenario seed.
+`missiles_open_rogue_incident` records `missiles_rogue_site_id` from that pointer, and the launch, timeout, custody-payload, recovery, and achievement paths read `missiles_rogue_site_state`, so a damage, disaster, or capture incident opened during the crisis keeps `missiles_incident_site`.
+`missiles_close_rogue_incident` closes the general incident record (`missiles_last_incident_closed`, `missiles_incident_active`, `missiles_active_incident_id`) only while the current incident type is rogue preparation or rogue launch, and never clears `missiles_incident_site`.
+`missiles_site_is_rogue_incident_site` (STATE, ROOT is the programme) matches the recorded site by id; the rogue isolate and scuttle decisions target it from `missiles_launch_site_states`, and `missiles_isolate_site`, `missiles_scuttle_site`, and `missiles_scuttle_site_from_current_controller` close the crisis only for that site.
+`missiles_isolate_site` settles a reserving order through `missiles_settle_lost_site_allocation` in refund mode before isolating, and `missiles_refresh_site_flags` never re-hardens an isolated site; `missiles_site_can_be_suspended` accepts isolated sites and `missiles_finish_site_repair` lifts the isolation.
+`.tools/test_event32_captured_sites.py` (`RogueSiteResolution`) pins these contracts.
+
 ## Retaliation warning responses
 
 `missiles_retaliation_response_can_be_accepted` (COUNTRY scope) is the single gate for every route that answers a warning: the `chaosx.nr32.80` accept option, the Accept the Current Response decision, and the Delegated or Automatic posture in `missiles_process_scheduled_warning_response`.

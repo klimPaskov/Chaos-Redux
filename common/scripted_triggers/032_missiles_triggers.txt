@@ -244,6 +244,7 @@ missiles_site_can_repair = {
 		has_state_flag = missiles_site_damaged
 		has_state_flag = missiles_site_compromised
 		has_state_flag = missiles_site_captured
+		has_state_flag = missiles_site_isolated
 	}
 	NOT = { has_state_flag = missiles_site_scuttled }
 }
@@ -514,9 +515,11 @@ missiles_rogue_defection_recipient_is_valid = {
 	missiles_country_has_controlled_land = yes
 }
 
+# COUNTRY scope. The rogue site is missiles_rogue_site_state: the candidate
+# while a rogue incident is chosen, then the crisis site until it closes.
 missiles_rogue_incident_site_has_reserve = {
-	has_variable = missiles_incident_site
-	var:missiles_incident_site = {
+	has_variable = missiles_rogue_site_state
+	var:missiles_rogue_site_state = {
 		has_variable = missiles_site_reserve
 		check_variable = { var = missiles_site_reserve value = constant:missiles_program_value.zero compare = greater_than }
 	}
@@ -524,8 +527,8 @@ missiles_rogue_incident_site_has_reserve = {
 }
 
 missiles_rogue_incident_site_has_payload = {
-	has_variable = missiles_incident_site
-	var:missiles_incident_site = { missiles_site_has_special_payload_custody = yes }
+	has_variable = missiles_rogue_site_state
+	var:missiles_rogue_site_state = { missiles_site_has_special_payload_custody = yes }
 }
 
 # -----------------------------------------------------------------------------

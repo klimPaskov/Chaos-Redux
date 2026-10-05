@@ -214,16 +214,22 @@ missiles_calculate_command_pressure = {
 	clamp_variable = { var = missiles_command_pressure min = constant:missiles_program_value.zero max = constant:missiles_program_value.maximum }
 }
 
+# COUNTRY scope. The rogue candidate is kept in its own pointer,
+# missiles_rogue_site_state, so a damage, disaster, or repair incident keeps
+# missiles_incident_site. An open rogue crisis keeps its recorded site.
 missiles_select_rogue_incident_site = {
-	clear_variable = missiles_incident_site
-	random_scope_in_array = {
-		array = missiles_launch_site_states
-		limit = { missiles_site_can_host_rogue_incident = yes }
-		ROOT = { set_variable = { missiles_incident_site = PREV } }
+	if = {
+		limit = { NOT = { has_country_flag = missiles_rogue_command_active } }
+		clear_variable = missiles_rogue_site_state
+		random_scope_in_array = {
+			array = missiles_launch_site_states
+			limit = { missiles_site_can_host_rogue_incident = yes }
+			ROOT = { set_variable = { missiles_rogue_site_state = PREV } }
+		}
 	}
 	if = {
-		limit = { has_variable = missiles_incident_site }
-		var:missiles_incident_site = {
+		limit = { has_variable = missiles_rogue_site_state NOT = { has_country_flag = missiles_rogue_command_active } }
+		var:missiles_rogue_site_state = {
 			if = { limit = { has_state_flag = missiles_site_captured } ROOT = { add_to_variable = { missiles_command_pressure = constant:missiles_rogue_tuning.captured_site_pressure } } }
 			if = { limit = { has_state_flag = missiles_site_compromised } ROOT = { add_to_variable = { missiles_command_pressure = constant:missiles_rogue_tuning.compromised_site_pressure } } }
 			if = { limit = { has_state_flag = missiles_site_isolated } ROOT = { add_to_variable = { missiles_command_pressure = constant:missiles_rogue_tuning.isolated_site_pressure } } }
@@ -294,9 +300,14 @@ missiles_open_rogue_incident = {
 	chaosx_convert_days_to_date_offset = yes
 	set_variable = { missiles_rogue_crisis_deadline = global.date }
 	add_to_variable = { missiles_rogue_crisis_deadline = chaosx_date_offset }
+	# The crisis acts only through its own site pointer, chosen by
+	# missiles_select_rogue_incident_site; damage or disaster incidents opened
+	# during the crisis keep missiles_incident_site.
+	clear_variable = missiles_rogue_site_id
 	if = {
-		limit = { has_variable = missiles_incident_site }
-		var:missiles_incident_site = {
+		limit = { has_variable = missiles_rogue_site_state }
+		var:missiles_rogue_site_state = {
+			PREV = { set_variable = { missiles_rogue_site_id = PREV.id } }
 			set_state_flag = missiles_site_rogue
 			set_state_flag = missiles_site_compromised
 			clr_state_flag = missiles_site_active
@@ -345,8 +356,8 @@ missiles_select_rogue_incident_family = {
 				NOT = {
 					OR = {
 						has_civil_war = yes
-						var:missiles_incident_site = { has_state_flag = missiles_site_captured }
-						var:missiles_incident_site = { NOT = { is_controlled_by = ROOT } }
+						var:missiles_rogue_site_state = { has_state_flag = missiles_site_captured }
+						var:missiles_rogue_site_state = { NOT = { is_controlled_by = ROOT } }
 					}
 				}
 			}
@@ -360,14 +371,14 @@ missiles_select_rogue_incident_family = {
 			missiles_open_rogue_incident = yes
 		}
 		constant:missiles_rogue_tuning.weight_captured = {
-			modifier = { factor = constant:missiles_rogue_tuning.factor_zero NOT = { var:missiles_incident_site = { has_state_flag = missiles_site_captured } } }
+			modifier = { factor = constant:missiles_rogue_tuning.factor_zero NOT = { var:missiles_rogue_site_state = { has_state_flag = missiles_site_captured } } }
 			set_variable = { missiles_rogue_incident_family = constant:missiles_rogue_incident_family.captured_arsenal }
 			missiles_open_rogue_incident = yes
 		}
 		constant:missiles_rogue_tuning.weight_payload = {
 			modifier = { factor = constant:missiles_rogue_tuning.factor_zero NOT = { missiles_rogue_incident_site_has_payload = yes } }
 			modifier = { factor = constant:missiles_rogue_tuning.factor_zero NOT = { has_variable = missiles_rogue_launch_target } }
-			modifier = { factor = constant:missiles_rogue_tuning.factor_severe var:missiles_incident_site = { has_state_flag = missiles_site_captured } }
+			modifier = { factor = constant:missiles_rogue_tuning.factor_severe var:missiles_rogue_site_state = { has_state_flag = missiles_site_captured } }
 			set_variable = { missiles_rogue_incident_family = constant:missiles_rogue_incident_family.special_payload_custody }
 			missiles_open_rogue_incident = yes
 		}
@@ -393,6 +404,8 @@ missiles_evaluate_rogue_incident_from_firing = {
 				missiles_select_rogue_incident_family = yes
 			}
 		}
+		# A candidate that did not open a crisis is not kept.
+		if = { limit = { NOT = { has_country_flag = missiles_rogue_command_active } } clear_variable = missiles_rogue_site_state }
 	}
 }
 
@@ -1651,9 +1664,9 @@ missiles_begin_site_recovery = {
 	if = {
 		limit = {
 			has_country_flag = missiles_rogue_command_active
-			has_variable = missiles_incident_site
+			has_variable = missiles_rogue_site_state
 		}
-		set_variable = { missiles_recovery_site_state = missiles_incident_site }
+		set_variable = { missiles_recovery_site_state = missiles_rogue_site_state }
 		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.site_recovery_mission_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 		chaosx_convert_days_to_date_offset = yes
@@ -1702,21 +1715,43 @@ missiles_close_rogue_incident = {
 			subtract_from_variable = { global.missiles_rogue_active_incidents = constant:missiles_program_value.one }
 		}
 		clr_country_flag = missiles_rogue_active_counted
-		set_variable = { missiles_last_incident_closed = constant:missiles_program_value.one }
-		set_variable = { missiles_last_incident_closed_date = global.date }
+		# The rogue crisis closes its own incident record only. A damage,
+		# disaster, or capture incident opened during the crisis stays open
+		# with its own site.
+		set_temp_variable = { missiles_rogue_incident_is_current = constant:missiles_program_value.zero }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.rogue_preparation compare = equals }
+					check_variable = { var = missiles_current_incident_type value = constant:missiles_incident_type.rogue_launch compare = equals }
+				}
+			}
+			set_temp_variable = { missiles_rogue_incident_is_current = constant:missiles_program_value.one }
+			set_variable = { missiles_last_incident_closed = constant:missiles_program_value.one }
+			set_variable = { missiles_last_incident_closed_date = global.date }
+		}
 		set_temp_variable = { chaosx_date_days = constant:missiles_rogue_tuning.incident_cooldown_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 		chaosx_convert_days_to_date_offset = yes
 		set_variable = { missiles_rogue_incident_cooldown_date = global.date }
 		add_to_variable = { missiles_rogue_incident_cooldown_date = chaosx_date_offset }
 		if = {
-			limit = { has_variable = missiles_incident_site }
-			var:missiles_incident_site = {
+			limit = { has_variable = missiles_rogue_site_state }
+			var:missiles_rogue_site_state = {
 				if = {
 					limit = { is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } NOT = { has_state_flag = missiles_site_captured } NOT = { has_state_flag = missiles_site_isolated } }
 					clr_state_flag = missiles_site_rogue
 					if = { limit = { NOT = { ROOT = { has_country_flag = missiles_rogue_resolution_preserve_compromise } } } clr_state_flag = missiles_site_compromised }
 					set_state_flag = missiles_site_active
+					missiles_refresh_site_flags = yes
+				}
+				# An isolated rogue site (cut off by the government or seized by a
+				# region) loses its rogue command but stays isolated and compromised
+				# until a repair programme returns it to service.
+				else_if = {
+					limit = { is_controlled_by = ROOT NOT = { has_state_flag = missiles_site_scuttled } NOT = { has_state_flag = missiles_site_captured } }
+					clr_state_flag = missiles_site_rogue
+					set_state_flag = missiles_site_compromised
 					missiles_refresh_site_flags = yes
 				}
 			}
@@ -1729,10 +1764,15 @@ missiles_close_rogue_incident = {
 		}
 		clr_country_flag = missiles_rogue_resolution_preserve_compromise
 		clr_country_flag = missiles_rogue_command_active
-		clr_country_flag = missiles_incident_active
+		if = {
+			limit = { check_variable = { var = missiles_rogue_incident_is_current value = constant:missiles_program_value.one compare = equals } }
+			clr_country_flag = missiles_incident_active
+			set_variable = { missiles_active_incident_id = constant:missiles_program_value.zero }
+		}
 		clr_country_flag = missiles_command_control_contested
 		set_country_flag = missiles_rogue_incident_resolved
-		clear_variable = missiles_incident_site
+		clear_variable = missiles_rogue_site_state
+		clear_variable = missiles_rogue_site_id
 		clear_variable = missiles_rogue_foreign_actor
 		clear_variable = missiles_rogue_defection_recipient
 		clear_variable = missiles_rogue_launch_target
@@ -1747,14 +1787,16 @@ missiles_select_rogue_custody_payload = {
 	set_variable = { missiles_selected_payload = constant:missiles_payload.conventional }
 	clr_country_flag = missiles_special_payload_selected
 	if = {
-		limit = { has_variable = missiles_incident_site }
-		if = { limit = { var:missiles_incident_site = { has_state_flag = missiles_site_custody_thermonuclear } missiles_country_has_thermonuclear_payload_candidate = yes has_country_flag = missiles_thermonuclear_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.thermonuclear } set_country_flag = missiles_special_payload_selected }
-		else_if = { limit = { var:missiles_incident_site = { has_state_flag = missiles_site_custody_nuclear } missiles_country_has_nuclear_payload_candidate = yes has_country_flag = missiles_nuclear_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.nuclear } set_country_flag = missiles_special_payload_selected }
-		else_if = { limit = { var:missiles_incident_site = { has_state_flag = missiles_site_custody_biological } missiles_country_has_biological_payload_candidate = yes has_country_flag = missiles_biological_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.biological } set_country_flag = missiles_special_payload_selected }
-		else_if = { limit = { var:missiles_incident_site = { has_state_flag = missiles_site_custody_chemical } missiles_country_has_chemical_payload_candidate = yes has_country_flag = missiles_chemical_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.chemical } set_country_flag = missiles_special_payload_selected }
+		limit = { has_variable = missiles_rogue_site_state }
+		if = { limit = { var:missiles_rogue_site_state = { has_state_flag = missiles_site_custody_thermonuclear } missiles_country_has_thermonuclear_payload_candidate = yes has_country_flag = missiles_thermonuclear_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.thermonuclear } set_country_flag = missiles_special_payload_selected }
+		else_if = { limit = { var:missiles_rogue_site_state = { has_state_flag = missiles_site_custody_nuclear } missiles_country_has_nuclear_payload_candidate = yes has_country_flag = missiles_nuclear_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.nuclear } set_country_flag = missiles_special_payload_selected }
+		else_if = { limit = { var:missiles_rogue_site_state = { has_state_flag = missiles_site_custody_biological } missiles_country_has_biological_payload_candidate = yes has_country_flag = missiles_biological_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.biological } set_country_flag = missiles_special_payload_selected }
+		else_if = { limit = { var:missiles_rogue_site_state = { has_state_flag = missiles_site_custody_chemical } missiles_country_has_chemical_payload_candidate = yes has_country_flag = missiles_chemical_integration_operational } set_variable = { missiles_selected_payload = constant:missiles_payload.chemical } set_country_flag = missiles_special_payload_selected }
 	}
 }
 
+# COUNTRY scope. The rogue launch acts on missiles_rogue_site_state, so an
+# incident opened during the crisis keeps missiles_incident_site.
 missiles_execute_rogue_launch = {
 	if = {
 		limit = { has_country_flag = missiles_rogue_command_active NOT = { missiles_rogue_commands_active = yes } }
@@ -1764,10 +1806,10 @@ missiles_execute_rogue_launch = {
 	else_if = {
 		limit = {
 			has_country_flag = missiles_rogue_command_active
-			has_variable = missiles_incident_site
+			has_variable = missiles_rogue_site_state
 			has_variable = missiles_rogue_launch_target
 			missiles_rogue_incident_site_has_reserve = yes
-			var:missiles_incident_site = { is_controlled_by = ROOT }
+			var:missiles_rogue_site_state = { is_controlled_by = ROOT }
 		}
 		set_variable = { missiles_rogue_previous_payload = missiles_selected_payload }
 		set_variable = { missiles_rogue_previous_payload_policy = missiles_special_payload_policy }
@@ -1785,7 +1827,7 @@ missiles_execute_rogue_launch = {
 		set_variable = { missiles_selected_target = missiles_rogue_launch_target }
 		var:missiles_rogue_launch_target = { ROOT = { set_variable = { missiles_selected_target_country_id = PREV.id } } }
 		set_country_flag = missiles_target_selected
-		var:missiles_incident_site = {
+		var:missiles_rogue_site_state = {
 			clr_state_flag = missiles_site_rogue
 			clr_state_flag = missiles_site_isolated
 			clr_state_flag = missiles_site_captured
@@ -1875,8 +1917,13 @@ missiles_resolve_rogue_incident_timeout = {
 			missiles_close_rogue_incident = yes
 		}
 		else_if = {
-			limit = { check_variable = { var = missiles_rogue_incident_family value = constant:missiles_rogue_incident_family.regional_seizure compare = equals } has_variable = missiles_incident_site }
-			var:missiles_incident_site = { set_state_flag = missiles_site_isolated clr_state_flag = missiles_site_active }
+			limit = { check_variable = { var = missiles_rogue_incident_family value = constant:missiles_rogue_incident_family.regional_seizure compare = equals } }
+			# The seized site is cut off; the crisis closes and the site stays
+			# isolated and compromised until a repair programme restores it.
+			if = {
+				limit = { has_variable = missiles_rogue_site_state var:missiles_rogue_site_state = { is_controlled_by = ROOT } }
+				var:missiles_rogue_site_state = { missiles_isolate_site = yes }
+			}
 			missiles_close_rogue_incident = yes
 		}
 		else_if = {
@@ -1906,7 +1953,10 @@ missiles_ai_rotate_emergency_codes = {
 missiles_ai_isolate_rogue_site = {
 	add_command_power = constant:missiles_rogue_action_cost.command_low_negative
 	add_equipment_to_stockpile = { type = support_equipment amount = constant:missiles_rogue_action_cost.support_low_negative }
-	if = { limit = { has_variable = missiles_incident_site } var:missiles_incident_site = { missiles_isolate_site = yes } }
+	if = {
+		limit = { has_variable = missiles_rogue_site_state var:missiles_rogue_site_state = { missiles_site_is_rogue_incident_site = yes } }
+		var:missiles_rogue_site_state = { missiles_isolate_site = yes }
+	}
 }
 
 missiles_ai_negotiate_with_command = {
@@ -1918,7 +1968,10 @@ missiles_ai_negotiate_with_command = {
 missiles_ai_scuttle_rogue_site = {
 	add_command_power = constant:missiles_rogue_action_cost.command_high_negative
 	add_manpower = constant:missiles_rogue_action_cost.manpower_low_negative
-	if = { limit = { has_variable = missiles_incident_site } var:missiles_incident_site = { missiles_scuttle_site = yes } }
+	if = {
+		limit = { has_variable = missiles_rogue_site_state var:missiles_rogue_site_state = { missiles_site_is_rogue_incident_site = yes } }
+		var:missiles_rogue_site_state = { missiles_scuttle_site = yes }
+	}
 }
 
 missiles_rotate_emergency_codes = {
@@ -1934,15 +1987,35 @@ missiles_rotate_emergency_codes = {
 }
 
 missiles_isolate_site = {
-	# STATE scope.
+	# STATE scope, ROOT is the program country. Isolation cuts the site out of
+	# the command network until a repair programme returns it to service.
+	# Isolating the open rogue site ends its rogue command and closes the crisis;
+	# the site stays isolated and compromised. Isolating any other site leaves a
+	# rogue crisis open.
+	set_temp_variable = { missiles_isolation_closes_rogue = constant:missiles_program_value.zero }
+	if = {
+		limit = { missiles_site_is_rogue_incident_site = yes }
+		set_temp_variable = { missiles_isolation_closes_rogue = constant:missiles_program_value.one }
+		clr_state_flag = missiles_site_rogue
+		set_state_flag = missiles_site_compromised
+	}
+	# Readied missiles stay at an isolated site, so an order reserving this
+	# site ends and its reservation is refunded.
+	save_event_target_as = missiles_lost_allocation_site
+	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.zero }
+	ROOT = { missiles_settle_lost_site_allocation = yes }
 	set_state_flag = missiles_site_isolated
 	clr_state_flag = missiles_site_active
 	clr_state_flag = missiles_site_hardened
 	if = { limit = { has_variable = missiles_site_operation_id } set_variable = { missiles_site_operation_id = constant:missiles_event.zero } }
+	missiles_refresh_site_flags = yes
 	ROOT = {
 		missiles_recalculate_network = yes
 		missiles_rebalance_site_custody = yes
-		if = { limit = { has_country_flag = missiles_rogue_command_active } missiles_close_rogue_incident = yes }
+		if = {
+			limit = { check_variable = { var = missiles_isolation_closes_rogue value = constant:missiles_program_value.one compare = equals } }
+			missiles_close_rogue_incident = yes
+		}
 	}
 }
 
@@ -1956,7 +2029,13 @@ missiles_negotiate_with_command = {
 
 missiles_scuttle_site = {
 	# STATE scope. Site custody is destroyed once and removed from the active
-	# registry; a later rebalance cannot resurrect it.
+	# registry; a later rebalance cannot resurrect it. Destroying the open rogue
+	# site closes the rogue crisis; scuttling any other site leaves it open.
+	set_temp_variable = { missiles_scuttle_closes_rogue = constant:missiles_program_value.zero }
+	if = {
+		limit = { missiles_site_is_rogue_incident_site = yes }
+		set_temp_variable = { missiles_scuttle_closes_rogue = constant:missiles_program_value.one }
+	}
 	if = {
 		limit = {
 			has_variable = missiles_site_captured_reserve
@@ -2000,7 +2079,10 @@ missiles_scuttle_site = {
 			missiles_finish_captured_site_resolution = yes
 		}
 		missiles_refresh_program_status_idea = yes
-		if = { limit = { has_country_flag = missiles_rogue_command_active } missiles_close_rogue_incident = yes }
+		if = {
+			limit = { check_variable = { var = missiles_scuttle_closes_rogue value = constant:missiles_program_value.one compare = equals } }
+			missiles_close_rogue_incident = yes
+		}
 	}
 }
 
@@ -2044,7 +2126,15 @@ missiles_scuttle_site_from_current_controller = {
 			}
 			remove_from_array = { array = missiles_launch_site_states value = PREV }
 			set_variable = { missiles_achievement_removed_site_id = PREV.id }
-			set_country_flag = missiles_refresh_close_rogue_requested
+			# Only the destruction of the controller's rogue site ends its crisis.
+			if = {
+				limit = {
+					has_country_flag = missiles_rogue_command_active
+					has_variable = missiles_rogue_site_id
+					check_variable = { var = missiles_rogue_site_id value = PREV.id compare = equals }
+				}
+				set_country_flag = missiles_refresh_close_rogue_requested
+			}
 		}
 	}
 	set_state_flag = missiles_site_scuttled

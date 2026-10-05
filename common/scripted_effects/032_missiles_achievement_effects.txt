@@ -870,7 +870,7 @@ chaosx_032_achievement_refresh_timers = {
 }
 
 chaosx_032_achievement_record_rogue_resolution = {
-	# The caller is the affected country and invokes this while the incident
+	# The caller is the affected country and invokes this while the rogue
 	# site pointer still exists. This receipt is written once at the actual
 	# resolution boundary, not when a crisis window merely opens.
 	set_variable = { chaosx_032_input_reserve_or_prepared = constant:missiles_program_value.zero }
@@ -903,8 +903,8 @@ chaosx_032_achievement_record_rogue_resolution = {
 	}
 	if = {
 		limit = {
-			has_variable = missiles_incident_site
-			var:missiles_incident_site = {
+			has_variable = missiles_rogue_site_state
+			var:missiles_rogue_site_state = {
 				OR = {
 					has_state_flag = missiles_site_scuttled
 					has_state_flag = missiles_site_damaged_beyond_use
@@ -916,15 +916,15 @@ chaosx_032_achievement_record_rogue_resolution = {
 	}
 	if = {
 		limit = {
-			has_variable = missiles_incident_site
-			var:missiles_incident_site = { has_state_flag = missiles_site_captured }
+			has_variable = missiles_rogue_site_state
+			var:missiles_rogue_site_state = { has_state_flag = missiles_site_captured }
 		}
 		set_variable = { chaosx_032_input_foreign_seizure = constant:missiles_program_value.one }
 	}
 	if = {
 		limit = {
-			has_variable = missiles_incident_site
-			var:missiles_incident_site = { missiles_site_is_secure = yes }
+			has_variable = missiles_rogue_site_state
+			var:missiles_rogue_site_state = { missiles_site_is_secure = yes }
 		}
 		set_variable = { chaosx_032_input_secure_restored = constant:missiles_program_value.one }
 	}

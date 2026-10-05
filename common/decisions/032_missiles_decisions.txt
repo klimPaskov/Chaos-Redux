@@ -1119,10 +1119,7 @@ missiles_program_management_category = {
 		target_array = missiles_launch_site_states
 		on_map_mode = map_and_decisions_view
 		visible = {
-			OR = {
-				has_country_flag = missiles_program_phase_incident
-				has_country_flag = missiles_program_phase_maintenance
-			}
+			missiles_site_suspension_is_offered = yes
 			missiles_country_can_manage_program = yes
 			NOT = { has_country_flag = missiles_captured_site_unresolved }
 			NOT = { missiles_incident_is_own_guidance_failure = yes }
@@ -1130,10 +1127,7 @@ missiles_program_management_category = {
 			FROM = { missiles_site_can_be_suspended = yes }
 		}
 		target_root_trigger = {
-			OR = {
-				has_country_flag = missiles_program_phase_incident
-				has_country_flag = missiles_program_phase_maintenance
-			}
+			missiles_site_suspension_is_offered = yes
 			missiles_country_can_manage_program = yes
 		}
 		target_trigger = { FROM = { missiles_site_can_be_suspended = yes } }
@@ -1380,17 +1374,28 @@ missiles_program_management_category = {
 		ai_will_do = { base = @m32_ai_urgent }
 	}
 
+	# Rogue isolation and scuttling target only the rogue site itself, from the
+	# country's own site registry.
 	missiles_isolate_rogue_site = {
 		icon = GFX_decision_032_missiles_isolate_site
-		state_target = any_owned_state
+		state_target = yes
+		target_array = missiles_launch_site_states
 		on_map_mode = map_and_decisions_view
 		visible = {
 			has_country_flag = missiles_program_phase_rogue
-			FROM = { missiles_site_can_launch = yes }
+			FROM = { missiles_site_is_rogue_incident_site = yes }
 		}
-		target_root_trigger = { has_country_flag = missiles_program_phase_rogue }
-		target_trigger = { FROM = { missiles_site_can_launch = yes } }
-		available = { FROM = { missiles_site_can_launch = yes } }
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_rogue
+			has_country_flag = missiles_rogue_command_active
+		}
+		target_trigger = { FROM = { missiles_site_is_rogue_incident_site = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_rogue_site_target_tt
+				FROM = { missiles_site_is_rogue_incident_site = yes }
+			}
+		}
 		custom_cost_trigger = {
 			command_power > @m32_command_low
 			has_equipment = { support_equipment > @m32_support_low }
@@ -1413,15 +1418,15 @@ missiles_program_management_category = {
 		visible = {
 			has_country_flag = missiles_program_phase_rogue
 			has_country_flag = missiles_rogue_command_active
-			has_variable = missiles_incident_site
+			has_variable = missiles_rogue_site_state
 			NOT = { has_active_mission = missiles_site_recovery_mission }
 		}
 		available = {
 			has_country_flag = missiles_rogue_command_active
 			custom_trigger_tooltip = {
 				tooltip = missiles_loyal_forces_requirements_tt
-				has_variable = missiles_incident_site
-				var:missiles_incident_site = {
+				has_variable = missiles_rogue_site_state
+				var:missiles_rogue_site_state = {
 					is_controlled_by = ROOT
 					NOT = { has_state_flag = missiles_site_scuttled }
 				}
@@ -1473,12 +1478,24 @@ missiles_program_management_category = {
 
 	missiles_scuttle_rogue_site = {
 		icon = GFX_decision_032_missiles_scuttle_site
-		state_target = any_owned_state
+		state_target = yes
+		target_array = missiles_launch_site_states
 		on_map_mode = map_and_decisions_view
-		visible = { has_country_flag = missiles_program_phase_rogue FROM = { missiles_site_can_launch = yes } }
-		target_root_trigger = { has_country_flag = missiles_program_phase_rogue }
-		target_trigger = { FROM = { missiles_site_can_launch = yes } }
-		available = { FROM = { missiles_site_can_launch = yes } }
+		visible = {
+			has_country_flag = missiles_program_phase_rogue
+			FROM = { missiles_site_is_rogue_incident_site = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_rogue
+			has_country_flag = missiles_rogue_command_active
+		}
+		target_trigger = { FROM = { missiles_site_is_rogue_incident_site = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_rogue_site_target_tt
+				FROM = { missiles_site_is_rogue_incident_site = yes }
+			}
+		}
 		custom_cost_trigger = {
 			command_power > @m32_command_high
 			has_manpower > @m32_manpower_low
@@ -1493,7 +1510,13 @@ missiles_program_management_category = {
 				FROM = { missiles_scuttle_site = yes }
 			}
 		}
-		ai_will_do = { base = @m32_ai_medium modifier = { factor = 3 has_war = yes } }
+		# Isolation keeps the site and its missiles; the AI destroys the rogue
+		# site mainly to keep a special warhead out of rogue or enemy hands.
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 3 has_war = yes FROM = { missiles_site_has_special_payload_custody = yes } }
+			modifier = { factor = 0.5 FROM = { NOT = { missiles_site_has_special_payload_custody = yes } } }
+		}
 	}
 
 	missiles_verify_warning = {
@@ -1589,14 +1612,21 @@ missiles_program_management_category = {
 		ai_will_do = { base = @m32_ai_high modifier = { factor = 3 NOT = { has_country_flag = missiles_warning_verified } } }
 	}
 
+	# Targets the country's own working sites from its site registry.
 	missiles_isolate_retaliation_site = {
 		icon = GFX_decision_032_missiles_isolate_site
-		state_target = any_owned_state
+		state_target = yes
+		target_array = missiles_launch_site_states
 		on_map_mode = map_and_decisions_view
-		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active FROM = { missiles_site_can_launch = yes } }
+		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active FROM = { is_controlled_by = ROOT missiles_site_can_launch = yes } }
 		target_root_trigger = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
-		target_trigger = { FROM = { missiles_site_can_launch = yes } }
-		available = { FROM = { missiles_site_can_launch = yes } }
+		target_trigger = { FROM = { is_controlled_by = ROOT missiles_site_can_launch = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_retaliation_site_target_tt
+				FROM = { is_controlled_by = ROOT missiles_site_can_launch = yes }
+			}
+		}
 		custom_cost_trigger = {
 			command_power > @m32_command_low
 			has_fuel > @m32_fuel_low

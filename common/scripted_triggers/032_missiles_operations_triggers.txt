@@ -91,6 +91,28 @@ missiles_maintenance_actions_are_visible = {
 	}
 }
 
+# COUNTRY scope. Site suspension is offered in the incident and maintenance
+# phases. In the wartime operations view it is offered to the AI, and to a
+# human when no strike can be prepared and the doctrine choice is not shown,
+# so that view stays within six actions; an isolated or damaged site whose
+# programme cannot strike can then begin its repair without waiting for peace.
+missiles_site_suspension_is_offered = {
+	OR = {
+		has_country_flag = missiles_program_phase_incident
+		has_country_flag = missiles_program_phase_maintenance
+		AND = {
+			has_country_flag = missiles_program_phase_operations
+			OR = {
+				is_ai = yes
+				AND = {
+					NOT = { missiles_country_can_prepare_operation = yes }
+					NOT = { missiles_saturation_doctrine_is_offered = yes }
+				}
+			}
+		}
+	}
+}
+
 missiles_ordinary_preparation_action_is_visible = {
 	has_country_flag = missiles_program_phase_operations
 	missiles_country_can_prepare_operation = yes
@@ -702,9 +724,10 @@ missiles_secondary_site_is_due = {
 	check_variable = { var = global.date value = missiles_secondary_site_due_date compare = greater_than_or_equals }
 }
 
-# STATE scope, ROOT is the program country. A damaged, wrecked, or compromised
-# national site can be taken out of service for a repair programme. Captured
-# and rogue sites use their own resolution actions.
+# STATE scope, ROOT is the program country. A damaged, wrecked, compromised, or
+# isolated national site can be taken out of service for a repair programme,
+# whose completion also lifts an isolation. Captured and rogue sites use their
+# own resolution actions.
 missiles_site_can_be_suspended = {
 	is_controlled_by = ROOT
 	is_in_array = { array = ROOT.missiles_launch_site_states value = THIS }
@@ -716,11 +739,27 @@ missiles_site_can_be_suspended = {
 		has_state_flag = missiles_site_damaged
 		has_state_flag = missiles_site_damaged_beyond_use
 		has_state_flag = missiles_site_compromised
+		has_state_flag = missiles_site_isolated
 		AND = {
 			has_variable = missiles_site_damage
 			check_variable = { var = missiles_site_damage value = constant:missiles_program_value.zero compare = greater_than }
 		}
 	}
+}
+
+# STATE scope, ROOT is the program country. The site that holds the open rogue
+# command: the country's own registered site recorded when the crisis opened.
+# Rogue isolation and scuttling act only on it, and only it closes the crisis.
+missiles_site_is_rogue_incident_site = {
+	has_state_flag = missiles_site_rogue
+	NOT = { has_state_flag = missiles_site_scuttled }
+	is_controlled_by = ROOT
+	is_in_array = { array = ROOT.missiles_launch_site_states value = THIS }
+	ROOT = {
+		has_country_flag = missiles_rogue_command_active
+		has_variable = missiles_rogue_site_id
+	}
+	check_variable = { var = THIS.id value = ROOT.missiles_rogue_site_id compare = equals }
 }
 
 missiles_repair_target_is_valid = {
