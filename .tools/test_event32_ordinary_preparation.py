@@ -328,7 +328,7 @@ class WholeMissileAllocation(unittest.TestCase):
         loss = list(descendants(guarded))
         self.assertIn(('subtract_from_variable', [('missiles_operational_reserve', 'missiles_lost_allocation')]), loss)
         self.assertIn(('NOT', [('has_country_flag', 'missiles_operation_committed')]), value(guarded, 'limit'))
-        for caller in ('missiles_handle_site_control_changed', 'missiles_scuttle_site', 'missiles_scuttle_site_from_current_controller', 'missiles_natural_disaster_damage_site'):
+        for caller in ('missiles_handle_site_control_changed', 'missiles_scuttle_site', 'missiles_scuttle_site_from_current_controller', 'missiles_apply_natural_disaster_site_damage'):
             self.assertIn(('missiles_settle_lost_site_allocation', 'yes'), list(descendants(EFFECTS[caller])), caller)
 
 

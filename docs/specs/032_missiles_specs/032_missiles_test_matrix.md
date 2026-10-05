@@ -433,7 +433,7 @@ Verify inherited site setup and no universal free program.
 
 ### `BRIDGE-13`: Natural disaster
 
-Verify site damage adapter.
+Strike a launch state with an Event 13 disaster (primary impact, then a repeated, neighbour, or chain-arrival impact) while another country is Event 13's actor. The site controller, not the disaster's actor, loses readiness, command, and the severity's share of the site's missiles; the site shows damage and a repair request, a site-damage incident opens when none is open, and suspension and repair are offered. A strike being prepared at the site is cancelled with its missiles returned; a wrecking impact destroys the site once and loses only its readied missiles. No evolution unlocks, and Event 13 still records its own history, deaths, and report. `needs_live_game`.
 
 ### `BRIDGE-16`: Brilliant Scientist
 

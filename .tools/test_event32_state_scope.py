@@ -58,7 +58,7 @@ class MissileStateScopeContract(unittest.TestCase):
 
     def test_state_apis_keep_country_checks_inside_country_scopes(self):
         for collection, names in (
-            (OPERATIONS, ('missiles_recover_rogue_site', 'missiles_natural_disaster_damage_site', 'missiles_register_conventional_military_losses')),
+            (OPERATIONS, ('missiles_recover_rogue_site', 'missiles_natural_disaster_damage_site', 'missiles_apply_natural_disaster_site_damage', 'missiles_register_conventional_military_losses')),
             (TRIGGERS, ('missiles_site_can_receive_project', 'missiles_site_can_receive_firing_recovery', 'missiles_site_is_secure')),
             (SITE_TRIGGERS, ('missiles_target_state_is_valid',)),
         ):
@@ -119,6 +119,72 @@ class MissileStateScopeContract(unittest.TestCase):
         for key, marker in construction:
             if key == 'if':
                 self.assertEqual(value(value(marker, 'limit'), 'ROOT'), [('has_country_flag', 'missiles_scenario_country_bypass_active')])
+
+
+DISASTERS = source('common/scripted_effects/013_natural_disasters_effects.txt')
+EVENT_FILE = parse((ROOT / 'events/032_missile_crisis.txt').read_text(encoding='utf-8-sig'))
+# Helpers whose effects depend on ROOT being the programme country.
+PROGRAMME_HELPERS = {
+    'missiles_recalculate_network', 'missiles_rebalance_site_custody', 'missiles_allocate_incident_id',
+    'missiles_settle_lost_site_allocation', 'missiles_remove_reserve', 'missiles_set_program_phases',
+    'chaosx_032_achievement_record_site_damage', 'chaosx_032_achievement_prepare_long_reach_snapshot',
+}
+
+
+class NaturalDisasterBridge(unittest.TestCase):
+    def test_event13_building_damage_helper_ends_with_one_guarded_call(self):
+        helper = DISASTERS['natural_disaster_apply_family_building_damage']
+        self.assertEqual(helper[-1], ('if', [('limit', [('missiles_state_has_registered_site', 'yes')]), ('missiles_natural_disaster_damage_site', 'yes')]))
+        calls = [name for name, body in DISASTERS.items() if isinstance(body, list) and ('missiles_natural_disaster_damage_site', 'yes') in list(descendants(body))]
+        self.assertEqual(calls, ['natural_disaster_apply_family_building_damage'])
+
+    def test_adapter_only_queues_the_site_on_its_controller(self):
+        adapter = OPERATIONS['missiles_natural_disaster_damage_site']
+        body = list(descendants(adapter))
+        self.assertFalse(PROGRAMME_HELPERS & {key for key, _ in body})
+        self.assertNotIn('ROOT', {key for key, _ in body})
+        controller = value(value(adapter, 'if'), 'controller')
+        self.assertIn(('country_event', [('id', 'chaosx.nr32.9')]), controller)
+        self.assertIn(('add_to_array', [('array', 'missiles_disaster_pending_sites'), ('value', 'PREV')]), list(descendants(controller)))
+        # Severity comes from Event 013's unscoped temporary through check_variable only.
+        severity_checks = [child for key, child in body if key == 'check_variable' and isinstance(child, list) and child and child[0][0] == 'natural_disaster_current_severity']
+        self.assertEqual(len(severity_checks), 4)
+        for helper in ('missiles_natural_disaster_damage_site', 'missiles_apply_natural_disaster_site_damage'):
+            self.assertNotIn(('has_variable', 'natural_disaster_current_severity'), list(descendants(OPERATIONS[helper])))
+
+    def test_receiver_applies_queued_sites_with_the_controller_as_root(self):
+        events = {value(body, 'id'): body for key, body in EVENT_FILE if key == 'country_event'}
+        receiver = events['chaosx.nr32.9']
+        self.assertEqual(value(receiver, 'hidden'), 'yes')
+        self.assertEqual(value(receiver, 'immediate'), [('missiles_process_natural_disaster_receipts', 'yes')])
+        process = OPERATIONS['missiles_process_natural_disaster_receipts']
+        self.assertEqual(process, [
+            ('for_each_scope_loop', [('array', 'missiles_disaster_pending_sites'), ('missiles_apply_natural_disaster_site_damage', 'yes')]),
+            ('clear_array', 'missiles_disaster_pending_sites'),
+        ])
+        apply = OPERATIONS['missiles_apply_natural_disaster_site_damage']
+        guarded = value(apply, 'if')
+        self.assertIn(('is_controlled_by', 'ROOT'), value(guarded, 'limit'))
+        self.assertIn(('has_variable', 'missiles_disaster_pending_severity'), value(guarded, 'limit'))
+        nodes = list(descendants(apply))
+        self.assertEqual(sum(1 for node in nodes if node == ('missiles_scuttle_site_from_current_controller', 'yes')), 1)
+        self.assertEqual(sum(1 for node in nodes if node == ('missiles_settle_lost_site_allocation', 'yes')), 1)
+        self.assertFalse(any('evolution' in key for key, _ in nodes))
+        self.assertFalse(any(key.startswith('event_target:') for key, _ in nodes))
+        # Programme helpers run only inside ROOT blocks, bound to the controller.
+        def outside_root(body):
+            for key, child in body:
+                if key == 'ROOT':
+                    continue
+                yield key
+                if isinstance(child, list):
+                    yield from outside_root(child)
+        self.assertFalse(PROGRAMME_HELPERS & set(outside_root(apply)))
+        self.assertEqual(apply[-3:], [
+            ('clear_variable', 'missiles_disaster_pending_severity'),
+            ('clear_variable', 'missiles_disaster_reserve_loss'),
+            ('clear_variable', 'missiles_disaster_reserve_settlement_result'),
+        ])
 
 
 if __name__ == '__main__':

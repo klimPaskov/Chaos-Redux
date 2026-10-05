@@ -4717,10 +4717,16 @@ missiles_apply_site_target_damage = {
 	}
 }
 
-# STATE scope. Event 013 calls this narrow adapter once after a valid natural
-# disaster impact. Event 013 retains ownership of disaster history, deaths,
-# reports, and aftermath; Event 032 only mutates the physical missile site and
-# the owning program's exact readiness, control, reserve, and warning ledgers.
+# STATE scope. Event 013's state-scope building-damage helper
+# (natural_disaster_apply_family_building_damage) calls this narrow adapter
+# after every physical disaster impact on a registered launch site: primary,
+# repeated, neighbour, and chain-arrival impacts. ROOT is Event 013's ROOT, not
+# the site controller, so this side only validates the site, records the
+# impact severity on the state, queues the state on its controller, and fires
+# the controller's immediate receiver chaosx.nr32.9. Every programme mutation
+# runs there with ROOT bound to the controller. Event 013 keeps disaster
+# history, deaths, reports, and aftermath, and a disaster never unlocks an
+# Event 032 evolution.
 missiles_natural_disaster_damage_site = {
 	set_variable = { missiles_disaster_adapter_result = constant:missiles_result.rejected }
 	if = {
@@ -4740,6 +4746,63 @@ missiles_natural_disaster_damage_site = {
 					}
 				}
 			}
+		}
+		# Event 013 publishes the impact severity as the unscoped temporary
+		# natural_disaster_current_severity.
+		set_temp_variable = { missiles_disaster_severity_tier = constant:natural_disaster_severity.local }
+		if = { limit = { check_variable = { natural_disaster_current_severity = constant:natural_disaster_severity.severe } } set_temp_variable = { missiles_disaster_severity_tier = constant:natural_disaster_severity.severe } }
+		else_if = { limit = { check_variable = { natural_disaster_current_severity = constant:natural_disaster_severity.regional } } set_temp_variable = { missiles_disaster_severity_tier = constant:natural_disaster_severity.regional } }
+		else_if = { limit = { check_variable = { natural_disaster_current_severity = constant:natural_disaster_severity.catastrophic } } set_temp_variable = { missiles_disaster_severity_tier = constant:natural_disaster_severity.catastrophic } }
+		else_if = { limit = { check_variable = { natural_disaster_current_severity = constant:natural_disaster_severity.abnormal } } set_temp_variable = { missiles_disaster_severity_tier = constant:natural_disaster_severity.abnormal } }
+		# Two impacts on one site before the receiver runs apply once, at the
+		# stronger severity.
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = missiles_disaster_pending_severity }
+					check_variable = { var = missiles_disaster_pending_severity value = missiles_disaster_severity_tier compare = less_than }
+				}
+			}
+			set_variable = { missiles_disaster_pending_severity = missiles_disaster_severity_tier }
+		}
+		controller = {
+			if = {
+				limit = { NOT = { is_in_array = { array = missiles_disaster_pending_sites value = PREV } } }
+				add_to_array = { array = missiles_disaster_pending_sites value = PREV }
+			}
+			country_event = { id = chaosx.nr32.9 }
+		}
+		set_variable = { missiles_disaster_adapter_result = constant:missiles_result.deferred }
+	}
+}
+
+# COUNTRY scope from the immediate receiver chaosx.nr32.9; ROOT is the site
+# controller. Applies every queued disaster impact once and empties the queue,
+# so a second receiver for the same impacts finds nothing to do.
+missiles_process_natural_disaster_receipts = {
+	for_each_scope_loop = {
+		array = missiles_disaster_pending_sites
+		missiles_apply_natural_disaster_site_damage = yes
+	}
+	clear_array = missiles_disaster_pending_sites
+}
+
+# STATE scope; ROOT is the site controller. The physical site and the
+# controller's readiness, command, reserve, guidance-backlog, warning-pressure,
+# incident, repair-request, and achievement records change here once per
+# queued impact. A wrecking impact settles through
+# missiles_scuttle_site_from_current_controller; a lesser one leaves a damaged
+# site that can be suspended and repaired.
+missiles_apply_natural_disaster_site_damage = {
+	if = {
+		limit = {
+			has_variable = missiles_disaster_pending_severity
+			missiles_state_has_registered_site = yes
+			is_controlled_by = ROOT
+			OR = {
+				NOT = { has_variable = missiles_site_controller_id }
+				check_variable = { var = missiles_site_controller_id value = ROOT.id compare = equals }
+			}
 			missiles_natural_disaster_reserve_settlement_is_valid = yes
 		}
 		if = { limit = { NOT = { has_variable = missiles_site_damage } } set_variable = { missiles_site_damage = constant:missiles_program_value.zero } }
@@ -4754,7 +4817,7 @@ missiles_natural_disaster_damage_site = {
 		set_temp_variable = { missiles_disaster_guidance_backlog = constant:missiles_natural_disaster.guidance_backlog_local }
 		set_temp_variable = { missiles_disaster_warning_pressure = constant:missiles_natural_disaster.false_warning_pressure_local }
 		if = {
-			limit = { has_variable = natural_disaster_current_severity check_variable = { var = natural_disaster_current_severity value = constant:natural_disaster_severity.severe compare = equals } }
+			limit = { check_variable = { var = missiles_disaster_pending_severity value = constant:natural_disaster_severity.severe compare = equals } }
 			set_temp_variable = { missiles_disaster_site_damage = constant:missiles_natural_disaster.site_damage_severe }
 			set_temp_variable = { missiles_disaster_capacity_loss = constant:missiles_natural_disaster.capacity_loss_severe }
 			set_temp_variable = { missiles_disaster_reserve_loss_percent = constant:missiles_natural_disaster.reserve_loss_severe }
@@ -4764,7 +4827,7 @@ missiles_natural_disaster_damage_site = {
 			set_temp_variable = { missiles_disaster_warning_pressure = constant:missiles_natural_disaster.false_warning_pressure_severe }
 		}
 		else_if = {
-			limit = { has_variable = natural_disaster_current_severity check_variable = { var = natural_disaster_current_severity value = constant:natural_disaster_severity.regional compare = equals } }
+			limit = { check_variable = { var = missiles_disaster_pending_severity value = constant:natural_disaster_severity.regional compare = equals } }
 			set_temp_variable = { missiles_disaster_site_damage = constant:missiles_natural_disaster.site_damage_regional }
 			set_temp_variable = { missiles_disaster_capacity_loss = constant:missiles_natural_disaster.capacity_loss_regional }
 			set_temp_variable = { missiles_disaster_reserve_loss_percent = constant:missiles_natural_disaster.reserve_loss_regional }
@@ -4774,7 +4837,7 @@ missiles_natural_disaster_damage_site = {
 			set_temp_variable = { missiles_disaster_warning_pressure = constant:missiles_natural_disaster.false_warning_pressure_regional }
 		}
 		else_if = {
-			limit = { has_variable = natural_disaster_current_severity check_variable = { var = natural_disaster_current_severity value = constant:natural_disaster_severity.catastrophic compare = equals } }
+			limit = { check_variable = { var = missiles_disaster_pending_severity value = constant:natural_disaster_severity.catastrophic compare = equals } }
 			set_temp_variable = { missiles_disaster_site_damage = constant:missiles_natural_disaster.site_damage_catastrophic }
 			set_temp_variable = { missiles_disaster_capacity_loss = constant:missiles_natural_disaster.capacity_loss_catastrophic }
 			set_temp_variable = { missiles_disaster_reserve_loss_percent = constant:missiles_natural_disaster.reserve_loss_catastrophic }
@@ -4784,7 +4847,7 @@ missiles_natural_disaster_damage_site = {
 			set_temp_variable = { missiles_disaster_warning_pressure = constant:missiles_natural_disaster.false_warning_pressure_catastrophic }
 		}
 		else_if = {
-			limit = { has_variable = natural_disaster_current_severity check_variable = { var = natural_disaster_current_severity value = constant:natural_disaster_severity.abnormal compare = equals } }
+			limit = { check_variable = { var = missiles_disaster_pending_severity value = constant:natural_disaster_severity.abnormal compare = equals } }
 			set_temp_variable = { missiles_disaster_site_damage = constant:missiles_natural_disaster.site_damage_abnormal }
 			set_temp_variable = { missiles_disaster_capacity_loss = constant:missiles_natural_disaster.capacity_loss_abnormal }
 			set_temp_variable = { missiles_disaster_reserve_loss_percent = constant:missiles_natural_disaster.reserve_loss_abnormal }
@@ -4806,55 +4869,27 @@ missiles_natural_disaster_damage_site = {
 			if = { limit = { check_variable = { var = missiles_disaster_reserve_loss_calculated value = missiles_site_reserve compare = greater_than } } set_temp_variable = { missiles_disaster_reserve_loss_calculated = missiles_site_reserve } }
 			set_variable = { missiles_disaster_reserve_loss = missiles_disaster_reserve_loss_calculated }
 		}
-		set_variable = { missiles_disaster_site_operation_id = missiles_site_operation_id }
-		controller = { save_event_target_as = missiles_disaster_controller }
 		# Settle the percentage receipt before site mutation; destruction below
 		# settles only the remaining site allocation and captured-held receipt.
 		set_variable = { missiles_disaster_reserve_settlement_result = constant:missiles_result.rejected }
 		if = {
-			limit = {
-				has_event_target = missiles_disaster_controller
-				check_variable = { var = missiles_disaster_reserve_loss value = constant:missiles_program_value.zero compare = greater_than }
-			}
-			event_target:missiles_disaster_controller = {
+			limit = { check_variable = { var = missiles_disaster_reserve_loss value = constant:missiles_program_value.zero compare = greater_than } }
+			ROOT = {
 				set_variable = { missiles_reserve_delta = PREV.missiles_disaster_reserve_loss }
 				missiles_remove_reserve = yes
 			}
 			if = {
-				limit = {
-					has_event_target = missiles_disaster_controller
-					event_target:missiles_disaster_controller = {
-						check_variable = { var = missiles_reserve_payment_result value = constant:missiles_result.accepted compare = equals }
-					}
-				}
+				limit = { ROOT = { check_variable = { var = missiles_reserve_payment_result value = constant:missiles_result.accepted compare = equals } } }
 				set_variable = { missiles_disaster_reserve_settlement_result = constant:missiles_result.accepted }
 			}
-			if = {
-				limit = { has_event_target = missiles_disaster_controller }
-				event_target:missiles_disaster_controller = {
-					clear_variable = missiles_reserve_payment_result
-				}
-			}
+			ROOT = { clear_variable = missiles_reserve_payment_result }
 		}
 		else = {
 			set_variable = { missiles_disaster_reserve_settlement_result = constant:missiles_result.accepted }
 		}
 		if = {
-			limit = {
-				check_variable = {
-					var = missiles_disaster_reserve_settlement_result
-					value = constant:missiles_result.accepted
-					compare = equals
-				}
-			}
-		if = {
-			limit = { has_event_target = missiles_disaster_controller }
-			event_target:missiles_disaster_controller = {
-				missiles_record_site_network_achievement_snapshot = yes
-			}
-		}
-		if = {
-			limit = { has_event_target = missiles_disaster_controller }
+			limit = { check_variable = { var = missiles_disaster_reserve_settlement_result value = constant:missiles_result.accepted compare = equals } }
+			ROOT = { missiles_record_site_network_achievement_snapshot = yes }
 			# A hit that wrecks the site loses its readied missiles once; a lesser
 			# hit cancels the order and returns them.
 			save_event_target_as = missiles_lost_allocation_site
@@ -4865,48 +4900,36 @@ missiles_natural_disaster_damage_site = {
 				limit = { check_variable = { var = missiles_disaster_projected_damage value = constant:missiles_reserve.site_destroyed_threshold compare = greater_than_or_equals } }
 				set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
 			}
-			event_target:missiles_disaster_controller = {
-				if = {
-					limit = { has_country_flag = missiles_program_initialized }
-					missiles_settle_lost_site_allocation = yes
-				}
-			}
-		}
-		set_variable = { missiles_site_damage_request = missiles_disaster_site_damage }
-		add_to_variable = { missiles_site_damage = missiles_site_damage_request }
-		clamp_variable = { var = missiles_site_damage min = constant:missiles_program_value.zero max = constant:missiles_tuning.site_damage_maximum }
-		set_variable = { missiles_site_last_damage_date = global.date }
-		set_variable = { missiles_site_last_damage_actor_id = constant:missiles_program_value.zero }
-		set_variable = { missiles_site_last_disaster_damage = missiles_disaster_site_damage }
-		set_variable = { missiles_site_last_disaster_date = global.date }
-		if = { limit = { NOT = { has_variable = missiles_site_capacity_loss } } set_variable = { missiles_site_capacity_loss = constant:missiles_program_value.zero } }
-		if = {
-			limit = {
-				has_variable = missiles_site_capacity
-				check_variable = { var = missiles_site_capacity value = constant:missiles_site_capacity.minimum compare = greater_than }
-			}
-			set_temp_variable = { missiles_disaster_capacity_take = missiles_disaster_capacity_loss }
-			if = { limit = { check_variable = { var = missiles_disaster_capacity_take value = missiles_site_capacity compare = greater_than } } set_temp_variable = { missiles_disaster_capacity_take = missiles_site_capacity } }
-			add_to_variable = { missiles_site_capacity_loss = missiles_disaster_capacity_take }
-			subtract_from_variable = { missiles_site_capacity = missiles_disaster_capacity_take }
-			clamp_variable = { var = missiles_site_capacity min = constant:missiles_site_capacity.minimum max = constant:missiles_site_capacity.strategic }
-		}
-		if = {
-			limit = { has_variable = missiles_site_reserve check_variable = { var = missiles_disaster_reserve_loss value = constant:missiles_program_value.zero compare = greater_than } }
-			subtract_from_variable = { missiles_site_reserve = missiles_disaster_reserve_loss }
-		}
-		missiles_refresh_site_flags = yes
-		if = {
-			limit = { check_variable = { var = missiles_site_damage value = constant:missiles_reserve.site_destroyed_threshold compare = greater_than_or_equals } }
-			# The current-controller adapter settles the remaining ordinary
-			# allocation and any captured-reserve receipt exactly once.
-			missiles_scuttle_site_from_current_controller = yes
-		}
-		if = {
-			limit = { has_event_target = missiles_disaster_controller }
-			event_target:missiles_disaster_controller = {
+			ROOT = { missiles_settle_lost_site_allocation = yes }
+			add_to_variable = { missiles_site_damage = missiles_disaster_site_damage }
+			clamp_variable = { var = missiles_site_damage min = constant:missiles_program_value.zero max = constant:missiles_tuning.site_damage_maximum }
+			set_variable = { missiles_site_last_damage_date = global.date }
+			set_variable = { missiles_site_last_damage_actor_id = constant:missiles_program_value.zero }
+			set_variable = { missiles_site_last_disaster_damage = missiles_disaster_site_damage }
+			set_variable = { missiles_site_last_disaster_date = global.date }
 			if = {
-				limit = { has_country_flag = missiles_program_initialized }
+				limit = {
+					has_variable = missiles_site_capacity
+					check_variable = { var = missiles_site_capacity value = constant:missiles_site_capacity.minimum compare = greater_than }
+				}
+				set_temp_variable = { missiles_disaster_capacity_take = missiles_disaster_capacity_loss }
+				if = { limit = { check_variable = { var = missiles_disaster_capacity_take value = missiles_site_capacity compare = greater_than } } set_temp_variable = { missiles_disaster_capacity_take = missiles_site_capacity } }
+				add_to_variable = { missiles_site_capacity_loss = missiles_disaster_capacity_take }
+				subtract_from_variable = { missiles_site_capacity = missiles_disaster_capacity_take }
+				clamp_variable = { var = missiles_site_capacity min = constant:missiles_site_capacity.minimum max = constant:missiles_site_capacity.strategic }
+			}
+			if = {
+				limit = { check_variable = { var = missiles_disaster_reserve_loss value = constant:missiles_program_value.zero compare = greater_than } }
+				subtract_from_variable = { missiles_site_reserve = missiles_disaster_reserve_loss }
+			}
+			missiles_refresh_site_flags = yes
+			if = {
+				limit = { check_variable = { var = missiles_site_damage value = constant:missiles_reserve.site_destroyed_threshold compare = greater_than_or_equals } }
+				# The current-controller adapter settles the remaining ordinary
+				# allocation and any captured-reserve receipt exactly once.
+				missiles_scuttle_site_from_current_controller = yes
+			}
+			ROOT = {
 				if = { limit = { has_variable = missiles_launch_readiness } subtract_from_variable = { missiles_launch_readiness = missiles_disaster_readiness_loss } }
 				if = { limit = { has_variable = missiles_command_control } subtract_from_variable = { missiles_command_control = missiles_disaster_control_loss } }
 				if = { limit = { NOT = { has_variable = missiles_guidance_backlog } } set_variable = { missiles_guidance_backlog = constant:missiles_program_value.zero } }
@@ -4924,6 +4947,8 @@ missiles_natural_disaster_damage_site = {
 				else = {
 					set_country_flag = missiles_site_repair_requested
 				}
+				# A surviving damaged site opens a site-damage incident, whose phase
+				# offers suspension and the repair programme.
 				if = {
 					limit = {
 						NOT = { has_country_flag = missiles_incident_active }
@@ -4932,7 +4957,6 @@ missiles_natural_disaster_damage_site = {
 					missiles_allocate_incident_id = yes
 					set_variable = { missiles_active_incident_id = missiles_current_incident_id }
 					set_country_flag = missiles_incident_active
-					set_country_flag = missiles_program_phase_incident
 					set_variable = { missiles_current_incident_type = constant:missiles_incident_type.site_damage }
 					set_variable = { missiles_incident_site = PREV }
 					set_variable = { missiles_incident_state = PREV }
@@ -4962,6 +4986,7 @@ missiles_natural_disaster_damage_site = {
 				missiles_recalculate_network = yes
 				missiles_rebalance_site_custody = yes
 				missiles_refresh_program_status_idea = yes
+				missiles_set_program_phases = yes
 				set_variable = { chaosx_032_input_retained_operational_site_count = missiles_active_site_count }
 				set_variable = { chaosx_032_input_damaged_site_id = PREV.id }
 				set_variable = { chaosx_032_input_scuttled = constant:missiles_program_value.zero }
@@ -4972,19 +4997,11 @@ missiles_natural_disaster_damage_site = {
 				chaosx_032_achievement_record_site_damage = yes
 				chaosx_032_achievement_prepare_long_reach_snapshot = yes
 			}
-			}
+			set_variable = { missiles_disaster_adapter_result = constant:missiles_result.completed }
 		}
-		set_variable = { missiles_disaster_adapter_result = constant:missiles_result.completed }
-		}
-		clear_variable = missiles_site_damage_request
-		clear_variable = missiles_disaster_site_operation_id
-		clear_variable = missiles_disaster_reserve_loss
-		clear_variable = missiles_disaster_reserve_settlement_result
 	}
-	# Rejected or malformed bridge calls must not leave a stale receipt for a
-	# later state callback. The normal path also clears these values above.
-	clear_variable = missiles_site_damage_request
-	clear_variable = missiles_disaster_site_operation_id
+	# A rejected or stale receipt never carries over to a later impact.
+	clear_variable = missiles_disaster_pending_severity
 	clear_variable = missiles_disaster_reserve_loss
 	clear_variable = missiles_disaster_reserve_settlement_result
 }

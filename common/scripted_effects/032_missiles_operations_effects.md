@@ -60,7 +60,16 @@ Native `days =` fields, mission timeouts, and timed flags stay in days.
 
 `missiles_suspend_damaged_site` runs in the damaged STATE and writes the repair flags, incident site, and repair due date on its program country `ROOT`, where the repair mission and cleanup read them.
 `missiles_establish_secondary_site` runs in COUNTRY scope at mission completion and registers only its stored `missiles_secondary_site_state`; it never evaluates state triggers against the country.
-The natural-disaster adapter applies its readiness, command, guidance-backlog, and false-warning penalties to the controller from the unscoped temporaries it calculated, because a temporary variable cannot be read through `PREV.`.
+The natural-disaster bridge runs every programme write under the site controller's ROOT; its readiness, command, guidance-backlog, and false-warning penalties are applied inside that ROOT block from the unscoped temporaries it calculated, because a temporary variable cannot be read through `PREV.`.
+
+## Natural-disaster bridge (Event 013)
+
+Event 013's state-scope building-damage helper `natural_disaster_apply_family_building_damage`, which serves the primary, repeated, neighbour, and chain-arrival impacts, ends with one guarded call: `if = { limit = { missiles_state_has_registered_site = yes } missiles_natural_disaster_damage_site = yes }`.
+`missiles_natural_disaster_damage_site` (STATE scope, ROOT is Event 013's ROOT) validates the registered site and its proven controller, reads the impact severity from Event 013's unscoped temporary `natural_disaster_current_severity` with `check_variable` only, stores the strongest pending severity on the state as `missiles_disaster_pending_severity`, queues the state in the controller's `missiles_disaster_pending_sites` array, and fires the hidden immediate receiver `chaosx.nr32.9` on the controller; it makes no programme write.
+`missiles_process_natural_disaster_receipts` (COUNTRY, ROOT is the controller) applies `missiles_apply_natural_disaster_site_damage` to every queued state once and empties the queue, so a second receiver for the same impacts does nothing.
+`missiles_apply_natural_disaster_site_damage` (STATE, ROOT is the controller) revalidates control, settles the percentage reserve loss through `missiles_remove_reserve`, settles a reserving order through `missiles_settle_lost_site_allocation` (refund mode, or loss mode when the hit wrecks the site), applies site damage and capacity loss, settles a wreck once through `missiles_scuttle_site_from_current_controller`, and then applies the controller's readiness, command, guidance-backlog, and false-warning losses, the repair request, a site-damage incident when none is open (its phase offers suspension and repair), network, custody, phase, and achievement updates; the pending severity is always cleared.
+Severity tiers use `natural_disaster_severity` (local 1 to abnormal 5) and the loss table `missiles_natural_disaster`. A disaster never unlocks an evolution, and Event 013 keeps its own history, deaths, and reports.
+`.tools/test_event32_state_scope.py` (`NaturalDisasterBridge`) pins the Event 013 call, the queue-only adapter, the receiver, and the controller-ROOT routing.
 
 ## Site and command project missions
 
