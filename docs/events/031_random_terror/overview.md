@@ -113,6 +113,14 @@ The current source contains those outcome families, with the unresolved unit, mi
 
 Disabled evolutions leave the ordinary incident, containment, state-response, surrender, and defeat paths available.
 
+### Civil wars and uprisings
+
+Every Event 31 civil war goes through `random_terror_start_pressure_civil_war`: an armed cell under a pressured government, a Global Jihad scenario seed, a successful coup, and every pressure uprising (`random_terror_start_pressure_uprising`, reached from Call a Coordinated Uprising, Open the Worldwide Uprising and the False Revelation's opening wave).
+The helper never changes the government's ideology: it passes no `ruling_party`, which the engine would otherwise apply to the original country together with an election ban.
+The rebels always take an ideology the government does not hold: fascist rebels rise against democratic and communist governments, democratic rebels against fascist and non-aligned ones.
+It does nothing while the government is already in any civil war (`has_civil_war`, Event 21's `random_civil_war_active` or `event021_civil_war_active`), and it sets `random_terror_civil_war_started` (and, for an uprising, `random_terror_pressure_uprising_recorded`) only when `has_civil_war` holds after `start_civil_war`, so a refused war records nothing.
+The revolt size stays a constant passed through `meta_effect` (`civil_war_size`, `civil_war_size_severe` for a severe-pressure uprising, `coup_revolt_size` for a coup).
+
 ### Recovery and closure
 
 A state that falls from Active or worse back to Dormant or Clear becomes recovering (`random_terror_state_recovery`, set in `random_terror_update_state_stage`), and the marker clears when the state reaches Clear or when Restore Civil Authority succeeds there.

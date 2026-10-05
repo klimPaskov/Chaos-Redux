@@ -507,3 +507,19 @@ Basis: a second source review of every round-2 commit (`8f232f358` through `3573
   `random_terror_can_gain_advanced_research_slot` now gates the grant and all three tooltips, the grant itself is hidden so the custom line is the only one, and the text names the actual result.
 - Wording: the Intelligence Sweep requirement tooltip now states the response cell or Intelligence Priority requirement R32 added and the wider-network and pressure gates it already enforced; the safe-haven answer tooltips name the Terrorist Safe Haven modifier instead of a "marker"; `chaosx.nr31.45` reads its never factor and opinion gates from file constants.
 - Route evidence: `hoi4.probability_inspect` with the `event_option_ai_chance` adapter and `candidatePool = ["chaosx.nr31.45"]` again returned "Invalid tool arguments"; no weight value changed in R44, so the probability baseline and comparison stay blocked as recorded under R32.
+
+## Round 3 decisions
+
+The round 3 assessment of 2026-10-05 listed the remaining source findings below and took these decisions under the user's grant of full design authority.
+Each is `implemented` in the commit named beside it; live-game behaviour remains with the user.
+
+### R45 Event 31 civil wars keep the government's ideology
+
+- Basis: `start_civil_war`'s `ruling_party` "Changes the ideology of the original, player-led country" and bans its elections (`paradox_wiki/Effects - Hearts of Iron 4 Wiki.md` line 1512), and spec Part 5 parent survival, under which a terror crisis must not rewrite a government's ideology.
+- Defect: every pressure uprising passed `ideology = fascism ruling_party = neutrality`, so Call a Coordinated Uprising, Open the Worldwide Uprising, Stop the Coordinated Uprising subjects and the False Revelation's opening wave turned each government non-aligned, and a fascist government received fascist rebels; the coup and armed-cell path turned communist governments non-aligned too.
+- Decision: one helper, `random_terror_start_pressure_civil_war`, serves the armed-cell, scenario, coup and uprising paths.
+  It passes no `ruling_party`; rebels are fascist against democratic and communist governments and democratic against fascist and non-aligned ones.
+  Both the helper and the uprising caller refuse while `has_civil_war`, `random_civil_war_active` or `event021_civil_war_active` holds, following the existing Event 21 guard.
+- `random_terror_civil_war_started`, `random_terror_pressure_uprising_recorded`, the coup success flags and the scenario civil-war count are set only when `has_civil_war` holds right after `start_civil_war`, which is how vanilla reads the new side (`common/scripted_effects/POL_scripted_effects.txt` lines 492-505); the helper returns the temp `random_terror_civil_war_begun` for callers.
+- The size stays a constant passed through `meta_effect`; the coup size moved from a country variable to the same temp input, which the helper resets on return.
+- Route evidence: no weight changed; no probability route was needed.

@@ -2360,7 +2360,7 @@ random_terror_scenario_seed_country = {
 		}
 		random_terror_start_pressure_civil_war = yes
 		if = {
-			limit = { has_country_flag = random_terror_civil_war_started }
+			limit = { check_variable = { random_terror_civil_war_begun = constant:random_terror_value.one } }
 			add_to_variable = { global.random_terror_scenario_civil_wars_started = constant:random_terror_value.one }
 		}
 	}
@@ -3711,36 +3711,45 @@ random_terror_try_spawn_actor = {
 # Baseline civil-war, response, and actor action outcomes
 # -----------------------------------------------------------------------------
 
+# COUNTRY scope: the government.  The one Event 31 civil-war starter, shared
+# by the armed-cell, scenario and coup paths and by every pressure uprising.
+# It never changes the government's ideology: no ruling_party is passed (the
+# engine would otherwise switch the original country to it and disallow its
+# elections), and the rebels always take an ideology the government does not
+# hold, fascist against a democratic or communist government and democratic
+# against a fascist or non-aligned one, so the engine always gets a valid
+# two-sided civil war.  It does nothing while the government is already in a
+# civil war of any origin.
+# Input: temp random_terror_civil_war_size (revolt size fraction); zero or
+# unset uses random_terror_tuning.civil_war_size; it is reset to zero on
+# return so a later call in the same chain never inherits it.
+# Output: temp random_terror_civil_war_begun is one only when the war really
+# started, which vanilla reads the same way (has_civil_war on the new side
+# right after start_civil_war, POL_scripted_effects.txt); the government then
+# carries random_terror_civil_war_started.
 random_terror_start_pressure_civil_war = {
+	set_temp_variable = { random_terror_civil_war_begun = constant:random_terror_value.zero }
 	if = {
 		limit = {
-			OR = {
-				has_country_flag = random_terror_civil_war_started
-				has_country_flag = random_civil_war_active
-				has_country_flag = event021_civil_war_active
-			}
+			NOT = { has_country_flag = random_terror_civil_war_started }
+			NOT = { has_country_flag = random_civil_war_active }
+			NOT = { has_country_flag = event021_civil_war_active }
+			NOT = { has_civil_war = yes }
 		}
-	}
-	else = {
-		set_country_flag = random_terror_civil_war_started
 		if = {
-			limit = { NOT = { has_variable = random_terror_civil_war_size } }
+			limit = { NOT = { check_variable = { random_terror_civil_war_size > constant:random_terror_value.zero } } }
 			set_temp_variable = { random_terror_civil_war_size = constant:random_terror_tuning.civil_war_size }
 		}
 		if = {
-			limit = { has_government = fascism }
-			meta_effect = {
-				text = {
-					start_civil_war = { ideology = democratic ruling_party = fascism size = [RT_CW_SIZE] }
+			limit = {
+				OR = {
+					has_government = democratic
+					has_government = communism
 				}
-				RT_CW_SIZE = "[?random_terror_civil_war_size|.2]"
 			}
-		}
-		else_if = {
-			limit = { has_government = democratic }
 			meta_effect = {
 				text = {
-					start_civil_war = { ideology = fascism ruling_party = democratic size = [RT_CW_SIZE] }
+					start_civil_war = { ideology = fascism size = [RT_CW_SIZE] }
 				}
 				RT_CW_SIZE = "[?random_terror_civil_war_size|.2]"
 			}
@@ -3748,12 +3757,18 @@ random_terror_start_pressure_civil_war = {
 		else = {
 			meta_effect = {
 				text = {
-					start_civil_war = { ideology = democratic ruling_party = neutrality size = [RT_CW_SIZE] }
+					start_civil_war = { ideology = democratic size = [RT_CW_SIZE] }
 				}
 				RT_CW_SIZE = "[?random_terror_civil_war_size|.2]"
 			}
 		}
+		if = {
+			limit = { has_civil_war = yes }
+			set_country_flag = random_terror_civil_war_started
+			set_temp_variable = { random_terror_civil_war_begun = constant:random_terror_value.one }
+		}
 	}
+	set_temp_variable = { random_terror_civil_war_size = constant:random_terror_value.zero }
 }
 
 random_terror_response_reduce_target = {
@@ -5264,25 +5279,26 @@ random_terror_start_pressure_uprising = {
 		chaosx_convert_days_to_date_offset = yes
 		set_variable = { random_terror_uprising_cooldown_until = global.date }
 		add_to_variable = { random_terror_uprising_cooldown_until = chaosx_date_offset }
+		# The shared starter keeps the government's ideology, picks rebels of
+		# another ideology and records the war only when it really began.
 		CONTROLLER = {
 			if = {
 				limit = {
 					NOT = { has_country_flag = random_terror_civil_war_started }
 					NOT = { has_country_flag = random_civil_war_active }
+					NOT = { has_country_flag = event021_civil_war_active }
+					NOT = { has_civil_war = yes }
 				}
-				set_temp_variable = { random_terror_uprising_size = constant:random_terror_tuning.civil_war_size }
+				set_temp_variable = { random_terror_civil_war_size = constant:random_terror_tuning.civil_war_size }
 				if = {
 					limit = { event_target:random_terror_uprising_state = { check_variable = { random_terror_state_pressure > constant:random_terror_value.severe } } }
-					set_temp_variable = { random_terror_uprising_size = constant:random_terror_tuning.civil_war_size_severe }
+					set_temp_variable = { random_terror_civil_war_size = constant:random_terror_tuning.civil_war_size_severe }
 				}
-				meta_effect = {
-					text = {
-						start_civil_war = { ideology = fascism ruling_party = neutrality size = [RT_UPRISING_SIZE] }
-					}
-					RT_UPRISING_SIZE = "[?random_terror_uprising_size|.2]"
+				random_terror_start_pressure_civil_war = yes
+				if = {
+					limit = { check_variable = { random_terror_civil_war_begun = constant:random_terror_value.one } }
+					set_country_flag = random_terror_pressure_uprising_recorded
 				}
-				set_country_flag = random_terror_civil_war_started
-				set_country_flag = random_terror_pressure_uprising_recorded
 			}
 		}
 	}
@@ -6655,11 +6671,10 @@ random_terror_trigger_coup_attempt = {
 		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.response_legitimacy_loss }
 		multiply_temp_variable = { random_terror_pending_legitimacy_delta = -1 }
 		random_terror_apply_legitimacy = yes
-		set_variable = { random_terror_civil_war_size = constant:random_terror_tuning.coup_revolt_size }
+		set_temp_variable = { random_terror_civil_war_size = constant:random_terror_tuning.coup_revolt_size }
 		random_terror_start_pressure_civil_war = yes
-		clear_variable = random_terror_civil_war_size
 		if = {
-			limit = { has_country_flag = random_terror_civil_war_started }
+			limit = { check_variable = { random_terror_civil_war_begun = constant:random_terror_value.one } }
 			set_country_flag = random_terror_coup_successful
 			set_country_flag = random_terror_government_paralysis_recorded
 			random_terror_achievement_record_coup = yes
