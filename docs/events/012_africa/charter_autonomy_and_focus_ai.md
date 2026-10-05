@@ -73,12 +73,19 @@ Scramble phase changes and the world-order opening refresh the stored host-polic
 The 22 full host playbooks also activate one exact country-specific focus plan.
 Each plan translates its accepted matrix priorities into a distinct combination of shared-opening, host-signature, matching regional-overlay, support-lane, and constitutional-route weights while leaving live focus availability and `ai_will_do` gates authoritative.
 
-The continental tree is installed through `africa_load_continental_focus_tree`.
-That helper replaces only the generic focus tree. Ethiopia, South Africa, and every other host with a meaningful existing tree keep it and receive Event 12 through additive decisions, events, ideas, and scripted systems. When replacement is appropriate, the helper preserves completed-focus history, records `africa_continental_focus_tree_loaded` only after the new tree is active, and refreshes the layout once.
+The continental tree is installed through `africa_load_continental_focus_tree`, which must run while ROOT is the host because `africa_is_current_host` compares the host pointer with ROOT.
+HOI4 cannot add the shared Charter focuses to a national tree that is already loaded, so the continental programme always arrives as a whole-tree replacement (agent decision L35).
+A host on the generic focus tree receives the continental tree directly.
+A host with its own national tree, such as Ethiopia, a Congo or Horn releasable, or an Event 006 package country, keeps that tree and receives one choice event, `chaosx.nr12.1211` "A Programme for the Charter", one day after it takes up the mandate.
+Adopting the programme sets `africa_continental_programme_adopted` and replaces the national tree with `keep_completed = yes`, copying finished continental focuses from `africa_focus_completion_source` when that chain-local target exists.
+Keeping the national course leaves the national tree in place, and the Charter League Court decision `africa_adopt_continental_programme` stays visible until the continental tree is loaded; it costs `africa_continental_programme.adopt_decision_cost` political power.
+The AI always adopts: the event weights and the decision weight are read from the `africa_continental_programme` script constants.
+South Africa is excluded from both the choice and the replacement and keeps its national tree and its rupture path.
+After any load the helper records `africa_continental_focus_tree_loaded` only once the new tree is active and refreshes the layout.
 `africa_focus_route_ensure_continental_tree_loaded` is a compatibility wrapper around the canonical helper rather than a second implementation.
 Priority packages keep their existing-tree safeguard and also preserve completed-focus history.
-When South Africa's settlement transfers League custody to the saved exile patron, the old host is retained as the chain-local `africa_focus_completion_source`.
-The canonical loader copies completed continental focuses from that source into the successor's tree while the separate RSA transfer continues to carry variables, flags, arrays, relationship state, and reconciled relationship counts and capacity caps.
+When South Africa's settlement transfers League custody to the saved exile patron, the transfer runs while ROOT is the loyalist winner, so the patron's tree is settled by the loader in the custodian notice `chaosx.nr12.1206`, where ROOT is the patron.
+South Africa never carries the continental tree, so a generic-tree patron receives it directly and a national-tree patron receives the adoption choice, while the separate RSA transfer continues to carry variables, flags, arrays, relationship state, and reconciled relationship counts and capacity caps.
 
 ## Host succession lifecycle
 
@@ -95,8 +102,11 @@ First-proof witnesses and evidence arrays, including the one-attempt recovery re
 Peace-exemption registries are closed and discarded with their missions rather than copied to the successor.
 If an opened congress later has no valid recorded candidate, the resolver can close it into the suspended crisis; if the one-use successor is later annexed, the terminal bridge clears the host pointer, resolves the Event 12 lifecycle, and records the end of the League.
 
-The immediate designation route copies completed continental focuses from `africa_previous_host` while that source still exists.
-The staged post-annex congress reloads the continental tree and marks `africa_host_focus_completion_transfer_deferred` because the removed host cannot be used as a focus-copy source after the on-action chain ends.
+The successor follows the same focus rule as a founding host.
+Staging records `africa_host_transfer_previous_host_had_continental_tree` when the departing host had the continental tree, and the successor then inherits it and is marked as having adopted the programme.
+A generic-tree successor loads the continental tree directly, and a successor with its own national tree whose predecessor never adopted the programme keeps that tree and receives the adoption choice from the loader call in the successor notice `chaosx.nr12.232`.
+When the tree is inherited, the immediate designation route copies completed continental focuses from `africa_previous_host` while that source still exists.
+The staged post-annex congress loads the inherited tree and marks `africa_host_focus_completion_transfer_deferred` because the removed host cannot be used as a focus-copy source after the on-action chain ends.
 The successor notice consumes that marker into `africa_host_focus_completion_transfer_reviewed`, keeping the limitation visible without leaving a write-only flag.
 The missing completed-focus copy from an already-removed source remains a known release-candidate simplification and live acceptance item.
 

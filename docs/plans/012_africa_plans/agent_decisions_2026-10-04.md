@@ -484,3 +484,27 @@ Review findings kept as they are:
 - `ai_will_do` bases and factors read `constant:` values, the mod-wide pattern; whether that field reads script constants stays `needs_live_game` (the installed documentation says every field that takes a scoped variable accepts `constant:`).
 
 MCP route evidence (2026-10-05): `hoi4_probability_inspect` with `adapter = decision_ai_will_do` and a three-decision `candidatePool` (the ultimatum answers) returned "Invalid tool arguments" again; it was not retried, and the probability audit stays `blocked` as in L24.
+
+## L35. A host with its own national tree is offered the continental programme
+
+Disposition: `implemented` (the native `load_focus_tree` replacement on a live national-tree host, such as Ethiopia, is `needs_live_game`).
+
+Basis: the routed live defect (2026-10-05 00:50) in which Ethiopia became the Africa host and still had the vanilla Ethiopia tree five weeks later, so the Part 7 host playbook, the constitutional routes, the ten focus AI plans and the Gods overlay were unreachable and the focus-gated Gods protection, judgment, Final Council and settlement decisions stayed locked.
+Spec Part 7 places the Ethiopia playbook in the continental overlay ("The overlay should not reproduce Ethiopia's entire historical tree"), and spec Part 4 lets a host lose a strong tree only when no add-on route exists and allows a controlled runtime replacement when the event owns the change.
+The installed `effects_documentation.md` (`load_focus_tree`, lines 4771 to 4789) and the offline wiki (National focus modding, "Shared focuses", lines 818 to 838) show that shared focuses are attached statically inside a tree definition, so no runtime effect can add the Charter focuses to an already loaded national tree.
+Editing vanilla national trees to carry them would be fragile, so a whole-tree replacement is the only route, and making it the host's choice keeps the player's agency.
+Vanilla precedent for a tree replacement from an event: `events/MTG_Netherlands.txt` line 3073.
+
+Decisions:
+
+- `africa_load_continental_focus_tree` keeps the direct load for a generic-tree host and also loads the tree for a host that adopted the programme (`africa_continental_programme_adopted`), with `keep_completed = yes` and `copy_completed_from` when `africa_focus_completion_source` exists.
+- A host with its own national tree (not South Africa) keeps it and receives one choice event, `chaosx.nr12.1211` "A Programme for the Charter", one day after it takes up the mandate (`africa_continental_programme_offered` stops a repeat). Adopting runs `africa_commit_to_continental_programme`, which sets the adoption flag, loads the tree through the canonical loader and refreshes the layout. Keeping the national course leaves the national tree.
+- The Charter League Court decision `africa_adopt_continental_programme` ("Adopt the Continental Programme") stays visible while `africa_host_can_adopt_continental_programme` holds and disappears once the continental tree is loaded. It costs 25 political power, because setting the national plan aside later is a deliberate reorganisation, and its tooltip says the national tree is replaced and finished focuses are kept.
+- The AI always adopts. `ai_chance` and `ai_will_do` read the new `africa_continental_programme` script constants (`adopt_ai_chance` 100, `keep_ai_chance` 0, `adopt_decision_ai_weight` 100), and the delay and cost live there too.
+- South Africa keeps its national tree and its rupture path, as before.
+- Host transfer follows the same rule. Staging records `africa_host_transfer_previous_host_had_continental_tree` from the departing host. A successor inherits the tree (and the adoption flag) only from a predecessor that had it, copying finished focuses while that host still exists. A generic-tree successor still loads directly. A successor with its own national tree whose predecessor never adopted keeps it and is offered the same choice by the loader call in `chaosx.nr12.232`, where ROOT is the successor. The unconditional `africa_continental_focus_tree_loaded` write in the transfer is replaced by a write only when the tree is active, and the forced `keep_completed = no` load is gone.
+- The RSA exile custodian: `africa_rsa_transfer_host_to_exile_patron` runs while ROOT is the loyalist winner, so its loader call could never pass `africa_is_current_host` and no custodian ever received the tree. The custodian notice `chaosx.nr12.1206` (ROOT is the custodian) now calls the loader, so a generic-tree custodian receives the tree and a national-tree custodian receives the choice.
+- Generic-tree founding hosts behave exactly as before.
+- The code comment and `docs/events/012_africa/charter_autonomy_and_focus_ai.md` and `overview.md` describe the real rule; the earlier claim that national-tree hosts received the content through additive decisions was not true.
+
+MCP route evidence (2026-10-05): `hoi4_event_inspect` with `mode = trace` for `chaosx.nr12.1211` returned "Invalid tool arguments" with both an object and a string selector; it was not retried. `hoi4_reference_search` and `hoi4_reference_read` supplied the citations above.

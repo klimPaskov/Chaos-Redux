@@ -1625,35 +1625,50 @@ africa_record_compact_promotion_proof = {
 # Continental focus-tree load and opening reward kernel
 # ---------------------------------------------------------------------------
 
-# COUNTRY scope on the committed host. Event 12 replaces only the generic focus
-# surface. Ethiopia, South Africa, and every other host with meaningful existing
-# content keep that tree and receive the Charter systems additively.
+# COUNTRY scope on the committed host; ROOT must be the host, because
+# africa_is_current_host compares the host pointer with ROOT. HOI4 cannot add
+# the shared Charter focuses to a national tree that is already loaded, so the
+# continental programme always arrives as a whole-tree replacement:
+# - a generic-tree host, or a host that adopted the programme, loads the
+#   continental tree here, keeping finished focuses and copying finished
+#   continental focuses from africa_focus_completion_source when it exists;
+# - a host with its own national tree keeps it and receives one adoption choice
+#   (chaosx.nr12.1211). Keeping the national course leaves the Charter Council
+#   decision africa_adopt_continental_programme open for later;
+# - South Africa keeps its national tree and its rupture path.
 africa_load_continental_focus_tree = {
 	if = {
 		limit = {
 			africa_is_current_host = yes
 			NOT = { original_tag = SAF }
-			has_focus_tree = generic_focus
 			NOT = { has_focus_tree = africa_continental_focus_tree }
-			has_event_target = africa_focus_completion_source
+			OR = {
+				has_focus_tree = generic_focus
+				has_country_flag = africa_continental_programme_adopted
+			}
 		}
-		load_focus_tree = {
-			tree = africa_continental_focus_tree
-			keep_completed = yes
-			copy_completed_from = event_target:africa_focus_completion_source
+		if = {
+			limit = { has_event_target = africa_focus_completion_source }
+			load_focus_tree = {
+				tree = africa_continental_focus_tree
+				keep_completed = yes
+				copy_completed_from = event_target:africa_focus_completion_source
+			}
+		}
+		else = {
+			load_focus_tree = {
+				tree = africa_continental_focus_tree
+				keep_completed = yes
+			}
 		}
 	}
 	else_if = {
 		limit = {
-			africa_is_current_host = yes
-			NOT = { original_tag = SAF }
-			has_focus_tree = generic_focus
-			NOT = { has_focus_tree = africa_continental_focus_tree }
+			africa_host_can_adopt_continental_programme = yes
+			NOT = { has_country_flag = africa_continental_programme_offered }
 		}
-		load_focus_tree = {
-			tree = africa_continental_focus_tree
-			keep_completed = yes
-		}
+		set_country_flag = africa_continental_programme_offered
+		country_event = { id = chaosx.nr12.1211 days = constant:africa_continental_programme.offer_delay_days }
 	}
 	if = {
 		limit = {
@@ -1673,6 +1688,19 @@ africa_refresh_continental_focus_tree_layout = {
 			has_focus_tree = africa_continental_focus_tree
 		}
 		mark_focus_tree_layout_dirty = yes
+	}
+}
+
+# COUNTRY scope on the host (ROOT must be the host). The host's answer to
+# chaosx.nr12.1211 or the Charter Council decision: record the adoption and let
+# the canonical loader replace the national tree. A later loss of the tree is
+# repaired by the next loader call instead of offering the choice again.
+africa_commit_to_continental_programme = {
+	if = {
+		limit = { africa_host_can_adopt_continental_programme = yes }
+		set_country_flag = africa_continental_programme_adopted
+		africa_load_continental_focus_tree = yes
+		africa_refresh_continental_focus_tree_layout = yes
 	}
 }
 

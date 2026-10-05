@@ -119,6 +119,12 @@ africa_host_transfer_stage_scalar_ledger = {
 		limit = { has_country_flag = gods_of_africa_candidate_census_complete }
 		set_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
 	}
+	# The successor inherits the continental tree only from a host that had it.
+	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
+	if = {
+		limit = { has_focus_tree = africa_continental_focus_tree }
+		set_global_flag = africa_host_transfer_previous_host_had_continental_tree
+	}
 	if = {
 		limit = { has_variable = africa_constitutional_representation }
 		set_variable = { global.africa_host_transfer_constitutional_representation = africa_constitutional_representation }
@@ -505,6 +511,7 @@ africa_host_transfer_restore_world_order_state = {
 africa_host_transfer_clear_route_staging = {
 	clr_global_flag = africa_host_transfer_scramble_state_machine_initialised
 	clr_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
+	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
 	clr_global_flag = africa_host_transfer_world_package_roster_documented
 	clr_global_flag = africa_host_transfer_world_package_roster_partial
 	clr_global_flag = africa_host_transfer_world_package_roster_absence_documented
@@ -1330,26 +1337,54 @@ africa_host_transfer_complete_successor = {
 		africa_reconcile_relationship_counts_and_caps = yes
 		africa_achievement_refresh_live_regional_proofs = yes
 
+		# Focus tree rule shared with the founding host (agent decision L35). ROOT
+		# is the resolver here, so the tree is loaded directly instead of through
+		# africa_load_continental_focus_tree:
+		# - the successor inherits the continental tree when the departing host had
+		#   it, copying its finished focuses while that host still exists;
+		# - a generic-tree successor loads the tree directly;
+		# - a successor with its own national tree whose predecessor never adopted
+		#   the programme keeps that tree, and the loader call in chaosx.nr12.232
+		#   (ROOT is the successor there) offers it the adoption choice;
+		# - South Africa keeps its own tree.
 		if = {
 			limit = {
-				has_event_target = africa_previous_host
-				event_target:africa_previous_host = { exists = yes }
-				NOT = { has_focus_tree = africa_continental_focus_tree }
 				NOT = { original_tag = SAF }
+				NOT = { has_focus_tree = africa_continental_focus_tree }
+				OR = {
+					has_global_flag = africa_host_transfer_previous_host_had_continental_tree
+					has_focus_tree = generic_focus
+				}
 			}
-			load_focus_tree = {
-				tree = africa_continental_focus_tree
-				keep_completed = no
-				copy_completed_from = event_target:africa_previous_host
+			if = {
+				limit = { has_global_flag = africa_host_transfer_previous_host_had_continental_tree }
+				set_country_flag = africa_continental_programme_adopted
+			}
+			if = {
+				limit = {
+					has_global_flag = africa_host_transfer_previous_host_had_continental_tree
+					has_event_target = africa_previous_host
+					event_target:africa_previous_host = { exists = yes }
+				}
+				load_focus_tree = {
+					tree = africa_continental_focus_tree
+					keep_completed = yes
+					copy_completed_from = event_target:africa_previous_host
+				}
+			}
+			else = {
+				load_focus_tree = { tree = africa_continental_focus_tree keep_completed = yes }
+				if = {
+					limit = { has_global_flag = africa_host_transfer_previous_host_had_continental_tree }
+					set_country_flag = africa_host_focus_completion_transfer_deferred
+				}
 			}
 		}
-		else_if = {
-			limit = { NOT = { original_tag = SAF } NOT = { has_focus_tree = africa_continental_focus_tree } }
-			load_focus_tree = { tree = africa_continental_focus_tree keep_completed = no }
-			set_country_flag = africa_host_focus_completion_transfer_deferred
+		if = {
+			limit = { has_focus_tree = africa_continental_focus_tree }
+			set_country_flag = africa_continental_focus_tree_loaded
+			mark_focus_tree_layout_dirty = yes
 		}
-		set_country_flag = africa_continental_focus_tree_loaded
-		mark_focus_tree_layout_dirty = yes
 		africa_clamp_host_values = yes
 		set_global_flag = africa_host_successor_consumed
 		clr_global_flag = africa_host_transfer_pending

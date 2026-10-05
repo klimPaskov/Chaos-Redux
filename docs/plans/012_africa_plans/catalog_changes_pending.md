@@ -57,3 +57,11 @@ If the workbook keeps per-event notes for Event 012, add these facts in the in-g
 ## Gods of Africa continuing support (agent decision L28)
 
 If the workbook keeps per-event notes for Event 012, add: "Sign the Support Agreement" (`gods_of_africa_sign_support_agreement`): "The first instalment of [amount] leaves our stocks now, and each later one every 30 days. The agreement becomes agreed terms: an instalment we cannot pay on its day breaks it."
+
+## Host focus tree choice (agent decision L35)
+
+If the workbook keeps per-event notes for Event 012, add these facts in the in-game wording:
+
+- A host that keeps its own national focus tree receives "A Programme for the Charter" (`chaosx.nr12.1211.t`) with the choices "Plan the government around the Charter." and "Keep the national programme for now."
+- New Charter League Court decision "Adopt the Continental Programme" (`africa_adopt_continental_programme`): "The national focus tree is replaced by The African Continental Charter. Focuses already finished keep their effects, and finished Charter focuses stay complete." (`africa_adopt_continental_programme_tt`)
+- A host on the generic focus tree still receives The African Continental Charter directly, and South Africa keeps its own tree.

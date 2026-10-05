@@ -320,6 +320,34 @@ country_event = {
 	}
 }
 
+# Programme choice for a host that still plans by its own national focus tree.
+# africa_load_continental_focus_tree queues it once per host. HOI4 cannot add the
+# shared Charter focuses to a loaded national tree, so adoption replaces the
+# whole tree. Keeping the national course leaves the Charter Council decision
+# africa_adopt_continental_programme available.
+country_event = {
+	id = chaosx.nr12.1211
+	title = chaosx.nr12.1211.t
+	desc = chaosx.nr12.1211.d
+	picture = GFX_report_event_012_africa_first_regional_congress
+	is_triggered_only = yes
+
+	trigger = { africa_host_can_adopt_continental_programme = yes }
+
+	option = {
+		name = chaosx.nr12.1211.a
+		ai_chance = { base = constant:africa_continental_programme.adopt_ai_chance }
+		custom_effect_tooltip = africa_adopt_continental_programme_tt
+		hidden_effect = { africa_commit_to_continental_programme = yes }
+	}
+
+	option = {
+		name = chaosx.nr12.1211.b
+		ai_chance = { base = constant:africa_continental_programme.keep_ai_chance }
+		custom_effect_tooltip = africa_keep_national_programme_tt
+	}
+}
+
 # Host-facing result notice for the shared runtime.
 country_event = {
 	id = chaosx.nr12.220
