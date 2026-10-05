@@ -584,6 +584,219 @@ asteroid_incoming_crater_action_state_is_valid = {
 	}
 }
 
+# ----------------------------------------------------------------------------
+# Recovery target ranking
+# ----------------------------------------------------------------------------
+# Each state-targeted recovery action lists one state per country: the
+# highest-ranked state that is open for that action now. The ranking is read
+# live in target_trigger, so once a state is used, resolved or lost, the next
+# state takes its place on the following daily check.
+# Emergency work ranks an active rescue burden first, then the strongest impact
+# profile, then the larger current population. Reconstruction ranks the
+# strongest impact profile first, then the larger infrastructure plus railway
+# gap against the pre-impact snapshot (the Stabilize the Damaged Zone order).
+# Equal states fall back to the lower state id.
+# Both comparisons read and write only their own unscoped temporaries inside
+# one scripted trigger, so no temporary crosses a scripted-trigger boundary.
+
+# STATE scope, candidate state; FROM is the decision's target state.
+asteroid_incoming_state_outranks_target_for_emergency = {
+	hidden_trigger = {
+		set_temp_variable = { asteroid_incoming_rank_state_id = THIS }
+		set_temp_variable = { asteroid_incoming_rank_state_profile = asteroid_incoming_state_profile }
+		set_temp_variable = { asteroid_incoming_rank_state_population = state_population_k }
+		FROM = {
+			set_temp_variable = { asteroid_incoming_rank_target_id = THIS }
+			set_temp_variable = { asteroid_incoming_rank_target_profile = asteroid_incoming_state_profile }
+			set_temp_variable = { asteroid_incoming_rank_target_population = state_population_k }
+		}
+		OR = {
+			AND = {
+				has_state_flag = asteroid_incoming_rescue_burden_active
+				FROM = { NOT = { has_state_flag = asteroid_incoming_rescue_burden_active } }
+			}
+			AND = {
+				# The target does not lead on the rescue burden. NOT is a NOR,
+				# so the pair is grouped in AND.
+				NOT = {
+					AND = {
+						FROM = { has_state_flag = asteroid_incoming_rescue_burden_active }
+						NOT = { has_state_flag = asteroid_incoming_rescue_burden_active }
+					}
+				}
+				OR = {
+					check_variable = { asteroid_incoming_rank_state_profile > asteroid_incoming_rank_target_profile }
+					AND = {
+						NOT = { check_variable = { asteroid_incoming_rank_state_profile < asteroid_incoming_rank_target_profile } }
+						OR = {
+							check_variable = { asteroid_incoming_rank_state_population > asteroid_incoming_rank_target_population }
+							AND = {
+								NOT = { check_variable = { asteroid_incoming_rank_state_population < asteroid_incoming_rank_target_population } }
+								check_variable = { asteroid_incoming_rank_state_id < asteroid_incoming_rank_target_id }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# STATE scope, candidate state; FROM is the decision's target state.
+asteroid_incoming_state_outranks_target_for_reconstruction = {
+	hidden_trigger = {
+		set_temp_variable = { asteroid_incoming_rank_state_id = THIS }
+		set_temp_variable = { asteroid_incoming_rank_state_profile = asteroid_incoming_state_profile }
+		set_temp_variable = { asteroid_incoming_rank_state_gap = asteroid_incoming_preimpact_infrastructure }
+		subtract_from_temp_variable = { asteroid_incoming_rank_state_gap = building_level@infrastructure }
+		add_to_temp_variable = { asteroid_incoming_rank_state_gap = asteroid_incoming_preimpact_railway }
+		subtract_from_temp_variable = { asteroid_incoming_rank_state_gap = building_level@rail_way }
+		FROM = {
+			set_temp_variable = { asteroid_incoming_rank_target_id = THIS }
+			set_temp_variable = { asteroid_incoming_rank_target_profile = asteroid_incoming_state_profile }
+			set_temp_variable = { asteroid_incoming_rank_target_gap = asteroid_incoming_preimpact_infrastructure }
+			subtract_from_temp_variable = { asteroid_incoming_rank_target_gap = building_level@infrastructure }
+			add_to_temp_variable = { asteroid_incoming_rank_target_gap = asteroid_incoming_preimpact_railway }
+			subtract_from_temp_variable = { asteroid_incoming_rank_target_gap = building_level@rail_way }
+		}
+		OR = {
+			check_variable = { asteroid_incoming_rank_state_profile > asteroid_incoming_rank_target_profile }
+			AND = {
+				NOT = { check_variable = { asteroid_incoming_rank_state_profile < asteroid_incoming_rank_target_profile } }
+				OR = {
+					check_variable = { asteroid_incoming_rank_state_gap > asteroid_incoming_rank_target_gap }
+					AND = {
+						NOT = { check_variable = { asteroid_incoming_rank_state_gap < asteroid_incoming_rank_target_gap } }
+						check_variable = { asteroid_incoming_rank_state_id < asteroid_incoming_rank_target_id }
+					}
+				}
+			}
+		}
+	}
+}
+
+# STATE scope. The state is open for one named recovery action.
+asteroid_incoming_state_is_open_for_mobile_hospitals = {
+	asteroid_incoming_emergency_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_mobile_hospitals_deployed }
+}
+
+asteroid_incoming_state_is_open_for_emergency_rail = {
+	asteroid_incoming_emergency_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_emergency_rail_corridor_open }
+}
+
+asteroid_incoming_state_is_open_for_debris_clearing = {
+	asteroid_incoming_emergency_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_unstable_debris_cleared }
+}
+
+asteroid_incoming_state_is_open_for_emergency_filters = {
+	asteroid_incoming_emergency_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_filters_distributed }
+}
+
+asteroid_incoming_state_is_open_for_supply_spine = {
+	asteroid_incoming_reconstruction_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt }
+}
+
+asteroid_incoming_state_is_open_for_outer_industry = {
+	asteroid_incoming_reconstruction_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_outer_industry_restored }
+}
+
+asteroid_incoming_state_is_open_for_worker_rehousing = {
+	asteroid_incoming_reconstruction_action_state_is_valid = yes
+	NOT = { has_state_flag = asteroid_incoming_workers_rehoused }
+}
+
+# COUNTRY scope (the deciding country in ROOT), decision target in FROM. Each
+# is true only for the single highest-ranked state open for its action.
+asteroid_incoming_from_is_first_mobile_hospitals_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_mobile_hospitals = yes
+				asteroid_incoming_state_outranks_target_for_emergency = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_emergency_rail_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_emergency_rail = yes
+				asteroid_incoming_state_outranks_target_for_emergency = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_debris_clearing_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_debris_clearing = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_debris_clearing = yes
+				asteroid_incoming_state_outranks_target_for_emergency = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_emergency_filters_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_emergency_filters = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_emergency_filters = yes
+				asteroid_incoming_state_outranks_target_for_emergency = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_supply_spine_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_supply_spine = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_supply_spine = yes
+				asteroid_incoming_state_outranks_target_for_reconstruction = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_outer_industry_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_outer_industry = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_outer_industry = yes
+				asteroid_incoming_state_outranks_target_for_reconstruction = yes
+			}
+		}
+	}
+}
+
+asteroid_incoming_from_is_first_worker_rehousing_target = {
+	hidden_trigger = {
+		FROM = { asteroid_incoming_state_is_open_for_worker_rehousing = yes }
+		NOT = {
+			any_controlled_state = {
+				asteroid_incoming_state_is_open_for_worker_rehousing = yes
+				asteroid_incoming_state_outranks_target_for_reconstruction = yes
+			}
+		}
+	}
+}
+
 asteroid_incoming_no_active_recovery_mission = {
 	hidden_trigger = {
 		NOT = { has_country_flag = asteroid_incoming_recovery_project_pending }

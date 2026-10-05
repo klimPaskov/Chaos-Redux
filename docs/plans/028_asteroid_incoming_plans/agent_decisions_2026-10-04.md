@@ -338,3 +338,25 @@ Decision: the Asteroid Recovery category header keeps its dust and protection va
 While Extraordinary Minerals is active, a crater clause names whether the country directly controls the main crater (`any_controlled_state` with `asteroid_incoming_main_crater`) and its `asteroid_incoming_country_controlled_fragment_count` fragment sites, with singular and plural wording; the clause is empty otherwise.
 Colour codes follow the header's existing label and yellow value pattern only.
 Basis: Part 6 (Presentation choice) lists the national recovery burden for damaged countries and the controlled crater-site count under Extraordinary Minerals as header values.
+
+## Takeover round 3 (2026-10-05)
+
+### Achievement list names and descriptions
+
+Decision: the five Event 028 achievements gain the native `<id>_NAME` and `<id>_DESC` keys, and both the description and the `<id>_tooltip` read the Chaos threshold, the Government Beyond the Crater deadline, the Collector site minimum and hold, and the Piercing hold from `asteroid_incoming_runtime` through `[?constant:...|0]`.
+The tooltips no longer describe the hold as an "accepted control period".
+Basis: the wiki Achievement modding Localization section (`paradox_wiki/Achievement modding - Hearts of Iron 4 Wiki.md`, lines 96-103) and the convention used by 400 of the 410 mod achievements.
+Commit: 08cb48523.
+
+### One target per state recovery action
+
+Decision: each of the seven state-targeted recovery decisions lists only the highest-ranked state its country controls that is open for that action now.
+The ranking is evaluated live in `target_trigger`, not refreshed on a schedule, so an action can never disappear while a valid state remains, and a used, resolved or lost state hands over to the next one on the following daily check.
+Emergency ranking: active rescue burden, then the strongest `asteroid_incoming_state_profile`, then the larger current `state_population_k`.
+Reconstruction ranking: the strongest profile, then the larger infrastructure plus railway gap against the pre-impact snapshot.
+Ties fall back to the lower state id, so the choice is deterministic.
+Each comparison reads and writes its own unscoped temporaries inside one scripted trigger, because the wiki Data structures page warns that temporaries set inside a scripted trigger may not survive outside it.
+`visible`, `available`, costs, crater and dust decisions and every `ai_will_do` are unchanged.
+Basis: Part 6 caps the visible actions (three or four in Phase 1, three in Phase 2), the acceptance line "Decision phases expose no more than the planned visible action cap", and "Prioritize the state with the largest expected preventable loss" for mobile hospitals; reconstruction mirrors the accepted Stabilize ranking.
+Engine references: the wiki Decision modding section (target_trigger is checked daily with ROOT as the country and FROM as the target, lines 527-535; `any_controlled_state` checks every controlled state, lines 578-581), the wiki Triggers table (NOT is a NOR, line 341), and vanilla `common/decisions/AST.txt:149` for `FROM.state_population_k` in a state-targeted decision.
+Probability evidence: one `hoi4_probability_inspect` call with `adapter = decision_ai_will_do`, the seven decision names as `candidatePool` and a single-file source selector returned "Invalid tool arguments"; no further attempt was made. The candidate pool shrinks from every valid state to one state per action and no weight changed, so this is a recorded route gap and the review is source-only. The live ranking display is a needs-live-game check.

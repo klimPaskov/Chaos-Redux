@@ -4,6 +4,9 @@
 # Ordinary state-targeted recovery actions, global dust protection, crater
 # control, and five bounded missions. The category is shared with the metadata
 # in categories/028_asteroid_incoming_categories.txt; no scripted GUI exists.
+# Each emergency and reconstruction action lists only the single highest-ranked
+# state open for it (asteroid_incoming_from_is_first_*_target), which keeps
+# each phase within the planned visible-action cap.
 # ============================================================================
 
 # The decision modifier schema requires a file-local literal for this field.
@@ -45,7 +48,7 @@ asteroid_incoming_recovery_category = {
 			}
 		}
 		target_root_trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_mobile_hospitals_deployed } } }
+		target_trigger = { asteroid_incoming_from_is_first_mobile_hospitals_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_mobile_hospitals_deployed } }
@@ -152,7 +155,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_emergency_rail_corridor_open } } }
+		target_trigger = { asteroid_incoming_from_is_first_emergency_rail_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_emergency_rail_corridor_open } }
@@ -253,7 +256,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_unstable_debris_cleared } } }
+		target_trigger = { asteroid_incoming_from_is_first_debris_clearing_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_unstable_debris_cleared } }
@@ -340,7 +343,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_emergency_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_filters_distributed } } }
+		target_trigger = { asteroid_incoming_from_is_first_emergency_filters_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_emergency_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_filters_distributed } }
@@ -398,7 +401,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt } } }
+		target_trigger = { asteroid_incoming_from_is_first_supply_spine_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_supply_spine_rebuilt } }
@@ -455,7 +458,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_outer_industry_restored } } }
+		target_trigger = { asteroid_incoming_from_is_first_outer_industry_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_outer_industry_restored } }
@@ -512,7 +515,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_active_project_tt asteroid_incoming_recovery_project_slot_is_free = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_reconstruction_recovery_surface = yes asteroid_incoming_country_has_recovery_target = yes asteroid_incoming_recovery_project_slot_is_free = yes }
-		target_trigger = { FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_workers_rehoused } } }
+		target_trigger = { asteroid_incoming_from_is_first_worker_rehousing_target = yes }
 		custom_cost_trigger = {
 			asteroid_incoming_recovery_project_slot_is_free = yes
 			FROM = { asteroid_incoming_reconstruction_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_workers_rehoused } }
