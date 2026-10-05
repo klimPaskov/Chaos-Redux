@@ -350,7 +350,13 @@ acid_rain_initialize_runtime_scalars = {
 	set_variable = { global.acid_rain_superstorm_forecast_count = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_superstorm_total_episodes = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_superstorm_capacity = constant:acid_rain_evolution.global_superstorm_opening_capacity }
+	# The formation request covers the first week; the first weekly request is
+	# due one week after formation.
 	set_variable = { global.acid_rain_air_week_start_day = global.date }
+	set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.contamination_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_variable = { global.acid_rain_air_week_start_day = chaosx_date_offset }
 	set_variable = { global.acid_rain_air_week_request_bp = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_air_lifetime_added_bp = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_coverage_complete_day = global.date }
@@ -5491,95 +5497,95 @@ acid_rain_host_worker = {
 			acid_rain_try_severe_evolution = yes
 			acid_rain_try_multiple_fronts = yes
 			acid_rain_try_global_evolution = yes
-	}
-	if = {
-		limit = {
-			check_variable = {
-				var = global.acid_rain_phase
-				value = constant:acid_rain_phase.global_warning
-				compare = equals
-			}
 		}
-		acid_rain_try_global_evolution = yes
-	}
-	if = {
-		limit = {
-			has_global_flag = acid_rain_global_layer_active
-			check_variable = {
-				var = global.acid_rain_phase
-				value = constant:acid_rain_phase.global
-				compare = equals
-			}
-		}
-		acid_rain_process_superstorms = yes
-		acid_rain_pulse_global_states = yes
-		acid_rain_try_extra_superstorm = yes
-	}
-	acid_rain_try_weekly_air_request = yes
-	acid_rain_refresh_active_consequences = yes
-	for_each_scope_loop = {
-		array = global.acid_rain_participant_countries
-		acid_rain_project_country_obligations = yes
-		acid_rain_033_achievement_check_runtime_country = yes
-		# A player's open world map shows that player's own national strip, so
-		# refresh it here; the host refresh below projects the shared world view.
 		if = {
 			limit = {
-				is_ai = no
-				has_country_flag = acid_rain_gui_window_open
-				has_variable = acid_rain_gui_view_generation
-				check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
+				check_variable = {
+					var = global.acid_rain_phase
+					value = constant:acid_rain_phase.global_warning
+					compare = equals
+				}
 			}
-			acid_rain_gui_refresh_national_strip = yes
-		}
-	}
-	acid_rain_refresh_world_coverage = yes
-	acid_rain_gui_refresh_read_only = yes
-	if = {
-		limit = {
-			has_global_flag = acid_rain_runtime_active
-			NOT = { has_global_flag = acid_rain_dissipation_pending }
-			NOT = { has_global_flag = acid_rain_global_layer_active }
-			acid_rain_all_regions_are_complete = yes
+			acid_rain_try_global_evolution = yes
 		}
 		if = {
-			limit = { NOT = { has_global_flag = acid_rain_coverage_complete } }
-			set_global_flag = acid_rain_coverage_complete
-			set_variable = { global.acid_rain_coverage_complete_day = global.date }
-			set_variable = { global.acid_rain_dissipation_check_index = constant:acid_rain_runtime.zero }
-			set_variable = { global.acid_rain_next_dissipation_check_day = global.date }
-			set_temp_variable = { chaosx_date_days = constant:acid_rain_dissipation.ordinary_completion_wait_days }
-			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-			chaosx_convert_days_to_date_offset = yes
-			add_to_variable = { global.acid_rain_next_dissipation_check_day = chaosx_date_offset }
+			limit = {
+				has_global_flag = acid_rain_global_layer_active
+				check_variable = {
+					var = global.acid_rain_phase
+					value = constant:acid_rain_phase.global
+					compare = equals
+				}
+			}
+			acid_rain_process_superstorms = yes
+			acid_rain_pulse_global_states = yes
+			acid_rain_try_extra_superstorm = yes
+		}
+		acid_rain_try_weekly_air_request = yes
+		acid_rain_refresh_active_consequences = yes
+		for_each_scope_loop = {
+			array = global.acid_rain_participant_countries
+			acid_rain_project_country_obligations = yes
+			acid_rain_033_achievement_check_runtime_country = yes
+			# A player's open world map shows that player's own national strip, so
+			# refresh it here; the host refresh below projects the shared world view.
+			if = {
+				limit = {
+					is_ai = no
+					has_country_flag = acid_rain_gui_window_open
+					has_variable = acid_rain_gui_view_generation
+					check_variable = { var = acid_rain_gui_view_generation value = global.acid_rain_generation_id compare = equals }
+				}
+				acid_rain_gui_refresh_national_strip = yes
+			}
+		}
+		acid_rain_refresh_world_coverage = yes
+		acid_rain_gui_refresh_read_only = yes
+		if = {
+			limit = {
+				has_global_flag = acid_rain_runtime_active
+				NOT = { has_global_flag = acid_rain_dissipation_pending }
+				NOT = { has_global_flag = acid_rain_global_layer_active }
+				acid_rain_all_regions_are_complete = yes
+			}
+			if = {
+				limit = { NOT = { has_global_flag = acid_rain_coverage_complete } }
+				set_global_flag = acid_rain_coverage_complete
+				set_variable = { global.acid_rain_coverage_complete_day = global.date }
+				set_variable = { global.acid_rain_dissipation_check_index = constant:acid_rain_runtime.zero }
+				set_variable = { global.acid_rain_next_dissipation_check_day = global.date }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_dissipation.ordinary_completion_wait_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { global.acid_rain_next_dissipation_check_day = chaosx_date_offset }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals } }
+				acid_rain_try_dissipation_check = yes
+			}
 		}
 		if = {
-			limit = { check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals } }
+			limit = {
+				has_global_flag = acid_rain_global_layer_active
+				NOT = { has_global_flag = acid_rain_dissipation_pending }
+				check_variable = { var = global.date value = global.acid_rain_global_minimum_dissipation_day compare = greater_than_or_equals }
+				check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals }
+				check_variable = { var = global.acid_rain_total_touched_states value = global.acid_rain_total_valid_states compare = equals }
+			}
 			acid_rain_try_dissipation_check = yes
 		}
-	}
-	if = {
-		limit = {
-			has_global_flag = acid_rain_global_layer_active
-			NOT = { has_global_flag = acid_rain_dissipation_pending }
-			check_variable = { var = global.date value = global.acid_rain_global_minimum_dissipation_day compare = greater_than_or_equals }
-			check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals }
-			check_variable = { var = global.acid_rain_total_touched_states value = global.acid_rain_total_valid_states compare = equals }
+		if = {
+			limit = {
+				has_global_flag = acid_rain_dissipation_pending
+				check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals }
+			}
+			acid_rain_apply_dissipation_step = yes
 		}
-		acid_rain_try_dissipation_check = yes
-	}
-	if = {
-		limit = {
-			has_global_flag = acid_rain_dissipation_pending
-			check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals }
+		if = {
+			limit = { has_global_flag = acid_rain_runtime_active }
+			acid_rain_bind_host_and_schedule_worker = yes
 		}
-		acid_rain_apply_dissipation_step = yes
 	}
-	if = {
-		limit = { has_global_flag = acid_rain_runtime_active }
-		acid_rain_bind_host_and_schedule_worker = yes
-	}
-}
 }
 
 # END_EVENT033_HOST_RUNTIME
