@@ -9,8 +9,9 @@
 # adds a public atrocity condemnation entry for the current controller. The helper
 # never creates contamination, outbreak state, ordinary map resources, or
 # Event 018 cave state. The second half records abuses that stay hidden until
-# an audit, a disclosure, a published contract, an occupation or a records
-# raid by outsiders brings them to light.
+# an audit, a disclosure, a published contract, an occupation, a records raid
+# by outsiders or an accepted foreign inspection brings them to light; a
+# blocked inspection is a public cover-up of its own.
 # ============================================================================
 
 # STATE scope. Inputs: temporary riches_found_harm_deaths,
@@ -180,6 +181,31 @@ riches_found_record_predatory_prosperity_harm = {
 		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.predatory_prosperity_condemnation }
 		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
 		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope, once per mine, called just before a baseline permanent seal
+# closes the workings. Sealing during a severe collapse or a supernatural
+# crisis without a completed evacuation entombs the shift still below: one
+# bounded loss under the mine_violence reason (a deliberate act), a public
+# atrocity, a blow to Local Order and Revenue Legitimacy, and the end of The
+# Last Shift. An evacuated mine or an exhausted deposit is sealed without loss.
+riches_found_record_entombment_harm = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_entombment_harm_recorded }
+			riches_found_seal_would_entomb_workforce = yes
+		}
+		set_state_flag = riches_found_entombment_harm_recorded
+		set_state_flag = riches_found_workforce_entombed
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.entombment_civilian_deaths }
+		set_temp_variable = { riches_found_harm_reason = constant:chaos_meter_deaths_reason.mine_violence }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.entombment_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+		add_to_variable = { riches_found_local_order = constant:riches_found_harm.entombment_order_loss }
+		add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_harm.entombment_legitimacy_loss }
+		riches_found_clamp_mine_values = yes
 	}
 }
 
@@ -491,4 +517,57 @@ riches_found_expose_hidden_abuse = {
 	}
 	clear_variable = riches_found_hidden_gold_amount
 	clear_variable = riches_found_hidden_gold_holder
+}
+
+# STATE scope, from the foreign inspection-demand incident. A mine that still
+# holds hidden abuse records either opens its books (a public or state
+# administration, or one that disclosed its owners or published its contract),
+# which brings every record to light against the country that holds it, or
+# its controller turns the inspectors away, which is itself a public cover-up,
+# recorded once per mine. Output: temporary riches_found_incident_report_text
+# names the outcome for the report; a mine with nothing hidden keeps the
+# ordinary report.
+riches_found_resolve_inspection_demand = {
+	if = {
+		limit = { riches_found_mine_holds_hidden_abuse = yes }
+		if = {
+			limit = { riches_found_mine_opens_books_to_inspection = yes }
+			riches_found_expose_hidden_abuse = yes
+			set_temp_variable = { riches_found_incident_report_text = constant:riches_found_report_text.inspection_exposed }
+		}
+		else = {
+			riches_found_record_blocked_inspection = yes
+			set_temp_variable = { riches_found_incident_report_text = constant:riches_found_report_text.inspection_blocked }
+		}
+	}
+}
+
+# STATE scope, once per mine. The controller blocked a foreign inspection of
+# a mine with hidden abuses: one public cover-up source in its Condemnation.
+riches_found_record_blocked_inspection = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_blocked_inspection_recorded }
+			CONTROLLER = { exists = yes }
+		}
+		set_state_flag = riches_found_blocked_inspection_recorded
+		if = {
+			limit = { OWNER = { exists = yes } }
+			OWNER = { save_event_target_as = riches_found_blocked_inspection_victim }
+		}
+		CONTROLLER = {
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.coverup }
+			set_temp_variable = { condemnation_base_gain = constant:riches_found_hidden_abuse.blocked_inspection_gain }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_civilian_deaths = constant:riches_found_value.zero }
+			set_temp_variable = { condemnation_contamination_value = constant:riches_found_value.zero }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.blocked_inspection }
+			if = {
+				limit = { has_event_target = riches_found_blocked_inspection_victim }
+				set_temp_variable = { condemnation_victim_country = event_target:riches_found_blocked_inspection_victim }
+			}
+			condemnation_add_source = yes
+		}
+	}
 }

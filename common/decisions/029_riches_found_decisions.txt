@@ -5182,6 +5182,9 @@ decision_riches_found_permanent_seal = {
 			}
 
 			FROM = {
+				# A seal over trapped crews entombs them; read before the
+				# workings close.
+				riches_found_record_entombment_harm = yes
 				riches_found_permanently_seal_mine = yes
 			}
 			riches_found_reconcile_controller = yes
@@ -5201,6 +5204,8 @@ decision_riches_found_permanent_seal = {
 		modifier = { factor = constant:riches_found_decision_ai.urgent_factor FROM = { has_state_flag = riches_found_supernatural_crisis } }
 		modifier = { factor = constant:riches_found_decision_ai.high_factor has_government = democratic }
 		modifier = { factor = constant:riches_found_decision_ai.untried_containment_factor FROM = { NOT = { riches_found_ai_lesser_containment_tried = yes } } }
+		modifier = { factor = constant:riches_found_decision_ai.low_factor FROM = { riches_found_seal_would_entomb_workforce = yes } }
+		modifier = { factor = constant:riches_found_decision_ai.never_factor has_government = democratic FROM = { riches_found_seal_would_entomb_workforce = yes } }
 	}
 }
 

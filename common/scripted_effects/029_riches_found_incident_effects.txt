@@ -27,6 +27,7 @@ riches_found_reset_incident_deltas = {
 	set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_value.zero }
 	set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_report_text = constant:riches_found_value.zero }
 }
 
 # STATE scope. Commits one selected candidate and schedules the next bounded
@@ -97,6 +98,11 @@ riches_found_finish_incident = {
 	add_to_variable = { riches_found_next_incident_date = chaosx_date_offset }
 	riches_found_clamp_mine_values = yes
 	set_temp_variable = { riches_found_report_input_text = riches_found_incident_kind }
+	# An incident whose outcome has its own report text names it here.
+	if = {
+		limit = { check_variable = { riches_found_incident_report_text > constant:riches_found_value.zero } }
+		set_temp_variable = { riches_found_report_input_text = riches_found_incident_report_text }
+	}
 	riches_found_queue_report = yes
 }
 
@@ -606,6 +612,12 @@ riches_found_run_foreign_interference_pool = {
 			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_friendly } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_offer_assistance compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_offer_assistance } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_foreign_assistance_offer }
 		}
 		riches_found_record_foreign_interference_evidence = yes
+		# An inspection demand on a mine with hidden abuses either exposes them or
+		# is blocked by the controller.
+		if = {
+			limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.foreign_demand_inspection compare = equals } }
+			riches_found_resolve_inspection_demand = yes
+		}
 		# A hostile actor's operation stays active around the mine for a while,
 		# threatening shipments and blocking a safe sealing of the depths.
 		if = {

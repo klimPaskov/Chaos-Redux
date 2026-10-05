@@ -565,6 +565,55 @@ riches_found_uncompensated_seizure_has_cause = {
 	}
 }
 
+# STATE scope. Sealing the mine now would entomb the shift trapped below: the
+# workings are in a severe collapse or a supernatural crisis, the deposit is
+# not simply exhausted, and neither the workforce nor the district has been
+# evacuated.
+riches_found_seal_would_entomb_workforce = {
+	OR = {
+		has_state_flag = riches_found_severe_collapse
+		has_state_flag = riches_found_supernatural_crisis
+	}
+	NOT = { has_state_flag = riches_found_deposit_exhausted }
+	NOT = { has_state_flag = riches_found_workforce_evacuated }
+	NOT = { has_state_flag = riches_found_demons_district_evacuated }
+}
+
+# STATE scope. The mine still holds a hidden abuse record that has not come
+# to light.
+riches_found_mine_holds_hidden_abuse = {
+	OR = {
+		AND = {
+			has_variable = riches_found_hidden_security_holder
+			check_variable = { riches_found_hidden_security_amount > constant:riches_found_value.zero }
+		}
+		AND = {
+			has_variable = riches_found_hidden_records_holder
+			check_variable = { riches_found_hidden_records_amount > constant:riches_found_value.zero }
+		}
+		AND = {
+			has_variable = riches_found_hidden_corruption_holder
+			check_variable = { riches_found_hidden_corruption_amount > constant:riches_found_value.zero }
+		}
+		AND = {
+			has_variable = riches_found_hidden_gold_holder
+			check_variable = { riches_found_hidden_gold_amount > constant:riches_found_value.zero }
+		}
+	}
+}
+
+# STATE scope. The administration opens its books to a foreign inspection: it
+# runs the mine under a public or state policy, or it has already disclosed
+# the owners or published the contract.
+riches_found_mine_opens_books_to_inspection = {
+	OR = {
+		riches_found_policy_profile_public = yes
+		riches_found_policy_profile_state = yes
+		has_state_flag = riches_found_beneficial_owners_disclosed
+		has_state_flag = riches_found_contract_published
+	}
+}
+
 # STATE scope. The district over the opened depths has been evacuated or
 # purged, so outside help can work there.
 riches_found_demons_district_cleared = {
