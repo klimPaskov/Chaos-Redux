@@ -520,3 +520,14 @@ Decision:
 Basis: the spec's Part 5 achievement-farming rule (refunded transactions do not count) and D10 (refunds return the charged price). No payment, availability, or AI weight changes.
 
 Disposition: implemented (source).
+
+## D35. The Formation Ledger refreshes its family availability when a sale starts and ends
+
+Decision: `black_friday_price_table_refresh_owner_quotes` rebuilds the Event 019 Formation Ledger view (`infantry_spawn_muster_board_refresh_if_open`) on each participant in Evolution IV, right after its request cost refresh.
+The ledger caches each family's train, spawn, and sustainment availability (`infantry_spawn_muster_gui_family_can_train_entries`, `_can_spawn_entries`, and `_can_sustain_entries`) from the provider `_evaluate_management` effects, which compare the family prices since D30, and the "Meet the Family's Obligations" and anomalous request decisions read that cache.
+Without the refresh, a sale left the cache at the old price until the next weekly Event 019 pulse: a family affordable only at the sale price stayed unavailable for up to a week, and after the sale a decision could stay clickable for a payment the provider then refused.
+
+Basis: review of D30 for round 2. Event 019 already rebuilds the view inside `every_country` when it applies Evolution IV, and the rebuild keeps its own idle-transaction guard. Payments were never affected, because each provider re-evaluates the price at payment.
+No price, payment, credit, or AI weight changes.
+
+Disposition: implemented (source). The ledger's availability on the day a sale starts and ends is `needs_live_game`.

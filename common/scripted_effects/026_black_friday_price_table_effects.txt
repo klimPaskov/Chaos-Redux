@@ -3193,10 +3193,16 @@ black_friday_price_table_refresh_owner_quotes = {
 		limit = { has_country_flag = utopia_manifesto_accepted }
 		utopia_manifesto_refresh_dynamic_costs_for_sale = yes
 	}
-	# Event 019 scaled formation request costs
+	# Event 019 scaled formation request costs, and the Evolution IV Formation
+	# Ledger, whose cached family train, spawn, and sustainment availability
+	# compares the family prices (D30)
 	every_country = {
 		limit = { has_country_flag = infantry_spawn_participant }
 		infantry_spawn_refresh_request_costs = yes
+		if = {
+			limit = { infantry_spawn_has_evolution_iv = yes }
+			infantry_spawn_muster_board_refresh_if_open = yes
+		}
 	}
 	# Event 011 cached response costs
 	every_country = {
