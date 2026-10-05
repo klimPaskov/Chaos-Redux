@@ -500,3 +500,13 @@ Decision: D26's rule (an action that pays to obtain its outcome is a purchase; a
 Basis: lead decisions (2) and (3) for round 2, D26, and D18. The installed effect documentation lists `army_experience` and `add_command_power` as plain value effects, and the existing Event 019 payments already pass temp variables to both. No option trigger is added or removed, and no AI chance or weight changes.
 
 Disposition: implemented (source). Option tooltips, the deferred recheck, the trial and rally debits, and the credit during a sale are `needs_live_game`.
+
+## D33. Event 015's Fund appeals option is a purchase; Event 077's equipment gift is a transfer
+
+Decision:
+- `chaosx.nr15.46.a` (Fund appeals and rewrite the conduct rules) pays Political Power to fund the appeals and lower the district's Resistance Target, so under D32 it is a purchase. Its option trigger checks `global.black_friday_price_utopia_manifesto_decision_cost_pp_medium` with an inclusive `greater_than_or_equals` instead of a strict check on the ordinary constant, its payment negates the same global, its option text prints `[?global.black_friday_price_utopia_manifesto_decision_cost_pp_medium|0]` instead of the fixed 40, and its `hidden_effect` calls `black_friday_credit_political_power_purchase` after paying. The inclusive check matches the decision costs D11 converted, so a country holding exactly the shown price can take the option.
+- The five `chaosx.nr77.2` options (`.a`, `.b`, `.c`, `.e`, and `.f`; `.d` is the event description) send the chosen stockpile to the selected minor through `send_chosen_equipment`, which the minor receives one for one, so they are transfers under D11 and `not_a_purchase_cost` (registry BF-EVO-050 to BF-EVO-054).
+
+Basis: lead decision (2) for round 2, D26, D11, and D32. A scan of the converted owners' events (`005`, `010`, `011`, `013`, `015`, `018`, `019`, `020`) for options that pay a registered owner constant or a negative literal amount found only Fund appeals and the Event 019 incident options (D32); after this change no option in those events reads a constant the price table registers. The AI chance of `chaosx.nr15.46.a` is unchanged.
+
+Disposition: implemented (source). The option text amount and the sale debit are `needs_live_game`.
