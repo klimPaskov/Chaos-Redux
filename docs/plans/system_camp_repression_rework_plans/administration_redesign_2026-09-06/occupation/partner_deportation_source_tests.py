@@ -95,7 +95,13 @@ class ResponseRuntime(PartnerRuntime):
     def execute(self, block, scope, prev=None):
         pending = []
         for key, op, value in block:
-            if key in ('country_event', 'reverse_add_opinion_modifier', 'add_war_support', 'add_autonomy_ratio'):
+            if key == 'hidden_effect' and isinstance(value, list):
+                # Engine primitive: hidden_effect runs its body in the current scope.
+                if pending:
+                    super().execute(pending, scope, prev)
+                    pending = []
+                self.execute(value, scope, prev)
+            elif key in ('country_event', 'reverse_add_opinion_modifier', 'add_war_support', 'add_autonomy_ratio'):
                 if pending:
                     super().execute(pending, scope, prev)
                     pending = []
