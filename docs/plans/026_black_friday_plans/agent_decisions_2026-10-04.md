@@ -510,3 +510,13 @@ Decision:
 Basis: lead decision (2) for round 2, D26, D11, and D32. A scan of the converted owners' events (`005`, `010`, `011`, `013`, `015`, `018`, `019`, `020`) for options that pay a registered owner constant or a negative literal amount found only Fund appeals and the Event 019 incident options (D32); after this change no option in those events reads a constant the price table registers. The AI chance of `chaosx.nr15.46.a` is unchanged.
 
 Disposition: implemented (source). The option text amount and the sale debit are `needs_live_game`.
+
+## D34. Refunded purchases earn no achievement credit
+
+Decision:
+- `infantry_spawn_derivative_rally_zombie_band` (Event 019) credits the equipment family only in the `infantry_spawn_derivative_materialization_succeeded` branch, after the band materializes. The rollback branch refunds the charged manpower and equipment and no longer keeps a credit for them.
+- The three retired Mengele import decisions (`import_subjects_from_japanese_china`, `import_subjects_from_india`, and `import_subjects_from_africa`) no longer call `black_friday_credit_political_power_purchase`. They cannot be seen or taken (`allowed` and `visible` are `always = no`), and a stale completion refunds the charged price in the same `complete_effect`, so it buys nothing. D27's count of decisions that credit Political Power at the start of `complete_effect` is 269 after this change.
+
+Basis: the spec's Part 5 achievement-farming rule (refunded transactions do not count) and D10 (refunds return the charged price). No payment, availability, or AI weight changes.
+
+Disposition: implemented (source).

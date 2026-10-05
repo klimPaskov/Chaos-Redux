@@ -449,7 +449,7 @@ Every remaining positive native or custom cost has a per-owner disposition (agen
 | Event 028 | 0 | 16 | owner adoption pending |
 | Event 032 | 0 | 26 | owner adoption pending |
 | Fallout | 12 | 41 | owner adoption pending |
-| Germany Mengele (custom) | 0 | 4 | converted: native costs read the table (D5) and credit Political Power (D27); the four clone decisions read the sale through the BF-MEN adapters |
+| Germany Mengele (custom) | 0 | 4 | converted: native costs read the table (D5) and credit Political Power (D27), except the three retired import decisions, whose stale completion refunds the price and credits nothing (D34); the four clone decisions read the sale through the BF-MEN adapters |
 | Event 019 unit family providers | 0 | 0 | `chaos_unit_family_provider_511`, `_512`, `_513`, `_514`, `_518`, `_520`, `_521`, `_523`, and `_524` charge nothing (`not_a_purchase_cost`); the Event 016 providers `_504` to `_510` and `_522` pay (through `brilliant_scientist_event19_pay_project_force_management`, or the laser reserve for `_508`) and are 016 `owner adoption pending`; Event 019's own `_501` to `_503` read the price table in their checks, payments, refunds, and texts and credit one family per payment (D30) |
 ### Paid event options in owners queued to Event 26, 2026-10-05
 
