@@ -1295,6 +1295,20 @@ event021_settlement_terms_offer_open = {
 	check_variable = { var = global.date value = event021_settlement_terms_last_offer_date compare = less_than_or_equals }
 }
 
+# COUNTRY scope. Fractured Command is timed when one of the opening actions
+# gave it an end date that has not passed, and permanent when the side holds
+# it without one.
+event021_fractured_command_is_timed = {
+	has_idea = event021_fractured_command
+	has_variable = event021_fractured_command_until
+	check_variable = { var = event021_fractured_command_until value = global.date compare = greater_than }
+}
+
+event021_fractured_command_is_permanent = {
+	has_idea = event021_fractured_command
+	NOT = { event021_fractured_command_is_timed = yes }
+}
+
 # COUNTRY scope. True while a strange incident's practice or its strain is
 # still running on this side, so a side never holds two incidents at once.
 event021_strange_incident_active = {

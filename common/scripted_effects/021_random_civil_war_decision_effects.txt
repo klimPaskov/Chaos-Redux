@@ -28,16 +28,93 @@ event021_add_same_tag_claimant_leverage = {
 	}
 }
 
-event021_decision_secure_arsenals = {
-	set_country_flag = event021_arsenals_secured
-	set_country_flag = event021_arsenal_action_used
+# -----------------------------------------------------------------------------
+# Fractured Command timer
+# -----------------------------------------------------------------------------
+# Every side starts its crisis with a permanent Fractured Command. The opening
+# actions change it only through these helpers, so no action adds the idea on
+# top of itself. A timed penalty records its end date in
+# event021_fractured_command_until through the shared date converter, which
+# lets a later action extend or shorten the remaining time exactly.
+
+# COUNTRY scope. Input temp event021_fractured_command_days (positive days).
+# Replaces any Fractured Command with a timed one that ends after those days.
+event021_fractured_command_set_timed = {
 	if = {
 		limit = { has_idea = event021_fractured_command }
 		remove_ideas = event021_fractured_command
 	}
 	add_timed_idea = {
 		idea = event021_fractured_command
-		days = constant:event021_action_tuning.arsenal_idea_days
+		days = event021_fractured_command_days
+	}
+	set_variable = { event021_fractured_command_until = global.date }
+	set_temp_variable = { event021_date_offset = event021_fractured_command_days }
+	event021_days_to_date_offset = yes
+	add_to_variable = { event021_fractured_command_until = event021_date_offset }
+}
+
+# COUNTRY scope. Input temp event021_fractured_command_days (positive days).
+# Adds those days to a timed Fractured Command.
+event021_fractured_command_extend = {
+	if = {
+		limit = { event021_fractured_command_is_timed = yes }
+		modify_timed_idea = {
+			idea = event021_fractured_command
+			days = event021_fractured_command_days
+		}
+		set_temp_variable = { event021_date_offset = event021_fractured_command_days }
+		event021_days_to_date_offset = yes
+		add_to_variable = { event021_fractured_command_until = event021_date_offset }
+	}
+}
+
+# COUNTRY scope. Input temp event021_fractured_command_days (positive days).
+# Takes those days off a timed Fractured Command, ending it at once when no
+# more than that many whole days remain.
+event021_fractured_command_shorten = {
+	if = {
+		limit = { event021_fractured_command_is_timed = yes }
+		set_temp_variable = { chaosx_date_offset = event021_fractured_command_until }
+		subtract_from_temp_variable = { chaosx_date_offset = global.date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		if = {
+			limit = { check_variable = { var = chaosx_date_days value = event021_fractured_command_days compare = less_than_or_equals } }
+			event021_fractured_command_end = yes
+		}
+		else = {
+			set_temp_variable = { event021_fractured_command_change = constant:random_civil_war_value.zero }
+			subtract_from_temp_variable = { event021_fractured_command_change = event021_fractured_command_days }
+			modify_timed_idea = {
+				idea = event021_fractured_command
+				days = event021_fractured_command_change
+			}
+			set_temp_variable = { event021_date_offset = event021_fractured_command_days }
+			event021_days_to_date_offset = yes
+			subtract_from_variable = { event021_fractured_command_until = event021_date_offset }
+		}
+	}
+}
+
+# COUNTRY scope. Ends Fractured Command and its timer record.
+event021_fractured_command_end = {
+	if = {
+		limit = { has_idea = event021_fractured_command }
+		remove_ideas = event021_fractured_command
+	}
+	clear_variable = event021_fractured_command_until
+}
+
+# COUNTRY scope. Secure the Arsenals puts an end date on a permanent Fractured
+# Command and leaves a timed or absent one as it is.
+event021_decision_secure_arsenals = {
+	set_country_flag = event021_arsenals_secured
+	set_country_flag = event021_arsenal_action_used
+	if = {
+		limit = { event021_fractured_command_is_permanent = yes }
+		set_temp_variable = { event021_fractured_command_days = constant:event021_action_tuning.arsenal_idea_days }
+		event021_fractured_command_set_timed = yes
 	}
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.arsenal_pressure_relief }
 	event021_reduce_pressure = yes
@@ -51,10 +128,6 @@ event021_decision_secure_arsenals = {
 event021_decision_defend_capital = {
 	set_country_flag = event021_capital_defense_active
 	set_country_flag = event021_capital_action_used
-	add_timed_idea = {
-		idea = event021_fractured_command
-		days = constant:event021_action_tuning.capital_idea_days
-	}
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.capital_authority_gain }
 	event021_add_authority = yes
 	set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.capital_gain }
@@ -85,9 +158,31 @@ event021_decision_review_loyalty = {
 		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.loyalty_authority_gain }
 		event021_add_authority = yes
 	}
-	add_timed_idea = {
-		idea = event021_fractured_command
-		days = constant:event021_action_tuning.loyalty_idea_days
+	# Indiscriminate arrests lengthen a timed Fractured Command or bring it
+	# back, and leave a permanent one in place. A careful review puts an end
+	# date on a permanent one or brings a timed one closer.
+	if = {
+		limit = { has_country_flag = random_civil_war_hardliner_profile }
+		if = {
+			limit = { event021_fractured_command_is_timed = yes }
+			set_temp_variable = { event021_fractured_command_days = constant:event021_action_tuning.loyalty_extend_days }
+			event021_fractured_command_extend = yes
+		}
+		else_if = {
+			limit = { NOT = { has_idea = event021_fractured_command } }
+			set_temp_variable = { event021_fractured_command_days = constant:event021_action_tuning.loyalty_idea_days }
+			event021_fractured_command_set_timed = yes
+		}
+	}
+	else_if = {
+		limit = { event021_fractured_command_is_permanent = yes }
+		set_temp_variable = { event021_fractured_command_days = constant:event021_action_tuning.loyalty_idea_days }
+		event021_fractured_command_set_timed = yes
+	}
+	else_if = {
+		limit = { event021_fractured_command_is_timed = yes }
+		set_temp_variable = { event021_fractured_command_days = constant:event021_action_tuning.loyalty_shorten_days }
+		event021_fractured_command_shorten = yes
 	}
 	set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.loyalty_gain }
 	event021_add_same_tag_government_leverage = yes
@@ -200,10 +295,7 @@ event021_decision_integrate_formations = {
 	event021_reduce_pressure = yes
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.integration_authority_gain }
 	event021_add_authority = yes
-	if = {
-		limit = { has_idea = event021_fractured_command }
-		remove_ideas = event021_fractured_command
-	}
+	event021_fractured_command_end = yes
 	set_temp_variable = { event021_same_tag_leverage_delta = constant:event021_same_tag_tuning.integration_gain }
 	event021_add_same_tag_government_leverage = yes
 	event021_refresh_country_state = yes
@@ -790,6 +882,8 @@ event021_clear_crisis_action_receipts = {
 	clr_country_flag = event021_disarmament_action_used
 	clr_country_flag = event021_coalition_action_used
 	clr_country_flag = event021_prevention_communications_used
+	# A crisis starts with a permanent Fractured Command, never an old timer.
+	clear_variable = event021_fractured_command_until
 }
 
 event021_cleanup_decision_state = {
