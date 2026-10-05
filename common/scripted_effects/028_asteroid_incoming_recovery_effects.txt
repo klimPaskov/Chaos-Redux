@@ -1530,6 +1530,8 @@ asteroid_incoming_regional_mission_failure = {
 # While a failed mission's burden window runs, the national idea and the
 # closeout stay untouched; the normal legacy, burden or closeout logic resumes
 # on the first pass after it ends.
+# A country that rebuilt its regional economy keeps the recovery legacy after
+# its last local burden ends; annexation clears that completion flag.
 # The monthly pass reaches this through every_country, so ROOT is not used.
 asteroid_incoming_refresh_national_recovery = {
 	if = {
@@ -1558,15 +1560,24 @@ asteroid_incoming_refresh_national_recovery = {
 			}
 			else = { add_ideas = asteroid_incoming_recovery_burden }
 		}
-		else_if = {
-			limit = {
-				has_country_flag = asteroid_incoming_affected_country
-				has_global_flag = asteroid_incoming_impact_recorded
-				NOT = { has_country_flag = asteroid_incoming_recovery_closeout_sent }
-				NOT = { has_country_flag = asteroid_incoming_recovery_closeout_pending }
+		else = {
+			# Rebuild the Regional Economy leaves a lasting legacy that
+			# outlives the local burdens and the closeout report. Other
+			# mission legacies end with the burden they replaced.
+			if = {
+				limit = { has_country_flag = asteroid_incoming_regional_economy_complete }
+				add_ideas = asteroid_incoming_recovery_legacy
 			}
-			set_country_flag = asteroid_incoming_recovery_closeout_pending
-			country_event = { id = chaosx.nr28.6 }
+			if = {
+				limit = {
+					has_country_flag = asteroid_incoming_affected_country
+					has_global_flag = asteroid_incoming_impact_recorded
+					NOT = { has_country_flag = asteroid_incoming_recovery_closeout_sent }
+					NOT = { has_country_flag = asteroid_incoming_recovery_closeout_pending }
+				}
+				set_country_flag = asteroid_incoming_recovery_closeout_pending
+				country_event = { id = chaosx.nr28.6 }
+			}
 		}
 	}
 }

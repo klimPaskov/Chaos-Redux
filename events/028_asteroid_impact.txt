@@ -503,7 +503,15 @@ country_event = {
 		clr_country_flag = asteroid_incoming_recovery_closeout_pending
 		set_country_flag = asteroid_incoming_recovery_closeout_sent
 		remove_ideas = asteroid_incoming_recovery_burden
-		remove_ideas = asteroid_incoming_recovery_legacy
+		# The Regional Economy legacy is lasting; other legacies end here.
+		if = {
+			limit = { has_country_flag = asteroid_incoming_regional_economy_complete }
+			if = {
+				limit = { NOT = { has_idea = asteroid_incoming_recovery_legacy } }
+				add_ideas = asteroid_incoming_recovery_legacy
+			}
+		}
+		else = { remove_ideas = asteroid_incoming_recovery_legacy }
 	}
 
 	option = {
