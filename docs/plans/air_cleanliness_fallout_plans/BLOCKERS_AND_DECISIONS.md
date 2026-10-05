@@ -303,12 +303,16 @@ Implemented second tranche (agent decision A10 in `agent_decisions_2026-10-04.md
 - naming a recent severe burner, which bans it and enters it into the violator ledger
 - Fallout-era treaty memory: member recognition and cohesion, violator distrust, seed archive food, and a Warlord Command push for named burners
 
+Implemented third tranche (agent decision A19 in `agent_decisions_2026-10-04.md`):
+
+- pooled treaty decontamination: the sponsor pays the first share, other members pledge shares by event, the brigade cleans one Phase 3 or worse state in proportion to its shares, and every share returns on ordinary cancellation or when too few members pay
+- member relief votes with ballots, a live-member count, delivered relief from yes voters, and stability and opinion consequences for a failed vote
+- the Clean Day betrayal for a pooled brigade or filter convoy that ends in a violator-owned state: the aid is lost and the violator gains Condemnation and loses its relief routes
+
 Still required:
 
-- pooled treaty decontamination with approved sponsor, recipient, cancellation, and refund rules
 - broader manually reviewed treaty event families
-- member relief votes
-- runtime observation of target scope, delayed results, sanctions, corridor population read-back, and route pressure
+- runtime observation of target scope, delayed results, sanctions, corridor population read-back, route pressure, pledges, ballots, and the betrayal hooks
 
 ### D3: three-layer focus architecture
 
@@ -402,7 +406,7 @@ Possible uses:
 
 The implemented Joint Filter Convoy already changes live Air Winter exposure, adaptation, shelter, recovery, and survival values. The Fallout snapshot later freezes those ordinary Air Winter values, so a completed route can influence the frozen state indirectly.
 
-Disposition: implemented for the memory values (agent decision A10). `fallout_treaty_apply_survivor_memory` gives former members Recognition and Cohesion, banned countries a Recognition loss, and seed archive holders Food, once per generation at the first orientation step. A post-Fallout reconstruction diplomacy route for former members remains unresolved.
+Disposition: implemented for the memory values (agent decision A10). `fallout_treaty_apply_survivor_memory` gives former members Recognition and Cohesion, banned countries a Recognition loss, and seed archive holders Food, once per generation at the first orientation step. The post-Fallout reconstruction diplomacy route is implemented under agent decision A19: former members that survive the Fallout can reconvene the treaty secretariat with another surviving former member as a reconstruction compact.
 
 ## P5: ordinary world-end documentation
 

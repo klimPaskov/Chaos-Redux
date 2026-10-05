@@ -302,6 +302,7 @@ Implemented in the Air Winter tranche:
 - Four monitoring levels across the Air Winter mapmode tooltip.
 - A bounded Air Cleanliness Treaty lifecycle with deterministic formation, invitation receipts, violation memory, and non-periodic annex cleanup.
 - A paid Joint Filter Convoy that applies existing response values to one exact Phase 3 or worse priority state and opens a pressure-reducing relief route for up to six months.
+- The treaty operations of baseline spec 02 (Shared Sampling Grid, Seed Archive Exchange, Evacuation Corridor, and naming a burner), a pooled decontamination brigade for one Phase 3 or worse state with refunds on cancellation, member relief votes for a Phase 4 or worse state, the Clean Day betrayal for cleaning operations that end in a violator-owned state, and a post-Fallout reconstruction compact between surviving former members. `air_cleanliness_treaty.md` documents each one.
 - A paid secretariat Verification Mission that offers full access, records-only access, or refusal, then returns an exact seven-day result with government-aware AI and durable memory. Refusal enforces the accepted treaty expulsion, relief-loss, opinion, and embargo consequences without changing Winter or Fallout tuning formulas.
 - Invalid treaty routes reconcile before the monthly state pressure pass. Membership loss, annexation, dissolution, and Fallout release active donor projects and exact state reservations through bounded receipts.
 - Membership loss, war, founder succession, annexation, dissolution, schema migration, and Fallout release paired inspection receipts through a separate bounded cancellation queue.
@@ -313,7 +314,7 @@ Implemented in the Air Winter tranche:
 
 Incomplete and not claimed:
 
-- The wider treaty catalogue remains incomplete. Pooled decontamination, seed archive exchange, evacuation corridors, relief votes, major-burner sanctions, and forecast precision beyond shared basic sampling are not implemented.
+- The wider treaty catalogue remains incomplete. Forecast precision beyond the Shared Sampling Grid and the broader manually reviewed treaty event families are not implemented.
 - Seed-ledger outcomes do not change post-Fallout food recovery. That consumer depends on the approval-gated Fallout numerical contract and remains unimplemented.
 - Island-refugee policy and migration memories do not yet feed post-Fallout focuses, successor identity, or migration allocation. Those consumers remain part of the incomplete Fallout country packages and rewrite.
 - Additional local Air Winter pressure from active ordinary land combat and an additional winter multiplier on recent strategic-bombing pressure or deaths. Chaos already routes strategic-bombing deaths separately. General air operations use the documented country-scoped aggregate, while exact regional confinement remains unavailable through runtime dynamic modifiers.

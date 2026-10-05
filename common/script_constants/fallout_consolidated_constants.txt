@@ -221,6 +221,9 @@ air_cleanliness_treaty_operation_id = {
 	seed_archive = 2
 	evacuation = 3
 	sanction = 4
+	pooled_decon = 5
+	relief_vote = 6
+	filter_convoy = 7
 }
 
 # AI weights for the treaty operations, following the spec 02 AI table.
@@ -46739,3 +46742,111 @@ fallout_event_1151_log = {
 	upper_bound = 100
 }
 
+# ============================================================================
+# Air Cleanliness Treaty joint actions (agent decision A19)
+# ============================================================================
+# Pooled decontamination, member relief votes, the Clean Day betrayal, and the
+# post-Fallout treaty reconstruction compact.
+
+air_cleanliness_treaty_joint_action = {
+	schema = { any_key = yes data = int }
+
+	zero = 0
+	one = 1
+
+	pooled_decon_duration_days = 60
+	pooled_decon_cooldown_days = 180
+	pooled_decon_civilian_factories = 1
+	pooled_decon_share_support = 60
+	pooled_decon_share_fuel = 2000
+	pooled_decon_minimum_shares = 2
+	pooled_decon_maximum_shares = 4
+	pooled_decon_exposure_per_share = 8
+	pooled_decon_disease_per_share = 5
+	pooled_decon_recovery_per_share = 4
+	pooled_decon_reclamation_per_share = 3
+	pooled_decon_result_cleaned = 1
+	pooled_decon_result_unassembled = 2
+
+	relief_vote_duration_days = 21
+	relief_vote_cooldown_days = 120
+	relief_vote_recipient_cooldown_days = 180
+	relief_vote_political_power = 25
+	relief_vote_minimum_yes = 2
+	relief_vote_pledge_support = 30
+	relief_vote_maximum_pledges = 4
+	relief_vote_shelter_per_pledge = 5
+	relief_vote_food_per_pledge = 6
+	relief_vote_disease_per_pledge = 4
+	relief_vote_refugee_per_pledge = 3
+	relief_vote_result_approved = 1
+	relief_vote_result_rejected = 2
+	ballot_abstain = 0
+	ballot_yes = 1
+	ballot_no = 2
+
+	betrayal_condemnation_gain = 10
+	betrayal_condemnation_window_days = 90
+
+	reconstruction_duration_days = 90
+	reconstruction_political_power = 35
+	reconstruction_recognition_cost = 5
+	reconstruction_recognition_gain = 8
+	reconstruction_partner_recognition_gain = 5
+	reconstruction_cohesion_gain = 4
+	reconstruction_compact_days = 365
+	reconstruction_refusal_days = 365
+	reconstruction_result_signed = 1
+	reconstruction_result_refused = 2
+}
+
+air_cleanliness_treaty_joint_action_value = {
+	schema = { any_key = yes data = fixed_point }
+
+	relief_vote_rejected_stability = -0.02
+	reconstruction_compact_stability = 0.04
+	reconstruction_compact_construction = 0.10
+}
+
+# AI weights for the joint actions. Decision weights multiply a base; event
+# option weights are relative chances inside one event.
+air_cleanliness_treaty_joint_action_ai = {
+	schema = { any_key = yes data = fixed_point }
+
+	pooled_decon_base = 3
+	pooled_decon_democratic_factor = 1.5
+	pooled_decon_own_state_factor = 2
+	pooled_decon_ash_winter_factor = 1.5
+	pooled_decon_war_factor = 0.4
+	pledge_yes_base = 50
+	pledge_yes_democratic_factor = 1.5
+	pledge_yes_war_factor = 0.4
+	pledge_yes_own_crisis_factor = 0.5
+	pledge_yes_friendly_factor = 1.5
+	pledge_no_base = 40
+	relief_vote_base = 2
+	relief_vote_own_state_factor = 2
+	relief_vote_democratic_factor = 1.3
+	relief_vote_war_factor = 0.5
+	vote_yes_base = 50
+	vote_yes_democratic_factor = 1.4
+	vote_yes_friendly_factor = 1.5
+	vote_yes_own_crisis_factor = 0.6
+	vote_no_base = 25
+	vote_no_fascist_factor = 2
+	vote_no_own_crisis_factor = 1.8
+	vote_no_hostile_factor = 2
+	vote_abstain_base = 25
+	vote_abstain_war_factor = 2
+	friendly_opinion = 25
+	hostile_opinion = -10
+	reconstruction_base = 5
+	reconstruction_friendly_factor = 1.5
+	reconstruction_war_factor = 0.3
+	reconstruction_accept_base = 60
+	reconstruction_accept_friendly_factor = 1.5
+	reconstruction_accept_war_factor = 0.6
+	reconstruction_accept_democratic_factor = 1.3
+	reconstruction_refuse_base = 30
+	reconstruction_refuse_hostile_factor = 3
+}

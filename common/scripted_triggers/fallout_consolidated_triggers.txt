@@ -37391,3 +37391,269 @@ fallout_event_1151_requested_branch_is_affordable = {
 	else_if = { limit = { check_variable = { var = fallout_event_1151_requested_branch value = constant:fallout_event_1151_branch.floodgates compare = equals } } fallout_event_1151_floodgates_affordable = yes }
 }
 
+# ============================================================================
+# Air Cleanliness Treaty joint actions (agent decision A19)
+# ============================================================================
+# Pooled decontamination, member relief votes, the Clean Day betrayal, and the
+# post-Fallout treaty reconstruction compact. One pooled brigade and one relief
+# vote can run at a time across the whole treaty, so their receipts live on
+# global variables keyed by a transaction counter.
+
+# Supported scope: COUNTRY. A banned country or a listed treaty violator.
+air_cleanliness_treaty_country_is_listed_violator = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_banned
+		is_in_array = { array = global.air_cleanliness_treaty_violators value = THIS }
+	}
+}
+
+# Supported scope: STATE. PREV is the recipient member. A Phase 3 or worse
+# state the recipient owns and controls that no treaty operation has reserved.
+air_cleanliness_treaty_state_can_host_pooled_decon = {
+	air_winter_state_is_valid = yes
+	check_variable = { var = air_winter_phase value = constant:air_winter_phase.hard_freeze compare = greater_than_or_equals }
+	is_owned_by = PREV
+	is_controlled_by = PREV
+	NOT = { has_state_flag = air_cleanliness_treaty_pooled_decon_reserved }
+	NOT = { has_state_flag = air_cleanliness_treaty_evacuation_reserved }
+	NOT = { has_state_flag = air_cleanliness_treaty_filter_convoy_reserved }
+}
+
+# Supported scope: COUNTRY, the recipient.
+air_cleanliness_treaty_country_can_receive_pooled_decon = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_variable = air_winter_response_priority_state
+	var:air_winter_response_priority_state = { air_cleanliness_treaty_state_can_host_pooled_decon = yes }
+}
+
+# Supported scope: COUNTRY. One share of a pooled decontamination brigade.
+air_cleanliness_treaty_can_pay_pooled_decon_share = {
+	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_joint_action.pooled_decon_share_support } }
+	NOT = { has_fuel < constant:air_cleanliness_treaty_joint_action.pooled_decon_share_fuel }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM the recipient, which
+# may be the sponsor itself.
+air_cleanliness_treaty_can_start_pooled_decon = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	NOT = { has_global_flag = air_cleanliness_treaty_pooled_decon_in_progress }
+	NOT = { has_global_flag = air_cleanliness_treaty_pooled_decon_cooldown }
+	FROM = {
+		exists = yes
+		air_cleanliness_treaty_country_can_receive_pooled_decon = yes
+	}
+	NOT = { has_war_with = FROM }
+	air_cleanliness_treaty_can_pay_pooled_decon_share = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_joint_action.pooled_decon_civilian_factories }
+}
+
+# Supported scope: COUNTRY. ROOT is the sponsor and FROM the decision target.
+air_cleanliness_treaty_pooled_decon_project_is_valid = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	has_country_flag = air_cleanliness_treaty_pooled_decon_sponsor
+	has_global_flag = air_cleanliness_treaty_pooled_decon_in_progress
+	has_variable = air_cleanliness_treaty_pooled_decon_transaction
+	has_variable = global.air_cleanliness_treaty_pooled_decon_transaction
+	has_variable = global.air_cleanliness_treaty_pooled_decon_recipient
+	has_variable = global.air_cleanliness_treaty_pooled_decon_state
+	has_variable = global.air_cleanliness_treaty_pooled_decon_generation
+	check_variable = { var = air_cleanliness_treaty_pooled_decon_transaction value = global.air_cleanliness_treaty_pooled_decon_transaction compare = equals }
+	check_variable = { var = global.air_cleanliness_treaty_pooled_decon_recipient value = FROM compare = equals }
+	check_variable = { var = global.air_cleanliness_treaty_pooled_decon_generation value = global.air_cleanliness_treaty_generation compare = equals }
+	FROM = { air_cleanliness_treaty_country_is_live_member = yes }
+	NOT = { has_war_with = FROM }
+	var:global.air_cleanliness_treaty_pooled_decon_state = {
+		air_winter_state_is_valid = yes
+		is_owned_by = FROM
+		is_controlled_by = FROM
+		has_state_flag = air_cleanliness_treaty_pooled_decon_reserved
+	}
+}
+
+# Supported scope: COUNTRY, the sponsor. The brigade's state now belongs to a
+# treaty violator: the Clean Day betrayal.
+air_cleanliness_treaty_pooled_decon_state_is_betrayed = {
+	has_country_flag = air_cleanliness_treaty_pooled_decon_sponsor
+	has_variable = global.air_cleanliness_treaty_pooled_decon_state
+	var:global.air_cleanliness_treaty_pooled_decon_state = {
+		OWNER = {
+			exists = yes
+			air_cleanliness_treaty_country_is_listed_violator = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY, the donor. The convoy's state now belongs to a
+# treaty violator: the Clean Day betrayal.
+air_cleanliness_treaty_filter_convoy_state_is_betrayed = {
+	has_country_flag = air_cleanliness_treaty_filter_convoy_project_active
+	has_variable = air_cleanliness_treaty_filter_convoy_state
+	var:air_cleanliness_treaty_filter_convoy_state = {
+		OWNER = {
+			exists = yes
+			air_cleanliness_treaty_country_is_listed_violator = yes
+		}
+	}
+}
+
+# Supported scope: COUNTRY, a member asked to pledge one share.
+air_cleanliness_treaty_pooled_decon_pledge_is_open = {
+	has_global_flag = air_cleanliness_treaty_pooled_decon_in_progress
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_pooled_decon_sponsor }
+	has_variable = air_cleanliness_treaty_pooled_decon_pledge_transaction
+	has_variable = global.air_cleanliness_treaty_pooled_decon_transaction
+	check_variable = { var = air_cleanliness_treaty_pooled_decon_pledge_transaction value = global.air_cleanliness_treaty_pooled_decon_transaction compare = equals }
+	check_variable = { var = global.air_cleanliness_treaty_pooled_decon_shares value = constant:air_cleanliness_treaty_joint_action.pooled_decon_maximum_shares compare = less_than }
+	NOT = { is_in_array = { array = global.air_cleanliness_treaty_pooled_decon_contributors value = THIS } }
+}
+
+# Supported scope: COUNTRY, the recipient of a relief vote.
+air_cleanliness_treaty_country_can_receive_relief_vote = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	NOT = { has_country_flag = air_cleanliness_treaty_relief_vote_recent_target }
+	has_variable = air_winter_response_priority_state
+	var:air_winter_response_priority_state = {
+		air_winter_state_is_valid = yes
+		check_variable = { var = air_winter_phase value = constant:air_winter_phase.black_harvest compare = greater_than_or_equals }
+		is_owned_by = PREV
+		is_controlled_by = PREV
+	}
+}
+
+# Supported scope: COUNTRY. ROOT calls the vote and FROM is the recipient,
+# which may be ROOT itself.
+air_cleanliness_treaty_can_call_relief_vote = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	NOT = { has_global_flag = air_cleanliness_treaty_relief_vote_open }
+	NOT = { has_country_flag = air_cleanliness_treaty_relief_vote_cooldown }
+	FROM = {
+		exists = yes
+		air_cleanliness_treaty_country_can_receive_relief_vote = yes
+	}
+	NOT = { has_war_with = FROM }
+}
+
+# Supported scope: COUNTRY. ROOT called the vote and FROM is its recipient.
+air_cleanliness_treaty_relief_vote_is_valid = {
+	air_cleanliness_treaty_country_is_live_member = yes
+	air_cleanliness_treaty_operation_phase_is_open = yes
+	has_country_flag = air_cleanliness_treaty_relief_vote_caller
+	has_global_flag = air_cleanliness_treaty_relief_vote_open
+	has_variable = air_cleanliness_treaty_relief_vote_transaction
+	has_variable = global.air_cleanliness_treaty_relief_vote_transaction
+	has_variable = global.air_cleanliness_treaty_relief_vote_recipient
+	has_variable = global.air_cleanliness_treaty_relief_vote_state
+	has_variable = global.air_cleanliness_treaty_relief_vote_generation
+	check_variable = { var = air_cleanliness_treaty_relief_vote_transaction value = global.air_cleanliness_treaty_relief_vote_transaction compare = equals }
+	check_variable = { var = global.air_cleanliness_treaty_relief_vote_recipient value = FROM compare = equals }
+	check_variable = { var = global.air_cleanliness_treaty_relief_vote_generation value = global.air_cleanliness_treaty_generation compare = equals }
+	FROM = { air_cleanliness_treaty_country_is_live_member = yes }
+	NOT = { has_war_with = FROM }
+	var:global.air_cleanliness_treaty_relief_vote_state = {
+		air_winter_state_is_valid = yes
+		is_owned_by = FROM
+		is_controlled_by = FROM
+	}
+}
+
+# Supported scope: COUNTRY, a member holding an unanswered ballot.
+air_cleanliness_treaty_relief_ballot_is_open = {
+	has_global_flag = air_cleanliness_treaty_relief_vote_open
+	air_cleanliness_treaty_country_is_live_member = yes
+	has_variable = air_cleanliness_treaty_relief_ballot_transaction
+	has_variable = global.air_cleanliness_treaty_relief_vote_transaction
+	check_variable = { var = air_cleanliness_treaty_relief_ballot_transaction value = global.air_cleanliness_treaty_relief_vote_transaction compare = equals }
+}
+
+# Supported scope: COUNTRY. Its own emergency priority state is in Air Winter
+# phase 4 or worse, so it needs relief more than it can give it.
+air_cleanliness_treaty_country_has_own_crisis = {
+	has_variable = air_winter_response_priority_state
+	var:air_winter_response_priority_state = {
+		air_winter_state_is_valid = yes
+		check_variable = { var = air_winter_phase value = constant:air_winter_phase.black_harvest compare = greater_than_or_equals }
+		is_owned_by = PREV
+	}
+}
+
+# Supported scope: COUNTRY. A Fallout survivor that was a treaty member and was
+# never banned.
+fallout_treaty_country_has_reconstruction_memory = {
+	has_country_flag = air_cleanliness_treaty_ever_member
+	NOT = { has_country_flag = air_cleanliness_treaty_banned }
+}
+
+# Supported scope: COUNTRY. A current Fallout survivor with treaty memory and
+# a loaded survival account.
+fallout_treaty_reconstruction_is_open = {
+	has_global_flag = fallout_active
+	NOT = { has_global_flag = fallout_transition_active }
+	fallout_event_registry_country_row_is_current = yes
+	fallout_treaty_country_has_reconstruction_memory = yes
+	check_variable = { var = fallout_survival_current_entries^num value = constant:fallout_survival_resource.upper_bound compare = equals }
+}
+
+# Supported scope: COUNTRY. ROOT can pay for the reconstruction compact.
+fallout_treaty_can_pay_reconstruction = {
+	NOT = { has_political_power < constant:air_cleanliness_treaty_joint_action.reconstruction_political_power }
+	check_variable = { var = fallout_survival_current_entries^9 value = constant:air_cleanliness_treaty_joint_action.reconstruction_recognition_cost compare = greater_than_or_equals }
+}
+
+# Supported scope: COUNTRY. FROM is another survivor that also remembers the
+# treaty, at peace with ROOT and without a compact or a recent refusal.
+fallout_treaty_reconstruction_partner_is_valid = {
+	FROM = {
+		exists = yes
+		NOT = { tag = ROOT }
+		fallout_treaty_reconstruction_is_open = yes
+		has_capitulated = no
+		NOT = { has_war_with = ROOT }
+		NOT = { has_country_flag = fallout_treaty_reconstruction_with_@ROOT }
+	}
+	NOT = { has_country_flag = fallout_treaty_reconstruction_refused_by_@FROM }
+}
+
+# Supported scope: COUNTRY. ROOT may open a reconstruction proposal to FROM.
+fallout_treaty_can_propose_reconstruction = {
+	fallout_treaty_reconstruction_is_open = yes
+	NOT = { has_country_flag = fallout_treaty_reconstruction_proposal_active }
+	fallout_treaty_reconstruction_partner_is_valid = yes
+	fallout_treaty_can_pay_reconstruction = yes
+}
+
+# Supported scope: COUNTRY. ROOT proposed and FROM is the decision target.
+fallout_treaty_reconstruction_proposal_is_valid = {
+	fallout_treaty_reconstruction_is_open = yes
+	has_country_flag = fallout_treaty_reconstruction_proposal_active
+	NOT = { has_country_flag = fallout_treaty_reconstruction_partner_refused }
+	has_variable = fallout_treaty_reconstruction_partner
+	has_variable = fallout_treaty_reconstruction_generation
+	check_variable = { var = fallout_treaty_reconstruction_partner value = FROM compare = equals }
+	check_variable = { var = fallout_treaty_reconstruction_generation value = global.fallout_transition_generation compare = equals }
+	FROM = {
+		exists = yes
+		fallout_treaty_reconstruction_is_open = yes
+		has_capitulated = no
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+# Supported scope: COUNTRY, the partner answering a proposal. The proposer is
+# read back from the partner's stored proposal variable.
+fallout_treaty_reconstruction_answer_is_open = {
+	fallout_treaty_reconstruction_is_open = yes
+	has_variable = fallout_treaty_reconstruction_proposer
+	var:fallout_treaty_reconstruction_proposer = {
+		exists = yes
+		has_country_flag = fallout_treaty_reconstruction_proposal_active
+		NOT = { has_country_flag = fallout_treaty_reconstruction_partner_accepted }
+		NOT = { has_country_flag = fallout_treaty_reconstruction_partner_refused }
+		has_variable = fallout_treaty_reconstruction_partner
+		check_variable = { var = fallout_treaty_reconstruction_partner value = ROOT compare = equals }
+		NOT = { has_war_with = ROOT }
+	}
+}

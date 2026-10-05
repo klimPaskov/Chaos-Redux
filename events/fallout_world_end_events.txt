@@ -2,6 +2,8 @@
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_AIR_WINTER_EVENT_OUTCOME_INFRASTRUCTURE_DAMAGE = 0.50
 @CR_SC_AIR_WINTER_EVENT_OUTCOME_RAIL_DAMAGE = 0.50
+@CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_FRIENDLY_OPINION = 25
+@CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_HOSTILE_OPINION = -10
 # ============================================================================
 # CHAOS REDUX - FALLOUT AND AIR CLEANLINESS EVENTS
 # Fallout is a consequence coordinator. These are internal callbacks and Air Winter reports.
@@ -463,6 +465,26 @@ country_event = {
 		}
 		text = chaosx_air_treaty.14.sanction.d
 	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.pooled_decon
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.pooled_decon.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_withdrawn_operation
+				value = constant:air_cleanliness_treaty_operation_id.relief_vote
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.14.relief_vote.d
+	}
 	picture = GFX_report_event_generic_sign_treaty1
 	is_triggered_only = yes
 
@@ -480,6 +502,477 @@ country_event = {
 	option = {
 		name = chaosx_air_treaty.15.a
 		custom_effect_tooltip = chaosx_air_treaty.15.a.tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Treaty joint actions (agent decision A19). The joint action effects save the
+# regular event targets these reports name; requests rebuild them from the
+# current brigade, vote, or proposal so a late answer still names the right
+# countries.
+# ---------------------------------------------------------------------------
+
+# A member asks the treaty to pool a decontamination brigade.
+country_event = {
+	id = chaosx_air_treaty.16
+	title = chaosx_air_treaty.16.t
+	desc = chaosx_air_treaty.16.d
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_pooled_decon_sponsor }
+			var:global.air_cleanliness_treaty_pooled_decon_sponsor = { save_event_target_as = air_cleanliness_treaty_pooled_decon_sponsor }
+		}
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_pooled_decon_recipient }
+			var:global.air_cleanliness_treaty_pooled_decon_recipient = { save_event_target_as = air_cleanliness_treaty_pooled_decon_recipient }
+		}
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_pooled_decon_state }
+			var:global.air_cleanliness_treaty_pooled_decon_state = { save_event_target_as = air_cleanliness_treaty_pooled_decon_state }
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.16.a
+		trigger = {
+			air_cleanliness_treaty_pooled_decon_pledge_is_open = yes
+			air_cleanliness_treaty_can_pay_pooled_decon_share = yes
+		}
+		custom_effect_tooltip = chaosx_air_treaty.16.a.tt
+		hidden_effect = { air_cleanliness_treaty_pledge_pooled_decon_share = yes }
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.pledge_yes_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.pledge_yes_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.pledge_yes_war_factor
+				has_war = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.pledge_yes_own_crisis_factor
+				air_cleanliness_treaty_country_has_own_crisis = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.pledge_yes_friendly_factor
+				has_event_target = air_cleanliness_treaty_pooled_decon_recipient
+				has_opinion = { target = event_target:air_cleanliness_treaty_pooled_decon_recipient value > @CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_FRIENDLY_OPINION }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.16.b
+		hidden_effect = { air_cleanliness_treaty_decline_pooled_decon_share = yes }
+		ai_chance = { base = constant:air_cleanliness_treaty_joint_action_ai.pledge_no_base }
+	}
+}
+
+# Pooled decontamination result, sent to the sponsor, the recipient, and every
+# contributor.
+country_event = {
+	id = chaosx_air_treaty.17
+	title = chaosx_air_treaty.17.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_pooled_decon_last_result
+				value = constant:air_cleanliness_treaty_joint_action.pooled_decon_result_cleaned
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.17.cleaned.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_pooled_decon_last_result
+				value = constant:air_cleanliness_treaty_joint_action.pooled_decon_result_unassembled
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.17.unassembled.d
+	}
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.17.a
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_pooled_decon_last_result
+				value = constant:air_cleanliness_treaty_joint_action.pooled_decon_result_cleaned
+				compare = equals
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.17.a.tt
+	}
+
+	option = {
+		name = chaosx_air_treaty.17.b
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = global.air_cleanliness_treaty_pooled_decon_last_result
+					value = constant:air_cleanliness_treaty_joint_action.pooled_decon_result_cleaned
+					compare = equals
+				}
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.17.b.tt
+	}
+}
+
+# A relief vote ballot, sent to every live member other than the caller and
+# the recipient.
+country_event = {
+	id = chaosx_air_treaty.18
+	title = chaosx_air_treaty.18.t
+	desc = chaosx_air_treaty.18.d
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_relief_vote_caller }
+			var:global.air_cleanliness_treaty_relief_vote_caller = { save_event_target_as = air_cleanliness_treaty_relief_vote_caller }
+		}
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_relief_vote_recipient }
+			var:global.air_cleanliness_treaty_relief_vote_recipient = { save_event_target_as = air_cleanliness_treaty_relief_vote_recipient }
+		}
+		if = {
+			limit = { has_variable = global.air_cleanliness_treaty_relief_vote_state }
+			var:global.air_cleanliness_treaty_relief_vote_state = { save_event_target_as = air_cleanliness_treaty_relief_vote_state }
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.18.a
+		trigger = { air_cleanliness_treaty_relief_ballot_is_open = yes }
+		custom_effect_tooltip = chaosx_air_treaty.18.a.tt
+		hidden_effect = {
+			set_temp_variable = { air_cleanliness_treaty_relief_ballot_choice = constant:air_cleanliness_treaty_joint_action.ballot_yes }
+			air_cleanliness_treaty_cast_relief_ballot = yes
+		}
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.vote_yes_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_yes_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_yes_friendly_factor
+				has_event_target = air_cleanliness_treaty_relief_vote_recipient
+				has_opinion = { target = event_target:air_cleanliness_treaty_relief_vote_recipient value > @CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_FRIENDLY_OPINION }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_yes_own_crisis_factor
+				air_cleanliness_treaty_country_has_own_crisis = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.18.b
+		trigger = { air_cleanliness_treaty_relief_ballot_is_open = yes }
+		custom_effect_tooltip = chaosx_air_treaty.18.b.tt
+		hidden_effect = {
+			set_temp_variable = { air_cleanliness_treaty_relief_ballot_choice = constant:air_cleanliness_treaty_joint_action.ballot_no }
+			air_cleanliness_treaty_cast_relief_ballot = yes
+		}
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.vote_no_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_no_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_no_own_crisis_factor
+				air_cleanliness_treaty_country_has_own_crisis = yes
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_no_hostile_factor
+				has_event_target = air_cleanliness_treaty_relief_vote_recipient
+				has_opinion = { target = event_target:air_cleanliness_treaty_relief_vote_recipient value < @CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_HOSTILE_OPINION }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.18.c
+		custom_effect_tooltip = chaosx_air_treaty.18.c.tt
+		hidden_effect = {
+			set_temp_variable = { air_cleanliness_treaty_relief_ballot_choice = constant:air_cleanliness_treaty_joint_action.ballot_abstain }
+			air_cleanliness_treaty_cast_relief_ballot = yes
+		}
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.vote_abstain_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.vote_abstain_war_factor
+				has_war = yes
+			}
+		}
+	}
+}
+
+# Relief vote result, sent to every live member.
+country_event = {
+	id = chaosx_air_treaty.19
+	title = chaosx_air_treaty.19.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_relief_vote_last_result
+				value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.19.approved.d
+	}
+	desc = {
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_relief_vote_last_result
+				value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_rejected
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.19.rejected.d
+	}
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.19.a
+		trigger = {
+			check_variable = {
+				var = global.air_cleanliness_treaty_relief_vote_last_result
+				value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
+				compare = equals
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.19.a.tt
+	}
+
+	option = {
+		name = chaosx_air_treaty.19.b
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = global.air_cleanliness_treaty_relief_vote_last_result
+					value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
+					compare = equals
+				}
+			}
+			has_event_target = air_cleanliness_treaty_relief_vote_recipient
+			tag = event_target:air_cleanliness_treaty_relief_vote_recipient
+		}
+		custom_effect_tooltip = chaosx_air_treaty.19.b.tt
+	}
+
+	option = {
+		name = chaosx_air_treaty.19.c
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = global.air_cleanliness_treaty_relief_vote_last_result
+					value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
+					compare = equals
+				}
+			}
+			NOT = {
+				AND = {
+					has_event_target = air_cleanliness_treaty_relief_vote_recipient
+					tag = event_target:air_cleanliness_treaty_relief_vote_recipient
+				}
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.19.c.tt
+	}
+}
+
+# Clean Day betrayal, sent to every member whose aid was lost.
+country_event = {
+	id = chaosx_air_treaty.20
+	title = chaosx_air_treaty.20.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = air_cleanliness_treaty_betrayal_operation
+				value = constant:air_cleanliness_treaty_operation_id.pooled_decon
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.20.pooled_decon.d
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = air_cleanliness_treaty_betrayal_operation
+					value = constant:air_cleanliness_treaty_operation_id.pooled_decon
+					compare = equals
+				}
+			}
+		}
+		text = chaosx_air_treaty.20.filter_convoy.d
+	}
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.20.a
+		custom_effect_tooltip = chaosx_air_treaty.20.a.tt
+	}
+}
+
+# Clean Day betrayal, sent to the violator that now holds the state.
+country_event = {
+	id = chaosx_air_treaty.21
+	title = chaosx_air_treaty.21.t
+	desc = chaosx_air_treaty.21.d
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.21.a
+		custom_effect_tooltip = chaosx_air_treaty.21.a.tt
+	}
+}
+
+# A former member proposes to reconvene the treaty secretariat after the
+# Fallout.
+country_event = {
+	id = chaosx_air_treaty.22
+	title = chaosx_air_treaty.22.t
+	desc = chaosx_air_treaty.22.d
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_variable = fallout_treaty_reconstruction_proposer }
+			var:fallout_treaty_reconstruction_proposer = { save_event_target_as = fallout_treaty_reconstruction_proposer }
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.22.a
+		trigger = { fallout_treaty_reconstruction_answer_is_open = yes }
+		custom_effect_tooltip = chaosx_air_treaty.22.a.tt
+		hidden_effect = { fallout_treaty_accept_reconstruction_compact = yes }
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_accept_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_accept_friendly_factor
+				has_event_target = fallout_treaty_reconstruction_proposer
+				has_opinion = { target = event_target:fallout_treaty_reconstruction_proposer value > @CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_FRIENDLY_OPINION }
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_accept_democratic_factor
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_accept_war_factor
+				has_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx_air_treaty.22.b
+		custom_effect_tooltip = chaosx_air_treaty.22.b.tt
+		hidden_effect = { fallout_treaty_refuse_reconstruction_compact = yes }
+		ai_chance = {
+			base = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_refuse_base
+			modifier = {
+				factor = constant:air_cleanliness_treaty_joint_action_ai.reconstruction_refuse_hostile_factor
+				has_event_target = fallout_treaty_reconstruction_proposer
+				has_opinion = { target = event_target:fallout_treaty_reconstruction_proposer value < @CR_SC_AIR_CLEANLINESS_TREATY_JOINT_ACTION_AI_HOSTILE_OPINION }
+			}
+		}
+	}
+}
+
+# Reconstruction compact result, sent to the proposer and, when signed, to the
+# partner.
+country_event = {
+	id = chaosx_air_treaty.23
+	title = chaosx_air_treaty.23.t
+	desc = {
+		trigger = {
+			check_variable = {
+				var = fallout_treaty_reconstruction_last_result
+				value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
+				compare = equals
+			}
+		}
+		text = chaosx_air_treaty.23.signed.d
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = fallout_treaty_reconstruction_last_result
+					value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
+					compare = equals
+				}
+			}
+		}
+		text = chaosx_air_treaty.23.refused.d
+	}
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx_air_treaty.23.a
+		trigger = {
+			check_variable = {
+				var = fallout_treaty_reconstruction_last_result
+				value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
+				compare = equals
+			}
+			has_event_target = fallout_treaty_reconstruction_proposer
+			tag = event_target:fallout_treaty_reconstruction_proposer
+		}
+		custom_effect_tooltip = chaosx_air_treaty.23.a.tt
+	}
+
+	option = {
+		name = chaosx_air_treaty.23.b
+		trigger = {
+			check_variable = {
+				var = fallout_treaty_reconstruction_last_result
+				value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
+				compare = equals
+			}
+			NOT = {
+				AND = {
+					has_event_target = fallout_treaty_reconstruction_proposer
+					tag = event_target:fallout_treaty_reconstruction_proposer
+				}
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.23.b.tt
+	}
+
+	option = {
+		name = chaosx_air_treaty.23.c
+		trigger = {
+			NOT = {
+				check_variable = {
+					var = fallout_treaty_reconstruction_last_result
+					value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
+					compare = equals
+				}
+			}
+		}
+		custom_effect_tooltip = chaosx_air_treaty.23.c.tt
 	}
 }
 

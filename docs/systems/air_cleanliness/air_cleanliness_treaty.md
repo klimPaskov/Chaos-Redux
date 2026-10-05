@@ -21,8 +21,12 @@ The implemented tranche contains:
 - four treaty operations from baseline spec 02: the Shared Sampling Grid, Seed Archive Exchange, Evacuation Corridor, and naming a burner
 - treaty memory carried into Fallout survivors: member recognition and cohesion, violator distrust, seed archive food, and a push toward military rule for named burners
 - AI weights for joining, every project and operation, and every verification response
+- pooled decontamination: a paid multi-member brigade for one Phase 3 or worse state, with refunds on cancellation
+- member relief votes with ballots, a counted result, delivered relief, and consequences for a failed vote
+- the Clean Day betrayal when a cleaning operation ends in a state owned by a treaty violator
+- a post-Fallout reconstruction compact between surviving former members
 
-Pooled decontamination, member relief votes, and broader manually reviewed treaty event families remain unimplemented.
+Broader manually reviewed treaty event families remain unimplemented.
 
 ## Runtime owner
 
@@ -151,6 +155,42 @@ The corridor follows the Air Winter island-refugee transfer contract instead of 
 
 On completion the target gains Condemnation through `condemnation_add_source` (public, major, observer-report context), is banned from membership, and enters the treaty violator ledger through `air_cleanliness_treaty_register_observed_violator`. Every live member, and every later member, applies the violator opinion penalty and a treaty-owned embargo. The target receives `chaosx_air_treaty.15` and keeps `air_cleanliness_treaty_sanctioned_burner`, which makes it eligible for the Warlord Command government during the Fallout classification even without an active war. The sponsor waits `sanction_cooldown_days` before naming another burner.
 
+### Pooled decontamination
+
+`air_cleanliness_treaty_pooled_decontamination` targets any live member, including the sponsor itself, whose emergency priority state is at Phase 3 or worse, owned and controlled by that member, and not reserved by a filter convoy, an evacuation corridor, or another brigade. Only one brigade can form across the whole treaty at a time, and a completed brigade starts a treaty-wide `pooled_decon_cooldown_days` rest.
+
+1. The sponsor pays one share (`pooled_decon_share_support` support equipment and `pooled_decon_share_fuel` fuel) and reserves `pooled_decon_civilian_factories` civilian factories. The start effect raises `global.air_cleanliness_treaty_pooled_decon_transaction`, records the sponsor, recipient, state, treaty generation, and share count on global variables, reserves the state with a timed flag, and sends `chaosx_air_treaty.16` to every other live member at peace with the recipient. Each of those members stores the transaction number as its pledge receipt.
+2. A member that answers "Send our share" pays one share only while its receipt matches the current transaction, the brigade is still forming, and the share count is below `pooled_decon_maximum_shares`. It joins `global.air_cleanliness_treaty_pooled_decon_contributors`. Either answer clears the receipt, so a late answer to an old brigade does nothing.
+3. On completion, a brigade with fewer than `pooled_decon_minimum_shares` shares never forms and every share returns. A full brigade lowers exposure by `pooled_decon_exposure_per_share` and disease pressure by `pooled_decon_disease_per_share`, and raises recovery by `pooled_decon_recovery_per_share` and reclamation by `pooled_decon_reclamation_per_share`, each multiplied by the share count. The state ledger is normalized and its survival value recalculated. The recipient gains `air_cleanliness_treaty_pooled_decon_gratitude` toward the sponsor and every contributor. Report `chaosx_air_treaty.17` goes once to the sponsor, the recipient, and every contributor.
+4. The decision's `cancel_trigger` re-validates the brigade every day. Ordinary failure (the state changes hands to a non-violator, a member leaves, or war between sponsor and recipient) returns every share and sends `chaosx_air_treaty.14` with the pooled description to the sponsor and each contributor. A state now owned by a treaty violator is a Clean Day betrayal and no share returns.
+5. An annexed sponsor's brigade is released at once and every contributor gets its share back. An annexed contributor's share stays in the brigade. The Fallout pause releases the brigade without refunds or reports.
+
+### Member relief votes
+
+`air_cleanliness_treaty_call_relief_vote` targets any live member, including the caller, whose emergency priority state is at Phase 4 or worse and under its own control, and which has not faced a vote in the last `relief_vote_recipient_cooldown_days`. Only one vote can be open across the treaty. The caller pays `relief_vote_political_power` through the native cost row and waits `relief_vote_cooldown_days` before calling another.
+
+1. The open effect raises `global.air_cleanliness_treaty_relief_vote_transaction`, records the caller, recipient, state, and generation on global variables, and places the caller and the recipient in `global.air_cleanliness_treaty_relief_vote_yes`. Every other live member stores the transaction as its ballot receipt and receives `chaosx_air_treaty.18` with yes, no, and abstain answers.
+2. After `relief_vote_duration_days` the count includes only voters that are still live members. The vote passes with more yes than no votes and at least `relief_vote_minimum_yes` yes votes.
+3. A passed vote walks the yes list. Each yes voter other than the recipient that holds `relief_vote_pledge_support` support equipment pays it, up to `relief_vote_maximum_pledges` deliveries, and the recipient gains `air_cleanliness_treaty_relief_vote_support` toward it. Each delivery adds shelter and food reserve and lowers disease and refugee pressure in the state by the per-pledge constants.
+4. A failed vote costs the recipient `relief_vote_rejected_stability` stability, sets `air_cleanliness_treaty_relief_vote_rejected_memory`, and gives the recipient `air_cleanliness_treaty_relief_vote_refused` toward every no voter.
+5. Report `chaosx_air_treaty.19` goes to every live member, with a recipient-specific option when the vote fails. An invalid vote is abandoned through `chaosx_air_treaty.14` and the political power is not returned. An annexed caller's vote is released and an annexed voter's ballot is removed. The Fallout pause releases the vote silently.
+
+### Clean Day betrayal
+
+A treaty cleaning operation that ends in a state owned by a treaty violator (a country with `air_cleanliness_treaty_banned` or in `global.air_cleanliness_treaty_violators`) is the baseline spec 01 Clean Day betrayal. Both the pooled brigade and the Joint Filter Convoy check it on cancellation. Membership loss through a violation sets the banned flag before the member is unregistered, so a member that violates the treaty while receiving aid is caught at the same moment its convoys are cancelled.
+
+`air_cleanliness_treaty_record_clean_day_betrayal` revokes every treaty relief route of the violator and, once per `betrayal_condemnation_window_days`, adds `betrayal_condemnation_gain` Condemnation through `condemnation_add_source` (public, major, relief-obstruction context) and sends `chaosx_air_treaty.21` to the violator. Every member whose aid was lost receives `chaosx_air_treaty.20` with a brigade or convoy description, and no equipment is returned.
+
+### Fallout reconstruction compact
+
+`fallout_treaty_reconstruction_category` opens for every current Fallout registry survivor that was a treaty member and was never banned, once its survival account is loaded. `fallout_treaty_reconvene_secretariat` targets another such survivor at peace with the proposer, without a compact with it, and that has not refused the proposer in the last `reconstruction_refusal_days`.
+
+1. The proposer pays `reconstruction_political_power` political power and `reconstruction_recognition_cost` Recognition when the envoys leave. The partner receives `chaosx_air_treaty.22` at once and accepts or refuses.
+2. After `reconstruction_duration_days`, an accepted proposal gives the proposer `reconstruction_recognition_gain` Recognition and the partner `reconstruction_partner_recognition_gain`. Both gain `reconstruction_cohesion_gain` Cohesion, the `fallout_treaty_reconstruction_compact` dynamic modifier for `reconstruction_compact_days`, the permanent `fallout_treaty_reconstruction_partner_opinion` toward each other, `fallout_treaty_reconstruction_memory`, and a targeted `fallout_treaty_reconstruction_with_<TAG>` flag that blocks a second compact with the same partner. Both receive `chaosx_air_treaty.23`.
+3. A refusal, war between the pair, either government leaving the registry, or no answer by the end returns the Recognition, blocks a new proposal to that partner for a year, and sends the refusal report to the proposer.
+
+The compact modifier uses `air_cleanliness_treaty_joint_action_value` for stability and construction speed.
+
 ### Fallout memory
 
 `fallout_treaty_apply_survivor_memory` runs once per Fallout generation inside each registry country's Ash-week orientation step:
@@ -166,6 +206,8 @@ The values change the survivor's current resource entries and are clamped to the
 Invitation AI weighs government, major status, unconventional stockpiles, prior weapon use, and war with the founder.
 
 Cleaning Day AI weighs government, war strain, and very high Air Contamination. Filter Convoy AI has a zero-validity gate through the decision availability trigger. It then weighs donor capacity, war strain, target phase, and critical target survival value.
+
+Joint action AI lives in `air_cleanliness_treaty_joint_action_ai`. Brigade sponsorship favors democracies, a member's own state, and Ash Winter or worse states, and falls during war. Pledges favor democracies and friendly recipients and fall during war or when the pledging member has its own crisis. Relief votes are called most often for the caller's own state. Ballots lean yes for democracies and friendly recipients, no for fascist members, members with their own crisis, and hostile recipients, and abstain during war. Reconstruction proposals favor friendly partners and fall during war; partners accept more readily when friendly or democratic and refuse hostile proposers.
 
 Treaty operation AI follows the spec 02 AI table. Democratic members and the secretariat favor the sampling grid, and war strain lowers it. Seed archive AI rises when the donor holds a seed vault and when the recipient's priority state is short of food. Evacuation AI rises for democratic sponsors and for Phase 5 or worse sources, and falls when every bordering state the sponsor could use has little shelter, which keeps island and small members from taking refugees they cannot house. Naming a burner is favored by democracies, disfavored by fascist members and against neighbors, and never chosen against a faction partner, overlord, or subject.
 
@@ -184,6 +226,8 @@ Verification dispatch AI weighs secretariat government, war strain, the subject'
 - `events/fallout_world_end_events.txt`, treaty section consolidated from `air_cleanliness_treaty_events.txt`
 - `events/chemical_warfare_events.txt`
 - `common/opinion_modifiers/air_contamination_opinion_modifiers.txt`
+- `common/opinion_modifiers/air_cleanliness_treaty_joint_action_opinion_modifiers.txt`
+- `common/dynamic_modifiers/fallout_consolidated_dynamic_modifiers.txt`, the reconstruction compact modifier
 - `common/scripted_localisation/chaosx_scripted_localisation_map_modes.txt`
 - `localisation/english/_chaosx_events_l_english.yml`
 - `localisation/english/chaosx_decisions_l_english.yml`
@@ -209,6 +253,10 @@ No new visual asset is required by this tranche.
 - Evacuation Corridor decision: `GFX_decision_air_winter_controlled_evacuation`; arrival and departure reports: `GFX_report_event_fallout_refugee_train`
 - Naming a burner decision: vanilla `GFX_decision_generic_break_treaty`; listed-country report: vanilla `GFX_report_event_generic_sign_treaty1`
 - Withdrawn operation report: vanilla `GFX_report_event_generic_sign_treaty1`
+- Pooled decontamination decision: vanilla `GFX_decision_generic_protection`; pledge request and result: vanilla `GFX_report_event_generic_factory`
+- Relief vote decision: vanilla `GFX_decision_generic_political_discourse`; ballot and result: vanilla `GFX_report_event_generic_sign_treaty2`
+- Clean Day betrayal reports: vanilla `GFX_report_event_generic_sign_treaty1`
+- Reconstruction category: `GFX_decision_category_contamination_defense` with picture `GFX_decision_cat_picture_air_cleanliness_treaty`; decision: vanilla `GFX_decision_generic_construction`; proposal and result: vanilla `GFX_report_event_generic_sign_treaty2`; compact modifier icon: vanilla `GFX_idea_AUS_treaty_of_saint_germain_en_laye`
 
 The Air Winter and Fallout sprites above are already registered in the Fallout interface files. A future dedicated treaty icon package should use a treaty-owned directory and stable sprite ids before art is commissioned. That package is not required for the implemented decisions to render.
 
@@ -220,8 +268,8 @@ Hearts of Iron IV was not launched. Targeted decision persistence, delayed invit
 
 ## Future plans
 
-1. Add pooled state decontamination through the existing Air Winter decontamination project and formula.
-2. Add member relief vote transactions so the secretariat can direct convoys and corridors toward the worst-hit member.
+1. Let a passed relief vote also open a free evacuation corridor or filter convoy toward the recipient when a yes voter borders it.
+2. Give the reconstruction compact a second stage: a shared salvage depot or a joint sampling station that reconnects the compact partners' survival accounts.
 3. Let a named burner answer the listing through a response event (defiance, quiet compliance, or a pledge) that interacts with the Condemnation compliance paths.
 4. Carry inspection outcomes into Fallout successors as a separate memory beside membership and violation.
 5. Give the seed archive a post-Fallout greenhouse decision for survivors that hold the archive memory.
