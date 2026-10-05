@@ -213,7 +213,9 @@ country_event = {
 	# breached; event021_parent_review_settlement_obligation closes it.
 	# Signed terms and every other settlement keep the single option. A
 	# government that won on the battlefield chooses a postwar direction, and
-	# an AI government takes the direction of its profile.
+	# an AI government takes the direction of its profile. Reform is offered
+	# only to a government that can pay for it; a consolidator that cannot
+	# offers amnesty instead.
 	option = {
 		name = chaosx.nr21.9.a
 		trigger = { NOT = { has_country_flag = random_civil_war_postwar_direction_pending } }
@@ -235,12 +237,19 @@ country_event = {
 		ai_chance = {
 			base = constant:random_civil_war_value.one
 			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_hardliner_profile }
-			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_consolidator_profile }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				has_country_flag = random_civil_war_consolidator_profile
+				event021_postwar_reform_affordable = yes
+			}
 		}
 	}
 	option = {
 		name = chaosx.nr21.9.reform
-		trigger = { has_country_flag = random_civil_war_postwar_direction_pending }
+		trigger = {
+			has_country_flag = random_civil_war_postwar_direction_pending
+			event021_postwar_reform_affordable = yes
+		}
 		add_political_power = constant:event021_postwar_direction.reform_political_power_cost
 		custom_effect_tooltip = chaosx.nr21.9.reform.tt
 		hidden_effect = {

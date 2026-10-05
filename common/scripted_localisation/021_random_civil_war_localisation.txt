@@ -245,6 +245,25 @@ defined_text = {
 	text = { localization_key = event021_fracture_summary_stable }
 }
 
+# Strange-incident tolerate outcome by role. Only a government prepares a
+# recurrence score when its reconstruction ends, so a claimant's tolerated
+# practice counts only if it takes power, and an independence front's never.
+defined_text = {
+	name = event021_GetStrangeIncidentTolerateOutcome
+	text = {
+		trigger = { has_country_flag = random_civil_war_government_side }
+		localization_key = event021_strange_incident_tolerate_government
+	}
+	text = {
+		trigger = {
+			NOT = { has_country_flag = random_civil_war_event6_front_active }
+			NOT = { has_country_flag = random_civil_war_event6_origin }
+		}
+		localization_key = event021_strange_incident_tolerate_claimant
+	}
+	text = { localization_key = event021_strange_incident_tolerate_independence }
+}
+
 # Strange-incident report text. The practice is read from the side's stored
 # variant and the region from its stored state, with a neutral fallback.
 defined_text = {

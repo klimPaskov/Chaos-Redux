@@ -2423,8 +2423,8 @@ event021_postwar_direction_emergency = {
 
 # COUNTRY scope. A postwar direction still pending when reconstruction ends
 # (The Fighting Stops never answered) takes the government's profile default:
-# a hardliner imposes a security settlement, a consolidator reforms, and any
-# other government offers amnesty.
+# a hardliner imposes a security settlement, a consolidator that can pay for
+# it reforms, and any other government offers amnesty.
 event021_resolve_pending_postwar_direction = {
 	if = {
 		limit = { has_country_flag = random_civil_war_postwar_direction_pending }
@@ -2433,7 +2433,10 @@ event021_resolve_pending_postwar_direction = {
 			event021_postwar_direction_harsh = yes
 		}
 		else_if = {
-			limit = { has_country_flag = random_civil_war_consolidator_profile }
+			limit = {
+				has_country_flag = random_civil_war_consolidator_profile
+				event021_postwar_reform_affordable = yes
+			}
 			add_political_power = constant:event021_postwar_direction.reform_political_power_cost
 			event021_postwar_direction_reform = yes
 		}
