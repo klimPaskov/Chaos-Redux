@@ -453,3 +453,22 @@ Corrections:
 - `video_game_in_sweden_update_trust_model_progress` now runs daily during a surge war (R3-2), so its two victory branches gained a `NOT = { has_country_flag = video_game_in_sweden_trust_model_opponent_victory }` guard; the first recorded victory date stays fixed instead of moving forward each day while Sweden fights another war. The favourable-result check is unchanged because the earlier date already sits before the deadline.
 Probability: one narrow `hoi4.probability_inspect` call (adapter `event_option_ai_chance`, source `events/024_hearts_of_iron.txt`, candidate pool `[chaosx.nr24.38]`, no refresh) again returned INTERNAL_ERROR and was not retried; R3-8 stays blocked.
 Disposition: `implemented` for the two corrections; tooltip rendering remains needs_live_game.
+
+## Round 4 decisions
+
+Disposition: accepted under the same standing grant of design authority, taking the round 4 lead's decisions as the basis.
+Implementation evidence is source review and the bounded runtime-observation fixture; anything only the engine can show is marked needs_live_game.
+
+### R4-1. A cabinet started by hand cannot earn the achievements
+
+Finding: spec part 3 requires achievement tracking to reject force-trigger and debug paths "according to the repository's normal achievement rules", but Event 24 only checked `force_trigger_mode_enabled` on the Swedish host in `video_game_in_sweden_record_normal_campaign`. A player playing Sweden could open the cabinet from the event settings or the Event Log without force mode and still earn Reality Check or According to Plan.
+Decision: the closest working precedents set the rule, Event 028 (`events/028_asteroid_impact.txt` lines 28-37) and Event 042 (`042_equipment_from_heavens_effects.txt` lines 37-46).
+- Inside `video_game_in_sweden_prepare_random_event_fire`, once a valid host is selected, the host gets `video_game_in_sweden_debug_invalid` before `chaosx.nr24.1` fires if `events_log_manual_event_detail_trigger` is above zero (the event settings Fire path `fire_event_by_id` and the Event Log Trigger button always set it), the requester `ROOT` has `force_trigger_mode_enabled`, or `ROOT` has the force-trigger variable `temp_bypass_checks`.
+- `video_game_in_sweden_record_normal_campaign` is unchanged and turns that mark into the loss of `video_game_in_sweden_normal_campaign` and `video_game_in_sweden_achievement_eligible` plus `video_game_in_sweden_according_to_plan_disqualified`.
+- An ordinary dispatch clears the mark on the selected host. Before the fire-once opening the mark can only come from an earlier manual preparation that never opened the cabinet, so a later ordinary opening keeps eligibility.
+- `is_debug` is deliberately not added, unlike Event 023: the manual and forced paths already cover every debug trigger route, and the orchestrator's live checks run in a `-debug` session, where `is_debug` would make the unlock unverifiable.
+- Both achievement tooltips end with "A cabinet started by hand from the event settings or the Event Log cannot qualify."
+The change stays inside Event 24's own preparation helper, which runs in the shared dispatcher's effect chain, so no shared `chaosx_*` file is edited.
+Trace (fixture cases `test_manual_or_forced_dispatch_disqualifies_the_achievements` and `test_ordinary_dispatch_keeps_achievement_eligibility`, every fixture case passes): each of the three signals, from Sweden itself or from another requester, leaves the opened cabinet without eligibility and with the According to Plan disqualifier; an ordinary dispatch keeps `video_game_in_sweden_is_eligible_for_achievement`, also after an earlier manual preparation that never opened the cabinet. Against the previous source the disqualification case fails.
+Basis: spec part 3 achievements, round 4 lead decision 1, Event 028 and Event 042 precedents.
+Disposition: `implemented`; the achievement unlock itself is needs_live_game.

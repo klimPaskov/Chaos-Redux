@@ -510,6 +510,12 @@ According to Plan is disqualified by loss of host validity, supply failure, fail
 Reality Check (`video_game_in_sweden_reality_check_disqualified`) is disqualified only by switching the event or a stage off, restriction or a provisional or dual-track settlement instead of the audit, a partial or failed audit, a full result reached through a narrow reassessment, and, after the full report, Reliance at Doctrine or above, the loss of Stockholm or an invalid host; the debug and normal-campaign checks sit in the eligibility trigger.
 A failed field validation, a partial or failed audit, a failed dual-track verification or a lost Stockholm instead records `video_game_in_sweden_cabinet_found_wanting`, the gameplay finding that blocks Trust the Model and shapes the field-validation, Trust the Model and foreign-response AI; it is cleared when a programme starts.
 
+A cabinet started by hand cannot earn either achievement, following the Event 028 and Event 042 rule.
+When the shared dispatcher prepares the opening, `video_game_in_sweden_prepare_random_event_fire` marks the selected host with `video_game_in_sweden_debug_invalid` before `chaosx.nr24.1` fires if the manual trigger temporary `events_log_manual_event_detail_trigger` is set (the event settings Fire button and the Event Log Trigger button set it), the requester (`ROOT`) has `force_trigger_mode_enabled`, or the requester holds the force-trigger variable `temp_bypass_checks`.
+`video_game_in_sweden_record_normal_campaign` then clears `video_game_in_sweden_normal_campaign` and `video_game_in_sweden_achievement_eligible` and sets `video_game_in_sweden_according_to_plan_disqualified`; it also still rejects a host that has `force_trigger_mode_enabled` itself.
+An ordinary random dispatch clears the mark, because before the fire-once opening it can only come from a manual preparation that never opened the cabinet.
+`is_debug` is deliberately not checked: the manual and forced paths already cover every debug trigger route, and live checks run in a `-debug` session.
+
 Achievement tracking is updated by bounded maintenance, daily observation, and outcome effects, with proof stored in country flags and variables.
 Native save-persistence acceptance remains outstanding.
 

@@ -482,6 +482,60 @@ class ObservationSourceTests(unittest.TestCase):
         self.assertEqual(model.saved[("SWE", "video_game_in_sweden_trust_model_victory_date")], Decimal(112))
         self.assertIn(("chaosx.nr24.50", Decimal(1)), model.scheduled)
 
+    # Manual and forced dispatch (R4-1). The requester is ROOT in the shared
+    # dispatcher; the opening event then initializes the selected host.
+    def dispatch(self, requester="SWE", manual=False, force=False, bypass=False, model=None):
+        model = model or self.model()
+        model.native_predicates["video_game_in_sweden_can_receive_program"] = True
+        model.targets["video_game_in_sweden_host"] = "SWE"
+        model.root, model.actor = requester, requester
+        model.flags.setdefault(requester, set())
+        if manual:
+            model.temp["events_log_manual_event_detail_trigger"] = Decimal(1)
+        if force:
+            model.flags[requester].add("force_trigger_mode_enabled")
+        if bypass:
+            model.saved[(requester, "temp_bypass_checks")] = Decimal(1)
+        model.temp["video_game_in_sweden_prefire_ready"] = Decimal(0)
+        model.call("video_game_in_sweden_prepare_random_event_fire")
+        self.assertEqual(model.temp["video_game_in_sweden_prefire_ready"], Decimal(1))
+        self.assertIn("video_game_in_sweden_prefire_opening_pending", model.flags["SWE"])
+        # The dispatcher resets its temporary inputs after the call.
+        model.temp.pop("events_log_manual_event_detail_trigger", None)
+        model.flags[requester].discard("force_trigger_mode_enabled")
+        model.saved.pop((requester, "temp_bypass_checks"), None)
+        return model
+
+    def open_cabinet(self, model):
+        model.root, model.actor = "SWE", "SWE"
+        model.flags["SWE"] |= {"video_game_in_sweden_normal_campaign", "video_game_in_sweden_achievement_eligible"}
+        model.call("video_game_in_sweden_record_normal_campaign")
+        model.facts.update({("SWE", "is_ai", "no"): True, ("SWE", "original_tag", "SWE"): True})
+        return model.call("video_game_in_sweden_is_eligible_for_achievement")
+
+    def test_manual_or_forced_dispatch_disqualifies_the_achievements(self):
+        for requester, signal in (("SWE", "manual"), ("SWE", "force"), ("SWE", "bypass"), ("NOR", "manual"),
+                                  ("NOR", "force"), ("NOR", "bypass")):
+            model = self.dispatch(requester, **{signal: True})
+            self.assertIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
+            self.assertFalse(self.open_cabinet(model))
+            self.assertNotIn("video_game_in_sweden_achievement_eligible", model.flags["SWE"])
+            self.assertNotIn("video_game_in_sweden_normal_campaign", model.flags["SWE"])
+            self.assertIn("video_game_in_sweden_according_to_plan_disqualified", model.flags["SWE"])
+
+    def test_ordinary_dispatch_keeps_achievement_eligibility(self):
+        for requester in ("SWE", "NOR"):
+            model = self.dispatch(requester)
+            self.assertTrue(self.open_cabinet(model))
+            self.assertNotIn("video_game_in_sweden_according_to_plan_disqualified", model.flags["SWE"])
+        # A manual preparation that never opened the cabinet leaves no mark on
+        # a later ordinary dispatch.
+        model = self.dispatch("SWE", manual=True)
+        model.flags["SWE"].discard("video_game_in_sweden_prefire_opening_pending")
+        model = self.dispatch("SWE", model=model)
+        self.assertNotIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
+        self.assertTrue(self.open_cabinet(model))
+
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()
         model.targets["video_game_in_sweden_host"] = "SWE"

@@ -158,6 +158,24 @@ video_game_in_sweden_prepare_random_event_fire = {
 		}
 		event_target:video_game_in_sweden_host = {
 			set_country_flag = video_game_in_sweden_prefire_opening_pending
+			# A cabinet opened by hand from the event settings or the Event
+			# Log, or through a forced trigger, cannot earn the achievements.
+			# Before the fire-once opening the only earlier mark comes from a
+			# manual preparation that never opened the cabinet, so an ordinary
+			# dispatch clears it.
+			if = {
+				limit = {
+					OR = {
+						check_variable = { events_log_manual_event_detail_trigger > constant:video_game_in_sweden_value.zero }
+						ROOT = { has_country_flag = force_trigger_mode_enabled }
+						ROOT = { has_variable = temp_bypass_checks }
+					}
+				}
+				set_country_flag = video_game_in_sweden_debug_invalid
+			}
+			else = {
+				clr_country_flag = video_game_in_sweden_debug_invalid
+			}
 		}
 		set_temp_variable = { video_game_in_sweden_prefire_ready = 1 }
 	}
