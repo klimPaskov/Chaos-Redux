@@ -524,3 +524,32 @@ FER blocked: the vanilla FER tag has no characters and Event 006 has no sourced 
 Validation: the allocator audit passes with 46 attested packages, 40 reservation groups and 48 adapters (its expected sets, group and anchor counts and the dispatcher-family count of 34 were updated); the country API, flag and SCN-008 matrix audits pass; brace balance is 0 on every touched file.
 
 Needs live game: a wave that releases one of the seven, especially YAK, KHA and ALT, whose force proofs changed.
+
+
+## D21. Round 2: Fiji admitted, Micronesia stays blocked, FORM-48 reviewed
+
+Disposition: `implemented` for IW-177 FIJ and for the startup-roster cleanup fix; `blocked` for IW-179 FSM; FORM-48 stays closed.
+
+Basis: the lead's round-2 priority-10 item and its photo-date decision, which accepts a sourced photograph taken within about ten years of the 1936 baseline.
+
+Identity decision: Ratu Sir Lala Sukuna is the accepted Fiji country leader. His source photograph dates from about the 1940s, which the lead's rule accepts. The HOI4-style final in the stable consumer `portrait_FIJ_independence_wave_founding_congress_chair.dds` is now the user-supplied file `portrait_FIJ_ratu_sir_lala_sukuna_source_00002.dds` (156x210) from the user's portrait output folder. It replaces an earlier agent-made repaint of a real person, which the project rules do not allow as a final. The GFX name, character id and localisation are unchanged, and no advisor, commander or small portrait was added.
+
+Political fix: vanilla FIJ and the package both rule with the democratic party, but Sukuna's leader role and both `promote_character` calls used `centrism`, a neutrality ideology. He would have led the non-ruling party, so `has_independence_wave_fij_origin_leadership` (ruling leader) could never pass. The character and both promotions now use `liberalism`, as D13 did for CHU and ASY.
+
+Setup defects found and fixed:
+
+- ROOT read for the carrier: the anchor and former-host checks in `can_initialize_*` and `has_prepared_*` for IW-177 and IW-179 compared with ROOT, which is the launching country during setup. Both now read PREV, as HAW and HBX already did. The FSM settlement-cancel check also reads PREV inside its capital scope, which is the same country there.
+- Planner gate: `can_plan_independence_wave_package_iw_177` checked the generic candidate wrapper. It now uses the new `is_independence_wave_runtime_automatic_package_iw_177_ready` trigger, as HAW and HBX do.
+- Second release: the HAW and FIJ cleanups retired their startup-roster characters, so a later release of either tag could never restore its leader (the D11 defect class). The same defect was in the COR, KOS, MNT and RUT cleanups. Each cleanup now keeps those characters, and each setup already restores the roles through `promote_character`.
+
+Walk-through: the loader publishes region 13 (`southeast_east_asia_oceania`), regional depth and the `port_or_island` archetype, which the proofs check. The p177 force profile decodes to `coastal_maritime` and its tradition constant matches the prepared proof. FIJ's proofs check no reinforcement pathway, so the mask (659) needs no match. Sukuna is recruited by the shared history roster, and the vanilla tree is `generic_focus`, which the setup requires.
+
+Admission: IW-177 is in the content attestation, the Liberations capacity probe (new `independence_wave_liberations_capacity_try_iw_177`) and the Join probe order after IW-054. It was already in the adapter list, the execution and SCN-008 preflights, the SCN-008 ranked list and the Pacific dispatchers. It reserves `RG-PACIFIC-ISLANDS`, which it shares with the unadmitted IW-175 SAM and IW-179 FSM. Foreign contacts: AST and NZL.
+
+FSM blocked: Micronesia has no sourced 1936 leader, `independence_wave_fsm_sourced_identity_ready` stays unset, and the user's portrait folder has no FSM final. A sourced leader needs new photographs, which this run cannot download without the user's approval. FSM stays out of the attestation, and its setup keeps failing closed.
+
+FORM-48: its contract binds HBX as carrier and HAW and FSM as sovereign members. HBX and HAW are admitted, but FSM is not, and no substitute member is invented, so the family stays unreachable. IW-183 Cascadia (HAX) has no package and is not a FORM-48 member. FORM-39 (FIJ, PNG and WPG) also stays closed, since PNG and WPG are unadmitted and the MFX flag still awaits user review.
+
+Validation: the allocator audit passes with 47 attested packages, 41 reservation groups, 48 adapters and IW-179 as the only adapter-only ID (its expected attested set and its group and anchor counts were updated); brace balance is 0 on every touched file.
+
+Needs live game: a wave that releases FIJ, and a second release of HAW, COR, KOS, MNT or RUT after an earlier one ended.

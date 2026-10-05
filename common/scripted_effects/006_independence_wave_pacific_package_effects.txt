@@ -85,7 +85,7 @@ independence_wave_prepare_fij_origin_leadership = {
 		}
 		promote_character = {
 			character = FIJ_independence_wave_founding_congress_chair
-			ideology = centrism
+			ideology = liberalism
 		}
 	}
 }
@@ -123,7 +123,7 @@ independence_wave_initialize_fij_politics = {
 	set_party_name = { ideology = fascism long_name = FIJ_independence_wave_fascism_party_long name = FIJ_independence_wave_fascism_party }
 	promote_character = {
 		character = FIJ_independence_wave_founding_congress_chair
-		ideology = centrism
+		ideology = liberalism
 	}
 	set_country_flag = independence_wave_fij_provisional_authority
 }
@@ -961,7 +961,8 @@ independence_wave_cleanup_iw_173_hawaii = {
 			limit = { has_country_leader = { ruling_only = no character = HAW_independence_wave_territorial_delegate } }
 			remove_country_leader_role = { character = HAW_independence_wave_territorial_delegate ideology = centrism }
 		}
-		if = { limit = { has_character = HAW_independence_wave_territorial_delegate } retire_character = HAW_independence_wave_territorial_delegate }
+		# The delegate belongs to HAW's startup roster and stays with the tag;
+		# setup restores his leader role on a later release.
 		if = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
@@ -1053,10 +1054,8 @@ independence_wave_cleanup_iw_177_fiji = {
 			limit = { has_focus_tree = independence_wave_focus_tree }
 			load_focus_tree = { tree = generic_focus keep_completed = no }
 		}
-		if = {
-			limit = { has_character = FIJ_independence_wave_founding_congress_chair }
-			retire_character = FIJ_independence_wave_founding_congress_chair
-		}
+		# Sukuna belongs to FIJ's startup roster and stays with the tag, so a
+		# later release finds him again.
 	}
 }
 

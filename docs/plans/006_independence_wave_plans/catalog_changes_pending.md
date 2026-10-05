@@ -103,3 +103,11 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - Mari El (MEL), Udmurtia (UDM), Komi (KOM), Yakutia (YAK), Buryatia (BYA), Altai (ALT) and Khakassia (KHA) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, each led by its own vanilla leaders.
 - The Far Eastern Republic package remains unavailable.
+
+
+## 2026-10-05: Fiji package (D21)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Fiji (FIJ) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, led by Ratu Sir Lala Sukuna.
+- Micronesia (FSM) remains unavailable, so the Pacific federation formable (FORM-48) cannot form yet.

@@ -1,5 +1,7 @@
 # Event 006 Pacific country packages
 
+> Admission (2026-10-05, agent decision D21): IW-177 FIJ is in the content attestation, the Liberations capacity probe, the Join probe order and the planner's runtime-ready gate. Ratu Sir Lala Sukuna leads the democratic government with the liberalism leader role, and his stable portrait consumer holds the user-supplied HOI4-style final. Setup reads the released country, and FIJ registers AST and NZL as foreign contacts. The HAW and FIJ cleanups keep their startup-roster characters, so a later release restores the leader. IW-179 FSM stays blocked without a sourced leader, so FORM-48 stays unreachable. Statements below that call FIJ fail-closed or adapter-only describe its earlier state.
+
 ## Scope
 
 The current whole-event authority is 32 content-attested packages across 29 compatible reservation groups with 161 selectable rows still unattested, served by 40 central/runtime adapters. Eight adapter-only rows remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM; the older arithmetic in this Pacific reference is dated traceability only. IW-045 Bashkiria is now admitted outside this regional reference.

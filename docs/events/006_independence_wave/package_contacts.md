@@ -114,6 +114,8 @@ A contact is an actor source for the foreign reaction queue and counts as the re
 | IW-098 | SOK | SAU | The pilgrimage road from Sokoto to Mecca |
 | IW-173 | HAW | JAP | The Japanese community of Hawaii |
 | IW-173 | HAW | ENG | The treaties of the Hawaiian Kingdom with Britain |
+| IW-177 | FIJ | AST | The Sydney sugar company that ran Fiji's mills |
+| IW-177 | FIJ | NZL | Pacific shipping and Fijian students in New Zealand |
 | IW-184 | HBX | MEX | Former Mexican Alta California and its Mexican communities |
 | IW-184 | HBX | JAP | Japanese-Californian farmers |
 
