@@ -6004,9 +6004,12 @@ decision_riches_found_deny_mine = {
 		}
 	}
 	# Expected loss: a controller losing its war denies the mine; one that
-	# still keeps troops in the district prefers to hold it.
+	# still keeps troops in the district prefers to hold it. The AI never
+	# wrecks its own mine while its war is not being lost, because an empty
+	# district on a holding front is more often a deployment gap than a loss.
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
+		modifier = { factor = constant:riches_found_decision_ai.never_factor NOT = { check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress } } }
 		modifier = { factor = constant:riches_found_decision_ai.policy_favored_factor FROM = { riches_found_policy_profile_militarized = yes } }
 		modifier = { factor = constant:riches_found_decision_ai.policy_favored_factor FROM = { riches_found_policy_profile_state = yes } }
 		modifier = { factor = constant:riches_found_decision_ai.policy_disfavored_factor FROM = { riches_found_policy_profile_public = yes } }

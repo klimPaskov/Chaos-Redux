@@ -313,9 +313,12 @@ riches_found_mine_needs_emergency_response = {
 }
 
 # STATE scope. Security overlay: armed claimants, a wage dispute, crime, a
-# raid crisis, an enemy holding ground beside the district while no Army
-# Cordon holds the mine, a mine about to fall to the enemy, or private forces
-# beyond government control.
+# raid crisis, an enemy holding ground beside the district while supplied
+# troops could raise an Army Cordon and none holds the mine, a mine about to
+# fall to the enemy, or private forces beyond government control. A front
+# alone never holds the overlay where no cordon can be raised (no supplied
+# route), so the milestone stays open there; the mine is then marked about to
+# fall only when its controller keeps no troops in the district or is losing.
 riches_found_mine_needs_security_response = {
 	OR = {
 		has_state_flag = riches_found_armed_claimants
@@ -324,6 +327,7 @@ riches_found_mine_needs_security_response = {
 		has_state_flag = riches_found_raid_crisis
 		AND = {
 			has_state_flag = riches_found_front_line
+			riches_found_state_has_supplied_force = yes
 			NOT = { riches_found_army_cordon_holds = yes }
 		}
 		has_state_flag = riches_found_mine_about_to_fall
@@ -703,6 +707,19 @@ riches_found_state_has_route_capacity = {
 riches_found_state_has_supplied_force = {
 	is_controlled_by = CONTROLLER
 	riches_found_state_has_route_capacity = yes
+	CONTROLLER = {
+		divisions_in_state = {
+			state = PREV
+			size > @riches_found_division_floor
+		}
+	}
+}
+
+# STATE scope. The controller keeps troops in the district, supplied through a
+# mine route or not. The front-line hold test reads this, so a mine without a
+# rail or port route is not reported as about to fall while divisions stand in
+# it.
+riches_found_state_has_controller_troops = {
 	CONTROLLER = {
 		divisions_in_state = {
 			state = PREV

@@ -481,3 +481,22 @@ The same-scenario comparison for D7, D14, D27 and the new surfaces of D35, D37 a
 | D42 (probability route retry) | 11 | `013eda503` |
 
 No catalog column changes: the workbook row's Details, evolution texts, type, chaos level, cluster and status are unaffected by this tranche.
+
+## Round 2, second tranche review
+
+Disposition: implemented by the round 2 reviewing agent under the same full-authority grant; source review only, and live-game behaviour remains with the orchestrator.
+The eleven tranche commits (`7d5fc8ed8` to `c29ad2041`) were reviewed with `git show`: engine syntax against `effects_documentation.md`, `triggers_documentation.md` and `modifiers_documentation.md` (`add_resistance`, `add_compliance`, `random_list` variable weights, `find_highest_in_array`, the three law cost modifiers and `opinion_gain_monthly_factor`), the wiki's targeted-decision rules for `target_array` (`paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, Targeted decisions), helper, constant, flag and localisation coverage, brace balance, and the shared Deaths hunks (only Event 029 lines were committed; the other owners' uncommitted hunks are intact).
+D32 to D37, D39 to D41 and the D42 record hold as written; D38 is refined below.
+
+D43. The front-line hold test reads troops in the district, and a front alone holds the security overlay only where a cordon can be raised (refines D38 and the D20 occupier test).
+Finding: `riches_found_state_has_supplied_force` requires a rail or port route with capacity, and D38 used it for the hold test, so a mine without a route was "about to fall" for its controller's whole war even with divisions standing in it; its security overlay could never lift, because Army Cordon also needs a supplied force, which hid the Rail Spur and every milestone action for the war, kept Deny the Mine to the Enemy on offer, and for an occupier hid Retain the Administration and Replace the Concession.
+Change: the new `riches_found_state_has_controller_troops` (controller divisions in the state, no route requirement) replaces the supplied-force test in `riches_found_refresh_mine_threat_position`, for the owner's `riches_found_mine_about_to_fall` and the occupier's `riches_found_retreat_imminent` alike; `riches_found_mine_needs_security_response` raises the overlay for the front only while a supplied force could raise an Army Cordon and none holds the mine.
+A route-less front mine with troops now keeps its milestone, an empty or losing one is still about to fall, and a supplied mine still sees Army Cordon until it is raised.
+
+D44. The AI denies its own mine only while its war is being lost.
+Finding: with the hold test above, an AI owner whose district is momentarily empty on a holding front would take Deny the Mine to the Enemy at base weight `medium` (times 2.5 under militarized or state profiles), wrecking the mine for good over a deployment gap.
+Change: `decision_riches_found_deny_mine` gains a `never_factor` modifier unless surrender progress is past `riches_found_overlay.retreat_surrender_progress`; the other factors are unchanged.
+Probability evidence: a narrow `hoi4_probability_inspect` (adapter `decision_ai_will_do`, candidate `decision_riches_found_deny_mine`, source path `common/decisions/029_riches_found_decisions.txt`) returned `INTERNAL_ERROR` with no artifacts on 2026-10-05, so this surface joins the blocked same-scenario comparison with D7, D14, D27, D35, D37 and D38; the pre-change source is the parent of the D43/D44 commit.
+
+Recorded, not changed: the duplicate wartime factor the probability route flagged on Drive Deeper (`urgent_factor` and `high_factor` both on `has_war = yes`, together eight times the base in war) is a template line shared by six other decisions (`decision_riches_found_offtake`, `decision_riches_found_quarantine`, `decision_riches_found_workforce_replacement`, `decision_riches_found_permanent_seal`, `decision_riches_found_demons_controlled_exploitation`, `decision_riches_found_account_predatory_prosperity`); all seven belong to the next probability pass.
+Live-game checks added by D43: a route-less front mine with troops keeps its milestone decisions, and an occupier with troops in a route-less district keeps Retain the Administration and Replace the Concession.

@@ -831,10 +831,12 @@ riches_found_reconcile_mine_phase = {
 
 # STATE scope. Marks a mine whose district borders a state held by an enemy
 # of its controller (riches_found_front_line) and a controller that is about
-# to lose it: its war is being lost or it keeps no supplied force in the
-# district. For an occupier that is riches_found_retreat_imminent; for the
-# owner holding its own mine it is riches_found_mine_about_to_fall. Only the
-# mine's own neighbouring states are read.
+# to lose it: its war is being lost or it keeps no troops in the district
+# (riches_found_state_has_controller_troops; a missing mine route does not
+# count as an absent garrison). For an occupier that is
+# riches_found_retreat_imminent; for the owner holding its own mine it is
+# riches_found_mine_about_to_fall. Only the mine's own neighbouring states are
+# read.
 riches_found_refresh_mine_threat_position = {
 	clr_state_flag = riches_found_front_line
 	clr_state_flag = riches_found_retreat_imminent
@@ -849,7 +851,7 @@ riches_found_refresh_mine_threat_position = {
 				limit = {
 					OR = {
 						CONTROLLER = { check_variable = { surrender_progress > constant:riches_found_overlay.retreat_surrender_progress } }
-						NOT = { riches_found_state_has_supplied_force = yes }
+						NOT = { riches_found_state_has_controller_troops = yes }
 					}
 				}
 				if = {
