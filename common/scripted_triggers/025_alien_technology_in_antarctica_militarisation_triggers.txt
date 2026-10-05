@@ -1,0 +1,64 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MILITARISED ANTARCTICA (EVOLUTION III) TRIGGERS
+# ============================================================================
+# Overview:
+# - Stage checks on the global militarisation value, the corridor compact
+#   between the decision maker and its target, and the seizure precondition.
+#   Only the countries named in an action and the global race values are
+#   read.
+# ============================================================================
+
+# Global. Militarisation has reached at least the tense stage.
+chaosx_nr25_militarisation_tense = {
+	has_variable = global.chaosx_nr25_militarisation
+	check_variable = { var = global.chaosx_nr25_militarisation value = constant:chaosx_nr25_militarisation.stage_tense compare = greater_than_or_equals }
+}
+
+# Global. At least the armed stage.
+chaosx_nr25_militarisation_armed = {
+	has_variable = global.chaosx_nr25_militarisation
+	check_variable = { var = global.chaosx_nr25_militarisation value = constant:chaosx_nr25_militarisation.stage_armed compare = greater_than_or_equals }
+}
+
+# Global. At least the contested stage.
+chaosx_nr25_militarisation_contested = {
+	has_variable = global.chaosx_nr25_militarisation
+	check_variable = { var = global.chaosx_nr25_militarisation value = constant:chaosx_nr25_militarisation.stage_contested compare = greater_than_or_equals }
+}
+
+# Global. Open clash.
+chaosx_nr25_militarisation_open_clash = {
+	has_variable = global.chaosx_nr25_militarisation
+	check_variable = { var = global.chaosx_nr25_militarisation value = constant:chaosx_nr25_militarisation.stage_open_clash compare = greater_than_or_equals }
+}
+
+# Country scope (the decision maker; FROM is the target). No corridor compact
+# holds between the two, so armed actions are possible.
+chaosx_nr25_no_compact_with_target = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_no_compact_with_target_tt
+		NOT = { has_country_flag = chaosx_nr25_compact_@FROM }
+	}
+}
+
+# Country scope (the decision maker; FROM is the target). The target's
+# outpost stands but is compromised or poorly defended.
+chaosx_nr25_target_outpost_seizable = {
+	custom_trigger_tooltip = {
+		tooltip = chaosx_nr25_target_outpost_seizable_tt
+		FROM = {
+			has_country_flag = chaosx_nr25_outpost_established
+			OR = {
+				has_country_flag = chaosx_nr25_outpost_compromised
+				check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_militarisation.seize_security_threshold compare = less_than }
+			}
+		}
+	}
+}
+
+# Country scope (the decision maker; FROM is the target). A corridor can be
+# offered: none holds, and no offer of ours is still waiting.
+chaosx_nr25_compact_can_be_offered = {
+	NOT = { has_country_flag = chaosx_nr25_compact_@FROM }
+	NOT = { has_country_flag = chaosx_nr25_compact_offer_pending }
+}

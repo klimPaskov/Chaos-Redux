@@ -162,6 +162,19 @@ A capture sets `chaosx_nr25_survivor_captured`, the Event 036 reaction marker `c
 Turn It Toward a Rival strikes the board-selected rival (or the rival with the most progress): its outpost loses 15 security, or its readiness 10 without an outpost, halved when it guards; the rival identifies the actor on its own intelligence or on a 40% chance and then gains the sabotage suspicion opinion while the actor's Exposure Risk rises (`.340` and `.341`).
 AI tendencies follow spec 009: weak expeditions avoid contact, militarised and desperate ones guard, desperate ones attempt capture (more once guarded), scientific ones offer a path, and trailing or aggressive ones turn the trace on a rival in final recovery; nobody re-orders the stance it already holds.
 
+### Militarised Antarctica (Evolution III)
+
+Militarisation is one global value, `global.chaosx_nr25_militarisation` (0 to 100), in `025_alien_technology_in_antarctica_militarisation_effects.txt` with its tuning in `025_alien_technology_in_antarctica_militarisation_constants.txt`.
+It starts at 10 when the evolution activates and at 25 when the race opens with armed escorts.
+Convoy escorts add 3, blockades 8, seizures 12, interceptions 6, attributed sabotage 4, a refused corridor 2 and a reinforced camp 3; a rescue removes 6 and an accepted corridor 10.
+The board's Exposure Risk tooltip shows its stage: guarded, tense from 20, armed from 40, contested from 60 and open clash from 80.
+Each expedition pulse adds the evolution's base exposure plus 0.04 per point of militarisation.
+
+Offer a Demilitarised Corridor targets one rival (the board-selected one for a human) and sends it `chaosx.nr25.166`; acceptance sets targeted compact flags on both countries (`chaosx_nr25_compact_<TAG>`, 180 days) that hide blockade, seizure and interception between them, gives both readiness and the compact opinion, and the offerer hears the answer in `.167`.
+Seizure needs the target's camp to stand while compromised or below 30 security; it carries off up to 10 survey evidence and the target's lowest fragment slot through `chaosx_alien_recovery_ledger_seize_fragment`, and the seizer's report is `.168`.
+The armed-incident report `.165` now offers a public protest (world tension, and AI armed actions against the protester are halved for 120 days), a corridor offer to the attacker, or reinforcement of the camp; none declares war.
+AI tendencies follow spec 009: risk-averse and weak expeditions seek corridors, more once the ice is armed or against a known attacker, and aggressive ones refuse them; armed actions avoid compact partners and protesters.
+
 Evolution V has contain, destroy, transfer, conceal, and integrate decision surfaces.
 They follow physical custody: a country sees them while it holds the recovered core, a fragment, or an Event 036 recovery, and loses them once the material has left.
 

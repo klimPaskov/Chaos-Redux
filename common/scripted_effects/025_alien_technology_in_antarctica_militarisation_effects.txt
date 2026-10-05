@@ -1,0 +1,179 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MILITARISED ANTARCTICA (EVOLUTION III)
+# ============================================================================
+# Overview:
+# - Militarisation is one global value, global.chaosx_nr25_militarisation,
+#   seeded when Evolution III activates (higher when the race opens with it).
+#   Escorts, blockades, seizures, interceptions and attributed sabotage raise
+#   it; rescues and corridor compacts lower it. The board shows it as five
+#   broad stages: guarded, tense, armed, contested and open clash.
+# - Each expedition pulse adds the evolution's exposure plus a share that
+#   grows with militarisation.
+# - A corridor compact is offered to one rival, which accepts or refuses.
+#   While it lasts neither country can blockade, seize from or intercept the
+#   other.
+# - An outpost can be seized only while it is compromised or poorly
+#   defended; the seizure carries off survey evidence and one held fragment
+#   through the custody ledger.
+# - An armed incident lets the victim protest, offer a corridor or reinforce.
+#   None of these declares a war.
+# - Only the expedition's own country, the stored participant registry and
+#   the countries named in an action are read. Nothing scans the world, and
+#   nothing runs while the evolution is disabled.
+# ============================================================================
+
+# GLOBAL value set from any scope. Seeds militarisation when Evolution III
+# activates: higher when the race opened with armed escorts.
+chaosx_nr25_seed_militarisation = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_opening_militarised_antarctica }
+		set_variable = { global.chaosx_nr25_militarisation = constant:chaosx_nr25_militarisation.opening_value }
+	}
+	else = {
+		set_variable = { global.chaosx_nr25_militarisation = constant:chaosx_nr25_militarisation.activation_value }
+	}
+}
+
+# Any scope. Adds the temporary chaosx_nr25_militarisation_delta (negative to
+# lower it) while Evolution III is in force; the caller sets the delta.
+chaosx_nr25_change_militarisation = {
+	if = {
+		limit = { chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
+		if = {
+			limit = { NOT = { has_variable = global.chaosx_nr25_militarisation } }
+			chaosx_nr25_seed_militarisation = yes
+		}
+		add_to_variable = { global.chaosx_nr25_militarisation = chaosx_nr25_militarisation_delta }
+		clamp_variable = {
+			var = global.chaosx_nr25_militarisation
+			min = constant:chaosx_nr25_value.zero
+			max = constant:chaosx_nr25_militarisation.max_value
+		}
+	}
+}
+
+# COUNTRY scope (the expedition, from its pulse while Evolution III is in
+# force). The evolution's exposure, plus a share of the militarisation.
+chaosx_nr25_militarisation_pulse = {
+	if = {
+		limit = { NOT = { has_variable = global.chaosx_nr25_militarisation } }
+		chaosx_nr25_seed_militarisation = yes
+	}
+	set_temp_variable = { chaosx_nr25_militarisation_exposure = global.chaosx_nr25_militarisation }
+	multiply_temp_variable = { chaosx_nr25_militarisation_exposure = constant:chaosx_nr25_militarisation.exposure_per_point }
+	add_to_temp_variable = { chaosx_nr25_militarisation_exposure = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
+	add_to_variable = { chaosx_nr25_exposure_risk = chaosx_nr25_militarisation_exposure }
+}
+
+# COUNTRY scope (the offering expedition; the rival is the event target
+# chaosx_nr25_rival_target_scope). Offers a demilitarised corridor; the rival
+# answers in chaosx.nr25.166.
+chaosx_nr25_offer_corridor_compact = {
+	set_temp_variable = { chaosx_nr25_militarisation_days = constant:chaosx_nr25_militarisation.offer_days }
+	set_country_flag = { flag = chaosx_nr25_compact_offer_pending days = chaosx_nr25_militarisation_days value = 1 }
+	set_variable = { chaosx_nr25_compact_offer_target = event_target:chaosx_nr25_rival_target_scope }
+	event_target:chaosx_nr25_rival_target_scope = { country_event = { id = chaosx.nr25.166 days = 1 } }
+	clear_variable = chaosx_nr25_rival_target
+	clear_variable = chaosx_nr25_rival_target_id
+	clr_country_flag = chaosx_nr25_rival_target_selected
+}
+
+# COUNTRY scope (the rival that accepts; FROM is the offering expedition).
+# Both countries hold a targeted compact flag for the compact period, gain
+# readiness and a good opinion of each other, and militarisation falls.
+chaosx_nr25_accept_corridor_compact = {
+	set_temp_variable = { chaosx_nr25_militarisation_days = constant:chaosx_nr25_militarisation.compact_days }
+	set_country_flag = { flag = chaosx_nr25_compact_@FROM days = chaosx_nr25_militarisation_days value = 1 }
+	add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_militarisation.compact_readiness }
+	add_opinion_modifier = { target = FROM modifier = chaosx_nr25_demilitarisation_compact }
+	set_country_flag = chaosx_nr25_militarisation_demilitarized_route
+	chaosx_nr25_clamp_values = yes
+	FROM = {
+		set_country_flag = { flag = chaosx_nr25_compact_@PREV days = chaosx_nr25_militarisation_days value = 1 }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_militarisation.compact_readiness }
+		add_opinion_modifier = { target = PREV modifier = chaosx_nr25_demilitarisation_compact }
+		set_country_flag = chaosx_nr25_militarisation_demilitarized_route
+		set_country_flag = chaosx_nr25_last_compact_accepted
+		clr_country_flag = chaosx_nr25_compact_offer_pending
+		chaosx_nr25_clamp_values = yes
+	}
+	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_value.zero }
+	subtract_from_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.compact_drop }
+	chaosx_nr25_change_militarisation = yes
+	FROM = { country_event = { id = chaosx.nr25.167 days = 1 } }
+}
+
+# COUNTRY scope (the rival that refuses; FROM is the offering expedition).
+chaosx_nr25_refuse_corridor_compact = {
+	FROM = {
+		clr_country_flag = chaosx_nr25_last_compact_accepted
+		clr_country_flag = chaosx_nr25_compact_offer_pending
+	}
+	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.refused_compact_rise }
+	chaosx_nr25_change_militarisation = yes
+	FROM = { country_event = { id = chaosx.nr25.167 days = 1 } }
+}
+
+# COUNTRY scope (the seizing expedition, after the target's camp fell; the
+# target is the event target chaosx_nr25_rival_target_scope). Carries off
+# survey evidence, at most what the target holds, and one fragment slot the
+# target holds. Results are kept for the seizure report.
+chaosx_nr25_take_seized_material = {
+	set_temp_variable = { chaosx_nr25_seized_evidence = constant:chaosx_nr25_militarisation.seize_evidence }
+	if = {
+		limit = { check_variable = { var = event_target:chaosx_nr25_rival_target_scope.chaosx_nr25_survey_evidence value = chaosx_nr25_seized_evidence compare = less_than } }
+		set_temp_variable = { chaosx_nr25_seized_evidence = event_target:chaosx_nr25_rival_target_scope.chaosx_nr25_survey_evidence }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_seized_evidence value = constant:chaosx_nr25_value.zero compare = less_than } }
+		set_temp_variable = { chaosx_nr25_seized_evidence = constant:chaosx_nr25_value.zero }
+	}
+	event_target:chaosx_nr25_rival_target_scope = { subtract_from_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_seized_evidence } }
+	add_to_variable = { chaosx_nr25_survey_evidence = chaosx_nr25_seized_evidence }
+	set_variable = { chaosx_nr25_last_seized_evidence = chaosx_nr25_seized_evidence }
+	set_temp_variable = { chaosx_alien_recovery_fragment_seized = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+	chaosx_alien_recovery_ledger_seize_fragment = yes
+	clr_country_flag = chaosx_nr25_last_seizure_took_fragment
+	if = {
+		limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.one compare = equals } }
+		set_country_flag = chaosx_nr25_last_seizure_took_fragment
+		set_country_flag = chaosx_nr25_fragment_recovered
+	}
+	set_variable = { chaosx_nr25_last_seizure_target = event_target:chaosx_nr25_rival_target_scope }
+	chaosx_nr25_clamp_values = yes
+	country_event = { id = chaosx.nr25.168 days = 1 }
+}
+
+# COUNTRY scope (the victim of an armed incident; FROM is the attacker).
+# Protest: the incident goes on the public record. The attacker is marked as
+# protested against for a time, which keeps the AI from repeating armed
+# actions against us.
+chaosx_nr25_clash_protest = {
+	set_temp_variable = { chaosx_nr25_militarisation_days = constant:chaosx_nr25_militarisation.protest_days }
+	FROM = { set_country_flag = { flag = chaosx_nr25_protested_by_@PREV days = chaosx_nr25_militarisation_days value = 1 } }
+	add_named_threat = { threat = constant:chaosx_nr25_cost.threat_public_intercept name = chaosx_nr25_public_protest }
+}
+
+# COUNTRY scope (the victim; FROM is the attacker). Negotiate: offer the
+# attacker a corridor compact at once, with no political cost.
+chaosx_nr25_clash_negotiate = {
+	FROM = { save_event_target_as = chaosx_nr25_rival_target_scope }
+	set_variable = { chaosx_nr25_rival_target = FROM }
+	set_variable = { chaosx_nr25_rival_target_id = FROM.id }
+	chaosx_nr25_offer_corridor_compact = yes
+}
+
+# COUNTRY scope (the victim). Reinforce: armed guards for the camp. Security
+# and readiness, and the ice grows more militarised.
+chaosx_nr25_clash_reinforce = {
+	if = {
+		limit = { has_country_flag = chaosx_nr25_outpost_established }
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_militarisation.reinforce_security }
+	}
+	add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_militarisation.reinforce_readiness }
+	set_country_flag = chaosx_nr25_security_zone
+	chaosx_nr25_clamp_values = yes
+	set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.reinforce_rise }
+	chaosx_nr25_change_militarisation = yes
+}

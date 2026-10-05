@@ -598,3 +598,17 @@ Decision:
 - Turning the trace toward a rival is a targeted covert disruption with attribution: the board-selected or leading rival loses outpost security or readiness, identifies the actor on its own intelligence or on a 40% chance, and then gains the sabotage suspicion opinion while the actor's exposure rises. The rival picker `chaosx_nr25_pick_rival_target` is shared with jamming.
 - Stance and response names follow spec 004: Avoid Contact, Guard Every Movement, Attempt Capture, Offer a Controlled Path, Turn It Toward a Rival. Tooltips state the numbers from the survivor constants.
 - The Evolution II body text and the pending catalog cell `E26` describe the incidents and stances.
+
+## D38. Militarised Antarctica: global stages, a consensual corridor, real seizures and clash responses
+
+Disposition: `implemented`; stage pacing and AI behaviour are `needs_live_game`; the MCP probability baseline and compare stay blocked as recorded in D31.
+
+Basis: spec 004 Evolution III (global militarisation state, overt actions, outpost seizure, limited conflict rule), spec 009 Militarised Antarctica and the round 2 remaining-work list.
+
+Decision:
+
+- `global.chaosx_nr25_militarisation` (0 to 100) is seeded at activation (10, or 25 with the armed opening) and moved by the listed actions through `chaosx_nr25_change_militarisation`, which does nothing while the evolution is not in force. Its five stages are scripted triggers and a board tooltip label; the evolution's pulse exposure is its base plus 0.04 per point.
+- The corridor compact is a targeted offer answered by the rival (`.166`); acceptance sets targeted timed compact flags on both countries for 180 days, which the blockade, seizure and interception target triggers read. The previously unread demilitarised route flag is now set on both partners of an accepted corridor. A refusal raises militarisation slightly.
+- Seizure requires a standing camp that is compromised or below 30 security. It moves survey evidence (at most what the target holds) and one fragment slot through the new ledger effect `chaosx_alien_recovery_ledger_seize_fragment`, documented in the ledger markdown; the core never moves this way.
+- The clash report offers protest (public record through a named threat, and a 120-day targeted flag that halves AI armed actions against the protester), negotiation (an immediate corridor offer to the attacker) and reinforcement (outpost security, readiness, a security zone, more militarisation), each with AI chances. No option declares war.
+- Spec 004's ultimatum or war-goal route after repeated high-severity incidents is not added; declaration stays with ordinary diplomacy.

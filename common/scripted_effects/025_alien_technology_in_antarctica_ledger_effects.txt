@@ -1039,6 +1039,56 @@ chaosx_alien_recovery_ledger_transfer_physical_custody = {
 	clear_variable = chaosx_alien_recovery_custody_recipient_id
 }
 
+# COUNTRY scope (the seizing country). Forcible single-slot transfer used by
+# an Evolution III outpost seizure: moves the lowest fragment slot held by the
+# event target chaosx_nr25_rival_target_scope to this country and keeps its
+# role. The recovered core never moves this way. Output: temporary
+# chaosx_alien_recovery_fragment_seized, one when a slot moved; the caller
+# sets it and chaosx_alien_recovery_fragment_assigned to zero first.
+chaosx_alien_recovery_ledger_seize_fragment = {
+	if = {
+		limit = {
+			exists = yes
+			is_subject = no
+			has_capitulated = no
+			has_event_target = chaosx_nr25_rival_target_scope
+			event_target:chaosx_nr25_rival_target_scope = { NOT = { tag = PREV } }
+		}
+		chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+		set_temp_variable = { chaosx_alien_recovery_fragment_role = constant:chaosx_nr25_value.zero }
+		for_loop_effect = {
+			start = constant:chaosx_nr25_value.one
+			end = constant:chaosx_nr25_cost.fragments_total
+			compare = less_than_or_equals
+			value = chaosx_alien_recovery_seize_slot
+			if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.zero compare = equals } }
+				meta_effect = {
+					text = {
+						if = {
+							limit = {
+								has_event_target = chaosx_alien_recovery_fragment_owner_[SLOT]
+								has_global_flag = chaosx_alien_recovery_fragment_[SLOT]_assigned
+								event_target:chaosx_alien_recovery_fragment_owner_[SLOT] = { tag = event_target:chaosx_nr25_rival_target_scope }
+							}
+							set_temp_variable = { chaosx_alien_recovery_fragment_role = global.chaosx_alien_recovery_fragment_[SLOT]_role }
+							chaosx_alien_recovery_ledger_assign_fragment_slot_[SLOT] = yes
+							set_temp_variable = { chaosx_alien_recovery_fragment_seized = constant:chaosx_nr25_value.one }
+						}
+					}
+					SLOT = "[?chaosx_alien_recovery_seize_slot|.0]"
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_fragment_seized value = constant:chaosx_nr25_value.one compare = equals } }
+			chaosx_alien_recovery_ledger_refresh_country_fragments = yes
+			event_target:chaosx_nr25_rival_target_scope = { chaosx_alien_recovery_ledger_refresh_country_fragments = yes }
+			chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+		}
+	}
+}
+
 # COUNTRY scope. Permanently retires only the sender's physical material.
 # Outputs match transfer. No input target, no knowledge/history revocation.
 chaosx_alien_recovery_ledger_destroy_physical_custody = {

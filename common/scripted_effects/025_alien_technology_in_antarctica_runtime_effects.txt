@@ -1634,7 +1634,9 @@ chaosx_nr25_run_bounded_pulse = {
 			}
 			if = {
 				limit = { chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
-				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
+				# Exposure grows with the global militarisation
+				# (025_alien_technology_in_antarctica_militarisation_effects.txt).
+				chaosx_nr25_militarisation_pulse = yes
 			}
 			if = {
 				limit = { chaosx_nr25_wreck_breaking_apart_evolution_in_force = yes }
@@ -2690,6 +2692,9 @@ chaosx_nr25_execute_action = {
 		clr_country_flag = chaosx_nr25_convoy_incident
 		set_country_flag = chaosx_nr25_route_escorted
 		set_country_flag = chaosx_nr25_action_escort_convoys_used
+		# Armed escorts add to the militarisation of the ice.
+		set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.escort_rise }
+		chaosx_nr25_change_militarisation = yes
 	}
 
 	if = {
@@ -3172,6 +3177,23 @@ chaosx_nr25_apply_militarisation_target = {
 			}
 			chaosx_nr25_publish_first_clash = yes
 		}
+		set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_value.zero }
+		if = { limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } } set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.blockade_rise } }
+		if = { limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } } set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.seize_rise } }
+		if = { limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } } set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.intercept_rise } }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } }
+			subtract_from_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.rescue_drop }
+		}
+		chaosx_nr25_change_militarisation = yes
+		# The camp that fell gives up survey evidence and one fragment.
+		if = {
+			limit = {
+				check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals }
+				event_target:chaosx_nr25_rival_target_scope = { has_country_flag = chaosx_nr25_militarisation_seized }
+			}
+			chaosx_nr25_take_seized_material = yes
+		}
 		if = {
 			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
 			add_named_threat = { threat = constant:chaosx_nr25_cost.threat_public_blockade name = chaosx_nr25_public_blockade }
@@ -3329,9 +3351,14 @@ chaosx_nr25_execute_evolution_action_unchecked = {
 	if = {
 		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.demilitarized compare = equals } }
 		add_political_power = constant:chaosx_nr25_cost.pp_public_evolution
-		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.six }
 		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_demilitarized_reduction }
-		set_country_flag = chaosx_nr25_militarisation_demilitarized_route
+		if = {
+			limit = {
+				has_event_target = chaosx_nr25_rival_target_scope
+				event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
+			}
+			chaosx_nr25_offer_corridor_compact = yes
+		}
 	}
 
 	if = {
@@ -3614,6 +3641,9 @@ chaosx_nr25_execute_rival_sabotage = {
 					}
 					add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
 					set_variable = { chaosx_nr25_identified_attacker_id = ROOT.id }
+					# Attributed sabotage adds to the militarisation of the ice.
+					set_temp_variable = { chaosx_nr25_militarisation_delta = constant:chaosx_nr25_militarisation.attributed_sabotage_rise }
+					chaosx_nr25_change_militarisation = yes
 					# Identified false coordinates no longer mislead the surveys.
 					if = {
 						limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }
@@ -3728,6 +3758,7 @@ chaosx_nr25_activate_evolution_militarised_antarctica = {
 		set_global_flag = chaosx_nr25_evolution_militarised_antarctica
 		clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
 		clear_global_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+		chaosx_nr25_seed_militarisation = yes
 		set_country_flag = chaosx_nr25_evolution_militarised_antarctica_holder
 		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.militarised_antarctica }
 		chaosx_nr25_record_evolution_milestone = yes

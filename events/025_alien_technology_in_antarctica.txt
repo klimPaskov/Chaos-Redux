@@ -1367,10 +1367,127 @@ country_event = {
 
 	trigger = { has_country_flag = chaosx_nr25_participant }
 
+	# Protest: the incident goes on the public record.
 	option = {
 		name = chaosx.nr25.165.a
-		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+		custom_effect_tooltip = chaosx_nr25_clash_protest_tt
+		hidden_effect = { chaosx_nr25_clash_protest = yes }
+		ai_chance = {
+			base = 40
+			modifier = { add = 20 chaosx_nr25_ai_risk_averse = yes }
+		}
+	}
+
+	# Negotiate: offer the attacker a demilitarised corridor.
+	option = {
+		name = chaosx.nr25.165.b
+		trigger = { FROM = { chaosx_nr25_target_participant_valid = yes } NOT = { has_country_flag = chaosx_nr25_compact_offer_pending } }
+		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+		custom_effect_tooltip = chaosx_nr25_clash_negotiate_tt
+		hidden_effect = { chaosx_nr25_clash_negotiate = yes }
+		ai_chance = {
+			base = 25
+			modifier = { add = 25 chaosx_nr25_ai_weak = yes }
+			modifier = { add = 15 chaosx_nr25_ai_leading = yes }
+			modifier = { factor = 0.3 chaosx_nr25_ai_aggressive = yes }
+		}
+	}
+
+	# Reinforce: armed guards for the camp.
+	option = {
+		name = chaosx.nr25.165.c
+		custom_effect_tooltip = chaosx_nr25_clash_opinion_tt
+		custom_effect_tooltip = chaosx_nr25_clash_reinforce_tt
+		hidden_effect = { chaosx_nr25_clash_reinforce = yes }
+		ai_chance = {
+			base = 25
+			modifier = { add = 25 chaosx_nr25_ai_militarised = yes }
+			modifier = { add = 15 chaosx_nr25_ai_aggressive = yes }
+			modifier = { factor = 0.5 chaosx_nr25_ai_weak = yes }
+		}
+	}
+}
+
+# A rival offers a demilitarised corridor. FROM is the offering expedition.
+country_event = {
+	id = chaosx.nr25.166
+	title = chaosx.nr25.166.t
+	desc = chaosx.nr25.166.d
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.166.a
+		custom_effect_tooltip = chaosx_nr25_compact_accept_tt
+		hidden_effect = { chaosx_nr25_accept_corridor_compact = yes }
+		ai_chance = {
+			base = 40
+			modifier = { add = 25 chaosx_nr25_ai_risk_averse = yes }
+			modifier = { add = 20 chaosx_nr25_ai_weak = yes }
+			modifier = { add = 15 chaosx_nr25_ai_leading = yes }
+			modifier = { factor = 0.3 chaosx_nr25_ai_aggressive = yes chaosx_nr25_ai_weak = no }
+		}
+	}
+
+	option = {
+		name = chaosx.nr25.166.b
+		custom_effect_tooltip = chaosx_nr25_compact_refuse_tt
+		hidden_effect = { chaosx_nr25_refuse_corridor_compact = yes }
+		ai_chance = {
+			base = 30
+			modifier = { add = 25 chaosx_nr25_ai_aggressive = yes }
+			modifier = { add = 15 has_variable = chaosx_nr25_identified_attacker_id check_variable = { var = chaosx_nr25_identified_attacker_id value = FROM.id compare = equals } }
+		}
+	}
+}
+
+# The offering expedition hears the answer. FROM is the rival.
+country_event = {
+	id = chaosx.nr25.167
+	title = chaosx.nr25.167.t
+	desc = {
+		text = chaosx.nr25.167.d_accepted
+		trigger = { has_country_flag = chaosx_nr25_last_compact_accepted }
+	}
+	desc = {
+		text = chaosx.nr25.167.d_refused
+		trigger = { NOT = { has_country_flag = chaosx_nr25_last_compact_accepted } }
+	}
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.167.a
+		ai_chance = { base = 100 }
+	}
+}
+
+# The seizing expedition counts what it carried off.
+country_event = {
+	id = chaosx.nr25.168
+	title = chaosx.nr25.168.t
+	desc = {
+		text = chaosx.nr25.168.d_fragment
+		trigger = { has_country_flag = chaosx_nr25_last_seizure_took_fragment }
+	}
+	desc = {
+		text = chaosx.nr25.168.d
+		trigger = { NOT = { has_country_flag = chaosx_nr25_last_seizure_took_fragment } }
+	}
+	picture = GFX_report_event_025_antarctic_militarised
+	is_triggered_only = yes
+
+	trigger = { has_country_flag = chaosx_nr25_participant }
+
+	option = {
+		name = chaosx.nr25.168.a
+		custom_effect_tooltip = chaosx_nr25_seizure_taken_tt
+		ai_chance = { base = 100 }
 	}
 }
 

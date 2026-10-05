@@ -1,0 +1,61 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 MILITARISED ANTARCTICA (EVOLUTION III)
+# ============================================================================
+# Overview:
+# - Tuning for the global militarisation value (0 to max_value) that armed
+#   actions raise and rescue and corridor compacts lower, its five board
+#   stages, the pulse exposure it adds, outpost seizure, the corridor compact
+#   and the responses to an armed incident.
+# - Nothing here runs while Evolution III is disabled, and no value here
+#   declares a war.
+# ============================================================================
+
+chaosx_nr25_militarisation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Global value.
+	activation_value = 10
+	opening_value = 25
+	max_value = 100
+	# Stage floors: guarded below tense, then tense, armed, contested, open clash.
+	stage_tense = 20
+	stage_armed = 40
+	stage_contested = 60
+	stage_open_clash = 80
+
+	# Raised by.
+	escort_rise = 3
+	blockade_rise = 8
+	seize_rise = 12
+	intercept_rise = 6
+	attributed_sabotage_rise = 4
+	refused_compact_rise = 2
+	reinforce_rise = 3
+	# Lowered by.
+	rescue_drop = 6
+	compact_drop = 10
+
+	# Pulse exposure for an expedition: the evolution's base exposure plus
+	# this much per point of militarisation.
+	exposure_per_point = 0.04
+
+	# An outpost can be seized only while it is compromised or its security
+	# is below this.
+	seize_security_threshold = 30
+	# Survey evidence a seizure carries off, at most what the target holds.
+	seize_evidence = 10
+
+	# Corridor compact.
+	compact_days = 180
+	offer_days = 30
+	compact_readiness = 6
+
+	# Responses to an armed incident.
+	reinforce_security = 15
+	reinforce_readiness = 5
+	protest_days = 120
+}
+

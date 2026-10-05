@@ -174,25 +174,25 @@ chaosx_nr25_evolution_category = {
 		icon = GFX_decision_generic_military
 		target_array = global.chaosx_nr25_participants
 		target_root_trigger = { chaosx_nr25_base_action_available = yes }
-		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } }
+		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } chaosx_nr25_no_compact_with_target = yes }
 		visible = { chaosx_nr25_race_response_at_sea_visible = yes has_global_flag = chaosx_nr25_evolution_militarised_antarctica chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
 		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
 		custom_cost_text = chaosx_nr25_militarisation_blockade_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_blockade_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.blockade } chaosx_nr25_execute_evolution_action = yes } }
-		ai_will_do = { base = 8 modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } }
+		ai_will_do = { base = 8 modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } modifier = { factor = constant:chaosx_nr25_ai.against_factor has_country_flag = chaosx_nr25_protested_by_@FROM } }
 	}
 	chaosx_nr25_militarisation_seize = {
 		icon = GFX_decision_generic_military
 		target_array = global.chaosx_nr25_participants
 		target_root_trigger = { chaosx_nr25_base_action_available = yes }
-		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } }
+		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } chaosx_nr25_no_compact_with_target = yes chaosx_nr25_target_outpost_seizable = yes }
 		visible = { chaosx_nr25_race_response_at_sea_visible = yes has_global_flag = chaosx_nr25_evolution_militarised_antarctica chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
 		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
 		custom_cost_text = chaosx_nr25_militarisation_seize_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_seize_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.seize } chaosx_nr25_execute_evolution_action = yes } }
-		ai_will_do = { base = 8 modifier = { add = 10 has_war = yes } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } }
+		ai_will_do = { base = 8 modifier = { add = 10 has_war = yes } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } modifier = { factor = constant:chaosx_nr25_ai.against_factor has_country_flag = chaosx_nr25_protested_by_@FROM } }
 	}
 	chaosx_nr25_militarisation_rescue = {
 		icon = GFX_decision_generic_military
@@ -210,22 +210,33 @@ chaosx_nr25_evolution_category = {
 		icon = GFX_decision_generic_research
 		target_array = global.chaosx_nr25_participants
 		target_root_trigger = { chaosx_nr25_base_action_available = yes }
-		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } }
+		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } chaosx_nr25_no_compact_with_target = yes }
 		visible = { chaosx_nr25_race_response_at_sea_visible = yes has_global_flag = chaosx_nr25_evolution_militarised_antarctica chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
 		custom_cost_trigger = { has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
 		custom_cost_text = chaosx_nr25_militarisation_intercept_cost
 		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_intercept_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.intercept } chaosx_nr25_execute_evolution_action = yes } }
-		ai_will_do = { base = 10 modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } }
+		ai_will_do = { base = 10 modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } modifier = { factor = constant:chaosx_nr25_ai.blocked_factor check_variable = { var = chaosx_nr25_last_militarisation_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } } modifier = { factor = constant:chaosx_nr25_ai.target_leader_factor chaosx_nr25_ai_target_leads = yes } modifier = { factor = constant:chaosx_nr25_ai.target_retaliation_factor chaosx_nr25_ai_target_is_known_attacker = yes } modifier = { factor = constant:chaosx_nr25_ai.target_defended_factor FROM = { has_country_flag = chaosx_nr25_countermeasure_ready } } modifier = { factor = constant:chaosx_nr25_ai.against_factor has_country_flag = chaosx_nr25_protested_by_@FROM } }
 	}
 	chaosx_nr25_militarisation_demilitarized = {
 		icon = GFX_decision_generic_research
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { chaosx_nr25_base_action_available = yes }
+		target_trigger = { chaosx_nr25_rival_target_shown = yes FROM = { chaosx_nr25_target_participant_valid = yes } chaosx_nr25_compact_can_be_offered = yes }
 		visible = { chaosx_nr25_race_response_at_sea_visible = yes has_global_flag = chaosx_nr25_evolution_militarised_antarctica chaosx_nr25_militarised_antarctica_evolution_in_force = yes }
 		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
 		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
 		custom_cost_text = chaosx_nr25_militarisation_demilitarized_cost
-		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_demilitarized_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.demilitarized } chaosx_nr25_execute_evolution_action = yes } }
-		ai_will_do = { base = 14 modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_demilitarized_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.demilitarized } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = {
+			base = 4
+			modifier = { add = constant:chaosx_nr25_ai.tendency_strong chaosx_nr25_ai_risk_averse = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_light chaosx_nr25_ai_weak = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_mild chaosx_nr25_militarisation_armed = yes }
+			modifier = { add = constant:chaosx_nr25_ai.tendency_mild chaosx_nr25_ai_target_is_known_attacker = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.against_factor chaosx_nr25_ai_aggressive = yes }
+			modifier = { factor = constant:chaosx_nr25_ai.blocked_factor chaosx_nr25_ai_keeps_reserve = no }
+		}
 	}
 
 	chaosx_nr25_wreck_stabilize = {
