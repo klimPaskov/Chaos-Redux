@@ -1295,6 +1295,19 @@ event021_settlement_terms_offer_open = {
 	check_variable = { var = global.date value = event021_settlement_terms_last_offer_date compare = less_than_or_equals }
 }
 
+# COUNTRY scope. True while a strange incident's practice or its strain is
+# still running on this side, so a side never holds two incidents at once.
+event021_strange_incident_active = {
+	OR = {
+		has_idea = event021_incident_night_assemblies
+		has_idea = event021_incident_oath_circles
+		has_idea = event021_incident_signal_fires
+		has_idea = event021_incident_endurance_rumours
+		has_idea = event021_incident_relic_processions
+		has_idea = event021_strange_incident_strain
+	}
+}
+
 event021_country_can_manage_multifront = {
 	event021_country_can_manage_crisis = yes
 	has_country_flag = random_civil_war_multifront_active

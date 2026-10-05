@@ -8413,8 +8413,11 @@ event021_parent_propagate_exposure = {
 }
 
 # COUNTRY scope. The rare incident is intentionally uncertain and local to a
-# side already exposed by Evolution II. It changes the two visible/hidden
-# values but never creates a new actor or bypasses the scheduler caps.
+# side already exposed by Evolution II. A success costs authority and adds
+# pressure, gives the side one timed battlefield practice and its strain, and
+# sends the side a report with three responses. A side with a running
+# incident cannot roll again, and the incident never creates an actor or
+# bypasses the scheduler caps.
 event021_parent_roll_strange_incident = {
 	if = {
 		limit = {
@@ -8435,6 +8438,7 @@ event021_parent_roll_strange_incident = {
 			NOT = { has_global_flag = events_log_disabled_evolution_21_21_2 }
 			has_country_flag = random_civil_war_active
 			NOT = { has_country_flag = random_civil_war_strange_incident_recent }
+			NOT = { event021_strange_incident_active = yes }
 		}
 		set_temp_variable = { event021_parent_strange_incident_weight = constant:event021_parent_tuning.strange_incident_probability }
 		set_temp_variable = { event021_parent_no_strange_incident_weight = constant:event021_parent_tuning.strange_incident_no_probability }
@@ -8449,11 +8453,62 @@ event021_parent_roll_strange_incident = {
 				set_temp_variable = { event021_date_offset = constant:random_civil_war_timing.exposure_cooldown_days }
 				event021_days_to_date_offset = yes
 				add_to_variable = { random_civil_war_strange_incident_until = event021_date_offset }
+				event021_parent_start_strange_incident = yes
 			}
 			var:event021_parent_no_strange_incident_weight = { }
 		}
 		event021_refresh_country_state = yes
 	}
+}
+
+# COUNTRY scope on the side whose strange-incident roll succeeded. Binds the
+# region named in the report (the side's anchor state while it holds it,
+# otherwise its capital), picks one of the five practices with equal
+# centralized weights, adds that practice and Unease in the Ranks as timed
+# ideas, and fires the report chaosx.nr21.21.
+event021_parent_start_strange_incident = {
+	save_event_target_as = event021_strange_incident_side
+	clear_variable = random_civil_war_strange_incident_state
+	if = {
+		limit = {
+			has_variable = random_civil_war_anchor_state
+			var:random_civil_war_anchor_state = { is_controlled_by = event_target:event021_strange_incident_side }
+		}
+		set_variable = { random_civil_war_strange_incident_state = random_civil_war_anchor_state }
+	}
+	else = {
+		capital_scope = {
+			event_target:event021_strange_incident_side = { set_variable = { random_civil_war_strange_incident_state = PREV } }
+		}
+	}
+	set_temp_variable = { event021_strange_incident_variant_weight = constant:event021_strange_incident.variant_weight }
+	random_list = {
+		var:event021_strange_incident_variant_weight = { set_variable = { random_civil_war_strange_incident_variant = constant:event021_strange_incident_variant.night_assemblies } }
+		var:event021_strange_incident_variant_weight = { set_variable = { random_civil_war_strange_incident_variant = constant:event021_strange_incident_variant.oath_circles } }
+		var:event021_strange_incident_variant_weight = { set_variable = { random_civil_war_strange_incident_variant = constant:event021_strange_incident_variant.signal_fires } }
+		var:event021_strange_incident_variant_weight = { set_variable = { random_civil_war_strange_incident_variant = constant:event021_strange_incident_variant.endurance_rumours } }
+		var:event021_strange_incident_variant_weight = { set_variable = { random_civil_war_strange_incident_variant = constant:event021_strange_incident_variant.relic_processions } }
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.night_assemblies compare = equals } }
+		add_timed_idea = { idea = event021_incident_night_assemblies days = constant:event021_strange_incident.benefit_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.oath_circles compare = equals } }
+		add_timed_idea = { idea = event021_incident_oath_circles days = constant:event021_strange_incident.benefit_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.signal_fires compare = equals } }
+		add_timed_idea = { idea = event021_incident_signal_fires days = constant:event021_strange_incident.benefit_days }
+	}
+	else_if = {
+		limit = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.endurance_rumours compare = equals } }
+		add_timed_idea = { idea = event021_incident_endurance_rumours days = constant:event021_strange_incident.benefit_days }
+	}
+	else = { add_timed_idea = { idea = event021_incident_relic_processions days = constant:event021_strange_incident.benefit_days } }
+	add_timed_idea = { idea = event021_strange_incident_strain days = constant:event021_strange_incident.strain_days }
+	set_country_flag = random_civil_war_strange_incident_report_pending
+	country_event = { id = chaosx.nr21.21 }
 }
 
 # ANY scope. Evolution I activates multi-front planning and records the
@@ -8813,6 +8868,7 @@ event021_parent_cleanup_crisis = {
 		clr_country_flag = random_civil_war_exposure_presentation_delivered
 		clr_country_flag = random_civil_war_strange_incident_recent
 		clear_variable = random_civil_war_strange_incident_until
+		event021_cleanup_strange_incident = yes
 		clr_country_flag = random_civil_war_multifront_news_sent
 		clr_country_flag = random_civil_war_exposure_active
 		clr_country_flag = random_civil_war_land_border_exposure_ready

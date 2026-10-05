@@ -110,6 +110,38 @@ defined_text = {
 	text = { localization_key = event021_summary_stable }
 }
 
+# Strange-incident report text. The practice is read from the side's stored
+# variant and the region from its stored state, with a neutral fallback.
+defined_text = {
+	name = event021_GetStrangeIncidentRegion
+	text = {
+		trigger = { has_variable = random_civil_war_strange_incident_state }
+		localization_key = "[?random_civil_war_strange_incident_state.GetName]"
+	}
+	text = { localization_key = event021_strange_incident_region_fallback }
+}
+
+defined_text = {
+	name = event021_GetStrangeIncidentReport
+	text = {
+		trigger = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.night_assemblies compare = equals } }
+		localization_key = event021_strange_incident_night_assemblies
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.oath_circles compare = equals } }
+		localization_key = event021_strange_incident_oath_circles
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.signal_fires compare = equals } }
+		localization_key = event021_strange_incident_signal_fires
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_strange_incident_variant value = constant:event021_strange_incident_variant.endurance_rumours compare = equals } }
+		localization_key = event021_strange_incident_endurance_rumours
+	}
+	text = { localization_key = event021_strange_incident_relic_processions }
+}
+
 defined_text = {
 	name = event021_GetCrisisTargetName
 	text = {

@@ -1,7 +1,7 @@
 # Event 021 catalog changes pending
 
 Disposition: accepted and queued.
-Acceptance basis: agent decisions D5, D6, and D11 in `agent_decisions_2026-10-04.md`, taken under the user's full-authority takeover grant.
+Acceptance basis: agent decisions D5, D6, D11, and D24 in `agent_decisions_2026-10-04.md`, taken under the user's full-authority takeover grant.
 Queue reason: implementation agents may not edit `docs/spreadsheets/chaos_redux_events_catalog.xlsx` or its CSV exports; the spreadsheet owner applies these rows and then runs `python .tools/export_event_catalog_csv.py`.
 No spreadsheet or CSV file was edited.
 
@@ -40,7 +40,18 @@ Proposed Evo I:
 Rival commands and regional movements are joining the civil wars already under way. Where a region can hold its own capital and forces, a new side takes up arms; elsewhere, governments and claimants tighten their grip on their fronts. New crises can now open on several fronts at once.
 ```
 
+## Evo II
+
+Reason: spec part 9 asks the Evolution II detail to mention unexplained battlefield practices, and agent decision D24 makes the rare strange incident a visible report. The in-game `event021_evolution_ii_body` gains one sentence.
+The proposed text is the in-game text of `event021_evolution_ii_body`.
+
+Proposed Evo II:
+
+```text
+Arms routes, sponsors, and displaced administrations are carrying the crisis across borders. Civilian relief and armed support now demand separate choices. In a few fighting units, night gatherings, sworn oaths, and repeated signs have appeared that no one outside their ranks can explain.
+```
+
 ## Unchanged fields
 
-Evo II, Evo III, Type (Minor Repeatable), Chaos level (1), Cluster ID (1), and Status (Needs Testing) are unchanged.
+Evo III, Type (Minor Repeatable), Chaos level (1), Cluster ID (1), and Status (Needs Testing) are unchanged.
 Agent decisions D13 to D15 change no catalog field. Signed terms now settle the war at once, and the settlement phase lasts for the whole obligation, but the Details Settlement and Reconstruction sections above still match `event021_event_log_detail_settlement` and `event021_event_log_detail_reconstruction` word for word.

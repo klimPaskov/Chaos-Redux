@@ -725,6 +725,54 @@ event021_clear_mission_offer_lapses = {
 	clr_country_flag = event021_settlement_terms_offer_lapsed
 }
 
+# COUNTRY scope. Removes whichever strange-incident practice the side holds.
+event021_remove_strange_incident_benefit = {
+	if = { limit = { has_idea = event021_incident_night_assemblies } remove_ideas = event021_incident_night_assemblies }
+	if = { limit = { has_idea = event021_incident_oath_circles } remove_ideas = event021_incident_oath_circles }
+	if = { limit = { has_idea = event021_incident_signal_fires } remove_ideas = event021_incident_signal_fires }
+	if = { limit = { has_idea = event021_incident_endurance_rumours } remove_ideas = event021_incident_endurance_rumours }
+	if = { limit = { has_idea = event021_incident_relic_processions } remove_ideas = event021_incident_relic_processions }
+}
+
+# COUNTRY scope. Strange-incident response: the practice and its strain run
+# their course, and the tolerated practice raises the recurrence score that
+# reconstruction prepares (random_civil_war_strange_incident_tolerated, cleared
+# when the next crisis begins).
+event021_strange_incident_tolerate = {
+	set_country_flag = random_civil_war_strange_incident_tolerated
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Strange-incident response: the organizers are investigated,
+# the practice ends, the strain remains until it expires, and State Authority
+# rises. The option pays the political power.
+event021_strange_incident_investigate = {
+	event021_remove_strange_incident_benefit = yes
+	set_variable = { random_civil_war_pending_authority_delta = constant:event021_strange_incident.investigate_authority_gain }
+	event021_add_authority = yes
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Strange-incident response: the affected units are rotated
+# out, ending both the practice and the strain. The option pays the army
+# experience.
+event021_strange_incident_rotate = {
+	event021_remove_strange_incident_benefit = yes
+	if = { limit = { has_idea = event021_strange_incident_strain } remove_ideas = event021_strange_incident_strain }
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Crisis cleanup removes a running strange incident and its
+# report receipts. The tolerated-practice memory stays for the recurrence
+# review and is cleared when the next crisis begins.
+event021_cleanup_strange_incident = {
+	event021_remove_strange_incident_benefit = yes
+	if = { limit = { has_idea = event021_strange_incident_strain } remove_ideas = event021_strange_incident_strain }
+	clr_country_flag = random_civil_war_strange_incident_report_pending
+	clear_variable = random_civil_war_strange_incident_variant
+	clear_variable = random_civil_war_strange_incident_state
+}
+
 # COUNTRY scope. Clears the once-per-crisis action receipts of the crisis
 # roles. Crisis cleanup and every new crisis role call it, so a side starts
 # each crisis with all of its actions; the timed prevention cooldowns are not

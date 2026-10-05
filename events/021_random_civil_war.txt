@@ -235,6 +235,66 @@ country_event = {
 	immediate = { event021_parent_review_active_evolution_i_theater = yes }
 }
 
+# Evolution II strange incident report. The roll has already applied the
+# practice, its strain, and the authority and pressure cost. The options are
+# the countermeasures: tolerate, investigate the organizers, or rotate the
+# affected units. AI sides answer by role and profile.
+country_event = {
+	id = chaosx.nr21.21
+	title = chaosx.nr21.21.t
+	desc = chaosx.nr21.21.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = random_civil_war_strange_incident_report_pending
+		event021_strange_incident_active = yes
+	}
+
+	immediate = { hidden_effect = { clr_country_flag = random_civil_war_strange_incident_report_pending } }
+
+	option = {
+		name = chaosx.nr21.21.a
+		custom_effect_tooltip = chaosx.nr21.21.a.tt
+		hidden_effect = { event021_strange_incident_tolerate = yes }
+		ai_chance = {
+			base = constant:event021_strange_incident.ai_tolerate
+			modifier = { factor = constant:event021_strange_incident.ai_preferred has_country_flag = random_civil_war_opposition_side }
+			modifier = { factor = constant:event021_strange_incident.ai_reluctant has_country_flag = random_civil_war_hardliner_profile }
+		}
+	}
+
+	option = {
+		name = chaosx.nr21.21.b
+		trigger = { NOT = { has_political_power < constant:event021_strange_incident.investigate_political_power_gate } }
+		add_political_power = constant:event021_strange_incident.investigate_political_power_cost
+		custom_effect_tooltip = chaosx.nr21.21.b.tt
+		hidden_effect = { event021_strange_incident_investigate = yes }
+		ai_chance = {
+			base = constant:event021_strange_incident.ai_investigate
+			modifier = { factor = constant:event021_strange_incident.ai_preferred has_country_flag = random_civil_war_hardliner_profile }
+			modifier = { factor = constant:event021_strange_incident.ai_reluctant has_country_flag = random_civil_war_opposition_side }
+		}
+	}
+
+	option = {
+		name = chaosx.nr21.21.c
+		trigger = { NOT = { has_army_experience < constant:event021_strange_incident.rotate_army_xp_gate } }
+		army_experience = constant:event021_strange_incident.rotate_army_xp_cost
+		custom_effect_tooltip = chaosx.nr21.21.c.tt
+		hidden_effect = { event021_strange_incident_rotate = yes }
+		ai_chance = {
+			base = constant:event021_strange_incident.ai_rotate
+			modifier = {
+				factor = constant:event021_strange_incident.ai_preferred
+				OR = {
+					has_country_flag = random_civil_war_negotiator_profile
+					has_country_flag = random_civil_war_consolidator_profile
+				}
+			}
+		}
+	}
+}
+
 news_event = {
 	id = chaosx.news.211
 	title = news_event_021_multi_front_war.t
