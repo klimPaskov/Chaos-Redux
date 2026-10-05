@@ -523,3 +523,36 @@ The dispatcher must establish the target and flags before this call.
 Settings supplies the request context, and its dispatcher or an owner event calls the hook from an actual failure branch.
 No icon or additional visual asset is required for this native text report.
 Detailed reference evidence and integration limits are recorded in `docs/plans/shared_interface_plans/subagent_handoffs/forced_feedback_hook_20261005.md`.
+
+### Event 007 read-only cost component display
+
+`fury_cost_display_quote_component` is a country-scoped display producer in `common/scripted_triggers/007_fury_cost_display_triggers.txt`.
+It changes no persistent state and makes no payment.
+Its caller supplies positive `fury_cost_display_ordinary_cost`, `fury_cost_display_family_mask`, and the exact `fury_cost_display_resource_kind` from the universal-cost enum.
+A zero family mask makes the component fixed-price, including the manpower and support equipment used by Fury depot deployment.
+A nonzero family receives a fresh composed Black Friday quote while that source is active.
+Before invoking the producer, the caller must allocate `fury_cost_display_quoted_amount` with its ordinary amount, `fury_cost_display_quote_valid = 0`, and `fury_cost_display_affordable = 0`.
+The producer returns true as an output writer, copies the actual quote into the first output, and tests the quoted positive amount with the shared native-resource affordability component.
+An invalid active-sale quote preserves the ordinary amount only as an invalid diagnostic and leaves affordability false.
+Literal `_1` and `_0` localisation keys show each component's normal or blocked state independently.
+The event-owned getters illustrate this contract and the full tooltip shows all four resources where an inline row displays three.
+
+```
+set_temp_variable = { fury_cost_display_ordinary_cost = constant:fury_decision_cost.target_cp }
+set_temp_variable = { fury_cost_display_family_mask = constant:universal_cost_family.command_power }
+set_temp_variable = { fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power }
+set_temp_variable = { fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost }
+set_temp_variable = { fury_cost_display_quote_valid = 0 }
+set_temp_variable = { fury_cost_display_affordable = 0 }
+fury_cost_display_quote_component = yes
+```
+
+### Deferred Fury physical-supply transfer billing
+
+The existing Event 026 Fury bundle accepts optional caller-owned temporary `black_friday_fury_defer_settlement = 1` for a transfer whose delivery still needs validation.
+Absent or zero input retains ordinary settlement and achievement recording.
+The outer caller must allocate the forwarded component resource-kind and final-cost arrays, transaction id, primary paid/ordinary amounts, and primary family fields consumed after nested payer returns.
+The Event 007 reserve-sharing effect reads its shipment from the actual paid resource vector, validates that vector, settles only after successful delivery, and records the primary purchase achievement after settlement.
+A malformed vector refunds the still-pending transaction, while a rejected settlement first retracts delivery and then refunds the sender.
+Every exit resets the opt-in input to zero.
+The API is limited to the existing Fury owner adapter and grants no periodic country content.

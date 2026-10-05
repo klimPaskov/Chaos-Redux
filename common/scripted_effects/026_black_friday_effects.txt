@@ -1186,13 +1186,18 @@ black_friday_pay_fury_bundle = {
 					compare = equals
 				}
 			}
-			set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-			universal_cost_settle_transaction = yes
-			set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
-			set_temp_variable = { black_friday_purchase_family_id = black_friday_fury_primary_family_id }
-			set_temp_variable = { black_friday_purchase_ordinary_cost = black_friday_fury_primary_ordinary }
-			set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_fury_primary_paid }
-			black_friday_record_achievement_transaction = yes
+			# Optional caller-owned temporary input, absent/zero keeps ordinary settlement.
+			# A deferred transfer owner settles and records achievements after validating delivery.
+			if = {
+				limit = { check_variable = { black_friday_fury_defer_settlement < constant:universal_cost_framework.one } }
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				universal_cost_settle_transaction = yes
+				set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+				set_temp_variable = { black_friday_purchase_family_id = black_friday_fury_primary_family_id }
+				set_temp_variable = { black_friday_purchase_ordinary_cost = black_friday_fury_primary_ordinary }
+				set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_fury_primary_paid }
+				black_friday_record_achievement_transaction = yes
+			}
 			set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
 		}
 		else = {
@@ -1502,11 +1507,6 @@ black_friday_fury_pay_march_core_cost = {
 		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.equipment }
 		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.march_core_equipment }
 		black_friday_fury_append_spend_component = yes
-		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.support_equipment }
-		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.support_equipment }
-		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.equipment }
-		set_temp_variable = { black_friday_fury_next_spend = constant:fury_decision_cost.march_core_support }
-		black_friday_fury_append_spend_component = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.stability }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.stability }
 		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.stability }
@@ -1520,7 +1520,6 @@ black_friday_fury_pay_march_core_cost = {
 		add_command_power = constant:fury_decision_cost.march_core_cp_spend
 		add_manpower = constant:fury_decision_cost.march_core_manpower
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.march_core_equipment }
-		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.march_core_support }
 		add_stability = constant:fury_decision_cost.march_core_stability
 		set_temp_variable = { black_friday_fury_payment_success = constant:universal_cost_framework.one }
 	}
@@ -1604,7 +1603,8 @@ black_friday_fury_pay_terminal_reserves_cost = {
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.terminal_reserves_cp_gate }
+		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.terminal_reserves_cp_spend }
+		multiply_temp_variable = { black_friday_fury_next_ordinary_cost = constant:universal_cost_framework.negative_one }
 		black_friday_fury_append_component = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.manpower }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.manpower }
@@ -1647,7 +1647,8 @@ black_friday_fury_pay_terminal_fronts_cost = {
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.command_power }
 		set_temp_variable = { black_friday_fury_next_family_mask = constant:universal_cost_family.command_power }
-		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.terminal_fronts_cp_gate }
+		set_temp_variable = { black_friday_fury_next_ordinary_cost = constant:fury_decision_cost.terminal_fronts_cp_spend }
+		multiply_temp_variable = { black_friday_fury_next_ordinary_cost = constant:universal_cost_framework.negative_one }
 		black_friday_fury_append_component = yes
 		set_temp_variable = { black_friday_fury_next_component_id = constant:universal_cost_resource_kind.army_experience }
 		set_temp_variable = { black_friday_fury_next_resource_kind = constant:universal_cost_resource_kind.army_experience }

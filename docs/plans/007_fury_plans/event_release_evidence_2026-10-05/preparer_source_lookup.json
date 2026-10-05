@@ -1,0 +1,47 @@
+{
+  "status": "ok",
+  "code": "OK",
+  "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+  "filesScanned": [],
+  "proposedFiles": [],
+  "changedFiles": [],
+  "diagnostics": [],
+  "artifacts": [],
+  "validation": {
+    "passed": true,
+    "checks": []
+  },
+  "blockers": [],
+  "data": {
+    "sourceScope": "helper_definitions",
+    "revision": "71b5fb2056a366864febf4b4e4a89b3ccb7c2e917c533fd522bfbb714afd65c5",
+    "complete": true,
+    "skippedSourceCount": 0,
+    "definitionCount": 1,
+    "definitionsTruncated": false,
+    "definitions": [
+      {
+        "kind": "scripted_effect",
+        "id": "fury_prepare_random_event_fire",
+        "path": "mod:common/scripted_effects/007_fury_effects.txt",
+        "rootKind": "mod",
+        "loadOrder": 15,
+        "overridden": false,
+        "sourceShadowed": false,
+        "startLine": 125,
+        "endLine": 164,
+        "fromLine": 125,
+        "toLine": 164,
+        "nextLine": null,
+        "nextColumn": null,
+        "text": "fury_prepare_random_event_fire = {\n\tset_temp_variable = { fury_prefire_created_actor = 0 }\n\tset_temp_variable = { fury_prefire_existing_actor_count = 0 }\n\tevery_country = {\n\t\tlimit = { is_fury_actor = yes }\n\t\tadd_to_temp_variable = { fury_prefire_existing_actor_count = 1 }\n\t}\n\tfury_sync_evolution_unlocks = yes\n\tif = {\n\t\tlimit = { any_country = { fury_can_be_selected = yes } }\n\t\tfury_select_ordinary_actor = yes\n\t}\n\tif = {\n\t\tlimit = { check_variable = { fury_prefire_created_actor > 0 } }\n\t\tif = {\n\t\t\tlimit = { has_global_flag = fury_evolution_iii_unlocked }\n\t\t\tfury_ensure_actor_count_three = yes\n\t\t}\n\t\telse_if = {\n\t\t\tlimit = { has_global_flag = fury_evolution_ii_unlocked }\n\t\t\tfury_ensure_actor_count_two = yes\n\t\t}\n\t\tset_temp_variable = { fury_prefire_new_actor_count = 0 }\n\t\tevery_country = {\n\t\t\tlimit = { is_fury_actor = yes }\n\t\t\tadd_to_temp_variable = { fury_prefire_new_actor_count = 1 }\n\t\t}\n\t\tsubtract_from_temp_variable = { fury_prefire_new_actor_count = fury_prefire_existing_actor_count }\n\t\tevent_target:fury_entry_primary_actor = {\n\t\t\tset_variable = { fury_opening_actor_count = fury_prefire_new_actor_count }\n\t\t\tsave_global_event_target_as = fury_latest_actor\n\t\t\tsave_event_target_as = fury_opening_news_actor\n\t\t\tnews_event = { id = chaosx.news.7008 }\n\t\t}\n\t}\n\telse = {\n\t\tset_temp_variable = { event_single_fire_allowed = 0 }\n\t\tfury_report_failed_manual_request = yes\n\t}\n}"
+      }
+    ],
+    "references": [],
+    "referencesIncluded": false,
+    "referenceCount": 0,
+    "referencesTruncated": false,
+    "referencesComplete": false,
+    "unresolvedReferenceCount": 0
+  }
+}

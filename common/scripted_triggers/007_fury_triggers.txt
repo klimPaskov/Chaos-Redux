@@ -32,7 +32,7 @@ fury_can_be_selected = {
 	NOT = { fury_is_player_linked_country = yes }
 	capital_scope = { is_island_state = no }
 	any_neighbor_country = {
-		count = 2
+		count = constant:fury_actor_selection.minimum_valid_neighbors
 		fury_is_valid_target = yes
 	}
 }
@@ -52,6 +52,22 @@ fury_actor_can_continue = {
 	exists = yes
 	NOT = { has_capitulated = yes }
 	num_of_controlled_states > 0
+}
+
+fury_has_reinforcement_reserve = {
+	has_variable = fury_reinforcement_reserve_pool
+	check_variable = {
+		var = fury_reinforcement_reserve_pool
+		value = constant:universal_cost_framework.zero
+		compare = greater_than
+	}
+}
+
+fury_has_depot_spawn_state = {
+	any_owned_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
 }
 
 fury_world_end_basic_readiness = {
@@ -111,6 +127,87 @@ fury_is_valid_target = {
 	PREV = { can_declare_war_on = PREV }
 }
 
+fury_can_target_rival_actor = {
+	OR = {
+		AND = {
+			has_country_flag = fury_triggerable_scenario_actor
+			has_global_flag = fury_triggerable_scenario_hostile
+		}
+		NOT = { any_neighbor_country = { fury_is_valid_target = yes } }
+	}
+}
+
+fury_is_valid_war_table_partner = {
+	is_fury_actor = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = fury_rival_route }
+	NOT = { has_war_with = PREV }
+}
+
+fury_has_war_table_partner = {
+	any_other_country = { fury_is_valid_war_table_partner = yes }
+}
+
+fury_is_valid_reserve_share_target = {
+	exists = yes
+	is_fury_actor = yes
+	fury_actor_can_continue = yes
+	NOT = { has_capitulated = yes }
+	NOT = { tag = PREV }
+	NOT = { has_war_with = PREV }
+	OR = {
+		AND = {
+			has_country_flag = fury_pact_member
+			NOT = { has_country_flag = fury_rival_route }
+			PREV = {
+				has_country_flag = fury_pact_command_unlocked
+				has_country_flag = fury_pact_member
+				has_country_flag = fury_cooperation_route
+				NOT = { has_country_flag = fury_rival_route }
+			}
+		}
+		AND = {
+			has_country_flag = fury_world_end_actor
+			PREV = {
+				has_country_flag = fury_world_end_actor
+				has_global_flag = fury_world_end_active
+			}
+		}
+	}
+}
+
+fury_can_share_reserves = {
+	is_fury_actor = yes
+	fury_actor_can_continue = yes
+	OR = {
+		AND = {
+			has_country_flag = fury_pact_command_unlocked
+			has_country_flag = fury_pact_member
+			has_country_flag = fury_cooperation_route
+			NOT = { has_country_flag = fury_rival_route }
+			any_other_country = { fury_is_valid_reserve_share_target = yes }
+		}
+		AND = {
+			has_country_flag = fury_world_end_actor
+			has_global_flag = fury_world_end_active
+			any_other_country = { fury_is_valid_reserve_share_target = yes }
+		}
+	}
+}
+
+fury_can_pay_terminal_reserve_share_cost = {
+	OR = {
+		AND = {
+			black_friday_is_active = yes
+			black_friday_can_pay_fury_terminal_reserves_cost = yes
+		}
+		AND = {
+			NOT = { black_friday_is_active = yes }
+			can_pay_fury_terminal_reserves_cost = yes
+		}
+	}
+}
+
 fury_terminal_can_threaten_player_linked_country = {
 	exists = yes
 	has_global_flag = fury_world_end_active
@@ -149,14 +246,55 @@ fury_is_valid_rival_actor_target = {
 	is_ai = yes
 	is_fury_actor = yes
 	NOT = { has_capitulated = yes }
-	NOT = { is_in_faction_with = ROOT }
-	NOT = { has_war_with = ROOT }
-	ROOT = { can_declare_war_on = PREV }
+	NOT = { is_in_faction_with = PREV }
+	NOT = { has_war_with = PREV }
+	PREV = { fury_can_target_rival_actor = yes }
+	PREV = { can_declare_war_on = PREV }
 }
 
 can_pay_fury_reinforcement_cost = {
+	fury_actor_can_continue = yes
+	has_country_flag = fury_depot_cadres_unlocked
+	fury_has_reinforcement_reserve = yes
+	fury_has_depot_spawn_state = yes
 	command_power > constant:fury_decision_cost.reinforcement_cp_gate
 	has_equipment = { infantry_equipment > constant:fury_decision_cost.reinforcement_equipment_gate }
+	has_equipment = { support_equipment > constant:fury_decision_cost.reinforcement_support_gate }
+	has_manpower > constant:fury_decision_cost.reinforcement_manpower_gate
+}
+
+fury_can_pay_reinforcement_depot_extra_costs = {
+	has_equipment = { support_equipment > constant:fury_decision_cost.reinforcement_support_gate }
+	has_manpower > constant:fury_decision_cost.reinforcement_manpower_gate
+}
+
+fury_can_use_reinforcement_depot = {
+	fury_actor_can_continue = yes
+	has_war = yes
+	has_country_flag = fury_depot_cadres_unlocked
+	fury_has_reinforcement_reserve = yes
+	fury_has_depot_spawn_state = yes
+}
+
+fury_can_pay_reinforcement_depot_resources = {
+	OR = {
+		AND = {
+			black_friday_is_active = yes
+			black_friday_can_pay_fury_reinforcement_cost = yes
+			fury_can_pay_reinforcement_depot_extra_costs = yes
+		}
+		AND = {
+			NOT = { black_friday_is_active = yes }
+			command_power > constant:fury_decision_cost.reinforcement_cp_gate
+			has_equipment = { infantry_equipment > constant:fury_decision_cost.reinforcement_equipment_gate }
+			fury_can_pay_reinforcement_depot_extra_costs = yes
+		}
+	}
+}
+
+fury_can_pay_reinforcement_depot_cost = {
+	fury_can_use_reinforcement_depot = yes
+	fury_can_pay_reinforcement_depot_resources = yes
 }
 
 can_pay_fury_target_cost = {
@@ -238,7 +376,7 @@ can_pay_fury_march_core_cost = {
 	command_power > constant:fury_decision_cost.march_core_cp_gate
 	has_manpower > constant:fury_decision_cost.march_core_manpower_gate
 	has_equipment = { infantry_equipment > constant:fury_decision_cost.march_core_equipment_gate }
-	has_equipment = { support_equipment > constant:fury_decision_cost.march_core_support_gate }
+	has_stability > constant:fury_decision_cost.march_core_stability_gate
 }
 
 can_pay_fury_cooperation_cost = {
@@ -294,6 +432,7 @@ can_pay_anti_fury_recognition_denial_cost = {
 
 anti_fury_response_visible = {
 	is_fury_actor = no
+	NOT = { has_global_flag = fury_all_actors_defeated }
 	OR = {
 		has_global_flag = fury_major_super_event_fired
 		has_global_flag = fury_world_end_active
@@ -313,11 +452,5 @@ anti_fury_has_active_target_to_aid = {
 			NOT = { has_capitulated = yes }
 			NOT = { fury_is_player_linked_country = yes }
 		}
-	}
-}
-
-anti_fury_has_recognition_target = {
-	any_country = {
-		is_fury_actor = yes
 	}
 }

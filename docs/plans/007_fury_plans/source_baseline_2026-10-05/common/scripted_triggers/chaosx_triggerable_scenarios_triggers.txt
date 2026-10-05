@@ -1,0 +1,346 @@
+# ============================================================================
+# CHAOS REDUX - TRIGGERABLE SCENARIO TRIGGERS
+# ============================================================================
+# Shared gates for manual sandbox/challenge scenarios opened through the
+# triggerable scenario window.
+# ============================================================================
+
+triggerable_scenario_can_spawn_zombie_state = {
+	can_host_zombie_outbreak_state = yes
+	NOT = { is_zombie_controlled_state = yes }
+	controller = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+	}
+}
+
+# Country-scope Disaster Barrage target proofs. These mirror Event 013's hard
+# geography routes before the confirmation button is enabled; score bonuses do
+# not manufacture eligibility. Maximum Geological, Random, Full Catalogue, and
+# every Skyfall pool may begin with a land meteor, so any otherwise valid impact
+# state is enough for those branches.
+triggerable_scenario_disaster_barrage_has_geological_target = {
+	if = {
+		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+		}
+	}
+	else = {
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+			OR = {
+				natural_disaster_state_is_seismic_zone = yes
+				AND = {
+					natural_disaster_state_is_dry_slope_zone = yes
+					OR = {
+						natural_disaster_state_is_seismic_zone = yes
+						natural_disaster_state_is_drought_zone = yes
+						natural_disaster_state_is_heat_zone = yes
+						natural_disaster_state_is_arid_zone = yes
+					}
+				}
+				AND = {
+					natural_disaster_state_is_wet_slope_zone = yes
+					OR = {
+						natural_disaster_state_is_flood_exposed_zone = yes
+						natural_disaster_state_is_tropical_storm_basin = yes
+						natural_disaster_state_is_convective_storm_zone = yes
+					}
+				}
+				natural_disaster_state_is_volcanic_vent_zone = yes
+			}
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_weather_target = {
+	any_owned_state = {
+		is_controlled_by = ROOT
+		natural_disaster_is_valid_impact_state = yes
+		OR = {
+			natural_disaster_state_is_flood_exposed_zone = yes
+			AND = {
+				is_coastal = yes
+				natural_disaster_state_is_tropical_storm_basin = yes
+			}
+			natural_disaster_state_is_windstorm_zone = yes
+			natural_disaster_state_is_convective_storm_zone = yes
+			natural_disaster_state_is_hail_zone = yes
+			natural_disaster_state_is_blizzard_zone = yes
+			natural_disaster_state_is_cold_zone = yes
+			AND = {
+				natural_disaster_state_is_heat_zone = yes
+				NOT = { has_state_flag = natural_disaster_heat_aftermath }
+				OWNER = {
+					NOT = { has_idea = heat_wave }
+					NOT = { has_country_flag = natural_disaster_heat_exclusion }
+				}
+			}
+			natural_disaster_state_is_drought_zone = yes
+			natural_disaster_state_is_arid_zone = yes
+			AND = {
+				natural_disaster_state_is_wildfire_fuel_zone = yes
+				OR = {
+					natural_disaster_state_is_heat_zone = yes
+					natural_disaster_state_is_drought_zone = yes
+					natural_disaster_state_is_arid_zone = yes
+					natural_disaster_state_is_windstorm_zone = yes
+					natural_disaster_state_is_convective_storm_zone = yes
+				}
+			}
+			AND = {
+				check_variable = { ROOT.triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low }
+				natural_disaster_state_is_tornado_zone = yes
+			}
+			AND = {
+				check_variable = { ROOT.triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+				natural_disaster_state_is_storm_corridor_zone = yes
+			}
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_random_full_target = {
+	OR = {
+		triggerable_scenario_disaster_barrage_has_geological_target = yes
+		triggerable_scenario_disaster_barrage_has_weather_target = yes
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+			natural_disaster_state_is_storm_surge_coast = yes
+		}
+	}
+}
+
+triggerable_scenario_disaster_barrage_has_selected_type_target = {
+	if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.geological_crisis } }
+		triggerable_scenario_disaster_barrage_has_geological_target = yes
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.weather_crisis } }
+		triggerable_scenario_disaster_barrage_has_weather_target = yes
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.skyfall_crisis } }
+		any_owned_state = {
+			is_controlled_by = ROOT
+			natural_disaster_is_valid_impact_state = yes
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.random_barrage }
+				check_variable = { triggerable_scenarios_disaster_barrage_type = constant:natural_disaster_scenario_type.full_catalogue }
+			}
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+			any_owned_state = {
+				is_controlled_by = ROOT
+				natural_disaster_is_valid_impact_state = yes
+			}
+		}
+		else = {
+			triggerable_scenario_disaster_barrage_has_random_full_target = yes
+		}
+	}
+	else = {
+		always = no
+	}
+}
+
+triggerable_scenario_can_launch_selected = {
+	OR = {
+		check_variable = {
+			var = triggerable_scenarios_selected
+			value = constant:triggerable_scenario_id.zombie_apocalypse
+		}
+		check_variable = {
+			var = triggerable_scenarios_selected
+			value = constant:triggerable_scenario_id.mengele_clones
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.soviet_collapse
+			}
+			SOV = { exists = yes }
+		}
+		AND = {
+			OR = {
+				check_variable = {
+					var = triggerable_scenarios_selected
+					value = constant:triggerable_scenario_id.fallout
+				}
+				check_variable = {
+					var = triggerable_scenarios_selected
+					value = constant:triggerable_scenario_id.final_silence
+				}
+			}
+			fallout_manual_sweep_can_begin = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.world_in_fury
+			}
+			any_country = { fury_can_be_selected = yes }
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.death
+			}
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = death_active }
+			NOT = { has_global_flag = death_defeated }
+			any_state = { death_is_valid_origin_state_outer = yes }
+			any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.disaster_barrage
+			}
+			NOT = { has_global_flag = world_end }
+			NOT = {
+				AND = {
+					check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+					has_country_flag = achievement_nd_barrage_maximum_started
+					NOT = { has_country_flag = achievement_nd_barrage_maximum_ended }
+					NOT = { has_country_flag = achievement_nd_barrage_aftermath_unresolved }
+				}
+			}
+			triggerable_scenario_disaster_barrage_has_selected_type_target = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.independence_wave
+			}
+			independence_wave_scenario_can_launch = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.coalition_unmasked
+			}
+			secret_alliance_scenario_can_launch = yes
+			secret_alliance_scenario_type_has_valid_major = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.cannibalism
+			}
+			cannibalism_scenario_can_launch = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.infantry_spawn
+			}
+			infantry_spawn_scenario_can_launch_from_triggerable_scenarios = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.black_plague
+			}
+			black_plague_scenario_can_launch_from_triggerable_scenarios = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.africa_is_one
+			}
+			africa_triggerable_scenario_can_launch = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.missile_age
+			}
+			missiles_scenario_can_launch_from_triggerable_scenarios = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.global_jihad
+			}
+			random_terror_can_launch_global_jihad = yes
+		}
+		AND = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.random_civil_war
+			}
+			random_civil_war_triggerable_scenario_can_launch = yes
+		}
+		AND = {
+			check_variable = { var = triggerable_scenarios_selected value = constant:triggerable_scenario_id.assassin_network compare = equals }
+			murder_mystery_triggerable_scenario_can_launch = yes
+		}
+	}
+}
+
+is_triggerable_scenario_zombie_country = {
+	exists = yes
+	has_country_flag = zombie_outbreak_dynamic_country
+	num_of_controlled_states > 0
+	NOT = { has_capitulated = yes }
+	OR = {
+		has_country_flag = weaponized_zombie_triggerable_scenario
+		has_country_flag = zombie_triggerable_scenario_standard
+	}
+}
+
+triggerable_scenario_zombie_same_type_as_actor = {
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = zombie_triggerable_scenario_standard
+				has_country_flag = weaponized_zombie_type_infected
+			}
+			event_target:triggerable_zombie_relation_actor = {
+				OR = {
+					has_country_flag = zombie_triggerable_scenario_standard
+					has_country_flag = weaponized_zombie_type_infected
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_rabid
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_rabid }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_parasitic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_parasitic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_mutant
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_mutant }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_undead
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_undead }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_necrotic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_necrotic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_demonic
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_demonic }
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_wendigo
+			event_target:triggerable_zombie_relation_actor = { has_country_flag = weaponized_zombie_type_wendigo }
+		}
+	}
+}

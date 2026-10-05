@@ -172,7 +172,9 @@ focus_tree = {
 			set_country_flag = fury_depot_cadres_unlocked
 			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_focus_reward.infantry_stockpile_medium }
 			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_focus_reward.support_stockpile_small }
-			fury_spawn_depot_decision_units = yes
+			set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_focus_reward.depot_cadres_reserve }
+			fury_add_reinforcement_reserve = yes
+			fury_spawn_focus_depot_units = yes
 		}
 		ai_will_do = {
 			base = 12
@@ -212,7 +214,6 @@ focus_tree = {
 		completion_reward = {
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_medium }
 			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_small }
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_small }
 		}
 		ai_will_do = { base = 12 }
 	}
@@ -363,7 +364,6 @@ focus_tree = {
 		prerequisite = { focus = fury_first_war_office_orders }
 		completion_reward = {
 			add_ideas = fury_compliance_drive
-			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
 			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
 			clamp_variable = { var = fury_overextension min = 0 }
 		}
@@ -383,7 +383,6 @@ focus_tree = {
 		prerequisite = { focus = fury_occupation_registers }
 		completion_reward = {
 			set_country_flag = fury_occupation_registers_unlocked
-			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
 			random_controlled_state = {
 				limit = {
 					is_owned_by = ROOT
@@ -410,7 +409,6 @@ focus_tree = {
 		cost = @fury_focus_medium
 		prerequisite = { focus = fury_occupation_registers }
 		completion_reward = {
-			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_medium }
 			add_stability = constant:fury_focus_reward.stability_small
 			add_command_power = constant:fury_focus_reward.command_power_small
 		}
@@ -501,7 +499,6 @@ focus_tree = {
 		mutually_exclusive = { focus = fury_core_by_march }
 		completion_reward = {
 			set_country_flag = fury_admin_coring_unlocked
-			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_medium }
 			subtract_from_variable = { fury_overextension = constant:fury_focus_reward.overextension_medium }
 			clamp_variable = { var = fury_overextension min = 0 }
 		}
@@ -515,8 +512,8 @@ focus_tree = {
 		id = fury_core_by_march
 		icon = GFX_goal_generic_forceful_treaty
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
-		x = 14
-		y = 9
+		x = 12
+		y = 10
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_garrison_the_names }
 		prerequisite = { focus = fury_conquest_coring }
@@ -544,6 +541,7 @@ focus_tree = {
 		prerequisite = { focus = fury_first_war_office_orders }
 		mutually_exclusive = { focus = fury_rival_column }
 		available = {
+			NOT = { has_country_flag = fury_rival_route }
 			OR = {
 				has_global_flag = fury_evolution_ii_unlocked
 				has_country_flag = fury_evolution_ii_applied
@@ -559,7 +557,6 @@ focus_tree = {
 			set_country_flag = fury_cooperation_route
 			set_country_flag = fury_pact_member
 			add_ideas = fury_pact_command
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
 		}
 		ai_will_do = {
 			base = 11
@@ -577,10 +574,18 @@ focus_tree = {
 		y = 6
 		cost = @fury_focus_medium
 		prerequisite = { focus = fury_second_war_table }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fury_project_pact_partner_available
+				hidden_trigger = {
+					fury_has_war_table_partner = yes
+				}
+			}
+		}
 		completion_reward = {
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
 			every_other_country = {
-				limit = { is_fury_actor = yes }
+				limit = { fury_is_valid_war_table_partner = yes }
+				set_country_flag = fury_pact_member
 			}
 		}
 		ai_will_do = { base = 10 }
@@ -597,7 +602,6 @@ focus_tree = {
 		completion_reward = {
 			add_command_power = constant:fury_focus_reward.command_power_medium
 			army_experience = constant:fury_focus_reward.army_xp_medium
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
 		}
 		ai_will_do = { base = 9 }
 	}
@@ -613,7 +617,6 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = fury_partition_plans_unlocked
 			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_medium }
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_small }
 		}
 		ai_will_do = {
 			base = 9
@@ -651,7 +654,6 @@ focus_tree = {
 		prerequisite = { focus = fury_joint_cadre_transfers }
 		completion_reward = {
 			add_ideas = fury_pact_command
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_medium }
 			set_country_flag = fury_pact_command_unlocked
 		}
 		ai_will_do = {
@@ -670,6 +672,7 @@ focus_tree = {
 		prerequisite = { focus = fury_first_war_office_orders }
 		mutually_exclusive = { focus = fury_second_war_table }
 		available = {
+			NOT = { has_country_flag = fury_cooperation_route }
 			OR = {
 				has_global_flag = fury_evolution_ii_unlocked
 				has_country_flag = fury_evolution_ii_applied
@@ -701,6 +704,12 @@ focus_tree = {
 		y = 6
 		cost = @fury_focus_medium
 		prerequisite = { focus = fury_rival_column }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fury_no_valid_neighbors
+				fury_can_target_rival_actor = yes
+			}
+		}
 		completion_reward = {
 			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
 			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
@@ -751,13 +760,18 @@ focus_tree = {
 		id = fury_last_fury_standing
 		icon = GFX_goal_generic_major_war
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
-		x = 20
-		y = 8
+		x = 17
+		y = 11
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_claim_the_same_map }
 		prerequisite = { focus = fury_absorb_the_rival_fire }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = fury_no_other_fury_actors_tt
+				NOT = { any_other_country = { is_fury_actor = yes } }
+			}
+		}
 		completion_reward = {
-			set_country_flag = fury_last_fury_standing_candidate
 			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
 			add_to_variable = { fury_target_preparation = constant:fury_focus_reward.target_preparation_large }
 		}
@@ -818,7 +832,9 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = fury_depot_officers_unlocked
 			add_command_power = constant:fury_focus_reward.command_power_medium
-			fury_spawn_depot_decision_units = yes
+			set_temp_variable = { fury_reinforcement_reserve_add = constant:fury_focus_reward.depot_officers_reserve }
+			fury_add_reinforcement_reserve = yes
+			fury_spawn_focus_depot_units = yes
 		}
 		ai_will_do = {
 			base = 11
@@ -835,7 +851,6 @@ focus_tree = {
 		cost = @fury_focus_medium
 		prerequisite = { focus = fury_harden_the_columns }
 		completion_reward = {
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_small }
 			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_medium }
 			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
 		}
@@ -853,7 +868,6 @@ focus_tree = {
 		prerequisite = { focus = fury_forced_march_tables }
 		completion_reward = {
 			add_manpower = constant:fury_focus_reward.manpower_large
-			add_to_variable = { fury_compliance_drive = constant:fury_focus_reward.compliance_drive_small }
 			add_to_variable = { fury_overextension = constant:fury_focus_reward.overextension_small }
 		}
 		ai_will_do = {
@@ -954,7 +968,6 @@ focus_tree = {
 		completion_reward = {
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:fury_focus_reward.truck_stockpile_large }
 			add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_focus_reward.train_stockpile_medium }
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
 		}
 		ai_will_do = { base = 10 }
 	}
@@ -963,11 +976,11 @@ focus_tree = {
 		id = fury_the_last_neighbor_has_fallen
 		icon = GFX_goal_generic_demand_territory
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
-		x = 10
-		y = 10
+		x = 9
+		y = 11
 		cost = @fury_focus_long
-		prerequisite = { focus = fury_the_next_neighbor }
-		prerequisite = { focus = fury_core_by_administration focus = fury_core_by_march }
+		prerequisite = { focus = fury_the_next_neighbor focus = fury_last_fury_standing }
+		prerequisite = { focus = fury_core_by_administration focus = fury_core_by_march focus = fury_last_fury_standing }
 		available = {
 			OR = {
 				has_country_flag = fury_no_valid_neighbors
@@ -976,7 +989,6 @@ focus_tree = {
 		}
 		completion_reward = {
 			set_country_flag = fury_world_end_candidate
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
 			add_named_threat = { threat = @fury_threat_small name = fury_the_last_neighbor_has_fallen_threat }
 		}
 		ai_will_do = {
@@ -990,12 +1002,11 @@ focus_tree = {
 		id = fury_carry_the_orders_overseas
 		icon = GFX_goal_fury_world_end
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_INDUSTRY }
-		x = 9
-		y = 11
+		x = 8
+		y = 12
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_the_last_neighbor_has_fallen }
 		completion_reward = {
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_large }
 			add_equipment_to_stockpile = { type = convoy_1 amount = constant:fury_focus_reward.convoy_stockpile_medium }
 			set_country_flag = fury_overseas_orders_unlocked
 		}
@@ -1009,8 +1020,8 @@ focus_tree = {
 		id = fury_continental_ignitions
 		icon = GFX_goal_fury_world_end
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
-		x = 11
-		y = 11
+		x = 10
+		y = 12
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_the_last_neighbor_has_fallen }
 		completion_reward = {
@@ -1028,17 +1039,20 @@ focus_tree = {
 		id = fury_main_fury_pact
 		icon = GFX_goal_fury_pact
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
-		x = 10
-		y = 12
+		x = 9
+		y = 13
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_carry_the_orders_overseas }
 		prerequisite = { focus = fury_continental_ignitions }
 		completion_reward = {
 			set_country_flag = fury_main_pact_candidate
+			if = {
+				limit = { has_country_flag = fury_rival_route }
+				remove_ideas = fury_rival_doctrine
+			}
 			set_global_flag = fury_pact_formed
 			set_country_flag = fury_pact_member
 			add_ideas = fury_pact_command
-			add_to_variable = { fury_pact_cohesion = constant:fury_focus_reward.pact_cohesion_medium }
 		}
 		ai_will_do = {
 			base = 4
@@ -1050,8 +1064,8 @@ focus_tree = {
 		id = fury_world_in_fury
 		icon = GFX_goal_fury_world_end
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
-		x = 10
-		y = 13
+		x = 9
+		y = 14
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_main_fury_pact }
 		available = {
@@ -1080,14 +1094,13 @@ focus_tree = {
 		id = fury_no_neutral_map
 		icon = GFX_goal_generic_attack_allies
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_WAR_SUPPORT }
-		x = 10
-		y = 14
+		x = 9
+		y = 15
 		cost = @fury_focus_long
 		prerequisite = { focus = fury_world_in_fury }
 		completion_reward = {
 			set_country_flag = fury_no_neutral_map_unlocked
 			add_to_variable = { fury_momentum = constant:fury_focus_reward.momentum_large }
-			add_to_variable = { fury_reach = constant:fury_focus_reward.reach_medium }
 			add_named_threat = { threat = @fury_threat_small name = fury_no_neutral_map_threat }
 		}
 		ai_will_do = {

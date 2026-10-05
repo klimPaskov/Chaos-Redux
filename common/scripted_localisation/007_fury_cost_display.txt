@@ -1,0 +1,3789 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 007 FURY COST DISPLAY LOCALISATION
+# ============================================================================
+# Country-scope per-component getters for decision custom-cost rows and
+# tooltips. Each colour branch recomputes its quote and caller-owned outputs.
+# Affordable components use literal _1 keys; deficient or invalid sale quotes
+# use literal _0 keys. No decision route, phase, or availability requirement
+# participates in a cost component's colour.
+# ============================================================================
+defined_text = {
+	name = GetFuryTargetCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.target_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_target_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.target_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.target_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_target_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.target_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryReinforcementCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryReinforcementInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryReinforcementManpowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_manpower = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_manpower_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_manpower = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_manpower_0
+	}
+}
+
+defined_text = {
+	name = GetFuryReinforcementSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.reinforcement_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_reinforcement_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.reinforcement_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFurySettlementCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.settlement_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.settlement_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFurySettlementInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.settlement_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.settlement_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFurySettlementSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.settlement_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.settlement_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_settlement_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.settlement_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRegistersCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.registers_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.registers_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRegistersInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.registers_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.registers_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRegistersSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.registers_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.registers_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_registers_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.registers_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRailRegistryCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRailRegistryTrainEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_trains
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.trains
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.train_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_train_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_train_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_trains
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.trains
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.train_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_train_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_train_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRailRegistrySupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rail_registry_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rail_registry_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.rail_registry_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryAdminCoreCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.admin_core_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.admin_core_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryAdminCoreManpowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_manpower = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.admin_core_manpower_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_manpower = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.admin_core_manpower_0
+	}
+}
+
+defined_text = {
+	name = GetFuryAdminCoreInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.admin_core_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.admin_core_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryAdminCoreSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.admin_core_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.admin_core_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_admin_core_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.admin_core_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryMarchCoreCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.march_core_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.march_core_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryMarchCoreManpowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_manpower = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.march_core_manpower_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_manpower = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.march_core_manpower_0
+	}
+}
+
+defined_text = {
+	name = GetFuryMarchCoreInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.march_core_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.march_core_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryMarchCoreStabilityCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_stability
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.stability
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.stability
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_stability = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.march_core_stability_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.march_core_stability
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.stability
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.stability
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_march_core_stability = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.march_core_stability_0
+	}
+}
+
+defined_text = {
+	name = GetFuryCooperationCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.cooperation_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_cooperation_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.cooperation_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.cooperation_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_cooperation_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.cooperation_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryCooperationInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.cooperation_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_cooperation_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.cooperation_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.cooperation_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_cooperation_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.cooperation_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryRivalryCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rivalry_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rivalry_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.rivalry_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.rivalry_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_rivalry_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.rivalry_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFurySurveyCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.survey_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_survey_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.survey_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.survey_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_survey_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.survey_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_cp_spend
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_cp_spend
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesManpowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_manpower = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_manpower_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_manpower
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.manpower
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.manpower
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_manpower = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_manpower_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_reserves_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_reserves_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_reserves_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalFrontsCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_fronts_cp_spend
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_fronts_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_fronts_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_fronts_cp_spend
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_fronts_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_fronts_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalFrontsArmyExperienceCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_fronts_army_xp
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.army_experience
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.army_experience
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_fronts_army_experience = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.terminal_fronts_army_experience_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.terminal_fronts_army_xp
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.army_experience
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.army_experience
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_terminal_fronts_army_experience = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.terminal_fronts_army_experience_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryBorderWatchCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_border_watch_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_border_watch_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_border_watch_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_border_watch_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryBorderWatchInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_border_watch_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_border_watch_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_border_watch_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_border_watch_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidSupportEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_support_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_support_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_support
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.support_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_support_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_support_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidTrainEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_trains
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.trains
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.train_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_train_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_train_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_aid_trains
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.trains
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.train_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_emergency_aid_train_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_emergency_aid_train_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryStaffTalksCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_staff_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_staff_talks_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_staff_talks_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_staff_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_staff_talks_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_staff_talks_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryStaffTalksArmyExperienceCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_staff_army_xp
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.army_experience
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.army_experience
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_staff_talks_army_experience = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_staff_talks_army_experience_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_staff_army_xp
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.army_experience
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.army_experience
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_staff_talks_army_experience = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_staff_talks_army_experience_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFurySupplyDenialCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_denial_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_supply_denial_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_supply_denial_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_denial_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_supply_denial_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_supply_denial_command_power_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFurySupplyDenialInfantryEquipmentCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_denial_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_supply_denial_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_supply_denial_infantry_equipment_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_denial_equipment
+			}
+			multiply_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:universal_cost_framework.negative_one
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.equipment
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.infantry_equipment
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_supply_denial_infantry_equipment = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_supply_denial_infantry_equipment_0
+	}
+}
+
+defined_text = {
+	name = GetAntiFuryRecognitionDenialCommandPowerCostDisplay
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_recognition_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_recognition_denial_command_power = fury_cost_display_quoted_amount
+			}
+			check_variable = {
+				var = fury_cost_display_quote_valid
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+			check_variable = {
+				var = fury_cost_display_affordable
+				value = constant:universal_cost_framework.one
+				compare = equals
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_recognition_denial_command_power_1
+	}
+	text = {
+		trigger = {
+			set_temp_variable = {
+				fury_cost_display_ordinary_cost = constant:fury_decision_cost.anti_fury_recognition_cp
+			}
+			set_temp_variable = {
+				fury_cost_display_family_mask = constant:universal_cost_family.command_power
+			}
+			set_temp_variable = {
+				fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power
+			}
+			# Initialize caller-owned outputs before the helper call.
+			set_temp_variable = {
+				fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost
+			}
+			set_temp_variable = {
+				fury_cost_display_quote_valid = constant:universal_cost_framework.zero
+			}
+			set_temp_variable = {
+				fury_cost_display_affordable = constant:universal_cost_framework.zero
+			}
+			fury_cost_display_quote_component = yes
+			set_temp_variable = {
+				fury_cost_display_anti_fury_recognition_denial_command_power = fury_cost_display_quoted_amount
+			}
+			NOT = {
+				AND = {
+					check_variable = {
+						var = fury_cost_display_quote_valid
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+					check_variable = {
+						var = fury_cost_display_affordable
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+			}
+		}
+		localization_key = fury_cost_display.anti_fury_recognition_denial_command_power_0
+	}
+}
+
