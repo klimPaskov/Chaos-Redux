@@ -1159,8 +1159,8 @@ independence_wave_form07_cleanup_runtime = {
 # ============================================================================
 # CHAOS REDUX - EVENT 006 FORM-08 DANUBIAN CONFEDERATION EFFECTS
 # ============================================================================
-# FORM-08 reuses the existing vanilla HUN_EMPIRE cosmetic identity (the
-# vanilla flag triplet and Danubian name are already registered). The adapter
+# FORM-08 carries its own X-ending DCX identity and flag triplet (agent
+# decision D23); the two-member family forms from TRA and AXX. The adapter
 # integrates only frozen, consenting Event 006 rows with explicit anchors:
 # TRA 84/76 or AXX 82. Vojvodina remains an HUN-origin overlay and Slavonia
 # has no unique installed-map anchor, so both remain outside the selectable
@@ -1192,12 +1192,11 @@ independence_wave_form08_register_readiness = {
 		}
 		set_variable = { independence_wave_formable_readiness_family = constant:independence_wave_formable_family.danubian_confederation }
 		set_country_flag = independence_wave_formable_territory_adapter_ready
-		# HUN_EMPIRE is an existing vanilla cosmetic identity with a complete
+		# DCX is the attested X-ending Danubian identity with its own flag
 # FORM08 merged-source continuation 4
-		# flag package. This receipt records reviewed reuse; no new tag or flag
-		# is added.
+		# triplet, and only one carrier may hold it at a time.
 		set_country_flag = independence_wave_formable_x_tag_reserved
-		set_country_flag = independence_wave_form08_hun_empire_identity_reuse_attested
+		set_country_flag = independence_wave_form08_identity_attested
 		set_country_flag = independence_wave_formable_flag_package_ready
 		set_country_flag = independence_wave_formable_identity_adapter_ready
 		set_country_flag = independence_wave_formable_integration_adapter_ready
@@ -1215,8 +1214,8 @@ independence_wave_formable_identity_adapter_8 = {
 			has_independence_wave_form08_identity_clearance = yes
 			has_independence_wave_form08_runtime_commit_proof = yes
 		}
-		set_cosmetic_tag = HUN_EMPIRE
-		set_global_flag = independence_wave_form08_hun_empire_identity_in_use
+		set_cosmetic_tag = DCX
+		set_global_flag = independence_wave_form08_identity_in_use
 		set_country_flag = independence_wave_form08_confederation_carrier
 		set_country_flag = independence_wave_formable_identity_committed
 	}
@@ -1228,7 +1227,7 @@ independence_wave_formable_integration_adapter_8 = {
 		limit = {
 			has_country_flag = independence_wave_formable_mutation_prevalidated
 			has_country_flag = independence_wave_formable_identity_committed
-			has_cosmetic_tag = HUN_EMPIRE
+			has_cosmetic_tag = DCX
 # FORM08 merged-source continuation 8
 		independence_wave_formable_member_arrays_are_aligned = yes
 		}
@@ -1417,10 +1416,10 @@ independence_wave_form08_complete_transport_project = {
 
 independence_wave_form08_rollback_identity = {
 	if = {
-		limit = { has_cosmetic_tag = HUN_EMPIRE NOT = { has_country_flag = independence_wave_formable_integration_committed } }
+		limit = { has_cosmetic_tag = DCX NOT = { has_country_flag = independence_wave_formable_integration_committed } }
 # FORM08 merged-source continuation 29
 		drop_cosmetic_tag = yes
-		clr_global_flag = independence_wave_form08_hun_empire_identity_in_use
+		clr_global_flag = independence_wave_form08_identity_in_use
 		clr_country_flag = independence_wave_form08_confederation_carrier
 	}
 	clr_country_flag = independence_wave_form08_identity_adapter_blocked
@@ -1446,11 +1445,20 @@ independence_wave_form08_cleanup_runtime = {
 	}
 	remove_ideas = { independence_wave_form08_provisional_charter independence_wave_form08_coordinated_charter independence_wave_form08_integrated_charter independence_wave_form08_autonomous_danube_member }
 # FORM08 merged-source continuation 32
-	if = { limit = { has_cosmetic_tag = HUN_EMPIRE } drop_cosmetic_tag = yes }
-	clr_global_flag = independence_wave_form08_hun_empire_identity_in_use
+	# Only the carrier that took DCX releases the shared identity lock.
+	if = {
+		limit = {
+			OR = {
+				has_cosmetic_tag = DCX
+				has_country_flag = independence_wave_form08_confederation_carrier
+			}
+		}
+		if = { limit = { has_cosmetic_tag = DCX } drop_cosmetic_tag = yes }
+		clr_global_flag = independence_wave_form08_identity_in_use
+	}
 	clr_country_flag = independence_wave_form08_confederation_carrier
 	clr_country_flag = independence_wave_form08_readiness_attested
-	clr_country_flag = independence_wave_form08_hun_empire_identity_reuse_attested
+	clr_country_flag = independence_wave_form08_identity_attested
 	clr_country_flag = independence_wave_form08_post_formation_active
 	clr_country_flag = independence_wave_form08_integration_committed
 	clr_country_flag = independence_wave_form08_congress_project_complete

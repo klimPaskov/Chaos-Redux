@@ -119,3 +119,10 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - Kurdistan (KUR) can now appear in Independence Waves, Join conversions and Every Banner Rises launches, released from Iran around Sanandaj and led by its own vanilla leaders.
 - Dahomey (DAH) can now appear in the same launches, led by its vanilla government.
+
+
+## 2026-10-05: Danubian Confederation formable (D23)
+
+Disposition: `accepted and queued` for the catalog owner; implementation is committed.
+
+- Transylvania and the Banat can now form the Danubian Confederation together, under its own name and flag.

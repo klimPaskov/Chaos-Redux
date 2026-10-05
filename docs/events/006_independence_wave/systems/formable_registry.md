@@ -2,6 +2,8 @@
 
 ## Purpose and status
 
+> FORM-08 (2026-10-05, agent decision D23): the Danubian Confederation is operational as a two-member family. A TRA carrier at state 84 and an AXX member at state 82 form it once both consent, and the carrier takes the X-ending `DCX` identity with its own flag triplet instead of the vanilla `HUN_EMPIRE` cosmetic. The registered carrier stays a member while its own proposal is open, the state puzzle requires states 84 and 82, the three FORM-08 AI strategies are allowed for TRA, and only the carrier that holds `DCX` releases its identity lock. Statements below that call FORM-08 fail-closed, require three members or reuse `HUN_EMPIRE` describe its earlier state.
+
 The Event 006 formable registry is the shared discovery and transaction framework for FORM-01 through FORM-48. It replaces family-by-family copied decisions with one profile table, one method and consent surface, and one bounded member and anchor ledger.
 
 All 48 accepted family rows have stable discovery metadata, but the shared
@@ -258,7 +260,7 @@ The Event 006 state-puzzle group is declared by fourteen consumer specs in `docs
 | FORM-04 | 51, 42 | 2 | `independence_wave_formable_state_puzzle_form04_territory` |
 | FORM-05 | 1, 114, 115 | 2 | `independence_wave_formable_state_puzzle_form05_territory` |
 | FORM-07 | 165, 792, 171 | 3 | `independence_wave_formable_state_puzzle_form07_territory` |
-| FORM-08 | 84, 82 | 3 | `independence_wave_formable_state_puzzle_form08_territory` |
+| FORM-08 | 84, 82 | 2 | `independence_wave_formable_state_puzzle_form08_territory` |
 | FORM-09 | 185, 184, 104, 106, 105, 802 | 3 | `independence_wave_formable_state_puzzle_form09_territory` |
 | FORM-12 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form12_territory` |
 | FORM-13 | 249, 651, 833, 399, 397 | carrier plus 3 members | `independence_wave_formable_state_puzzle_form13_territory` |

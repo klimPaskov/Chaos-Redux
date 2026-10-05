@@ -581,3 +581,28 @@ Validation: the allocator audit passes with 49 attested packages, 41 reservation
 Remaining gap: a DAH cleanup keeps the Event 006 party names, since vanilla DAH has no party name keys to restore.
 
 Needs live game: a wave that releases KUR from Iran with state 1001 as its capital, and a wave that releases DAH.
+
+
+## D23. Round 2: FORM-08 Danubian Confederation made operational
+
+Disposition: `implemented`.
+
+Basis: the lead's round-2 priority-11 item (formables). The FORM-08 matrix row names Transylvania, Banat, Vojvodina, Slavonia and compatible members, sets no numeric minimum, and requires any new formable or route tag to end in X.
+
+Defects that kept FORM-08 from ever forming:
+
+- Member count: the registry required three members, consents and anchors, but the geography guard admits only TRA (state 84) and AXX (state 82). Vojvodina is a HUN-origin overlay and Slavonia has no unique map anchor, so a third member could never exist. FORM-08 is now a two-member family (`minimum_members`, `minimum_consents` and `minimum_anchors` are 2), the same shape as FORM-11 and FORM-18. The integration adapter already integrates `minimum_members - 1` partners, so it now integrates AXX.
+- Carrier self-exclusion: `is_independence_wave_form08_eligible_member` rejected any country with an open founding proposal. The carrier check, the member ledger and the commit proof all run through it while the carrier's own proposal is open, and `has_valid_independence_wave_formable_founding_proposal` requires that proposal, so the strict mutation preconditions could never hold. The registered carrier (`independence_wave_form08_readiness_attested`) now stays eligible while its proposal is open. Other countries with their own open proposal are still excluded.
+- Territory: `independence_wave_formable_state_puzzle_form08_territory` was `always = no`. It now requires states 84 and 82 to qualify. The state-puzzle summary reads "/ 2", and the consumer spec and manifest carry `summary_required_count` 2 so a regeneration keeps it.
+- AI: the three FORM-08 AI strategies had `allowed = { has_cosmetic_tag = HUN_EMPIRE }`. `allowed` is checked only before the game starts (offline wiki, AI modding, Arguments), when no country holds that cosmetic tag, so they never applied. They now use `allowed = { original_tag = TRA }`, and their `enable` blocks still require a formed confederation.
+- Identity lock: the cleanup cleared the global identity lock for every country that ran it. Only the carrier that holds the identity or the carrier flag releases it now, as D7 did for IFX.
+
+Identity decision: FORM-08 no longer reuses the vanilla `HUN_EMPIRE` cosmetic. That identity named a Transylvania and Banat federation "Austria-Hungary" or "Austro-Hungarian Empire" under neutral or fascist governments, broke the X-ending tag rule, and was blocked whenever Hungary formed Austria-Hungary. The carrier now takes the X-ending cosmetic tag `DCX` ("Danubian Confederation"; communist "Danubian Union of Councils", fascist "Danubian Federal State"). Its flag is an alternate-history civic synthesis of the member colours: navy over crimson split by a gold-edged white wave for the Danube, with two gold stars for the founders. It was generated with ChatGPT Images through the `gptimage` MCP. All three attempts drew the design but added vignette shading to the large fields, so the accepted master was flattened to its four design colours before the Lanczos exports. That processing step is recorded in `docs/assets/006_independence_wave/form08_danubian_confederation_flag_2026_10_05/manifest.md`. The collision scan for `DCX` over the mod, vanilla, the Workshop folder and sibling local mods found no use. The renamed flags `independence_wave_form08_identity_attested` and `independence_wave_form08_identity_in_use` keep their requirement localisation.
+
+MCP: a narrow `hoi4.gui_render` call on `chaosx_independence_wave_formable_state_puzzle_window` was rejected as invalid arguments by the tool schema, as in D7, and was not retried. The only GUI-facing change is the summary count in an existing string; no layout, sprite or click region changed.
+
+Validation: the allocator, flag, country API and SCN-008 matrix audits pass; brace balance is 0 on every touched file.
+
+Related D22 gap: the FORM-18 state puzzle still draws its KUR piece from state 421 (Ilam), while KUR is now anchored at state 1001. The piece qualifies from KUR's membership, not from ownership of 421, so gameplay is unaffected, but the picture shows the wrong state. Moving the piece needs new geometry from the state-puzzle generator and a shared GUI regeneration, which is queued for the next FORM-18 tranche. FORM-18 also still lacks its admitted CJX member (IW-062).
+
+Needs live game: a TRA carrier inviting AXX, the congress vote and commit, the DCX names and flag, AXX's integration, and the FORM-08 post-formation decisions and AI.

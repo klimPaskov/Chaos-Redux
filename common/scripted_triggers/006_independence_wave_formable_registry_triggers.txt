@@ -290,8 +290,8 @@ has_independence_wave_form07_runtime_commit_proof = {
 # Banat). Vojvodina remains a vanilla HUN-origin overlay and Slavonia has no
 # unique installed-map anchor, so neither is promoted into this ledger. Every
 # member stays sovereign until an explicit consent row authorizes integration,
-# and the family remains fail-closed until its minimum three members, consents,
-# and unique anchors are present in the frozen registry ledger.
+# and the family forms once its two members, consents, and unique anchors are
+# present in the frozen registry ledger (agent decision D23).
 # ============================================================================
 
 is_independence_wave_form08_eligible_member = {
@@ -300,7 +300,12 @@ is_independence_wave_form08_eligible_member = {
 	is_subject = no
 	NOT = { has_country_flag = independence_wave_form0124_autonomous_member }
 	NOT = { has_country_flag = independence_wave_formable_active }
-	NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+	# A country proposing its own formable cannot join this one, but the
+	# registered Danubian carrier stays a member while its proposal is open.
+	OR = {
+		NOT = { has_country_flag = independence_wave_formable_founding_proposal_active }
+		has_country_flag = independence_wave_form08_readiness_attested
+	}
 	NOT = { has_country_flag = soviet_collapse_active_origin }
 	has_country_flag = independence_wave_formable_family_selected
 	check_variable = { independence_wave_formable_family = constant:independence_wave_formable_family.danubian_confederation }
@@ -328,14 +333,10 @@ has_independence_wave_form08_exact_carrier_anchor = {
 	has_independence_wave_form08_identity_clearance = yes
 }
 
-# Vanilla HUN, Habsburg, and Austria-Hungary routes can already claim the
-# HUN_EMPIRE cosmetic identity. FORM-08 must not silently reuse that identity
-# while another country is carrying it, so admission is fail-closed until the
-# installed world has no live carrier and the vanilla formation flag is clear.
+# FORM-08 carries its own X-ending DCX identity and flag triplet (agent
+# decision D23). Only one carrier may hold it at a time.
 has_independence_wave_form08_identity_clearance = {
-	NOT = { has_global_flag = independence_wave_form08_hun_empire_identity_in_use }
-	NOT = { has_global_flag = form_austria_hungary_flag }
-	NOT = { any_country = { has_cosmetic_tag = HUN_EMPIRE } }
+	NOT = { has_global_flag = independence_wave_form08_identity_in_use }
 }
 
 is_independence_wave_form08_member = {
@@ -402,7 +403,7 @@ is_independence_wave_form08_postformation_carrier = {
 	has_country_flag = independence_wave_formable_active
 	has_country_flag = independence_wave_form08_confederation_carrier
 	has_country_flag = independence_wave_form08_post_formation_active
-	has_cosmetic_tag = HUN_EMPIRE
+	has_cosmetic_tag = DCX
 }
 
 can_pay_independence_wave_form08_administration_strategic_cost = {
