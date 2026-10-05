@@ -91,6 +91,13 @@ The Preparedness tooltip lists each component's tier and its points toward the t
 The footer holds Refresh, Back (returning to the decision category or Event Details, whichever opened the map), Details (opening the Event 33 page in Event Details), and the motion toggle.
 Opening or refreshing the map runs a read-only projection that cannot advance fronts, add contamination, apply losses, spend resources, or complete work.
 
+## Event Details
+
+Before Acid Rain forms, its Event Details page shows the description only.
+While the rain is active, the page adds the formation date, the current phase, world coverage with the reached and total state counts, worldwide deaths, the Air Contamination added and the viewing country's Preparedness.
+Once acute rain has closed, it shows the stored outcome instead: whether the rain dispersed or ended early, its duration, deaths, states reached, Air Contamination added, severe cells and superstorms, and the states still under aftermath.
+After formation the page also lists the viewing country's ten Acid Rain achievements as earned, open or no longer possible; Under One Sky appears once Global Acid Rain begins, No Severe Ruins once the country records a tier-3 aftermath state, and Five States, Few Dead only once earned.
+
 ## Integration surfaces
 
 - Event chain: `events/033_acid_rain.txt`

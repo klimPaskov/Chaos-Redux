@@ -5232,9 +5232,15 @@ acid_rain_apply_dissipation_step = {
 
 # ANY SCOPE. Stores the worldwide summary the dissipation report shows, once,
 # when acute rain closes. It only reads the event totals.
-# Input: temporary acid_rain_unresolved_aftermath_count, counted by the final
-# cleanup pass over the frozen states.
+# Inputs: temporary acid_rain_unresolved_aftermath_count, counted by the final
+# cleanup pass over the frozen states, and acid_rain_033_natural_closure, so
+# Event Details can tell a natural dispersal from an early end.
 acid_rain_store_dissipation_report_facts = {
+	if = {
+		limit = { check_variable = { var = acid_rain_033_natural_closure value = constant:acid_rain_runtime.one compare = equals } }
+		clr_global_flag = acid_rain_closed_early
+	}
+	else = { set_global_flag = acid_rain_closed_early }
 	set_temp_variable = { chaosx_date_offset = global.date }
 	subtract_from_temp_variable = { chaosx_date_offset = global.acid_rain_runtime_start_day }
 	set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }

@@ -188,3 +188,131 @@ acid_rain_033_two_regions_ready_is_complete = {
 acid_rain_033_no_severe_ruins_is_complete = {
 	has_country_flag = acid_rain_033_no_severe_ruins_receipt
 }
+
+# ---------------------------------------------------------------------------
+# Event Details status
+# ---------------------------------------------------------------------------
+# COUNTRY SCOPE. Event Details only. An achievement is out of reach when the
+# country has no valid campaign, carries the achievement's disqualifier, or a
+# stored fact rules it out. Acute-phase achievements are settled when acute rain
+# closes (acid_rain_final_dissipation_receipt); After the Clouds and No Severe
+# Ruins settle during aftercare and stay open while their deadlines run.
+
+acid_rain_033_achievement_acute_closed = {
+	has_global_flag = acid_rain_final_dissipation_receipt
+}
+
+acid_rain_033_before_the_first_drop_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_before_the_first_drop_disqualified
+		NOT = { has_country_flag = acid_rain_033_achievement_formation_eligible }
+		has_variable = acid_rain_033_achievement_first_opening_shock_day
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_shelters_held_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_shelters_held_disqualified
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_three_evacuations_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_three_evacuations_disqualified
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_railways_still_run_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_railways_still_run_disqualified
+		NOT = { has_country_flag = acid_rain_033_achievement_formation_eligible }
+		check_variable = { var = acid_rain_033_achievement_formation_state_count value = @acid_rain_033_achievement_five compare = less_than }
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_under_one_sky_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_under_one_sky_disqualified
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_after_the_clouds_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_after_the_clouds_disqualified
+		AND = {
+			acid_rain_033_achievement_acute_closed = yes
+			OR = {
+				NOT = { check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = @acid_rain_033_achievement_one compare = equals } }
+				check_variable = { var = acid_rain_033_achievement_recovery_required_count value = @acid_rain_033_achievement_three compare = less_than }
+			}
+		}
+	}
+}
+
+acid_rain_033_five_states_few_dead_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_five_states_few_dead_disqualified
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_small_state_civil_defense_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_small_state_civil_defense_disqualified
+		NOT = { has_country_flag = acid_rain_033_achievement_formation_eligible }
+		NOT = { has_country_flag = acid_rain_033_achievement_small_state_eligible }
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_two_regions_ready_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_two_regions_ready_disqualified
+		acid_rain_033_achievement_acute_closed = yes
+	}
+}
+
+acid_rain_033_no_severe_ruins_is_out_of_reach = {
+	OR = {
+		NOT = { acid_rain_033_achievement_campaign_is_valid = yes }
+		has_country_flag = acid_rain_033_achievement_no_severe_ruins_disqualified
+		AND = {
+			acid_rain_033_achievement_acute_closed = yes
+			OR = {
+				NOT = { check_variable = { var = acid_rain_033_achievement_acute_closure_kind value = @acid_rain_033_achievement_one compare = equals } }
+				check_variable = { var = acid_rain_033_achievement_tier3_row_count value = @acid_rain_033_achievement_one compare = less_than }
+			}
+		}
+	}
+}
+
+# Hidden achievements stay out of the list until their reveal condition:
+# Under One Sky once Global Acid Rain begins, No Severe Ruins once a tier-3
+# state is recorded for the country, Five States, Few Dead only when earned.
+acid_rain_033_under_one_sky_is_revealed = {
+	OR = {
+		acid_rain_033_under_one_sky_is_complete = yes
+		has_global_flag = acid_rain_global_layer_receipt
+	}
+}
+
+acid_rain_033_no_severe_ruins_is_revealed = {
+	OR = {
+		acid_rain_033_no_severe_ruins_is_complete = yes
+		check_variable = { var = acid_rain_033_achievement_tier3_row_count value = @acid_rain_033_achievement_one compare = greater_than_or_equals }
+	}
+}
