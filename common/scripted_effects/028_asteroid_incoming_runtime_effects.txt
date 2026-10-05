@@ -1298,6 +1298,69 @@ asteroid_incoming_mark_visual_strike_state = {
 	}
 }
 
+# STATE SCOPE. Plays one fragment centre's presentation-only map visual. The
+# timed marker is set just before launch_nuke, so every on_nuke_drop consumer
+# skips it even when its callback runs late.
+asteroid_incoming_play_fragment_visual = {
+	asteroid_incoming_mark_visual_strike_state = yes
+	if = {
+		limit = { CONTROLLER = { exists = yes } }
+		CONTROLLER = {
+			set_global_flag = asteroid_incoming_visual_strike_active
+			launch_nuke = {
+				state = PREV
+				controller = THIS
+				use_nuke = no
+				nuke_type = nuclear_bomb
+			}
+			clr_global_flag = asteroid_incoming_visual_strike_active
+		}
+	}
+}
+
+# COUNTRY SCOPE. Queues the next fragment visual a few hours after the main
+# strike or the previous fragment, while the persistent queue has entries.
+# Each hidden callback takes one state off the queue before it plays, so a
+# save between visuals neither repeats nor loses one.
+asteroid_incoming_schedule_next_fragment_visual = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.asteroid_incoming_fragment_visual_queue^num
+				value = constant:asteroid_incoming_runtime.zero
+				compare = greater_than
+			}
+		}
+		# An event delay takes a literal, so the constant is injected as an integer.
+		set_temp_variable = { asteroid_incoming_fragment_visual_hours = constant:asteroid_incoming_runtime.fragment_visual_interval_hours }
+		meta_effect = {
+			text = {
+				country_event = { id = chaosx.nr28.9 hours = [VISUAL_HOURS] }
+			}
+			VISUAL_HOURS = "[?asteroid_incoming_fragment_visual_hours|.0]"
+		}
+	}
+}
+
+# COUNTRY SCOPE. Called by chaosx.nr28.9: plays the first queued fragment
+# visual and queues the next one.
+asteroid_incoming_play_next_fragment_visual = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.asteroid_incoming_fragment_visual_queue^num
+				value = constant:asteroid_incoming_runtime.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { asteroid_incoming_fragment_visual_index = constant:asteroid_incoming_runtime.first_array_index }
+		set_temp_variable = { asteroid_incoming_fragment_visual_state = global.asteroid_incoming_fragment_visual_queue^asteroid_incoming_fragment_visual_index }
+		remove_from_array = { array = global.asteroid_incoming_fragment_visual_queue value = asteroid_incoming_fragment_visual_state }
+		var:asteroid_incoming_fragment_visual_state = { asteroid_incoming_play_fragment_visual = yes }
+		asteroid_incoming_schedule_next_fragment_visual = yes
+	}
+}
+
 asteroid_incoming_apply_state_profile = {
 	if = {
 		limit = { asteroid_incoming_state_is_resolvable_transaction = yes }
@@ -1402,16 +1465,11 @@ asteroid_incoming_apply_state_profile = {
 				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.fragment_center_recovery_days }
 				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
 				add_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery days = asteroid_incoming_local_burden_days }
-				asteroid_incoming_mark_visual_strike_state = yes
-				CONTROLLER = {
-					set_global_flag = asteroid_incoming_visual_strike_active
-					launch_nuke = {
-						state = PREV
-						controller = THIS
-						use_nuke = no
-						nuke_type = nuclear_bomb
-					}
-					clr_global_flag = asteroid_incoming_visual_strike_active
+				# The fragment's map visual plays after the main strike, from the
+				# hidden chaosx.nr28.9 sequence; its damage stays in this transaction.
+				if = {
+					limit = { NOT = { is_in_array = { array = global.asteroid_incoming_fragment_visual_queue value = THIS } } }
+					add_to_array = { array = global.asteroid_incoming_fragment_visual_queue value = THIS }
 				}
 			}
 			else_if = {
@@ -1448,6 +1506,7 @@ asteroid_incoming_apply_state_profile = {
 
 asteroid_incoming_process_footprint = {
 	set_global_flag = asteroid_incoming_local_recovery_active
+	clear_array = global.asteroid_incoming_fragment_visual_queue
 	set_variable = { global.asteroid_incoming_total_deaths = 0 }
 	set_variable = { global.asteroid_incoming_destroyed_industry_levels = 0 }
 	set_variable = { global.asteroid_incoming_destroyed_logistics_levels = 0 }

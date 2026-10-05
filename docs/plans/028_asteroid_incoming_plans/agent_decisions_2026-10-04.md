@@ -402,3 +402,12 @@ That existing global array already is the persistent crater-site array: the impa
 A second array with the same members was not added.
 `visible` and `target_trigger` are unchanged.
 Basis: the wiki Decision modding section (`state_target = any` checks every state in the game daily, and explicit targets need `state_target = yes` or `any`, lines 578-584) and the vanilla precedent `common/decisions/AUS.txt:942-944` (`state_target = yes` with a state `target_array`) and `CHI_decisions.txt:7929` (a `global.` target array).
+
+### Fragment visuals follow the main strike in sequence
+
+Decision: the main centre's `launch_nuke` visual stays inside the impact transaction, while each applied fragment centre is added to the persistent `global.asteroid_incoming_fragment_visual_queue` during its profile application.
+Right after `asteroid_incoming_process_footprint`, the resolver queues the hidden presentation event `chaosx.nr28.9` `asteroid_incoming_runtime.fragment_visual_interval_hours` (4) hours later; each callback takes the first state off the queue, marks it with `asteroid_incoming_mark_visual_strike_state`, plays its `nuclear_bomb` visual from the current controller under `asteroid_incoming_visual_strike_active`, and queues the next callback while entries remain.
+The hour delay is injected as an integer through `meta_effect`, as the resolver delay is.
+Damage, dust, deaths and reports are untouched by the callbacks; removing the state before the visual and queuing the next in the same `immediate` means a save between visuals neither repeats nor loses one.
+Basis: Part 9 asks to "resolve the visuals in a short sequence after the main effect so the player can understand that several sites were struck"; `effects_documentation.md` documents `hours` on `country_event` and the `launch_nuke` fields.
+Needs live game: the visual spacing on the map, and whether a late `on_nuke_drop` consumer still sees each marker (the marker lasts `visual_strike_marker_days` from each launch).

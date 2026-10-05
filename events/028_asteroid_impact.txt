@@ -364,6 +364,8 @@ country_event = {
 				set_global_flag = asteroid_incoming_minerals_active
 			}
 			asteroid_incoming_process_footprint = yes
+			# Fragment-centre visuals follow the main strike a few hours apart.
+			asteroid_incoming_schedule_next_fragment_visual = yes
 			asteroid_incoming_refresh_mineral_control = yes
 			asteroid_incoming_recalculate_dust = yes
 			set_variable = { global.asteroid_incoming_opening_dust_stage = global.asteroid_incoming_dust_stage }
@@ -669,5 +671,20 @@ country_event = {
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.1.na.tt
 		hidden_effect = { asteroid_incoming_close_unavailable_board = yes }
+	}
+}
+
+# Presentation only. After the main strike, each applied fragment centre's map
+# visual plays from this hidden callback, a few hours apart, so the player can
+# see that several sites were struck. All damage, dust and reports were applied
+# by the impact transaction; this event only plays the next queued visual and
+# queues the one after it.
+country_event = {
+	id = chaosx.nr28.9
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		asteroid_incoming_play_next_fragment_visual = yes
 	}
 }
