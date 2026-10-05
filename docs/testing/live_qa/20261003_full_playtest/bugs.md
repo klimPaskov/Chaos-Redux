@@ -202,3 +202,14 @@ These are recorded so they are not mistaken for mod bugs:
 
 ### B041 Network Cadre listed as "NCD" in the division designer — routed (Event 014)
 - Division Designer > Infantry Battalions shows the Network Cadre battalion by its abbreviation "NCD" instead of its name, although the name key exists.
+
+### B042 New load errors on the 5 October snapshot (`539b55887`) — partly fixed, rest routed
+- Event 016: three localisation values in `016_brilliant_scientist_projects_l_english.yml` broke across lines ("Expected colon"), so the keys after them did not load. Fixed in `874fdc0bd` and `ce195cbe3`.
+- Fallout: `fallout_orientation_cell_lock_condition_is_met` used `num_owned_states` as a trigger ("Unknown trigger-type"). Fixed in `874fdc0bd` (read through `check_variable` against a named threshold).
+- Event 006: 62 load warnings "recruit_character should only happen in game/history files" from the per-tag blocks in `006_independence_wave_execution_effects.txt` (lines 464–606). Routed to 006.
+- Event 027: about 120 "dynamic token ... add it as a synchronized dynamic token" warnings for every `modifier@<doctrine>_mastery_gain_factor` read. Routed to 027.
+- Event 012: the same warning for `num_equipment@fighter_equipment_1`. Routed to 012.
+- Event 032: one runtime "exists: Invalid Scope, provided: State" at `032_missiles_operations_effects.txt:6388` after a missile programme started. Routed to 032.
+
+### B043 Forcing an event restarts the random event timer
+- Not a defect, recorded for testers: firing any event through Settings sets a new random timer window, so a parked timer (`event_timer_days`) does not hold after a forced event. During a three-month run after forcing Event 001, Missiles (032) fired from the restarted timer. The batch harness re-parks the timer before each run of days.

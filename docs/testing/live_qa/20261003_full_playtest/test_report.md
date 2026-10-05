@@ -55,8 +55,16 @@ Bugs found and their status are in `bugs.md` (B001–B041). Per-item coverage is
 
 ## Events
 
-Forced from Settings: Event 024, Event 028 (Asteroid Incoming: the strike choice works and the in-game impact lands on the chosen state; its window shows the blocked description while offering valid targets, routed to 028) and the evolutions of Event 010 (Death).
-The remaining "Needs Testing" events (1–21, 26, 29, 35, 39, 42) were not run one by one in this round; they stay pending in `coverage.csv`.
+All 28 "Needs Testing" events were forced one by one on 5 October from a fresh 1936 United States game created on snapshot `ce195cbe3` (`qa_001_fresh_head`), with the random event timer parked so only the forced chain ran, about two and a half months each at speed 5, every popup answered with its first option. Per-event results are in `coverage.csv`; contact sheets of every popup are kept in the trailer workspace (`records/qa/evtNNN_sheet.jpg`).
+
+- Played visibly and cleanly: 001, 002, 003, 004, 005, 008, 011, 016, 017, 018, 019; 010 started its designed quiet origin.
+- Fixed during the run: 013 logged one runtime error (building damage on a missing building, `ff1f29862`) and its impact report used unreadable colours, a bookkeeping line and a trailing comma (`f5b1e494a`).
+- Event spam: 035 sends "The downturn is spreading" about 28 times in a row; 028 repeats "The Forecast Holds" seven or more times and opens news on top of its super-event.
+- Silent when forced on an ineligible country: 009 (no minor-only war), 015 (the US is a major), 021 and 026 (dispatchers did not fire on a fresh save).
+- No content reached the United States in the window: 006, 007, 012, 014, 020, 024, 029, 039, 042 (country-specific or slow chains; not covered in single-country mode).
+
+Earlier in the round Event 024, Event 028 (the strike choice and the in-game impact on the chosen state) and the evolutions of Event 010 were forced from Settings.
+Every finding is routed: Phase 2 owners through their queues, the other events to Codex sessions (ws2a–ws2e), shared windows to ws4. All report and news text lost its § colours in `794b31a7b`.
 
 ## Artifacts
 
