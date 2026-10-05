@@ -145,11 +145,12 @@ event021_decision_review_loyalty = {
 		set_country_flag = { flag = event021_prevention_loyalty_recent days = event021_decision_flag_days }
 	}
 	else = { set_country_flag = event021_loyalty_action_used }
+	# A hardliner's review is a purge, which costs the repression constant.
 	if = {
 		limit = { has_country_flag = random_civil_war_hardliner_profile }
 		set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.hardliner_pressure_cost }
 		event021_reduce_pressure = yes
-		set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.hardliner_authority_cost }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.repression }
 		event021_add_authority = yes
 	}
 	else = {
@@ -233,11 +234,13 @@ event021_record_settlement_offer_baseline = {
 	event021_record_opening_held_states = yes
 }
 
-# COUNTRY scope on a crisis government. Records how many of its own states it
-# owns and controls. The opening paths call it again once every opening front
-# has taken its states.
+# COUNTRY scope on a crisis side. Records how many of its own states it owns
+# and controls. The opening paths call it again once every opening front has
+# taken its states, and the held-territory review then returns any State
+# Authority it charged for states those opening fronts took.
 event021_record_opening_held_states = {
 	set_variable = { random_civil_war_opening_held_state_count = num_owned_controlled_states }
+	event021_review_held_territory = yes
 }
 
 # COUNTRY scope on the crisis government. Opens talks and asks the government
@@ -304,6 +307,12 @@ event021_decision_integrate_formations = {
 event021_decision_set_priority_front = {
 	set_country_flag = event021_priority_front_action_used
 	set_variable = { random_civil_war_priority_front_selected_date = global.date }
+	# A new priority front is not bound to the old one's loss, which stays paid.
+	clr_country_flag = random_civil_war_front_state_lost
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_rail_state_lost } }
+		clr_country_flag = random_civil_war_supply_lost
+	}
 	event021_set_priority_front = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.priority_pressure_relief }
 	event021_reduce_pressure = yes
@@ -444,7 +453,11 @@ event021_apply_government_support_to_exposure_target = {
 	}
 }
 
+# COUNTRY scope on the sponsoring neighbour. The government those arms are
+# used against takes the foreign-intervention loss once while the
+# intervention is live.
 event021_apply_opposition_support_to_exposure_target = {
+	save_event_target_as = event021_foreign_sponsor
 	if = {
 		limit = { has_variable = random_civil_war_exposure_source_country_scope }
 		var:random_civil_war_exposure_source_country_scope = {
@@ -453,6 +466,16 @@ event021_apply_opposition_support_to_exposure_target = {
 				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.opposition_support_infantry_transfer }
 				set_country_flag = event021_opposition_support_received
 				event021_record_received_sponsor_commitment = yes
+				if = {
+					limit = {
+						has_variable = random_civil_war_host_country_scope
+						var:random_civil_war_host_country_scope = {
+							exists = yes
+							has_country_flag = random_civil_war_government_side
+						}
+					}
+					var:random_civil_war_host_country_scope = { event021_authority_foreign_intervention_started = yes }
+				}
 			}
 			else_if = {
 				limit = {
@@ -464,6 +487,7 @@ event021_apply_opposition_support_to_exposure_target = {
 					set_country_flag = event021_opposition_support_received
 					event021_record_received_sponsor_commitment = yes
 				}
+				event021_authority_foreign_intervention_started = yes
 			}
 		}
 	}
@@ -554,13 +578,15 @@ event021_record_mediation_receipt = {
 # COUNTRY scope on the mediated government. The receipt names the mediator
 # and lasts constant:event021_action_tuning.mediation_days. While it lasts the
 # government can offer terms before the minimum war duration, and terms it
-# signs count as a negotiated settlement.
+# signs count as a negotiated settlement. The first talks of the crisis raise
+# its State Authority once.
 event021_receive_mediation = {
 	set_variable = { random_civil_war_mediator_scope = event_target:event021_mediation_mediator }
 	set_variable = { random_civil_war_mediation_until = global.date }
 	set_temp_variable = { event021_date_offset = constant:event021_action_tuning.mediation_days }
 	event021_days_to_date_offset = yes
 	add_to_variable = { random_civil_war_mediation_until = event021_date_offset }
+	event021_authority_talks_opened = yes
 }
 
 event021_decision_end_sponsor_commitment = {

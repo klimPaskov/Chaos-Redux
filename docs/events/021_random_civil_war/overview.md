@@ -46,6 +46,14 @@ Pressure falls through relief, settlements, reconstruction, and other explicit a
 
 Authority changes through capital control, supply and depot access, administration, negotiation, repression, foreign intervention, settlement, and victory or defeat.
 
+A government's opening lowers its State Authority once: its value, capped at the default 70, falls by 8, 20, 32, or 42 for a Limited, Serious, Severe, or Critical opening, after the opening region has been sized from the pre-opening value. A claimant starts at 50 and an Event 006 independence front at 60.
+
+The war then moves it through the existing `on_state_control_changed` hook, narrowed to live, unsettled crisis sides. Losing the side's crisis capital costs 12 and retaking it returns 8, losing a bound rail or priority-front depot state costs 5 and retaking it returns 5, and every state fewer than the side held once its opening fronts had formed costs 2, returned when the state is recovered. Each condition applies once per transition and is cleared at crisis cleanup and at every new crisis role.
+
+The bounded country review re-measures the same territory, records a missing claimant baseline, flags contested territory from one lost state and key territory from two, flags a capital without a supply node or bordering an enemy-held state, and ends an outside intervention whose sponsor commitment has ended. These conditions feed Fracture Pressure and the category summary while the war lasts and end at the settlement.
+
+A neighbour's first mediation in the war gives the government 4, a sponsor arming its opponents costs it 6 once per live intervention, and a hardliner's loyalty purge costs 4. The settlement adds 10 and, by outcome, 15 for the side whose war aims prevailed or -15 for a government that lost the war or territory to it; negotiated autonomy, coalition, merger, and multi-front settlements add neither.
+
 The state refresh publishes the current pressure band, authority band, summary, phase, target name, and N/A fallback used by the decision category and Event Details.
 
 ## Targeting and opening transaction

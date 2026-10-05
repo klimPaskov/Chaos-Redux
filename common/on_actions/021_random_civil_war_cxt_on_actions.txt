@@ -59,6 +59,21 @@ on_actions = {
 				}
 				event021_record_capital_continuity = yes
 			}
+			# State Authority follows the war. Only a live, unsettled crisis side
+			# reacts: the old controller loses its crisis capital, bound supply
+			# state, or territory once, and the new controller recovers them.
+			FROM = {
+				if = {
+					limit = { event021_authority_follows_control = yes }
+					event021_authority_review_lost_state = yes
+				}
+			}
+			ROOT = {
+				if = {
+					limit = { event021_authority_follows_control = yes }
+					event021_authority_review_gained_state = yes
+				}
+			}
 		}
 	}
 

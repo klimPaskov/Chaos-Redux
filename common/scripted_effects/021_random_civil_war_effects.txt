@@ -317,8 +317,317 @@ event021_clear_authority_conditions = {
 	clr_country_flag = random_civil_war_capital_supply_risk
 	clr_country_flag = random_civil_war_negotiation_active
 	clr_country_flag = random_civil_war_foreign_intervention_active
+	clear_variable = random_civil_war_foreign_sponsor_scope
 	clear_variable = random_civil_war_contested_state_count
 	clear_variable = random_civil_war_authority_capital
+}
+
+# COUNTRY scope. Records the side's current capital state as its crisis
+# capital in `random_civil_war_authority_capital`. The capital conditions
+# follow that state for the rest of the crisis, even after a move.
+event021_record_authority_capital = {
+	clear_variable = random_civil_war_authority_capital
+	capital_scope = { set_variable = { PREV.random_civil_war_authority_capital = THIS } }
+}
+
+# COUNTRY scope on a crisis government at its opening commit, after its
+# opening severity is recorded and its achievement history has started.
+# State Authority, capped at the default, falls once by the loss of the
+# opening severity, and the current capital becomes the crisis capital. The
+# opening region was already sized from the pre-opening value.
+event021_apply_government_opening_authority = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_state_authority } }
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
+	}
+	clamp_variable = {
+		var = random_civil_war_state_authority
+		max = constant:random_civil_war_authority.default
+	}
+	set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.opening_limited_loss }
+	if = {
+		limit = { check_variable = { var = random_civil_war_opening_severity value = constant:random_civil_war_severity.serious compare = equals } }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.opening_serious_loss }
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_opening_severity value = constant:random_civil_war_severity.severe compare = equals } }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.opening_severe_loss }
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_opening_severity value = constant:random_civil_war_severity.critical compare = equals } }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.opening_critical_loss }
+	}
+	event021_add_authority = yes
+	event021_record_authority_capital = yes
+}
+
+# COUNTRY scope on a claimant when its crisis role begins. An independence
+# front with its own institutions starts at the independence-front value and
+# every other claimant at the claimant value; the current capital becomes
+# the crisis capital.
+event021_apply_claimant_opening_authority = {
+	set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.claimant_opening }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_event6_front_active
+				has_country_flag = random_civil_war_event6_origin
+			}
+		}
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.independence_front_opening }
+	}
+	event021_update_authority_band = yes
+	event021_record_authority_capital = yes
+}
+
+# COUNTRY scope on the live crisis side that has just lost control of the
+# state saved as `event021_mission_control_changed_state` (the FROM country
+# of on_state_control_changed). Its crisis capital applies the capital loss
+# and a bound supply state (rail state or priority-front depot state) the
+# rail-or-depot loss, each once, and its held territory is re-measured.
+event021_authority_review_lost_state = {
+	if = {
+		limit = {
+			has_variable = random_civil_war_authority_capital
+			var:random_civil_war_authority_capital = { state = event_target:event021_mission_control_changed_state }
+		}
+		event021_authority_capital_lost = yes
+	}
+	set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_civil_war_front_state_lost }
+			has_variable = random_civil_war_priority_front_state
+			var:random_civil_war_priority_front_state = { state = event_target:event021_mission_control_changed_state }
+		}
+		set_country_flag = random_civil_war_front_state_lost
+		set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.one }
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_civil_war_rail_state_lost }
+			has_variable = random_civil_war_rail_mission_state
+			var:random_civil_war_rail_mission_state = { state = event_target:event021_mission_control_changed_state }
+		}
+		set_country_flag = random_civil_war_rail_state_lost
+		set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.one }
+	}
+	event021_authority_supply_state_lost = yes
+	event021_review_held_territory = yes
+}
+
+# COUNTRY scope on the live crisis side that has just taken control of the
+# state saved as `event021_mission_control_changed_state` (the ROOT country
+# of on_state_control_changed). Recovering its lost crisis capital or a lost
+# bound supply state applies the recovery once, and its held territory is
+# re-measured.
+event021_authority_review_gained_state = {
+	if = {
+		limit = {
+			has_variable = random_civil_war_authority_capital
+			var:random_civil_war_authority_capital = { state = event_target:event021_mission_control_changed_state }
+		}
+		event021_authority_capital_regained = yes
+	}
+	set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_front_state_lost
+			has_variable = random_civil_war_priority_front_state
+			var:random_civil_war_priority_front_state = { state = event_target:event021_mission_control_changed_state }
+		}
+		clr_country_flag = random_civil_war_front_state_lost
+		set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.one }
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_rail_state_lost
+			has_variable = random_civil_war_rail_mission_state
+			var:random_civil_war_rail_mission_state = { state = event_target:event021_mission_control_changed_state }
+		}
+		clr_country_flag = random_civil_war_rail_state_lost
+		set_temp_variable = { event021_authority_supply_change = constant:random_civil_war_value.one }
+	}
+	event021_authority_supply_state_regained = yes
+	event021_review_held_territory = yes
+}
+
+# COUNTRY scope on a live, unsettled crisis side with an opening held-state
+# count. Measures how many fewer of its own states it owns and controls than
+# at the start of the war (`random_civil_war_contested_state_count`) and
+# changes State Authority by `territory_state_lost` for each state of
+# difference since the last measurement, so every lost state costs its share
+# once and a recovered state returns it. It also refreshes the territory and
+# capital-risk conditions that feed Fracture Pressure and the category
+# summary: contested territory from one lost state, key territory lost from
+# `key_territory_states`, and a capital without a supply node or bordering a
+# state held by an enemy.
+event021_review_held_territory = {
+	if = {
+		limit = {
+			event021_authority_follows_control = yes
+			has_variable = random_civil_war_opening_held_state_count
+		}
+		save_event_target_as = event021_territory_side
+		set_temp_variable = { event021_territory_lost_now = random_civil_war_opening_held_state_count }
+		subtract_from_temp_variable = { event021_territory_lost_now = num_owned_controlled_states }
+		clamp_temp_variable = {
+			var = event021_territory_lost_now
+			min = constant:random_civil_war_value.zero
+			max = random_civil_war_opening_held_state_count
+		}
+		set_temp_variable = { event021_territory_lost_before = constant:random_civil_war_value.zero }
+		if = {
+			limit = { has_variable = random_civil_war_contested_state_count }
+			set_temp_variable = { event021_territory_lost_before = random_civil_war_contested_state_count }
+		}
+		if = {
+			limit = {
+				NOT = { check_variable = { var = event021_territory_lost_now value = event021_territory_lost_before compare = equals } }
+			}
+			set_variable = { random_civil_war_pending_authority_delta = event021_territory_lost_now }
+			subtract_from_variable = { random_civil_war_pending_authority_delta = event021_territory_lost_before }
+			multiply_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.territory_state_lost }
+			event021_add_authority = yes
+		}
+		set_variable = { random_civil_war_contested_state_count = event021_territory_lost_now }
+		clr_country_flag = random_civil_war_contested_territory
+		clr_country_flag = random_civil_war_key_state_lost
+		if = {
+			limit = { check_variable = { var = event021_territory_lost_now value = constant:random_civil_war_value.zero compare = greater_than } }
+			set_country_flag = random_civil_war_contested_territory
+		}
+		if = {
+			limit = { check_variable = { var = event021_territory_lost_now value = constant:random_civil_war_authority.key_territory_states compare = greater_than_or_equals } }
+			set_country_flag = random_civil_war_key_state_lost
+		}
+		clr_country_flag = random_civil_war_capital_supply_risk
+		if = {
+			limit = {
+				capital_scope = {
+					OR = {
+						NOT = { supply_node > constant:random_civil_war_value.zero }
+						any_neighbor_state = {
+							controller = { has_war_with = event_target:event021_territory_side }
+						}
+					}
+				}
+			}
+			set_country_flag = random_civil_war_capital_supply_risk
+		}
+	}
+}
+
+# COUNTRY scope from the bounded registered-country review. Keeps a live
+# crisis side's conditions in step with the war between control changes: a
+# side without an opening held-state count records it here, the territory and
+# capital risk are re-measured, and an outside intervention whose sponsor
+# commitment has ended stops counting.
+event021_review_crisis_conditions = {
+	if = {
+		limit = { event021_authority_follows_control = yes }
+		if = {
+			limit = { NOT = { has_variable = random_civil_war_opening_held_state_count } }
+			event021_record_opening_held_states = yes
+		}
+		event021_review_held_territory = yes
+		if = {
+			limit = {
+				has_country_flag = random_civil_war_foreign_intervention_active
+				NOT = { event021_foreign_intervention_live = yes }
+			}
+			event021_end_foreign_intervention = yes
+		}
+	}
+}
+
+# COUNTRY scope on a crisis government whose opponents a neighbour, saved as
+# `event021_foreign_sponsor`, has just armed. Records the sponsor and applies
+# the foreign-intervention loss once while an intervention is live.
+event021_authority_foreign_intervention_started = {
+	if = {
+		limit = { has_event_target = event021_foreign_sponsor }
+		set_variable = { random_civil_war_foreign_sponsor_scope = event_target:event021_foreign_sponsor }
+		if = {
+			limit = { NOT = { has_country_flag = random_civil_war_foreign_intervention_active } }
+			set_country_flag = random_civil_war_foreign_intervention_active
+			set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.foreign_intervention }
+			event021_add_authority = yes
+		}
+	}
+}
+
+# COUNTRY scope on a crisis government. The intervention no longer counts;
+# State Authority is unchanged, and a later sponsor applies the loss again.
+event021_end_foreign_intervention = {
+	clr_country_flag = random_civil_war_foreign_intervention_active
+	clear_variable = random_civil_war_foreign_sponsor_scope
+}
+
+# COUNTRY scope on a crisis government that a neighbour's mediation has just
+# reached. The first talks of the crisis apply the negotiation gain once.
+event021_authority_talks_opened = {
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_negotiation_active } }
+		set_country_flag = random_civil_war_negotiation_active
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.negotiation }
+		event021_add_authority = yes
+	}
+}
+
+# COUNTRY scope on a settled side, after `random_civil_war_settlement_type` is
+# recorded. A side whose war aims prevailed gains the victory constant: a
+# government after its military victory, a claimant after its victory, and an
+# independence or partition successor. A government that lost the war or part
+# of its territory to the settlement takes the defeat constant. Negotiated
+# autonomy, coalition, merger, and multi-front settlements change neither.
+# The territory and capital-risk conditions end with the war.
+event021_apply_settlement_outcome_authority = {
+	set_temp_variable = { event021_settlement_outcome_delta = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_country_flag = random_civil_war_government_side }
+		if = {
+			limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.government_victory compare = equals } }
+			set_temp_variable = { event021_settlement_outcome_delta = constant:random_civil_war_authority.victory }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.opposition_victory compare = equals }
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.independence compare = equals }
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals }
+				}
+			}
+			set_temp_variable = { event021_settlement_outcome_delta = constant:random_civil_war_authority.defeat }
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.opposition_victory compare = equals }
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.independence compare = equals }
+					check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals }
+				}
+			}
+			set_temp_variable = { event021_settlement_outcome_delta = constant:random_civil_war_authority.victory }
+		}
+		else_if = {
+			limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.government_victory compare = equals } }
+			set_temp_variable = { event021_settlement_outcome_delta = constant:random_civil_war_authority.defeat }
+		}
+	}
+	if = {
+		limit = {
+			NOT = { check_variable = { var = event021_settlement_outcome_delta value = constant:random_civil_war_value.zero compare = equals } }
+		}
+		set_variable = { random_civil_war_pending_authority_delta = event021_settlement_outcome_delta }
+		event021_add_authority = yes
+	}
+	clr_country_flag = random_civil_war_contested_territory
+	clr_country_flag = random_civil_war_key_state_lost
+	clr_country_flag = random_civil_war_capital_supply_risk
+	clear_variable = random_civil_war_contested_state_count
 }
 
 # COUNTRY scope. Refreshes the visible four-band State Authority ladder.
@@ -768,6 +1077,7 @@ event021_random_civil_war_commit_opening = {
 		event021_parent_mark_treaty_recurrence = yes
 		event021_parent_commit_generation_history = yes
 		event021_begin_achievement_history = yes
+		event021_apply_government_opening_authority = yes
 		set_country_flag = random_civil_war_recent_target
 		set_country_flag = random_civil_war_plan_committed
 		set_country_flag = random_civil_war_plan_owner
@@ -1941,6 +2251,7 @@ event021_apply_settlement = {
 	add_to_variable = { random_civil_war_successor_grace_until = event021_date_offset }
 	set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.settlement }
 	event021_add_authority = yes
+	event021_apply_settlement_outcome_authority = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.settlement_relief }
 	event021_reduce_pressure = yes
 	event021_update_achievement_state = yes

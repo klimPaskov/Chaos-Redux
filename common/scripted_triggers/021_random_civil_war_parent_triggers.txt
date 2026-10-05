@@ -1438,3 +1438,27 @@ event021_settlement_offer_blocked = {
 		}
 	}
 }
+
+# COUNTRY scope. A side's State Authority follows control of its capital,
+# supply states, and territory while it is in a live crisis that has not yet
+# been settled. The settlement and reconstruction phases belong to the
+# current crisis role, so a reused claimant tag is not mistaken for a
+# settled one.
+event021_authority_follows_control = {
+	has_country_flag = random_civil_war_active
+	NOT = { has_country_flag = random_civil_war_settlement_phase }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
+}
+
+# COUNTRY scope on a crisis government. A neighbour is arming its opponents:
+# the recorded sponsor still exists and its commitment has not ended.
+event021_foreign_intervention_live = {
+	has_country_flag = random_civil_war_foreign_intervention_active
+	has_variable = random_civil_war_foreign_sponsor_scope
+	var:random_civil_war_foreign_sponsor_scope = {
+		exists = yes
+		has_country_flag = random_civil_war_sponsor_commitment_active
+		has_variable = random_civil_war_sponsor_commitment_until
+		check_variable = { var = global.date value = random_civil_war_sponsor_commitment_until compare = less_than }
+	}
+}
