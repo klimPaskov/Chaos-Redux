@@ -254,7 +254,7 @@ The old-world diplomacy proof gate also remains unresolved. Truces now use the o
 8. Close the tracked blackout input, scripted-GUI binding, and all-resolution drawing-order gates. The mapmode frame gate is resolved by `AIR_WINTER_MAPMODE_ICON_PROOF.md`.
 9. Finish regional successor content, focus content, AI, localisation, assets, documentation alignment, and the required audits.
 10. Resolve literal multiplayer lobby-host authority or retain it as an explicit engine blocker. The live project coordinator is deterministic and date-bounded, but it is not a documented lobby-host predicate.
-11. Complete the accepted Ash-week orientation contract with exact capital repair, implementation registries for the other 96 cells of the approved 108-cell source matrix, complete country-memory coverage, the character registry, callers, activation, audits, and runtime proof. History `9110` and the generic Event Log detail route are statically wired, but they remain dormant with the event package. Do not wire its caller until successor allocation, player continuation, and the required candidate registries are proven. Do not enable the living-world scheduler. The schema-3 live ledger, national pilot, twelve-memory resource pilot, twelve-memory government pilot, capital and character pilots, and closure package remain dormant.
+11. Ash-week orientation runs for every registry country (agent decisions A2 and A14). National orientation, capital condition, resource crisis and government archetype reach every country with a region and archetype through the 108 cell rows, with pilot memory rows taking precedence. Remaining: the character or institution step and its registry, and live runtime proof.
 
 ## Resume map
 

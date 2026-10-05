@@ -254,7 +254,7 @@ Runtime acceptance remains required for railway topology, supply-node removal, i
 
 ## B12: Ash-week orientation implementation
 
-Status: implemented by agent decision A2 (2026-10-04). `fallout_orientation_reconcile_registry` and hidden step event `chaosx.fallout.85` start and advance orientation for every registry country. Components without a reviewed row are recorded complete without a popup, and capital repair uses decision A3. The history below records the dormant period.
+Status: implemented by agent decisions A2 and A14 (2026-10-04 and round 2). `fallout_orientation_reconcile_registry` and hidden step event `chaosx.fallout.85` start and advance orientation for every registry country. Resource crisis and government archetype run for every country with a region and archetype from the 108 cell rows in `FALLOUT_ORIENTATION_CELL_ROWS.md`, with the twelve pilot memory rows taking precedence where they match. Character or institution remains recorded complete without a popup until its registry exists, and capital repair uses decision A3. The history below records the dormant period.
 
 Previous status: accepted design with a partial dormant pilot, caller and release remain blocked
 

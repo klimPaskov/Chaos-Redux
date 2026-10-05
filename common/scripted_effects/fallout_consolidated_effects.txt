@@ -61189,10 +61189,75 @@ fallout_event_release_issued_bilateral_cleanup = {
 # Dormant Ash-week Fallout orientation transaction substrate
 # ---------------------------------------------------------------------------
 
+# Supported scope: COUNTRY. Clears the region and archetype cell row.
+fallout_orientation_clear_cell_row = {
+	clear_variable = fallout_orientation_cell_generation
+	clear_variable = fallout_orientation_cell_region
+	clear_variable = fallout_orientation_cell_archetype
+	clear_variable = fallout_orientation_cell_row_id
+	clear_variable = fallout_orientation_cell_support_resource
+	clear_variable = fallout_orientation_cell_resource_ai_branch
+	clear_variable = fallout_orientation_cell_effect_kind
+	clear_variable = fallout_orientation_cell_effect_value
+	clear_variable = fallout_orientation_cell_government_ai_branch
+	clear_variable = fallout_orientation_cell_locked_component
+	clear_variable = fallout_orientation_cell_locked_branch
+	clear_variable = fallout_orientation_cell_lock_condition
+}
+
+# Supported scope: COUNTRY. Loads the country's region and archetype cell row
+# from the per-cell constants once per generation. The row id is
+# region * region_multiplier + archetype, so it never collides with the twelve
+# pilot government row ids.
+fallout_orientation_refresh_cell_row = {
+	if = {
+		limit = {
+			has_variable = fallout_region_id
+			has_variable = fallout_government_archetype
+			has_variable = global.fallout_transition_generation
+			check_variable = { fallout_region_id > constant:fallout_region.none }
+			check_variable = { fallout_region_id < constant:fallout_region.upper_bound }
+			check_variable = { fallout_government_archetype > constant:fallout_government_archetype.none }
+			check_variable = { fallout_government_archetype < constant:fallout_government_archetype.upper_bound }
+		}
+		if = {
+			limit = { NOT = { fallout_orientation_cell_row_is_current = yes } }
+			set_variable = { fallout_orientation_cell_generation = global.fallout_transition_generation }
+			set_variable = { fallout_orientation_cell_region = fallout_region_id }
+			set_variable = { fallout_orientation_cell_archetype = fallout_government_archetype }
+			set_variable = { fallout_orientation_cell_row_id = fallout_region_id }
+			multiply_variable = { fallout_orientation_cell_row_id = constant:fallout_orientation_cell_row.region_multiplier }
+			add_to_variable = { fallout_orientation_cell_row_id = fallout_government_archetype }
+			set_temp_variable = { fallout_orientation_cell_region_key = fallout_region_id }
+			round_temp_variable = fallout_orientation_cell_region_key
+			set_temp_variable = { fallout_orientation_cell_archetype_key = fallout_government_archetype }
+			round_temp_variable = fallout_orientation_cell_archetype_key
+			meta_effect = {
+				text = {
+					set_variable = { fallout_orientation_cell_support_resource = constant:fallout_orientation_cell_resource_support.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_resource_ai_branch = constant:fallout_orientation_cell_resource_ai_branch.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_effect_kind = constant:fallout_orientation_cell_government_effect_kind.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_effect_value = constant:fallout_orientation_cell_government_effect_value.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_government_ai_branch = constant:fallout_orientation_cell_government_ai_branch.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_locked_component = constant:fallout_orientation_cell_locked_component.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_locked_branch = constant:fallout_orientation_cell_locked_branch.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+					set_variable = { fallout_orientation_cell_lock_condition = constant:fallout_orientation_cell_lock_condition_id.r[CELL_REGION]_a[CELL_ARCHETYPE] }
+				}
+				CELL_REGION = "[?fallout_orientation_cell_region_key|.0]"
+				CELL_ARCHETYPE = "[?fallout_orientation_cell_archetype_key|.0]"
+			}
+		}
+	}
+	else = {
+		fallout_orientation_clear_cell_row = yes
+	}
+}
+
 # Supported scope: COUNTRY. Clears only the derived resource pilot identity.
 # The future reviewed asset package receipt is separate and is not reset here.
 fallout_orientation_reset_resource_mapping = {
 	clr_country_flag = fallout_orientation_resource_registry_mapped
+	clr_country_flag = fallout_orientation_resource_registry_cell_row
 	clear_variable = fallout_orientation_resource_registry_schema_version
 	clear_variable = fallout_orientation_resource_registry_generation
 	clear_variable = fallout_orientation_resource_registry_country_memory
@@ -61251,6 +61316,17 @@ fallout_orientation_prepare_resource_mapping = {
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.ethiopian_highland_refuge } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.fuel } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state } check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.tailored } }
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government } check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } } set_variable = { fallout_orientation_resource_registry_support_resource = constant:fallout_survival_resource.power } set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = constant:fallout_orientation_resource_branch.ration } }
+			# No pilot row: the region and archetype cell row supplies the step.
+			fallout_orientation_refresh_cell_row = yes
+			if = {
+				limit = {
+					NOT = { has_variable = fallout_orientation_resource_registry_support_resource }
+					fallout_orientation_cell_row_is_current = yes
+				}
+				set_variable = { fallout_orientation_resource_registry_support_resource = fallout_orientation_cell_support_resource }
+				set_variable = { fallout_orientation_resource_registry_ai_preferred_branch = fallout_orientation_cell_resource_ai_branch }
+				set_country_flag = fallout_orientation_resource_registry_cell_row
+			}
 
 			if = {
 				limit = { has_variable = fallout_orientation_resource_registry_support_resource has_variable = fallout_orientation_resource_registry_ai_preferred_branch }
@@ -61308,6 +61384,7 @@ fallout_orientation_load_resource_request = {
 # Supported scope: COUNTRY. Clears only the derived government pilot row.
 fallout_orientation_reset_government_mapping = {
 	clr_country_flag = fallout_orientation_government_registry_mapped
+	clr_country_flag = fallout_orientation_government_registry_cell_row
 	clear_variable = fallout_orientation_government_registry_schema_version
 	clear_variable = fallout_orientation_government_registry_generation
 	clear_variable = fallout_orientation_government_registry_country_memory
@@ -61370,6 +61447,19 @@ fallout_orientation_prepare_government_mapping = {
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.ethiopian_highland_refuge } check_variable = { fallout_region_id = constant:fallout_region.sub_saharan_africa } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } set_variable = { fallout_orientation_government_registry_row_id = constant:fallout_orientation_government_row_id.ethiopian_highland_refuge } set_variable = { fallout_orientation_government_registry_effect_kind = constant:fallout_orientation_archetype_effect_kind.cohesion } set_variable = { fallout_orientation_government_registry_effect_value = constant:fallout_orientation_government_effect_value.ethiopian_cohesion } set_variable = { fallout_orientation_government_registry_ai_preferred_branch = constant:fallout_orientation_government_branch.division } }
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.atacama_observatory_state } check_variable = { fallout_region_id = constant:fallout_region.latin_america_caribbean } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.technate } } set_variable = { fallout_orientation_government_registry_row_id = constant:fallout_orientation_government_row_id.atacama_observatory_state } set_variable = { fallout_orientation_government_registry_effect_kind = constant:fallout_orientation_archetype_effect_kind.supply } set_variable = { fallout_orientation_government_registry_effect_value = constant:fallout_orientation_government_effect_value.atacama_supply } set_variable = { fallout_orientation_government_registry_ai_preferred_branch = constant:fallout_orientation_government_branch.division } }
 			else_if = { limit = { check_variable = { fallout_country_memory_id = constant:fallout_country_memory.antarctic_listening_government } check_variable = { fallout_region_id = constant:fallout_region.oceania_remote_islands } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.machine_protocol } } set_variable = { fallout_orientation_government_registry_row_id = constant:fallout_orientation_government_row_id.antarctic_listening_government } set_variable = { fallout_orientation_government_registry_effect_kind = constant:fallout_orientation_archetype_effect_kind.adaptation } set_variable = { fallout_orientation_government_registry_effect_value = constant:fallout_orientation_government_effect_value.antarctic_adaptation } set_variable = { fallout_orientation_government_registry_ai_preferred_branch = constant:fallout_orientation_government_branch.division } }
+			# No pilot row: the region and archetype cell row supplies the step.
+			fallout_orientation_refresh_cell_row = yes
+			if = {
+				limit = {
+					NOT = { has_variable = fallout_orientation_government_registry_row_id }
+					fallout_orientation_cell_row_is_current = yes
+				}
+				set_variable = { fallout_orientation_government_registry_row_id = fallout_orientation_cell_row_id }
+				set_variable = { fallout_orientation_government_registry_effect_kind = fallout_orientation_cell_effect_kind }
+				set_variable = { fallout_orientation_government_registry_effect_value = fallout_orientation_cell_effect_value }
+				set_variable = { fallout_orientation_government_registry_ai_preferred_branch = fallout_orientation_cell_government_ai_branch }
+				set_country_flag = fallout_orientation_government_registry_cell_row
+			}
 
 			if = {
 				limit = { has_variable = fallout_orientation_government_registry_row_id has_variable = fallout_orientation_government_registry_effect_kind has_variable = fallout_orientation_government_registry_effect_value has_variable = fallout_orientation_government_registry_ai_preferred_branch }
@@ -63075,10 +63165,12 @@ fallout_orientation_choose_ai_branch_and_schedule_result = {
 # - fallout_orientation_advance_country cancels a stalled transaction, loads
 #   the request payload, and begins the next component. National orientation
 #   and capital condition run for every registry country. Resource crisis and
-#   government archetype run where a reviewed row exists for the country's
-#   memory. Character or institution waits for a curated registry. A component
-#   with no reviewed row, or no branch the country can pay for, is recorded
-#   complete without a popup. After all five, the closure report runs.
+#   government archetype run from the country's pilot memory row where one
+#   matches, otherwise from its region and archetype cell row, so every
+#   registry country with a region and archetype receives them. Character or
+#   institution waits for a curated registry. A component with no row, or no
+#   branch the country can pay for, is recorded complete without a popup.
+#   After all five, the closure report runs.
 # - The driver never sets scheduler flags. Ordinary living-world events wait
 #   for fallout_event_orientation_is_complete on each country.
 
@@ -63123,16 +63215,19 @@ fallout_orientation_request_step = {
 
 # Supported scope: COUNTRY. Opens the reviewed orientation surfaces for this
 # registry country. National, capital, and state results are universal rows.
-# Government rows exist only for the twelve reviewed pilot memories. Character
-# and institution installation stays closed until a curated registry exists.
+# Government rows exist for every country with a region and archetype cell
+# row; a matching pilot memory row takes precedence inside the mapping.
+# Character and institution installation stays closed until a curated
+# registry exists.
 fallout_orientation_approve_country_surfaces = {
+	fallout_orientation_refresh_cell_row = yes
 	set_variable = { fallout_orientation_regional_row_surface_status = constant:fallout_orientation_surface_status.approved }
 	set_variable = { fallout_orientation_archetype_row_surface_status = constant:fallout_orientation_surface_status.approved }
 	set_variable = { fallout_orientation_memory_row_surface_status = constant:fallout_orientation_surface_status.approved }
 	set_variable = { fallout_orientation_state_result_surface_status = constant:fallout_orientation_surface_status.approved }
 	set_variable = { fallout_orientation_capital_repair_surface_status = constant:fallout_orientation_surface_status.approved }
 	if = {
-		limit = { fallout_orientation_country_memory_has_pilot_government_mapping = yes }
+		limit = { fallout_orientation_cell_row_is_current = yes }
 		set_variable = { fallout_orientation_government_row_surface_status = constant:fallout_orientation_surface_status.approved }
 	}
 	else = {
@@ -63141,13 +63236,14 @@ fallout_orientation_approve_country_surfaces = {
 	set_variable = { fallout_orientation_character_install_surface_status = constant:fallout_orientation_surface_status.blocked }
 }
 
-# Supported scope: COUNTRY. Installs the resource-crisis package for one of the
-# twelve reviewed memories. The package targets the assigned capital, where the
-# reviewed supporting asset (fuel stores or the power plant) is drawn on.
+# Supported scope: COUNTRY. Installs the resource-crisis package for every
+# country with a region and archetype cell row (pilot memory rows included).
+# The package targets the assigned capital, where the supporting asset (fuel
+# stores or the power plant) is drawn on.
 fallout_orientation_install_resource_package = {
 	if = {
 		limit = {
-			fallout_orientation_country_memory_has_pilot_resource_mapping = yes
+			fallout_orientation_cell_row_is_current = yes
 			NOT = { fallout_orientation_resource_package_receipt_is_current = yes }
 			has_variable = fallout_successor_assignment_capital_state
 		}
@@ -63223,13 +63319,17 @@ fallout_orientation_load_country_request = {
 	}
 	clamp_temp_variable = { var = fallout_orientation_requested_receiving_shelter min = constant:fallout_survival_numeric.minimum max = constant:fallout_survival_numeric.maximum }
 
-	# Declared matches exist only where a reviewed memory row fits the
+	# Every mapped row names the supporting resource. Declared matches, which
+	# add to the result score, exist only where a pilot memory row fits the
 	# country's region and archetype.
 	if = {
 		limit = { fallout_orientation_resource_mapping_is_current = yes }
-		set_temp_variable = { fallout_orientation_requested_archetype_match = constant:fallout_orientation_score.match_flag }
-		set_temp_variable = { fallout_orientation_requested_regional_match = constant:fallout_orientation_score.match_flag }
 		set_temp_variable = { fallout_orientation_requested_tailored_resource = fallout_orientation_resource_registry_support_resource }
+		if = {
+			limit = { fallout_orientation_country_has_pilot_row = yes }
+			set_temp_variable = { fallout_orientation_requested_archetype_match = constant:fallout_orientation_score.match_flag }
+			set_temp_variable = { fallout_orientation_requested_regional_match = constant:fallout_orientation_score.match_flag }
+		}
 	}
 
 	set_temp_variable = { fallout_orientation_requested_primary_resource = constant:fallout_survival_resource.food }
@@ -63460,7 +63560,9 @@ fallout_orientation_advance_country = {
 			}
 			fallout_orientation_issue_or_skip_component = yes
 		}
-		# 3. Immediate resource crisis, reviewed memory rows only.
+		# 3. Immediate resource crisis: pilot memory row, else the region and
+		# archetype cell row. Only a missing archetype or region, or a missing
+		# capital past the retry window, skips the step without a popup.
 		if = {
 			limit = {
 				NOT = { has_country_flag = fallout_orientation_transaction_pending }
@@ -63474,12 +63576,16 @@ fallout_orientation_advance_country = {
 				limit = { fallout_orientation_resource_package_receipt_is_current = yes }
 				fallout_orientation_begin_immediate_resource_crisis = yes
 			}
+			else_if = {
+				limit = { NOT = { fallout_orientation_cell_row_is_current = yes } }
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.archetype_row_missing }
+			}
 			else = {
-				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.memory_row_missing }
+				set_temp_variable = { fallout_orientation_requested_diagnostic = constant:fallout_orientation_diagnostic.state_target_missing }
 			}
 			fallout_orientation_issue_or_skip_component = yes
 		}
-		# 4. Government archetype, reviewed memory rows only.
+		# 4. Government archetype: pilot memory row, else the cell row.
 		if = {
 			limit = {
 				NOT = { has_country_flag = fallout_orientation_transaction_pending }
