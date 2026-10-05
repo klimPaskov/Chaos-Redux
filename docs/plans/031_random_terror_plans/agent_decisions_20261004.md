@@ -494,9 +494,9 @@ A source review of R32-R42 after the round found three defects in the committed 
   The flag is now set only while the controller holds Stop the Coordinated Uprising for that state (`random_terror_uprising_subject_<tag>`); a rising without the mission leaves only the 28-day date window, which is what item 9 of the round asked for.
 - Route evidence: none of the three changes a weight; no probability route was needed.
 
-### R44 Skeptical review of round 2: stacking, report reopening, stale haven links and slot tooltips
+### R44 Skeptical review of round 2: stacking, report reopening, stale haven links and slot tooltips (`c56803b6b`)
 
-Basis: a second source review of every round-2 commit (`8f232f358` through `3573ef986`) by the round-2 reviewer, acting under the user's grant of full design authority; each item is `implemented` in the R44 commit, and live-game behaviour remains with the user.
+Basis: a second source review of every round-2 commit (`8f232f358` through `3573ef986`) by the round-2 reviewer, acting under the user's grant of full design authority; each item is `implemented` in `c56803b6b`, and live-game behaviour remains with the user.
 
 - Presence stacking (R38 follow-up): `random_terror_mark_final_actor` removes the flat Presence of the Entity spirit, but Seal the Final Command still added it, and a final command that had not completed Seal before the revelation can still take it (its `available` reads only the jihadist profile, which includes the final profile, and the Final Jihad flag) on the way to The Ambiguous Light, so the flat spirit stacked with the scaling `random_terror_entity_presence` modifier, against Part 8's "should not give unlimited power at full strength regardless of world state".
   Seal now adds the spirit only while the command is not yet final; for the final command it shows and applies its `sealed_command_points` through `random_terror_refresh_terminal_strength` at once.
