@@ -1779,6 +1779,12 @@ great_depression_category = {
 		custom_cost_text = great_depression_cost_contagion
 		days_re_enable = constant:great_depression_event.global_pressure_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_relief_days = constant:great_depression_market_exit.abandon_relief_days }
+			set_temp_variable = { great_depression_tt_relief = constant:great_depression_market_exit.abandon_credit_relief }
+			add_to_temp_variable = { great_depression_tt_relief = constant:great_depression_market_exit.abandon_trade_relief }
+			multiply_temp_variable = { great_depression_tt_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_partner_shock = constant:great_depression_market_exit.abandon_partner_shock }
+			custom_effect_tooltip = great_depression_abandon_distressed_market_tt
 			FROM = { great_depression_abandon_distressed_market = yes }
 		}
 		ai_will_do = {
@@ -1786,7 +1792,9 @@ great_depression_category = {
 			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_profile_is_liquidation_gambler = yes }
 			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_fiscal_retrencher = yes }
 			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_urgent = yes }
+			modifier = { add = constant:great_depression_ai_weight.strong FROM = { great_depression_ai_partner_is_near_paralysis = yes } }
 			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_strategic = yes } }
+			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_close_ally = yes } }
 		}
 	}
 
@@ -2237,13 +2245,19 @@ great_depression_category = {
 		custom_cost_text = great_depression_cost_contagion
 		days_re_enable = constant:great_depression_event.global_pressure_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_relief_days = constant:great_depression_market_exit.withdraw_relief_days }
+			set_temp_variable = { great_depression_tt_relief = constant:great_depression_market_exit.withdraw_trade_relief }
+			multiply_temp_variable = { great_depression_tt_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_partner_shock = constant:great_depression_market_exit.withdraw_partner_shock }
+			custom_effect_tooltip = great_depression_withdraw_from_distressed_market_tt
 			FROM = { great_depression_withdraw_from_distressed_market = yes }
 		}
 		ai_will_do = {
 			base = constant:great_depression_target_weight.base
-			modifier = { add = constant:great_depression_ai_weight.dominant great_depression_ai_profile_is_liquidation_gambler = yes }
-			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_fiscal_retrencher = yes }
+			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_profile_is_liquidation_gambler = yes }
+			modifier = { add = constant:great_depression_ai_weight.preferred great_depression_ai_profile_is_fiscal_retrencher = yes }
 			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_urgent = yes }
+			modifier = { add = constant:great_depression_ai_weight.standard FROM = { great_depression_ai_partner_is_close_ally = yes } }
 			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_strategic = yes } }
 		}
 	}
@@ -2275,6 +2289,12 @@ great_depression_category = {
 		custom_cost_text = great_depression_cost_contagion
 		days_re_enable = constant:great_depression_event.global_pressure_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_relief_days = constant:great_depression_market_exit.exploit_relief_days }
+			set_temp_variable = { great_depression_tt_relief = constant:great_depression_market_exit.exploit_industrial_relief }
+			multiply_temp_variable = { great_depression_tt_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_backlash = constant:great_depression_market_exit.exploit_social_backlash }
+			set_temp_variable = { great_depression_tt_partner_shock = constant:great_depression_market_exit.exploit_partner_pressure }
+			custom_effect_tooltip = great_depression_exploit_supply_gap_tt
 			FROM = { great_depression_exploit_supply_gap = yes }
 		}
 		ai_will_do = {
@@ -2284,6 +2304,8 @@ great_depression_category = {
 			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_affordable = yes }
 			modifier = { add = constant:great_depression_ai_weight.strong FROM = { great_depression_ai_partner_is_valuable = yes } }
 			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_unaffordable = yes } }
+			modifier = { factor = constant:great_depression_ai_weight.blocked FROM = { great_depression_ai_partner_is_close_ally = yes } }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_social_strain_is_extreme = yes }
 		}
 	}
 
@@ -2725,16 +2747,24 @@ great_depression_category = {
 			great_depression_should_show_competitive_devaluation_or_currency_break = yes
 		}
 		available = {
-			hidden_trigger = { great_depression_can_pay_global_reconstruction = yes }
+			hidden_trigger = { great_depression_can_pay_market_clear = yes }
 			great_depression_action_slot_is_open = yes
 			great_depression_can_start_competitive_devaluation_or_currency_break = yes
 		}
 		custom_cost_trigger = {
-			great_depression_can_pay_global_reconstruction = yes
+			great_depression_can_pay_market_clear = yes
 		}
-		custom_cost_text = great_depression_cost_global_reconstruction
+		custom_cost_text = great_depression_cost_market_clear
 		days_re_enable = constant:great_depression_event.global_pressure_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_relief_days = constant:great_depression_currency_action.devaluation_relief_days }
+			set_temp_variable = { great_depression_tt_relief = constant:great_depression_currency_action.devaluation_trade_relief }
+			multiply_temp_variable = { great_depression_tt_relief = constant:great_depression_api.negative_one }
+			set_temp_variable = { great_depression_tt_partner_cap = constant:great_depression_currency_action.devaluation_partner_cap }
+			set_temp_variable = { great_depression_tt_partner_days = constant:great_depression_currency_action.devaluation_partner_pressure_days }
+			set_temp_variable = { great_depression_tt_drag_days = constant:great_depression_currency_action.devaluation_recovery_drag_days }
+			set_temp_variable = { great_depression_tt_drag_maximum = constant:great_depression_currency_action.recovery_drag_maximum_days }
+			custom_effect_tooltip = great_depression_competitive_devaluation_or_currency_break_tt
 			great_depression_competitive_devaluation_or_currency_break = yes
 		}
 		ai_will_do = {
@@ -2744,6 +2774,7 @@ great_depression_category = {
 			modifier = { add = constant:great_depression_ai_weight.elevated great_depression_ai_action_is_urgent = yes }
 			modifier = { add = constant:great_depression_ai_weight.strong great_depression_ai_action_is_affordable = yes }
 			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_currency_break_is_unsafe = yes }
+			modifier = { factor = constant:great_depression_ai_weight.blocked great_depression_ai_global_stage_is_recovery = yes }
 		}
 	}
 
@@ -2958,16 +2989,20 @@ great_depression_category = {
 			great_depression_should_show_withdraw_from_international_commitments = yes
 		}
 		available = {
-			hidden_trigger = { great_depression_can_pay_global_reconstruction = yes }
+			hidden_trigger = { great_depression_can_pay_policy_review = yes }
 			great_depression_action_slot_is_open = yes
 			great_depression_can_start_withdraw_from_international_commitments = yes
 		}
 		custom_cost_trigger = {
-			great_depression_can_pay_global_reconstruction = yes
+			great_depression_can_pay_policy_review = yes
 		}
-		custom_cost_text = great_depression_cost_global_reconstruction
+		custom_cost_text = great_depression_cost_policy_review
 		days_re_enable = constant:great_depression_event.global_pressure_days
 		complete_effect = {
+			set_temp_variable = { great_depression_tt_relief_days = constant:great_depression_currency_action.withdrawal_relief_days }
+			set_temp_variable = { great_depression_tt_relief = constant:great_depression_currency_action.withdrawal_fiscal_relief }
+			multiply_temp_variable = { great_depression_tt_relief = constant:great_depression_api.negative_one }
+			custom_effect_tooltip = great_depression_withdraw_from_international_commitments_tt
 			great_depression_withdraw_from_international_commitments = yes
 		}
 		ai_will_do = {

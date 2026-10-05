@@ -263,6 +263,22 @@ Conversion calls the fail-closed API with the proved source and receipt and deep
 
 Event 34 suppliers enter through the supplier adapter and retain their own Overheating and contract-risk rules.
 
+### Market exits and supply-gap purchases
+
+Abandon the Distressed Market, Withdraw from Distressed Market, and Exploit Supply Gap trade a bounded, current-episode benefit for the acting country against a cost carried by the partner. None of them raises the actor's own Severity.
+
+| Action | Actor benefit (current episode) | Partner cost |
+| --- | --- | --- |
+| Abandon | credit and trade relief for `abandon_relief_days`, and the link stops carrying the actor's weekly pressure to the partner | Severity shock if the partner is in its own depression; otherwise an existing exposure link rises one stage or a new link opens at Dependent; `great_depression_market_abandoned` opinion of the actor |
+| Withdraw | smaller trade relief for `withdraw_relief_days`, no diplomatic cost | smaller Severity shock if the partner is in its own depression; a new link opens only at Pressured |
+| Exploit | industrial relief for `exploit_relief_days`; while Social Collapse is active, hidden social stress takes part of it back | Severity pressure on the partner and `great_depression_supply_gap_exploited` opinion of the actor |
+
+All values live in `great_depression_market_exit`. The relief windows are `great_depression_market_abandon_relief_*`, `great_depression_market_withdraw_relief_*`, and `great_depression_supply_gap_relief_*` (due day plus episode id), read by `great_depression_rebuild_hidden_components` through the `*_relief_is_active` triggers. An abandoned partner joins the bounded `great_depression_severed_partner_countries` array, which `great_depression_process_contagion_network` skips. `great_depression_clear_market_exit_state` clears every window and the severed list at episode start, abort, retirement, and recovery cleanup.
+
+The contagion row of a market exit is marked abandoned through the temporary input `great_depression_partner_outcome_hostile`, and the opening stage of a new link through `great_depression_partner_link_stage`. `great_depression_raise_partner_exposure_link` raises an existing link by `great_depression_partner_link_raise` and applies it once through `great_depression_apply_exposure`, so the ordinary conversion rules decide whether the partner falls into its own depression.
+
+AI: liquidation gamblers and fiscal retrenchers still favour these exits, and abandonment gains weight when the partner is near paralysis, but the AI never abandons or exploits a faction member, ally, overlord, or subject (`great_depression_ai_partner_is_close_ally`) or a major partner.
+
 When Financial Contagion activates on a crisis already under way, `great_depression_queue_contagion_activation_report` queues `chaosx.nr35.12` for the origin once per episode, a day later, with the contagion picture.
 It freezes the partner count and the partner at the highest exposure stage when it is queued, so the report names the most exposed partner and how many partner economies are tied to the origin, or says that none is tied closely enough yet, and it never shows conversion odds.
 An episode that opens with the evolution already active is covered by its opening report instead.
@@ -298,6 +314,20 @@ The global lifecycle progresses through shock, contraction, coordination, recove
 The reconstruction and end news name the country where the worldwide depression began only when the activation source was known, through `global.great_depression_news_origin`, which is copied before retirement clears the global event target.
 They describe the world economy and never imply that every country is in a national depression.
 All three use the registered news picture, because the report pictures have report dimensions.
+
+### Competitive devaluation and withdrawal from international commitments
+
+Competitive Devaluation or Currency Break costs the market-clearing quote (political power, stability, war support), is available once per country in each global episode (`great_depression_devaluation_global_episode_id`), and gives standard Severity relief at once plus a trade-relief window for `devaluation_relief_days`.
+`great_depression_apply_devaluation_partner_pressure` then marks up to `devaluation_partner_cap` partners, first the actor's contagion exposure targets and then registered worldwide-pressure countries with a proved relationship, with `great_depression_currency_pressure_due_day` for the current global episode.
+A marked partner adds `devaluation_partner_exposure_score` to its worldwide classification and, if it is in a national depression, `devaluation_partner_trade_stress` to its hidden trade stress.
+Each devaluation adds `devaluation_recovery_drag_days` to `global.great_depression_global_recovery_drag_days`, capped at `recovery_drag_maximum_days`, and the international-reconstruction proof must hold that much longer. The drag resets with the global ledgers.
+
+Withdraw from International Commitments costs the policy-review quote (political power and stability) instead of the reconstruction quote.
+`great_depression_remove_global_contribution` removes the country's row and recorded industrial weight from the global contribution ledger, removes its contribution receipts, and clears its contribution flags.
+`great_depression_commitments_withdrawn_global_episode_id` closes every global contribution decision for the rest of that global episode through `great_depression_global_commitments_are_open`, and `great_depression_increment_global_contribution` refuses a withdrawn country.
+The country's civilian commitment is released, it gets light Severity relief at once, and a fiscal-relief window runs for `withdrawal_relief_days`.
+
+Neither action raises the actor's Severity. Values live in `great_depression_currency_action`.
 
 ## Shared-system adapters and Chaos accounting
 

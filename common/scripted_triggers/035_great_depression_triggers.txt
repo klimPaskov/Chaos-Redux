@@ -648,3 +648,55 @@ great_depression_call_active_target_is_valid = {
 		check_variable = { var = great_depression_call_caller_type value = constant:great_depression_caller.debug_or_test compare = equals }
 	}
 }
+
+# ============================================================================
+# CURRENT-EPISODE ACTION BENEFITS AND PARTNER PRESSURE
+# ============================================================================
+# COUNTRY scope. Each window is true only while its due day lies ahead and it
+# was opened in the country's current national (or worldwide) episode, so no
+# benefit or pressure can carry into a later episode.
+# ============================================================================
+
+great_depression_market_abandon_relief_is_active = {
+	has_variable = great_depression_market_abandon_relief_due_day
+	has_variable = great_depression_active_episode_id
+	check_variable = { var = great_depression_market_abandon_relief_episode_id value = great_depression_active_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_market_abandon_relief_due_day compare = less_than }
+}
+
+great_depression_market_withdraw_relief_is_active = {
+	has_variable = great_depression_market_withdraw_relief_due_day
+	has_variable = great_depression_active_episode_id
+	check_variable = { var = great_depression_market_withdraw_relief_episode_id value = great_depression_active_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_market_withdraw_relief_due_day compare = less_than }
+}
+
+great_depression_supply_gap_relief_is_active = {
+	has_variable = great_depression_supply_gap_relief_due_day
+	has_variable = great_depression_active_episode_id
+	check_variable = { var = great_depression_supply_gap_relief_episode_id value = great_depression_active_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_supply_gap_relief_due_day compare = less_than }
+}
+
+great_depression_devaluation_relief_is_active = {
+	has_variable = great_depression_devaluation_relief_due_day
+	has_variable = great_depression_active_episode_id
+	check_variable = { var = great_depression_devaluation_relief_episode_id value = great_depression_active_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_devaluation_relief_due_day compare = less_than }
+}
+
+great_depression_commitment_withdrawal_relief_is_active = {
+	has_variable = great_depression_commitment_withdrawal_relief_due_day
+	has_variable = great_depression_active_episode_id
+	check_variable = { var = great_depression_commitment_withdrawal_relief_episode_id value = great_depression_active_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_commitment_withdrawal_relief_due_day compare = less_than }
+}
+
+# Partner scope. A trading partner's devaluation in the current worldwide
+# episode is still pressing on this economy.
+great_depression_currency_pressure_is_active = {
+	has_global_flag = great_depression_worldwide_episode_active
+	has_variable = great_depression_currency_pressure_due_day
+	check_variable = { var = great_depression_currency_pressure_global_episode_id value = global.great_depression_global_episode_id compare = equals }
+	check_variable = { var = global.num_days value = great_depression_currency_pressure_due_day compare = less_than }
+}

@@ -353,3 +353,49 @@ Disposition: implemented.
 - Accepted and queued: news for the failure of a major recovery conference and for the formation of a major clearing or protectionist bloc (D19).
 - Asset follow-up: bespoke Event 35 art for the twelve aliased spirits and dedicated news art for the reconstruction, end and supplier-collapse news.
 - The numeric AI probability comparison remains blocked by the decision adapter (D10); no weight changed in round 2.
+
+## Lead decisions for round 2, attempt 2
+
+Disposition: recorded as the acceptance basis for D21 onward. The lead took these under the user's grant of full design authority.
+
+- L1. Round 2 attempt 1 (D13 to D20, `51e9c1532` to `eaa9ab8f8`) counts as done; the one defect found (`great_depression_occupied_industry_socialized` never cleared) belongs to the flag-leak item.
+- L2. The six trap actions keep their identities, stop raising the actor's Severity, give a bounded current-episode benefit read by `great_depression_rebuild_hidden_components`, and move the cost to the partner or the world. Withdraw from International Commitments stops charging the reconstruction quote and visibly gives up the country's global contribution.
+- L3. The Global Recovery Conference becomes a convened conference that other countries join, with success and failure outcomes, one guarded Chaos change and one world news on failure.
+- L4. Clearing and protectionist blocs become global member sets with real effects and formation news.
+- L5. Effect tooltips cover the whole decision surface; the Severity amount comes from the same constant the effect uses.
+- L6. Flag lifecycle: a country's own action and condition flags clear at episode start, abort and recovery cleanup after the recovery outcomes have read them; partner and global flags end with the relationship or at global retirement; achievement receipts count within one episode.
+- L7. Art: the twelve vanilla-texture spirits need bespoke Event 35 art; the D6 decisions keep their shared doctrine plates; the global news may keep the Event 35 news picture.
+- L8. Excluded: Event 34 supplier choices, the hidden-row paid paths closed in D4, the settings force-fire path, workbook and CSV edits, documentation-only churn.
+
+## D21. Market exits and supply-gap purchases (round 2 attempt 2, item 2)
+
+Disposition: implemented.
+
+- Basis: L2; spec part 5 "Abandon the Distressed Market", "Exposure pressure", and "Foreign aid and exploitation balance".
+- Agent decision on the actor benefit: each action opens a current-episode relief window (due day plus episode id) read by `great_depression_rebuild_hidden_components`. Abandon is the strongest (credit -2 and trade -2 for 84 days), Withdraw the smallest (trade -1 for 56 days), Exploit gives industrial relief (-2 for 70 days). A later use refreshes the window rather than stacking it. The actor's Severity no longer moves, and an action with no Severity change keeps the measured trend.
+- Agent decision on "stops that partner pair from passing pressure on": Abandon adds the partner to the actor's bounded `great_depression_severed_partner_countries`, and `great_depression_process_contagion_network` no longer applies the actor's weekly exposure to that partner. The cut link carries the one shock below and nothing after it.
+- Agent decision on the partner cost: Abandon gives a partner in its own depression +4 Severity; an exposed partner's existing link rises one stage through `great_depression_raise_partner_exposure_link` and `great_depression_apply_exposure`, so the ordinary conversion rules apply; an untouched partner opens a new link at Dependent. The partner gains `great_depression_market_abandoned` (-30, decay 2) towards the actor, which is the diplomatic cost. Withdraw gives +2 to a partner in its own depression, opens a new link only at Pressured, and adds no opinion. Exploit gives +3 to the partner (always in its own depression by the target rule) and `great_depression_supply_gap_exploited` (-20, decay 2); while the actor's Social Collapse is active, its relief window also adds +1 hidden social stress.
+- The never-read partner flags `great_depression_distressed_market_abandoned`, `_withdrawn` and `great_depression_supply_gap_exploited` are gone. Contagion rows still record abandonment through the temporary `great_depression_partner_outcome_hostile`.
+- Cleanup: `great_depression_clear_market_exit_state` runs in `great_depression_reset_episode_policy_state` and `great_depression_clear_dynamic_state`, which covers episode start, abort, invalid retirement and recovery.
+- Tooltips: each decision sets temporary values from the same constants and shows one custom tooltip naming the actor's relief, its duration and the partner's cost. The Severity line itself comes from `great_depression_apply_public_action_delta` (D23).
+- AI: abandonment gains +8 when the partner is at Systemic Breakdown or worse (`great_depression_ai_partner_is_near_paralysis`) and is blocked for a faction member, ally, overlord or subject (`great_depression_ai_partner_is_close_ally`); Withdraw is now the retrencher's preferred quiet exit and is preferred for close allies; Exploit is blocked for close allies and when the actor's social strain is extreme.
+- Evidence: `hoi4.decision_inspect` inspect mode, scenario `abandon_gambler_partner_near_paralysis` (GER liquidation gambler at Severity 75, HUN partner in its own crisis at Severity 90): base 10, +14 profile, +8 urgent, +8 near paralysis, score 40 before the close-ally factor, which stays unresolved because faction and alliance relations cannot be declared. Artifacts `decision-747f5175db1908b66a088471.json`, `probability-befa994aa735f70f3642704e.json`.
+- Route blocker: `hoi4.probability_compare` was not run because the decision adapter of `hoi4.probability_inspect` still returns `INTERNAL_ERROR` (lead MCP note, 2026-10-05).
+
+## D22. Competitive devaluation and withdrawal from international commitments (round 2 attempt 2, item 3)
+
+Disposition: implemented.
+
+- Basis: L2; spec part 7 "Competitive Devaluation or Currency Break" ("can help locally while raising pressure on partners") and the decision's own text ("a smaller role in global recovery").
+- Devaluation: costs the market-clearing quote, is available once per country per global episode (`great_depression_devaluation_global_episode_id`, `great_depression_devaluation_is_unused`), gives standard relief (-3) at once and a trade-relief window (-2 for 84 days). Agent decision on the partner set: up to six partners, first the actor's contagion exposure targets, then registered worldwide-pressure countries with a proved relationship, receive a partner pressure window for 84 days: +2 worldwide exposure score (it can lift them into the severe contraction tier) and +1 hidden trade stress if they are in a national depression. Agent decision on the recovery term: each devaluation adds 20 days to the international-reconstruction proof, at most 60 days in total for one global episode (`global.great_depression_global_recovery_drag_days`, reset with the global ledgers). The text describes cheaper exports and lost partner sales and never names an exchange rate.
+- Withdrawal: costs the policy-review quote (political power and stability), which `great_depression_can_pay_policy_review` and `great_depression_cost_policy_review` already pair. `great_depression_remove_global_contribution` removes the country's row and recorded industrial weight from the global ledger, its receipts and its contribution flags, including the Recovery of Nations candidate. `great_depression_commitments_withdrawn_global_episode_id` closes every global contribution decision through `great_depression_global_commitments_are_open`, which also guards `great_depression_increment_global_contribution`. The civilian commitment is released, Severity falls by 2 at once, and a fiscal-relief window (-2 for 84 days) follows.
+- AI: devaluation is blocked during the Recovery and International Reconstruction stages, so the AI does not lengthen a proof that is already running; withdrawal keeps its retrencher and gambler weights and its recovery-stage block.
+- Evidence (`hoi4.decision_inspect` inspect mode): devaluation, GER financial stabilizer at Severity 72 in Coordination, eligible, score 26 plus 8 if affordable (has_equipment cannot be declared); fiscal retrencher at Severity 60, eligible, 12 plus 8; the same stabilizer in the Recovery stage scores 0; a country that already devalued in the current global episode is not eligible. Withdrawal, ITA liquidation gambler in Coordination, eligible, 24 plus 8; already withdrawn, not eligible. Artifacts `decision-66fc598805568413265da5ff.json`, `probability-cef5c8bf8626bba8a5b5f4e9.json`, `decision-97cf94e2ef3d94186c0fabb1.json`, `probability-b7c81957c4a3dd8e201fb409.json`.
+
+## D23. Severity line in every action tooltip (round 2 attempt 2, part of item 5)
+
+Disposition: implemented for the shared Severity path; the per-decision consequence lines are tracked under item 5.
+
+- Basis: L5; paradox_wiki Data structures (variable and flag effects have no tooltip); vanilla `common/national_focus/france.txt` (FRA_force_the_issue) shows a temporary variable set in an effect block feeding the tooltip of the next effect.
+- `great_depression_apply_public_action_delta` shows `great_depression_severity_change_tt` ("Depression Severity: [?great_depression_action_delta|=-0]") whenever the change is not zero, from the same temporary value it adds, and wraps band, phase, spirit and modifier upkeep in `hidden_effect`.
+- `great_depression_commit_country_action` and `great_depression_commit_external_action` hide the cost payment (already shown by the custom cost text) and the action receipt.

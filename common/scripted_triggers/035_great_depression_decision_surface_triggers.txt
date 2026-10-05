@@ -17,6 +17,33 @@ great_depression_action_slot_is_open = {
 	NOT = { has_country_flag = great_depression_action_lock }
 }
 
+# COUNTRY scope. A country that withdrew from its international commitments
+# during the current worldwide episode cannot contribute to it again.
+great_depression_global_commitments_are_open = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_global_commitments_are_open_tt
+		NOT = {
+			AND = {
+				has_variable = great_depression_commitments_withdrawn_global_episode_id
+				check_variable = { var = great_depression_commitments_withdrawn_global_episode_id value = global.great_depression_global_episode_id compare = equals }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Competitive devaluation is available once per worldwide episode.
+great_depression_devaluation_is_unused = {
+	custom_trigger_tooltip = {
+		tooltip = great_depression_devaluation_is_unused_tt
+		NOT = {
+			AND = {
+				has_variable = great_depression_devaluation_global_episode_id
+				check_variable = { var = great_depression_devaluation_global_episode_id value = global.great_depression_global_episode_id compare = equals }
+			}
+		}
+	}
+}
+
 # Countries carrying only an exposure or worldwide-pressure row receive a
 # compact response surface without being given a national Depression Severity.
 great_depression_exposure_response_surface_is_ready = {
@@ -1566,6 +1593,24 @@ great_depression_ai_partner_is_valuable = {
 	OR = { is_major = yes is_ai = no }
 }
 
+# Partner scope with ROOT as the AI actor. Abandoning or exploiting a faction
+# member, ally, overlord or subject costs more goodwill than it saves.
+great_depression_ai_partner_is_close_ally = {
+	OR = {
+		is_in_faction_with = ROOT
+		is_ally_with = ROOT
+		is_subject_of = ROOT
+		ROOT = { is_subject_of = PREV }
+	}
+}
+
+# Partner scope. The partner's own depression is near paralysis, so the actor
+# has little chance of saving the market.
+great_depression_ai_partner_is_near_paralysis = {
+	great_depression_active_crisis_is_coherent = yes
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.systemic_breakdown_threshold compare = greater_than_or_equals }
+}
+
 
 # Action-start aliases preserve the source matrix names and delegate the
 # actual debit and outcome to 035_great_depression_decision_effects.txt.
@@ -1588,14 +1633,17 @@ great_depression_can_start_cleared_economy_certification = {
 
 great_depression_can_start_competitive_devaluation_or_currency_break = {
 	great_depression_action_slot_is_open = yes
+	great_depression_devaluation_is_unused = yes
 }
 
 great_depression_can_start_coordinate_industrial_demand = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_coordinated_public_works_and_reconstruction = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_deploy_security_forces = {
@@ -1624,10 +1672,12 @@ great_depression_can_start_emergency_relief = {
 
 great_depression_can_start_emergency_trade_clearing = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_global_recovery_conference = {
 	great_depression_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_guarantee_essential_orders = {
@@ -1640,6 +1690,7 @@ great_depression_can_start_guarantee_property_and_credit = {
 
 great_depression_can_start_international_debt_conference = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_national_employment_compact = {
@@ -1660,6 +1711,7 @@ great_depression_can_start_national_recovery_plan = {
 
 great_depression_can_start_protect_domestic_market = {
 	great_depression_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_protectionist_bloc = {
@@ -1680,14 +1732,17 @@ great_depression_can_start_recognize_workplace_or_regional_councils = {
 
 great_depression_can_start_reconstruction_and_employment_fund = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_reconstruction_supplier_compact = {
 	great_depression_external_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_regional_clearing_agreement = {
 	great_depression_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 great_depression_can_start_remove_emergency_controls = {
@@ -1716,6 +1771,7 @@ great_depression_can_start_withdraw_emergency_support = {
 
 great_depression_can_start_withdraw_from_international_commitments = {
 	great_depression_action_slot_is_open = yes
+	great_depression_global_commitments_are_open = yes
 }
 
 # STATE scope. Called as FROM = { ... } inside the state-targeted center

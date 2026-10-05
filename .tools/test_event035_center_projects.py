@@ -463,6 +463,8 @@ class Event35Runtime:
             return value in scope.flags
         if key == "has_global_flag":
             return value in self.global_flags
+        if key == "has_idea":
+            return scope.kind == "country" and value in scope.ideas
         if key == "exists":
             if scope.kind != "country":
                 raise SourceContractError(f"country-only exists trigger in {scope.kind} scope at line {node.line}")
@@ -647,11 +649,16 @@ class Event35Runtime:
                 for index in range(start, end):
                     self._set_temp(var, index)
                     self._effects(body, scope)
+            elif key == "hidden_effect":
+                # Tooltip suppression only; the effects still run.
+                self._effects(value, scope)
+            elif key == "custom_effect_tooltip":
+                pass
             elif key == "for_each_scope_loop":
                 array_name = first(value, "array")
                 container, rest, global_scope = self._path_container(array_name)
                 arrays = self.global_arrays if global_scope else container.arrays
-                body = [child for child in value if child.key != "array"]
+                body = [child for child in value if child.key not in ("array", "break", "tooltip")]
                 for target in list(arrays.get(rest, [])):
                     self.scope_stack.append(target)
                     try:
