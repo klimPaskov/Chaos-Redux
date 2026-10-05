@@ -24,7 +24,13 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 
 `event021_reduce_pressure` consumes `random_civil_war_pending_pressure_delta` in country scope and adds it to the persistent `random_civil_war_pressure_modifier` before refreshing the bounded pressure value. This keeps decision, mission, settlement, and reconstruction changes intact when the derived live-country inputs are refreshed.
 
-`event021_add_authority` consumes `random_civil_war_pending_authority_delta` in country scope and applies a bounded authority change.
+`event021_add_authority` consumes `random_civil_war_pending_authority_delta` in country scope and applies exactly that delta, then clamps State Authority and refreshes its band. It never adds a standing condition, so every tooltip constant equals the change it describes, and without a pending delta it changes nothing.
+
+State Authority conditions change State Authority once per transition. `event021_authority_capital_lost` sets `random_civil_war_capital_lost` and applies `capital_lost` only when the flag is new, and `event021_authority_capital_regained` clears it and applies `capital_secured` only when it was set. `event021_authority_supply_state_lost` and `event021_authority_supply_state_regained` take the temporary input `event021_authority_supply_change` (1 when the caller has just set or cleared one of the per-state flags `random_civil_war_rail_state_lost` or `random_civil_war_front_state_lost`), apply `rail_or_depot_lost` or `supply_secured` once for that change, and keep `random_civil_war_supply_lost` set while any bound supply state is lost.
+
+`event021_clear_authority_conditions` removes every condition flag, the contested-state count, and the recorded crisis capital without changing State Authority. Crisis cleanup, the annexation teardown, and both new-role helpers (`event021_commit_opening_evolution_provenance` and `event021_inherit_crisis_opening_evolution_provenance`) call it, so no condition from an earlier war reaches a later crisis. The Hold the Center capital receipt `random_civil_war_capital_secured` is not an authority condition: only `event021_parent_record_achievement_receipts` writes it, and `event021_begin_achievement_history` clears it when a new crisis begins.
+
+Example: a government at 54 that loses its crisis capital drops to 42 once, however many later actions it takes; retaking the capital raises it by 8 once, and Reconstruct the Administration then adds exactly its 8.
 
 `event021_update_authority_band` and `event021_update_pressure_band` convert the current values into the stable band variables used by triggers and localisation.
 

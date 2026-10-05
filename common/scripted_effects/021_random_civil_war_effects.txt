@@ -217,51 +217,19 @@ event021_reduce_pressure = {
 	event021_refresh_country_state = yes
 }
 
-# COUNTRY scope. `random_civil_war_pending_authority_delta` is an optional
-# normal-variable input. Without one, the helper applies the centralized
-# administrative restoration delta. Condition flags add the loss or recovery
-# associated with the current capital, supply, and settlement state.
+# COUNTRY scope. Input: normal variable `random_civil_war_pending_authority_delta`.
+# Applies exactly that delta (nothing when it is absent), clamps State
+# Authority, and refreshes its band. Standing conditions never add to it here:
+# a capital, supply-state, territory, or outside-intervention change applies
+# its constant once, on the transition, through the condition helpers below.
 event021_add_authority = {
-	if = {
-		limit = { NOT = { has_variable = random_civil_war_pending_authority_delta } }
-		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.admin_restored }
-	}
 	if = {
 		limit = { NOT = { has_variable = random_civil_war_state_authority } }
 		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
 	}
-	add_to_variable = { random_civil_war_state_authority = random_civil_war_pending_authority_delta }
 	if = {
-		limit = { has_country_flag = random_civil_war_capital_lost }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.capital_lost }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_capital_secured }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.capital_secured }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_supply_lost }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.supply_lost }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_supply_secured }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.supply_secured }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_admin_restored }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.admin_restored }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_negotiation_active }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.negotiation }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_repression_active }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.repression }
-	}
-	if = {
-		limit = { has_country_flag = random_civil_war_foreign_intervention_active }
-		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.foreign_intervention }
+		limit = { has_variable = random_civil_war_pending_authority_delta }
+		add_to_variable = { random_civil_war_state_authority = random_civil_war_pending_authority_delta }
 	}
 	clamp_variable = {
 		var = random_civil_war_state_authority
@@ -270,6 +238,87 @@ event021_add_authority = {
 	}
 	clear_variable = random_civil_war_pending_authority_delta
 	event021_update_authority_band = yes
+}
+
+# -----------------------------------------------------------------------------
+# State Authority conditions
+# -----------------------------------------------------------------------------
+# Each condition is a country flag that marks the current state of one
+# crisis condition. Its helper adds the condition's constant only when the
+# flag changes, and the opposite helper applies the recovery constant when it
+# clears, so a lasting condition is never counted twice. The flags belong to
+# one crisis role: `event021_clear_authority_conditions` removes them at crisis
+# cleanup and whenever a country takes a new crisis role.
+
+# COUNTRY scope. The side's crisis capital (`random_civil_war_authority_capital`)
+# has passed to another controller. Applies the capital loss once.
+event021_authority_capital_lost = {
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_capital_lost } }
+		set_country_flag = random_civil_war_capital_lost
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.capital_lost }
+		event021_add_authority = yes
+	}
+}
+
+# COUNTRY scope. A lost crisis capital is under the side's control again.
+# Applies the capital recovery once and ends the loss.
+event021_authority_capital_regained = {
+	if = {
+		limit = { has_country_flag = random_civil_war_capital_lost }
+		clr_country_flag = random_civil_war_capital_lost
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.capital_secured }
+		event021_add_authority = yes
+	}
+}
+
+# COUNTRY scope. Input temp `event021_authority_supply_change` (1 when one of
+# the side's bound supply states, its rail state or priority-front depot state,
+# has just been lost). The caller sets the per-state flag; this helper applies
+# the rail-or-depot loss once for that change and marks the side's supply as
+# cut.
+event021_authority_supply_state_lost = {
+	if = {
+		limit = { check_variable = { var = event021_authority_supply_change value = constant:random_civil_war_value.one compare = equals } }
+		set_country_flag = random_civil_war_supply_lost
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.rail_or_depot_lost }
+		event021_add_authority = yes
+	}
+}
+
+# COUNTRY scope. Input temp `event021_authority_supply_change` (1 when a lost
+# bound supply state is under the side's control again). Applies the supply
+# recovery once and lifts the cut once no bound supply state remains lost.
+event021_authority_supply_state_regained = {
+	if = {
+		limit = { check_variable = { var = event021_authority_supply_change value = constant:random_civil_war_value.one compare = equals } }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.supply_secured }
+		event021_add_authority = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_civil_war_rail_state_lost }
+			NOT = { has_country_flag = random_civil_war_front_state_lost }
+		}
+		clr_country_flag = random_civil_war_supply_lost
+	}
+}
+
+# COUNTRY scope. Clears every State Authority condition of the current crisis
+# role without changing State Authority. Crisis cleanup, annexation teardown,
+# and both new-role helpers call it, so no condition reaches a later crisis.
+event021_clear_authority_conditions = {
+	clr_country_flag = random_civil_war_capital_lost
+	clr_country_flag = random_civil_war_supply_lost
+	clr_country_flag = random_civil_war_rail_state_lost
+	clr_country_flag = random_civil_war_front_state_lost
+	clr_country_flag = random_civil_war_key_state_lost
+	clr_country_flag = random_civil_war_contested_territory
+	clr_country_flag = random_civil_war_capital_supply_risk
+	clr_country_flag = random_civil_war_negotiation_active
+	clr_country_flag = random_civil_war_foreign_intervention_active
+	clear_variable = random_civil_war_contested_state_count
+	clear_variable = random_civil_war_authority_capital
 }
 
 # COUNTRY scope. Refreshes the visible four-band State Authority ladder.
@@ -2349,6 +2398,7 @@ event021_cleanup_crisis = {
 		clear_variable = random_civil_war_opening_severity
 		clear_variable = random_civil_war_critical_queue_date
 		clear_variable = random_civil_war_scenario_start_date
+		event021_clear_authority_conditions = yes
 		clr_country_flag = random_civil_war_setup_carrier_pending
 		clr_country_flag = random_civil_war_plan_owner
 		clr_country_flag = random_civil_war_cleanup_lock

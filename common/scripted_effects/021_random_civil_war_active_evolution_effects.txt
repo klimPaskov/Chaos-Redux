@@ -23,12 +23,14 @@ event021_capture_pending_opening_evolution_stage = {
 # COUNTRY scope on a successful host or primary. Missing scratch is not
 # inferred from current world stage or the number of surviving actors.
 # A new crisis role starts without any earlier crisis's Evolution I review or
-# management receipt, and with every crisis action available.
+# management receipt, State Authority condition, and with every crisis action
+# available.
 event021_commit_opening_evolution_provenance = {
 	clr_country_flag = random_civil_war_evolution_i_management_ready
 	clr_country_flag = random_civil_war_active_evolution_i_pending
 	event021_clear_mission_offer_lapses = yes
 	event021_clear_crisis_action_receipts = yes
+	event021_clear_authority_conditions = yes
 	if = {
 		limit = { has_variable = global.random_civil_war_pending_opening_evolution_stage }
 		set_variable = { random_civil_war_opening_evolution_stage = global.random_civil_war_pending_opening_evolution_stage }
@@ -43,6 +45,7 @@ event021_inherit_crisis_opening_evolution_provenance = {
 	clr_country_flag = random_civil_war_active_evolution_i_pending
 	event021_clear_mission_offer_lapses = yes
 	event021_clear_crisis_action_receipts = yes
+	event021_clear_authority_conditions = yes
 	if = {
 		limit = {
 			has_variable = random_civil_war_crisis_host_scope
