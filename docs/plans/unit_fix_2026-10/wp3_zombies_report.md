@@ -111,7 +111,8 @@ The source sweep finds 32 penetrating frames, so matching loop endpoints and zer
 The material binder also fails action retention through save/reopen, and the native previews remain magenta; the exact maps are staged but rendered material binding is unresolved.
 The animation SHA is `8b314481fe933da7aed4d483d360bf5c898b04c5bfe24c578a6e3f4a951ef5c5`; it is rejected, uninstalled and separate from the unchanged runtime attack.
 The source checkpoint, decoded report and native proof remain in the mutant job; the phase receipt explicitly states that its metadata was reconstructed from intact measured inputs after a failed write.
-A separate earlier body-eased export (`dd27c0d3a7448d87a5f9e234986127402f8b6070012edba77f2fe09b920ff28c`) still needs its missing exact native reimport receipt; that evidence step is queued behind the undead worker.
+The earlier body-eased export (`dd27c0d3a7448d87a5f9e234986127402f8b6070012edba77f2fe09b920ff28c`) has its exact native reimport proof at `validation/reimport_wp3_mutant_attack_bodyeased_nativeproof_20261006.json`.
+Its five sampled bounds stay at +0.00398269 to +0.00399523 units, but the 207-finding delivery rejection and backward arch remain; readable reconstruction does not make the action acceptable.
 Actual role repair remains open, with no wider strike exemptions, static substitute or action alias.
 
 ### Installed demonic diffuse and provider-normal repack
@@ -125,6 +126,18 @@ Diffuse SHA is `319386BAE79A81B50CC5AFA9463CE2BF57B5463C321054DB440E06CB0094926D
 The parent receipt is `wp3_evidence/demonic_parent_install_receipt_20261006.json`.
 This is a bounded current-mesh material improvement; the unchanged specular, rig/weights, geometry and action defects remain open.
 Final geometry, UV or weight changes require mask rebinding and re-QA against the original grade basis, without darkening the already graded map again.
+
+### Undead source regions and native AO
+
+The source/runtime correspondence maps all 30,474 triangles one-to-one with identity UVs at position precision 1e-5 and UV precision 1e-7, despite 40,875 source versus 42,103 exported vertex records.
+The reviewed source views distinguish skin/bone, coat/trousers, shirt/lining, hair, eyes and leather shoes; the first head-only masks are rejected for patchy skin coverage, hair boundary errors, missed eye lenses, 278 ambiguous faces and 51 cross-class UV texels.
+No rejected mask is used for grading and no undead runtime map changes.
+The independent native Cycles AO bake returned FINISHED on a source-preserving rest-pose working checkpoint, with the existing UVMap, four active target slots, CPU/128 samples and target-only visibility.
+Its 512 linear scalar map has 175,845 occupied pixels, mean 0.4808402, median 0.4235294 and p95 1.0; source geometry, UVs, skin weights, rig and action inventories match after save/reopen.
+Raw PNG SHA is `31c94862a7a72c70aee2a0c5f5fa8578094178c03fdbfd1d556e1194d5e0ad10`, scalar preview SHA `7434a9f799f4af17bd578379a6a31cba453b65ad3aa0359495c59d99c6884932`, and checkpoint SHA `a2ec19b34ca139350c114c4355775cf800d10d5207e075a4da0be9dc0f2b961a`.
+Parent acceptance is limited to real native AO source evidence on this geometry/UV basis; the margin-zero output needs occupancy padding before texture use, and geometry/UV repairs require rebaking or rebinding.
+Material-region acceptance, source-based diffuse/specular work, topology/weights/actions and runtime appearance remain open.
+The handoff is `wp3_undead_model_handoff.md`; the bake and recovery receipt is `docs/assets/002_zombie_outbreak/models_3d/undead_zombies/blender/evidence/ao_20261006/ao_bake_receipt_20261006.json`.
 
 ## Per-ticket work and remaining acceptance
 
