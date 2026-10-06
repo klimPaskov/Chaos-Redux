@@ -190,60 +190,92 @@ independence_wave_form03_join_active_carrier_as_autonomous_member = {
 		set_country_flag = independence_wave_form03_post_charter_member
 		if = {
 			limit = { original_tag = BEL has_cosmetic_tag = BEL_flanders }
-			AFX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_belgian_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_belgian_member
+					}
 				}
 			}
-			AGX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_belgian_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_belgian_member
+					}
 				}
 			}
 		}
 		else_if = {
 			limit = { original_tag = HOL }
-			AFX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_dutch_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_dutch_member
+					}
 				}
 			}
-			AGX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_dutch_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_dutch_member
+					}
 				}
 			}
 		}
 		else_if = {
 			limit = { original_tag = LUX }
-			AFX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_luxembourgish_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_luxembourgish_member
+					}
 				}
 			}
-			AGX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form03_active_carrier = yes }
-					set_country_flag = independence_wave_form03_has_luxembourgish_member
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form03_active_carrier = yes }
+						set_country_flag = independence_wave_form03_has_luxembourgish_member
+					}
 				}
 			}
 		}
 		independence_wave_form03_initialize_late_autonomous_member = yes
-		AFX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_reconcile_member_mirrors = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_reconcile_member_mirrors = yes
+				}
 			}
 		}
-		AGX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_reconcile_member_mirrors = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_reconcile_member_mirrors = yes
+				}
 			}
 		}
 	}
@@ -455,37 +487,45 @@ independence_wave_form03_dispatch_constitutional_status_votes = {
 independence_wave_form03_initialize_late_autonomous_member = {
 	if = {
 		limit = { has_country_flag = independence_wave_form03_autonomous_member }
-		AFX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
 				if = {
-					limit = { has_country_flag = independence_wave_form03_post_charter_complete }
-					ROOT = { country_event = { id = chaosx.nr6.304 } }
-				}
-				else_if = {
-					limit = { NOT = { check_variable = { independence_wave_form03_language_model = constant:independence_wave_form03_language_model.none } } }
-					ROOT = { country_event = { id = chaosx.nr6.302 } }
-				}
-				if = {
-					limit = { has_country_flag = independence_wave_form03_sovereign_corridor_invitations_sent }
-					ROOT = { country_event = { id = chaosx.nr6.303 } }
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					if = {
+						limit = { has_country_flag = independence_wave_form03_post_charter_complete }
+						ROOT = { country_event = { id = chaosx.nr6.304 } }
+					}
+					else_if = {
+						limit = { NOT = { check_variable = { independence_wave_form03_language_model = constant:independence_wave_form03_language_model.none } } }
+						ROOT = { country_event = { id = chaosx.nr6.302 } }
+					}
+					if = {
+						limit = { has_country_flag = independence_wave_form03_sovereign_corridor_invitations_sent }
+						ROOT = { country_event = { id = chaosx.nr6.303 } }
+					}
 				}
 			}
 		}
-		AGX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
 				if = {
-					limit = { has_country_flag = independence_wave_form03_post_charter_complete }
-					ROOT = { country_event = { id = chaosx.nr6.304 } }
-				}
-				else_if = {
-					limit = { NOT = { check_variable = { independence_wave_form03_language_model = constant:independence_wave_form03_language_model.none } } }
-					ROOT = { country_event = { id = chaosx.nr6.302 } }
-				}
-				if = {
-					limit = { has_country_flag = independence_wave_form03_sovereign_corridor_invitations_sent }
-					ROOT = { country_event = { id = chaosx.nr6.303 } }
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					if = {
+						limit = { has_country_flag = independence_wave_form03_post_charter_complete }
+						ROOT = { country_event = { id = chaosx.nr6.304 } }
+					}
+					else_if = {
+						limit = { NOT = { check_variable = { independence_wave_form03_language_model = constant:independence_wave_form03_language_model.none } } }
+						ROOT = { country_event = { id = chaosx.nr6.302 } }
+					}
+					if = {
+						limit = { has_country_flag = independence_wave_form03_sovereign_corridor_invitations_sent }
+						ROOT = { country_event = { id = chaosx.nr6.303 } }
+					}
 				}
 			}
 		}
@@ -601,16 +641,24 @@ independence_wave_form03_apply_member_settlement_to_this_host = {
 # BEL/HOL/LUX member scope.
 independence_wave_form03_apply_member_settlement_to_host = {
 	save_event_target_as = independence_wave_form03_reporting_member
-	AFX = {
+	for_each_scope_loop = {
+		array = global.independence_wave_active_countries
 		if = {
-			limit = { has_independence_wave_form03_post_charter_progression = yes }
-			independence_wave_form03_apply_member_settlement_to_this_host = yes
+			limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+			if = {
+				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				independence_wave_form03_apply_member_settlement_to_this_host = yes
+			}
 		}
 	}
-	AGX = {
+	for_each_scope_loop = {
+		array = global.independence_wave_active_countries
 		if = {
-			limit = { has_independence_wave_form03_post_charter_progression = yes }
-			independence_wave_form03_apply_member_settlement_to_this_host = yes
+			limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+			if = {
+				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				independence_wave_form03_apply_member_settlement_to_this_host = yes
+			}
 		}
 	}
 }
@@ -618,22 +666,43 @@ independence_wave_form03_apply_member_settlement_to_host = {
 # Carrier scope. The event target was saved in the sovereign member scope.
 independence_wave_form03_report_member_resolution = {
 	independence_wave_form03_reconcile_member_mirrors = yes
-	country_event = { id = chaosx.nr6.305 }
+	if = {
+		limit = {
+			has_variable = independence_wave_generation_id
+			NOT = {
+				AND = {
+					has_variable = independence_wave_form03_member_summary_generation
+					check_variable = { var = independence_wave_form03_member_summary_generation value = independence_wave_generation_id compare = equals }
+				}
+			}
+		}
+		set_variable = { independence_wave_form03_member_summary_generation = independence_wave_generation_id }
+		set_temp_variable = { independence_wave_form03_member_summary_delay = constant:independence_wave_form03_project.member_summary_delay_days }
+		country_event = { id = chaosx.nr6.305 days = independence_wave_form03_member_summary_delay }
+	}
 }
 
 # BEL/HOL/LUX member scope.
 independence_wave_form03_report_current_member_to_carrier = {
 	save_event_target_as = independence_wave_form03_reporting_member
-	AFX = {
+	for_each_scope_loop = {
+		array = global.independence_wave_active_countries
 		if = {
-			limit = { has_independence_wave_form03_post_charter_progression = yes }
-			independence_wave_form03_report_member_resolution = yes
+			limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+			if = {
+				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				independence_wave_form03_report_member_resolution = yes
+			}
 		}
 	}
-	AGX = {
+	for_each_scope_loop = {
+		array = global.independence_wave_active_countries
 		if = {
-			limit = { has_independence_wave_form03_post_charter_progression = yes }
-			independence_wave_form03_report_member_resolution = yes
+			limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+			if = {
+				limit = { has_independence_wave_form03_post_charter_progression = yes }
+				independence_wave_form03_report_member_resolution = yes
+			}
 		}
 	}
 }
@@ -652,16 +721,24 @@ independence_wave_form03_record_member_language_ratification = {
 		clr_country_flag = independence_wave_form03_limited_associate
 		save_event_target_as = independence_wave_form03_reporting_member
 		independence_wave_form03_apply_member_settlement_to_host = yes
-		AFX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_report_member_resolution = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_report_member_resolution = yes
+				}
 			}
 		}
-		AGX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_report_member_resolution = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_report_member_resolution = yes
+				}
 			}
 		}
 	}
@@ -708,16 +785,24 @@ independence_wave_form03_record_member_corridor_completion = {
 			set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 			independence_wave_change_network_standing = yes
 		}
-		AFX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_record_member_corridor_on_carrier = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_record_member_corridor_on_carrier = yes
+				}
 			}
 		}
-		AGX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_record_member_corridor_on_carrier = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_record_member_corridor_on_carrier = yes
+				}
 			}
 		}
 	}
@@ -1218,16 +1303,24 @@ independence_wave_form03_leave_autonomous_membership = {
 		clr_country_flag = independence_wave_form03_industrial_terms_withheld
 		clr_country_flag = independence_wave_form03_corridor_project_complete
 		save_event_target_as = independence_wave_form03_reporting_member
-		AFX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_apply_member_withdrawal_to_carrier = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AFX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_apply_member_withdrawal_to_carrier = yes
+				}
 			}
 		}
-		AGX = {
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
 			if = {
-				limit = { has_independence_wave_form03_post_charter_progression = yes }
-				independence_wave_form03_apply_member_withdrawal_to_carrier = yes
+				limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = AGX is_independence_wave_active_country = yes is_independence_wave_form03_active_carrier = yes }
+				if = {
+					limit = { has_independence_wave_form03_post_charter_progression = yes }
+					independence_wave_form03_apply_member_withdrawal_to_carrier = yes
+				}
 			}
 		}
 	}

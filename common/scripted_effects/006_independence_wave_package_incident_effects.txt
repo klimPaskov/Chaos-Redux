@@ -7,8 +7,8 @@
 #   first incident.
 # - `independence_wave_schedule_package_incident_b` runs from either answer to
 #   the first incident and schedules the second.
-# - Both store the current Event 006 generation, so the events fire only for
-#   the generation that scheduled them.
+# - Both store the current generation and a due date. Public delivery also
+#   consumes a phase-specific flag before the player chooses an answer.
 # - `independence_wave_clear_package_incident_runtime` clears every receipt; the
 #   generation reset and origin end call it.
 # No effect iterates countries or runs on a periodic hook.
@@ -24,6 +24,11 @@ independence_wave_schedule_package_incident_a = {
 		}
 		set_variable = { independence_wave_package_incident_generation = independence_wave_generation_id }
 		set_temp_variable = { independence_wave_package_incident_delay = constant:independence_wave_package_incident.first_delay_days }
+		set_temp_variable = { chaosx_date_days = independence_wave_package_incident_delay }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { independence_wave_package_incident_a_due_date = global.date }
+		add_to_variable = { independence_wave_package_incident_a_due_date = chaosx_date_offset }
 		if = {
 			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
 			set_country_flag = independence_wave_package_incident_a_scheduled
@@ -362,6 +367,11 @@ independence_wave_schedule_package_incident_b = {
 		}
 		set_variable = { independence_wave_package_incident_generation = independence_wave_generation_id }
 		set_temp_variable = { independence_wave_package_incident_delay = constant:independence_wave_package_incident.second_delay_days }
+		set_temp_variable = { chaosx_date_days = independence_wave_package_incident_delay }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { independence_wave_package_incident_b_due_date = global.date }
+		add_to_variable = { independence_wave_package_incident_b_due_date = chaosx_date_offset }
 		if = {
 			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
 			set_country_flag = independence_wave_package_incident_b_scheduled
@@ -714,5 +724,9 @@ independence_wave_clear_package_incident_runtime = {
 	clr_country_flag = independence_wave_package_incident_a_resolved
 	clr_country_flag = independence_wave_package_incident_b_scheduled
 	clr_country_flag = independence_wave_package_incident_b_resolved
+	clr_country_flag = independence_wave_package_incident_a_delivered
+	clr_country_flag = independence_wave_package_incident_b_delivered
+	clear_variable = independence_wave_package_incident_a_due_date
+	clear_variable = independence_wave_package_incident_b_due_date
 	clear_variable = independence_wave_package_incident_generation
 }

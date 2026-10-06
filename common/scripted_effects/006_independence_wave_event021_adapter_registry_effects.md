@@ -16,6 +16,9 @@ When a complete Event 006 package is added or removed, update this Event 006-own
 - Scope: Event 021 host country.
 - Input: `independence_wave_event021_adapter_package_id`.
 - Output: regular event target `random_civil_war_event6_selected_actor` when that carrier exists.
+  A living static Event 021 carrier is checked first.
+  If none was captured, the bounded aligned active-country registry resolves AFX, AGX, AJX, ARX, ASX or HBX by the requested package id and the live country's original tag.
+  The first exact active match is captured, and the selection-owner flag prevents another row overwriting it.
 - Side effects: binds the regular `random_civil_war_event6_selection_owner` target to the calling host, clears that host's `random_civil_war_event6_selected_actor_valid` flag, then sets the flag only alongside a successful carrier capture.
   It does not create, activate, or enroll the carrier.
   Consumers require both target presence and the validity flag through the selection-owner target; an unmatched package or absent carrier leaves any older chain pointer unusable.

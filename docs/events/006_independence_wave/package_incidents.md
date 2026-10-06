@@ -1,14 +1,22 @@
 # Event 006 package incidents
 
-Each Level 2 package that had no story incidents of its own now has two. They give the package's own ledgers, its founding history and its former host a voice after release.
+The covered Level 2 packages each have two incidents tied to local conditions and their relations with the former administration.
 
 ## How it works
 
 1. When a released country settles its founding posture (`chaosx.nr6.41` for players, `chaosx.nr6.42` for the AI), `independence_wave_schedule_package_incident_a` stores the current Event 006 generation in `independence_wave_package_incident_generation` and schedules the package's first incident after `independence_wave_package_incident.first_delay_days`.
 2. Either answer to the first incident schedules the second after `independence_wave_package_incident.second_delay_days`.
-3. Every incident trigger checks the package identity and `can_fire_independence_wave_package_incident`, which requires an active Event 006 origin of the same generation. An event scheduled for an earlier release of the tag therefore never fires.
-4. Each option sets its receipt, zeroes the shared deltas, and applies its Statehood deltas through `independence_wave_decision_apply_country_deltas`, its package ledger deltas through the package's own clamped helper, and, where the text says so, a former-host hostility change through `independence_wave_decision_apply_host_deltas`. Costly options require and spend 35 political power or the light manpower cost.
-5. `independence_wave_clear_package_incident_runtime` runs in the generation reset and at origin end.
+3. Separate first- and second-incident due dates use `chaosx_convert_days_to_date_offset`, with caller-initialized temporary output storage.
+4. `can_deliver_independence_wave_package_incident_a` and its second-incident counterpart require the live origin and current generation, the scheduled phase, a due appointment and no prior delivery or resolution.
+5. Each public report consumes its delivery flag in `immediate`, so two compatible delayed calls cannot open duplicate reports while the player answers.
+6. Each answer first checks that its phase is still delivered and unresolved for the active government, then performs its original payment and result once.
+The results use the shared clamped Statehood helpers, the package's own values, and the stated former-host changes.
+Costly options require and spend 35 political power or the light manpower cost.
+7. `independence_wave_clear_package_incident_runtime` runs in the generation reset and at origin end, clearing both appointments and delivery flags.
+
+A stored country generation is mutable state, not an immutable payload attached to a delayed event.
+The due-date and consumed-delivery checks reject early callbacks from a prior release and duplicate mature delivery.
+Their native re-release test remains recorded in the finishing status report.
 
 No hook iterates countries or runs on a daily, weekly or monthly pulse.
 
@@ -149,7 +157,7 @@ No hook iterates countries or runs on a daily, weekly or monthly pulse.
 
 ## Files
 
-- `events/006_independence_wave_package_incident_events.txt` (events `chaosx.nr6.101` to `.142`).
+- `events/006_independence_wave_package_incident_events.txt` (events `chaosx.nr6.101` to `.142`, and `.200` to `.287`).
 - `common/scripted_effects/006_independence_wave_package_incident_effects.txt` and `common/scripted_triggers/006_independence_wave_package_incident_triggers.txt`.
 - `common/script_constants/006_independence_wave_package_incident_constants.txt` (`independence_wave_package_incident`).
 - `localisation/english/006_independence_wave_package_incidents_l_english.yml`.
@@ -162,4 +170,4 @@ The incidents use existing report pictures only: vanilla `GFX_report_event_merch
 
 - Let a recorded answer change a later decision or focus, for example a cheaper charter project after the Crofters' Charter.
 - Add a third incident tied to each package's route government once the route events of every package are reviewed.
-- Give RHI, BAY, AFX, COR, ARX and ASX the same generation receipt for their existing incidents.
+- Review the separate RHI, BAY, AFX, COR, ARX and ASX incident chains against the same due-date and consumed-delivery contract.

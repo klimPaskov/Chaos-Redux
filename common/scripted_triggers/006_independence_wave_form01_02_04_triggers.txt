@@ -306,7 +306,7 @@ has_independence_wave_form02_strict_mutation_preconditions = {
 	has_independence_wave_form02_verified_convoy_capacity = yes
 	has_valid_independence_wave_formable_founding_proposal = yes
 	independence_wave_formable_member_arrays_are_aligned = yes
-	GZX = { has_independence_wave_form02_usable_member_port = yes has_independence_wave_form0124_valid_founder_from_root = yes }
+	any_of_scopes = { array = global.independence_wave_active_countries independence_wave_active_country_arrays_are_aligned = yes original_tag = GZX is_independence_wave_active_country = yes has_independence_wave_form02_usable_member_port = yes has_independence_wave_form0124_valid_founder_from_root = yes }
 	OR = {
 		AND = {
 			ICE = { has_independence_wave_form02_usable_member_port = yes has_independence_wave_form0124_valid_founder_from_root = yes }
@@ -328,8 +328,16 @@ has_independence_wave_form02_strict_mutation_preconditions = {
 
 has_independence_wave_form04_connected_capitals = {
 	RHI = { exists = yes is_independence_wave_form04_eligible_member = yes }
-	AJX = { exists = yes is_independence_wave_form04_eligible_member = yes }
-	RHI = { NOT = { has_war_with = AJX } is_neighbor_of = AJX }
+	any_of_scopes = {
+		array = global.independence_wave_active_countries
+		independence_wave_active_country_arrays_are_aligned = yes
+		original_tag = AJX
+		is_independence_wave_active_country = yes
+		exists = yes
+		is_independence_wave_form04_eligible_member = yes
+		NOT = { has_war_with = RHI }
+		is_neighbor_of = RHI
+	}
 	51 = { any_neighbor_state = { state = 42 } }
 	has_independence_wave_form04_undominated_corridor = yes
 }
@@ -350,7 +358,7 @@ has_independence_wave_form04_strict_mutation_preconditions = {
 		}
 	}
 	RHI = { has_independence_wave_form0124_valid_founder_from_root = yes }
-	AJX = { has_independence_wave_form0124_valid_founder_from_root = yes }
+	any_of_scopes = { array = global.independence_wave_active_countries independence_wave_active_country_arrays_are_aligned = yes original_tag = AJX is_independence_wave_active_country = yes has_independence_wave_form0124_valid_founder_from_root = yes }
 }
 
 # This is an AI preference only. Players remain governed by the hard capital,

@@ -215,19 +215,27 @@ independence_wave_form05_accept_invitation = {
 		}
 		else_if = {
 			limit = { has_country_flag = independence_wave_form05_invited_by_arx }
-			ARX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form05_active_charter_carrier = yes }
-					add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = ARX is_independence_wave_active_country = yes is_independence_wave_form05_active_charter_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form05_active_charter_carrier = yes }
+						add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+					}
 				}
 			}
 		}
 		else_if = {
 			limit = { has_country_flag = independence_wave_form05_invited_by_asx }
-			ASX = {
+			for_each_scope_loop = {
+				array = global.independence_wave_active_countries
 				if = {
-					limit = { is_independence_wave_form05_active_charter_carrier = yes }
-					add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+					limit = { independence_wave_active_country_arrays_are_aligned = yes original_tag = ASX is_independence_wave_active_country = yes is_independence_wave_form05_active_charter_carrier = yes }
+					if = {
+						limit = { is_independence_wave_form05_active_charter_carrier = yes }
+						add_to_variable = { independence_wave_form05_consent_count = constant:independence_wave_formable_tuning.loop_increment }
+					}
 				}
 			}
 		}

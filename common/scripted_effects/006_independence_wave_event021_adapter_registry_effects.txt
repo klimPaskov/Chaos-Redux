@@ -88,6 +88,33 @@ independence_wave_capture_event021_adapter_actor = {
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_072 } AZR = { exists = yes } } AZR = { save_event_target_as = random_civil_war_event6_selected_actor } set_country_flag = random_civil_war_event6_selected_actor_valid }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_173 } HAW = { exists = yes } } HAW = { save_event_target_as = random_civil_war_event6_selected_actor } set_country_flag = random_civil_war_event6_selected_actor_valid }
 	if = { limit = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_184 } HBX = { exists = yes } } HBX = { save_event_target_as = random_civil_war_event6_selected_actor } set_country_flag = random_civil_war_event6_selected_actor_valid }
+	# Reuse a live dynamic Event 006 country when its static template is absent.
+	# A captured static Event 021 carrier remains authoritative.
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_civil_war_event6_selected_actor_valid }
+			independence_wave_active_country_arrays_are_aligned = yes
+		}
+		for_each_scope_loop = {
+			array = global.independence_wave_active_countries
+			if = {
+				limit = {
+					is_independence_wave_active_country = yes
+					event_target:random_civil_war_event6_selection_owner = { NOT = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
+					OR = {
+						AND = { original_tag = AFX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_006 } } }
+						AND = { original_tag = AGX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_007 } } }
+						AND = { original_tag = AJX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_010 } } }
+						AND = { original_tag = ARX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_018 } } }
+						AND = { original_tag = ASX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_019 } } }
+						AND = { original_tag = HBX event_target:random_civil_war_event6_selection_owner = { check_variable = { independence_wave_event021_adapter_package_id = constant:independence_wave_package_id.iw_184 } } }
+					}
+				}
+				save_event_target_as = random_civil_war_event6_selected_actor
+				event_target:random_civil_war_event6_selection_owner = { set_country_flag = random_civil_war_event6_selected_actor_valid }
+			}
+		}
+	}
 }
 
 # COUNTRY scope on the Event 021 host. Input is the Event 006-owned adapter

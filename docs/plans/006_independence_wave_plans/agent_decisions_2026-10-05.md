@@ -42,3 +42,94 @@ The only pre-existing uncommitted Event 006 path at the start of this pass was `
 Its 129 removed and 129 added lines compare identically with whitespace at line endings ignored.
 The physical working copy is preserved, and no acceptance claim is inferred from that formatting hunk.
 The CHU/ASY source hunks and the TAT specification paragraph mentioned by the takeover history have already been adopted by its committed D13 and D14 work.
+
+## D37. Reserve the factory capacity advertised by regional projects
+
+Disposition: `implemented` at source, with native reservation and release confirmation pending.
+Basis: G4 requires a visible cause and cost for every benefit, and the parent accepted the decision auditor's confirmed missing reservation.
+
+The nine D25-D33 regional decision files contain 48 administration-standard and 38 strategic-standard projects that advertised two civilian factories and tested for free capacity without holding it.
+Each has a timed native `civilian_factory_use` modifier of two for its existing 120- or 180-day duration.
+Upfront command power, manpower, stability and the train-or-convoy choice remain unchanged, as do rewards and AI coefficients.
+The transport payer selects exactly one alternative.
+The [decision handoff](subagent_handoffs/decision_regional_audit_20261006.md) lists every affected id and the vanilla timed-decision precedent.
+An army security project spends four resource types, and the compact blocked-price selector puts manpower first when manpower is missing while the full hover tooltip retains all four charges.
+
+## D38. Resolve live dynamic formable countries and their display values
+
+Disposition: `implemented` for the reviewed non-weighted source, with the weighted dependency comparison tracked separately.
+Basis: D34 queued these static-template lookups, and the parent reviewed the bounded country audit.
+
+FORM-02/03/04/05/48 requirements, consent accounting, member callbacks and status selectors find the actual country through the bounded active-country registry and `original_tag`.
+Effect lookups are deterministic and preserve PREV, with zero or one qualifying family carrier under the existing identity locks.
+The FORM-04 adjacency and peace proof addresses the dynamic Saar country rather than its absent AJX template.
+The [country handoff](subagent_handoffs/country_dynamic_carriers_20261006.md) records the exact files, ids, references and limits.
+
+The parent found an additional display defect after the selector repair.
+Forty FORM-03 numeric return strings and two FORM-05 summaries still read AFX, AGX, ARX or ASX as static localisation namespaces.
+Their `text.trigger` branches initialize caller-owned temporary outputs, capture the selected live country's numbers, and return those outputs through literal localisation keys.
+FORM-05 also captures the live government pointer for its name.
+No persistent variable or flag is created by this display repair, and the plain report variants retain their lack of colour codes.
+
+## D39. Consume incident delivery before showing the report
+
+Disposition: `implemented` at source, with re-release and duplicate-delivery scenarios pending native confirmation.
+Basis: G2 and the parent review of D15's generation-safety claim.
+
+The country-level incident-generation variable is overwritten when the same country starts another origin, so it cannot alone identify a delayed event instance.
+The first and second package incidents store separate due dates using the shared days-to-date helper.
+All 130 public incidents require their current appointment to be due and undelivered, and consume a delivery flag in `immediate` before either answer is chosen.
+All 260 options validate that the current government still awaits that phase's reply and has not resolved it, before applying the original payment and outcome.
+Generation cleanup clears both dates and delivery flags.
+Early calls from a prior release are ignored, while a duplicate mature call cannot open or settle the same question twice.
+The 45-day first and 150-day second intervals, option identities, payments, outcomes and normalized AI blocks remain unchanged.
+This is a bounded delivery repair rather than an assertion that a delayed event carries an immutable generation payload.
+
+## D40. Keep true status visible beneath decorative motion
+
+Disposition: `implemented` for the reviewed art and source wiring, with final matching GUI evidence tracked in the UI handoff.
+Basis: G5 and G6 authorize correcting visible defects and weak presentation.
+
+The four optional status animations used the same strips as the static recognition, dependency, League and formable readouts.
+Their loops cycled through semantic statuses regardless of the country's values.
+The static symbols retain their live frame properties and remain visible with animation on or off.
+Eight separately authored native-alpha frames animate a small flourish on a shared bronze ring with a transparent centre, leaving the inner status symbol legible.
+The existing animated aliases and static fallbacks use that decorative ring instead of the semantic strips.
+The recognition strip's idle cell receives the reviewed bronze treatment, with its other four cells unchanged.
+This preserves animation and current-state information without a static substitute.
+The parent reviewed every ring frame and native/4x composites, and accepted its deliberately translucent ornamental edge because the actual state symbols remain clear.
+
+## D41. Aggregate member replies and consume opening reports
+
+Disposition: `implemented` at source; duplicate native delivery remains a live check.
+Basis: G2 requires a low report count per chain.
+
+The founding report consumes a delivered flag in its immediate block while retaining its separate unanswered-choice flag until the player replies.
+The former host's ordinary and two special response reports share one delivered flag, cleared only when the bounded host response is queued.
+FORM-03 collects member outcomes into one report per origin, delayed thirteen days to include the ordinary reply window, instead of reporting each member separately.
+Its text describes the current constitutional settlement and service agreements rather than whichever member last overwrote a reporting target.
+The summary marker survives FORM-03 cleanup and is cleared by the next origin reset.
+Package founding incidents remain at most one first report and one second report per package and origin.
+World declaration news retains its existing one-dispatch guard, and foreign reaction routing retains its existing country reply guard.
+
+## D42. Preserve threat coefficients while addressing the actual country
+
+Disposition: `implemented` source correction; the probability handoff records unresolved scenario evaluation and comparison limits.
+Basis: G4 and the read-only baseline audit found literal-template and nested-scope defects.
+
+The Pacific HAW/FSM collapse modifiers resolve the current HBX country through the bounded active registry.
+The FORM-05 threat helper resolves current ARX/ASX countries by the same contract.
+The former-host war test addresses PREV, the government whose threat is being checked, rather than ROOT, which can be a different autonomous member or calling country.
+All authored probability coefficients and normalized incident option weights remain unchanged.
+An excluded or unresolved MCP scenario is not evidence that the score stayed equal.
+
+## D43. Capture existing dynamic carriers for the Event 021 adapter
+
+Disposition: `implemented` for actor capture; Event 021 release and origin ownership are preserved.
+Basis: D34 queued this exact Event 006-owned mapping and the completion audit confirmed its literal-template gap.
+
+The adapter first retains its existing static carrier lookup.
+Only when no actor was captured, it searches the bounded aligned Event 006 active-country array for the requested package and its exact original tag among AFX, AGX, AJX, ARX, ASX and HBX.
+The selection-owner target receives the validity flag with the captured country, and prevents a later row replacing it.
+No country is released, initialized, enrolled or granted a different origin by this fallback.
+Event 021's preflight, static release contract and consumer ownership checks remain authoritative.
