@@ -93,3 +93,13 @@ Both legacy aliases and the focus-consumed aliases receive identical repaired DD
 No event mechanics, focus rewards, AI weights, country identities, or catalog wording are changed by this graphics tranche.
 Implementation evidence and the exact twenty-row graphics disposition are in `docs/plans/gfx_fix_2026-10/005_kaz_report.md`.
 Focus-layout diagnostics remain separate open findings; this tranche does not claim full focus-tree or Event 005 completion.
+
+## Graphics review: portrait identity and framing, 2026-10-06
+
+Acceptance basis: the user's Event 005 portrait repairs and G6 art/design authority, together with the required grounded-source and fictional-portrait gates.
+The synthetic Military Factory of Russia is interpreted from the part 6 source spec's arsenal-state/industrial-complex portrait direction, its high-chaos tag registration and its Arsenal Board identity.
+Its collective board is represented by one invented chairman with a brass caliper and production-board setting, giving it a distinct painted composition and avoiding the duplicated Construction Board group.
+The parent independently reviewed the source and native 156x210 PNG, then authorized only the matching MFR DDS installation after exact header/pixel proof.
+Grounded Alash, Tuvan, Ukrainian, Azerbaijani and Kyrgyz identities receive attributed archival source packages, not invented faces.
+Their staged source crops retain framing, annotation or style defects and are withheld from runtime until suitable user-supplied painted finals pass independent review.
+The actual sources, original/crop hashes, conditional roster checks, distinct Yefremov identities, per-row verdicts and unfinished work are recorded in `docs/plans/gfx_fix_2026-10/005_portraits_report.md`.
