@@ -1,0 +1,62 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 SOVIET NUCLEAR BOMBS AI STRATEGY
+# ============================================================================
+# Keeps an AI-run Soviet arsenal able to deliver its devices.
+#
+# Every Event 23 release, test, coercion credibility check and delivery crew
+# certification needs more than `deployed_bomber_floor` deployed strategic
+# bombers (sov_nuclear_bombs_event_has_delivery_route). The vanilla Soviet
+# plan SOV_unit_production in common/ai_strategy/SOV.txt sets the
+# strategic_bomber unit_ratio to 0 and its equipment_production_factor to
+# -20, and the default plan excludes SOV, so once the starting bombers are
+# lost nothing makes the AI replace them.
+#
+# SYSTEM FEATURES:
+# - One plan, allowed only for original_tag SOV.
+# - Enabled only while sov_nuclear_bombs_event_ai_needs_delivery_bombers
+#   holds: the AI-run Event 23 actor is past its opening, has atomic research
+#   and nukes, is not under the Atomic Moratorium, and has no more deployed
+#   strategic bombers than the delivery floor.
+# - Aborts as soon as the floor is exceeded again or any enable condition
+#   fails (abort_when_not_enabled).
+# - Bounded offsets: a small air unit weight (about a tenth of the Soviet
+#   land-based air weights of 31), the -20 production penalty cancelled to
+#   neutral, and one guaranteed production line.
+#
+# Vanilla precedent: SOV_bomber_production (equipment_production_min_factories
+# for strategic_bomber) and the unit_ratio blocks of SOV_unit_production.
+# ai_strategy values take plain numbers, so the tuning values are file-scoped
+# @ constants.
+# ============================================================================
+
+@SOV_NUCLEAR_BOMBS_BOMBER_UNIT_RATIO = 3
+@SOV_NUCLEAR_BOMBS_BOMBER_PRODUCTION_FACTOR = 20
+@SOV_NUCLEAR_BOMBS_BOMBER_MIN_FACTORIES = 1
+
+sov_nuclear_bombs_ai_delivery_bombers = {
+	allowed = {
+		original_tag = SOV
+	}
+	enable = {
+		sov_nuclear_bombs_event_ai_needs_delivery_bombers = yes
+	}
+	abort_when_not_enabled = yes
+
+	ai_strategy = {
+		type = unit_ratio
+		id = strategic_bomber
+		value = @SOV_NUCLEAR_BOMBS_BOMBER_UNIT_RATIO
+	}
+
+	ai_strategy = {
+		type = equipment_production_factor
+		id = strategic_bomber
+		value = @SOV_NUCLEAR_BOMBS_BOMBER_PRODUCTION_FACTOR
+	}
+
+	ai_strategy = {
+		type = equipment_production_min_factories
+		id = strategic_bomber
+		value = @SOV_NUCLEAR_BOMBS_BOMBER_MIN_FACTORIES
+	}
+}

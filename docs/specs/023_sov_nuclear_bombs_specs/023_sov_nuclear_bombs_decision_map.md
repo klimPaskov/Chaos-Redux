@@ -1100,7 +1100,7 @@ Consequences:
 
 ## Contextual command and service orders
 
-Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Acceptance basis: the user's finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
 Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
 The custody phase exposes one doctrine-specific development row through sov_nuclear_bombs_develop_command, completed by sov_nuclear_bombs_command_development_mission.
 The production phase exposes sov_nuclear_bombs_service_arsenal only above intact-stock upkeep capacity, completed by sov_nuclear_bombs_service_arsenal_mission.

@@ -1,0 +1,77 @@
+# Event 023: read-only command developments, service capacity and missile hook.
+# Country predicates use the Soviet actor. The overload quote is scratch-only.
+sov_nuclear_bombs_event_has_missile_delivery_capability = {
+	missiles_special_warheads_active = yes
+	has_country_flag = missiles_nuclear_integration_operational
+	missiles_country_has_nuclear_payload_candidate = yes
+	missiles_country_has_active_site = yes
+	check_variable = { var = missiles_operational_reserve value = constant:missiles_tuning.operation_minimum_reserve compare = greater_than_or_equals }
+	check_variable = { var = missiles_launch_readiness value = constant:missiles_tuning.operation_minimum_readiness compare = greater_than_or_equals }
+	check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = greater_than_or_equals }
+}
+sov_nuclear_bombs_event_response_has_missile_backing = {
+	has_event_target = sov_nuclear_bombs_coercion_actor
+	event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_event_has_missile_delivery_capability = yes }
+}
+sov_nuclear_bombs_prepare_maintenance_quote = {
+	set_temp_variable = { sov_nuclear_bombs_maintenance_capacity = sov_nuclear_bombs_reactor_count }
+	multiply_temp_variable = { sov_nuclear_bombs_maintenance_capacity = constant:sov_nuclear_bombs_tuning.maintenance_capacity_per_reactor }
+	clamp_temp_variable = { var = sov_nuclear_bombs_maintenance_capacity min = constant:sov_nuclear_bombs_tuning.maintenance_capacity_floor }
+	set_temp_variable = { sov_nuclear_bombs_maintenance_inventory = sov_nuclear_bombs_actor_operational }
+	add_to_temp_variable = { sov_nuclear_bombs_maintenance_inventory = sov_nuclear_bombs_actor_assigned }
+	add_to_temp_variable = { sov_nuclear_bombs_maintenance_inventory = sov_nuclear_bombs_actor_reserved }
+	always = yes
+}
+sov_nuclear_bombs_event_arsenal_is_over_capacity = {
+	set_temp_variable = { sov_nuclear_bombs_maintenance_capacity = constant:sov_nuclear_bombs_ledger.zero }
+	set_temp_variable = { sov_nuclear_bombs_maintenance_inventory = constant:sov_nuclear_bombs_ledger.zero }
+	sov_nuclear_bombs_prepare_maintenance_quote = yes
+	check_variable = { var = sov_nuclear_bombs_maintenance_inventory value = sov_nuclear_bombs_maintenance_capacity compare = greater_than }
+}
+sov_nuclear_bombs_event_can_service_arsenal = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	sov_nuclear_bombs_event_has_evolution_i = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+	NOT = { has_country_flag = sov_nuclear_bombs_service_cooldown }
+	NOT = { has_country_flag = sov_nuclear_bombs_service_stabilized }
+	sov_nuclear_bombs_event_no_active_project = yes
+	sov_nuclear_bombs_event_arsenal_is_over_capacity = yes
+	check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_closure.service_readiness_floor compare = greater_than_or_equals }
+}
+sov_nuclear_bombs_event_has_command_development_purpose = {
+	sov_nuclear_bombs_event_has_evolution_i = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+	OR = {
+		AND = { sov_nuclear_bombs_event_doctrine_is_party = yes has_country_flag = sov_nuclear_bombs_capital_threat_active NOT = { has_country_flag = sov_nuclear_bombs_mobile_reserve_command } }
+		AND = { sov_nuclear_bombs_event_doctrine_is_military = yes NOT = { has_country_flag = sov_nuclear_bombs_second_confirmation_channel } }
+		AND = { sov_nuclear_bombs_event_doctrine_is_scientific = yes NOT = { has_country_flag = sov_nuclear_bombs_technical_veto } }
+		AND = { sov_nuclear_bombs_event_doctrine_is_dispersed = yes NOT = { has_country_flag = sov_nuclear_bombs_regional_reserve_commands } }
+	}
+}
+sov_nuclear_bombs_event_can_develop_command = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	sov_nuclear_bombs_event_has_command_development_purpose = yes
+	sov_nuclear_bombs_event_no_active_project = yes
+}
+sov_nuclear_bombs_event_delegated_command_is_ready = {
+	OR = {
+		AND = { sov_nuclear_bombs_event_doctrine_is_military = yes has_country_flag = sov_nuclear_bombs_second_confirmation_channel }
+		AND = { sov_nuclear_bombs_event_doctrine_is_dispersed = yes has_country_flag = sov_nuclear_bombs_regional_reserve_commands }
+	}
+}
+
+# Country scope: the formal veto checks the exact prepared strike endpoint.
+# It remains a last guard even if the selected target changed since preparation.
+sov_nuclear_bombs_event_technical_veto_allows_action = {
+	OR = {
+		NOT = { has_country_flag = sov_nuclear_bombs_technical_veto }
+		NOT = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals } }
+		AND = {
+			has_variable = sov_nuclear_bombs_action_state
+			var:sov_nuclear_bombs_action_state = {
+				NOT = { is_capital = yes }
+				state_population_k < constant:sov_nuclear_bombs_tuning.first_use_target_population_max_k
+			}
+		}
+	}
+}

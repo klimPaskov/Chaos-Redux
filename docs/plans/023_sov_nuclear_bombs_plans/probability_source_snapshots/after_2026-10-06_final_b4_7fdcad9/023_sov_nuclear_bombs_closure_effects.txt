@@ -1,0 +1,139 @@
+# Event 023: bounded final command, maintenance and public-presentation helpers.
+# Country scope unless marked STATE. Inputs and outputs are named at each seam.
+# No helper grants devices, changes shared blast damage or scans the world.
+sov_nuclear_bombs_clear_command_developments = {
+	clr_country_flag = sov_nuclear_bombs_mobile_reserve_command
+	clr_country_flag = sov_nuclear_bombs_second_confirmation_channel
+	clr_country_flag = sov_nuclear_bombs_technical_veto
+	clr_country_flag = sov_nuclear_bombs_regional_reserve_commands
+}
+sov_nuclear_bombs_complete_command_development = {
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_command_development_pending sov_nuclear_bombs_event_actor_is_valid = yes }
+		if = { limit = { sov_nuclear_bombs_event_doctrine_is_party = yes } set_country_flag = sov_nuclear_bombs_mobile_reserve_command }
+		else_if = {
+			limit = { sov_nuclear_bombs_event_doctrine_is_military = yes }
+			set_country_flag = sov_nuclear_bombs_second_confirmation_channel
+			add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_closure.military_development_integrity }
+		}
+		else_if = { limit = { sov_nuclear_bombs_event_doctrine_is_scientific = yes } set_country_flag = sov_nuclear_bombs_technical_veto }
+		else = { set_country_flag = sov_nuclear_bombs_regional_reserve_commands }
+		sov_nuclear_bombs_clamp_command_values = yes
+		sov_nuclear_bombs_refresh_posture = yes
+	}
+	clr_country_flag = sov_nuclear_bombs_command_development_pending
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+sov_nuclear_bombs_begin_arsenal_service = {
+	if = {
+		limit = { sov_nuclear_bombs_event_can_service_arsenal = yes sov_nuclear_bombs_can_pay_logistics_cost = yes }
+		sov_nuclear_bombs_pay_logistics_cost = yes
+		add_to_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_closure.service_readiness_loss }
+		sov_nuclear_bombs_clamp_command_values = yes
+		set_country_flag = sov_nuclear_bombs_service_pending
+		activate_mission = sov_nuclear_bombs_service_arsenal_mission
+	}
+}
+sov_nuclear_bombs_complete_arsenal_service = {
+	if = {
+		limit = { has_country_flag = sov_nuclear_bombs_service_pending sov_nuclear_bombs_event_actor_is_valid = yes }
+		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_closure.service_integrity_gain }
+		sov_nuclear_bombs_clamp_command_values = yes
+		set_temp_variable = { sov_nuclear_bombs_service_stabilization_days = constant:sov_nuclear_bombs_closure.service_stabilization_days }
+		set_temp_variable = { sov_nuclear_bombs_service_cooldown_days = constant:sov_nuclear_bombs_closure.service_cooldown_days }
+		meta_effect = {
+			text = {
+				set_country_flag = { flag = sov_nuclear_bombs_service_stabilized days = [STABLE] }
+				set_country_flag = { flag = sov_nuclear_bombs_service_cooldown days = [COOLDOWN] }
+			}
+			STABLE = "[?sov_nuclear_bombs_service_stabilization_days|.0]"
+			COOLDOWN = "[?sov_nuclear_bombs_service_cooldown_days|.0]"
+		}
+		sov_nuclear_bombs_refresh_posture = yes
+	}
+	clr_country_flag = sov_nuclear_bombs_service_pending
+	sov_nuclear_bombs_ai_request_phase_review = yes
+}
+# The presentation is chosen after preparation reserves one device. Cancelling
+# the test clears it; the final receipt freezes it for reports and first news.
+sov_nuclear_bombs_request_public_test_presentation = {
+	clear_variable = sov_nuclear_bombs_public_test_presentation
+	set_country_flag = sov_nuclear_bombs_public_test_presentation_pending
+	country_event = { id = chaosx.nr23.183 }
+}
+sov_nuclear_bombs_apply_public_test_presentation = {
+	if = {
+		limit = { NOT = { has_variable = sov_nuclear_bombs_public_test_presentation } }
+		set_variable = { sov_nuclear_bombs_public_test_presentation = constant:sov_nuclear_bombs_closure.presentation_afterward }
+	}
+	set_variable = { sov_nuclear_bombs_last_test_presentation = sov_nuclear_bombs_public_test_presentation }
+	set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_closure.afterward_credibility }
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_public_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_observers compare = equals } }
+		set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_closure.observers_credibility }
+		add_to_variable = { sov_nuclear_bombs_integrity = constant:sov_nuclear_bombs_closure.observers_integrity }
+	}
+	else_if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_public_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_notice compare = equals } }
+		set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_closure.notice_credibility }
+	}
+	sov_nuclear_bombs_change_credibility = yes
+	sov_nuclear_bombs_clamp_command_values = yes
+	clear_variable = sov_nuclear_bombs_public_test_presentation
+	clr_country_flag = sov_nuclear_bombs_public_test_presentation_pending
+}
+sov_nuclear_bombs_publish_first_demonstration = {
+	if = {
+		limit = { NOT = { has_global_flag = sov_nuclear_bombs_demonstration_news_sent } }
+		set_global_flag = sov_nuclear_bombs_demonstration_news_sent
+		set_variable = { sov_nuclear_bombs_news_test_presentation = sov_nuclear_bombs_last_test_presentation }
+		news_event = { id = chaosx.news.230 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+	}
+}
+# STATE, only after an exact Event 5 SOV-to-breakaway disposition. The existing
+# missing-site helper owns all actor/state/global bucket movement.
+sov_nuclear_bombs_apply_doctrine_transfer_risk = {
+	if = {
+		limit = {
+			SOV = { sov_nuclear_bombs_event_doctrine_is_dispersed = yes }
+			NOT = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_resolved }
+			NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
+			check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+		}
+		set_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending
+		if = {
+			limit = {
+				NOT = { has_state_flag = sov_nuclear_bombs_native_delivery_state_pending }
+				NOT = { has_state_flag = sov_nuclear_bombs_active_dismantlement_site }
+				check_variable = { var = sov_nuclear_bombs_site_reserved value = constant:sov_nuclear_bombs_ledger.zero compare = equals }
+			}
+			clr_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending
+			set_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_resolved
+			set_temp_variable = { sov_nuclear_bombs_disperse_missing_weight = constant:sov_nuclear_bombs_doctrine_effect.dispersed_transfer_missing_chance }
+			set_temp_variable = { sov_nuclear_bombs_disperse_safe_weight = constant:sov_nuclear_bombs_doctrine_effect.certainty }
+			subtract_from_temp_variable = { sov_nuclear_bombs_disperse_safe_weight = sov_nuclear_bombs_disperse_missing_weight }
+			random_list = {
+				var:sov_nuclear_bombs_disperse_missing_weight = { sov_nuclear_bombs_mark_site_missing = yes }
+				var:sov_nuclear_bombs_disperse_safe_weight = { }
+			}
+		}
+	}
+}
+# Called in the breakaway's own delivery-integration mission callback, so ROOT
+# is the successor. Regular event targets travel into its one world news.
+sov_nuclear_bombs_publish_successor_emergence = {
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_successor_news_sent } }
+		set_country_flag = sov_nuclear_bombs_successor_news_sent
+		save_event_target_as = sov_nuclear_bombs_news_successor_actor
+		var:sov_nuclear_bombs_local_custody_state = { save_event_target_as = sov_nuclear_bombs_news_successor_state }
+		news_event = { id = chaosx.news.236 days = constant:sov_nuclear_bombs_tuning.action_report_delay }
+		SOV = {
+			set_temp_variable = { sov_nuclear_bombs_credibility_delta = constant:sov_nuclear_bombs_closure.successor_credibility_loss }
+			sov_nuclear_bombs_change_credibility = yes
+			set_temp_variable = { sov_nuclear_bombs_exposure_delta = constant:sov_nuclear_bombs_closure.successor_exposure }
+			set_temp_variable = { sov_nuclear_bombs_exposure_source_id = constant:sov_nuclear_bombs_exposure_source.collapse }
+			sov_nuclear_bombs_add_exposure = yes
+		}
+	}
+}

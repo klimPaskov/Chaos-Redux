@@ -431,7 +431,7 @@ Party custody starts at Readiness 35 and Integrity 96, Military at 47/84, Scient
 Party guards reduce positive exposure gains to 70% and add five days to strike preparation.
 Military command takes three days off strike preparation and thirty off crew certification, and gains eight Readiness after each confirmed enemy nuclear strike.
 Scientific certification adds ten success weight and removes four accident weight from tests, and assembly takes thirty more days.
-Dispersed command takes smaller Readiness and Integrity losses from a threatened capital, but an exact Soviet-collapse transfer has a one-time 25% risk of losing that depot?s transferred devices through the shared missing-device accounting.
+Dispersed command takes smaller Readiness and Integrity losses from a threatened capital, but an exact Soviet-collapse transfer has a one-time 25% risk of losing that depot's transferred devices through the shared missing-device accounting.
 
 Each doctrine offers one 90-day command development in the custody phase, paid with the existing security resources.
 A Party mobile reserve command halves future capital-threat losses, the Military second confirmation channel restores eight Integrity and permits delegated retaliation, the Scientific technical veto excludes capitals and densely populated endpoints from Event 23 combat release and lowers test accident weight further, and Dispersed regional commands permit delegation through surviving secure storage after Moscow falls.
@@ -439,7 +439,7 @@ A doctrine reform clears the previous command development.
 The current posture spirit describes the completed development without adding another permanent idea.
 
 Registered reactor sites contribute production and upkeep capacity only while SOV owns and controls them and their reactor remains present.
-The physical controlled count is distinct from effective capacity, which cannot exceed the attained stage?s entitlement.
+The physical controlled count is distinct from effective capacity, which cannot exceed the attained stage's entitlement.
 Occupation removes capacity and costs ten Readiness once per loss episode, and recapture restores the site without raising effective capacity above entitlement.
 A lost site can be replaced within the entitlement.
 No reactor ownership change grants devices.
@@ -464,8 +464,8 @@ A public-test operation therefore gives the Soviet player one presentation repor
 Repeated demonstrations add one new operation result and its intentional presentation choice, without repeating the world headline.
 
 Event 32 contributes a read-only verified missile capability when special warheads remain enabled, nuclear integration is operational, a launch site exists, and the programme has sufficient reserve, readiness and command control.
-It prevents wear attributed to a lost delivery force and modestly strengthens the target?s assessment of an ultimatum.
-It grants no technology or equipment and cannot bypass Event 23?s bomber-based release checks.
+It prevents wear attributed to a lost delivery force and modestly strengthens the target's assessment of an ultimatum.
+It grants no technology or equipment and cannot bypass Event 23's bomber-based release checks.
 
 The hidden entry sends an explanation to its invoking country when the Soviet government is absent, the arsenal is already open or queued, or the system cannot run.
 A queued opening choice is guarded against duplicate dispatch.

@@ -8,20 +8,20 @@ No `refresh = true`, whole-repository state-flow or helper-expansion query was u
 
 | Read reference | Lines | Source revision returned by MCP |
 | --- | --- | --- |
-| Installed `documentation/effects_documentation.md`, random_list | 5413?5432 | `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` |
-| Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, random effects | 4518?4557 | `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c` |
-| Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, missions | 465?479 | `7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162` |
-| Installed `documentation/script_concept_documentation.md`, Script Constants | 216?222 | `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7` |
-| Installed `common/script_constants/documentation.md`, mandatory first schema | 1?34 | `e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c` |
+| Installed `documentation/effects_documentation.md`, random_list | 5413-5432 | `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` |
+| Offline `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, random effects | 4518-4557 | `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c` |
+| Offline `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, missions | 465-479 | `7713b9bcee5f3818d63aafbd45d18e812a9173a7c59ab238384b57db60db6162` |
+| Installed `documentation/script_concept_documentation.md`, Script Constants | 216-222 | `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7` |
+| Installed `common/script_constants/documentation.md`, mandatory first schema | 1-34 | `e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c` |
 
 The initial event context omitted Triggers and On actions under its limit.
 Those were read at exact reactor/control/callback sections by the reactor worker, with citations and delivery gaps in `subagent_handoffs/reactors_20261006.md`.
-Targeted event-modification reading used the local Event modding snapshot lines 24?35 for recipient ROOT, carried event targets and sender FROM semantics.
-Local Decision modding lines 303?326 establish the custom-cost trigger/text/tooltip contract.
+Targeted event-modification reading used the local Event modding snapshot lines 24-35 for recipient ROOT, carried event targets and sender FROM semantics.
+Local Decision modding lines 303-326 establish the custom-cost trigger/text/tooltip contract.
 Installed `common/decisions/CHI_decisions.txt:6454` is the native `days_mission_timeout = var:CHI_improving_neglected_countryside_mission_time` precedent, with its surrounding timeout block read directly.
-`hoi4.source_lookup` returned the CHI flying-tigers decision definition at game path `common/decisions/CHI_decisions.txt:3654?3673`, source index revision `a874904e876d8d45494aae78a9f10a31e7bb854436fc3e59e8c2d786f5978ef1`.
+`hoi4.source_lookup` returned the CHI flying-tigers decision definition at game path `common/decisions/CHI_decisions.txt:3654-3673`, source index revision `a874904e876d8d45494aae78a9f10a31e7bb854436fc3e59e8c2d786f5978ef1`.
 
-The installed `set_country_flag` section at `documentation/effects_documentation.md:6730?6738` confirms country scope but does not settle variable-duration parsing.
+The installed `set_country_flag` section at `documentation/effects_documentation.md:6730-6738` confirms country scope but does not settle variable-duration parsing.
 This pass therefore follows the existing documented Event 23 meta-effect literal-day pattern for service flags instead of assuming a variable token is accepted.
 The full file hashes below identify these local fallback reads.
 
@@ -46,8 +46,8 @@ The source specification explicitly excludes a new focus tree, country, portrait
 No skill file or workbook/export was edited by this pass.
 
 The parent found a localisation pointer defect in the first localisation handoff: custom normal-variable scopes require the question-mark prefix, unlike regular event targets.
-Offline `Data structures - Hearts of Iron 4 Wiki.md:492?496` explicitly requires `[?country_variable.GetName]`.
-Installed `localisation/english/aat_decisions_l_english.yml:399?415` uses `[?DEN.DEN_overlord_nation.GetNameDef]` and `[?DEN.hosts_danish_brigades.GetNameDefCap]` as exact current-engine precedents.
+Offline `Data structures - Hearts of Iron 4 Wiki.md:492-496` explicitly requires `[?country_variable.GetName]`.
+Installed `localisation/english/aat_decisions_l_english.yml:399-415` uses `[?DEN.DEN_overlord_nation.GetNameDef]` and `[?DEN.hosts_danish_brigades.GetNameDefCap]` as exact current-engine precedents.
 News 231/232 use `[?SOV.sov_nuclear_bombs_news_threat_country.GetNameDef]` and equivalent state/strike variables.
 Successor news retains regular carried event targets without a question mark.
 
@@ -57,10 +57,13 @@ The whole-file validator returned `SCRIPT_CHECKED` for both Event 023 event file
 Its final cost-aligned decision read checked 1,561 commands, returned no findings, and explicitly left 102 native argument blocks and 15 unknown-scope roots outside complete proof.
 The event-effects whole-file warning names the pre-existing static character scope `KRG_warren_kruger` in the Event 16 milestone bridge.
 The character is defined in `common/characters/016_brilliant_scientist_characters.txt:11`.
-A separate exact snippet with that declared character binding returned `SCRIPT_CHECKED`, `valid = true`, zero unresolved findings and no unchecked argument blocks, citing installed `has_character_flag` at lines 3422?3437.
+A separate exact snippet with that declared character binding returned `SCRIPT_CHECKED`, `valid = true`, zero unresolved findings and no unchecked argument blocks, citing installed `has_character_flag` at lines 3422-3437.
 This resolves the command-kind/scope question for that bridge without claiming a live character roster result.
 Other file checks have no concrete findings, but `valid = null`, unknown root scopes and unchecked argument blocks remain material coverage limits.
 `script_validation_20261006.json` and `script_validation_final_20261006.json` retain the returned checks.
 Malformed limit/binding requests were corrected, and their validation errors are not treated as engine evidence.
 The final source hash inventory identifies the exact owned files committed after the adversarial corrections.
 The report-color audit returns zero literal color keys, and the parent also removed automatic colored delta formatting from technical report descriptions.
+
+The final normal-variable namespace section was also retrieved through `hoi4.reference_read`, id `5cb39e320b8b359394a5a98eadff92bd51c3aed771d78c93f0f9723ddb570f41`, revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`, lines 492-500.
+It confirms the mandatory question-mark distinction and default uncolored variable formatting.

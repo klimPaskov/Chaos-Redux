@@ -444,9 +444,9 @@ Avoid calling every breakaway a nuclear state. Text must distinguish possession,
 
 ## Successor announcement acceptance
 
-Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Acceptance basis: the user's finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
 Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
 The first completed delivery integration of each breakaway sends one world news naming its country and depot.
-Regular event targets carried from the holder?s own mission preserve those names without a shared overwriteable actor pointer.
+Regular event targets carried from the holder's own mission preserve those names without a shared overwriteable actor pointer.
 The Soviet actor loses 8 credibility and gains 15 exposure through existing helpers.
 An exact Soviet-to-breakaway transfer under Dispersed custody resolves one 25% missing-site risk through the existing device accounting, with no new ownership grant.

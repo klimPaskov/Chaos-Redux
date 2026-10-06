@@ -1,0 +1,74 @@
+# ============================================================================
+# EVENT 023 - REGISTERED REACTOR CAPACITY LIFECYCLE
+# ============================================================================
+# Exact-state registration/control callbacks maintain physical controlled sites.
+# Effective production/upkeep capacity is capped by current stage entitlement.
+# Documentation: docs/plans/023_sov_nuclear_bombs_plans/subagent_handoffs/reactors_20261006.md
+
+# SOV country scope. No arguments or temporary outputs.
+# Inputs: controlled_reactor_count (default zero), reactor_entitlement_count.
+# Output: reactor_count = min(controlled physical sites, stage entitlement).
+# No buildings, devices, site markers, event targets, or readiness are changed.
+sov_nuclear_bombs_refresh_effective_reactor_capacity = {
+	if = {
+		limit = { tag = SOV has_variable = sov_nuclear_bombs_reactor_entitlement_count }
+		if = {
+			limit = { NOT = { has_variable = sov_nuclear_bombs_controlled_reactor_count } }
+			set_variable = { sov_nuclear_bombs_controlled_reactor_count = constant:sov_nuclear_bombs_ledger.zero }
+		}
+		clamp_variable = { var = sov_nuclear_bombs_controlled_reactor_count min = constant:sov_nuclear_bombs_ledger.zero }
+		set_variable = { sov_nuclear_bombs_reactor_count = sov_nuclear_bombs_controlled_reactor_count }
+		clamp_variable = {
+			var = sov_nuclear_bombs_reactor_count
+			min = constant:sov_nuclear_bombs_ledger.zero
+			max = sov_nuclear_bombs_reactor_entitlement_count
+		}
+	}
+}
+
+# Exact registered production-reactor STATE scope. No arguments or targets.
+# Counted marker makes callbacks idempotent; lost marker is one loss episode.
+# A recapture clears lost, restores physical count, and refreshes capped capacity.
+# A loss subtracts readiness once, floors it at zero, and preserves the building,
+# historical production role, original production owner, and every device bucket.
+sov_nuclear_bombs_reconcile_production_reactor_capacity = {
+	if = {
+		limit = { has_state_flag = sov_nuclear_bombs_production_reactor_site }
+		if = {
+			limit = { is_owned_by = SOV is_controlled_by = SOV nuclear_reactor > 0 }
+			if = {
+				limit = { NOT = { has_state_flag = sov_nuclear_bombs_production_reactor_counted } }
+				set_state_flag = sov_nuclear_bombs_production_reactor_counted
+				SOV = {
+					if = {
+						limit = { NOT = { has_variable = sov_nuclear_bombs_controlled_reactor_count } }
+						set_variable = { sov_nuclear_bombs_controlled_reactor_count = constant:sov_nuclear_bombs_ledger.zero }
+					}
+					add_to_variable = { sov_nuclear_bombs_controlled_reactor_count = constant:sov_nuclear_bombs_ledger.one }
+					sov_nuclear_bombs_refresh_effective_reactor_capacity = yes
+					sov_nuclear_bombs_refresh_posture = yes
+					sov_nuclear_bombs_ai_request_phase_review = yes
+				}
+			}
+			clr_state_flag = sov_nuclear_bombs_production_reactor_lost
+		}
+		else_if = {
+			limit = { has_state_flag = sov_nuclear_bombs_production_reactor_counted }
+			clr_state_flag = sov_nuclear_bombs_production_reactor_counted
+			SOV = { subtract_from_variable = { sov_nuclear_bombs_controlled_reactor_count = constant:sov_nuclear_bombs_ledger.one } }
+			if = {
+				limit = { NOT = { has_state_flag = sov_nuclear_bombs_production_reactor_lost } }
+				set_state_flag = sov_nuclear_bombs_production_reactor_lost
+				SOV = {
+					subtract_from_variable = { sov_nuclear_bombs_readiness = constant:sov_nuclear_bombs_reactor_capacity.site_loss_readiness }
+					clamp_variable = { var = sov_nuclear_bombs_readiness min = constant:sov_nuclear_bombs_ledger.zero max = constant:sov_nuclear_bombs_tuning.value_max }
+				}
+			}
+			SOV = {
+				sov_nuclear_bombs_refresh_effective_reactor_capacity = yes
+				sov_nuclear_bombs_refresh_posture = yes
+				sov_nuclear_bombs_ai_request_phase_review = yes
+			}
+		}
+	}
+}

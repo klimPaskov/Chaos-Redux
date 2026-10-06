@@ -62,7 +62,7 @@ Actual completed batch amounts must match the displayed quote and preserve the e
 ## Arsenal servicing and an attack during work
 
 At Evolution I, the 175-device intact arsenal and two reactors provide a natural over-capacity fixture because two reactors support 100 devices.
-Open production, inspect Service the Arsenal?s first-hover inventory/capacity quote, and take it with sufficient command power, trains and fuel.
+Open production, inspect Service the Arsenal's first-hover inventory/capacity quote, and take it with sufficient command power, trains and fuel.
 Expect one debit of those three resources and Readiness down by 8, with other nuclear projects locked during the 60-day mission.
 After completion, expect the held Readiness to return once, Integrity up by 8, 180 days without overload wear, and a 360-day completion cooldown.
 Repeated completion-helper calls must not restore Readiness again.
@@ -82,15 +82,15 @@ Observer results add 16 credibility and 4 Integrity, notice 12 credibility, afte
 Inspect foreign report behavior over multiple runs for softer observer alarm, stronger notice guarantees and stronger unannounced air defence.
 Cancel a prepared public test and prepare another, and expect no stale choice.
 Repeat a completed demonstration in the same campaign and expect no second news 230.
-For a secret test with a foreign overflight incident, the incident?s observer answer must still reveal a successful test without duplicate world news.
+For a secret test with a foreign overflight incident, the incident's observer answer must still reveal a successful test without duplicate world news.
 Check clean, partial, failed and non-yield accident outcomes for one technical report per action and one device debit only.
 
 ## Ultimata, native raids and release
 
-At Evolution II, select a valid nonnuclear enemy state, send a private signal, issue a public ultimatum and refuse from the target country?s report.
+At Evolution II, select a valid nonnuclear enemy state, send a private signal, issue a public ultimatum and refuse from the target country's report.
 Return to SOV, complete a demonstration, then renew the same demand.
 Expect the same named state and government, a usable enforcement window, and no repeated news 231.
-Confirm no final authorization against a nuclear major below Evolution IV?s full first-use gate, including a 1100-Chaos campaign lacking the severe strategic-loss conditions.
+Confirm no final authorization against a nuclear major below Evolution IV's full first-use gate, including a 1100-Chaos campaign lacking the severe strategic-loss conditions.
 When every severe condition holds, expect selection, preparation, certification and a separate final authorization, followed by exactly one native callback and no duplicated shared blast consequences.
 Try a human vanilla nuclear raid, inspect stockpile draw timing, cancel another raid to inspect refund timing, and confirm Event 23 books expenditure without a permanent accounting dispute.
 After an enemy strike, a genuine Soviet response may produce news 233 once.
@@ -115,7 +115,7 @@ Expect no lost-delivery Readiness erosion while the verified missile capability 
 Disable the special-warhead evolution or lose the missile site and expect that exception to end.
 Plain atomic technology and bombs without a missile programme must never qualify.
 Run a multi-major exchange through the existing receipt chain and inspect response-window shortening, warning/hotline choices, stand-down expiry and the nonterminal super-event 108 picture/audio.
-Inspect the delivery-preparation and device-disablement decision icons at native scale, Broken Chain?s red/black medal frame, and all seven achievement color/grey/red-X triplets.
+Inspect the delivery-preparation and device-disablement decision icons at native scale, Broken Chain's red/black medal frame, and all seven achievement color/grey/red-X triplets.
 No cropped subject, checkerboard matte, halo, raw key or panel overflow is accepted.
 The game should retain the same stable sprite aliases and paths.
 

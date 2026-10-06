@@ -379,9 +379,9 @@ The CSV files supplied with this planning task are read-only snapshots. They mus
 
 ## Missile capability acceptance
 
-Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Acceptance basis: the user's finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
 Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
-Event 23 reads Event 32?s nuclear payload predicate together with enabled special warheads, operational nuclear integration, an active launch site and reserve/readiness/control requirements.
+Event 23 reads Event 32's nuclear payload predicate together with enabled special warheads, operational nuclear integration, an active launch site and reserve/readiness/control requirements.
 The bare payload predicate alone proves bombs rather than missile delivery.
 Verified missile capability prevents lost-delivery Readiness wear and adds a bounded 1.25 target acceptance factor.
 It never grants technology or bypasses the bomber release contract.

@@ -335,7 +335,7 @@ The event should reward preparation and judgment. It should punish empty threats
 
 ## Custody doctrine acceptance
 
-Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Acceptance basis: the user's finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
 Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
 The baseline opening values are Party Readiness 35 / Integrity 96, Military 47 / 84, Scientific 27 / 98, and Dispersed 43 / 78.
-Lasting doctrine behavior and the paid command developments follow the current event doc?s command-development section.
+Lasting doctrine behavior and the paid command developments follow the current event doc's command-development section.
