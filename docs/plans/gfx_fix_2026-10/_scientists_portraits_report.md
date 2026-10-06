@@ -91,3 +91,23 @@ The requested HOI4-style historical finals for the other four historical portrai
 The parent independently reviewed the current Rabid v2 and Godly Figure runtime portraits at native156x210, alongside the complete Holy Realm progression family.
 Their painted finish, framing, and family consistency pass this task review; the Holy Realm family uses a quiet temple interior for the human seed and ornate interiors for later stages.
 This current direct acceptance within the user-authorized graphics review is separate from the contradictory earlier release-manifest status labels, which are left for their owner to reconcile.
+
+## Bounded second source pass, 6 October 2026
+
+The portrait worker completed six additional targeted searches per blocked scientist and made no runtime changes.
+No candidate met identity, usable crop, pose and reuse requirements together.
+
+For Weigl, Commons marks the [UJK photograph from Wschód 131/1939](https://commons.wikimedia.org/wiki/File:Rudolf_Weigl_in_UJK_(-1939).jpg) as public domain, linking to the [Jagiellonian Digital Library publication](https://jbc.bj.uj.edu.pl/publication/922356); its 439×566 image remains a laboratory profile rather than a frontal bust.
+Its inspected download SHA-256 is `2d26d9d5aefd827816d01bc70c52e39d5779bde15a817ba75506bdfc5a4f4c23`.
+The NAC `1-N-541a` portrait hit identifies Marian Sokołowski, so it was rejected as the wrong person.
+
+For Rascher, the [Lombardy Cultural Heritage record IMM-o9010-0000065](https://www.lombardiabeniculturali.it/fotografie/schede/IMM-o9010-0000065/) concerns a multi-person experiment scene; its page timed out and reuse terms could not be verified.
+The related [Bridgeman photograph](https://www.bridgemanimages.com/en/noartistknown/nazi-physicians-performing-freezing-experiments-on-an-internee-at-dachau-concentration-camp-c-1942-b/black-and-white-photograph/asset/343409) is rights-managed and also fails the bust requirement.
+The public-domain [pressurization-experiment image](https://commons.wikimedia.org/wiki/File:Pressurization_experiments_(Nazi_human_experimentation).jpg) depicts the prisoner/chamber rather than providing a Rascher portrait.
+
+For Dufraisse, the official Collège de France records [000956_001, 21 June 1942](https://phototheque.college-de-france.fr/tl/image/info/5748/000956_001.html) and [001075_001, 24 June 1951](https://phototheque.college-de-france.fr/tl/image/info/6199/001075_001.html) identify him within large groups.
+Their watermarked previews provide insufficient face detail and no stated reuse license.
+The [Académie des sciences obituary](https://www.academie-sciences.fr/pdf/eloges/dufraisse_cr1969.pdf) is text only.
+
+These findings reinforce the existing source blockers without substituting an unrelated person, an unlicensed photograph or generated historical face.
+The six user-supplied painted portrait finals remain pending as recorded in the two portrait-group reports.
