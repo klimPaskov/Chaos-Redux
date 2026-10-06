@@ -144,7 +144,7 @@ def edge_stats(image):
             'chroma_edge_pixels': int((edge & chroma(arr[..., :3])).sum())}
 
 
-def defringe(image, erosion=1):
+def defringe(image, erosion=1, spill_mask=None):
     """Erode alpha; extend nearest uncontaminated interior RGB into the rim.
 
     Intentionally does not key opaque backgrounds, unpremultiply colours or
@@ -152,11 +152,17 @@ def defringe(image, erosion=1):
     """
     arr = np.array(image)
     alpha = arr[..., 3]
+    if spill_mask is None:
+        spill_mask = np.zeros(alpha.shape, dtype=bool)
+    else:
+        spill_mask = np.asarray(spill_mask, dtype=bool)
+        if spill_mask.shape != alpha.shape:
+            raise ValueError('Spill mask must match the exact frame canvas')
     if alpha.max() == 0:
         raise ValueError('Empty subject')
     if alpha.min() > 0:
         raise ValueError('No transparent canvas; cannot infer a cut-out')
-    core = (alpha >= 240) & ~chroma(arr[..., :3])
+    core = (alpha >= 240) & ~chroma(arr[..., :3]) & ~spill_mask
     core = binary_erosion(core, iterations=1, border_value=0)
     if not core.any():
         raise ValueError('No uncontaminated opaque interior; repair needs source review')
@@ -171,7 +177,10 @@ def defringe(image, erosion=1):
     if not alpha_out.any():
         raise ValueError('Erosion would erase subject')
     _, nearest = distance_transform_edt(~core, return_indices=True)
-    rim = (alpha_out < 255) | ((alpha_out > 0) & chroma(arr[..., :3]) & ~core)
+    # A vivid green field inside the painted object is not key spill.
+    # Limit opaque recolouring to the two-pixel original boundary band.
+    boundary = ~binary_erosion(alpha >= 240, iterations=2, border_value=0)
+    rim = (alpha_out < 255) | ((alpha_out > 0) & chroma(arr[..., :3]) & boundary) | spill_mask
     arr[..., :3][rim] = arr[nearest[0][rim], nearest[1][rim], :3]
     arr[..., 3] = alpha_out
     return Image.fromarray(arr, 'RGBA')
@@ -355,6 +364,7 @@ def main():
             p.add_argument('--force', action='store_true', help='Replace an existing output, never authorizes input overwrite')
         if command == 'defringe':
             p.add_argument('--erosion', type=int, choices=(0, 1), default=1)
+            p.add_argument('--spill-mask', help='Reviewed grayscale PNG mask: nonzero pixels explicitly select opaque key spill; exact sheet dimensions')
         if command == 'size':
             p.add_argument('--profile', required=True, choices=PROFILES)
             p.add_argument('--margin', type=int)
@@ -378,6 +388,8 @@ def main():
     protected = {path.resolve() for path, _ in items}
     if args.list:
         protected.add(Path(args.list).resolve())
+    if getattr(args, 'spill_mask', None):
+        protected.add(Path(args.spill_mask).resolve())
     if args.json:
         report_path = Path(args.json).resolve()
         outputs = set()
@@ -411,7 +423,13 @@ def main():
                 if out.exists() and not args.force:
                     raise FileExistsError(out)
                 if args.command == 'defringe':
-                    repaired = [defringe(f, args.erosion) for f in split]
+                    masks = [None] * frame_count
+                    if args.spill_mask:
+                        mask = load(args.spill_mask)
+                        if mask.size != image.size:
+                            raise ValueError('Spill mask must match exact sheet canvas')
+                        masks = [np.asarray(f.convert('L')) > 0 for f in frames(mask, frame_count)]
+                    repaired = [defringe(f, args.erosion, m) for f, m in zip(split, masks)]
                     result = Image.new('RGBA', image.size)
                     for i, f in enumerate(repaired):
                         result.paste(f, (i * f.width, 0))

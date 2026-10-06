@@ -72,6 +72,59 @@ class GfxHelpersTests(unittest.TestCase):
         self.assertEqual(repaired.getpixel((5, 4))[3], 255)
         self.assertEqual(repaired.getpixel((0, 0))[3], 0)
 
+    def test_vivid_green_opaque_interior_is_preserved_while_boundary_green_is_repaired(self):
+        image = Image.new("RGBA", (15, 15), (0, 255, 0, 0))
+        for y in range(2, 13):
+            for x in range(2, 13):
+                image.putpixel((x, y), (40, 90, 130, 255))
+        for y in range(5, 10):
+            for x in range(5, 10):
+                image.putpixel((x, y), (15, 230, 20, 255))
+        image.putpixel((2, 7), (15, 230, 20, 255))
+
+        repaired = gfx.defringe(image, erosion=1)
+        self.assertEqual(repaired.getpixel((7, 7)), (15, 230, 20, 255))
+        self.assertEqual(repaired.getpixel((2, 7))[:3], (40, 90, 130))
+        self.assertEqual(repaired.getpixel((2, 7))[3], 0)
+
+    def test_explicit_spill_mask_recolours_only_selected_internal_green(self):
+        image = Image.new("RGBA", (15, 15), (0, 255, 0, 0))
+        for y in range(2, 13):
+            for x in range(2, 13):
+                image.putpixel((x, y), (40, 90, 130, 255))
+        image.putpixel((6, 7), (15, 230, 20, 255))  # reviewed opaque spill
+        image.putpixel((8, 7), (15, 230, 20, 255))  # adjacent legitimate green detail
+        mask = np.zeros((15, 15), dtype=bool)
+        mask[7, 6] = True
+
+        repaired = gfx.defringe(image, erosion=1, spill_mask=mask)
+        self.assertEqual(repaired.getpixel((6, 7)), (40, 90, 130, 255))
+        self.assertEqual(repaired.getpixel((8, 7)), (15, 230, 20, 255))
+        self.assertEqual(repaired.getchannel("A").tobytes(),
+                         gfx.defringe(image, erosion=1).getchannel("A").tobytes())
+
+    def test_explicit_spill_mask_rejects_wrong_canvas_shape(self):
+        image = Image.new("RGBA", (9, 9), (0, 0, 0, 0))
+        for y in range(2, 7):
+            for x in range(2, 7):
+                image.putpixel((x, y), (40, 40, 40, 255))
+        with self.assertRaisesRegex(ValueError, "exact frame canvas"):
+            gfx.defringe(image, spill_mask=np.zeros((8, 9), dtype=bool))
+
+    def test_partial_alpha_core_keeps_its_rgb_but_one_pixel_erosion_can_lower_alpha(self):
+        image = Image.new("RGBA", (9, 9), (0, 0, 0, 0))
+        for y in range(2, 7):
+            for x in range(2, 7):
+                image.putpixel((x, y), (40, 40, 40, 245))
+        image.putpixel((3, 3), (90, 90, 90, 240))
+        image.putpixel((4, 4), (140, 140, 140, 250))
+
+        repaired = gfx.defringe(image, erosion=1)
+        # This point survives the alpha>=240 seed mask's one-pixel erosion.
+        self.assertEqual(repaired.getpixel((4, 4))[:3], (140, 140, 140))
+        # Alpha erosion is independent of the RGB-core preservation rule.
+        self.assertEqual(repaired.getpixel((4, 4))[3], 240)
+
     def test_defringe_fails_closed_for_empty_or_fully_opaque_canvases(self):
         with self.assertRaisesRegex(ValueError, "Empty subject"):
             gfx.defringe(Image.new("RGBA", (7, 7), (1, 2, 3, 0)))
@@ -181,6 +234,22 @@ class GfxHelpersTests(unittest.TestCase):
                 capture_output=True, text=True, check=False)
             self.assertNotEqual(output_result.returncode, 0)
             self.assertFalse(planned_png.exists())
+
+    def test_json_report_refuses_to_replace_explicit_spill_mask(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.png"
+            mask = root / "mask.png"
+            Image.new("RGBA", (9, 9), (40, 40, 40, 255)).save(source)
+            Image.new("L", (9, 9), 0).save(mask)
+            before = mask.read_bytes()
+            result = subprocess.run(
+                [sys.executable, str(Path(__file__).with_name("gfx.py")), "defringe",
+                 str(source), "--root", str(root), "--out", str(root / "output"),
+                 "--spill-mask", str(mask), "--json", str(mask)],
+                capture_output=True, text=True, check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(mask.read_bytes(), before)
 
     def test_manifest_can_declare_mixed_frame_counts(self):
         with tempfile.TemporaryDirectory() as directory:

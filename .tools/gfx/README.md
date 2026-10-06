@@ -55,6 +55,9 @@ It shrinks the alpha boundary by one pixel using a zero-padded minimum filter, t
 Magenta means both red and blue exceed green by more than 40; green means green exceeds red and blue by more than 40.
 Interior seed pixels must have alpha at least 240 and survive a one-pixel erosion, so a key-coloured rim cannot become a source colour.
 RGB bleeding does not alter alpha or subject colour inside that core.
+Opaque chroma recolouring is restricted to the original two-pixel boundary band, preserving vivid green or purple paint inside the subject.
+For a visually confirmed key-colour blob inside opaque artwork, `--spill-mask reviewed_mask.png` explicitly selects pixels for interior-colour bleeding; the grayscale mask must match the exact sheet dimensions, with nonzero values only at reviewed spill coordinates.
+This opt-in mask does not infer a background or change alpha; retain the mask, source hash and reviewed pixel coordinates as repair evidence.
 Each frame is processed separately to prevent colours bleeding across frame boundaries.
 `--erosion 0` performs RGB bleeding without shrinking the silhouette when an owner has verified that erosion would damage a very small symbol.
 The tool refuses empty subjects, images without transparent unused canvas, interiors too faint to supply reliable colours, and erosion that would erase the subject.
