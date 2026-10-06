@@ -103,3 +103,12 @@ The parent independently reviewed the source and native 156x210 PNG, then author
 Grounded Alash, Tuvan, Ukrainian, Azerbaijani and Kyrgyz identities receive attributed archival source packages, not invented faces.
 Their staged source crops retain framing, annotation or style defects and are withheld from runtime until suitable user-supplied painted finals pass independent review.
 The actual sources, original/crop hashes, conditional roster checks, distinct Yefremov identities, per-row verdicts and unfinished work are recorded in `docs/plans/gfx_fix_2026-10/005_portraits_report.md`.
+
+## Graphics review: Caucasus subjects and framing, 2026-10-06
+
+Acceptance basis: the user's eight Caucasus graphics findings and G6 authority to repair repeated or weak visual subjects.
+Artillery schools use a period mountain gun, the border cabinet uses officers' caps and a map table, the three capitals' talks use architectural seals and a blank treaty, and the enduring compact uses a guarded ridge road and compact seal.
+The defense-compact shield is retained for its original role, while those follow-up focuses receive independent original artwork.
+Existing oil, voting and foreign-guarantee compositions are fitted and centered proportionally, with matching legacy/focus copies.
+The parent independently reviewed and installed ten DDSs, with source/pixel evidence in `docs/plans/gfx_fix_2026-10/005_caucasus_report.md`.
+The closed MCP transport blocks final render acceptance; implementation evidence is not promoted to an engine-completion claim.
