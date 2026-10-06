@@ -149,17 +149,19 @@ def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]
     worker_env = os.environ.copy()
     worker_env["CHAOSX_WORKER_REQUEST"] = str(request_path)
     worker_env["CHAOSX_IO_PDX_ROOT"] = CONFIG["io_pdx_mesh_root"]
-    completed = subprocess.run(
-        command,
-        cwd=str(REPO_ROOT),
-        text=True,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        env=worker_env,
-        timeout=1800,
-        check=False,
-    )
+    from worker_lock import blender_worker_lock
+    with blender_worker_lock(PIPELINE_ROOT / "staging"):
+        completed = subprocess.run(
+            command,
+            cwd=str(REPO_ROOT),
+            text=True,
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            env=worker_env,
+            timeout=1800,
+            check=False,
+        )
     output_path = job / "logs" / "adapter" / f"{request_id}.result.json"
     output_path.write_text(completed.stdout, encoding="utf-8")
     if completed.returncode != 0:
@@ -230,82 +232,40 @@ def _texture_resize_for_job(job: Path, png: Path) -> tuple[int | None, int | Non
         return None, None
 
 
-def _process_textures(job_id: str, blend_rel: str) -> Dict[str, Any]:
-    """Extract PNGs in Blender, convert through the repo DDS tool, then relink."""
-
+def _process_textures(job_id: str, blend_rel: str, texture_roles: Dict[str, str] | None = None) -> Dict[str, Any]:
+    """Extract actual UV occupancy, deliver BC+mips, then relink proven DDS."""
     extracted = _run(job_id, "process_textures", {"blend_rel": blend_rel})
     job = _job(job_id)
-    converter = REPO_ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
-    if not converter.exists():
-        raise FileNotFoundError(converter)
-    dds_map: Dict[str, str] = {}
+    settings = json.loads((PIPELINE_ROOT / "config/texture_delivery.json").read_text(encoding="utf-8"))
+    converter = PIPELINE_ROOT / "textures/checkpoint_delivery.py"
+    unique = uuid.uuid4().hex[:12]
+    extraction_path = job / "blender/reports" / ("texture_extract_" + unique + ".json")
+    roles_path = job / "blender/reports" / ("texture_roles_" + unique + ".json")
+    result_path = job / "blender/reports" / ("texture_delivery_" + unique + ".json")
+    extraction_path.write_text(json.dumps(extracted) + "\n", encoding="utf-8")
+    roles_path.write_text(json.dumps(texture_roles or {}) + "\n", encoding="utf-8")
+    completed = subprocess.run([settings["python_executable"], str(converter), "--repo", str(REPO_ROOT),
+                                "--job", str(job), "--extraction", str(extraction_path), "--roles", str(roles_path),
+                                "--output", str(result_path)], cwd=str(REPO_ROOT), text=True,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=1800, check=False)
+    log = job / "logs/adapter" / ("texture_delivery_" + unique + ".log")
+    log.write_text(completed.stdout, encoding="utf-8")
+    if completed.returncode != 0 or not result_path.exists():
+        raise RuntimeError("BC/mipmap texture delivery failed; inspect " + str(log))
+    delivery = json.loads(result_path.read_text(encoding="utf-8"))
+    delivery_manifest = json.loads((job / delivery['manifest']).read_text(encoding='utf-8'))
     conversions = []
-    for item in extracted.get("textures", []):
-        png_rel = item["processed_png"]
-        png = _relative(png_rel, job)
-        dds_rel = f"textures/dds/{png.stem}.dds"
-        dds = _relative(dds_rel, job)
-        dds.parent.mkdir(parents=True, exist_ok=True)
-        if dds.exists():
-            try:
-                dds.unlink()
-            except OSError as exc:
-                raise RuntimeError(f"Unable to replace existing DDS output: {dds}") from exc
-        width, height = _texture_resize_for_job(job, png)
-        converter_args = [
-            sys.executable,
-            str(converter),
-            "--input",
-            str(png),
-            "--output",
-            str(dds),
-        ]
-        if width is not None and height is not None:
-            converter_args.extend(["--width", str(width), "--height", str(height)])
-        completed = subprocess.run(
-            converter_args,
-            cwd=str(REPO_ROOT),
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=600,
-            check=False,
-        )
-        log = job / "logs" / "adapter" / f"dds_{len(conversions):03d}.log"
-        log.write_text(completed.stdout, encoding="utf-8")
-        if completed.returncode != 0 or not dds.exists():
-            raise RuntimeError(f"DDS conversion failed; evidence: {log}")
-        dds_map[item["image"]] = dds_rel
-        conversions.append(
-            {
-                "image": item["image"],
-                "png": png_rel,
-                "dds": dds_rel,
-                "log": str(log.relative_to(job)).replace("\\", "/"),
-                "width": width,
-                "height": height,
-            }
-        )
-    if dds_map:
-        relinked = _run(
-            job_id,
-            "process_textures",
-            {
-                "blend_rel": blend_rel,
-                "rewrite_to_dds": True,
-                "dds_map": dds_map,
-            },
-        )
-    else:
-        relinked = {"textures": []}
-    result = {
-        "extracted": extracted,
-        "conversions": conversions,
-        "relinked": relinked,
-        "backend": "repository convert_to_dds.py",
-    }
-    report = job / "blender" / "reports" / "textures_dds.json"
-    report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    for item in extracted['textures']:
+        target = (job / delivery['dds_map'][item['image']]).relative_to(REPO_ROOT).as_posix()
+        planned = next(row for row in delivery_manifest['items'] if row['target_rel'] == target)
+        conversions.append({'image': item['image'], 'png': item['processed_png'], 'dds': delivery['dds_map'][item['image']],
+                             'width': planned['output_size'], 'height': planned['output_size'],
+                             'occupancy_mask_rel': Path(planned['occupancy_mask_rel']).relative_to(job.relative_to(REPO_ROOT)).as_posix()})
+    relinked = _run(job_id, "process_textures", {"blend_rel": blend_rel, "rewrite_to_dds": True,
+                                                "dds_map": delivery["dds_map"]})
+    result = {"extracted": extracted, "delivery": delivery, "conversions": conversions, "relinked": relinked,
+              "backend": "native BC1/BC3 with UV dilation and complete mip chains"}
+    (job / "blender/reports/textures_dds.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
 
 
@@ -330,7 +290,7 @@ def chaosx_blender_hoi4_prepare_candidate(
     texture_source_rels: Dict[str, str] | None = None,
     preserve_geometry_topology: bool = False,
     repair_before_reduction: bool = False,
-    topology_weld_distance: float = 1e-5,
+    topology_weld_distance: float = 1e-3,
     max_runtime_footprint_m: float | None = None,
     runtime_footprint_policy: str = "reject",
     output_namespace_rel: str = "",
@@ -445,11 +405,12 @@ def chaosx_blender_hoi4_process_textures(
     rewrite_to_dds: bool = False,
     dds_map: Dict[str, str] | None = None,
     rename_images: bool = False,
+    texture_roles: Dict[str, str] | None = None,
 ) -> Dict[str, Any]:
     """Extract textures, or relink approved DDS maps in a bounded saved scene."""
 
     if not rewrite_to_dds:
-        return _process_textures(job_id, blend_rel)
+        return _process_textures(job_id, blend_rel, texture_roles)
     return _run(
         job_id,
         "process_textures",
@@ -717,13 +678,17 @@ def chaosx_blender_hoi4_reimport_export(
     anim_rel: str = "",
     proof_name: str = "",
     stage_default_textures: bool = True,
+    preview_views: list[str] | None = None,
+    expected_mesh_sha256: str = "",
+    expected_anim_sha256: str = "",
 ) -> Dict[str, Any]:
     """Reimport exported PDX assets and save proof into the job."""
 
     return _run(
         job_id,
         "reimport_export",
-        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name, "stage_default_textures": stage_default_textures},
+        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name, "stage_default_textures": stage_default_textures,
+         "preview_views": preview_views, "expected_mesh_sha256": expected_mesh_sha256, "expected_anim_sha256": expected_anim_sha256},
     )
 
 

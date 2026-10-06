@@ -221,6 +221,7 @@ class ReleaseConsistency(unittest.TestCase):
     def test_local_import_closure_is_locked(self):
         stdlib = Path(sysconfig.get_paths()['stdlib'])
         external = {'bpy', 'bmesh', 'mathutils', 'mcp', 'io_pdx_mesh', 'io_anim_bvh'}
+        platform_stdlib = {'fcntl', 'msvcrt'}
         for relative in self.route['source_sha256']:
             path = ROOT / relative
             if path.parent != ADAPTER or path.suffix != '.py':
@@ -234,7 +235,7 @@ class ReleaseConsistency(unittest.TestCase):
                     if local.is_file():
                         self.assertIn(local.relative_to(ROOT).as_posix(), self.route['source_sha256'])
                     else:
-                        self.assertTrue(module in external or module in sys.builtin_module_names
+                        self.assertTrue(module in external or module in platform_stdlib or module in sys.builtin_module_names
                                         or (stdlib / (module + '.py')).exists() or (stdlib / module).exists(),
                                         f'Missing/unclassified import {module} in {relative}')
 

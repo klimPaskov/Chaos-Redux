@@ -25,6 +25,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import provider_intake as pi  # noqa: E402
+sys.path.insert(0, str(HERE.parent))
+from textures.dds import parse_dds_header
 
 MOD = pi.MOD
 
@@ -57,7 +59,7 @@ def main():
     mesh_rel = f"{a.out}/{a.stem}.mesh"
     mesh = pi.adapter("export_mesh", {"job_id": a.job, "blend_rel": a.blend, "output_rel": mesh_rel})
     report["mesh"] = {"rel": mesh_rel, "sha256": digest(job / mesh_rel), "streams": mesh.get("mesh_streams"),
-                      "geometry": mesh.get("geometry")}
+                      "geometry": mesh.get("geometry"), "delivery_gate": mesh.get('delivery_gate')}
     print("mesh", report["mesh"]["sha256"][:12], len(mesh.get("mesh_streams") or []), "streams", flush=True)
     for spec in a.role:
         role, action = spec.split("=", 1)
@@ -69,7 +71,8 @@ def main():
         entry = {"action": action, "anim_rel": anim_rel, "sha256": digest(job / anim_rel), "bytes": exp.get("anim_bytes"),
                  "frames": [exp.get("frame_start"), exp.get("frame_end")], "fps": exp.get("fps"),
                  "reimport_contact_min_max": [min(contact), max(contact)] if contact else None,
-                 "proof_blend": proof.get("proof_blend"), "previews": proof.get("previews", [])[:3]}
+                 "proof_blend": proof.get("proof_blend"), "previews": proof.get("previews", [])[:3],
+                 "delivery_gate": exp.get('delivery_gate')}
         # An .anim of a few KB means no channel animated: usually an unbound action slot. Small rigs
         # (a vehicle with a handful of bones) legitimately stay near this size; check their reimport.
         if (exp.get("anim_bytes") or 0) < 10000:
@@ -77,6 +80,8 @@ def main():
         report["roles"][role] = entry
         print(role, entry["frames"], entry["bytes"], "contact", entry["reimport_contact_min_max"], entry.get("warning", ""), flush=True)
     if a.install:
+        if report['mesh'].get('delivery_gate', {}).get('status') != 'pass' or any(row.get('delivery_gate', {}).get('status') != 'pass' for row in report['roles'].values()):
+            raise RuntimeError('Runtime package installation requires passing actual-byte mesh/action delivery gates.')
         dest = MOD / a.install
         dest.mkdir(parents=True, exist_ok=True)
         installed = {}
@@ -84,6 +89,11 @@ def main():
         if a.textures:
             tex = Path(a.textures) if Path(a.textures).is_absolute() else job / a.textures
             files += [tex / f"{a.stem}_{m}.dds" for m in ("diffuse", "specular", "normal")]
+            for role in ('diffuse', 'specular', 'normal'):
+                path = tex / f'{a.stem}_{role}.dds'
+                header = parse_dds_header(path.read_bytes(), require_full_mips=True, min_dimension=128, max_dimension=1024)
+                if role != 'diffuse' and header.fourcc != 'DXT5':
+                    raise ValueError('Normal/specular runtime maps require BC3 and full mip chains.')
         for src in files:
             shutil.copy2(src, dest / src.name)
             installed[src.name] = {"source": digest(src), "runtime": digest(dest / src.name)}

@@ -1,11 +1,11 @@
-"""Attach separately generated held items (weapons, staffs, shields) to a rigged unit.
+"""Review an existing live-authored equipped assembly without generating skin or motion.
 
-Every held item is its own Meshy geometry task (the body is always generated empty-handed).
-This worker places each item rigidly on the bone that carries it, packs the body and item
-textures into one atlas so the unit keeps a single PDX material, joins the items into the body
-mesh with a 1.0 weight on the carrying bone, and writes a new checkpoint plus review evidence.
-It never creates or edits motion: grip transforms are explicit numbers the agent chose after
-looking at the hand close-ups, and the contact report says where a pose needs live correction.
+Body and held items keep their authored UVs and separate texture/material consumers.
+Every item is already attached and weighted in the supplied checkpoint.
+Required item fields are existing_object, bone, axis_ends_bone_space and head_bone_local.
+The legacy import/placement/atlas/automatic-weight/aim/floor helpers below are historical
+implementation data and run() never calls them; live Blender authoring owns that work.
+Output reports point to real contact defects and unchanged material-slot integration needs.
 
 Run headless (no Lab socket needed):
     blender --background --factory-startup --python lab_items.py -- <config.json>
@@ -39,10 +39,9 @@ Config (JSON, absolute paths):
              "closeup": 0.35}   # optional hand close-ups, width as a fraction of the framed extent
 }
 
-Atlas: the body keeps UV v in [0, 1 - cell] (full width); item k gets the square cell
-u in [k*cell, (k+1)*cell], v in [1 - cell, 1]. The atlas PNGs keep the provider file names, so
-``pdx_textures.py --textures <atlas dir>`` converts them unchanged. Item materials and images are
-removed after the join, so the partition step's image-identity proof still sees only the body set.
+The historical atlas fields in the example are ignored by the production review route.
+Use process_textures for each existing consumer, with 512 body maps and justified
+256/512 item maps, then wire every exported material stream through meshsettings.
 
 Contacts: for every sampled frame of every action, the distance from each off-hand grip point to
 the item's long axis segment, and the lowest item point against the floor, go into
@@ -472,32 +471,44 @@ def run(config_path=None):
     bpy.ops.wm.open_mainfile(filepath=cfg["blend"])
     rig = bpy.data.objects[cfg.get("armature", "Armature.001")]
     body = bpy.data.objects[cfg.get("body", "char1.001")]
+    if any('existing_object' not in item for item in cfg['items']):
+        raise ValueError('Held-item delivery requires an already live-authored assembly checkpoint and existing_object per item; automated skinning/aim keys and the shared 256-cell atlas are not production routes.')
     rig.data.pose_position = "REST"
     height = _rest_height(body)
     specs = cfg["items"]
     items, placed = [], {}
     for spec in specs:
-        item = _import_item(spec)
-        placed[spec["name"]] = _place(item, rig, spec, height)
+        item = bpy.data.objects.get(spec['existing_object'])
+        if item is None or item.type != 'MESH' or not item.data.uv_layers or not item.data.materials:
+            raise ValueError('Existing equipped item needs its own authored mesh, UVs and material.')
+        if set(item.data.materials) & set(body.data.materials):
+            raise ValueError('Equipped item must retain separate material/texture consumers; the body atlas is not reduced into a shared top strip.')
+        controlled = item.parent == rig and item.parent_type == 'BONE' and item.parent_bone == spec['bone']
+        controlled = controlled or any(modifier.type == 'ARMATURE' and modifier.object == rig for modifier in item.modifiers)
+        if not controlled:
+            raise ValueError('Equipped item needs existing live-authored skeletal attachment/weights.')
+        points = [bone_frame(rig, spec['bone']).inverted() @ item.matrix_world @ vertex.co for vertex in item.data.vertices]
+        if 'axis_ends_bone_space' not in spec or 'head_bone_local' not in spec:
+            raise ValueError('Supply measured authored shaft endpoints and head/muzzle location for contact review.')
+        placed[spec['name']] = {'bone': spec['bone'], 'scale': list(item.scale),
+                               'axis_ends_bone_space': [Vector(value) for value in spec['axis_ends_bone_space']],
+                               'head_bone_local': spec['head_bone_local'], 'points_bone_space': points}
         items.append(item)
     rig.data.pose_position = "POSE"
-    cell = cfg["atlas"].get("cell", 0.25)
-    _atlas_uvs(body, (0.0, 0.0, 1.0, 1.0 - cell))
-    for k, item in enumerate(items):
-        _atlas_uvs(item, (k * cell, 1.0 - cell, (k + 1) * cell, 1.0))
-    atlas = _write_atlas(cfg, specs)
-    _join(body, items, [s["bone"] for s in specs])
-    _purge_unused()
+    atlas = {'policy': 'separate existing body/item UVs and material consumers preserved',
+             'body_uv_and_texture_canvas_unchanged': True, 'item_meshes': [item.name for item in items]}
     report = {"rest_height": height, "atlas": atlas,
               "items": {k: {"bone": v["bone"], "scale": v["scale"],
                             "axis_ends_bone_space": [list(e) for e in v["axis_ends_bone_space"]],
                             "head_bone_local": v["head_bone_local"]} for k, v in placed.items()},
-              "aim_turn_deg": _aim_items(cfg, rig, placed),
-              "floor_fixed_frames": _floor_items(cfg, rig, placed, height),
+              "aim_turn_deg": {'policy': 'measured existing authored action only; no key generation'},
+              "floor_fixed_frames": {'policy': 'contact defects returned for live authoring; no key generation'},
               "contacts": _measure(cfg, rig, body, placed, height), "triangles": sum(len(p.vertices) - 2 for p in body.data.polygons)}
-    _render(cfg, rig, body, height)
-    _purge_unused()
+    # Preserve material consumers rather than using the old single-atlas
+    # preview override; use the adapter's actual-material preview operation.
     if cfg.get("out") and not cfg.get("review_only"):
+        if os.path.exists(cfg['out']):
+            raise FileExistsError('Reviewed assembly checkpoint already exists.')
         bpy.ops.wm.save_as_mainfile(filepath=cfg["out"])
     dest = os.path.join(cfg.get("review", {}).get("out_dir") or os.path.dirname(cfg.get("out") or cfg["blend"]), "items_report.json")
     json.dump(report, open(dest, "w", encoding="utf-8"), indent=1)

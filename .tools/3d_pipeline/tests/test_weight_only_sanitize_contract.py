@@ -13,6 +13,8 @@ from pathlib import Path
 PIPELINE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PIPELINE_ROOT.parents[1]
 sys.path.insert(0, str(PIPELINE_ROOT))
+sys.path.insert(0, str(PIPELINE_ROOT / 'adapter'))
+from worker_lock import blender_worker_lock
 
 from blender_client import BlenderAdapterClient  # noqa: E402
 from lib.mcp_stdio import call_stdio  # noqa: E402
@@ -95,14 +97,11 @@ class WeightOnlySanitizeContractTests(unittest.TestCase):
         )
         blender = Path(config["blender_executable"])
         integration = PIPELINE_ROOT / "tests" / "blender_weight_only_sanitize_integration.py"
-        completed = subprocess.run(
-            [str(blender), "--background", "--factory-startup", "--python", str(integration)],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=180,
-            check=False,
-        )
+        with blender_worker_lock(PIPELINE_ROOT / 'staging'):
+            completed = subprocess.run(
+                [str(blender), "--background", "--factory-startup", "--python", str(integration)],
+                cwd=REPO_ROOT, capture_output=True, text=True, timeout=180, check=False,
+            )
         output = completed.stdout + completed.stderr
         self.assertEqual(completed.returncode, 0, output)
         self.assertIn('"status": "pass"', output)

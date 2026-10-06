@@ -55,6 +55,7 @@ from pack_pdx_material import (  # noqa: E402
     pack_pdx_specular_map,
     prepare_texture_source_rels,
 )
+from textures.single_map import deliver as deliver_packed_map
 
 
 STATIC_ASSET_KINDS = {"static", "building", "static_building"}
@@ -609,35 +610,9 @@ def _finalize_pdx_runtime_texture(
     shutil.copy2(packed_source, processed)
     dds_rel = str(conversion["dds"])
     dds = job / dds_rel
-    if dds.exists():
-        try:
-            dds.unlink()
-        except OSError as exc:
-            raise RuntimeError(f"Unable to replace existing DDS output: {dds}") from exc
-    converter = REPO_ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
-    converter_args = [
-        sys.executable,
-        str(converter),
-        "--input",
-        str(processed),
-        "--output",
-        str(dds),
-    ]
-    width = conversion.get("width")
-    height = conversion.get("height")
-    if width and height:
-        converter_args.extend(["--width", str(width), "--height", str(height)])
-    completed = subprocess.run(
-        converter_args,
-        cwd=str(REPO_ROOT),
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=600,
-        check=False,
-    )
-    if completed.returncode != 0 or not dds.exists():
-        raise RuntimeError(f"PDX runtime DDS conversion failed for {dds}.")
+    role = 'normal' if 'normal' in report_key else 'specular'
+    conversion['delivery'] = deliver_packed_map(REPO_ROOT, job, processed, dds,
+                                               job / conversion['occupancy_mask_rel'], role)
     conversion["png"] = processed_rel
     conversion["layout"] = layout
     textures[report_key] = pack_report
@@ -691,6 +666,8 @@ def _apply_runtime_diffuse_grade(
     processed = job / processed_rel
     with Image.open(source) as source_image:
         rgba = source_image.convert("RGBA")
+        if width > rgba.width or height > rgba.height:
+            raise ValueError('Runtime diffuse delivery never upscales source pixels.')
         if rgba.size != (width, height):
             rgba = rgba.resize((width, height), Image.Resampling.LANCZOS)
         lut = [
@@ -705,34 +682,8 @@ def _apply_runtime_diffuse_grade(
         graded.save(processed, format="PNG", optimize=True)
 
     dds = job / str(conversion["dds"])
-    if dds.exists():
-        if not dds.is_file():
-            raise RuntimeError(f"Runtime diffuse DDS target is not a file: {dds}")
-        dds.unlink()
-    converter = REPO_ROOT / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
-    converter_args = [
-        sys.executable,
-        str(converter),
-        "--input",
-        str(processed),
-        "--output",
-        str(dds),
-        "--width",
-        str(width),
-        "--height",
-        str(height),
-    ]
-    completed = subprocess.run(
-        converter_args,
-        cwd=str(REPO_ROOT),
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        timeout=600,
-        check=False,
-    )
-    if completed.returncode != 0 or not dds.exists():
-        raise RuntimeError(f"Runtime diffuse DDS conversion failed for {dds}.")
+    conversion['delivery'] = deliver_packed_map(REPO_ROOT, job, processed, dds,
+                                               job / conversion['occupancy_mask_rel'], 'diffuse')
     conversion["png"] = processed_rel
     textures["runtime_diffuse_grade"] = {
         "source": source_rel,

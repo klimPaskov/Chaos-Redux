@@ -1210,11 +1210,16 @@ def triangulate_and_normals() -> Dict[str, Any]:
         bm.from_mesh(mesh)
         bmesh.ops.triangulate(bm, faces=list(bm.faces))
         bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
+        angle = math.radians(45 if any(token in obj.name.casefold() for token in ('rifle', 'pistol', 'gun')) else 60)
+        for face in bm.faces:
+            face.smooth = True
+        for edge in bm.edges:
+            edge.smooth = len(edge.link_faces) == 2 and edge.calc_face_angle() <= angle
         bm.to_mesh(mesh)
         bm.free()
         mesh.update()
         changed.append(obj.name)
-    return {"triangulated_objects": changed}
+    return {"triangulated_objects": changed, "smoothing_policy": "existing faces smooth; sharp edges at 60 degrees, 45 for named firearm components"}
 
 
 def controlled_decimate(target_triangles: int) -> Dict[str, Any]:
@@ -1295,7 +1300,7 @@ def controlled_decimate(target_triangles: int) -> Dict[str, Any]:
     }
 
 
-def repair_open_surface_boundaries(weld_distance: float = 1e-5) -> Dict[str, Any]:
+def repair_open_surface_boundaries(weld_distance: float = 1e-3) -> Dict[str, Any]:
     """Weld coincident provider seams, then cap only bounded small loops."""
 
     records: List[Dict[str, Any]] = []
@@ -1380,7 +1385,7 @@ def repair_open_surface_boundaries(weld_distance: float = 1e-5) -> Dict[str, Any
 
         filled_face_count = 0
         skipped_components = 0
-        max_bounded_loop_edges = 96
+        max_bounded_loop_edges = 8
         cap_methods: Dict[str, int] = {}
         component_specs = [
             [tuple(sorted(vertex.index for vertex in edge.verts)) for edge in component]
@@ -1488,7 +1493,7 @@ def repair_open_surface_boundaries(weld_distance: float = 1e-5) -> Dict[str, Any
         )
     return {
         "applied": any(record["welded_vertices"] or record["faces_added"] for record in records),
-        "method": f"bmesh remove_doubles at {weld_distance:g}, remove duplicate-overlap faces, then bounded holes_fill/triangle_fill on loops up to 96 edges with cap-only non-manifold rollback",
+        "method": f"bmesh remove_doubles at {weld_distance:g}, remove duplicate-overlap faces, then bounded holes_fill/triangle_fill on loops up to 8 edges with cap-only non-manifold rollback",
         "objects": records,
     }
 
@@ -2306,10 +2311,17 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         if preserve_geometry_topology
         else triangulate_and_normals()
     )
-    weld_distance = float(payload.get("topology_weld_distance", 1e-5))
+    weld_distance = float(payload.get("topology_weld_distance", 1e-3))
     pre_reduction_topology_repair = None
     if payload.get("repair_before_reduction", False):
         pre_reduction_topology_repair = repair_open_surface_boundaries(weld_distance)
+    from delivery_policy import unit_delivery_job
+    if not preserve_geometry_topology and unit_delivery_job(job, asset_kind=asset_kind):
+        intake = [{"object": obj.name, **position_welded_geometry_metrics_for_object(obj, weld_distance)} for obj in mesh_objects()]
+        intake_path = job / 'blender/reports/provider_intake_delivery.json'
+        intake_path.write_text(json.dumps({'weld_distance': weld_distance, 'objects': intake}, indent=2) + '\n', encoding='utf-8')
+        if any(row['loose_boundary_edges'] >= 200 for row in intake):
+            raise RuntimeError('Provider intake has 200 or more boundary edges after bounded repair; inspect ' + str(intake_path))
     reduction = (
         {
             "applied": False,
@@ -3582,11 +3594,36 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
     records = []
     image_paths: Dict[str, str] = {}
     if not payload.get("rewrite_to_dds"):
-        for material, image in image_nodes():
+        node_pairs = list(image_nodes())
+        def connected_roles(material, target_image):
+            shader = _principled_shader(material)
+            found = []
+            def reaches(socket, seen):
+                for link in socket.links:
+                    node = link.from_node
+                    if node.as_pointer() in seen:
+                        continue
+                    seen.add(node.as_pointer())
+                    if node.type == 'TEX_IMAGE' and node.image == target_image:
+                        return True
+                    if any(reaches(input_socket, seen) for input_socket in node.inputs):
+                        return True
+                return False
+            for input_name, role in [('Base Color', 'diffuse'), ('Roughness', 'specular'), ('Normal', 'normal')]:
+                if reaches(shader.inputs[input_name], set()):
+                    found.append(role)
+            return found
+        seen_images = set()
+        for material, image in node_pairs:
+            if image.as_pointer() in seen_images:
+                continue
+            seen_images.add(image.as_pointer())
             filename = safe_name(Path(image.name).stem) + ".png"
             output = processed / filename
             if image.packed_file is not None or image.source == "GENERATED":
-                image.save_render(filepath=str(output))
+                image.filepath_raw = str(output)
+                image.file_format = 'PNG'
+                image.save()
             else:
                 original = Path(bpy.path.abspath(image.filepath))
                 if original.exists() and original.suffix.lower() in {".png", ".jpg", ".jpeg", ".tga", ".tif", ".tiff"}:
@@ -3597,16 +3634,36 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
                             output.unlink()
                         shutil.copy2(original, output)
                 else:
-                    image.save_render(filepath=str(output))
+                    image.filepath_raw = str(output)
+                    image.file_format = 'PNG'
+                    image.save()
             image.filepath = str(output)
             image.source = "FILE"
             image_paths[image.name] = str(output.relative_to(job)).replace("\\", "/")
+            matching_materials = {candidate for candidate, consumer in node_pairs if consumer == image}
+            uv_triangles = []
+            for obj in mesh_objects():
+                slots = {index for index, slot in enumerate(obj.material_slots) if slot.material in matching_materials}
+                layer = obj.data.uv_layers.active
+                if not slots or layer is None:
+                    continue
+                obj.data.calc_loop_triangles()
+                for triangle in obj.data.loop_triangles:
+                    if triangle.material_index in slots:
+                        uv_triangles.append([[float(layer.data[index].uv.x), 1.0 - float(layer.data[index].uv.y)] for index in triangle.loops])
+            if not uv_triangles:
+                raise RuntimeError("Texture delivery needs actual UV triangles for " + image.name)
+            uv_path = processed / (safe_name(Path(image.name).stem) + "_uv.json")
+            uv_path.write_text(json.dumps({"image": image.name, "triangles": uv_triangles,
+                                          "blend_sha256": file_sha256(blend), "coordinates": "top-left normalized"}) + "\n", encoding="utf-8")
             records.append(
                 {
                     "material": material.name,
                     "image": image.name,
                     "processed_png": image_paths[image.name],
                     "bytes": output.stat().st_size,
+                    "uv_triangles_rel": uv_path.relative_to(job).as_posix(),
+                    "connected_texture_roles": connected_roles(material, image),
                 }
             )
     if payload.get("rewrite_to_dds"):
@@ -4812,6 +4869,18 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     streams = exported_mesh_streams(text_output)
     from skeletal_export_partition import require_bounded_export_streams
     require_bounded_export_streams(streams)
+    from io_pdx_mesh import pdx_data
+    from geometry_delivery_checks import inspect_pdx_mesh_tree
+    delivery = inspect_pdx_mesh_tree(pdx_data.read_meshfile(str(output)), provider_intake=False, manifold_required=True)
+    winding_ok = all(row.get("winding_report", {}).get("status") == "pass" and
+                     row.get("winding_report", {}).get("non_manifold_edge_count", 1) == 0 and
+                     not row.get("winding_report", {}).get("flip_face_indices") for row in delivery["meshes"])
+    # Keep failed candidate bytes and evidence outside runtime for deliberate repair.
+    gate_report = output.with_suffix(".delivery.json")
+    gate_report.write_text(json.dumps({"mesh_sha256": file_sha256(output), "geometry": delivery}, indent=2) + "\n", encoding="utf-8")
+    from delivery_policy import unit_delivery_job
+    if unit_delivery_job(job) and (delivery["status"] != "pass" or not winding_ok):
+        raise RuntimeError("Mesh delivery gate refused topology/winding; inspect " + str(gate_report))
     save_blend(exported_checkpoint)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
@@ -4821,6 +4890,7 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         if output.with_suffix(".txt").exists()
         else None,
         "mesh_streams": streams,
+        "delivery_gate": delivery,
         "maximum_stream_vertices": max(stream["vertices"] for stream in streams),
         "maximum_stream_triangle_indices": max(stream["triangle_indices"] for stream in streams),
         "vertex_stream_limit": 65535,
@@ -5003,6 +5073,11 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     pdx = load_pdx(req["io_pdx_root"])
     rig, action, start, end = select_armature_and_action(payload["action_name"])
+    from animation_delivery_checks import normalize_quaternion_curve_signs, inspect_animation_delivery
+    from delivery_policy import action_policy, native_skeleton_tree, measured_sole_contacts
+    source_sha = file_sha256(blend)
+    continuity = normalize_quaternion_curve_signs([curve for curve, slot in action_fcurves(action)])
+    policy = action_policy(job, action.name, source_sha)
     export_transforms = prepare_pdx_export_transforms()
     bpy.context.scene.frame_start = start
     bpy.context.scene.frame_end = end
@@ -5021,6 +5096,25 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     scale_normalization = normalize_exported_animation_scales(output, pdx, 1.0)
     from animation_root_export import correct_exported_initial_roots
     initial_root_world_pose = correct_exported_initial_roots(output, rig, start, bpy)
+    from io_pdx_mesh import pdx_data
+    skeleton = native_skeleton_tree(rig)
+    roots = [bone.name for bone in rig.data.bones if bone.parent is None]
+    if len(roots) != 1:
+        raise RuntimeError("Animation delivery requires one measured native skeleton root.")
+    humanoid = policy["humanoid"]
+    if humanoid is None:
+        names = [bone.name.casefold() for bone in rig.data.bones]
+        humanoid = all(any(side in name and 'foot' in name for name in names) for side in ('left', 'right'))
+    feet = measured_sole_contacts(rig, mesh_objects(), bpy, start, end) if policy['role'] in {'move', 'retreat'} and humanoid else None
+    delivery = inspect_animation_delivery(pdx_data.read_meshfile(str(output)), skeleton_tree=skeleton,
+        action_name=action.name, role=policy['role'], looped=policy['looped'], frame_start=start,
+        root_bone=roots[0], humanoid=humanoid, strike_windows=policy['strike_windows'], foot_world_measurements=feet)
+    gate_report = output.with_suffix('.delivery.json')
+    gate_report.write_text(json.dumps({'animation_sha256': file_sha256(output), 'source_blend_sha256': source_sha,
+                                      'continuity': continuity, 'policy': policy, 'delivery': delivery,
+                                      'sole_geometry_measurements': feet}, indent=2) + '\n', encoding='utf-8')
+    if delivery['status'] != 'pass':
+        raise RuntimeError('Animation delivery gate refused measured motion/contacts; inspect ' + str(gate_report))
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "action": action.name,
@@ -5037,6 +5131,9 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         else None,
         "scale_normalization": scale_normalization,
         "initial_root_world_pose": initial_root_world_pose,
+        "delivery_gate": delivery,
+        "quaternion_continuity": continuity,
+        "delivery_policy": policy,
         "warnings": [],
     }
     report = job / "blender" / "reports" / f"export_anim_{safe_name(action.name)[:32]}_{hashlib.sha256(action.name.encode()).hexdigest()[:10]}.json"
@@ -5051,6 +5148,15 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     mesh = within(job, payload["mesh_rel"])
     anim = within(job, payload["anim_rel"]) if payload.get("anim_rel") else None
+    mesh_hash_before = file_sha256(mesh)
+    anim_hash_before = file_sha256(anim) if anim else None
+    for key, actual in (("expected_mesh_sha256", mesh_hash_before), ("expected_anim_sha256", anim_hash_before)):
+        expected = payload.get(key)
+        if expected and (actual is None or str(expected).upper() != actual):
+            raise ValueError("Reimport source SHA-256 mismatch: " + key)
+    preview_views = payload.get("preview_views")
+    if preview_views is not None and (not isinstance(preview_views, list) or any(view not in {"front", "rear", "left", "right", "top", "three_quarter"} for view in preview_views)):
+        raise ValueError("Reimport preview_views must be an explicit supported view list.")
     texture_staging = []
     stage_defaults = payload.get("stage_default_textures", True)
     if type(stage_defaults) is not bool:
@@ -5153,27 +5259,36 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
                         "locators": locator_records(),
                     }
                 )
-                preview_paths.extend(
-                    render_previews(
-                        job,
-                        f"reimport_{proof_name}_frame_{frame:03d}",
-                        ["front", "left", "three_quarter"],
-                        working_only=False,
+                if preview_views != []:
+                    preview_paths.extend(
+                        render_previews(
+                            job,
+                            f"reimport_{proof_name}_frame_{frame:03d}",
+                            preview_views if preview_views is not None else ["front", "left", "three_quarter"],
+                            working_only=False,
+                        )
                     )
-                )
             bpy.context.scene.frame_set(first)
             bpy.context.view_layer.update()
-    else:
+    elif preview_views != []:
         preview_paths.extend(
             render_previews(
                 job,
                 f"reimport_{proof_name}",
+                view_names=preview_views,
                 working_only=False,
             )
         )
     proof = job / "blender" / "checkpoints" / f"reimport_{proof_name}.blend"
+    if proof.exists():
+        raise FileExistsError("Reimport proof checkpoint exists; choose a new proof_name.")
+    if file_sha256(mesh) != mesh_hash_before or (anim and file_sha256(anim) != anim_hash_before):
+        raise RuntimeError("Reimport source changed during the operation.")
     save_blend(proof)
     report = {
+        "mesh_sha256": mesh_hash_before,
+        "anim_sha256": anim_hash_before,
+        "proof_scope": "geometry/skeleton/action import; visual material review remains separate" if preview_views == [] else "native import with requested visual previews",
         "mesh": str(mesh.relative_to(job)).replace("\\", "/"),
         "anim": str(anim.relative_to(job)).replace("\\", "/") if anim else None,
         "runtime_texture_staging": texture_staging,
@@ -5289,6 +5404,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
     manifest = Path(req["io_pdx_root"]).resolve() / "blender_manifest.toml"
     return {
         "blender_version": ".".join(str(part) for part in bpy.app.version),
+        "native_face_angle_smoothing_available": hasattr(bmesh.types.BMEdge, 'calc_face_angle'),
         "blender_binary": bpy.app.binary_path,
         "io_pdx_mesh_manifest": str(manifest),
         "io_pdx_mesh_loaded": True,
@@ -6385,6 +6501,8 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     provenance = action_provenance(action)
 
     old_start = float(action.frame_range[0])
+    from animation_delivery_checks import normalize_quaternion_curve_signs
+    continuity = normalize_quaternion_curve_signs([curve for curve, slot in action_fcurves(action)])
     old_end = float(action.frame_range[1])
     fcurve_count_before = len(list(action_fcurves(action)))
     frame_ratio = target_fps / source_fps
@@ -6418,6 +6536,7 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "target_armature": rig.name,
         "action": action.name,
         "source_fps": source_fps,
+        "quaternion_continuity": continuity,
         "target_fps": target_fps,
         "frame_ratio": frame_ratio,
         "frame_start_before": old_start,
@@ -6432,7 +6551,9 @@ def retime_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "retention_evidence": {
             "fcurve_count_before": fcurve_count_before,
             "fcurve_count_after": len(list(action_fcurves(action))),
-            "keyframe_values_changed": False,
+            "keyframe_values_changed": bool(continuity.get('sign_flipped_key_count', 0)),
+            "keyframe_orientations_changed": False,
+            "keyframe_value_policy": 'equivalent quaternion signs only; no authored orientation replacement',
             "keyframe_times_rescaled": True,
             "manual_or_procedural_replacement_authored": False,
         },

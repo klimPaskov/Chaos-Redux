@@ -146,6 +146,9 @@ class HumanoidComponentReviewContracts(unittest.TestCase):
             types.SimpleNamespace(data_path="unresolved.property", array_index=3, group=None),
         ]
         curves.append(copy.copy(curves[0]))
+        for curve in curves:
+            curve.keyframe_points = []
+            curve.extrapolation = 'CONSTANT'
         self.ns["action_fcurves"] = lambda action: [(curve, object()) for curve in curves]
         rows = self.ns["_action_channel_rows"](object(), rig)
         self.assertEqual(len(rows), 7)
@@ -160,6 +163,8 @@ class HumanoidComponentReviewContracts(unittest.TestCase):
         for curve in (types.SimpleNamespace(data_path="", array_index=0, group=None),
                       types.SimpleNamespace(data_path="location", array_index=-1, group=None),
                       types.SimpleNamespace(data_path="location", array_index=0, group=types.SimpleNamespace(name="x" * 129))):
+            curve.keyframe_points = []
+            curve.extrapolation = 'CONSTANT'
             self.ns["action_fcurves"] = lambda action, value=curve: [(value, object())]
             with self.assertRaises(ValueError):
                 self.ns["_action_channel_rows"](object(), rig)
@@ -176,8 +181,8 @@ class HumanoidComponentReviewContracts(unittest.TestCase):
         req = {"payload": {"mesh_region": {}}}
         self.assertIn("mesh_region", self.ns["inspect"](req))
         function = next(node for node in self.tree.body if isinstance(node, ast.FunctionDef) and node.name == "inspect")
-        first = [node for node in function.body if isinstance(node, ast.If)][0]
-        self.assertIn("include_action_channels", ast.unparse(first.test))
+        guards = [ast.unparse(node.test) for node in function.body if isinstance(node, ast.If)]
+        self.assertTrue(any('include_action_channels' in guard for guard in guards))
 
     def test_exact_tool_and_client_forwarding_contract(self):
         tool_tree = ast.parse((PIPELINE_ROOT / "adapter/chaosx_blender_hoi4_mcp.py").read_text(encoding="utf-8"))

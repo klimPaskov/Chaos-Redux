@@ -10,13 +10,32 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict
 
 from PIL import Image, ImageOps
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+from textures.conventions import build_pdx_specular_from_provider, repack_provider_normal, gate_specular
 
 
-PDX_SPECULAR_LEVEL = 32
+def _material_class_inputs(job: Path, source: Path):
+    """Read explicit, source-adjacent class/UV masks; never infer from colour."""
+    path = source.parent / "material_classes.json"
+    if not path.is_file():
+        raise ValueError("PDX specular packing needs explicit material_classes.json masks beside " + str(source))
+    data = json.loads(path.read_text(encoding="utf-8-sig"))
+    def load_mask(value):
+        target = (source.parent / value).resolve()
+        target.relative_to(job.resolve())
+        with Image.open(target) as image:
+            return image.convert("L").copy()
+    masks = {name: load_mask(value) for name, value in data["classes"].items()}
+    occupancy = load_mask(data["occupancy"])
+    return masks, occupancy, {"manifest": _record(path, job),
+                              "masks": {name: _record((source.parent / value).resolve(), job) for name, value in data["classes"].items()},
+                              "occupancy": _record((source.parent / data["occupancy"]).resolve(), job)}
 
 
 def _channel_stats(image: Image.Image) -> Dict[str, Dict[str, float]]:
@@ -57,8 +76,8 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
 
     The source must be the provider's ``metallic_roughness.png``. The sibling
     grayscale maps are authoritative because the glTF packed alpha channel is
-    not the HOI4 glossiness channel. The resulting channels are R=0,
-    G=specular level, B=metallic, and A=255-roughness.
+    not the HOI4 glossiness channel. Explicit source-adjacent material masks
+    control G strength, B metal coverage and class-bounded inverted-roughness A.
     PdxMeshAdvanced uses spec.A as Glossiness in the installed vanilla shader.
     """
 
@@ -81,17 +100,12 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
                 f"PDX material packing requires the provider sibling map: {path}"
             )
 
+    masks, occupancy, mask_evidence = _material_class_inputs(job, rough)
     with Image.open(metal) as metal_image, Image.open(rough) as rough_image:
-        metal_l = metal_image.convert("L")
-        rough_l = rough_image.convert("L")
-        if metal_l.size != rough_l.size:
-            raise ValueError(
-                f"Metallic and roughness maps must have the same dimensions: "
-                f"{metal_l.size} != {rough_l.size}"
-            )
-        zero = Image.new("L", metal_l.size, 0)
-        specular = Image.new("L", metal_l.size, PDX_SPECULAR_LEVEL)
-        packed = Image.merge("RGBA", (zero, specular, metal_l, ImageOps.invert(rough_l)))
+        packed, recipe = build_pdx_specular_from_provider(rough_image, metal_image, masks, occupancy)
+    semantic_gate = gate_specular(packed, occupancy, masks)
+    if semantic_gate["status"] != "passed":
+        raise ValueError("PDX specular material gate refused provider pack: " + str(semantic_gate["failures"]))
 
     output = source.with_name("pdx_specular.png")
     _replace_file(output)
@@ -100,7 +114,7 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
         "status": "packed",
         "layout": {
             "red": "unused_mask_zero",
-            "green": f"specular_level_{PDX_SPECULAR_LEVEL}",
+            "green": "provider_roughness_mapped_to_explicit_material_class_recipe",
             "blue": "metallic",
             "alpha": "glossiness_255_minus_roughness",
         },
@@ -112,6 +126,9 @@ def pack_pdx_specular_map(job: Path, specular_source_rel: str) -> Dict[str, Any]
         "output": _record(output, job),
         "dimensions": list(packed.size),
         "channel_stats": _channel_stats(packed),
+        "material_masks": mask_evidence,
+        "recipe": recipe,
+        "semantic_gate": semantic_gate,
     }
     report_path = job / "blender" / "reports" / "pdx_material_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -133,17 +150,12 @@ def pack_pdx_specular_channels(
     for path in (metallic, roughness):
         if not path.is_file():
             raise FileNotFoundError(path)
+    masks, occupancy, mask_evidence = _material_class_inputs(job, roughness)
     with Image.open(metallic) as metallic_image, Image.open(roughness) as roughness_image:
-        metallic_l = metallic_image.convert("L")
-        roughness_l = roughness_image.convert("L")
-        if metallic_l.size != roughness_l.size:
-            raise ValueError(
-                f"Metallic and roughness maps must have the same dimensions: "
-                f"{metallic_l.size} != {roughness_l.size}"
-            )
-        zero = Image.new("L", metallic_l.size, 0)
-        specular = Image.new("L", metallic_l.size, PDX_SPECULAR_LEVEL)
-        packed = Image.merge("RGBA", (zero, specular, metallic_l, ImageOps.invert(roughness_l)))
+        packed, recipe = build_pdx_specular_from_provider(roughness_image, metallic_image, masks, occupancy)
+    semantic_gate = gate_specular(packed, occupancy, masks)
+    if semantic_gate["status"] != "passed":
+        raise ValueError("PDX specular material gate refused provider pack: " + str(semantic_gate["failures"]))
     output.parent.mkdir(parents=True, exist_ok=True)
     _replace_file(output)
     packed.save(output, format="PNG", optimize=True)
@@ -151,7 +163,7 @@ def pack_pdx_specular_channels(
         "status": "packed",
         "layout": {
             "red": "unused_mask_zero",
-            "green": f"specular_level_{PDX_SPECULAR_LEVEL}",
+            "green": "provider_roughness_mapped_to_explicit_material_class_recipe",
             "blue": "metallic",
             "alpha": "glossiness_255_minus_roughness",
         },
@@ -162,6 +174,9 @@ def pack_pdx_specular_channels(
         "output": _record(output, job),
         "dimensions": list(packed.size),
         "channel_stats": _channel_stats(packed),
+        "material_masks": mask_evidence,
+        "recipe": recipe,
+        "semantic_gate": semantic_gate,
     }
     report_path = job / "blender" / "reports" / "pdx_generation_specular_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)
@@ -213,20 +228,20 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
     """Pack a conventional RGB tangent normal into HOI4's PDX ``n`` layout.
 
     The pinned ``io_pdx_mesh`` material route reads the PDX normal texture's
-    green channel as tangent X, its alpha channel as tangent Y, and supplies a
-    constant tangent Z. The provider's RGB normal therefore needs R=unused,
-    G=source.R, B=unused, and A=source.G. The previous pack put source.R in
-    the unused red channel and left the engine's tangent-X channel at zero,
-    which produced the bright, broken surfaces seen in the pilot's map render.
+    green channel as tangent X and alpha as tangent Y. The runtime shader
+    reconstructs tangent Z. R mirrors source.R/G, B is zero, and A retains
+    source.G unless explicit provider handedness evidence requests inversion.
     """
 
     source = (job / normal_source_rel).resolve()
     if source.name.casefold() == "pdx_normal.png":
         with Image.open(source) as packed_source:
             stats = _channel_stats(packed_source)
-        if stats["R"]["max"] != 0 or stats["B"]["max"] != 0:
+        with Image.open(source) as checked:
+            mirrored = checked.getchannel('R').tobytes() == checked.getchannel('G').tobytes()
+        if not mirrored or stats["B"]["max"] != 0:
             raise ValueError(
-                f"Existing PDX normal has non-zero unused channels: {source}"
+                f"Existing PDX normal requires R/G mirror and B-zero cleanup through the shared delivery step: {source}"
             )
         return {
             "status": "already_packed",
@@ -237,11 +252,7 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
         raise FileNotFoundError(f"PDX normal packing requires the provider normal map: {source}")
 
     with Image.open(source) as source_image:
-        rgba = source_image.convert("RGBA")
-        red = rgba.getchannel("R")
-        green = rgba.getchannel("G")
-        zero = Image.new("L", rgba.size, 0)
-        packed = Image.merge("RGBA", (zero, red, zero, green))
+        packed, normal_recipe = repack_provider_normal(source_image, green_sign="preserve")
 
     output = source.with_name("pdx_normal.png")
     _replace_file(output)
@@ -249,7 +260,7 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
     report = {
         "status": "packed",
         "layout": {
-            "red": "unused_zero",
+            "red": "source_normal_red_mirrored_tangent_x",
             "green": "source_normal_red_tangent_x",
             "blue": "unused_zero",
             "alpha": "source_normal_green_tangent_y",
@@ -258,6 +269,7 @@ def pack_pdx_normal_map(job: Path, normal_source_rel: str) -> Dict[str, Any]:
         "output": _record(output, job),
         "dimensions": list(packed.size),
         "channel_stats": _channel_stats(packed),
+        "recipe": normal_recipe,
     }
     report_path = job / "blender" / "reports" / "pdx_normal_pack.json"
     report_path.parent.mkdir(parents=True, exist_ok=True)

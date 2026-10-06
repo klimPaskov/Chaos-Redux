@@ -811,15 +811,17 @@ For every firearm-bearing unit, including existing firearm models, prepare exact
 
 For every firing runtime state, the 3D handoff must identify the exact discharge frame/time and verified muzzle or weapon locator/node, plus the matching particle/beam/muzzle effect, light where the weapon calls for one, and licensed sourced `soundeffect`. Attack, defend, support_attack, and any other firing state are independent consumers. A silent or particleless firing state is incomplete, and an unrelated vanilla weapon family must not be silently reused. The 3D worker supplies the action → discharge frame/time → locator/node → particle/light → soundeffect → source/license → runtime entity consumer → evidence/status crosswalk. The parent owns final entity, particle, sound-definition, and runtime wiring. Non-firing armed actions do not require particles or gunshot audio merely because the unit is armed.
 
+Model texture delivery uses the shared `.tools/3d_pipeline/textures/` BC1/BC3 full-mip contract in `chaos-redux-3d-model-pipeline`, with active `.gfx` texture overrides and hash-bound UV/material masks; the legacy uncompressed 2D DDS recipe below does not apply. Sourced unit audio uses `.tools/3d_pipeline/audio/master.py` and retains exact source/derivative attribution and hashes. Delivered-byte decoding or a geometry-only native reimport checkpoint is bounded evidence, not rendered material, deformation, audio-playback, or live-game acceptance.
+
 The asset worker owns source files, checkpoints, processed textures, previews, exports, manifests, reports, reimport evidence, and a runtime handoff. The main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, final runtime synchronization, and evidence review. The user supplies in-game screenshots and performs live consumer validation.
 
 ## Processing and installation
 
 ### DDS conversion
 
-Final PNG assets must be converted to DDS using the repository's standard DDS conversion workflow. The converter lives only at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
+Final 2D PNG assets must be converted to DDS using the repository's standard 2D DDS conversion workflow. Model textures follow the separate compressed full-mip contract in [3D model package handoff](#3d-model-package-handoff). The converter lives only at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
 
-The output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
+For these 2D assets, the output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
 Run the bundled converter from the mod root:
 
@@ -827,7 +829,7 @@ Run the bundled converter from the mod root:
 python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <processed.png> --output <final.dds> [--width <pixels> --height <pixels>]
 ```
 
-If a retained custom mechanical processor must write uncompressed BGRA DDS directly, mirror that converter's `write_bgra_dds` layout exactly instead of inventing another header layout.
+If a retained custom 2D mechanical processor must write uncompressed BGRA DDS directly, mirror that converter's `write_bgra_dds` layout exactly instead of inventing another header layout.
 
 For a standard legacy, one-level, uncompressed BGRA DDS, require all of the following:
 

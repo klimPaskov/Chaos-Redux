@@ -105,7 +105,7 @@ class BlenderAdapterClient:
         texture_source_rels: Optional[Dict[str, str]] = None,
         preserve_geometry_topology: bool = False,
         repair_before_reduction: bool = False,
-        topology_weld_distance: float = 1e-5,
+        topology_weld_distance: float = 1e-3,
         max_runtime_footprint_m: Optional[float] = None,
         runtime_footprint_policy: str = "reject",
     ) -> Dict[str, Any]:
@@ -138,6 +138,7 @@ class BlenderAdapterClient:
         rewrite_to_dds: bool = False,
         dds_map: Optional[Dict[str, str]] = None,
         rename_images: bool = False,
+        texture_roles: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_process_textures",
@@ -147,6 +148,7 @@ class BlenderAdapterClient:
                 "rewrite_to_dds": rewrite_to_dds,
                 "dds_map": dds_map or {},
                 "rename_images": rename_images,
+                "texture_roles": texture_roles or {},
             },
         )
 
@@ -327,6 +329,10 @@ class BlenderAdapterClient:
         mesh_rel: str,
         anim_rel: str = "",
         proof_name: str = "",
+        stage_default_textures: bool = True,
+        preview_views: Optional[list[str]] = None,
+        expected_mesh_sha256: str = "",
+        expected_anim_sha256: str = "",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_reimport_export",
@@ -335,6 +341,10 @@ class BlenderAdapterClient:
                 "mesh_rel": mesh_rel,
                 "anim_rel": anim_rel,
                 "proof_name": proof_name,
+                "stage_default_textures": stage_default_textures,
+                "preview_views": preview_views,
+                "expected_mesh_sha256": expected_mesh_sha256,
+                "expected_anim_sha256": expected_anim_sha256,
             },
         )
 

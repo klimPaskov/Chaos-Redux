@@ -1,5 +1,64 @@
 # Chaos Redux autonomous 3D model pipeline
 
+## Shared unit delivery and acceptance tools
+
+The unit delivery route uses adapter 1.11.0 and the installed Python executable recorded in `config/texture_delivery.json` for Pillow/NumPy work.
+The adapter's isolated environment remains separate from that image-processing interpreter.
+`BlenderAdapterClient` starts a fresh stdio MCP wrapper per call, so new optional arguments are negotiated from the current checked-in schema.
+`adapter/worker_lock.py` holds an OS file lock while each factory-startup background Blender worker runs and releases it on exit or failure.
+No desktop window is opened by this route.
+
+| Tool | Purpose and contract |
+|---|---|
+| `runtime/inventory.py --output <json>` | Resolve active `.gfx` and `.asset` consumers, clone inheritance, installed mesh material names, action files, unit and selection audio, hashes, and globally unused files. |
+| `runtime/pdx_reader.py` | Read the locked installed binary parser without importing Blender; report the parser source hash. Vanilla `@@t@` text animations remain an explicit parser gap. |
+| `runtime/clausewitz.py` | Read asset blocks while preserving repeated keys, source lines, comments and quoted strings. Malformed input fails explicitly. |
+| `runtime/uv_masks.py --inventory <json> --output <dir>` | Rasterize actual installed UV triangles into per-consumer occupancy masks, including neighbouring wrapped tiles; never infer islands from dark pixels. |
+| `runtime/installed_audit.py --inventory <json> --output <dir>` | Decode installed geometry and every registered action, combine material streams per logical object, measure local and hierarchy-composed motion, and write hash-bound motion-peak tables. |
+| `runtime/entity_lint.py --inventory <json> --motion <json> --output <json>` | Resolve particle lifetimes and sound samples, check stacking, overlap, repeated-state logic, firing coverage and measured contact-peak offsets. A motion peak is a proxy; authored contact markers are separate evidence. |
+| `runtime/reimport_runtime.py --inventory <json> --crosswalk <json> --output <json>` | Archive exact installed meshes/maps, perform serialized native Blender reimports, and retain checkpoint hashes. Empty preview lists establish geometry/skeleton import only, with visual/material acceptance explicitly pending. |
+| `runtime/cleanup_runtime.py --output <dir> [--execute]` | Archive and delete only byte-matched unit binaries unused by global active consumers and embedded mesh references; default is read-only. |
+| `runtime/texture_batch.py prepare/convert/install --output <dir>` | Build the shared DDS request from actual consumer roles and masks, stage once, verify decoded pixels and every mip, then perform explicit CAS installation. `convert` and `install` need `--execute`. |
+| `runtime/accept_texture_repair.py --manifest <json> --proof <json>` | Independently re-encode a reviewed, isolated failed mip and reconcile its exact QA paths without rerunning the batch or relaxing thresholds. |
+| `textures/cli.py prepare/convert/install/resolve-mask` | General hash-bound texture batch CLI, described in `textures/README.md`. |
+| `textures/bc_codec.py`, `dds.py`, `atlas.py` | Native source-derived BC1/BC3 endpoint fitting, complete legacy DDS parsing and mip decoding, and masked gutter dilation. They create no texture detail. |
+| `textures/conventions.py` | Explicit cloth/skin/leather/steel/stone/fur recipes from provider maps and class masks; RRxG normal packing and G/A-preserving packed-map cleanup. |
+| `textures/checkpoint_delivery.py` | Deliver extracted native checkpoint textures with their measured UVs and explicit/native-connected texture roles through BC/mip QA. |
+| `textures/single_map.py` | Deliver an already-authored packed map through the same masked BC/mip gates, including the pilot runner's grading and final map steps. |
+| `review/pdx_textures.py` | Provider PBR conversion with source-adjacent `material_classes.json`; no flat-G recipe, no raw RGBA DDS route, no source upscaling. |
+| `audio/master.py inspect/audit-tree/batch` | Source-only recording analysis, mastering, duplicate/take/attribution coverage, and staging; see `audio/README.md` for exact schemas, role targets, recovery limits and commands. |
+| `audio/metrics.py`, `inventory.py` | Codec, sample, DC, spectral, lead, RMS/LUFS/true-peak and loop-edge measurements, source hashes, family pools and cue coverage. |
+| `runtime/audio_allowlist.py --inventory <json> --output <json>` | Produce a parent-reviewed list of existing recordings and originating attribution rows; ignored archives are searched, while the new audit's own files are excluded as source evidence. |
+| `runtime/install_audio.py --batch <json> --provenance <json> --output <dir> [--execute]` | Promote only passing, licensed, byte-matched candidates; retain exact preimages and provenance. This is mastering acceptance, not sound-package acceptance. |
+| `adapter/geometry_delivery_checks.py` | Report winding, duplicates, open/non-manifold topology and normal splits despite ambiguous islands; topology is inspected jointly across each object's streams. |
+| `adapter/animation_delivery_checks.py` | Inspect decoded local/world motion, quaternion signs, loop seams, root travel and measured sole plants; negate only existing aligned quaternion keys/handles, never add skeletal keys. |
+| `adapter/delivery_policy.py` | Resolve declared job/action policies and read real native hierarchy and evaluated foot/toe sole geometry. Unknown or weak contact regions remain unmeasured. |
+| `runtime/footstep_proposals.py --report <json> --cue <id> --output <json>` | Emit exact event times only from certain measured plants, with the action hash; never create skeletal motion or edit an entity silently. |
+
+Unit diffuse maps use BC1 unless meaningful alpha requires BC3; normal and specular maps use BC3.
+The default is 512 with every mip through 1×1, no source upscaling, 8–16 pixel occupancy-based padding, and an explicit atlas justification for 1024.
+Compression-only updates retain pre-existing material defects as unresolved diagnostics rather than claiming full model acceptance.
+Provider specular conversion requires an explicit steel mask, even when empty, and class/UV masks in `material_classes.json` beside the source roughness map.
+Its schema is `{"classes":{"cloth":"cloth.png","steel":"steel.png"},"occupancy":"uv_occupancy.png"}`; masks have the source dimensions and all paths remain inside the approved job.
+Normal cleanup preserves existing G/A when source tangent handedness is not proven, mirrors G into R, zeros unused B, and uses flat padding.
+Reconstructing missing normal detail or changing material identity requires source-backed package work.
+
+Before unit mesh export, bounded preparation welds at the declared 0.0005–0.002 scale, fills only simple loops of at most eight sides, removes duplicate faces, recalculates normals, and uses native face-angle smoothing at 60° or 45° for named firearm components.
+Provider intake refuses 200 or more boundary edges after repair and before reduction.
+Exports must have clean logical-object topology and zero winding flips; failed candidates remain outside runtime with evidence.
+Every action export and retime preflights existing quaternion curves and enforces sign continuity without creating keys.
+`validation/animation_delivery_policy.json` can declare an exact checkpoint SHA, semantic role, loop behavior, humanoid status and bounded strike-frame windows under an `actions` mapping keyed by the literal action name.
+Default non-death roles conservatively require a closed loop and in-place horizontal root travel; real pose/root corrections belong to live Blender authoring.
+Move/retreat event proposals require measured sole contacts; unknown stride evidence cannot pass.
+
+The legacy `review/lab_items.py` production entry accepts an existing live-authored assembly using `existing_object`, `bone`, `axis_ends_bone_space` and `head_bone_local` per item.
+It preserves independent body/item UVs and material consumers rather than squeezing props into a shared quarter-height strip, and it performs no automatic skinning, aim-key or floor-key authoring.
+Every emitted material stream still needs its own parent-owned `meshsettings` registration.
+
+Recorded-sample mastering may trim, fade, EQ, mix recorded head/tail edges and limit existing recordings; it never creates tones, noise, rigs, weights or skeletal motion.
+Format/level fixes do not establish distinct takes, correct voice identity, loop-state wiring or weapon synchronization.
+Undeclared duplicate sources, single-sample cues, source gaps and semantic/state defects remain in package acceptance reports.
+
 This repository-owned package runs the bounded path:
 
 ~~~text
@@ -215,7 +274,7 @@ Repair or reject holes, loose components, non-manifold edges, and degenerate geo
 
 Use the verified PDX material mapping and packed specular channels, and never use a raw grayscale roughness map as the PDX specular map.
 
-Keep model textures within the verified runtime dimension budget, which is `1024` pixels for the current pilot surface.
+Keep model textures within the verified consumer budget: 512 is the unit default, while a necessary 1024 atlas needs an explicit justification.
 
 If the provider diffuse is too dark, derive a documented deterministic grade from the immutable provider base and rebuild the derivative from that base rather than compounding edits.
 

@@ -66,10 +66,10 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
         faces.append(face)
         for a, b in zip(face, face[1:] + face[:1]):
             edges[tuple(sorted((a, b)))].append((index, a, b))
-    if any(len(rows) > 2 for rows in edges.values()):
-        raise ValueError("Non-manifold positional edges are ambiguous for orientation repair.")
     adjacency = [[] for _ in faces]
     boundary_by_face = defaultdict(list)
+    nonmanifold_by_face = defaultdict(list)
+    nonmanifold_edges = []
     same = opposed = 0
     for rows in edges.values():
         if len(rows) == 1:
@@ -82,6 +82,20 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
             opposed += 1 - parity
             adjacency[left[0]].append((right[0], parity))
             adjacency[right[0]].append((left[0], parity))
+        if len(rows) > 2:
+            edge_key = tuple(sorted(rows[0][1:]))
+            record = {"positional_edge": [list(welded[v]) for v in edge_key],
+                      "incident_face_indices": [row[0] for row in rows],
+                      "incident_face_count": len(rows)}
+            nonmanifold_edges.append(record)
+            for row in rows:
+                nonmanifold_by_face[row[0]].append(record)
+            # Connect every incident face for island reporting, but do not
+            # invent an orientation parity across an ambiguous edge.
+            anchor = rows[0][0]
+            for row in rows[1:]:
+                adjacency[anchor].append((row[0], None))
+                adjacency[row[0]].append((anchor, None))
     assigned, components, flips = {}, [], []
     ambiguous = []
     for seed in range(len(faces)):
@@ -93,6 +107,11 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
             current = queue.popleft()
             group.append(current)
             for neighbor, parity in adjacency[current]:
+                if parity is None:
+                    if neighbor not in assigned:
+                        assigned[neighbor] = 0
+                        queue.append(neighbor)
+                    continue
                 wanted = assigned[current] ^ parity
                 if neighbor in assigned and assigned[neighbor] != wanted:
                     contradictions.add(tuple(sorted((current, neighbor))))
@@ -104,8 +123,24 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
         low = [min(welded[v][axis] for v in used) for axis in range(3)]
         high = [max(welded[v][axis] for v in used) for axis in range(3)]
         center = tuple((a+b)/2 for a, b in zip(low, high))
-        volume = sum(_dot(_sub(welded[f[0]], center), _cross(_sub(welded[f[1]], center), _sub(welded[f[2]], center))) / 6 for f in oriented.values())
         area = sum(_area(*(welded[v] for v in f)) for f in oriented.values())
+        component_nonmanifold = sorted({id(edge): edge for face_id in group for edge in nonmanifold_by_face[face_id]}.values(), key=lambda row: tuple(row["incident_face_indices"]))
+        if component_nonmanifold:
+            component = {"component": len(components), "triangles": len(group), "positional_vertices": len(used),
+                         "boundary_edges": sum(len(boundary_by_face[face_id]) for face_id in group),
+                         "boundary_loop_lengths": [], "surface_area": area, "virtual_cap_area": None,
+                         "virtual_cap_area_ratio": None, "virtual_closed_signed_volume_before_outward_choice": None,
+                         "orientation_basis": "unavailable_nonmanifold_positional_edges",
+                         "ambiguous_reasons": ["non_manifold_positional_edges"],
+                         "orientation_conflict_count": len(contradictions),
+                         "orientation_conflict_examples": [{"face_indices": list(pair), "shared_positions": [list(welded[v]) for v in sorted(set(faces[pair[0]]) & set(faces[pair[1]]))]} for pair in sorted(contradictions)[:16]],
+                         "face_index_preview": group[:32], "face_indices_truncated": len(group) > 32,
+                         "non_manifold_edges": component_nonmanifold[:64],
+                         "non_manifold_edges_truncated": len(component_nonmanifold) > 64}
+            ambiguous.append(component["component"])
+            components.append(component)
+            continue
+        volume = sum(_dot(_sub(welded[f[0]], center), _cross(_sub(welded[f[1]], center), _sub(welded[f[2]], center))) / 6 for f in oriented.values())
         boundary = []
         for face_id in group:
             for a, b in boundary_by_face[face_id]:
@@ -143,7 +178,7 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
         diagonal = math.sqrt(sum((a-b)**2 for a, b in zip(low, high)))
         if abs(enclosed_volume) <= max(1e-12, diagonal**3 * 1e-10):
             reasons.append("zero_or_numerically_ambiguous_enclosed_volume")
-        component = {"component": len(components), "triangles": len(group), "positional_vertices": len(used), "boundary_edges": len(boundary), "boundary_loop_lengths": [len(loop) for loop in loops], "surface_area": area, "virtual_cap_area": cap_area, "virtual_cap_area_ratio": cap_area/area, "virtual_closed_signed_volume_before_outward_choice": enclosed_volume, "orientation_basis": "closed_signed_volume" if not boundary else "tiny_boundary_virtual_caps_for_diagnostic_signed_volume_only", "ambiguous_reasons": reasons, "orientation_conflict_count": len(contradictions), "orientation_conflict_examples": [{"face_indices": list(pair), "shared_positions": [list(welded[v]) for v in sorted(set(faces[pair[0]]) & set(faces[pair[1]]))]} for pair in sorted(contradictions)[:16]]}
+        component = {"component": len(components), "triangles": len(group), "positional_vertices": len(used), "boundary_edges": len(boundary), "boundary_loop_lengths": [len(loop) for loop in loops], "surface_area": area, "virtual_cap_area": cap_area, "virtual_cap_area_ratio": cap_area/area, "virtual_closed_signed_volume_before_outward_choice": enclosed_volume, "orientation_basis": "closed_signed_volume" if not boundary else "tiny_boundary_virtual_caps_for_diagnostic_signed_volume_only", "ambiguous_reasons": reasons, "orientation_conflict_count": len(contradictions), "orientation_conflict_examples": [{"face_indices": list(pair), "shared_positions": [list(welded[v]) for v in sorted(set(faces[pair[0]]) & set(faces[pair[1]]))]} for pair in sorted(contradictions)[:16]], "face_index_preview": group[:32], "face_indices_truncated": len(group) > 32}
         if reasons:
             ambiguous.append(component["component"])
         else:
@@ -152,7 +187,9 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
             flips.extend(chosen)
             component.update(reversed_triangles=len(chosen), final_virtual_closed_volume=abs(enclosed_volume))
         components.append(component)
-    return {"status": "blocked" if ambiguous else "pass", "policy": "coherent_outward_component_orientation; no final weld or virtual caps retained", "adjacency_mode": adjacency_mode, "vertices": len(positions), "exact_positional_vertices": exact_position_count, "triangles": len(faces), "edges": len(edges), "boundary_edges": sum(len(rows) == 1 for rows in edges.values()), "same_direction_shared_edges_before": same, "opposed_shared_edges_before": opposed, "components": components, "ambiguous_components": ambiguous, "flip_face_indices": sorted(flips)}
+    boundary_edge_count = sum(len(rows) == 1 for rows in edges.values())
+    nonmanifold_face_indices = sorted(nonmanifold_by_face)
+    return {"status": "blocked" if ambiguous else "pass", "policy": "coherent_outward_component_orientation; nonmanifold islands reported without orientation parity; no final weld or virtual caps retained", "adjacency_mode": adjacency_mode, "vertices": len(positions), "exact_positional_vertices": exact_position_count, "triangles": len(faces), "edges": len(edges), "boundary_edges": boundary_edge_count, "non_manifold_edge_count": len(nonmanifold_edges), "non_manifold_face_count": len(nonmanifold_face_indices), "non_manifold_face_indices_preview": nonmanifold_face_indices[:64], "non_manifold_face_indices_truncated": len(nonmanifold_face_indices) > 64, "non_manifold_edges": nonmanifold_edges[:64], "non_manifold_edges_truncated": len(nonmanifold_edges) > 64, "same_direction_shared_edges_before": same, "opposed_shared_edges_before": opposed, "components": components, "ambiguous_components": ambiguous, "flip_face_indices": sorted(flips)}
 
 
 def inspect_mesh_winding(req, api):

@@ -74,6 +74,18 @@ class WindingPlanner(unittest.TestCase):
         self.assertIn("component_is_not_coherently_orientable",result["components"][0]["ambiguous_reasons"])
         self.assertGreater(result["components"][0]["orientation_conflict_count"],0)
 
+    def test_nonmanifold_positional_edge_returns_island_evidence_and_no_plan(self):
+        positions = [(0.,0.,0.), (1.,0.,0.), (0.,1.,0.), (0.,-1.,0.), (0.,0.,1.)]
+        faces = [(0,1,2), (1,0,3), (0,1,4)]
+        result = repair.plan_consistent_outward_winding(positions, faces)
+        self.assertEqual(result["status"], "blocked")
+        self.assertEqual(result["non_manifold_edge_count"], 1)
+        self.assertEqual(result["non_manifold_face_count"], 3)
+        self.assertEqual(result["components"][0]["triangles"], 3)
+        self.assertIn("non_manifold_positional_edges", result["components"][0]["ambiguous_reasons"])
+        self.assertIsNone(result["components"][0]["virtual_closed_signed_volume_before_outward_choice"])
+        self.assertEqual(result["flip_face_indices"], [])
+
     def test_native_entry_never_welds_adds_deletes_or_disables_culling(self):
         source = MODULE.read_text(encoding="utf-8")
         tree = ast.parse(source)

@@ -54,11 +54,15 @@ def make_provider_fbx(path: Path) -> None:
         [
             (-20.0, -10.0, 0.0),
             (20.0, -10.0, 0.0),
+            (20.0, 10.0, 0.0),
+            (-20.0, 10.0, 0.0),
+            (-20.0, -10.0, local_height),
+            (20.0, -10.0, local_height),
             (20.0, 10.0, local_height),
             (-20.0, 10.0, local_height),
         ],
         [],
-        [(0, 1, 2, 3)],
+        [(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)],
     )
     mesh = bpy.data.objects.new("ProviderMesh", mesh_data)
     bpy.context.scene.collection.objects.link(mesh)
@@ -68,13 +72,14 @@ def make_provider_fbx(path: Path) -> None:
     modifier = mesh.modifiers.new("ProviderArmature", "ARMATURE")
     modifier.object = rig
     group = mesh.vertex_groups.new(name="Hips")
-    group.add([0, 1, 2, 3], 1.0, "REPLACE")
+    group.add(list(range(8)), 1.0, "REPLACE")
     material = bpy.data.materials.new("ProviderMaterial")
     material.use_nodes = True
     mesh.data.materials.append(material)
 
     accessory_data = bpy.data.meshes.new("AccessoryData")
-    accessory_data.from_pydata([(0.0, 0.0, 20.0), (5.0, 0.0, 20.0), (0.0, 5.0, 20.0)], [], [(0, 1, 2)])
+    accessory_data.from_pydata([(0.0, 0.0, 20.0), (5.0, 0.0, 20.0), (0.0, 5.0, 20.0), (0.0, 0.0, 24.0)],
+                              [], [(0, 2, 1), (0, 1, 3), (0, 3, 2), (1, 2, 3)])
     accessory = bpy.data.objects.new("AccessoryMesh", accessory_data)
     bpy.context.scene.collection.objects.link(accessory)
     accessory.parent = rig
@@ -125,6 +130,7 @@ def main() -> None:
         (job / "blender" / "reports").mkdir(parents=True)
         make_provider_fbx(source)
         pdx = blender_worker.load_pdx(io_pdx_root)
+        (job / 'job.yaml').write_text('profile: humanoid_unit\n', encoding='utf-8')
         result = blender_worker.prepare(
             {
                 "job_root": str(job),
@@ -203,8 +209,10 @@ def main() -> None:
         assert coordinate_checkpoint["action_provenance"]["source_sha256"] == "A" * 64
 
         mesh_output = job / "export" / "mesh" / "synthetic.mesh"
-        export = blender_worker.export_mesh(
+        try:
+            export = blender_worker.export_mesh(
             {
+                "job_id": "normalization_fixture",
                 "job_root": str(job),
                 "io_pdx_root": io_pdx_root,
                 "payload": {
@@ -213,8 +221,13 @@ def main() -> None:
                     "split_verts": False,
                 },
             },
-            pdx,
-        )
+                pdx,
+            )
+        except RuntimeError:
+            report = mesh_output.with_suffix('.delivery.json')
+            if report.exists():
+                print('DELIVERY_GATE_FIXTURE_DIAGNOSTIC', report.read_text(encoding='utf-8'))
+            raise
         assert mesh_output.is_file()
         assert all(math.isclose(component, 1.0, abs_tol=1e-6) for component in export["export_transforms"]["armature_world_scale_after"])
         reset_scene()

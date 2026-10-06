@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 import os
 import sys
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 import unittest
 from pathlib import Path
 

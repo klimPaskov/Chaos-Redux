@@ -1,87 +1,81 @@
-"""Convert Meshy PBR texture downloads into HOI4 PdxMeshAdvanced DDS maps.
+"""Deliver provider PBR maps as masked PDX BC1/BC3 mipmapped DDS.
 
-Inputs are the provider files saved beside a download (base_color.png, metallic.png,
-roughness.png, normal.png). The asset profile in config/asset_profiles.json supplies the
-texture size, the runtime diffuse gamma, and the specular packing; nothing is hardcoded.
-
-Outputs in --out-dir:
-  <stem>_diffuse.dds   RGB graded by the profile gamma (lifts provider-dark cloth), alpha kept
-  <stem>_specular.dds  R=0, G=profile specular level, B=metallic, A=255-roughness (glossiness)
-  <stem>_normal.dds    PDX "RRxG" layout: R=0, G=normal.R (tangent X), B=0, A=normal.G (tangent Y)
-  <stem>_textures_manifest.json with source/output hashes and the transforms applied
-
-DDS files are uncompressed BGRA with one mip, produced by the event-asset converter
-(.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py), matching the project's
-other unit models.
-
-Usage:
-  python .tools/3d_pipeline/review/pdx_textures.py --textures <dir> --out-dir <dir> --stem chaosx_zombies [--profile humanoid_unit]
+Require source-adjacent material_classes.json with explicit classes and UV
+occupancy; retain originals, default to 512, and never enlarge source maps.
 """
 import argparse
 import hashlib
 import json
-import subprocess
-import sys
 from pathlib import Path
+import sys
+import uuid
+from PIL import Image
 
-from PIL import Image, ImageOps
-
-HERE = Path(__file__).resolve().parent
-PIPE = HERE.parent
-MOD = PIPE.parent.parent
-CONVERTER = MOD / ".agents" / "skills" / "chaos-redux-event-assets" / "tools" / "convert_to_dds.py"
-
-
-def digest(path):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest().upper()
+PIPE = Path(__file__).resolve().parents[1]
+MOD = PIPE.parents[1]
+sys.path.insert(0, str(PIPE))
+from pack_pdx_material import pack_pdx_specular_channels, pack_pdx_normal_map
+from textures.delivery import prepare_batch, convert_batch, install_batch
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--textures", required=True)
-    p.add_argument("--out-dir", required=True)
-    p.add_argument("--stem", required=True)
-    p.add_argument("--profile", default="humanoid_unit")
-    p.add_argument("--gamma", type=float, help="override the profile runtime_diffuse_gamma")
-    a = p.parse_args()
+    cli = argparse.ArgumentParser(description=__doc__)
+    cli.add_argument('--textures', type=Path, required=True)
+    cli.add_argument('--out-dir', type=Path, required=True)
+    cli.add_argument('--stem', required=True)
+    cli.add_argument('--profile', default='humanoid_unit')
+    cli.add_argument('--gamma', type=float)
+    cli.add_argument('--size', type=int, choices=(128, 256, 512, 1024), default=512)
+    cli.add_argument('--size-justification')
+    args = cli.parse_args()
+    source, out = args.textures.resolve(), args.out_dir.resolve()
+    source.relative_to(MOD)
+    out.relative_to(MOD)
+    if args.size == 1024 and not args.size_justification:
+        raise ValueError('1024 delivery requires an atlas justification')
+    profiles = json.loads((PIPE / 'config/asset_profiles.json').read_text(encoding='utf-8'))['profiles']
+    gamma = args.gamma if args.gamma is not None else float(profiles[args.profile].get('runtime_diffuse_gamma', 1))
+    classes = json.loads((source / 'material_classes.json').read_text(encoding='utf-8-sig'))
+    mask = source / classes['occupancy']
+    out.mkdir(parents=True, exist_ok=True)
+    work = out / ('source_' + uuid.uuid4().hex[:10])
+    work.mkdir()
+    with Image.open(source / 'base_color.png') as image:
+        rgba = image.convert('RGBA')
+        lut = [round(255 * (value / 255) ** gamma) for value in range(256)]
+        r, g, b, a = rgba.split()
+        diffuse = Image.merge('RGBA', (r.point(lut), g.point(lut), b.point(lut), a))
+        diffuse_path = work / 'diffuse.png'
+        diffuse.save(diffuse_path)
+    specular_path = work / 'specular.png'
+    specular = pack_pdx_specular_channels(MOD, (source / 'metallic.png').relative_to(MOD).as_posix(),
+        (source / 'roughness.png').relative_to(MOD).as_posix(), specular_path.relative_to(MOD).as_posix())
+    normal = pack_pdx_normal_map(MOD, (source / 'normal.png').relative_to(MOD).as_posix())
+    normal_path = MOD / normal['output']['path']
+    request = {'batch_id': 'pbr_' + uuid.uuid4().hex[:10], 'items': []}
+    for role, path in [('diffuse', diffuse_path), ('specular', specular_path), ('normal', normal_path)]:
+        with Image.open(path) as image:
+            size = min(args.size, image.width, image.height)
+        request['items'].append({'id': role, 'source_rel': path.relative_to(MOD).as_posix(),
+            'target_rel': (out / (args.stem + '_' + role + '.dds')).relative_to(MOD).as_posix(),
+            'occupancy_mask_rel': mask.relative_to(MOD).as_posix(), 'role': role, 'size': size,
+            'size_justification': args.size_justification, 'dilation_px': 12,
+            'conversion_scope': 'packed_normal_cleanup' if role == 'normal' else 'compression_only'})
+    request_path, manifest = work / 'request.json', work / 'delivery.json'
+    request_path.write_text(json.dumps(request, indent=2) + '\n', encoding='utf-8')
+    prepare_batch(MOD, request_path, work / 'stage', manifest)
+    converted = convert_batch(MOD, manifest, execute=True)
+    if not converted['install']['install_eligible']:
+        raise RuntimeError('Provider map delivery refused quality; inspect ' + str(manifest))
+    result = install_batch(MOD, manifest, execute=True)
+    record = {'delivery_manifest': manifest.relative_to(MOD).as_posix(), 'profile': args.profile,
+              'diffuse_gamma': gamma, 'size_requested': args.size, 'specular_recipe': specular,
+              'normal_recipe': normal, 'state': result['state'],
+              'sources': {name: hashlib.sha256((source / name).read_bytes()).hexdigest()
+                          for name in ('base_color.png', 'roughness.png', 'metallic.png', 'normal.png')}}
+    (out / (args.stem + '_textures_manifest.json')).write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'state': result['state'], 'manifest': str(manifest)}))
 
-    profile = json.loads((PIPE / "config" / "asset_profiles.json").read_text(encoding="utf-8"))["profiles"][a.profile]
-    size = int(profile.get("texture_max_dimension", 1024))
-    gamma = a.gamma if a.gamma is not None else float(profile.get("runtime_diffuse_gamma", 1.0))
-    spec_level = int(profile["materials"]["specular_packing"]["green"])
-    src = Path(a.textures)
-    out = Path(a.out_dir)
-    work = out / "png"
-    work.mkdir(parents=True, exist_ok=True)
 
-    def load(name, mode):
-        img = Image.open(src / name).convert(mode)
-        return img.resize((size, size), Image.Resampling.LANCZOS) if img.size != (size, size) else img
-
-    base = load("base_color.png", "RGBA")
-    lut = [int(round(255.0 * ((v / 255.0) ** gamma))) for v in range(256)]
-    r, g, b, alpha = base.split()
-    diffuse = Image.merge("RGBA", (r.point(lut), g.point(lut), b.point(lut), alpha))
-    metal = load("metallic.png", "L")
-    rough = load("roughness.png", "L")
-    zero = Image.new("L", (size, size), 0)
-    specular = Image.merge("RGBA", (zero, Image.new("L", (size, size), spec_level), metal, ImageOps.invert(rough)))
-    normal_src = load("normal.png", "RGBA")
-    normal = Image.merge("RGBA", (zero, normal_src.getchannel("R"), zero, normal_src.getchannel("G")))
-
-    record = {"profile": a.profile, "size": size, "diffuse_gamma": gamma, "specular_level": spec_level,
-              "sources": {n: digest(src / n) for n in ("base_color.png", "metallic.png", "roughness.png", "normal.png")},
-              "outputs": {}}
-    for role, img in (("diffuse", diffuse), ("specular", specular), ("normal", normal)):
-        png = work / f"{a.stem}_{role}.png"
-        img.save(png)
-        dds = out / f"{a.stem}_{role}.dds"
-        subprocess.run([sys.executable, str(CONVERTER), "--input", str(png), "--output", str(dds), "--width", str(size), "--height", str(size)],
-                       check=True, capture_output=True)
-        record["outputs"][role] = {"dds": dds.name, "sha256": digest(dds), "bytes": dds.stat().st_size}
-    (out / f"{a.stem}_textures_manifest.json").write_text(json.dumps(record, indent=1), encoding="utf-8")
-    print(json.dumps(record["outputs"]))
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

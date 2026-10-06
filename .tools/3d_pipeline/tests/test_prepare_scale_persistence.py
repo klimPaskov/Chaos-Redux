@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -11,6 +12,8 @@ from pathlib import Path
 PIPELINE_ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = PIPELINE_ROOT.parents[1]
 TARGET_HEIGHT = 7.351824
+sys.path.insert(0, str(PIPELINE_ROOT / 'adapter'))
+from worker_lock import blender_worker_lock
 
 
 class PrepareScalePersistenceTests(unittest.TestCase):
@@ -18,14 +21,11 @@ class PrepareScalePersistenceTests(unittest.TestCase):
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         blender = Path(config["blender_executable"])
         integration = PIPELINE_ROOT / "tests" / "blender_prepare_scale_persistence_integration.py"
-        result = subprocess.run(
-            [str(blender), "--background", "--factory-startup", "--python", str(integration)],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=180,
-            check=False,
-        )
+        with blender_worker_lock(PIPELINE_ROOT / 'staging'):
+            result = subprocess.run(
+                [str(blender), "--background", "--factory-startup", "--python", str(integration)],
+                cwd=REPO_ROOT, capture_output=True, text=True, timeout=180, check=False,
+            )
         self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
         self.assertNotIn("Traceback", result.stdout + result.stderr)
         proof = next(
