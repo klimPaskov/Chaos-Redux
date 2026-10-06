@@ -1,11 +1,13 @@
 {
   "status": "passed",
-  "cases": 20,
+  "cases": 28,
   "sourceHashes": {
     "common/scripted_effects/cbrn_exposure_effects.txt": "3112e6b2d976f592d714eced13440871ea1a8214d945d646672b6853335c3580",
     "common/scripted_effects/cbrn_chemical_state_effects.txt": "1873d29b193023e5121273376ac28af0119f91a0c11e4a7eb0e4b2a5ac063f40",
     "common/scripted_effects/cbrn_doctrine_effects.txt": "32f684dc0022b2bc0149a06028ed9a8a158222df8b21630f20102999f4523d18",
-    "common/scripted_effects/cbrn_diplomacy_effects.txt": "c005b6687b816c9fd8d09e1749f289a19239e63335afbd6c19641c7a33ef14d2"
+    "common/scripted_effects/cbrn_diplomacy_effects.txt": "c005b6687b816c9fd8d09e1749f289a19239e63335afbd6c19641c7a33ef14d2",
+    "common/scripted_effects/cbrn_consequence_effects.txt": "43b8546fb77cf3086940020739f8f9f6e29d8dbe513b12b1e1387219f643692b",
+    "common/scripted_effects/chaos_meter_effects.txt": "5d081c81129363dba6960939b6e1d12ede0b637131a5d9a4b09f0728b0bfa8df"
   },
   "baselineSourceHash": "c58431f88ac264308bd39dc788bfbafbbf105229d5abc25bc7b86b019d41dc3e",
   "results": [
@@ -146,11 +148,71 @@
       "after": "old/new outputs allocated before returning helper",
       "before": "no caller allocation",
       "nativeCleanupAmounts": "not simulated"
+    },
+    {
+      "id": "immediate-loss-output-999",
+      "expected": 999,
+      "after": 999,
+      "before": 0,
+      "oldDefectReproduced": true,
+      "nativeLossCalculation": "only first three arithmetic statements modeled"
+    },
+    {
+      "id": "immediate-loss-output-1000",
+      "expected": 1000,
+      "after": 1000,
+      "before": 0,
+      "oldDefectReproduced": true,
+      "nativeLossCalculation": "only first three arithmetic statements modeled"
+    },
+    {
+      "id": "immediate-loss-output-2000",
+      "expected": 2000,
+      "after": 2000,
+      "before": 0,
+      "oldDefectReproduced": true,
+      "nativeLossCalculation": "only first three arithmetic statements modeled"
+    },
+    {
+      "id": "nested-attribution-output-19",
+      "expected": 0,
+      "after": 0,
+      "before": 0,
+      "oldDefectReproduced": false
+    },
+    {
+      "id": "nested-attribution-output-20",
+      "expected": 1,
+      "after": 1,
+      "before": 0,
+      "oldDefectReproduced": true
+    },
+    {
+      "id": "nested-attribution-output-45",
+      "expected": 2,
+      "after": 2,
+      "before": 0,
+      "oldDefectReproduced": true
+    },
+    {
+      "id": "nested-attribution-output-75",
+      "expected": 3,
+      "after": 3,
+      "before": 0,
+      "oldDefectReproduced": true
+    },
+    {
+      "id": "nested-attribution-output-100",
+      "expected": 3,
+      "after": 3,
+      "before": 0,
+      "oldDefectReproduced": true
     }
   ],
   "limitations": [
     "STATE variables are modeled, not native scope execution.",
     "Strict helper frames discard only newly created temporary storage; caller-owned modifications survive.",
-    "Tests exercise actual class/air source fragments and inspect actual cleanup caller allocations; full state delta, global air change and real cleanup totals remain outside the model."
+    "Tests exercise actual class/air/nested-attribution fragments and inspect actual cleanup caller allocations; full state delta, global air change and real cleanup totals remain outside the model.",
+    "Immediate-loss cases narrow the native death helper to its first three actual arithmetic statements; population caps, random multipliers, native death totals and achievement unlock are not simulated."
   ]
 }

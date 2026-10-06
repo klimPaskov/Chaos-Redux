@@ -1329,6 +1329,11 @@ The helper maps the class to the existing Air Cleanliness contribution, without 
 - A caller that reads `cbrn_apply_state_contamination_delta_internal`'s previous or resulting contamination after return must initialize `cbrn_state_previous_contamination_value` and `cbrn_state_new_contamination_value` to `constant:cbrn_math.zero` before invoking it.
 The state-delta helper applies the supplied delta/duration, refreshes the class and state modifier, updates Air Cleanliness and continuing deaths, and records real cleanup for an open nerve episode.
 No price, threshold, cleanup coefficient or timing is changed by these storage requirements.
+- Before consuming `cbrn_apply_state_evidence_delta_internal`'s nested attribution result, initialize `cbrn_state_attribution_output` to `constant:cbrn_attribution_state.unknown`.
+The evidence helper applies its supplied state delta and refreshes the existing suspected/probable/confirmed state, returning the attribution through that ancestor storage.
+- Before consuming `chaos_meter_register_state_civilian_deaths_percent`'s result, initialize `chaos_deaths_change` to `constant:cbrn_math.zero` in its caller.
+The shared native death calculation updates the preallocated result; the CBRN dispatcher copies it into `cbrn_action_civilian_deaths` for the release's nerve episode.
+Both immediate releases and continuing deaths require that storage contract.
 
 Example in STATE scope:
 

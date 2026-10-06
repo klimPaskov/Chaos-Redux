@@ -85,3 +85,13 @@ The earlier term player-triggered distinguished a chosen decision from an automa
 The inherited willingness weights remain six, with no balance change or invented numerical click probability.
 The export title is Audit Mask Shipment, with its recipient retained in the native target flag and tooltip, preventing long country names from overflowing the title.
 The final localisation audit corrects past-versus-current sanctions and contamination, all-country outbreak clearance, repeated nerve-attack protection and when Air protection is measured.
+
+## Final consequence-output review
+
+Disposition: implemented within the two restored achievements' direct dependencies.
+The adversarial review found that immediate chemical losses consumed `chaos_deaths_change` after a returning helper without caller storage, although continuing losses already had storage.
+The dispatch caller now initializes that output before the death helper, so immediate episode losses cannot disappear when the helper returns.
+The same dispatcher initializes `cbrn_state_attribution_output` before the evidence helper and its nested attribution helper.
+This preserves confirmed attribution for the chemical-war requirement instead of relying on newly created nested temporary storage.
+Both changes preserve native loss arithmetic, evidence thresholds, caps and random coefficients.
+The regression extends the actual-source helper-frame cases; its immediate-loss fragment deliberately excludes native caps and random multipliers, and does not claim native achievement execution.
