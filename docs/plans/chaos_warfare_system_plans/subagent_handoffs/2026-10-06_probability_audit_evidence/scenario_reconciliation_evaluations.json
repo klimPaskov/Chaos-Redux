@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0",
+  "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+  "source": {
+    "path": "common/decisions/cbrn_protection_decisions.txt",
+    "rawSha256": "D263E1803A5DBD2B760F78A4F79A29EDFDD910B770B79A78600220327AFDC790",
+    "probabilitySourceHash": "c1d7aeb94f5957bfcbbc66a7229715717212678f2be066d46d32a2c5e7da5a56",
+    "probabilitySourceRevision": "2302f4b9cfa4780a8fad038ec71a49120b67c0122fc63529bc7978a0644ed0a3"
+  },
+  "adapter": "decision_ai_will_do",
+  "candidatePool": [
+    "cbrn_reconcile_occupied_mask_records",
+    "cbrn_reconcile_export_shipment_records"
+  ],
+  "candidatePoolCompleteness": "Complete for the two named reconciliation definitions only; incomplete for the decision category, all state/country target choices, and engine selection cadence. The adapter is score-only and does not require or produce a normalized probability.",
+  "scenarioSets": [
+    {
+      "id": "CBRN_RECONCILIATION_2026_10_06",
+      "scenarioHash": "a2c769dcd542e10997bc48ba8ebd5b872648c1806f66ed98ef1b00b2aaac95bf",
+      "analysisId": "probability-142e8150dc0301ebe1cb4b62",
+      "bindingNote": "First pass omitted scopes.ROOT duplication. Preserve as a failed fixture and do not use its eligibility results.",
+      "scenarioIds": [
+        "NW_1936_NO_STOCKS_NO_WAR",
+        "OCC_REFUND_PENDING",
+        "EXP_REFUND_PENDING",
+        "OCC_AND_EXP_REFUNDS_PENDING",
+        "OCC_REFUND_PENDING_ACTIVE_PROGRAM"
+      ]
+    },
+    {
+      "id": "CBRN_RECONCILIATION_BOUND_2026_10_06",
+      "scenarioHash": "a30d92885289c775bebca35a306b92de75c6a61812d316365c2911a2f364697b",
+      "analysisId": "probability-ed49ad87705460a5b55fcd01",
+      "scenarioIds": [
+        "NW_1936_NO_STOCKS_NO_WAR",
+        "OCC_REFUND_PENDING",
+        "EXP_REFUND_PENDING",
+        "OCC_AND_EXP_REFUNDS_PENDING",
+        "OCC_PENDING_ACTIVE_PROGRAM",
+        "EXP_STALE_RECEIPT_NO_RECOVERY_FLAG"
+      ],
+      "scenarios": [
+        {
+          "id": "NW_1936_NO_STOCKS_NO_WAR",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_at_war": false, "has_equipment": false, "political_power": 0},
+          "flags": [],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_at_war": false, "has_equipment": false, "political_power": 0}, "flags": []},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          }
+        },
+        {
+          "id": "OCC_REFUND_PENDING",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_at_war": true, "has_equipment": false, "political_power": 50},
+          "flags": ["cbrn_occupied_transaction_recovery_pending"],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_at_war": true, "has_equipment": false, "political_power": 50}, "flags": ["cbrn_occupied_transaction_recovery_pending"]},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          }
+        },
+        {
+          "id": "EXP_REFUND_PENDING",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1},
+          "flags": ["cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1}, "flags": ["cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"]},
+            "FROM": {"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": []},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          },
+          "scopePools": [{
+            "id": "cbrn_export_recovery_recipient_pool",
+            "bindAs": "FROM",
+            "selection": "enumeration",
+            "complete": false,
+            "filter": {"scriptedTrigger": "cbrn_export_transaction_has_recovery_work"},
+            "candidates": [{"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": ["cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"]}]
+          }]
+        },
+        {
+          "id": "OCC_AND_EXP_REFUNDS_PENDING",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1},
+          "flags": ["cbrn_occupied_transaction_recovery_pending", "cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1}, "flags": ["cbrn_occupied_transaction_recovery_pending", "cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"]},
+            "FROM": {"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": []},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          },
+          "scopePools": [{
+            "id": "cbrn_export_recovery_recipient_pool",
+            "bindAs": "FROM",
+            "selection": "enumeration",
+            "complete": false,
+            "filter": {"scriptedTrigger": "cbrn_export_transaction_has_recovery_work"},
+            "candidates": [{"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": ["cbrn_export_owned_FRA", "cbrn_export_recovery_FRA"]}]
+          }]
+        },
+        {
+          "id": "OCC_PENDING_ACTIVE_PROGRAM",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_at_war": true, "has_equipment": true, "political_power": 50, "cbrn_occupied_committed_transaction": 1},
+          "flags": ["cbrn_occupied_transaction_recovery_pending", "cbrn_occupied_transaction_active", "cbrn_civilian_distribution_program_active"],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_at_war": true, "has_equipment": true, "political_power": 50, "cbrn_occupied_committed_transaction": 1}, "flags": ["cbrn_occupied_transaction_recovery_pending", "cbrn_occupied_transaction_active", "cbrn_civilian_distribution_program_active"]},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          }
+        },
+        {
+          "id": "EXP_STALE_RECEIPT_NO_RECOVERY_FLAG",
+          "actor": "GER",
+          "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1},
+          "flags": ["cbrn_export_owned_FRA"],
+          "scopes": {
+            "ROOT": {"id": "GER", "type": "country", "actor": "GER", "state": {"is_ai": true, "is_actual_nonhuman_country": false, "has_capitulated": false, "has_equipment": false, "political_power": 50, "cbrn_export_owned_receipts_count": 1, "cbrn_export_recipient_FRA": "FRA", "cbrn_export_fee_FRA": 8, "cbrn_export_source_FRA": 26, "cbrn_export_receipt_FRA": 1}, "flags": ["cbrn_export_owned_FRA"]},
+            "FROM": {"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": []},
+            "GLOBAL": {"id": "global", "type": "unknown", "state": {}, "flags": []}
+          },
+          "scopePools": [{
+            "id": "cbrn_export_recovery_recipient_pool",
+            "bindAs": "FROM",
+            "selection": "enumeration",
+            "complete": false,
+            "filter": {"scriptedTrigger": "cbrn_export_transaction_has_recovery_work"},
+            "candidates": [{"id": "FRA", "type": "country", "actor": "FRA", "state": {"is_actual_nonhuman_country": false, "has_capitulated": false}, "flags": []}]
+          }]
+        }
+      ]
+    }
+  ],
+  "externalFactorCompleteness": "All scenario values are synthetic and unobserved. The export scenario cannot bind the country-id equality as a numeric operand, the occupied scenarios omit an explicit exists value and zero committed transaction variable, and each target pool remains incomplete.",
+  "classification": "Score-only exact base values with unresolved per-scenario eligibility; no selection probabilities."
+}
+

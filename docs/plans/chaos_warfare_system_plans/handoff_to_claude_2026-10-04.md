@@ -1,5 +1,9 @@
 # CBRN workstream handoff to Claude - 2026-10-04
 
+Disposition: superseded as a current status handoff by [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md), under the user's explicit October 6 instruction to finish this workstream.
+The transfer instruction below records the October 4 handoff; it does not cancel that later authorization.
+Accepted design and historical evidence remain preserved, and the replacement report retains unsupported achievements, audio attribution and native acceptance limits.
+
 ## Authority, goal and source of truth
 
 The user requests transfer of this workstream and no further implementation by Codex.

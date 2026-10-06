@@ -29,6 +29,9 @@ Use `docs/plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_
 
 Use `docs/plans/chaos_warfare_system_plans/documentation_state.md` for the reconciled current-state map, unresolved plan and handoff dispositions, contradiction register, and stale-document register.
 
+For the October 6 authorized takeover, use [takeover_status_2026-10-06.md](../../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md) for current commits, source/MCP coverage, repaired graphics and native acceptance checks.
+It supersedes the October 4 status handoff without promoting implementation evidence into design approval or closing the accepted blocked achievements.
+
 Use `docs/plans/chaos_warfare_system_plans/2026-09-20_documentation_cleanup_handoff.md` for this overhaul's documentation-curator handoff; it is not gameplay or runtime completion proof. The unqualified `documentation_cleanup_handoff.md` remains an earlier snapshot.
 
 The later explicit user constraints recorded on 2026-07-29 supersede older optional-estimator wording: continuous chemical-air contamination remains fail-closed without a verified current-version mission hook, no estimator or other fallback is allowed, selected-state chemical raids must use the shared exposure pipeline, and idle chemical-capable aircraft never contaminate.

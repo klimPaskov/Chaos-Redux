@@ -55,3 +55,10 @@ Every project file supplied with this task was read in full, including the skill
 The entire live GitHub repository, the user's local offline Paradox wiki snapshot, and the user's local Hearts of Iron IV installation were not available as a complete mounted filesystem. Targeted current repository files were inspected through the GitHub connector. Current vanilla 1.19 behavior was checked through official Hearts of Iron IV announcements and patch notes. This limitation is carried into the implementation handoff and must be closed by the implementation agent before changing engine-facing files.
 
 Project custom subagents were provided as definitions but no subagent-spawn tool was available in this environment. Their standards were applied manually. A manual improvement-loop pass and completion audit are included. No claim is made that the actual custom agents ran.
+
+## Implementation evidence after the takeover
+
+The source-reading statement above records the original planning environment, not the mounted repository used for the October implementation.
+The user's October 6 takeover authorizes the current pass, whose source references, specialist audits, commits, graphics dispositions and exact orchestrator checks are recorded in the [takeover status](../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md).
+The accepted amendment remains the design authority, and the [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) retains accepted requirements and unresolved implementation evidence.
+The historical package manifest is provenance rather than a current integrity checksum list.
