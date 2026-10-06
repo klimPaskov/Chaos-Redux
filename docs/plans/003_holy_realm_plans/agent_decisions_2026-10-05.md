@@ -105,3 +105,13 @@ Six Buddhahood milestone arrows and three distant entry arrows become visible co
 Native inspection reports zero crossings, long links, node intersections or layout diagnostics for all 111 focuses.
 The High Pass focus authorizes force only above the existing 600 coercive threshold and revalidates that threshold for each eligible target.
 The Storehouses wording describes its actual national logistics and conditional cohesion reward; an unsupported promise of free foreign infrastructure is removed under G4/G6, with no new grant or broader design acceptance inferred.
+
+
+## Graphics decisions accepted on 2026-10-06
+
+The current graphics brief authorizes replacing the oversized decision-row animation with a 34x34 static lotus while preserving the registered aliases.
+The five concentration decisions now use that static alias.
+Dedicated native-alpha 72x88 BoP sides replace the oversized reused focus images, and the doctrine category uses its bespoke 52x40 art.
+The clipped first BoP crops and faint first seal were rejected; final images have intact silhouettes and clear margins.
+Five raw flag tooltips surfaced by the required validator received short requirement labels without changing eligibility.
+Evidence is docs/plans/gfx_fix_2026-10/003_report.md.
