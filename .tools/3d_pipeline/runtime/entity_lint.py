@@ -70,6 +70,17 @@ def particle_index():
     return result
 
 
+def strongest_contact_peaks(rows):
+    """Keep positive hand/weapon motion; a zero channel is not a peak."""
+    relevant = [m for m in rows if any(part in m.get('bone', '').lower()
+                                      for part in ('hand', 'arm', 'weapon', 'jaw', 'claw'))]
+    angular_max = max((m.get('angular_deg', 0) for m in relevant), default=0)
+    speed_max = max((m.get('translation_step', 0) for m in relevant), default=0)
+    return [m for m in relevant
+            if (angular_max > 1e-8 and m.get('angular_deg', 0) >= .8 * angular_max)
+            or (speed_max > 1e-8 and m.get('translation_step', 0) >= .8 * speed_max)]
+
+
 def lint_state(state, *, entity_name, path, cycle, cue_samples, effects, particles,
                motion=None, contact_markers=None, animation_sha=None):
     findings = []
@@ -156,11 +167,7 @@ def lint_state(state, *, entity_name, path, cycle, cue_samples, effects, particl
         else:
             # Measured peaks are useful leads, but a snap is not a weapon strike.
             rows = (motion or {}).get('world_motion', {}).get('world_motion_peak_table', []) or (motion or {}).get('motion_peak_table', [])
-            relevant = [m for m in rows if any(part in m.get('bone', '').lower() for part in ('hand', 'arm', 'weapon', 'jaw', 'claw'))]
-            if relevant:
-                angular_max = max(m.get('angular_deg', 0) for m in relevant)
-                speed_max = max(m.get('translation_step', 0) for m in relevant)
-                relevant = [m for m in relevant if m.get('angular_deg', 0) >= .8 * angular_max or m.get('translation_step', 0) >= .8 * speed_max]
+            relevant = strongest_contact_peaks(rows)
             delta = min((abs(event['time'] - m['time_seconds'] / speed) for m in relevant), default=None)
             if delta is not None and delta > .15:
                 findings.append({'rule': 'measured_contact_peak_offset', 'line': event['line'], 'offset_s': delta,

@@ -577,6 +577,80 @@ def _load_manifest(path: Path) -> Tuple[Dict[str, Any], str]:
     return manifest, digest
 
 
+def _load_sound_inventory_surface(path: Path) -> Tuple[Dict[str, Dict[str, Any]], List[Dict[str, Any]], str, Dict[str, Any]]:
+    """Adapt the current pipeline inventory's model and top-level file rows.
+
+    Consumer/cue ownership comes from ``models[].sound_cues`` and
+    ``models[].additional_sound_files``. The top-level ``files`` array is the
+    canonical file index and is merged as a checksum/coverage cross-check.
+    """
+    if not path.is_file():
+        raise ValueError("sound inventory does not exist: {}".format(path))
+    inventory, digest = load_json(path)
+    if not isinstance(inventory.get("models"), list):
+        raise ValueError("sound inventory has no models array")
+    top_level_files = inventory.get("files")
+    if not isinstance(top_level_files, list):
+        raise ValueError("sound inventory has no top-level files array")
+    records, cues = flatten_runtime_inventory(inventory)
+    top_sound_records: Dict[str, Dict[str, Any]] = {}
+    for item in top_level_files:
+        if not isinstance(item, dict) or not item.get("path"):
+            continue
+        source_path = str(item["path"])
+        normalized = source_path.replace("\\", "/").lower()
+        if not normalized.startswith("sound/"):
+            continue
+        top_sound_records[source_path] = item
+        record = records.setdefault(
+            source_path,
+            {
+                "path": source_path,
+                "sha256": item.get("sha256"),
+                "bytes": item.get("bytes"),
+                "consumer_units": [],
+                "consumer_cues": [],
+                "sample_names": [],
+            },
+        )
+        record["inventory_file_list_reference"] = True
+        record["top_level_file_sha256"] = item.get("sha256")
+        record["top_level_file_bytes"] = item.get("bytes")
+        if record.get("sha256") and item.get("sha256") and record["sha256"] != item["sha256"]:
+            record["inventory_sha_conflict"] = True
+        if not record.get("sha256"):
+            record["sha256"] = item.get("sha256")
+        if record.get("bytes") is None:
+            record["bytes"] = item.get("bytes")
+
+    model_sound_paths = {
+        source_path for source_path in records
+        if source_path.replace("\\", "/").lower().startswith("sound/")
+        and not records[source_path].get("inventory_file_list_reference")
+    }
+    top_sound_paths = set(top_sound_records)
+    surface = {
+        "model_count": len(inventory["models"]),
+        "top_level_file_record_count": len(top_level_files),
+        "top_level_sound_file_count": len(top_sound_records),
+        "sound_file_record_count_after_merge": sum(
+            1 for source_path in records
+            if source_path.replace("\\", "/").lower().startswith("sound/")
+        ),
+        "top_level_sound_paths_missing_from_model_sound_graph": sorted(top_sound_paths - {
+            source_path for source_path, record in records.items()
+            if source_path.replace("\\", "/").lower().startswith("sound/")
+            and (record.get("consumer_units") or record.get("consumer_cues"))
+        }),
+        "model_sound_paths_missing_from_top_level_file_list": sorted(model_sound_paths),
+        "cue_count_from_models": len(cues),
+        "unresolved_sample_count": sum(int(cue.get("unresolved_sample_count", 0)) for cue in cues),
+    }
+    if inventory["models"] and not cues and top_sound_records:
+        raise ValueError("sound inventory has sound paths but no parsed model sound cues")
+    return records, cues, digest, surface
+
+
 def _batch(args: argparse.Namespace) -> int:
     repo_root = Path.cwd().resolve()
     manifest_path = Path(args.manifest).resolve()
@@ -744,9 +818,18 @@ def _audit_tree(args: argparse.Namespace) -> int:
     inventory_records: Dict[str, Dict[str, Any]] = {}
     cue_rows: List[Dict[str, Any]] = []
     inventory_sha = None
-    if inventory_path and inventory_path.is_file():
-        inventory, inventory_sha = load_json(inventory_path)
-        inventory_records, cue_rows = flatten_runtime_inventory(inventory)
+    inventory_surface: Dict[str, Any] = {
+        "model_count": 0,
+        "top_level_file_record_count": 0,
+        "top_level_sound_file_count": 0,
+        "sound_file_record_count_after_merge": 0,
+        "top_level_sound_paths_missing_from_model_sound_graph": [],
+        "model_sound_paths_missing_from_top_level_file_list": [],
+        "cue_count_from_models": 0,
+        "unresolved_sample_count": 0,
+    }
+    if inventory_path:
+        inventory_records, cue_rows, inventory_sha, inventory_surface = _load_sound_inventory_surface(inventory_path)
     family_pools: List[Dict[str, Any]] = []
     if args.family_pools:
         family_payload, _ = load_json(Path(args.family_pools))
@@ -773,7 +856,14 @@ def _audit_tree(args: argparse.Namespace) -> int:
                 reports[rel] = {"path": str(path), "status": "analysis_error", "error": str(exc)}
                 hashes[rel] = sha256_file(path)
     coverage = build_sound_coverage(root, cue_rows, attribution_map, Path.cwd(), inventory_records)
-    duplicates = summarize_duplicates(inventory_records, hashes, family_pools)
+    duplicate_records = {
+        path: record for path, record in inventory_records.items()
+        if record.get("consumer_units") or record.get("consumer_cues")
+    }
+    duplicates = summarize_duplicates(duplicate_records, hashes, family_pools)
+    single_sample_count = len(coverage["single_sample_cues"])
+    duplicate_count = duplicates["duplicate_group_count"]
+    undeclared_duplicate_count = len(duplicates["undeclared_cross_unit_duplicates"])
     report = {
         "schema": 1,
         "tool": "Chaos Redux read-only unit sound tree audit",
@@ -781,17 +871,24 @@ def _audit_tree(args: argparse.Namespace) -> int:
         "root": str(root),
         "inventory_path": str(inventory_path) if inventory_path else None,
         "inventory_sha256": inventory_sha,
+        "inventory_sound_file_surface": inventory_surface,
         "ffmpeg_version": binary_version(ffmpeg),
         "ffprobe_version": binary_version(ffprobe),
         "audio_file_count": len(audio_paths),
+        "active_sound_cue_count": len(cue_rows),
+        "single_sample_cue_count": single_sample_count,
+        "duplicate_group_count": duplicate_count,
+        "undeclared_cross_unit_duplicate_count": undeclared_duplicate_count,
         "family_pool_and_duplicate_audit": duplicates,
         "single_sample_and_coverage_audit": coverage,
         "files": reports,
     }
     _json_write(Path(args.output).resolve(), report)
     print(json.dumps({"output": str(Path(args.output).resolve()), "audio_files": len(audio_paths),
-                      "single_sample_cues": len(coverage["single_sample_cues"]),
-                      "undeclared_cross_unit_duplicates": len(duplicates["undeclared_cross_unit_duplicates"])}, indent=2))
+                      "active_sound_cues": len(cue_rows),
+                      "single_sample_cues": single_sample_count,
+                      "duplicate_groups": duplicate_count,
+                      "undeclared_cross_unit_duplicates": undeclared_duplicate_count}, indent=2))
     return 0
 
 

@@ -53,6 +53,22 @@ class EntityLintTests(unittest.TestCase):
         self.assertIn('keep_particle_on_impulse_emitter', rules)
         self.assertIn('particle_overlap_on_locator', rules)
 
+    def test_static_channels_do_not_establish_contact_timing(self):
+        row = self.lint('state={name=attack event={time=.2 sound={soundeffect=shot}}}',
+                        motion={'motion_peak_table': [{'bone': 'RightHand', 'time_seconds': .2,
+                                                     'angular_deg': 0, 'translation_step': 0}]})
+        contact = next(f for f in row['findings'] if f['rule'] == 'contact_evidence_required')
+        self.assertIsNone(contact['nearest_motion_peak_offset_s'])
+
+    def test_zero_translation_does_not_select_every_rotation_frame(self):
+        row = self.lint('state={name=attack event={time=.2 sound={soundeffect=shot}}}',
+                        motion={'motion_peak_table': [
+                            {'bone': 'RightHand', 'time_seconds': .2, 'angular_deg': 1, 'translation_step': 0},
+                            {'bone': 'RightHand', 'time_seconds': .8, 'angular_deg': 20, 'translation_step': 0}]})
+        contact = next(f for f in row['findings'] if f['rule'] == 'contact_evidence_required')
+        self.assertAlmostEqual(contact['nearest_motion_peak_offset_s'], .6)
+        self.assertIn('measured_contact_peak_offset', {f['rule'] for f in row['findings']})
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -58,6 +58,9 @@ Every emitted material stream still needs its own parent-owned `meshsettings` re
 Recorded-sample mastering may trim, fade, EQ, mix recorded head/tail edges and limit existing recordings; it never creates tones, noise, rigs, weights or skeletal motion.
 Format/level fixes do not establish distinct takes, correct voice identity, loop-state wiring or weapon synchronization.
 Undeclared duplicate sources, single-sample cues, source gaps and semantic/state defects remain in package acceptance reports.
+`audio/master.py audit-tree --inventory` accepts the current consumer inventory's `models[].sound_cues[].samples[].file` structure and resolves its recorded source paths, not only a standalone cue-list schema.
+Contact timing diagnostics use positive measured hand/arm/weapon/jaw/claw motion; a static pose or a zero-valued channel cannot establish a motion peak.
+Compact motion evidence may retain the same strongest positive rows under each exact action SHA, while the full per-frame table remains in the local audit artifact.
 
 This repository-owned package runs the bounded path:
 
