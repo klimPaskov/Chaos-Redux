@@ -1,0 +1,19 @@
+# Shared missing unit texticon and counter repairs
+
+Status: this owner table contains nine raw rows; two rows are implemented in the approved v9 tranche, one CBRN row is implemented by the parent-accepted external package, and six rows remain unresolved for the next tranche.
+
+| Raw plan row | Disposition | Runtime asset and evidence |
+|---|---|---|
+| `GFX_unit_coal_golem_icon_small` | implemented | `gfx/interface/counters/divisions_small/onmap_unit_coal_golem_icon.dds` is a 60x12 two-frame strip. Frame 1 is derived from frame 1 of the same unit’s large counter; frame 2 is the exact installed vanilla on-map infantry NATO plate. |
+| `GFX_unit_rat_burrowers_icon_small` | implemented | `gfx/interface/counters/divisions_small/onmap_unit_black_plague_rat_shared_base_icon.dds` is a solid light-grey rat silhouette and a black same-source rat glyph on the vanilla NATO plate. It serves burrowers, dock stowaways, carrion guard, tunnelers, brutes, and the black-plague medium-white sprite. |
+| `GFX_unit_paleogenetic_creature_icon_small` | unresolved | `gfx/interface/counters/divisions_small/onmap_unit_paleogenetic_creature_icon.dds` remains unchanged; next tranche will derive a solid light-grey silhouette from the same unit’s large source and use the vanilla NATO plate. |
+| `GFX_unit_temporal_guard_icon_small` | unresolved | `gfx/interface/counters/divisions_small/onmap_unit_temporal_guard_icon.dds` remains unchanged; next tranche will derive an opaque same-unit silhouette and use the vanilla two-frame convention. |
+| `GFX_cbrn_instruments_texticon` | implemented by parent-accepted external package | `gfx/texticons/cbrn_instruments_texticon.dds` is the accepted 20x20 gauge glyph. Current SHA-256 `085b61158db68e0d25884f0e517af5f9314d4bce6a43fa31e0f3e9b3f0eb41a9` matches the committed `2026-10-06_gfx_counters.json` manifest. |
+| `GFX_medical_capacity_texticon` | unresolved | `gfx/texticons/medical_capacity_texticon.dds` remains unchanged; next tranche will replace the 18x18 low-contrast blob with a flat medical cross/bed glyph from a saved native-alpha ImageGen request. |
+| `GFX_unit_stone_cohorts_icon_small` | unresolved | `gfx/interface/counters/divisions_small/onmap_unit_stone_cohorts_icon.dds` remains unchanged; next tranche will derive a solid silhouette from the same unit’s large counter. |
+| `GFX_unit_forest_giants_icon_small` | unresolved | `gfx/interface/counters/divisions_small/onmap_unit_forest_giants_icon.dds` remains unchanged; next tranche will derive a solid silhouette from the same unit’s large counter. |
+| `GFX_unit_death_weak_ghost_host_icon_small` | unresolved | `gfx/interface/counters/divisions_small/onmap_unit_death_ghost_icon.dds` remains unchanged and is shared with death last-shore ghost host; next tranche will preserve the hooded ghost identity, make frame 1 solid, and replace frame 2 with the vanilla NATO plate. |
+
+The two completed new silhouettes use prompt-bound native-alpha sources at `docs/assets/gfx_fix_2026-10/shared_chaosx_missing_unit_texticons/source_v2/rat_burrower.png` and the same-unit coal large-counter frame-1 source at `docs/assets/gfx_fix_2026-10/shared_chaosx_missing_unit_texticons/source/coal_golem_large_frame1_source.png`. The original runtime files before v9 are preserved under `docs/assets/gfx_fix_2026-10/baseline_v8_runtime/`; the original pre-v8 coal/rat files are preserved under `docs/assets/gfx_fix_2026-10/baseline_v8/`.
+
+The 33 approved v9 counter DDS files decode pixel-for-pixel against their processed PNGs, and the narrow large/on-map `gfx.py counter` checks report zero findings. The dark-field source/processed/DDS sheets are `docs/assets/gfx_fix_2026-10/contact_sheets/final_small_counters_source_png_dds_v9.png` and `docs/assets/gfx_fix_2026-10/contact_sheets/final_large_counters_source_png_dds_v9.png`.
