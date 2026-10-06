@@ -1,6 +1,6 @@
-﻿# Shared equipment asset handoff
+# Shared equipment asset handoff
 
-Status: Seven wide cylinders and seven tank shells (14 DDS textures) are promoted in the shared worktree and the parent has wired all 28 corresponding GFX leaves. The parent has not yet supplied the commit hash. The separate 27-variant chemical-air row has parent-approved native and processed art but still needs canonical DDS conversion, round-trip QA, and guarded replacement.
+Status: Seven wide cylinders and seven tank shells (14 DDS textures), with all 28 corresponding GFX leaves, were committed in `d3c613a2c5c445a4eb4c1bad5a9e5b8d83176bd0`. All 27 parent-approved chemical-air variants now have canonical 56x42 DDS files promoted to their existing registered paths; the separate air commit is pending.
 
 ## Cylinder and shell paths
 
@@ -31,4 +31,4 @@ The exact installed vanilla tank-module references are recorded with hashes in [
 
 ## Separate chemical-air tranche
 
-All 27 native sources and 56x42 previews are parent-approved, but their existing DDS targets remain untouched pending the separate conversion and hash-guarded promotion pass. Their complete prompt/source/baseline record is [chem_air_variants_27_progress_manifest.json](evidence/chem_air_variants_27_progress_manifest.json); review sheets for batches 1–7 sit alongside it. The protected technology 64x64 research textures, equipment costs, module stats, combat behavior, localization, and gameplay remain unchanged.
+All 27 native sources and 56x42 previews are parent-approved, canonically converted, exact-roundtrip validated, and promoted under immediate baseline-hash guards. The [final manifest](evidence/chem_air_variants_27_final_manifest.json) carries complete prompts and lineage; the [runtime path/hash packet](evidence/chem_air_variant_27_runtime_hashes.json) gives every registered sprite and final DDS SHA-256. The final native and 4x family comparisons are [here](evidence/chem_air_variant_family_before_after_native.png) and [here](evidence/chem_air_variant_family_before_after_4x.png). The protected technology 64x64 research textures, equipment costs, module stats, combat behavior, localization, and gameplay remain unchanged.
