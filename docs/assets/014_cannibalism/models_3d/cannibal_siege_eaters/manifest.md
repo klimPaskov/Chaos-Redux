@@ -1,5 +1,21 @@
 # Cannibal Siege Eaters 3D manifest: CURRENT reconciliation
 
+## Installed runtime reconciliation - 6 October 2026
+
+Disposition: implemented installed-byte reconciliation under the user-authorized shared unit-fix task; full model acceptance remains open.
+Historical status, numeric summaries and source candidates below are superseded for current installed facts by `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` and the matching package report.
+This proves current implementation and import facts, not approval of every historical design claim.
+
+Active model: `cannibal_siege_eaters_mesh`.
+Installed mesh: `gfx/models/units/014_cannibalism/cannibal_siege_eaters/cannibal_siege_eaters.mesh`, SHA-256 `a632f115a093421a1ac8dee441692d72d8799c097b9d7c9c2f16abd4a6bd9772`.
+Decoded bones: 24; registered action FPS: 24.0; entity scale: cannibal_siege_eaters_entity=0.8.
+Matching native checkpoint: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/blender/checkpoints/reimport_installed_a632f115a093421a.blend`, SHA-256 `03301792b86851f06891318d57c69bb79352c3ae1905d6d7fcc75134e717ae90`.
+The checkpoint proves geometry/skeleton import only; material appearance, real deformation, authored contacts and live consumer acceptance remain pending.
+Active DDS maps have hash-bound 512 BC1/BC3 delivery with ten mips; original G/A tangent data is retained and material/detail defects remain explicit in the package report.
+Current audio source, format/level changes and held cues are recorded in the shared audio install/provenance/needs reports; candidate existence does not prove runtime installation.
+No global mesh/action rewrite, source substitution, or generated production rig/weight/key/sound is asserted by this reconciliation.
+
+
 Record type: newly reconciled current metadata manifest, not a recovered original JSON.
 Status: `needs_user_review`.
 

@@ -1,5 +1,21 @@
 # CURRENT Reconciled Model Manifest: cannibal_march_predation_column
 
+## Installed runtime reconciliation - 6 October 2026
+
+Disposition: implemented installed-byte reconciliation under the user-authorized shared unit-fix task; full model acceptance remains open.
+Historical status, numeric summaries and source candidates below are superseded for current installed facts by `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` and the matching package report.
+This proves current implementation and import facts, not approval of every historical design claim.
+
+Active model: `cannibal_march_predation_column_mesh`.
+Installed mesh: `gfx/models/units/014_cannibalism/cannibal_march_predation_column/cannibal_march_predation_column.mesh`, SHA-256 `dc6d2f19c25c8c2e2ee83d7ea01124248c3917d203e41c9b5368f563225cbc9e`.
+Decoded bones: 24; registered action FPS: 30.0; entity scale: cannibal_march_predation_column_entity=0.8.
+Matching native checkpoint: `docs/assets/014_cannibalism/models_3d/cannibal_march_predation_column/blender/checkpoints/reimport_installed_dc6d2f19c25c8c2e.blend`, SHA-256 `6f21abb3eefc433e2a2ef8c888c81d4408acbee50f625500e08084f23f990945`.
+The checkpoint proves geometry/skeleton import only; material appearance, real deformation, authored contacts and live consumer acceptance remain pending.
+Active DDS maps have hash-bound 512 BC1/BC3 delivery with ten mips; original G/A tangent data is retained and material/detail defects remain explicit in the package report.
+Current audio source, format/level changes and held cues are recorded in the shared audio install/provenance/needs reports; candidate existence does not prove runtime installation.
+No global mesh/action rewrite, source substitution, or generated production rig/weight/key/sound is asserted by this reconciliation.
+
+
 Reconciled 2026-10-03 from the accepted runtime handoff, the installed-binding receipt, the package job, and retained package records. This is a new current reconciliation, not a recovered original manifest.
 
 **Status: needs_user_review.** The mesh and eight animation exports match their installed bytes. The approved reference image, provider downloads, package texture/audio source files, and named reimport checkpoints are absent; upstream source provenance and semantic/live acceptance remain unresolved.
