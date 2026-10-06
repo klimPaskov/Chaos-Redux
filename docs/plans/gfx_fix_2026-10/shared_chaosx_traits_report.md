@@ -1,6 +1,6 @@
 # Shared trait graphics repair
 
-Disposition: all five finding rows implemented; two final medals produced in this session, three CBRN rows verified from the existing committed package.
+Disposition: all five finding rows implemented; one retained medal produced in this session, the Swedish medal independently reviewed from the later committed Event 024 package, and three CBRN rows verified from the existing committed package.
 Acceptance basis: the assigned October graphics review requests every finding in this shared group.
 
 | Finding | Result and evidence |
@@ -8,12 +8,12 @@ Acceptance basis: the assigned October graphics review requests every finding in
 | Antarctica, severity 1 | Native ImageGen blue ribbon, bronze suspension and silver snowflake/ice-field medal replace the hard-edged pixel-art iceberg |
 | Agent-specific cylinder traits, severity 2 | Four distinct green, grey-blue, yellow and rust ribbons already installed by `8450deaf8`; current registry points to four separate files |
 | Inhumane scientist, severity 2 | Crisp skull-and-syringe medal already installed by `8450deaf8`, 24×33, no edge-reaching glow |
-| Swedish rulebook commander, severity 2 | Native ImageGen blue/gold ribbon and bronze rulebook medal replace the miniature officer portrait |
+| Swedish rulebook commander, severity 2 | Native ImageGen rulebook medal replaces the miniature officer portrait; the later Event 024 red/gold-ribbon version is independently accepted at native size |
 | Five CBRN commander traits, severity 2 | Bright ribbon/disc medals already installed by `8450deaf8`, verified individually in the current group |
 
 The two replacements preserve their 23×33 canvases, existing filenames and sprite registrations.
 Runtime paths are `gfx/interface/traits/trait_in_antarctica.dds` and `gfx/interface/traits/024_video_game_in_sweden/024_video_game_in_sweden_rulebook_commander.dds`.
-Final SHA-256 values are respectively `2aca1a052a27eed85ac328c365c4972e4f857d9f6f77eff31cfb20b19cdedc4d` and `6e07f7a9e5a77ee7c9afa9a0225b0fda2d93e4ab1a110220cf1f7fedfadc7c71`.
+Final SHA-256 values are respectively `2aca1a052a27eed85ac328c365c4972e4f857d9f6f77eff31cfb20b19cdedc4d` and `49d48fc7efd29b1fa29b2574202e4748d63a318c8cf66ceff7873b2e394ce258`.
 
 ## Sources, processing and review
 
@@ -35,8 +35,15 @@ Offline sprite documentation and installed GUI-documentation sections are record
 ## Orchestrator live check
 
 Inspect an Antarctica commander and a Swedish rulebook commander in their unit-leader trait lists at UI scale 1.
-The first trait must show a smooth blue-ribbon snowflake medal and the second a blue/gold-ribbon book medal, without a pixel-art iceberg or tiny officer portrait.
+The first trait must show a smooth blue-ribbon snowflake medal and the second a red/gold-ribbon book medal, without a pixel-art iceberg or tiny officer portrait.
 In the CBRN test setup, compare all four cylinder-agent ribbons, five CBRN commander medals and the inhumane scientist trait alongside vanilla traits.
 Their symbols must remain readable without glow, clipped ribbons or raw sprite identifiers.
 
 No artwork substitutions or omitted finding rows remain in this group.
+
+## Later Event 024 integration
+
+Commit 18bf22a36 subsequently installed a red/gold ribbon and bronze rulebook medal at the same runtime path.
+The parent independently reviewed the current 23×33 DDS at native size and 4× nearest scale on 2026-10-06 and accepted its complete ribbon, clear book emblem and clean transparent edges.
+The current review is docs/assets/gfx_fix_shared_ability_traits/rulebook_concurrent_review.png; the Event 024 source and processing archive is recorded in docs/plans/024_video_game_in_sweden_plans/subagent_handoffs/20261006_asset_repairs.md.
+The earlier blue/gold source remains preserved as historical candidate evidence and is superseded at runtime by this accepted Event 024 version.
