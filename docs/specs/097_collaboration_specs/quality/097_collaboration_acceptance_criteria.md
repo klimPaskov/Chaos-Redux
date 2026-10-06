@@ -1,0 +1,65 @@
+# Event 097 Collaboration: Acceptance Criteria
+
+Event 097 is complete only when every criterion below holds in the implemented files and the evidence is recorded in `docs/events/097_collaboration/`. Live-game confirmation belongs to the user. Engine facts that could not be verified during planning are listed in the research notes and must be resolved or reported as blockers.
+
+## Core event
+
+1. A firing gives every participant a layer of native collaboration inside every other participant, in both directions, with the base or Deep Networks size and each country's stance multipliers.
+2. No Collaboration currency, meter, or management screen exists. The only stored power is native collaboration.
+3. Participants exclude actual nonhuman countries and special Chaos countries in both directions, through the shared classifiers. Ideology, alliances, relations, and subject status never exclude a country.
+4. The application pass runs once per firing in daily batches, owns its own schedule, and adds no periodic world hook.
+5. Event 097 never sets collaboration to an absolute value and never removes collaboration from other sources. Every reduction is relative and stops at zero, or the implementation reports the engine blocker.
+6. The event shows `N/A` with a reason when fewer than two countries can participate or a pass is in progress.
+7. Every native collaboration write checks the Fallout gates, and no Event 097 collaboration can exist after the Fallout reset.
+
+## Evolutions
+
+8. Each evolution activates through MTTH pacing at its Chaos tier, logs once with no actor, can be disabled independently, and never changes Chaos by activating.
+9. Each evolution's active-event entry and pre-fire evolved opening behave as Part 2 describes.
+10. A disabled evolution leaves the baseline event and every other evolution playable, and sets no flag that later content reads.
+
+## Occupation, capitulation, and governments
+
+11. Seats, Open Gates, and prepared cadres act only on core states of the host and only where Event 097 has added networks.
+12. The Fifth Column is evaluated only when a relevant capture, war change, or capitulation happens, with hysteresis between bands.
+13. Open Gates respects its state conditions, its 90-day spacing, and its cap of three per host per war.
+14. The capitulation offer and the Seat decision share one installation helper and one registry, and the one-government-per-original-tag limit holds across both.
+15. Installed governments receive the Installed Administration lifecycle, auxiliaries drawn from the installer's stockpile, and a registry row. No new tags, flags, leaders, or portraits are created.
+16. Turned Regime happens only under its conditions and at most once per government per war, or is reported as an engine blocker.
+17. The competing-orders milestone fires the super-event and its Chaos once per campaign.
+18. The democratic and non-aligned installer question from Part 3 is settled by the user before the installation helper ships.
+
+## Decisions and responses
+
+19. Divided Loyalties never shows more than four actions at once, and Prepared Governments shows at most two per target.
+20. Every action uses at most four spendable cost types with correct texticons, at most three inline values, and a full cost tooltip.
+21. Every tuning value lives in the Event 097 constant group.
+22. Blocked tooltips name the exact missing requirement.
+23. The Divided Loyalties category has its static picture after the reference family and contact sheet were inspected.
+
+## Chaos
+
+24. Every row in the Chaos impact map fires at its outcome, through the shared Chaos path, with an Event 097 history reason.
+25. Repeat guards and the lifetime cap on the firing row hold.
+26. No row duplicates a generic Chaos source for the same fact, and the generic puppet check from Part 3 is recorded.
+
+## AI and probability
+
+27. Every weighted surface in the probability matrix has a baseline and post-patch `chaosx_ai_probability_auditor` pass with the same named scenarios, through the HOI4 MCP probability tools.
+28. The world does not polarize into all cultivators or all screeners in the stance scenarios.
+29. Event 097 adds no AI behavior that starts wars.
+
+## Presentation, assets, and records
+
+30. Event Details shows the premise and one qualitative current-state line, and the evolution catalog shows each evolution's premise.
+31. Every report, spirit, decision, category, super-event, and achievement asset in the asset prompt exists as a final DDS, is registered in its owning `.gfx` file, and appears in the coverage crosswalk.
+32. The super-event uses a free slot, and its title, quote, remark, and audio come from the super-event research workflow.
+33. All six achievements exist with tracking, disqualifiers, localisation, and three icon states, and none unlocks automatically.
+34. The catalog row and the cluster row match final localisation, and the CSV exports were regenerated by the export tool.
+35. The event overview in `docs/events/097_collaboration/`, the event README row, and the dynamic-effects documentation for any new reusable helper are complete.
+36. A package-owned CXT test fixture exists under the dynamic extension contract and prepares Event 097 records for inspection without firing the event or adding collaboration.
+
+## Process
+
+37. `chaosx_improvement_loop_planner` ran near completion of the implementation goal, and its addendum or closure was resolved and recorded.
+38. The completion report lists every simplification, omission, and blocker, or states that there are none with evidence.
