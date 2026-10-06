@@ -146,3 +146,12 @@ No numeric fee changes.
 The same exact-fee guard now replaces 184 one-unit-subtracted stock checks.
 This matters for the 25 Fuel and 10 Command Power branches whose balances can be fractional; the 50 Manpower and 99 equipment comparisons retain equality while using the same exact quote convention.
 The debit, sale ratio, branch selection and numeric AI weights remain unchanged.
+
+
+## Graphics decisions accepted on 2026-10-06
+
+The current graphics brief authorizes fourteen consistently tilted sepia report cards, a solid meteor-command symbol, physically plausible cyclone art, a painted winter railway scene, and visible panel damage.
+Eleven straight-mat photos were preserved and remounted; no new subjects were substituted for those eleven.
+The damaged panel retains the grid and controls; matching 1920x1080 and 1366x768 synthetic renders show its crack with identical fixture data.
+The meteor-command symbol is corrected but has no current unified-category consumer; it remains a registered reserve pending the requested disposition.
+Evidence is docs/plans/gfx_fix_2026-10/013_report.md and 013_panel_handoff.md.
