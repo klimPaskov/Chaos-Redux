@@ -17,7 +17,11 @@ function parse(source) {
   function body(nested = false) {
     const nodes = [];
     while (i < tokens.length && tokens[i][0] !== '}') {
-      const token = tokens[i++], key = token[0], op = tokens[i++][0];
+      const token = tokens[i++], key = token[0];
+      if (!['=', '<', '>'].includes(tokens[i]?.[0])) {
+        nodes.push({ key, op: null, value: key, atom: true, start: token.index, end: token.index + key.length }); continue;
+      }
+      const op = tokens[i++][0];
       assert(['=', '<', '>'].includes(op), `parse ${key} ${op}`);
       let value = tokens[i++][0];
       if (value === '{') value = body(true);

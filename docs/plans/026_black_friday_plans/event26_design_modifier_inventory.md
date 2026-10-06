@@ -6,6 +6,13 @@ The Event 26 country dynamic modifier `black_friday_native_sale` carries every m
 
 This inventory is exact installed-engine evidence for the design modifier family. It does not claim that the designer UI has been live-tested; the Part 8 record keeps display/payment/save evidence open until user-owned live validation.
 
+## Current composition limit
+
+Disposition: source partial, exact native pricing blocked under D42 in `agent_decisions_2026-10-05.md`.
+The key inventory establishes available fields, not correct composition for every native purchase.
+The stored contribution can become stale when an ordinary modifier changes during the sale, and equipment, module, parent-archetype, and unit factor overlap remains an engine acceptance question.
+The 6 October source regressions cover all 580 stored keys at both ratios, repeat refresh, and cleanup, with a separate stale-factor counterexample.
+
 ## Equipment design cost factors (195)
 
 - `amphibious_mechanized_equipment_design_cost_factor`

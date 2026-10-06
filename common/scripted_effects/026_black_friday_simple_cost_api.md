@@ -14,6 +14,11 @@ Native `cost =` decisions use the [sale price table](026_black_friday_price_tabl
 
 ## Contract
 
+When a caller reads an output after a scripted helper returns, it must initialize that temporary in its own block before the call.
+Before `black_friday_simple_cost_quote`, display callers initialize `black_friday_simple_cost_payable` to the ordinary amount and `black_friday_simple_cost_family`, `black_friday_simple_cost_quoted`, `black_friday_simple_cost_on_sale`, `black_friday_simple_cost_valid`, and `black_friday_simple_cost_affordable` to `constant:universal_cost_framework.zero`.
+Before `black_friday_simple_cost_pay`, outcome callers that inspect success initialize `black_friday_simple_cost_paid` to `constant:universal_cost_framework.zero`.
+The affordability and payment wrappers own the nested outputs they consume, so callers that use only the trigger's truth value or only the payment side effect need no exported-output declarations.
+
 | Name | Kind | Scope | Inputs | Outputs and side effects |
 | --- | --- | --- | --- | --- |
 | `black_friday_simple_cost_quote` | Scripted trigger, always true | Country (payer) | Temps `black_friday_simple_cost_ordinary` (the owner's current ordinary amount) and `black_friday_simple_cost_kind` (`constant:universal_cost_resource_kind.*`) | Temps `black_friday_simple_cost_payable`, `black_friday_simple_cost_family`, `black_friday_simple_cost_quoted` (1 when an active sale priced the cost), `black_friday_simple_cost_on_sale` (1 when payable is below ordinary), `black_friday_simple_cost_valid` (0 when an active sale could not price the cost, which blocks the purchase instead of charging a wrong price), `black_friday_simple_cost_affordable`. Writes the shared `black_friday_quote_*` and `universal_cost_affordability_*` scratch temps. |
@@ -107,6 +112,12 @@ defined_text = {
 		trigger = {
 			set_temp_variable = { black_friday_simple_cost_ordinary = constant:my_owner.decision_cp }
 			set_temp_variable = { black_friday_simple_cost_kind = constant:universal_cost_resource_kind.command_power }
+			set_temp_variable = { black_friday_simple_cost_payable = black_friday_simple_cost_ordinary }
+			set_temp_variable = { black_friday_simple_cost_family = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_simple_cost_quoted = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_simple_cost_on_sale = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_simple_cost_valid = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_simple_cost_affordable = constant:universal_cost_framework.zero }
 			black_friday_simple_cost_quote = yes
 		}
 		localization_key = black_friday_simple_cost.line

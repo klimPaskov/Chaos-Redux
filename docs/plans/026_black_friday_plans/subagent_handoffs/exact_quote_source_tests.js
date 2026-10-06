@@ -25,7 +25,11 @@ function parse(source) {
   function body(nested = false) {
     const nodes = [];
     while (i < tokens.length && tokens[i] !== '}') {
-      const key = tokens[i++], op = tokens[i++];
+      const key = tokens[i++];
+      // Native slots and other token lists contain bare atoms, not assignments.
+      // Retain them structurally without teaching the arithmetic VM to execute them.
+      if (!['=', '<', '>'].includes(tokens[i])) { nodes.push({ key, op: null, value: key, atom: true }); continue; }
+      const op = tokens[i++];
       assert(['=', '<', '>'].includes(op), `parse ${key} ${op}`);
       let value = tokens[i++];
       if (value === '{') value = body(true);

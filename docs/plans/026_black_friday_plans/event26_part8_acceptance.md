@@ -222,3 +222,13 @@ The lifecycle, event-log, presentation, arithmetic, asset, and catalog source pa
 The queued owners' native and custom costs read the sale price table or the simple API (D4, D5, D11 to D22, D28, and D30, which covers Event 019's family management and its own family providers), their paid event options are classified as purchases or not (D26), and every native price-table decision credits the achievement (D27).
 Engine costs that no modifier can multiply keep their normal price, and the report and Event Details name them (D7 and D24).
 The open work is the active workstreams' own adoption of the sale (`owner_adoption_requests.md`), which leaves a missed discount rather than a wrong charge, and the live evidence listed above, which belongs to the user's live sessions.
+
+## Controlling takeover result (2026-10-06)
+
+The historical matrix above preserves its earlier evidence. It does not establish current completion.
+The latest source repairs preserve linked-factor, law, slot, and simple-cost helper outputs, add a bounded manual rejection report, and require net spending evidence for inferred institutional families.
+Exact native cost composition remains a source blocker under D42, including a reproduced stale-contribution zero-price counterexample.
+Achievement inference remains weaker than individual native payment proof.
+The catalog wording in `catalog_changes_pending.md` remains queued with the workbook owner.
+The current audit handoffs and exact live checks are in `takeover_status_2026-10-06.md`.
+No new live, save/reload, multiplayer, or universal AI acceptance is claimed.

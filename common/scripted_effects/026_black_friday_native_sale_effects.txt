@@ -25,7 +25,9 @@
 # the vanilla political advisors that carry a ledger all use the army ledger.
 # With no linked discount the result is exact; with one the sale is computed
 # from the deeper discount, so no purchase is priced below its sale price or
-# becomes free, whether the engine adds or multiplies the two keys.
+# becomes free under those unchanged factors, whether the engine adds or
+# multiplies the two keys. Other cost-factor changes after this computation
+# require another explicit refresh and remain a native acceptance blocker.
 #
 # The key list mirrors common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt.
 # Keep both files in step when a key is added or removed.
@@ -42,6 +44,15 @@ black_friday_native_sale_apply = {
 	set_temp_variable = { black_friday_native_sale_offset = global.black_friday_discount_ratio }
 	divide_temp_variable = { black_friday_native_sale_offset = constant:black_friday_event.ratio_basis }
 	subtract_from_temp_variable = { black_friday_native_sale_offset = constant:black_friday_event.one }
+	# Caller-owned outputs must survive the linked-factor helper's return.
+	set_temp_variable = { black_friday_native_army_ledger_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_navy_ledger_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_air_ledger_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_any_ledger_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_military_leader_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_army_spirit_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_navy_spirit_min = constant:black_friday_event.zero }
+	set_temp_variable = { black_friday_native_air_spirit_min = constant:black_friday_event.zero }
 	black_friday_native_sale_read_linked_ordinaries = yes
 	black_friday_native_sale_store_contributions = yes
 	set_country_flag = black_friday_native_sale_stored

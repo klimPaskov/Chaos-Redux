@@ -30,3 +30,42 @@ country_event = {
 		}
 	}
 }
+
+# A manual request that cannot open the sale explains its captured reason.
+# The entry effect sends this report at most once per human country.
+country_event = {
+	id = chaosx.nr26.3
+	title = chaosx.nr26.3.t
+	desc = {
+		text = chaosx.nr26.3.d.active
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.active } }
+	}
+	desc = {
+		text = chaosx.nr26.3.d.fired
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.fired } }
+	}
+	desc = {
+		text = chaosx.nr26.3.d.disabled
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.disabled } }
+	}
+	desc = {
+		text = chaosx.nr26.3.d.paused
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.paused } }
+	}
+	desc = {
+		text = chaosx.nr26.3.d.world_end
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.world_end } }
+	}
+	desc = {
+		text = chaosx.nr26.3.d.reserved
+		trigger = { check_variable = { black_friday_entry_failure_reason = constant:black_friday_entry_failure.reserved } }
+	}
+	desc = { text = chaosx.nr26.3.d.below_chaos }
+	picture = GFX_report_event_026_black_friday
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr26.3.a
+		ai_chance = { base = 100 }
+		hidden_effect = { clear_variable = black_friday_entry_failure_reason }
+	}
+}
