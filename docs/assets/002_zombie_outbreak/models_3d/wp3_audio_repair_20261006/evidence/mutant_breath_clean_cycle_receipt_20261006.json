@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "status": "technical_candidate_staged_parent_review_required",
+  "role": "mutant low breathing loop candidate",
+  "source": {
+    "title": "horror breathing",
+    "creator": "primbal",
+    "source_page": "https://opengameart.org/content/horror-breathing",
+    "license": "CC0 1.0",
+    "archive_path": "docs/assets/chaos_warfare_system/models_3d/chaos_assault_battalion/audio/recovery_20260912/sources/breath/horrorbreathing.zip",
+    "archive_sha256": "5984AA9D197885AB110C31EA0BA382D3F47D12B93449F8942E1CF96B0449462C",
+    "original_member": "horrorbreathing/horrorbreathing.wav",
+    "original_path": "docs/assets/chaos_warfare_system/models_3d/chaos_assault_battalion/audio/recovery_20260912/sources/breath/extracted/horrorbreathing.wav",
+    "original_sha256": "C6BA78F40B9F5A1C9A3BDDCEB580FEC137DAE12861C95B82688D1DCFB13FC45A",
+    "original_format": "stereo PCM16, 44100 Hz, 6.253877551 s",
+    "prior_role_classification": "idle_breath in the existing Chaos Assault Battalion receipt",
+    "underlying_distinct_take_count": 1,
+    "alternate_encoding_note": "The archive OGG is an alternate encoding of the same recording and is not another take. The WAV scan found direct clipping outside this crop; no near-rail samples were found in this selected interval."
+  },
+  "crop": {
+    "source_interval_seconds": [4.2, 5.4],
+    "selection_basis": "50 ms RMS envelope shows a recorded low-to-high-to-low swell, approximately -22.2 dBFS at the initial trough, -5.2 dBFS near the peak, and -24.1 dBFS at the ending trough; direct source WAV rail scan found no near-rail samples in the interval.",
+    "path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/mutant_breath_clean_cycle_crop/primbal_clean_recorded_breath_4p2s_5p4s.wav",
+    "sha256": "3B901DD748900D77525C2D89CBCD7470910DACE4BEA3D59276C4C8AEB5EECB56",
+    "duration_seconds": 1.2,
+    "format": "stereo PCM16, 44100 Hz",
+    "command": "ffmpeg -i horrorbreathing.wav -ss 4.200000 -t 1.200000 -map 0:a:0 -vn -c:a pcm_s16le -ar 44100 primbal_clean_recorded_breath_4p2s_5p4s.wav",
+    "take_and_semantics_limit": "A section of one recorded breathing file, not an independent take. Envelope evidence suggests a complete cycle, but waveform metrics cannot establish perceived cycle completeness or mutant-role fit."
+  },
+  "mastering": {
+    "manifest_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/evidence/mutant_breath_clean_cycle_master_allowlist.json",
+    "manifest_sha256": "A94752CA6556E621A5E32F12F6BA294CF99CC566C6838029E6872C12CA2D870E",
+    "master_report_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/evidence/mutant_breath_clean_cycle_master.json",
+    "master_report_sha256": "71AED5318FDDCC13EC05102E6870C9F7D7D656898A799396AB7834CE917B539B",
+    "processing": "Recorded crop only: 30 Hz high-pass, mono downmix to 44100 Hz, trim start 0, 8 ms fade-in and 50 ms fade-out. The shared recorded loop master selected a measured 250 ms equal-power recorded head/tail overlap (effective output duration 0.95 s), applied EBU loudness normalization to -20 LUFS, with no measured limiter sample gain reduction. No silence, noise, tone, or external recording was added.",
+    "full_commands_and_boundary_metrics": "See the cited master report."
+  },
+  "candidate": {
+    "path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/mutant_breath_clean_cycle_candidates/mutant_zombie_clean_breath_4p2s_5p4s.wav",
+    "sha256": "BF4023661ED7E1D5EFA3020635DBEA2457CC6232ACC411B79151C5BF0EF577B4",
+    "duration_seconds": 0.95,
+    "format": "mono PCM16, 44100 Hz",
+    "measurements": {
+      "integrated_lufs": -20.0,
+      "sample_peak_dbfs": -3.4129,
+      "true_peak_dbtp": -3.4,
+      "loop_inner_edge_rms_delta_db": 1.0329,
+      "leading_silence_ms_at_minus55db": 0.0,
+      "direct_near_rail_samples": 0,
+      "probable_flat_top": false,
+      "mean_dc_offset_linear": -0.0028663
+    },
+    "inspection_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/evidence/mutant_breath_clean_cycle_inspect.json",
+    "inspection_sha256": "0F56233A7DD43E25B42C0EADB58049C4946E5AD4C8CCD5FA756676EDD3B48F9C",
+    "inspection_status": "passes_role_checks",
+    "technical_limits": "The existing loop inspector gates report <=20 ms lead, -20 LUFS +/-1, true peak <=-1 dBTP, no direct flat-top, and loop inner-edge RMS delta <=3 dB. This file passes those measured checks. Technical passage does not prove role fit or a perceptually clean loop."
+  },
+  "acceptance_limits": [
+    "Candidate only; no runtime install or definition wiring is included.",
+    "Parent/orchestrator must review whether the crop reads as a complete breath cycle and suits mutant low breathing.",
+    "The master creates a loop by overlapping the recorded crop's tail and head; listen for repetition, discontinuity, or audible crossfade artifacts.",
+    "This derivative remains one underlying recorded take, not a breathing pool or several takes."
+  ],
+  "related_source_quality_evidence": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/evidence/mutant_breath_source_clipping_alignment_20261006.json"
+}

@@ -9,8 +9,8 @@ The missing requested `unit_s3_report.md` was replaced for reference reading by 
 
 The host-restart reconciliation verifies that all 72 installed mesh/action files still match the latest hash-bound audit: one geometry pass, seven geometry blockers, seven action passes and 57 action blockers.
 `wp3_evidence/restart_recovery_20261006.json` records the actual-byte comparisons and the fresh reference-search failure (`Transport closed`).
-The active mutant attack candidate stays outside runtime; the next serialized Blender tranche is undead material-region review and native AO.
-The nine completed WP3 commits were recovered from Git; pre-existing dirty zombie intake/blocker files remain reserved for their original owner.
+The mutant attack candidates stay outside runtime; the undead source correspondence and native AO tranche is archived, and base-zombie geometry review is continuing in an isolated source branch.
+The initial nine WP3 commits and the subsequent focused source/evidence commits were recovered from Git; pre-existing dirty zombie intake/blocker files remain reserved for their original owner.
 
 The focused presentation commit is `dbbd5444b`: all eight death blood bursts drop `keep_particle`, the undead attack grunt moves from 2.80 to 2.45 seconds, and the necrotic fall cue moves from 1.30 to 3.30 seconds.
 Shared idle volume changes from 0.22 to 0.42, shared movement from 0.34 to 0.50, and parasitic feeding from 0.45 to 0.55, matching the WP3 ticket values.
@@ -35,6 +35,9 @@ Two additional source-labeled zombie moans remain staged, not installed.
 The low-breathing OGG derivative passes output-file checks but is held: the aligned archive WAV has 19,704 near-rail samples and 1,101 plateau runs spanning 0.060136-4.105533 seconds, and those intervals map into the candidate.
 Lossy decoding does not establish repaired source peaks; the near-rail-free tail is not proven to contain a complete breathing cycle.
 The exact original/candidate hashes and interval mapping are in `mutant_breath_source_clipping_alignment_20261006.json`; no derivative is promoted on the alternative encoding alone.
+One later source-only candidate isolates the original WAV's rail-free 4.200-5.400-second interval and uses a 250 ms recorded head/tail crossfade.
+Its 0.950-second output measures -20.0 LUFS, -3.413 dBFS, -3.4 dBTP and 1.033 dB inner-edge mismatch; source-envelope evidence suggests a swell but cannot establish a complete perceived breath or mutant-role fit.
+This clean-interval candidate remains uninstalled and unlistened; exact source, crop, master and output hashes are in `mutant_breath_clean_cycle_receipt_20261006.json`.
 
 Shared footsteps 03–06 isolate complete transients from their original CC0 recordings, with short releases; footsteps 01–02 already fit the shortest interval.
 The final six paths remain distinct recorded takes, at the shared -6 dBFS peak target, with a maximum duration of 0.17 seconds.
@@ -72,7 +75,7 @@ The current 64-state comparison clears all ten one-shot/silent-state findings: 3
 All 44 current local WAV paths and the installed mesh/action hashes remain unchanged.
 This repairs recurring source wiring; actual cadence, state-exit stop/fade and crowd balance require orchestrator listening.
 Existing source-level and take-count gaps remain open; no new recording is claimed.
-Evidence is `wp3_evidence/idle_ambient_fix_20261006/parent_comparison.json`.
+Evidence is `wp3_evidence/idle_ambient_fix_20261006/parent_comparison.json`; the installed definition and entity changes are committed as `808a40c5c`.
 
 ### Installed mutant geometry, idle and two material maps
 
@@ -138,6 +141,8 @@ Raw PNG SHA is `31c94862a7a72c70aee2a0c5f5fa8578094178c03fdbfd1d556e1194d5e0ad10
 Parent acceptance is limited to real native AO source evidence on this geometry/UV basis; the margin-zero output needs occupancy padding before texture use, and geometry/UV repairs require rebaking or rebinding.
 Material-region acceptance, source-based diffuse/specular work, topology/weights/actions and runtime appearance remain open.
 The handoff is `wp3_undead_model_handoff.md`; the bake and recovery receipt is `docs/assets/002_zombie_outbreak/models_3d/undead_zombies/blender/evidence/ao_20261006/ao_bake_receipt_20261006.json`.
+Commit `676b50952` preserves the exact source views, correspondence, rejected masks, native AO and working checkpoint without changing undead runtime bytes.
+Commit `7794655c0` closes the missing native proof for the rejected mutant body-eased export; its motion rejection remains unchanged.
 
 ## Per-ticket work and remaining acceptance
 
