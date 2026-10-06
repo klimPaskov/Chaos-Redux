@@ -122,3 +122,13 @@ Parent review rejected circled-A-like commune tokens and revised them to blank s
 The anti-protectorate wax seal is blank; the remaining apparent native-size mark was verified at source resolution as envelope-fold shading.
 The parent reviewed the complete native sheets, installed all 47 files and independently checked the runtime DDS pixels against their approved PNGs.
 The closed MCP transport leaves final engine rendering unresolved; source and independent audit evidence is recorded in `docs/plans/gfx_fix_2026-10/005_bbh_report.md`.
+
+## Graphics review: Arctic Workers' Republic subjects, 2026-10-06
+
+Acceptance basis: the user's AOX placeholder-tree finding, per-focus subject requirement and G6 authority.
+All 47 focus slots receive original native-alpha subjects tied to current names, descriptions and rewards, with the anchor-star identity reserved for Birth.
+The parent rejected neon arcs on Extreme Path in favor of a physical signal mast, red lamp and harbor lights, and replaced a UI-selector endgame candidate with a fortified harbor gate, sail and broken-chain seal.
+First Guard preserves its tall source proportions rather than stretching to fill a fixed box.
+The five outdated plan suffixes are mapped to the current registered consumers without renaming sprites or changing gameplay source.
+The parent reviewed all 47 native DDS tiles, installed the textures and independently verified their exact approved PNG pixels.
+The final named-tree MCP raster returned Transport closed; `docs/plans/gfx_fix_2026-10/005_aox_report.md` records the accepted art and remaining engine acceptance gap.
