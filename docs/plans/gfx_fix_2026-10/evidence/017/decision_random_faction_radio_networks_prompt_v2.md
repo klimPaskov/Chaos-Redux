@@ -1,0 +1,8 @@
+﻿Use case: precise-object-edit.
+Asset type: Hearts of Iron IV decision icon, exact target 32x32 RGBA with genuine transparency.
+Input image 1: the supplied decision_random_faction_radio_networks_v1.png is the edit target. Keep its radio-mast identity, bronze and dark-steel materials, warm lighting, solid painted construction, and small transmitter cabinet.
+Input image 2: canonical decision_generic_intelligence_operation.png from the Vanilla Decisions family is a style-only anchor for compact HOI4 painted icon shading and crisp dark edges; do not copy its subject.
+Primary request: Change only the composition and relative proportions so this radio station reads clearly in a 32x32 decision slot. The first candidate is too tall and narrow.
+Edit delta: Recompose it into a compact near-square icon. Shorten the lattice mast, widen its horizontal antenna arms, and make the base transmitter cabinet slightly broader so the complete silhouette occupies about 26x27 px of the 32x32 canvas. Preserve the same radio mast and cabinet; use fewer, thicker structural braces so they survive small-size reduction.
+Invariants: Keep one central mast, an antenna cross-arm, a compact base transmitter, the same aged bronze and dark-steel painted style, and a genuine transparent unused canvas. Keep the whole object complete with a 2 px outer margin. The painted surfaces must be fully opaque inside the silhouette, with antialiasing only at its outer edge.
+Avoid: Scattered colored dots, radio-wave symbols, extra masts, people, text, flags, fake checkerboard, opaque or chroma background, broad glow, blur, clipping, white outline, sticker border, and changes to the subject identity or material style.
